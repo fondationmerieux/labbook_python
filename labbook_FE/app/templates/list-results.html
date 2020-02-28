@@ -1,0 +1,296 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    {% block title %}
+    <title>Saisie de résultats</title>
+    {% endblock %}
+    <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}        
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title saisie-resultat">
+                <span>Saisie de résultats</span>
+            </h2>
+            <div id="results">
+                <form id="form_main" class="vzn-form form-horizontal row" enctype="application/x-www-form-urlencoded" method="post" action="{{ session['server_ext'] }}/sigl/result/index/index">
+                    <fieldset id="filter-group" class="group group-1">
+                        <legend>Filtre</legend>
+                        <div class="row">
+                            <div id="filter" class="col-xs-12">
+                                <div class="form-group">
+                                    <div class="statictext control-label"><span>Date de la demande du</span></div>
+                                    <div class="field date-fields form-inline">
+                                        <input id="f_date_beg" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                    </div>
+                                    <div class="statictext control-label"><span>au</span></div>
+                                    <div class="field date-fields form-inline">
+                                        <input id="f_date_end" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="statictext control-label">Type</div>
+                                    <div class="field">
+                                        <select name="type_ana" id="f_type_ana" class="form-control">
+                                            <option value="0" selected="selected"></option>
+                                            {% for type_ana in ihm['type_ana'] %}
+                                            <option value="{{ type_ana['id_data'] }}">{{ type_ana['label'] }}</option>
+                                            {% endfor %}
+                                        </select>       
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="field">
+                                        <input id="f_emer_ana" type="checkbox" name="urgent" value="4">
+                                    </div>
+                                    <div class="statictext control-label">
+                                        <label for="f_emer_ana">Afficher uniquement les analyses prioritaires</label>
+                                    </div>
+                                    <div class="field">
+                                        <input id="f_valid_res" type="checkbox" name="valid" value="1">
+                                    </div>
+                                    <div class="statictext control-label">
+                                        <label for="f_valid_res">Masquer les résultats déjà validés</label>
+                                    </div>
+                                </div>
+                                <div class="form-group button">
+                                    <input class="btn btn-primary" type="submit" name="update-filter" onclick="filter_result();return false;" value="Appliquer le filtre">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <div id="analyses">
+                    <div id="no_result" class="error">Aucune analyse</div>
+                    <div id="list_result"></div>
+                </div>
+
+            </div><!-- ferme results -->
+
+        </div><!-- ferme inner -->
+    </div><!-- ferme main -->
+</div><!-- ferme le corps -->
+{% endblock %}        
+
+{% block add_script %}
+<script>
+var data_results = {{ args|safe }} ; 
+
+function filter_result()
+{
+let date_beg  = $("#f_date_beg").val() ;
+let date_end  = $("#f_date_end").val() ;
+let type_ana  = $("#f_type_ana").val() ;
+let emer_ana  = 0 ;
+let valid_res = 0 ;
+
+    if ( $("#f_emer_ana").is(":checked") )
+    emer_ana = $("#f_emer_ana").val() ;
+
+    if ( $("#f_valid_res").is(":checked") )
+    valid_res = $("#f_valid_res").val() ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
+            '"type_ana":' + type_ana  + ', ' +
+            '"emer_ana":' + emer_ana  + ', ' +
+            '"valid_res":' + valid_res + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/result/list",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG success post filter_result data="+JSON.stringify(data));
+
+           data_results = data ;
+
+           //p_max = Math.ceil( data.length / p_step ) ;
+
+           display_result( 1 ) ;
+           },
+       error: function(data)
+           {
+           console.log("ERREUR") ;
+           alert("Une erreur est survenue") ;
+           }
+    } ) ;
+
+}
+
+
+function display_result( num_page )
+{
+    // hide no_result
+    if (data_results.length < 1)
+    $("#no_result").show() ;
+    else
+    $("#no_result").hide() ;
+
+res = '<form id="form-538" enctype="application/x-www-form-urlencoded" method="post" action="{{ session['server_ext'] }}/sigl/result/index/index" class="vzn-form form-horizontal row">' +
+    '<fieldset id="subform-538" class="subform group group-1">' +
+        '<legend>' + data_results[0].nom + '</legend>' +
+        '<div id="select-all-div-538" class="select-all hide">' +
+            '<span class="checkbox">' +
+                '<input type="hidden" name="select_all" value="0"><input type="checkbox" name="select_all" id="select-all-538" value="1" checked="checked">' +
+                '<label for="select-all-538">Sélectionner / Déselectionner tout</label>' +
+            '</span>' +
+        '</div>' +
+        '<fieldset id="yui_3_10_1_1_1582117454625_106">' +
+            '<legend><span class="num-dos">3</span> 01/2020</legend>' + // fin de num_dos_an via id_dos=id_data from sigl_02_data // date from date_dos dans sigl_02_data
+            '<div class="listing table-responsive yui-dt">' +
+                '<table class="main">' +
+                    '<tbody class="yui-dt-data">' +
+                        '<tr class="yui-dt-rec">' +
+                            '<td>' +
+                                '<span id="ckbx-9" class="checkbox hide">' +
+                                    '<input type="hidden" name="checkbox-9" value="0"><input type="checkbox" name="checkbox-9" id="checkbox-9" value="9" class="result-checkbox">' +
+                                '</span>' +
+                            '</td>' +
+                            '<td class="icon-container">' +
+                                '<span id="oor-9" class="oor hide"><span id="normals-9" class="normals"></span></span>' +
+                            '</td>' +
+                            '<td class="icon-container">&nbsp;</td>' +
+                            '<td id="status-9" class="icon-container status">' +
+                                '<span class="icon status-a">A</span>' +
+                            '</td>' +
+                            '<td class="icon-container history">' +
+                                '<div id="history-9" class="history-icon"></div>' +
+                                '<div id="history-detail-9" class="hide"></div>' +
+                            '</td>' +
+                            '<td class="icon-container var-label">' + data_results[0].libelle + '</td>' +
+                            '<td class="value">' +
+                                '<span id="value-9" class="value">' +
+                                    '<select name="res-9" id="res-9" class="form-control saved" onchange="">' +
+                                        '<option value=""> </option>' +
+                                        '<option value="524">Résistant</option>' +
+                                        '<option value="525">Intermédiaire</option>' +
+                                        '<option value="526">Sensible</option>' +
+                                        '<option value="1013">Non effectué</option>' +
+                                    '</select>' +
+                                    '<input type="hidden" name="type-res-9" value="600" id="type-res-9">' +
+                                '</span>' +
+                                '<span id="unit-9" class="unit show"></span>' +
+                            '</td>' +
+                            '<td class="optionnal">&nbsp;</td>' +
+                        '</tr>' +
+                        '<tr class="yui-dt-rec">' +
+                            '<td>' +
+                                '<span id="ckbx-10" class="checkbox hide">' +
+                                    '<input type="hidden" name="checkbox-10" value="0"><input type="checkbox" name="checkbox-10" id="checkbox-10" value="10" class="result-checkbox">' +
+                                '</span>' +
+                            '</td>' +
+                            '<td class="icon-container">' +
+                                '<span id="oor-10" class="oor hide"><span id="normals-10" class="normals"></span></span>' +
+                            '</td>' +
+                            '<td class="icon-container">&nbsp;</td>' +
+                            '<td id="status-10" class="icon-container status">' +
+                                '<span class="icon status-a">A</span>' +
+                            '</td>' +
+                            '<td class="icon-container history">' +
+                                '<div id="history-10" class="history-icon"></div>' +
+                                '<div id="history-detail-10" class="hide"></div>' +
+                            '</td>' +
+                            '<td class="icon-container var-label">' + data_results[0].libelle + '</td>' +
+                            '<td class="value">' +
+                                '<span id="value-10" class="value">' +
+                                    '<select name="res-10" id="res-10" class="form-control saved" onchange="">' +
+                                        '<option value=""> </option>' +
+                                        '<option value="524">Résistant</option>' +
+                                        '<option value="525">Intermédiaire</option>' +
+                                        '<option value="526">Sensible</option>' +
+                                        '<option value="1013">Non effectué</option>' +
+                                    '</select>' +
+                                    '<input type="hidden" name="type-res-10" value="1134" id="type-res-10">' +
+                                '</span>' +
+                                '<span id="unit-10" class="unit show"></span>' +
+                            '</td>' +
+                            '<td class="optionnal">&nbsp;</td>' +
+                        '</tr>' +
+                    '</tbody>' +
+                '</table>' +
+            '</div>' +
+        '</fieldset>' +
+        '<div class="form-group button tech">' +
+            '<button name="ok" id="save-538" type="button" value="Enregistrer" disabled="disabled" class="btn disabled btn-default">Enregistrer</button>' +
+        '</div>' +
+        '<input type="hidden" name="date_begin" value="2020-01-19" id="date_begin_538">' +
+        '<input type="hidden" name="date_begin_day" value="19" id="date_begin_day_538">' +
+        '<input type="hidden" name="date_begin_month" value="01" id="date_begin_month_538">' +
+        '<input type="hidden" name="date_begin_year" value="2020" id="date_begin_year_538">' +
+        '<input type="hidden" name="date_end" value="2020-02-19" id="date_end_538">' +    
+        '<input type="hidden" name="date_end_day" value="19" id="date_end_day_538">' +
+        '<input type="hidden" name="date_end_month" value="02" id="date_end_month_538">' +
+        '<input type="hidden" name="date_end_year" value="2020" id="date_end_year_538">' +
+        '<input type="hidden" name="type" value="0" id="type_538">' +
+        '<input type="hidden" name="urgent" value="0" id="urgent_538">' +
+        '<input type="hidden" name="valid" value="0" id="valid_538">' +
+    '</fieldset>' +
+'</form>' ;
+
+$("#list_result").html( res ) ;
+
+// Fill result
+//$("#list_result").text( JSON.stringify(data_results) ) ;
+
+/*
+[{"ref_ana":306,"id_ana":10,"id_dos":5,"nom":"Acide fusidique","famille":"",
+"id_res":9,"id_data":428,"id_owner":1010,
+"libelle":"Acide fusidique","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":600,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":306,"id_ana":10,"id_dos":5,"nom":"Acide fusidique","famille":"",
+"id_res":10,"id_data":429,"id_owner":1010,
+"libelle":"Acide fusidique","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":1134,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":178,"id_ana":5,"id_dos":3,"nom":"Détermination du groupe sanguin ABO et Rhésus standard (D)","famille":"Hématologie, Immunohématologie et Hémostase",
+"id_res":3,"id_data":203,"id_owner":1010,
+"libelle":"Groupe sanguin","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":900,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":178,"id_ana":5,"id_dos":3,"nom":"Détermination du groupe sanguin ABO et Rhésus standard (D)","famille":"Hématologie, Immunohématologie et Hémostase",
+"id_res":4,"id_data":204,"id_owner":1010,
+"libelle":"Rhésus","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":230,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":178,"id_ana":7,"id_dos":4,"nom":"Détermination du groupe sanguin ABO et Rhésus standard (D)","famille":"Hématologie, Immunohématologie et Hémostase",
+"id_res":5,"id_data":203,"id_owner":1010,
+"libelle":"Groupe sanguin","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":900,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":178,"id_ana":7,"id_dos":4,"nom":"Détermination du groupe sanguin ABO et Rhésus standard (D)","famille":"Hématologie, Immunohématologie et Hémostase",
+"id_res":6,"id_data":204,"id_owner":1010,
+"libelle":"Rhésus","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":230,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":178,"id_ana":9,"id_dos":5,"nom":"Détermination du groupe sanguin ABO et Rhésus standard (D)","famille":"Hématologie, Immunohématologie et Hémostase",
+"id_res":7,"id_data":203,"id_owner":1010,
+"libelle":"Groupe sanguin","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":900,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""},
+
+{"ref_ana":178,"id_ana":9,"id_dos":5,"nom":"Détermination du groupe sanguin ABO et Rhésus standard (D)","famille":"Hématologie, Immunohématologie et Hémostase",
+"id_res":8,"id_data":204,"id_owner":1010,
+"libelle":"Rhésus","description":"","unite":"","normal_min":"","normal_max":"",
+"commentaire":"","type_resultat":230,"unite2":"","formule_unite2":"","formule":"","precision":"","precision2":""}]
+*/
+}
+
+$( document ).ready( function()
+{
+$("#f_date_beg").val( "{{ now|date_now }}" ) ;
+$("#f_date_end").val( "{{ now|date_now }}" ) ;
+
+display_result( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

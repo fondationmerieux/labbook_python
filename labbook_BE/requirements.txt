@@ -1,0 +1,16 @@
+aniso8601==8.0.0
+Babel==2.7.0
+Click==7.0
+Flask==1.1.1
+Flask-RESTful==0.3.7
+flask-restful-swagger==0.20.1
+gunicorn==20.0.0
+IfxPy==3.0.1
+itsdangerous==1.1.0
+Jinja2==2.10.3
+MarkupSafe==1.1.1
+mysql-connector-python==8.0.18
+protobuf==3.10.0
+pytz==2019.3
+six==1.13.0
+Werkzeug==0.16.0

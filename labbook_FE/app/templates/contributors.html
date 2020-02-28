@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='{{ locale }}'>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Contributeurs</title>
+    <link rel="icon" href="{{ session['server_ext'] }}/assets/images/favicon.ico" />
+    <link href="{{ session['server_ext'] }}/fontawesome/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/bootstrap/css/bootstrap.min.css" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/sigl/style?2.15" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/css/labbook.css?0" media="screen" rel="stylesheet" type="text/css">
+</head>
+
+<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">
+    <div id="page" class="container">
+        <header>
+            <div class="inner">
+                <div id="logo">
+                    <h1>
+                        <a href="{{ session['server_ext'] }}/sigl/">LABBOOK</a>
+                    </h1>
+                </div>
+            </div>
+        </header><!-- ferme le header -->
+        <div id="content">
+            <div class="inner">
+                <div id="main">
+                    <h2 class="page-title"><span>Contributeurs</span></h2>
+                    <div class="col-lg-7">
+                        <p>LabBook est un logiciel de gestion de laboratoire Opensource.</p>
+                        <p>Il a été développé dans le cadre du projet RESAOLAB par la Fondation Mérieux.</p>
+                        <p>LabBook est co-financé par l’AFD et la Fondation Mérieux.</p>
+                        <p>La société Epiconcept a développé le logiciel Labbook à partir de l’écosystème Voozanoo, spécialisé dans la collecte et la gestion de données multicentriques dans le domaine de la santé publique et de la recherche.</p>
+                        <p>© LabBbook / Fondation Mérieux ; plus d’information sur :<br>
+                            <a href="http://labbook.globe-network.org" onclick="window.open('http://labbook.globe-network.org', 'globe'); return false;">http://labbook.globe-network.org</a>
+                        </p>
+                        <p>© Voozanoo / Epiconcept ; plus d’information sur :<br>
+                            <a href="http://www.voozanoo.net" onclick="window.open('http://www.voozanoo.net', 'voozanoo'); return false;">http://www.voozanoo.net</a>
+                        </p>
+                        <p>Ces deux logiciels sont sous licence GNU.</p>
+                    </div>
+                    <div class="col-lg-5" style="text-align: center;">
+                        <a href="http://resaolab.globe-network.org" onclick="window.open('http://resaolab.globe-network.org', 'resaolab'); return false;"><img src="/assets/images/resaolab.png" alt="RESAOLAB"></a><br>
+                        <a href="http://www.afd.fr" onclick="window.open('http://www.afd.fr', 'afd'); return false;"><img src="/assets/images/afd.png" alt="AFD"></a><br>
+                        <a href="http://www.fondation-merieux.org/?lang=fr" onclick="window.open('http://www.fondation-merieux.org/?lang=fr', 'fmx'); return false;"><img src="/assets/images/fmx.png" alt="Fondation Mérieux"></a><br>
+                        <br />
+                        <a href="http://www.epiconcept.fr/" onclick="window.open('http://www.epiconcept.fr/', 'epiconcept'); return false;"><img src="/assets/images/epiconcept.png" alt="EpiConcept"></a>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <footer>
+            <div class="version">Version : 2.9.0 | <a href="{{ session['server_ext'] }}/sigl/contributors">Contributeurs</a></div>
+        </footer>
+    </div><!-- ferme la page -->
+</body>
+</html>

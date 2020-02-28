@@ -1,0 +1,14 @@
+# ######################################
+#   Imports
+# ######################################
+
+from datetime import timedelta
+
+# ######################################
+#  Default flask parameters
+# ######################################
+
+DEBUG                      = True
+SECRET_KEY                 = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+PERMANENT_SESSION_LIFETIME = timedelta(days=1460)
+BABEL_DEFAULT_LOCALE       = 'fr'

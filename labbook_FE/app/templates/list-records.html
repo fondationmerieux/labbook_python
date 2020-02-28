@@ -1,0 +1,337 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    {% block title %}
+    <title>Liste des dossiers</title>
+    {% endblock %}
+    <link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />
+    <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>
+    <style>
+        .menu-act
+        {
+        color   : white;
+        padding : 3px !important;
+        }
+
+        .menu-act:hover
+        {
+        color         : black;
+        padding       : 3px !important;
+        padding-left  : 10px !important;
+        padding-right : 10px !important;
+        }
+
+        .menu-act-drop
+        {
+        background-color : #F08739 !important;
+        color            : white !important;
+        }
+
+        .menu-act-item:hover
+        {
+        background-color : #DD6512 !important;
+        color            : white !important;
+        }
+    </style>
+{% endblock %}
+
+{% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title  form-liste_des_dossiers"><span>Liste des dossiers</span></h2>
+            <form id="form_main" class="vzn-form form-horizontal row">
+                <!-- Filter -->
+                <div id="f-list-filter-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Filtre</h3></div>
+                    <div class="panel-body " id="f-list-filter-group_body">
+                        <div class="row">
+                            <div id="f-list-filter" class="col-xs-12">
+                                <div class="form-group">
+                                    <div class="statictext control-label col-lg-1 col-md-1 col-sm-4"><span>N° dossier</span></div>
+                                    <div class="field col-lg-2 col-md-2 col-sm-8">
+                                        <input id="f_num_rec" type="text" value="" maxlength="10" class="form-control" style="width: 120px;" null="">
+                                    </div>
+                                    <div class="statictext control-label col-lg-2 col-md-2 col-sm-4"><span>Statut du dossier</span></div>
+                                    <div class="field col-lg-3 col-md-3 col-sm-8">
+                                        <select id="f_stat_rec" class="form-control">
+                                            <option value="0" selected=""></option>
+                                            <option value="181">Nouveau</option>
+                                            <option value="182">Validé administrativement</option>
+                                            <option value="253">Intermédiaire (validé admin.)</option>
+                                            <option value="254">Validé techniquement</option>
+                                            <option value="255">Intermédiaire (validé tech.)</option>
+                                            <option value="256">Validé biologiquement</option>
+                                        </select>
+                                    </div>
+                                    <div class="statictext control-label col-lg-1 col-md-1 col-sm-4"><span>Patient</span></div>
+                                    <div class="field col-lg-3 col-md-3 col-sm-8">
+                                        <input id="f_patient" type="text" value="" maxlength="40" class="form-control" style="width: 320px;" null="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="statictext control-label col-lg-2"><span>Date dossier supérieure à</span></div>
+                                    <div class="field date-fields form-inline col-lg-2">
+                                        <input id="f_date_beg" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                    </div>
+                                    <div class="statictext control-label col-lg-2"><span>Date dossier inférieure à</span></div>
+                                    <div class="field date-fields form-inline col-lg-2">
+                                        <input id="f_date_end" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                    </div>
+                                    <div class="statictext control-label col-lg-1"><span>Urgent</span></div>
+                                    <div class="radio-group col-lg-2">
+                                        <label class="radio-inline undefined"><input type="radio" name="f_emer" value="4">Oui</label>
+                                        <label class="radio-inline undefined"><input type="radio" name="f_emer" value="5" {% if not args or not args['urgent'] %} checked="checked" {% endif %}>Non</label>
+                                    </div>
+                                </div>
+                                <div class="form-group button">
+                                    <input type="button" onclick="filter_record();return false;" class="btn undefined btn-default" value="Appliquer le filtre">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List records -->
+                <div class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Liste des dossiers</h3></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="listing_total_info" id="listing_dos_total_info">
+                                    <span class="listing_total_label" id="listing_dos_total_label">Nombre total de lignes :</span>
+                                    <span class="listing_total" id="listing_dos_total">{% if not args %}0{% else %}{{ args|length }}{% endif %}</span>
+                                </div>
+                                <div class="listing table-responsive yui-dt" id="listing_dos">
+                                    <div id="yui-dt0-paginator0" class="yui-dt-paginator yui-pg-container" style="">
+                                        <span id="yui-pg0-0-first-span23" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">Premier</a></span>
+                                        <span id="yui-pg0-0-prev-span25" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">Précédent</a></span>
+                                        <span id="num_page_t" class="yui-pg-pages" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span id="yui-pg0-0-next-span28" class="yui-pg-next"><a id="next_rec" onclick="display_record(1000);">Suivant</a></span>
+                                        <span id="yui-pg0-0-last-span30" class="yui-pg-last"><a id="last_rec" onclick="display_record(p_max);">Dernier</a></span>
+                                    </div>
+                                    <div class="yui-dt-mask" style="display: none;"></div>
+                                    <table summary="" id="yuievtautoid-0">
+                                        <colgroup><col><col><col><col><col><col><col><col><col></colgroup>
+                                        <thead>
+                                            <tr class="yui-dt-first yui-dt-last">
+                                                <th id="yui-dt0-th-id_data" rowspan="1" colspan="1" class="yui-dt0-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
+                                                    <div id="yui-dt0-th-id_data-liner" class="yui-dt-liner"><span class="yui-dt-label">id_data</span></div>
+                                                </th>
+                                                <th id="yui-dt0-th-action" rowspan="1" colspan="1" class="yui-dt0-col-action yui-dt-col-action">
+                                                    <div id="yui-dt0-th-action-liner" class="yui-dt-liner"><span class="yui-dt-label">Action</span></div>
+                                                </th>
+                                                <th id="yui-dt0-th-statut_court" rowspan="1" colspan="1" class="string yui-dt0-col-statut_court yui-dt-col-statut_court yui-dt-sortable">
+                                                    <div id="yui-dt0-th-statut_court-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-statut_court" title="Click to sort ascending" class="yui-dt-sortable">Statut</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt0-th-urgent" rowspan="1" colspan="1" class="string yui-dt0-col-urgent yui-dt-col-urgent yui-dt-sortable">
+                                                    <div id="yui-dt0-th-urgent-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-urgent" title="Click to sort ascending" class="yui-dt-sortable">Urgent</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt0-th-num_dos" rowspan="1" colspan="1" class="integer yui-dt0-col-num_dos yui-dt-col-num_dos yui-dt-sortable">
+                                                    <div id="yui-dt0-th-num_dos-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-num_dos" title="Click to sort ascending" class="yui-dt-sortable">N° dossier</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt0-th-date_dos" rowspan="1" colspan="1" class="date yui-dt0-col-date_dos yui-dt-col-date_dos yui-dt-sortable">
+                                                    <div id="yui-dt0-th-date_dos-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-date_dos" title="Click to sort ascending" class="yui-dt-sortable">Création dossier</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt0-th-code" rowspan="1" colspan="1" class="string yui-dt0-col-code yui-dt-col-code yui-dt-sortable">
+                                                    <div id="yui-dt0-th-code-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code patient</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt0-th-nom" rowspan="1" colspan="1" class="string yui-dt0-col-nom yui-dt-col-nom yui-dt-sortable">
+                                                    <div id="yui-dt0-th-nom-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt0-th-prenom" rowspan="1" colspan="1" class="string yui-dt0-col-prenom yui-dt-col-prenom yui-dt-sortable yui-dt-last">
+                                                    <div id="yui-dt0-th-prenom-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt0-href-prenom" title="Click to sort ascending" class="yui-dt-sortable">Prénom</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_records" class="yui-dt-message" style=""></tbody>
+                                    </table>
+                                    <div id="listing_dos_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
+                                        <div class="bd">
+                                            <ul class="first-of-type">
+                                                <li class="yuimenuitem first-of-type" id="yui-gen12" groupindex="0" index="0">
+                                                    <a href="#" class="yuimenuitemlabel">Dossier administratif</a>
+                                                </li>
+                                                <li class="yuimenuitem" id="yui-gen13" groupindex="0" index="1">
+                                                    <a href="#" class="yuimenuitemlabel">Saisie des résultats</a>
+                                                </li>
+                                                <li class="yuimenuitem yuimenuitem-disabled" id="yui-gen14" groupindex="0" index="2">
+                                                    <a href="#" class="yuimenuitemlabel yuimenuitemlabel-disabled"><hr></a>
+                                                </li>
+                                                <li class="yuimenuitem" id="yui-gen15" groupindex="0" index="3">
+                                                    <a href="#" class="yuimenuitemlabel">Supprimer</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div id="yui-dt0-paginator1" class="yui-dt-paginator yui-pg-container" style="">
+                                        <span id="yui-pg0-1-first-span33" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">Premier</a></span>
+                                        <span id="yui-pg0-1-prev-span35" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">Précédent</a></span>
+                                        <span id="num_page_b" class="yui-pg-pages" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span id="yui-pg0-1-next-span38" class="yui-pg-next"><a id="next_rec" onclick="display_record(1000);">Suivant</a></span>
+                                        <span id="yui-pg0-1-last-span40" class="yui-pg-last"><a id="last_rec" onclick="display_record(p_max);">Dernier</a></span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!-- close main -->
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_records = {{ args|safe }} ;
+var p_step       = 20 ;
+var p_cur        = 1 ;
+var p_max        = Math.ceil( {{ args|length }} / p_step ) ;
+
+function status( id_stat )
+{
+let res = '' ;
+
+    if ( id_stat == 182 )
+    res = '<span class="icon status-a">A</span>' ;
+    else if ( id_stat == 253 )
+    res = '<span class="icon status-a">I</span>' ;
+    else if ( id_stat == 254 )
+    res = '<span class="icon status-t">T</span>' ;
+    else if ( id_stat == 255 )
+    res = '<span class="icon status-t">I</span>' ;
+    else if ( id_stat == 256 )
+    res = '<span class="icon status-b">B</span>' ;
+
+return res ;
+}
+
+function filter_record()
+{
+let num_rec  = $("#f_num_rec").val()  ;
+let stat_rec = $("#f_stat_rec").val() ;
+let patient  = $("#f_patient").val()  ;
+let date_beg = $("#f_date_beg").val() ;
+let date_end = $("#f_date_end").val() ;
+let emer     = $("input:radio[name=f_emer]:checked").val() ;
+
+let param = '{ "num_rec":"' + num_rec + '", ' +
+            '"stat_rec":' + stat_rec  + ', ' +
+            '"patient":"' + patient  + '", ' +
+            '"date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
+            '"emer":' + emer + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/record/list/" + {{ session['user_id_group']|safe}},
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           data_records = data ;
+
+           p_max = Math.ceil( data.length / p_step ) ;
+
+           display_record( 1 ) ;
+           },
+       error: function(data)
+           {
+           console.log("ERREUR") ;
+           alert("Une erreur est survenue") ;
+           }
+    } ) ;
+}
+
+function display_record( num_page )
+{
+let res = ''
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+$("#tbody_records").empty() ;
+
+{% if not args %}
+res = '<tr class="yui-dt-first yui-dt-last">' +
+      '<td colspan="9" class="yui-dt-empty">' +
+      '<div class="yui-dt-liner">Aucune donnée à afficher</div></td></tr>' ;
+{% else %}
+let i_start = (p_cur -1) * p_step ;
+let i_stop  = Math.min( data_records.length, p_cur * p_step ) ;
+
+for( i = i_start; i < i_stop; i++ )
+{
+let menu_act = '<ul class="nav navbar-nav">' +
+               '<li class="dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">Action</a>' +
+               '<ul class="dropdown-menu menu-act-drop">' +
+               '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/N/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
+               '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/">Saisie de résultats</a></li>' +
+               '<li><a class="menu-act-item" onclick="">Supprimer</a></li></ul></ul>' ;
+
+res += '<tr><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
+       '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;">' + status( data_records[i].stat ) + '</div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;"><span class="icon">' + data_records[i].urgent + '</span></div></td>' +
+       '<td><div class="yui-dt-liner integer" style="text-align:center;"><span class="num-dos">' + data_records[i].num_dos + '</span></div></td>' +
+       '<td><div class="yui-dt-liner date" style="text-align:center;">' + data_records[i].date_dos + '</div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].code + '</div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].nom + '</div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].prenom + '</div></td></tr>' ;
+}
+{% endif %}
+
+$("#tbody_records").append(res) ;
+$("#num_page_t").text( p_cur ) ;
+$("#num_page_b").text( p_cur ) ;
+}
+
+$( document ).ready( function()
+{
+display_record( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang='{{ locale }}'>
+
+<head>
+    {% block head %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {% block title %}
+    <title>Titre de la page</title>
+    {% endblock %}
+    <link rel="icon" href="{{ session['server_ext'] }}/assets/images/favicon.ico" />
+    <link href="{{ session['server_ext'] }}/yui2/datatable/assets/skins/sam/datatable.css" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/bootstrap/css/bootstrap.min.css" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/sigl/style?2.15" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/sigl/style/index/index/name/yui_datatable?2.15" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/sigl/style/index/index/name/form?2.15" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/css/labbook.css?0" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ session['server_ext'] }}/css/{{ session['user_role']|safe }}.css?0" media="screen" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="{{ session['server_ext'] }}/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="{{ session['server_ext'] }}/bootstrap/js/bootstrap.min.js"></script>
+    {% endblock %}
+</head>
+
+{% block body %}
+{% block tag_body %}<body class="{{ session['user_role']|safe }}">{% endblock %}
+    <div id="page" class="container">
+        {% block header %}
+        <header>
+            <div id="country-select" class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <strong>{{ session['lang_select'] }}</strong>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ session['server_ext'] }}/labbook_FE/lang/fr_FR/">{{ _('Français (FR)') }}</a></li>
+                    <li><a href="{{ session['server_ext'] }}/labbook_FE/lang/en_GB/">{{ _('English (UK)') }}</a></li>
+                    <li><a href="{{ session['server_ext'] }}/labbook_FE/lang/en_US/">{{ _('English (US)') }}</a></li>
+                </ul>
+            </div>
+            <div class="inner">
+                <div id="logo">
+                    <h1>
+                        <a href="{{ session['server_ext'] }}/sigl/">{{ _('LABBOOK') }}</a>
+                    </h1>
+                </div>
+                <div id="user-info">
+                    <div id="header_name" class="name"></div>
+                    <div class="role">
+                        <ul>
+                            <li>
+                                <a href="{{ session['server_ext'] }}/sigl/auth/index/disconnect" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header><!-- ferme le header -->
+        {% endblock %}
+        {% block content %}
+        <div id="content"></div>
+        {% endblock %}
+        {% block footer %}
+        <footer>
+            <div class="version">{{ _('Version : ') }}{{ session['version'] }} | <a href="{{ session['server_ext'] }}/labbook_FE/contributors/">{{ _('Contributeurs') }}</a></div>
+        </footer>
+        {% endblock %}
+    </div><!-- ferme la page -->
+</body>
+{% endblock %}
+
+<script>
+var username = "{{ session['user_name']|safe}}" ;
+
+function load_username()
+{
+var name      = ''             ;
+var firstname = "{{ session['user_firstname']|safe}}" ;
+var lastname  = "{{ session['user_lastname']|safe}}" ;
+
+    if ( firstname )
+    name = firstname + ' ' + lastname ;
+    
+    if ( !name )
+    name = username ;  
+
+$("#header_name").text( name ) ;
+}
+
+$( document ).ready( function()
+{
+    load_username() ;
+} ) ;
+</script>
+{% block add_script %}
+{% endblock %}
+</html>

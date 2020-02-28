@@ -1,0 +1,446 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    {% block title %}
+    <title>Dossier administratif</title>
+    {% endblock %}
+    <!--<link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />-->
+    <!--<script src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>-->
+    <link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />
+    <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
+    <link href="{{ session['server_ext'] }}/select2.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="{{ session['server_ext'] }}/select2.min.js"></script>
+    <script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>
+{% endblock %}
+
+{% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title form-patient_externe"><span>Dossier administratif</span></h2>
+            <form id="form_main" class="vzn-form form-horizontal row">
+                {% if entry == 'N' %}
+                <div class="statictext undefined">
+                    <span>Dossier :</span> 
+                </div>
+                <div class="form-control-static filed readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
+                    <span>0</span> <!-- TODO record number ??? -->
+                </div>
+                {% endif %}
+                <div id="pat-group-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Identité</h3></div>
+                    <div class="panel-body " id="pat-group-group_body">
+                        <div class="row">
+                            <div id="pat-group" class="col-xs-12">
+                                <div class="form-group form-inline col-xs-12">
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
+                                        <span>{{ args['code_patient'] }}</span>
+                                    </div>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
+                                        <span>{{ args['code'] }}</span>
+                                    </div>
+                                </div>
+                                <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-inline col-xs-12">
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                    <span>{{ args['prenom'] }} {{ args['nom'] }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-2 panel-primary" style="display: none; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 0;">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-inline col-xs-12">
+                                                <div class="statictext undefined"><span>Patient anonyme.</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-2 panel-primary" style="">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-inline col-xs-12">
+                                                <div class="statictext undefined"><span>Né(e) le</span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                    <span>{{ args['ddn']|date_format }}</span>
+                                                </div>
+                                                <div class="statictext undefined"><span>-</span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                    <span>{{ args['age'] }}</span>
+                                                </div>
+                                                <div class="statictext undefined"><span></span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                    <span>{% if args['unite'] == 1037 %}Années
+                                                          {% elif args['unite'] == 1036 %}Mois
+                                                          {% elif args['unite'] == 1035 %}Semaines
+                                                          {% elif args['unite'] == 1034 %}Jours{% endif %}</span>
+                                                </div>
+                                                <div class="statictext undefined"><span>.</span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                    <span>{% if args['sexe'] == 1 %}Masculin
+                                                          {% elif args['sexe'] == 2 %}Féminin
+                                                          {% elif args['sexe'] == 3 %}Inconnu{% endif %}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="presc-group-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Prescription</h3>
+                    </div>
+                    <div class="panel-body " id="presc-group-group_body">
+                        <div class="row">
+                            <div id="presc-group" class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="mandatory control-label col-xs-3" style="">
+                                        <span data-field="date_dos">Date de réception du dossier *</span>
+                                    </label>
+                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
+                                        <span>25/01/2020</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="mandatory control-label col-xs-3" style="">
+                                        <span data-field="date_prescription">Date de prescription *</span>
+                                    </label>
+                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
+                                        <span>27/01/2020</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="prat-search">
+                                    <div class="statictext control-label col-xs-3">
+                                        <span>Praticien</span>
+                                    </div>
+                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-xs-3" style=""><span data-field="colis">Colis</span></label>
+                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
+                                        <span>Non</span>
+                                    </div>
+                                </div>
+                                <div id="colis-group" class="panel panel-2 panel-primary" style="display: none; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 0;">
+                                    <div class="panel-body " id="colis-group_body">
+                                        <div class="row">
+                                            <div id="colis" class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-xs-3" style="">
+                                                        <span data-field="id_colis">Identification du colis</span>
+                                                    </label>
+                                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
+                                                        <span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-xs-3" style="">
+                                                        <span data-field="date_reception_colis">Date de réception du colis</span>
+                                                    </label>
+                                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
+                                                        <span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="analyse-confirm-group-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Analyses et actes de prélèvement</h3></div>
+                    <div class="panel-body " id="analyse-confirm-group-group_body">
+                        <div class="row">
+                            <div id="analyse-confirm-group" class="col-xs-12">
+                                <div class="form-group">
+                                    <div class="statictext col-md-1 title"><span>Analyses</span></div>
+                                </div>
+                                <div class="listing table-responsive yui-dt" id="listing_analyse">
+                                    <div class="yui-dt-mask" style="display: none;"></div>
+                                    <table summary="" id="yuievtautoid-5">
+                                        <colgroup><col><col><col><col><col><col><col></colgroup>
+                                        <thead>
+                                            <tr class="yui-dt-first yui-dt-last">
+                                                <th id="yui-dt96-th-id_data" rowspan="1" colspan="1" class="yui-dt96-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
+                                                    <div id="yui-dt96-th-id_data-liner" class="yui-dt-liner"><span class="yui-dt-label">id_data</span></div>
+                                                </th>
+                                                <th id="yui-dt96-th-code" rowspan="1" colspan="1" class="string yui-dt96-col-code yui-dt-col-code yui-dt-sortable">
+                                                    <div id="yui-dt96-th-code-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label" id="yui-gen143">
+                                                            <a href="yui-dt96-href-code" title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen142">Code</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt96-th-nom" rowspan="1" colspan="1" class="string yui-dt96-col-nom yui-dt-col-nom yui-dt-sortable">
+                                                    <div id="yui-dt96-th-nom-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label" id="yui-gen133">
+                                                            <a href="yui-dt96-href-nom" title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen132">Nom</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt96-th-urgent" rowspan="1" colspan="1" class="fkey_dico yui-dt96-col-urgent yui-dt-col-urgent yui-dt-sortable">
+                                                    <div id="yui-dt96-th-urgent-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt96-href-urgent" title="Click to sort ascending" class="yui-dt-sortable">Urgent</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt96-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt96-col-demande yui-dt-col-demande yui-dt-sortable">
+                                                    <div id="yui-dt96-th-demande-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt96-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt96-th-cote" rowspan="1" colspan="1" class="string yui-dt96-col-cote yui-dt-col-cote yui-dt-sortable">
+                                                    <div id="yui-dt96-th-cote-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt96-href-cote" title="Click to sort ascending" class="yui-dt-sortable">cote</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt96-th-prix" rowspan="1" colspan="1" class="float yui-dt96-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-last">
+                                                    <div id="yui-dt96-th-prix-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt96-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>DATA_ANALYSIS</tbody>
+                                    </table>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="form-group">
+                                    <div class="statictext col-md-5 title"><span>Actes de prélèvement</span></div>
+                                </div>
+                                <div class="listing table-responsive yui-dt" id="listing_pb">
+                                    <div class="yui-dt-mask" style="display: none;"></div>
+                                    <table summary="" id="yuievtautoid-4">
+                                        <colgroup><col><col><col><col><col><col></colgroup>
+                                        <thead>
+                                            <tr class="yui-dt-first yui-dt-last">
+                                                <th id="yui-dt108-th-id_data" rowspan="1" colspan="1" class="yui-dt108-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
+                                                    <div id="yui-dt108-th-id_data-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">id_data</span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt108-th-code" rowspan="1" colspan="1" class="string yui-dt108-col-code yui-dt-col-code yui-dt-sortable">
+                                                    <div id="yui-dt108-th-code-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt108-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt108-th-nom" rowspan="1" colspan="1" class="string yui-dt108-col-nom yui-dt-col-nom yui-dt-sortable">
+                                                    <div id="yui-dt108-th-nom-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt108-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt108-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt108-col-demande yui-dt-col-demande yui-dt-sortable">
+                                                    <div id="yui-dt108-th-demande-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt108-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt108-th-cote" rowspan="1" colspan="1" class="string yui-dt108-col-cote yui-dt-col-cote yui-dt-sortable">
+                                                    <div id="yui-dt108-th-cote-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt108-href-cote" title="Click to sort ascending" class="yui-dt-sortable">cote</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt108-th-prix" rowspan="1" colspan="1" class="float yui-dt108-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-last">
+                                                    <div id="yui-dt108-th-prix-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt108-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>DATA_SAMPLES</tbody>
+                                    </table>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Compte-rendus</h3></div>
+                    <div class="panel-body ">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="listing table-responsive yui-dt" id="listing_cr">
+                                    <div class="yui-dt-mask" style="display: none;"></div>
+                                    <table summary="" id="yuievtautoid-3">
+                                        <colgroup><col><col><col></colgroup>
+                                        <thead>
+                                            <tr class="yui-dt-first yui-dt-last">
+                                                <th id="yui-dt118-th-id_data" rowspan="1" colspan="1" class="yui-dt118-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
+                                                    <div id="yui-dt118-th-id_data-liner" class="yui-dt-liner"><span class="yui-dt-label">id_data</span></div>
+                                                </th>
+                                                <th id="yui-dt118-th-action" rowspan="1" colspan="1" class="yui-dt118-col-action yui-dt-col-action">
+                                                    <div id="yui-dt118-th-action-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label" id="yui-gen129">Action</span>
+                                                    </div>
+                                                </th>
+                                                <th id="yui-dt118-th-date" rowspan="1" colspan="1" class="string yui-dt118-col-date yui-dt-col-date yui-dt-sortable yui-dt-last">
+                                                    <div id="yui-dt118-th-date-liner" class="yui-dt-liner">
+                                                        <span class="yui-dt-label">
+                                                            <a href="yui-dt118-href-date" title="Click to sort ascending" class="yui-dt-sortable">Date</a>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <caption>listing_cr</caption>
+                                        <tbody>DATA_COMPTE_RENDU_???</tbody>
+                                    </table>
+                                    <div id="listing_cr_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
+                                        <div class="bd">
+                                            <ul class="first-of-type">
+                                                <li class="yuimenuitem first-of-type" id="yui-gen124" groupindex="0" index="0">
+                                                    <a href="#" class="yuimenuitemlabel">Télécharger</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="facturation-group-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Facturation</h3></div>
+                    <div class="panel-body " id="facturation-group-group_body">
+                        <div class="row">
+                            <div id="facturation-group" class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" style=""><span data-field="prix">Prix total</span></label>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style="">
+                                        <span>37000,00</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" style=""><span data-field="remise">Remise sur la facturation</span></label>
+                                    <div class="form-control-static field readonly-field col-lg-2" style=""><span></span></div>
+                                    <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">Pourcentage de la remise</span></label>
+                                    <div class="form-control-static field readonly-field col-md-3" style=""><span></span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" style="">
+                                        <span data-field="assu_pourcent">Pourcentage assurance maladie / mutuelle</span>
+                                    </label>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span></span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" style=""><span data-field="a_payer">Reste à payer</span></label>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span>37000,00</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" style=""><span data-field="num_quittance">Numéro de quittance</span></label>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="field_a_payer" style=""><span></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rc-confirm-group-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Renseignements / Informations complémentaires</h3></div>
+                    <div class="panel-body " id="rc-confirm-group-group_body">
+                        <div class="row">
+                            <div id="rc-confirm-group" class="col-xs-12">
+                                <div class="form-control-static field readonly-field col-md-11" style=""><span>RAS</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading"><h3 class="panel-title">Valise de documents</h3></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <div class="vzn-box text-left upload-container">
+                                        <div class="yui-dt">
+                                            <div>
+                                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                                    <button class="btn btn-default" onclick="return false" style="width:undefined;height=undefined;margin-bottom:4px">Parcourir...</button>
+                                                    <input type="file" multiple="multiple" style="visibility:hidden;position:absolute;top:-50;left:-50">
+                                                    <button onclick="return false" style="margin-bottom: 4px; display: none;">Envoyer le(s) fichier(s)</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div class="yui-dt table-responsive">
+                                            <table>
+                                                <thead>
+                                                    <tr><th><div class="yui-dt-liner">Fichier</div></th><th><div class="yui-dt-liner">Action</div></th></tr>
+                                                </thead>
+                                                <tbody><tr><td colspan="3"><div class="yui-dt-liner">Aucun fichier déposé</div></td></tr></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" onclick="return false;" class="btn undefined btn-default" value="Enregistrer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group button" id="button">
+                    <input type="button" onclick="" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
+                    <input type="button" onclick="" id="bar_code" class="btn btn-primary" value="{{ _('Code barre') }}">
+                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
+                </div>
+
+            </form><!-- close form_main -->
+            
+        </div>
+    </div>
+</div><!-- ferme le corps -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/sigl/";
+}
+
+$( document ).ready( function()
+{
+    //$("#date_record").val( "{{ now|date_now }}" ) ;
+    //load_data() ;
+} ) ;
+</script>
+{% endblock %}
+

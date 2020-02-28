@@ -1,0 +1,412 @@
+{% extends "skeleton.html" %}
+
+{% block title %}
+<title>Details patient</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title form-patient_externe"><span>Demande d'analyses patient externe - Fiche patient</span></h2>
+            <form class="vzn-form form-horizontal">
+                <div class="panel panel-1 panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Identité</h3>
+                    </div>
+                    <div class="panel-body ">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-1" style="">Anonyme</label>
+                                    <div class="radio-group col-lg-2">
+                                        <label class="radio-inline undefined">
+                                            <input type="radio" name="anonyme" value="4" {% if args['anonyme'] == 4 %} checked="checked" {% endif %}>Oui</input>
+                                        </label>
+                                        <label class="radio-inline undefined">
+                                            <input type="radio" name="anonyme" value="5" {% if not args or args['anonyme'] == 5 %} checked="checked" {% endif %}>Non</input>
+                                        </label>
+                                    </div>
+                                    <label for="code_patient" class="control-label col-lg-3" id="code-label" style="">Code patient interne au laboratoire</label>
+                                    <div class="field col-lg-2">
+                                        <input id="code_patient" type="text" value="{{ args['code_patient'] }}" maxlength="8" class="form-control" style="width:96px;" null="">
+                                    </div>
+                                    <div class="form-control-static field readonly-field text_right col-lg-1" id="anon-code-ro" style="">
+                                        <span>{{ args['code'] }}</span>
+                                    </div>
+                                </div>
+                                <div class="canvas">
+                                    <div class="vzn-row">
+
+                                        <div class="cell" style="width: 360px;">
+                                            <div id="patient-nom-prenom-group" class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
+                                                <div class="panel-body " id="patient-nom-prenom-group_body">
+                                                    <div class="row">
+                                                        <div id="patient-nom-prenom" class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-6" style="">
+                                                                    <span data-field="nom">Nom</span>
+                                                                </label>
+                                                                <div class="field col-lg-6">
+                                                                    <input id="nom" type="text" value="{{ args['nom'] }}" maxlength="40" class="form-control" style="width: 320px;" null="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-6" style="">
+                                                                    <span data-field="nom_jf">Nom de jeune fille</span>
+                                                                </label>
+                                                                <div class="field col-lg-6">
+                                                                    <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control" style="width: 320px;" null="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-6" style="">
+                                                                    <span data-field="prenom">Prénom(s)</span>
+                                                                </label>
+                                                                <div class="field col-lg-6">
+                                                                    <input id="prenom" type="text" value="{{ args['prenom'] }}" maxlength="80" class="form-control" style="" null="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" id="group_sex">
+                                                                <label class="control-label col-lg-2" style="">
+                                                                    <span data-field="sexe">Sexe</span>
+                                                                </label>
+                                                                <div class="radio-group col-lg-10">
+                                                                    <div class="field radio-field col-sm-4">
+                                                                        <div class="radio">
+                                                                            <label class="">
+                                                                                <input type="radio" name="sexe" value="1" {% if args['sexe'] == 1 %} checked="checked" {% endif %}>Masculin
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field radio-field col-sm-4">
+                                                                        <div class="radio">
+                                                                            <label class="" >
+                                                                                <input type="radio" name="sexe" value="2" {% if args['sexe'] == 2 %} checked="checked" {% endif %}>Féminin
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field radio-field col-sm-4">
+                                                                        <div class="radio">
+                                                                            <label class="">
+                                                                                <input type="radio" name="sexe" value="3" {% if not args or args['sexe'] == 3 %} checked="checked" {% endif %}>Inconnu
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- ferme cell -->
+
+                                        <div class="cell" style="width: 500px;">
+                                            <div id="patient-ddn-sexe-group" class="panel panel-2 panel-primary" style="">
+                                                <div class="panel-body " id="patient-ddn-sexe-group_body">
+                                                    <div class="row">
+                                                        <div id="patient-ddn-sexe" class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-5" style="">
+                                                                    <span>Date de naissance</span>
+                                                                </label>
+                                                                <div class="field date-fields form-inline col-lg-7">
+                                                                    <input id="ddn" class="form-control" type="date" maxlength="10" size="10" value="{{ args['ddn'] }}" name="ddn" style="color: #888;">
+                                                                    <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-6" style="">
+                                                                    <span data-field="ddn_approx">Date de naissance approximative</span>
+                                                                </label>
+                                                                <div id="ddn_approx" class="radio-group col-lg-6">
+                                                                    <div class="field radio-field col-sm-6">
+                                                                        <div class="radio">
+                                                                            <label class="">
+                                                                                <input type="radio" name="ddn_approx" value="4" {% if not args or args['ddn_approx'] == 4 %} checked="checked" {% endif %}>Oui
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field radio-field col-sm-6">
+                                                                        <div class="radio">
+                                                                            <label class="">
+                                                                                <input type="radio" name="ddn_approx" value="5" {% if args['ddn_approx'] == 5 %} checked="checked" {% endif %}>Non
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" >
+                                                                <div class="statictext col-lg-6 text-right">
+                                                                    <span>ou</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4" style="">
+                                                                    <span data-field="age">Age</span>
+                                                                </label>
+                                                                <div class="field col-lg-2">
+                                                                    <input id="age" type="text" name="age" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width: 66px;" min="0" max="150">
+                                                                </div>
+                                                                <div class="statictext control-label col-lg-1">
+                                                                    <span>unité</span>
+                                                                </div>
+                                                                <div class="field col-lg-5">
+                                                                    <select name="unite" id="unite" class="form-control">
+                                                                        <option value="1034" {% if args['unite'] == 1034 %} selected {% endif %}>Jours</option>
+                                                                        <option value="1035" {% if args['unite'] == 1035 %} selected {% endif %}>Semaines</option>
+                                                                        <option value="1036" {% if args['unite'] == 1036 %} selected {% endif %}>Mois</option>
+                                                                        <option value="1037" {% if not args or args['unite'] == 1037 %} selected {% endif %}>Années</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- ferme cell -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- ferme panel-primary -->
+
+                <div id="patient-coord-group" class="panel panel-1 panel-primary" style="">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Coordonnées</h3>
+                    </div>
+                    <div class="panel-body " id="patient-coord-group_body">
+                        <div class="row">
+                            <div id="patient-coord" class="col-xs-12">
+                                <div class="canvas">
+                                    <div class="vzn-row">
+                                        <div class="cell" style="width: 40%;">
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" style="">
+                                                    <span data-field="adresse">Adresse</span>
+                                                </label>
+                                                <div class="field col-xs-9">
+                                                    <textarea id="adresse" rows="4" cols="50" class="form-control">{{ args['adresse'] }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cell">
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" style="">
+                                                    <span data-field="bp">Boîte postale</span>
+                                                </label>
+                                                <div class="field col-md-3 col-lg-4">
+                                                    <input id="bp" type="text" value="{{ args['bp'] }}" maxlength="10" class="form-control" style="width: 120px;" null="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" style="">
+                                                    <span data-field="quartier">Quartier / Secteur</span>
+                                                </label>
+                                                <div class="field col-md-3 col-lg-4">
+                                                    <input id="quartier" type="text" value="{{ args['quartier'] }}" maxlength="40" class="form-control" style="width: 320px;" null="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" style="">
+                                                    <span data-field="cp">Code postal</span>
+                                                </label>
+                                                <div class="field col-md-3 col-lg-4">
+                                                    <input id="cp" type="text" value="{{ args['cp'] }}" maxlength="10" class="form-control" style="width: 120px;" null="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" style="">
+                                                    <span data-field="ville">Ville / Village</span>
+                                                </label>
+                                                <div class="field col-md-3 col-lg-4">
+                                                    <input id="ville" type="text" value="{{ args['ville'] }}" maxlength="40" class="form-control" style="width: 320px;" null="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="form-group form-inline">
+                                    <label class="control-label label-rightMargin" style="">
+                                        <span data-field="tel">Téléphone</span>
+                                    </label>
+                                    <input id="tel" type="text" value="{{ args['tel'] }}" maxlength="20" class="form-control field-rightMargin {sClass}" style="width: 200px;" null="">
+                                    <label class="control-label label-rightMargin" style="">
+                                        <span data-field="profession">Profession</span>
+                                    </label>
+                                    <input id="profession" type="text" value="{{ args['profession'] }}" maxlength="50" class="form-control field-rightMargin {sClass}" style="" null="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-1 panel-primary" style="">
+                    <div class="panel-body ">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group button">
+                                    <input type="button" onclick="save_pat();" class="btn btn-primary" value="Enregistrer">
+                                    <input type="button" onclick="return_back();" class="btn undefined btn-default" value="Retour">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- ferme le corps -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save_pat() 
+{
+var id_owner      = {{ session['user_id_group']|safe}} ;
+var anonyme       = $("input:radio[name=anonyme]:checked").val() ;
+var code          = "" ; // TODO how generate code ?
+var code_patient  = $("#code_patient").val() ;
+var nom           = $("#nom").val() ;
+var prenom        = $("#prenom").val() ;
+var ddn           = $("#ddn").val() ;
+var sexe          = $("input:radio[name=sexe]:checked").val() ;
+var ethnie        = '' ; // TODO useless ?
+var adresse       = JSON.stringify( $("#adresse").val() ) ;
+var cp            = $("#cp").val() ;
+var ville         = $("#ville").val() ;
+var tel           = $("#tel").val() ;
+var profession    = $("#profession").val() ;
+var nom_jf        = $("#nom_jf").val() ;
+var quartier      = $("#quartier").val() ;
+var bp            = $("#bp").val() ;
+var ddn_approx    = $("input:radio[name=ddn_approx]:checked").val() ;
+var age           = $("#age").val() ;
+var annee_naiss   = 0 ; // TODO useless ?
+var semaine_naiss = 0 ;
+var mois_naiss    = 0 ;
+var unite         = $("#unite").val() ;
+
+    // date de naissance obligatoire
+    if (ddn == "")
+    {
+    alert( "Veuillez sélectionner un date de naissance" ) ;
+    return false;
+    }
+ 
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"anonyme":' + anonyme  + ', ' +
+              '"code":"' + code + '", ' +
+              '"code_patient":"' + code_patient + '", ' +
+              '"nom":"' + nom + '", ' +
+              '"prenom":"' + prenom + '", ' +
+              '"ddn":"' + ddn + '", ' +
+              '"sexe":' + sexe + ', ' +
+              '"ethnie":"' + ethnie + '", ' +
+              '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
+              '"cp":"' + cp + '", ' +
+              '"ville":"' + ville + '", ' +
+              '"tel":"' + tel + '", ' +
+              '"profession":"' + profession + '", ' +
+              '"nom_jf":"' + nom_jf + '", ' +
+              '"quartier":"' + quartier + '", ' +
+              '"bp":"' + bp + '", ' +
+              '"ddn_approx":' + ddn_approx + ', ' +
+              '"age":' + age + ', ' +
+              '"annee_naiss":' + annee_naiss + ', ' +
+              '"semaine_naiss":' + semaine_naiss + ', ' +
+              '"mois_naiss":' + mois_naiss + ', ' +
+              '"unite":' + unite + '}' ;
+
+console.log("param="+param) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/patient/det/0",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           id_pat = data.id_pat ;
+
+           console.log("retour id_pat="+id_pat);
+
+           window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/Y/" + id_pat ;
+           },
+       error: function(data)
+           {
+           console.log("ERREUR") ;
+           alert("Une erreur est survenue") ;
+           }
+    } ) ;
+}
+
+$("input[type=radio][name=anonyme]").change(function() 
+{
+    if (this.value == '4') 
+    {
+    // Clean and hide input nom, prenom, nom_jf, sexe
+    $("#nom").val("")    ;
+    $("#nom_jf").val("") ;
+    $("#prenom").val("") ;
+    $("input:radio[name=sexe]:checked").prop('checked', false) ;
+    $("#patient-nom-prenom").hide() ;
+    }
+    else if (this.value == '5') 
+    {
+    // Show input nom, prenom, nom_jf, sexe
+    $("#patient-nom-prenom").show() ;
+    }
+} ) ;
+
+$("#ddn").change(function() 
+{
+// after date change calculate age and put unit
+var start = $("#ddn").val() ;
+var end   = $("#date_current").val() ;
+
+// end - start returns difference in milliseconds 
+var diff = new Date(Date.parse(end) - Date.parse(start));
+
+// get days
+var days = diff/1000/60/60/24;
+console.log("DEBUG days = " + days) ;
+
+    if (days > 730)
+    {
+    $("#age").val( (days / 365).toFixed(0) ) ;
+    $("#unite").val("1037") ;
+    }
+    else if (days > 28)
+    {
+    $("#age").val( (days / 30).toFixed(0) ) ;
+    $("#unite").val("1036") ;
+    }
+    else if (days > 6)
+    {
+    $("#age").val( (days / 7).toFixed(0) ) ;
+    $("#unite").val("1035") ;
+    }
+    else
+    {
+    $("#age").val( (days).toFixed(0) ) ;
+    $("#unite").val("1034") ;
+    }
+
+} ) ;
+
+function return_back()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+    $("#date_current").val( "{{ now|date_now }}" ) ;
+} ) ;
+</script>
+{% endblock %}

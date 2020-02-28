@@ -1,0 +1,137 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    {% block title %}
+    <title>Saisie de résultats</title>
+    {% endblock %}
+    <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}        
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title saisie-resultat">
+                <span>Saisie de résultats</span>
+            </h2>
+            <div id="results">
+                <form id="form_main" class="vzn-form form-horizontal row" enctype="application/x-www-form-urlencoded" method="post" action="{{ session['server_ext'] }}/sigl/result/index/index">
+                    <fieldset id="filter-group" class="group group-1">
+                        <legend>Filtre</legend>
+                        <div class="row">
+                            <div id="filter" class="col-xs-12">
+                                <div class="form-group">
+                                    Date de la demande du <script type="text/javascript">
+                                        /* YUI().use('helper-date-picker', function(Y) {
+                                                Y.on('domready', function() {
+                                                        new Y.HelperDatePicker({
+                                                                sFieldIdDay: 'date_begin_day',
+                                                                sFieldIdMonth: 'date_begin_month',
+                                                                sFieldIdYear: 'date_begin_year',
+                                                                sImgPickerId: 'date_begin_img',
+                                                                sAfterDateSelect: '',
+                                                                sHeaderText: 'Date de début'
+                                                        });
+                                                });
+                                        }); */
+                                    </script>
+                                    <div class="field date-fields form-inline">
+                                        <input type="text" name="date_begin_day" id="date_begin_day" value="25" size="2" maxlength="2" class="voo_date voo_date_day voo_date_field_1 form-control" placeholder="jj">
+                                        <span class="separator">/</span>
+                                        <input type="text" name="date_begin_month" id="date_begin_month" value="11" size="2" maxlength="2" class="voo_date voo_date_month voo_date_field_2 form-control" placeholder="mm">
+                                        <span class="separator">/</span>
+                                        <input type="text" name="date_begin_year" id="date_begin_year" value="2019" size="4" maxlength="4" class="voo_date voo_date_year voo_date_field_3 form-control" placeholder="aaaa">
+                                        <span class="calendar-img" id="quick_calendar_button_date_begin_img">
+                                            <img id="date_begin_img" src="/assets/widgets/calendar.gif">
+                                        </span>
+                                    </div>
+                                    au <script type="text/javascript">
+                                    /* YUI().use('helper-date-picker', function(Y) {
+                                            Y.on('domready', function() {
+                                                    new Y.HelperDatePicker({
+                                                            sFieldIdDay: 'date_end_day',
+                                                            sFieldIdMonth: 'date_end_month',
+                                                            sFieldIdYear: 'date_end_year',
+                                                            sImgPickerId: 'date_end_img',
+                                                            sAfterDateSelect: '',
+                                                            sHeaderText: 'Date de fin'
+                                                    });
+                                            });
+                                    }); */
+                                    </script>
+                                    <div class="field date-fields form-inline">
+                                        <input type="text" name="date_end_day" id="date_end_day" value="25" size="2" maxlength="2" class="voo_date voo_date_day voo_date_field_1 form-control" placeholder="jj">
+                                        <span class="separator">/</span>
+                                        <input type="text" name="date_end_month" id="date_end_month" value="11" size="2" maxlength="2" class="voo_date voo_date_month voo_date_field_2 form-control" placeholder="mm">
+                                        <span class="separator">/</span>
+                                        <input type="text" name="date_end_year" id="date_end_year" value="2019" size="4" maxlength="4" class="voo_date voo_date_year voo_date_field_3 form-control" placeholder="aaaa">
+                                        <span class="calendar-img" id="quick_calendar_button_date_end_img">
+                                            <img id="date_end_img" src="/assets/widgets/calendar.gif">
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="statictext control-label">Type</div>
+                                    <div class="field">
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="0" selected="selected"> </option>
+                                            <option value="11">Biochimie sanguine</option>
+                                            <option value="12">Biochimie urinaire</option>
+                                            <option value="13">Biochimie LDP</option>
+                                            <option value="15">Parasitologie</option>
+                                            <option value="16">Mycologie</option>
+                                            <option value="17">Virologie</option>
+                                            <option value="18">Bactériologie</option>
+                                            <option value="19">Immunologie / hormonologie / protéines spécifiques</option>
+                                            <option value="20">Anatomie et cytologie pathologiques</option>
+                                            <option value="23">Biologie moléculaire</option>
+                                            <option value="24">Analyses sanitaires</option>
+                                            <option value="25">Divers</option>
+                                            <option value="278">Cytologie</option>
+                                            <option value="279">Hématologie, Immunohématologie et Hémostase</option>
+                                            <option value="301">Biochimie</option>
+                                            <option value="302">Immuno- Sérologie et Biologie moléculaire</option>
+                                            <option value="303">Médicaments et toxiques</option>
+                                            <option value="304">Spermiologie</option>
+                                            <option value="1001">Hématologie</option>
+                                            <option value="1002">Hémostase</option>
+                                            <option value="1003">Immunologie</option>
+                                            <option value="1018">Antibiotique</option>
+                                        </select>       
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="field">
+                                        <input id="urgent-checkbox" type="checkbox" name="urgent" value="4">
+                                    </div>
+                                    <div class="statictext control-label">
+                                        <label for="urgent-checkbox">Afficher uniquement les analyses prioritaires</label>
+                                    </div>
+                                    <div class="field">
+                                        <input id="valid-checkbox" type="checkbox" name="valid" value="1">
+                                    </div>
+                                    <div class="statictext control-label">
+                                        <label for="valid-checkbox">Masquer les résultats déjà validés</label>
+                                    </div>
+                                </div>
+                                <div class="form-group button">
+                                    <input class="btn btn-primary" type="submit" name="update-filter" value="Appliquer le filtre">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <div id="analyses">
+                    <div class="error">Aucune analyse</div>
+                </div>
+
+            </div><!-- ferme results -->
+
+        </div><!-- ferme inner -->
+    </div><!-- ferme main -->
+</div><!-- ferme le corps -->
+{% endblock %}        

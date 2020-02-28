@@ -1,0 +1,21 @@
+# -*- coding:utf-8 -*-
+
+# ######################################
+#   Imports
+# ######################################
+
+from datetime import timedelta
+
+# ######################################
+#  Default flask parameters
+# ######################################
+
+DEBUG                      = True
+SECRET_KEY                 = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+PERMANENT_SESSION_LIFETIME = timedelta(days=1460)
+BABEL_DEFAULT_LOCALE       = 'fr_FR'
+TEMPLATES_AUTO_RELOAD      = True
+
+URL_SERVER_INT             = 'http://localhost'  # For URL in python code
+URL_SERVER_EXT             = 'http://labbook3'   # For URL in html page
+APP_VERSION                = '2.9.0'
