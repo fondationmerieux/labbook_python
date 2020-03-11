@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import logging
 
-from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
@@ -13,7 +12,7 @@ from app.models.Logs import Logs
 
 
 class AnalysisSearch(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def post(self, id_group):
         args = request.get_json()
@@ -30,7 +29,7 @@ class AnalysisSearch(Resource):
 
 
 class AnalysisDet(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, id_ana):
         analysis = Analysis.getAnalysis(id_ana)
@@ -95,7 +94,7 @@ class AnalysisDet(Resource):
                                         unite=args['unite'])
 
             if ret is False:
-                self.log.error(Logs.alerte() + ' : AnalysisDet ERROR update')
+                self.log.error(Logs.alert() + ' : AnalysisDet ERROR update')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -132,7 +131,7 @@ class AnalysisDet(Resource):
                                         unite=args['unite'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : AnalysisDet ERROR  insert')
+                self.log.error(Logs.alert() + ' : AnalysisDet ERROR  insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -150,7 +149,7 @@ class AnalysisDet(Resource):
                                              id_group=id_group_lab['id_group_parent'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : AnalysisDet ERROR  insert group')
+                self.log.error(Logs.alert() + ' : AnalysisDet ERROR  insert group')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
 
@@ -159,7 +158,7 @@ class AnalysisDet(Resource):
 
 
 class AnalysisTypeProd(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, id_type_prod):
         type_prod = Analysis.getProductType(id_type_prod)

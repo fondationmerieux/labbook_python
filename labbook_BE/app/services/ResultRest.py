@@ -13,7 +13,7 @@ from app.models.Logs import Logs
 
 
 class ResultList(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def post(self):
         args = request.get_json()
@@ -43,7 +43,7 @@ class ResultList(Resource):
 
 """
 class ResultDet(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, id_ana):
         Result = Result.getResult(id_ana)
@@ -108,7 +108,7 @@ class ResultDet(Resource):
                                         unite=args['unite'])
 
             if ret is False:
-                self.log.error(Logs.alerte() + ' : ResultDet ERROR update')
+                self.log.error(Logs.alert() + ' : ResultDet ERROR update')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -145,7 +145,7 @@ class ResultDet(Resource):
                                         unite=args['unite'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : ResultDet ERROR  insert')
+                self.log.error(Logs.alert() + ' : ResultDet ERROR  insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -163,7 +163,7 @@ class ResultDet(Resource):
                                              id_group=id_group_lab['id_group_parent'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : ResultDet ERROR  insert group')
+                self.log.error(Logs.alert() + ' : ResultDet ERROR  insert group')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
 
@@ -172,7 +172,7 @@ class ResultDet(Resource):
 
 
 class ResultTypeProd(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, id_type_prod):
         type_prod = Result.getProductType(id_type_prod)

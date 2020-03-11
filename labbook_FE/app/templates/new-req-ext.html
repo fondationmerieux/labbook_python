@@ -5,10 +5,8 @@
     {% block title %}
     <title>{{ _('Patient externe') }}</title>
     {% endblock %}
-    <!--<link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />-->
-    <!--<script src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>-->
-    <link href="{{ session['server_ext'] }}/select2.min.css" rel="stylesheet" />
-    <script src="{{ session['server_ext'] }}/select2.min.js"></script>
+    <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
+    <script src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -110,12 +108,12 @@ return display ;
 $("#search_patient").on("select2:select", function (e) 
 {
   var id_pat = $(e.currentTarget).val();
-  window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/Y/" + id_pat ;
+  window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-ext/Y/" + id_pat ;
 } ) ;
 
 function new_pat() 
 {
-window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-patient/0";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/0";
 }
 
 function return_home()

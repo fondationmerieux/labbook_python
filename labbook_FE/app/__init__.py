@@ -12,14 +12,15 @@
 #   Imports
 # ###########################################
 
+import os
 import logging
 import requests
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date
 
-from flask import Flask, render_template, request, session, json, redirect, url_for
-from flask_babel import Babel, gettext
+from flask import Flask, render_template, request, session, json, redirect
+from flask_babel import Babel
 
 from app.models.Logs import Logs
 from app.models.Constants import Constants
@@ -44,12 +45,20 @@ def prep_log(logger_nom, log_fich, niveau=logging.INFO):
     l.setLevel(niveau)
     l.addHandler(fileHandler)
 
-prep_log('log_front', r'./logs/log_front.log')
+prep_log('log_front', r'../logs/log_front.log')
 
 log = logging.getLogger('log_front')
 
-app = Flask(__name__)  # , static_url_path='/labbook_FE/app/static')
+app = Flask(__name__)  # ,static_url_path='/TEST/static')
 app.config.from_object('default_settings')
+
+config_envvar = 'LOCAL_SETTINGS'
+
+if config_envvar in os.environ:
+    print("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar]))
+    app.config.from_envvar(config_envvar)
+else:
+    print("No local configuration available: {} is undefined in the environment".format(config_envvar))
 
 babel = Babel(app)
 
@@ -90,18 +99,23 @@ def get_locale():
 
 def get_init_var():
 
-    # init internal url server
-    if not session or 'server_int' not in session:
-        session['server_int'] = app.config.get('URL_SERVER_INT')
+    # init internal server
+    if not session or 'server_int' not in session or session['server_int'] != ('http://' + app.config.get('SERVER_INT')):
+        session['server_int'] = 'http://' + app.config.get('SERVER_INT')
         session.modified = True
 
-    # init external url server
-    if not session or 'server_ext' not in session:
-        session['server_ext'] = app.config.get('URL_SERVER_EXT')
+    # init external server
+    if not session or 'server_ext' not in session or session['server_ext'] != ('http://' + os.environ.get('SERVER_EXT')):
+        session['server_ext'] = 'http://' + os.environ.get('SERVER_EXT')
+        session.modified = True
+
+    # init internal url server
+    if not session or 'redirect_name' not in session or session['redirect_name'] != app.config.get('REDIRECT_NAME'):
+        session['redirect_name'] = app.config.get('REDIRECT_NAME')
         session.modified = True
 
     # init number version
-    if not session or 'version' not in session:
+    if not session or 'version' not in session or session['version'] != app.config.get('APP_VERSION'):
         session['version'] = app.config.get('APP_VERSION')
         session.modified = True
 
@@ -136,7 +150,7 @@ def get_user_data(login):
         return False
 
     try:
-        url = session['server_int'] + '/services/user/login/' + login
+        url = session['server_ext'] + '/services/user/login/' + login
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -214,7 +228,7 @@ def list_results():
     json_ihm  = {}
     json_data = {}
 
-     # Load analysis type
+    # Load analysis type
     try:
         url = session['server_int'] + '/services/dico/list/famille_analyse'
         req = requests.get(url)
@@ -230,7 +244,7 @@ def list_results():
         date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
         date_end = date_beg
 
-        payload = {'date_beg': date_beg, 'date_end': date_end, 'emer_ana':0} 
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'emer_ana': 0}
 
         url = session['server_int'] + '/services/result/list'
         req = requests.post(url, json=payload)

@@ -16,7 +16,7 @@
     <link href="{{ session['server_ext'] }}/css/labbook.css?0" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ session['server_ext'] }}/css/{{ session['user_role']|safe }}.css?0" media="screen" rel="stylesheet" type="text/css">
 
-    <script type="text/javascript" src="{{ session['server_ext'] }}/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{{ session['server_ext'] }}/bootstrap/js/bootstrap.min.js"></script>
     {% endblock %}
 </head>
@@ -32,9 +32,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ session['server_ext'] }}/labbook_FE/lang/fr_FR/">{{ _('Français (FR)') }}</a></li>
-                    <li><a href="{{ session['server_ext'] }}/labbook_FE/lang/en_GB/">{{ _('English (UK)') }}</a></li>
-                    <li><a href="{{ session['server_ext'] }}/labbook_FE/lang/en_US/">{{ _('English (US)') }}</a></li>
+                    <li><a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/fr_FR/">{{ _('Français (FR)') }}</a></li>
+                    <li><a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_GB/">{{ _('English (UK)') }}</a></li>
+                    <li><a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/labbook_FE/lang/en_US/">{{ _('English (US)') }}</a></li>
                 </ul>
             </div>
             <div class="inner">
@@ -61,7 +61,7 @@
         {% endblock %}
         {% block footer %}
         <footer>
-            <div class="version">{{ _('Version : ') }}{{ session['version'] }} | <a href="{{ session['server_ext'] }}/labbook_FE/contributors/">{{ _('Contributeurs') }}</a></div>
+            <div class="version">{{ _('Version : ') }}{{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors/">{{ _('Contributeurs') }}</a></div>
         </footer>
         {% endblock %}
     </div><!-- ferme la page -->

@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import logging
 
-from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
@@ -13,7 +12,7 @@ from app.models.Logs import Logs
 
 
 class DoctorSearch(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def post(self, id_group):
         args = request.get_json()
@@ -30,7 +29,7 @@ class DoctorSearch(Resource):
 
 """
 class DoctorDet(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, id_pat):
         doctor = Doctor.getDoctor(id_pat)
@@ -96,7 +95,7 @@ class DoctorDet(Resource):
                                         unite=args['unite'])
 
             if ret is False:
-                self.log.error(Logs.alerte() + ' : DoctorDet ERROR update')
+                self.log.error(Logs.alert() + ' : DoctorDet ERROR update')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -133,7 +132,7 @@ class DoctorDet(Resource):
                                         unite=args['unite'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : DoctorDet ERROR  insert')
+                self.log.error(Logs.alert() + ' : DoctorDet ERROR  insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -151,7 +150,7 @@ class DoctorDet(Resource):
                                              id_group=id_group_lab['id_group_parent'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : DoctorDet ERROR  insert group')
+                self.log.error(Logs.alert() + ' : DoctorDet ERROR  insert group')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
 

@@ -4,7 +4,7 @@
 class Logs:
 
     @staticmethod
-    def alerte():
+    def alert():
         import inspect
 
         callerframerecord = inspect.stack()[1]
@@ -12,7 +12,7 @@ class Logs:
         frame = callerframerecord[0]
         info = inspect.getframeinfo(frame)
 
-        return "ALERTE " + info.filename + ' ' + info.function + ' line ' + str(info.lineno)
+        return "ALERT " + info.filename + ' ' + info.function + ' line ' + str(info.lineno)
 
     @staticmethod
     def fileline():

@@ -3,17 +3,17 @@ import logging
 import mysql.connector
 
 # from app.models.Constants import *
-from app.models.BDD import BDD
+from app.models.DB import DB
 from app.models.Logs import Logs
 from app.models.Constants import Constants
 
 
 class Patient:
-    log = logging.getLogger('log_bdd')
+    log = logging.getLogger('log_db')
 
     @staticmethod
     def getPatientSearch(text):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         code = text
         text = '%' + text + '%'
@@ -29,7 +29,7 @@ class Patient:
 
     @staticmethod
     def getPatient(id_pat):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, tel, profession, '\
               'nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite '\
@@ -43,7 +43,7 @@ class Patient:
     @staticmethod
     def insertPatient(**params):
         try:
-            cursor = BDD.cursor()
+            cursor = DB.cursor()
 
             cursor.execute('insert into sigl_03_data '
                            '(id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, '
@@ -63,7 +63,7 @@ class Patient:
     @staticmethod
     def insertPatientGroup(**params):
         try:
-            cursor = BDD.cursor()
+            cursor = DB.cursor()
 
             cursor.execute('insert into sigl_03_data_group '
                            '(id_data, id_group) '

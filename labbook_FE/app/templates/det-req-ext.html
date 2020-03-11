@@ -5,12 +5,10 @@
     {% block title %}
     <title>Details demande d'analyses</title>
     {% endblock %}
-    <!--<link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />-->
-    <!--<script src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>-->
     <link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />
     <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
-    <link href="{{ session['server_ext'] }}/select2.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="{{ session['server_ext'] }}/select2.min.js"></script>
+    <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
     <script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>
 {% endblock %}
 
@@ -543,7 +541,7 @@ var opt_yorn      = {{ ihm['yorn']|safe }} ;
 
 function change_pat( id_pat ) 
 {
-window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-patient/" + id_pat ;
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/" + id_pat ;
 }
 
 $("#search_doctor").select2(
@@ -1134,13 +1132,13 @@ data_save.data_products = data_products ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/labbook_FE/save-data/",
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/save-data/",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data : JSON.stringify(data_save),
         success : function(response)
         {
-        window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/N/" + {{ args['id_data'] }} ;
+        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-ext/N/" + {{ args['id_data'] }} ;
         }
     } ) ;
 }
@@ -1157,13 +1155,13 @@ data_save.data_products = data_products ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/labbook_FE/save-data/",
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/save-data/",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data : JSON.stringify(data_save),
         success : function(response)
         {
-        window.location.href = "{{ session['server_ext'] }}/labbook_FE/administrative-record/N/" + {{ args['id_data'] }} ;
+        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/N/" + {{ args['id_data'] }} ;
         }
     } ) ;
 }

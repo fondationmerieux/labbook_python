@@ -1,10 +1,7 @@
+# -*- coding:utf-8 -*-
 # import informixdb
-import logging
-import mysql.connector
 
 from app.models.Constants import *
-from app.models.BDD import BDD
-from app.models.Logs import Logs
 
 
 '''

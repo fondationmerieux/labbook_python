@@ -1,19 +1,16 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
 
 # from app.models.Constants import *
-from app.models.BDD import BDD
-from app.models.Logs import Logs
-from app.models.Constants import Constants
+from app.models.DB import DB
 
 
 class Result:
-    log = logging.getLogger('log_bdd')
+    log = logging.getLogger('log_db')
 
     @staticmethod
     def getResultList(args):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         filter_cond = ''
 
@@ -49,7 +46,7 @@ class Result:
     """
     @staticmethod
     def getResult(id_ana):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_data, id_owner, code, nom, abbr, famille, paillasse, cote_unite, cote_valeur, '\
               'commentaire, produit_biologique, type_prel, type_analyse, actif '\
@@ -64,7 +61,7 @@ class Result:
     @staticmethod
     def insertResult(**params):
         try:
-            cursor = BDD.cursor()
+            cursor = DB.cursor()
 
             cursor.execute('insert into sigl_03_data '
                            '(id_owner, anonyme, code, code_record, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, '
@@ -84,7 +81,7 @@ class Result:
     @staticmethod
     def insertResultGroup(**params):
         try:
-            cursor = BDD.cursor()
+            cursor = DB.cursor()
 
             cursor.execute('insert into sigl_03_data_group '\
                            '(id_data, id_group) '\
@@ -101,7 +98,7 @@ class Result:
 
     @staticmethod
     def getProductType(id_data):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
               'from sigl_dico_data '\

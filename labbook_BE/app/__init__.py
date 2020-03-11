@@ -12,6 +12,7 @@
 #   Imports
 # ###########################################
 
+import os
 import logging
 
 from logging.handlers import WatchedFileHandler
@@ -30,8 +31,9 @@ from app.services.RecordRest import *
 from app.services.ResultRest import *
 
 LANGUAGES = {
-    'fr': 'French',
-    'en': 'English'
+    'fr_FR': 'French',
+    'en_GB': 'English',
+    'en_US': 'English',
 }
 
 # ######################################
@@ -48,14 +50,21 @@ def prep_log(logger_nom, log_fich, niveau=logging.INFO):
     l.setLevel(niveau)
     l.addHandler(fileHandler)
 
-prep_log('log_service', r'./logs/log_service.log')
-prep_log('log_bdd', r'./logs/log_bdd.log')
+prep_log('log_services', r'../logs/log_services.log')
+prep_log('log_db', r'../logs/log_db.log')
 
-log = logging.getLogger('log_service')
+log = logging.getLogger('log_services')
 
 app = Flask(__name__)
-
 app.config.from_object('default_settings')
+
+config_envvar = 'LOCAL_SETTINGS'
+
+if config_envvar in os.environ:
+    print("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar]))
+    app.config.from_envvar(config_envvar)
+else:
+    print("No local configuration available: {} is undefined in the environment".format(config_envvar))
 
 # ######################################
 # REST initialization

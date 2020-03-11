@@ -11,7 +11,7 @@ from app.models.Various import Various
 
 
 class Test(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self):
         self.log.info(Logs.fileline() + ' : TRACE Test GET')
@@ -26,7 +26,7 @@ class Test(Resource):
 
 
 class DicoList(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, dico_name):
         l_dico = Various.getDicoList(dico_name)
@@ -46,7 +46,7 @@ class DicoList(Resource):
 
 
 class DefaultValue(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, name):
         val = Various.getDefaultValue(name)

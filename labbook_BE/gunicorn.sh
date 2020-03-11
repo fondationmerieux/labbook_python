@@ -15,29 +15,29 @@ export INFORMIXSERVER=informix
 export ONCONFIG=onconfig
 
 #############
-# Fonctions #
+# Functions #
 #############
 #
-# Affiche l'usage et sort
+# Display use
 #
 usage()
 {
 echo
-echo "Lancement Gunicorn Labbook BACK END"
+echo "Run Gunicorn Labbook BACK END"
 echo
-echo "Usage :"
+echo "Use :"
 echo "  $0 -h"
 echo "  $0 -r"
 echo
 echo "Options:"
-echo "  -h                 Cette aide"
-echo "  -r                 Ajoute l'attribut reload au lancement"
+echo "  -h                 This help"
+echo "  -r                 Add reload option"
 echo
 exit 2
 }
 
 ######################
-# Début du programme #
+# START              #
 ######################
 opt_reload=""
 
@@ -53,17 +53,18 @@ do
     ;;
 
     *)
-    echo "option $option inconnue"
+    echo "option $option unknown"
     usage
     ;;
     esac
 done
 
-# Application amicare
+# Application name
 APP_NAME=labbook_BE
 
-HOME_APP=/home/www/apps/labbook/current/$APP_NAME
-VENV_DIR=${HOME_APP}/venv
+HOME_APP=/home/apps/$APP_NAME
+APP_DIR=${HOME_APP}/${APP_NAME}
+VENV_DIR=${APP_DIR}/venv
 LOGS_DIR=${HOME_APP}/logs
 GUNICORN_DIR=${HOME_APP}/gunicorn
 GUNICORN_TIMEOUT=60
@@ -72,8 +73,20 @@ source ${VENV_DIR}/bin/activate
 
 # create Gunicorn directory if necessary
 mkdir -p ${GUNICORN_DIR}
+mkdir -p ${LOGS_DIR}
 
-cd ${HOME_APP}
+# Operating environment
+export LOCAL_SETTINGS=${HOME_APP}/local_settings.py
+
+# if local_settings file doesnt exist we create one
+# from local_settings.py.sample in app directory
+test -f $LOCAL_SETTINGS || {
+    echo "$LOCAL_SETTINGS not found, local_settings.py file create"
+
+    cp ${APP_DIR}/local_settings.py.sample $LOCAL_SETTINGS || exit 1
+}
+
+cd ${APP_DIR} || exit 1
 
 # Gunicorn is installed in the virtual environment
 # When started by supervisord, exec is necessary for the signals to reach gunicorn.

@@ -10,7 +10,9 @@ itsdangerous==1.1.0
 Jinja2==2.10.3
 MarkupSafe==1.1.1
 mysql-connector-python==8.0.18
+pip==20.0.2
 protobuf==3.10.0
 pytz==2019.3
+setuptools==40.6.2
 six==1.13.0
 Werkzeug==0.16.0

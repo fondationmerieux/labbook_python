@@ -13,7 +13,7 @@ from app.models.Logs import Logs
 
 
 class PatientSearch(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def post(self):
         args = request.get_json()
@@ -29,7 +29,7 @@ class PatientSearch(Resource):
 
 
 class PatientDet(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, id_pat):
         patient = Patient.getPatient(id_pat)
@@ -95,7 +95,7 @@ class PatientDet(Resource):
                                         unite=args['unite'])
 
             if ret is False:
-                self.log.error(Logs.alerte() + ' : PatientDet ERROR update')
+                self.log.error(Logs.alert() + ' : PatientDet ERROR update')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -132,7 +132,7 @@ class PatientDet(Resource):
                                         unite=args['unite'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : PatientDet ERROR  insert')
+                self.log.error(Logs.alert() + ' : PatientDet ERROR  insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -150,7 +150,7 @@ class PatientDet(Resource):
                                              id_group=id_group_lab['id_group_parent'])
 
             if ret <= 0:
-                self.log.error(Logs.alerte() + ' : PatientDet ERROR  insert group')
+                self.log.error(Logs.alert() + ' : PatientDet ERROR  insert group')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PatientDet id_pat=' + str(res['id_pat']))

@@ -1,18 +1,16 @@
+# -*- coding:utf-8 -*-
 # import informixdb
 import logging
-import mysql.connector
 
-from app.models.Constants import *
-from app.models.BDD import BDD
-from app.models.Logs import Logs
+from app.models.DB import DB
 
 
 class Various:
-    log = logging.getLogger('log_bdd')
+    log = logging.getLogger('log_db')
 
     @staticmethod
     def getDicoList(dico_name):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
               'from sigl_dico_data '\
@@ -24,7 +22,7 @@ class Various:
 
     @staticmethod
     def getDefaultValue(name):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_data, id_owner, identifiant, label, value '\
               'from sigl_06_data '\

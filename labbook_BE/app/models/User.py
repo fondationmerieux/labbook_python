@@ -2,16 +2,16 @@
 import logging
 
 # from app.models.Constants import *
-from app.models.BDD import BDD
+from app.models.DB import DB
 # from app.models.Logs import Logs
 
 
 class User:
-    log = logging.getLogger('log_bdd')
+    log = logging.getLogger('log_db')
 
     @staticmethod
     def getUserByLogin(login):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select g.id_group, g.name, g.id_axis, '\
               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
@@ -26,7 +26,7 @@ class User:
 
     @staticmethod
     def getUserGroupParent(id_group):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_group_parent '\
               'from sigl_pj_group_link '\

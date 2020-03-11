@@ -1,18 +1,16 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
 
 # from app.models.Constants import *
-from app.models.BDD import BDD
-from app.models.Logs import Logs
+from app.models.DB import DB
 
 
 class Doctor:
-    log = logging.getLogger('log_bdd')
+    log = logging.getLogger('log_db')
 
     @staticmethod
     def getDoctorSearch(text, id_lab, id_group):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         text = '%' + text + '%'
 
@@ -36,7 +34,7 @@ class Doctor:
 """
     @staticmethod
     def getDoctor(id_pat):
-        cursor = BDD.cursor()
+        cursor = DB.cursor()
 
         req = 'select id_data, id_owner, anonyme, code, code_doctor, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, tel, profession, '\
               'nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite '\
@@ -50,7 +48,7 @@ class Doctor:
     @staticmethod
     def insertDoctor(**params):
         try:
-            cursor = BDD.cursor()
+            cursor = DB.cursor()
 
             cursor.execute('insert into sigl_03_data '
                            '(id_owner, anonyme, code, code_doctor, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, '
@@ -70,7 +68,7 @@ class Doctor:
     @staticmethod
     def insertDoctorGroup(**params):
         try:
-            cursor = BDD.cursor()
+            cursor = DB.cursor()
 
             cursor.execute('insert into sigl_03_data_group '\
                            '(id_data, id_group) '\

@@ -12,7 +12,7 @@ from app.models.Logs import Logs
 
 
 class UserDet(Resource):
-    log = logging.getLogger('log_service')
+    log = logging.getLogger('log_services')
 
     def get(self, login):
         user = User.getUserByLogin(login)
@@ -20,6 +20,11 @@ class UserDet(Resource):
         if not user:
             self.log.error(Logs.fileline() + ' : TRACE UserDet')
             return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Replace None by empty string
+        for key, value in user.items():
+            if user[key] is None:
+                user[key] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE UserDet')
         return compose_ret(user, Constants.cst_content_type_json)
