@@ -5,13 +5,6 @@
     {% block title %}
     <title>Dossier administratif</title>
     {% endblock %}
-    <!--<link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />-->
-    <!--<script src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>-->
-    <link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />
-    <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
-    <link href="{{ session['server_ext'] }}/select2.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="{{ session['server_ext'] }}/select2.min.js"></script>
-    <script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -26,7 +19,7 @@
                     <span>Dossier :</span> 
                 </div>
                 <div class="form-control-static filed readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
-                    <span>0</span> <!-- TODO record number ??? -->
+                    <span>{{ args['record']['num_dos'] }}</span>
                 </div>
                 {% endif %}
                 <div id="pat-group-group" class="panel panel-1 panel-primary" style="">
@@ -36,10 +29,10 @@
                             <div id="pat-group" class="col-xs-12">
                                 <div class="form-group form-inline col-xs-12">
                                     <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
-                                        <span>{{ args['code_patient'] }}</span>
+                                        <span>{{ args['patient']['code_patient'] }}</span>
                                     </div>
                                     <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
-                                        <span>{{ args['code'] }}</span>
+                                        <span>{{ args['patient']['code'] }}</span>
                                     </div>
                                 </div>
                                 <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
@@ -47,7 +40,7 @@
                                         <div class="row">
                                             <div class="form-inline col-xs-12">
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{{ args['prenom'] }} {{ args['nom'] }}</span>
+                                                    <span>{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,24 +61,24 @@
                                             <div class="form-inline col-xs-12">
                                                 <div class="statictext undefined"><span>Né(e) le</span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{{ args['ddn']|date_format }}</span>
+                                                    <span>{{ args['patient']['ddn']|date_format }}</span>
                                                 </div>
                                                 <div class="statictext undefined"><span>-</span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{{ args['age'] }}</span>
+                                                    <span>{{ args['patient']['age'] }}</span>
                                                 </div>
                                                 <div class="statictext undefined"><span></span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{% if args['unite'] == 1037 %}Années
-                                                          {% elif args['unite'] == 1036 %}Mois
-                                                          {% elif args['unite'] == 1035 %}Semaines
-                                                          {% elif args['unite'] == 1034 %}Jours{% endif %}</span>
+                                                    <span>{% if args['patient']['unite'] == 1037 %}Années
+                                                          {% elif args['patient']['unite'] == 1036 %}Mois
+                                                          {% elif args['patient']['unite'] == 1035 %}Semaines
+                                                          {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}</span>
                                                 </div>
                                                 <div class="statictext undefined"><span>.</span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{% if args['sexe'] == 1 %}Masculin
-                                                          {% elif args['sexe'] == 2 %}Féminin
-                                                          {% elif args['sexe'] == 3 %}Inconnu{% endif %}</span>
+                                                    <span>{% if args['patient']['sexe'] == 1 %}Masculin
+                                                          {% elif args['patient']['sexe'] == 2 %}Féminin
+                                                          {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,7 +101,7 @@
                                         <span data-field="date_dos">Date de réception du dossier *</span>
                                     </label>
                                     <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>25/01/2020</span>
+                                        <span>{{ args['record']['date_dos']|date_format }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -116,12 +109,17 @@
                                         <span data-field="date_prescription">Date de prescription *</span>
                                     </label>
                                     <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>27/01/2020</span>
+                                        <span>{{ args['record']['date_prescription']|date_format }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" id="prat-search">
                                     <div class="statictext control-label col-xs-3">
                                         <span>Praticien</span>
+                                        <span>
+                                        {% if args['doctor'] %}
+                                            {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}{% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
+                                        {% endif %}
+                                        </span>
                                     </div>
                                     <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
                                         <span></span>
@@ -130,7 +128,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-xs-3" style=""><span data-field="colis">Colis</span></label>
                                     <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>Non</span>
+                                        <span>{% if args['record']['colis'] == 4 %}{{ args['record']['id_colis'] }} {{ args['record']['date_reception_colis']|date_format }}{% else %}Non{% endif %}</span>
                                     </div>
                                 </div>
                                 <div id="colis-group" class="panel panel-2 panel-primary" style="display: none; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 0;">
@@ -176,8 +174,8 @@
                                         <colgroup><col><col><col><col><col><col><col></colgroup>
                                         <thead>
                                             <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt96-th-id_data" rowspan="1" colspan="1" class="yui-dt96-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt96-th-id_data-liner" class="yui-dt-liner"><span class="yui-dt-label">id_data</span></div>
+                                                <th style="display:none;">
+                                                    <div><span>id_data</span></div>
                                                 </th>
                                                 <th id="yui-dt96-th-code" rowspan="1" colspan="1" class="string yui-dt96-col-code yui-dt-col-code yui-dt-sortable">
                                                     <div id="yui-dt96-th-code-liner" class="yui-dt-liner">
@@ -223,7 +221,7 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>DATA_ANALYSIS</tbody>
+                                        <tbody id="tbody_analysis" style=""></tbody>
                                     </table>
                                 </div>
                                 <div class="clear"></div>
@@ -236,9 +234,9 @@
                                         <colgroup><col><col><col><col><col><col></colgroup>
                                         <thead>
                                             <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt108-th-id_data" rowspan="1" colspan="1" class="yui-dt108-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt108-th-id_data-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">id_data</span>
+                                                <th  style="display:none;">
+                                                    <div>
+                                                        <span>id_data</span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt108-th-code" rowspan="1" colspan="1" class="string yui-dt108-col-code yui-dt-col-code yui-dt-sortable">
@@ -278,7 +276,7 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>DATA_SAMPLES</tbody>
+                                        <tbody id="tbody_sample"></tbody>
                                     </table>
                                 </div>
                                 <div class="clear"></div>
@@ -316,7 +314,7 @@
                                             </tr>
                                         </thead>
                                         <caption>listing_cr</caption>
-                                        <tbody>DATA_COMPTE_RENDU_???</tbody>
+                                        <tbody id="tbody_report"></tbody>
                                     </table>
                                     <div id="listing_cr_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
                                         <div class="bd">
@@ -342,28 +340,28 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style=""><span data-field="prix">Prix total</span></label>
                                     <div class="form-control-static field readonly-field col-md-4 col-lg-3" style="">
-                                        <span>37000,00</span>
+                                        <span>{{ args['record']['prix'] }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style=""><span data-field="remise">Remise sur la facturation</span></label>
-                                    <div class="form-control-static field readonly-field col-lg-2" style=""><span></span></div>
+                                    <div class="form-control-static field readonly-field col-lg-2" style=""><span>{{ args['record']['remise'] }}</span></div>
                                     <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">Pourcentage de la remise</span></label>
-                                    <div class="form-control-static field readonly-field col-md-3" style=""><span></span></div>
+                                    <div class="form-control-static field readonly-field col-md-3" style=""><span>{{ args['record']['remise_pourcent'] }}</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style="">
                                         <span data-field="assu_pourcent">Pourcentage assurance maladie / mutuelle</span>
                                     </label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span></span></div>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span>{{ args['record']['assu_pourcent'] }}</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style=""><span data-field="a_payer">Reste à payer</span></label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span>37000,00</span></div>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span>{{ args['record']['a_payer'] }}</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style=""><span data-field="num_quittance">Numéro de quittance</span></label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="field_a_payer" style=""><span></span></div>
+                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="field_a_payer" style=""><span>{{ args['record']['num_quittance'] }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -375,7 +373,7 @@
                     <div class="panel-body " id="rc-confirm-group-group_body">
                         <div class="row">
                             <div id="rc-confirm-group" class="col-xs-12">
-                                <div class="form-control-static field readonly-field col-md-11" style=""><span>RAS</span></div>
+                                <div class="form-control-static field readonly-field col-md-11" style=""><span>{{ args['record']['rc'] }}</span></div>
                             </div>
                         </div>
                     </div>
@@ -430,6 +428,121 @@
 
 {% block add_script %}
 <script>
+var data_analysis = {{ args['data_analysis']|safe }} ;
+var data_samples  = {{ args['data_samples']|safe }}  ;
+
+function load_analysis( data )
+{
+let tr_analysis = '' ;
+
+    if (data.length < 1)
+    {
+    tr_analysis = '' ; //'<tr class=""><td colspan="8">' +
+                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
+    }
+    else
+    {
+    let obj    = data ;
+    let tmp_tr = '<tr style="">' ;
+    let urg    = obj.urgent ;
+    let dem    = obj.demande ;
+    let rate   = obj.cote_unite + obj.cote_valeur ;
+
+        if ( urg == 4 )
+        urg = "Oui" ;
+        else
+        urg = "Non" ;
+
+        if ( dem == 4 )
+        dem = "Oui" ;
+        else
+        dem = "Non" ;
+
+    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+    tmp_tr += create_td("", obj.code, "", "") ;
+    tmp_tr += create_td("", obj.nom, "", "") ;
+    tmp_tr += create_td("", urg, "", "") ;
+    tmp_tr += create_td("", dem, "", "") ;
+    tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+    tmp_tr += create_td("", obj.prix, "", "") ;
+
+    tmp_tr += '</tr>' ;
+
+    tr_analysis += tmp_tr ;
+    }
+
+$("#tbody_analysis").append(tr_analysis) ;
+}
+
+function load_sample( data )
+{
+let tr_sample = '' ;
+
+    if (data.length < 1)
+    {
+    tr_sample = '' ; //'<tr class=""><td colspan="7">' +
+                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
+    }
+    else
+    {
+    let obj = data ;
+
+        if ( obj.id_data > 0 )
+        {
+        let tmp_tr = '<tr style="">' ;
+        let dem    = obj.demande ;
+        let rate   = obj.cote_unite + obj.cote_valeur ;
+
+            if ( dem == 4 )
+            dem = "Oui" ;
+            else
+            dem = "Non" ;
+
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+        tmp_tr += create_td("", obj.code, "", "") ;
+        tmp_tr += create_td("", obj.nom, "", "") ;
+        tmp_tr += create_td("", dem, "", "") ;
+        tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+        tmp_tr += create_td("", obj.prix, "", "") ;
+
+        tmp_tr += '</tr>' ;
+
+        tr_sample += tmp_tr ;
+        }
+    }
+
+$("#tbody_sample").append(tr_sample) ;
+}
+
+function load_data()
+{
+// clear table tbody
+$("#tbody_analysis").empty() ;
+$("#tbody_sample").empty() ;
+
+    for( i in data_analysis )
+    {
+    load_analysis( data_analysis[i] ) ;
+    }
+
+    for( i in data_samples )
+    {
+    load_sample( data_samples[i] ) ;
+    }
+}
+
+function create_td(id, val, cls, style)
+{
+let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
+             '<div>' + val + '</div></td>' ;
+
+return tmp_td ;
+}
+
+function format_rate(rate, price)
+{
+return rate + '(' + price + ')' ;
+}
 
 function return_home()
 {
@@ -438,8 +551,7 @@ window.location.href = "{{ session['server_ext'] }}/sigl/";
 
 $( document ).ready( function()
 {
-    //$("#date_record").val( "{{ now|date_now }}" ) ;
-    //load_data() ;
+    load_data() ;
 } ) ;
 </script>
 {% endblock %}

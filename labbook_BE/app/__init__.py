@@ -25,6 +25,7 @@ from app.models.Logs import Logs
 from app.services.GeneralRest import *
 from app.services.UserRest import *
 from app.services.AnalysisRest import *
+from app.services.ProductRest import *
 from app.services.DoctorRest import *
 from app.services.PatientRest import *
 from app.services.RecordRest import *
@@ -88,11 +89,17 @@ api.add_resource(UserDet,            '/services/user/login/<string:login>')
 api.add_resource(AnalysisSearch,     '/services/analysis/search/<int:id_group>')
 api.add_resource(AnalysisDet,        '/services/analysis/det/<int:id_ana>')
 api.add_resource(AnalysisTypeProd,   '/services/analysis/type/product/<int:id_type_prod>')
+api.add_resource(AnalysisReq,        '/services/analysis/list/req/<int:id_rec>/bio/<string:bio_prod>','/services/analysis/list/req')
+api.add_resource(ProductReq,         '/services/product/list/req/<int:id_rec>', '/services/product/list/req')
 api.add_resource(DoctorSearch,       '/services/doctor/search/<int:id_group>')
+api.add_resource(DoctorDet,          '/services/doctor/det/<int:id_doctor>')
 api.add_resource(PatientSearch,      '/services/patient/search')
 api.add_resource(PatientDet,         '/services/patient/det/<int:id_pat>')
 api.add_resource(RecordList,         '/services/record/list/<int:id_group>')
+api.add_resource(RecordDet,          '/services/record/det/<int:id_rec>')
+api.add_resource(RecordStat,         '/services/record/stat/<int:id_rec>')
 api.add_resource(ResultList,         '/services/result/list')
+api.add_resource(ResultCreate,       '/services/result/create/<int:id_rec>')
 
 # if __name__ == "__main__":
 #    app.run()

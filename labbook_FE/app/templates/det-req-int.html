@@ -5,11 +5,11 @@
     {% block title %}
     <title>Details demande d'analyses</title>
     {% endblock %}
-    <!--<link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />-->
-    <!--<script src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>-->
+    <!--<link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />-->
     <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
-    <link href="{{ session['server_ext'] }}/select2.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="{{ session['server_ext'] }}/select2.min.js"></script>
+    <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
+    <!--<script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>-->
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -24,7 +24,7 @@
                     <span>Dossier :</span>
                 </div>
                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
-                    <span>1</span>
+                    <span>{% if entry == 'N' %}{{ args['record']['num_dos'] }}{% endif %}</span>
                 </div>
                 {% endif %}
                 <div class="canvas">
@@ -39,10 +39,10 @@
                                         <div id="pat-group" class="col-xs-12">
                                             <div class="form-group form-inline">
                                                 <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
-                                                    <span>{{ args['code_patient'] }}</span>
+                                                    <span>{{ args['patient']['code_patient'] }}</span>
                                                 </div>
                                                 <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
-                                                    <span>{{ args['code'] }}</span>
+                                                    <span>{{ args['patient']['code'] }}</span>
                                                 </div>
                                             </div>
                                             <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
@@ -50,7 +50,7 @@
                                                     <div class="row">
                                                         <div class="form-inline col-xs-12">
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['prenom'] }} {{ args['nom'] }}</span>
+                                                                <span>{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -75,30 +75,30 @@
                                                                 <span>Né(e) le</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['ddn'] }}</span>
+                                                                <span>{{ args['patient']['ddn']|date_format }}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>-</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['age'] }}</span>
+                                                                <span>{{ args['patient']['age'] }}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['unite'] == 1037 %}Années
-                                                                      {% elif args['unite'] == 1036 %}Mois
-                                                                      {% elif args['unite'] == 1035 %}Semaines
-                                                                      {% elif args['unite'] == 1034 %}Jours{% endif %}</span>
+                                                                <span>{% if args['patient']['unite'] == 1037 %}Années
+                                                                      {% elif args['patient']['unite'] == 1036 %}Mois
+                                                                      {% elif args['patient']['unite'] == 1035 %}Semaines
+                                                                      {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>.</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['sexe'] == 1 %}Masculin
-                                                                      {% elif args['sexe'] == 2 %}Féminin
-                                                                      {% elif args['sexe'] == 3 %}Inconnu{% endif %}</span>
+                                                                <span>{% if args['patient']['sexe'] == 1 %}Masculin
+                                                                      {% elif args['patient']['sexe'] == 2 %}Féminin
+                                                                      {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -106,7 +106,7 @@
                                             </div>
                                             {% if entry == 'Y' %}
                                             <div class="form-group button">
-                                                <input type="button" onclick="change_pat({{ args['id_data'] }});" class="btn undefined btn-default" value="Modifier le dossier du patient">
+                                                <input type="button" onclick="change_pat({{ args['patient']['id_data'] }});" class="btn undefined btn-default" value="Modifier le dossier du patient">
                                             </div>
                                             {% endif %}
                                         </div>
@@ -126,7 +126,12 @@
                                                     <span data-field="date_dos">Date de réception du dossier *</span>
                                                 </label>
                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
-                                                    <input class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="">
+                                                    {% if entry == 'Y' %}
+                                                    <input id="date_record" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="">
+                                                    {% else %}
+                                                    {{ args['record']['date_dos']|date_format }}
+                                                    {% endif %}
+
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -134,7 +139,11 @@
                                                     <span data-field="date_prescription">Date de prescription *</span>
                                                 </label>
                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
-                                                    <input class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                                    {% if entry == 'Y' %}
+                                                    <input id="date_prescr" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                                    {% else %}
+                                                    {{ args['record']['date_prescription']|date_format }}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="form-group" id="prat-search">
@@ -142,26 +151,40 @@
                                                     <span>Praticien</span>
                                                 </div>
                                                 <div class="field col-lg-6 col-md-6 col-sm-6">
-                                                    <select id="search_doctor" style="width:160px"></select>
+                                                    {% if entry == 'Y' %}
+                                                    <select id="search_doctor" style="width:400px"></select>
+                                                    {% else %}
+                                                        {% if args['doctor'] %}
+                                                            {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}{% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
+                                                        {% endif %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-lg-6 col-md-6 col-sm-6" style=""><span data-field="colis">Colis</span></label>
+                                                <label class="control-label col-lg-6 col-md-6 col-sm-6" style=""><span>Colis</span></label>
                                                 <div class="radio-group col-lg-6 col-md-6 col-sm-6">
-                                                    <label class="radio-inline undefined"><input type="radio" value="4">Oui</label>
-                                                    <label class="radio-inline undefined"><input type="radio" value="5">Non</label>
+                                                    {% if entry == 'Y' %}
+                                                    <label class="radio-inline undefined">
+                                                        <input type="radio" name="parcel" value="4">Oui
+                                                    </label>
+                                                    <label class="radio-inline undefined">
+                                                        <input type="radio" name="parcel" value="5" checked="checked">Non
+                                                    </label>
+                                                    {% else %}
+                                                    {% if args['record']['colis'] == 4 %}{{ args['record']['id_colis'] }} {{ args['record']['date_reception_colis']|date_format }}{% else %}Non{% endif %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
-                                            <div id="colis-group" class="group-transparent group-transparent-2 panel-primary" style="display:none; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 0;">
+                                            <div id="colis-group" class="panel-primary" style="display:none;">
                                                 <div class="panel-body " id="colis-group_body">
                                                     <div class="row">
-                                                        <div id="colis" class="col-xs-12">
+                                                        <div class="col-xs-12">
                                                             <div class="form-group">
                                                                 <label class="control-label col-lg-6 col-md-6 col-sm-6" style="">
                                                                     <span data-field="id_colis">Identification du colis</span>
                                                                 </label>
                                                                 <div class="field col-lg-6 col-md-6 col-sm-6">
-                                                                    <input type="text" value="" maxlength="30" class="form-control" style="width: 240px;" null="">
+                                                                    <input id="parcel_id" type="text" value="" maxlength="30" class="form-control" style="width: 240px;" null="">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -169,7 +192,7 @@
                                                                     <span data-field="date_reception_colis">Date de réception du colis</span>
                                                                 </label>
                                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
-                                                                    <input class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                                                    <input  id="date_parcel" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -215,81 +238,68 @@
                     <div class="panel-body " id="analyse-group-group_body">
                         <div class="row">
                             <div id="analyse-group" class="col-xs-12">
+                                {% if entry == 'Y' %}
                                 <div class="form-group">
                                     <div class="statictext col-lg-2 control-label"><span>Rechercher une analyse</span></div>
                                     <div class="field col-lg-2">
-                                        <select id="search_analysis" style="width:200px"></select>
+                                        <select id="search_analysis" style="width:450px"></select>
                                     </div>
                                 </div>
+                                {% endif %}
                                 <div class="form-group">
                                     <div class="statictext col-md-1 title"><span>Analyses</span></div>
                                 </div>
                                 <div class="listing table-responsive yui-dt" id="listing_analyse">
-                                    <div class="yui-dt-mask" style="display:none;"></div>
-                                    <table summary="" id="yuievtautoid-0">
-                                        <colgroup><col><col><col><col><col><col><col><col></colgroup>
+                                    <table id="table_analysis" class="tablesorter">
+                                        <colgroup>{% if entry == 'Y' %}<col>{% endif %}<col><col><col><col><col><col><col></colgroup>
                                         <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt3-th-id_data" rowspan="1" colspan="1" class="yui-dt3-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt3-th-id_data-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">id_data</span>
+                                            <tr>
+                                                <th style="display:none;">
+                                                    <div>
+                                                        <span>id_data</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-action" rowspan="1" colspan="1" class="yui-dt3-col-action yui-dt-col-action">
-                                                    <div id="yui-dt3-th-action-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label" id="yui-gen53">Action</span>
+                                                {% if entry == 'Y' %}
+                                                <th>
+                                                    <div>
+                                                        <span>Action</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-code" rowspan="1" colspan="1" class="string yui-dt3-col-code yui-dt-col-code yui-dt-sortable">
-                                                    <div id="yui-dt3-th-code-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt3-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code</a></span>
+                                                {% endif %}
+                                                <th>
+                                                    <div>
+                                                        <span>Code</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-nom" rowspan="1" colspan="1" class="string yui-dt3-col-nom yui-dt-col-nom yui-dt-sortable">
-                                                    <div id="yui-dt3-th-nom-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt3-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a></span>
+                                                <th>
+                                                    <div>
+                                                        <span>Nom</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-urgent" rowspan="1" colspan="1" class="fkey_dico yui-dt3-col-urgent yui-dt-col-urgent yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt3-th-urgent-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt3-href-urgent" title="Click to sort ascending" class="yui-dt-sortable">Urgent</a></span>
+                                                <th class="yui-dt-editable">
+                                                    <div>
+                                                        <span>Urgent</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt3-col-demande yui-dt-col-demande yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt3-th-demande-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt3-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a></span>
+                                                <th class="yui-dt-editable">
+                                                    <div>
+                                                        <span>Demandée</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-cote" rowspan="1" colspan="1" class="string yui-dt3-col-cote yui-dt-col-cote yui-dt-sortable">
-                                                    <div id="yui-dt3-th-cote-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt3-href-cote" title="Click to sort ascending" class="yui-dt-sortable">cote</a></span>
+                                                <th>
+                                                    <div>
+                                                        <span>Cote</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt3-th-prix" rowspan="1" colspan="1" class="float yui-dt3-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-editable yui-dt-last">
-                                                    <div id="yui-dt3-th-prix-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt3-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a></span>
+                                                <th class="yui-dt-editable">
+                                                    <div>
+                                                        <span>Prix</span>
                                                     </div>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody class="yui-dt-message" style="">
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <td colspan="8" class="yui-dt-empty" id="yui-gen48">
-                                                    <div class="yui-dt-liner" id="yui-gen49">Aucune donnée à afficher</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody tabindex="0" class="yui-dt-data"></tbody>
+                                        <tbody id="tbody_analysis" style=""></tbody>
                                     </table>
-                                    <div id="listing_analyse_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
-                                        <div class="bd">
-                                            <ul class="first-of-type">
-                                                <li class="yuimenuitem first-of-type" id="yui-gen14" groupindex="0" index="0">
-                                                    <a href="#" class="yuimenuitemlabel">Supprimer</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 
                                 <div class="clear"></div>
@@ -298,66 +308,51 @@
                                     <div class="statictext col-md-3 title"><span>Actes de prélèvement</span></div>
                                 </div>
                                 <div class="listing table-responsive yui-dt" id="listing_pb">
-                                    <div class="yui-dt-mask" style="display:none;"></div>
-                                    <table summary="" id="yuievtautoid-1">
-                                        <colgroup><col><col><col><col><col><col><col></colgroup>
+                                    <table id="table_sample">
+                                        <colgroup>{% if entry == 'Y' %}<col>{% endif %}<col><col><col><col><col><col></colgroup>
                                         <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt17-th-id_data" rowspan="1" colspan="1" class="yui-dt17-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt17-th-id_data-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">id_data</span>
+                                            <tr>
+                                                <th style="display:none;">
+                                                    <div>
+                                                        <span>id_data</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt17-th-action" rowspan="1" colspan="1" class="yui-dt17-col-action yui-dt-col-action">
-                                                    <div id="yui-dt17-th-action-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label" id="yui-gen52">Action</span>
+                                                {% if entry == 'Y' %}
+                                                <th>
+                                                    <div>
+                                                        <span>Action</span>
                                                     </div>
                                                 </th>
+                                                {% endif %}
                                                 <th id="yui-dt17-th-code" rowspan="1" colspan="1" class="string yui-dt17-col-code yui-dt-col-code yui-dt-sortable">
                                                     <div id="yui-dt17-th-code-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt17-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code</a></span>
+                                                        <span><a href="yui-dt17-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code</a></span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt17-th-nom" rowspan="1" colspan="1" class="string yui-dt17-col-nom yui-dt-col-nom yui-dt-sortable">
                                                     <div id="yui-dt17-th-nom-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt17-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a></span>
+                                                        <span><a href="yui-dt17-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a></span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt17-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt17-col-demande yui-dt-col-demande yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt17-th-demande-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt17-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a></span>
+                                                        <span><a href="yui-dt17-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a></span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt17-th-cote" rowspan="1" colspan="1" class="string yui-dt17-col-cote yui-dt-col-cote yui-dt-sortable">
                                                     <div id="yui-dt17-th-cote-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt17-href-cote" title="Click to sort ascending" class="yui-dt-sortable">cote</a></span>
+                                                        <span><a href="yui-dt17-href-cote" title="Click to sort ascending" class="yui-dt-sortable">Cote</a></span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt17-th-prix" rowspan="1" colspan="1" class="float yui-dt17-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-editable yui-dt-last">
                                                     <div id="yui-dt17-th-prix-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt17-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a></span>
+                                                        <span><a href="yui-dt17-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a></span>
                                                     </div>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody class="yui-dt-message" style="">
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <td colspan="7" class="yui-dt-empty" id="yui-gen51">
-                                                    <div class="yui-dt-liner" id="yui-gen50">Aucune donnée à afficher</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody tabindex="0" class="yui-dt-data"></tbody>
+                                        <tbody id="tbody_sample" class="yui-dt-message" style=""></tbody>
                                     </table>
-                                    <div id="listing_pb_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
-                                        <div class="bd">
-                                            <ul class="first-of-type">
-                                                <li class="yuimenuitem first-of-type" id="yui-gen27" groupindex="0" index="0">
-                                                    <a href="#" class="yuimenuitemlabel">Supprimer</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 
                                 <div class="clear"></div>
@@ -373,44 +368,68 @@
                         <div class="row">
                             <div id="facturation-group" class="col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="prix">Prix total</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="prix">{{ _('Prix total') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
-                                        <input type="text" id="field_prix" name="field_prix" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" readonly="">
+                                        {% if entry == 'Y' %}
+                                        <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
+                                        {% else %}
+                                        {{ args['record']['prix'] }}
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="remise">Remise sur la facturation</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="remise">{{ _('Remise sur la facturation') }}</span></label>
                                     <div class="field col-lg-2">
-                                        <select class="form-control">
-                                            <option selected=""></option>
-                                            <option value="267">Personnel hospitalier</option>
-                                            <option value="268">Exonération</option>
-                                            <option value="269">Autre</option>
+                                        {% if entry == 'Y' %}
+                                        <select id="discount" class="form-control">
+                                            <option selected="" value="0"></option>
+                                            {% for discount_type in ihm['discount_bill'] %}
+                                            <option value="{{ discount_type['id_data'] }}">{{ _(discount_type['label']) }}</option>
+                                            {% endfor %}
                                         </select>
+                                        {% else %}
+                                        {{ args['record']['remise'] }}
+                                        {% endif %}
                                     </div>
-                                    <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">Pourcentage de la remise</span></label>
+                                    <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">{{ _('Pourcentage de la remise') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
-                                        <input type="text" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999">
+                                        {% if entry == 'Y' %}
+                                        <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01">
+                                        {% else %}
+                                        {{ args['record']['remise_pourcent'] }}
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style="">
-                                        <span data-field="assu_pourcent">Pourcentage assurance maladie / mutuelle</span>
+                                        <span data-field="assu_pourcent">{{ _('Pourcentage assurance maladie / mutuelle') }}</span>
                                     </label>
                                     <div class="field col-md-3 col-lg-4">
-                                        <input type="text" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999">
+                                        {% if entry == 'Y' %}
+                                        <input id="per_insurance" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01">
+                                        {% else %}
+                                        {{ args['record']['assu_pourcent'] }}
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="a_payer">Reste à payer</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="a_payer">{{ _('Reste à payer') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
-                                        <input type="text" id="field_a_payer" name="field_a_payer" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" readonly="">
+                                        {% if entry == 'Y' %}
+                                        <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
+                                        {% else %}
+                                        {{ args['record']['a_payer'] }}
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="num_quittance">Numéro de quittance</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="num_quittance">{{ _('Numéro de quittance') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
-                                        <input type="text" id="field_num_quitance" name="field_num_quitance" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
+                                        {% if entry == 'Y' %}
+                                        <input type="text" id="receipt_num" name="receipt_num" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
+                                        {% else %}
+                                        {{ args['record']['num_quittance'] }}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -424,178 +443,79 @@
                     <div class="panel-body " id="prel-group-group_body">
                         <div class="row">
                             <div id="prel-group" class="col-xs-12">
-                                <div class="tabs">
-                                    <div id="tabs_prel_list">
-                                        <ul class="form-tabs">
-                                            <li class="new-tab"><a id="tabs_prel_new" onClick="display_sample_entry();" href="#">Ajouter un prélèvement</a></li>
-                                            <li class="rm-tab">
-                                                <a id="tabs_prel_rm" href="#" style="display:none;">
-                                                    <span class="glyphicon glyphicon-remove"></span> 
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div id="tabs_prel" class="tabs-panel" style="display:none;">
-                                        <div class="form-group">
-                                            <label class="mandatory control-label col-lg-2" style=""><span data-field="statut">Statut *</span></label>
-                                            <div class="field col-md-2">
-                                                <select class="form-control">
-                                                    <option selected=""></option>
-                                                    <option value="8">Fait</option>
-                                                    <option value="9">A faire</option>
-                                                    <option value="10">Apporté</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="mandatory control-label col-lg-2" style="">
-                                                <span data-field="type_prel">Produit pathologique *</span>
-                                            </label>
-                                            <div class="field col-lg-3">
-                                                <select class="form-control">
-                                                    <option selected=""></option>
-                                                    <option value="34">Liquide de ponction articulaire</option>
-                                                    <option value="35">Liquide de ponction ascite</option>
-                                                    <option value="38">Biopsie</option>
-                                                    <option value="1014">Eau potable</option>
-                                                    <option value="50">Crachat</option>
-                                                    <option value="56">Lavage Broncho Alvéolaire</option>
-                                                    <option value="75">Prélèvement gorge</option>
-                                                    <option value="99">Liquide Céphalo-Rachidien</option>
-                                                    <option value="100">Liquide de ponction bronchique</option>
-                                                    <option value="102">Liquide de ponction alvéolaire</option>
-                                                    <option value="104">Liquide de ponction pleural</option>
-                                                    <option value="138">Sang</option>
-                                                    <option value="141">Selles</option>
-                                                    <option value="152">Prélèvement urétral</option>
-                                                    <option value="153">Urine</option>
-                                                    <option value="162">Prélèvement vaginal</option>
-                                                    <option value="1000">Prélèvement génital</option>
-                                                    <option value="163">Autre</option>
-                                                    <option value="1015">Eau usée</option>
-                                                    <option value="1016">Eau de surface</option>
-                                                </select>
-                                            </div>
-                                            <label class="control-label col-lg-1" style=""><span data-field="quantite">Quantité</span></label>
-                                            <div class="field col-md-3 col-lg-4">
-                                                <input type="text" value="" maxlength="2" class="form-control" style="width: 44px;" min="1" max="10">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-lg-2" style="">
-                                                <span data-field="date_prel">Date du prélèvement</span>
-                                            </label>
-                                            <div class="field date-fields form-inline col-md-4">
-                                                <input class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-lg-2" style="">
-                                                <span data-field="date_reception">Date de réception au labo</span>
-                                            </label>
-                                            <div class="field date-fields form-inline col-md-4">
-                                                <input class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-lg-2" style=""><span data-field="preleveur">Préleveur</span></label>
-                                            <div class="field col-md-3 col-lg-4">
-                                                <input type="text" value="" maxlength="50" class="form-control" style="" null="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-lg-2" style=""><span data-field="commentaire">Commentaire</span></label>
-                                            <div class="field col-md-3 col-lg-4">
-                                                <input type="text" value="" maxlength="50" class="form-control" style="" null="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% if entry == 'Y' %}
+                                <input type="button" onclick="new_prod();return false;" id="prod_new" class="btn btn-primary" value="{{ _('Ajouter un prélèvement') }}">
+                                {% endif %}
                                 <div class="listing table-responsive yui-dt" id="listing_prel">
                                     <div class="yui-dt-mask" style="display:none;"></div>
-                                    <table summary="">
-                                        <colgroup><col><col><col><col><col><col><col><col><col></colgroup>
+                                    <table id="table_product" summary="">
+                                        <colgroup>{% if entry == 'Y' %}<col>{% endif %}<col><col><col><col><col><col><col><col></colgroup>
                                         <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt35-th-id_data" rowspan="1" colspan="1" class="yui-dt35-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt35-th-id_data-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">id_data</span>
+                                            <tr>
+                                                <th style="display:none;">
+                                                    <div>
+                                                        <span>id_data</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-action" rowspan="1" colspan="1" class="yui-dt35-col-action yui-dt-col-action">
-                                                    <div id="yui-dt35-th-action-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">Action</span>
+                                                {% if entry == 'Y' %}
+                                                <th>
+                                                    <div>
+                                                        <span>Action</span>
                                                     </div>
                                                 </th>
+                                                {% endif %}
                                                 <th id="yui-dt35-th-type_prel" rowspan="1" colspan="1" class="fkey_dico yui-dt35-col-type_prel yui-dt-col-type_prel yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-type_prel-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
+                                                        <span>
                                                             <a href="yui-dt35-href-type_prel" title="Click to sort ascending" class="yui-dt-sortable">Prod. pathol.</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-statut" rowspan="1" colspan="1" class="fkey_dico yui-dt35-col-statut yui-dt-col-statut yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-statut-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
+                                                        <span>
                                                             <a href="yui-dt35-href-statut" title="Click to sort ascending" class="yui-dt-sortable">Statut</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-date_prel" rowspan="1" colspan="1" class="date yui-dt35-col-date_prel yui-dt-col-date_prel yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-date_prel-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label"><a href="yui-dt35-href-date_prel" title="Click to sort ascending" class="yui-dt-sortable">Date Prel</a>
+                                                        <span><a href="yui-dt35-href-date_prel" title="Click to sort ascending" class="yui-dt-sortable">Date Prel</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-date_reception" rowspan="1" colspan="1" class="date yui-dt35-col-date_reception yui-dt-col-date_reception yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-date_reception-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
+                                                        <span>
                                                             <a href="yui-dt35-href-date_reception" title="Click to sort ascending" class="yui-dt-sortable">Date réception</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-preleveur" rowspan="1" colspan="1" class="string yui-dt35-col-preleveur yui-dt-col-preleveur yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-preleveur-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
+                                                        <span>
                                                             <a href="yui-dt35-href-preleveur" title="Click to sort ascending" class="yui-dt-sortable">Préleveur</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-quantite" rowspan="1" colspan="1" class="integer yui-dt35-col-quantite yui-dt-col-quantite yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-quantite-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
+                                                        <span>
                                                             <a href="yui-dt35-href-quantite" title="Click to sort ascending" class="yui-dt-sortable">Qtté</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-commentaire" rowspan="1" colspan="1" class="string yui-dt35-col-commentaire yui-dt-col-commentaire yui-dt-sortable yui-dt-editable yui-dt-last">
                                                     <div id="yui-dt35-th-commentaire-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
+                                                        <span>
                                                             <a href="yui-dt35-href-commentaire" title="Click to sort ascending" class="yui-dt-sortable">Commentaire</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody class="yui-dt-message" style="">
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <td colspan="9" class="yui-dt-empty">
-                                                    <div class="yui-dt-liner">Aucune donnée à afficher</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody tabindex="0" class="yui-dt-data"></tbody>
+                                        <tbody id="tbody_product" class="yui-dt-data"></tbody>
                                     </table>
-                                    <div id="listing_prel_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
-                                        <div class="bd">
-                                            <ul class="first-of-type">
-                                                <li class="yuimenuitem first-of-type" id="yui-gen47" groupindex="0" index="0">
-                                                    <a href="#" class="yuimenuitemlabel">Supprimer</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -604,12 +524,16 @@
                 </div>
 
                 <div id="rc-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Renseignements / Informations complémentaires</h3></div>
+                    <div class="panel-heading"><h3 class="panel-title">{{ _('Renseignements / Informations complémentaires') }}</h3></div>
                     <div class="panel-body " id="rc-group-group_body">
                         <div class="row">
                             <div id="rc-group" class="col-xs-12">
                                 <div class="field col-md-12">
-                                    <textarea rows="5" cols="80" class="form-control"></textarea>
+                                    {% if entry == 'Y' %}
+                                    <textarea id="comm" rows="5" cols="80" class="form-control"></textarea>
+                                    {% else %}
+                                    {{ args['record']['rc'] }}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -617,8 +541,12 @@
                 </div>
 
                 <div class="form-group button" id="button">
-                    <input type="button" onclick="save_requests();" id="save" class="btn btn-primary" value="Enregistrer">
-                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="Quitter">
+                    {% if entry == 'Y' %}
+                    <input type="button" onclick="save_requests();" id="save" class="btn btn-primary" value="{{ _('Enregistrer') }}">
+                    {% else %}
+                    <input type="button" onclick="valid_requests();" id="valid" class="btn btn-primary" value="{{ _('Valider') }}">
+                    {% endif %}
+                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
                 </div>
 
             </form><!-- close form_main -->
@@ -630,14 +558,28 @@
 
 {% block add_script %}
 <script>
+var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0} ;
+var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0} ;
+var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
+var data_analysis = {{ args['data_analysis']|safe }} ;
+var data_samples  = {{ args['data_samples']|safe }}  ;
+var data_products = {{ args['data_products']|safe }} ;
+var ind_products  = 0  ;
+var bill_price    = 0  ;
+var bill_remain   = {% if entry == 'Y' %}{{ args['billing_pat']['value'] }}{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
+var act_price     = {{ ihm['act_price']['value'] }} ;
+var opt_yorn      = {{ ihm['yorn']|safe }} ;
+
+{% if entry == 'Y' %}
 function change_pat( id_pat ) 
 {
-window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-patient/" + id_pat ;
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/" + id_pat ;
 }
 
 $("#search_doctor").select2(
 {
-    tokenSeparators: [',', ' '],
+    tokenSeparators: [' '],
+    tags: false,
     minimumInputLength: 2,
     ajax: {
         url: "{{ session['server_ext'] }}/services/doctor/search/" + {{ session['user_id_group'] }},
@@ -664,14 +606,6 @@ $("#search_doctor").select2(
     }
 } ) ;
 
-$("#search_doctor").on("select2:select", function (e) 
-{
-  var id_doctor = $(e.currentTarget).val();
-
-  // TODO action suite a la selection d'un medecin
-  console.log( "TRACE id_doctor = " + id_doctor ) ;
-} ) ;
-
 $("#search_analysis").select2(
 {
     tokenSeparators: [',', ' '],
@@ -683,41 +617,782 @@ $("#search_analysis").select2(
         contentType: "application/json; charset=utf-8",
         term: $("#search_analysis").text(),
         data: function (params) {
-
-            return JSON.stringify({
+            return JSON.stringify(
+            {
                 term: params.term
-            });
+            } ) ;
         },
         processResults: function (data) {
             return {
-                results: $.map(data, function (item) {
-                    return {
-                    text: item.head + " - " + item.body,
-                        id: item.id_data
-                    }
-                })
-            };
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
         }
-    }
+    },
+    templateResult: formatRepoAnalysis
 } ) ;
+
+function formatRepoAnalysis(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ;
+
+var name = "" ;
+
+    if (repo.name)
+    name += repo.name ;
+
+var cat = "" ;
+
+    if (repo.label)
+    cat += repo.label ;
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__code'><b>" + code + "</b></div>" +
+            "<div class='select2-result-repository__name'>" + name + "</div>" +
+            "<div class='select2-result-repository__category'>" + cat + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+return display ;
+}
 
 $("#search_analysis").on("select2:select", function (e) 
 {
-  var id_analysis = $(e.currentTarget).val();
+let id_item    = $(e.currentTarget).val();
+let data_exist = false ;
 
-  // TODO action suite a la selection d'une analyse
-  console.log( "TRACE id_analysis = " + id_analysis ) ;
+    // check if this analysis is not already used
+    if ( !$.isEmptyObject(data_analysis) )
+    $.map(data_analysis,function(val,key) { if(val.id_data == id_item) { data_exist = true; } } ) ;
+
+    if (!data_exist)
+    {
+        $("#search_analysis").empty() ;
+
+        // GET det analysis
+        $.ajax( {
+            type: "GET",
+            url: "/services/analysis/det/" + id_item,
+            success: function(data_ana)
+                {
+                let tmp_struct_ana = JSON.parse(JSON.stringify(struct_ana)) ; // copy structure
+
+                tmp_struct_ana.id_data = data_ana.id_data ;
+                tmp_struct_ana.code    = data_ana.code ;
+                tmp_struct_ana.name    = data_ana.nom ;
+                tmp_struct_ana.rate    = data_ana.cote_unite + data_ana.cote_valeur ;
+                tmp_struct_ana.price   = act_price * data_ana.cote_valeur ;
+
+                data_analysis.push(tmp_struct_ana) ;
+
+                // load new analysis in table
+                load_analysis( tmp_struct_ana, 1) ;
+                refresh_bill() ;
+
+                    // id_samp greater than 0 then GET det sample linked to analysis
+                    if ( data_ana.produit_biologique > 0 )
+                    {
+                    let id_type_prod = data_ana.type_prel ;
+
+                    // check if this analysis is not already used
+                    if (!$.isEmptyObject(data_samples) )
+                    $.map(data_samples,function(val,key) { if ( val.id_data == data_ana.produit_biologique ) { data_exist = true; } } ) ;
+
+                        if (!data_exist)
+                        {
+                            // GET det sample
+                            $.ajax( {
+                                type: "GET",
+                                url: "/services/analysis/det/" +  data_ana.produit_biologique,
+                                success: function(data_samp)
+                                    {
+                                    let tmp_struct_samp = JSON.parse(JSON.stringify(struct_samp)) ;
+
+                                    tmp_struct_samp.id_data = data_samp.id_data ;
+                                    tmp_struct_samp.code    = data_samp.code ;
+                                    tmp_struct_samp.name    = data_samp.nom ;
+                                    tmp_struct_samp.rate    = data_samp.cote_unite + data_samp.cote_valeur ;
+                                    tmp_struct_samp.price   = act_price * data_samp.cote_valeur ;
+
+                                    data_samples.push(tmp_struct_samp) ;
+
+                                    // load new sample in table
+                                    load_sample( tmp_struct_samp, 1 ) ;
+                                    refresh_bill() ;
+                                    },
+                                error: function(data_samp)
+                                    {
+                                    console.log("ERROR GET det sample");
+                                    // TODO display error
+                                    }
+                            } ) ;
+
+                            // GET type product
+                            $.ajax( {
+                                type: "GET",
+                                url: "/services/analysis/type/product/" +  id_type_prod,
+                                success: function(data_prod)
+                                    {
+                                    let tmp_struct_prod = JSON.parse(JSON.stringify(struct_prod)) ;
+
+                                    tmp_struct_prod.id_data    = ind_products++ ;
+                                    tmp_struct_prod.type       = data_prod.id_data ;
+                                    tmp_struct_prod.stat       = 9 ; // TODO where get data ?
+
+                                    data_products.push(tmp_struct_prod) ;
+
+                                    // load new product in table
+                                    load_product( tmp_struct_prod ) ;
+                                    },
+                                error: function(data_prod)
+                                    {
+                                    console.log("ERROR GET type product");
+                                    // TODO display error
+                                    }
+                            } ) ;
+                        }
+                    }
+                },
+            error: function(data_ana)
+                {
+                console.log("ERROR GET det analysis");
+                // TODO display error
+                }
+        } ) ;
+    }
+
+// tmp_search = $.map(tmp_data,function(val,key) { if(val.id_data == id_item) { return val ; } } ) ;
 } ) ;
+{% endif %}
 
-function display_sample_entry()
+function load_analysis( data, bill_calc )
 {
-$("#tabs_prel").show() ;
+let tr_analysis = '' ;
+
+    if (data.length < 1)
+    {
+    tr_analysis = '' ; //'<tr class=""><td colspan="8">' +
+                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
+    }
+    else
+    {
+    let obj    = data ;
+    let tmp_tr = '<tr style="">' ;
+
+    {% if entry == 'Y' %}
+    let btn = '<input type="button" onclick="del_analysis(' + obj.id_data + ');load_data(0);refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' ;
+
+    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+    tmp_tr += create_td("", btn, "", "") ;
+    tmp_tr += create_td("", obj.code, "", "") ;
+    tmp_tr += create_td("", obj.name, "", "") ;
+    tmp_tr += create_td("", create_select("ana_emer_"+obj.id_data, opt_yorn, obj.emer, true), "", "") ;
+    tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
+    tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
+    tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999), "", "") ;
+    {% else %}
+    let urg  = obj.urgent ;
+    let dem  = obj.demande ;
+    let rate = obj.cote_unite + obj.cote_valeur ;
+
+        if ( urg == 4 )
+        urg = "Oui" ;
+        else
+        urg = "Non" ;
+
+        if ( dem == 4 )
+        dem = "Oui" ;
+        else
+        dem = "Non" ;
+
+    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+    tmp_tr += create_td("", obj.code, "", "") ;
+    tmp_tr += create_td("", obj.nom, "", "") ;
+    tmp_tr += create_td("", urg, "", "") ;
+    tmp_tr += create_td("", dem, "", "") ;
+    tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+    tmp_tr += create_td("", obj.prix, "", "") ;
+    {% endif %}
+
+    tmp_tr += '</tr>' ;
+
+        if (bill_calc)
+        {
+        bill_price  += obj.price ;
+        bill_remain += obj.price ;
+        }
+
+    tr_analysis += tmp_tr ;
+    }
+
+$("#tbody_analysis").append(tr_analysis) ;
+//$("#table_analysis").tablesorter() ;
 }
 
+{% if entry == 'Y' %}
+function del_analysis( id_data )
+{
+    for( i in data_analysis )
+    {
+        if (data_analysis[i].id_data == id_data)
+        {
+        bill_price  -= data_analysis[i].price ;
+        bill_remain -= data_analysis[i].price ;
+
+        delete data_analysis[i] ;
+
+        break ;
+        }
+    }
+}
+{% endif %}
+
+function load_sample( data, bill_calc )
+{
+let tr_sample = '' ;
+
+    if (data.length < 1)
+    {
+    tr_sample = '' ; //'<tr class=""><td colspan="7">' +
+                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
+    }
+    else
+    {
+    let obj = data ;
+
+        if ( obj.id_data > 0 )
+        {
+        let tmp_tr = '<tr style="">' ;
+
+        {% if entry == 'Y' %}
+        let btn = '<input type="button" onclick="del_sample(' + obj.id_data + ');load_data(0);refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' 
+
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+        tmp_tr += create_td("", btn, "", "") ;
+        tmp_tr += create_td("", obj.code, "", "") ;
+        tmp_tr += create_td("", obj.name, "", "") ;
+        tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
+        tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
+        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999), "", "") ;
+        {% else %}
+        let dem  = obj.demande ;
+        let rate = obj.cote_unite + obj.cote_valeur ;
+
+            if ( dem == 4 )
+            dem = "Oui" ;
+            else
+            dem = "Non" ;
+
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+        tmp_tr += create_td("", obj.code, "", "") ;
+        tmp_tr += create_td("", obj.nom, "", "") ;
+        tmp_tr += create_td("", dem, "", "") ;
+        tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+        tmp_tr += create_td("", obj.prix, "", "") ;
+        {% endif %}
+
+        tmp_tr += '</tr>' ;
+
+            if (bill_calc)
+            {
+            bill_price  += obj.price ;
+            bill_remain += obj.price ;
+            }
+
+        tr_sample += tmp_tr ;
+        }
+    }
+
+$("#tbody_sample").append(tr_sample) ;
+//$("#table_sample").tablesorter() ;
+}
+
+{% if entry == 'Y' %}
+function del_sample( id_data )
+{
+    for( i in data_samples )
+    {
+        if (data_samples[i].id_data == id_data)
+        {
+        bill_price  -= data_samples[i].price ;
+        bill_remain -= data_samples[i].price ;
+
+        delete data_samples[i] ;
+
+        break ;
+        }
+    }
+}
+{% endif %}
+
+function load_product( data )
+{
+let tr_product = '' ;
+
+    if (data.length < 1)
+    {
+    tr_product = '' ; //'<tr class=""><td colspan="7">' +
+                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
+    }
+    else
+    {
+    let obj = data ;
+
+        if ( obj.id_data >= 0 )
+        {
+        let tmp_tr = '<tr style="">' ;
+
+        {% if entry == 'Y' %}
+        let btn = '<input type="button" onclick="del_product(' + obj.id_data + ');load_data(0);" value="' + '{{ _("Supprimer") }}' + '">' ;
+
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+        tmp_tr += create_td("", btn, "", "") ; // actions
+        tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "", "") ; // select product
+        tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "", "") ; // select statut
+        tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0), "", "") ; // input date prel
+        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "date", obj.dateReceipt, 0, 0), "", "") ; // input date recept
+        tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0), "", "") ; // input text preleveur
+        tmp_tr += create_td("", create_input("prod_qty_"+obj.id_data, "number", obj.qty, 0, 10), "", "") ; // input number qtte
+        tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0), "", "") ; // input text comm
+        {% else %}
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+        tmp_tr += create_td("", obj.type_prod, "", "") ;
+        tmp_tr += create_td("", obj.stat_prod, "", "") ;
+        tmp_tr += create_td("", obj.date_prel, "", "") ;
+        tmp_tr += create_td("", obj.date_reception, "", "") ;
+        tmp_tr += create_td("", obj.preleveur, "", "") ;
+        tmp_tr += create_td("", obj.quantite, "", "") ;
+        tmp_tr += create_td("", obj.commentaire, "", "") ;
+        {% endif %}
+
+        tmp_tr += '</tr>' ;
+
+        tr_product += tmp_tr ;
+        }
+    }
+
+$("#tbody_product").append(tr_product) ;
+//$("#table_product").tablesorter() ;
+}
+
+{% if entry == 'Y' %}
+function del_product( id_data )
+{
+    for( i in data_products )
+    {
+        if (data_products[i].id_data == id_data)
+        {
+        delete data_products[i] ;
+
+        break ;
+        }
+    }
+}
+{% endif %}
+
+function create_td(id, val, cls, style)
+{
+let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
+             '<div>' + val + '</div></td>' ;
+
+return tmp_td ;
+}
+
+{% if entry == 'Y' %}
+function create_select(id, l_options, val_select, opt_empty)
+{
+let tmp_select = '<select class="form-control" id="' + id + '" onChange="change_data(this)">' ;
+
+    if (opt_empty)
+    tmp_select += '<option value="0"></option>' ;
+
+    for( i in l_options )
+    {
+    let selected = "" ;
+
+        if (l_options[i].id_data == val_select)
+        selected = "selected" ;
+
+    tmp_select += '<option value="' + l_options[i].id_data + '" ' + selected + ' >' + l_options[i].label + '</option>' ;
+    }
+
+tmp_select += '</select>' ;
+
+return tmp_select ;
+}
+
+function create_input(id, type, val, min, max)
+{
+let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onChange="change_data(this)"' ;
+
+    if (type == "number")
+    tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
+
+tmp_input += '>' ;
+
+return tmp_input ;
+}
+
+function change_data( elem )
+{
+// Get new value from select or input
+let val = $(elem).val() ;
+
+// Change value in data structure
+let id_elem = elem.id ;
+let split_id = id_elem.split("_") ;
+let id_data  = split_id[split_id.length -1] ; 
+
+    if ( split_id[0] == "ana" )
+    {
+        for( i in data_analysis )
+        {
+            if (data_analysis[i].id_data == id_data )
+            {
+                if ( split_id[1] == "emer" )
+                data_analysis[i].emer = val ;
+                else if ( split_id[1] == "req" )
+                data_analysis[i].req = val ;
+                else if ( split_id[1] == "price" )
+                data_analysis[i].price = val ;
+
+            break ;
+            }
+        }
+    }
+    else if ( split_id[0] == "samp" )
+    {
+        for( i in data_samples )
+        {
+            if (data_samples[i].id_data == id_data )
+            {
+                if ( split_id[1] == "req" )
+                data_samples[i].req = val ;
+                else if ( split_id[1] == "price" )
+                data_samples[i].price = val ;
+
+            break ;
+            }
+        }
+    }
+    else if ( split_id[0] == "prod" )
+    {
+        for( i in data_products )
+        {
+            if (data_products[i].id_data == id_data )
+            {
+                if ( split_id[1] == "type" )
+                data_products[i].type = val ;
+                else if ( split_id[1] == "stat" )
+                data_products[i].stat = val ;
+                else if ( split_id[1] == "dateSamp" )
+                data_products[i].dateSamp = val ;
+                else if ( split_id[1] == "dateReceipt" )
+                data_products[i].dateReceipt = val ;
+                else if ( split_id[1] == "sampler" )
+                data_products[i].sampler = val ;
+                else if ( split_id[1] == "qty" )
+                data_products[i].qty = val ;
+                else if ( split_id[1] == "comm" )
+                data_products[i].comm = val ;
+
+            break ;
+            }
+        }
+    }
+}
+{% endif %}
+
+function format_rate(rate, price)
+{
+return rate + '(' + price + ')' ;
+}
+
+{% if entry == 'Y' %}
+function refresh_bill()
+{
+$("#bill_price").val(bill_price)   ;
+$("#bill_remain").val(bill_remain) ;
+}
+
+function new_prod()
+{
+let tmp_struct_prod = JSON.parse(JSON.stringify(struct_prod)) ;
+
+tmp_struct_prod.id_data = ind_products++ ;
+
+data_products.push(tmp_struct_prod) ;
+
+load_product( tmp_struct_prod ) ;
+}
+{% endif %}
+
+function load_data( bill_calc )
+{
+// clear table tbody
+$("#tbody_analysis").empty() ;
+$("#tbody_sample").empty() ;
+$("#tbody_product").empty() ;
+
+    for( i in data_analysis )
+    {
+    load_analysis( data_analysis[i], bill_calc ) ;
+    }
+
+    for( i in data_samples )
+    {
+    load_sample( data_samples[i], bill_calc ) ;
+    }
+
+    for( i in data_products )
+    {
+    load_product( data_products[i] ) ;
+    }
+}
+
+{% if entry == 'Y' %}
+$("input[type=radio][name=parcel]").change(function() 
+{
+    if (this.value == '4') 
+    {
+    $("#parcel_id").val("")   ;
+    $("#parcel_date").val("") ;
+    $("#colis-group").show()  ;
+    }
+    else if (this.value == '5') 
+    {
+    // hide identification and date reception
+    $("#parcel_id").val("")   ;
+    $("#parcel_date").val("") ;
+    $("#colis-group").hide()  ;
+    }
+} ) ;
+{% endif %}
+
+{% if entry == 'Y' %}
 function save_requests()
 {
-window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/N/" + {{ args['id_data'] }} ;
+var id_group      = {{ session['user_id_group']|safe}} ;
+var id_patient    = {{ args['patient']['id_data']|safe }} ;
+var type          = 183 ; // EXTERNE
+var date_record   = $("#date_record").val() ;
+var id_med        = $("#search_doctor").val() ;
+var date_prescr   = $("#date_prescr").val() ;
+var parcel_id     = $("#parcel_id").val() ;
+var date_parcel   = $("#date_parcel").val() ;
+var comm          = JSON.stringify( $("#comm").val() ) ;
+var parcel        = $("parcel").val() ;
+var price         = $("#bill_price").val() ;
+var discount      = $("#discount").val() ;
+var per_discount  = $("#per_discount").val() ;
+var per_insurance = $("#per_insurance").val() ;
+var bill_remain   = $("#bill_remain").val() ;
+var receipt_num   = $("#receipt_num").val() ;
+var bill_num      = "" ;
+var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
+
+    if (parcel == "undefined")
+    parcel = 5 ;
+
+    // date_record required
+    if (date_record == "")
+    {
+    alert( "Veuillez sélectionner une date de réception du dossier" ) ;
+    return false;
+    }
+
+    // date_prescr required
+    if (date_prescr == "")
+    {
+    alert( "Veuillez sélectionner une date de prescription" ) ;
+    return false;
+    }
+
+var param = '{ "id_owner":' + id_group + ', ' +
+              '"id_patient":' + id_patient  + ', ' +
+              '"type":' + type + ', ' +
+              '"date_record":"' + date_record + '", ' +
+              '"id_med":' + id_med + ', ' +
+              '"date_prescr":"' + date_prescr + '", ' +
+              '"parcel_id":"' + parcel_id + '", ' +
+              '"date_parcel":"' + date_parcel + '", ' +
+              '"comm":' + comm + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
+              '"parcel":' + parcel + ', ' +
+              '"price":' + price + ', ' +
+              '"discount":' + discount + ', ' +
+              '"percent_discount":' + per_discount + ', ' +
+              '"percent_insurance":' + per_insurance + ', ' +
+              '"bill_remain":' + bill_remain + ', ' +
+              '"receipt_num":"' + receipt_num + '", ' +
+              '"bill_num":"' + bill_num + '", ' +
+              '"service_int":"", ' +
+              '"bed_num":0, ' +
+              '"stat":' + stat + '}' ;
+
+    // Send record information
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/record/det/0",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret_rec)
+        {
+        var id_rec = ret_rec.id_rec ;
+
+        var param_list_ana = '{ "list_ana":[ ';
+
+            // Add analysis
+            for( i in data_analysis )
+            {
+                if (i > 0)
+                param_list_ana += ', ' ;
+
+            var param_ana = '{ "id_owner":' + id_group + ', ' +
+                              '"id_rec":' + id_rec  + ', ' +
+                              '"id_ana":' + data_analysis[i].id_data + ', ' +
+                              '"price":' + data_analysis[i].price + ', ' +
+                              '"paid": 5, ' +
+                              '"emer":' + data_analysis[i].emer + ', ' +
+                              '"req":' + data_analysis[i].req + '}' ;
+
+            param_list_ana += param_ana ;
+            }
+
+            // Add samples
+            for( i in data_samples )
+            {
+            param_list_ana += ', ' ;
+
+            var param_samp = '{ "id_owner":' + id_group + ', ' +
+                               '"id_rec":' + id_rec  + ', ' +
+                               '"id_ana":' + data_samples[i].id_data + ', ' +
+                               '"price":' + data_samples[i].price + ', ' +
+                               '"paid": 5, ' +
+                               '"emer": 5, ' +
+                               '"req":' + data_samples[i].req + '}' ;
+
+            param_list_ana += param_samp ;
+            }
+
+        param_list_ana += ' ] }';
+
+            // Send analysis information
+            $.ajax( 
+            {
+                type: "POST",
+                url: "{{ session['server_ext'] }}/services/analysis/list/req",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_list_ana,
+                success: function(ret_ana)
+                {
+                var param_list_prod = '{ "list_prod":[ ';
+
+                    for( i in data_products )
+                    {
+                        if (i > 0)
+                        param_list_prod += ', ' ;
+
+                    var param_prod = '{ "id_owner":' + id_group + ', ' +
+                                       '"date_samp":"' + data_products[i].dateSamp + '", ' +
+                                       '"type_samp":"' + data_products[i].type + '", ' +
+                                       '"qty":' + data_products[i].qty + ', ' +
+                                       '"stat":' + data_products[i].stat + ', ' +
+                                       '"id_rec":' + id_rec + ', ' +
+                                       '"sampler":"' + data_products[i].sampler + '", ' +
+                                       '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
+                                       '"time_receipt":"", ' +
+                                       '"comm":"' + data_products[i].comm + '", ' +
+                                       '"locat_samp":"", ' +
+                                       '"locat_samp_more":"", ' +
+                                       '"location":""}' ;
+
+                    param_list_prod += param_prod ;
+                    }
+
+                param_list_prod += ' ] }';
+
+                    // Send product information
+                    $.ajax( 
+                    {
+                        type: "POST",
+                        url: "{{ session['server_ext'] }}/services/product/list/req",
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        data: param_list_prod,
+                        success: function(ret_prod)
+                        {
+                        window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/N/" + id_rec ;
+                        },
+                        error: function(data_ana)
+                        {
+                        console.log("ERREUR") ;
+                        alert("Une erreur est survenue lors de l'enregistrement des prelevements") ;
+                        } 
+                    } ) ;
+                },
+                error: function(data_ana)
+                {
+                console.log("ERREUR") ;
+                alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
+                } 
+            } ) ;
+        },
+        error: function(data_rec)
+        {
+        console.log("ERREUR") ;
+        alert("Une erreur est survenue lors de l'enregistrement du dossier") ;
+        }
+    } ) ;
 }
+{% endif %}
+
+{% if entry == 'N' %}
+function valid_requests()
+{
+let id_group  = {{ session['user_id_group']|safe}} ;
+let user_role = "{{ session['user_role']|safe }}"  ;
+let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}' ;
+
+    // create in DB list of results to enter and corresponding validation
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_res,
+        success : function(response)
+        {
+        let param_stat = '{ "stat":182 }' ; 
+
+            // update record stat 181 to 182
+            $.ajax(
+            {
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_stat,
+                success : function(response)
+                {
+                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/Y/" + {{ args['record']['id_data'] }} ;
+                }
+            } ) ;
+        }
+    } ) ;
+}
+{% endif %}
 
 function return_home()
 {
@@ -726,7 +1401,10 @@ window.location.href = "{{ session['server_ext'] }}/sigl/";
 
 $( document ).ready( function()
 {
-    $("#date_file").val( "{{ now|date_now }}" ) ;
+    {% if entry == 'Y' %}
+    $("#date_record").val( "{{ now|date_now }}" ) ;
+    {% endif %}
+    load_data(1) ;
 } ) ;
 </script>
 {% endblock %}

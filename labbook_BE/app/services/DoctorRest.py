@@ -27,27 +27,26 @@ class DoctorSearch(Resource):
         self.log.info(Logs.fileline() + ' : TRACE DoctorSearch')
         return compose_ret(l_doctors, Constants.cst_content_type_json)
 
-"""
+
 class DoctorDet(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_pat):
-        doctor = Doctor.getDoctor(id_pat)
+    def get(self, id_doctor):
+        doctor = Doctor.getDoctor(id_doctor)
 
         if not doctor:
             self.log.error(Logs.fileline() + ' : ' + 'DoctorDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
-
-        doctor['ddn'] = datetime.strftime(doctor['ddn'], '%Y-%m-%d')
 
         # Replace None by empty string
         for key, value in doctor.items():
             if doctor[key] is None:
                 doctor[key] = ''
 
-        self.log.info(Logs.fileline() + ' : DoctorDet id_pat=' + str(id_pat))
+        self.log.info(Logs.fileline() + ' : DoctorDet id_doctor=' + str(id_doctor))
         return compose_ret(doctor, Constants.cst_content_type_json, 200)
 
+    """
     def post(self, id_pat=0):
         args = request.get_json()
 

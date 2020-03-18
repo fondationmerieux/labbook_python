@@ -5,10 +5,8 @@
     {% block title %}
     <title>Nouvelle demande interne</title>
     {% endblock %}
-    <!--<link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />-->
-    <!--<script src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>-->
-    <link href="{{ session['server_ext'] }}/select2.min.css" rel="stylesheet" />
-    <script src="{{ session['server_ext'] }}/select2.min.js"></script>
+    <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
+    <script src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -20,29 +18,21 @@
             <form id="form_main" class="vzn-form form-horizontal row">
                 <div class="panel panel-1 panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Chercher un patient</h3>
+                        <h3 class="panel-title">{{ _('Chercher un patient') }}</h3>
                     </div>
                     <div class="panel-body ">
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="statictext col-lg-3 control-label">
-                                    <span>Nom, prénom ou code du patient</span>
+                                    <span>{{ _("Nom, prénom ou code du patient") }}</span>
                                 </div>
                                 <div class="field col-lg-4">
-                                    <!--<input id="search_patient" class="form-control" style="margin-left: 0px;" type="text" value="" aria-autocomplete="list" aria-expanded="false" autocomplete="off">
-
-                                    <div style="width: 184px; left: 2058.5px; top: 1164px;" aria-hidden="true">
-                                        <div>
-                                            <ul role="listbox"></ul>
-                                        </div>
-                                    </div>
-                                    <div aria-live="polite" role="status"></div>-->
                                     <select id="search_patient" style="width:300px"></select>
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="form-group button">
-                                    <input type="button" onclick="new_pat();" id="new_patient" class="btn undefined btn-default" value="Nouveau patient">
-                                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="Quitter">
+                                    <input type="button" onclick="new_pat();" id="new_patient" class="btn undefined btn-default" value="{{ _('Nouveau patient') }}">
+                                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
                                 </div>
                             </div>
                         </div>
@@ -67,33 +57,63 @@ $("#search_patient").select2(
         contentType: "application/json; charset=utf-8",
         term: $("#search_patient").text(),
         data: function (params) {
-
             return JSON.stringify({
                 term: params.term
             });
         },
         processResults: function (data) {
             return {
-                results: $.map(data, function (item) {
-                    return {
-                        text: item.prenom + ' ' + item.nom + ' [' + item.code + ']',
-                        id: item.id_data
-                    }
-                })
-            };
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
         }
-    }
+    },
+    templateResult: formatRepo
 } ) ;
+
+function formatRepo(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var ident = "" ;
+
+    if (repo.prenom)
+    ident += repo.prenom + " " ;
+
+    if (repo.nom)
+    ident += repo.nom ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ; // TODO also code_patient ?
+
+var info = "" ;
+
+    if (repo.ddn)
+    info += repo.ddn + " " ; // TODO change format date ?
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'><b>" + ident + " " + code + "</b></div>" +
+            "<div class='select2-result-repository__description'>" + info + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+return display ;
+}
 
 $("#search_patient").on("select2:select", function (e) 
 {
   var id_pat = $(e.currentTarget).val();
-  window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-int/Y/" + id_pat ;
+  window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-int/Y/" + id_pat ;
 } ) ;
 
 function new_pat() 
 {
-window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-patient/0";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/0";
 }
 
 function return_home()

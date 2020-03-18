@@ -5,11 +5,11 @@
     {% block title %}
     <title>Details demande d'analyses</title>
     {% endblock %}
-    <link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />
+    <!--<link rel="stylesheet" href="{{ session['server_ext'] }}/theme.default.css" />-->
     <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
     <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
     <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
-    <script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>
+    <!--<script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>-->
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -23,8 +23,8 @@
                 <div class="statictext undefined">
                     <span>Dossier :</span>
                 </div>
-                <div class="form-control-static filed readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
-                    <span>1</span>
+                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
+                    <span>{% if entry == 'N' %}{{ args['record']['num_dos'] }}{% endif %}</span>
                 </div>
                 {% endif %}
                 <div class="canvas">
@@ -39,10 +39,10 @@
                                         <div id="pat-group" class="col-xs-12">
                                             <div class="form-group form-inline">
                                                 <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
-                                                    <span>{{ args['code_patient'] }}</span>
+                                                    <span>{{ args['patient']['code_patient'] }}</span>
                                                 </div>
                                                 <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
-                                                    <span>{{ args['code'] }}</span>
+                                                    <span>{{ args['patient']['code'] }}</span>
                                                 </div>
                                             </div>
                                             <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
@@ -50,7 +50,7 @@
                                                     <div class="row">
                                                         <div class="form-inline col-xs-12">
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['prenom'] }} {{ args['nom'] }}</span>
+                                                                <span>{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -75,30 +75,30 @@
                                                                 <span>Né(e) le</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['ddn']|date_format }}</span>
+                                                                <span>{{ args['patient']['ddn']|date_format }}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>-</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['age'] }}</span>
+                                                                <span>{{ args['patient']['age'] }}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['unite'] == 1037 %}Années
-                                                                      {% elif args['unite'] == 1036 %}Mois
-                                                                      {% elif args['unite'] == 1035 %}Semaines
-                                                                      {% elif args['unite'] == 1034 %}Jours{% endif %}</span>
+                                                                <span>{% if args['patient']['unite'] == 1037 %}Années
+                                                                      {% elif args['patient']['unite'] == 1036 %}Mois
+                                                                      {% elif args['patient']['unite'] == 1035 %}Semaines
+                                                                      {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>.</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['sexe'] == 1 %}Masculin
-                                                                      {% elif args['sexe'] == 2 %}Féminin
-                                                                      {% elif args['sexe'] == 3 %}Inconnu{% endif %}</span>
+                                                                <span>{% if args['patient']['sexe'] == 1 %}Masculin
+                                                                      {% elif args['patient']['sexe'] == 2 %}Féminin
+                                                                      {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -106,7 +106,7 @@
                                             </div>
                                             {% if entry == 'Y' %}
                                             <div class="form-group button">
-                                                <input type="button" onclick="change_pat({{ args['id_data'] }});" class="btn undefined btn-default" value="Modifier le dossier du patient">
+                                                <input type="button" onclick="change_pat({{ args['patient']['id_data'] }});" class="btn undefined btn-default" value="Modifier le dossier du patient">
                                             </div>
                                             {% endif %}
                                         </div>
@@ -129,7 +129,7 @@
                                                     {% if entry == 'Y' %}
                                                     <input id="date_record" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="">
                                                     {% else %}
-                                                    data_date_recept
+                                                    {{ args['record']['date_dos']|date_format }}
                                                     {% endif %}
 
                                                 </div>
@@ -140,9 +140,9 @@
                                                 </label>
                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
                                                     {% if entry == 'Y' %}
-                                                    <input class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                                    <input id="date_prescr" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                                                     {% else %}
-                                                    data_date_prescription
+                                                    {{ args['record']['date_prescription']|date_format }}
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -154,7 +154,9 @@
                                                     {% if entry == 'Y' %}
                                                     <select id="search_doctor" style="width:400px"></select>
                                                     {% else %}
-                                                    data_doctor
+                                                        {% if args['doctor'] %}
+                                                            {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}{% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
+                                                        {% endif %}
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -162,10 +164,14 @@
                                                 <label class="control-label col-lg-6 col-md-6 col-sm-6" style=""><span>Colis</span></label>
                                                 <div class="radio-group col-lg-6 col-md-6 col-sm-6">
                                                     {% if entry == 'Y' %}
-                                                    <label class="radio-inline undefined"><input type="radio" name="colis" value="4">Oui</label>
-                                                    <label class="radio-inline undefined"><input type="radio" name="colis" value="5">Non</label>
+                                                    <label class="radio-inline undefined">
+                                                        <input type="radio" name="parcel" value="4">Oui
+                                                    </label>
+                                                    <label class="radio-inline undefined">
+                                                        <input type="radio" name="parcel" value="5" checked="checked">Non
+                                                    </label>
                                                     {% else %}
-                                                    data_colis
+                                                    {% if args['record']['colis'] == 4 %}{{ args['record']['id_colis'] }} {{ args['record']['date_reception_colis']|date_format }}{% else %}Non{% endif %}
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -186,7 +192,7 @@
                                                                     <span data-field="date_reception_colis">Date de réception du colis</span>
                                                                 </label>
                                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
-                                                                    <input  id="parcel_date" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                                                    <input  id="date_parcel" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -340,9 +346,9 @@
                                     <label class="control-label col-lg-3" style=""><span data-field="prix">{{ _('Prix total') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input type="text" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" readonly="">
+                                        <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                                         {% else %}
-                                        data_bill_price
+                                        {{ args['record']['prix'] }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -350,22 +356,22 @@
                                     <label class="control-label col-lg-3" style=""><span data-field="remise">{{ _('Remise sur la facturation') }}</span></label>
                                     <div class="field col-lg-2">
                                         {% if entry == 'Y' %}
-                                        <select class="form-control">
-                                            <option selected=""></option>
+                                        <select id="discount" class="form-control">
+                                            <option selected="" value="0"></option>
                                             {% for discount_type in ihm['discount_bill'] %}
                                             <option value="{{ discount_type['id_data'] }}">{{ _(discount_type['label']) }}</option>
                                             {% endfor %}
                                         </select>
                                         {% else %}
-                                        data_discount_bill
+                                        {{ args['record']['remise'] }}
                                         {% endif %}
                                     </div>
                                     <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">{{ _('Pourcentage de la remise') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input type="text" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999">
+                                        <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01">
                                         {% else %}
-                                        data_remise
+                                        {{ args['record']['remise_pourcent'] }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -375,9 +381,9 @@
                                     </label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input type="text" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999">
+                                        <input id="per_insurance" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01">
                                         {% else %}
-                                        data_assur_maladie
+                                        {{ args['record']['assu_pourcent'] }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -385,9 +391,9 @@
                                     <label class="control-label col-lg-3" style=""><span data-field="a_payer">{{ _('Reste à payer') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input type="text" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" readonly="">
+                                        <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                                         {% else %}
-                                        data_reste_a_payer
+                                        {{ args['record']['a_payer'] }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -395,9 +401,9 @@
                                     <label class="control-label col-lg-3" style=""><span data-field="num_quittance">{{ _('Numéro de quittance') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input type="text" id="field_num_quitance" name="field_num_quitance" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
+                                        <input type="text" id="receipt_num" name="receipt_num" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
                                         {% else %}
-                                        data_quittance
+                                        {{ args['record']['num_quittance'] }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -499,9 +505,9 @@
                             <div id="rc-group" class="col-xs-12">
                                 <div class="field col-md-12">
                                     {% if entry == 'Y' %}
-                                    <textarea rows="5" cols="80" class="form-control"></textarea>
+                                    <textarea id="comm" rows="5" cols="80" class="form-control"></textarea>
                                     {% else %}
-                                    data_comm
+                                    {{ args['record']['rc'] }}
                                     {% endif %}
                                 </div>
                             </div>
@@ -527,18 +533,19 @@
 
 {% block add_script %}
 <script>
-var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "ask":4, "rate":"", "price":0} ;
-var struct_samp   = {"id_data":0 ,"code":"", "name":"", "ask":4, "rate":"", "price":0} ;
-var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceiv":"", "sampler":"", "qty":0, "comm":""} ;
+var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0} ;
+var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0} ;
+var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
 var data_analysis = {{ args['data_analysis']|safe }} ;
 var data_samples  = {{ args['data_samples']|safe }}  ;
 var data_products = {{ args['data_products']|safe }} ;
 var ind_products  = 0  ;
 var bill_price    = 0  ;
-var bill_remain   = {{ args['billing_pat']['value'] }} ;
+var bill_remain   = {% if entry == 'Y' %}{{ args['billing_pat']['value'] }}{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
 var act_price     = {{ ihm['act_price']['value'] }} ;
 var opt_yorn      = {{ ihm['yorn']|safe }} ;
 
+{% if entry == 'Y' %}
 function change_pat( id_pat ) 
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/" + id_pat ;
@@ -651,8 +658,6 @@ let data_exist = false ;
             url: "/services/analysis/det/" + id_item,
             success: function(data_ana)
                 {
-                console.log("DEBUG /services/analysis/det/"+id_item+" = " +JSON.stringify(data_ana) ) ;
-
                 let tmp_struct_ana = JSON.parse(JSON.stringify(struct_ana)) ; // copy structure
 
                 tmp_struct_ana.id_data = data_ana.id_data ;
@@ -664,10 +669,8 @@ let data_exist = false ;
                 data_analysis.push(tmp_struct_ana) ;
 
                 // load new analysis in table
-                load_analysis( tmp_struct_ana ) ;
+                load_analysis( tmp_struct_ana, 1) ;
                 refresh_bill() ;
-
-                console.log( "DEBUG data_ana.produit_biologique =" + data_ana.produit_biologique ) ;
 
                     // id_samp greater than 0 then GET det sample linked to analysis
                     if ( data_ana.produit_biologique > 0 )
@@ -697,10 +700,8 @@ let data_exist = false ;
                                     data_samples.push(tmp_struct_samp) ;
 
                                     // load new sample in table
-                                    load_sample( tmp_struct_samp ) ;
+                                    load_sample( tmp_struct_samp, 1 ) ;
                                     refresh_bill() ;
-
-                                    console.log("DEBUG /services/analysis/det/"+data_ana.produit_biologique+" = " +JSON.stringify(data_samp) ) ;
                                     },
                                 error: function(data_samp)
                                     {
@@ -725,8 +726,6 @@ let data_exist = false ;
 
                                     // load new product in table
                                     load_product( tmp_struct_prod ) ;
-
-                                    console.log("DEBUG /services/analysis/type/product/"+id_type_prod+" = " +JSON.stringify(data_prod) ) ;
                                     },
                                 error: function(data_prod)
                                     {
@@ -747,8 +746,9 @@ let data_exist = false ;
 
 // tmp_search = $.map(tmp_data,function(val,key) { if(val.id_data == id_item) { return val ; } } ) ;
 } ) ;
+{% endif %}
 
-function load_analysis( data )
+function load_analysis( data, bill_calc )
 {
 let tr_analysis = '' ;
 
@@ -763,40 +763,56 @@ let tr_analysis = '' ;
     let tmp_tr = '<tr style="">' ;
 
     {% if entry == 'Y' %}
-    let btn = '<input type="button" onclick="del_analysis(' + obj.id_data + ');load_data();refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' ;
+    let btn = '<input type="button" onclick="del_analysis(' + obj.id_data + ');load_data(0);refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' ;
 
     tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
     tmp_tr += create_td("", btn, "", "") ;
     tmp_tr += create_td("", obj.code, "", "") ;
     tmp_tr += create_td("", obj.name, "", "") ;
     tmp_tr += create_td("", create_select("ana_emer_"+obj.id_data, opt_yorn, obj.emer, true), "", "") ;
-    tmp_tr += create_td("", create_select("ana_ask_"+obj.id_data, opt_yorn, obj.ask, false), "", "") ;
+    tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
     tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
     tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999), "", "") ;
     {% else %}
+    let urg  = obj.urgent ;
+    let dem  = obj.demande ;
+    let rate = obj.cote_unite + obj.cote_valeur ;
+
+        if ( urg == 4 )
+        urg = "Oui" ;
+        else
+        urg = "Non" ;
+
+        if ( dem == 4 )
+        dem = "Oui" ;
+        else
+        dem = "Non" ;
+
     tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
     tmp_tr += create_td("", obj.code, "", "") ;
-    tmp_tr += create_td("", obj.name, "", "") ;
-    tmp_tr += create_td("", obj.emer, "", "") ;
-    tmp_tr += create_td("", obj.ask, "", "") ;
-    tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
-    tmp_tr += create_td("", obj.price, "", "") ;
+    tmp_tr += create_td("", obj.nom, "", "") ;
+    tmp_tr += create_td("", urg, "", "") ;
+    tmp_tr += create_td("", dem, "", "") ;
+    tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+    tmp_tr += create_td("", obj.prix, "", "") ;
     {% endif %}
 
     tmp_tr += '</tr>' ;
 
-    bill_price  += obj.price ;
-    bill_remain += obj.price ;
+        if (bill_calc)
+        {
+        bill_price  += obj.price ;
+        bill_remain += obj.price ;
+        }
 
     tr_analysis += tmp_tr ;
     }
 
-console.log( "DEBUG tr_analysis = " + tr_analysis ) ;
-
 $("#tbody_analysis").append(tr_analysis) ;
-$("#table_analysis").tablesorter() ;
+//$("#table_analysis").tablesorter() ;
 }
 
+{% if entry == 'Y' %}
 function del_analysis( id_data )
 {
     for( i in data_analysis )
@@ -812,8 +828,9 @@ function del_analysis( id_data )
         }
     }
 }
+{% endif %}
 
-function load_sample( data )
+function load_sample( data, bill_calc )
 {
 let tr_sample = '' ;
 
@@ -831,39 +848,49 @@ let tr_sample = '' ;
         let tmp_tr = '<tr style="">' ;
 
         {% if entry == 'Y' %}
-        let btn = '<input type="button" onclick="del_sample(' + obj.id_data + ');load_data();refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' 
+        let btn = '<input type="button" onclick="del_sample(' + obj.id_data + ');load_data(0);refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' 
 
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
         tmp_tr += create_td("", btn, "", "") ;
         tmp_tr += create_td("", obj.code, "", "") ;
         tmp_tr += create_td("", obj.name, "", "") ;
-        tmp_tr += create_td("", create_select("samp_ask_"+obj.id_data, opt_yorn, obj.ask, false), "", "") ;
+        tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
         tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
         tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999), "", "") ;
         {% else %}
+        let dem  = obj.demande ;
+        let rate = obj.cote_unite + obj.cote_valeur ;
+
+            if ( dem == 4 )
+            dem = "Oui" ;
+            else
+            dem = "Non" ;
+
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
         tmp_tr += create_td("", obj.code, "", "") ;
-        tmp_tr += create_td("", obj.name, "", "") ;
-        tmp_tr += create_td("", obj.ask, "", "") ;
-        tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
-        tmp_tr += create_td("", obj.price, "", "") ;
+        tmp_tr += create_td("", obj.nom, "", "") ;
+        tmp_tr += create_td("", dem, "", "") ;
+        tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+        tmp_tr += create_td("", obj.prix, "", "") ;
         {% endif %}
 
         tmp_tr += '</tr>' ;
 
-        bill_price  += obj.price ;
-        bill_remain += obj.price ;
+            if (bill_calc)
+            {
+            bill_price  += obj.price ;
+            bill_remain += obj.price ;
+            }
 
         tr_sample += tmp_tr ;
         }
     }
 
-console.log( "DEBUG tr_sample = " + tr_sample ) ;
-
 $("#tbody_sample").append(tr_sample) ;
-$("#table_sample").tablesorter() ;
+//$("#table_sample").tablesorter() ;
 }
 
+{% if entry == 'Y' %}
 function del_sample( id_data )
 {
     for( i in data_samples )
@@ -879,6 +906,7 @@ function del_sample( id_data )
         }
     }
 }
+{% endif %}
 
 function load_product( data )
 {
@@ -898,25 +926,26 @@ let tr_product = '' ;
         let tmp_tr = '<tr style="">' ;
 
         {% if entry == 'Y' %}
-        let btn = '<input type="button" onclick="del_product(' + obj.id_data + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+        let btn = '<input type="button" onclick="del_product(' + obj.id_data + ');load_data(0);" value="' + '{{ _("Supprimer") }}' + '">' ;
 
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
         tmp_tr += create_td("", btn, "", "") ; // actions
         tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "", "") ; // select product
         tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "", "") ; // select statut
         tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0), "", "") ; // input date prel
-        tmp_tr += create_td("", create_input("prod_dateReceiv_"+obj.id_data, "date", obj.dateReceiv, 0, 0), "", "") ; // input date recept
+        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "date", obj.dateReceipt, 0, 0), "", "") ; // input date recept
         tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0), "", "") ; // input text preleveur
         tmp_tr += create_td("", create_input("prod_qty_"+obj.id_data, "number", obj.qty, 0, 10), "", "") ; // input number qtte
         tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0), "", "") ; // input text comm
         {% else %}
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", obj.type, "", "") ;
-        tmp_tr += create_td("", obj.stat, "", "") ;
-        tmp_tr += create_td("", obj.dateSamp, "", "") ;
-        tmp_tr += create_td("", obj.dateReceiv, "", "") ;
-        tmp_tr += create_td("", obj.qty, "", "") ;
-        tmp_tr += create_td("", obj.comm, "", "") ;
+        tmp_tr += create_td("", obj.type_prod, "", "") ;
+        tmp_tr += create_td("", obj.stat_prod, "", "") ;
+        tmp_tr += create_td("", obj.date_prel, "", "") ;
+        tmp_tr += create_td("", obj.date_reception, "", "") ;
+        tmp_tr += create_td("", obj.preleveur, "", "") ;
+        tmp_tr += create_td("", obj.quantite, "", "") ;
+        tmp_tr += create_td("", obj.commentaire, "", "") ;
         {% endif %}
 
         tmp_tr += '</tr>' ;
@@ -925,12 +954,11 @@ let tr_product = '' ;
         }
     }
 
-console.log( "DEBUG tr_product = " + tr_product ) ;
-
 $("#tbody_product").append(tr_product) ;
-$("#table_product").tablesorter() ;
+//$("#table_product").tablesorter() ;
 }
 
+{% if entry == 'Y' %}
 function del_product( id_data )
 {
     for( i in data_products )
@@ -943,6 +971,7 @@ function del_product( id_data )
         }
     }
 }
+{% endif %}
 
 function create_td(id, val, cls, style)
 {
@@ -952,6 +981,7 @@ let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
 return tmp_td ;
 }
 
+{% if entry == 'Y' %}
 function create_select(id, l_options, val_select, opt_empty)
 {
 let tmp_select = '<select class="form-control" id="' + id + '" onChange="change_data(this)">' ;
@@ -993,7 +1023,6 @@ let val = $(elem).val() ;
 
 // Change value in data structure
 let id_elem = elem.id ;
-console.log("DEBUG change_data id_elem=" + id_elem) ;
 let split_id = id_elem.split("_") ;
 let id_data  = split_id[split_id.length -1] ; 
 
@@ -1005,8 +1034,8 @@ let id_data  = split_id[split_id.length -1] ;
             {
                 if ( split_id[1] == "emer" )
                 data_analysis[i].emer = val ;
-                else if ( split_id[1] == "ask" )
-                data_analysis[i].ask = val ;
+                else if ( split_id[1] == "req" )
+                data_analysis[i].req = val ;
                 else if ( split_id[1] == "price" )
                 data_analysis[i].price = val ;
 
@@ -1020,8 +1049,8 @@ let id_data  = split_id[split_id.length -1] ;
         {
             if (data_samples[i].id_data == id_data )
             {
-                if ( split_id[1] == "ask" )
-                data_samples[i].ask = val ;
+                if ( split_id[1] == "req" )
+                data_samples[i].req = val ;
                 else if ( split_id[1] == "price" )
                 data_samples[i].price = val ;
 
@@ -1041,8 +1070,8 @@ let id_data  = split_id[split_id.length -1] ;
                 data_products[i].stat = val ;
                 else if ( split_id[1] == "dateSamp" )
                 data_products[i].dateSamp = val ;
-                else if ( split_id[1] == "dateReceiv" )
-                data_products[i].dateReceiv = val ;
+                else if ( split_id[1] == "dateReceipt" )
+                data_products[i].dateReceipt = val ;
                 else if ( split_id[1] == "sampler" )
                 data_products[i].sampler = val ;
                 else if ( split_id[1] == "qty" )
@@ -1055,12 +1084,14 @@ let id_data  = split_id[split_id.length -1] ;
         }
     }
 }
+{% endif %}
 
 function format_rate(rate, price)
 {
 return rate + '(' + price + ')' ;
 }
 
+{% if entry == 'Y' %}
 function refresh_bill()
 {
 $("#bill_price").val(bill_price)   ;
@@ -1077,11 +1108,10 @@ data_products.push(tmp_struct_prod) ;
 
 load_product( tmp_struct_prod ) ;
 }
+{% endif %}
 
-function load_data()
+function load_data( bill_calc )
 {
-console.log("DEBUG load_data()") ;
-
 // clear table tbody
 $("#tbody_analysis").empty() ;
 $("#tbody_sample").empty() ;
@@ -1089,12 +1119,12 @@ $("#tbody_product").empty() ;
 
     for( i in data_analysis )
     {
-    load_analysis( data_analysis[i] ) ;
+    load_analysis( data_analysis[i], bill_calc ) ;
     }
 
     for( i in data_samples )
     {
-    load_sample( data_samples[i] ) ;
+    load_sample( data_samples[i], bill_calc ) ;
     }
 
     for( i in data_products )
@@ -1103,7 +1133,8 @@ $("#tbody_product").empty() ;
     }
 }
 
-$("input[type=radio][name=colis]").change(function() 
+{% if entry == 'Y' %}
+$("input[type=radio][name=parcel]").change(function() 
 {
     if (this.value == '4') 
     {
@@ -1119,52 +1150,224 @@ $("input[type=radio][name=colis]").change(function()
     $("#colis-group").hide()  ;
     }
 } ) ;
+{% endif %}
 
+{% if entry == 'Y' %}
 function save_requests()
 {
-let data_save = {{ args|safe }} ;
+var id_group      = {{ session['user_id_group']|safe}} ;
+var id_patient    = {{ args['patient']['id_data']|safe }} ;
+var type          = 183 ; // EXTERNE
+var date_record   = $("#date_record").val() ;
+var id_med        = $("#search_doctor").val() ;
+var date_prescr   = $("#date_prescr").val() ;
+var parcel_id     = $("#parcel_id").val() ;
+var date_parcel   = $("#date_parcel").val() ;
+var comm          = JSON.stringify( $("#comm").val() ) ;
+var parcel        = $("parcel").val() ;
+var price         = $("#bill_price").val() ;
+var discount      = $("#discount").val() ;
+var per_discount  = $("#per_discount").val() ;
+var per_insurance = $("#per_insurance").val() ;
+var bill_remain   = $("#bill_remain").val() ;
+var receipt_num   = $("#receipt_num").val() ;
+var bill_num      = "" ;
+var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
 
-// TODO ajouter a data_save 
-data_save.data_analysis = data_analysis ;
-data_save.data_samples  = data_samples  ;
-data_save.data_products = data_products ;
+    if (parcel == "undefined")
+    parcel = 5 ;
 
-    $.ajax(
+    // date_record required
+    if (date_record == "")
     {
-        type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/save-data/",
-        dataType: "json",
+    alert( "Veuillez sélectionner une date de réception du dossier" ) ;
+    return false;
+    }
+
+    // date_prescr required
+    if (date_prescr == "")
+    {
+    alert( "Veuillez sélectionner une date de prescription" ) ;
+    return false;
+    }
+
+var param = '{ "id_owner":' + id_group + ', ' +
+              '"id_patient":' + id_patient  + ', ' +
+              '"type":' + type + ', ' +
+              '"date_record":"' + date_record + '", ' +
+              '"id_med":' + id_med + ', ' +
+              '"date_prescr":"' + date_prescr + '", ' +
+              '"parcel_id":"' + parcel_id + '", ' +
+              '"date_parcel":"' + date_parcel + '", ' +
+              '"comm":' + comm + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
+              '"parcel":' + parcel + ', ' +
+              '"price":' + price + ', ' +
+              '"discount":' + discount + ', ' +
+              '"percent_discount":' + per_discount + ', ' +
+              '"percent_insurance":' + per_insurance + ', ' +
+              '"bill_remain":' + bill_remain + ', ' +
+              '"receipt_num":"' + receipt_num + '", ' +
+              '"bill_num":"' + bill_num + '", ' +
+              '"service_int":"", ' +
+              '"bed_num":0, ' +
+              '"stat":' + stat + '}' ;
+
+    // Send record information
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/record/det/0",
+        dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        data : JSON.stringify(data_save),
-        success : function(response)
+        data: param,
+        success: function(ret_rec)
         {
-        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-ext/N/" + {{ args['id_data'] }} ;
+        var id_rec = ret_rec.id_rec ;
+
+        var param_list_ana = '{ "list_ana":[ ';
+
+            // Add analysis
+            for( i in data_analysis )
+            {
+                if (i > 0)
+                param_list_ana += ', ' ;
+
+            var param_ana = '{ "id_owner":' + id_group + ', ' +
+                              '"id_rec":' + id_rec  + ', ' +
+                              '"id_ana":' + data_analysis[i].id_data + ', ' +
+                              '"price":' + data_analysis[i].price + ', ' +
+                              '"paid": 5, ' +
+                              '"emer":' + data_analysis[i].emer + ', ' +
+                              '"req":' + data_analysis[i].req + '}' ;
+
+            param_list_ana += param_ana ;
+            }
+
+            // Add samples
+            for( i in data_samples )
+            {
+            param_list_ana += ', ' ;
+
+            var param_samp = '{ "id_owner":' + id_group + ', ' +
+                               '"id_rec":' + id_rec  + ', ' +
+                               '"id_ana":' + data_samples[i].id_data + ', ' +
+                               '"price":' + data_samples[i].price + ', ' +
+                               '"paid": 5, ' +
+                               '"emer": 5, ' +
+                               '"req":' + data_samples[i].req + '}' ;
+
+            param_list_ana += param_samp ;
+            }
+
+        param_list_ana += ' ] }';
+
+            // Send analysis information
+            $.ajax( 
+            {
+                type: "POST",
+                url: "{{ session['server_ext'] }}/services/analysis/list/req",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_list_ana,
+                success: function(ret_ana)
+                {
+                var param_list_prod = '{ "list_prod":[ ';
+
+                    for( i in data_products )
+                    {
+                        if (i > 0)
+                        param_list_prod += ', ' ;
+
+                    var param_prod = '{ "id_owner":' + id_group + ', ' +
+                                       '"date_samp":"' + data_products[i].dateSamp + '", ' +
+                                       '"type_samp":"' + data_products[i].type + '", ' +
+                                       '"qty":' + data_products[i].qty + ', ' +
+                                       '"stat":' + data_products[i].stat + ', ' +
+                                       '"id_rec":' + id_rec + ', ' +
+                                       '"sampler":"' + data_products[i].sampler + '", ' +
+                                       '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
+                                       '"time_receipt":"", ' +
+                                       '"comm":"' + data_products[i].comm + '", ' +
+                                       '"locat_samp":"", ' +
+                                       '"locat_samp_more":"", ' +
+                                       '"location":""}' ;
+
+                    param_list_prod += param_prod ;
+                    }
+
+                param_list_prod += ' ] }';
+
+                    // Send product information
+                    $.ajax( 
+                    {
+                        type: "POST",
+                        url: "{{ session['server_ext'] }}/services/product/list/req",
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        data: param_list_prod,
+                        success: function(ret_prod)
+                        {
+                        window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/N/" + id_rec ;
+                        },
+                        error: function(data_ana)
+                        {
+                        console.log("ERREUR") ;
+                        alert("Une erreur est survenue lors de l'enregistrement des prelevements") ;
+                        } 
+                    } ) ;
+                },
+                error: function(data_ana)
+                {
+                console.log("ERREUR") ;
+                alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
+                } 
+            } ) ;
+        },
+        error: function(data_rec)
+        {
+        console.log("ERREUR") ;
+        alert("Une erreur est survenue lors de l'enregistrement du dossier") ;
         }
     } ) ;
 }
+{% endif %}
 
+{% if entry == 'N' %}
 function valid_requests()
 {
-let data_save = {{ args|safe }} ;
+let id_group  = {{ session['user_id_group']|safe}} ;
+let user_role = "{{ session['user_role']|safe }}"  ;
+let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}' ;
 
-// TODO ajouter a data_save 
-data_save.data_analysis = data_analysis ;
-data_save.data_samples  = data_samples  ;
-data_save.data_products = data_products ;
-
+    // create in DB list of results to enter and corresponding validation
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/save-data/",
-        dataType: "json",
+        url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
+        dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        data : JSON.stringify(data_save),
+        data: param_res,
         success : function(response)
         {
-        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/N/" + {{ args['id_data'] }} ;
+        let param_stat = '{ "stat":182 }' ; 
+
+            // update record stat 181 to 182
+            $.ajax(
+            {
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_stat,
+                success : function(response)
+                {
+                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/Y/" + {{ args['record']['id_data'] }} ;
+                }
+            } ) ;
         }
     } ) ;
 }
+{% endif %}
 
 function return_home()
 {
@@ -1173,10 +1376,10 @@ window.location.href = "{{ session['server_ext'] }}/sigl/";
 
 $( document ).ready( function()
 {
+    {% if entry == 'Y' %}
     $("#date_record").val( "{{ now|date_now }}" ) ;
-    load_data() ;
-
-    console.log("DEBUG ready data_analysis="+JSON.stringify(data_analysis));
+    {% endif %}
+    load_data(1) ;
 } ) ;
 </script>
 {% endblock %}

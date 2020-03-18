@@ -136,6 +136,7 @@ function display_result( num_page )
     else
     $("#no_result").hide() ;
 
+/*
 res = '<form id="form-538" enctype="application/x-www-form-urlencoded" method="post" action="{{ session['server_ext'] }}/sigl/result/index/index" class="vzn-form form-horizontal row">' +
     '<fieldset id="subform-538" class="subform group group-1">' +
         '<legend>' + data_results[0].nom + '</legend>' +
@@ -238,9 +239,10 @@ res = '<form id="form-538" enctype="application/x-www-form-urlencoded" method="p
 '</form>' ;
 
 $("#list_result").html( res ) ;
+*/
 
 // Fill result
-//$("#list_result").text( JSON.stringify(data_results) ) ;
+$("#list_result").text( JSON.stringify(data_results) ) ;
 
 /*
 [{"ref_ana":306,"id_ana":10,"id_dos":5,"nom":"Acide fusidique","famille":"",

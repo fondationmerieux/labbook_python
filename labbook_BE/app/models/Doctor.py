@@ -31,20 +31,23 @@ class Doctor:
 
         return cursor.fetchall()
 
-"""
     @staticmethod
-    def getDoctor(id_pat):
+    def getDoctor(id_doctor):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, anonyme, code, code_doctor, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, tel, profession, '\
-              'nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite '\
-              'from sigl_03_data '\
-              'where id_data=%s'
+        req = 'select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '\
+              'doctor.prenom as prenom, doctor.ville as ville, doctor.etablissement as etablissement, '\
+              'doctor.specialite as specialite, doctor.tel as tel, doctor.email as email, doctor.titre as titre,'\
+              'doctor.initiale as initiale, doctor.service as service, doctor.adresse as adresse, '\
+              'doctor.mobile as mobile, doctor.fax as fax, dico.label as spe_doctor '\
+              'from sigl_08_data as doctor, sigl_dico_data as dico '\
+              'where dico.id_data=doctor.specialite and doctor.id_data=%s'
 
-        cursor.execute(req, (id_pat,))
+        cursor.execute(req, (id_doctor,))
 
         return cursor.fetchone()
 
+    """
     @staticmethod
     def insertDoctor(**params):
         try:

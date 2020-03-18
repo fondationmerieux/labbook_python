@@ -8,6 +8,7 @@ from flask_restful import Resource
 from app.models.General import compose_ret
 from app.models.Constants import *
 from app.models.Result import *
+from app.models.Analysis import *
 from app.models.User import *
 from app.models.Logs import Logs
 
@@ -189,3 +190,112 @@ class ResultTypeProd(Resource):
         self.log.info(Logs.fileline() + ' : ResulttypeProd id_type_prod' + str(id_type_prod))
         return compose_ret(type_prod, Constants.cst_content_type_json, 200)
 """
+
+class ResultCreate(Resource):
+    log = logging.getLogger('log_services')
+
+    """
+    def get(self, id_rec, bio_prod='O'):
+        l_res = Result.getResultCreate(id_rec, bio_prod)
+
+        if not l_res:
+            self.log.error(Logs.fileline() + ' : ' + 'ResultCreate ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for analysis in l_res:
+            # Replace None by empty string
+            for key, value in analysis.items():
+                if analysis[key] is None:
+                    analysis[key] = ''
+
+            analysis['prix'] = float(analysis['prix'])
+
+        self.log.info(Logs.fileline() + ' : ResultCreate id_rec=' + str(id_rec))
+        return compose_ret(l_res, Constants.cst_content_type_json, 200)"""
+
+    def post(self, id_rec):
+        args = request.get_json()
+
+        if 'id_owner' not in args or 'user_role' not in args:
+            self.log.error(Logs.fileline() + ' : ResultCreate ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        if args['user_role'] == 'secretaire':
+            type_validation = 250
+        elif args['user_role'] == 'technicien':
+            type_validation = 251
+        elif args['user_role'] == 'biologiste':
+            type_validation = 252
+        else:
+            type_validation = 250
+
+        # get list of all analysis (even samples)
+        l_ana = Analysis.getAnalysisReq(id_rec, 'A') 
+
+        if not l_ana:
+            self.log.error(Logs.fileline() + ' : ' + 'ResultCreate ERROR l_ana not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Loop on list_ana
+        for ana in l_ana:
+
+            ref = Analysis.getRefVariable(ana['id_data'])
+
+            if ref and ref['id_refvariable']:
+                ret = Result.insertResult(id_owner=args['id_owner'],
+                                          id_analyse=ref['id_refanalyse'],
+                                          ref_variable=ref['id_refvariable'],
+                                          obligatoire=ref['obligatoire'])
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert result')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                res = {}
+                res['id_res'] = ret
+
+                # Get id_group of lab with id_group of user
+                id_group_lab = User.getUserGroupParent(args['id_owner'])
+
+                if not id_group_lab:
+                    self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                # insert sigl_09_data_group
+                ret = Result.insertResultGroup(id_data=res['id_res'],
+                                               id_group=id_group_lab['id_group_parent'])
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                # insert corresponding validation
+                ret = Result.insertValidation(id_owner=args['id_owner'],
+                                              id_resultat=res['id_res'],
+                                              utilisateur=args['id_owner'],
+                                              type_validation=type_validation)
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert validation')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                res = {}
+                res['id_valid'] = ret
+
+                # Get id_group of lab with id_group of user
+                id_group_lab = User.getUserGroupParent(args['id_owner'])
+
+                if not id_group_lab:
+                    self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                # insert sigl_10_data_group
+                ret = Result.insertValidationGroup(id_data=res['id_valid'],
+                                                   id_group=id_group_lab['id_group_parent'])
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group validation')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ResultCreate')
+        return compose_ret('', Constants.cst_content_type_json)

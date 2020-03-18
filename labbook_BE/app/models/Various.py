@@ -3,6 +3,7 @@
 import logging
 
 from app.models.DB import DB
+# from app.models.Logs import Logs
 
 
 class Various:
@@ -29,5 +30,17 @@ class Various:
               'where identifiant = %s'
 
         cursor.execute(req, (name,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getLastNumDos():
+        cursor = DB.cursor()
+
+        req = 'select num_dos_jour, num_dos_an, num_dos_mois '\
+              'from sigl_02_data '\
+              'order by id_data desc limit 1'
+
+        cursor.execute(req)
 
         return cursor.fetchone()

@@ -221,7 +221,7 @@ var p_step       = 20 ;
 var p_cur        = 1 ;
 var p_max        = Math.ceil( {{ args|length }} / p_step ) ;
 
-function status( id_stat )
+function stat( id_stat )
 {
 let res = '' ;
 
@@ -235,6 +235,16 @@ let res = '' ;
     res = '<span class="icon status-t">I</span>' ;
     else if ( id_stat == 256 )
     res = '<span class="icon status-b">B</span>' ;
+
+return res ;
+}
+
+function emer( flag_emer )
+{
+let res = '' ;
+
+    if ( flag_emer == "O" )
+    res = '<span class="icon urgent">&nbsp;</span>' ;
 
 return res ;
 }
@@ -302,6 +312,7 @@ res = '<tr class="yui-dt-first yui-dt-last">' +
 {% else %}
 let i_start = (p_cur -1) * p_step ;
 let i_stop  = Math.min( data_records.length, p_cur * p_step ) ;
+let tr_class= '' ;
 
 for( i = i_start; i < i_stop; i++ )
 {
@@ -310,12 +321,17 @@ let menu_act = '<ul class="nav navbar-nav">' +
                '<ul class="dropdown-menu menu-act-drop">' +
                '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/N/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
                '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/">Saisie de résultats</a></li>' +
-               '<li><a class="menu-act-item" onclick="">Supprimer</a></li></ul></ul>' ;
+               '<li><a class="menu-act-item" onclick="">Supprimer</a></li></ul></ul>' ; // TODO function delete record and analysis + samples + products requested ... ?
 
-res += '<tr><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
+    if ( data_records[i].urgent == "O" )
+    tr_style = 'style="background-color:#FFD5D6;"' ;
+    else
+    tr_style = '' ;
+
+res += '<tr ' + tr_style + '><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
        '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;">' + status( data_records[i].stat ) + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;"><span class="icon">' + data_records[i].urgent + '</span></div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;">' + stat( data_records[i].stat ) + '</div></td>' +
+       '<td><div class="yui-dt-liner string" style="text-align:center;">' + emer( data_records[i].urgent ) + '</div></td>' +
        '<td><div class="yui-dt-liner integer" style="text-align:center;"><span class="num-dos">' + data_records[i].num_dos + '</span></div></td>' +
        '<td><div class="yui-dt-liner date" style="text-align:center;">' + data_records[i].date_dos + '</div></td>' +
        '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].code + '</div></td>' +
