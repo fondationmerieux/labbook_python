@@ -192,8 +192,12 @@ class ProductReq(Resource):
                 if prod[key] is None:
                     prod[key] = ''
 
-            prod['date_prel']      = datetime.strftime(prod['date_prel'], '%Y-%m-%d')
-            prod['date_reception'] = datetime.strftime(prod['date_reception'], '%Y-%m-%d')
+            if prod['date_prel']:
+                prod['date_prel'] = datetime.strftime(prod['date_prel'], '%Y-%m-%d')
+
+            if prod['date_reception']
+                prod['date_reception'] = datetime.strftime(prod['date_reception'], '%Y-%m-%d')
+
             # TODO format time heure_reception ?
             prod['heure_reception']= ''
 
@@ -217,8 +221,11 @@ class ProductReq(Resource):
                 self.log.error(Logs.fileline() + ' : ProductReq ERROR prod missing')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
-            prod['date_samp']    = datetime.strptime(prod['date_samp'], Constants.cst_isodate)
-            prod['date_receipt'] = datetime.strptime(prod['date_receipt'], Constants.cst_isodate)
+            if prod['date_samp']:
+                prod['date_samp'] = datetime.strptime(prod['date_samp'], Constants.cst_isodate)
+
+            if prod['date_receipt']:
+                prod['date_receipt'] = datetime.strptime(prod['date_receipt'], Constants.cst_isodate)
 
             ret = Product.insertProductReq(id_owner=prod['id_owner'],
                                            date_prel=prod['date_samp'],

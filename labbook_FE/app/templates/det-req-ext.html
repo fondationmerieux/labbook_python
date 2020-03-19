@@ -672,11 +672,9 @@ let data_exist = false ;
                 load_analysis( tmp_struct_ana, 1) ;
                 refresh_bill() ;
 
-                    // id_samp greater than 0 then GET det sample linked to analysis
+                    // GET det sample linked to analysis
                     if ( data_ana.produit_biologique > 0 )
                     {
-                    let id_type_prod = data_ana.type_prel ;
-
                     // check if this analysis is not already used
                     if (!$.isEmptyObject(data_samples) )
                     $.map(data_samples,function(val,key) { if ( val.id_data == data_ana.produit_biologique ) { data_exist = true; } } ) ;
@@ -709,7 +707,22 @@ let data_exist = false ;
                                     // TODO display error
                                     }
                             } ) ;
+                        }
+                    }
 
+                    data_exist = false ;
+
+                    // GET det product linked to analysis
+                    if ( data_ana.type_prel > 0 )
+                    {
+                    let id_type_prod = data_ana.type_prel ;
+
+                    // check if this analysis is not already used
+                    if (!$.isEmptyObject(data_products) )
+                    $.map(data_products,function(val,key) { if ( val.type == data_ana.type_prel ) { data_exist = true; } } ) ;
+
+                        if (!data_exist)
+                        {
                             // GET type product
                             $.ajax( {
                                 type: "GET",
@@ -743,8 +756,6 @@ let data_exist = false ;
                 }
         } ) ;
     }
-
-// tmp_search = $.map(tmp_data,function(val,key) { if(val.id_data == id_item) { return val ; } } ) ;
 } ) ;
 {% endif %}
 
@@ -1174,8 +1185,17 @@ var receipt_num   = $("#receipt_num").val() ;
 var bill_num      = "" ;
 var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
 
-    if (parcel == "undefined")
+    if (id_med == null)
+    id_med = 0 ;
+
+    if (parcel == null)
     parcel = 5 ;
+
+    if (per_discount == "")
+    per_discount = 0 ;
+
+    if (per_insurance == "")
+    per_insurance = 0 ;
 
     // date_record required
     if (date_record == "")

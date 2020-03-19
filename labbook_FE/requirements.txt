@@ -1,3 +1,4 @@
+aniso8601==8.0.0
 Babel==2.7.0
 certifi==2019.9.11
 chardet==3.0.4
@@ -12,6 +13,6 @@ MarkupSafe==1.1.1
 pip==20.0.2
 pytz==2019.3
 requests==2.22.0
-setuptools==1.25.7
-urllib3==1.25.7
+setuptools==40.6.2
+six==1.13.0
 Werkzeug==0.16.0

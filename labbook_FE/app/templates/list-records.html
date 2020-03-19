@@ -177,24 +177,6 @@
                                         </thead>
                                         <tbody id="tbody_records" class="yui-dt-message" style=""></tbody>
                                     </table>
-                                    <div id="listing_dos_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
-                                        <div class="bd">
-                                            <ul class="first-of-type">
-                                                <li class="yuimenuitem first-of-type" id="yui-gen12" groupindex="0" index="0">
-                                                    <a href="#" class="yuimenuitemlabel">Dossier administratif</a>
-                                                </li>
-                                                <li class="yuimenuitem" id="yui-gen13" groupindex="0" index="1">
-                                                    <a href="#" class="yuimenuitemlabel">Saisie des résultats</a>
-                                                </li>
-                                                <li class="yuimenuitem yuimenuitem-disabled" id="yui-gen14" groupindex="0" index="2">
-                                                    <a href="#" class="yuimenuitemlabel yuimenuitemlabel-disabled"><hr></a>
-                                                </li>
-                                                <li class="yuimenuitem" id="yui-gen15" groupindex="0" index="3">
-                                                    <a href="#" class="yuimenuitemlabel">Supprimer</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                     <div id="yui-dt0-paginator1" class="yui-dt-paginator yui-pg-container" style="">
                                         <span id="yui-pg0-1-first-span33" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">Premier</a></span>
                                         <span id="yui-pg0-1-prev-span35" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">Précédent</a></span>
@@ -303,7 +285,7 @@ let res = ''
     else
     return false;
 
-$("#tbody_records").empty() ;
+    $("#tbody_records").empty() ;
 
 {% if not args %}
 res = '<tr class="yui-dt-first yui-dt-last">' +
@@ -314,35 +296,35 @@ let i_start = (p_cur -1) * p_step ;
 let i_stop  = Math.min( data_records.length, p_cur * p_step ) ;
 let tr_class= '' ;
 
-for( i = i_start; i < i_stop; i++ )
-{
-let menu_act = '<ul class="nav navbar-nav">' +
-               '<li class="dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">Action</a>' +
-               '<ul class="dropdown-menu menu-act-drop">' +
-               '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/N/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
-               '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/">Saisie de résultats</a></li>' +
-               '<li><a class="menu-act-item" onclick="">Supprimer</a></li></ul></ul>' ; // TODO function delete record and analysis + samples + products requested ... ?
+    for( i = i_start; i < i_stop; i++ )
+    {
+    let menu_act = '<ul class="nav navbar-nav">' +
+                   '<li class="dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">Action</a>' +
+                   '<ul class="dropdown-menu menu-act-drop">' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/N/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/">Saisie de résultats</a></li>' +
+                   '<li><a class="menu-act-item" onclick="">Supprimer</a></li></ul></ul>' ; // TODO function delete record and analysis + samples + products requested ... ?
 
-    if ( data_records[i].urgent == "O" )
-    tr_style = 'style="background-color:#FFD5D6;"' ;
-    else
-    tr_style = '' ;
+        if ( data_records[i].urgent == "O" )
+        tr_style = 'style="background-color:#FFD5D6;"' ;
+        else
+        tr_style = '' ;
 
-res += '<tr ' + tr_style + '><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
-       '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;">' + stat( data_records[i].stat ) + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;">' + emer( data_records[i].urgent ) + '</div></td>' +
-       '<td><div class="yui-dt-liner integer" style="text-align:center;"><span class="num-dos">' + data_records[i].num_dos + '</span></div></td>' +
-       '<td><div class="yui-dt-liner date" style="text-align:center;">' + data_records[i].date_dos + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].code + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].nom + '</div></td>' +
-       '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].prenom + '</div></td></tr>' ;
-}
+    res += '<tr ' + tr_style + '><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
+           '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' +
+           '<td><div class="yui-dt-liner string" style="text-align:center;">' + stat( data_records[i].stat ) + '</div></td>' +
+           '<td><div class="yui-dt-liner string" style="text-align:center;">' + emer( data_records[i].urgent ) + '</div></td>' +
+           '<td><div class="yui-dt-liner integer" style="text-align:center;"><span class="num-dos">' + data_records[i].num_dos + '</span></div></td>' +
+           '<td><div class="yui-dt-liner date" style="text-align:center;">' + data_records[i].date_dos + '</div></td>' +
+           '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].code + '</div></td>' +
+           '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].nom + '</div></td>' +
+           '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].prenom + '</div></td></tr>' ;
+    }
 {% endif %}
 
-$("#tbody_records").append(res) ;
-$("#num_page_t").text( p_cur ) ;
-$("#num_page_b").text( p_cur ) ;
+    $("#tbody_records").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
 }
 
 $( document ).ready( function()

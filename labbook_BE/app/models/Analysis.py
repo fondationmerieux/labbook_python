@@ -45,44 +45,6 @@ class Analysis:
 
         return cursor.fetchone()
 
-    """
-    @staticmethod
-    def insertAnalysis(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_03_data '
-                           '(id_owner, anonyme, code, code_analysis, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, '
-                           'tel, profession, nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite) '
-                           'values '
-                           '(%(id_owner)s, %(anonyme)s, %(code)s, %(code_analysis)s, %(nom)s, %(prenom)s, %(ddn)s, %(sexe)s, %(ethnie)s, %(adresse)s, %(cp)s, %(ville)s, '
-                           '%(tel)s, %(profession)s, %(nom_jf)s, %(quartier)s, %(bp)s, %(ddn_approx)s, %(age)s, %(annee_naiss)s, '
-                           '%(semaine_naiss)s, %(mois_naiss)s, %(unite)s )', params)
-
-            Analysis.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Analysis.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
-            return 0
-
-    @staticmethod
-    def insertAnalysisGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_03_data_group '\
-                           '(id_data, id_group) '\
-                           'values '\
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Analysis.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Analysis.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
-            return 0"""
-
     @staticmethod
     def getProductType(id_data):
         cursor = DB.cursor()
@@ -96,13 +58,13 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
-    def getAnalysisReq(id_rec, bio_prod):
+    def getAnalysisReq(id_rec, type_ana):
         cursor = DB.cursor()
 
-        if bio_prod == 'O':
-            cond = ' and ref_ana.produit_biologique is not NULL'
-        elif bio_prod == 'N':
-            cond = ' and ref_ana.produit_biologique IS NULL'
+        if type_ana == 'O':
+            cond = ' and (cote_unite is NULL or cote_unite != "PB")'
+        elif type_ana == 'N':
+            cond = ' and cote_unite="PB"'
         else:
             cond = ''
 

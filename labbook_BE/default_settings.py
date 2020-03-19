@@ -10,4 +10,4 @@ DB_TYPE = 'MYSQL'  # MYSQL or IFX
 DB_USER = 'root'
 DB_PWD  = 'root'
 DB_NAME = 'SIGL'
-DB_HOST = 'localhost'
+DB_HOST = '10.88.0.1'

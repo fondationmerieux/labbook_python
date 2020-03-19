@@ -469,7 +469,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load list analysis requested
         try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/bio/O'
+            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/O'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -480,7 +480,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load list samples requested
         try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/bio/N'
+            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/N'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -536,7 +536,7 @@ def det_req_int(entry='Y', ref=0):
     json_data = {}
 
     if entry == "Y":
-        # ref = id_pat
+        # here : ref = id_pat
         # Load data patient
         if ref > 0:
             try:
@@ -615,14 +615,14 @@ def det_req_int(entry='Y', ref=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests billing_pat failed, err=%s , url=%s', err, url)
 
-        # add empty structure for post data_save after save_request
+        # add empty structure
         json_data['data_analysis'] = []
         json_data['data_samples']  = []
         json_data['data_products'] = []
         json_data['record']        = []
 
     else:
-        # ref = id_rec
+        # here : ref = id_rec
         # Load save record
         try:
             url = session['server_int'] + '/services/record/det/' + str(ref)
@@ -660,7 +660,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load list analysis requested
         try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/bio/O'
+            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/O'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -671,7 +671,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load list samples requested
         try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/bio/N'
+            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/N'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -724,6 +724,10 @@ def administrative_record( entry='Y', id_rec=0):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
 
     json_data = {}
+    json_data['data_analysis'] = []
+    json_data['data_samples']  = []
+    json_data['data_products'] = []
+    json_data['record']        = []
 
     # Load save record
     try:
@@ -762,7 +766,7 @@ def administrative_record( entry='Y', id_rec=0):
 
     # Load list analysis requested
     try:
-        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/bio/O'
+        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/type/O'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -773,7 +777,7 @@ def administrative_record( entry='Y', id_rec=0):
 
     # Load list samples requested
     try:
-        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/bio/N'
+        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/type/N'
         req = requests.get(url)
 
         if req.status_code == 200:

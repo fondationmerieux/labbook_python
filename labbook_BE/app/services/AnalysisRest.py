@@ -180,8 +180,8 @@ class AnalysisTypeProd(Resource):
 class AnalysisReq(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_rec, bio_prod='A'):
-        l_ana = Analysis.getAnalysisReq(id_rec, bio_prod)
+    def get(self, id_rec, type_ana='A'):
+        l_ana = Analysis.getAnalysisReq(id_rec, type_ana)
 
         if not l_ana:
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisReq ERROR not found')
@@ -193,7 +193,8 @@ class AnalysisReq(Resource):
                 if analysis[key] is None:
                     analysis[key] = ''
 
-            analysis['prix'] = float(analysis['prix'])
+            if analysis['prix'] != '':
+                analysis['prix'] = float(analysis['prix'])
 
         self.log.info(Logs.fileline() + ' : AnalysisReq id_rec=' + str(id_rec))
         return compose_ret(l_ana, Constants.cst_content_type_json, 200)

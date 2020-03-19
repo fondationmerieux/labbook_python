@@ -115,6 +115,8 @@
                                 <div class="form-group" id="prat-search">
                                     <div class="statictext control-label col-xs-3">
                                         <span>Praticien</span>
+                                    </div>
+                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
                                         <span>
                                         {% if args['doctor'] %}
                                             {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}{% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}

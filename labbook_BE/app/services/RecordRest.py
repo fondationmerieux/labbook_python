@@ -54,20 +54,22 @@ class RecordDet(Resource):
         if record['date_reception_colis']:
             record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')
 
-        # decimal number not serializable in JSON
-        if record['prix']:
+        # decimal number not serializable in JSON, convert except if empty string
+        if record['prix'] != '':
             record['prix'] = float(record['prix'])
 
-        if record['remise_pourcent']:
+        if record['remise_pourcent'] != '':
             record['remise_pourcent'] = float(record['remise_pourcent'])
 
-        if record['assu_pourcent']:
+        if record['assu_pourcent'] != '':
             record['assu_pourcent'] = float(record['assu_pourcent'])
 
-        if record['a_payer']:
+        if record['a_payer'] != '':
             record['a_payer'] = float(record['a_payer'])
 
         record['num_dos'] = int(record['num_dos_jour'][8:])
+
+        self.log.info(Logs.fileline() + ' : DEBUG RecordDet record=' + str(record))
 
         self.log.info(Logs.fileline() + ' : RecordDet id_rec=' + str(id_rec))
         return compose_ret(record, Constants.cst_content_type_json, 200)
@@ -132,8 +134,8 @@ class RecordDet(Resource):
             args['date_record'] = datetime.strptime(args['date_record'], Constants.cst_isodate)
             args['date_prescr'] = datetime.strptime(args['date_prescr'], Constants.cst_isodate)
 
-            # DEBUG if empty ???
-            args['date_parcel'] = datetime.strptime(args['date_parcel'], Constants.cst_isodate)
+            if args['date_parcel']:
+                args['date_parcel'] = datetime.strptime(args['date_parcel'], Constants.cst_isodate)
 
             # Increases num_dos_jour, num_dos_an and num_dos_mois
             # num_dos_jour = yyyymmddXXXX +1 if same day
@@ -143,8 +145,12 @@ class RecordDet(Resource):
             num_dos = Various.getLastNumDos()
 
             if not num_dos:
-                self.log.error(Logs.fileline() + ' : RecordDet ERROR num_dos not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
+                self.log.error(Logs.fileline() + ' : RecordDet num_dos not found, first num_dos')
+                date_now = datetime.now().strftime("%Y%m%d")
+                num_dos = {}
+                num_dos['num_dos_jour'] = date_now + '0000'
+                num_dos['num_dos_mois'] = date_now[:6] + '0000'
+                num_dos['num_dos_an']   = date_now[:4] + '000000'
 
             num_dos_jour = num_dos['num_dos_jour']
             num_dos_mois = num_dos['num_dos_mois']
@@ -158,7 +164,8 @@ class RecordDet(Resource):
             if num_dos_jour[:8] != date_now:
                 num_dos_jour = date_record + '0001'
             else:
-                num_jour  = int(num_dos_jour[8:])
+                num_jour  = num_dos_jour[8:]
+                num_jour  = int(num_jour)
                 num_jour += 1
                 num_jour  = str(num_jour).rjust(4, '0')
 
@@ -168,7 +175,8 @@ class RecordDet(Resource):
             if num_dos_mois[:6] != date_now[:6]:
                 num_dos_mois = date_record[:6] + '0001'
             else:
-                num_mois  = int(num_dos_mois[8:])
+                num_mois  = num_dos_mois[6:]
+                num_mois  = int(num_mois)
                 num_mois += 1
                 num_mois  = str(num_mois).rjust(4, '0')
 
@@ -178,7 +186,8 @@ class RecordDet(Resource):
             if num_dos_an[:4] != date_now[:4]:
                 num_dos_an = date_record[:4] + '000001'
             else:
-                num_an  = int(num_dos_an[8:])
+                num_an  = num_dos_an[4:]
+                num_an  = int(num_an)
                 num_an += 1
                 num_an  = str(num_an).rjust(6, '0')
 

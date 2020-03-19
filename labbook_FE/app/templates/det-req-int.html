@@ -215,13 +215,13 @@
                                                     <span data-field="service_interne">Service demandeur</span>
                                                 </label>
                                                 <div class="field col-lg-6">
-                                                    <input type="text" value="" maxlength="50" class="form-control" style="" null="">
+                                                    <input id="service_int" type="text" value="" maxlength="50" class="form-control" style="" null="">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-lg-6" style=""><span data-field="num_lit">Numéro de lit</span></label>
                                                 <div class="field col-lg-6">
-                                                    <input type="text" value="" maxlength="4" class="form-control" style="width: 64px;" min="0" max="9999">
+                                                    <input id="bed_num" type="number" value="" maxlength="4" class="form-control" style="width: 64px;" min="0" max="9999">
                                                 </div>
                                             </div>
                                         </div>
@@ -1196,11 +1196,25 @@ var per_discount  = $("#per_discount").val() ;
 var per_insurance = $("#per_insurance").val() ;
 var bill_remain   = $("#bill_remain").val() ;
 var receipt_num   = $("#receipt_num").val() ;
+var service_int   = $("#service_int").val() ;
+var bed_num       = $("#bed_num").val() ;
 var bill_num      = "" ;
 var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
 
-    if (parcel == "undefined")
+    if (id_med == null)
+    id_med = 0 ;
+
+    if (parcel == null)
     parcel = 5 ;
+
+    if (per_discount == "")
+    per_discount = 0 ;
+
+    if (per_insurance == "")
+    per_insurance = 0 ;
+
+    if (bed_num == "")
+    bed_num = 0 ;
 
     // date_record required
     if (date_record == "")
@@ -1233,8 +1247,8 @@ var param = '{ "id_owner":' + id_group + ', ' +
               '"bill_remain":' + bill_remain + ', ' +
               '"receipt_num":"' + receipt_num + '", ' +
               '"bill_num":"' + bill_num + '", ' +
-              '"service_int":"", ' +
-              '"bed_num":0, ' +
+              '"service_int":"' + service_int + '", ' +
+              '"bed_num":' + bed_num + ', ' +
               '"stat":' + stat + '}' ;
 
     // Send record information
