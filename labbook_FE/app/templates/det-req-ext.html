@@ -704,7 +704,7 @@ let data_exist = false ;
                                 error: function(data_samp)
                                     {
                                     console.log("ERROR GET det sample");
-                                    // TODO display error
+                                    alert("Erreur lors la récupération des prélèvements") ;
                                     }
                             } ) ;
                         }
@@ -743,7 +743,7 @@ let data_exist = false ;
                                 error: function(data_prod)
                                     {
                                     console.log("ERROR GET type product");
-                                    // TODO display error
+                                    alert("Erreur lors la récupération des produits pathologiques") ;
                                     }
                             } ) ;
                         }
@@ -752,7 +752,7 @@ let data_exist = false ;
             error: function(data_ana)
                 {
                 console.log("ERROR GET det analysis");
-                // TODO display error
+                alert("Erreur lors la récupération des analyses") ;
                 }
         } ) ;
     }
