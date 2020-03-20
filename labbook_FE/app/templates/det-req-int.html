@@ -730,8 +730,8 @@ let data_exist = false ;
                                     },
                                 error: function(data_samp)
                                     {
-                                    console.log("ERROR GET det sample");
-                                    // TODO display error
+                                    console.log("ERROR GET det sample") ;
+                                    alert("Erreur lors la récupération des prélèvements") ;
                                     }
                             } ) ;
 
@@ -754,8 +754,8 @@ let data_exist = false ;
                                     },
                                 error: function(data_prod)
                                     {
-                                    console.log("ERROR GET type product");
-                                    // TODO display error
+                                    console.log("ERROR GET type product") ;
+                                    alert("Erreur lors la récupération des produits pathologiques") ;
                                     }
                             } ) ;
                         }
@@ -764,7 +764,7 @@ let data_exist = false ;
             error: function(data_ana)
                 {
                 console.log("ERROR GET det analysis");
-                // TODO display error
+                alert("Erreur lors la récupération des analyses") ;
                 }
         } ) ;
     }
@@ -1350,21 +1350,21 @@ var param = '{ "id_owner":' + id_group + ', ' +
                         },
                         error: function(data_ana)
                         {
-                        console.log("ERREUR") ;
+                        console.log("ERROR product list req") ;
                         alert("Une erreur est survenue lors de l'enregistrement des prelevements") ;
                         } 
                     } ) ;
                 },
                 error: function(data_ana)
                 {
-                console.log("ERREUR") ;
+                console.log("ERROR analysis list req") ;
                 alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
                 } 
             } ) ;
         },
         error: function(data_rec)
         {
-        console.log("ERREUR") ;
+        console.log("ERROR record det") ;
         alert("Une erreur est survenue lors de l'enregistrement du dossier") ;
         }
     } ) ;
@@ -1401,8 +1401,18 @@ let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}
                 success : function(response)
                 {
                 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/Y/" + {{ args['record']['id_data'] }} ;
+                },
+                error: function(response)
+                {
+                console.log("ERROR record stat") ;
+                alert("Une erreur est survenue du changement de statut du dossier") ;
                 }
             } ) ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR result create") ;
+        alert("Une erreur est survenue lors de création des résultats") ;
         }
     } ) ;
 }
