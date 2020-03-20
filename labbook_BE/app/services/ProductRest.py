@@ -195,7 +195,7 @@ class ProductReq(Resource):
             if prod['date_prel']:
                 prod['date_prel'] = datetime.strftime(prod['date_prel'], '%Y-%m-%d')
 
-            if prod['date_reception']
+            if prod['date_reception']:
                 prod['date_reception'] = datetime.strftime(prod['date_reception'], '%Y-%m-%d')
 
             # TODO format time heure_reception ?
