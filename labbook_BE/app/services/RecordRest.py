@@ -262,22 +262,27 @@ class RecordStat(Resource):
         self.log.info(Logs.fileline() + ' : TRACE RecordStat')
         return compose_ret('', Constants.cst_content_type_json)
 
-"""
-class RecordTypeProd(Resource):
+
+class RecordTypeNumber(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_type_prod):
-        type_prod = Record.getProductType(id_type_prod)
+    def get(self):
+        param = Record.getRecordTypeNumber()
 
-        if not type_prod:
-            self.log.error(Logs.fileline() + ' : ' + 'RecordTypeProd ERROR not found')
+        if not param:
+            self.log.error(Logs.fileline() + ' : ERROR RecordTypeNumber not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in type_prod.items():
-            if type_prod[key] is None:
-                type_prod[key] = ''
+        for key, value in param.items():
+            if param[key] is None:
+                param[key] = ''
 
-        self.log.info(Logs.fileline() + ' : RecordtypeProd id_type_prod' + str(id_type_prod))
-        return compose_ret(type_prod, Constants.cst_content_type_json, 200)
-"""
+        if param['sys_creation_date']:
+            param['sys_creation_date'] = datetime.strftime(param['sys_creation_date'], '%Y-%m-%d %H:%M:%S')
+
+        if param['sys_last_mod_date']:
+            param['sys_last_mod_date'] = datetime.strftime(param['sys_last_mod_date'], '%Y-%m-%d %H:%M:%S')
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordTypeNumber')
+        return compose_ret(param, Constants.cst_content_type_json)

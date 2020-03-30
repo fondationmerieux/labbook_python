@@ -32,7 +32,7 @@
                                         <input id="code_patient" type="text" value="{{ args['code_patient'] }}" maxlength="8" class="form-control" style="width:96px;" null="">
                                     </div>
                                     <div class="form-control-static field readonly-field text_right col-lg-1" id="anon-code-ro" style="">
-                                        <span>{{ args['code'] }}</span>
+                                        <span id="code">{{ args['code'] }}</span>
                                     </div>
                                 </div>
                                 <div class="canvas">
@@ -268,7 +268,7 @@ function save_pat()
 {
 var id_owner      = {{ session['user_id_group']|safe}} ;
 var anonyme       = $("input:radio[name=anonyme]:checked").val() ;
-var code          = "" ; // TODO how generate code ?
+var code          = $("#code").text() ;
 var code_patient  = $("#code_patient").val() ;
 var nom           = $("#nom").val() ;
 var prenom        = $("#prenom").val() ;

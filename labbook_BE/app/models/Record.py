@@ -151,15 +151,14 @@ class Record:
             Record.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
             return False
 
-"""
     @staticmethod
-    def getProductType(id_data):
+    def getRecordTypeNumber():
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
-              'from sigl_dico_data '\
-              'where id_data=%s'
+        req = 'select id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, periode, format '\
+              'from sigl_param_num_dos_data '\
+              'order by id_data desc limit 1'
 
-        cursor.execute(req, (id_data,))
+        cursor.execute(req)
 
-        return cursor.fetchone()"""
+        return cursor.fetchone()

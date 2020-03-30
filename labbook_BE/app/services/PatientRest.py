@@ -28,6 +28,20 @@ class PatientSearch(Resource):
         return compose_ret(l_pats, Constants.cst_content_type_json)
 
 
+class PatientCode(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        code = Patient.newPatientCode()
+
+        if not code:
+            self.log.error(Logs.fileline() + ' : ERROR GeneratePatientCode not generate')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        self.log.info(Logs.fileline() + ' : TRACE GeneratePatientCode : ' + code)
+        return compose_ret(code, Constants.cst_content_type_json)
+
+
 class PatientDet(Resource):
     log = logging.getLogger('log_services')
 

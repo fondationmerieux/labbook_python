@@ -23,14 +23,19 @@ class Result:
 
         # NULL (5 sometimes) or 4 in base
         if args['emer_ana'] and args['emer_ana'] == 4:
-            filter_cond += ' and ana.urgent=4 and ref_var.type_resultat not in ("229", "265") '
+            filter_cond += ' and urgent=4 and ref_var.type_resultat not in ("229", "265") '
 
-        # TODO condition type_ana  ???
+        # Analysis family
+        if args['type_ana'] and args['type_ana'] > 0:
+            filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
+
         # TODO condition valid_res ???
 
-        # ref_ana, id_ana, id_dos, nom, famille, id_res, ref_var.*
+        # ref_ana, id_ana, id_dos, nom, famille, id_res, ref_var.*, num_dos_mois, date_prescr, urgent
         req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
-              'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.* '\
+              'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.*, '\
+              'dos.num_dos_mois as num_dos_mois, dos.date_prescription as date_prescr, '\
+              'dos.statut as stat, ana.urgent as urgent '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
@@ -45,19 +50,26 @@ class Result:
 
         return cursor.fetchall()
 
-    """
     @staticmethod
-    def getResult(id_ana):
+    def getResultRecord(id_rec):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, code, nom, abbr, famille, paillasse, cote_unite, cote_valeur, '\
-              'commentaire, produit_biologique, type_prel, type_analyse, actif '\
-              'from sigl_05_data '\
-              'where id_data=%s'
+        req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
+              'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.*, '\
+              'dos.num_dos_mois as num_dos_mois, dos.date_prescription as date_prescr, '\
+              'dos.statut as stat, ana.urgent as urgent, dos.id_patient as id_pat '\
+              'from sigl_04_data as ana '\
+              'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
+              'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
+              'left join sigl_dico_data as fam on fam.id_data = ref.famille '\
+              'inner join sigl_09_data as res on ana.id_data = res.id_analyse '\
+              'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
+              'where id_dos=%s '\
+              'order by nom asc'
 
-        cursor.execute(req, (id_ana,))
+        cursor.execute(req, (id_rec,))
 
-        return cursor.fetchone()"""
+        return cursor.fetchall()
 
     @staticmethod
     def insertResult(**params):
@@ -81,9 +93,9 @@ class Result:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_09_data_group '\
-                           '(id_data, id_group) '\
-                           'values '\
+            cursor.execute('insert into sigl_09_data_group '
+                           '(id_data, id_group) '
+                           'values '
                            '(%(id_data)s, %(id_group)s )', params)
 
             Result.log.info(Logs.fileline())
@@ -115,9 +127,9 @@ class Result:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_10_data_group '\
-                           '(id_data, id_group) '\
-                           'values '\
+            cursor.execute('insert into sigl_10_data_group '
+                           '(id_data, id_group) '
+                           'values '
                            '(%(id_data)s, %(id_group)s )', params)
 
             Result.log.info(Logs.fileline())
@@ -126,16 +138,3 @@ class Result:
         except mysql.connector.Error as e:
             Result.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
             return 0
-
-    """
-    @staticmethod
-    def getProductType(id_data):
-        cursor = DB.cursor()
-
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
-              'from sigl_dico_data '\
-              'where id_data=%s'
-
-        cursor.execute(req, (id_data,))
-
-        return cursor.fetchone()"""

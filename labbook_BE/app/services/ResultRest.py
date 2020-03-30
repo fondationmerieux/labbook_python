@@ -7,6 +7,7 @@ from flask_restful import Resource
 
 from app.models.General import compose_ret
 from app.models.Constants import *
+from app.models.Various import *
 from app.models.Result import *
 from app.models.Analysis import *
 from app.models.User import *
@@ -33,6 +34,35 @@ class ResultList(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ResultList not found')
 
         for result in l_results:
+            if result['date_prescr']:
+                result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
+
+            # Get result answer
+            type_res             = ''
+            result['unit']       = ''
+            result['res_answer'] = []
+
+            # get unit label
+            if result['unite']:
+                unit = Various.getDicoById(result['unite'])
+
+                # get short_label (without prefix "dico_") in type_res
+                if unit and unit['label']:
+                    result['unit'] = unit['label']
+
+            if result['type_resultat']:
+                type_res = Various.getDicoById(result['type_resultat'])
+
+                # get short_label (without prefix "dico_") in type_res
+                if type_res and type_res['short_label'].startswith("dico_"):
+                        type_res = type_res['short_label'][5:]
+                else:
+                    type_res = ''
+
+            # init list of answer
+            if type_res:
+                result['res_answer'] = Various.getDicoList(str(type_res))
+
             # Replace None by empty string
             for key, value in result.items():
                 if result[key] is None:
@@ -42,26 +72,29 @@ class ResultList(Resource):
         return compose_ret(l_results, Constants.cst_content_type_json)
 
 
-"""
-class ResultDet(Resource):
+class ResultRecord(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_ana):
-        Result = Result.getResult(id_ana)
+    def get(self, id_rec):
+        l_results = Result.getResultRecord(id_rec)
 
-        if not Result:
-            self.log.error(Logs.fileline() + ' : ' + 'ResultDet ERROR not found')
+        if not l_results:
+            self.log.error(Logs.fileline() + ' : ' + 'ResultRecord ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        # Replace None by empty string
-        for key, value in Result.items():
-            if Result[key] is None:
-                Result[key] = ''
+        for result in l_results:
+            # Replace None by empty string
+            for key, value in result.items():
+                if result[key] is None:
+                    result[key] = ''
 
-        self.log.info(Logs.fileline() + ' : ResultDet id_data=' + str(id_ana))
-        return compose_ret(Result, Constants.cst_content_type_json, 200)
+            if result['date_prescr']:
+                    result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
 
+        self.log.info(Logs.fileline() + ' : ResultRecord id_rec=' + str(id_rec))
+        return compose_ret(l_results, Constants.cst_content_type_json, 200)
 
+    """
     def post(self, id_pat=0):
         args = request.get_json()
 
@@ -191,6 +224,7 @@ class ResultTypeProd(Resource):
         return compose_ret(type_prod, Constants.cst_content_type_json, 200)
 """
 
+
 class ResultCreate(Resource):
     log = logging.getLogger('log_services')
 
@@ -230,7 +264,7 @@ class ResultCreate(Resource):
             type_validation = 250
 
         # get list of all analysis (even samples)
-        l_ana = Analysis.getAnalysisReq(id_rec, 'A') 
+        l_ana = Analysis.getAnalysisReq(id_rec, 'A')
 
         if not l_ana:
             self.log.error(Logs.fileline() + ' : ' + 'ResultCreate ERROR l_ana not found')

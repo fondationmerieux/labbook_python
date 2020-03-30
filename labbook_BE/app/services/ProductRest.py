@@ -199,7 +199,7 @@ class ProductReq(Resource):
                 prod['date_reception'] = datetime.strftime(prod['date_reception'], '%Y-%m-%d')
 
             # TODO format time heure_reception ?
-            prod['heure_reception']= ''
+            prod['heure_reception'] = ''
 
         self.log.info(Logs.fileline() + ' : ProductReq id_rec=' + str(id_rec))
         return compose_ret(l_prod, Constants.cst_content_type_json, 200)

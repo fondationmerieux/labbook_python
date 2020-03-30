@@ -76,3 +76,36 @@ class Patient:
         except mysql.connector.Error as e:
             Patient.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
             return 0
+
+    @staticmethod
+    def newPatientCode():
+        import random
+
+        # Format ABCD3, 4 letters + 1 digit
+
+        chars   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        numbers = "123456789"
+        length  = 4
+        ret     = 'START'
+
+        while ret:
+            code = ""
+
+            for i in range(length):
+                code += random.choice(chars)
+
+            for i in range(1):
+                code += random.choice(numbers)
+
+            # check if code not already exist in DB
+            cursor = DB.cursor()
+
+            req = 'select code '\
+                  'from sigl_03_data '\
+                  'where code=%s'
+
+            cursor.execute(req, (code,))
+
+            ret = cursor.fetchone()
+
+        return code

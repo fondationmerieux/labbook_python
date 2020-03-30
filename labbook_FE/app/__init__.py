@@ -19,7 +19,7 @@ import requests
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date
 
-from flask import Flask, render_template, request, session, json, redirect
+from flask import Flask, render_template, request, session, redirect
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -105,9 +105,13 @@ def get_init_var():
         session.modified = True
 
     # init external server
-    if not session or 'server_ext' not in session or session['server_ext'] != ('http://' + os.environ.get('SERVER_EXT')):
-        session['server_ext'] = 'http://' + os.environ.get('SERVER_EXT')
-        session.modified = True
+    if request.cookies and 'PHP_url_host' in request.cookies:
+        if not session or 'server_ext' not in session or session['server_ext'] != 'http://' + request.cookies.get('PHP_url_host'):
+            log.info(Logs.fileline() + ' : cookies PHP_url_host = ' + request.cookies.get('PHP_url_host'))
+            session['server_ext'] = 'http://' + request.cookies.get('PHP_url_host')
+            session.modified = True
+    else:
+        log.info(Logs.fileline() + ' : cookies PHP_url_host missing')
 
     # init internal url server
     if not session or 'redirect_name' not in session or session['redirect_name'] != app.config.get('REDIRECT_NAME'):
@@ -163,6 +167,24 @@ def get_user_data(login):
             session.modified = True
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
+        return False
+
+    return True
+
+
+def get_software_settings():
+    try:
+        url = session['server_ext'] + '/services/record/type/number'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json = req.json()
+
+            session['record_period'] = json['periode']
+            session['record_format'] = json['format']
+            session.modified = True
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests software settings failed, err=%s , url=%s', err, url)
         return False
 
     return True
@@ -224,6 +246,7 @@ def list_results():
 
     get_init_var()
     get_user_data(session['user_name'])
+    get_software_settings()
 
     json_ihm  = {}
     json_data = {}
@@ -245,12 +268,13 @@ def list_results():
         date_end = date_beg
 
         payload = {'date_beg': date_beg, 'date_end': date_end, 'emer_ana': 0}
+        # payload = {'date_beg': '2019-01-01', 'date_end': '2020-03-25', 'emer_ana': 0}  # TEST
 
         url = session['server_int'] + '/services/result/list'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
-            json_data = req.json()
+            json_data['list_res'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
@@ -259,13 +283,94 @@ def list_results():
 
 
 # Page : enter result
-@app.route('/enter-result/')
-def enter_result():
-    log.info(Logs.fileline())
+@app.route('/enter-result/<int:id_rec>')
+def enter_result(id_rec=0):
+    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
 
-    # TODO load from id_data
+    json_ihm  = {}
+    json_data = {}
 
-    return render_template('enter-result.html')
+    # Load list results
+    try:
+        url = session['server_int'] + '/services/result/record/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['list_res'] = req.json()
+
+            # Get result answer
+            if json_data['list_res']:
+                for res in json_data['list_res']:
+                    # load result types
+                    type_res = ''
+
+                    if res['type_resultat']:
+                        try:
+                            url = session['server_int'] + '/services/dico/id/' + str(res['type_resultat'])
+                            req = requests.get(url)
+
+                            if req.status_code == 200:
+                                type_res = req.json()
+
+                                # get short_label (without prefix "dico_") in type_res
+                                if type_res and type_res['short_label'].startswith("dico_"):
+                                        type_res = type_res['short_label'][5:]
+                                else:
+                                    type_res = ''
+
+                        except requests.exceptions.RequestException as err:
+                            log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+                    # get unit label
+                    try:
+                        url = session['server_int'] + '/services/dico/id/' + str(res['unite'])
+                        req = requests.get(url)
+
+                        res['unit'] = ''
+
+                        if req.status_code == 200:
+                            unit = req.json()
+
+                            # get short_label (without prefix "dico_") in type_res
+                            if unit and unit['label']:
+                                res['unit'] = unit['label']
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+                    # init list of answer
+                    res['res_answer'] = []
+                    # get anwser
+                    try:
+                        if type_res:
+                            url = session['server_int'] + '/services/dico/list/' + str(type_res)
+                            req = requests.get(url)
+
+                            if req.status_code == 200:
+                                res['res_answer'] = req.json()
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+
+    # Load data patient
+    id_pat = res['id_pat']
+
+    json_data['patient'] = {}
+    if id_pat > 0:
+        try:
+            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['patient'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+    return render_template('enter-result.html', ihm=json_ihm, args=json_data)
 
 
 # Page : List of records
@@ -275,6 +380,7 @@ def list_records():
 
     get_init_var()
     get_user_data(session['user_name'])
+    get_software_settings()
 
     json_data = {}
 
@@ -299,6 +405,7 @@ def new_req_ext():
 
     get_init_var()
     get_user_data(session['user_name'])
+    get_software_settings()
 
     return render_template('new-req-ext.html')
 
@@ -310,6 +417,7 @@ def new_req_int():
 
     get_init_var()
     get_user_data(session['user_name'])
+    get_software_settings()
 
     return render_template('new-req-int.html')
 
@@ -332,6 +440,17 @@ def det_patient(id_pat=0):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+    else:
+        # generate a code
+        try:
+            url = session['server_int'] + '/services/patient/generate/code'
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['code'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
 
     return render_template('det-patient.html', args=json_data)
 
@@ -499,8 +618,6 @@ def det_req_ext(entry='Y', ref=0):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests list prod failed, err=%s , url=%s', err, url)
-
-        #json_data = session['data_save']
 
         # Load prix_acte
         try:
@@ -691,8 +808,6 @@ def det_req_int(entry='Y', ref=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests list prod failed, err=%s , url=%s', err, url)
 
-        #json_data = session['data_save']
-
         # Load prix_acte
         try:
             url = session['server_int'] + '/services/default/val/prix_acte'
@@ -762,7 +877,7 @@ def administrative_record( entry='Y', id_rec=0):
                     log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)  
+        log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)
 
     # Load list analysis requested
     try:
