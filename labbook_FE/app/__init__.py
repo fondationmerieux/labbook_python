@@ -154,7 +154,7 @@ def get_user_data(login):
         return False
 
     try:
-        url = session['server_ext'] + '/services/user/login/' + login
+        url = session['server_int'] + '/services/user/login/' + login
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -174,7 +174,7 @@ def get_user_data(login):
 
 def get_software_settings():
     try:
-        url = session['server_ext'] + '/services/record/type/number'
+        url = session['server_int'] + '/services/record/type/number'
         req = requests.get(url)
 
         if req.status_code == 200:
