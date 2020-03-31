@@ -183,6 +183,8 @@ def get_software_settings():
             session['record_period'] = json['periode']
             session['record_format'] = json['format']
             session.modified = True
+            log.error(Logs.fileline() + ' : DEBUG period et format=' + str(json))
+
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests software settings failed, err=%s , url=%s', err, url)
         return False
@@ -267,7 +269,7 @@ def list_results():
         date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
         date_end = date_beg
 
-        payload = {'date_beg': date_beg, 'date_end': date_end, 'emer_ana': 0}
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'valid_res': 0 }
         # payload = {'date_beg': '2019-01-01', 'date_end': '2020-03-25', 'emer_ana': 0}  # TEST
 
         url = session['server_int'] + '/services/result/list'

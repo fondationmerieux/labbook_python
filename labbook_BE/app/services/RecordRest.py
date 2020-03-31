@@ -67,8 +67,6 @@ class RecordDet(Resource):
         if record['a_payer'] != '':
             record['a_payer'] = float(record['a_payer'])
 
-        record['num_dos'] = int(record['num_dos_jour'][8:])
-
         self.log.info(Logs.fileline() + ' : DEBUG RecordDet record=' + str(record))
 
         self.log.info(Logs.fileline() + ' : RecordDet id_rec=' + str(id_rec))

@@ -321,8 +321,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"mois_naiss":' + mois_naiss + ', ' +
               '"unite":' + unite + '}' ;
 
-console.log("param="+param) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/patient/det/0",
@@ -333,14 +331,12 @@ console.log("param="+param) ;
            {
            id_pat = data.id_pat ;
 
-           console.log("retour id_pat="+id_pat);
-
            window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/Y/" + id_pat ;
            },
        error: function(data)
            {
-           console.log("ERREUR") ;
-           alert("Une erreur est survenue") ;
+           console.log("ERROR POST patient det") ;
+           alert("Une erreur est survenue lors de la modification/ajout d'un patient") ;
            }
     } ) ;
 }
@@ -374,7 +370,6 @@ var diff = new Date(Date.parse(end) - Date.parse(start));
 
 // get days
 var days = diff/1000/60/60/24;
-console.log("DEBUG days = " + days) ;
 
     if (days > 730)
     {

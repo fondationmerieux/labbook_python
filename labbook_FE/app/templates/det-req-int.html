@@ -10,6 +10,7 @@
     <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
     <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
     <!--<script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>-->
+    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/js/labbook.js"></script>
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -24,7 +25,7 @@
                     <span>Dossier :</span>
                 </div>
                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
-                    <span>{% if entry == 'N' %}{{ args['record']['num_dos'] }}{% endif %}</span>
+                    <span id="num_rec"></span>
                 </div>
                 {% endif %}
                 <div class="canvas">
@@ -561,9 +562,9 @@
 var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0} ;
 var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0} ;
 var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
-var data_analysis = {{ args['data_analysis']|safe }} ;
-var data_samples  = {{ args['data_samples']|safe }}  ;
-var data_products = {{ args['data_products']|safe }} ;
+var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
+var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|safe }}{% else %}[]{% endif %}   ;
+var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
 var ind_products  = 0  ;
 var bill_price    = 0  ;
 var bill_remain   = {% if entry == 'Y' %}{{ args['billing_pat']['value'] }}{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
@@ -1427,6 +1428,16 @@ $( document ).ready( function()
 {
     {% if entry == 'Y' %}
     $("#date_record").val( "{{ now|date_now }}" ) ;
+    {% else %}
+        {% if session['record_period'] == 1070 %} // Month period
+        let num_dos = {{ args['record']['num_dos_mois'] }} ;
+        {% else %} // Annual period
+        let num_dos = {{ args['record']['num_dos_an'] }} ;
+        {% endif %}
+
+        num_dos = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+
+        $("#num_rec").text( num_dos ) ;
     {% endif %}
     load_data(1) ;
 } ) ;

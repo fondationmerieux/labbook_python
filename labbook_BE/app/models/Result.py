@@ -34,8 +34,8 @@ class Result:
         # ref_ana, id_ana, id_dos, nom, famille, id_res, ref_var.*, num_dos_mois, date_prescr, urgent
         req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
               'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.*, '\
-              'dos.num_dos_mois as num_dos_mois, dos.date_prescription as date_prescr, '\
-              'dos.statut as stat, ana.urgent as urgent '\
+              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, '\
+              'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
@@ -56,8 +56,8 @@ class Result:
 
         req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
               'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.*, '\
-              'dos.num_dos_mois as num_dos_mois, dos.date_prescription as date_prescr, '\
-              'dos.statut as stat, ana.urgent as urgent, dos.id_patient as id_pat '\
+              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, ana.urgent as urgent, '\
+              'dos.date_prescription as date_prescr, dos.statut as stat, dos.id_patient as id_pat '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\

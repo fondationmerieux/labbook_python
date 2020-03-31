@@ -6,6 +6,7 @@
     <title>Saisie de résultats</title>
     {% endblock %}
     <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/js/labbook.js"></script>
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -167,7 +168,7 @@
 
 {% block add_script %}
 <script>
-var data_results = {{ args['list_res']|safe }} ;
+var data_results = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
 var id_history   = 0 ;
 
 function filter_result()
@@ -198,8 +199,6 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
         data: param,
         success: function(data)
             {
-            console.log("DEBUG success post filter_result data="+JSON.stringify(data));
-
             data_results = data ;
 
             display_result( 1 ) ;
@@ -262,7 +261,7 @@ function display_result( num_page )
 gen_ihm_res( data_results ) ;
 
 // Fill result
-// $("#list_result_test").text( JSON.stringify(data_results) ) ;
+//$("#list_result_test").text( JSON.stringify(data_results) ) ;
 }
 
 function gen_ihm_res( data )
@@ -282,19 +281,8 @@ let id_res_p = 0  ;
         // close the form and table
         res += '</tbody></table></div></fieldset>' +
                '<div class="form-group button tech">' +
-                   '<button name="ok" id="save-538" type="button" value="Enregistrer" disabled="disabled" class="btn disabled btn-default">Enregistrer</button>' +
+                   '<button name="ok" type="button" value="Enregistrer" disabled="disabled" class="btn disabled btn-default">Enregistrer</button>' +
                '</div>' +
-               '<input type="hidden" name="date_begin" value="2020-01-19" id="date_begin_538">' +
-               '<input type="hidden" name="date_begin_day" value="19" id="date_begin_day_538">' +
-               '<input type="hidden" name="date_begin_month" value="01" id="date_begin_month_538">' +
-               '<input type="hidden" name="date_begin_year" value="2020" id="date_begin_year_538">' +
-               '<input type="hidden" name="date_end" value="2020-02-19" id="date_end_538">' +    
-               '<input type="hidden" name="date_end_day" value="19" id="date_end_day_538">' +
-               '<input type="hidden" name="date_end_month" value="02" id="date_end_month_538">' +
-               '<input type="hidden" name="date_end_year" value="2020" id="date_end_year_538">' +
-               '<input type="hidden" name="type" value="0" id="type_538">' +
-               '<input type="hidden" name="urgent" value="0" id="urgent_538">' +
-               '<input type="hidden" name="valid" value="0" id="valid_538">' +
                '</fieldset>' +
                '</form>' ;
         }
@@ -304,19 +292,23 @@ let id_res_p = 0  ;
         {
         id_dos_p = id_dos ;
 
-        let res_name     = data[i].nom ;
-        let res_fam      = " [" + data[i].famille + "]" ;
-        let num_dos_mois = data[i].num_dos_mois ;
-        let num_dos      = Number( (num_dos_mois).substr(6,4) ) ;
-        let mois_dos     = (num_dos_mois).substr(4,2) + "/" + (num_dos_mois).substr(0,4) ;
+        let res_name    = data[i].nom ;
+        let res_fam     = " [" + data[i].famille + "]" ;
+        {% if session['record_period'] == 1070 %} // Month period
+        let num_dos = data[i].num_dos_mois ;
+        {% else %} // Annual period
+        let num_dos = data[i].num_dos_an ;
+        {% endif %}
+        let num_rec = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+        let per_rec = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;        
 
             if (res_fam.length < 4) res_fam = "" ;
 
-        res += '<form id="form-538" enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row">' +
-               '<fieldset id="subform-538" class="subform group group-1">' +
+        res += '<form enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row">' +
+               '<fieldset class="subform group group-1">' +
                '<legend>' + res_name + res_fam + '</legend>' +
-               '<fieldset id="yui_3_10_1_1_1582117454625_106">' +
-               '<legend><span class="num-dos">' + num_dos + '</span>&nbsp;' + mois_dos + '</legend>' +
+               '<fieldset>' +
+               '<legend><span class="num-dos">' + num_rec + '</span>&nbsp;' + per_rec + '</legend>' +
                '<div class="listing table-responsive yui-dt">' +
                '<table class="main">' +
                '<tbody class="yui-dt-data">' ;
@@ -336,23 +328,20 @@ let id_res_p = 0  ;
                    '<td></td>' +
                    '<td class="icon-container"></td>' +
                    '<td class="icon-container">' + res_emer + '</td>' +
-                   '<td id="status-9" class="icon-container status">' + res_stat +
+                   '<td class="icon-container status">' + res_stat +
                    '</td>' +
                    '<td class="icon-container history">' +
-                       '<div id="history-9" class="history-icon" onclick="display_histo(' + id_dos + ');"></div>' +
-                       '<div id="history-detail-9" class="hide"></div>' +
+                       '<div class="history-icon" onclick="display_histo(' + id_dos + ');"></div>' +
                    '</td>' +
                    '<td class="icon-container var-label">' + res_label + '</td>' ;
 
         let res_answer = data[i].res_answer ;
 
-        console.log("DEBUG res_answer=" + res_answer) ;
-
-        res += '<td class="value"><span id="value-9" class="value">' ;
+        res += '<td class="value"><span class="value">' ;
 
             if ( Object.keys(res_answer).length > 1)
             {
-            res += '<select name="res-9" id="res-9" class="form-control saved">' +
+            res += '<select class="form-control saved">' +
                    '<option value="0"> </option>' ;
 
                 for ( j in res_answer )
@@ -364,11 +353,11 @@ let id_res_p = 0  ;
             }
             else
             {
-            res += '<input type="text" name="res-14" id="res-14" value="" class="form-control saved" size="6">' ;
+            res += '<input type="text" value="" class="form-control saved" size="6">' ;
             }
 
-        res += '<input type="hidden" name="type-res-9" value="' + data[i].type_resultat + '" id="type-res-9"></span>&nbsp;' +
-               '<span id="unit-9" class="unit show">' + res_unit + '</span></td>' +
+        res += '<input type="hidden" value="' + data[i].type_resultat + '"></span>&nbsp;' +
+               '<span class="unit show">' + res_unit + '</span></td>' +
                '<td class="optionnal">&nbsp;</td></tr>' ;
         }
     }
