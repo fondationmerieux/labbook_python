@@ -20,8 +20,11 @@ class Pdf:
 
             CODE39 = barcode.get_barcode_class('code39')
 
+            options ={'font_size': 10, 'text_distance':1.0}
+            options['center_text'] = True
+
             ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-            ean.save('tmp/etiquette_' + num)
+            ean.save('tmp/etiquette_' + num, options=options)
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : getPdfBarcode failed, err=%s , num=%s', err, str(num))
             return False

@@ -569,7 +569,7 @@ function print_barcode()
         url: "{{ session['server_ext'] }}/services/pdf/barcode/num/" + num_rec_y,
         success: function(ret)
         {
-        window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/label_" + num_rec_y + ".png";
+        window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/etiquette_" + num_rec_y + ".png";
         },
         error: function(ret)
         {

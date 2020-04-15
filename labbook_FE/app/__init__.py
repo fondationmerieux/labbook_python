@@ -942,7 +942,7 @@ def download_file(filename=''):
     if not filename:
         return False
 
-    path = '/home/apps/labbook_BE/tmp/'
+    path = '/home/apps/labbook_BE/labbook_BE/tmp/'
 
     return send_file(path + filename, as_attachment=True)
 
