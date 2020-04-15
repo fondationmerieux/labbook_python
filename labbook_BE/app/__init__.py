@@ -28,6 +28,7 @@ from app.services.AnalysisRest import *
 from app.services.ProductRest import *
 from app.services.DoctorRest import *
 from app.services.PatientRest import *
+from app.services.PdfRest import *
 from app.services.RecordRest import *
 from app.services.ResultRest import *
 
@@ -97,10 +98,12 @@ api.add_resource(DoctorDet,          '/services/doctor/det/<int:id_doctor>')
 api.add_resource(PatientSearch,      '/services/patient/search')
 api.add_resource(PatientDet,         '/services/patient/det/<int:id_pat>')
 api.add_resource(PatientCode,        '/services/patient/generate/code')
+api.add_resource(PdfBarcode,         '/services/pdf/barcode/num/<string:num>')
 api.add_resource(RecordList,         '/services/record/list/<int:id_group>')
 api.add_resource(RecordDet,          '/services/record/det/<int:id_rec>')
 api.add_resource(RecordStat,         '/services/record/stat/<int:id_rec>')
 api.add_resource(RecordTypeNumber,   '/services/record/type/number')
+api.add_resource(ResultValue,        '/services/result/list/value')
 api.add_resource(ResultList,         '/services/result/list')
 api.add_resource(ResultRecord,       '/services/result/record/<int:id_rec>')
 api.add_resource(ResultCreate,       '/services/result/create/<int:id_rec>')

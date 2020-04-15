@@ -19,7 +19,7 @@ import requests
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date
 
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, send_file
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -183,7 +183,6 @@ def get_software_settings():
             session['record_period'] = json['periode']
             session['record_format'] = json['format']
             session.modified = True
-            log.error(Logs.fileline() + ' : DEBUG period et format=' + str(json))
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests software settings failed, err=%s , url=%s', err, url)
@@ -269,7 +268,7 @@ def list_results():
         date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
         date_end = date_beg
 
-        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'valid_res': 0 }
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'valid_res': 0}
         # payload = {'date_beg': '2019-01-01', 'date_end': '2020-03-25', 'emer_ana': 0}  # TEST
 
         url = session['server_int'] + '/services/result/list'
@@ -291,6 +290,8 @@ def enter_result(id_rec=0):
 
     json_ihm  = {}
     json_data = {}
+
+    id_pat = 0
 
     # Load list results
     try:
@@ -354,11 +355,28 @@ def enter_result(id_rec=0):
                     except requests.exceptions.RequestException as err:
                         log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+            # Load data patient
+            if res and res['id_pat']:
+                id_pat = res['id_pat']
 
-    # Load data patient
-    id_pat = res['id_pat']
+        # If no ReulstRecord found we're looking for record information
+        else:
+            try:
+                url = session['server_int'] + '/services/record/det/' + str(id_rec)
+                req = requests.get(url)
+
+                if req.status_code == 200:
+                    json_data['record'] = req.json()
+
+                    # Load data patient
+                    if json_data['record']:
+                        id_pat = json_data['record']['id_patient']
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests results record failed, err=%s , url=%s', err, url)
 
     json_data['patient'] = {}
     if id_pat > 0:
@@ -540,7 +558,7 @@ def det_req_ext(entry='Y', ref=0):
             req = requests.get(url)
 
             if req.status_code == 200:
-                json_data['billing_pat'] = req.json()
+                json_data['billing_hosp'] = req.json()
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests billing_pat failed, err=%s , url=%s', err, url)
@@ -729,7 +747,7 @@ def det_req_int(entry='Y', ref=0):
             req = requests.get(url)
 
             if req.status_code == 200:
-                json_data['billing_pat'] = req.json()
+                json_data['billing_hosp'] = req.json()
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests billing_pat failed, err=%s , url=%s', err, url)
@@ -836,8 +854,8 @@ def det_req_int(entry='Y', ref=0):
 
 
 # Page : administrative record
-@app.route('/administrative-record/<string:entry>/<int:id_rec>')
-def administrative_record( entry='Y', id_rec=0):
+@app.route('/administrative-record/<string:type_req>/<int:id_rec>')
+def administrative_record( type_req='E', id_rec=0):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
 
     json_data = {}
@@ -903,10 +921,7 @@ def administrative_record( entry='Y', id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
 
-    if entry == "N":
-        log.error(Logs.fileline() + ' : DEBUG TODO administrative-record entry=N')
-
-    return render_template('administrative-record.html', entry=entry, args=json_data)
+    return render_template('administrative-record.html', type_req=type_req, args=json_data)
 
 
 # Page : contributors
@@ -917,6 +932,20 @@ def contributors():
     get_init_var()
 
     return render_template('contributors.html')
+
+
+# Page : download a file
+@app.route('/download-file/<string:filename>')
+def download_file(filename=''):
+    log.info(Logs.fileline())
+
+    if not filename:
+        return False
+
+    path = '/home/apps/labbook_BE/tmp/'
+
+    return send_file(path + filename, as_attachment=True)
+
 
 if __name__ == "__main__":
     app.run()

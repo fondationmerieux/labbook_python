@@ -10,7 +10,6 @@
     <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
     <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
     <!--<script type="text/javascript" src="{{ session['server_ext'] }}/jquery.tablesorter.min.js"></script>-->
-    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/js/labbook.js"></script>
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -370,7 +369,7 @@
                                     <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">{{ _('Pourcentage de la remise') }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01">
+                                        <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_discount=this.value;" onchange="change_per_discount(this);">
                                         {% else %}
                                         {{ args['record']['remise_pourcent'] }}
                                         {% endif %}
@@ -382,7 +381,7 @@
                                     </label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
-                                        <input id="per_insurance" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01">
+                                        <input id="per_insurance" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_insurance=this.value;" onchange="change_per_insurance(this);">
                                         {% else %}
                                         {{ args['record']['assu_pourcent'] }}
                                         {% endif %}
@@ -540,9 +539,12 @@ var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceip
 var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
 var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|safe }}{% else %}[]{% endif %}   ;
 var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
-var ind_products  = 0  ;
-var bill_price    = 0  ;
-var bill_remain   = {% if entry == 'Y' %}{{ args['billing_pat']['value'] }}{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
+var ind_products  = 0 ;
+var old_value     = 0 ;
+var old_discount  = 0 ;
+var old_insurance = 0 ;
+var bill_price    = 0 ;
+var bill_remain   = {% if entry == 'Y' %}0{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
 var act_price     = {{ ihm['act_price']['value'] }} ;
 var opt_yorn      = {{ ihm['yorn']|safe }} ;
 
@@ -784,7 +786,7 @@ let tr_analysis = '' ;
     tmp_tr += create_td("", create_select("ana_emer_"+obj.id_data, opt_yorn, obj.emer, true), "", "") ;
     tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
     tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
-    tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999), "", "") ;
+    tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "", "") ;
     {% else %}
     let urg  = obj.urgent ;
     let dem  = obj.demande ;
@@ -868,7 +870,7 @@ let tr_sample = '' ;
         tmp_tr += create_td("", obj.name, "", "") ;
         tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
         tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
-        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999), "", "") ;
+        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "", "") ;
         {% else %}
         let dem  = obj.demande ;
         let rate = obj.cote_unite + obj.cote_valeur ;
@@ -944,11 +946,11 @@ let tr_product = '' ;
         tmp_tr += create_td("", btn, "", "") ; // actions
         tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "", "") ; // select product
         tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "", "") ; // select statut
-        tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0), "", "") ; // input date prel
-        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "date", obj.dateReceipt, 0, 0), "", "") ; // input date recept
-        tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0), "", "") ; // input text preleveur
-        tmp_tr += create_td("", create_input("prod_qty_"+obj.id_data, "number", obj.qty, 0, 10), "", "") ; // input number qtte
-        tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0), "", "") ; // input text comm
+        tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0, ""), "", "") ; // input date prel
+        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "date", obj.dateReceipt, 0, 0, ""), "", "") ; // input date recept
+        tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0, ""), "", "") ; // input text preleveur
+        tmp_tr += create_td("", create_input("prod_qty_"+obj.id_data, "number", obj.qty, 0, 10, ""), "", "") ; // input number qtte
+        tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0, ""), "", "") ; // input text comm
         {% else %}
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
         tmp_tr += create_td("", obj.type_prod, "", "") ;
@@ -1016,9 +1018,15 @@ tmp_select += '</select>' ;
 return tmp_select ;
 }
 
-function create_input(id, type, val, min, max)
+function create_input(id, type, val, min, max, fct)
 {
-let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onChange="change_data(this)"' ;
+let other_fct = '' ;
+
+    // example : onchange for price
+    if ( fct != "" )
+    other_fct += fct + '(this);" ' ;
+
+let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
@@ -1026,6 +1034,53 @@ let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '"
 tmp_input += '>' ;
 
 return tmp_input ;
+}
+
+function change_price( elem )
+{
+// Get new value from input
+let val = $(elem).val() ;
+
+bill_price += ( Number(val) - Number(old_value) )  ;
+
+// Update old value
+old_value = Number(val) ;
+
+refresh_bill();
+}
+
+function change_per_discount( elem )
+{
+// Get new value from input
+let val = $(elem).val() ;
+
+// Update old discount
+old_discount = Number(val) ;
+
+refresh_bill();
+}
+
+function change_per_insurance( elem )
+{
+// Get new value from input
+let val = $(elem).val() ;
+
+// Update old insurance
+old_insurance = Number(val) ;
+
+refresh_bill();
+}
+
+function calc_remain()
+{
+    if ( old_discount > 0 && old_insurance > 0 )
+    bill_remain = (bill_price - (bill_price * Number(old_discount) / 100)) * (100 - Number(old_insurance)) / 100 ;
+    else if ( old_discount > 0 )
+    bill_remain = bill_price - (bill_price * Number(old_discount) / 100) ;
+    else if ( old_insurance > 0 )
+    bill_remain = bill_price - (bill_price * Number(old_insurance) / 100) ;
+    else
+    bill_remain = bill_price ;
 }
 
 function change_data( elem )
@@ -1106,6 +1161,8 @@ return rate + '(' + price + ')' ;
 {% if entry == 'Y' %}
 function refresh_bill()
 {
+calc_remain() ;
+
 $("#bill_price").val(bill_price)   ;
 $("#bill_remain").val(bill_remain) ;
 }
@@ -1330,21 +1387,21 @@ var param = '{ "id_owner":' + id_group + ', ' +
                         {
                         window.location.href = "{{ session['server_ext'] }}/labbook_FE/det-req-ext/N/" + id_rec ;
                         },
-                        error: function(data_ana)
+                        error: function(ret_prod)
                         {
                         console.log("ERROR product list req") ;
                         alert("Une erreur est survenue lors de l'enregistrement des prelevements") ;
                         } 
                     } ) ;
                 },
-                error: function(data_ana)
+                error: function(ret_ana)
                 {
                 console.log("ERROR analysis list req") ;
                 alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
                 } 
             } ) ;
         },
-        error: function(data_rec)
+        error: function(ret_rec)
         {
         console.log("ERROR record det") ;
         alert("Une erreur est survenue lors de l'enregistrement du dossier") ;
@@ -1382,7 +1439,7 @@ let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}
                 data: param_stat,
                 success : function(response)
                 {
-                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/Y/" + {{ args['record']['id_data'] }} ;
+                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/" + {{ args['record']['id_data'] }} ;
                 },
                 error: function(response)
                 {

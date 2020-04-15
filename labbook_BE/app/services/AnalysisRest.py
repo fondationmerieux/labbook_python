@@ -208,7 +208,6 @@ class AnalysisReq(Resource):
 
         # Loop on list_ana
         for ana in args['list_ana']:
-            self.log.error(Logs.fileline() + ' : DEBUG AnalysisReq insert')
 
             if 'id_owner' not in ana or 'id_rec' not in ana or 'id_ana' not in ana or 'price' not in ana or \
                'paid' not in ana or 'emer' not in ana or 'req' not in ana:

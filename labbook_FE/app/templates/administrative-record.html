@@ -5,7 +5,6 @@
     {% block title %}
     <title>Dossier administratif</title>
     {% endblock %}
-    <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/js/labbook.js"></script>
 {% endblock %}
 
 {% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
@@ -226,6 +225,7 @@
                                     </table>
                                 </div>
                                 <div class="clear"></div>
+                                {% if type_req == 'E' %}
                                 <div class="form-group">
                                     <div class="statictext col-md-5 title"><span>Actes de prélèvement</span></div>
                                 </div>
@@ -281,6 +281,7 @@
                                     </table>
                                 </div>
                                 <div class="clear"></div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -408,15 +409,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="button" onclick="return false;" class="btn undefined btn-default" value="Enregistrer">
+                                <input type="button" onclick="upload_file();" class="btn undefined btn-default" value="Enregistrer">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group button" id="button">
-                    <input type="button" onclick="" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
-                    <input type="button" onclick="" id="bar_code" class="btn btn-primary" value="{{ _('Code barre') }}">
+                    <input type="button" onclick="print_bill();" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
+                    <input type="button" onclick="print_barcode();" id="bar_code" class="btn btn-primary" value="{{ _('Code barre') }}">
                     <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
                 </div>
 
@@ -430,7 +431,8 @@
 {% block add_script %}
 <script>
 var data_analysis = {{ args['data_analysis']|safe }} ;
-var data_samples  = {{ args['data_samples']|safe }}  ;
+var num_rec_y = 0 ;
+{% if type_req == 'E' %}var data_samples  = {{ args['data_samples']|safe }}  ;{% endif %}
 
 function load_analysis( data )
 {
@@ -475,6 +477,7 @@ let tr_analysis = '' ;
 $("#tbody_analysis").append(tr_analysis) ;
 }
 
+{% if type_req == 'E' %}
 function load_sample( data )
 {
 let tr_sample = '' ;
@@ -514,22 +517,25 @@ let tr_sample = '' ;
 
 $("#tbody_sample").append(tr_sample) ;
 }
+{% endif %}
 
 function load_data()
 {
 // clear table tbody
 $("#tbody_analysis").empty() ;
-$("#tbody_sample").empty() ;
+{% if type_req == 'E' %}$("#tbody_sample").empty() ;{% endif %}
 
     for( i in data_analysis )
     {
     load_analysis( data_analysis[i] ) ;
     }
 
+    {% if type_req == 'E' %}
     for( i in data_samples )
     {
     load_sample( data_samples[i] ) ;
     }
+    {% endif %}
 }
 
 function create_td(id, val, cls, style)
@@ -545,6 +551,56 @@ function format_rate(rate, price)
 return rate + '(' + price + ')' ;
 }
 
+function upload_file()
+{
+// TODO upload_file
+}
+
+function print_bill()
+{
+// TODO print_bill
+}
+
+function print_barcode()
+{
+    $.ajax( 
+    {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/pdf/barcode/num/" + num_rec_y,
+        success: function(ret)
+        {
+        window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/label_" + num_rec_y + ".png";
+        },
+        error: function(ret)
+        {
+        console.log("ERROR GET pdf barcode");
+        alert("Erreur lors de la génération du PDF code barre") ;
+        }
+    } ) ;
+}
+
+/*
+$( "#export-data" ).on( "click", function()
+{
+    $.post( "/post_form/itr_export_data.php", 
+    {
+    tab_html: $( ".table-contact-itr" ).prop( "outerHTML" )
+    }, 
+    function( data ) 
+    {
+        if ( data == "OK" )
+        window.location="/post_form/itr_telecharge_fichier.php?nom=tab_contacts.csv";
+        else
+        {
+            setTimeout(function()
+            {
+                $( "#dialog_error" ).modal( "show" );
+            }, 1000);
+        }
+    } );
+} );
+*/
+
 function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/sigl/";
@@ -552,15 +608,17 @@ window.location.href = "{{ session['server_ext'] }}/sigl/";
 
 $( document ).ready( function()
 {
+num_rec_y = {{ args['record']['num_dos_an'] }} ;
+
 {% if session['record_period'] == 1070 %} // Month period
-let num_dos = {{ args['record']['num_dos_mois'] }} ;
+let num_rec = {{ args['record']['num_dos_mois'] }} ;
 {% else %} // Annual period
-let num_dos = {{ args['record']['num_dos_an'] }} ;
+let num_rec = {{ args['record']['num_dos_an'] }} ;
 {% endif %}
 
-num_dos = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+let num_rec_fmt = fmt_num_rec( num_rec, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
 
-    $("#num_rec").text( num_dos ) ;
+    $("#num_rec").text( num_rec_fmt ) ;
     load_data() ;
 } ) ;
 </script>

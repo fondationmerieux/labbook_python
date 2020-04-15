@@ -23,9 +23,9 @@ class DB:
                 try:
                     cursor = DB.cnx.cursor(dictionary=True)
                 except mysql.connector.Error as e:
-                    DB.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+                    DB.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
                     DB.cnx = None
-                    cursor = DB.ouvre_cnx().cursor(dictionary=True)
+                    cursor = DB.open_cnx().cursor(dictionary=True)
 
             elif current_app.config['DB_TYPE'] == 'IFX':
                 # cursor = DB.open_cnx().cursor(rowformat = informixdb.ROW_AS_DICT)

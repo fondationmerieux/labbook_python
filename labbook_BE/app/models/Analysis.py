@@ -93,7 +93,7 @@ class Analysis:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Analysis.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -110,7 +110,7 @@ class Analysis:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Analysis.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -122,5 +122,18 @@ class Analysis:
               'where id_refanalyse=%s'
 
         cursor.execute(req, (id_ana,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getLastAnalysisReqByRefAna(ref_ana):
+        cursor = DB.cursor()
+
+        req = 'select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande '\
+              'from sigl_04_data '\
+              'where ref_analyse=%s '\
+              'order by id_data desc limit 1'
+
+        cursor.execute(req, (ref_ana,))
 
         return cursor.fetchone()

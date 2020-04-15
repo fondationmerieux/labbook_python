@@ -31,11 +31,13 @@ class Result:
 
         # TODO condition valid_res ???
 
-        # ref_ana, id_ana, id_dos, nom, famille, id_res, ref_var.*, num_dos_mois, date_prescr, urgent
+        # ref_ana, id_ana, id_dos, nom, famille, id_res, valeur, ref_var.*, num_dos_mois, num_dos_an,
+        # date_dos, date_prescr, stat, urgent, id_owner
         req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
-              'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.*, '\
-              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, '\
-              'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent '\
+              'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
+              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '\
+              'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '\
+              'ana.id_owner as id_owner '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
@@ -55,9 +57,10 @@ class Result:
         cursor = DB.cursor()
 
         req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
-              'ref.nom as nom, fam.label as famille, res.id_data as id_res, ref_var.*, '\
-              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, ana.urgent as urgent, '\
-              'dos.date_prescription as date_prescr, dos.statut as stat, dos.id_patient as id_pat '\
+              'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
+              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '\
+              'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '\
+              'ana.id_owner as id_owner, dos.id_patient as id_pat '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
@@ -85,7 +88,7 @@ class Result:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Result.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -102,8 +105,20 @@ class Result:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Result.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def getResultValidation(id_res):
+        cursor = DB.cursor()
+
+        req = 'select id_data, id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation '\
+              'from sigl_10_data '\
+              'where id_resultat=%s'
+
+        cursor.execute(req, (id_res,))
+
+        return cursor.fetchone()
 
     @staticmethod
     def insertValidation(**params):
@@ -119,7 +134,7 @@ class Result:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Result.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -136,5 +151,22 @@ class Result:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Result.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def updateResult(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_09_data set '
+                           'id_owner=%(id_owner)s, '
+                           'valeur=%(valeur)s '
+                           'where id_data=%(id_data)s', params)
+
+            Result.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

@@ -14,6 +14,29 @@ from app.models.User import *
 from app.models.Logs import Logs
 
 
+class ResultValue(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'list_answer' not in args:
+            self.log.error(Logs.fileline() + ' : TRACE Result ERROR list_answer missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        for answer in args['list_answer']:
+            ret = Result.updateResult(id_data=answer['id_res'],
+                                      id_owner=answer['id_owner'],
+                                      valeur=answer['value'])
+
+            if ret is False:
+                self.log.error(Logs.fileline() + ' : TRACE Result updateResult ERROR')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE Result')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class ResultList(Resource):
     log = logging.getLogger('log_services')
 
@@ -34,15 +57,41 @@ class ResultList(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ResultList not found')
 
         for result in l_results:
+            if result['date_dos']:
+                result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
+
             if result['date_prescr']:
                 result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
+
+            # Get validation info
+            result['validation'] = Result.getResultValidation(result['id_res'])
+
+            if result['validation']['date_validation']:
+                result['validation']['date_validation'] = datetime.strftime(result['validation']['date_validation'], '%Y-%m-%d')
+
+            # Replace None by empty string
+            for key, value in result['validation'].items():
+                if result['validation'][key] is None:
+                    result['validation'][key] = ''
+
+            # Get identity from user who validated this result
+            result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
+
+            # Replace None by empty string
+            for key, value in result['user'].items():
+                if result['user'][key] is None:
+                    result['user'][key] = ''
+
+            # Get status labels of record
+            tmp = Various.getDicoById(str(result['stat']))
+            result['stat_label'] = tmp['label']
 
             # Get result answer
             type_res             = ''
             result['unit']       = ''
             result['res_answer'] = []
 
-            # get unit label
+            # Get unit label
             if result['unite']:
                 unit = Various.getDicoById(result['unite'])
 
@@ -83,169 +132,46 @@ class ResultRecord(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         for result in l_results:
+            if result['date_dos']:
+                result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
+
+            if result['date_prescr']:
+                result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
+
+            # Get validation info
+            result['validation'] = Result.getResultValidation(result['id_res'])
+
+            if result['validation']['date_validation']:
+                result['validation']['date_validation'] = datetime.strftime(result['validation']['date_validation'], '%Y-%m-%d')
+
+            # Replace None by empty string
+            for key, value in result['validation'].items():
+                if result['validation'][key] is None:
+                    result['validation'][key] = ''
+
+            # Get identity from user who validated this result
+            result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
+
+            # Replace None by empty string
+            for key, value in result['user'].items():
+                if result['user'][key] is None:
+                    result['user'][key] = ''
+
+            # Get status labels of record
+            tmp = Various.getDicoById(str(result['stat']))
+            result['stat_label'] = tmp['label']
+
             # Replace None by empty string
             for key, value in result.items():
                 if result[key] is None:
                     result[key] = ''
 
-            if result['date_prescr']:
-                    result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
-
         self.log.info(Logs.fileline() + ' : ResultRecord id_rec=' + str(id_rec))
         return compose_ret(l_results, Constants.cst_content_type_json, 200)
-
-    """
-    def post(self, id_pat=0):
-        args = request.get_json()
-
-        if 'id_owner' not in args or 'anonyme' not in args or 'code' not in args or 'code_Result' not in args or 'nom' not in args or \
-           'prenom' not in args or 'ddn' not in args or 'sexe' not in args or 'ethnie' not in args or 'adresse' not in args or \
-           'cp' not in args or 'ville' not in args or 'tel' not in args or 'profession' not in args or 'nom_jf' not in args or \
-           'quartier' not in args or 'bp' not in args or 'ddn_approx' not in args or 'age' not in args or 'annee_naiss' not in args or \
-           'semaine_naiss' not in args or 'mois_naiss' not in args or 'unite' not in args:
-            self.log.error(Logs.fileline() + ' : ResultDet ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
-
-        # Update Result
-        if id_pat != 0:
-            self.log.error(Logs.fileline() + ' : DEBUG ResultDet update')
-
-            Result = Result.getResult(id_pat)
-
-            if not Result:
-                self.log.error(Logs.fileline() + ' : ResultDet ERROR not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            ret = Result.updateResult(id=id_pat,
-                                        id_owner=args['id_owner'],
-                                        anonyme=args['anonyme'],
-                                        code=args['code'],
-                                        code_Result=args['code_Result'],
-                                        nom=args['nom'],
-                                        prenom=args['prenom'],
-                                        ddn=args[''],
-                                        sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
-                                        adresse=args['adresse'],
-                                        cp=args['cp'],
-                                        ville=args['ville'],
-                                        tel=args['tel'],
-                                        profession=args['profession'],
-                                        nom_jf=args['nom_jf'],
-                                        quartier=args['quartier'],
-                                        bp=args['bp'],
-                                        ddn_approx=args['ddn_approx'],
-                                        age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
-
-            if ret is False:
-                self.log.error(Logs.alert() + ' : ResultDet ERROR update')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            res = {}
-            res['id_pat'] = id_pat
-
-        # Insert new Result
-        else:
-            self.log.error(Logs.fileline() + ' : DEBUG ResultDet insert')
-
-            args['ddn'] = datetime.strptime(args['ddn'], Constants.cst_isodate)
-
-            ret = Result.insertResult(id_owner=args['id_owner'],
-                                        anonyme=args['anonyme'],
-                                        code=args['code'],
-                                        code_Result=args['code_Result'],
-                                        nom=args['nom'],
-                                        prenom=args['prenom'],
-                                        ddn=args['ddn'],
-                                        sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
-                                        adresse=args['adresse'],
-                                        cp=args['cp'],
-                                        ville=args['ville'],
-                                        tel=args['tel'],
-                                        profession=args['profession'],
-                                        nom_jf=args['nom_jf'],
-                                        quartier=args['quartier'],
-                                        bp=args['bp'],
-                                        ddn_approx=args['ddn_approx'],
-                                        age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : ResultDet ERROR  insert')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            res = {}
-            res['id_pat'] = ret
-
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : ResultDet ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_03_data_group
-            ret = Result.insertResultGroup(id_data=res['id_pat'],
-                                             id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : ResultDet ERROR  insert group')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-
-        self.log.info(Logs.fileline() + ' : TRACE ResultDet id_pat=' + str(res['id_pat']))
-        return compose_ret(res, Constants.cst_content_type_json)
-
-
-class ResultTypeProd(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self, id_type_prod):
-        type_prod = Result.getProductType(id_type_prod)
-
-        if not type_prod:
-            self.log.error(Logs.fileline() + ' : ' + 'ResultTypeProd ERROR not found')
-            return compose_ret('', Constants.cst_content_type_json, 404)
-
-        # Replace None by empty string
-        for key, value in type_prod.items():
-            if type_prod[key] is None:
-                type_prod[key] = ''
-
-        self.log.info(Logs.fileline() + ' : ResulttypeProd id_type_prod' + str(id_type_prod))
-        return compose_ret(type_prod, Constants.cst_content_type_json, 200)
-"""
 
 
 class ResultCreate(Resource):
     log = logging.getLogger('log_services')
-
-    """
-    def get(self, id_rec, bio_prod='O'):
-        l_res = Result.getResultCreate(id_rec, bio_prod)
-
-        if not l_res:
-            self.log.error(Logs.fileline() + ' : ' + 'ResultCreate ERROR not found')
-            return compose_ret('', Constants.cst_content_type_json, 404)
-
-        for analysis in l_res:
-            # Replace None by empty string
-            for key, value in analysis.items():
-                if analysis[key] is None:
-                    analysis[key] = ''
-
-            analysis['prix'] = float(analysis['prix'])
-
-        self.log.info(Logs.fileline() + ' : ResultCreate id_rec=' + str(id_rec))
-        return compose_ret(l_res, Constants.cst_content_type_json, 200)"""
 
     def post(self, id_rec):
         args = request.get_json()
@@ -263,8 +189,18 @@ class ResultCreate(Resource):
         else:
             type_validation = 250
 
-        # get list of all analysis (even samples)
-        l_ana = Analysis.getAnalysisReq(id_rec, 'A')
+        # In case of add new analysis
+        if 'list_ref' in args:
+            l_ana = args['list_ref']
+            # GET last id_data in sigl_04_data with ref_analyse
+            for ana in l_ana:
+                req_ana = Analysis.getLastAnalysisReqByRefAna(ana['ref_analyse'])
+                ana['id_data'] = req_ana['id_data']
+        else:
+            # get list of all analysis for this record (even samples)
+            l_ana = Analysis.getAnalysisReq(id_rec, 'A')
+
+        self.log.error(Logs.fileline() + ' : DEBUG ResultCreate l_ana=' + str(l_ana))
 
         if not l_ana:
             self.log.error(Logs.fileline() + ' : ' + 'ResultCreate ERROR l_ana not found')
@@ -273,11 +209,11 @@ class ResultCreate(Resource):
         # Loop on list_ana
         for ana in l_ana:
 
-            ref = Analysis.getRefVariable(ana['id_data'])
+            ref = Analysis.getRefVariable(ana['ref_analyse'])
 
             if ref and ref['id_refvariable']:
                 ret = Result.insertResult(id_owner=args['id_owner'],
-                                          id_analyse=ref['id_refanalyse'],
+                                          id_analyse=ana['id_data'],
                                           ref_variable=ref['id_refvariable'],
                                           obligatoire=ref['obligatoire'])
 

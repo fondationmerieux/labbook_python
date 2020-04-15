@@ -52,7 +52,8 @@ class PatientDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'PatientDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        patient['ddn'] = datetime.strftime(patient['ddn'], '%Y-%m-%d')
+        if patient['ddn']:
+            patient['ddn'] = datetime.strftime(patient['ddn'], '%Y-%m-%d')
 
         # Replace None by empty string
         for key, value in patient.items():

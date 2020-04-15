@@ -57,7 +57,7 @@ class Patient:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Patient.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -74,7 +74,7 @@ class Patient:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Patient.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod

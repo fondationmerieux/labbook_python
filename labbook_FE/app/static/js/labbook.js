@@ -26,3 +26,31 @@ let ret = "" ;
 
 return ret ;
 }
+
+function stat( id_stat )
+{
+let res = '' ;
+
+    if ( id_stat == 182 )
+    res = '<span class="icon status-a">A</span>' ;
+    else if ( id_stat == 253 )
+    res = '<span class="icon status-a">I</span>' ;
+    else if ( id_stat == 254 )
+    res = '<span class="icon status-t">T</span>' ;
+    else if ( id_stat == 255 )
+    res = '<span class="icon status-t">I</span>' ;
+    else if ( id_stat == 256 )
+    res = '<span class="icon status-b">B</span>' ;
+
+return res ;
+}
+
+function emer( flag_emer )
+{
+let res = '' ;
+
+    if ( flag_emer == "O" || flag_emer == 4 )
+    res = '<span class="icon urgent">&nbsp;</span>' ;
+
+return res ;
+}

@@ -11,6 +11,7 @@ Jinja2==2.10.3
 MarkupSafe==1.1.1
 mysql-connector-python==8.0.18
 pdfkit==0.6.1
+Pillow==7.1.1
 pip==20.0.2
 protobuf==3.10.0
 python-barcode==0.11.0

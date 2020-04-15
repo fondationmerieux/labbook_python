@@ -113,7 +113,7 @@ class Record:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Record.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -130,7 +130,7 @@ class Record:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Record.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -148,7 +148,7 @@ class Record:
 
             return True
         except mysql.connector.Error as e:
-            Record.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
 
     @staticmethod

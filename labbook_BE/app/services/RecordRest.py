@@ -84,9 +84,9 @@ class RecordDet(Resource):
 
         # Update Record
         if id_rec != 0:
-            self.log.error(Logs.fileline() + ' : DEBUG RecordDet update')
+            self.log.error(Logs.fileline() + ' : DEBUG TODO ? RecordDet update')
 
-            """ TODO
+            """
             Record = Record.getRecord(id_rec)
 
             if not Record:

@@ -65,7 +65,7 @@ class Doctor:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Doctor.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Doctor.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
     @staticmethod
@@ -82,5 +82,5 @@ class Doctor:
 
             return cursor.lastrowid
         except mysql.connector.Error as e:
-            Doctor.log.error(Logs.fileline() + ' : ERROR SQL ' + str(e.errno))
+            Doctor.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0"""
