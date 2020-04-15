@@ -11,8 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Automatic calculation on some type of result (11 / 704) 
 - Technical validation
 - Biological validation
-- Load report and list of files in administrative-record page
+- Load report in administrative-record page
+- Active link files in administrative-record page
 - Automatic disconnection
+
 
 ## [2.9.0-beta.3] - 2020-04-15
 ### Added
@@ -28,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Limit min & max on values in result pages
 - Button Save (result) enabled when someone focus at least one result box
 - Generate a barcode image (need to include in a PDF file)
+- Load files in administrative-record page (link not active)
 
 ## [2.9.0-beta.2] - 2020-03-30
 ### Added

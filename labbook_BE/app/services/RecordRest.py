@@ -241,6 +241,25 @@ class RecordDet(Resource):
         return compose_ret(res, Constants.cst_content_type_json)
 
 
+class RecordFile(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec):
+        l_files = Record.getRecordFile(id_rec)
+
+        if not l_files:
+            self.log.error(Logs.fileline() + ' : TRACE RecordFile not found')
+
+        for files in l_files:
+            # Replace None by empty string
+            for key, value in files.items():
+                if files[key] is None:
+                    files[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordFile')
+        return compose_ret(l_files, Constants.cst_content_type_json)
+
+
 class RecordStat(Resource):
     log = logging.getLogger('log_services')
 

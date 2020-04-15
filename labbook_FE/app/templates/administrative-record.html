@@ -27,10 +27,10 @@
                             <div id="pat-group" class="col-xs-12">
                                 <div class="form-group form-inline col-xs-12">
                                     <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
-                                        <span>{{ args['patient']['code_patient'] }}</span>
+                                        <span>{% if args['patient'] %}{{ args['patient']['code_patient'] }}{% endif %}</span>
                                     </div>
                                     <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
-                                        <span>{{ args['patient']['code'] }}</span>
+                                        <span>{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
                                     </div>
                                 </div>
                                 <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
@@ -38,7 +38,7 @@
                                         <div class="row">
                                             <div class="form-inline col-xs-12">
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}</span>
+                                                    <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% endif %}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,24 +59,24 @@
                                             <div class="form-inline col-xs-12">
                                                 <div class="statictext undefined"><span>Né(e) le</span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{{ args['patient']['ddn']|date_format }}</span>
+                                                    <span>{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
                                                 </div>
                                                 <div class="statictext undefined"><span>-</span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{{ args['patient']['age'] }}</span>
+                                                    <span>{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}</span>
                                                 </div>
                                                 <div class="statictext undefined"><span></span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{% if args['patient']['unite'] == 1037 %}Années
+                                                    <span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}Années
                                                           {% elif args['patient']['unite'] == 1036 %}Mois
                                                           {% elif args['patient']['unite'] == 1035 %}Semaines
-                                                          {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}</span>
+                                                          {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}{% endif %}</span>
                                                 </div>
                                                 <div class="statictext undefined"><span>.</span></div>
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                    <span>{% if args['patient']['sexe'] == 1 %}Masculin
+                                                    <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}Masculin
                                                           {% elif args['patient']['sexe'] == 2 %}Féminin
-                                                          {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}</span>
+                                                          {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}{% endif %}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -404,7 +404,7 @@
                                                 <thead>
                                                     <tr><th><div class="yui-dt-liner">Fichier</div></th><th><div class="yui-dt-liner">Action</div></th></tr>
                                                 </thead>
-                                                <tbody><tr><td colspan="3"><div class="yui-dt-liner">Aucun fichier déposé</div></td></tr></tbody>
+                                                <tbody id="tbody_file"></tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -431,6 +431,7 @@
 {% block add_script %}
 <script>
 var data_analysis = {{ args['data_analysis']|safe }} ;
+var data_files    = {{ args['data_files']|safe }} ;
 var num_rec_y = 0 ;
 {% if type_req == 'E' %}var data_samples  = {{ args['data_samples']|safe }}  ;{% endif %}
 
@@ -519,11 +520,39 @@ $("#tbody_sample").append(tr_sample) ;
 }
 {% endif %}
 
+function load_file( data )
+{
+let tr_file = '' ;
+
+    if (data.length < 1)
+    {
+    tr_file = '<tr><td colspan="2"><div class="yui-dt-liner">Aucun fichier déposé</div></td></tr>' ;
+    }
+    else
+    {
+    let obj = data ;
+
+        if ( obj.id_data > 0 )
+        {
+        let tmp_tr = '<tr style="">' ;
+        
+        tmp_tr += '<td class="filename"><div class="yui-dt-liner"><a href="#">' + obj.name + '</a></div></td>' ;
+        tmp_tr += '<td class="action"><div class="yui-dt-liner"><a href="#">Télécharger</a> - <a href="#">Supprimer</a></div></td>' ;
+        tmp_tr += '</tr>' ;
+
+        tr_file += tmp_tr ;
+        }
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
 function load_data()
 {
 // clear table tbody
 $("#tbody_analysis").empty() ;
 {% if type_req == 'E' %}$("#tbody_sample").empty() ;{% endif %}
+$("#tbody_file").empty() ;
 
     for( i in data_analysis )
     {
@@ -536,6 +565,11 @@ $("#tbody_analysis").empty() ;
     load_sample( data_samples[i] ) ;
     }
     {% endif %}
+
+    for( i in data_files )
+    {
+    load_file( data_files[i] ) ;
+    }
 }
 
 function create_td(id, val, cls, style)
@@ -578,28 +612,6 @@ function print_barcode()
         }
     } ) ;
 }
-
-/*
-$( "#export-data" ).on( "click", function()
-{
-    $.post( "/post_form/itr_export_data.php", 
-    {
-    tab_html: $( ".table-contact-itr" ).prop( "outerHTML" )
-    }, 
-    function( data ) 
-    {
-        if ( data == "OK" )
-        window.location="/post_form/itr_telecharge_fichier.php?nom=tab_contacts.csv";
-        else
-        {
-            setTimeout(function()
-            {
-                $( "#dialog_error" ).modal( "show" );
-            }, 1000);
-        }
-    } );
-} );
-*/
 
 function return_home()
 {

@@ -97,6 +97,18 @@ class Record:
         return cursor.fetchone()
 
     @staticmethod
+    def getRecordFile(id_rec):
+        cursor = DB.cursor()
+
+        req = 'select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage '\
+              'from sigl_dos_valisedoc__file_data as valise, sigl_file_data as file, sigl_storage_data as storage '\
+              'where file.id_data=valise.id_file and storage.id_data=file.id_storage and valise.id_ext=%s'
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def insertRecord(**params):
         try:
             cursor = DB.cursor()

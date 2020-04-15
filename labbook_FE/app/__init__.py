@@ -861,7 +861,7 @@ def administrative_record( type_req='E', id_rec=0):
     json_data = {}
     json_data['data_analysis'] = []
     json_data['data_samples']  = []
-    json_data['data_products'] = []
+    json_data['data_files']    = []
     json_data['record']        = []
 
     # Load save record
@@ -920,6 +920,17 @@ def administrative_record( type_req='E', id_rec=0):
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
+
+    # Load files attached to this record
+    try:
+        url = session['server_int'] + '/services/record/list/file/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_files'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests record list files failed, err=%s , url=%s', err, url)
 
     return render_template('administrative-record.html', type_req=type_req, args=json_data)
 

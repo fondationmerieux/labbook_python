@@ -39,10 +39,10 @@
                                         <div id="pat-group" class="col-xs-12">
                                             <div class="form-group form-inline">
                                                 <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
-                                                    <span>{{ args['patient']['code_patient'] }}</span>
+                                                    <span>{% if args['patient'] %}{{ args['patient']['code_patient'] }}{% endif %}</span>
                                                 </div>
                                                 <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
-                                                    <span>{{ args['patient']['code'] }}</span>
+                                                    <span>{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
                                                 </div>
                                             </div>
                                             <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
@@ -50,7 +50,7 @@
                                                     <div class="row">
                                                         <div class="form-inline col-xs-12">
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}</span>
+                                                                <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% endif %}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -75,30 +75,30 @@
                                                                 <span>Né(e) le</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['patient']['ddn']|date_format }}</span>
+                                                                <span>{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>-</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{{ args['patient']['age'] }}</span>
+                                                                <span>{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['patient']['unite'] == 1037 %}Années
+                                                                <span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}Années
                                                                       {% elif args['patient']['unite'] == 1036 %}Mois
                                                                       {% elif args['patient']['unite'] == 1035 %}Semaines
-                                                                      {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}</span>
+                                                                      {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}{% endif %}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>.</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['patient']['sexe'] == 1 %}Masculin
+                                                                <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}Masculin
                                                                       {% elif args['patient']['sexe'] == 2 %}Féminin
-                                                                      {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}</span>
+                                                                      {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}{% endif %}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -106,7 +106,7 @@
                                             </div>
                                             {% if entry == 'Y' %}
                                             <div class="form-group button">
-                                                <input type="button" onclick="change_pat({{ args['patient']['id_data'] }});" class="btn undefined btn-default" value="Modifier le dossier du patient">
+                                                <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn undefined btn-default" value="Modifier le dossier du patient">
                                             </div>
                                             {% endif %}
                                         </div>
