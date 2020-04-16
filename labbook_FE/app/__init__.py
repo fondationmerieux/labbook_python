@@ -15,6 +15,7 @@
 import os
 import logging
 import requests
+import json
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date
@@ -275,7 +276,7 @@ def list_results():
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
-            json_data['list_res'] = req.json()
+            json_data['list_res'] = json.dumps(req.json())
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
@@ -359,7 +360,7 @@ def enter_result(id_rec=0):
             if res and res['id_pat']:
                 id_pat = res['id_pat']
 
-        # If no ReulstRecord found we're looking for record information
+        # If no ResultRecord found we're looking for record information
         else:
             try:
                 url = session['server_int'] + '/services/record/det/' + str(id_rec)
@@ -410,7 +411,7 @@ def list_records():
         req = requests.post(url)
 
         if req.status_code == 200:
-            json_data = req.json()
+            json_data = json.dumps(req.json())
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests records list failed, err=%s , url=%s', err, url)
@@ -884,7 +885,7 @@ def administrative_record( type_req='E', id_rec=0):
                 except requests.exceptions.RequestException as err:
                     log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
 
-            # Load data patient with id_patient
+            # Load data doctor with id_doctor
             if json_data['record']['med_prescripteur'] and json_data['record']['med_prescripteur'] > 0:
                 try:
                     url = session['server_int'] + '/services/doctor/det/' + str(json_data['record']['med_prescripteur'])

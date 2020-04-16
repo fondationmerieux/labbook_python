@@ -208,64 +208,64 @@ class ResultCreate(Resource):
 
         # Loop on list_ana
         for ana in l_ana:
+            l_ref = Analysis.getRefVariable(ana['ref_analyse'])
 
-            ref = Analysis.getRefVariable(ana['ref_analyse'])
+            for ref in l_ref:
+                if ref and ref['id_refvariable']:
+                    ret = Result.insertResult(id_owner=args['id_owner'],
+                                              id_analyse=ana['id_data'],
+                                              ref_variable=ref['id_refvariable'],
+                                              obligatoire=ref['obligatoire'])
 
-            if ref and ref['id_refvariable']:
-                ret = Result.insertResult(id_owner=args['id_owner'],
-                                          id_analyse=ana['id_data'],
-                                          ref_variable=ref['id_refvariable'],
-                                          obligatoire=ref['obligatoire'])
+                    if ret <= 0:
+                        self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert result')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
 
-                if ret <= 0:
-                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert result')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
+                    res = {}
+                    res['id_res'] = ret
 
-                res = {}
-                res['id_res'] = ret
+                    # Get id_group of lab with id_group of user
+                    id_group_lab = User.getUserGroupParent(args['id_owner'])
 
-                # Get id_group of lab with id_group of user
-                id_group_lab = User.getUserGroupParent(args['id_owner'])
+                    if not id_group_lab:
+                        self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
 
-                if not id_group_lab:
-                    self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
-
-                # insert sigl_09_data_group
-                ret = Result.insertResultGroup(id_data=res['id_res'],
-                                               id_group=id_group_lab['id_group_parent'])
-
-                if ret <= 0:
-                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
-
-                # insert corresponding validation
-                ret = Result.insertValidation(id_owner=args['id_owner'],
-                                              id_resultat=res['id_res'],
-                                              utilisateur=args['id_owner'],
-                                              type_validation=type_validation)
-
-                if ret <= 0:
-                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert validation')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
-
-                res = {}
-                res['id_valid'] = ret
-
-                # Get id_group of lab with id_group of user
-                id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-                if not id_group_lab:
-                    self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
-
-                # insert sigl_10_data_group
-                ret = Result.insertValidationGroup(id_data=res['id_valid'],
+                    # insert sigl_09_data_group
+                    ret = Result.insertResultGroup(id_data=res['id_res'],
                                                    id_group=id_group_lab['id_group_parent'])
 
-                if ret <= 0:
-                    self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group validation')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
+                    if ret <= 0:
+                        self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    # insert corresponding validation
+                    ret = Result.insertValidation(id_owner=args['id_owner'],
+                                                  id_resultat=res['id_res'],
+                                                  utilisateur=args['id_owner'],
+                                                  type_validation=type_validation)
+
+                    if ret <= 0:
+                        self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert validation')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    res = {}
+                    res['id_valid'] = ret
+
+                    # Get id_group of lab with id_group of user
+                    id_group_lab = User.getUserGroupParent(args['id_owner'])
+
+                    if not id_group_lab:
+                        self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    # insert sigl_10_data_group
+                    ret = Result.insertValidationGroup(id_data=res['id_valid'],
+                                                       id_group=id_group_lab['id_group_parent'])
+
+                    if ret <= 0:
+                        self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group validation')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ResultCreate')
         return compose_ret('', Constants.cst_content_type_json)

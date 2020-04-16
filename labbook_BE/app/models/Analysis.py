@@ -123,7 +123,7 @@ class Analysis:
 
         cursor.execute(req, (id_ana,))
 
-        return cursor.fetchone()
+        return cursor.fetchall()
 
     @staticmethod
     def getLastAnalysisReqByRefAna(ref_ana):
