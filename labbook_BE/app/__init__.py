@@ -27,6 +27,7 @@ from app.services.UserRest import *
 from app.services.AnalysisRest import *
 from app.services.ProductRest import *
 from app.services.DoctorRest import *
+from app.services.FileRest import *
 from app.services.PatientRest import *
 from app.services.PdfRest import *
 from app.services.RecordRest import *
@@ -93,6 +94,8 @@ api.add_resource(DicoById,           '/services/dico/id/<int:id_data>')
 api.add_resource(DicoList,           '/services/dico/list/<string:dico_name>')
 api.add_resource(DoctorDet,          '/services/doctor/det/<int:id_doctor>')
 api.add_resource(DoctorSearch,       '/services/doctor/search/<int:id_group>')
+api.add_resource(FileDoc,            '/services/file/document/<int:id_file>')
+api.add_resource(FileReport,         '/services/file/report/record/<int:id_rec>')
 api.add_resource(PatientCode,        '/services/patient/generate/code')
 api.add_resource(PatientDet,         '/services/patient/det/<int:id_pat>')
 api.add_resource(PatientSearch,      '/services/patient/search')

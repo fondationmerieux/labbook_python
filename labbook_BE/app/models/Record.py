@@ -174,3 +174,34 @@ class Record:
         cursor.execute(req)
 
         return cursor.fetchone()
+
+    @staticmethod
+    def deleteRecord(id_rec):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_02_deleted '
+                           '(id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+                           'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, '
+                           'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois) '
+                           'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+                           'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, '
+                           'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois '
+                           'from sigl_02_data '
+                           'where id_data=%s', (id_rec,))
+
+            cursor.execute('delete from sigl_02_data_group_mode '
+                           'where id_data_group=%s', (id_rec,))
+
+            cursor.execute('delete from sigl_02_data_group '
+                           'where id_data=%s', (id_rec,))
+
+            cursor.execute('delete from sigl_02_data '
+                           'where id_data=%s', (id_rec,))
+
+            Record.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

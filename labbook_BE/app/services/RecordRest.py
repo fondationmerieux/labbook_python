@@ -5,9 +5,13 @@ from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
+from app.models.Analysis import *
 from app.models.General import compose_ret
 from app.models.Constants import *
+from app.models.File import *
+from app.models.Product import *
 from app.models.Record import *
+from app.models.Result import *
 from app.models.Various import *
 from app.models.User import *
 from app.models.Logs import Logs
@@ -239,6 +243,63 @@ class RecordDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordDet id_rec=' + str(res['id_rec']))
         return compose_ret(res, Constants.cst_content_type_json)
+
+    def delete(self, id_rec):
+        # delete sigl_11_data with id_dos = id_rec
+        ret = File.deleteFileReportByRecord(id_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE RecordDet delete FileReport ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete sigl_dos_valisedoc__file_data with id_ext = id_rec
+        ret = File.deleteFileDocByRecord(id_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE RecordDet delete FileDoc ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # load result requested with id_rec to get list of id_data
+        l_res = Result.getResultRecord(id_rec)
+
+        for res in l_res:
+            # delete sigl_10_data with id_resultat = id_data list
+            ret = Result.deleteValidationByResult(res['id_res'])
+
+            if not ret:
+                self.log.error(Logs.fileline() + ' : TRACE RecordDet delete Validation ERROR')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # delete sigl_09_data with id_resultat = id_res
+            ret = Result.deleteResult(res['id_res'])
+
+            if not ret:
+                self.log.error(Logs.fileline() + ' : TRACE RecordDet delete Result ERROR')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete sigl_04_data with id_dos = id_rec
+        ret = Analysis.deleteAnalysisByRecord(id_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE RecordDet delete Analysis ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete sigl_01_data with id_dos = id_rec
+        ret = Product.deleteProductByRecord(id_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE RecordDet delete Product ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete sigl_02_data with id_data = id_rec
+        ret = Record.deleteRecord(id_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE RecordDet delete Record ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordDet delete')
+        return compose_ret('', Constants.cst_content_type_json)
 
 
 class RecordFile(Resource):

@@ -63,3 +63,39 @@ class Product:
         except mysql.connector.Error as e:
             Product.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def deleteProductByRecord(id_rec):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select id_data '
+                           'from sigl_01_data '
+                           'where id_dos=%s', (id_rec,))
+
+            l_product = cursor.fetchall()
+
+            for product in l_product:
+                cursor.execute('insert into sigl_01_deleted '
+                               '(id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
+                               'commentaire, lieu_prel, lieu_prel_plus, localisation) '
+                               'select id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
+                               'commentaire, lieu_prel, lieu_prel_plus, localisation '
+                               'from sigl_01_data '
+                               'where id_data=%s', (product['id_data'],))
+
+                cursor.execute('delete from sigl_01_data_group_mode '
+                               'where id_data_group=%s', (product['id_data'],))
+
+                cursor.execute('delete from sigl_01_data_group '
+                               'where id_data=%s', (product['id_data'],))
+
+                cursor.execute('delete from sigl_01_data '
+                               'where id_data=%s', (product['id_data'],))
+
+            Product.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Product.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

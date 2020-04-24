@@ -20,7 +20,7 @@ class Pdf:
 
             CODE39 = barcode.get_barcode_class('code39')
 
-            options ={'font_size': 10, 'text_distance':1.0}
+            options = {'font_size': 10, 'text_distance': 1.0}
             options['center_text'] = True
 
             ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)

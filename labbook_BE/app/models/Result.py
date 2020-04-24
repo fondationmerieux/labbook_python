@@ -109,6 +109,40 @@ class Result:
             return 0
 
     @staticmethod
+    def deleteResult(id_res):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select id_data '
+                           'from sigl_09_data '
+                           'where id_data=%s', (id_res,))
+
+            l_result = cursor.fetchall()
+
+            for result in l_result:
+                cursor.execute('insert into sigl_09_deleted '
+                               '(id_data, id_owner, id_analyse, ref_variable, valeur, obligatoire) '
+                               'select id_data, id_owner, id_analyse, ref_variable, valeur, obligatoire '
+                               'from sigl_09_data '
+                               'where id_data=%s', (result['id_data'],))
+
+                cursor.execute('delete from sigl_09_data_group_mode '
+                               'where id_data_group=%s', (result['id_data'],))
+
+                cursor.execute('delete from sigl_09_data_group '
+                               'where id_data=%s', (result['id_data'],))
+
+                cursor.execute('delete from sigl_09_data '
+                               'where id_data=%s', (result['id_data'],))
+
+            Result.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getResultValidation(id_res):
         cursor = DB.cursor()
 
@@ -153,6 +187,40 @@ class Result:
         except mysql.connector.Error as e:
             Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def deleteValidationByResult(id_res):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select id_data '
+                           'from sigl_10_data '
+                           'where id_resultat=%s', (id_res,))
+
+            l_valid = cursor.fetchall()
+
+            for valid in l_valid:
+                cursor.execute('insert into sigl_10_deleted '
+                               '(id_data, id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation ) '
+                               'select id_data, id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation '
+                               'from sigl_10_data '
+                               'where id_data=%s', (valid['id_data'],))
+
+                cursor.execute('delete from sigl_10_data_group_mode '
+                               'where id_data_group=%s', (valid['id_data'],))
+
+                cursor.execute('delete from sigl_10_data_group '
+                               'where id_data=%s', (valid['id_data'],))
+
+                cursor.execute('delete from sigl_10_data '
+                               'where id_data=%s', (valid['id_data'],))
+
+            Result.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def updateResult(**params):

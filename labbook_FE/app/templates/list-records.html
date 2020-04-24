@@ -301,7 +301,7 @@ let tr_class= '' ;
                    '<ul class="dropdown-menu menu-act-drop">' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
-                   '<li><a class="menu-act-item" onclick="">Supprimer</a></li></ul></ul>' ; // TODO function delete record and analysis + samples + products requested ... ?
+                   '<li><a class="menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">Supprimer</a></li></ul></ul>' ;
 
         if ( data_records[i].urgent == "O" )
         tr_style = 'style="background-color:#FFD5D6;"' ;
@@ -323,6 +323,29 @@ let tr_class= '' ;
     $("#tbody_records").append(res) ;
     $("#num_page_t").text( p_cur ) ;
     $("#num_page_b").text( p_cur ) ;
+}
+
+function del_record( id_rec )
+{
+    if ( window.confirm("Merci de confirmer la suppression") )
+    {
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/record/det/" + id_rec,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE record") ;
+            alert("Erreur lors de la suppression d'un dossier") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
 }
 
 $( document ).ready( function()

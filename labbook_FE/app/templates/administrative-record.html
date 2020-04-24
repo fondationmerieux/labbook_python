@@ -316,17 +316,9 @@
                                             </tr>
                                         </thead>
                                         <caption>listing_cr</caption>
-                                        <tbody id="tbody_report"></tbody>
+                                        <tbody id="tbody_report">
+                                        </tbody>
                                     </table>
-                                    <div id="listing_cr_menu" class="yui-module yui-overlay yuimenu yui-overlay-hidden" style="z-index: 2; position: absolute; visibility: hidden;">
-                                        <div class="bd">
-                                            <ul class="first-of-type">
-                                                <li class="yuimenuitem first-of-type" id="yui-gen124" groupindex="0" index="0">
-                                                    <a href="#" class="yuimenuitemlabel">Télécharger</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -391,9 +383,9 @@
                                         <div class="yui-dt">
                                             <div>
                                                 <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
-                                                    <button class="btn btn-default" onclick="return false" style="width:undefined;height=undefined;margin-bottom:4px">Parcourir...</button>
+                                                    <button class="btn btn-default" onclick="return false;" style="width:undefined;height=undefined;margin-bottom:4px">Parcourir...</button>
                                                     <input type="file" multiple="multiple" style="visibility:hidden;position:absolute;top:-50;left:-50">
-                                                    <button onclick="return false" style="margin-bottom: 4px; display: none;">Envoyer le(s) fichier(s)</button>
+                                                    <button onclick="return false;" style="margin-bottom: 4px; display: none;">Envoyer le(s) fichier(s)</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -431,6 +423,7 @@
 {% block add_script %}
 <script>
 var data_analysis = {{ args['data_analysis']|safe }} ;
+var data_reports  = {% if args['data_reports'] %}{{ args['data_reports']|safe }}{% else %}[]{% endif %} ;
 var data_files    = {{ args['data_files']|safe }} ;
 var num_rec_y = 0 ;
 {% if type_req == 'E' %}var data_samples  = {{ args['data_samples']|safe }}  ;{% endif %}
@@ -438,24 +431,48 @@ var num_rec_y = 0 ;
 function load_analysis( data )
 {
 let tr_analysis = '' ;
+let obj    = data ;
+let tmp_tr = '<tr style="">' ;
+let urg    = obj.urgent ;
+let dem    = obj.demande ;
+let rate   = obj.cote_unite + obj.cote_valeur ;
 
-    if (data.length < 1)
-    {
-    tr_analysis = '' ; //'<tr class=""><td colspan="8">' +
-                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
-    }
+    if ( urg == 4 )
+    urg = "Oui" ;
     else
+    urg = "Non" ;
+
+    if ( dem == 4 )
+    dem = "Oui" ;
+    else
+    dem = "Non" ;
+
+tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+tmp_tr += create_td("", obj.code, "", "") ;
+tmp_tr += create_td("", obj.nom, "", "") ;
+tmp_tr += create_td("", urg, "", "") ;
+tmp_tr += create_td("", dem, "", "") ;
+tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
+tmp_tr += create_td("", obj.prix, "", "") ;
+
+tmp_tr += '</tr>' ;
+
+tr_analysis += tmp_tr ;
+
+$("#tbody_analysis").append(tr_analysis) ;
+}
+
+{% if type_req == 'E' %}
+function load_sample( data )
+{
+let tr_sample = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
     {
-    let obj    = data ;
     let tmp_tr = '<tr style="">' ;
-    let urg    = obj.urgent ;
     let dem    = obj.demande ;
     let rate   = obj.cote_unite + obj.cote_valeur ;
-
-        if ( urg == 4 )
-        urg = "Oui" ;
-        else
-        urg = "Non" ;
 
         if ( dem == 4 )
         dem = "Oui" ;
@@ -465,83 +482,57 @@ let tr_analysis = '' ;
     tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
     tmp_tr += create_td("", obj.code, "", "") ;
     tmp_tr += create_td("", obj.nom, "", "") ;
-    tmp_tr += create_td("", urg, "", "") ;
     tmp_tr += create_td("", dem, "", "") ;
     tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
     tmp_tr += create_td("", obj.prix, "", "") ;
 
     tmp_tr += '</tr>' ;
 
-    tr_analysis += tmp_tr ;
-    }
-
-$("#tbody_analysis").append(tr_analysis) ;
-}
-
-{% if type_req == 'E' %}
-function load_sample( data )
-{
-let tr_sample = '' ;
-
-    if (data.length < 1)
-    {
-    tr_sample = '' ; //'<tr class=""><td colspan="7">' +
-                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
-    }
-    else
-    {
-    let obj = data ;
-
-        if ( obj.id_data > 0 )
-        {
-        let tmp_tr = '<tr style="">' ;
-        let dem    = obj.demande ;
-        let rate   = obj.cote_unite + obj.cote_valeur ;
-
-            if ( dem == 4 )
-            dem = "Oui" ;
-            else
-            dem = "Non" ;
-
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", obj.code, "", "") ;
-        tmp_tr += create_td("", obj.nom, "", "") ;
-        tmp_tr += create_td("", dem, "", "") ;
-        tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
-        tmp_tr += create_td("", obj.prix, "", "") ;
-
-        tmp_tr += '</tr>' ;
-
-        tr_sample += tmp_tr ;
-        }
+    tr_sample += tmp_tr ;
     }
 
 $("#tbody_sample").append(tr_sample) ;
 }
 {% endif %}
 
+function load_report( data )
+{
+let tr_report = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let menu_act = '<ul class="menu-act-drop">' +
+                   '<li><a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj.file + '\', ' + num_rec_y + ');">Télécharger</a></li></ul>' ;
+
+    let tmp_tr = '<tr style="">' ;
+
+    tmp_tr += '<td class="yui-dt-hidden"><div class="yui-dt-liner">' + obj.id_data + '</div></td>' ;
+    tmp_tr += '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' ;
+    tmp_tr += '<td><div class="yui-dt-liner">' + obj.date + '</div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_report += tmp_tr ;
+    }
+
+$("#tbody_report").append(tr_report) ;
+}
+
 function load_file( data )
 {
 let tr_file = '' ;
+let obj = data ;
 
-    if (data.length < 1)
+    if ( obj.id_data > 0 )
     {
-    tr_file = '<tr><td colspan="2"><div class="yui-dt-liner">Aucun fichier déposé</div></td></tr>' ;
-    }
-    else
-    {
-    let obj = data ;
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div class="yui-dt-liner"><a href="#">' + obj.name + '</a></div></td>' ;
+    tmp_tr += '<td class="action"><div class="yui-dt-liner"><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += '- <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '</tr>' ;
 
-        if ( obj.id_data > 0 )
-        {
-        let tmp_tr = '<tr style="">' ;
-        
-        tmp_tr += '<td class="filename"><div class="yui-dt-liner"><a href="#">' + obj.name + '</a></div></td>' ;
-        tmp_tr += '<td class="action"><div class="yui-dt-liner"><a href="#">Télécharger</a> - <a href="#">Supprimer</a></div></td>' ;
-        tmp_tr += '</tr>' ;
-
-        tr_file += tmp_tr ;
-        }
+    tr_file += tmp_tr ;
     }
 
 $("#tbody_file").append(tr_file) ;
@@ -552,6 +543,7 @@ function load_data()
 // clear table tbody
 $("#tbody_analysis").empty() ;
 {% if type_req == 'E' %}$("#tbody_sample").empty() ;{% endif %}
+$("#tbody_report").empty() ;
 $("#tbody_file").empty() ;
 
     for( i in data_analysis )
@@ -559,16 +551,48 @@ $("#tbody_file").empty() ;
     load_analysis( data_analysis[i] ) ;
     }
 
+    if (data_analysis.length < 1)
+    {
+    let tr_ana = '<tr class=""><td colspan="8"><div>Aucune donnée à afficher</div></td></tr>' ;
+
+    $("#tbody_analysis").append(tr_ana) ;
+    }
+
     {% if type_req == 'E' %}
     for( i in data_samples )
     {
     load_sample( data_samples[i] ) ;
     }
+
+    if (data_samples.length < 1)
+    {
+    let tr_sample = '<tr class=""><td colspan="7"><div>Aucune donnée à afficher</div></td></tr>' ;
+
+    $("#tbody_sample").append(tr_sample) ;
+    }
     {% endif %}
+
+    if (data_reports.length < 1)
+    {
+    let tr_report = '<tr><td colspan="3"><div class="yui-dt-liner">Aucune donnéee à afficher</div></td></tr>' ;
+
+    $("#tbody_report").append(tr_report) ;
+    }
+    else
+    {
+    load_report( data_reports ) ;
+    }
 
     for( i in data_files )
     {
     load_file( data_files[i] ) ;
+    }
+
+    if (data_files.length < 1)
+    {
+    let tr_file = '<tr><td colspan="2"><div class="yui-dt-liner">Aucun fichier déposé</div></td></tr>' ;
+
+    $("#tbody_file").append(tr_file) ;
     }
 }
 
@@ -590,6 +614,36 @@ function upload_file()
 // TODO upload_file
 }
 
+function download_file( type, filename, ref )
+{
+// TODO check user role rights ?
+window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + ref ;
+}
+
+function delete_file( id_file )
+{
+// TODO check user role rights
+    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    {
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/file/document/" + id_file,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE document file") ;
+            alert("Erreur lors de la suppression d'un fichier") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
 function print_bill()
 {
 // TODO print_bill
@@ -603,7 +657,7 @@ function print_barcode()
         url: "{{ session['server_ext'] }}/services/pdf/barcode/num/" + num_rec_y,
         success: function(ret)
         {
-        window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/etiquette_" + num_rec_y + ".png";
+        download_file( "BC", "etiquette_" + num_rec_y + ".png", 0 ) ;
         },
         error: function(ret)
         {

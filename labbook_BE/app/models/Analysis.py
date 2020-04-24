@@ -137,3 +137,37 @@ class Analysis:
         cursor.execute(req, (ref_ana,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def deleteAnalysisByRecord(id_rec):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select id_data '
+                           'from sigl_04_data '
+                           'where id_dos=%s', (id_rec,))
+
+            l_ana = cursor.fetchall()
+
+            for ana in l_ana:
+                cursor.execute('insert into sigl_04_deleted '
+                               '(id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande ) '
+                               'select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande '
+                               'from sigl_04_data '
+                               'where id_data=%s', (ana['id_data'],))
+
+                cursor.execute('delete from sigl_04_data_group_mode '
+                               'where id_data_group=%s', (ana['id_data'],))
+
+                cursor.execute('delete from sigl_04_data_group '
+                               'where id_data=%s', (ana['id_data'],))
+
+                cursor.execute('delete from sigl_04_data '
+                               'where id_data=%s', (ana['id_data'],))
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

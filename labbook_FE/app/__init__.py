@@ -862,6 +862,7 @@ def administrative_record( type_req='E', id_rec=0):
     json_data = {}
     json_data['data_analysis'] = []
     json_data['data_samples']  = []
+    json_data['data_reports']  = []
     json_data['data_files']    = []
     json_data['record']        = []
 
@@ -922,6 +923,17 @@ def administrative_record( type_req='E', id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
 
+    # Load report attached to this record
+    try:
+        url = session['server_int'] + '/services/file/report/record/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_reports'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report file failed, err=%s , url=%s', err, url)
+
     # Load files attached to this record
     try:
         url = session['server_int'] + '/services/record/list/file/' + str(id_rec)
@@ -946,17 +958,47 @@ def contributors():
     return render_template('contributors.html')
 
 
-# Page : download a file
-@app.route('/download-file/<string:filename>')
-def download_file(filename=''):
+# Route : download a file
+@app.route('/download-file/type/<string:type>/name/<string:filename>/ref/<string:ref>')
+def download_file(type='', filename='', ref=''):
     log.info(Logs.fileline())
 
-    if not filename:
+    # TYPE
+    # BC => BarCode
+    # JF => Join File
+    # RP => Report
+
+    if type == 'BC':
+        filepath = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        generated_name = filename
+    elif type == 'JF':
+        try:
+            url = session['server_int'] + '/services/file/document/' + ref
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                file_info = req.json()
+
+                if file_info:
+                    filepath = os.path.join(file_info['storage'] + '/sigl', file_info['path'])
+                    generated_name = file_info['generated_name']
+                else:
+                    return False
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests file document failed, err=%s , url=%s', err, url)
+    elif type == 'RP':
+        filepath = '/space/www/apps/labbook/labbook_2.05/files/'
+        generated_name = filename
+
+        filename = 'cr_' + ref + '.pdf'
+    else:
         return False
 
-    path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+    ret_file = send_file(os.path.join(filepath, generated_name), as_attachment=True, attachment_filename=filename)
+    ret_file.headers["x-suggested-filename"] = filename
 
-    return send_file(path + filename, as_attachment=True)
+    return ret_file
 
 
 if __name__ == "__main__":
