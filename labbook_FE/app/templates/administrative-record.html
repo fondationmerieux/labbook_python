@@ -13,11 +13,11 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title form-patient_externe"><span>Dossier administratif</span></h2>
-            <form id="form_main" class="vzn-form form-horizontal row">
-                <div class="statictext undefined">
+            <form id="form_main" class="vzn-form form-horizontal row" action="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/{{ args['record']['id_data'] }}" method="POST" enctype="multipart/form-data">
+                <div class="statictext">
                     <span>Dossier :</span> 
                 </div>
-                <div class="form-control-static filed readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
+                <div class="form-control-static filed readonly-field div-inline label-rightMargin" id="num-dos-ro">
                     <span id="num_rec"></span>
                 </div>
                 <div id="pat-group-group" class="panel panel-1 panel-primary" style="">
@@ -37,7 +37,7 @@
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="form-inline col-xs-12">
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
                                                     <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% endif %}</span>
                                                 </div>
                                             </div>
@@ -48,7 +48,7 @@
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="form-inline col-xs-12">
-                                                <div class="statictext undefined"><span>Patient anonyme.</span></div>
+                                                <div class="statictext"><span>Patient anonyme.</span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -57,23 +57,23 @@
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="form-inline col-xs-12">
-                                                <div class="statictext undefined"><span>Né(e) le</span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                <div class="statictext"><span>Né(e) le</span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
                                                     <span>{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
                                                 </div>
-                                                <div class="statictext undefined"><span>-</span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                <div class="statictext"><span>-</span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
                                                     <span>{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}</span>
                                                 </div>
-                                                <div class="statictext undefined"><span></span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                <div class="statictext"><span></span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
                                                     <span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}Années
                                                           {% elif args['patient']['unite'] == 1036 %}Mois
                                                           {% elif args['patient']['unite'] == 1035 %}Semaines
                                                           {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}{% endif %}</span>
                                                 </div>
-                                                <div class="statictext undefined"><span>.</span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
+                                                <div class="statictext"><span>.</span></div>
+                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
                                                     <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}Masculin
                                                           {% elif args['patient']['sexe'] == 2 %}Féminin
                                                           {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}{% endif %}</span>
@@ -180,42 +180,42 @@
                                                 <th id="yui-dt96-th-code" rowspan="1" colspan="1" class="string yui-dt96-col-code yui-dt-col-code yui-dt-sortable">
                                                     <div id="yui-dt96-th-code-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label" id="yui-gen143">
-                                                            <a href="yui-dt96-href-code" title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen142">Code</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen142">Code</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt96-th-nom" rowspan="1" colspan="1" class="string yui-dt96-col-nom yui-dt-col-nom yui-dt-sortable">
                                                     <div id="yui-dt96-th-nom-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label" id="yui-gen133">
-                                                            <a href="yui-dt96-href-nom" title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen132">Nom</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen132">Nom</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt96-th-urgent" rowspan="1" colspan="1" class="fkey_dico yui-dt96-col-urgent yui-dt-col-urgent yui-dt-sortable">
                                                     <div id="yui-dt96-th-urgent-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt96-href-urgent" title="Click to sort ascending" class="yui-dt-sortable">Urgent</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Urgent</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt96-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt96-col-demande yui-dt-col-demande yui-dt-sortable">
                                                     <div id="yui-dt96-th-demande-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt96-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt96-th-cote" rowspan="1" colspan="1" class="string yui-dt96-col-cote yui-dt-col-cote yui-dt-sortable">
                                                     <div id="yui-dt96-th-cote-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt96-href-cote" title="Click to sort ascending" class="yui-dt-sortable">cote</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">cote</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt96-th-prix" rowspan="1" colspan="1" class="float yui-dt96-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-last">
                                                     <div id="yui-dt96-th-prix-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt96-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
                                                         </span>
                                                     </div>
                                                 </th>
@@ -243,35 +243,35 @@
                                                 <th id="yui-dt108-th-code" rowspan="1" colspan="1" class="string yui-dt108-col-code yui-dt-col-code yui-dt-sortable">
                                                     <div id="yui-dt108-th-code-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt108-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Code</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt108-th-nom" rowspan="1" colspan="1" class="string yui-dt108-col-nom yui-dt-col-nom yui-dt-sortable">
                                                     <div id="yui-dt108-th-nom-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt108-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Nom</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt108-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt108-col-demande yui-dt-col-demande yui-dt-sortable">
                                                     <div id="yui-dt108-th-demande-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt108-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt108-th-cote" rowspan="1" colspan="1" class="string yui-dt108-col-cote yui-dt-col-cote yui-dt-sortable">
                                                     <div id="yui-dt108-th-cote-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt108-href-cote" title="Click to sort ascending" class="yui-dt-sortable">cote</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">cote</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt108-th-prix" rowspan="1" colspan="1" class="float yui-dt108-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-last">
                                                     <div id="yui-dt108-th-prix-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt108-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
                                                         </span>
                                                     </div>
                                                 </th>
@@ -309,7 +309,7 @@
                                                 <th id="yui-dt118-th-date" rowspan="1" colspan="1" class="string yui-dt118-col-date yui-dt-col-date yui-dt-sortable yui-dt-last">
                                                     <div id="yui-dt118-th-date-liner" class="yui-dt-liner">
                                                         <span class="yui-dt-label">
-                                                            <a href="yui-dt118-href-date" title="Click to sort ascending" class="yui-dt-sortable">Date</a>
+                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Date</a>
                                                         </span>
                                                     </div>
                                                 </th>
@@ -383,9 +383,7 @@
                                         <div class="yui-dt">
                                             <div>
                                                 <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
-                                                    <button class="btn btn-default" onclick="return false;" style="width:undefined;height=undefined;margin-bottom:4px">Parcourir...</button>
-                                                    <input type="file" multiple="multiple" style="visibility:hidden;position:absolute;top:-50;left:-50">
-                                                    <button onclick="return false;" style="margin-bottom: 4px; display: none;">Envoyer le(s) fichier(s)</button>
+                                                    <input name="file" type="file" style="margin-bottom:4px"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -401,7 +399,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="button" onclick="upload_file();" class="btn undefined btn-default" value="Enregistrer">
+                                <input type="button" class="btn btn-default" value="Enregistrer" onclick="upload_file({{ args['record']['id_data'] }});">
                             </div>
                         </div>
                     </div>
@@ -410,7 +408,7 @@
                 <div class="form-group button" id="button">
                     <input type="button" onclick="print_bill();" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
                     <input type="button" onclick="print_barcode();" id="bar_code" class="btn btn-primary" value="{{ _('Code barre') }}">
-                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
+                    <input type="button" onclick="return_home();" id="exit" class="btn btn-default" value="{{ _('Quitter') }}">
                 </div>
 
             </form><!-- close form_main -->
@@ -609,9 +607,32 @@ function format_rate(rate, price)
 return rate + '(' + price + ')' ;
 }
 
-function upload_file()
+function upload_file( id_rec )
 {
-// TODO upload_file
+let param_form = new FormData() ;
+
+param_form.append('file', $('input[type=file]')[0].files[0]) ;
+
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + id_rec,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
+        {
+        console.log( "success upload ") ;
+        location.reload() ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR upload file") ;
+        alert("Une erreur est survenue lors du dépot d'un fichier") ;
+        }
+    } ) ;
+    
 }
 
 function download_file( type, filename, ref )

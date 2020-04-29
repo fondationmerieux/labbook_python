@@ -1,12 +1,15 @@
 FROM centos
 
+COPY vendor/*.rpm /tmp
+
 # may have to add openssl libssl.so.10 before compat-openssl10
 RUN yum update -y && yum install -y \
     compat-openssl10 \
     binutils \
     glibc-devel \
     mysql \
-    python36
+    python36 \
+    /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm
 
 # install supervisor
 RUN pip3 install supervisor

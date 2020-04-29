@@ -4,18 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-- Technical validation
 - Biological validation
 - PDF bill
 - PDF report
 - Automatic calculation on some type of result (11 / 704) 
-- Upload a file to a record
 - Automatic disconnection
 - Top menu
 
-## [2.9.0-beta.4] - 2020-04-24
+## [2.9.0-beta.4] - 2020-04-28
 ### Added
 - Delete action in list of records 
+- Upload a file to a record
+- Technical validation (In Progress)
 
 ### Fixed
 - Delete a document file administrative-record page

@@ -50,7 +50,7 @@ prep_log('log_front', r'../logs/log_front.log')
 
 log = logging.getLogger('log_front')
 
-app = Flask(__name__)  # ,static_url_path='/TEST/static')
+app = Flask(__name__)
 app.config.from_object('default_settings')
 
 config_envvar = 'LOCAL_SETTINGS'
@@ -318,7 +318,7 @@ def enter_result(id_rec=0):
 
                                 # get short_label (without prefix "dico_") in type_res
                                 if type_res and type_res['short_label'].startswith("dico_"):
-                                        type_res = type_res['short_label'][5:]
+                                    type_res = type_res['short_label'][5:]
                                 else:
                                     type_res = ''
 
@@ -856,7 +856,7 @@ def det_req_int(entry='Y', ref=0):
 
 # Page : administrative record
 @app.route('/administrative-record/<string:type_req>/<int:id_rec>')
-def administrative_record( type_req='E', id_rec=0):
+def administrative_record(type_req='E', id_rec=0):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
 
     json_data = {}
@@ -948,6 +948,130 @@ def administrative_record( type_req='E', id_rec=0):
     return render_template('administrative-record.html', type_req=type_req, args=json_data)
 
 
+# Page : technical validation
+@app.route('/technical-validation/<int:id_rec>')
+def technical_validation(id_rec=0):
+    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+
+    json_ihm  = {}
+    json_data = {}
+
+    id_pat = 0
+
+    # Load list results
+    try:
+        url = session['server_int'] + '/services/result/record/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['list_res'] = req.json()
+
+            # Get result answer
+            if json_data['list_res']:
+                for res in json_data['list_res']:
+                    # load result types
+                    type_res = ''
+
+                    if res['type_resultat']:
+                        try:
+                            url = session['server_int'] + '/services/dico/id/' + str(res['type_resultat'])
+                            req = requests.get(url)
+
+                            if req.status_code == 200:
+                                type_res = req.json()
+
+                                # get short_label (without prefix "dico_") in type_res
+                                if type_res and type_res['short_label'].startswith("dico_"):
+                                    type_res = type_res['short_label'][5:]
+                                else:
+                                    type_res = ''
+
+                        except requests.exceptions.RequestException as err:
+                            log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+                    # get result label if a value has been entered
+                    if type_res and res['valeur']:
+                        try:
+                            url = session['server_int'] + '/services/dico/id/' + str(res['valeur'])
+                            req = requests.get(url)
+
+                            res['res_label'] = ''
+
+                            if req.status_code == 200:
+                                dico_tmp = req.json()
+                                res['res_label'] = dico_tmp['label']
+
+                        except requests.exceptions.RequestException as err:
+                            log.error(Logs.fileline() + ' : requests result label failed, err=%s , url=%s', err, url)
+                    else:
+                        res['res_label'] = res['valeur']
+
+                    # get unit label
+                    try:
+                        url = session['server_int'] + '/services/dico/id/' + str(res['unite'])
+                        req = requests.get(url)
+
+                        res['unit'] = ''
+
+                        if req.status_code == 200:
+                            unit = req.json()
+
+                            # get short_label (without prefix "dico_") in type_res
+                            if unit and unit['label']:
+                                res['unit'] = unit['label']
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+            # Load data patient
+            if res and res['id_pat']:
+                id_pat = res['id_pat']
+
+        # If no ResultRecord found we're looking for record information
+        else:
+            try:
+                url = session['server_int'] + '/services/record/det/' + str(id_rec)
+                req = requests.get(url)
+
+                if req.status_code == 200:
+                    json_data['record'] = req.json()
+
+                    # Load data patient
+                    if json_data['record']:
+                        id_pat = json_data['record']['id_patient']
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests results record failed, err=%s , url=%s', err, url)
+
+    json_data['patient'] = {}
+    if id_pat > 0:
+        try:
+            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['patient'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+    return render_template('technical-validation.html', ihm=json_ihm, args=json_data)
+
+
+# Page : biological validation
+@app.route('/biological-validation/<int:id_rec>')
+def biological_validation(id_rec=0):
+    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+
+    json_ihm  = {}
+    json_data = {}
+
+    return render_template('biological-validation.html', ihm=json_ihm, args=json_data)
+
+
 # Page : contributors
 @app.route('/contributors/')
 def contributors():
@@ -999,6 +1123,82 @@ def download_file(type='', filename='', ref=''):
     ret_file.headers["x-suggested-filename"] = filename
 
     return ret_file
+
+
+# Route : upload a file
+@app.route('/upload-file/<int:id_rec>', methods=['POST'])
+def upload_file(id_rec=0):
+    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+    try:
+
+        if request.method == 'POST':
+            f = request.files['file']
+
+            original_name = f.filename
+
+            # random name kind like VOOZANOO
+            # PHP version : md5( mt_rand() . mt_rand() .microtime() )
+            import pathlib
+            import time
+            import hashlib
+            generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
+            hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
+
+            log.info(Logs.fileline() + ' : DEBUG generated_name=' + str(generated_name))
+
+            # Create end of storage path
+            end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
+
+            # Get last storage path
+            url = session['server_int'] + '/services/file/storage'
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                storage = req.json()
+
+                if not storage:
+                    log.error(Logs.fileline() + ' : upload-file storage failed')
+                    return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+            filepath = storage['path'] + '/sigl/'
+
+            pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=True, exist_ok=True)
+            pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=True, exist_ok=True)
+
+            f.save(os.path.join(filepath + end_path, generated_name))
+
+            # Get info on file
+            file_ext  = pathlib.Path(original_name).suffix
+            file_size = pathlib.Path(os.path.join(filepath + end_path, generated_name)).stat().st_size
+            mime_type = f.mimetype
+
+            # remove first dot
+            if file_ext.startswith('.'):
+                file_ext = file_ext[1:]
+
+            # insert upload information in DB
+            payload = {'id_owner': session['user_id_group'],
+                       'original_name': original_name,
+                       'generated_name': generated_name,
+                       'size': file_size,
+                       'hash': hash_name,
+                       'ext': file_ext,
+                       'content_type': mime_type,
+                       'id_storage': storage['id_data'],
+                       'end_path': end_path}
+
+            url = session['server_int'] + '/services/file/document/' + str(id_rec)
+            req = requests.post(url, json=payload)
+
+            if req.status_code != 200:
+                log.error(Logs.fileline() + ' : upload-file insert failed')
+                return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    except Exception as err:
+        log.error(Logs.fileline() + ' : upload-file failed, err=%s', err)
+        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 if __name__ == "__main__":

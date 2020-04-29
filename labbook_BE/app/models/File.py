@@ -23,6 +23,76 @@ class File:
         return cursor.fetchone()
 
     @staticmethod
+    def insertFileData(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_file_data '
+                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, status, date_creation, '
+                           'original_name, generated_name, size, hash, ext, content_type, id_storage, path) '
+                           'values '
+                           '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, 1, NOW(), %(original_name)s, %(generated_name)s, '
+                           '%(size)s, %(hash)s, %(ext)s, %(content_type)s, %(id_storage)s, %(path)s)', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def insertFileDataGroup(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_file_data_group '
+                           '(id_data, id_group) '
+                           'values '
+                           '(%(id_data)s, %(id_group)s )', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def insertFileDoc(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_dos_valisedoc__file_data '
+                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, id_ext, id_file) '
+                           'values '
+                           '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(id_ext)s, %(id_file)s)', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def insertFileDocGroup(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_dos_valisedoc__file_data_group '
+                           '(id_data, id_group) '
+                           'values '
+                           '(%(id_data)s, %(id_group)s )', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
     def deleteFileDoc(id_file):
         try:
             cursor = DB.cursor()
@@ -101,6 +171,18 @@ class File:
               'where id_data=%s'
 
         cursor.execute(req, (id_storage,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getLastFileStorage():
+        cursor = DB.cursor()
+
+        req = 'select id_data, id_owner, path '\
+              'from sigl_storage_data '\
+              'order by id_data desc limit 1'
+
+        cursor.execute(req)
 
         return cursor.fetchone()
 

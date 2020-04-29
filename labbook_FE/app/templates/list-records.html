@@ -301,6 +301,7 @@ let tr_class= '' ;
                    '<ul class="dropdown-menu menu-act-drop">' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/technical-validation/' + data_records[i].id_data + '">Validation technique</a></li>' +
                    '<li><a class="menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">Supprimer</a></li></ul></ul>' ;
 
         if ( data_records[i].urgent == "O" )
