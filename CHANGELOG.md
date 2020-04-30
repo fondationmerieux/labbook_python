@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Automatic disconnection
 - Top menu
 
+## [2.9.0-beta.5] - 2020-04-30
+### Fixed
+- Storage information missing in DB (need for upload)
+
 ## [2.9.0-beta.4] - 2020-04-28
 ### Added
 - Delete action in list of records 

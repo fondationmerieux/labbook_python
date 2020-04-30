@@ -8,9 +8,9 @@ let ret = num_rec ;
     if ( fmt == 1072 ) // short format
     {
         if ( period == 1070 ) // month period
-        ret = Number( (num_rec).substr(6,4) ) ; // convert number to take off front zero
+        ret = Number( (num_rec.toString()).substr(6,4) ) ; // convert number to take off front zero
         else
-        ret = Number( (num_rec).substr(4,6) ) ;
+        ret = Number( (num_rec.toString()).substr(4,6) ) ;
     }
 
 return ret ; 
@@ -22,7 +22,7 @@ function per_num_rec( num_rec, fmt, period )
 let ret = "" ;
 
     if ( period == 1070 && fmt == 1072 ) // month period and short format
-    ret = (num_rec).substr(4,2) + "/" + (num_rec).substr(0,4) ;
+    ret = (num_rec.toString()).substr(4,2) + "/" + (num_rec.toString()).substr(0,4) ;
 
 return ret ;
 }

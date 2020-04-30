@@ -139,12 +139,19 @@ class FileReport(Resource):
 class FileStorage(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self):
+    def get(self, id_group):
         storage = File.getLastFileStorage()
 
         if not storage:
             self.log.error(Logs.fileline() + ' : TRACE FileStorage not found')
-            return compose_ret('', Constants.cst_content_type_json, 500)
+            # We create a first storage
+            ret = File.insertStorage(id_owner=id_group, path='/space/applisdata/labbook/storage')
+
+            if ret <= 0:
+                self.log.info(Logs.fileline() + ' : TRACE FileStorage ERROR insert storage')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            storage = File.getLastFileStorage()
 
         # Replace None by empty string
         for key, value in storage.items():

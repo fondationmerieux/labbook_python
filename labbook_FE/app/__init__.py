@@ -1129,9 +1129,8 @@ def download_file(type='', filename='', ref=''):
 @app.route('/upload-file/<int:id_rec>', methods=['POST'])
 def upload_file(id_rec=0):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
-    try:
-
-        if request.method == 'POST':
+    if request.method == 'POST':
+        try :
             f = request.files['file']
 
             original_name = f.filename
@@ -1148,9 +1147,13 @@ def upload_file(id_rec=0):
 
             # Create end of storage path
             end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-file failed to hash name, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
+        try:
             # Get last storage path
-            url = session['server_int'] + '/services/file/storage'
+            url = session['server_int'] + '/services/file/storage/' + str(session['user_id_group'])
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1159,14 +1162,26 @@ def upload_file(id_rec=0):
                 if not storage:
                     log.error(Logs.fileline() + ' : upload-file storage failed')
                     return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-file failed requests storage, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-            filepath = storage['path'] + '/sigl/'
+        filepath = storage['path'] + '/sigl/'
 
-            pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=True, exist_ok=True)
-            pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=True, exist_ok=True)
+        try:
+            pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)
+            pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=False, exist_ok=True)
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-file failed to filepath, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
+        try:
             f.save(os.path.join(filepath + end_path, generated_name))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-file failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
+        try:
             # Get info on file
             file_ext  = pathlib.Path(original_name).suffix
             file_size = pathlib.Path(os.path.join(filepath + end_path, generated_name)).stat().st_size
@@ -1194,11 +1209,13 @@ def upload_file(id_rec=0):
                 log.error(Logs.fileline() + ' : upload-file insert failed')
                 return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-file failed, err=%s', err)
-        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-file failed information file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
 
 if __name__ == "__main__":

@@ -187,6 +187,23 @@ class File:
         return cursor.fetchone()
 
     @staticmethod
+    def insertStorage(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_storage_data '
+                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) '
+                           'values '
+                           '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(path)s)', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
     def getFileReport(id_rec):
         cursor = DB.cursor()
 
