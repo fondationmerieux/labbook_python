@@ -24,7 +24,7 @@
                                             <input type="radio" name="anonyme" value="4" {% if args['anonyme'] == 4 %} checked="checked" {% endif %}>Oui</input>
                                         </label>
                                         <label class="radio-inline undefined">
-                                            <input type="radio" name="anonyme" value="5" {% if not args or args['anonyme'] == 5 %} checked="checked" {% endif %}>Non</input>
+                                            <input type="radio" name="anonyme" value="5" {% if not args['anonyme'] or args['anonyme'] == 5 %} checked="checked" {% endif %}>Non</input>
                                         </label>
                                     </div>
                                     <label for="code_patient" class="control-label col-lg-3" id="code-label" style="">Code patient interne au laboratoire</label>
@@ -89,7 +89,7 @@
                                                                     <div class="field radio-field col-sm-4">
                                                                         <div class="radio">
                                                                             <label class="">
-                                                                                <input type="radio" name="sexe" value="3" {% if not args or args['sexe'] == 3 %} checked="checked" {% endif %}>Inconnu
+                                                                                <input type="radio" id="unknown_sex" name="sexe" value="3" {% if not args['sexe'] or args['sexe'] == 3 %} checked="checked" {% endif %}>Inconnu
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -123,7 +123,7 @@
                                                                     <div class="field radio-field col-sm-6">
                                                                         <div class="radio">
                                                                             <label class="">
-                                                                                <input type="radio" name="ddn_approx" value="4" {% if not args or args['ddn_approx'] == 4 %} checked="checked" {% endif %}>Oui
+                                                                                <input type="radio" name="ddn_approx" value="4" {% if not args['ddn_approx'] or args['ddn_approx'] == 4 %} checked="checked" {% endif %}>Oui
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -356,6 +356,7 @@ $("input[type=radio][name=anonyme]").change(function()
     {
     // Show input nom, prenom, nom_jf, sexe
     $("#patient-nom-prenom").show() ;
+    $("#unknown_sex").prop('checked', true) ;
     }
 } ) ;
 

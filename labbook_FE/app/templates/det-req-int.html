@@ -50,7 +50,7 @@
                                                     <div class="row">
                                                         <div class="form-inline col-xs-12">
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% endif %}</span>
+                                                                <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -583,6 +583,7 @@ window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] 
 
 $("#search_doctor").select2(
 {
+    placeholder: "Rechercher un praticien",
     tokenSeparators: [' '],
     tags: false,
     minimumInputLength: 2,
@@ -613,6 +614,7 @@ $("#search_doctor").select2(
 
 $("#search_analysis").select2(
 {
+    placeholder: "Rechercher une analyse",
     tokenSeparators: [',', ' '],
     minimumInputLength: 2,
     ajax: {

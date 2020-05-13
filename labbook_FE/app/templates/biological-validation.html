@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     {% block title %}
-    <title>Validation technique</title>
+    <title>Validation biologique</title>
     {% endblock %}
     <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
@@ -16,8 +16,8 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title form-technique">
-                <span>Validation technique</span>
+            <h2 class="page-title form-biologique">
+                <span>Validation biologique</span>
             </h2>
             <div class="statictext"><span>Dossier :</span></div>
             <div class="form-control-static field readonly-field div-inline">
@@ -73,9 +73,57 @@
                 </fieldset>
             </form>
 
+            {% if args['record'] and args['record']['rc'] %}
+            <form>
+                <fieldset class="group group-1">
+                    <legend>Renseignements cliniques</legend>
+                    <div class="row">{{ args['record']['rc'] }}</div>
+                </fieldset>
+            </form>
+            {% endif %}
+
             <div id="no_result" class="error">Aucune analyse</div>
             <div id="list_result"></div>
             <div id="list_result_test"></div>
+
+            <div id="valid_div" class="subform validation">
+                <fieldset class="group group-1">
+                    <legend>Validation des résultats cochés</legend>
+                    <div class="form-group">
+                        <span class="date-realisation">
+                            <label>Date de validation : </label>
+                            <div class="field date-fields form-inline">
+                                <input id="date_bio" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">
+                                <span class="calendar-img" id="quick_calendar_button_validation-date_img">
+                                <img id="validation-date_img" src="/assets/widgets/calendar.gif">
+                                </span>
+                            </div>
+                        </span>
+                        <span class="realisation">
+                            <label for="validator">Biologiste :</label>&nbsp;
+                            <select name="validator" id="validator" class="form-control"></select>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="comm_valid" class="col-lg-1">Commentaire</label>
+                        <div class="field">
+                            <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group button bio">
+                        <input type="hidden" name="validation-type" value="B" id="validation-type">
+                        <button name="validate" id="validate" type="button" value="Valider" class="btn btn-primary" onclick="save_valid({{ args['record']['id_data'] }});">Valider</button>
+                        <input type="button" onclick="return_home();" id="exit" class="btn btn-default" value="{{ _('Quitter') }}">
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="subform">
+                <fieldset class="group group-1">
+                    <legend>Compte rendu</legend>
+                    <div id="report"></div>
+                </fieldset>
+            </div>
 
             <!-- Popup history -->
             <div class="modal fade" id="dial_history" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -121,6 +169,34 @@
                 </div>
             </div>
 
+            <!-- Popup cancel -->
+            <div class="modal fade" id="dial_cancel" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dlg-cancel" style="background:#EEE;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4>Commentaire et motif annulation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" style=""><span data-field="reason">{{ _('Motif') }} </span></label>
+                            <select id="cancel_reason">
+                                {% for reason in ihm['cancel_reason'] %}
+                                <option value="{{ reason['id_data'] }}">{{ _(reason['label']) }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-lg-3" style=""><span data-field="comment">{{ _('Commentaire') }}</span></label>
+                            <textarea id="cancel_comm" rows="3" cols="80" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="button btn btn-success" name="btn_cancel_res" id="btn_cancel_res" value="Ajouter"  onclick="send_cancel();">
+                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Annuler</button>
+                    </div>
+                </div>
+            </div>
+
             {% if args['list_res'] %}
             <form id="form-new-analyses" enctype="application/x-www-form-urlencoded" method="post" action="">
                 <div class="subform">
@@ -146,12 +222,15 @@
 {% block add_script %}
 <script>
 var data_res     = [] ;
-var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
+var data_reports = {% if args['data_reports'] %}{{ args['data_reports']|safe }}{% else %}[]{% endif %} ;
 var list_id_ana  = [] ;
+var num_rec_y    = 0  ;
 var num_dos      = 0  ;
 var num_rec      = "" ;
 var per_rec      = "" ;
 var rec_stat     = 0  ;
+var id_rec_tmp   = 0  ;
+var id_res_tmp   = 0  ;
 
 function display_histo( i )
 {
@@ -171,6 +250,32 @@ let lastname  = data_res[i].user.lastname  ;
     {
         $( "#dial_history" ).modal( "show" ) ;
     }, 600) ;
+}
+
+function fill_bio_list()
+{
+{% if ihm['bio_list'] %}
+let bio_list = {{ ihm['bio_list']|safe }} ;
+let res      = '<option value="0"> </option>' ;
+
+    for ( k in bio_list )
+    {
+    let selected   = "" ;
+    let bio_ident = bio_list[k].username ;
+
+        if ( bio_list[k].firstname != "" && bio_list[k].lastname != "" )
+        bio_ident =  bio_list[k].firstname + " " + bio_list[k].lastname ;
+
+        if ( bio_list[k].id_group == {{ session['user_id_group'] }} )
+        {
+        selected = "selected" ;
+        }
+        
+    res += '<option value="' + bio_list[k].id_group + '" ' + selected + '>' + bio_ident + '</option>' ;
+    }
+
+$("#validator").html(res) ;
+{% endif %}
 }
 
 function add_analysis()
@@ -239,7 +344,7 @@ param_list_res += ' ] }';
                         data: param_stat,
                         success : function(response)
                         {
-                        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/" + id_rec ;
+                        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/" + id_rec ;
                         },
                         error: function(response)
                         {
@@ -274,51 +379,129 @@ function display_result( num_page )
 gen_ihm_res( data_res ) ;
 }
 
-function enabled_save( id_rec, ref_ana )
+function reset_res( id_rec, id_res )
 {
-    $(".btn_save_"+id_rec+"_"+ref_ana).prop("disabled", false) ;
+    if ( window.confirm("Etes-vous sur de vouloir effacer ce résultat ?") )
+    {
+    let param_res = '{ "id_owner": {{ session['user_id_group'] }}, "id_res":' + id_res + '}' ;
+
+        // result to reset
+        $.ajax( 
+        {
+            type: "POST",
+            url: "/services/result/reset/" + id_rec,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param_res,
+            success: function(data)
+                {
+                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/" + id_rec ;
+                },
+            error: function(data)
+                {
+                console.log("ERROR result reset") ;
+                alert("Une erreur est survenue lors de réinitialisation d'une valeur saisie") ;
+                }
+        } ) ;
+    }
 }
 
-function save_valid( id_rec, ref_ana )
+function cancel_res( id_rec, id_res )
 {
-let date_valid = $("#date_tech_"+ id_rec +"_"+ ref_ana).val() ;
-let user_valid = $("#validator_"+ id_rec +"_"+ ref_ana).val() ;
+    if ( window.confirm("Etes-vous sur de vouloir annuler ce résultat ?\nCette action est irreversible.") )
+    {
+    id_rec_tmp = id_rec ;
+    id_res_tmp = id_res ;
 
-let param_list_valid = '{ "list_valid":[ ' ;
+        // popup reason and comment
+        setTimeout(function()
+        {
+            $( "#dial_cancel" ).modal( "show" ) ;
+        }, 600) ;
+    }
+    else
+    {
+    id_rec_tmp = 0 ;
+    id_res_tmp = 0 ;
+    }
+}
+
+function send_cancel()
+{
+let reason    = $("#cancel_reason").val() ;
+let comment   = JSON.stringify( $("#cancel_comm").val() ) ;
+let param_res = '{ "id_owner": {{ session['user_id_group'] }}, ' +
+                  '"id_res":' + id_res_tmp + ', ' +
+                  '"reason":' + reason + ',' +
+                  '"comment":' + comment  + '}' ; // NO QUOTE DUE TO STRINGIFY PROCESS
+
+    $( "#dial_cancel" ).modal( "hide" ) ;
+
+    // result to cancel
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/result/cancel/" + id_rec_tmp,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_res,
+        success: function(data)
+            {
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/" + id_rec_tmp ;
+            },
+        error: function(data)
+            {
+            console.log("ERROR result cancel") ;
+            alert("Une erreur est survenue lors de l'annulation d'une valeur saisie") ;
+            }
+    } ) ;
+}
+
+function save_valid( id_rec )
+{
+let date_valid = $("#date_bio").val() ;
+let user_valid = $("#validator").val() ;
+let comm_valid = JSON.stringify( $("#comm_valid").val() ) ;
+
+let param_list_valid = '{ "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
 
     // GET id_res and value
-    $(".res-" + id_rec +"-"+ ref_ana ).each( function(i, elem)
+    $(".cbx-" + id_rec ).each( function(i, elem)
     {
+    let id_res  = $(this).attr("id").substr(4) ;
+    let val_res = $("#res_"+id_res).val() ;
+
         if (i > 0)
         param_list_valid += ', ' ;
 
     let param_valid = '{ "id_owner": {{ session['user_id_group'] }}, ' +
-                        '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
+                        '"id_res":' + id_res + ', ' +
                         '"date_valid":"' + date_valid + '", ' +
                         '"user_valid":' + user_valid + ', ' +
-                        '"value":"' + $(this).val() + '"}' ;
+                        '"value":"' + val_res + '"}' ;
 
     param_list_valid += param_valid ;
     } ) ;
 
 param_list_valid += ' ] }' ;
 
+console.log("DEBUG param_list_valid=" + param_list_valid);
     // result to validate
     $.ajax( 
     {
         type: "POST",
-        url: "/services/result/valid/T/" + id_rec,
+        url: "/services/result/valid/B/" + id_rec,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_valid,
         success: function(data)
             {
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/" + id_rec ;
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/" + id_rec ;
             },
         error: function(data)
             {
-            console.log("ERROR result valid") ;
-            alert("Une erreur est survenue lors de validation technique des valeurs saisies") ;
+            console.log("ERROR result valid bio") ;
+            alert("Une erreur est survenue lors de validation biologique des valeurs saisies") ;
             }
     } ) ;
 }
@@ -344,51 +527,8 @@ let disp_valid = "hide" ;
         {
         // close the form and table
         res += '</tbody></table></div></fieldset>' +
-               '<div class="form-group button tech">' +
-                   '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
-                       '<span class="date-realisation">' +
-                           '<label>Date de validation </label>&nbsp;' +
-                           '<div class="field date-fields form-inline">' +
-                               '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
-                               '<span class="calendar-img" id="quick_calendar_button_validation-date-10_img">' +
-                                   '<img id="validation-date-10_img" src="/assets/widgets/calendar.gif">' +
-                               '</span>' +
-                           '</div>' +
-                       '</span>' +
-                       '<span class="realisation">' +
-                           '<label for="validator_' + id_rec +'_'+ ref_ana_p  + '">Technicien</label>&nbsp;' +
-                           '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p  + '" class="form-control">' +
-                               '<option value="0"> </option>' ;
-
-        // fill technical choice
-        for ( k in tech_list )
-        {
-        let selected   = "" ;
-        let tech_ident = tech_list[k].username ;
-
-            if ( tech_list[k].firstname != "" && tech_list[k].lastname != "" )
-            tech_ident =  tech_list[k].firstname + " " + tech_list[k].lastname ;
-
-            if ( tech_list[k].id_group == {{ session['user_id_group'] }} )
-            {
-            selected = "selected" ;
-            }
-            
-        res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
-        }
-
-        res +=             '</select>&nbsp;' +
-                       '</span>' +
-                       '<span class="valider">' +
-                           '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" value="Valider" class="btn btn-default" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">Valider</button>' +
-                       '</span>' +
-                       '<clear></clear>' +
-                   '</span>' +
-               '</div>' +
                '</fieldset>' +
                '</form>' ;
-
-        disp_valid = "hide" ;
         }
 
         // new analysis so new form
@@ -417,8 +557,11 @@ let disp_valid = "hide" ;
         let res_emer   = emer(data[i].urgent)
         let res_label  = data[i].libelle ;
         let res_unit   = data[i].unit ;
+        let value      = data[i].res_label ;
         let res_limit  = '' ;
-        let value = data[i].res_label ;
+        let res_check  = '<td><span class="checkbox hide"><input type="checkbox" id="cbx_' + id_res + '" value="N" class="result-checkbox cbx-' + id_rec + '"></span></td>' ;
+        let res_reset  = '' ;
+        let res_cancel = '' ;
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" )
             {
@@ -430,8 +573,16 @@ let disp_valid = "hide" ;
             res_limit = '<span id="limit_' + id_res + '" class="oor ' + ico_limit + '"><span class="normals">[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]</span></span>' ;
             }
 
+            if ( value != "" && res_valid != 252 )
+            {
+            res_check = '<td><span class="checkbox show"><input type="checkbox" id="cbx_' + id_res + '" value="O" checked="checked" class="result-checkbox cbx-' + id_rec + '"></span></td>' ;
+            res_reset = '<a title="Réinitialiser la valeur" class="glyphicon glyphicon-step-backward" style="color:#8330e2;" onclick="reset_res(' + id_rec +','+ id_res + ');"></a>' ;
+
+            disp_valid = "show" ;
+            }
+
         res += '<tr class="yui-dt-rec">' +
-                   '<td></td>' +
+                   res_check +
                    '<td class="icon-container">' + res_limit + '</td>' +
                    '<td class="icon-container">' + res_emer + '</td>' +
                    '<td class="icon-container status">' + res_stat +
@@ -443,21 +594,23 @@ let disp_valid = "hide" ;
 
         res += '<td class="value"><span class="value">' ;
 
-        if (res_valid == 250  && value != "" )
-        disp_valid = "show" ;
+        if ( res_valid == 251 || (res_valid == 252 && value != "") )
+        res_cancel = '<a title="Annuler" class="glyphicon glyphicon-remove" onclick="cancel_res(' + id_rec +','+ id_res + ');"></a>' ;
 
         if ( value != "" )
-        res += '<span>' + value + '</span>' ;
+        res += '<span>' + value + '</span><input id="res_' + id_res + '" type="hidden" value="' + data[i].valeur + '">' ;
         else if ( res_valid == 252 )
         {
         res += '<span>ANNULEE</span>' ;
+        res_cancel = '<span>' + data[i].validation.label_motif + '<br />' + data[i].validation.commentaire + '</span>' ;
         }
         else
         res += '<span>Non rempli</span>' ;
 
         res += '<input type="hidden" value="' + data[i].type_resultat + '"></span>&nbsp;' +
                '<span class="unit show">' + res_unit + '</span></td>' +
-               '<td class="optionnal">&nbsp;</td></tr>' ;
+               '<td class="action">' + res_reset + '</td>' +
+               '<td class="action">' + res_cancel + '</td></tr>' ;
         }
 
     ref_ana_p = ref_ana ;
@@ -469,54 +622,57 @@ let disp_valid = "hide" ;
     {
     // close the form and table
     res += '</tbody></table></div></fieldset>' +
-           '<div class="form-group button tech">' +
-               '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
-                   '<span class="date-realisation">' +
-                       '<label>Date de validation </label>&nbsp;' +
-                       '<div class="field date-fields form-inline">' +
-                           '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
-                           '<span class="calendar-img" id="quick_calendar_button_validation-date-10_img">' +
-                               '<img id="validation-date-10_img" src="/assets/widgets/calendar.gif">' +
-                           '</span>' +
-                       '</div>' +
-                   '</span>' +
-                   '<span class="realisation">' +
-                       '<label for="validator_' + id_rec +'_'+ ref_ana_p + '">Technicien</label>&nbsp;' +
-                       '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p + '" class="form-control">' +
-                           '<option value="0"> </option>' ;
-
-    // fill technical choice
-    for ( k in tech_list )
-    {
-    let selected   = "" ;
-    let tech_ident = tech_list[k].username ;
-
-        if ( tech_list[k].firstname != "" && tech_list[k].lastname != "" )
-        tech_ident =  tech_list[k].firstname + " " + tech_list[k].lastname ;
-
-        if ( tech_list[k].id_group == {{ session['user_id_group'] }} )
-        {
-        selected = "selected" ;
-        }
-        
-    res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
-    }
-
-    res +=             '</select>&nbsp;' +
-                   '</span>' +
-                   '<span class="valider">' +
-                       '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" value="Valider" class="btn btn-default" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">Valider</button>' +
-                   '</span>' +
-                   '<clear></clear>' +
-               '</span>' +
-           '</div>' +
            '</fieldset>' +
            '</form>' ;
     }
 
+    if (disp_valid == "hide")
+    $("#valid_div").hide() ;
+
     $("#list_result").html( res ) ;
     {% endif %}
 // $("#list_result_test").text( JSON.stringify(data) ) ;
+}
+
+function load_report( data )
+{
+let div_report = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_div = '<span style="padding-left:40px;">' ;
+
+    tmp_div += '<a class="report current" onclick="download_file(\'RP\', \'' + obj.file + '\', ' + num_rec_y + ');">' + obj.date + '</a>' ;
+    tmp_div += '</span><br />' ;
+
+    div_report += tmp_div ;
+    }
+
+$("#report").append(div_report) ;
+}
+
+function load_data()
+{
+// clear div report
+$("#report").empty() ;
+
+    if (data_reports.length < 1)
+    {
+    let div_report = '<span style="padding-left:40px;color:#CCC;">Aucun compte rendu</span>' ;
+
+    $("#report").append(div_report) ;
+    }
+    else
+    {
+    load_report( data_reports ) ;
+    }
+}
+
+function download_file( type, filename, ref )
+{
+// TODO check user role rights ?
+window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + ref ;
 }
 
 $("#search_analysis").select2(
@@ -607,9 +763,19 @@ $("#div_add_analysis").show() ;
         } ) ;
 } ) ;
 
+function return_home()
+{
+    if ( window.confirm("Attention vous allez quitter ce dossier sans l'avoir validé.") )
+    {
+    window.location.href = "{{ session['server_ext'] }}/sigl/" ;
+    }
+}
+
 $( document ).ready( function()
 {
 data_res = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
+
+num_rec_y = {{ args['record']['num_dos_an'] }} ;
 
 {% if session['record_period'] == 1070 %} // Month period
 num_dos = data_res[0].num_dos_mois ;
@@ -625,6 +791,9 @@ rec_stat = status_rec(data_res[0].stat) ;
     $("#rec_stat").html(rec_stat) ;
 
 display_result( 1 ) ;
+fill_bio_list() ;
+
+load_data() ;
 } ) ;
 </script>
 {% endblock %}

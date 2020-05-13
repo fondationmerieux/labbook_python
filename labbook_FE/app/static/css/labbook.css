@@ -1,7 +1,12 @@
 
 .modal-dialog
-{ 
+{
 width : 750px;
+}
+
+.modal-dlg-cancel
+{ 
+width : 500px; !important
 }
 
 .modal-body

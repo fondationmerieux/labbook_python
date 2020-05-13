@@ -209,11 +209,46 @@ class File:
 
         req = 'select id_data, id_owner, id_dos, file, file_type, doc_type, date '\
               'from sigl_11_data '\
-              'where id_dos=%s and doc_type=257'
+              'where id_dos=%s and doc_type=1074 '\
+              'order by id_data desc limit 1'
 
         cursor.execute(req, (id_rec,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def insertFileReport(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_11_data '
+                           '(id_owner, id_dos, file, file_type, doc_type, date) '
+                           'values '
+                           '(%(id_owner)s, %(id_dos)s, UUID(), 259, %(doc_type)s, NOW())', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def insertFileReportGroup(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_11_data_group '
+                           '(id_data, id_group) '
+                           'values '
+                           '(%(id_data)s, %(id_group)s )', params)
+
+            File.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
 
     @staticmethod
     def deleteFileReportByRecord(id_rec):

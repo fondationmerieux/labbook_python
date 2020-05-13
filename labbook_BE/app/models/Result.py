@@ -146,11 +146,29 @@ class Result:
     def getResultValidation(id_res):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation '\
-              'from sigl_10_data '\
-              'where id_resultat=%s'
+        req = 'select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '\
+              'v.date_validation as date_validation, v.utilisateur as utilisateur, v.valeur as valeur, '\
+              'v.type_validation as type_validation, v.commentaire as commentaire, '\
+              'v.motif_annulation as motif_annulation, dico.label as label_motif '\
+              'from sigl_10_data as v '\
+              'left join sigl_dico_data as dico on dico.id_data=motif_annulation '\
+              'where id_resultat=%s '\
+              'order by id_data desc limit 1'
 
         cursor.execute(req, (id_res,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getLastTypeValidation(id_ana):
+        cursor = DB.cursor()
+
+        req = 'select valid.type_validation as type_validation '\
+              'from sigl_10_data as valid, sigl_09_data as res '\
+              'where valid.id_resultat=res.id_data and res.id_analyse=%s '\
+              'order by valid.id_data desc limit 1'
+
+        cursor.execute(req, (id_ana,))
 
         return cursor.fetchone()
 
@@ -160,9 +178,9 @@ class Result:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_10_data '
-                           '(id_owner, id_resultat, date_validation, utilisateur, type_validation) '
+                           '(id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation) '
                            'values '
-                           '(%(id_owner)s, %(id_resultat)s, NOW(),%(utilisateur)s, %(type_validation)s)', params)
+                           '(%(id_owner)s, %(id_resultat)s, %(date_validation)s, %(utilisateur)s, %(valeur)s, %(type_validation)s, %(commentaire)s, %(motif_annulation)s )', params)
 
             Result.log.info(Logs.fileline())
 

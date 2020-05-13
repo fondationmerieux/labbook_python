@@ -270,7 +270,6 @@ def list_results():
         date_end = date_beg
 
         payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'valid_res': 0}
-        # payload = {'date_beg': '2019-01-01', 'date_end': '2020-03-25', 'emer_ana': 0}  # TEST
 
         url = session['server_int'] + '/services/result/list'
         req = requests.post(url, json=payload)
@@ -280,6 +279,17 @@ def list_results():
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+
+    # Load list of technician
+    try:
+        url = session['server_int'] + '/services/user/role/3'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tech_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
 
     return render_template('list-results.html', ihm=json_ihm, args=json_data)
 
@@ -335,7 +345,6 @@ def enter_result(id_rec=0):
                         if req.status_code == 200:
                             unit = req.json()
 
-                            # get short_label (without prefix "dico_") in type_res
                             if unit and unit['label']:
                                 res['unit'] = unit['label']
 
@@ -390,6 +399,17 @@ def enter_result(id_rec=0):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+    # Load list of technician
+    try:
+        url = session['server_int'] + '/services/user/role/3'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tech_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
 
     return render_template('enter-result.html', ihm=json_ihm, args=json_data)
 
@@ -1058,6 +1078,17 @@ def technical_validation(id_rec=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
 
+    # Load list of technician
+    try:
+        url = session['server_int'] + '/services/user/role/3'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tech_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
+
     return render_template('technical-validation.html', ihm=json_ihm, args=json_data)
 
 
@@ -1068,6 +1099,154 @@ def biological_validation(id_rec=0):
 
     json_ihm  = {}
     json_data = {}
+
+    json_data['data_reports'] = []
+
+    id_pat = 0
+
+    # Load record
+    try:
+        url = session['server_int'] + '/services/record/det/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['record'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests record failed, err=%s , url=%s', err, url)
+
+    # Load list results
+    try:
+        url = session['server_int'] + '/services/result/record/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['list_res'] = req.json()
+
+            # Get result answer
+            if json_data['list_res']:
+                for res in json_data['list_res']:
+                    # load result types
+                    type_res = ''
+
+                    if res['type_resultat']:
+                        try:
+                            url = session['server_int'] + '/services/dico/id/' + str(res['type_resultat'])
+                            req = requests.get(url)
+
+                            if req.status_code == 200:
+                                type_res = req.json()
+
+                                # get short_label (without prefix "dico_") in type_res
+                                if type_res and type_res['short_label'].startswith("dico_"):
+                                    type_res = type_res['short_label'][5:]
+                                else:
+                                    type_res = ''
+
+                        except requests.exceptions.RequestException as err:
+                            log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+                    # get result label if a value has been entered
+                    if type_res and res['valeur']:
+                        try:
+                            url = session['server_int'] + '/services/dico/id/' + str(res['valeur'])
+                            req = requests.get(url)
+
+                            res['res_label'] = ''
+
+                            if req.status_code == 200:
+                                dico_tmp = req.json()
+                                res['res_label'] = dico_tmp['label']
+
+                        except requests.exceptions.RequestException as err:
+                            log.error(Logs.fileline() + ' : requests result label failed, err=%s , url=%s', err, url)
+                    else:
+                        res['res_label'] = res['valeur']
+
+                    # get unit label
+                    try:
+                        url = session['server_int'] + '/services/dico/id/' + str(res['unite'])
+                        req = requests.get(url)
+
+                        res['unit'] = ''
+
+                        if req.status_code == 200:
+                            unit = req.json()
+
+                            # get short_label (without prefix "dico_") in type_res
+                            if unit and unit['label']:
+                                res['unit'] = unit['label']
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+            # Load data patient
+            if res and res['id_pat']:
+                id_pat = res['id_pat']
+
+        # If no ResultRecord found we're looking for record information
+        else:
+            try:
+                url = session['server_int'] + '/services/record/det/' + str(id_rec)
+                req = requests.get(url)
+
+                if req.status_code == 200:
+                    json_data['record'] = req.json()
+
+                    # Load data patient
+                    if json_data['record']:
+                        id_pat = json_data['record']['id_patient']
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests results record failed, err=%s , url=%s', err, url)
+
+    json_data['patient'] = {}
+    if id_pat > 0:
+        try:
+            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['patient'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+    # Load list of biologist
+    try:
+        url = session['server_int'] + '/services/user/role/2'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['bio_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
+
+    # Load report attached to this record
+    try:
+        url = session['server_int'] + '/services/file/report/record/' + str(id_rec)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_reports'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report file failed, err=%s , url=%s', err, url)
+
+    # Load reasons to cancel a result
+    try:
+        url = session['server_int'] + '/services/dico/list/motif_annulation'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['cancel_reason'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests cancel reason failed, err=%s , url=%s', err, url)
 
     return render_template('biological-validation.html', ihm=json_ihm, args=json_data)
 
@@ -1089,13 +1268,18 @@ def download_file(type='', filename='', ref=''):
 
     # TYPE
     # BC => BarCode
+    # BI => Bill
     # JF => Join File
     # RP => Report
 
     if type == 'BC':
         filepath = '/home/apps/labbook_BE/labbook_BE/tmp/'
         generated_name = filename
+    elif type == 'BI':
+        filepath = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        generated_name = filename
     elif type == 'JF':
+        # ref = id_file
         try:
             url = session['server_int'] + '/services/file/document/' + ref
             req = requests.get(url)
@@ -1130,7 +1314,7 @@ def download_file(type='', filename='', ref=''):
 def upload_file(id_rec=0):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
     if request.method == 'POST':
-        try :
+        try:
             f = request.files['file']
 
             original_name = f.filename

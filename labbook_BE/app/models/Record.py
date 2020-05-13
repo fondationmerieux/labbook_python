@@ -205,3 +205,38 @@ class Record:
         except mysql.connector.Error as e:
             Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def generateBillNumber(id_rec):
+        try:
+            # Get last number
+            cursor = DB.cursor()
+
+            req = 'select num_fact '\
+                  'from sigl_02_data '\
+                  'order by num_fact desc limit 1'
+
+            cursor.execute(req)
+
+            num = cursor.fetchone()
+
+            if num['num_fact']:
+                bill_num = int(num['num_fact']) + 1
+                bill_num = str(bill_num).rjust(10, '0')
+            else:
+                bill_num = '0000000001'
+
+            cursor = DB.cursor()
+
+            req = 'update sigl_02_data '\
+                  'set num_fact=%s '\
+                  'where id_data=%s'
+
+            cursor.execute(req, (bill_num, id_rec,))
+
+            Record.log.info(Logs.fileline() + ' : generateBillNumber id_rec=' + str(id_rec))
+
+            return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

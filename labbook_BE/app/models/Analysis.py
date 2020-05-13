@@ -61,10 +61,13 @@ class Analysis:
     def getAnalysisReq(id_rec, type_ana):
         cursor = DB.cursor()
 
+        # Only analysis
         if type_ana == 'O':
             cond = ' and (cote_unite is NULL or cote_unite != "PB")'
+        # Only samples
         elif type_ana == 'N':
             cond = ' and cote_unite="PB"'
+        # Everything
         else:
             cond = ''
 

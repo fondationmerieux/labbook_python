@@ -38,7 +38,7 @@
                                         <div class="row">
                                             <div class="form-inline col-xs-12">
                                                 <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
-                                                    <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% endif %}</span>
+                                                    <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -406,7 +406,7 @@
                 </div>
 
                 <div class="form-group button" id="button">
-                    <input type="button" onclick="print_bill();" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
+                    <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
                     <input type="button" onclick="print_barcode();" id="bar_code" class="btn btn-primary" value="{{ _('Code barre') }}">
                     <input type="button" onclick="return_home();" id="exit" class="btn btn-default" value="{{ _('Quitter') }}">
                 </div>
@@ -525,9 +525,9 @@ let obj = data ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div class="yui-dt-liner"><a href="#">' + obj.name + '</a></div></td>' ;
+    tmp_tr += '<td class="filename"><div class="yui-dt-liner">' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div class="yui-dt-liner"><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', ' + obj.id_data + ');">Télécharger</a>';
-    tmp_tr += '- <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
     tmp_tr += '</tr>' ;
 
     tr_file += tmp_tr ;
@@ -665,9 +665,23 @@ function delete_file( id_file )
     return false ;
 }
 
-function print_bill()
+function print_bill( id_rec )
 {
-// TODO print_bill
+// TODO check user role rights ?
+    $.ajax( 
+    {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
+        success: function(ret)
+        {
+        download_file( "BI", "facture_" + num_rec_y + ".pdf", 0 ) ;
+        },
+        error: function(ret)
+        {
+        console.log("ERROR GET pdf bill");
+        alert("Erreur lors de la génération du PDF facture") ;
+        }
+    } ) ;
 }
 
 function print_barcode()

@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-- Biological validation
-- PDF bill
-- PDF report
 - Automatic calculation on some type of result (11 / 704) 
 - Automatic disconnection
 - Top menu
+
+## [2.9.0-beta.6] - 2020-05-13
+### Added
+- Biological validation 
+- Technical validation
+- PDF bill
+- PDF report
+
+### Fixed
+- Limit range icon in enter-result, list-result, tech/bio validation
 
 ## [2.9.0-beta.5] - 2020-04-30
 ### Fixed

@@ -24,7 +24,7 @@
                 <span class="num-dos" id="num_rec"></span>
             </div>
             <div class="form-control-static field readonly-field div-inline">
-                <span class="icon file-status status-a"  id="rec_stat"></span>
+                <span class="icon file-status" id="rec_stat"></span>
             </div>
             <form class="vzn-form form-horizontal row">
                 <fieldset id="pat-group-group" class="group group-1">
@@ -38,7 +38,7 @@
                                 <div class="row">
                                     <div class="form-inline col-xs-12">
                                         <div class="readonly-field form-control-static">
-                                            <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% endif %}</span>
+                                            <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -146,6 +146,7 @@
 {% block add_script %}
 <script>
 var data_res     = [] ;
+var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
 var list_id_ana  = [] ;
 var num_dos      = 0  ;
 var num_rec      = "" ;
@@ -161,10 +162,10 @@ let lastname  = data_res[i].user.lastname  ;
     $("#num_rec_h").text( {% if session['record_period'] == 1070 %}data_res[i].num_dos_mois{% else %}data_res[i].num_dos_an{% endif %} ) ;
     $("#label_res").text( data_res[i].nom ) ;
     $("#date_prescr").text( data_res[i].date_prescr ) ;
-    $("#stat_res").html( stat( data_res[i].stat ) );
+    $("#stat_res").html( status_res( data_res[i].validation.type_validation ) );
     $("#date_valid").text( data_res[i].validation.date_validation ) ;
     $("#ident_valid").text( firstname + ' ' + lastname ) ;
-    $("#type_valid").text( data_res[i].stat_label ) ; // TODO not sure of source of this info
+    $("#type_valid").text( data_res[i].stat_label ) ; // TODO CHANGE IT'S WRONG
 
     setTimeout(function()
     {
@@ -188,6 +189,370 @@ let val = $( "#res_"+id_res ).val() ;
         $("#limit_"+id_res).removeClass('show') ;
         $("#res_"+id_res).removeClass('error') ;
     }
+}
+
+function save_res( id_rec, ref_ana )
+{
+let param_list_answer = '{ "list_answer":[ ' ;
+
+    // GET answer 
+    $(".res-" + id_rec +"-"+ ref_ana ).each( function(i, elem)
+    {
+        if (i > 0)
+        param_list_answer += ', ' ;
+
+    let param_answer = '{ "id_owner":' + {{ session['user_id_group'] }} + ', ' +
+                         '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
+                         '"value":"' + $(this).val() + '"}' ;
+
+    param_list_answer += param_answer ;
+    } ) ;
+
+param_list_answer += ' ] }' ;
+
+    // UPDATE value
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/result/list/value" ,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_list_answer,
+        success: function(data)
+            {
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec ;
+            },
+        error: function(data)
+            {
+            console.log("ERROR result list") ;
+            alert("Une erreur est survenue lors de l'enregistrement des valeurs saisies") ;
+            }
+    } ) ;
+}
+
+function display_result( num_page )
+{
+    // hide no_result
+    if (data_res.length < 1)
+    $("#no_result").show() ;
+    else
+    $("#no_result").hide() ;
+
+gen_ihm_res( data_res ) ;
+}
+
+function enabled_save( id_rec, ref_ana )
+{
+    $(".btn_save_"+id_rec+"_"+ref_ana).prop("disabled", false) ;
+}
+
+function check_change( id_rec, ref_ana, id_res )
+{
+let new_value = $("#res_"+id_res).val() ;
+let old_value = $("#old_res_"+id_res).val() ;
+
+    if ( new_value != old_value ) 
+    {
+    $("#span_valid_"+id_rec+"_"+ref_ana).addClass('hide') ;
+    $("#span_valid_"+id_rec+"_"+ref_ana).removeClass('show') ;
+    }
+}
+
+function save_valid( id_rec, ref_ana )
+{
+let date_valid = $("#date_tech_"+ id_rec +"_"+ ref_ana).val() ;
+let user_valid = $("#validator_"+ id_rec +"_"+ ref_ana).val() ;
+
+let param_list_valid = '{ "list_valid":[ ' ;
+
+    // GET id_res and value
+    $(".res-" + id_rec +"-"+ ref_ana ).each( function(i, elem)
+    {
+        if (i > 0)
+        param_list_valid += ', ' ;
+
+    let param_valid = '{ "id_owner":' + {{ session['user_id_group'] }} + ', ' +
+                        '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
+                        '"date_valid":"' + date_valid + '", ' +
+                        '"user_valid":' + user_valid + ', ' +
+                        '"value":"' + $(this).val() + '"}' ;
+
+    param_list_valid += param_valid ;
+    } ) ;
+
+param_list_valid += ' ] }' ;
+
+    // result to validate
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/result/valid/T/" + id_rec,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_list_valid,
+        success: function(data)
+            {
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec ;
+            },
+        error: function(data)
+            {
+            console.log("ERROR result valid") ;
+            alert("Une erreur est survenue lors de validation technique des valeurs saisies") ;
+            }
+    } ) ;
+}
+
+function gen_ihm_res( data )
+{
+let res       = "" ;
+let id_rec    = 0  ;
+let ref_ana_p = 0  ;
+let id_res_p  = 0  ;
+
+let disp_valid = "hide" ;
+
+    {% if args['list_res'] %}
+    for( i in data )
+    {
+    id_rec      = data[i].id_dos  ;
+    let ref_ana = data[i].ref_ana ;
+    let id_res  = data[i].id_res  ;
+
+        // close the previous form
+        if ( ref_ana_p != 0 && ref_ana != ref_ana_p )
+        {
+        // close the form and table
+        res += '</tbody></table></div></fieldset>' +
+               '<div class="form-group button tech">' +
+                   '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">Enregistrer</button>&nbsp;&nbsp;' +
+                   '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
+                       '<span class="date-realisation">' +
+                           '<label>Date de validation </label>&nbsp;' +
+                           '<div class="field date-fields form-inline">' +
+                               '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
+                               '<span class="calendar-img" id="quick_calendar_button_validation-date-10_img">' +
+                                   '<img id="validation-date-10_img" src="/assets/widgets/calendar.gif">' +
+                               '</span>' +
+                           '</div>' +
+                       '</span>' +
+                       '<span class="realisation">' +
+                           '<label for="validator_' + id_rec +'_'+ ref_ana_p  + '">Technicien</label>&nbsp;' +
+                           '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p  + '" class="form-control">' +
+                               '<option value="0"> </option>' ;
+
+        // fill technical choice
+        for ( k in tech_list )
+        {
+        let selected   = "" ;
+        let tech_ident = tech_list[k].username ;
+
+            if ( tech_list[k].firstname != "" && tech_list[k].lastname != "" )
+            tech_ident =  tech_list[k].firstname + " " + tech_list[k].lastname ;
+
+            if ( tech_list[k].id_group == {{ session['user_id_group'] }} )
+            {
+            selected = "selected" ;
+            }
+            
+        res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
+        }
+
+        res +=             '</select>&nbsp;' +
+                       '</span>' +
+                       '<span class="valider">' +
+                           '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" value="Valider" class="btn btn-default" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">Valider</button>' +
+                       '</span>' +
+                       '<clear></clear>' +
+                   '</span>' +
+               '</div>' +
+               '</fieldset>' +
+               '</form>' ;
+
+        disp_valid = "hide" ;
+        }
+
+        // new analysis so new form
+        if ( ref_ana != ref_ana_p )
+        {
+        let res_name = data[i].nom ;
+        let res_fam  = " [" + data[i].famille + "]" ;
+
+            if (res_fam.length < 4) res_fam = "" ;
+
+        res += '<form enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row">' +
+               '<fieldset class="subform group group-1">' +
+               '<legend>' + res_name + res_fam + '</legend>' +
+               '<fieldset>' +
+               '<legend><span class="num-dos">' + num_rec + '</span>&nbsp;' + per_rec + '</legend>' +
+               '<div class="listing table-responsive yui-dt">' +
+               '<table class="main">' +
+               '<tbody class="yui-dt-data">' ;
+        }
+
+        // new analysis so new result line
+        if ( id_res != id_res_p )
+        {
+        let res_valid  = data[i].validation.type_validation
+        let res_stat   = status_res(res_valid) ;
+        let res_emer   = emer(data[i].urgent)
+        let res_label  = data[i].libelle ;
+        let res_unit   = data[i].unit ;
+        let res_limit  = '' ;
+        let res_answer = data[i].res_answer ;
+        let value      = data[i].valeur ;
+
+            if ( data[i].normal_min != "" && data[i].normal_max != "" )
+            {
+            let ico_limit = "hide" ;
+
+                if ( value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max) )
+                ico_limit = "show" ;
+
+            res_limit = '<span id="limit_' + id_res + '" class="oor ' + ico_limit + '"><span class="normals">[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]</span></span>' ;
+            }
+
+        res += '<tr class="yui-dt-rec">' +
+                   '<td></td>' +
+                   '<td class="icon-container">' + res_limit + '</td>' +
+                   '<td class="icon-container">' + res_emer + '</td>' +
+                   '<td class="icon-container status">' + res_stat +
+                   '</td>' +
+                   '<td class="icon-container history">' +
+                       '<div class="history-icon" onclick="display_histo(' + i + ');"></div>' +
+                   '</td>' +
+                   '<td class="icon-container var-label">' + res_label + '</td>' ;
+
+        res += '<td class="value"><span class="value">' ;
+
+            // CANCEL RESULT
+            if ( res_valid == 252 && value == "" )
+            {
+            res += 'ANNULEE</span>&nbsp;' ;
+            }
+            // SELECT CHOICE RESULT
+            else if ( res_answer.length > 1 )
+            {
+            let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ')"';
+
+                // Validated
+                if (res_valid != 250)
+                change = 'disabled' ;
+
+            res += '<select id="res_' + id_res + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')"' + change + ' >' +
+                   '<option value="0"> </option>' ;
+
+            value = "0" ;
+
+                for ( j in res_answer )
+                {
+                let selected = "" ;
+
+                    if ( data[i].valeur == res_answer[j].id_data )
+                    {
+                    selected = "selected" ;
+                    value = data[i].valeur ;
+
+                        if (res_valid == 250)
+                        disp_valid = "show" ;
+                    }
+                    
+                res += '<option value="' + res_answer[j].id_data + '" ' + selected + '>' + res_answer[j].label + '</option>' ;
+                }
+
+            res += '</select>' ;
+            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+            }
+            // WRITE RESULT
+            else if ( data[i].formule == "" )
+            {
+            let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ');' ;
+
+                if ( value != "" && res_valid == 250 )
+                disp_valid = "show" ;
+
+                if ( data[i].normal_min != "" && data[i].normal_max != "" )
+                change += 'check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');"' ;
+                else
+                change += '"' ;
+
+                // Validated
+                if (res_valid != 250)
+                change = 'disabled' ;
+
+            res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
+            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+            }
+            // READONLY RESULT
+            else
+            {
+            let value = data[i].valeur ;
+
+            res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
+            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+            }
+
+        res += '<span class="unit show">' + res_unit + '</span></td>' +
+               '<td class="optionnal">&nbsp;</td></tr>' ;
+        }
+
+    ref_ana_p = ref_ana ;
+    id_res_p  = id_res  ;
+    }
+
+    // close last form
+    if ( res != "" )
+    {
+    // close the form and table
+    res += '</tbody></table></div></fieldset>' +
+           '<div class="form-group button tech">' +
+               '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">Enregistrer</button>&nbsp;&nbsp;' +
+               '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
+                   '<span class="date-realisation">' +
+                       '<label>Date de validation </label>&nbsp;' +
+                       '<div class="field date-fields form-inline">' +
+                           '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
+                           '<span class="calendar-img" id="quick_calendar_button_validation-date-10_img">' +
+                               '<img id="validation-date-10_img" src="/assets/widgets/calendar.gif">' +
+                           '</span>' +
+                       '</div>' +
+                   '</span>' +
+                   '<span class="realisation">' +
+                       '<label for="validator_' + id_rec +'_'+ ref_ana_p + '">Technicien</label>&nbsp;' +
+                       '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p + '" class="form-control">' +
+                           '<option value="0"> </option>' ;
+
+    // fill technical choice
+    for ( k in tech_list )
+    {
+    let selected   = "" ;
+    let tech_ident = tech_list[k].username ;
+
+        if ( tech_list[k].firstname != "" && tech_list[k].lastname != "" )
+        tech_ident =  tech_list[k].firstname + " " + tech_list[k].lastname ;
+
+        if ( tech_list[k].id_group == {{ session['user_id_group'] }} )
+        {
+        selected = "selected" ;
+        }
+        
+    res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
+    }
+
+    res +=             '</select>&nbsp;' +
+                   '</span>' +
+                   '<span class="valider">' +
+                       '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" value="Valider" class="btn btn-default" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">Valider</button>' +
+                   '</span>' +
+                   '<clear></clear>' +
+               '</span>' +
+           '</div>' +
+           '</fieldset>' +
+           '</form>' ;
+    }
+
+    $("#list_result").html( res ) ;
+    {% endif %}
+// $("#list_result_test").text( JSON.stringify(data) ) ;
 }
 
 function add_analysis()
@@ -280,195 +645,9 @@ param_list_res += ' ] }';
     } ) ;
 }
 
-function save_res( id_rec )
-{
-let param_list_answer = '{ "list_answer":[ ' ;
-
-    // GET answer 
-    $(".res-" + id_rec).each( function(i, elem)
-    {
-        if (i > 0)
-        param_list_answer += ', ' ;
-
-    let param_answer = '{ "id_owner":' + {{ session['user_id_group'] }} + ', ' +
-                         '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
-                         '"value":"' + $(this).val() + '"}' ;
-
-    param_list_answer += param_answer ;
-    } ) ;
-
-param_list_answer += ' ] }' ;
-
-    // UPDATE value
-    $.ajax( 
-    {
-        type: "POST",
-        url: "/services/result/list/value" ,
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param_list_answer,
-        success: function(data)
-            {
-            // TODO display HTML elements for date validation
-            },
-        error: function(data)
-            {
-            console.log("ERROR result list") ;
-            alert("Une erreur est survenue lors de l'enregistrement des valeurs saisies") ;
-            }
-    } ) ;
-}
-
-function display_result( num_page )
-{
-    // hide no_result
-    if (data_res.length < 1)
-    $("#no_result").show() ;
-    else
-    $("#no_result").hide() ;
-
-gen_ihm_res( data_res ) ;
-}
-
-function enabled_save( id_rec )
-{
-    $(".btn_save_"+id_rec).prop("disabled", false) ;
-}
-
-function gen_ihm_res( data )
-{
-let res       = "" ;
-let id_rec    = 0  ;
-let ref_ana_p = 0  ;
-let id_res_p  = 0  ;
-
-    {% if args['list_res'] %}
-    for( i in data )
-    {
-    id_rec      = data[i].id_dos  ;
-    let ref_ana = data[i].ref_ana ;
-    let id_res  = data[i].id_res  ;
-
-        // close the previous form
-        if ( ref_ana_p != 0 && ref_ana != ref_ana_p )
-        {
-        // close the form and table
-        res += '</tbody></table></div></fieldset>' +
-               '<div class="form-group button tech">' +
-                   '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec  + '" disabled onclick="save_res(' + id_rec + ');">Enregistrer</button>' +
-               '</div>' +
-               '</fieldset>' +
-               '</form>' ;
-        }
-
-        // new analysis so new form
-        if ( ref_ana != ref_ana_p )
-        {
-        ref_ana_p = ref_ana ;
-
-        let res_name     = data[i].nom ;
-        let res_fam      = " [" + data[i].famille + "]" ;
-
-            if (res_fam.length < 4) res_fam = "" ;
-
-        res += '<form enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row">' +
-               '<fieldset class="subform group group-1">' +
-               '<legend>' + res_name + res_fam + '</legend>' +
-               '<fieldset>' +
-               '<legend><span class="num-dos">' + num_rec + '</span>&nbsp;' + per_rec + '</legend>' +
-               '<div class="listing table-responsive yui-dt">' +
-               '<table class="main">' +
-               '<tbody class="yui-dt-data">' ;
-        }
-
-        // new analysis so new result line
-        if ( id_res != id_res_p )
-        {
-        id_res_p = id_res ;
-
-        let res_stat  = stat(data[i].stat) ;
-        let res_emer  = emer(data[i].urgent)
-        let res_label = data[i].libelle ;
-        let res_unit  = data[i].unit ;
-        let res_limit = '' ;
-
-            if ( data[i].normal_min != "" && data[i].normal_max != "" )
-            res_limit = '<span id="limit_' + id_res + '" class="oor hide"><span class="normals">[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]</span></span>' ;
-
-        res += '<tr class="yui-dt-rec">' +
-                   '<td></td>' +
-                   '<td class="icon-container">' + res_limit + '</td>' +
-                   '<td class="icon-container">' + res_emer + '</td>' +
-                   '<td class="icon-container status">' + res_stat +
-                   '</td>' +
-                   '<td class="icon-container history">' +
-                       '<div class="history-icon" onclick="display_histo(' + i + ');"></div>' +
-                   '</td>' +
-                   '<td class="icon-container var-label">' + res_label + '</td>' ;
-
-        let res_answer = data[i].res_answer ;
-
-        res += '<td class="value"><span class="value">' ;
-
-            if ( res_answer.length > 1 )
-            {
-            res += '<select id="res_' + id_res + '" class="form-control saved res-' + id_rec + '" onfocus="enabled_save(' + id_rec + ')">' +
-                   '<option value="0"> </option>' ;
-
-                for ( j in res_answer )
-                {
-                let selected = "" ;
-
-                    if ( data[i].valeur == res_answer[j].id_data )
-                    selected = "selected" ;
-                    
-                res += '<option value="' + res_answer[j].id_data + '" ' + selected + '>' + res_answer[j].label + '</option>' ;
-                }
-
-            res += '</select>' ;
-            }
-            else if ( data[i].formule == "" )
-            {
-            let value  = data[i].valeur ;
-            let change = '' ;
-
-                if ( data[i].normal_min != "" && data[i].normal_max != "" )
-                change = 'onchange="check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');"' ;
-
-            res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec + '" onfocus="enabled_save(' + id_rec + ')" ' + change + ' size="6">' ;
-            }
-            else
-            {
-            let value = data[i].valeur ;
-
-            res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec + '" readonly size="6">' ;
-            }
-
-        res += '<input type="hidden" value="' + data[i].type_resultat + '"></span>&nbsp;' +
-               '<span class="unit show">' + res_unit + '</span></td>' +
-               '<td class="optionnal">&nbsp;</td></tr>' ;
-        }
-    }
-
-    // close last form
-    if ( res != "" )
-    {
-    // close the form and table
-    res += '</tbody></table></div></fieldset>' +
-           '<div class="form-group button tech">' +
-               '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec  + '" disabled onclick="save_res(' + id_rec + ');">Enregistrer</button>' +
-           '</div>' +
-           '</fieldset>' +
-           '</form>' ;
-    }
-
-    $("#list_result").html( res ) ;
-    {% endif %}
-// $("#list_result_test").text( JSON.stringify(data) ) ;
-}
-
 $("#search_analysis").select2(
 {
+    placeholder: "Rechercher une analyse",
     tokenSeparators: [',', ' '],
     minimumInputLength: 2,
     ajax: {
@@ -556,7 +735,7 @@ $("#div_add_analysis").show() ;
 
 $( document ).ready( function()
 {
-data_res = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
+data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
 
 {% if session['record_period'] == 1070 %} // Month period
 num_dos = data_res[0].num_dos_mois ;
@@ -566,7 +745,7 @@ num_dos = data_res[0].num_dos_an ;
 
 num_rec  = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
 per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-rec_stat = stat(data_res[0].stat) ;
+rec_stat = status_rec(data_res[0].stat) ;
 
     $("#num_rec").html(num_rec)   ;
     $("#rec_stat").html(rec_stat) ;

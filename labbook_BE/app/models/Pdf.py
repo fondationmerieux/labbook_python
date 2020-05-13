@@ -1,16 +1,20 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
 import barcode
 import pdfkit
 
 from barcode.writer import ImageWriter
+from datetime import datetime
 
+from app.models.Analysis import Analysis
 from app.models.DB import DB
 from app.models.Logs import Logs
 from app.models.Constants import Constants
+from app.models.Patient import Patient
 from app.models.Record import Record
+from app.models.Result import Result
 from app.models.Various import Various
+from app.models.User import User
 
 
 class Pdf:
@@ -37,15 +41,141 @@ class Pdf:
     @staticmethod
     def getPdfBill(id_rec):
         path = 'tmp/'
+        # CHANGE PATH TO EASY VIEW TEST PDF
+        # path = '/space/www/apps/labbook/labbook_2.05/public/test_pdf_python/'
+
+        # Get format header
+        pdfpref = Pdf.getPdfPref()
+
+        full_header = True
+
+        if pdfpref and pdfpref['entete'] == 1069:
+            full_header = False
 
         # Get record details
         record = Record.getRecord(id_rec)
 
-        num_rec_y = record['num_dos_an']
+        num_rec_y   = record['num_dos_an']
+        bill_num    = record['num_fact']  # TODO insert before to get from record['num_fact']
+        receipt_num = record['num_quittance']
 
-        page_header = Pdf.getPdfHeader()
-        page_body   = ''
-        page_footer = '</div>'
+        if receipt_num:
+            receipt_num = '<div><span class="ft_bill_rec">N° quittance : ' + receipt_num + '</span></div>'
+        else:
+            receipt_num = ''
+
+        # Get Patient details
+        pat = Patient.getPatient(record['id_patient'])
+
+        addr_div = ''
+
+        if pat:
+            addr_div += '<div style="width:475px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:right;">'
+
+            if pat['nom'] or pat['prenom']:
+                pat_lname = ''
+                pat_fname = ''
+
+                if pat['nom']:
+                    pat_lname = pat['nom']
+
+                if pat['nom_jf']:
+                    pat_lname += '&nbsp;' + pat['nom_jf']
+
+                if pat['prenom']:
+                    pat_fname = pat['prenom']
+
+                addr_div += '<div><span class="ft_pat_ident">' + pat_lname + '&nbsp;' + pat_fname + '</span></div>'
+
+            if pat['adresse']:
+                addr_div += '<div><span class="ft_pat_addr">' + pat['adresse'] + '</span></div>'
+
+            if pat['cp'] or pat['ville']:
+                pat_zip = ''
+                pat_city = ''
+
+                if pat['cp']:
+                    pat_zip = pat['cp']
+
+                if pat['ville']:
+                    pat_city = pat['ville']
+
+                addr_div += '<div><span class="ft_pat_addr">' + pat_zip + '&nbsp;' + pat_city + '</span></div>'
+
+            addr_div += '</div>'
+
+        l_ana = Analysis.getAnalysisReq(id_rec, '')
+
+        bill_div = ''
+        ana_div  = ''
+        samp_div = ''
+
+        if l_ana:
+            bill_div += '<div style="width:980px;height:460px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
+
+            for ana in l_ana:
+                # Requested analysis
+                if ana['cote_unite'] is None or ana['cote_unite'] != 'PB':
+                    if not ana_div:
+                        ana_div += '<div><span class="ft_bill_det_tit">Analyses demandées</span></div>'
+
+                    ana_div += """\
+                            <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + ana['code'] + """</span>
+                                 <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + ana['nom'] + """</span>
+                                 <span class="ft_bill_det" style="width:120px;display:inline-block;text-align:right;">""" + str(ana['prix']) + """</span></div>"""
+
+                # Requested samples
+                if ana['cote_unite'] == 'PB':
+                    if not samp_div:
+                        samp_div += '<div><span class="ft_bill_det_tit">Actes de prélèvements</span></div>'
+
+                    # No display of samples without price
+                    if ana['prix'] > 0:
+                        samp_div += """\
+                                <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + ana['code'] + """</span>
+                                     <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + ana['nom'] + """</span>
+                                     <span class="ft_bill_det" style="width:120px;display:inline-block;text-align:right;">""" + str(ana['prix']) + """</span></div>"""
+
+            if ana_div:
+                bill_div += ana_div + '<br />'
+
+            if samp_div:
+                bill_div += samp_div + '<br />'
+
+            # bill_price and bill_remain
+            bill_div += """\
+                    <div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">Total</span>
+                         <span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;"">""" + str(record['prix']) + """</span>
+                    </div>
+                    <div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">Total à payer</span>
+                         <span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;">""" + str(record['a_payer']) + """</span>
+                    </div>"""
+
+            bill_div += '</div>'
+
+        page_header = Pdf.getPdfHeader(full_header)
+
+        page_body = """\
+                <div style="width:1000px;">
+                    <div style="width:475px;padding:10px;background-color:#FFF;float:left;">
+                        <div><span class="ft_bill_num">FACTURE : """ + bill_num + """</span></div>
+                        <div><span class="ft_bill_rec">N° dossier : """ + num_rec_y + """</span></div>
+                        """ + receipt_num + """
+                    </div>
+                    """ + addr_div + bill_div + """
+                    <div style="clear:both;"></div>
+                </div>"""
+
+        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
+
+        page_footer = """\
+                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
+                    <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Facture n°""" + bill_num + """, édité le """ + date_now + """</span>
+                         <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page 1/1</span></div>
+                </div>
+                <hr style="width:100%;border-top: 2px dashed dimgrey;">"""
+
+        page_footer += '</div>'
 
         filename = 'facture_' + num_rec_y + '.pdf'
 
@@ -53,10 +183,10 @@ class Pdf:
 
         options = {'--encoding': 'utf-8',
                    'page-size': 'A4',
-                   'margin-top': '100.00mm',
-                   'margin-right': '100.00mm',
-                   'margin-bottom': '100.00mm',
-                   'margin-left': '100.00mm',
+                   'margin-top': '0.00mm',
+                   'margin-right': '0.00mm',
+                   'margin-bottom': '0.00mm',
+                   'margin-left': '0.00mm',
                    'no-outline': None}
 
         pdfkit.from_string(form_cont, path + filename, options=options)
@@ -64,10 +194,412 @@ class Pdf:
         return True
 
     @staticmethod
-    def getPdfHeader():
-        header = """<div style='padding:0px;width:1000px;height:1400px;border:0px;font-family:arial;background-color:#AAA;color:black;font-size:20px;'>"""
+    def getPdfReport(id_rec, filename):
+        path = '/space/www/apps/labbook/labbook_2.05/files/'
+        # CHANGE PATH TO EASY VIEW TEST PDF
+        # path = '/space/www/apps/labbook/labbook_2.05/public/test_pdf_python/'
 
-        head_logo = ''
+        # Get format header
+        pdfpref = Pdf.getPdfPref()
+
+        full_header = True
+        full_comm   = False
+
+        if pdfpref and pdfpref['entete'] == 1069:
+            full_header = False
+
+        if pdfpref and pdfpref['commentaire'] == 1049:
+            full_comm = True
+
+        # Get record details
+        record = Record.getRecord(id_rec)
+
+        num_rec_y = record['num_dos_an']
+
+        # Get Patient details
+        pat = Patient.getPatient(record['id_patient'])
+
+        # Patient birth
+        birth = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+
+        # Patient Age
+        age = str(pat['age'])
+
+        if pat['unite'] == 1037:
+            age += ' ans'
+        elif pat['unite'] == 1036:
+            age += ' mois'
+        elif pat['unite'] == 1035:
+            age += ' semaines'
+        elif pat['unite'] == 1034:
+            age += ' jours'
+
+        # Patient Sex
+        sex = ''
+
+        if pat['sexe'] == 1:
+            sex += 'Masculin'
+        elif pat['sexe'] == 2:
+            sex += 'Feminin'
+        elif pat['sexe'] == 3:
+            sex += 'Inconnu'
+
+        # Block det record
+        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
+
+        rec_div  = '<div style="width:465px;height:80px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:left;">'
+
+        rec_div += '<div><span class="ft_rec_det">Dossier ' + num_rec_y + ' de ' + pat['prenom'] + '&nbsp;' + pat['nom'] + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">Né le ' + birth + ' - ' + age + ' - ' + sex + ' - Code ' + pat['code'] + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">Examen prescrit le ' + datetime.strftime(record['date_prescription'], '%d/%m/%Y') + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + date_now + '</span></div>'
+
+        rec_div += '</div>'
+
+        # Block patient address
+        addr_div = ''
+
+        if pat:
+            addr_div += '<div style="width:465px;height:80px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:right;">'
+
+            if pat['nom'] or pat['prenom']:
+                pat_lname = ''
+                pat_fname = ''
+
+                if pat['nom']:
+                    pat_lname = pat['nom']
+
+                if pat['nom_jf']:
+                    pat_lname += '&nbsp;' + pat['nom_jf']
+
+                if pat['prenom']:
+                    pat_fname = pat['prenom']
+
+                addr_div += '<div><span class="ft_pat_ident">' + pat_lname + '&nbsp;' + pat_fname + '</span></div>'
+
+            if pat['adresse']:
+                addr_div += '<div><span class="ft_pat_addr">' + pat['adresse'] + '</span></div>'
+
+            if pat['cp'] or pat['ville']:
+                pat_zip = ''
+                pat_city = ''
+
+                if pat['cp']:
+                    pat_zip = pat['cp']
+
+                if pat['ville']:
+                    pat_city = pat['ville']
+
+                addr_div += '<div><span class="ft_pat_addr">' + pat_zip + '&nbsp;' + pat_city + '</span></div>'
+
+            addr_div += '</div>'
+
+        l_res = Result.getResultRecord(id_rec)
+
+        id_ana_p = 0
+        id_res_p = 0
+
+        report_div = '<div style="width:980px;height:1090px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
+        res_div    = ''
+
+        if l_res:
+            for res in l_res:
+                # New analysis div
+                if res['id_ana'] != id_ana_p and res['id_res'] != id_res_p:
+                    # close previous analysis div
+                    if id_ana_p > 0:
+                        res_div += '</div>'
+                        # comment and who make validation
+                        res_valid = Result.getResultValidation(id_res_p)
+
+                        user = User.getUserByIdGroup(res_valid['utilisateur'])
+
+                        if user['lastname'] and user['firstname']:
+                            user = user['lastname'] + ' ' + user['firstname']
+                        else:
+                            user = user['username']
+
+                        if res_valid['commentaire']:
+                            res_comm = res_valid['commentaire']
+                        else:
+                            res_comm = ''
+
+                        if full_comm:
+                            comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + res_comm + '</span></div>'
+                        else:
+                            comm_div = ''
+
+                        res_div += comm_div + """\
+                                <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + user + """</span></div>"""
+
+                    id_ana_p = res['id_ana']
+                    id_res_p = res['id_res']
+
+                    res_name = ''
+                    res_fam  = ''
+
+                    if res['famille']:
+                        res_fam = res['famille']
+
+                    if res['nom']:
+                        res_name = res['nom']
+
+                    res_div += """\
+                            <div><span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">""" + res_fam + """</span>
+                                 <span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">""" + res_name + """</span>"""
+
+                # Get label of value
+                type_res = Various.getDicoById(res['type_resultat'])
+
+                if type_res and type_res['short_label'].startswith("dico_"):
+                    type_res = type_res['short_label'][5:]
+                else:
+                    type_res = ''
+
+                if type_res and res['valeur']:
+                    val = Various.getDicoById(res['valeur'])
+                    val = val['label']
+                else:
+                    val = res['valeur']
+                    if res['unite']:
+                        unit = Various.getDicoById(res['unite'])
+                        if unit:
+                            val += '&nbsp;' + unit['label']
+
+                # Get normal of value
+                ref = ''
+
+                if res['normal_min'] and res['normal_max']:
+                    ref = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
+
+                # Get previous result if exist
+                res_prev = ''  # TODO get res_prev
+
+                # new line of result
+                res_div += """<div style="margin-bottom:10px;">\
+                             <span class="ft_res_label" style="width:370px;display:inline-block;text-align:left;padding-left:15px;">""" + res['libelle'] + """</span>
+                             <span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">""" + val + """</span>
+                             <span class="ft_res_ref" style="width:180px;display:inline-block;text-align:center;">""" + ref + """</span>
+                             <span class="ft_res_prev" style="width:180px;display:inline-block;text-align:right;">""" + res_prev + """</span></div>"""
+
+            if res_div:
+                report_div += res_div
+
+                # comment and who make validation
+                res_valid = Result.getResultValidation(id_res_p)
+
+                user = User.getUserByIdGroup(res_valid['utilisateur'])
+
+                if user['lastname'] and user['firstname']:
+                    user = user['lastname'] + ' ' + user['firstname']
+                else:
+                    user = user['username']
+
+                if res_valid['commentaire']:
+                    res_comm = res_valid['commentaire']
+                else:
+                    res_comm = ''
+
+                if full_comm:
+                    comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + res_comm + '</span></div>'
+                else:
+                    comm_div = ''
+
+                report_div += comm_div + """\
+                        <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + user + """</span></div>
+                        </div>"""
+
+        report_div += '</div>'
+
+        page_header = Pdf.getPdfHeader(full_header)
+
+        page_body = """\
+                <div style="width:1000px;">""" + rec_div + addr_div + """</div>
+                <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
+                <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
+                    <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
+                    <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
+                    <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
+                    <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
+                </div>
+                <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
+
+        page_footer = """\
+                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
+                    <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page 1/1</span></div>
+                </div>"""
+
+        page_footer += '</div>'
+
+        form_cont = page_header + page_body + page_footer
+
+        options = {'--encoding': 'utf-8',
+                   'page-size': 'A4',
+                   'margin-top': '0.00mm',
+                   'margin-right': '0.00mm',
+                   'margin-bottom': '0.00mm',
+                   'margin-left': '0.00mm',
+                   'no-outline': None}
+
+        pdfkit.from_string(form_cont, path + filename, options=options)
+
+        return True
+
+    @staticmethod
+    def getPdfHeader(full_header):
+        # Width 47px <=> 1cm, Height 47px <=> 1cm
+        header = """\
+                <style>
+                .ft_lab_name
+                {
+                font        : 26px Helvetica;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_header
+                {
+                font        : 15px Helvetica;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_bill_num
+                {
+                font        : 26px Helvetica;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_bill_rec
+                {
+                font        : 18px Helvetica;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_rec_det
+                {
+                font        : 15px Helvetica;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_pat_ident
+                {
+                font        : 20px Helvetica;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_pat_addr
+                {
+                font        : 15px Helvetica;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_bill_det_tit
+                {
+                font        : 15px Helvetica;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_bill_det
+                {
+                font        : 18px Courier;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_bill_det_tot
+                {
+                font        : 18px Courier;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_report_tit
+                {
+                font        : 20px Courier;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_cat_tit
+                {
+                font        : 13px Courier;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_res_fam
+                {
+                font        : 26px Helvetica;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_res_name
+                {
+                font        : 18px Helvetica;
+                font-weight : bold;
+                font-style  : normal;
+                }
+
+                .ft_res_label
+                {
+                font        : 18px Courier;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_res_value
+                {
+                font        : 18px Courier;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_res_ref
+                {
+                font        : 16px Courier;
+                font-weight : normal;
+                font-style  : normal;
+                }
+
+                .ft_res_prev
+                {
+                font        : 15px Courier;
+                font-weight : normal;
+                font-style  : italic;
+                }
+
+                .ft_res_comm
+                {
+                font        : 18px Courier;
+                font-weight : normal;
+                font-style  : italic;
+                }
+
+                .ft_res_valid
+                {
+                font        : 18px Courier;
+                font-weight : normal;
+                font-style  : italic;
+                }
+
+                .ft_footer
+                {
+                font        : 18px Courier;
+                font-weight : normal;
+                font-style  : italic;
+                }
+                </style>
+                <div style='padding:50px;width:1000px;height:1410px;border:0px;font-family:arial;background-color:#FFF;color:black;font-size:20px;'>"""
+
+        head_logo = '<img src="/space/www/apps/labbook/labbook_2.05/resources/images/logo.png" width="230px;">'
 
         head_name  = Various.getDefaultValue('entete_1')
         head_line2 = Various.getDefaultValue('entete_2')
@@ -77,11 +609,36 @@ class Pdf:
         head_fax   = Various.getDefaultValue('entete_fax')
         head_email = Various.getDefaultValue('entete_email')
 
+        extra_header = ''
+
+        if full_header:
+            extra_header += """\
+                        <div><span style="font: 15px 'Helvetica';">""" + head_line2['value'] + """</span></div>
+                        <div><span style="font: 15px 'Helvetica';">""" + head_line3['value'] + """</span></div>"""
+
         header += """\
-                <div><span>""" + head_name['value'] + """</span></div>
-                <div><span>""" + head_line2['value'] + """</span></div>
-                <div><span>""" + head_line3['value'] + """</span></div>
-                <div><span>""" + head_addr['value'] + """</span></div>
-                <div><span>""" + head_phone['value'] + """</span><span>""" + head_fax['value'] + """</span><span>""" + head_email['value'] + """</span></div>"""
+                <div style="width:1000px;height:140px;background-color:#FFF;">
+                    <div style="float:left;width:250px;">""" + head_logo + """</div>
+                    <div style="float:right;width:750px;">
+                        <div><span class="ft_lab_name">""" + head_name['value'] + """</span></div>
+                        """ + extra_header + """
+                        <div><span class="ft_header">""" + head_addr['value'] + """</span></div>
+                        <div><span class="ft_header">TEL : """ + head_phone['value'] + """&nbsp;</span>
+                             <span class="ft_header">FAX : """ + head_fax['value'] + """&nbsp;</span>
+                             <span class="ft_header">EMAIL : """ + head_email['value'] + """&nbsp;</span></div>
+                    </div>
+                </div>"""
 
         return header
+
+    @staticmethod
+    def getPdfPref():
+        cursor = DB.cursor()
+
+        req = 'select id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, entete, commentaire '\
+              'from sigl_param_cr_data '\
+              'limit 1'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()

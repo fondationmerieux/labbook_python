@@ -28,3 +28,23 @@ class UserDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE UserDet')
         return compose_ret(user, Constants.cst_content_type_json)
+
+
+class UserByRole(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_role):
+        l_users = User.getUsersByRole(id_role)
+
+        if not l_users:
+            self.log.error(Logs.fileline() + ' : TRACE UserByRole')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for user in l_users:
+            # Replace None by empty string
+            for key, value in user.items():
+                if user[key] is None:
+                    user[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE UserByRole')
+        return compose_ret(l_users, Constants.cst_content_type_json)

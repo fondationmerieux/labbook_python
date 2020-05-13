@@ -201,34 +201,6 @@ var p_step       = 20 ;
 var p_cur        = 1 ;
 var p_max        = Math.ceil( {{ args|length }} / p_step ) ;
 
-function stat( id_stat )
-{
-let res = '' ;
-
-    if ( id_stat == 182 )
-    res = '<span class="icon status-a">A</span>' ;
-    else if ( id_stat == 253 )
-    res = '<span class="icon status-a">I</span>' ;
-    else if ( id_stat == 254 )
-    res = '<span class="icon status-t">T</span>' ;
-    else if ( id_stat == 255 )
-    res = '<span class="icon status-t">I</span>' ;
-    else if ( id_stat == 256 )
-    res = '<span class="icon status-b">B</span>' ;
-
-return res ;
-}
-
-function emer( flag_emer )
-{
-let res = '' ;
-
-    if ( flag_emer == "O" )
-    res = '<span class="icon urgent">&nbsp;</span>' ;
-
-return res ;
-}
-
 function filter_record()
 {
 let num_rec  = $("#f_num_rec").val()  ;
@@ -302,6 +274,7 @@ let tr_class= '' ;
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/technical-validation/' + data_records[i].id_data + '">Validation technique</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/biological-validation/' + data_records[i].id_data + '">Validation biologique</a></li>' +
                    '<li><a class="menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">Supprimer</a></li></ul></ul>' ;
 
         if ( data_records[i].urgent == "O" )
@@ -311,7 +284,7 @@ let tr_class= '' ;
 
     res += '<tr ' + tr_style + '><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
            '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' +
-           '<td><div class="yui-dt-liner string" style="text-align:center;">' + stat( data_records[i].stat ) + '</div></td>' +
+           '<td><div class="yui-dt-liner string" style="text-align:center;">' + status_rec( data_records[i].stat ) + '</div></td>' +
            '<td><div class="yui-dt-liner string" style="text-align:center;">' + emer( data_records[i].urgent ) + '</div></td>' +
            '<td><div class="yui-dt-liner integer" style="text-align:center;"><span class="num-dos">' + data_records[i].num_dos + '</span></div></td>' +
            '<td><div class="yui-dt-liner date" style="text-align:center;">' + data_records[i].date_dos + '</div></td>' +

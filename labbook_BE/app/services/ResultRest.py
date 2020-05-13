@@ -6,12 +6,15 @@ from flask import request
 from flask_restful import Resource
 
 from app.models.General import compose_ret
-from app.models.Constants import *
-from app.models.Various import *
-from app.models.Result import *
-from app.models.Analysis import *
-from app.models.User import *
 from app.models.Logs import Logs
+from app.models.Analysis import *
+from app.models.Constants import *
+from app.models.File import *
+from app.models.Pdf import *
+from app.models.Record import *
+from app.models.Result import *
+from app.models.User import *
+from app.models.Various import *
 
 
 class ResultValue(Resource):
@@ -180,14 +183,15 @@ class ResultCreate(Resource):
             self.log.error(Logs.fileline() + ' : ResultCreate ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        """ TODO WRONG ? NEED TO TEST
         if args['user_role'] == 'secretaire':
             type_validation = 250
         elif args['user_role'] == 'technicien':
             type_validation = 251
         elif args['user_role'] == 'biologiste':
             type_validation = 252
-        else:
-            type_validation = 250
+        else:"""
+        type_validation = 250
 
         # In case of add new analysis
         if 'list_ref' in args:
@@ -242,8 +246,12 @@ class ResultCreate(Resource):
                     # insert corresponding validation
                     ret = Result.insertValidation(id_owner=args['id_owner'],
                                                   id_resultat=res['id_res'],
+                                                  date_validation=datetime.strftime(datetime.now(), "%Y/%m/%d %H:%M:%S"),
                                                   utilisateur=args['id_owner'],
-                                                  type_validation=type_validation)
+                                                  valeur=None,
+                                                  type_validation=type_validation,
+                                                  commentaire=None,
+                                                  motif_annulation=None)
 
                     if ret <= 0:
                         self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert validation')
@@ -268,4 +276,255 @@ class ResultCreate(Resource):
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ResultCreate')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ResultValid(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, type_valid, id_rec):
+        args = request.get_json()
+
+        if 'list_valid' not in args:
+            self.log.error(Logs.fileline() + ' : TRACE ResultValid ERROR list_valid missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        if type_valid == 'T':
+            type_validation = 251  # Technical result
+            stat_rec = 254         # Technical record
+            comment = None
+        elif type_valid == 'B':
+            type_validation = 252  # Biological result
+            stat_rec = 256         # Biological record
+            if args['comm_valid']:
+                comment = args['comm_valid']
+            else:
+                comment = None
+        else:
+            self.log.error(Logs.fileline() + ' : TRACE ResultValid type_valid ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # VALIDATION : insert validation
+        for valid in args['list_valid']:
+            id_owner = valid['id_owner']
+            ret = Result.insertValidation(id_owner=valid['id_owner'],
+                                          id_resultat=valid['id_res'],
+                                          date_validation=valid['date_valid'],
+                                          utilisateur=valid['user_valid'],
+                                          valeur=valid['value'],
+                                          type_validation=type_validation,
+                                          commentaire=comment,
+                                          motif_annulation=None)
+
+            if ret <= 0:
+                self.log.error(Logs.fileline() + ' : TRACE ResultValid insertValidation ERROR')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            res = {}
+            res['id_valid'] = ret
+
+            # Get id_group of lab with id_group of user
+            id_group_lab = User.getUserGroupParent(id_owner)
+
+            if not id_group_lab:
+                self.log.error(Logs.fileline() + ' : ResultValid ERROR group not found')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # insert sigl_10_data_group
+            ret = Result.insertValidationGroup(id_data=res['id_valid'],
+                                               id_group=id_group_lab['id_group_parent'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : ResultValid ERROR  insert group validation')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # check if it was the last validation to do
+        stat_rec = 253  # Technical intermediate record
+
+        l_res = Result.getResultRecord(id_rec)
+
+        if not l_res:
+            self.log.error(Logs.fileline() + ' : TRACE ResultValid getResultRecord ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        for res in l_res:
+            last_type = Result.getLastTypeValidation(res['id_ana'])
+            if last_type:
+                if type_valid == 'T' and last_type['type_validation'] == 250:
+                    stat_rec = 253  # Technical intermediate record
+                elif type_valid == 'B' and last_type['type_validation'] < 252:
+                    stat_rec = 255  # biological intermediate record
+
+        # RECORD : update status record
+        ret = Record.updateRecordStat(id_rec, stat_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR ResultValid record stat update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # REPORT PART
+        if type_valid == 'B':
+            ret = File.insertFileReport(id_owner=id_owner,
+                                        id_dos=id_rec,
+                                        doc_type=1074)
+
+            if ret <= 0:
+                self.log.error(Logs.fileline() + ' : TRACE ResultValid insertFileReport ERROR')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            res = {}
+            res['id_file'] = ret
+
+            # Get id_group of lab with id_group of user
+            id_group_lab = User.getUserGroupParent(id_owner)
+
+            if not id_group_lab:
+                self.log.error(Logs.fileline() + ' : ResultValid ERROR group not found')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # insert sigl_11_data_group
+            ret = File.insertFileReportGroup(id_data=res['id_file'],
+                                             id_group=id_group_lab['id_group_parent'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : ResultValid ERROR  insert group validation')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # Get uuid filename and create pdf
+            fileReport = File.getFileReport(id_rec)
+
+            if fileReport:
+                Pdf.getPdfReport(id_rec, fileReport['file'])
+
+        self.log.info(Logs.fileline() + ' : TRACE ResultValid')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ResultReset(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_rec):
+        args = request.get_json()
+
+        if 'id_owner' not in args or 'id_res' not in args:
+            self.log.error(Logs.fileline() + ' : TRACE ResultReset ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update value of result
+        ret = Result.updateResult(id_data=args['id_res'],
+                                  id_owner=args['id_owner'],
+                                  valeur=None)
+
+        if ret is False:
+            self.log.error(Logs.fileline() + ' : TRACE ResultReset updateResult ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new validation
+        ret = Result.insertValidation(id_owner=args['id_owner'],
+                                      id_resultat=args['id_res'],
+                                      date_validation=datetime.strftime(datetime.now(), "%Y/%m/%d %H:%M:%S"),
+                                      utilisateur=args['id_owner'],
+                                      valeur=None,
+                                      type_validation=250,
+                                      commentaire=None,
+                                      motif_annulation=None)
+
+        if ret <= 0:
+            self.log.error(Logs.fileline() + ' : TRACE ResultReset insertValidation ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        res = {}
+        res['id_valid'] = ret
+
+        # Get id_group of lab with id_group of user
+        id_group_lab = User.getUserGroupParent(args['id_owner'])
+
+        if not id_group_lab:
+            self.log.error(Logs.fileline() + ' : ResultReset ERROR group not found')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # insert sigl_10_data_group
+        ret = Result.insertValidationGroup(id_data=res['id_valid'],
+                                           id_group=id_group_lab['id_group_parent'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : ResultReset ERROR  insert group validation')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Update record status to status administrative intermediate
+        stat_rec = 253
+
+        # update status record
+        ret = Record.updateRecordStat(id_rec, stat_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR ResultReset record stat update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ResultReset')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ResultCancel(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_rec):
+        args = request.get_json()
+
+        if 'id_owner' not in args or 'id_res' not in args or 'reason' not in args or 'comment' not in args:
+            self.log.error(Logs.fileline() + ' : TRACE ResultCancel ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update value of result
+        ret = Result.updateResult(id_data=args['id_res'],
+                                  id_owner=args['id_owner'],
+                                  valeur=None)
+
+        if ret is False:
+            self.log.error(Logs.fileline() + ' : TRACE ResultCancel updateResult ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new validation
+        ret = Result.insertValidation(id_owner=args['id_owner'],
+                                      id_resultat=args['id_res'],
+                                      date_validation=datetime.strftime(datetime.now(), "%Y/%m/%d %H:%M:%S"),
+                                      utilisateur=args['id_owner'],
+                                      valeur=None,
+                                      type_validation=252,
+                                      commentaire=args['comment'],
+                                      motif_annulation=args['reason'])
+
+        if ret <= 0:
+            self.log.error(Logs.fileline() + ' : TRACE ResultCancel insertValidation ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        res = {}
+        res['id_valid'] = ret
+
+        # Get id_group of lab with id_group of user
+        id_group_lab = User.getUserGroupParent(args['id_owner'])
+
+        if not id_group_lab:
+            self.log.error(Logs.fileline() + ' : ResultCancel ERROR group not found')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # insert sigl_10_data_group
+        ret = Result.insertValidationGroup(id_data=res['id_valid'],
+                                           id_group=id_group_lab['id_group_parent'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : ResultCancel ERROR  insert group validation')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Update record status to status administrative intermediate
+        stat_rec = 253
+
+        # update status record
+        ret = Record.updateRecordStat(id_rec, stat_rec)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR ResultCancel record stat update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ResultCancel')
         return compose_ret('', Constants.cst_content_type_json)
