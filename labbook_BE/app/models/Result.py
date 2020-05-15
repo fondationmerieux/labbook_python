@@ -160,6 +160,21 @@ class Result:
         return cursor.fetchone()
 
     @staticmethod
+    def getResultListValidation(id_res):
+        cursor = DB.cursor()
+
+        req = 'select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '\
+              'v.date_validation as date_validation, v.utilisateur as utilisateur, v.valeur as valeur, '\
+              'v.type_validation as type_validation, v.commentaire as commentaire, v.motif_annulation as motif_annulation '\
+              'from sigl_10_data as v '\
+              'where id_resultat=%s '\
+              'order by id_data'
+
+        cursor.execute(req, (id_res,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getLastTypeValidation(id_ana):
         cursor = DB.cursor()
 

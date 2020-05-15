@@ -40,7 +40,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBill(id_rec):
-        path = 'tmp/'
+        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
         # CHANGE PATH TO EASY VIEW TEST PDF
         # path = '/space/www/apps/labbook/labbook_2.05/public/test_pdf_python/'
 
@@ -56,7 +56,7 @@ class Pdf:
         record = Record.getRecord(id_rec)
 
         num_rec_y   = record['num_dos_an']
-        bill_num    = record['num_fact']  # TODO insert before to get from record['num_fact']
+        bill_num    = record['num_fact']
         receipt_num = record['num_quittance']
 
         if receipt_num:
@@ -147,8 +147,8 @@ class Pdf:
                     <div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">Total</span>
                          <span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;"">""" + str(record['prix']) + """</span>
                     </div>
-                    <div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">Total à payer</span>
-                         <span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;">""" + str(record['a_payer']) + """</span>
+                    <div><span class="ft_bill_det_tit" style="width:160px;display:inline-block;text-align:left;">Total à payer</span>
+                         <span class="ft_bill_det_tot" style="width:810px;display:inline-block;text-align:right;">""" + str(record['a_payer']) + """</span>
                     </div>"""
 
             bill_div += '</div>'
@@ -162,8 +162,9 @@ class Pdf:
                         <div><span class="ft_bill_rec">N° dossier : """ + num_rec_y + """</span></div>
                         """ + receipt_num + """
                     </div>
-                    """ + addr_div + bill_div + """
+                    """ + addr_div + """
                     <div style="clear:both;"></div>
+                    """ + bill_div + """
                 </div>"""
 
         date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")

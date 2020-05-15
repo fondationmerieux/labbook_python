@@ -101,7 +101,7 @@
                             <div class="col-xs-12">
                                 <div class="listing_total_info" id="listing_dos_total_info">
                                     <span class="listing_total_label" id="listing_dos_total_label">Nombre total de lignes :</span>
-                                    <span class="listing_total" id="listing_dos_total">{% if not args %}0{% else %}{{ args|length }}{% endif %}</span>
+                                    <span class="listing_total" id="listing_dos_total">{% if not args %}0{% endif %}</span>
                                 </div>
                                 <div class="listing table-responsive yui-dt" id="listing_dos">
                                     <div id="yui-dt0-paginator0" class="yui-dt-paginator yui-pg-container" style="">
@@ -199,7 +199,7 @@
 var data_records = {{ args|safe }} ;
 var p_step       = 20 ;
 var p_cur        = 1 ;
-var p_max        = Math.ceil( {{ args|length }} / p_step ) ;
+var p_max        = Math.ceil( data_records.length / p_step ) ;
 
 function filter_record()
 {
@@ -262,9 +262,12 @@ res = '<tr class="yui-dt-first yui-dt-last">' +
       '<td colspan="9" class="yui-dt-empty">' +
       '<div class="yui-dt-liner">Aucune donnée à afficher</div></td></tr>' ;
 {% else %}
-let i_start = (p_cur -1) * p_step ;
-let i_stop  = Math.min( data_records.length, p_cur * p_step ) ;
-let tr_class= '' ;
+let data_len = data_records.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = '' ;
+
+$("#listing_dos_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
@@ -272,9 +275,13 @@ let tr_class= '' ;
                    '<li class="dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">Action</a>' +
                    '<ul class="dropdown-menu menu-act-drop">' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
+                   {% if session['user_id_role'] < 4 %}
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/technical-validation/' + data_records[i].id_data + '">Validation technique</a></li>' +
+                   {% if session['user_id_role'] < 3 %}
                    '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/biological-validation/' + data_records[i].id_data + '">Validation biologique</a></li>' +
+                   {% endif %}{% endif %}
+                   '<li><hr style="border-top:1px solid #DDD;"></li>' +
                    '<li><a class="menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">Supprimer</a></li></ul></ul>' ;
 
         if ( data_records[i].urgent == "O" )

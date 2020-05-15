@@ -469,14 +469,14 @@
                                                 <th id="yui-dt35-th-type_prel" rowspan="1" colspan="1" class="fkey_dico yui-dt35-col-type_prel yui-dt-col-type_prel yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-type_prel-liner" class="yui-dt-liner">
                                                         <span>
-                                                            <a href="yui-dt35-href-type_prel" title="Click to sort ascending" class="yui-dt-sortable">Prod. pathol.</a>
+                                                            <a href="yui-dt35-href-type_prel" title="Click to sort ascending" class="yui-dt-sortable">*Prod. pathol.</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-statut" rowspan="1" colspan="1" class="fkey_dico yui-dt35-col-statut yui-dt-col-statut yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-statut-liner" class="yui-dt-liner">
                                                         <span>
-                                                            <a href="yui-dt35-href-statut" title="Click to sort ascending" class="yui-dt-sortable">Statut</a>
+                                                            <a href="yui-dt35-href-statut" title="Click to sort ascending" class="yui-dt-sortable">*Statut</a>
                                                         </span>
                                                     </div>
                                                 </th>
@@ -489,14 +489,14 @@
                                                 <th id="yui-dt35-th-date_reception" rowspan="1" colspan="1" class="date yui-dt35-col-date_reception yui-dt-col-date_reception yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-date_reception-liner" class="yui-dt-liner">
                                                         <span>
-                                                            <a href="yui-dt35-href-date_reception" title="Click to sort ascending" class="yui-dt-sortable">Date réception</a>
+                                                            <a href="yui-dt35-href-date_reception" title="Click to sort ascending" class="yui-dt-sortable">*Date réception</a>
                                                         </span>
                                                     </div>
                                                 </th>
                                                 <th id="yui-dt35-th-preleveur" rowspan="1" colspan="1" class="string yui-dt35-col-preleveur yui-dt-col-preleveur yui-dt-sortable yui-dt-editable">
                                                     <div id="yui-dt35-th-preleveur-liner" class="yui-dt-liner">
                                                         <span>
-                                                            <a href="yui-dt35-href-preleveur" title="Click to sort ascending" class="yui-dt-sortable">Préleveur</a>
+                                                            <a href="yui-dt35-href-preleveur" title="Click to sort ascending" class="yui-dt-sortable">*Préleveur</a>
                                                         </span>
                                                     </div>
                                                 </th>
@@ -583,7 +583,7 @@ window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] 
 
 $("#search_doctor").select2(
 {
-    placeholder: "Rechercher un praticien",
+    placeholder: "Cliquer pour commencer une recherche",
     tokenSeparators: [' '],
     tags: false,
     minimumInputLength: 2,
@@ -614,7 +614,7 @@ $("#search_doctor").select2(
 
 $("#search_analysis").select2(
 {
-    placeholder: "Rechercher une analyse",
+    placeholder: "Cliquer pour commencer une recherche",
     tokenSeparators: [',', ' '],
     minimumInputLength: 2,
     ajax: {
@@ -767,7 +767,7 @@ let data_exist = false ;
 
                                     tmp_struct_prod.id_data    = ind_products++ ;
                                     tmp_struct_prod.type       = data_prod.id_data ;
-                                    tmp_struct_prod.stat       = 9 ; // TODO where get data ?
+                                    tmp_struct_prod.stat       = 9 ;
 
                                     data_products.push(tmp_struct_prod) ;
 
@@ -1303,14 +1303,42 @@ var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
     if (date_record == "")
     {
     alert( "Veuillez sélectionner une date de réception du dossier" ) ;
-    return false;
+    return false ;
     }
 
     // date_prescr required
     if (date_prescr == "")
     {
     alert( "Veuillez sélectionner une date de prescription" ) ;
-    return false;
+    return false ;
+    }
+
+    // DateReceipt and sampler required
+    for( i in data_products )
+    {
+        if (data_products[i].type == 0)
+        {
+        alert( "Veuillez renseigner le type du produit" ) ;
+        return false ;
+        }
+
+        if (data_products[i].stat == 0)
+        {
+        alert( "Veuillez renseigner le statut du produit" ) ;
+        return false ;
+        }
+
+        if (data_products[i].dateReceipt == "")
+        {
+        alert( "Veuillez renseigner toutes les dates de réception" ) ;
+        return false ;
+        }
+
+        if (data_products[i].sampler == "")
+        {
+        alert( "Veuillez renseigner toutes les identités des préleveurs" ) ;
+        return false ;
+        }
     }
 
 var param = '{ "id_owner":' + id_group + ', ' +

@@ -162,6 +162,7 @@ def get_user_data(login):
             json = req.json()
 
             session['user_id']        = json['id_data']  # not used for now
+            session['user_id_role']   = json['id_role']
             session['user_id_group']  = json['id_group']
             session['user_firstname'] = json['firstname']
             session['user_lastname']  = json['lastname']

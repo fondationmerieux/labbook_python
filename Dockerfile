@@ -9,6 +9,7 @@ RUN yum update -y && yum install -y \
     glibc-devel \
     mysql \
     python36 \
+    which \
     /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm
 
 # install supervisor

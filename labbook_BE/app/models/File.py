@@ -209,7 +209,7 @@ class File:
 
         req = 'select id_data, id_owner, id_dos, file, file_type, doc_type, date '\
               'from sigl_11_data '\
-              'where id_dos=%s and doc_type=1074 '\
+              'where id_dos=%s and doc_type=257 '\
               'order by id_data desc limit 1'
 
         cursor.execute(req, (id_rec,))

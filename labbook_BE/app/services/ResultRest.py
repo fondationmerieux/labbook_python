@@ -183,14 +183,6 @@ class ResultCreate(Resource):
             self.log.error(Logs.fileline() + ' : ResultCreate ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        """ TODO WRONG ? NEED TO TEST
-        if args['user_role'] == 'secretaire':
-            type_validation = 250
-        elif args['user_role'] == 'technicien':
-            type_validation = 251
-        elif args['user_role'] == 'biologiste':
-            type_validation = 252
-        else:"""
         type_validation = 250
 
         # In case of add new analysis
@@ -366,7 +358,7 @@ class ResultValid(Resource):
         if type_valid == 'B':
             ret = File.insertFileReport(id_owner=id_owner,
                                         id_dos=id_rec,
-                                        doc_type=1074)
+                                        doc_type=257)
 
             if ret <= 0:
                 self.log.error(Logs.fileline() + ' : TRACE ResultValid insertFileReport ERROR')
@@ -528,3 +520,31 @@ class ResultCancel(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE ResultCancel')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class ResultHisto(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_res):
+        l_valid = Result.getResultListValidation(id_res)
+
+        if not l_valid:
+            self.log.error(Logs.fileline() + ' : ' + 'ResultHisto ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for valid in l_valid:
+            # Replace None by empty string
+            for key, value in valid.items():
+                if valid[key] is None:
+                    valid[key] = ''
+
+            valid['dico_valid']  = Various.getDicoById(str(valid['type_validation']))
+            valid['dico_cancel'] = Various.getDicoById(str(valid['motif_annulation']))
+
+            valid['user'] = User.getUserByIdGroup(valid['utilisateur'])
+
+            if valid['date_validation']:
+                valid['date_validation'] = datetime.strftime(valid['date_validation'], '%Y-%m-%d')
+
+        self.log.info(Logs.fileline() + ' : ResultHisto id_res=' + str(id_res))
+        return compose_ret(l_valid, Constants.cst_content_type_json, 200)

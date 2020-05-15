@@ -21,8 +21,8 @@ class PatientSearch(Resource):
         l_pats = Patient.getPatientSearch(args['term'])
 
         if not l_pats:
-            self.log.error(Logs.fileline() + ' : ERROR PatientSearch')
-            return compose_ret('', Constants.cst_content_type_json, 500)
+            self.log.error(Logs.fileline() + ' : WARNING PatientSearch NOT FOUND')
+            return compose_ret('', Constants.cst_content_type_json, 200)  # 200 if not select2 trigger an exception
 
         self.log.info(Logs.fileline() + ' : TRACE PatientSearch')
         return compose_ret(l_pats, Constants.cst_content_type_json)

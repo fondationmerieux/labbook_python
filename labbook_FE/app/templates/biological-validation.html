@@ -135,31 +135,7 @@
                     <div class="modal-body">  
                         <div class="yui-dt listing">
                             <table>
-                                <tbody>
-                                    <tr class="yui-dt-odd">
-                                        <td class="icon-container status">
-                                            <span class="icon status-n">N</span>
-                                        </td>
-                                        <td><span id="date_rec"></span></td>
-                                        <td>
-                                            <ul style="padding:10px;">
-                                                <li>Création du dossier (<span id="num_rec_h"></span>).</li>
-                                                <li>Analyse demandée : <span id="label_res"></span></li>
-                                                <li>Date de prescription : <span id="date_prescr"></span>.</li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr class="yui-dt-even">
-                                        <td class="icon-container status" id="stat_res"></td>
-                                        <td><span id="date_valid"></span></td>
-                                        <td>
-                                            <ul style="padding:10px;">
-                                                <li><span id="ident_valid"></span></li>
-                                                <li><span id="type_valid"></span></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="tbody_histo"></tbody>
                             </table>
                         </div>
                     </div>
@@ -234,22 +210,60 @@ var id_res_tmp   = 0  ;
 
 function display_histo( i )
 {
-let firstname = data_res[i].user.firstname ;
-let lastname  = data_res[i].user.lastname  ;
+$("#tbody_histo").empty() ;
 
-    $("#date_rec").text( data_res[i].date_dos ) ;
-    $("#num_rec_h").text( {% if session['record_period'] == 1070 %}data_res[i].num_dos_mois{% else %}data_res[i].num_dos_an{% endif %} ) ;
-    $("#label_res").text( data_res[i].nom ) ;
-    $("#date_prescr").text( data_res[i].date_prescr ) ;
-    $("#stat_res").html( status_res( data_res[i].validation.type_validation ) );
-    $("#date_valid").text( data_res[i].validation.date_validation ) ;
-    $("#ident_valid").text( firstname + ' ' + lastname ) ;
-    $("#type_valid").text( data_res[i].stat_label ) ; // TODO not sure of source of this info
+let tr_histo = '<tr><td class="icon-container status"><span class="icon status-n">N</span></td>' +
+               '<td><span id="date_rec">' + data_res[i].date_dos + '</span></td>' +
+               '<td><ul style="padding:10px;"><li>Création du dossier (' + 
+               {% if session['record_period'] == 1070 %}data_res[i].num_dos_mois{% else %}data_res[i].num_dos_an{% endif %} + ').</li>' +
+               '<li>Analyse demandée : ' + data_res[i].nom + '</li>' +
+               '<li>Date de prescription : ' + data_res[i].date_prescr + '.</li></ul></td></tr>' ;
 
-    setTimeout(function()
+    $.ajax( 
     {
-        $( "#dial_history" ).modal( "show" ) ;
-    }, 600) ;
+        type: "GET",
+        url: "/services/result/history/" + data_res[i].id_res,
+        success: function(data_histo)
+        {
+            for( i in data_histo )
+            {
+            ident = '' ;
+            extra = '' ;
+
+                if ( data_histo[i].user.firstname  != "" )
+                ident += data_histo[i].user.firstname + ' ' ;
+
+                if ( data_histo[i].user.lastname  != "" )
+                ident += data_histo[i].user.lastname ;
+
+                if ( ident == "" )
+                ident += data_histo[i].user.username ;
+
+                if ( data_histo[i].motif_annulation != "" )
+                extra += '<li><span>ANNULE ' + data_histo[i].dico_cancel.label +'</span></li>' ;
+
+                if ( data_histo[i].commentaire != "" )
+                extra += '<li><span>Commentaire : ' + data_histo[i].commentaire +'</span></li>'
+
+            tr_histo += '<tr><td class="icon-container status" id="stat_res">' + status_res( data_histo[i].type_validation ) + '</td>' +
+                        '<td><span>' + data_histo[i].date_validation +'</span></td>' +
+                        '<td><ul style="padding:10px;"><li><span>' + ident + '</span></li>' +
+                        '<li><span>Validation ' + data_histo[i].dico_valid.label +'</span></li>' + extra + '</ul></td></tr>' ;
+            }
+
+            $("#tbody_histo").append(tr_histo) ;
+
+            setTimeout(function()
+            {
+                $( "#dial_history" ).modal( "show" ) ;
+            }, 600) ;
+        },
+        error: function(data_ana)
+        {
+            console.log("ERROR GET result history");
+            alert("Erreur lors la récupération des informations d'historiques de ce résultat") ;
+        }
+    } ) ;
 }
 
 function fill_bio_list()
@@ -563,7 +577,7 @@ let disp_valid = "hide" ;
         let res_reset  = '' ;
         let res_cancel = '' ;
 
-            if ( data[i].normal_min != "" && data[i].normal_max != "" )
+            if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
             {
             let ico_limit = "hide" ;
 
@@ -677,7 +691,7 @@ window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/do
 
 $("#search_analysis").select2(
 {
-    placeholder: "Rechercher une analyse",
+    placeholder: "Cliquer pour commencer une recherche",
     tokenSeparators: [',', ' '],
     minimumInputLength: 2,
     ajax: {
