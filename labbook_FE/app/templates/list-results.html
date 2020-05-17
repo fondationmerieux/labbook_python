@@ -188,7 +188,7 @@ function save_res( id_rec, ref_ana )
 let param_list_answer = '{ "list_answer":[ ' ;
 
     // GET answer 
-    $(".res-" + id_rec).each( function(i, elem)
+    $(".res-" + id_rec +"-"+ref_ana).each( function(i, elem)
     {
         if (i > 0)
         param_list_answer += ', ' ;

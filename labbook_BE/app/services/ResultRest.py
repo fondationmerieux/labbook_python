@@ -331,8 +331,6 @@ class ResultValid(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # check if it was the last validation to do
-        stat_rec = 253  # Technical intermediate record
-
         l_res = Result.getResultRecord(id_rec)
 
         if not l_res:

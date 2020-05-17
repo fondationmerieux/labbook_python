@@ -306,7 +306,7 @@ let param_list_valid = '{ "list_valid":[ ' ;
         if (i > 0)
         param_list_valid += ', ' ;
 
-    let param_valid = '{ "id_owner": {{ session['user_id_group'] }}, ' +
+    let param_valid = '{ "id_owner":' + {{ session['user_id_group'] }} + ', ' +
                         '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
                         '"date_valid":"' + date_valid + '", ' +
                         '"user_valid":' + user_valid + ', ' +
@@ -316,6 +316,8 @@ let param_list_valid = '{ "list_valid":[ ' ;
     } ) ;
 
 param_list_valid += ' ] }' ;
+
+console.log("DEBUG list_valid="+param_list_valid);
 
     // result to validate
     $.ajax( 
@@ -432,7 +434,7 @@ let disp_valid = "hide" ;
         let res_label  = data[i].libelle ;
         let res_unit   = data[i].unit ;
         let res_limit  = '' ;
-        let value = data[i].res_label ;
+        let value      = data[i].res_label ;
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
             {
@@ -461,7 +463,7 @@ let disp_valid = "hide" ;
         disp_valid = "show" ;
 
         if ( value != "" )
-        res += '<span>' + value + '</span>' ;
+        res += '<span>' + value + '</span><input id="res_' + id_res + '" class="res-' + id_rec + '-' + ref_ana + '" type="hidden" value="' + data[i].valeur + '">' ;
         else if ( res_valid == 252 )
         {
         res += '<span>ANNULEE</span>' ;
