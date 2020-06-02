@@ -148,6 +148,19 @@ def get_init_var():
     else:
         log.info(Logs.fileline() + ' : cookies PHP_user_name missing')
 
+    # Load auto_logout
+    try:
+        url = session['server_int'] + '/services/default/val/auto_logout'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            ret_json = req.json()
+            session['auto_logout'] = ret_json['value']
+            session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests auto_logout failed, err=%s , url=%s', err, url)
+
 
 def get_user_data(login):
     if not login:

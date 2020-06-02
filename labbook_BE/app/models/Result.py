@@ -37,16 +37,18 @@ class Result:
               'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
               'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '\
               'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '\
-              'ana.id_owner as id_owner '\
+              'ana.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
               'left join sigl_dico_data as fam on fam.id_data = ref.famille '\
               'inner join sigl_09_data as res on ana.id_data = res.id_analyse '\
               'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
+              'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
+              'and ref.id_data = var_pos.id_refanalyse '\
               'where (cast(substring(num_dos_jour, 1, 8) as UNSIGNED) >= %s) and '\
               '(cast(substring(num_dos_jour, 1, 8) as UNSIGNED) <= %s) ' + filter_cond +\
-              'order by nom asc, id_dos asc ' + limit
+              'order by nom asc, id_dos asc, position asc ' + limit
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -60,19 +62,40 @@ class Result:
               'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
               'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '\
               'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '\
-              'ana.id_owner as id_owner, dos.id_patient as id_pat '\
+              'ana.id_owner as id_owner, dos.id_patient as id_pat, '\
+              'var_pos.position as position, var_pos.num_var as num_var '\
               'from sigl_04_data as ana '\
               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
               'left join sigl_dico_data as fam on fam.id_data = ref.famille '\
               'inner join sigl_09_data as res on ana.id_data = res.id_analyse '\
               'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
+              'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
+              'and ref.id_data = var_pos.id_refanalyse '\
               'where id_dos=%s '\
-              'order by nom asc'
+              'order by nom asc, position asc'
 
         cursor.execute(req, (id_rec,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getPreviousResult(id_pat, ref_ana, ref_var, id_res):
+        cursor = DB.cursor()
+
+        req = 'select res.valeur as valeur, vld.date_validation as date_valid '\
+              'from sigl_09_data as res '\
+              'inner join sigl_05_07_data as ref on ref.id_refvariable = res.ref_variable '\
+              'inner join sigl_04_data as dem on dem.ref_analyse = ref.id_refanalyse and dem.id_data = res.id_analyse '\
+              'inner join sigl_02_data as dos on dos.id_data = dem.id_dos '\
+              'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '\
+              'where dos.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '\
+              'and vld.type_validation=252 and vld.motif_annulation is NULL and res.id_data != %s '\
+              'order by vld.date_validation desc limit 1'
+
+        cursor.execute(req, (id_pat, ref_ana, ref_var, id_res))
+
+        return cursor.fetchone()
 
     @staticmethod
     def insertResult(**params):

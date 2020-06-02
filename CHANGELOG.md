@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-- Automatic calculation on some type of result (11 / 704) 
-- Automatic disconnection
 - Top menu
+
+## [2.9.0-rc.1] - 2020-05-26
+### Added
+- Automatic calculation on some type of result
+- Automatic disconnection
+- Previous result in PDF report
+- Clinical information in PDF report
 
 ## [2.9.0-beta.6] - 2020-05-14
 ### Added

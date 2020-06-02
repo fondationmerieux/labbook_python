@@ -236,7 +236,32 @@ class Record:
 
             Record.log.info(Logs.fileline() + ' : generateBillNumber id_rec=' + str(id_rec))
 
+            # insert in sigl_pj_sequence num_fact
+            pattern = "%010d"        # make pattern for table
+            end_num = int(bill_num)  # get end number without 0
+            ret = Record.insertPjSequence("num_fact", pattern, end_num)
+
+            if ret <= 0:
+                Record.log.error(Logs.alert() + ' : generateBillNumber ERROR  insertPjSequence num_fact')
+
             return True
         except mysql.connector.Error as e:
             Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def insertPjSequence(sid, pattern, num):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_pj_sequence '
+                           '(sid, pattern, num) '
+                           'values '
+                           '(%s, %s, %s )', (sid, pattern, num))
+
+            Record.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0

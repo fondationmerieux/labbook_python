@@ -2,14 +2,9 @@
 
 {% block head %}
 {{ super() }}
-    {% block title %}
     <title>Saisie de résultats</title>
-    {% endblock %}
-    <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/css/labbook.css?0" media="screen" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
 {% block content %}        
 <div id="content">
     <div class="inner">
@@ -400,6 +395,10 @@ let disp_valid = "hide" ;
         let res_answer = data[i].res_answer ;
         let value      = data[i].valeur ;
 
+            // LABEL TYPE
+            if ( data[i].type_resultat == 265 )
+            res_label = "<b>" + res_label + "</b>" ;
+
             if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
             {
             let ico_limit = "hide" ;
@@ -426,7 +425,7 @@ let disp_valid = "hide" ;
             // CANCEL RESULT
             if ( res_valid == 252 && value == "" )
             {
-            res += 'ANNULEE</span>&nbsp;' ;
+            res += 'ANNULE</span>&nbsp;' ;
             }
             // SELECT CHOICE RESULT
             else if ( Object.keys(res_answer).length > 1)
@@ -462,7 +461,7 @@ let disp_valid = "hide" ;
             res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
             }
             // WRITE RESULT
-            else if ( data[i].formule == "" )
+            else if ( data[i].type_resultat != 229 && data[i].type_resultat != 265 ) // not calc and not label
             {
             let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ');' ;
 
@@ -485,8 +484,12 @@ let disp_valid = "hide" ;
             {
             let value = data[i].valeur ;
 
-            res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
-            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                // if not label type
+                if ( data[i].type_resultat != 265 )
+                {
+                res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
+                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                }
             }
 
         res += '<span class="unit show">' + res_unit + '</span></td>' +

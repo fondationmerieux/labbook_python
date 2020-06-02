@@ -197,8 +197,9 @@ class Pdf:
     @staticmethod
     def getPdfReport(id_rec, filename):
         path = '/space/www/apps/labbook/labbook_2.05/files/'
-        # CHANGE PATH TO EASY VIEW TEST PDF
+        # UNCOMMENT PATH AND FILENAME TO EASY VIEW TEST PDF
         # path = '/space/www/apps/labbook/labbook_2.05/public/test_pdf_python/'
+        # filename = 'cr_test.pdf'
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -295,12 +296,20 @@ class Pdf:
 
             addr_div += '</div>'
 
+        # clinical information (= commentary in record)
+        rec_comm = ''
+
+        if full_comm and record['rc']:
+            rec_comm  = '<div style="width:980px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:5px;background-color:#FFF;">'
+            rec_comm += '<span class="ft_res_name">Renseignements cliniques</span><br />'
+            rec_comm += '<span class="ft_rec_det">' + record['rc'] + '</span></div>'
+
         l_res = Result.getResultRecord(id_rec)
 
         id_ana_p = 0
         id_res_p = 0
 
-        report_div = '<div style="width:980px;height:1090px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
+        report_div = '<div style="width:980px;min-height:900px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
         res_div    = ''
 
         if l_res:
@@ -336,6 +345,8 @@ class Pdf:
                     id_ana_p = res['id_ana']
                     id_res_p = res['id_res']
 
+                    Pdf.log.error(Logs.fileline() + ' : DEBUG id_ana=' + str(id_ana_p) + ' | id_res=' + str(id_res_p) + ' | ref_ana=' + str(res['ref_ana']))
+
                     res_name = ''
                     res_fam  = ''
 
@@ -349,6 +360,14 @@ class Pdf:
                             <div><span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">""" + res_fam + """</span>
                                  <span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">""" + res_name + """</span>"""
 
+                # Start to get previous result if exist
+                prev = ''
+
+                res_prev = Result.getPreviousResult(res['id_pat'], res['ref_ana'], res['id_data'], res['id_res'])
+
+                if res_prev:
+                    prev = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y') + ' : '
+
                 # Get label of value
                 type_res = Various.getDicoById(res['type_resultat'])
 
@@ -360,12 +379,21 @@ class Pdf:
                 if type_res and res['valeur']:
                     val = Various.getDicoById(res['valeur'])
                     val = val['label']
+
+                    if res_prev and res_prev['valeur']:
+                        label_prev = Various.getDicoById(res_prev['valeur'])
+                        prev += label_prev['label']
                 else:
-                    val = res['valeur']
+                    val   = res['valeur']
+                    if res_prev and res_prev['valeur']:
+                        prev += res_prev['valeur']
+
                     if res['unite']:
                         unit = Various.getDicoById(res['unite'])
                         if unit:
-                            val += '&nbsp;' + unit['label']
+                            val  += '&nbsp;' + unit['label']
+                            if prev:
+                                prev += '&nbsp;' + unit['label']
 
                 # Get normal of value
                 ref = ''
@@ -373,15 +401,12 @@ class Pdf:
                 if res['normal_min'] and res['normal_max']:
                     ref = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
 
-                # Get previous result if exist
-                res_prev = ''  # TODO get res_prev
-
                 # new line of result
                 res_div += """<div style="margin-bottom:10px;">\
-                             <span class="ft_res_label" style="width:370px;display:inline-block;text-align:left;padding-left:15px;">""" + res['libelle'] + """</span>
+                             <span class="ft_res_label" style="width:360px;display:inline-block;text-align:left;padding-left:15px;">""" + res['libelle'] + """</span>
                              <span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">""" + val + """</span>
-                             <span class="ft_res_ref" style="width:180px;display:inline-block;text-align:center;">""" + ref + """</span>
-                             <span class="ft_res_prev" style="width:180px;display:inline-block;text-align:right;">""" + res_prev + """</span></div>"""
+                             <span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">""" + ref + """</span>
+                             <span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">""" + prev + """</span></div>"""
 
             if res_div:
                 report_div += res_div
@@ -417,6 +442,7 @@ class Pdf:
         page_body = """\
                 <div style="width:1000px;">""" + rec_div + addr_div + """</div>
                 <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
+                """ + rec_comm + """
                 <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
                     <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
                     <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>

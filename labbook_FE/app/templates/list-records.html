@@ -2,9 +2,7 @@
 
 {% block head %}
 {{ super() }}
-    {% block title %}
     <title>Liste des dossiers</title>
-    {% endblock %}
     <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
     <style>
         .menu-act
@@ -35,7 +33,6 @@
     </style>
 {% endblock %}
 
-{% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
 {% block content %}
 <div id="content">
     <div class="inner">

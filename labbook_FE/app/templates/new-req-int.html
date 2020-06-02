@@ -2,9 +2,7 @@
 
 {% block head %}
 {{ super() }}
-    {% block title %}
     <title>Nouvelle demande interne</title>
-    {% endblock %}
     <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
     <script src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
 {% endblock %}

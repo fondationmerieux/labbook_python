@@ -241,6 +241,30 @@ class RecordDet(Resource):
                 self.log.error(Logs.alert() + ' : RecordDet ERROR  insert group')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
+            # insert in sigl_pj_sequence num_dos_jour
+            pattern = num_dos_jour[:8] + "%04d"  # make pattern for table
+            end_num = int(num_dos_jour[8:])      # get end number without 0
+            ret = Record.insertPjSequence("numdosjour", pattern, end_num)
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : RecordDet ERROR  insertPjSequence numdosjour')
+
+            # insert in sigl_pj_sequence num_dos_an
+            pattern = num_dos_an[:4] + "%06d"
+            end_num = int(num_dos_an[4:])
+            ret = Record.insertPjSequence("numdosan", pattern, end_num)
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : RecordDet ERROR  insertPjSequence numdosan')
+
+            # insert in sigl_pj_sequence num_dos_mois
+            pattern = num_dos_mois[:6] + "%04d"
+            end_num = int(num_dos_mois[6:])
+            ret = Record.insertPjSequence("numdosmois", pattern, end_num)
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : RecordDet ERROR  insertPjSequence numdosmois')
+
         self.log.info(Logs.fileline() + ' : TRACE RecordDet id_rec=' + str(res['id_rec']))
         return compose_ret(res, Constants.cst_content_type_json)
 

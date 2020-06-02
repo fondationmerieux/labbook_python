@@ -2,16 +2,12 @@
 
 {% block head %}
 {{ super() }}
-    {% block title %}
     <title>Validation biologique</title>
-    {% endblock %}
     <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/css/select2.min.css" rel="stylesheet" />
-    <link href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/css/labbook.css?0" media="screen" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/static/vendor/js/select2.min.js"></script>
 {% endblock %}
 
-{% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}">{% endblock %}
 {% block content %}        
 <div id="content">
     <div class="inner">
@@ -615,7 +611,7 @@ let disp_valid = "hide" ;
         res += '<span>' + value + '</span><input id="res_' + id_res + '" type="hidden" value="' + data[i].valeur + '">' ;
         else if ( res_valid == 252 )
         {
-        res += '<span>ANNULEE</span>' ;
+        res += '<span>ANNULE</span>' ;
         res_cancel = '<span>' + data[i].validation.label_motif + '<br />' + data[i].validation.commentaire + '</span>' ;
         }
         else
