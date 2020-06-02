@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
-## [2.9.0-rc.1] - 2020-05-26
+## [2.9.0-rc.1] - 2020-06-02
 ### Added
 - Automatic calculation on some type of result
 - Automatic disconnection
