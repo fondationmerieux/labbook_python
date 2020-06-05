@@ -10,7 +10,7 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title form-patient_externe"><span>Dossier administratif</span></h2>
-            <form id="form_main" class="vzn-form form-horizontal row" action="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/{{ args['record']['id_data'] }}" method="POST" enctype="multipart/form-data">
+            <form id="form_main" class="vzn-form form-horizontal row" action="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/{{ args['record']['id_data'] }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="statictext">
                     <span>Dossier :</span> 
                 </div>

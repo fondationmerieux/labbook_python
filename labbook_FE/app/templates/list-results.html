@@ -3,6 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>Saisie de résultats</title>
+    <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}        
@@ -13,7 +14,7 @@
                 <span>Saisie de résultats</span>
             </h2>
             <div id="results">
-                <form id="form_main" class="vzn-form form-horizontal row" enctype="application/x-www-form-urlencoded" method="post" action="{{ session['server_ext'] }}/sigl/result/index/index">
+                <form id="form_main" class="vzn-form form-horizontal row" enctype="application/x-www-form-urlencoded" method="post" action="{{ session['server_ext'] }}/sigl/result/index/index" autocomplete="off">
                     <fieldset id="filter-group" class="group group-1">
                         <legend>Filtre</legend>
                         <div class="row">
@@ -168,13 +169,13 @@ let val = $( "#res_"+id_res ).val() ;
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('hide') ;
-        $("#res_"+id_res).addClass('error') ;
+        //$("#res_"+id_res).addClass('error') ;
     }
     else
     {
         $("#limit_"+id_res).addClass('hide') ;
         $("#limit_"+id_res).removeClass('show') ;
-        $("#res_"+id_res).removeClass('error') ;
+        //$("#res_"+id_res).removeClass('error') ;
     }
 }
 
@@ -183,7 +184,7 @@ function save_res( id_rec, ref_ana )
 let param_list_answer = '{ "list_answer":[ ' ;
 
     // GET answer 
-    $(".res-" + id_rec +"-"+ref_ana).each( function(i, elem)
+    $(".res-" + id_rec +"-"+ ref_ana ).each( function(i, elem)
     {
         if (i > 0)
         param_list_answer += ', ' ;
@@ -301,9 +302,9 @@ let disp_valid = "hide" ;
 
     for( i in data )
     {
-    id_rec = data[i].id_dos ;
+    id_rec      = data[i].id_dos  ;
     let ref_ana = data[i].ref_ana ;
-    let id_res = data[i].id_res ;
+    let id_res  = data[i].id_res  ;
 
         // close the previous form
         if ( ( ref_ana_p != 0 && ref_ana != ref_ana_p ) || ( id_rec_p != 0 && id_rec != id_rec_p ) )
@@ -311,7 +312,7 @@ let disp_valid = "hide" ;
         // close the form and table
         res += '</tbody></table></div></fieldset>' +
                '<div class="form-group button tech">' +
-                   '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p + ');">Enregistrer</button>&nbsp;&nbsp;' +
+                   '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p + ', '  + ref_ana_p + ');">Enregistrer</button>&nbsp;&nbsp;' +
                    '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec_p +'_'+ ref_ana_p  + '">' +
                        '<span class="date-realisation">' +
                            '<label>Date de validation </label>&nbsp;' +
@@ -373,7 +374,7 @@ let disp_valid = "hide" ;
 
             if (res_fam.length < 4) res_fam = "" ;
 
-        res += '<form enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row">' +
+        res += '<form enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row" autocomplete="off">' +
                '<fieldset class="subform group group-1">' +
                '<legend>' + res_name + res_fam + '</legend>' +
                '<fieldset>' +
@@ -399,11 +400,11 @@ let disp_valid = "hide" ;
             if ( data[i].type_resultat == 265 )
             res_label = "<b>" + res_label + "</b>" ;
 
-            if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
+            if ( data[i].normal_min != "" && data[i].normal_max != "" )
             {
             let ico_limit = "hide" ;
 
-                if ( value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max) )
+                if ( (value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max)) && value != "" )
                 ico_limit = "show" ;
 
             res_limit = '<span id="limit_' + id_res + '" class="oor ' + ico_limit + '"><span class="normals">[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]</span></span>' ;
@@ -469,7 +470,22 @@ let disp_valid = "hide" ;
                 disp_valid = "show" ;
 
                 if ( data[i].normal_min != "" && data[i].normal_max != "" )
-                change = 'check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');"' ;
+                change += 'check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
+
+                // Num var
+                if (data[i].num_var > 0)
+                {
+                change += 'calc(' + id_rec + ', ' + ref_ana + ', ' + id_res + ', ' + data[i].num_var + ');"' ;
+
+                res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+
+                    // Convert formula
+                    if (data[i].formule_unite2 != "")
+                    {
+                    res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
+                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
+                    }
+                }
                 else
                 change += '"' ;
 
@@ -478,6 +494,9 @@ let disp_valid = "hide" ;
                 change = 'disabled' ;
 
             res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
+            res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
+            res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
+            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
             }
             // READONLY RESULT
             else
@@ -487,7 +506,25 @@ let disp_valid = "hide" ;
                 // if not label type
                 if ( data[i].type_resultat != 265 )
                 {
+                    // Num var
+                    if (data[i].num_var > 0)
+                    res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+
+                    // Formula
+                    if (data[i].formule != "")
+                    res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
+
+                    // Convert formula
+                    if (data[i].formule_unite2 != "")
+                    {
+                    res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
+                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
+                    }
+
                 res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
+                res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
+                res += '<input type="hidden" id="accu_' + id_res + '" value="' + data[i].precision + '">' ; // precision
+                res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
                 res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
                 }
             }

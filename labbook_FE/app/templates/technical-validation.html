@@ -21,7 +21,7 @@
             <div class="form-control-static field readonly-field div-inline">
                 <span class="icon file-status" id="rec_stat"></span>
             </div>
-            <form class="vzn-form form-horizontal row">
+            <form class="vzn-form form-horizontal row" autocomplete="off">
                 <fieldset id="pat-group-group" class="group group-1">
                     <legend>Identité</legend>
                     <div class="row">
@@ -311,8 +311,6 @@ let param_list_valid = '{ "list_valid":[ ' ;
     } ) ;
 
 param_list_valid += ' ] }' ;
-
-console.log("DEBUG list_valid="+param_list_valid);
 
     // result to validate
     $.ajax( 
