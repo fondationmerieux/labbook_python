@@ -267,6 +267,7 @@ def list_results():
     json_ihm  = {}
     json_data = {}
 
+    dt_start_req = datetime.now()
     # Load analysis type
     try:
         url = session['server_int'] + '/services/dico/list/famille_analyse'
@@ -305,6 +306,11 @@ def list_results():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
 
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG list-results processing time = ' + str(dt_time_req))
+
     return render_template('list-results.html', ihm=json_ihm, args=json_data)
 
 
@@ -318,6 +324,7 @@ def enter_result(id_rec=0):
 
     id_pat = 0
 
+    dt_start_req = datetime.now()
     # Load list results
     try:
         url = session['server_int'] + '/services/result/record/' + str(id_rec)
@@ -425,6 +432,11 @@ def enter_result(id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
 
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG enter-result processing time = ' + str(dt_time_req))
+
     return render_template('enter-result.html', ihm=json_ihm, args=json_data)
 
 
@@ -439,6 +451,7 @@ def list_records():
 
     json_data = {}
 
+    dt_start_req = datetime.now()
     # Load list records
     try:
         url = session['server_int'] + '/services/record/list/' + str(session['user_id_group'])
@@ -450,6 +463,11 @@ def list_records():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests records list failed, err=%s , url=%s', err, url)
 
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG list-records processing time = ' + str(dt_time_req))
+
     return render_template('list-records.html', args=json_data)
 
 
@@ -458,9 +476,14 @@ def list_records():
 def new_req_ext():
     log.info(Logs.fileline())
 
+    dt_start_req = datetime.now()
     get_init_var()
     get_user_data(session['user_name'])
     get_software_settings()
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG new-req-ext processing time = ' + str(dt_time_req))
 
     return render_template('new-req-ext.html')
 
@@ -484,6 +507,7 @@ def det_patient(id_pat=0):
 
     json_data = {}
 
+    dt_start_req = datetime.now()
     # Load data patient
     if id_pat > 0:
         try:
@@ -507,6 +531,11 @@ def det_patient(id_pat=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
 
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG det-patient processing time = ' + str(dt_time_req))
+
     return render_template('det-patient.html', args=json_data)
 
 
@@ -518,6 +547,7 @@ def det_req_ext(entry='Y', ref=0):
     json_ihm  = {}
     json_data = {}
 
+    dt_start_req = datetime.now()
     if entry == "Y":
         # ref = id_pat
         # Load data patient
@@ -695,6 +725,11 @@ def det_req_ext(entry='Y', ref=0):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
+
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG det-req-ext processing time = ' + str(dt_time_req))
 
     return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data)
 
@@ -900,6 +935,7 @@ def administrative_record(type_req='E', id_rec=0):
     json_data['data_files']    = []
     json_data['record']        = []
 
+    dt_start_req = datetime.now()
     # Load save record
     try:
         url = session['server_int'] + '/services/record/det/' + str(id_rec)
@@ -979,6 +1015,11 @@ def administrative_record(type_req='E', id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests record list files failed, err=%s , url=%s', err, url)
 
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG administrative-record processing time = ' + str(dt_time_req))
+
     return render_template('administrative-record.html', type_req=type_req, args=json_data)
 
 
@@ -992,6 +1033,7 @@ def technical_validation(id_rec=0):
 
     id_pat = 0
 
+    dt_start_req = datetime.now()
     # Load list results
     try:
         url = session['server_int'] + '/services/result/record/' + str(id_rec)
@@ -1103,6 +1145,11 @@ def technical_validation(id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
 
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG technical-validation processing time = ' + str(dt_time_req))
+
     return render_template('technical-validation.html', ihm=json_ihm, args=json_data)
 
 
@@ -1118,6 +1165,7 @@ def biological_validation(id_rec=0):
 
     id_pat = 0
 
+    dt_start_req = datetime.now()
     # Load record
     try:
         url = session['server_int'] + '/services/record/det/' + str(id_rec)
@@ -1261,6 +1309,11 @@ def biological_validation(id_rec=0):
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests cancel reason failed, err=%s , url=%s', err, url)
+
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG biological-validation processing time = ' + str(dt_time_req))
 
     return render_template('biological-validation.html', ihm=json_ihm, args=json_data)
 

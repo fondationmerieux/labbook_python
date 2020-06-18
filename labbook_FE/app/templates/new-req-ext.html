@@ -25,7 +25,7 @@
                                     <span>{{ _("Nom, prénom ou code du patient") }}</span>
                                 </div>
                                 <div class="field col-lg-4">
-                                    <select id="search_patient" style="width:300px"></select>
+                                    <select id="search_patient" style="width:450px"></select>
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="form-group button">
@@ -86,7 +86,10 @@ var ident = "" ;
 var code = "" ;
 
     if (repo.code)
-    code += "[" + repo.code + "]" ; // TODO also code_patient ?
+    code += "[" + repo.code + "]" ;
+
+    if (repo.code_patient)
+    code += " - code patient : " + repo.code_patient ;
 
 var info = "" ;
 

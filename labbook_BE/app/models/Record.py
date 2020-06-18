@@ -18,9 +18,9 @@ class Record:
         filter_cond = ''
 
         if not args:
-            limit = 'LIMIT 20'
-        else:
             limit = 'LIMIT 200'
+        else:
+            limit = 'LIMIT 4000'
             # filter conditions
             if args['num_rec']:
                 filter_cond += ' and (dos.num_dos_an LIKE "' + args['num_rec'] + '%" or dos.num_dos_mois LIKE "' + args['num_rec'] + '%") '
@@ -45,9 +45,9 @@ class Record:
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = 'select statut.id_data as stat, '\
-              'if(ana.urgent LIKE "%4%", "O", "") as urgent, '\
-              'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,cast(substring(dos.num_dos_mois from 7) as UNSIGNED), dos.num_dos_mois), '\
-              'if(param_num_dos.format=1072, cast(substring(dos.num_dos_an from 5) as UNSIGNED), dos.num_dos_an)) as num_dos, '\
+              'if(ana.urgent=4, "O", "") as urgent, '\
+              'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), dos.num_dos_mois), '\
+              'if(param_num_dos.format=1072, substring(dos.num_dos_an from 5), dos.num_dos_an)) as num_dos, '\
               'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, pat.prenom as prenom, pat.id_data as id_pat '\
               'from sigl_02_data as dos '\
               'inner join sigl_dico_data as statut on dos.statut=statut.id_data and statut.dico_name = "statut_dossier" '\
@@ -56,30 +56,9 @@ class Record:
               'left join sigl_09_data as res on res.id_analyse=ana.id_data '\
               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '\
               'where length(dos.num_dos_an) = 10 ' + filter_cond +\
-              'and (dos.id_data is NULL or (exists(select 1 from sigl_02_data_group where sigl_02_data_group.id_group in (%s) and sigl_02_data_group.id_data = dos.id_data)) '\
-              'or ( exists( select 1 from sigl_02_data_group inner join sigl_02_data_group_mode on sigl_02_data_group.id_data_group=sigl_02_data_group_mode.id_data_group '\
-              'where sigl_02_data_group.id_group=%s and sigl_02_data_group.id_data = dos.id_data and sigl_02_data_group_mode.mode & 292 '\
-              'and (sigl_02_data_group_mode.date_valid IS NULL or CURRENT_DATE <= sigl_02_data_group_mode.date_valid)))) '\
-              'and (pat.id_data is NULL or (exists(select 1 from sigl_03_data_group where sigl_03_data_group.id_group in (%s) and sigl_03_data_group.id_data = pat.id_data)) '\
-              'or ( exists( select 1 from sigl_03_data_group inner join sigl_03_data_group_mode on sigl_03_data_group.id_data_group=sigl_03_data_group_mode.id_data_group '\
-              'where sigl_03_data_group.id_group=%s and sigl_03_data_group.id_data = pat.id_data and sigl_03_data_group_mode.mode & 292 '\
-              'and (sigl_03_data_group_mode.date_valid IS NULL or CURRENT_DATE <= sigl_03_data_group_mode.date_valid)))) '\
-              'and (ana.id_data is NULL or (exists(select 1 from sigl_04_data_group where sigl_04_data_group.id_group in (%s) and sigl_04_data_group.id_data = ana.id_data)) '\
-              'or ( exists( select 1 from sigl_04_data_group inner join sigl_04_data_group_mode on sigl_04_data_group.id_data_group=sigl_04_data_group_mode.id_data_group '\
-              'where sigl_04_data_group.id_group=%s and sigl_04_data_group.id_data = ana.id_data and sigl_04_data_group_mode.mode & 292 '\
-              'and (sigl_04_data_group_mode.date_valid IS NULL or CURRENT_DATE <= sigl_04_data_group_mode.date_valid)))) '\
-              'and (res.id_data is NULL or (exists(select 1 from sigl_09_data_group where sigl_09_data_group.id_group in (%s) and sigl_09_data_group.id_data = res.id_data)) '\
-              'or ( exists( select 1 from sigl_09_data_group inner join sigl_09_data_group_mode on sigl_09_data_group.id_data_group=sigl_09_data_group_mode.id_data_group '\
-              'where sigl_09_data_group.id_group=%s and sigl_09_data_group.id_data = res.id_data and sigl_09_data_group_mode.mode & 292 '\
-              'and (sigl_09_data_group_mode.date_valid IS NULL or CURRENT_DATE <= sigl_09_data_group_mode.date_valid)))) '\
-              'and (param_num_dos.id_data is NULL or (exists(select 1 from sigl_param_num_dos_data_group where sigl_param_num_dos_data_group.id_group in (%s) '\
-              'and sigl_param_num_dos_data_group.id_data = param_num_dos.id_data)) or ( exists( select 1 from sigl_param_num_dos_data_group '\
-              'inner join sigl_param_num_dos_data_group_mode on sigl_param_num_dos_data_group.id_data_group=sigl_param_num_dos_data_group_mode.id_data_group '\
-              'where sigl_param_num_dos_data_group.id_group=%s and sigl_param_num_dos_data_group.id_data=param_num_dos.id_data and sigl_param_num_dos_data_group_mode.mode & 292 '\
-              'and (sigl_param_num_dos_data_group_mode.date_valid IS NULL or CURRENT_DATE <= sigl_param_num_dos_data_group_mode.date_valid)))) '\
               'group by dos.id_data order by dos.num_dos_an desc ' + limit
 
-        cursor.execute(req, (Constants.cst_isodate, id_lab, id_group, id_lab, id_group, id_lab, id_group, id_lab, id_group, id_lab, id_group,))
+        cursor.execute(req, (Constants.cst_isodate,))
 
         return cursor.fetchall()
 

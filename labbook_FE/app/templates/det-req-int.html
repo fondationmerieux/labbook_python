@@ -12,11 +12,11 @@
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title form-patient_interne"><span>Demande d'analyses patient hospitalisé</span></h2>
+            <h2 class="page-title form-patient_interne"><span>{{ _("Demande d'analyses patient hospitalisé") }}</span></h2>
             <form id="form_main" class="vzn-form form-horizontal row" autocomplete="off">
                 {% if entry == 'N' %}
                 <div class="statictext undefined">
-                    <span>Dossier :</span>
+                    <span>{{ _("Dossier") }} :</span>
                 </div>
                 <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" id="num-dos-ro">
                     <span id="num_rec"></span>
@@ -27,7 +27,7 @@
                         <div class="cell" style="width: 360px;">
                             <div id="pat-group-group" class="panel panel-1 panel-primary" style="">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Identité</h3>
+                                    <h3 class="panel-title">{{ _("Identité") }}</h3>
                                 </div>
                                 <div class="panel-body " id="pat-group-group_body">
                                     <div class="row">
@@ -56,7 +56,7 @@
                                                     <div class="row">
                                                         <div class="form-inline col-xs-12">
                                                             <div class="statictext undefined">
-                                                                <span>Patient anonyme.</span>
+                                                                <span>{{ _("Patient anonyme.") }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -67,7 +67,7 @@
                                                     <div class="row">
                                                         <div class="form-inline col-xs-12">
                                                             <div class="statictext undefined">
-                                                                <span>Né(e) le</span>
+                                                                <span>{{ _("Né(e) le") }}</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
                                                                 <span>{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
@@ -82,18 +82,18 @@
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}Années
-                                                                      {% elif args['patient']['unite'] == 1036 %}Mois
-                                                                      {% elif args['patient']['unite'] == 1035 %}Semaines
-                                                                      {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}{% endif %}</span>
+                                                                <span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}{{ _("Années") }}
+                                                                      {% elif args['patient']['unite'] == 1036 %}{{ _("Mois") }}
+                                                                      {% elif args['patient']['unite'] == 1035 %}{{ _("Semaines") }}
+                                                                      {% elif args['patient']['unite'] == 1034 %}{{ _("Jours") }}{% endif %}{% endif %}</span>
                                                             </div>
                                                             <div class="statictext undefined">
                                                                 <span>.</span>
                                                             </div>
                                                             <div class="form-control-static field readonly-field div-inline label-rightMargin undefined" style="">
-                                                                <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}Masculin
-                                                                      {% elif args['patient']['sexe'] == 2 %}Féminin
-                                                                      {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}{% endif %}</span>
+                                                                <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
+                                                                      {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
+                                                                      {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -101,7 +101,7 @@
                                             </div>
                                             {% if entry == 'Y' %}
                                             <div class="form-group button">
-                                                <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn undefined btn-default" value="Modifier le dossier du patient">
+                                                <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn undefined btn-default" value="{{ _("Modifier le dossier du patient") }}">
                                             </div>
                                             {% endif %}
                                         </div>
@@ -112,13 +112,13 @@
 
                         <div class="cell" style="width: 470px;">
                             <div id="presc-group-group" class="panel panel-1 panel-primary" style="">
-                                <div class="panel-heading"><h3 class="panel-title">Prescription</h3></div>
+                                <div class="panel-heading"><h3 class="panel-title">{{ _("Prescription") }}</h3></div>
                                 <div class="panel-body " id="presc-group-group_body">
                                     <div class="row">
                                         <div id="presc-group" class="col-xs-12">
                                             <div class="form-group">
                                                 <label class="mandatory control-label col-lg-6 col-md-6 col-sm-6" style="">
-                                                    <span data-field="date_dos">Date de réception du dossier *</span>
+                                                    <span data-field="date_dos">{{ _("Date de réception du dossier *") }}</span>
                                                 </label>
                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
                                                     {% if entry == 'Y' %}
@@ -131,7 +131,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="mandatory control-label col-lg-6 col-md-6 col-sm-6" style="">
-                                                    <span data-field="date_prescription">Date de prescription *</span>
+                                                    <span data-field="date_prescription">{{ _("Date de prescription *") }}</span>
                                                 </label>
                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
                                                     {% if entry == 'Y' %}
@@ -142,12 +142,12 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" id="prat-search">
-                                                <div class="statictext control-label col-lg-6 col-md-6 col-sm-6 text-right">
-                                                    <span>Praticien</span>
+                                                <div class="statictext control-label col-lg-2 col-md-2 col-sm-2 text-right">
+                                                    <span>{{ _("Praticien") }}</span>
                                                 </div>
-                                                <div class="field col-lg-6 col-md-6 col-sm-6">
+                                                <div class="field col-lg-10 col-md-10 col-sm-10">
                                                     {% if entry == 'Y' %}
-                                                    <select id="search_doctor" style="width:400px"></select>
+                                                    <select id="search_doctor" style="width:350px"></select>
                                                     {% else %}
                                                         {% if args['doctor'] %}
                                                             {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}{% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
@@ -156,14 +156,14 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-lg-6 col-md-6 col-sm-6" style=""><span>Colis</span></label>
+                                                <label class="control-label col-lg-6 col-md-6 col-sm-6" style=""><span>{{ _("Colis") }}</span></label>
                                                 <div class="radio-group col-lg-6 col-md-6 col-sm-6">
                                                     {% if entry == 'Y' %}
                                                     <label class="radio-inline undefined">
-                                                        <input type="radio" name="parcel" value="4">Oui
+                                                        <input type="radio" name="parcel" value="4">{{ _("Oui") }}
                                                     </label>
                                                     <label class="radio-inline undefined">
-                                                        <input type="radio" name="parcel" value="5" checked="checked">Non
+                                                        <input type="radio" name="parcel" value="5" checked="checked">{{ _("Non") }}
                                                     </label>
                                                     {% else %}
                                                     {% if args['record']['colis'] == 4 %}{{ args['record']['id_colis'] }} {{ args['record']['date_reception_colis']|date_format }}{% else %}Non{% endif %}
@@ -176,7 +176,7 @@
                                                         <div class="col-xs-12">
                                                             <div class="form-group">
                                                                 <label class="control-label col-lg-6 col-md-6 col-sm-6" style="">
-                                                                    <span data-field="id_colis">Identification du colis</span>
+                                                                    <span data-field="id_colis">{{ _("Identification du colis") }}</span>
                                                                 </label>
                                                                 <div class="field col-lg-6 col-md-6 col-sm-6">
                                                                     <input id="parcel_id" type="text" value="" maxlength="30" class="form-control" style="width: 240px;" null="">
@@ -184,7 +184,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label col-lg-6 col-md-6 col-sm-6" style="">
-                                                                    <span data-field="date_reception_colis">Date de réception du colis</span>
+                                                                    <span data-field="date_reception_colis">{{ _("Date de réception du colis") }}</span>
                                                                 </label>
                                                                 <div class="field date-fields form-inline col-lg-6 col-md-6 col-sm-6">
                                                                     <input  id="date_parcel" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
@@ -199,22 +199,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="cell" style="width: 320px;">
+                        <div class="cell" style="width: 340px;">
                             <div id="hosp-group-group" class="panel panel-1 panel-primary" style="">
-                                <div class="panel-heading"><h3 class="panel-title">Hospitalisation</h3></div>
+                                <div class="panel-heading"><h3 class="panel-title">{{ _("Hospitalisation") }}</h3></div>
                                 <div class="panel-body " id="hosp-group-group_body">
                                     <div class="row">
                                         <div id="hosp-group" class="col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label col-lg-6" style="">
-                                                    <span data-field="service_interne">Service demandeur</span>
+                                                    <span data-field="service_interne">{{ _("Service demandeur") }}</span>
                                                 </label>
                                                 <div class="field col-lg-6">
                                                     <input id="service_int" type="text" value="" maxlength="50" class="form-control" style="" null="">
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-lg-6" style=""><span data-field="num_lit">Numéro de lit</span></label>
+                                                <label class="control-label col-lg-6" style=""><span data-field="num_lit">{{ _("Numéro de lit") }}</span></label>
                                                 <div class="field col-lg-6">
                                                     <input id="bed_num" type="number" value="" maxlength="4" class="form-control" style="width: 64px;" min="0" max="9999">
                                                 </div>
@@ -229,20 +229,20 @@
                 </div>
 
                 <div id="analyse-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Analyses et actes de prélèvement</h3></div>
+                    <div class="panel-heading"><h3 class="panel-title">{{ _("Analyses et actes de prélèvement") }}</h3></div>
                     <div class="panel-body " id="analyse-group-group_body">
                         <div class="row">
                             <div id="analyse-group" class="col-xs-12">
                                 {% if entry == 'Y' %}
                                 <div class="form-group">
-                                    <div class="statictext col-lg-2 control-label"><span>Rechercher une analyse</span></div>
+                                    <div class="statictext col-lg-2 control-label"><span>{{ _("Rechercher une analyse") }}</span></div>
                                     <div class="field col-lg-2">
                                         <select id="search_analysis" style="width:450px"></select>
                                     </div>
                                 </div>
                                 {% endif %}
                                 <div class="form-group">
-                                    <div class="statictext col-md-1 title"><span>Analyses</span></div>
+                                    <div class="statictext col-md-1 title"><span>{{ _("Analyses") }}</span></div>
                                 </div>
                                 <div class="listing table-responsive yui-dt" id="listing_analyse">
                                     <table id="table_analysis" class="tablesorter">
@@ -257,38 +257,38 @@
                                                 {% if entry == 'Y' %}
                                                 <th>
                                                     <div>
-                                                        <span>Action</span>
+                                                        <span>{{ _("Action") }}</span>
                                                     </div>
                                                 </th>
                                                 {% endif %}
                                                 <th>
                                                     <div>
-                                                        <span>Code</span>
+                                                        <span>{{ _("Code") }}</span>
                                                     </div>
                                                 </th>
                                                 <th>
                                                     <div>
-                                                        <span>Nom</span>
+                                                        <span>{{ _("Nom") }}</span>
                                                     </div>
                                                 </th>
                                                 <th class="yui-dt-editable">
                                                     <div>
-                                                        <span>Urgent</span>
+                                                        <span>{{ _("Urgent") }}</span>
                                                     </div>
                                                 </th>
                                                 <th class="yui-dt-editable">
                                                     <div>
-                                                        <span>Demandée</span>
+                                                        <span>{{ _("Demandée") }}</span>
                                                     </div>
                                                 </th>
                                                 <th>
                                                     <div>
-                                                        <span>Cote</span>
+                                                        <span>{{ _("Cote") }}</span>
                                                     </div>
                                                 </th>
                                                 <th class="yui-dt-editable">
                                                     <div>
-                                                        <span>Prix</span>
+                                                        <span>{{ _("Prix") }}</span>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -298,61 +298,6 @@
                                 </div>
                                 
                                 <div class="clear"></div>
-                                
-                                {% if DEAD_CODE %}
-                                <div class="form-group">
-                                    <div class="statictext col-md-3 title"><span>Actes de prélèvement</span></div>
-                                </div>
-                                <div class="listing table-responsive yui-dt" id="listing_pb">
-                                    <table id="table_sample">
-                                        <colgroup>{% if entry == 'Y' %}<col>{% endif %}<col><col><col><col><col><col></colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th style="display:none;">
-                                                    <div>
-                                                        <span>id_data</span>
-                                                    </div>
-                                                </th>
-                                                {% if entry == 'Y' %}
-                                                <th>
-                                                    <div>
-                                                        <span>Action</span>
-                                                    </div>
-                                                </th>
-                                                {% endif %}
-                                                <th id="yui-dt17-th-code" rowspan="1" colspan="1" class="string yui-dt17-col-code yui-dt-col-code yui-dt-sortable">
-                                                    <div id="yui-dt17-th-code-liner" class="yui-dt-liner">
-                                                        <span><a href="yui-dt17-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code</a></span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt17-th-nom" rowspan="1" colspan="1" class="string yui-dt17-col-nom yui-dt-col-nom yui-dt-sortable">
-                                                    <div id="yui-dt17-th-nom-liner" class="yui-dt-liner">
-                                                        <span><a href="yui-dt17-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a></span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt17-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt17-col-demande yui-dt-col-demande yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt17-th-demande-liner" class="yui-dt-liner">
-                                                        <span><a href="yui-dt17-href-demande" title="Click to sort ascending" class="yui-dt-sortable">Demandée</a></span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt17-th-cote" rowspan="1" colspan="1" class="string yui-dt17-col-cote yui-dt-col-cote yui-dt-sortable">
-                                                    <div id="yui-dt17-th-cote-liner" class="yui-dt-liner">
-                                                        <span><a href="yui-dt17-href-cote" title="Click to sort ascending" class="yui-dt-sortable">Cote</a></span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt17-th-prix" rowspan="1" colspan="1" class="float yui-dt17-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-editable yui-dt-last">
-                                                    <div id="yui-dt17-th-prix-liner" class="yui-dt-liner">
-                                                        <span><a href="yui-dt17-href-prix" title="Click to sort ascending" class="yui-dt-sortable">Prix</a></span>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody_sample" class="yui-dt-message" style=""></tbody>
-                                    </table>
-                                </div>
-                                {% endif %}
-                                
-                                <div class="clear"></div>
                 
                             </div>
                         </div>
@@ -360,12 +305,12 @@
                 </div>
 
                 <div id="facturation-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Facturation</h3></div>
+                    <div class="panel-heading"><h3 class="panel-title">{{ _("Facturation") }}</h3></div>
                     <div class="panel-body " id="facturation-group-group_body">
                         <div class="row">
                             <div id="facturation-group" class="col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="prix">{{ _('Prix total') }}</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="prix">{{ _("Prix total") }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
                                         <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
@@ -375,7 +320,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="remise">{{ _('Remise sur la facturation') }}</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="remise">{{ _("Remise sur la facturation") }}</span></label>
                                     <div class="field col-lg-2">
                                         {% if entry == 'Y' %}
                                         <select id="discount" class="form-control">
@@ -388,7 +333,7 @@
                                         {{ args['record']['remise'] }}
                                         {% endif %}
                                     </div>
-                                    <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">{{ _('Pourcentage de la remise') }}</span></label>
+                                    <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">{{ _("Pourcentage de la remise") }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
                                         <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_discount=this.value;" onchange="change_per_discount(this);">
@@ -399,7 +344,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-3" style="">
-                                        <span data-field="assu_pourcent">{{ _('Pourcentage assurance maladie / mutuelle') }}</span>
+                                        <span data-field="assu_pourcent">{{ _("Pourcentage assurance maladie / mutuelle") }}</span>
                                     </label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
@@ -410,7 +355,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="a_payer">{{ _('Reste à payer') }}</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="a_payer">{{ _("Reste à payer") }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
                                         <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
@@ -420,7 +365,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="num_quittance">{{ _('Numéro de quittance') }}</span></label>
+                                    <label class="control-label col-lg-3" style=""><span data-field="num_quittance">{{ _("Numéro de quittance") }}</span></label>
                                     <div class="field col-md-3 col-lg-4">
                                         {% if entry == 'Y' %}
                                         <input type="text" id="receipt_num" name="receipt_num" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
@@ -434,14 +379,13 @@
                     </div>
                 </div>
 
-
                 <div id="prel-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Produits pathologiques</h3></div>
+                    <div class="panel-heading"><h3 class="panel-title">{{ _("Produits pathologiques") }}</h3></div>
                     <div class="panel-body " id="prel-group-group_body">
                         <div class="row">
                             <div id="prel-group" class="col-xs-12">
                                 {% if entry == 'Y' %}
-                                <input type="button" onclick="new_prod();return false;" id="prod_new" class="btn btn-primary" value="{{ _('Ajouter un prélèvement') }}">
+                                <input type="button" onclick="new_prod();return false;" id="prod_new" class="btn btn-primary" value="{{ _("Ajouter un prélèvement") }}">
                                 {% endif %}
                                 <div class="listing table-responsive yui-dt" id="listing_prel">
                                     <div class="yui-dt-mask" style="display:none;"></div>
@@ -457,56 +401,43 @@
                                                 {% if entry == 'Y' %}
                                                 <th>
                                                     <div>
-                                                        <span>Action</span>
+                                                        <span>{{ _("Action") }}</span>
                                                     </div>
                                                 </th>
                                                 {% endif %}
-                                                <th id="yui-dt35-th-type_prel" rowspan="1" colspan="1" class="fkey_dico yui-dt35-col-type_prel yui-dt-col-type_prel yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt35-th-type_prel-liner" class="yui-dt-liner">
-                                                        <span>
-                                                            <a href="yui-dt35-href-type_prel" title="Click to sort ascending" class="yui-dt-sortable">*Prod. pathol.</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("*Prod. pathol.") }}</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-statut" rowspan="1" colspan="1" class="fkey_dico yui-dt35-col-statut yui-dt-col-statut yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt35-th-statut-liner" class="yui-dt-liner">
-                                                        <span>
-                                                            <a href="yui-dt35-href-statut" title="Click to sort ascending" class="yui-dt-sortable">*Statut</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("*Statut") }}</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-date_prel" rowspan="1" colspan="1" class="date yui-dt35-col-date_prel yui-dt-col-date_prel yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt35-th-date_prel-liner" class="yui-dt-liner">
-                                                        <span><a href="yui-dt35-href-date_prel" title="Click to sort ascending" class="yui-dt-sortable">Date Prel</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("Date Prel") }}</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-date_reception" rowspan="1" colspan="1" class="date yui-dt35-col-date_reception yui-dt-col-date_reception yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt35-th-date_reception-liner" class="yui-dt-liner">
-                                                        <span>
-                                                            <a href="yui-dt35-href-date_reception" title="Click to sort ascending" class="yui-dt-sortable">*Date réception</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("*Date réception") }}</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-preleveur" rowspan="1" colspan="1" class="string yui-dt35-col-preleveur yui-dt-col-preleveur yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt35-th-preleveur-liner" class="yui-dt-liner">
-                                                        <span>
-                                                            <a href="yui-dt35-href-preleveur" title="Click to sort ascending" class="yui-dt-sortable">*Préleveur</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("*Préleveur") }}</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-quantite" rowspan="1" colspan="1" class="integer yui-dt35-col-quantite yui-dt-col-quantite yui-dt-sortable yui-dt-editable">
-                                                    <div id="yui-dt35-th-quantite-liner" class="yui-dt-liner">
-                                                        <span>
-                                                            <a href="yui-dt35-href-quantite" title="Click to sort ascending" class="yui-dt-sortable">Qtté</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("Qtté") }}</span>
                                                     </div>
                                                 </th>
-                                                <th id="yui-dt35-th-commentaire" rowspan="1" colspan="1" class="string yui-dt35-col-commentaire yui-dt-col-commentaire yui-dt-sortable yui-dt-editable yui-dt-last">
-                                                    <div id="yui-dt35-th-commentaire-liner" class="yui-dt-liner">
-                                                        <span>
-                                                            <a href="yui-dt35-href-commentaire" title="Click to sort ascending" class="yui-dt-sortable">Commentaire</a>
-                                                        </span>
+                                                <th>
+                                                    <div>
+                                                        <span>{{ _("Commentaire") }}</span>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -521,7 +452,7 @@
                 </div>
 
                 <div id="rc-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">{{ _('Renseignements / Informations complémentaires') }}</h3></div>
+                    <div class="panel-heading"><h3 class="panel-title">{{ _("Renseignements / Informations complémentaires") }}</h3></div>
                     <div class="panel-body " id="rc-group-group_body">
                         <div class="row">
                             <div id="rc-group" class="col-xs-12">
@@ -539,11 +470,11 @@
 
                 <div class="form-group button" id="button">
                     {% if entry == 'Y' %}
-                    <input type="button" onclick="save_requests();" id="save" class="btn btn-primary" value="{{ _('Enregistrer') }}">
+                    <input type="button" onclick="save_requests();" id="save" class="btn btn-primary" value="{{ _("Enregistrer") }}">
                     {% else %}
-                    <input type="button" onclick="valid_requests();" id="valid" class="btn btn-primary" value="{{ _('Valider') }}">
+                    <input type="button" onclick="valid_requests();" id="valid" class="btn btn-primary" value="{{ _("Valider") }}">
                     {% endif %}
-                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
+                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _("Quitter") }}">
                 </div>
 
             </form><!-- close form_main -->
@@ -556,10 +487,8 @@
 {% block add_script %}
 <script>
 var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0} ;
-{% if DEAD_CODE %}var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0} ;{% endif %}
 var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
 var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
-{% if DEAD_CODE %}var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|safe }}{% else %}[]{% endif %}   ;{% endif %}
 var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
 var ind_products  = 0 ;
 var old_value     = 0 ;
@@ -691,53 +620,13 @@ let data_exist = false ;
                 tmp_struct_ana.code    = data_ana.code ;
                 tmp_struct_ana.name    = data_ana.nom ;
                 tmp_struct_ana.rate    = data_ana.cote_unite + data_ana.cote_valeur ;
-                tmp_struct_ana.price   = {% if args['billing_hosp']['value'] == 1 %}act_price * data_ana.cote_valeur{% else %}0{% endif %} ;
+                tmp_struct_ana.price   = {% if args['billing_hosp']['value'] == "1" %}act_price * data_ana.cote_valeur{% else %}0{% endif %} ;
 
                 data_analysis.push(tmp_struct_ana) ;
 
                 // load new analysis in table
                 load_analysis( tmp_struct_ana, 1) ;
                 refresh_bill() ;
-
-                    {% if DEAD_CODE %}
-                    // GET det sample linked to analysis
-                    if ( data_ana.produit_biologique > 0 )
-                    {
-                    // check if this analysis is not already used
-                    if (!$.isEmptyObject(data_samples) )
-                    $.map(data_samples,function(val,key) { if ( val.id_data == data_ana.produit_biologique ) { data_exist = true; } } ) ;
-
-                        if (!data_exist)
-                        {
-                            // GET det sample
-                            $.ajax( {
-                                type: "GET",
-                                url: "/services/analysis/det/" +  data_ana.produit_biologique,
-                                success: function(data_samp)
-                                    {
-                                    let tmp_struct_samp = JSON.parse(JSON.stringify(struct_samp)) ;
-
-                                    tmp_struct_samp.id_data = data_samp.id_data ;
-                                    tmp_struct_samp.code    = data_samp.code ;
-                                    tmp_struct_samp.name    = data_samp.nom ;
-                                    tmp_struct_samp.rate    = data_samp.cote_unite + data_samp.cote_valeur ;
-                                    tmp_struct_samp.price   = act_price * data_samp.cote_valeur ;
-
-                                    data_samples.push(tmp_struct_samp) ;
-
-                                    // load new sample in table
-                                    load_sample( tmp_struct_samp, 1 ) ;
-                                    refresh_bill() ;
-                                    },
-                                error: function(data_samp)
-                                    {
-                                    console.log("ERROR GET det sample");
-                                    alert("Erreur lors la récupération des prélèvements") ;
-                                    }
-                            } ) ;
-                        }
-                    }
-                    {% endif %}
 
                     data_exist = false ;
 
@@ -772,7 +661,7 @@ let data_exist = false ;
                                 error: function(data_prod)
                                     {
                                     console.log("ERROR GET type product");
-                                    alert("Erreur lors la récupération des produits pathologiques") ;
+                                    alert("{{ _("Erreur lors la récupération des produits pathologiques") }}") ;
                                     }
                             } ) ;
                         }
@@ -781,7 +670,7 @@ let data_exist = false ;
             error: function(data_ana)
                 {
                 console.log("ERROR GET det analysis");
-                alert("Erreur lors de la récupération d'une analyse") ;
+                alert("{{ _("Erreur lors de la récupération des analyses") }}") ;
                 }
         } ) ;
     }
@@ -855,101 +744,24 @@ $("#tbody_analysis").append(tr_analysis) ;
 {% if entry == 'Y' %}
 function del_analysis( id_data )
 {
-    for( i in data_analysis )
+    if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
     {
-        if (data_analysis[i].id_data == id_data)
+        for( i in data_analysis )
         {
-        bill_price  -= data_analysis[i].price ;
-        bill_remain -= data_analysis[i].price ;
+            if (data_analysis[i].id_data == id_data)
+            {
+            bill_price  -= data_analysis[i].price ;
+            bill_remain -= data_analysis[i].price ;
 
-        delete data_analysis[i] ;
+            delete data_analysis[i] ;
 
-        break ;
+            break ;
+            }
         }
-    }
-}
-{% endif %}
-
-{% if DEAD_CODE %}
-function load_sample( data, bill_calc )
-{
-let tr_sample = '' ;
-
-    if (data.length < 1)
-    {
-    tr_sample = '' ; //'<tr class=""><td colspan="7">' +
-                  //'<div>Aucune donnée à afficher</div></td></tr>' ;
     }
     else
-    {
-    let obj = data ;
-
-        if ( obj.id_data > 0 )
-        {
-        let tmp_tr = '<tr style="">' ;
-
-        {% if entry == 'Y' %}
-        let btn = '<input type="button" onclick="del_sample(' + obj.id_data + ');load_data(0);refresh_bill();" value="' + '{{ _("Supprimer") }}' + '">' 
-
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", btn, "", "") ;
-        tmp_tr += create_td("", obj.code, "", "") ;
-        tmp_tr += create_td("", obj.name, "", "") ;
-        tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "", "") ;
-        tmp_tr += create_td("", format_rate(obj.rate, obj.price), "", "") ;
-        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "", "") ;
-        {% else %}
-        let dem  = obj.demande ;
-        let rate = obj.cote_unite + obj.cote_valeur ;
-
-            if ( dem == 4 )
-            dem = "Oui" ;
-            else
-            dem = "Non" ;
-
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", obj.code, "", "") ;
-        tmp_tr += create_td("", obj.nom, "", "") ;
-        tmp_tr += create_td("", dem, "", "") ;
-        tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
-        tmp_tr += create_td("", obj.prix, "", "") ;
-        {% endif %}
-
-        tmp_tr += '</tr>' ;
-
-            if (bill_calc)
-            {
-            bill_price  += obj.price ;
-            bill_remain += obj.price ;
-            }
-
-        tr_sample += tmp_tr ;
-        }
-    }
-
-$("#tbody_sample").append(tr_sample) ;
-//$("#table_sample").tablesorter() ;
+    return false ;
 }
-{% endif %}
-
-{% if DEAD_CODE %}
-{% if entry == 'Y' %}
-function del_sample( id_data )
-{
-    for( i in data_samples )
-    {
-        if (data_samples[i].id_data == id_data)
-        {
-        bill_price  -= data_samples[i].price ;
-        bill_remain -= data_samples[i].price ;
-
-        delete data_samples[i] ;
-
-        break ;
-        }
-    }
-}
-{% endif %}
 {% endif %}
 
 function load_product( data )
@@ -1005,15 +817,20 @@ $("#tbody_product").append(tr_product) ;
 {% if entry == 'Y' %}
 function del_product( id_data )
 {
-    for( i in data_products )
+    if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
     {
-        if (data_products[i].id_data == id_data)
+        for( i in data_products )
         {
-        delete data_products[i] ;
+            if (data_products[i].id_data == id_data)
+            {
+            delete data_products[i] ;
 
-        break ;
+            break ;
+            }
         }
     }
+    else
+    return false ;
 }
 {% endif %}
 
@@ -1140,23 +957,6 @@ let id_data  = split_id[split_id.length -1] ;
             }
         }
     }
-    {% if DEAD_CODE %}
-    else if ( split_id[0] == "samp" )
-    {
-        for( i in data_samples )
-        {
-            if (data_samples[i].id_data == id_data )
-            {
-                if ( split_id[1] == "req" )
-                data_samples[i].req = val ;
-                else if ( split_id[1] == "price" )
-                data_samples[i].price = val ;
-
-            break ;
-            }
-        }
-    }
-    {% endif %}
     else if ( split_id[0] == "prod" )
     {
         for( i in data_products )
@@ -1215,20 +1015,12 @@ function load_data( bill_calc )
 {
 // clear table tbody
 $("#tbody_analysis").empty() ;
-{% if DEAD_CODE %}$("#tbody_sample").empty() ;{% endif %}
 $("#tbody_product").empty() ;
 
     for( i in data_analysis )
     {
     load_analysis( data_analysis[i], bill_calc ) ;
     }
-
-    {% if DEAD_CODE %}
-    for( i in data_samples )
-    {
-    load_sample( data_samples[i], bill_calc ) ;
-    }
-    {% endif %}
 
     for( i in data_products )
     {
@@ -1277,7 +1069,7 @@ var receipt_num   = $("#receipt_num").val() ;
 var service_int   = $("#service_int").val() ;
 var bed_num       = $("#bed_num").val() ;
 var bill_num      = "" ;
-var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
+var stat          = 181 ;
 
     if (id_med == null)
     id_med = 0 ;
@@ -1297,14 +1089,14 @@ var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
     // date_record required
     if (date_record == "")
     {
-    alert( "Veuillez sélectionner une date de réception du dossier" ) ;
+        alert( "{{ _("Veuillez sélectionner une date de réception du dossier") }}" ) ;
     return false ;
     }
 
     // date_prescr required
     if (date_prescr == "")
     {
-    alert( "Veuillez sélectionner une date de prescription" ) ;
+    alert( "{{ _("Veuillez sélectionner une date de prescription") }}" ) ;
     return false ;
     }
 
@@ -1313,25 +1105,25 @@ var stat          = {% if entry == 'Y' %}181{% else %}182{% endif %} ;
     {
         if (data_products[i].type == 0)
         {
-        alert( "Veuillez renseigner le type du produit" ) ;
+        alert( "{{ _("Veuillez renseigner le type du produit") }}" ) ;
         return false ;
         }
 
         if (data_products[i].stat == 0)
         {
-        alert( "Veuillez renseigner le statut du produit" ) ;
+        alert( "{{ _("Veuillez renseigner le statut du produit") }}" ) ;
         return false ;
         }
 
         if (data_products[i].dateReceipt == "")
         {
-        alert( "Veuillez renseigner toutes les dates de réception" ) ;
+        alert( "{{ _("Veuillez renseigner toutes les dates de réception") }}" ) ;
         return false ;
         }
 
         if (data_products[i].sampler == "")
         {
-        alert( "Veuillez renseigner toutes les identités des préleveurs" ) ;
+        alert( "{{ _("Veuillez renseigner toutes les identités des préleveurs") }}" ) ;
         return false ;
         }
     }
@@ -1388,24 +1180,6 @@ var param = '{ "id_owner":' + id_group + ', ' +
             param_list_ana += param_ana ;
             }
 
-            {% if DEAD_CODE %}
-            // Add samples
-            for( i in data_samples )
-            {
-            param_list_ana += ', ' ;
-
-            var param_samp = '{ "id_owner":' + id_group + ', ' +
-                               '"id_rec":' + id_rec  + ', ' +
-                               '"id_ana":' + data_samples[i].id_data + ', ' +
-                               '"price":' + data_samples[i].price + ', ' +
-                               '"paid": 5, ' +
-                               '"emer": 5, ' +
-                               '"req":' + data_samples[i].req + '}' ;
-
-            param_list_ana += param_samp ;
-            }
-            {% endif %}
-
         param_list_ana += ' ] }';
 
             // Send analysis information
@@ -1459,21 +1233,21 @@ var param = '{ "id_owner":' + id_group + ', ' +
                         error: function(ret_prod)
                         {
                         console.log("ERROR product list req") ;
-                        alert("Une erreur est survenue lors de l'enregistrement des prelevements") ;
+                        alert("{{ _("Une erreur est survenue lors de l'enregistrement des prelevements") }}") ;
                         } 
                     } ) ;
                 },
                 error: function(ret_ana)
                 {
                 console.log("ERROR analysis list req") ;
-                alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
+                alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
                 } 
             } ) ;
         },
         error: function(ret_rec)
         {
         console.log("ERROR record det") ;
-        alert("Une erreur est survenue lors de l'enregistrement du dossier") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement du dossier") }}") ;
         }
     } ) ;
 }
@@ -1513,14 +1287,14 @@ let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}
                 error: function(response)
                 {
                 console.log("ERROR record stat") ;
-                alert("Une erreur est survenue du changement de statut du dossier") ;
+                alert("{{ _("Une erreur est survenue du changement de statut du dossier") }}") ;
                 }
             } ) ;
         },
         error: function(response)
         {
         console.log("ERROR result create") ;
-        alert("Une erreur est survenue lors de création des résultats") ;
+        alert("{{ _("Une erreur est survenue lors de création des résultats") }}") ;
         }
     } ) ;
 }

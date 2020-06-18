@@ -71,8 +71,6 @@ class RecordDet(Resource):
         if record['a_payer'] != '':
             record['a_payer'] = float(record['a_payer'])
 
-        self.log.info(Logs.fileline() + ' : DEBUG RecordDet record=' + str(record))
-
         self.log.info(Logs.fileline() + ' : RecordDet id_rec=' + str(id_rec))
         return compose_ret(record, Constants.cst_content_type_json, 200)
 
@@ -87,52 +85,7 @@ class RecordDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update Record
-        if id_rec != 0:
-            self.log.error(Logs.fileline() + ' : DEBUG TODO ? RecordDet update')
-
-            """
-            Record = Record.getRecord(id_rec)
-
-            if not Record:
-                self.log.error(Logs.fileline() + ' : RecordDet ERROR not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            ret = Record.updateRecord(id=id_pat,
-                                        id_owner=args['id_owner'],
-                                        anonyme=args['anonyme'],
-                                        code=args['code'],
-                                        code_Record=args['code_Record'],
-                                        nom=args['nom'],
-                                        prenom=args['prenom'],
-                                        ddn=args[''],
-                                        sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
-                                        adresse=args['adresse'],
-                                        cp=args['cp'],
-                                        ville=args['ville'],
-                                        tel=args['tel'],
-                                        profession=args['profession'],
-                                        nom_jf=args['nom_jf'],
-                                        quartier=args['quartier'],
-                                        bp=args['bp'],
-                                        ddn_approx=args['ddn_approx'],
-                                        age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
-
-            if ret is False:
-                self.log.error(Logs.alert() + ' : RecordDet ERROR update')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            res = {}
-            res['id_rec'] = id_rec"""
-
-        # Insert new Record
-        else:
-            self.log.error(Logs.fileline() + ' : DEBUG RecordDet insert')
-
+        if id_rec == 0:
             args['date_record'] = datetime.strptime(args['date_record'], Constants.cst_isodate)
             args['date_prescr'] = datetime.strptime(args['date_prescr'], Constants.cst_isodate)
 

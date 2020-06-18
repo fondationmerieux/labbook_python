@@ -173,11 +173,11 @@
                                         <tbody id="tbody_records" class="yui-dt-message" style=""></tbody>
                                     </table>
                                     <div id="yui-dt0-paginator1" class="yui-dt-paginator yui-pg-container" style="">
-                                        <span id="yui-pg0-1-first-span33" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">Premier</a></span>
-                                        <span id="yui-pg0-1-prev-span35" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">Précédent</a></span>
+                                        <span id="yui-pg0-1-first-span33" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">{{ _('Premier') }}</a></span>
+                                        <span id="yui-pg0-1-prev-span35" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">{{ _('Précédent') }}</a></span>
                                         <span id="num_page_b" class="yui-pg-pages" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
-                                        <span id="yui-pg0-1-next-span38" class="yui-pg-next"><a id="next_rec" onclick="display_record(1000);">Suivant</a></span>
-                                        <span id="yui-pg0-1-last-span40" class="yui-pg-last"><a id="last_rec" onclick="display_record(p_max);">Dernier</a></span>
+                                        <span id="yui-pg0-1-next-span38" class="yui-pg-next"><a id="next_rec" onclick="display_record(1000);">{{ _('Suivant') }}</a></span>
+                                        <span id="yui-pg0-1-last-span40" class="yui-pg-last"><a id="last_rec" onclick="display_record(p_max);">{{ _('Dernier') }}</a></span>
                                     </div>
                                 </div>
                                 <div class="clear"></div>
@@ -186,6 +186,22 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Popup waiting -->
+            <div class="modal fade" id="dial_wait" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dlg-cancel" style="background:#EEE;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4>{{ _('Processus en cours') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <span data-field="reason">{{ _('Veuillez patienter') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div><!-- close main -->
     </div>
 </div><!-- close content -->
@@ -214,6 +230,12 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
             '"date_end":"' + date_end  + '", ' +
             '"emer":' + emer + '}' ;
 
+    // popup wait
+    setTimeout(function()
+    {
+        $( "#dial_wait" ).modal( "show" ) ;
+    }, 300) ;
+
     $.ajax( {
        type: "POST",
        url: "/services/record/list/" + {{ session['user_id_group']|safe}},
@@ -227,9 +249,13 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
            p_max = Math.ceil( data.length / p_step ) ;
 
            display_record( 1 ) ;
+
+           $( "#dial_wait" ).modal( "hide" ) ;
            },
        error: function(data)
            {
+           $( "#dial_wait" ).modal( "hide" ) ;
+
            console.log("ERROR record list") ;
            alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
            }
