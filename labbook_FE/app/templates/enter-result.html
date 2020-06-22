@@ -147,14 +147,17 @@ let tr_histo = '<tr><td class="icon-container status"><span class="icon status-n
             ident = '' ;
             extra = '' ;
 
-                if ( data_histo[i].user.firstname  != "" )
-                ident += data_histo[i].user.firstname + ' ' ;
+                if ( data_histo[i].user != null )
+                {
+                    if ( data_histo[i].user.firstname  != "" )
+                    ident += data_histo[i].user.firstname + ' ' ;
 
-                if ( data_histo[i].user.lastname  != "" )
-                ident += data_histo[i].user.lastname ;
+                    if ( data_histo[i].user.lastname  != "" )
+                    ident += data_histo[i].user.lastname ;
 
-                if ( ident == "" )
-                ident += data_histo[i].user.username ;
+                    if ( ident == "" )
+                    ident += data_histo[i].user.username ;
+                }
 
                 if ( data_histo[i].motif_annulation != "" )
                 extra += '<li><span>ANNULE ' + data_histo[i].dico_cancel.label +'</span></li>' ;

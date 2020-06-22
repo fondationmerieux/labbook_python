@@ -18,7 +18,7 @@ class Record:
         filter_cond = ''
 
         if not args:
-            limit = 'LIMIT 200'
+            limit = 'LIMIT 500'
         else:
             limit = 'LIMIT 4000'
             # filter conditions

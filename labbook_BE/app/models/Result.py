@@ -2,7 +2,8 @@
 import logging
 import mysql.connector
 
-# from app.models.Constants import *
+from datetime import datetime, date
+from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
 
@@ -16,7 +17,7 @@ class Result:
 
         filter_cond = ''
 
-        limit = 'LIMIT 200'
+        limit = 'LIMIT 500'
         # filter conditions
         date_beg = args['date_beg']
         date_end = args['date_end']
@@ -29,7 +30,9 @@ class Result:
         if args['type_ana'] and args['type_ana'] > 0:
             filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
 
-        # TODO condition valid_res ???
+        # Without valid result
+        if args['valid_res'] and args['valid_res'] > 0:
+            filter_cond += ' and res.id_data not in (select id_resultat from sigl_10_data where type_validation > 250 and res.id_data=id_resultat) '
 
         # ref_ana, id_ana, id_dos, nom, famille, id_res, valeur, ref_var.*, num_dos_mois, num_dos_an,
         # date_dos, date_prescr, stat, urgent, id_owner
@@ -46,9 +49,9 @@ class Result:
               'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
               'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
               'and ref.id_data = var_pos.id_refanalyse '\
-              'where (cast(substring(num_dos_jour, 1, 8) as UNSIGNED) >= %s) and '\
-              '(cast(substring(num_dos_jour, 1, 8) as UNSIGNED) <= %s) ' + filter_cond +\
-              'order by nom asc, id_dos asc, position asc ' + limit
+              'where substring(num_dos_jour, 1, 8) >= %s and '\
+              'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +\
+              'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -73,7 +76,7 @@ class Result:
               'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
               'and ref.id_data = var_pos.id_refanalyse '\
               'where id_dos=%s '\
-              'order by nom asc, position asc'
+              'order by nom asc, id_ana asc, position asc'
 
         cursor.execute(req, (id_rec,))
 
@@ -83,6 +86,8 @@ class Result:
     def getPreviousResult(id_pat, ref_ana, ref_var, id_res):
         cursor = DB.cursor()
 
+        date_today = datetime.strftime(date.today(), Constants.cst_isodate) + ' 00:00' 
+
         req = 'select res.valeur as valeur, vld.date_validation as date_valid '\
               'from sigl_09_data as res '\
               'inner join sigl_05_07_data as ref on ref.id_refvariable = res.ref_variable '\
@@ -91,9 +96,10 @@ class Result:
               'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '\
               'where dos.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '\
               'and vld.type_validation=252 and vld.motif_annulation is NULL and res.id_data != %s '\
+              'and vld.date_validation < %s '\
               'order by vld.date_validation desc limit 1'
 
-        cursor.execute(req, (id_pat, ref_ana, ref_var, id_res))
+        cursor.execute(req, (id_pat, ref_ana, ref_var, id_res, date_today))
 
         return cursor.fetchone()
 

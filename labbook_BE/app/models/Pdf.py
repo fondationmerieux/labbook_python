@@ -308,6 +308,7 @@ class Pdf:
 
         id_ana_p = 0
         id_res_p = 0
+        id_user_valid_p = 0
 
         report_div = '<div style="width:980px;min-height:900px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
         res_div    = ''
@@ -322,25 +323,29 @@ class Pdf:
                         # comment and who make validation
                         res_valid = Result.getResultValidation(id_res_p)
 
-                        user = User.getUserByIdGroup(res_valid['utilisateur'])
+                        # If valid user change we display who valid previous analisys
+                        if id_user_valid_p > 0 and res_valid['utilisateur'] != id_user_valid_p:
+                            id_user_valid_p = res_valid['utilisateur']
 
-                        if user['lastname'] and user['firstname']:
-                            user = user['lastname'] + ' ' + user['firstname']
-                        else:
-                            user = user['username']
+                            user = User.getUserByIdGroup(res_valid['utilisateur'])
 
-                        if res_valid['commentaire']:
-                            res_comm = res_valid['commentaire']
-                        else:
-                            res_comm = ''
+                            if user['lastname'] and user['firstname']:
+                                user = user['lastname'] + ' ' + user['firstname']
+                            else:
+                                user = user['username']
 
-                        if full_comm:
-                            comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + res_comm + '</span></div>'
-                        else:
-                            comm_div = ''
+                            if res_valid['commentaire']:
+                                res_comm = res_valid['commentaire']
+                            else:
+                                res_comm = ''
 
-                        res_div += comm_div + """\
-                                <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + user + """</span></div>"""
+                            if full_comm:
+                                comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + res_comm + '</span></div>'
+                            else:
+                                comm_div = ''
+
+                            res_div += comm_div + """\
+                                    <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + user + """</span></div>"""
 
                     id_ana_p = res['id_ana']
                     id_res_p = res['id_res']
@@ -356,9 +361,14 @@ class Pdf:
                     if res['nom']:
                         res_name = res['nom']
 
-                    res_div += """\
-                            <div><span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">""" + res_fam + """</span>
-                                 <span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">""" + res_name + """</span>"""
+                    # Start div of an analysis
+                    res_div += '<div>'
+
+                    if res_fam:
+                        res_div += '<span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">' + res_fam + '</span>'
+
+                    if res_name:
+                        res_div += '<span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">' + res_name + '</span>'
 
                 # Start to get previous result if exist
                 prev = ''
@@ -383,9 +393,15 @@ class Pdf:
                     if res_prev and res_prev['valeur']:
                         label_prev = Various.getDicoById(res_prev['valeur'])
                         prev += label_prev['label']
+                    else:
+                        prev = ''
                 else:
-                    val   = res['valeur']
-                    if res_prev and res_prev['valeur']:
+                    val = res['valeur']
+                    # Cancel result
+                    if not val:
+                        val  = 'Annulée'
+                        prev = ''
+                    elif res_prev and res_prev['valeur']:
                         prev += res_prev['valeur']
 
                     if res['unite']:
@@ -403,10 +419,10 @@ class Pdf:
 
                 # new line of result
                 res_div += """<div style="margin-bottom:10px;">\
-                             <span class="ft_res_label" style="width:360px;display:inline-block;text-align:left;padding-left:15px;">""" + res['libelle'] + """</span>
-                             <span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">""" + val + """</span>
-                             <span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">""" + ref + """</span>
-                             <span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">""" + prev + """</span></div>"""
+                             <span class="ft_res_label" style="width:360px;display:inline-block;text-align:left;padding-left:15px;">""" + str(res['libelle']) + """</span>
+                             <span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">""" + str(val) + """</span>
+                             <span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">""" + str(ref) + """</span>
+                             <span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">""" + str(prev) + """</span></div>"""
 
             if res_div:
                 report_div += res_div

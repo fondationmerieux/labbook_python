@@ -80,10 +80,11 @@ class ResultList(Resource):
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
 
-            # Replace None by empty string
-            for key, value in result['user'].items():
-                if result['user'][key] is None:
-                    result['user'][key] = ''
+            if result['user']:
+                # Replace None by empty string
+                for key, value in result['user'].items():
+                    if result['user'][key] is None:
+                        result['user'][key] = ''
 
             # Get status labels of record
             tmp = Various.getDicoById(str(result['stat']))

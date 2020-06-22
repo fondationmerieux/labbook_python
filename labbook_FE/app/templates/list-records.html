@@ -231,10 +231,7 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
-    setTimeout(function()
-    {
-        $( "#dial_wait" ).modal( "show" ) ;
-    }, 300) ;
+    $( "#dial_wait" ).modal( "show" ) ;
 
     $.ajax( {
        type: "POST",
