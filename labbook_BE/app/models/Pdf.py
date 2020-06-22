@@ -41,8 +41,6 @@ class Pdf:
     @staticmethod
     def getPdfBill(id_rec):
         path = '/home/apps/labbook_BE/labbook_BE/tmp/'
-        # CHANGE PATH TO EASY VIEW TEST PDF
-        # path = '/space/www/apps/labbook/labbook_2.05/public/test_pdf_python/'
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -404,7 +402,7 @@ class Pdf:
                     elif res_prev and res_prev['valeur']:
                         prev += res_prev['valeur']
 
-                    if res['unite']:
+                    if res['unite'] and val != 'Annulée':
                         unit = Various.getDicoById(res['unite'])
                         if unit:
                             val  += '&nbsp;' + unit['label']

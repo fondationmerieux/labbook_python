@@ -86,7 +86,7 @@ class Result:
     def getPreviousResult(id_pat, ref_ana, ref_var, id_res):
         cursor = DB.cursor()
 
-        date_today = datetime.strftime(date.today(), Constants.cst_isodate) + ' 00:00' 
+        date_today = datetime.strftime(date.today(), Constants.cst_isodate) + ' 00:00'
 
         req = 'select res.valeur as valeur, vld.date_validation as date_valid '\
               'from sigl_09_data as res '\
