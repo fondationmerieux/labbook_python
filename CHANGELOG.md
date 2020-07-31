@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
+## [2.9.0] - 2020-07-31
+- Final version of 2.9.0 branch validated
+
 ## [2.9.0-rc.2] - 2020-06-18
 ### Added
 - Add popup waiting message for pages with filter by date
