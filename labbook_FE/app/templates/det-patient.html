@@ -250,7 +250,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group button">
-                                    <input type="button" onclick="save_pat();" class="btn btn-primary" value="Enregistrer">
+                                    <input type="button" onclick="save_pat( {{ args['id_pat'] }} );" class="btn btn-primary" value="Enregistrer">
                                     <input type="button" onclick="return_back();" class="btn undefined btn-default" value="Retour">
                                 </div>
                             </div>
@@ -265,7 +265,7 @@
 
 {% block add_script %}
 <script>
-function save_pat() 
+function save_pat( id_pat ) 
 {
 var id_owner      = {{ session['user_id_group']|safe}} ;
 var anonyme       = $("input:radio[name=anonyme]:checked").val() ;
@@ -292,9 +292,9 @@ var mois_naiss    = 0 ; // useless
 var unite         = $("#unite").val() ;
 
     // date de naissance obligatoire
-    if (ddn == "")
+    if (ddn == "" && age == "")
     {
-    alert( "Veuillez sélectionner un date de naissance" ) ;
+    alert( "Veuillez sélectionner une date de naissance ou saisir un age" ) ;
     return false;
     }
  
@@ -324,7 +324,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/patient/det/0",
+       url: "/services/patient/det/" + id_pat,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

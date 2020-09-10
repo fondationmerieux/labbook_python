@@ -6,8 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
-## [2.9.0] - 2020-07-31
+## [2.9.0] - 2020-09-11
+### Changed
 - Final version of 2.9.0 branch validated
+
+### Added
+- Add Alembic, database migrations tool
+
+### Fixed
+- Patient details (age without birth date)
 
 ## [2.9.0-rc.2] - 2020-06-18
 ### Added

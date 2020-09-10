@@ -84,6 +84,11 @@ class PatientDet(Resource):
                 self.log.error(Logs.fileline() + ' : PatientDet ERROR not found')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
+            if args['ddn']:
+                args['ddn'] = datetime.strptime(args['ddn'], Constants.cst_isodate)
+            else:
+                args['ddn'] = None
+
             ret = Patient.updatePatient(id=id_pat,
                                         id_owner=args['id_owner'],
                                         anonyme=args['anonyme'],
@@ -91,7 +96,7 @@ class PatientDet(Resource):
                                         code_patient=args['code_patient'],
                                         nom=args['nom'],
                                         prenom=args['prenom'],
-                                        ddn=args[''],
+                                        ddn=args['ddn'],
                                         sexe=args['sexe'],
                                         ethnie=args['ethnie'],
                                         adresse=args['adresse'],
@@ -120,7 +125,10 @@ class PatientDet(Resource):
         else:
             self.log.error(Logs.fileline() + ' : DEBUG PatientDet insert')
 
-            args['ddn'] = datetime.strptime(args['ddn'], Constants.cst_isodate)
+            if args['ddn']:
+                args['ddn'] = datetime.strptime(args['ddn'], Constants.cst_isodate)
+            else:
+                args['ddn'] = None
 
             ret = Patient.insertPatient(id_owner=args['id_owner'],
                                         anonyme=args['anonyme'],

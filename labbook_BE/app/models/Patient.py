@@ -41,6 +41,26 @@ class Patient:
         return cursor.fetchone()
 
     @staticmethod
+    def updatePatient(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_03_data '
+                           'set id_owner=%(id_owner)s, anonyme=%(anonyme)s, code=%(code)s, code_patient=%(code_patient)s, '
+                           'nom=%(nom)s, prenom=%(prenom)s, ddn=%(ddn)s, sexe=%(sexe)s, ethnie=%(ethnie)s, adresse=%(adresse)s, '
+                           'cp=%(cp)s, ville=%(ville)s, tel=%(tel)s, profession=%(profession)s, nom_jf=%(nom_jf)s, '
+                           'quartier=%(quartier)s, bp=%(bp)s, ddn_approx=%(ddn_approx)s, age=%(age)s, '
+                           'annee_naiss=%(annee_naiss)s, semaine_naiss=%(semaine_naiss)s, mois_naiss=%(mois_naiss)s, unite=%(unite)s '
+                           'where id_data=%(id)s', params)
+
+            Patient.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def insertPatient(**params):
         try:
             cursor = DB.cursor()

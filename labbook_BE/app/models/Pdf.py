@@ -58,7 +58,7 @@ class Pdf:
         receipt_num = record['num_quittance']
 
         if receipt_num:
-            receipt_num = '<div><span class="ft_bill_rec">N° quittance : ' + receipt_num + '</span></div>'
+            receipt_num = '<div><span class="ft_bill_rec">N° quittance : ' + str(receipt_num) + '</span></div>'
         else:
             receipt_num = ''
 
@@ -83,10 +83,10 @@ class Pdf:
                 if pat['prenom']:
                     pat_fname = pat['prenom']
 
-                addr_div += '<div><span class="ft_pat_ident">' + pat_lname + '&nbsp;' + pat_fname + '</span></div>'
+                addr_div += '<div><span class="ft_pat_ident">' + str(pat_lname) + '&nbsp;' + str(pat_fname) + '</span></div>'
 
             if pat['adresse']:
-                addr_div += '<div><span class="ft_pat_addr">' + pat['adresse'] + '</span></div>'
+                addr_div += '<div><span class="ft_pat_addr">' + str(pat['adresse']) + '</span></div>'
 
             if pat['cp'] or pat['ville']:
                 pat_zip = ''
@@ -98,7 +98,7 @@ class Pdf:
                 if pat['ville']:
                     pat_city = pat['ville']
 
-                addr_div += '<div><span class="ft_pat_addr">' + pat_zip + '&nbsp;' + pat_city + '</span></div>'
+                addr_div += '<div><span class="ft_pat_addr">' + str(pat_zip) + '&nbsp;' + str(pat_city) + '</span></div>'
 
             addr_div += '</div>'
 
@@ -118,8 +118,8 @@ class Pdf:
                         ana_div += '<div><span class="ft_bill_det_tit">Analyses demandées</span></div>'
 
                     ana_div += """\
-                            <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + ana['code'] + """</span>
-                                 <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + ana['nom'] + """</span>
+                            <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + str(ana['code']) + """</span>
+                                 <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + str(ana['nom']) + """</span>
                                  <span class="ft_bill_det" style="width:120px;display:inline-block;text-align:right;">""" + str(ana['prix']) + """</span></div>"""
 
                 # Requested samples
@@ -130,8 +130,8 @@ class Pdf:
                     # No display of samples without price
                     if ana['prix'] > 0:
                         samp_div += """\
-                                <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + ana['code'] + """</span>
-                                     <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + ana['nom'] + """</span>
+                                <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + str(ana['code']) + """</span>
+                                     <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + str(ana['nom']) + """</span>
                                      <span class="ft_bill_det" style="width:120px;display:inline-block;text-align:right;">""" + str(ana['prix']) + """</span></div>"""
 
             if ana_div:
@@ -156,8 +156,8 @@ class Pdf:
         page_body = """\
                 <div style="width:1000px;">
                     <div style="width:475px;padding:10px;background-color:#FFF;float:left;">
-                        <div><span class="ft_bill_num">FACTURE : """ + bill_num + """</span></div>
-                        <div><span class="ft_bill_rec">N° dossier : """ + num_rec_y + """</span></div>
+                        <div><span class="ft_bill_num">FACTURE : """ + str(bill_num) + """</span></div>
+                        <div><span class="ft_bill_rec">N° dossier : """ + str(num_rec_y) + """</span></div>
                         """ + receipt_num + """
                     </div>
                     """ + addr_div + """
@@ -169,7 +169,7 @@ class Pdf:
 
         page_footer = """\
                 <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                    <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Facture n°""" + bill_num + """, édité le """ + date_now + """</span>
+                    <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Facture n°""" + str(bill_num) + """, édité le """ + str(date_now) + """</span>
                          <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page 1/1</span></div>
                 </div>
                 <hr style="width:100%;border-top: 2px dashed dimgrey;">"""
@@ -249,10 +249,10 @@ class Pdf:
 
         rec_div  = '<div style="width:465px;height:80px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:left;">'
 
-        rec_div += '<div><span class="ft_rec_det">Dossier ' + num_rec_y + ' de ' + pat['prenom'] + '&nbsp;' + pat['nom'] + '</span></div>'
-        rec_div += '<div><span class="ft_rec_det">Né le ' + birth + ' - ' + age + ' - ' + sex + ' - Code ' + pat['code'] + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">Dossier ' + str(num_rec_y) + ' de ' + str(pat['prenom']) + '&nbsp;' + str(pat['nom']) + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">Né le ' + str(birth) + ' - ' + str(age) + ' - ' + str(sex) + ' - Code ' + str(pat['code']) + '</span></div>'
         rec_div += '<div><span class="ft_rec_det">Examen prescrit le ' + datetime.strftime(record['date_prescription'], '%d/%m/%Y') + '</span></div>'
-        rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + date_now + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + str(date_now) + '</span></div>'
 
         rec_div += '</div>'
 
@@ -275,10 +275,10 @@ class Pdf:
                 if pat['prenom']:
                     pat_fname = pat['prenom']
 
-                addr_div += '<div><span class="ft_pat_ident">' + pat_lname + '&nbsp;' + pat_fname + '</span></div>'
+                addr_div += '<div><span class="ft_pat_ident">' + str(pat_lname) + '&nbsp;' + str(pat_fname) + '</span></div>'
 
             if pat['adresse']:
-                addr_div += '<div><span class="ft_pat_addr">' + pat['adresse'] + '</span></div>'
+                addr_div += '<div><span class="ft_pat_addr">' + str(pat['adresse']) + '</span></div>'
 
             if pat['cp'] or pat['ville']:
                 pat_zip = ''
@@ -300,7 +300,7 @@ class Pdf:
         if full_comm and record['rc']:
             rec_comm  = '<div style="width:980px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:5px;background-color:#FFF;">'
             rec_comm += '<span class="ft_res_name">Renseignements cliniques</span><br />'
-            rec_comm += '<span class="ft_rec_det">' + record['rc'] + '</span></div>'
+            rec_comm += '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>'
 
         l_res = Result.getResultRecord(id_rec)
 
@@ -338,12 +338,12 @@ class Pdf:
                                 res_comm = ''
 
                             if full_comm:
-                                comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + res_comm + '</span></div>'
+                                comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + str(res_comm) + '</span></div>'
                             else:
                                 comm_div = ''
 
                             res_div += comm_div + """\
-                                    <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + user + """</span></div>"""
+                                    <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
 
                     id_ana_p = res['id_ana']
                     id_res_p = res['id_res']
@@ -441,12 +441,12 @@ class Pdf:
                     res_comm = ''
 
                 if full_comm:
-                    comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + res_comm + '</span></div>'
+                    comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + str(res_comm) + '</span></div>'
                 else:
                     comm_div = ''
 
                 report_div += comm_div + """\
-                        <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + user + """</span></div>
+                        <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>
                         </div>"""
 
         report_div += '</div>'
@@ -654,19 +654,19 @@ class Pdf:
 
         if full_header:
             extra_header += """\
-                        <div><span style="font: 15px 'Helvetica';">""" + head_line2['value'] + """</span></div>
-                        <div><span style="font: 15px 'Helvetica';">""" + head_line3['value'] + """</span></div>"""
+                        <div><span style="font: 15px 'Helvetica';">""" + str(head_line2['value']) + """</span></div>
+                        <div><span style="font: 15px 'Helvetica';">""" + str(head_line3['value']) + """</span></div>"""
 
         header += """\
                 <div style="width:1000px;height:140px;background-color:#FFF;">
                     <div style="float:left;width:250px;">""" + head_logo + """</div>
                     <div style="float:right;width:750px;">
-                        <div><span class="ft_lab_name">""" + head_name['value'] + """</span></div>
+                        <div><span class="ft_lab_name">""" + str(head_name['value']) + """</span></div>
                         """ + extra_header + """
-                        <div><span class="ft_header">""" + head_addr['value'] + """</span></div>
-                        <div><span class="ft_header">TEL : """ + head_phone['value'] + """&nbsp;</span>
-                             <span class="ft_header">FAX : """ + head_fax['value'] + """&nbsp;</span>
-                             <span class="ft_header">EMAIL : """ + head_email['value'] + """&nbsp;</span></div>
+                        <div><span class="ft_header">""" + str(head_addr['value']) + """</span></div>
+                        <div><span class="ft_header">TEL : """ + str(head_phone['value']) + """&nbsp;</span>
+                             <span class="ft_header">FAX : """ + str(head_fax['value']) + """&nbsp;</span>
+                             <span class="ft_header">EMAIL : """ + str(head_email['value']) + """&nbsp;</span></div>
                     </div>
                 </div>"""
 

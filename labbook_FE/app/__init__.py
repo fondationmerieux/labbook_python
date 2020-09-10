@@ -516,6 +516,7 @@ def det_patient(id_pat=0):
 
             if req.status_code == 200:
                 json_data = req.json()
+                json_data['id_pat'] = id_pat
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
@@ -527,6 +528,7 @@ def det_patient(id_pat=0):
 
             if req.status_code == 200:
                 json_data['code'] = req.json()
+                json_data['id_pat'] = 0
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
