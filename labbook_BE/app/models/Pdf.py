@@ -255,7 +255,7 @@ class Pdf:
         rec_div  = '<div style="width:465px;height:80px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:left;">'
 
         rec_div += '<div><span class="ft_rec_det">Dossier ' + str(num_rec_y) + ' de ' + str(pat['prenom']) + '&nbsp;' + str(pat['nom']) + '</span></div>'
-        rec_div += '<div><span class="ft_rec_det">'str(birth) + str(age) + ' - ' + str(sex) + ' - Code ' + str(pat['code']) + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">' + str(birth) + str(age) + ' - ' + str(sex) + ' - Code ' + str(pat['code']) + '</span></div>'
         rec_div += '<div><span class="ft_rec_det">Examen prescrit le ' + datetime.strftime(record['date_prescription'], '%d/%m/%Y') + '</span></div>'
         rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + str(date_now) + '</span></div>'
 
