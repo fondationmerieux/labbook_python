@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
-## [2.9.0] - 2020-09-11
+## [2.9.0] - 2020-09-14
 ### Changed
 - Final version of 2.9.0 branch validated
 
