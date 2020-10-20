@@ -1330,21 +1330,29 @@ def contributors():
     return render_template('contributors.html')
 
 
+# Page : WHONET export
+@app.route('/whonet-export/')
+def whonet_export():
+    log.info(Logs.fileline())
+
+    get_init_var()
+    get_user_data(session['user_name'])
+    get_software_settings()
+
+    return render_template('whonet-export.html')
+
+
 # Route : download a file
 @app.route('/download-file/type/<string:type>/name/<string:filename>/ref/<string:ref>')
 def download_file(type='', filename='', ref=''):
     log.info(Logs.fileline())
 
     # TYPE
-    # BC => BarCode
-    # BI => Bill
+    # PY => Python : BarCode, Bill, Whonet
     # JF => Join File
     # RP => Report
 
-    if type == 'BC':
-        filepath = '/home/apps/labbook_BE/labbook_BE/tmp/'
-        generated_name = filename
-    elif type == 'BI':
+    if type == 'PY':
         filepath = '/home/apps/labbook_BE/labbook_BE/tmp/'
         generated_name = filename
     elif type == 'JF':

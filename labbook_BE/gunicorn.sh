@@ -88,6 +88,9 @@ test -f $LOCAL_SETTINGS || {
 
 cd ${APP_DIR} || exit 1
 
+# run alembic upgrade
+alembic upgrade head > ${LOGS_DIR}/alembic.out
+
 # Gunicorn is installed in the virtual environment
 # When started by supervisord, exec is necessary for the signals to reach gunicorn.
 # Another approach with catched signals is described here :

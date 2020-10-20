@@ -25,6 +25,7 @@ from app.models.Logs import Logs
 from app.services.GeneralRest import *
 from app.services.UserRest import *
 from app.services.AnalysisRest import *
+from app.services.ExportRest import *
 from app.services.ProductRest import *
 from app.services.DoctorRest import *
 from app.services.FileRest import *
@@ -94,6 +95,7 @@ api.add_resource(DicoById,           '/services/dico/id/<int:id_data>')
 api.add_resource(DicoList,           '/services/dico/list/<string:dico_name>')
 api.add_resource(DoctorDet,          '/services/doctor/det/<int:id_doctor>')
 api.add_resource(DoctorSearch,       '/services/doctor/search/<int:id_group>')
+api.add_resource(ExportWhonet,       '/services/export/whonet')
 api.add_resource(FileDoc,            '/services/file/document/<int:ref>')
 api.add_resource(FileReport,         '/services/file/report/record/<int:id_rec>')
 api.add_resource(FileStorage,        '/services/file/storage/<int:id_group>')

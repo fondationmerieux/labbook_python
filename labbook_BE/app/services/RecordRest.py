@@ -58,6 +58,9 @@ class RecordDet(Resource):
         if record['date_reception_colis']:
             record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')
 
+        if record['date_hosp']:
+            record['date_hosp'] = datetime.strftime(record['date_hosp'], '%Y-%m-%d')
+
         # decimal number not serializable in JSON, convert except if empty string
         if record['prix'] != '':
             record['prix'] = float(record['prix'])
@@ -78,7 +81,7 @@ class RecordDet(Resource):
         args = request.get_json()
 
         if 'id_owner' not in args or 'type' not in args or 'date_record' not in args or 'id_med' not in args or 'date_prescr' not in args or 'service_int' not in args or \
-           'bed_num' not in args or 'parcel_id' not in args or 'date_parcel' not in args or 'comm' not in args or 'parcel' not in args or \
+           'bed_num' not in args or 'parcel_id' not in args or 'date_parcel' not in args or 'comm' not in args or 'parcel' not in args or 'date_hosp' not in args or \
            'price' not in args or 'discount' not in args or 'percent_discount' not in args or 'percent_insurance' not in args or \
            'bill_remain' not in args or 'receipt_num' not in args or 'bill_num' not in args or 'stat' not in args or 'id_patient' not in args:
             self.log.error(Logs.fileline() + ' : RecordDet ERROR args missing')
@@ -91,6 +94,9 @@ class RecordDet(Resource):
 
             if args['date_parcel']:
                 args['date_parcel'] = datetime.strptime(args['date_parcel'], Constants.cst_isodate)
+
+            if args['date_hosp']:
+                args['date_hosp'] = datetime.strptime(args['date_hosp'], Constants.cst_isodate)
 
             # Increases num_dos_jour, num_dos_an and num_dos_mois
             # num_dos_jour = yyyymmddXXXX +1 if same day
@@ -170,7 +176,8 @@ class RecordDet(Resource):
                                       num_quittance=args['receipt_num'],
                                       num_fact=args['bill_num'],
                                       statut=args['stat'],
-                                      num_dos_mois=num_dos_mois)
+                                      num_dos_mois=num_dos_mois,
+                                      date_hosp=args['date_hosp'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : RecordDet ERROR  insert')

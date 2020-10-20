@@ -67,7 +67,8 @@ class Record:
         cursor = DB.cursor()
 
         req = 'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, date_prescription, service_interne, num_lit, '\
-              'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois '\
+              'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, '\
+              'date_hosp '\
               'from sigl_02_data '\
               'where id_data=%s'
 
@@ -94,11 +95,12 @@ class Record:
 
             cursor.execute('insert into sigl_02_data '
                            '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, date_prescription, service_interne, num_lit, '
-                           'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois) '
+                           'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
+                           'num_dos_mois, date_hosp) '
                            'values '
                            '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, %(med_prescripteur)s, %(date_prescription)s, '
                            '%(service_interne)s, %(num_lit)s, %(id_colis)s, %(date_reception_colis)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
-                           '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, %(num_dos_mois)s )', params)
+                           '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, %(num_dos_mois)s, %(date_hosp)s)', params)
 
             Record.log.info(Logs.fileline())
 

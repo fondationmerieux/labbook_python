@@ -307,7 +307,7 @@ class Pdf:
             rec_comm += '<span class="ft_res_name">Renseignements cliniques</span><br />'
             rec_comm += '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>'
 
-        l_res = Result.getResultRecord(id_rec)
+        l_res = Result.getResultRecord(id_rec, False)
 
         id_ana_p = 0
         id_res_p = 0

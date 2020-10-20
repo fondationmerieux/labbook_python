@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
+## [2.9.1] - 2020-10-20
+### Added
+- Migration of database with Alembic when Gunicorn is started
+- Add admission date for internal request
+- Add in DB 2*9 Antibiogramme (DISK and CMI method)
+- Export WHONET in CSV file of [WHONET] Antibiogramme (B650 to B678)
+
 ## [2.9.0] - 2020-09-14
 ### Changed
 - Final version of 2.9.0 branch validated

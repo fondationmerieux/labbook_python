@@ -21,14 +21,9 @@ class Analysis:
               'FROM sigl_05_data AS ref_ana '\
               'LEFT JOIN sigl_dico_data AS dico ON dico.id_data=ref_ana.famille '\
               'WHERE (ref_ana.actif = 4 AND (ref_ana.code = %s or ref_ana.nom like %s or ref_ana.abbr like %s)) '\
-              'AND (ref_ana.id_data is NULL or (exists(select 1 from sigl_05_data_group where sigl_05_data_group.id_group in (%s) '\
-              'and sigl_05_data_group.id_data = ref_ana.id_data)) '\
-              'OR ( exists( select 1 from sigl_05_data_group inner join sigl_05_data_group_mode on sigl_05_data_group.id_data_group=sigl_05_data_group_mode.id_data_group '\
-              'where sigl_05_data_group.id_group = %s and sigl_05_data_group.id_data = ref_ana.id_data and sigl_05_data_group_mode.mode & 292 '\
-              'AND (sigl_05_data_group_mode.date_valid IS NULL OR CURRENT_DATE <= sigl_05_data_group_mode.date_valid)))) '\
               'ORDER BY nom ASC LIMIT 7000'
 
-        cursor.execute(req, (code, text, text, id_lab, id_group,))
+        cursor.execute(req, (code, text, text,))
 
         return cursor.fetchall()
 

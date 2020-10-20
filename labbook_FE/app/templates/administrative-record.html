@@ -671,7 +671,7 @@ function print_bill( id_rec )
         url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
         success: function(ret)
         {
-        download_file( "BI", "facture_" + num_rec_y + ".pdf", 0 ) ;
+        download_file( "PY", "facture_" + num_rec_y + ".pdf", 0 ) ;
         },
         error: function(ret)
         {
@@ -689,7 +689,7 @@ function print_barcode()
         url: "{{ session['server_ext'] }}/services/pdf/barcode/num/" + num_rec_y,
         success: function(ret)
         {
-        download_file( "BC", "etiquette_" + num_rec_y + ".png", 0 ) ;
+        download_file( "PY", "etiquette_" + num_rec_y + ".png", 0 ) ;
         },
         error: function(ret)
         {

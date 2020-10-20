@@ -58,8 +58,14 @@ class Result:
         return cursor.fetchall()
 
     @staticmethod
-    def getResultRecord(id_rec):
+    def getResultRecord(id_rec, empty=True):
         cursor = DB.cursor()
+
+        cond = ''
+
+        # avoid empty result of this request
+        if not empty:
+            cond = ' and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
 
         req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
               'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
@@ -75,7 +81,7 @@ class Result:
               'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
               'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
               'and ref.id_data = var_pos.id_refanalyse '\
-              'where id_dos=%s '\
+              'where id_dos=%s ' + cond + \
               'order by nom asc, id_ana asc, position asc'
 
         cursor.execute(req, (id_rec,))

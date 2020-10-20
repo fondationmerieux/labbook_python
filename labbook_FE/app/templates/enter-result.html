@@ -467,10 +467,16 @@ let disp_valid = "hide" ;
                     if ( data[i].valeur == res_answer[j].id_data )
                     {
                     selected = "selected" ;
-                    value = data[i].valeur ;
+                    value    = data[i].valeur ;
 
                         if (res_valid == 250)
                         disp_valid = "show" ;
+                    }
+                    // NOTE : works because 1013 is always the last choice
+                    else if ( selected == "" && value == "0" && res_answer[j].id_data == 1013 )
+                    {
+                    selected = "selected" ;
+                    value    = res_answer[j].id_data ;
                     }
 
                 res += '<option value="' + res_answer[j].id_data + '" ' + selected + '>' + res_answer[j].label + '</option>' ;
