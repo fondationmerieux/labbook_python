@@ -1,0 +1,119 @@
+<nav class="navbar navbar-expand-md">
+    <div class="container-fluid nav-cust-cont">
+        <ul class="navbar-nav">
+            <!-- Dropdown -->
+            {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
+            <span class="nav-cust-btn">
+                <li class="nav-item dropdown btn-admin">
+                  <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-toggle="dropdown">
+                  </a>
+                  <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                    <a class="dropdown-item" href="#">Liste des dossiers</a>
+                    {% if session['user_role'] == 'B' %}
+                    <a class="dropdown-item" href="#">Liste de travail biologiste</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'T' %}
+                    <a class="dropdown-item" href="#">Liste de travail technicien</a>
+                    {% endif %}
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    <a class="dropdown-item" href="#">Nouvelle demande externe</a>
+                    <a class="dropdown-item" href="#">Nouvelle demande hospitalisé</a>
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' %}
+                    <a class="dropdown-item" href="#">Etat des prélèvements en cours</a>
+                    <a class="dropdown-item" href="#">Saisie des résultats</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="#">Liste des prescripteurs</a>
+                  </div>
+                </li>
+                <span class="nav-btn-txt">Administratif</span>
+            </span>
+            {% endif %}
+
+            <!-- Dropdown -->
+            {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
+            <span class="nav-cust-btn">
+                <li class="nav-item dropdown btn-report">
+                  <a class="nav-link dropdown-toggle report" href="#" id="navbardrop" data-toggle="dropdown">
+                  </a>
+                  <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                    <a class="dropdown-item" href="#">Rapport épidémiologique et statistique</a>
+                    <a class="dropdown-item" href="#">Rapport DHIS2</a>
+                    <a class="dropdown-item" href="#">Export WHONET</a>
+                    <a class="dropdown-item" href="#">Historique patient</a>
+                    <a class="dropdown-item" href="#">Historique d'analyse</a>
+                    <a class="dropdown-item" href="#">Rapport de fin de journée</a>
+                    <a class="dropdown-item" href="#">Etat de la facturation journalière</a>
+                  </div>
+                </li>
+                <span class="nav-btn-txt">Rapports</span>
+            </span>
+            {% endif %}
+
+            <!-- Dropdown -->
+            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
+            <span class="nav-cust-btn">
+                <li class="nav-item dropdown btn-param">
+                  <a class="nav-link dropdown-toggle param" href="#" id="navbardrop" data-toggle="dropdown">
+                  </a>
+                  <div class="dropdown-menu param-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' %}
+                    <a class="dropdown-item" href="#">Référentiel des analyses</a>
+                    <a class="dropdown-item" href="#">Exporter le référentiel</a>
+                    <a class="dropdown-item" href="#">Importer un référentiel</a>
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    <a class="dropdown-item" href="#">Dictionnaires</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'S' %}
+                    <a class="dropdown-item" href="#">Gestion des utilisateurs</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'A' %}
+                    <a class="dropdown-item" href="#">Gestion des rôles</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="#">Préférences</a>
+                    {% if session['user_role'] == 'A' %}
+                    <a class="dropdown-item" href="#">Changement de logo</a>
+                    {% endif %}
+                  </div>
+                </li>
+                <span class="nav-btn-txt">Paramétrages</span>
+            </span>
+            {% endif %}
+
+            <!-- Dropdown -->
+            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %} 
+            <span class="nav-cust-btn">
+                <li class="nav-item dropdown btn-qualite">
+                  <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-toggle="dropdown">
+                  </a>
+                  <div class="dropdown-menu qualite-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                    <a class="dropdown-item" href="#">Général</a>
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    <a class="dropdown-item" href="#">Laboratoire</a>
+                    <a class="dropdown-item" href="#">Personnels</a>
+                    <a class="dropdown-item" href="#">Prescripteurs</a>
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    <a class="dropdown-item" href="#">Equipements</a>
+                    <a class="dropdown-item" href="#">Fournisseurs</a>
+                    <a class="dropdown-item" href="#">Manuels</a>
+                    <a class="dropdown-item" href="#">Procédures</a>
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    <a class="dropdown-item" href="#">Module des non-conformités</a>
+                    <div class="dropdown-divider nav-cust-divider"></div>
+                    <a class="dropdown-item" href="#">Réunion du laboratoire</a>
+                  </div>
+                </li>
+                <span class="nav-btn-txt">Qualité</span>
+            </span>
+            {% endif %}
+
+            <!-- Link -->
+            <span class="nav-cust-btn">
+                <li class="nav-item">
+                  <a class="nav-link non-conformite" href="#"></a>
+                </li>
+                <span class="nav-btn-txt">Non conformité</span>
+            </span>
+        </ul>
+    </div><!-- /.container-fluid -->
+</nav>

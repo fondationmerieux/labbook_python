@@ -1,0 +1,106 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _('Accueil') }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _('Accueil') }}</span></h2>
+
+            {% if session['user_role'] == 'A' %}
+            <div class="module">
+                <div class="links">
+                    <a href="#" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
+                    <a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>
+                    <a href="#" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
+                    <a href="#" class="list-group-item admin-referentiel">{{ _("Réferentiel") }}</a>
+                    <a href="#" class="list-group-item admin-conf-cr">{{ _("Configuration des comptes-rendu") }}</a>
+                    <a href="#" class="list-group-item admin-num-doss">{{ _("Configuration des numéros de dossier") }}</a>
+                    <a href="#" class="list-group-item admin-gest-fact-0">{{ _("Gestion de la Facturation") }}</a>
+                    <a href="#" class="list-group-item admin-qualite-0">{{ _("Management de la Qualité") }}</a>
+                </div>
+            </div>
+            {% elif  session['user_role'] == 'B' %}
+            <div class="module">
+                <div class="links">
+                    <a href="#" class="list-group-item f-list-bio">{{ _("Liste des dossiers") }}</a>
+                    <a href="#" class="list-group-item b-list-bio">{{ _("Liste de travail biologiste") }}</a>
+                    <a href="#" class="list-group-item prel-bio">{{ _("Etat des prélèvements en cours") }}</a>
+                    <a href="#" class="list-group-item res-bio">{{ _("Saisie des résultats") }}</a>
+                    <a href="#" class="list-group-item home-qualite">{{ _("Management de la Qaulité") }}</a>
+                </div>
+            </div>
+            <div class="home-stat row">
+                <div class="home-graph col-md-6">
+                    <h3>Validations à effectuer</h3>
+                    TODO IMG GRAPH
+                </div>
+                <div class="home-activity col-md-6">
+                    <h3>Activité du laboratoire</h3>
+                    <ul>
+                        <li>Dernier numéro utilisé : <strong><span class="num-dos">TODO</span></strong></li>
+                        <li>Nombre de dossiers validés aujourd'hui : <strong>TODO</strong></li>
+                        <li>Nombre de dossiers enregistrés : <strong>TODO</strong></li>
+                    </ul>
+                </div>
+            </div>
+            {% elif  session['user_role'] == 'T' %}
+            <div class="module">
+                <div class="links">
+                    <a href="#" class="list-group-item f-list-tec">Liste des dossiers</a>
+                    <a href="#" class="list-group-item t-list-tec">Liste de travail technicien</a>
+                    <a href="#" class="list-group-item prel-tec">Etat des prélèvements en cours</a>
+                    <a href="#" class="list-group-item res-tec">Saisie des résultats</a>
+                </div>
+            </div>
+            <div class="home-stat row">
+                <div class="home-graph col-md-6">
+                    <h3>Validations à effectuer</h3>
+                    TODO IMG GRAPH
+                </div>
+                <div class="home-activity col-md-6">
+                    <h3>Activité du laboratoire</h3>
+                    <ul>
+                        <li>Dernier numéro utilisé : <strong><span class="num-dos">TODO</span></strong></li>
+                        <li>Nombre de dossiers validés aujourd'hui : <strong>TODO</strong></li>
+                        <li>Nombre de dossiers enregistrés : <strong>TODO</strong></li>
+                    </ul>
+                </div>
+            </div>
+            {% elif  session['user_role'] == 'S' %}
+            <div class="module">
+                <div class="links">
+                    <a href="#" class="list-group-item f-list-sec">Liste des dossiers</a>
+                    <a href="#" class="list-group-item new-dos-ext-sec">Nouvelle demande externe</a>
+                    <a href="#" class="list-group-item new-dos-int-sec">Nouvelle demande hospitalisé</a>
+                </div>
+            </div>
+            <div class="home-stat row">
+                <div class="home-graph col-md-6">
+                    <h3>Validations à effectuer</h3>
+                    TODO IMG GRAPH
+                </div>
+                <div class="home-activity col-md-6">
+                    <h3>Activité du laboratoire</h3>
+                    <ul>
+                        <li>Dernier numéro utilisé : <strong><span class="num-dos">TODO</span></strong></li>
+                        <li>Nombre de dossiers validés aujourd'hui : <strong>TODO</strong></li>
+                        <li>Nombre de dossiers enregistrés : <strong>TODO</strong></li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div><!-- ferme le corps -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+</script>
+{% endblock %}

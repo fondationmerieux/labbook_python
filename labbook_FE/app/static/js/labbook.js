@@ -1,5 +1,5 @@
 /* javascript functions for labbook project */
-var disconnect_page = "/sigl/auth/index/disconnect" ;
+var disconnect_page = "/sigl/disconnect/" ;
 var page_timeout    = 0 ;
 
 // Return formatted record number

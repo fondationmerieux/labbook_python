@@ -37,7 +37,9 @@ class ExportWhonet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Data
-        l_data = [['Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth (or age)', 'Date of admission', 'Patient location', 'Type of location', 'Exam number', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
+        l_data = [['Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth (or age)',
+                   'Date of admission', 'Patient location', 'Type of location', 'Exam number',
+                   'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
         if dict_data:
@@ -58,7 +60,7 @@ class ExportWhonet(Resource):
                 if d['date_hosp']:
                     d['date_hosp'] = datetime.strftime(d['date_hosp'], '%Y-%m-%d')
                     data.append(d['date_hosp'])
-                
+
                 data.append(d['service_interne'])
                 data.append(d['rec_type'])
                 data.append(d['ana_code'])
@@ -69,10 +71,10 @@ class ExportWhonet(Resource):
 
                     start_meth = ana_name.find('[')  # search where method starts
                     end_meth   = ana_name.find(']')  # search where method ends
-        
-                    method_name = ana_name[start_meth+1:end_meth]
 
-                    ana_name = ana_name[0:start_meth-1]
+                    method_name = ana_name[start_meth + 1:end_meth]
+
+                    ana_name = ana_name[0:start_meth - 1]
 
                     data.append(ana_name)
 
@@ -85,7 +87,7 @@ class ExportWhonet(Resource):
                     else:
                         data.append(d['valeur'])
                         data.append('')
-                
+
                 l_data.append(data)  # list(d.values()))
 
         self.log.error(Logs.fileline() + ' : l_data=' + str(l_data))

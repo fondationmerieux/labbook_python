@@ -20,7 +20,7 @@ import json
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date
 
-from flask import Flask, render_template, request, session, redirect, send_file
+from flask import Flask, render_template, request, session, redirect, send_file, url_for
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -100,19 +100,16 @@ def get_locale():
 
 def get_init_var():
 
+    # init external server
+    root = request.url_root
+    log.info(Logs.fileline() + ' : URL : %s', root)
+    session['server_ext'] = root
+    session.modified = True
+
     # init internal server
     if not session or 'server_int' not in session or session['server_int'] != ('http://' + app.config.get('SERVER_INT')):
         session['server_int'] = 'http://' + app.config.get('SERVER_INT')
         session.modified = True
-
-    # init external server
-    if request.cookies and 'PHP_url_host' in request.cookies:
-        if not session or 'server_ext' not in session or session['server_ext'] != 'http://' + request.cookies.get('PHP_url_host'):
-            log.info(Logs.fileline() + ' : cookies PHP_url_host = ' + request.cookies.get('PHP_url_host'))
-            session['server_ext'] = 'http://' + request.cookies.get('PHP_url_host')
-            session.modified = True
-    else:
-        log.info(Logs.fileline() + ' : cookies PHP_url_host missing')
 
     # init internal url server
     if not session or 'redirect_name' not in session or session['redirect_name'] != app.config.get('REDIRECT_NAME'):
@@ -125,28 +122,22 @@ def get_init_var():
         session.modified = True
 
     # Get locale
+    """
     if request.cookies and 'PHP_locale' in request.cookies:
         log.info(Logs.fileline() + ' : cookies PHP_locale = ' + request.cookies.get('PHP_locale'))
         session['lang'] = request.cookies.get('PHP_locale')
         session.modified = True
     else:
-        log.info(Logs.fileline() + ' : cookies PHP_locale missing')
-
-    # Get user_role
-    if request.cookies and 'PHP_user_role' in request.cookies:
-        log.info(Logs.fileline() + ' : cookies PHP_user_role = ' + request.cookies.get('PHP_user_role'))
-        session['user_role'] = request.cookies.get('PHP_user_role')
-        session.modified = True
-    else:
-        log.info(Logs.fileline() + ' : cookies PHP_user_role missing')
+        log.info(Logs.fileline() + ' : cookies PHP_locale missing')"""
 
     # Get user_name
+    """
     if request.cookies and 'PHP_user_name' in request.cookies:
         log.info(Logs.fileline() + ' : cookies PHP_user_name = ' + request.cookies.get('PHP_user_name'))
         session['user_name'] = request.cookies.get('PHP_user_name')
         session.modified = True
     else:
-        log.info(Logs.fileline() + ' : cookies PHP_user_name missing')
+        log.info(Logs.fileline() + ' : cookies PHP_user_name missing')"""
 
     # Load auto_logout
     try:
@@ -177,9 +168,28 @@ def get_user_data(login):
             session['user_id']        = json['id_data']  # not used for now
             session['user_id_role']   = json['id_role']
             session['user_id_group']  = json['id_group']
+            session['user_name']      = json['username']
             session['user_firstname'] = json['firstname']
             session['user_lastname']  = json['lastname']
             session.modified = True
+
+            if session['user_id_role'] == 1:
+                session['user_role'] = 'A'  # Administrator
+                session.modified = True
+            elif session['user_id_role'] == 2:
+                session['user_role'] = 'B'  # Biologist
+                session.modified = True
+            elif session['user_id_role'] == 3:
+                session['user_role'] = 'T'  # Technician
+                session.modified = True
+            elif session['user_id_role'] == 4:
+                session['user_role'] = 'S'  # Secretary
+                session.modified = True
+            else:
+                log.error(Logs.fileline() + ' : TRACE unknow role')
+                session['user_role'] = 'X'  # Unknown
+                session.modified = True
+
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
         return False
@@ -224,13 +234,46 @@ def date_now(date_now):
 
 @app.route("/")
 def index():
-    log.info(Logs.fileline() + ' : TRACE Labbook FRONT END')
-    return "Hello World ! Coucou le Monde ! Labbook FRONT END"
+    if not session or 'current_page' not in session:
+        log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Login')
+        get_init_var()
+        return render_template('login.html')
+    else:
+        log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Current')
+        return redirect(url_for(session['current_page']))
+
+
+@app.route("/disconnect/")
+def disconnect():
+    log.info(Logs.fileline() + ' : TRACE Labbook FRONT END disconnect')
+    url = session['server_ext'] + session['redirect_name']
+    session.clear()
+    return redirect(url)
+
+
+# Page : homepage
+@app.route('/homepage/<string:login>')
+def homepage(login=''):
+    log.info(Logs.fileline() + ' : TRACE Homepage login=' + str(login))
+
+    dt_start_req = datetime.now()
+
+    get_user_data(login)
+
+    # get_init_var()
+    # get_software_settings()
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG homepage processing time = ' + str(dt_time_req))
+
+    return render_template('homepage.html')
 
 
 # Change la langue
 @app.route("/lang/<string:lang>/")
 def lang(lang='fr'):
+    # TODO change for Python process
     url_php_lang = session['server_ext'] + '/sigl/lang/index/change-lang/lang/'
 
     if lang == 'en_GB':

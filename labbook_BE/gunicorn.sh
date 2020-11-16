@@ -66,6 +66,7 @@ HOME_APP=/home/apps/$APP_NAME
 APP_DIR=${HOME_APP}/${APP_NAME}
 VENV_DIR=${APP_DIR}/venv
 LOGS_DIR=${HOME_APP}/logs
+LOGS_PERM=/space/applistmp
 GUNICORN_DIR=${HOME_APP}/gunicorn
 GUNICORN_TIMEOUT=60
 
@@ -89,7 +90,7 @@ test -f $LOCAL_SETTINGS || {
 cd ${APP_DIR} || exit 1
 
 # run alembic upgrade
-alembic upgrade head > ${LOGS_DIR}/alembic.out
+alembic upgrade head > ${LOGS_PERM}/alembic.out
 
 # Gunicorn is installed in the virtual environment
 # When started by supervisord, exec is necessary for the signals to reach gunicorn.

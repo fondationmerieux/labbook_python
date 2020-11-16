@@ -4,37 +4,32 @@
 <head>
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="icon" href="{{ session['server_ext'] }}/assets/images/favicon.ico" />
-    <link href="{{ session['server_ext'] }}/yui2/datatable/assets/skins/sam/datatable.css" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/bootstrap/css/bootstrap.min.css" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/sigl/style?2.15" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/sigl/style/index/index/name/yui_datatable?2.15" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/sigl/style/index/index/name/form?2.15" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/css/labbook.css?0" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ session['server_ext'] }}/css/{{ session['user_role']|safe }}.css?0" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/labbook.css') }}?0" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/labbook.css') }}?2" media="screen" rel="stylesheet" type="text/css">
 
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.4.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ session['server_ext'] }}/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.5.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/labbook.js') }}?0"></script>
     {% endblock %}
 </head>
 
 {% block body %}
-{% block tag_body %}<body class="yui3-skin-sam yui-skin-sam {{ session['user_role']|safe }}" onLoad="init_timeOut('{{ session['server_ext'] }}', {{ session['auto_logout'] }});" onmousemove="reboot_timeOut({{ session['auto_logout'] }});">{% endblock %}
+{% block tag_body %}<body onLoad="init_timeOut('{{ session['server_ext'] }}', {{ session['auto_logout'] }});" onmousemove="reboot_timeOut({{ session['auto_logout'] }});">{% endblock %}
     <div id="page" class="container">
         {% block header %}
-        <header>
-            <div id="country-select" class="btn-group">
+        <header id="page-header">
+            <div id="country-sel" class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <strong>{{ session['lang_select'] }}</strong>
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/fr_FR/">{{ _('Français (FR)') }}</a></li>
-                    <li><a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_GB/">{{ _('English (UK)') }}</a></li>
-                    <li><a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_US/">{{ _('English (US)') }}</a></li>
-                </ul>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/fr_FR/">{{ _('Français (FR)') }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_GB/">{{ _('English (UK)') }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_US/">{{ _('English (US)') }}</a>
+                </div>
             </div>
             <div class="inner">
                 <div id="logo">
@@ -44,14 +39,15 @@
                 </div>
                 <div id="user-info">
                     <div id="header_name" class="name"></div>
-                    <div class="role">
+                    <div class="role role-{{ session['user_role']|safe }}">
                         <ul>
                             <li>
-                                <a href="{{ session['server_ext'] }}/sigl/auth/index/disconnect" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
+                                <a href="{{ session['server_ext'] }}/sigl/disconnect/" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
                             </li>
                         </ul>
                     </div>
                 </div>
+                {% include 'menu.html' %} 
             </div>
         </header><!-- ferme le header -->
         {% endblock %}
@@ -60,7 +56,7 @@
         {% endblock %}
         {% block footer %}
         <footer>
-            <div class="version">{{ _('Version : ') }}{{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors/">{{ _('Contributeurs') }}</a></div>
+            <div class="version">{{ _('Version') }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors/">{{ _('Contributeurs') }}</a></div>
         </footer>
         {% endblock %}
     </div><!-- ferme la page -->

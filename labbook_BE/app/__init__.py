@@ -119,8 +119,10 @@ api.add_resource(ResultRecord,       '/services/result/record/<int:id_rec>')
 api.add_resource(ResultReset,        '/services/result/reset/<int:id_rec>')
 api.add_resource(ResultValid,        '/services/result/valid/<string:type_valid>/<int:id_rec>')
 api.add_resource(ResultValue,        '/services/result/list/value')
+api.add_resource(UserAccess,         '/services/user/access')
 api.add_resource(UserDet,            '/services/user/login/<string:login>')
 api.add_resource(UserByRole,         '/services/user/role/<int:id_role>')
+api.add_resource(UserRights,         '/services/user/rights/<string:role>')
 
 # if __name__ == "__main__":
 #    app.run()
