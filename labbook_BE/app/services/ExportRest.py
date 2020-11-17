@@ -58,6 +58,8 @@ class ExportWhonet(Resource):
                 if d['date_hosp']:
                     d['date_hosp'] = datetime.strftime(d['date_hosp'], '%Y-%m-%d')
                     data.append(d['date_hosp'])
+                else:
+                    data.append('')
                 
                 data.append(d['service_interne'])
                 data.append(d['rec_type'])
@@ -88,13 +90,13 @@ class ExportWhonet(Resource):
                 
                 l_data.append(data)  # list(d.values()))
 
-        self.log.error(Logs.fileline() + ' : l_data=' + str(l_data))
+        self.log.error(Logs.fileline() + ' : WHONET l_data=' + str(l_data))
 
         # write csv file
         try:
             import csv
 
-            filename = 'whonet_' + args['date_beg'] + '_' + args['date_end'] + '.csv'
+            filename = 'whonet_' + args['date_beg'] + '_' + args['date_end'] + '.txt'
 
             with open('tmp/' + filename, mode='w') as file:
                 writer = csv.writer(file, delimiter='\t')

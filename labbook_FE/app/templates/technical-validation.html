@@ -27,6 +27,7 @@
                     <div class="row">
                         <div id="pat-group" class="col-xs-12">
                             <div class="form-group form-inline">
+                                <div id="anon-code-ro" class="field"><span>{% if args['patient'] %}{{ args['patient']['code_patient'] }}{% endif %}</span></div>
                                 <div id="anon-code-ro" class="field"><span>{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span></div>
                             </div>
                             <fieldset class="group group-2">

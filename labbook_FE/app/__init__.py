@@ -106,13 +106,21 @@ def get_init_var():
         session.modified = True
 
     # init external server
-    if request.cookies and 'PHP_url_host' in request.cookies:
-        if not session or 'server_ext' not in session or session['server_ext'] != 'http://' + request.cookies.get('PHP_url_host'):
+    if request.cookies and 'PHP_url_host' in request.cookies and 'PHP_url_https' in request.cookies:
+        if not session or 'server_ext' not in session or session['server_ext'].find(request.cookies.get('PHP_url_host')) > 0:
             log.info(Logs.fileline() + ' : cookies PHP_url_host = ' + request.cookies.get('PHP_url_host'))
-            session['server_ext'] = 'http://' + request.cookies.get('PHP_url_host')
-            session.modified = True
+            log.info(Logs.fileline() + ' : cookies PHP_url_https = ' + request.cookies.get('PHP_url_https'))
+
+            if request.cookies.get('PHP_url_https') != "HTTP":
+                session['server_ext'] = 'https://' + request.cookies.get('PHP_url_host')
+                session.modified = True
+                log.info(Logs.fileline() + ' : server_ext with HTTPS')
+            else:
+                session['server_ext'] = 'http://' + request.cookies.get('PHP_url_host')
+                session.modified = True
+                log.info(Logs.fileline() + ' : server_ext with HTTP')
     else:
-        log.info(Logs.fileline() + ' : cookies PHP_url_host missing')
+        log.info(Logs.fileline() + ' : cookies PHP_url_host or PHP_url_https missing')
 
     # init internal url server
     if not session or 'redirect_name' not in session or session['redirect_name'] != app.config.get('REDIRECT_NAME'):

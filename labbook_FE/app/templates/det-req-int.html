@@ -434,12 +434,12 @@
                                                 </th>
                                                 <th>
                                                     <div>
-                                                        <span>{{ _("*Date réception") }}</span>
+                                                        <span>{{ _("Date réception") }}</span>
                                                     </div>
                                                 </th>
                                                 <th>
                                                     <div>
-                                                        <span>{{ _("*Préleveur") }}</span>
+                                                        <span>{{ _("Préleveur") }}</span>
                                                     </div>
                                                 </th>
                                                 <th>
@@ -1090,6 +1090,12 @@ var stat          = 181 ;
     if (parcel == null)
     parcel = 5 ;
 
+    if (data_analysis.length < 1)
+    {
+    alert( "{{ _("Veuillez sélectionner au moins une analyse") }}" ) ;
+    return false ;
+    }
+
     if (per_discount == "")
     per_discount = 0 ;
 
@@ -1113,7 +1119,7 @@ var stat          = 181 ;
     return false ;
     }
 
-    // DateReceipt and sampler required
+    // Type and status required
     for( i in data_products )
     {
         if (data_products[i].type == 0)
@@ -1128,6 +1134,7 @@ var stat          = 181 ;
         return false ;
         }
 
+        /* ISSUE 1 17/10/2020
         if (data_products[i].dateReceipt == "")
         {
         alert( "{{ _("Veuillez renseigner toutes les dates de réception") }}" ) ;
@@ -1139,6 +1146,7 @@ var stat          = 181 ;
         alert( "{{ _("Veuillez renseigner toutes les identités des préleveurs") }}" ) ;
         return false ;
         }
+        */
     }
 
 var param = '{ "id_owner":' + id_group + ', ' +
