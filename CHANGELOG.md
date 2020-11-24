@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
+## [2.9.2] - 2020-11-24
+### Fixed
+- mandatory fields changed
+- internal patient code display
+- csv column offset
+- specimen details in Whonet Export
+- Whonet export filename modify
+- Https supported
+- No record without analysis
+- Whonet export result on the same line
+
 ## [2.9.1] - 2020-10-20
 ### Added
 - Migration of database with Alembic when Gunicorn is started
