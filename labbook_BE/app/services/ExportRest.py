@@ -36,8 +36,12 @@ class ExportWhonet(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportWhonet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        dt_start_req = datetime.now()
+
         # Data
-        l_data = [['Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth (or age)', 'Date of admission', 'Patient location', 'Type of location', 'Exam number', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
+        l_data = [['Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth (or age)',
+                   'Date of admission', 'Patient location', 'Type of location', 'Exam number',
+                   'Specimen date', 'Specimen type', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
         if dict_data:
@@ -60,37 +64,39 @@ class ExportWhonet(Resource):
                     data.append(d['date_hosp'])
                 else:
                     data.append('')
-                
+
                 data.append(d['service_interne'])
                 data.append(d['rec_type'])
                 data.append(d['ana_code'])
 
+                # specimen part
+                if d['spec_date']:
+                    d['spec_date'] = datetime.strftime(d['spec_date'], '%Y-%m-%d')
+
+                data.append(d['spec_date'])
+                data.append(d['spec_type'])
+
+                # analysis part
                 if d['ana_name']:
                     ana_name = d['ana_name']
                     ana_name = ana_name[14:]  # delete "Antibiogramme"
 
                     start_meth = ana_name.find('[')  # search where method starts
                     end_meth   = ana_name.find(']')  # search where method ends
-        
-                    method_name = ana_name[start_meth+1:end_meth]
 
-                    ana_name = ana_name[0:start_meth-1]
+                    method_name = ana_name[start_meth + 1:end_meth]
+
+                    ana_name = ana_name[0:start_meth - 1]
 
                     data.append(ana_name)
-
                     data.append(d['libelle'])
                     data.append(method_name)
+                    data.append(d['method_value'])
+                    data.append(d['valeur'])
 
-                    if d['type_res'] == 600 or d['type_res'] == 1134:
-                        data.append('')
-                        data.append(d['valeur'])
-                    else:
-                        data.append(d['valeur'])
-                        data.append('')
-                
                 l_data.append(data)  # list(d.values()))
 
-        self.log.error(Logs.fileline() + ' : WHONET l_data=' + str(l_data))
+        # self.log.error(Logs.fileline() + ' : WHONET l_data=' + str(l_data))
 
         # write csv file
         try:
@@ -106,6 +112,11 @@ class ExportWhonet(Resource):
         except Exception as err:
             self.log.error(Logs.fileline() + ' : post ExportWhonet failed, err=%s , num=%s', err, str(num))
             return False
+
+        dt_stop_req = datetime.now()
+        dt_time_req = dt_stop_req - dt_start_req
+
+        self.log.info(Logs.fileline() + ' : DEBUG ExportWhonet processing time = ' + str(dt_time_req))
 
         self.log.info(Logs.fileline() + ' : TRACE ExportWhonet')
         return compose_ret('', Constants.cst_content_type_json)

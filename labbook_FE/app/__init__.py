@@ -107,7 +107,10 @@ def get_init_var():
 
     # init external server
     if request.cookies and 'PHP_url_host' in request.cookies and 'PHP_url_https' in request.cookies:
-        if not session or 'server_ext' not in session or session['server_ext'].find(request.cookies.get('PHP_url_host')) > 0:
+        if not session or 'server_ext' not in session or \
+           (session['server_ext'].startswith('https') and request.cookies.get('PHP_url_https') == "off") or \
+           (session['server_ext'].startswith('http:') and request.cookies.get('PHP_url_https') == "on") or \
+           session['server_ext'].find(request.cookies.get('PHP_url_host')) < 1:
             log.info(Logs.fileline() + ' : cookies PHP_url_host = ' + request.cookies.get('PHP_url_host'))
             log.info(Logs.fileline() + ' : cookies PHP_url_https = ' + request.cookies.get('PHP_url_https'))
 

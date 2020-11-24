@@ -28,16 +28,21 @@ class Export:
 
         l_rec = cursor.fetchall()
 
+        # Export.log.info(Logs.fileline() + ' ########## EXPORT ##########')
+        # Export.log.info(Logs.fileline() + ' : l_rec=' + str(l_rec))
+
         for rec in l_rec:
             # check this list for whonet analyzes
             req = 'select ana.id_data as id_ana, req.id_data as id_req, code as ana_code, nom as ana_name '\
                   'from sigl_04_data as req '\
                   'left join sigl_05_data as ana on req.ref_analyse=ana.id_data '\
-                  'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s' 
+                  'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s'
 
             cursor.execute(req, (rec['id_rec'],))
 
             l_ana = cursor.fetchall()
+
+            # Export.log.info(Logs.fileline() + ' : l_ana=' + str(l_ana))
 
             if l_ana:
 
@@ -45,6 +50,8 @@ class Export:
                     res = rec.copy()
                     res.update(ana)
                     l_tmp.append(res)
+
+        # Export.log.info(Logs.fileline() + ' : l_tmp=' + str(l_tmp))
 
         # get results
         for ana in l_tmp:
@@ -61,26 +68,67 @@ class Export:
 
             l_var = cursor.fetchall()
 
+            # Export.log.info(Logs.fileline() + ' : l_var=' + str(l_var))
+
             if l_var:
+                res = {}
+
                 for res_var in l_var:
                     # find label for res value
                     if res_var['type_res'] == 600 or res_var['type_res'] == 1134:
                         res_label = Various.getDicoById(res_var['valeur'])
                         res_var['valeur'] = res_label['label']
 
-                    res = ana.copy()
-                    res.update(res_var)
-                    l_res.append(res)
+                        res = ana.copy()
+                        res.update(res_var)
+                    # add method result on the same line
+                    elif res_var['libelle'].startswith('Diam. inhibition ') or res_var['libelle'].startswith('CMI '):
+                        res['method_value'] = res_var['valeur']
+                        l_res.append(res)
+                    # in case of something else than antiobic and method result
+                    else:
+                        res = ana.copy()
+                        res.update(res_var)
+                        l_res.append(res)
+
+        # Export.log.info(Logs.fileline() + ' : l_res=' + str(l_res))
+
+        # get products details with list of analyzes
+        id_rec_p = 0
+
+        for res in l_res:
+            if id_rec_p != res['id_rec']:
+                req = 'select id_dos, date_prel, dico.label as type_prod '\
+                      'from sigl_01_data as prod '\
+                      'inner join sigl_dico_data as dico on prod.type_prel=dico.id_data and dico.dico_name="type_prel" '\
+                      'where prod.statut=8 and prod.id_dos=%s'
+
+                cursor.execute(req, (res['id_rec'],))
+
+                l_products = cursor.fetchall()
+                id_rec_p = res['id_rec']
+
+            if l_products:
+                # Export.log.info(Logs.fileline() + ' : l_products=' + str(l_products))
+                for prod in l_products:
+                    if res['id_rec'] == prod['id_dos']:
+                        res['spec_date'] = prod['date_prel']
+                        res['spec_type'] = prod['type_prod']
+            else:
+                res['spec_date'] = ''
+                res['spec_type'] = ''
 
         # patient details
         for res in l_res:
             req = 'select pat.code as pat_code, pat.nom as pat_name, pat.prenom as pat_fname, ddn, age, dico.label as sex '\
                   'from sigl_03_data as pat '\
                   'inner join sigl_dico_data as dico on pat.sexe=dico.id_data and dico.dico_name="sexe" '\
-                  'where pat.id_data=%s' 
+                  'where pat.id_data=%s'
 
             cursor.execute(req, (res['id_patient'],))
 
             res.update(cursor.fetchone())
+
+        # Export.log.info(Logs.fileline() + ' : FINAL l_res=' + str(l_res))
 
         return l_res
