@@ -98,6 +98,10 @@ class ExportWhonet(Resource):
 
         # self.log.error(Logs.fileline() + ' : WHONET l_data=' + str(l_data))
 
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
         # write csv file
         try:
             import csv

@@ -114,7 +114,7 @@ def get_init_var():
             log.info(Logs.fileline() + ' : cookies PHP_url_host = ' + request.cookies.get('PHP_url_host'))
             log.info(Logs.fileline() + ' : cookies PHP_url_https = ' + request.cookies.get('PHP_url_https'))
 
-            if request.cookies.get('PHP_url_https') != "HTTP":
+            if request.cookies.get('PHP_url_https') != "off":
                 session['server_ext'] = 'https://' + request.cookies.get('PHP_url_host')
                 session.modified = True
                 log.info(Logs.fileline() + ' : server_ext with HTTPS')
