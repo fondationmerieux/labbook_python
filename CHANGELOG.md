@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Top menu
 
+## [2.9.3] - 2020-12-11
+### Fixed
+- Redirection following the creation of a new patient
+
 ## [2.9.2] - 2020-11-24
 ### Fixed
 - mandatory fields changed

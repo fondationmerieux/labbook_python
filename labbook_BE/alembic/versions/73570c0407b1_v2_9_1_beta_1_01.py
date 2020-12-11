@@ -2,7 +2,7 @@
 """v2.9.1-beta.1 01
 
 Revision ID: 73570c0407b1
-Revises: 
+Revises:
 Create Date: 2020-09-24 16:02:11.552434
 
 """

@@ -294,12 +294,12 @@ $("#listing_dos_total").html( data_len ) ;
     let menu_act = '<ul class="nav navbar-nav">' +
                    '<li class="dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">Action</a>' +
                    '<ul class="dropdown-menu menu-act-drop">' +
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
                    {% if session['user_id_role'] < 4 %}
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/technical-validation/' + data_records[i].id_data + '">Validation technique</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/' + data_records[i].id_data + '">Validation technique</a></li>' +
                    {% if session['user_id_role'] < 3 %}
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/biological-validation/' + data_records[i].id_data + '">Validation biologique</a></li>' +
+                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/' + data_records[i].id_data + '">Validation biologique</a></li>' +
                    {% endif %}{% endif %}
                    '<li><hr style="border-top:1px solid #DDD;"></li>' +
                    '<li><a class="menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">Supprimer</a></li></ul></ul>' ;
