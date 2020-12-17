@@ -1,0 +1,62 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Changement de logo") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Changement de logo pour les documents") }}</span></h2>
+            <div class="row justify-content-md-center" id="pref-logo">
+                <label>{{ _("Logo actuel") }} :</label>
+                <img src="{{ session['server_ext'] }}/resources/images/logo.png?{{ rand }}">
+            </div>
+            <div class="row">
+                <div class="offset-md-2" style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                    <input name="file" type="file" style="margin-bottom:4px"/>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="offset-md-2">
+                    <input type="button" class="btn btn-success" value="{{ _("Enregistrer") }}" onclick="upload_logo();">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function upload_logo()
+{
+let param_form = new FormData() ;
+
+param_form.append('file', $('input[type=file]')[0].files[0]) ;
+
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-logo/",
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
+        {
+        console.log( "success upload logo ") ;
+        location.reload() ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR upload logo") ;
+        alert("Une erreur est survenue lors du dépot du logo") ;
+        }
+    } ) ;
+    
+}
+</script>
+{% endblock %}

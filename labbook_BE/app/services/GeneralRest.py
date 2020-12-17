@@ -81,3 +81,13 @@ class DefaultValue(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE DefaultValue : ' + name)
         return compose_ret(val, Constants.cst_content_type_json)
+
+    def post(self, name, value):
+        ret = Various.updateDefaultValue(name, value)
+
+        if ret is False:
+            self.log.error(Logs.fileline() + ' : ERROR DefaultValue update identifiant : ' + name)
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE DefaultValue : ' + name)
+        return compose_ret(ret, Constants.cst_content_type_json)

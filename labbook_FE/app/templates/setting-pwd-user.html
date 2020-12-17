@@ -1,0 +1,104 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Mise à jour du mot de passe") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Mise à jour du mot de passe") }}</span></h2>
+            <form id="form_main" autocomplete="off">
+                <div class="form-group row mt-3">
+                    <label for="new-pwd" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Mot de passe") }} *</label>
+                    <div>					
+                        <input type="password" name="new-pwd" id="new-pwd" value="" class="form-control">
+                    </div>
+                    <div>
+                        <span class="fa fa-eye mt-2 ml-2" onclick="see_pwd();"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="renew-pwd" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Confirmation du mot de passe") }} *</label>
+                    <div>					
+                        <input type="password" name="renew-pwd" id="renew-pwd" value="" class="form-control">
+                    </div>
+                </div>                
+            </form>
+
+            <div class="mb-5">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-success">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success ml-2">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save()
+{
+var id_owner = {{ session['user_id_group']|safe}} ;
+var id_user  = {{ args['id_user'] }} ;
+var pwd1     = $("#new-pwd").val() ;
+var pwd2     = $("#renew-pwd").val() ;
+
+    if ( id_user < 1 )
+    return false ;
+
+    if ( pwd1 != pwd2 )
+    {
+    alert("{{ _("Les mots de passe ne sont pas identiques !") }}") ; 
+    }
+    else
+    {
+    var param = '{ "id_owner":' + id_owner + ', ' +
+                  '"id_user":' + id_user + ', ' +
+                  '"password":"' + pwd1 + '"}' ;
+
+        $.ajax( {
+           type: "POST",
+           url: "/services/user/password",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
+               {
+               tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
+
+               window.history.back() ;
+               },
+           error: function(data)
+               {
+               console.log("ERROR POST setting user pwd") ;
+               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+               }
+        } ) ;
+    }
+}
+
+function see_pwd() 
+{
+var x = document.getElementById("new-pwd") ;
+
+    if (x.type === "password")
+    x.type = "text" ;
+    else
+    x.type = "password" ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
+}
+</script>
+{% endblock %}

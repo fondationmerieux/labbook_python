@@ -1,0 +1,274 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Nouvel utilisateur") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Nouvel utilisateur") }}</span></h2>
+            <form id="form_main" autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Accès") }}</h3>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="login" class="form-control-label col-md-3 text-right mt-2">{{ _("Identifiant") }}*</label>
+                    <div>					
+                        <input type="text" name="login" id="login" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="pwd" class="form-control-label col-md-3 text-right mt-2">{{ _("Mot de passe") }}*</label>
+                    <div>					
+                        <input type="password" name="pwd" id="pwd" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="re-pwd" class="form-control-label col-md-3 text-right mt-2">{{ _("Confirmation du mot de passe") }}*</label>
+                    <div>					
+                        <input type="password" name="re-pwd" id="re-pwd" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cps" class="form-control-label col-md-3 text-right optional mt-2">{{ _("CPS") }}</label>
+                    <div>					
+                        <input type="text" name="cps" id="cps" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="rpps" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Numéro RPPS") }}</label>
+                    <div>					
+                        <input type="text" name="rpps" id="rpps" value="" class="form-control">			
+                    </div>
+                </div>
+
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Identité") }}</h3>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="firstname" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <div class="">					
+                        <input type="firstname" name="firstname" id="firstname" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lastname" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="lastname" id="lastname" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="form-control-label col-md-3 text-right mt-2">{{ _("Langues *") }}</label>
+                    <label class="form-control-label text-right mt-2 mr-3">
+                        <input type="radio" name="lang_user" value="FR" {% if args['lang_user'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Français (FR)") }}</input>
+                    </label>
+                    <label class="form-control-label text-right mt-2 mr-3">
+                        <input type="radio" name="lang_user" value="UK" {% if args['lang_user'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("English (UK)") }}</input>
+                    </label>
+                    <label class="form-control-label text-right mt-2">
+                        <input type="radio" name="lang_user" value="US" {% if args['lang_user'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("English (US)") }}</input>
+                    </label>                    
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <div>					
+                        <input type="email" name="email" id="email" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Titre") }}</label>
+                    <div>					
+                        <select id="title" name="title" class="form-control">
+                            <option value="0"></option>  
+                            <option value="260">{{ _("Monsieur") }}</option>
+                            <option value="261">{{ _("Madame") }}</option>
+                            <option value="262">{{ _("Mademoiselle") }}</option>
+                            <option value="263">{{ _("Docteur") }}</option>
+                            <option value="264">{{ _("Professeur") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="initial" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Initiales") }}</label>
+                    <div>					
+                        <input type="text" name="initial" id="initial" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="birth" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Date de naissance") }}</label>
+                    <div>					
+                        <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="" name="birth" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <div>					
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Numéro de téléphone") }}</label>
+                    <div>					
+                        <input type="text" name="phone" id="phone" value="" class="form-control">			
+                    </div>
+                </div>
+                 <div class="form-group row">
+                    <label for="arrived" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
+                    <div>					
+                        <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="" name="arrived" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="position" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
+                    <div>					
+                        <input type="text" name="position" id="position" value="" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cv" class="form-control-label col-md-3 text-right optional mt-2">{{ _("CV") }}</label>
+                    <div>					
+                        <textarea id="cv" name="cv" rows="4" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="diploma" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Diplômes") }}</label>
+                    <div>					
+                        <textarea id="diplom" name="diploma" rows="4" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="training" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Formations continues") }}</label>
+                    <div>					
+                        <textarea id="training" name="training" rows="4" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="section" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Section de travail") }}</label>
+                    <div>					
+                        <select id="section" name="section" class="form-control">
+                            <option value="0">TODO load list</option>  
+                            <option value="1038">{{ _("Administration") }}</option>
+                            <option value="1039">{{ _("Prélèvement") }}</option>
+                            <option value="1040">{{ _("Biochimie") }}</option>
+                            <option value="1041">{{ _("Hématologie") }}</option>
+                            <option value="1042">{{ _("Sérologie") }}</option>
+                            <option value="1043">{{ _("Micriobiologie") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="last_eval" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
+                    <div>					
+                        <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="" name="last_eval" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="comment" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Commentaires") }}</label>
+                    <div>					
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Droits utilisateur") }}</h3>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="role" class="form-control-label col-md-3 text-right mt-2">{{ _("Rôle") }} *</label>
+                    <div>					
+                        <select id="role" name="role" class="form-control">
+                            <option value="0"></option>  
+                            <option value="1">{{ _("Administrateur") }}</option>
+                            <option value="2">{{ _("Biologiste") }}</option>
+                            <option value="3">{{ _("Technicien") }}</option>
+                            <option value="4">{{ _("Secrétaire") }}</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-success">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success ml-2">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save_user()
+{
+var id_owner   = {{ session['user_id_group']|safe}} ;
+var deed_price = $("#pref_deed_price").val() ;
+var head_1     = $("#pref_head_1").val() ;
+var head_2     = $("#pref_head_2").val() ;
+var head_3     = $("#pref_head_2").val() ;
+var addr       = $("#pref_addr").val() ;
+var phone      = $("#pref_phone").val() ;
+var fax        = $("#pref_fax").val() ;
+var email      = $("#pref_email").val() ;
+var city       = $("#pref_city").val() ;
+var fact_hosp  = 0 ;
+var age_unit   = $("#pref_age_unit").val() ;
+var logout     = $("#pref_logout").val() ;
+var quality    = 0 ;
+var bill       = 0 ;
+
+    if ( $("#pref_fact_hosp").is(":checked") )
+    fact_hosp = $("#pref_fact_hosp").val()
+
+    if ( $("#pref_quality").is(":checked") )
+    quality = $("#pref_quality").val()
+
+    if ( $("#pref_bill").is(":checked") )
+    bill = $("#pref_bill").val()
+
+var param = '{ "prix_acte":"' + deed_price + '", ' +
+              '"entete_1":"' + head_1 + '", ' +
+              '"entete_2":"' + head_2 + '", ' +
+              '"entete_3":"' + head_3 + '", ' +
+              '"entete_adr":"' + addr + '", ' +
+              '"entete_tel":"' + phone + '", ' +
+              '"entete_fax":"' + fax + '", ' +
+              '"entete_email":"' + email + '", ' +
+              '"entete_ville":"' + city + '", ' +
+              '"facturation_pat_hosp":"' + fact_hosp + '", ' +
+              '"unite_age_defaut":"' + age_unit + '", ' +
+              '"auto_logout":"' + logout + '", ' +
+              '"qualite":"' + quality + '", ' +
+              '"facturation":"' + bill  + '"}' ;
+
+console.log("DEBUG param="+JSON.stringify(param));
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/setting/pref/list/" + id_owner,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 1000) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST patient det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

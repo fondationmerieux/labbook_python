@@ -145,18 +145,6 @@ class Record:
             return False
 
     @staticmethod
-    def getRecordTypeNumber():
-        cursor = DB.cursor()
-
-        req = 'select id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, periode, format '\
-              'from sigl_param_num_dos_data '\
-              'order by id_data desc limit 1'
-
-        cursor.execute(req)
-
-        return cursor.fetchone()
-
-    @staticmethod
     def deleteRecord(id_rec):
         try:
             cursor = DB.cursor()

@@ -14,14 +14,15 @@
             {% if session['user_role'] == 'A' %}
             <div class="module">
                 <div class="links">
-                    <a href="#" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
-                    <a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>
-                    <a href="#" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users/" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
+                    <!--<a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>-->
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pref/" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
                     <a href="#" class="list-group-item admin-referentiel">{{ _("Réferentiel") }}</a>
-                    <a href="#" class="list-group-item admin-conf-cr">{{ _("Configuration des comptes-rendu") }}</a>
-                    <a href="#" class="list-group-item admin-num-doss">{{ _("Configuration des numéros de dossier") }}</a>
-                    <a href="#" class="list-group-item admin-gest-fact-0">{{ _("Gestion de la Facturation") }}</a>
-                    <a href="#" class="list-group-item admin-qualite-0">{{ _("Management de la Qualité") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-report/" class="list-group-item admin-conf-cr">{{ _("Configuration des comptes-rendu") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-rec-num/" class="list-group-item admin-num-doss">{{ _("Configuration des numéros de dossier") }}</a>
+                    <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ args['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
+
+                    <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ args['pref_quality'] }});" class="list-group-item admin-qualite-{{ args['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
                 </div>
             </div>
             {% elif  session['user_role'] == 'B' %}
@@ -102,5 +103,44 @@
 
 {% block add_script %}
 <script>
+var val_bill    = {{ args['pref_bill'] }} ;
+var val_quality = {{ args['pref_quality'] }} ;
+
+function change_pref(pref_name)
+{
+let prec_val = val_bill ;    
+let val      = 0 ;
+let ico      = "admin-gest-fact-" ;
+
+    if (pref_name == "qualite")
+    {
+    prec_val = val_quality ;
+    ico      = "admin-qualite-" ;
+    }
+
+    if (prec_val == 0)
+    val = 1 ;
+
+    if (pref_name == "qualite")
+    val_quality = val ;
+    else
+    val_bill = val ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/default/name/" + pref_name + "/val/" + val,
+       success: function(data)
+           {
+           console.log("SUCCESS POST change pref") ;
+           $("." + ico + prec_val).addClass(ico + val) ;
+           $("." + ico + val).removeClass(ico + prec_val) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST change pref") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
 </script>
 {% endblock %}

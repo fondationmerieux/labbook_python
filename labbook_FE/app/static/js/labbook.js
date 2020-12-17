@@ -2,6 +2,21 @@
 var disconnect_page = "/sigl/disconnect/" ;
 var page_timeout    = 0 ;
 
+function tempAlert(msg,duration)
+{
+var el = document.createElement("div") ;
+
+el.setAttribute("id","tempAlert") ;
+el.innerHTML = '<div style="display:table-cell;vertical-align:middle;">' + msg + '</div>' ;
+
+    setTimeout( function()
+    {
+    el.parentNode.removeChild(el) ;
+    }, duration) ;
+
+document.body.appendChild(el);
+}
+
 // Return formatted record number
 function fmt_num_rec( num_rec, fmt, period )
 {

@@ -14,6 +14,7 @@ from app.models.Record import *
 from app.models.Result import *
 from app.models.Various import *
 from app.models.User import *
+from app.models.Setting import *
 from app.models.Logs import Logs
 
 
@@ -323,28 +324,3 @@ class RecordStat(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordStat')
         return compose_ret('', Constants.cst_content_type_json)
-
-
-class RecordTypeNumber(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self):
-        param = Record.getRecordTypeNumber()
-
-        if not param:
-            self.log.error(Logs.fileline() + ' : ERROR RecordTypeNumber not found')
-            return compose_ret('', Constants.cst_content_type_json, 404)
-
-        # Replace None by empty string
-        for key, value in param.items():
-            if param[key] is None:
-                param[key] = ''
-
-        if param['sys_creation_date']:
-            param['sys_creation_date'] = datetime.strftime(param['sys_creation_date'], '%Y-%m-%d %H:%M:%S')
-
-        if param['sys_last_mod_date']:
-            param['sys_last_mod_date'] = datetime.strftime(param['sys_last_mod_date'], '%Y-%m-%d %H:%M:%S')
-
-        self.log.info(Logs.fileline() + ' : TRACE RecordTypeNumber')
-        return compose_ret(param, Constants.cst_content_type_json)

@@ -17,4 +17,4 @@ BABEL_DEFAULT_LOCALE       = 'fr_FR'
 TEMPLATES_AUTO_RELOAD      = True
 
 SERVER_INT                 = 'localhost'  # For URL in python code
-REDIRECT_NAME              = 'labbook_FE'
+REDIRECT_NAME              = 'sigl'

@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
-# import informixdb
 import logging
+import mysql.connector
 
 from app.models.DB import DB
-# from app.models.Logs import Logs
+from app.models.Logs import Logs
+from app.models.Constants import Constants
 
 
 class Various:
@@ -46,6 +47,24 @@ class Various:
         cursor.execute(req, (name,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def updateDefaultValue(name, value):
+        try:
+            cursor = DB.cursor()
+
+            req = 'update sigl_06_data '\
+                  'set value=%s '\
+                  'where identifiant = %s'
+
+            cursor.execute(req, (value, name,))
+
+            Various.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Various.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getLastNumDos():

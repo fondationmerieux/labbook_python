@@ -613,7 +613,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + id_rec,
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file-rec/" + id_rec,
         dataType: 'json',
         contentType: false,
         processData: false,
@@ -701,7 +701,7 @@ function print_barcode()
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/sigl/";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
 }
 
 $( document ).ready( function()

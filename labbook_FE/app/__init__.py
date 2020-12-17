@@ -16,6 +16,7 @@ import os
 import logging
 import requests
 import json
+import random
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date
@@ -99,10 +100,13 @@ def get_locale():
 
 
 def get_init_var():
-
     # init external server
     root = request.url_root
     log.info(Logs.fileline() + ' : URL : %s', root)
+
+    if root.endswith('/'):
+        root = root[:-1]
+
     session['server_ext'] = root
     session.modified = True
 
@@ -199,7 +203,7 @@ def get_user_data(login):
 
 def get_software_settings():
     try:
-        url = session['server_int'] + '/services/record/type/number'
+        url = session['server_int'] + '/services/setting/record/number'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -240,54 +244,91 @@ def index():
         return render_template('login.html')
     else:
         log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Current')
-        return redirect(url_for(session['current_page']))
+        return redirect('/' + session['redirect_name'] + '/' + url_for(session['current_page']))
 
 
 @app.route("/disconnect/")
 def disconnect():
     log.info(Logs.fileline() + ' : TRACE Labbook FRONT END disconnect')
-    url = session['server_ext'] + session['redirect_name']
+    url = session['server_ext'] + '/' + session['redirect_name']
     session.clear()
     return redirect(url)
 
 
 # Page : homepage
+@app.route('/homepage/')
 @app.route('/homepage/<string:login>')
 def homepage(login=''):
     log.info(Logs.fileline() + ' : TRACE Homepage login=' + str(login))
 
+    session['current_page'] = 'homepage'
+    session.modified = True
+
     dt_start_req = datetime.now()
+
+    json_data = {}
+
+    if login:
+        session['login'] = login
+        session.modified = True
+    elif 'login' in session and session['login']:
+        login = session['login']
 
     get_user_data(login)
 
     # get_init_var()
     # get_software_settings()
+
+    # Load pref_quality
+    try:
+        url = session['server_int'] + '/services/default/val/qualite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            ret = req.json()
+            if ret and 'value' in ret:
+                json_data['pref_quality'] = ret['value']
+            else:
+                json_data['pref_quality'] = 0
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests pref_quality failed, err=%s , url=%s', err, url)
+
+    # Load pref_bill
+    try:
+        url = session['server_int'] + '/services/default/val/facturation'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            ret = req.json()
+            if ret and 'value' in ret:
+                json_data['pref_bill'] = ret['value']
+            else:
+                json_data['pref_bill'] = 0
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests pref_bill failed, err=%s , url=%s', err, url)
+
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : DEBUG homepage processing time = ' + str(dt_time_req))
 
-    return render_template('homepage.html')
+    return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Change la langue
 @app.route("/lang/<string:lang>/")
 def lang(lang='fr'):
-    # TODO change for Python process
-    url_php_lang = session['server_ext'] + '/sigl/lang/index/change-lang/lang/'
-
     if lang == 'en_GB':
-        lang_php = 'en_GB'
         session['lang_select'] = 'UK'
         session['date_format'] = Constants.cst_date_eu
         session.modified = True
     elif lang == 'en_US':
-        lang_php = 'en_US'
         session['lang_select'] = 'US'
         session['date_format'] = Constants.cst_date_us
         session.modified = True
     else:
-        lang_php = 'fr_FR'
         session['lang_select'] = 'FR'
         session['date_format'] = Constants.cst_date_eu
         session.modified = True
@@ -295,7 +336,153 @@ def lang(lang='fr'):
     session['lang']  = lang
     session.modified = True
 
-    return redirect(url_php_lang + lang_php)
+    return redirect(session['server_ext'] + '/' + session['redirect_name'] + '/homepage')
+
+
+# Page : users list
+@app.route('/setting-users/')
+def setting_users():
+    log.info(Logs.fileline() + ' : TRACE setting users')
+
+    session['current_page'] = 'setting-users'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list users
+    try:
+        url = session['server_int'] + '/services/user/list/' + str(session['user_id_group'])
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = json.dumps(req.json())
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-users.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details user
+@app.route('/setting-det-user/<int:id_user>')
+def setting_det_user(id_user=0):
+    log.info(Logs.fileline() + ' : TRACE setting det user')
+
+    session['current_page'] = 'setting-det-user/' + str(id_user)
+    session.modified = True
+
+    json_data = {}
+
+    if id_user > 0:
+        # Load user details
+        try:
+            url = session['server_int'] + '/services/user/det/' + str(id_user)
+            req = requests.post(url)
+
+            if req.status_code == 200:
+                json_data = json.dumps(req.json())
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-det-user.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting new password for a user
+@app.route('/setting-pwd-user/<int:id_user>')
+def setting_pwd_user(id_user=0):
+    log.info(Logs.fileline() + ' : TRACE setting pwd user')
+
+    session['current_page'] = 'setting-pwd-user/' + str(id_user)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['id_user'] = id_user
+
+    return render_template('setting-pwd-user.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : preferences list
+@app.route('/setting-pref/')
+def setting_preferences():
+    log.info(Logs.fileline() + ' : TRACE setting preferences')
+
+    session['current_page'] = 'setting-pref'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/setting/pref/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['pref_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-pref.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting report
+@app.route('/setting-report/')
+def setting_report():
+    log.info(Logs.fileline() + ' : TRACE setting report')
+
+    session['current_page'] = 'setting-report'
+    session.modified = True
+
+    json_data = {}
+
+    # Load setting report
+    try:
+        url = session['server_int'] + '/services/setting/report'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests setting report failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-report.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting record number
+@app.route('/setting-rec-num/')
+def setting_rec_num():
+    log.info(Logs.fileline() + ' : TRACE setting record number')
+
+    session['current_page'] = 'setting-rec-num'
+    session.modified = True
+
+    json_data = {}
+
+    # Load record number setting
+    try:
+        url = session['server_int'] + '/services/setting/record/number'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests record number setting failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-rec-num.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : logo
+@app.route('/setting-logo/')
+def setting_logo():
+    log.info(Logs.fileline() + ' : TRACE setting logo')
+
+    session['current_page'] = 'setting-logo'
+    session.modified = True
+
+    return render_template('setting-logo.html', rand=random.randint(0, 999))
 
 
 # Page : list of results to enter
@@ -1408,7 +1595,7 @@ def download_file(type='', filename='', ref=''):
                 file_info = req.json()
 
                 if file_info:
-                    filepath = os.path.join(file_info['storage'] + '/sigl', file_info['path'])
+                    filepath = os.path.join(file_info['storage'] + '/' + session['redirect_name'], file_info['path'])
                     generated_name = file_info['generated_name']
                 else:
                     return False
@@ -1429,9 +1616,9 @@ def download_file(type='', filename='', ref=''):
     return ret_file
 
 
-# Route : upload a file
-@app.route('/upload-file/<int:id_rec>', methods=['POST'])
-def upload_file(id_rec=0):
+# Route : upload a file for record
+@app.route('/upload-file-rec/<int:id_rec>', methods=['POST'])
+def upload_file_rec(id_rec=0):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
     if request.method == 'POST':
         try:
@@ -1452,7 +1639,7 @@ def upload_file(id_rec=0):
             # Create end of storage path
             end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed to hash name, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file-rec failed to hash name, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -1464,7 +1651,7 @@ def upload_file(id_rec=0):
                 storage = req.json()
 
                 if not storage:
-                    log.error(Logs.fileline() + ' : upload-file storage failed')
+                    log.error(Logs.fileline() + ' : upload-file-rec storage failed')
                     return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-file failed requests storage, err=%s', err)
@@ -1476,13 +1663,13 @@ def upload_file(id_rec=0):
             pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)
             pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=False, exist_ok=True)
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed to filepath, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file-rec failed to filepath, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
             f.save(os.path.join(filepath + end_path, generated_name))
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed to save file, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file-rec failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -1510,11 +1697,36 @@ def upload_file(id_rec=0):
             req = requests.post(url, json=payload)
 
             if req.status_code != 200:
-                log.error(Logs.fileline() + ' : upload-file insert failed')
+                log.error(Logs.fileline() + ' : upload-file-rec insert failed')
                 return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed information file, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file-rec failed information file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload a logo for document
+@app.route('/upload-logo/', methods=['POST'])
+def upload_logo():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-logo failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath  = '/space/www/apps/labbook/current/resources/images/'
+        logo_name = 'logo.png'
+
+        try:
+            f.save(os.path.join(filepath, logo_name))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-logo failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

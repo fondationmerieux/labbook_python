@@ -33,7 +33,7 @@ class Export:
             req = 'select ana.id_data as id_ana, req.id_data as id_req, code as ana_code, nom as ana_name '\
                   'from sigl_04_data as req '\
                   'left join sigl_05_data as ana on req.ref_analyse=ana.id_data '\
-                  'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s' 
+                  'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s'
 
             cursor.execute(req, (rec['id_rec'],))
 
@@ -77,7 +77,7 @@ class Export:
             req = 'select pat.code as pat_code, pat.nom as pat_name, pat.prenom as pat_fname, ddn, age, dico.label as sex '\
                   'from sigl_03_data as pat '\
                   'inner join sigl_dico_data as dico on pat.sexe=dico.id_data and dico.dico_name="sexe" '\
-                  'where pat.id_data=%s' 
+                  'where pat.id_data=%s'
 
             cursor.execute(req, (res['id_patient'],))
 

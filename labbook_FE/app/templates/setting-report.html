@@ -1,0 +1,84 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage compte rendu") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage compte rendu") }}</span></h2>
+            <form id="form_main" autocomplete="off">
+                <div class="form-group row">
+                    <label class="form-control-label col-md-3 text-right mt-2">{{ _("Type d'entête") }}</label>
+                    <label class="form-control-label text-right mt-2 mr-3">
+                        <input type="radio" name="header" value="1068" {% if args['entete'] == 1068 %} checked="checked" {% endif %}>&nbsp;{{ _("Complet") }}</input>
+                    </label>
+                    <label class="form-control-label text-right mt-2 mr-3">
+                        <input type="radio" name="header" value="1069" {% if args['entete'] == 1069 %} checked="checked" {% endif %}>&nbsp;{{ _("Simple") }}</input>
+                    </label>
+                </div>
+                <div class="form-group row">
+                    <label class="form-control-label col-md-3 text-right mt-2">{{ _("Afficher les commentaires") }}</label>
+                    <label class="form-control-label text-right mt-2 mr-3">
+                        <input type="radio" name="comment" value="1049" {% if args['commentaire'] == 1049 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                    </label>
+                    <label class="form-control-label text-right mt-2 mr-3">
+                        <input type="radio" name="comment" value="1051" {% if args['commentaire'] == 1051 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                    </label>
+                </div>
+            </form>
+
+            <div class="mb-5">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-success">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success ml-2">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save()
+{
+var id_owner = {{ session['user_id_group']|safe}} ;
+var header   = $("input:radio[name=header]:checked").val() ;
+var comment  = $("input:radio[name=comment]:checked").val() ;
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"header":' + header + ', ' +
+              '"comment":' + comment + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/setting/report",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 1000) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST setting report") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
+}
+</script>
+{% endblock %}

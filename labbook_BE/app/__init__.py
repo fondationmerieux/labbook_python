@@ -33,6 +33,7 @@ from app.services.PatientRest import *
 from app.services.PdfRest import *
 from app.services.RecordRest import *
 from app.services.ResultRest import *
+from app.services.SettingRest import *
 
 LANGUAGES = {
     'fr_FR': 'French',
@@ -90,7 +91,7 @@ api.add_resource(AnalysisDet,        '/services/analysis/det/<int:id_ana>')
 api.add_resource(AnalysisReq,        '/services/analysis/list/req/<int:id_rec>/type/<string:type_ana>', '/services/analysis/list/req')
 api.add_resource(AnalysisSearch,     '/services/analysis/search/<int:id_group>')
 api.add_resource(AnalysisTypeProd,   '/services/analysis/type/product/<int:id_type_prod>')
-api.add_resource(DefaultValue,       '/services/default/val/<string:name>')
+api.add_resource(DefaultValue,       '/services/default/val/<string:name>', '/services/default/name/<string:name>/val/<string:value>')
 api.add_resource(DicoById,           '/services/dico/id/<int:id_data>')
 api.add_resource(DicoList,           '/services/dico/list/<string:dico_name>')
 api.add_resource(DoctorDet,          '/services/doctor/det/<int:id_doctor>')
@@ -110,7 +111,6 @@ api.add_resource(RecordDet,          '/services/record/det/<int:id_rec>')
 api.add_resource(RecordFile,         '/services/record/list/file/<int:id_rec>')
 api.add_resource(RecordList,         '/services/record/list/<int:id_group>')
 api.add_resource(RecordStat,         '/services/record/stat/<int:id_rec>')
-api.add_resource(RecordTypeNumber,   '/services/record/type/number')
 api.add_resource(ResultCancel,       '/services/result/cancel/<int:id_rec>')
 api.add_resource(ResultCreate,       '/services/result/create/<int:id_rec>')
 api.add_resource(ResultHisto,        '/services/result/history/<int:id_res>')
@@ -119,10 +119,17 @@ api.add_resource(ResultRecord,       '/services/result/record/<int:id_rec>')
 api.add_resource(ResultReset,        '/services/result/reset/<int:id_rec>')
 api.add_resource(ResultValid,        '/services/result/valid/<string:type_valid>/<int:id_rec>')
 api.add_resource(ResultValue,        '/services/result/list/value')
+api.add_resource(SettingPref,        '/services/setting/pref/list', '/services/setting/pref/list/<int:id_owner>')
+api.add_resource(SettingRecNum,      '/services/setting/record/number')
+api.add_resource(SettingReport,      '/services/setting/report')
 api.add_resource(UserAccess,         '/services/user/access')
-api.add_resource(UserDet,            '/services/user/login/<string:login>')
+api.add_resource(UserByLogin,        '/services/user/login/<string:login>')
 api.add_resource(UserByRole,         '/services/user/role/<int:id_role>')
+api.add_resource(UserDet,            '/services/user/det/<int:id_user>')
+api.add_resource(UserList,           '/services/user/list/<int:id_group>')
 api.add_resource(UserRights,         '/services/user/rights/<string:role>')
+api.add_resource(UserStatus,         '/services/user/status')
+api.add_resource(UserPassword,       '/services/user/password')
 
 # if __name__ == "__main__":
 #    app.run()
