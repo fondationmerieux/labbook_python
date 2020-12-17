@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.0.0-alpha.2] - 2020-12-17
+### Changed
+- List users
+- Change password
+- Disabled user
+- Search user
+- Setting Record number
+- Setting Report
+- Enable/Disable Billing
+- Enable/Disable Quality
+
 ## [3.0.0-alpha.1] - 2020-11-01
 ### Changed
 - Page login
