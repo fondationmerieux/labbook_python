@@ -15,23 +15,30 @@ class Record:
     def getRecordList(args, id_lab, id_group):
         cursor = DB.cursor()
 
-        filter_cond = ''
+        filter_cond = 'length(dos.num_dos_an) = 10 '
 
         if not args:
-            limit = 'LIMIT 500'
+            limit = 'LIMIT 1000'
         else:
             limit = 'LIMIT 4000'
             # filter conditions
             if args['num_rec']:
-                filter_cond += ' and (dos.num_dos_an LIKE "' + args['num_rec'] + '%" or dos.num_dos_mois LIKE "' + args['num_rec'] + '%") '
+                filter_cond += ' and (dos.num_dos_an LIKE "%' + args['num_rec'] + '%" or dos.num_dos_mois LIKE "%' + args['num_rec'] + '%") '
+
+            if 'stat_work' in args and args['stat_work']:
+                filter_cond += ' and dos.statut IN ' + str(args['stat_work']) + ' '
 
             if args['stat_rec'] and args['stat_rec'] > 0:
                 filter_cond += ' and dos.statut=' + str(args['stat_rec']) + ' '
 
-            if args['patient']:
-                filter_cond += ' and (pat.nom LIKE "' + args['patient'] + '%"'\
-                               ' or pat.prenom LIKE "' + args['patient'] + '%"'\
-                               ' or pat.code LIKE "' + args['patient'] + '") '
+            if args['lastname']:
+                filter_cond += ' and pat.nom LIKE "' + args['lastname'] + '%" '
+
+            if args['firstname']:
+                filter_cond += ' and pat.prenom LIKE "' + args['firstname'] + '%" '
+
+            if args['code']:
+                filter_cond += ' and (pat.code LIKE "%' + args['code'] + '%" or pat.code_patient LIKE "%' + args['code'] + '%") '
 
             if args['date_beg']:
                 filter_cond += ' and dos.date_dos >= "' + args['date_beg'] + '" '
@@ -39,28 +46,42 @@ class Record:
             if args['date_end']:
                 filter_cond += ' and dos.date_dos <= "' + args['date_end'] + '" '
 
-            # NULL (5 sometimes) or 4 in base
+            # 4 in base for yes
             if args['emer'] and args['emer'] == 4:
                 filter_cond += ' and ana.urgent=4 '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
-        req = 'select statut.id_data as stat, '\
-              'if(ana.urgent=4, "O", "") as urgent, '\
+        req = 'select dos.statut as stat, '\
               'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), dos.num_dos_mois), '\
               'if(param_num_dos.format=1072, substring(dos.num_dos_an from 5), dos.num_dos_an)) as num_dos, '\
+              'if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '\
               'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, pat.prenom as prenom, pat.id_data as id_pat '\
               'from sigl_02_data as dos '\
-              'inner join sigl_dico_data as statut on dos.statut=statut.id_data and statut.dico_name = "statut_dossier" '\
               'inner join sigl_03_data as pat on dos.id_patient=pat.id_data '\
               'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '\
-              'left join sigl_09_data as res on res.id_analyse=ana.id_data '\
               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '\
-              'where length(dos.num_dos_an) = 10 ' + filter_cond +\
+              'where ' + filter_cond +\
               'group by dos.id_data order by dos.num_dos_an desc ' + limit
 
         cursor.execute(req, (Constants.cst_isodate,))
 
-        return cursor.fetchall()
+        l_rec = cursor.fetchall()
+
+        req = 'select count(*) as nb_emer '\
+              'from sigl_04_data '\
+              'where id_dos=%s and urgent=4 '
+
+        # Search for emergency status
+        for rec in l_rec:
+            cursor.execute(req, (rec['id_data'],))
+            emer = cursor.fetchone()
+
+            if emer['nb_emer'] > 0:
+                rec['urgent'] = 'O'
+            else:
+                rec['urgent'] = ''
+
+        return l_rec
 
     @staticmethod
     def getRecord(id_rec):
@@ -77,16 +98,43 @@ class Record:
         return cursor.fetchone()
 
     @staticmethod
-    def getRecordFile(id_rec):
+    def getLastRecord():
         cursor = DB.cursor()
 
-        req = 'select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage '\
-              'from sigl_dos_valisedoc__file_data as valise, sigl_file_data as file, sigl_storage_data as storage '\
-              'where file.id_data=valise.id_file and storage.id_data=file.id_storage and valise.id_ext=%s'
+        req = 'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, date_prescription, service_interne, num_lit, '\
+              'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, '\
+              'date_hosp '\
+              'from sigl_02_data '\
+              'order by id_data desc limit 1'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getRecordNext(id_rec):
+        cursor = DB.cursor()
+
+        req = 'select id_data '\
+              'from sigl_02_data '\
+              'where statut in (254,255) or id_data=%s '\
+              'order by num_dos_an desc'
 
         cursor.execute(req, (id_rec,))
 
-        return cursor.fetchall()
+        l_rec = cursor.fetchall()
+
+        rec_next = False
+
+        for rec in l_rec:
+            if rec_next:
+                rec_next = rec
+                break
+
+            if rec['id_data'] == id_rec:
+                rec_next = True
+
+        return rec_next
 
     @staticmethod
     def insertRecord(**params):
@@ -174,6 +222,71 @@ class Record:
         except mysql.connector.Error as e:
             Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getRecordNbEmer():
+        cursor = DB.cursor()
+
+        req = 'select count(*) as nb_emer '\
+              'from sigl_02_data as rec '\
+              'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '\
+              'where ana.urgent=4 and rec.statut in (182,253,254,255) '\
+              'group by rec.id_data'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getRecordNbRecTech():
+        cursor = DB.cursor()
+
+        # Number of records to validate by a technician
+        req = 'select count(*) as nb_rec_tech '\
+              'from sigl_02_data '\
+              'where statut in (182,253)'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getRecordNbRecBio():
+        cursor = DB.cursor()
+
+        # Number of records to validate by a biologist
+        req = 'select count(*) as nb_rec_bio '\
+              'from sigl_02_data '\
+              'where statut in (254,255)'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getRecordNbRec():
+        cursor = DB.cursor()
+
+        # Number of records
+        req = 'select count(*) as nb_rec '\
+              'from sigl_02_data'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getRecordNbRecToday(num_today):
+        cursor = DB.cursor()
+
+        # Number of records validated today
+        req = 'select count(*) as nb_rec_today '\
+              'from sigl_02_data '\
+              'where statut=256 and num_dos_jour like "%s%"'
+
+        cursor.execute(req, (num_today,))
+
+        return cursor.fetchone()
 
     @staticmethod
     def generateBillNumber(id_rec):

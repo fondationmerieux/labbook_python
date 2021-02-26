@@ -12,6 +12,86 @@ from app.models.User import *
 from app.models.Logs import Logs
 
 
+class PatientList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_patients = Patient.getPatientList(args)
+
+        if not l_patients:
+            self.log.error(Logs.fileline() + ' : TRACE PatientList not found')
+
+        for patient in l_patients:
+            # Replace None by empty string
+            for key, value in patient.items():
+                if patient[key] is None:
+                    patient[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE PatientList')
+        return compose_ret(l_patients, Constants.cst_content_type_json)
+
+
+class PatientListExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_data = [['id_data', 'id_owner', 'code', 'code_lab', 'lastname', 'firstname', 'birth', 'sex']]
+
+        if 'code' not in args or 'code_lab' not in args or 'lastname' not in args or 'firstname' not in args:
+            self.log.error(Logs.fileline() + ' : PatientListExport ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        args['limit'] = 50000  # for overpassed default limit
+
+        dict_data = Patient.getPatientList(args)
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['id_data'])
+                data.append(d['id_owner'])
+                data.append(d['code'])
+                data.append(d['code_lab'])
+                data.append(d['lastname'])
+                data.append(d['firstname'])
+                data.append(d['birth'])
+                data.append(d['sex'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'patients_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post PatientListExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE PatientListExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class PatientSearch(Resource):
     log = logging.getLogger('log_services')
 
@@ -76,8 +156,6 @@ class PatientDet(Resource):
 
         # Update patient
         if id_pat != 0:
-            self.log.error(Logs.fileline() + ' : DEBUG PatientDet update')
-
             patient = Patient.getPatient(id_pat)
 
             if not patient:
@@ -123,8 +201,6 @@ class PatientDet(Resource):
 
         # Insert new patient
         else:
-            self.log.error(Logs.fileline() + ' : DEBUG PatientDet insert')
-
             if args['ddn']:
                 args['ddn'] = datetime.strptime(args['ddn'], Constants.cst_isodate)
             else:
@@ -178,3 +254,46 @@ class PatientDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE PatientDet id_pat=' + str(res['id_pat']))
         return compose_ret(res, Constants.cst_content_type_json)
+
+
+class PatientHistoric(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_pat):
+        l_datas = {}
+
+        patient = Patient.getPatient(id_pat)
+
+        if not patient:
+            self.log.error(Logs.fileline() + ' : ' + 'PatientHistoric ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        if patient['ddn']:
+            patient['ddn'] = datetime.strftime(patient['ddn'], '%Y-%m-%d')
+
+        # Replace None by empty string
+        for key, value in patient.items():
+            if patient[key] is None:
+                patient[key] = ''
+
+        l_datas['patient'] = patient
+
+        analyzes = Patient.getPatientHistoric(id_pat)
+
+        if not analyzes:
+            self.log.error(Logs.fileline() + ' : ' + 'PatientHistoric ERROR not found')
+            analyzes = {}
+
+        for ana in analyzes:
+            # Replace None by empty string
+            for key, value in ana.items():
+                if ana[key] is None:
+                    ana[key] = ''
+
+            if ana['date_prescr']:
+                ana['date_prescr'] = datetime.strftime(ana['date_prescr'], '%Y-%m-%d')
+
+        l_datas['analyzes'] = analyzes
+
+        self.log.info(Logs.fileline() + ' : PatientHistoric id_pat=' + str(id_pat))
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)

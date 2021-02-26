@@ -16,19 +16,6 @@ from app.models.Logs import Logs
 class ExportWhonet(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self):
-
-        json = Export.getDataWhonet("2020-10-01", "2020-10-30")
-
-        for res in json:
-            if res['date_hosp']:
-                res['date_hosp'] = datetime.strftime(res['date_hosp'], '%Y-%m-%d')
-            if res['ddn']:
-                res['ddn'] = datetime.strftime(res['ddn'], '%Y-%m-%d')
-
-        self.log.info(Logs.fileline() + ' : TRACE TEST ExportWhonet')
-        return compose_ret(json, Constants.cst_content_type_json)
-
     def post(self):
         args = request.get_json()
 
@@ -104,7 +91,7 @@ class ExportWhonet(Resource):
                     writer.writerow(line)
 
         except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportWhonet failed, err=%s , num=%s', err, str(num))
+            self.log.error(Logs.fileline() + ' : post ExportWhonet failed, err=%s', err)
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportWhonet')

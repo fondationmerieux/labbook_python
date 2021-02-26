@@ -1,0 +1,250 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Réunion") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Réunion") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row">
+                    <label for="date_meeting" class="col-form-label col-3 text-right mt-2">{{ _("Date") }} *</label>
+                    <div>					
+                        <input id="date_meeting" class="form-control" type="date" maxlength="10" size="10" value="{{ args['meeting']['date_meeting'] }}" name="date_meeting" style="color: #888;">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="type" class="col-form-label col-3 text-right mt-2">{{ _("Type") }}</label>
+                    <div>					
+                        <select id="type" name="type" class="form-control">
+                            <option value="0" {% if args['meeting']['type'] == 0 %} selected {% endif %}></option>  
+                            <option value="1044" {% if args['meeting']['type'] == 1044 %} selected {% endif %}>{{ _("Réunion d'équipe") }}</option>
+                            <option value="1045" {% if args['meeting']['type'] == 1045 %} selected {% endif %}>{{ _("Réunion qualité") }}</option>
+                            <option value="1046" {% if args['meeting']['type'] == 1046 %} selected {% endif %}>{{ _("Réunion de direction") }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="search_promoter" class="col-form-label col-3 text-right mr-1">{{ _("Organisateur") }}</label>
+                    <div>
+                        <select id="search_promoter" style="width:400px"></select>
+                        <span class="ml-2">{{ args['meeting']['promoter'] }}</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="report" class="col-form-label col-3 text-right mt-2">{{ _("Compte-rendu") }}</label>
+                    <div>					
+                        <textarea id="report" name="report" rows="4" cols="50" class="form-control">{{ args['meeting']['report'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="offset-3 text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="MEET" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_MEET = {% if args['data_MEET'] %}{{ args['data_MEET']|safe }}{% else %}[]{% endif %} ;
+
+$("#search_promoter").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/user/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_promoter").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_promoter").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+function save_item()
+{
+var id_owner     = {{ session['user_id_group']|safe }} ;
+var id_meeting   = {{ args['id_meeting']|safe }} ;
+var date_meeting = $("#date_meeting").val()      ;
+var type         = $("#type").val()              ;
+var promoter     = $("#search_promoter").val()   ;
+var report       = JSON.stringify( $("#report").val() ) ;
+
+var msg = "" ;
+
+    if (date_meeting == "")
+    msg += "{{ _("Veuillez saisir une date de réunion.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+    if (id_meeting > 0)
+    {
+        if (promoter < 1)
+        promoter = {% if args['meeting']['promoter_id'] %}{{ args['meeting']['promoter_id']|safe }}{% else %}0{% endif %} ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_item":' + id_meeting + ', ' +
+              '"date_meeting":"' + date_meeting + '", ' +
+              '"type":' + type + ', ' +
+              '"promoter":' + promoter + ', ' +
+              '"report":' + report + '}' ;  // No quotes with stringify
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/meeting/det/" + id_meeting,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           let ref = JSON.stringify(data) ;
+
+           upload_file(ref);
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function load_data()
+{
+$("#tbody_file").empty() ;
+
+    for( i in data_MEET )
+    {
+    load_file( data_MEET[i] ) ;
+    }
+}
+
+function load_file( data )
+{
+let tr_file = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'MEET\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function upload_file(ref)
+{
+let param_form = new FormData() ;
+let input_file = $("#MEET")[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    param_form.append('file', input_file.files[0]) ;
+
+        $.ajax(
+        {
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/MEET/" + ref,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: param_form,
+            success : function(response)
+            {
+            console.log( "success upload ") ;
+            },
+            error: function(response)
+            {
+            console.log("ERROR upload file") ;
+            alert("Une erreur est survenue lors du dépot d'un fichier") ;
+            }
+        } ) ;
+    }    
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

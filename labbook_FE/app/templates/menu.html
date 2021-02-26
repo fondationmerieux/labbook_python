@@ -1,56 +1,57 @@
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid nav-cust-cont">
         <ul class="navbar-nav">
-            <!-- Dropdown -->
+            <!-- Dropdown Admin -->
             {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-admin">
                   <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }}" style="padding:0;">
-                    <a class="dropdown-item" href="#">Liste des dossiers</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records">{{ _("Liste des dossiers") }}</a>
                     {% if session['user_role'] == 'B' %}
-                    <a class="dropdown-item" href="#">Liste de travail biologiste</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B">{{ _("Liste de travail biologiste") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'T' %}
-                    <a class="dropdown-item" href="#">Liste de travail technicien</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="#">Nouvelle demande externe</a>
-                    <a class="dropdown-item" href="#">Nouvelle demande hospitalisé</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-ext">{{ _("Nouvelle demande externe") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-int">{{ _("Nouvelle demande hospitalisé") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
                     {% if session['user_role'] == 'B' or session['user_role'] == 'T' %}
-                    <a class="dropdown-item" href="#">Etat des prélèvements en cours</a>
-                    <a class="dropdown-item" href="#">Saisie des résultats</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products">{{ _("Etat des prélèvements en cours") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
-                    <a class="dropdown-item" href="#">Liste des prescripteurs</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-doctors">{{ _("Liste des prescripteurs") }}</a>
                   </div>
                 </li>
-                <span class="nav-btn-txt">Administratif</span>
+                <span class="nav-btn-txt">{{ _("Administratif") }}</span>
             </span>
             {% endif %}
 
-            <!-- Dropdown -->
+            <!-- Dropdown Report -->
             {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-report">
                   <a class="nav-link dropdown-toggle report" href="#" id="navbardrop" data-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }}" style="padding:0;">
-                    <a class="dropdown-item" href="#">Rapport épidémiologique et statistique</a>
-                    <a class="dropdown-item" href="#">Rapport DHIS2</a>
-                    <a class="dropdown-item" href="#">Export WHONET</a>
-                    <a class="dropdown-item" href="#">Historique patient</a>
-                    <a class="dropdown-item" href="#">Historique d'analyse</a>
-                    <a class="dropdown-item" href="#">Rapport de fin de journée</a>
-                    <a class="dropdown-item" href="#">Etat de la facturation journalière</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-epidemio">{{ _("Rapport épidémiologique") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-statistic">{{ _("Rapport statistique") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-dhis2">{{ _("Rapport DHIS2") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/whonet-export">{{ _("Export WHONET") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-patients">{{ _("Historique patient") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-analyzes">{{ _("Historique d'analyse") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-today">{{ _("Rapport de fin de journée") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-billing">{{ _("Etat de la facturation journalière") }}</a>
                   </div>
                 </li>
-                <span class="nav-btn-txt">Rapports</span>
+                <span class="nav-btn-txt">{{ _("Rapports") }}</span>
             </span>
             {% endif %}
 
-            <!-- Dropdown -->
+            <!-- Dropdown Setting -->
             {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
@@ -58,61 +59,68 @@
                   </a>
                   <div class="dropdown-menu setting-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' %}
-                    <a class="dropdown-item" href="#">Référentiel des analyses</a>
-                    <a class="dropdown-item" href="#">Exporter le référentiel</a>
-                    <a class="dropdown-item" href="#">Importer un référentiel</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes">{{ _("Référentiel des analyses") }}</a>
+                    <a class="dropdown-item" onclick="export_repo_analyzes();">{{ _("Exporter le référentiel") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/import-analyzes">{{ _("Importer un référentiel") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="#">Dictionnaires</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-dicts">{{ _("Dictionnaires") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'S' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users/">Gestion des utilisateurs</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' %}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/manage-pat-records">{{ _("Gestion des dossiers patients") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-age-interval">{{ _("Intervalles d'âge") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-stickers">{{ _("Etiquettes") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' %}
-                    <!--<a class="dropdown-item" href="#">Gestion des rôles</a>-->
+                    <!--<a class="dropdown-item" href="#">{{ _("Gestion des rôles") }}</a>-->
                     {% endif %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-preferences/">Préférences</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pref">{{ _("Préférences") }}</a>
                     {% if session['user_role'] == 'A' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-logo/">Changement de logo</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-backup">{{ _("Gestion sauvegarde") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-logo">{{ _("Changement de logo") }}</a>
                     {% endif %}
                   </div>
                 </li>
-                <span class="nav-btn-txt">Paramétrages</span>
+                <span class="nav-btn-txt">{{ _("Paramétrages") }}</span>
             </span>
             {% endif %}
 
-            <!-- Dropdown -->
+            <!-- Dropdown Quality -->
             {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
                   <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu qualite-content nav-{{ session['user_role']|safe }}" style="padding:0;">
-                    <a class="dropdown-item" href="#">Général</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/quality-general">{{ _("Général") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="#">Laboratoire</a>
-                    <a class="dropdown-item" href="#">Personnels</a>
-                    <a class="dropdown-item" href="#">Prescripteurs</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-laboratory">{{ _("Laboratoire") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-staff">{{ _("Personnels") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-doctors">{{ _("Prescripteurs") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="#">Equipements</a>
-                    <a class="dropdown-item" href="#">Fournisseurs</a>
-                    <a class="dropdown-item" href="#">Manuels</a>
-                    <a class="dropdown-item" href="#">Procédures</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-equipment">{{ _("Equipements") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-suppliers">{{ _("Fournisseurs") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-manuals">{{ _("Manuels") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-procedure">{{ _("Procédures") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-stock">{{ _("Gestion des stocks") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="#">Module des non-conformités</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-nonconformities">{{ _("Module des non-conformités") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="#">Réunion du laboratoire</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-meeting">{{ _("Réunion du laboratoire") }}</a>
                   </div>
                 </li>
-                <span class="nav-btn-txt">Qualité</span>
+                <span class="nav-btn-txt">{{ _("Qualité") }}</span>
             </span>
             {% endif %}
 
             <!-- Link -->
             <span class="nav-cust-btn">
                 <li class="nav-item">
-                  <a class="nav-link non-conformite" href="#"></a>
+                  <a class="nav-link non-conformite" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/non-conformity"></a>
                 </li>
-                <span class="nav-btn-txt">Non conformité</span>
+                <span class="nav-btn-txt">{{ _("Non conformité") }}</span>
             </span>
         </ul>
     </div><!-- /.container-fluid -->

@@ -1,5 +1,5 @@
 /* javascript functions for labbook project */
-var disconnect_page = "/sigl/disconnect/" ;
+var disconnect_page = "/sigl/disconnect" ;
 var page_timeout    = 0 ;
 
 function tempAlert(msg,duration)
@@ -49,15 +49,15 @@ function status_rec( id_stat )
 let res = '' ;
 
     if ( id_stat == 182 )
-    res = '<span class="icon status-a">A</span>' ;
+    res = '<span class="icon stat-A">A</span>' ;
     else if ( id_stat == 253 )
-    res = '<span class="icon status-a">I</span>' ;
+    res = '<span class="icon stat-A">I</span>' ;
     else if ( id_stat == 254 )
-    res = '<span class="icon status-t">T</span>' ;
+    res = '<span class="icon stat-T">T</span>' ;
     else if ( id_stat == 255 )
-    res = '<span class="icon status-t">I</span>' ;
+    res = '<span class="icon stat-T">I</span>' ;
     else if ( id_stat == 256 )
-    res = '<span class="icon status-b">B</span>' ;
+    res = '<span class="icon stat-B">B</span>' ;
 
 return res ;
 }
@@ -67,11 +67,11 @@ function status_res( id_stat )
 let res = '' ;
 
     if ( id_stat == 250 )
-    res = '<span class="icon status-a">A</span>' ;
+    res = '<span class="icon stat-A">A</span>' ;
     else if ( id_stat == 251 )
-    res = '<span class="icon status-t">T</span>' ;
+    res = '<span class="icon stat-T">T</span>' ;
     else if ( id_stat == 252 )
-    res = '<span class="icon status-b">B</span>' ;
+    res = '<span class="icon stat-B">B</span>' ;
 
 return res ;
 }
@@ -81,7 +81,7 @@ function emer( flag_emer )
 let res = '' ;
 
     if ( flag_emer == "O" || flag_emer == 4 )
-    res = '<span class="icon urgent">&nbsp;</span>' ;
+    res = '<span class="emer">&nbsp;</span>' ;
 
 return res ;
 }

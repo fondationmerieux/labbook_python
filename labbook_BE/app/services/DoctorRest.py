@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
@@ -9,6 +10,30 @@ from app.models.Constants import *
 from app.models.Doctor import *
 from app.models.User import *
 from app.models.Logs import Logs
+
+
+class DoctorList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_doctors = Doctor.getDoctorList(args)
+
+        if not l_doctors:
+            self.log.error(Logs.fileline() + ' : TRACE DoctorList not found')
+
+        for doctor in l_doctors:
+            # Replace None by empty string
+            for key, value in doctor.items():
+                if doctor[key] is None:
+                    doctor[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE DoctorList')
+        return compose_ret(l_doctors, Constants.cst_content_type_json)
 
 
 class DoctorSearch(Resource):
@@ -46,112 +71,126 @@ class DoctorDet(Resource):
         self.log.info(Logs.fileline() + ' : DoctorDet id_doctor=' + str(id_doctor))
         return compose_ret(doctor, Constants.cst_content_type_json, 200)
 
-    """
-    def post(self, id_pat=0):
+    def post(self, id_doctor):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'anonyme' not in args or 'code' not in args or 'code_doctor' not in args or 'nom' not in args or \
-           'prenom' not in args or 'ddn' not in args or 'sexe' not in args or 'ethnie' not in args or 'adresse' not in args or \
-           'cp' not in args or 'ville' not in args or 'tel' not in args or 'profession' not in args or 'nom_jf' not in args or \
-           'quartier' not in args or 'bp' not in args or 'ddn_approx' not in args or 'age' not in args or 'annee_naiss' not in args or \
-           'semaine_naiss' not in args or 'mois_naiss' not in args or 'unite' not in args:
+        if 'id_owner' not in args or 'id_doctor' not in args or 'code' not in args or 'title' not in args or \
+           'lastname' not in args or 'firstname' not in args or 'initial' not in args or 'work_place' not in args or \
+           'service' not in args or 'address' not in args or 'city' not in args or 'spe' not in args or \
+           'phone' not in args or 'mobile' not in args or 'fax' not in args or 'email' not in args:
             self.log.error(Logs.fileline() + ' : DoctorDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update doctor
-        if id_pat != 0:
-            self.log.error(Logs.fileline() + ' : DEBUG DoctorDet update')
-
-            doctor = Doctor.getDoctor(id_pat)
-
-            if not doctor:
-                self.log.error(Logs.fileline() + ' : DoctorDet ERROR not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            ret = Doctor.updateDoctor(id=id_pat,
-                                        id_owner=args['id_owner'],
-                                        anonyme=args['anonyme'],
-                                        code=args['code'],
-                                        code_doctor=args['code_doctor'],
-                                        nom=args['nom'],
-                                        prenom=args['prenom'],
-                                        ddn=args[''],
-                                        sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
-                                        adresse=args['adresse'],
-                                        cp=args['cp'],
-                                        ville=args['ville'],
-                                        tel=args['tel'],
-                                        profession=args['profession'],
-                                        nom_jf=args['nom_jf'],
-                                        quartier=args['quartier'],
-                                        bp=args['bp'],
-                                        ddn_approx=args['ddn_approx'],
-                                        age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
+        if id_doctor > 0:
+            ret = Doctor.updateDoctor(id_data=id_doctor,
+                                      id_owner=args['id_owner'],
+                                      code=args['code'],
+                                      nom=args['lastname'],
+                                      prenom=args['firstname'],
+                                      ville=args['city'],
+                                      etablissement=args['work_place'],
+                                      specialite=args['spe'],
+                                      tel=args['phone'],
+                                      email=args['email'],
+                                      titre=args['title'],
+                                      initiale=args['initial'],
+                                      service=args['service'],
+                                      adresse=args['address'],
+                                      mobile=args['mobile'],
+                                      fax=args['fax'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : DoctorDet ERROR update')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-            res = {}
-            res['id_pat'] = id_pat
-
         # Insert new doctor
         else:
-            self.log.error(Logs.fileline() + ' : DEBUG DoctorDet insert')
-
-            args['ddn'] = datetime.strptime(args['ddn'], Constants.cst_isodate)
-
             ret = Doctor.insertDoctor(id_owner=args['id_owner'],
-                                        anonyme=args['anonyme'],
-                                        code=args['code'],
-                                        code_doctor=args['code_doctor'],
-                                        nom=args['nom'],
-                                        prenom=args['prenom'],
-                                        ddn=args['ddn'],
-                                        sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
-                                        adresse=args['adresse'],
-                                        cp=args['cp'],
-                                        ville=args['ville'],
-                                        tel=args['tel'],
-                                        profession=args['profession'],
-                                        nom_jf=args['nom_jf'],
-                                        quartier=args['quartier'],
-                                        bp=args['bp'],
-                                        ddn_approx=args['ddn_approx'],
-                                        age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
+                                      code=args['code'],
+                                      nom=args['lastname'],
+                                      prenom=args['firstname'],
+                                      ville=args['city'],
+                                      etablissement=args['work_place'],
+                                      specialite=args['spe'],
+                                      tel=args['phone'],
+                                      email=args['email'],
+                                      titre=args['title'],
+                                      initiale=args['initial'],
+                                      service=args['service'],
+                                      adresse=args['address'],
+                                      mobile=args['mobile'],
+                                      fax=args['fax'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : DoctorDet ERROR  insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-            res = {}
-            res['id_pat'] = ret
+            id_doctor = ret
 
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : DoctorDet ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_03_data_group
-            ret = Doctor.insertDoctorGroup(id_data=res['id_pat'],
-                                             id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : DoctorDet ERROR  insert group')
-                return compose_ret('', Constants.cst_content_type_json, 500)
+        self.log.info(Logs.fileline() + ' : TRACE DoctorDet id_doctor=' + str(id_doctor))
+        return compose_ret('', Constants.cst_content_type_json)
 
 
-        self.log.info(Logs.fileline() + ' : TRACE DoctorDet id_pat=' + str(res['id_pat']))
-        return compose_ret(res, Constants.cst_content_type_json)"""
+class DoctorExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        args['limit'] = 50000  # for overpassed default limit
+
+        l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'city',
+                   'work_place', 'spe', 'phone', 'mobile', 'fax', 'email', 'title',
+                   'initial', 'service', 'address', ]]
+        dict_data = Doctor.getDoctorList(args)
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['id_data'])
+                data.append(d['id_owner'])
+                data.append(d['code'])
+                data.append(d['lastname'])
+                data.append(d['firstname'])
+                data.append(d['city'])
+                data.append(d['work_place'])
+                data.append(d['spe'])
+                data.append(d['phone'])
+                data.append(d['mobile'])
+                data.append(d['fax'])
+                data.append(d['email'])
+                data.append(d['title'])
+                data.append(d['initial'])
+                data.append(d['service'])
+                data.append(d['address'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'doctor_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post DoctorExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE DoctorExport')
+        return compose_ret('', Constants.cst_content_type_json)

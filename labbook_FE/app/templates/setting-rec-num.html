@@ -10,22 +10,22 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage numéro dossier") }}</span></h2>
-            <form id="form_main" autocomplete="off">
+            <form autocomplete="off">
                 <div class="form-group row">
-                    <label class="form-control-label col-md-3 text-right mt-2">{{ _("Période de numérotation") }}</label>
-                    <label class="form-control-label text-right mt-2 mr-3">
+                    <label class="col-form-label col-3 text-right mt-2">{{ _("Période de numérotation") }}</label>
+                    <label class="col-form-label text-right mt-2 mr-3">
                         <input type="radio" name="period" value="1070" {% if args['periode'] == 1070 %} checked="true" {% endif %}>&nbsp;{{ _("Mois") }}</input>
                     </label>
-                    <label class="form-control-label text-right mt-2 mr-3">
+                    <label class="col-form-label text-right mt-2 mr-3">
                         <input type="radio" name="period" value="1071" {% if args['periode'] == 1071 %} checked="true" {% endif %}>&nbsp;{{ _("Année") }}</input>
                     </label>
                 </div>
                 <div class="form-group row">
-                    <label class="form-control-label col-md-3 text-right mt-2">{{ _("Format de numérotation") }}</label>
-                    <label class="form-control-label text-right mt-2 mr-3">
+                    <label class="col-form-label col-3 text-right mt-2">{{ _("Format de numérotation") }}</label>
+                    <label class="col-form-label text-right mt-2 mr-3">
                         <input type="radio" name="format" value="1072" {% if args['format'] == 1072 %} checked="true" {% endif %}>&nbsp;{{ _("Court") }}</input>
                     </label>
-                    <label class="form-control-label text-right mt-2 mr-3">
+                    <label class="col-form-label text-right mt-2 mr-3">
                         <input type="radio" name="format" value="1073" {% if args['format'] == 1073 %} checked="true" {% endif %}>&nbsp;{{ _("Long") }}</input>
                     </label>
                 </div>
@@ -33,10 +33,10 @@
 
             <div class="mb-5">
                 <div class="float-left" style="margin-left:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-success">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success ml-2">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -78,7 +78,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
 }
 </script>
 {% endblock %}

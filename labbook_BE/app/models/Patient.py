@@ -2,7 +2,6 @@
 import logging
 import mysql.connector
 
-# from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
 from app.models.Constants import Constants
@@ -12,18 +11,63 @@ class Patient:
     log = logging.getLogger('log_db')
 
     @staticmethod
+    def getPatientList(args):
+        cursor = DB.cursor()
+
+        filter_cond = ' code is not NULL '
+
+        if not args:
+            limit = 'LIMIT 5000'
+        else:
+            if 'limit' in args and args['limit'] > 0:
+                limit = 'LIMIT ' + str(args['limit'])
+            else:
+                limit = 'LIMIT 5000'
+
+            # filter conditions
+            if args['code']:
+                filter_cond += ' and code LIKE "%' + args['code'] + '%" '
+
+            if args['code_lab']:
+                filter_cond += ' and code_patient LIKE "%' + args['code_lab'] + '%" '
+
+            if args['lastname']:
+                filter_cond += ' and nom LIKE "%' + args['lastname'] + '%" '
+
+            if args['firstname']:
+                filter_cond += ' and prenom LIKE "%' + args['firstname'] + '%" '
+
+        req = ('select id_data, id_owner, code, code_patient as code_lab, nom as lastname, prenom as firstname, '
+               'date_format(ddn, %s) as birth, sexe as sex '
+               'from sigl_03_data '
+               'where ' + filter_cond +
+               'order by lastname asc, firstname asc ' + limit)
+
+        cursor.execute(req, (Constants.cst_isodate,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getPatientSearch(text):
         cursor = DB.cursor()
 
-        code = text
-        text = '%' + text + '%'
+        l_words = text.split(' ')
+
+        cond = '(anonyme=5 or anonyme is NULL)'
+
+        for word in l_words:
+            cond = (cond +
+                    ' and (nom like "' + word + '%" or '
+                    'prenom like "' + word + '%" or '
+                    'code like "' + word + '%" or '
+                    'code_patient like "' + word + '%") ')
 
         req = 'select id_data as id, nom, prenom, nom_jf, code, '\
               'date_format(ddn, %s) as ddn, code_patient '\
               'from sigl_03_data '\
-              'where ((nom LIKE %s or nom_jf LIKE %s or prenom LIKE %s) AND IFNULL(anonyme, 5) = 5) or code = %s or code_patient LIKE %s'
+              'where ' + cond + ' order by nom asc limit 1000'
 
-        cursor.execute(req, (Constants.cst_isodate, text, text, text, code, text))
+        cursor.execute(req, (Constants.cst_isodate,))
 
         return cursor.fetchall()
 
@@ -31,7 +75,8 @@ class Patient:
     def getPatient(id_pat):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, tel, profession, '\
+        req = 'select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, '\
+              'adresse, cp, ville, tel, profession, '\
               'nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite '\
               'from sigl_03_data '\
               'where id_data=%s'
@@ -129,3 +174,30 @@ class Patient:
             ret = cursor.fetchone()
 
         return code
+
+    @staticmethod
+    def getPatientHistoric(id_pat):
+        cursor = DB.cursor()
+
+        req = ('select rec.id_data, rec.date_prescription as date_prescr, ref.nom as analysis, '
+               'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
+               'rec.num_dos_mois), '
+               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '
+               'ref_var.libelle as variable, '
+               'IF("dico_" = SUBSTRING(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
+               'from sigl_03_data as pat '
+               'inner join sigl_02_data as rec on rec.id_patient=pat.id_data '
+               'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data=ana.ref_analyse and ref.cote_unite != "PB" '
+               'inner join sigl_09_data as res on res.id_analyse=ana.id_data '
+               'inner join sigl_07_data as ref_var on ref_var.id_data=res.ref_variable '
+               'left join sigl_05_07_data as ref_link on ref_link.id_data=res.ref_variable '
+               'left join sigl_dico_data as dict_type on dict_type.id_data=ref_var.type_resultat '
+               'left join sigl_dico_data as dict_res on dict_res.id_data=res.valeur '
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data = 1 '
+               'where pat.id_data=%s '
+               'order by rec.num_dos_an desc, ref.id_data asc limit 7000')
+
+        cursor.execute(req, (id_pat,))
+
+        return cursor.fetchall()

@@ -10,18 +10,18 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Changement de logo pour les documents") }}</span></h2>
-            <div class="row justify-content-md-center" id="pref-logo">
+            <div class="row justify-content-center" id="pref-logo">
                 <label>{{ _("Logo actuel") }} :</label>
                 <img src="{{ session['server_ext'] }}/resources/images/logo.png?{{ rand }}">
             </div>
             <div class="row">
-                <div class="offset-md-2" style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                <div class="offset-2" style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
                     <input name="file" type="file" style="margin-bottom:4px"/>
                 </div> 
             </div>
             <div class="row">
-                <div class="offset-md-2">
-                    <input type="button" class="btn btn-success" value="{{ _("Enregistrer") }}" onclick="upload_logo();">
+                <div class="offset-2">
+                    <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}" onclick="upload_logo();">
                 </div>
             </div>
         </div><!-- close main -->

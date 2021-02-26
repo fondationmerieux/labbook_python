@@ -1,0 +1,229 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Liste des équipements") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des équipements") }}</span></h2>
+            <div>
+                <span>{{ _("Nombre total de lignes") }} :</span>
+                <span id="list_items_total">{% if not args %}0{% endif %}</span>
+            </div>
+            <div>
+                <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <form class="row justify-content-center mt-3" id="doctors-list">
+                <table id="table_items" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>{{ _("serial") }}</th>
+                            <th class="text-center">{{ _("Action") }}</th>
+                            <th class="text-center cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-center cursor-act">{{ _("Fabricant") }}</th>
+                            <th class="text-center cursor-act">{{ _("Modèle") }}</th>
+                            <th class="text-center cursor-act">{{ _("Localisation") }}</th>
+                            <th class="text-center cursor-act">{{ _("Section") }}</th>
+                            <th class="text-center cursor-act">{{ _("Fonction") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_items">
+                    </tbody>
+                </table>
+            </form>
+
+            <div>
+                <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <div class="mb-5 mt-3">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter un équipement") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_items = {{ args|safe }} ;
+var p_step     = 20 ;
+var p_cur      = 1 ;
+var p_max      = Math.ceil( data_items.length / p_step ) ;
+
+function display_item( num_page )
+{
+let res = ''
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+    $("#tbody_items").empty() ;
+
+{% if not args %}
+res = '<tr>' +
+      '<td colspan="7">' +
+      '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
+{% else %}
+let data_len = data_items.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = '' ;
+
+$("#list_items_total").html( data_len ) ;
+
+    for( i = i_start; i < i_stop; i++ )
+    {
+    let menu_act = '<nav class="">' +
+                   '<ul class="navbar-nav">' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-equipment/' + data_items[i].id_data + '">{{ _("Editer") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')">{{ _("Supprimer") }}</a>';   
+        
+    menu_act += '</div></ul></nav>' ;
+
+    res += '<tr><td hidden><div>' + data_items[i].id_data + '</div></td>' +
+           '<td><div>' + menu_act + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].name + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].maker + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].model + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].location + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].section + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].funct + '</div></td></tr>' ;
+    }
+{% endif %}
+
+    $("#tbody_items").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
+
+    $("#table_items").tablesorter() ;  // sort only data on screen
+}
+
+function delete_item(id_item)
+{
+var id_owner = {{ session['user_id_group']|safe}} ;
+
+    if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
+    {
+    var param = '{ "id_owner":' + id_owner + ', ' +
+                  '"id_user":' + id_user + '}' ;
+
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/quality/equipment/det/" + id_item,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
+
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE item") ;
+            alert("{{ _("Erreur lors de la suppression") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false ; 
+}
+
+function add_item()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-equipment/0";
+}
+
+function export_data()
+{
+var param = '{}' ;
+
+    // popup wait
+    $( "#dial_wait" ).modal( "show" ) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/quality/equipment/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+
+        let filename = "equipment_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+}
+
+$( document ).ready( function()
+{
+display_item( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

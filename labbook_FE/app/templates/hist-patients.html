@@ -1,0 +1,308 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Liste patients") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste patients") }}</span></h2>
+            <form autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Rechercher") }}</h3>
+                </div>
+                <div class="panel-filter row mt-3">
+                    <div class="col-5">
+                        <div class="form-group row">
+                            <label for="code" class="col-form-label col-3 text-right mt-2 ">{{ _("Code") }}</label>
+                            <div>					
+                                <input type="text" name="code" id="code" value="" class="form-control cnx_trigger">			
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="code_lab" class="col-form-label col-3 text-right mt-2 ">{{ _("Code labo.") }}</label>
+                            <div>					
+                                <input type="text" name="code_lab" id="code_lab" value="" class="form-control cnx_trigger">			
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="lastname" class="col-form-label col-3 text-right mt-2 ">{{ _("Nom") }}</label>
+                            <div>					
+                                <input type="text" name="lastname" id="lastname" value="" class="form-control cnx_trigger">			
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="firstname" class="col-form-label col-3 text-right mt-2 ">{{ _("Prénom") }}</label>
+                            <div class="">					
+                                <input type="text" name="firstname" id="firstname" value="" class="form-control cnx_trigger">			
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="float-right">
+                            <button type="button" onclick="filter_patients();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div>
+                <span>{{ _("Nombre total de lignes") }} :</span>
+                <span id="list_patients_total">{% if not args %}0{% endif %}</span>
+            </div>
+            <div>
+                <span><a class="link" id="first_patient" onclick="display_patient(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_patient" onclick="display_patient(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_patient" onclick="display_patient(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_patient" onclick="display_patient(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <form class="row justify-content-center mt-3" id="patients-list">
+                <table id="table_patients" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>{{ _("serial") }}</th>
+                            <th class="text-center">{{ _("Action") }}</th>
+                            <th class="text-center cursor-act">{{ _("Code") }}</th>
+                            <th class="text-center cursor-act">{{ _("Code labo.") }}</th>
+                            <th class="text-center cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-center cursor-act">{{ _("Prénom") }}</th>
+                            <th class="text-center cursor-act">{{ _("DDN") }}</th>
+                            <th class="text-center cursor-act">{{ _("Sexe") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_patients">
+                    </tbody>
+                </table>
+            </form>
+
+            <div>
+                <span><a class="link" id="first_patient" onclick="display_patient(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_patient" onclick="display_patient(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_patient" onclick="display_patient(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_patient" onclick="display_patient(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <div class="mb-5 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Quitter") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_patients = {{ args|safe }} ;
+var p_step     = 20 ;
+var p_cur      = 1 ;
+var p_max      = Math.ceil( data_patients.length / p_step ) ;
+
+console.log("DEBUG p_max="+p_max);
+
+function filter_patients()
+{
+let code      = $("#code").val()      ;
+let code_lab  = $("#code_lab").val()  ;
+let lastname  = $("#lastname").val()  ;
+let firstname = $("#firstname").val() ;
+
+let param = '{ "code":"' + code + '", ' +
+            '"code_lab":"' + code + '", ' +
+            '"lastname":"' + lastname  + '", ' +
+            '"firstname":"' + firstname  + '"}' ;
+
+    // popup wait
+    $( "#dial-wait" ).modal( "show" ) ;
+
+    $.ajax( {
+        type: "POST",
+        url: "/services/patient/list",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            data_patients = data ;
+
+            p_max = Math.ceil( data.length / p_step ) ;
+
+            display_patient( 1 ) ;
+
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+            },
+        error: function(data)
+            {
+            setTimeout(function()
+                 {
+                 $('#dial-wait').modal("hide") ;
+                 }, 1000) ;
+
+            console.log("ERROR patient list") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération de la liste des patients") }}") ;
+            }
+    } ) ;
+}
+
+function display_patient( num_page )
+{
+let res = ''
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+    $("#tbody_patients").empty() ;
+
+{% if not args %}
+res = '<tr>' +
+      '<td colspan="8">' +
+      '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
+{% else %}
+let data_len = data_patients.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = '' ;
+
+$("#list_patients_total").html( data_len ) ;
+
+    for( i = i_start; i < i_stop; i++ )
+    {
+    let menu_act = '<nav class="">' +
+                   '<ul class="navbar-nav">' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-hist-patient/' + data_patients[i].id_data + '">{{ _("Historique") }}</a>' ;   
+        
+    menu_act += '</div></ul></nav>' ;
+
+    res += '<tr><td hidden><div>' + data_patients[i].id_data + '</div></td>' +
+           '<td><div>' + menu_act + '</div></td>' +
+           '<td><div class="text-center">' + data_patients[i].code + '</div></td>' +
+           '<td><div class="text-center">' + data_patients[i].code_lab + '</div></td>' +
+           '<td><div class="text-center">' + data_patients[i].lastname + '</div></td>' +
+           '<td><div class="text-center">' + data_patients[i].firstname + '</div></td>' +
+           '<td><div class="text-center">' + data_patients[i].birth + '</div></td>' +
+           '<td><div class="text-center">' + sex_pat(data_patients[i].sex) + '</div></td></tr>' ;
+    }
+{% endif %}
+
+    $("#tbody_patients").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
+
+    $("#table_patients").tablesorter() ;  // sort only data on screen
+}
+
+function sex_pat(num)
+{
+let sex = "{{ _("Inconnu") }}" ;
+
+    if (num == 1)
+    sex = "{{ _("Masculin") }}" ;
+    else if (num == 2)
+    sex = "{{ _("Féminin") }}" ;
+
+return sex ;
+}
+
+function export_data()
+{
+let code      = $("#code").val()      ;
+let code_lab  = $("#code_lab").val()  ;
+let lastname  = $("#lastname").val()  ;
+let firstname = $("#firstname").val() ;
+
+let param = '{ "code":"' + code + '", ' +
+            '"code_lab":"' + code + '", ' +
+            '"lastname":"' + lastname  + '", ' +
+            '"firstname":"' + firstname  + '"}' ;
+
+    // popup wait
+    $( "#dial_wait" ).modal( "show" ) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/patient/list/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+
+        let filename = "patients_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+$( document ).ready( function()
+{
+display_patient( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

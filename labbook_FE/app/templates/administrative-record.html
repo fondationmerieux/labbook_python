@@ -2,417 +2,240 @@
 
 {% block head %}
 {{ super() }}
-    <title>Dossier administratif</title>
+    <title>{{ _("Dossier administratif") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title form-patient_externe"><span>Dossier administratif</span></h2>
-            <form id="form_main" class="vzn-form form-horizontal row" action="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/{{ args['record']['id_data'] }}" method="POST" enctype="multipart/form-data" autocomplete="off">
-                <div class="statictext">
-                    <span>Dossier :</span> 
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+                <span>{{ _("Dossier administratif") }}</span>
+            </h2>
+            <form autocomplete="off">
+                <div class="row ml-3">
+                    <span>{{ _("Dossier") }} :&nbsp;</span> 
+                    <span class="rec-num" id="num_rec"></span>
                 </div>
-                <div class="form-control-static filed readonly-field div-inline label-rightMargin" id="num-dos-ro">
-                    <span id="num_rec"></span>
+                <!-- Patient -->
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Identité") }}</h3>
                 </div>
-                <div id="pat-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Identité</h3></div>
-                    <div class="panel-body " id="pat-group-group_body">
-                        <div class="row">
-                            <div id="pat-group" class="col-xs-12">
-                                <div class="form-group form-inline col-xs-12">
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="pat-code-ro" style="">
-                                        <span>{% if args['patient'] %}{{ args['patient']['code_patient'] }}{% endif %}</span>
-                                    </div>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="anon-code-ro" style="">
-                                        <span>{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
-                                    </div>
-                                </div>
-                                <div class="panel panel-2 panel-primary" style="transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 1;">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="form-inline col-xs-12">
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
-                                                    <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
-                                                </div>
-                                            </div>
+                <div class="row ml-3">
+                    <div class="col-12 mt-3">
+                        {% if args['patient'] and args['patient']['code_patient'] %}
+                        <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
+                        {% endif %}
+                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
+                    </div>
+                    <div class="col-12 mt-2">
+                        {% if args['patient'] and args['patient']['anonyme'] != 4 %}
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
+                        {% else %}
+                        <span class="font-info">{{ _("Patient anonyme") }}.</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 mt-2">
+                        <span>{{ _("Né(e) le") }}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}{{ _("années") }}
+                                                {% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}
+                                                {% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}
+                                                {% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
+                                                {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
+                                                {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
+                    </div>
+                </div>
+
+                <!-- Prescription -->
+                <div class="panel-heading row mt-2">
+                    <h3 class="panel-title">{{ _("Prescription") }}</h3>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-12 mt-3">
+                        <span>{{ _("Date de réception du dossier") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['date_dos']|date_format }}</span>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <span>{{ _("Date de prescription") }} *</span>
+                        <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <span>{{ _("Prescripteur") }}</span>
+                        <span class="font-info">
+                        {% if args['doctor'] %}
+                            {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}
+                            {% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
+                        {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <span>{{ _("Colis") }}</span>
+                        {% if args['record']['colis'] == 4 %}
+                        <span class="font-info">{{ _("Oui") }}</span><br />
+                        <span>{{ _("Identification du colis") }}</span>
+                        <span class="font-info">{{ args['record']['id_colis'] }}</span><br />
+                        <span>{{ _("Date de réception du colis") }}</span>
+                        <span class="font-info">{{ args['record']['date_reception_colis']|date_format }}</span>
+                        {% else %}
+                        <span class="font-info">{{ _("Non") }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+
+            <!-- Analyzes -->
+            <div class="panel-heading row mt-2">
+                <h3 class="panel-title">{{ _("Analyses et actes de prélèvement") }}</h3>
+            </div>
+            <div class="row ml-3 mt-3">
+                <span class="font-info">{{ _("Analyses") }}</span>
+            </div>
+            <form class="row justify-content-center mt-3">
+                <table id="table_analysis" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>serial</th>
+                            <th class="text-center cursor-act">{{ _("Code") }}</th>
+                            <th class="text-center cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-center cursor-act">{{ _("Urgent") }}</th>
+                            <th class="text-center cursor-act">{{ _("Demandée") }}</th>
+                            <th class="text-center cursor-act">{{ _("Cote") }}</th>
+                            <th class="text-center cursor-act">{{ _("Prix") }}</th>
+                    </thead>
+                    <tbody id="tbody_analysis"></tbody>
+                </table>
+            </form>
+            {% if type_req == 'E' %}
+            <div class="row ml-3 mt-3">
+                <span class="font-info">{{ _("Actes de prélèvement") }}</span>
+            </div>
+            <form class="row justify-content-center mt-3">
+                <table id="table_sample" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>serial</th>
+                            <th class="text-center cursor-act">{{ _("Code") }}</th>
+                            <th class="text-center cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-center cursor-act">{{ _("Demandée") }}</th>
+                            <th class="text-center cursor-act">{{ _("Cote") }}</th>
+                            <th class="text-center cursor-act">{{ _("Prix") }}</th>
+                    </thead>
+                    <tbody id="tbody_sample"></tbody>
+                </table>
+            </form>
+            {% endif %}
+
+            <!-- Reports -->
+            <div class="panel-heading row mt-2">
+                <h3 class="panel-title">{{ _("Compte-rendus") }}</h3>
+            </div>
+            <form class="row mt-3">
+                <table class="table table-striped table-hover col-4 table-lbk">
+                    <thead>
+                        <tr>
+                            <th hidden>serial</th>
+                            <th class="text-center">{{ _("Action") }}</th>
+                            <th class="text-center">{{ _("Date") }}</th>
+                    </thead>
+                    <tbody id="tbody_report"></tbody>
+                </table>
+            </form>
+
+            <form>
+                <!-- Billing -->
+                <div class="panel-heading row mt-2">
+                    <h3 class="panel-title">{{ _("Facturation") }}</h3>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-12 mt-3">
+                        <span>{{ _("Prix total") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['prix'] }}</span>
+                    </div>
+                    <div class="col-4 mt-3">
+                        <span>{{ _("Remise sur la facturation") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['remise'] }}</span>
+                    </div>
+                    <div class="col-4 mt-3">
+                        <span>{{ _("Pourcentage de la remise") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['remise_pourcent'] }}</span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <span>{{ _("Pourcentage assurance maladie / mutuelle") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['assu_pourcent'] }}</span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <span>{{ _("Reste à payer") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['a_payer'] }}</span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <span>{{ _("Numéro de quittance") }}&nbsp;</span>
+                        <span class="font-info">{{ args['record']['num_quittance'] }}</span>
+                    </div>
+                </div>
+
+                <!-- Comments --> 
+                <div class="panel-heading row mt-2">
+                    <h3 class="panel-title">{{ _("Renseignements / Informations complémentaires") }}</h3>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-12 mt-3">
+                        <span class="font-info">{{ args['record']['rc'] }}</span>
+                    </div>
+                </div>
+
+                <!-- Files -->
+                <div class="panel-heading row mt-2">
+                    <h3 class="panel-title">{{ _("Valise de documents") }}</h3>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-12 mt-3">
+                        <div class="form-group">
+                            <div class="text-left upload-container">
+                                <div>
+                                    <div>
+                                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                            <input name="file" type="file" style="margin-bottom:4px"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel panel-2 panel-primary" style="display: none; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 0;">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="form-inline col-xs-12">
-                                                <div class="statictext"><span>Patient anonyme.</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-2 panel-primary" style="">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="form-inline col-xs-12">
-                                                <div class="statictext"><span>Né(e) le</span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
-                                                    <span>{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
-                                                </div>
-                                                <div class="statictext"><span>-</span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
-                                                    <span>{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}</span>
-                                                </div>
-                                                <div class="statictext"><span></span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
-                                                    <span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}Années
-                                                          {% elif args['patient']['unite'] == 1036 %}Mois
-                                                          {% elif args['patient']['unite'] == 1035 %}Semaines
-                                                          {% elif args['patient']['unite'] == 1034 %}Jours{% endif %}{% endif %}</span>
-                                                </div>
-                                                <div class="statictext"><span>.</span></div>
-                                                <div class="form-control-static field readonly-field div-inline label-rightMargin" style="">
-                                                    <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}Masculin
-                                                          {% elif args['patient']['sexe'] == 2 %}Féminin
-                                                          {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}{% endif %}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div></div>
+                                <div></div>
+                                <table class=table-responsive">
+                                    <thead>
+                                        <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                                    </thead>
+                                    <tbody id="tbody_file"></tbody>
+                                </table>
                             </div>
                         </div>
+                        <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file({{ args['record']['id_data'] }});">
                     </div>
                 </div>
 
-                <div id="presc-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Prescription</h3>
-                    </div>
-                    <div class="panel-body " id="presc-group-group_body">
-                        <div class="row">
-                            <div id="presc-group" class="col-xs-12">
-                                <div class="form-group">
-                                    <label class="mandatory control-label col-xs-3" style="">
-                                        <span data-field="date_dos">Date de réception du dossier *</span>
-                                    </label>
-                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>{{ args['record']['date_dos']|date_format }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="mandatory control-label col-xs-3" style="">
-                                        <span data-field="date_prescription">Date de prescription *</span>
-                                    </label>
-                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>{{ args['record']['date_prescription']|date_format }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="prat-search">
-                                    <div class="statictext control-label col-xs-3">
-                                        <span>Prescripteur</span>
-                                    </div>
-                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>
-                                        {% if args['doctor'] %}
-                                            {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}{% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
-                                        {% endif %}
-                                        </span>
-                                    </div>
-                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-xs-3" style=""><span data-field="colis">Colis</span></label>
-                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                        <span>{% if args['record']['colis'] == 4 %}{{ args['record']['id_colis'] }} {{ args['record']['date_reception_colis']|date_format }}{% else %}Non{% endif %}</span>
-                                    </div>
-                                </div>
-                                <div id="colis-group" class="panel panel-2 panel-primary" style="display: none; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s; opacity: 0;">
-                                    <div class="panel-body " id="colis-group_body">
-                                        <div class="row">
-                                            <div id="colis" class="col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-3" style="">
-                                                        <span data-field="id_colis">Identification du colis</span>
-                                                    </label>
-                                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-3" style="">
-                                                        <span data-field="date_reception_colis">Date de réception du colis</span>
-                                                    </label>
-                                                    <div class="form-control-static field readonly-field col-lg-6 col-md-6 col-sm-6" style="">
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="row ml-3 mt-4">
+                    <div class="col-12">
+                        <div class="float-left">
+                            <input type="button" onclick="return_home();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
+                        <div class="float-right">
+                            <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Imprimer la facture') }}">
+                            <input type="button" onclick="print_barcode();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Code barre') }}">
+                        </div> 
                     </div>
                 </div>
-
-                <div id="analyse-confirm-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Analyses et actes de prélèvement</h3></div>
-                    <div class="panel-body " id="analyse-confirm-group-group_body">
-                        <div class="row">
-                            <div id="analyse-confirm-group" class="col-xs-12">
-                                <div class="form-group">
-                                    <div class="statictext col-md-1 title"><span>Analyses</span></div>
-                                </div>
-                                <div class="listing table-responsive yui-dt" id="listing_analyse">
-                                    <div class="yui-dt-mask" style="display: none;"></div>
-                                    <table summary="" id="yuievtautoid-5">
-                                        <colgroup><col><col><col><col><col><col><col></colgroup>
-                                        <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th style="display:none;">
-                                                    <div><span>id_data</span></div>
-                                                </th>
-                                                <th id="yui-dt96-th-code" rowspan="1" colspan="1" class="string yui-dt96-col-code yui-dt-col-code yui-dt-sortable">
-                                                    <div id="yui-dt96-th-code-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label" id="yui-gen143">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen142">Code</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt96-th-nom" rowspan="1" colspan="1" class="string yui-dt96-col-nom yui-dt-col-nom yui-dt-sortable">
-                                                    <div id="yui-dt96-th-nom-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label" id="yui-gen133">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable" id="yui-gen132">Nom</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt96-th-urgent" rowspan="1" colspan="1" class="fkey_dico yui-dt96-col-urgent yui-dt-col-urgent yui-dt-sortable">
-                                                    <div id="yui-dt96-th-urgent-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Urgent</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt96-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt96-col-demande yui-dt-col-demande yui-dt-sortable">
-                                                    <div id="yui-dt96-th-demande-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt96-th-cote" rowspan="1" colspan="1" class="string yui-dt96-col-cote yui-dt-col-cote yui-dt-sortable">
-                                                    <div id="yui-dt96-th-cote-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">cote</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt96-th-prix" rowspan="1" colspan="1" class="float yui-dt96-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-last">
-                                                    <div id="yui-dt96-th-prix-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody_analysis" style=""></tbody>
-                                    </table>
-                                </div>
-                                <div class="clear"></div>
-                                {% if type_req == 'E' %}
-                                <div class="form-group">
-                                    <div class="statictext col-md-5 title"><span>Actes de prélèvement</span></div>
-                                </div>
-                                <div class="listing table-responsive yui-dt" id="listing_pb">
-                                    <div class="yui-dt-mask" style="display: none;"></div>
-                                    <table summary="" id="yuievtautoid-4">
-                                        <colgroup><col><col><col><col><col><col></colgroup>
-                                        <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th  style="display:none;">
-                                                    <div>
-                                                        <span>id_data</span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt108-th-code" rowspan="1" colspan="1" class="string yui-dt108-col-code yui-dt-col-code yui-dt-sortable">
-                                                    <div id="yui-dt108-th-code-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Code</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt108-th-nom" rowspan="1" colspan="1" class="string yui-dt108-col-nom yui-dt-col-nom yui-dt-sortable">
-                                                    <div id="yui-dt108-th-nom-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Nom</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt108-th-demande" rowspan="1" colspan="1" class="fkey_dico yui-dt108-col-demande yui-dt-col-demande yui-dt-sortable">
-                                                    <div id="yui-dt108-th-demande-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Demandée</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt108-th-cote" rowspan="1" colspan="1" class="string yui-dt108-col-cote yui-dt-col-cote yui-dt-sortable">
-                                                    <div id="yui-dt108-th-cote-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">cote</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt108-th-prix" rowspan="1" colspan="1" class="float yui-dt108-col-prix yui-dt-col-prix yui-dt-sortable yui-dt-last">
-                                                    <div id="yui-dt108-th-prix-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Prix</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody_sample"></tbody>
-                                    </table>
-                                </div>
-                                <div class="clear"></div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Compte-rendus</h3></div>
-                    <div class="panel-body ">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="listing table-responsive yui-dt" id="listing_cr">
-                                    <div class="yui-dt-mask" style="display: none;"></div>
-                                    <table summary="" id="yuievtautoid-3">
-                                        <colgroup><col><col><col></colgroup>
-                                        <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt118-th-id_data" rowspan="1" colspan="1" class="yui-dt118-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt118-th-id_data-liner" class="yui-dt-liner"><span class="yui-dt-label">id_data</span></div>
-                                                </th>
-                                                <th id="yui-dt118-th-action" rowspan="1" colspan="1" class="yui-dt118-col-action yui-dt-col-action">
-                                                    <div id="yui-dt118-th-action-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label" id="yui-gen129">Action</span>
-                                                    </div>
-                                                </th>
-                                                <th id="yui-dt118-th-date" rowspan="1" colspan="1" class="string yui-dt118-col-date yui-dt-col-date yui-dt-sortable yui-dt-last">
-                                                    <div id="yui-dt118-th-date-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a title="Click to sort ascending" class="yui-dt-sortable">Date</a>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <caption>listing_cr</caption>
-                                        <tbody id="tbody_report">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="facturation-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Facturation</h3></div>
-                    <div class="panel-body " id="facturation-group-group_body">
-                        <div class="row">
-                            <div id="facturation-group" class="col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="prix">Prix total</span></label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style="">
-                                        <span>{{ args['record']['prix'] }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="remise">Remise sur la facturation</span></label>
-                                    <div class="form-control-static field readonly-field col-lg-2" style=""><span>{{ args['record']['remise'] }}</span></div>
-                                    <label class="control-label col-lg-2" style=""><span data-field="remise_pourcent">Pourcentage de la remise</span></label>
-                                    <div class="form-control-static field readonly-field col-md-3" style=""><span>{{ args['record']['remise_pourcent'] }}</span></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-lg-3" style="">
-                                        <span data-field="assu_pourcent">Pourcentage assurance maladie / mutuelle</span>
-                                    </label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span>{{ args['record']['assu_pourcent'] }}</span></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="a_payer">Reste à payer</span></label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" style=""><span>{{ args['record']['a_payer'] }}</span></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-lg-3" style=""><span data-field="num_quittance">Numéro de quittance</span></label>
-                                    <div class="form-control-static field readonly-field col-md-4 col-lg-3" id="field_a_payer" style=""><span>{{ args['record']['num_quittance'] }}</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="rc-confirm-group-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Renseignements / Informations complémentaires</h3></div>
-                    <div class="panel-body " id="rc-confirm-group-group_body">
-                        <div class="row">
-                            <div id="rc-confirm-group" class="col-xs-12">
-                                <div class="form-control-static field readonly-field col-md-11" style=""><span>{{ args['record']['rc'] }}</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Valise de documents</h3></div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <div class="vzn-box text-left upload-container">
-                                        <div class="yui-dt">
-                                            <div>
-                                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
-                                                    <input name="file" type="file" style="margin-bottom:4px"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div></div>
-                                        <div></div>
-                                        <div class="yui-dt table-responsive">
-                                            <table>
-                                                <thead>
-                                                    <tr><th><div class="yui-dt-liner">Fichier</div></th><th><div class="yui-dt-liner">Action</div></th></tr>
-                                                </thead>
-                                                <tbody id="tbody_file"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="button" class="btn btn-default" value="Enregistrer" onclick="upload_file({{ args['record']['id_data'] }});">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group button" id="button">
-                    <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" id="print" class="btn btn-primary" value="{{ _('Imprimer la facture') }}">
-                    <input type="button" onclick="print_barcode();" id="bar_code" class="btn btn-primary" value="{{ _('Code barre') }}">
-                    <input type="button" onclick="return_home();" id="exit" class="btn btn-default" value="{{ _('Quitter') }}">
-                </div>
-
-            </form><!-- close form_main -->
+            </form><!-- close form -->
             
-        </div>
-    </div>
-</div><!-- ferme le corps -->
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
 {% endblock %}
 
 {% block add_script %}
@@ -443,12 +266,12 @@ let rate   = obj.cote_unite + obj.cote_valeur ;
     dem = "Non" ;
 
 tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-tmp_tr += create_td("", obj.code, "", "") ;
+tmp_tr += create_td("", obj.code, "text-center", "") ;
 tmp_tr += create_td("", obj.nom, "", "") ;
-tmp_tr += create_td("", urg, "", "") ;
-tmp_tr += create_td("", dem, "", "") ;
-tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
-tmp_tr += create_td("", obj.prix, "", "") ;
+tmp_tr += create_td("", urg, "text-center", "") ;
+tmp_tr += create_td("", dem, "text-center", "") ;
+tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
+tmp_tr += create_td("", obj.prix, "text-center", "") ;
 
 tmp_tr += '</tr>' ;
 
@@ -475,11 +298,11 @@ let obj = data ;
         dem = "Non" ;
 
     tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-    tmp_tr += create_td("", obj.code, "", "") ;
+    tmp_tr += create_td("", obj.code, "text-center", "") ;
     tmp_tr += create_td("", obj.nom, "", "") ;
-    tmp_tr += create_td("", dem, "", "") ;
-    tmp_tr += create_td("", format_rate(rate, obj.prix), "", "") ;
-    tmp_tr += create_td("", obj.prix, "", "") ;
+    tmp_tr += create_td("", dem, "text-center", "") ;
+    tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
+    tmp_tr += create_td("", obj.prix, "text-center", "") ;
 
     tmp_tr += '</tr>' ;
 
@@ -497,14 +320,13 @@ let obj = data ;
 
     if ( obj.id_data > 0 )
     {
-    let menu_act = '<ul class="menu-act-drop">' +
-                   '<li><a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj.file + '\', ' + num_rec_y + ');">Télécharger</a></li></ul>' ;
+    let menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj.file + '\', \'REC\', ' + num_rec_y + ');">Télécharger</a>' ;
 
     let tmp_tr = '<tr style="">' ;
 
-    tmp_tr += '<td class="yui-dt-hidden"><div class="yui-dt-liner">' + obj.id_data + '</div></td>' ;
-    tmp_tr += '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' ;
-    tmp_tr += '<td><div class="yui-dt-liner">' + obj.date + '</div></td>' ;
+    tmp_tr += '<td hidden>' + obj.id_data + '</td>' ;
+    tmp_tr += '<td class="text-center">' + menu_act + '</td>' ;
+    tmp_tr += '<td class="text-center">' + obj.date + '</td>' ;
     tmp_tr += '</tr>' ;
 
     tr_report += tmp_tr ;
@@ -522,8 +344,8 @@ let obj = data ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div class="yui-dt-liner">' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div class="yui-dt-liner"><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'REC\', ' + obj.id_data + ');">Télécharger</a>';
     tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
     tmp_tr += '</tr>' ;
 
@@ -569,7 +391,7 @@ $("#tbody_file").empty() ;
 
     if (data_reports.length < 1)
     {
-    let tr_report = '<tr><td colspan="3"><div class="yui-dt-liner">Aucune donnéee à afficher</div></td></tr>' ;
+    let tr_report = '<tr><td colspan="3"><div>Aucune donnéee à afficher</div></td></tr>' ;
 
     $("#tbody_report").append(tr_report) ;
     }
@@ -585,10 +407,13 @@ $("#tbody_file").empty() ;
 
     if (data_files.length < 1)
     {
-    let tr_file = '<tr><td colspan="2"><div class="yui-dt-liner">Aucun fichier déposé</div></td></tr>' ;
+    let tr_file = '<tr><td colspan="2"><div>Aucun fichier déposé</div></td></tr>' ;
 
     $("#tbody_file").append(tr_file) ;
     }
+
+    $("#table_analysis").tablesorter() ;  // sort only data on screen
+    $("#table_sample").tablesorter()   ;  // sort only data on screen
 }
 
 function create_td(id, val, cls, style)
@@ -613,7 +438,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file-rec/" + id_rec,
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/REC/" + id_rec,
         dataType: 'json',
         contentType: false,
         processData: false,
@@ -632,12 +457,6 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     
 }
 
-function download_file( type, filename, ref )
-{
-// TODO check user role rights ?
-window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + ref ;
-}
-
 function delete_file( id_file )
 {
 // TODO check user role rights
@@ -646,7 +465,7 @@ function delete_file( id_file )
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/file/document/" + id_file,
+            url: "{{ session['server_ext'] }}/services/file/document/REC/" + id_file,
             success: function(ret)
             {
             location.reload() ;
@@ -671,7 +490,7 @@ function print_bill( id_rec )
         url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
         success: function(ret)
         {
-        download_file( "PY", "facture_" + num_rec_y + ".pdf", 0 ) ;
+        download_file( "PY", "facture_" + num_rec_y + ".pdf", "GEN", 0 ) ;
         },
         error: function(ret)
         {
@@ -689,7 +508,7 @@ function print_barcode()
         url: "{{ session['server_ext'] }}/services/pdf/barcode/num/" + num_rec_y,
         success: function(ret)
         {
-        download_file( "PY", "etiquette_" + num_rec_y + ".png", 0 ) ;
+        download_file( "PY", "barcode_" + num_rec_y + ".pdf", "GEN", 0 ) ;
         },
         error: function(ret)
         {
@@ -701,7 +520,7 @@ function print_barcode()
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
 }
 
 $( document ).ready( function()

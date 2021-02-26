@@ -2,187 +2,201 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Nouvel utilisateur") }}</title>
+    <title>{{ _("Utilisateur") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Nouvel utilisateur") }}</span></h2>
-            <form id="form_main" autocomplete="off">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Utilisateur") }}</span></h2>
+            <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
                 </div>
                 <div class="form-group row mt-3">
-                    <label for="login" class="form-control-label col-md-3 text-right mt-2">{{ _("Identifiant") }}*</label>
+                    <label for="login" class="col-form-label col-3 text-right mt-2">{{ _("Identifiant") }}*</label>
                     <div>					
-                        <input type="text" name="login" id="login" value="" class="form-control">			
+                        <input type="text" name="login" id="login" value="{{ args['username'] }}" class="form-control">			
                     </div>
                 </div>
+                {% if args['user_id'] == 0 %}
                 <div class="form-group row">
-                    <label for="pwd" class="form-control-label col-md-3 text-right mt-2">{{ _("Mot de passe") }}*</label>
+                    <label for="pwd" class="col-form-label col-3 text-right mt-2">{{ _("Mot de passe") }}*</label>
                     <div>					
                         <input type="password" name="pwd" id="pwd" value="" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="re-pwd" class="form-control-label col-md-3 text-right mt-2">{{ _("Confirmation du mot de passe") }}*</label>
+                    <label for="pwd2" class="col-form-label col-3 text-right mt-2">{{ _("Confirmation du mot de passe") }}*</label>
                     <div>					
-                        <input type="password" name="re-pwd" id="re-pwd" value="" class="form-control">			
+                        <input type="password" name="pwd2" id="pwd2" value="" class="form-control">			
+                    </div>
+                </div>
+                {% endif %}
+                <div class="form-group row">
+                    <label for="cps" class="col-form-label col-3 text-right mt-2">{{ _("CPS") }}</label>
+                    <div>					
+                        <input type="text" name="cps" id="cps" value="{{ args['cps'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="cps" class="form-control-label col-md-3 text-right optional mt-2">{{ _("CPS") }}</label>
+                    <label for="rpps" class="col-form-label col-3 text-right mt-2">{{ _("Numéro RPPS") }}</label>
                     <div>					
-                        <input type="text" name="cps" id="cps" value="" class="form-control">			
+                        <input type="text" name="rpps" id="rpps" value="{{ args['rpps'] }}" class="form-control">			
                     </div>
                 </div>
+                {% if args['user_id'] > 0 %}
                 <div class="form-group row">
-                    <label for="rpps" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Numéro RPPS") }}</label>
-                    <div>					
-                        <input type="text" name="rpps" id="rpps" value="" class="form-control">			
-                    </div>
+                    <label class="col-form-label col-3 text-right mt-2">{{ _("Statut") }}</label>
+                    <label class="col-form-label text-right mt-2 mr-3">
+                        <input type="radio" name="stat" value="29" {% if args['stat'] == 29 %} checked="checked" {% endif %}>&nbsp;{{ _("Activé") }}</input>
+                    </label>
+                    <label class="col-form-label text-right mt-2 mr-3">
+                        <input type="radio" name="stat" value="30" {% if args['stat'] == 30 or args['stat'] == 31 %} checked="checked" {% endif %}>&nbsp;{{ _("Désactivé") }}</input>
+                    </label>
                 </div>
+                {% endif %}
 
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Identité") }}</h3>
                 </div>
                 <div class="form-group row mt-3">
-                    <label for="firstname" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <label for="firstname" class="col-form-label col-3 text-right mt-2">{{ _("Prénom") }}</label>
                     <div class="">					
-                        <input type="firstname" name="firstname" id="firstname" value="" class="form-control">			
+                        <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="lastname" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <label for="lastname" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
                     <div>					
-                        <input type="text" name="lastname" id="lastname" value="" class="form-control">			
+                        <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="form-control-label col-md-3 text-right mt-2">{{ _("Langues *") }}</label>
-                    <label class="form-control-label text-right mt-2 mr-3">
-                        <input type="radio" name="lang_user" value="FR" {% if args['lang_user'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Français (FR)") }}</input>
+                    <label class="col-form-label col-3 text-right mt-2">{{ _("Langues *") }}</label>
+                    <label class="col-form-label text-right mt-2 mr-3">
+                        <input type="radio" name="lang" value="35" {% if args['lang'] == 35 %} checked="checked" {% endif %}>&nbsp;{{ _("Français (FR)") }}</input>
                     </label>
-                    <label class="form-control-label text-right mt-2 mr-3">
-                        <input type="radio" name="lang_user" value="UK" {% if args['lang_user'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("English (UK)") }}</input>
+                    <label class="col-form-label text-right mt-2 mr-3">
+                        <input type="radio" name="lang" value="34" {% if args['lang'] == 34 %} checked="checked" {% endif %}>&nbsp;{{ _("English (UK)") }}</input>
                     </label>
-                    <label class="form-control-label text-right mt-2">
-                        <input type="radio" name="lang_user" value="US" {% if args['lang_user'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("English (US)") }}</input>
+                    <label class="col-form-label text-right mt-2">
+                        <input type="radio" name="lang" value="75" {% if args['lang'] == 75 %} checked="checked" {% endif %}>&nbsp;{{ _("English (US)") }}</input>
                     </label>                    
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <label for="email" class="col-form-label col-3 text-right mt-2">{{ _("Adresse email") }}</label>
                     <div>					
-                        <input type="email" name="email" id="email" value="" class="form-control">			
+                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="title" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Titre") }}</label>
+                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Titre") }}</label>
                     <div>					
                         <select id="title" name="title" class="form-control">
-                            <option value="0"></option>  
-                            <option value="260">{{ _("Monsieur") }}</option>
-                            <option value="261">{{ _("Madame") }}</option>
-                            <option value="262">{{ _("Mademoiselle") }}</option>
-                            <option value="263">{{ _("Docteur") }}</option>
-                            <option value="264">{{ _("Professeur") }}</option>
+                            <option value="0" {% if args['title'] == 0  %} selected {% endif %}></option>  
+                            <option value="260" {% if args['title'] == 260 %} selected {% endif %}>{{ _("Monsieur") }}</option>
+                            <option value="261" {% if args['title'] == 261 %} selected {% endif %}>{{ _("Madame") }}</option>
+                            <option value="262" {% if args['title'] == 262 %} selected {% endif %}>{{ _("Mademoiselle") }}</option>
+                            <option value="263" {% if args['title'] == 263 %} selected {% endif %}>{{ _("Docteur") }}</option>
+                            <option value="264" {% if args['title'] == 264 %} selected {% endif %}>{{ _("Professeur") }}</option>
                         </select>			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="initial" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Initiales") }}</label>
+                    <label for="initial" class="col-form-label col-3 text-right mt-2">{{ _("Initiales") }}</label>
                     <div>					
-                        <input type="text" name="initial" id="initial" value="" class="form-control">			
+                        <input type="text" name="initial" id="initial" value="{{ args['initial'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="birth" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Date de naissance") }}</label>
+                    <label for="birth" class="col-form-label col-3 text-right mt-2">{{ _("Date de naissance") }}</label>
                     <div>					
-                        <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="" name="birth" style="color: #888;">
+                        <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="{{ args['birth'] }}" name="birth" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="address" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <label for="address" class="col-form-label col-3 text-right mt-2">{{ _("Adresse") }}</label>
                     <div>					
-                        <textarea id="address" name="address" rows="4" cols="50" class="form-control"></textarea>
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['address'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="phone" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Numéro de téléphone") }}</label>
+                    <label for="phone" class="col-form-label col-3 text-right mt-2">{{ _("Numéro de téléphone") }}</label>
                     <div>					
-                        <input type="text" name="phone" id="phone" value="" class="form-control">			
+                        <input type="text" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control">			
                     </div>
                 </div>
                  <div class="form-group row">
-                    <label for="arrived" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
+                    <label for="arrived" class="col-form-label col-3 text-right mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
                     <div>					
-                        <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="" name="arrived" style="color: #888;">
+                        <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="{{ args['arrived'] }}" name="arrived" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="position" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
+                    <label for="position" class="col-form-label col-3 text-right mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
                     <div>					
-                        <input type="text" name="position" id="position" value="" class="form-control">			
+                        <input type="text" name="position" id="position" value="{{ args['position'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="cv" class="form-control-label col-md-3 text-right optional mt-2">{{ _("CV") }}</label>
+                    <label for="cv" class="col-form-label col-3 text-right mt-2">{{ _("CV") }}</label>
                     <div>					
-                        <textarea id="cv" name="cv" rows="4" cols="50" class="form-control"></textarea>
+                        <textarea id="cv" name="cv" rows="4" cols="50" class="form-control">{{ args['cv'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="diploma" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Diplômes") }}</label>
+                    <label for="diploma" class="col-form-label col-3 text-right mt-2">{{ _("Diplômes") }}</label>
                     <div>					
-                        <textarea id="diplom" name="diploma" rows="4" cols="50" class="form-control"></textarea>
+                        <textarea id="diploma" name="diploma" rows="4" cols="50" class="form-control">{{ args['diploma'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="training" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Formations continues") }}</label>
+                    <label for="training" class="col-form-label col-3 text-right mt-2">{{ _("Formations continues") }}</label>
                     <div>					
-                        <textarea id="training" name="training" rows="4" cols="50" class="form-control"></textarea>
+                        <textarea id="training" name="training" rows="4" cols="50" class="form-control">{{ args['training'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="section" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Section de travail") }}</label>
+                    <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section de travail") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-control">
-                            <option value="0">TODO load list</option>  
-                            <option value="1038">{{ _("Administration") }}</option>
-                            <option value="1039">{{ _("Prélèvement") }}</option>
-                            <option value="1040">{{ _("Biochimie") }}</option>
-                            <option value="1041">{{ _("Hématologie") }}</option>
-                            <option value="1042">{{ _("Sérologie") }}</option>
-                            <option value="1043">{{ _("Micriobiologie") }}</option>
+                            <option value="0" {% if args['section'] == 0 %} selected {% endif %}>TODO load list</option>  
+                            <option value="1038" {% if args['section'] == 1038 %} selected {% endif %}>{{ _("Administration") }}</option>
+                            <option value="1039" {% if args['section'] == 1039 %} selected {% endif %}>{{ _("Prélèvement") }}</option>
+                            <option value="1040" {% if args['section'] == 1040 %} selected {% endif %}>{{ _("Biochimie") }}</option>
+                            <option value="1041" {% if args['section'] == 1041 %} selected {% endif %}>{{ _("Hématologie") }}</option>
+                            <option value="1042" {% if args['section'] == 1042 %} selected {% endif %}>{{ _("Sérologie") }}</option>
+                            <option value="1043" {% if args['section'] == 1043 %} selected {% endif %}>{{ _("Microbiologie") }}</option>
                         </select>			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="last_eval" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
+                    <label for="last_eval" class="col-form-label col-3 text-right mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
                     <div>					
-                        <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="" name="last_eval" style="color: #888;">
+                        <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="{{ args['last_eval'] }}" name="last_eval" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="comment" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Commentaires") }}</label>
+                    <label for="comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaires") }}</label>
                     <div>					
-                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control"></textarea>
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
                     </div>
                 </div>
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Droits utilisateur") }}</h3>
                 </div>
                 <div class="form-group row mt-3">
-                    <label for="role" class="form-control-label col-md-3 text-right mt-2">{{ _("Rôle") }} *</label>
+                    <label for="role" class="col-form-label col-3 text-right mt-2">{{ _("Rôle") }} *</label>
                     <div>					
                         <select id="role" name="role" class="form-control">
-                            <option value="0"></option>  
-                            <option value="1">{{ _("Administrateur") }}</option>
-                            <option value="2">{{ _("Biologiste") }}</option>
-                            <option value="3">{{ _("Technicien") }}</option>
-                            <option value="4">{{ _("Secrétaire") }}</option>
+                            <option value="0" {% if args['id_role'] == 0 %} selected {% endif %}></option>  
+                            <option value="1" {% if args['id_role'] == 1 %} selected {% endif %}>{{ _("Administrateur") }}</option>
+                            <option value="2" {% if args['id_role'] == 2 %} selected {% endif %}>{{ _("Biologiste") }}</option>
+                            <option value="3" {% if args['id_role'] == 3 %} selected {% endif %}>{{ _("Technicien") }}</option>
+                            <option value="4" {% if args['id_role'] == 4 %} selected {% endif %}>{{ _("Secrétaire") }}</option>
                         </select>
                     </div>
                 </div>
@@ -190,10 +204,10 @@
             
             <div class="my-2">
                 <div class="float-left" style="margin-left:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-success">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success ml-2">
+                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -206,61 +220,113 @@
 <script>
 function save_user()
 {
-var id_owner   = {{ session['user_id_group']|safe}} ;
-var deed_price = $("#pref_deed_price").val() ;
-var head_1     = $("#pref_head_1").val() ;
-var head_2     = $("#pref_head_2").val() ;
-var head_3     = $("#pref_head_2").val() ;
-var addr       = $("#pref_addr").val() ;
-var phone      = $("#pref_phone").val() ;
-var fax        = $("#pref_fax").val() ;
-var email      = $("#pref_email").val() ;
-var city       = $("#pref_city").val() ;
-var fact_hosp  = 0 ;
-var age_unit   = $("#pref_age_unit").val() ;
-var logout     = $("#pref_logout").val() ;
-var quality    = 0 ;
-var bill       = 0 ;
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_user   = {{ args['user_id']|safe }} ;
+var login     = $("#login").val()     ;
+var cps       = $("#cps").val()       ;
+var rpps      = $("#rpps").val()      ;
+var firstname = $("#firstname").val() ;
+var lastname  = $("#lastname").val()  ;
+var email     = $("#email").val()     ;
+var title     = $("#title").val()     ;
+var initial   = $("#initial").val()   ;
+var birth     = $("#birth").val()     ; 
+var phone     = $("#phone").val()     ;
+var arrived   = $("#arrived").val()   ;
+var position  = $("#position").val()  ;
+var section   = $("#section").val()   ;
+var last_eval = $("#last_eval").val() ;
+{% if args['user_id'] > 0 %}
+var stat      = $("input:radio[name=stat]:checked").val() ;
+{% endif %}
+var lang      = $("input:radio[name=lang]:checked").val() ;
+var address   = JSON.stringify( $("#address").val() )  ;
+var cv        = JSON.stringify( $("#cv").val() )       ;
+var diploma   = JSON.stringify( $("#diploma").val() )  ;
+var training  = JSON.stringify( $("#training").val() ) ;
+var comment   = JSON.stringify( $("#comment").val() )  ;
+var id_role   = $("#role").val()   ;
 
-    if ( $("#pref_fact_hosp").is(":checked") )
-    fact_hosp = $("#pref_fact_hosp").val()
+var msg = "" ;
 
-    if ( $("#pref_quality").is(":checked") )
-    quality = $("#pref_quality").val()
+    if (login == "")
+    msg += "{{ _("Veuillez saisir un identifiant.") }}\n" ;
 
-    if ( $("#pref_bill").is(":checked") )
-    bill = $("#pref_bill").val()
+{% if args['user_id'] == 0 %}
+var pwd  = $("#pwd").val()    ;
+var pwd2 = $("#pwd2").val() ;
 
-var param = '{ "prix_acte":"' + deed_price + '", ' +
-              '"entete_1":"' + head_1 + '", ' +
-              '"entete_2":"' + head_2 + '", ' +
-              '"entete_3":"' + head_3 + '", ' +
-              '"entete_adr":"' + addr + '", ' +
-              '"entete_tel":"' + phone + '", ' +
-              '"entete_fax":"' + fax + '", ' +
-              '"entete_email":"' + email + '", ' +
-              '"entete_ville":"' + city + '", ' +
-              '"facturation_pat_hosp":"' + fact_hosp + '", ' +
-              '"unite_age_defaut":"' + age_unit + '", ' +
-              '"auto_logout":"' + logout + '", ' +
-              '"qualite":"' + quality + '", ' +
-              '"facturation":"' + bill  + '"}' ;
+    if (pwd == "")
+    msg += "{{ _("Veuillez saisir un mot de passe.") }}\n" ;
 
-console.log("DEBUG param="+JSON.stringify(param));
+    if (pwd2 == "")
+    msg += "{{ _("Veuillez confirmer votre mot de passe.") }}\n" ;
+
+    if (pwd2 != pwd)
+    msg += "{{ _("Les mots de passe ne correspondent pas !") }}\n" ;
+{% endif %}
+
+    if (lang == "")
+    msg += "{{ _("Veuillez choisir une langue.") }}\n" ;
+
+    if (id_role == 0)
+    msg += "{{ _("Veuillez choisir un rôle.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_user":' + id_user + ', ' +
+              '"login":"' + login + '", ' +
+              {% if args['user_id'] == 0 %}
+              '"password":"' + pwd + '", ' +
+              {% endif %}
+              '"cps":"' + cps + '", ' +
+              '"rpps":"' + rpps + '", ' +
+              {% if args['user_id'] > 0 %}
+              '"stat":' + stat + ', ' +
+              {% endif %}
+              '"firstname":"' + firstname + '", ' +
+              '"lastname":"' + lastname + '", ' +
+              '"lang":' + lang + ', ' +
+              '"email":"' + email + '", ' +
+              '"title":' + title + ', ' +
+              '"initial":"' + initial + '", ' +
+              '"birth":"' + birth + '", ' +
+              '"phone":"' + phone + '", ' +
+              '"arrived":"' + arrived + '", ' +
+              '"position":"' + position + '", ' +
+              '"section":' + section + ', ' +
+              '"last_eval":"' + last_eval + '", ' +
+              '"address":' + address + ', ' +   // No quotes with stringify
+              '"cv":' + cv + ', ' +             // No quotes with stringify
+              '"diploma":' + diploma + ', ' +   // No quotes with stringify
+              '"training":' + training + ', ' + // No quotes with stringify
+              '"comment":' + comment + ', ' +   // No quotes with stringify
+              '"id_role":' + id_role + '}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
 
     $.ajax( {
        type: "POST",
-       url: "/services/setting/pref/list/" + id_owner,
+       url: "/services/user/det/" + id_user,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 1000) ;
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           window.history.back() ;
            },
        error: function(data)
            {
-           console.log("ERROR POST patient det") ;
+           console.log("ERROR POST user det") ;
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;

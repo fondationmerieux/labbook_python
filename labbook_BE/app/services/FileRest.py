@@ -10,40 +10,61 @@ from app.models.Constants import *
 from app.models.Various import *
 from app.models.File import *
 from app.models.Logs import Logs
+from app.models.Quality import *
 from app.models.User import *
+
+
+class FileDocList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type_ref, ref):
+        l_files = File.getFileDocList(type_ref, ref)
+
+        if not l_files:
+            self.log.error(Logs.fileline() + ' : TRACE FileDocList not found')
+
+        for files in l_files:
+            # Replace None by empty string
+            for key, value in files.items():
+                if files[key] is None:
+                    files[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE FileDocList')
+        return compose_ret(l_files, Constants.cst_content_type_json)
 
 
 class FileDoc(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, ref):
+    def get(self, type_ref, ref):
         # ref= id_file
-        filedoc = File.getFileDoc(ref)
+        filedata = File.getFileData(ref)
 
-        if not filedoc:
+        if not filedata:
             self.log.error(Logs.fileline() + ' : TRACE FileDoc not found')
 
-        filestorage = File.getFileStorage(filedoc['id_storage'])
+        filestorage = File.getFileStorage(filedata['id_storage'])
 
         if not filestorage:
             self.log.error(Logs.fileline() + ' : TRACE FileDoc storage not found')
 
-        filedoc['storage'] = filestorage['path']
+        filedata['storage'] = filestorage['path']
 
         # Replace None by empty string
-        for key, value in filedoc.items():
-            if filedoc[key] is None:
-                filedoc[key] = ''
+        for key, value in filedata.items():
+            if filedata[key] is None:
+                filedata[key] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE FileDoc')
-        return compose_ret(filedoc, Constants.cst_content_type_json)
+        return compose_ret(filedata, Constants.cst_content_type_json)
 
-    def post(self, ref):
+    def post(self, type_ref, ref):
         # ref = id_rec
         args = request.get_json()
 
-        if 'id_owner' not in args or 'original_name' not in args or 'generated_name' not in args or 'size' not in args or \
-           'hash' not in args or 'ext' not in args or 'content_type' not in args or 'id_storage' not in args or 'end_path' not in args:
+        if 'id_owner' not in args or 'original_name' not in args or 'generated_name' not in args or \
+           'size' not in args or 'hash' not in args or 'ext' not in args or 'content_type' not in args or \
+           'id_storage' not in args or 'end_path' not in args:
             self.log.error(Logs.fileline() + ' : TRACE FileDoc ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -65,47 +86,22 @@ class FileDoc(Resource):
         res = {}
         res['id_file'] = ret
 
-        # Get id_group of lab with id_group of user
-        id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-        if not id_group_lab:
-            self.log.error(Logs.fileline() + ' : FileDoc ERROR group not found')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        # insert sigl_file_data_data_group
-        ret = File.insertFileDataGroup(id_data=res['id_file'],
-                                         id_group=id_group_lab['id_group_parent'])
-
-        if ret <= 0:
-            self.log.error(Logs.alert() + ' : FileDoc ERROR insert group')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        # insert into sigl_dos_valisedoc__file_data
+        # insert into sigl_XXXX__file_data
         ret = File.insertFileDoc(id_owner=args['id_owner'],
                                  id_ext=ref,
-                                 id_file=res['id_file'])
+                                 id_file=res['id_file'],
+                                 type_ref=type_ref)
 
         if ret <= 0:
             self.log.error(Logs.alert() + ' : FileDoc ERROR insert FileDoc')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
-        res = {}
-        res['id_data'] = ret
-
-        # insert sigl_file_data_data_group
-        ret = File.insertFileDocGroup(id_data=res['id_data'],
-                                      id_group=id_group_lab['id_group_parent'])
-
-        if ret <= 0:
-            self.log.error(Logs.alert() + ' : FileDoc ERROR insert group')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
         self.log.info(Logs.fileline() + ' : TRACE FileDoc')
         return compose_ret('', Constants.cst_content_type_json)
 
-    def delete(self, ref):
+    def delete(self, type_ref, ref):
         # ref= id_file
-        ret = File.deleteFileDoc(ref)
+        ret = File.deleteFileDoc(type_ref, ref)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : TRACE FileDoc delete ERROR')
@@ -160,3 +156,19 @@ class FileStorage(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE FileStorage')
         return compose_ret(storage, Constants.cst_content_type_json)
+
+
+class FileNbManual(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        res = File.getFileNbManuals()
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE FileNbManual not found')
+            nb_manuals = 0
+        else:
+            nb_manuals = res['nb_manuals']
+
+        self.log.info(Logs.fileline() + ' : TRACE FileNbManual')
+        return compose_ret(nb_manuals, Constants.cst_content_type_json)

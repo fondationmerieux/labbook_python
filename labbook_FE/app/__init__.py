@@ -19,9 +19,9 @@ import json
 import random
 
 from logging.handlers import WatchedFileHandler
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
-from flask import Flask, render_template, request, session, redirect, send_file, url_for
+from flask import Flask, render_template, request, session, redirect, send_file
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -125,24 +125,6 @@ def get_init_var():
         session['version'] = app.config.get('APP_VERSION')
         session.modified = True
 
-    # Get locale
-    """
-    if request.cookies and 'PHP_locale' in request.cookies:
-        log.info(Logs.fileline() + ' : cookies PHP_locale = ' + request.cookies.get('PHP_locale'))
-        session['lang'] = request.cookies.get('PHP_locale')
-        session.modified = True
-    else:
-        log.info(Logs.fileline() + ' : cookies PHP_locale missing')"""
-
-    # Get user_name
-    """
-    if request.cookies and 'PHP_user_name' in request.cookies:
-        log.info(Logs.fileline() + ' : cookies PHP_user_name = ' + request.cookies.get('PHP_user_name'))
-        session['user_name'] = request.cookies.get('PHP_user_name')
-        session.modified = True
-    else:
-        log.info(Logs.fileline() + ' : cookies PHP_user_name missing')"""
-
     # Load auto_logout
     try:
         url = session['server_int'] + '/services/default/val/auto_logout'
@@ -235,19 +217,40 @@ def date_now(date_now):
 # Routes Flask pages
 # ######################################
 
-
 @app.route("/")
 def index():
     if not session or 'current_page' not in session:
         log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Login')
         get_init_var()
-        return render_template('login.html')
+        return render_template('login.html', rand=random.randint(0, 999))
     else:
         log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Current')
-        return redirect('/' + session['redirect_name'] + '/' + url_for(session['current_page']))
+        return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
 
 
-@app.route("/disconnect/")
+# Change la langue
+@app.route("/lang/<string:lang>")
+def lang(lang='fr_FR'):
+    if lang == 'en_GB':
+        session['lang_select'] = 'en_GB'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+    elif lang == 'en_US':
+        session['lang_select'] = 'en_US'
+        session['date_format'] = Constants.cst_date_us
+        session.modified = True
+    else:
+        session['lang_select'] = 'fr_FR'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+
+    session['lang']  = lang
+    session.modified = True
+
+    return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+
+
+@app.route("/disconnect")
 def disconnect():
     log.info(Logs.fileline() + ' : TRACE Labbook FRONT END disconnect')
     url = session['server_ext'] + '/' + session['redirect_name']
@@ -256,7 +259,7 @@ def disconnect():
 
 
 # Page : homepage
-@app.route('/homepage/')
+@app.route('/homepage')
 @app.route('/homepage/<string:login>')
 def homepage(login=''):
     log.info(Logs.fileline() + ' : TRACE Homepage login=' + str(login))
@@ -275,9 +278,7 @@ def homepage(login=''):
         login = session['login']
 
     get_user_data(login)
-
-    # get_init_var()
-    # get_software_settings()
+    get_software_settings()
 
     # Load pref_quality
     try:
@@ -309,6 +310,72 @@ def homepage(login=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests pref_bill failed, err=%s , url=%s', err, url)
 
+    # Load nb_emer
+    try:
+        url = session['server_int'] + '/services/record/count/emergency'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_emer'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count ermergency failed, err=%s , url=%s', err, url)
+
+    # Load nb_rec_tech
+    try:
+        url = session['server_int'] + '/services/record/count/technician'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_rec_tech'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count technician records failed, err=%s , url=%s', err, url)
+
+    # Load nb_rec_bio
+    try:
+        url = session['server_int'] + '/services/record/count/biologist'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_rec_bio'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count biologist records failed, err=%s , url=%s', err, url)
+
+    # Load nb_rec
+    try:
+        url = session['server_int'] + '/services/record/count'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_rec'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count records failed, err=%s , url=%s', err, url)
+
+    # Load nb_rec_today
+    try:
+        url = session['server_int'] + '/services/record/count/today'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_rec_today'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count today validated records failed, err=%s , url=%s', err, url)
+
+    # Load last_record
+    try:
+        url = session['server_int'] + '/services/record/last'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['record'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests last records failed, err=%s , url=%s', err, url)
+
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
@@ -317,30 +384,12 @@ def homepage(login=''):
     return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))
 
 
-# Change la langue
-@app.route("/lang/<string:lang>/")
-def lang(lang='fr'):
-    if lang == 'en_GB':
-        session['lang_select'] = 'UK'
-        session['date_format'] = Constants.cst_date_eu
-        session.modified = True
-    elif lang == 'en_US':
-        session['lang_select'] = 'US'
-        session['date_format'] = Constants.cst_date_us
-        session.modified = True
-    else:
-        session['lang_select'] = 'FR'
-        session['date_format'] = Constants.cst_date_eu
-        session.modified = True
-
-    session['lang']  = lang
-    session.modified = True
-
-    return redirect(session['server_ext'] + '/' + session['redirect_name'] + '/homepage')
-
+# --------------------
+# --- Setting page ---
+# --------------------
 
 # Page : users list
-@app.route('/setting-users/')
+@app.route('/setting-users')
 def setting_users():
     log.info(Logs.fileline() + ' : TRACE setting users')
 
@@ -355,7 +404,7 @@ def setting_users():
         req = requests.post(url)
 
         if req.status_code == 200:
-            json_data = json.dumps(req.json())
+            json_data = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
@@ -364,47 +413,243 @@ def setting_users():
 
 
 # Page : details user
-@app.route('/setting-det-user/<int:id_user>')
-def setting_det_user(id_user=0):
-    log.info(Logs.fileline() + ' : TRACE setting det user')
+@app.route('/setting-det-user/<int:user_id>')
+def setting_det_user(user_id=0):
+    log.info(Logs.fileline() + ' : TRACE setting det user=' + str(user_id))
 
-    session['current_page'] = 'setting-det-user/' + str(id_user)
+    session['current_page'] = 'setting-det-user/' + str(user_id)
     session.modified = True
 
     json_data = {}
 
-    if id_user > 0:
+    if user_id > 0:
         # Load user details
         try:
-            url = session['server_int'] + '/services/user/det/' + str(id_user)
-            req = requests.post(url)
+            url = session['server_int'] + '/services/user/det/' + str(user_id)
+            req = requests.get(url)
 
             if req.status_code == 200:
-                json_data = json.dumps(req.json())
+                json_data = req.json()
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+
+    json_data['user_id'] = user_id
 
     return render_template('setting-det-user.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : setting new password for a user
-@app.route('/setting-pwd-user/<int:id_user>')
-def setting_pwd_user(id_user=0):
+@app.route('/setting-pwd-user/<int:user_id>')
+def setting_pwd_user(user_id=0):
     log.info(Logs.fileline() + ' : TRACE setting pwd user')
 
-    session['current_page'] = 'setting-pwd-user/' + str(id_user)
+    session['current_page'] = 'setting-pwd-user/' + str(user_id)
     session.modified = True
 
     json_data = {}
 
-    json_data['id_user'] = id_user
+    json_data['user_id'] = user_id
 
     return render_template('setting-pwd-user.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : dict list
+@app.route('/setting-dicts')
+def setting_dicts():
+    log.info(Logs.fileline() + ' : TRACE setting dict')
+
+    session['current_page'] = 'setting-dicts'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list dict
+    try:
+        url = session['server_int'] + '/services/dict/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests dicts list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-dicts.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details dictionnary
+@app.route('/setting-det-dict')
+@app.route('/setting-det-dict/<string:dict_name>')
+def setting_det_dict(dict_name=''):
+    log.info(Logs.fileline() + ' : TRACE setting det dict=' + str(dict_name))
+
+    session['current_page'] = 'setting-det-dict/' + str(dict_name)
+    session.modified = True
+
+    json_data = {}
+
+    if dict_name:
+        # Load dict details
+        try:
+            url = session['server_int'] + '/services/dict/det/' + str(dict_name)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_values'] = req.json()
+
+                i = 0
+                for val in json_data['data_values']:
+                    val['id_ihm'] = i
+                    i += 1
+
+                json_data['data_last_id'] = i
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+    else:
+        json_data['data_values'] = []
+
+    json_data['dict_name'] = str(dict_name)
+
+    return render_template('setting-det-dict.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : analyzes list
+@app.route('/setting-analyzes')
+def setting_analyzes():
+    log.info(Logs.fileline() + ' : TRACE setting analyzes')
+
+    session['current_page'] = 'setting-analyzes'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
+    # Load products
+    try:
+        url = session['server_int'] + '/services/dict/det/type_prel'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['products'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+
+    # Load list analyzes
+    try:
+        url = session['server_int'] + '/services/analysis/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details analysis
+@app.route('/setting-det-analysis/<int:analysis_id>')
+def setting_det_analysis(analysis_id=0):
+    log.info(Logs.fileline() + ' : TRACE setting det analysis=' + str(analysis_id))
+
+    session['current_page'] = 'setting-det-analysis/' + str(analysis_id)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
+    # Load products
+    try:
+        url = session['server_int'] + '/services/dict/det/type_prel'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['products'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+
+    if analysis_id > 0:
+        # Load analysis details
+        try:
+            url = session['server_int'] + '/services/analysis/det/' + str(analysis_id)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests analysis det failed, err=%s , url=%s', err, url)
+
+    json_data['analysis_id'] = analysis_id
+
+    return render_template('setting-det-analysis.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : manage patient records
+@app.route('/manage-pat-records')
+def manage_pat_records():
+    log.info(Logs.fileline() + ' : TRACE manage patient records')
+
+    session['current_page'] = 'manage-pat-records'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('manage-pat-records.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting stickers
+@app.route('/setting-stickers')
+def setting_stickers():
+    log.info(Logs.fileline() + ' : TRACE setting stickers')
+
+    session['current_page'] = 'setting-stickers'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/setting/sticker'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests setting stickers failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-stickers.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : preferences list
-@app.route('/setting-pref/')
+@app.route('/setting-pref')
 def setting_preferences():
     log.info(Logs.fileline() + ' : TRACE setting preferences')
 
@@ -426,8 +671,31 @@ def setting_preferences():
     return render_template('setting-pref.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : setting backup and restore
+@app.route('/setting-backup')
+def setting_backup():
+    log.info(Logs.fileline() + ' : TRACE setting backup')
+
+    session['current_page'] = 'setting-backup'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/setting/backup'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-backup.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : setting report
-@app.route('/setting-report/')
+@app.route('/setting-report')
 def setting_report():
     log.info(Logs.fileline() + ' : TRACE setting report')
 
@@ -451,7 +719,7 @@ def setting_report():
 
 
 # Page : setting record number
-@app.route('/setting-rec-num/')
+@app.route('/setting-rec-num')
 def setting_rec_num():
     log.info(Logs.fileline() + ' : TRACE setting record number')
 
@@ -475,7 +743,7 @@ def setting_rec_num():
 
 
 # Page : logo
-@app.route('/setting-logo/')
+@app.route('/setting-logo')
 def setting_logo():
     log.info(Logs.fileline() + ' : TRACE setting logo')
 
@@ -485,14 +753,48 @@ def setting_logo():
     return render_template('setting-logo.html', rand=random.randint(0, 999))
 
 
-# Page : list of results to enter
-@app.route('/list-results/')
-def list_results():
-    log.info(Logs.fileline())
+# Page : age interval setting
+@app.route('/setting-age-interval')
+def setting_age_interval():
+    log.info(Logs.fileline() + ' : TRACE setting age interval')
 
-    get_init_var()
-    get_user_data(session['user_name'])
-    get_software_settings()
+    session['current_page'] = 'setting-age-interval'
+    session.modified = True
+
+    json_data = {}
+
+    # Load interval details
+    try:
+        url = session['server_int'] + '/services/setting/age/interval'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+            i = 0
+            for val in json_data['data_values']:
+                val['id_ihm'] = i
+                i += 1
+
+            json_data['data_last_id'] = i
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-age-interval.html', args=json_data, rand=random.randint(0, 999))
+
+
+# ---------------------------
+# --- Administrative page ---
+# ---------------------------
+
+# Page : list of results to enter
+@app.route('/list-results')
+def list_results():
+    log.info(Logs.fileline() + ' : TRACE list-results')
+
+    session['current_page'] = 'list-results'
+    session.modified = True
 
     json_ihm  = {}
     json_data = {}
@@ -500,7 +802,7 @@ def list_results():
     dt_start_req = datetime.now()
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dico/list/famille_analyse'
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -541,7 +843,7 @@ def list_results():
 
     log.info(Logs.fileline() + ' : DEBUG list-results processing time = ' + str(dt_time_req))
 
-    return render_template('list-results.html', ihm=json_ihm, args=json_data)
+    return render_template('list-results.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : enter result
@@ -607,7 +909,7 @@ def enter_result(id_rec=0):
                     # get anwser
                     try:
                         if type_res:
-                            url = session['server_int'] + '/services/dico/list/' + str(type_res)
+                            url = session['server_int'] + '/services/dict/det/' + str(type_res)
                             req = requests.get(url)
 
                             if req.status_code == 200:
@@ -667,17 +969,16 @@ def enter_result(id_rec=0):
 
     log.info(Logs.fileline() + ' : DEBUG enter-result processing time = ' + str(dt_time_req))
 
-    return render_template('enter-result.html', ihm=json_ihm, args=json_data)
+    return render_template('enter-result.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : List of records
-@app.route('/list-records/')
+@app.route('/list-records')
 def list_records():
-    log.info(Logs.fileline())
+    log.info(Logs.fileline() + ' : TRACE list-records')
 
-    get_init_var()
-    get_user_data(session['user_name'])
-    get_software_settings()
+    session['current_page'] = 'list-records'
+    session.modified = True
 
     json_data = {}
 
@@ -697,43 +998,255 @@ def list_records():
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : DEBUG list-records processing time = ' + str(dt_time_req))
+    return render_template('list-records.html', args=json_data, rand=random.randint(0, 999))
 
-    return render_template('list-records.html', args=json_data)
 
+@app.route('/list-works/<string:user_role>')
+@app.route('/list-works/<string:user_role>/<string:emer>')
+def list_works(user_role='', emer=''):
+    log.info(Logs.fileline() + ' : TRACE list-works user_role=' + str(user_role))
 
-# Page : new external request
-@app.route('/new-req-ext/')
-def new_req_ext():
-    log.info(Logs.fileline())
+    session['current_page'] = 'list-works/' + str(user_role)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    if emer:
+        emer = 4
 
     dt_start_req = datetime.now()
-    get_init_var()
-    get_user_data(session['user_name'])
-    get_software_settings()
+    # Load list records with status filter
+    try:
+        payload = {'num_rec': '',
+                   'stat_rec': 0,
+                   'patient': '',
+                   'date_beg': '',
+                   'date_end': '',
+                   'emer': emer}
+
+        if user_role == 'B':
+            # We lloking for emergency record in more record status
+            if emer == 4:
+                payload['stat_work'] = '(182,253,254,255)'
+            else:
+                payload['stat_work'] = '(254,255)'
+        elif user_role == 'T':
+            payload['stat_work'] = '(182,253)'
+
+        json_ihm['stat_work'] = payload['stat_work']
+
+        url = session['server_int'] + '/services/record/list/' + str(session['user_id_group'])
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data = json.dumps(req.json())
+            if emer:
+                json_ihm['emer'] = 'E'
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests works list failed, err=%s , url=%s', err, url)
+
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG new-req-ext processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : DEBUG list-works processing time = ' + str(dt_time_req))
+    return render_template('list-works.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
-    return render_template('new-req-ext.html')
+
+# Page : List of products to do or modify
+@app.route('/list-products')
+def list_products():
+    log.info(Logs.fileline() + ' : TRACE list-products')
+
+    session['current_page'] = 'list-products'
+    session.modified = True
+
+    json_data = {}
+
+    dt_start_req = datetime.now()
+    # Load list records
+    try:
+        url = session['server_int'] + '/services/product/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = json.dumps(req.json())
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+
+    dt_stop_req = datetime.now()
+    dt_time_req = dt_stop_req - dt_start_req
+
+    log.info(Logs.fileline() + ' : DEBUG list-products processing time = ' + str(dt_time_req))
+    return render_template('list-products.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details of a product
+@app.route('/det-product/<int:id_prod>')
+def det_product(id_prod=0):
+    log.info(Logs.fileline() + ' : TRACE det product=' + str(id_prod))
+
+    session['current_page'] = 'det-product/' + str(id_prod)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load products statut
+    try:
+        url = session['server_int'] + '/services/dict/det/prel_statut'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['products_statut'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products statut list failed, err=%s , url=%s', err, url)
+
+    # Load products type
+    try:
+        url = session['server_int'] + '/services/dict/det/type_prel'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['products'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products type list failed, err=%s , url=%s', err, url)
+
+    # Load products location choice
+    try:
+        url = session['server_int'] + '/services/dict/det/lieu_prel'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['products_location'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products location list failed, err=%s , url=%s', err, url)
+
+    if id_prod > 0:
+        # Load product details
+        try:
+            url = session['server_int'] + '/services/product/det/' + str(id_prod)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['product'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests product det failed, err=%s , url=%s', err, url)
+
+        # Load record details
+        try:
+            url = session['server_int'] + '/services/record/det/' + str(json_data['product']['id_rec'])
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['record'] = req.json()
+
+                # Load data patient with id_patient
+                if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
+                    try:
+                        url = session['server_int'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
+                        req = requests.get(url)
+
+                        if req.status_code == 200:
+                            json_data['patient'] = req.json()
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)
+
+    json_data['id_prod'] = id_prod
+
+    return render_template('det-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : doctors list (prescribers exactly)
+@app.route('/list-doctors')
+def list_doctors():
+    log.info(Logs.fileline() + ' : TRACE list doctors')
+
+    session['current_page'] = 'list-doctors'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list doctors
+    try:
+        url = session['server_int'] + '/services/doctor/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests doctors list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-doctors.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details doctor (prescribers exactly
+@app.route('/det-doctor/<int:id_doctor>')
+def det_doctor(id_doctor=0):
+    log.info(Logs.fileline() + ' : TRACE setting det doctor=' + str(id_doctor))
+
+    session['current_page'] = 'det-doctor/' + str(id_doctor)
+    session.modified = True
+
+    json_data = {}
+
+    if id_doctor > 0:
+        # Load doctor details
+        try:
+            url = session['server_int'] + '/services/doctor/det/' + str(id_doctor)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
+
+    json_data['id_doctor'] = id_doctor
+
+    return render_template('det-doctor.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : new external request
+@app.route('/new-req-ext')
+def new_req_ext():
+    log.info(Logs.fileline() + ' : TRACE new-req-ext')
+
+    session['current_page'] = 'new-req-ext'
+    session.modified = True
+
+    return render_template('new-req-ext.html', rand=random.randint(0, 999))
 
 
 # Page : new internal request
-@app.route('/new-req-int/')
+@app.route('/new-req-int')
 def new_req_int():
-    log.info(Logs.fileline())
+    log.info(Logs.fileline() + ' : TRACE new-req-int')
 
-    get_init_var()
-    get_user_data(session['user_name'])
-    get_software_settings()
+    session['current_page'] = 'new-req-int'
+    session.modified = True
 
-    return render_template('new-req-int.html')
+    return render_template('new-req-int.html', rand=random.randint(0, 999))
 
 
 # Page : patient details
 @app.route('/det-patient/<int:id_pat>')
 def det_patient(id_pat=0):
-    log.info(Logs.fileline() + ' : id_pat = ' + str(id_pat))
+    log.info(Logs.fileline() + ' : TRACE det-patient id_pat = ' + str(id_pat))
+
+    session['current_page'] = 'det-patient/' + str(id_pat)
+    session.modified = True
 
     json_data = {}
 
@@ -768,13 +1281,18 @@ def det_patient(id_pat=0):
 
     log.info(Logs.fileline() + ' : DEBUG det-patient processing time = ' + str(dt_time_req))
 
-    return render_template('det-patient.html', args=json_data)
+    return render_template('det-patient.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : external request details
 @app.route('/det-req-ext/<string:entry>/<int:ref>')
 def det_req_ext(entry='Y', ref=0):
-    log.info(Logs.fileline() + ' : ref = ' + str(ref))
+    log.info(Logs.fileline() + ' : TRACE det-req-ext ref = ' + str(ref))
+
+    session['current_page'] = 'det-req-ext/' + str(entry) + '/' + str(ref)
+    session.modified = True
+
+    get_software_settings()
 
     json_ihm  = {}
     json_data = {}
@@ -796,7 +1314,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load yes or no
         try:
-            url = session['server_int'] + '/services/dico/list/yorn'
+            url = session['server_int'] + '/services/dict/det/yorn'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -807,7 +1325,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load discount billing
         try:
-            url = session['server_int'] + '/services/dico/list/remise_facturation'
+            url = session['server_int'] + '/services/dict/det/remise_facturation'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -818,7 +1336,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load products statut
         try:
-            url = session['server_int'] + '/services/dico/list/prel_statut'
+            url = session['server_int'] + '/services/dict/det/prel_statut'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -829,7 +1347,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load products
         try:
-            url = session['server_int'] + '/services/dico/list/type_prel'
+            url = session['server_int'] + '/services/dict/det/type_prel'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -949,7 +1467,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load yes or no
         try:
-            url = session['server_int'] + '/services/dico/list/yorn'
+            url = session['server_int'] + '/services/dict/det/yorn'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -963,13 +1481,18 @@ def det_req_ext(entry='Y', ref=0):
 
     log.info(Logs.fileline() + ' : DEBUG det-req-ext processing time = ' + str(dt_time_req))
 
-    return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data)
+    return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : internal request details
 @app.route('/det-req-int/<string:entry>/<int:ref>')
 def det_req_int(entry='Y', ref=0):
-    log.info(Logs.fileline() + ' : ref = ' + str(ref))
+    log.info(Logs.fileline() + ' : TRACE det-req-int ref = ' + str(ref))
+
+    session['current_page'] = 'det-req-int/' + str(entry) + '/' + str(ref)
+    session.modified = True
+
+    get_software_settings()
 
     json_ihm  = {}
     json_data = {}
@@ -990,7 +1513,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load yes or no
         try:
-            url = session['server_int'] + '/services/dico/list/yorn'
+            url = session['server_int'] + '/services/dict/det/yorn'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1001,7 +1524,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load discount billing
         try:
-            url = session['server_int'] + '/services/dico/list/remise_facturation'
+            url = session['server_int'] + '/services/dict/det/remise_facturation'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1012,7 +1535,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load products statut
         try:
-            url = session['server_int'] + '/services/dico/list/prel_statut'
+            url = session['server_int'] + '/services/dict/det/prel_statut'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1023,7 +1546,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load products
         try:
-            url = session['server_int'] + '/services/dico/list/type_prel'
+            url = session['server_int'] + '/services/dict/det/type_prel'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1143,7 +1666,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load yes or no
         try:
-            url = session['server_int'] + '/services/dico/list/yorn'
+            url = session['server_int'] + '/services/dict/det/yorn'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1152,13 +1675,16 @@ def det_req_int(entry='Y', ref=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
 
-    return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data)
+    return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : administrative record
 @app.route('/administrative-record/<string:type_req>/<int:id_rec>')
 def administrative_record(type_req='E', id_rec=0):
-    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+    log.info(Logs.fileline() + ' : TRACE administrative-record id_rec = ' + str(id_rec))
+
+    session['current_page'] = 'administrative-record/' + str(type_req) + '/' + str(id_rec)
+    session.modified = True
 
     json_data = {}
     json_data['data_analysis'] = []
@@ -1238,7 +1764,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load files attached to this record
     try:
-        url = session['server_int'] + '/services/record/list/file/' + str(id_rec)
+        url = session['server_int'] + '/services/file/document/list/REC/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1252,13 +1778,16 @@ def administrative_record(type_req='E', id_rec=0):
 
     log.info(Logs.fileline() + ' : DEBUG administrative-record processing time = ' + str(dt_time_req))
 
-    return render_template('administrative-record.html', type_req=type_req, args=json_data)
+    return render_template('administrative-record.html', type_req=type_req, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : technical validation
 @app.route('/technical-validation/<int:id_rec>')
 def technical_validation(id_rec=0):
-    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+    log.info(Logs.fileline() + ' : TRACE technical-validation id_rec = ' + str(id_rec))
+
+    session['current_page'] = 'technical-validation/' + str(id_rec)
+    session.modified = True
 
     json_ihm  = {}
     json_data = {}
@@ -1382,13 +1911,16 @@ def technical_validation(id_rec=0):
 
     log.info(Logs.fileline() + ' : DEBUG technical-validation processing time = ' + str(dt_time_req))
 
-    return render_template('technical-validation.html', ihm=json_ihm, args=json_data)
+    return render_template('technical-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : biological validation
-@app.route('/biological-validation/<int:id_rec>')
-def biological_validation(id_rec=0):
-    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+@app.route('/biological-validation/<string:mode>/<int:id_rec>')
+def biological_validation(mode='', id_rec=0):
+    log.info(Logs.fileline() + ' : TRACE biological-validation id_rec = ' + str(id_rec))
+
+    session['current_page'] = 'biological-validation/' + str(id_rec)
+    session.modified = True
 
     json_ihm  = {}
     json_data = {}
@@ -1396,6 +1928,26 @@ def biological_validation(id_rec=0):
     json_data['data_reports'] = []
 
     id_pat = 0
+
+    # Single or Group mode of validation
+    if mode and mode == 'G':
+        json_ihm['mode'] = mode
+        # find next record to validate
+        try:
+            url = session['server_int'] + '/services/record/next/' + str(id_rec)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                id_rec_next = req.json()
+                if id_rec_next and id_rec_next > 0:
+                    json_ihm['id_rec_next'] = id_rec_next
+                else:
+                    json_ihm['id_rec_next'] = ''
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests record next failed, err=%s , url=%s', err, url)
+    else:
+        json_ihm['mode'] = 'S'
 
     dt_start_req = datetime.now()
     # Load record
@@ -1533,7 +2085,7 @@ def biological_validation(id_rec=0):
 
     # Load reasons to cancel a result
     try:
-        url = session['server_int'] + '/services/dico/list/motif_annulation'
+        url = session['server_int'] + '/services/dict/det/motif_annulation'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1547,34 +2099,1053 @@ def biological_validation(id_rec=0):
 
     log.info(Logs.fileline() + ' : DEBUG biological-validation processing time = ' + str(dt_time_req))
 
-    return render_template('biological-validation.html', ihm=json_ihm, args=json_data)
+    return render_template('biological-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
-# Page : contributors
-@app.route('/contributors/')
-def contributors():
-    log.info(Logs.fileline())
+# --------------------
+# --- Report page ---
+# --------------------
 
-    get_init_var()
+# Page : report epidemiological
+@app.route('/report-epidemio')
+@app.route('/report-epidemio/<string:date_beg>/<string:date_end>')
+def report_epidemio(date_beg='', date_end=''):
+    log.info(Logs.fileline() + ' : TRACE report epidemio')
 
-    return render_template('contributors.html')
+    session['current_page'] = 'report-epidemio'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # load data for statistic
+    try:
+        if not date_beg:
+            date_beg = date.today()
+            date_beg = date_beg - timedelta(days=31)
+            date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
+            # date_beg = "2019-01-01"  # TEST
+
+        if not date_end:
+            date_end = date.today()
+            date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg,
+                   'date_end': date_end}
+
+        url = session['server_int'] + '/services/report/epidemio'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['epidemio'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report epidemio failed, err=%s , url=%s', err, url)
+
+    return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : report statistic
+@app.route('/report-statistic')
+def report_statistic():
+    log.info(Logs.fileline() + ' : TRACE report statistic')
+
+    session['current_page'] = 'report-statistic'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # load age interval setting
+    try:
+        url = session['server_int'] + '/services/setting/age/interval'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['age_interval'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests age interval setting failed, err=%s , url=%s', err, url)
+
+    # load data for statistic
+    try:
+        date_beg = date.today()
+        date_beg = date_beg - timedelta(days=31)
+        date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
+
+        date_end = date.today()
+        date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg,
+                   'date_end': date_end}
+
+        url = session['server_int'] + '/services/report/stat'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['stat'] = json.dumps(req.json())
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report stat failed, err=%s , url=%s', err, url)
+
+    return render_template('report-statistic.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : report dhis2
+@app.route('/report-dhis2')
+def report_dhis2():
+    log.info(Logs.fileline() + ' : TRACE report dhis2')
+
+    session['current_page'] = 'report-dhis2'
+    session.modified = True
+
+    json_data = {}
+
+    """
+    try:
+        url = session['server_int'] + '/services/setting/pref/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['pref_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
+        """
+
+    return render_template('report-dhis2.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : WHONET export
-@app.route('/whonet-export/')
+@app.route('/whonet-export')
 def whonet_export():
-    log.info(Logs.fileline())
+    log.info(Logs.fileline() + ' : TRACE whonet-export')
 
-    get_init_var()
-    get_user_data(session['user_name'])
-    get_software_settings()
+    session['current_page'] = 'whonet-export'
+    session.modified = True
 
-    return render_template('whonet-export.html')
+    return render_template('whonet-export.html', rand=random.randint(0, 999))
+
+
+# Page : historic patients
+@app.route('/hist-patients')
+def hist_patients():
+    log.info(Logs.fileline() + ' : TRACE hist patients')
+
+    session['current_page'] = 'hist-patients'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list patients
+    try:
+        url = session['server_int'] + '/services/patient/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests patients list failed, err=%s , url=%s', err, url)
+
+    return render_template('hist-patients.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details historic patient
+@app.route('/det-hist-patient/<int:id_pat>')
+def det_hist_patient(id_pat=0):
+    log.info(Logs.fileline() + ' : TRACE det hist patient')
+
+    session['current_page'] = 'det-hist-patient/' + str(id_pat)
+    session.modified = True
+
+    json_data = {}
+
+    # Load details hitoric patient
+    try:
+        url = session['server_int'] + '/services/patient/historic/' + str(id_pat)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests details hitoric patient failed, err=%s , url=%s', err, url)
+
+    return render_template('det-hist-patient.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : historic analyzes
+@app.route('/hist-analyzes')
+def hist_analyzes():
+    log.info(Logs.fileline() + ' : TRACE hist analyzes')
+
+    session['current_page'] = 'hist-analyzes'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
+    # Load list analyzes
+    try:
+        date_end = date.today()
+        date_beg = date_end - timedelta(days=7)
+
+        date_beg = datetime.strftime(date_beg, Constants.cst_isodate)
+        date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg, 'date_end': date_end}
+
+        url = session['server_int'] + '/services/analysis/historic/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['analyzes'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
+
+    return render_template('hist-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details historic patient
+@app.route('/det-hist-analysis/<int:id_ana>/<string:date_beg>/<string:date_end>')
+def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
+    log.info(Logs.fileline() + ' : TRACE det hist analysis')
+
+    session['current_page'] = 'det-hist-analysis/' + str(id_ana) + '/' + date_beg + '/' + date_end
+    session.modified = True
+
+    json_data = {}
+
+    # Load details hitoric analysis
+    try:
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'id_ana': id_ana}
+
+        url = session['server_int'] + '/services/analysis/historic/details'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['details'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests details hitoric analysis failed, err=%s , url=%s', err, url)
+
+    return render_template('det-hist-analysis.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : report today
+@app.route('/report-today')
+def report_today():
+    log.info(Logs.fileline() + ' : TRACE report today')
+
+    session['current_page'] = 'report-today'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        date_end = date.today()
+        date_beg = date_end - timedelta(days=1)
+
+        date_beg = datetime.strftime(date_beg, Constants.cst_isodate)
+        date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg, 'date_end': date_end}
+
+        url = session['server_int'] + '/services/report/today'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['today_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests today list failed, err=%s , url=%s', err, url)
+
+    return render_template('report-today.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : report billing
+@app.route('/report-billing')
+def report_billing():
+    log.info(Logs.fileline() + ' : TRACE report billing')
+
+    session['current_page'] = 'report-billing'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    try:
+        date_end = date.today()
+        date_beg = date_end - timedelta(days=365)
+
+        date_beg = datetime.strftime(date_beg, Constants.cst_isodate)
+        date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'id_user': 0}
+
+        url = session['server_int'] + '/services/report/billing'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['bills'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests billing list failed, err=%s , url=%s', err, url)
+
+    return render_template('report-billing.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# --------------------
+# --- Quality page ---
+# --------------------
+
+# Page : Quality General
+@app.route('/quality-general')
+def quality_general():
+    log.info(Logs.fileline() + ' : TRACE quality-general')
+
+    session['current_page'] = 'quality-general'
+    session.modified = True
+
+    json_data = {}
+
+    # Load nb_users
+    try:
+        url = session['server_int'] + '/services/user/count'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_users'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count users failed, err=%s , url=%s', err, url)
+
+    # Load nb_manuals
+    try:
+        url = session['server_int'] + '/services/file/count/manual'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_manuals'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count manuals failed, err=%s , url=%s', err, url)
+
+    # Load last_meeting
+    try:
+        url = session['server_int'] + '/services/quality/last/meeting'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['meeting'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests last meeting failed, err=%s , url=%s', err, url)
+
+    # Load nb_noncompliances_open
+    try:
+        url = session['server_int'] + '/services/quality/count/noncompliance/open'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_noncompliances_open'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count noncompliances open failed, err=%s , url=%s', err, url)
+
+    # Load nb_noncompliances_month
+    try:
+        url = session['server_int'] + '/services/quality/count/noncompliance/month'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['nb_noncompliances_month'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests count noncompliances month failed, err=%s , url=%s', err, url)
+
+    return render_template('quality-general.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list laboratory
+@app.route('/list-laboratory')
+def list_laboratory():
+    log.info(Logs.fileline() + ' : TRACE list laboratory')
+
+    session['current_page'] = 'list-laboratory'
+    session.modified = True
+
+    json_data = {}
+
+    # Load laboratory files
+    try:
+        url = session['server_int'] + '/services/file/document/list/LABO/1'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_files'] = req.json()
+            log.error(Logs.fileline() + ' : DEBUG json data file=' + str(json_data['data_files']))
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests laboratory files failed, err=%s , url=%s', err, url)
+
+    # Load dict details
+    try:
+        url = session['server_int'] + '/services/dict/det/sections'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+            i = 0
+            for val in json_data['data_values']:
+                val['id_ihm'] = i
+                i += 1
+
+            json_data['data_last_id'] = i
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+
+    json_data['dict_name'] = 'sections'
+
+    return render_template('list-laboratory.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list staff
+@app.route('/list-staff')
+def list_staff():
+    log.info(Logs.fileline() + ' : TRACE list staff')
+
+    session['current_page'] = 'list-staff'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/user/list/' + str(session['user_id_group'])
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-staff.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details staff
+@app.route('/det-staff/<int:user_id>')
+def det_staff(user_id=0):
+    log.info(Logs.fileline() + ' : TRACE det staff=' + str(user_id))
+
+    session['current_page'] = 'det-staff/' + str(user_id)
+    session.modified = True
+
+    json_data = {}
+
+    # Load User CV files
+    try:
+        url = session['server_int'] + '/services/file/document/list/USCV/' + str(user_id)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_USCV'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests User CV files failed, err=%s , url=%s', err, url)
+
+    # Load User Diploma files
+    try:
+        url = session['server_int'] + '/services/file/document/list/USDI/' + str(user_id)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_USDI'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests User Diploma files failed, err=%s , url=%s', err, url)
+
+    # Load User Training files
+    try:
+        url = session['server_int'] + '/services/file/document/list/USTR/' + str(user_id)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_USTR'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests User Training files failed, err=%s , url=%s', err, url)
+
+    # Load User Evaluation files
+    try:
+        url = session['server_int'] + '/services/file/document/list/USEV/' + str(user_id)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_USEV'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests User Evaluation files failed, err=%s , url=%s', err, url)
+
+    if user_id > 0:
+        # Load user details
+        try:
+            url = session['server_int'] + '/services/user/det/' + str(user_id)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['user_det'] = req.json()
+            else:
+                json_data['user_det'] = []
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+
+    json_data['user_id'] = user_id
+
+    return render_template('det-staff.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list equipment
+@app.route('/list-equipment')
+def list_equipment():
+    log.info(Logs.fileline() + ' : TRACE list equipment')
+
+    session['current_page'] = 'list-equipment'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/equipment/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-equipment.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details equipment
+@app.route('/det-equipment/<int:id_eqp>')
+def det_equipment(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE det equipment=' + str(id_eqp))
+
+    session['current_page'] = 'det-equipment/' + str(id_eqp)
+    session.modified = True
+
+    json_data = {}
+
+    if id_eqp > 0:
+        # Load Equipment Photo files
+        try:
+            url = session['server_int'] + '/services/file/document/list/EQPH/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_EQPH'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Photo files failed, err=%s , url=%s', err, url)
+
+        # Load Equipment Breakdown files
+        try:
+            url = session['server_int'] + '/services/file/document/list/EQBD/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_EQBD'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Breakdown files failed, err=%s , url=%s', err, url)
+
+        # Load Equipment Preventive Maintenance files
+        try:
+            url = session['server_int'] + '/services/file/document/list/EQPM/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_EQPM'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Preventive Maintenance files failed, err=%s , url=%s', err, url)
+
+        # Load Equipment Calibration Certificat files
+        try:
+            url = session['server_int'] + '/services/file/document/list/EQCC/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_EQCC'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Calibration Certificat files failed, err=%s , url=%s', err, url)
+
+        # Load Equipment Maintenance Contract files
+        try:
+            url = session['server_int'] + '/services/file/document/list/EQMC/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_EQMC'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Maintenance Contract files failed, err=%s , url=%s', err, url)
+
+        # Load Equipment Bill files
+        try:
+            url = session['server_int'] + '/services/file/document/list/EQBI/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_USEV'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Bill files failed, err=%s , url=%s', err, url)
+
+        # Load equipment details
+        try:
+            url = session['server_int'] + '/services/quality/equipment/det/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['det_eqp'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('det-equipment.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : suppliers list
+@app.route('/list-suppliers')
+def list_suppliers():
+    log.info(Logs.fileline() + ' : TRACE list suppliers')
+
+    session['current_page'] = 'list-suppliers'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list suppliers
+    try:
+        url = session['server_int'] + '/services/quality/supplier/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests suppliers list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-suppliers.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details supplier
+@app.route('/det-supplier/<int:id_supplier>')
+def det_supplier(id_supplier=0):
+    log.info(Logs.fileline() + ' : TRACE setting det supplier=' + str(id_supplier))
+
+    session['current_page'] = 'det-supplier/' + str(id_supplier)
+    session.modified = True
+
+    json_data = {}
+
+    if id_supplier > 0:
+        # Load supplier details
+        try:
+            url = session['server_int'] + '/services/quality/supplier/det/' + str(id_supplier)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests supplier det failed, err=%s , url=%s', err, url)
+
+    json_data['id_supplier'] = id_supplier
+
+    return render_template('det-supplier.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list manuals
+@app.route('/list-manuals')
+def list_manuals():
+    log.info(Logs.fileline() + ' : TRACE list manuals')
+
+    session['current_page'] = 'list-manuals'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/manual/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests manual list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-manuals.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details manual
+@app.route('/det-manual/<int:id_manual>')
+def det_manual(id_manual=0):
+    log.info(Logs.fileline() + ' : TRACE setting det manual=' + str(id_manual))
+
+    session['current_page'] = 'det-manual/' + str(id_manual)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['manual_det'] = []
+
+    if id_manual > 0:
+        # Load Manual files
+        try:
+            url = session['server_int'] + '/services/file/document/list/MANU/' + str(id_manual)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_MANU'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Manual files failed, err=%s , url=%s', err, url)
+
+        # Load manual details
+        try:
+            url = session['server_int'] + '/services/quality/manual/det/' + str(id_manual)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['manual_det'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests manual det failed, err=%s , url=%s', err, url)
+
+    json_data['id_manual'] = id_manual
+
+    return render_template('det-manual.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list procedure
+@app.route('/list-procedure')
+def list_procedure():
+    log.info(Logs.fileline() + ' : TRACE list procedure')
+
+    session['current_page'] = 'list-procedure'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/procedure/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests procedure list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-procedure.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details procedure
+@app.route('/det-procedure/<int:id_procedure>')
+def det_procedure(id_procedure=0):
+    log.info(Logs.fileline() + ' : TRACE setting det procedure=' + str(id_procedure))
+
+    session['current_page'] = 'det-procedure/' + str(id_procedure)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['procedure'] = []
+
+    if id_procedure > 0:
+        # Load procdeure files
+        try:
+            url = session['server_int'] + '/services/file/document/list/PROC/' + str(id_procedure)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_PROC'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Procedure files failed, err=%s , url=%s', err, url)
+
+        # Load procedure details
+        try:
+            url = session['server_int'] + '/services/quality/procedure/det/' + str(id_procedure)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['procedure'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests procedure det failed, err=%s , url=%s', err, url)
+
+    json_data['id_procedure'] = id_procedure
+
+    return render_template('det-procedure.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list stock
+@app.route('/list-stock')
+def manage_stock():
+    log.info(Logs.fileline() + ' : TRACE list stock')
+
+    session['current_page'] = 'list-stock'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/stock/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-stock.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details a stock product
+@app.route('/det-stock-product/<int:id_product>')
+def det_stock_product(id_product=0):
+    log.info(Logs.fileline() + ' : TRACE setting det stock product=' + str(id_product))
+
+    session['current_page'] = 'det-stock-product/' + str(id_product)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['stock_product'] = []
+
+    # Load product_type
+    try:
+        url = session['server_int'] + '/services/dict/det/product_type'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_type'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product type failed, err=%s , url=%s', err, url)
+
+    # Load product_conserv
+    try:
+        url = session['server_int'] + '/services/dict/det/product_conserv'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_conserv'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product conserv failed, err=%s , url=%s', err, url)
+
+    if id_product > 0:
+        # Load stock product details
+        try:
+            url = session['server_int'] + '/services/quality/stock/product/det/' + str(id_product)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['stock_product'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
+
+    json_data['id_product'] = id_product
+
+    return render_template('det-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list nonconformities
+@app.route('/list-nonconformities')
+def list_nonconformities():
+    log.info(Logs.fileline() + ' : TRACE list nonconformities')
+
+    session['current_page'] = 'list-nonconformities'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        date_end = date.today()
+        date_beg = date_end - timedelta(days=30)
+
+        date_beg = datetime.strftime(date_beg, Constants.cst_isodate)
+        date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg, 'date_end': date_end}
+
+        url = session['server_int'] + '/services/quality/conformity/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['item_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests conformity list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-nonconformities.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : apply a non-conformity
+@app.route('/non-conformity/<int:id_det>')
+def non_conformity(id_det=0):
+    log.info(Logs.fileline() + ' : TRACE non-conformity')
+
+    session['current_page'] = 'non-conformity/' + str(id_det)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['details'] = []
+
+    try:
+        url = session['server_int'] + '/services/quality/nonconformity/det/' + str(id_det)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['details'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests non-conformity details failed, err=%s , url=%s', err, url)
+
+    json_data['id_det'] = id_det
+
+    return render_template('non-conformity.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list meeting
+@app.route('/list-meeting')
+def list_meeting():
+    log.info(Logs.fileline() + ' : TRACE list meeting')
+
+    session['current_page'] = 'list-meeting'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/meeting/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests meeting list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-meeting.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details meeting
+@app.route('/det-meeting/<int:id_meeting>')
+def det_meeting(id_meeting=0):
+    log.info(Logs.fileline() + ' : TRACE setting det meeting=' + str(id_meeting))
+
+    session['current_page'] = 'det-meeting/' + str(id_meeting)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['meeting'] = []
+
+    if id_meeting > 0:
+        # Load meeting files
+        try:
+            url = session['server_int'] + '/services/file/document/list/MEET/' + str(id_meeting)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_MEET'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Meeting files failed, err=%s , url=%s', err, url)
+
+        # Load meeting details
+        try:
+            url = session['server_int'] + '/services/quality/meeting/det/' + str(id_meeting)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['meeting'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests meeting det failed, err=%s , url=%s', err, url)
+
+    json_data['id_meeting'] = id_meeting
+
+    return render_template('det-meeting.html', args=json_data, rand=random.randint(0, 999))
+
+
+# --------------------
+# --- Various page ---
+# --------------------
+
+# Page : contributors
+@app.route('/contributors')
+def contributors():
+    log.info(Logs.fileline() + ' : TRACE contributors')
+
+    return render_template('contributors.html', rand=random.randint(0, 999))
 
 
 # Route : download a file
-@app.route('/download-file/type/<string:type>/name/<string:filename>/ref/<string:ref>')
-def download_file(type='', filename='', ref=''):
+@app.route('/download-file/type/<string:type>/name/<string:filename>/ref/<string:type_ref>/<string:ref>')
+def download_file(type='', filename='', type_ref='', ref=''):
     log.info(Logs.fileline())
 
     # TYPE
@@ -1588,7 +3159,7 @@ def download_file(type='', filename='', ref=''):
     elif type == 'JF':
         # ref = id_file
         try:
-            url = session['server_int'] + '/services/file/document/' + ref
+            url = session['server_int'] + '/services/file/document/' + str(type_ref) + '/' + str(ref)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1612,14 +3183,16 @@ def download_file(type='', filename='', ref=''):
 
     ret_file = send_file(os.path.join(filepath, generated_name), as_attachment=True, attachment_filename=filename)
     ret_file.headers["x-suggested-filename"] = filename
+    ret_file.headers["Cache-Control"] = 'no-store, must-revalidate'
+    ret_file.headers["Expires"] = '0'
 
     return ret_file
 
 
-# Route : upload a file for record
-@app.route('/upload-file-rec/<int:id_rec>', methods=['POST'])
-def upload_file_rec(id_rec=0):
-    log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+# Route : upload a file form permanent storage
+@app.route('/upload-file/<string:type_ref>/<int:id_ref>', methods=['POST'])
+def upload_file(type_ref='', id_ref=0):
+    log.info(Logs.fileline() + ' : type_ref = ' + str(type_ref) + ' | id_ref = ' + str(id_ref))
     if request.method == 'POST':
         try:
             f = request.files['file']
@@ -1693,7 +3266,7 @@ def upload_file_rec(id_rec=0):
                        'id_storage': storage['id_data'],
                        'end_path': end_path}
 
-            url = session['server_int'] + '/services/file/document/' + str(id_rec)
+            url = session['server_int'] + '/services/file/document/' + str(type_ref) + '/' + str(id_ref)
             req = requests.post(url, json=payload)
 
             if req.status_code != 200:
@@ -1710,7 +3283,7 @@ def upload_file_rec(id_rec=0):
 
 
 # Route : upload a logo for document
-@app.route('/upload-logo/', methods=['POST'])
+@app.route('/upload-logo', methods=['POST'])
 def upload_logo():
     log.info(Logs.fileline())
     if request.method == 'POST':
@@ -1734,5 +3307,5 @@ def upload_logo():
     return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+#    app.run()

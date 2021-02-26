@@ -9,10 +9,11 @@ from datetime import datetime
 from app.models.Analysis import Analysis
 from app.models.DB import DB
 from app.models.Logs import Logs
-from app.models.Constants import Constants
+# from app.models.Constants import Constants
 from app.models.Patient import Patient
 from app.models.Record import Record
 from app.models.Result import Result
+from app.models.Setting import Setting
 from app.models.Various import Various
 from app.models.User import User
 
@@ -21,20 +22,107 @@ class Pdf:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getPdfBarcode(num):
+    def getPdfBarcode(num, args=''):
+        sts_width         = 62
+        sts_height        = 28
+        sts_margin_top    = 10
+        sts_margin_bottom = 10
+        sts_margin_left   = 10
+        sts_margin_right  = 10
+
+        # setting unsaved to test
+        if args:
+            if args['sts_width']:
+                sts_width = args['sts_width']
+
+            if args['sts_height']:
+                sts_height = args['sts_height']
+
+            if args['sts_margin_top']:
+                sts_margin_top = args['sts_margin_top']
+
+            if args['sts_margin_bottom']:
+                sts_margin_bottom = args['sts_margin_bottom']
+
+            if args['sts_margin_left']:
+                sts_margin_left = args['sts_margin_left']
+
+            if args['sts_margin_right']:
+                sts_margin_right = args['sts_margin_right']
+        else:
+            setting = Setting.getStickerSetting()
+
+            if not setting:
+                Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfBarcode no sticker setting found')
+                return False
+
+            sts_width         = args['sts_width'] + 2   # +2 for border 1px
+            sts_height        = args['sts_height'] + 2  # +2 for border 1px
+            sts_margin_top    = max(args['sts_margin_top'], 10)     # impossible to reduce margin under 10 !
+            sts_margin_bottom = max(args['sts_margin_bottom'], 10)  # impossible to reduce margin under 10 !
+            sts_margin_left   = max(args['sts_margin_left'], 10)    # impossible to reduce margin under 10 !
+            sts_margin_right  = max(args['sts_margin_right'], 10)   # impossible to reduce margin under 10 !
+
+        # Generate barcode code39 type
         try:
             checksum = False
 
             CODE39 = barcode.get_barcode_class('code39')
 
-            options = {'font_size': 10, 'text_distance': 1.0}
+            options = {'font_size': 10,
+                       'text_distance': 1.0,
+                       'module_height': sts_height - 4,  # substract distance text + text
+                       'quiet_zone': 4.0}
             options['center_text'] = True
 
             ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-            ean.save('tmp/etiquette_' + num, options=options)
+            ean.save('tmp/sticker_' + num, options=options)
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : getPdfBarcode failed, err=%s , num=%s', err, str(num))
             return False
+
+        # Generate PDF
+        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+
+        page_w = int(210 - (sts_margin_left + sts_margin_right))
+        page_h = int(297 - (sts_margin_top + sts_margin_bottom))
+
+        # Need coeff convert to works !
+        sticker = ('<img src="' + path + '/sticker_' + num + '.png" width="' + str(sts_width * 3.7795275591) + 'mm" ' +
+                   'height="' + str(sts_height * 4.6) + 'mm">')
+
+        nb_col  = int(page_w / sts_width)
+        nb_line = int(page_h / sts_height)
+
+        div_stickers  = '<table width="100%" style="border:1px solid #DDD;" cellspacing="1px;" cellpadding="0">'
+        line_stickers = '<tr>'
+
+        for c in range(nb_col):
+            line_stickers += '<td style="border:1px solid #DDD;">' + sticker + '</td>'
+
+        line_stickers += '</tr>'
+
+        for l in range(nb_line):
+            div_stickers += line_stickers
+
+        div_stickers += '</table>'
+
+        page_body = ('<div style="position:absolute;top:0;left:0;width:' + str(210) + 'mm;height:' + str(297) +
+                     'mm;background-color:#FFF;">' + div_stickers + '</div>')
+
+        filename = 'barcode_' + num + '.pdf'
+
+        form_cont = page_body
+
+        options = {'--encoding': 'utf-8',
+                   'page-size': 'A4',
+                   'margin-top': str(sts_margin_bottom) + 'mm',
+                   'margin-right': str(sts_margin_right) + 'mm',
+                   'margin-bottom': str(sts_margin_bottom) + 'mm',
+                   'margin-left': str(sts_margin_left) + 'mm',
+                   'no-outline': None}
+
+        pdfkit.from_string(form_cont, path + filename, options=options)
 
         return True
 
@@ -177,6 +265,87 @@ class Pdf:
         page_footer += '</div>'
 
         filename = 'facture_' + num_rec_y + '.pdf'
+
+        form_cont = page_header + page_body + page_footer
+
+        options = {'--encoding': 'utf-8',
+                   'page-size': 'A4',
+                   'margin-top': '0.00mm',
+                   'margin-right': '0.00mm',
+                   'margin-bottom': '0.00mm',
+                   'margin-left': '0.00mm',
+                   'no-outline': None}
+
+        pdfkit.from_string(form_cont, path + filename, options=options)
+
+        return True
+
+    @staticmethod
+    def getPdfBillList(l_datas, date_beg, date_end):
+        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+
+        # Get format header
+        pdfpref = Pdf.getPdfPref()
+
+        full_header = True
+
+        if pdfpref and pdfpref['entete'] == 1069:
+            full_header = False
+
+        bill_div = ''
+
+        total_price  = 0
+        total_remain = 0
+
+        bill_div += ('<span>ETAT DE LA FACTURATION DU ' + str(date_beg) + ' AU ' + str(date_end) + '</span>'
+                     '<div style="width:980px;height:600px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
+                     '<table style="width:100%"><thead>'
+                     '<th style="text-align:left;">N° dossier</th>'
+                     '<th style="text-align:left;">N° quittance</th>'
+                     '<th style="text-align:left;">N° facture</th>'
+                     '<th>Prix</th>'
+                     '<th>A payer</th></thead>'
+                     '<tr><td colspan="5"></td></tr>')
+
+        for data in l_datas:
+            bill_div += ('<tr><td style="text-align:left;">' + data['rec_num'] + '</td>'
+                         '<td style="text-align:left;">' + data['receipt_num'] + '</td>'
+                         '<td style="text-align:left;">' + data['bill_num'] + '</td>'
+                         '<td style="text-align:right;">' + str(data['bill_price']) + '</td>'
+                         '<td style="text-align:right;">' + str(data['bill_remain']) + '</td></tr>')
+
+            total_price  += data['bill_price']
+            total_remain += data['bill_remain']
+
+        # bill_price and bill_remain
+        bill_div += """\
+                <tr><td colspan="5"></td></tr>
+                <tr><td class="ft_bill_det_tit" style="text-align:left;">Total</td>
+                    <td colspan="3" class="ft_bill_det_tot" style="text-align:right;"">""" + str(total_price) + """</td>
+                    <td class="ft_bill_det_tot" style="text-align:right;">""" + str(total_remain) + """</td>
+                </tr>"""
+
+        bill_div += '</table></div>'
+
+        page_header = Pdf.getPdfHeader(full_header)
+
+        page_body = bill_div
+
+        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
+
+        page_footer = """\
+                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
+                    <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Etat de la facturation, édité le """ + str(date_now) + """</span>
+                         <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page 1/1</span></div>
+                </div>
+                <hr style="width:100%;border-top: 2px dashed dimgrey;">"""
+
+        page_footer += '</div>'
+
+        date_now = datetime.now()
+        today    = date_now.strftime("%Y%m%d")
+
+        filename = 'list_bill_' + today + '.pdf'
 
         form_cont = page_header + page_body + page_footer
 
@@ -492,6 +661,49 @@ class Pdf:
         return True
 
     @staticmethod
+    def getPdfReportGeneric(html_part, filename=''):
+        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+
+        date_now = datetime.now()
+        today    = date_now.strftime("%Y%m%d")
+
+        filename = filename + '_' + today + '.pdf'
+
+        # Get format header
+        pdfpref = Pdf.getPdfPref()
+
+        full_header = True
+        full_comm   = False
+
+        if pdfpref and pdfpref['entete'] == 1069:
+            full_header = False
+
+        page_header = Pdf.getPdfHeader(full_header)
+
+        page_body = """<div style="width:1000px;">""" + html_part + """</div>"""
+
+        page_footer = """\
+                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
+                    <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page 1/1</span></div>
+                </div>"""
+
+        page_footer += '</div>'
+
+        form_cont = page_header + page_body + page_footer
+
+        options = {'--encoding': 'utf-8',
+                   'page-size': 'A4',
+                   'margin-top': '0.00mm',
+                   'margin-right': '0.00mm',
+                   'margin-bottom': '0.00mm',
+                   'margin-left': '0.00mm',
+                   'no-outline': None}
+
+        pdfkit.from_string(form_cont, path + filename, options=options)
+
+        return True
+
+    @staticmethod
     def getPdfHeader(full_header):
         # Width 47px <=> 1cm, Height 47px <=> 1cm
         header = """\
@@ -662,6 +874,21 @@ class Pdf:
                         <div><span style="font: 15px 'Helvetica';">""" + str(head_line2['value']) + """</span></div>
                         <div><span style="font: 15px 'Helvetica';">""" + str(head_line3['value']) + """</span></div>"""
 
+        if head_phone['value']:
+            phone = """<span class="ft_header">TEL : """ + str(head_phone['value']) + """&nbsp;</span>"""
+        else:
+            phone = ''
+
+        if head_fax['value']:
+            fax = """<span class="ft_header">FAX : """ + str(head_fax['value']) + """&nbsp;</span>"""
+        else:
+            fax = ''
+
+        if head_email['value']:
+            email = """<span class="ft_header">EMAIL : """ + str(head_email['value']) + """&nbsp;</span></div>"""
+        else:
+            email = ''
+
         header += """\
                 <div style="width:1000px;height:140px;background-color:#FFF;">
                     <div style="float:left;width:250px;">""" + head_logo + """</div>
@@ -669,9 +896,7 @@ class Pdf:
                         <div><span class="ft_lab_name">""" + str(head_name['value']) + """</span></div>
                         """ + extra_header + """
                         <div><span class="ft_header">""" + str(head_addr['value']) + """</span></div>
-                        <div><span class="ft_header">TEL : """ + str(head_phone['value']) + """&nbsp;</span>
-                             <span class="ft_header">FAX : """ + str(head_fax['value']) + """&nbsp;</span>
-                             <span class="ft_header">EMAIL : """ + str(head_email['value']) + """&nbsp;</span></div>
+                        <div>""" + phone + fax + email + """</div>
                     </div>
                 </div>"""
 

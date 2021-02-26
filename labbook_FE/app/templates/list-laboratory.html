@@ -1,0 +1,388 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Laboratoire") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Laboratoire") }}</span></h2>
+            <form>
+                <div class="panel-name row mt-3">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="name" class="col-form-label col-4 text-right mt-2 optional">{{ _("Nom du dictionnaire") }}</label>
+                            <div>					
+                                <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control" maxlength="20">			
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2 float-right">
+                    </div>
+                </div>
+            </form>
+            <form>
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Organigramme") }}</h3>
+                </div>
+                <div class="row mt-3">
+                    <div class="form-group">
+                        <div class="text-left upload-container">
+                            <div>
+                                <div>
+                                    <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                        <input name="file" type="file" style="margin-bottom:4px"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                            <div></div>
+                            <table class=table-responsive">
+                                <thead>
+                                    <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                                </thead>
+                                <tbody id="tbody_file"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
+                    </div>
+                </div>
+            </form>
+
+            <form class="row justify-content-center mt-2" id="value-list">
+                <div class="panel-heading col-12">
+                    <h3 class="panel-title">{{ _("Valeurs") }}</h3>
+                </div>
+                <table id="table_value" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th class="col" hidden>{{ _("serial") }}</th>
+                            <th class="d-inline-block col-2 text-center">{{ _("Action") }}</th>
+                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Libéllé") }} *</th>
+                            <th class="d-inline-block col-2 text-left cursor-act">{{ _("Code") }} *</th>
+                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Libéllé court") }}</th>
+                            <th class="d-inline-block col-2 text-left cursor-act">{{ _("Position") }}</th>
+                    </thead>
+                    <tbody id="tbody_value">
+                    </tbody>
+                </table>
+            </form>
+            
+            <div class="my-2">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var struct_val  = {"id_ihm":0, "id_data":0 ,"label":"", "code":"", "short_label":"", "position":0} ;
+var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var ind_values  = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
+var data_files  = {% if args['data_files'] %}{{ args['data_files']|safe }}{% else %}[]{% endif %} ;
+
+function add_value()
+{
+let tmp_struct_val = JSON.parse(JSON.stringify(struct_val)) ;
+
+tmp_struct_val.id_ihm = ind_values++ ;
+
+data_values.push(tmp_struct_val) ;
+
+load_value( tmp_struct_val ) ;
+}
+
+function load_value( data )
+{
+let tr_value = '' ;
+    
+let obj = data ;
+
+    if ( obj.id_ihm >= 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+
+    let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+
+    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
+    tmp_tr += create_td("", btn, " text-center d-inline-block col-2", "") ; // actions
+    tmp_tr += create_td("", create_input("label_"+obj.id_ihm, "text", obj.label, "","", ""), "d-inline-block col-3", "") ;
+    tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "d-inline-block col-2", "") ;
+    tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "d-inline-block col-3", "") ;
+    tmp_tr += create_td("", create_input("pos_"+obj.id_ihm, "number", obj.position, 0, 10, ""), "d-inline-block col-2", "") ;
+    tmp_tr += '</tr>' ;
+
+    tr_value += tmp_tr ;
+    }
+
+    $("#tbody_value").append(tr_value) ;
+    $("#table_value").tablesorter() ;  // sort only data on screen
+}
+
+function del_value( id_ihm )
+{
+    if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
+    {
+        for( i in data_values )
+        {
+            if (data_values[i].id_ihm == id_ihm)
+            {
+            delete data_values[i] ;
+
+            break ;
+            }
+        }
+    }
+    else
+    return false ;
+}
+
+function load_data()
+{
+// clear table tbody
+$("#tbody_value").empty() ;
+
+    for( i in data_values )
+    {
+    load_value( data_values[i] ) ;
+    }
+
+    for( i in data_files )
+    {
+    load_file( data_files[i] ) ;
+    }
+
+    if (data_files.length < 1)
+    {
+    let tr_file = '<tr><td colspan="2"><div>Aucun fichier déposé</div></td></tr>' ;
+
+    $("#tbody_file").append(tr_file) ;
+    }
+}
+
+function create_td(id, val, cls, style)
+{
+let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
+             '<div>' + val + '</div></td>' ;
+
+return tmp_td ;
+}
+
+function create_input(id, type, val, min, max, fct)
+{
+let other_fct = '' ;
+
+    // example : onchange for price
+    if ( fct != "" )
+    other_fct += fct + '(this);" ' ;
+
+let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+
+    if (type == "number")
+    tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
+    else if (type == "text" && max != "")
+    tmp_input += 'maxlength="' + max + '"'
+
+tmp_input += '>' ;
+
+return tmp_input ;
+}
+
+function change_data( elem )
+{
+// Get new value from select or input
+let val = $(elem).val() ;
+
+// Change value in data structure
+let id_elem = elem.id ;
+let split_id = id_elem.split("_") ;
+let id_ihm  = split_id[split_id.length -1] ; 
+
+    for( i in data_values )
+    {
+        if (data_values[i].id_ihm == id_ihm )
+        {
+            if ( split_id[0] == "label" )
+            data_values[i].label = val ;
+            else if ( split_id[0] == "code" )
+            data_values[i].code = val ;
+            else if ( split_id[0] == "short" )
+            data_values[i].short_label = val ;
+            else if ( split_id[0] == "pos" )
+            data_values[i].position = val ;
+
+        break ;
+        }
+    }
+}
+
+function save_dict()
+{
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var dict_name = $("#name").val() ;
+
+    if (dict_name == "")
+    {
+    alert( "{{ _("Veuillez saisir un nom de dictionnaire.") }}" ) ;
+    return false ;
+    }
+
+    // Label and code are required
+    for( i in data_values )
+    {
+        if (data_values[i].label == "")
+        {
+        alert( "{{ _("Veuillez renseigner le(s) libéllé(s).") }}" ) ;
+        return false ;
+        }
+
+        if (data_values[i].code == "")
+        {
+        alert( "{{ _("Veuillez renseigner le(s) code(s).") }}" ) ;
+        return false ;
+        }
+    }
+
+var param = '{ "list_val":[ ';
+
+    for( i in data_values )
+    {
+        if (i > 0)
+        param += ', ' ;
+
+    var param_val = '{ "id_owner":' + id_owner + ', ' +
+                      '"id_data":' + data_values[i].id_data + ', ' +
+                      '"label":"' + data_values[i].label + '", ' +
+                      '"short_label":"' + data_values[i].short_label + '", ' +
+                      '"position":' + data_values[i].position + ', ' +
+                      '"code":"' + data_values[i].code + '"}' ;
+
+    param += param_val ;
+    }
+
+param += ' ] }';
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/dict/det/" + dict_name,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           //window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST dict det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function load_file( data )
+{
+let tr_file = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function upload_file()
+{
+let param_form = new FormData() ;
+
+param_form.append('file', $('input[type=file]')[0].files[0]) ;
+
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/LABO/1",
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
+        {
+        console.log( "success upload ") ;
+        location.reload() ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR upload file") ;
+        alert("Une erreur est survenue lors du dépot d'un fichier") ;
+        }
+    } ) ;
+}
+
+function delete_file( id_file )
+{
+// TODO check user role rights
+    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    {
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/file/document/LABO/" + id_file,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE document file") ;
+            alert("Erreur lors de la suppression d'un fichier") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+{% if args['dict_name'] %}
+load_data() ;
+$("#name").prop("readonly", true) ;
+{% else %}
+add_value() ;
+{% endif %}
+} ) ;
+</script>
+{% endblock %}

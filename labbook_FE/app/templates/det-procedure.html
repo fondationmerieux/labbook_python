@@ -1,0 +1,398 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Procédure") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Procédure") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row mt-3">
+                    <label for="reference" class="col-form-label col-3 text-right mt-2">{{ _("Référence") }}</label>
+                    <div>					
+                        <input type="text" name="reference" id="reference" value="{{ args['procedure']['reference'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Titre") }}</label>
+                    <div>					
+                        <input type="text" name="title" id="title" value="{{ args['procedure']['title'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_writer" class="col-form-label col-3 text-right mr-1">{{ _("Rédacteur") }}</label>
+                    <div>
+                        <select id="search_writer" style="width:400px"></select>
+                        <span class="ml-2">{{ args['procedure']['writer'] }}</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_auditor" class="col-form-label col-3 text-right mr-1">{{ _("Vérificateur") }}</label>
+                    <div>
+                        <select id="search_auditor" style="width:400px"></select>
+                        <span class="ml-2">{{ args['procedure']['auditor'] }}</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_approver" class="col-form-label col-3 text-right mr-1">{{ _("Approbateur") }}</label>
+                    <div>
+                        <select id="search_approver" style="width:400px"></select>
+                        <span class="ml-2">{{ args['procedure']['approver'] }}</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_insert" class="col-form-label col-3 text-right mt-2">{{ _("Date de création") }}</label>
+                    <div>					
+                        <input id="date_insert" class="form-control" type="date" maxlength="10" size="10" value="{{ args['procedure']['date_insert'] }}" name="date_insert" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_apply" class="col-form-label col-3 text-right mt-2">{{ _("Date d'application") }}</label>
+                    <div>					
+                        <input id="date_apply" class="form-control" type="date" maxlength="10" size="10" value="{{ args['procedure']['date_apply'] }}" name="date_apply" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_update" class="col-form-label col-3 text-right mt-2">{{ _("Date de modification") }}</label>
+                    <div>					
+                        <input id="date_update" class="form-control" type="date" maxlength="10" size="10" value="{{ args['procedure']['date_update'] }}" name="date_update" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section d'application") }}</label>
+                    <div>					
+                        <select id="section" name="section" class="form-control">
+                            <option value="0" {% if args['procedure']['section'] == 0 %} selected {% endif %}>TODO load list</option>  
+                            <option value="1038" {% if args['procedure']['section'] == 1038 %} selected {% endif %}>{{ _("Administration") }}</option>
+                            <option value="1039" {% if args['procedure']['section'] == 1039 %} selected {% endif %}>{{ _("Prélèvement") }}</option>
+                            <option value="1040" {% if args['procedure']['section'] == 1040 %} selected {% endif %}>{{ _("Biochimie") }}</option>
+                            <option value="1041" {% if args['procedure']['section'] == 1041 %} selected {% endif %}>{{ _("Hématologie") }}</option>
+                            <option value="1042" {% if args['procedure']['section'] == 1042 %} selected {% endif %}>{{ _("Sérologie") }}</option>
+                            <option value="1043" {% if args['procedure']['section'] == 1043 %} selected {% endif %}>{{ _("Microbiologie") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="offset-3  text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="PROC" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_PROC = {% if args['data_PROC'] %}{{ args['data_PROC']|safe }}{% else %}[]{% endif %} ;
+
+$("#search_writer").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/user/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_writer").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_writer").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+$("#search_auditor").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/user/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_auditor").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_auditor").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+$("#search_approver").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/user/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_approver").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_approver").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+function save_item()
+{
+var id_owner    = {{ session['user_id_group']|safe }} ;
+var id_proc     = {{ args['id_procedure']|safe }} ;
+var reference   = $("#reference").val()   ;
+var title       = $("#title").val()       ;
+var writer      = $("#search_writer").val()   ;
+var auditor     = $("#search_auditor").val()  ;
+var approver    = $("#search_approver").val() ;
+var date_insert = $("#date_insert").val() ;
+var date_apply  = $("#date_apply").val()  ;
+var date_update = $("#date_update").val() ;
+var section     = $("#section").val()     ;
+
+var msg = "" ;
+
+    if (reference == "" && titre == "")
+    msg += "{{ _("Veuillez saisir une référence ou un titre.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+    if (id_proc > 0)
+    {
+        if (writer < 1)
+        writer = {% if args['procedure']['writer_id'] %}{{ args['procedure']['writer_id']|safe }}{% else %}0{% endif %} ;
+
+        if (auditor < 1)
+        auditor = {% if args['procedure']['auditor_id'] %}{{ args['procedure']['auditor_id']|safe }}{% else %}0{% endif %} ;
+
+        if (approver < 1)
+        approver = {% if args['procedure']['approver_id'] %}{{ args['procedure']['approver_id']|safe }}{% else %}0{% endif %} ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_item":' + id_proc + ', ' +
+              '"reference":"' + reference + '", ' +
+              '"title":"' + title + '", ' +
+              '"writer":' + writer + ', ' +
+              '"auditor":' + auditor + ', ' +
+              '"approver":' + approver + ', ' +
+              '"date_insert":"' + date_insert + '", ' +
+              '"date_apply":"' + date_apply + '", ' + 
+              '"date_update":"' + date_update + '", ' +
+              '"section":' + section + '}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/procedure/det/" + id_proc,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           let ref = JSON.stringify(data) ;
+
+           upload_file(ref);
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function load_data()
+{
+$("#tbody_file").empty() ;
+
+    for( i in data_PROC )
+    {
+    load_file( data_PROC[i] ) ;
+    }
+}
+
+function load_file( data )
+{
+let tr_file = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'PROC\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function upload_file(ref)
+{
+let param_form = new FormData() ;
+let input_file = $("#PROC")[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    param_form.append('file', input_file.files[0]) ;
+
+        $.ajax(
+        {
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/PROC/" + ref,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: param_form,
+            success : function(response)
+            {
+            console.log( "success upload ") ;
+            },
+            error: function(response)
+            {
+            console.log("ERROR upload file") ;
+            alert("Une erreur est survenue lors du dépot d'un fichier") ;
+            }
+        } ) ;
+    }    
+}
+
+function delete_file( id_file )
+{
+// TODO check user role rights
+    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    {
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/file/document/PROC/" + id_file,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE document file") ;
+            alert("Erreur lors de la suppression d'un fichier") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

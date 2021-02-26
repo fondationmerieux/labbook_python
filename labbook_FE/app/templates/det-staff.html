@@ -1,0 +1,406 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Personnel") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Personnel") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row">
+                    <label for="lastname" class="col-form-label col-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="lastname" id="lastname" value="{{ args['user_det']['lastname'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="firstname" class="col-form-label col-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <div class="">					
+                        <input type="text" name="firstname" id="firstname" value="{{ args['user_det']['firstname'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <div>					
+                        <input type="email" name="email" id="email" value="{{ args['user_det']['email'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="col-form-label col-3 text-right optional mt-2">{{ _("Titre") }}</label>
+                    <div>					
+                        <select id="title" name="title" class="form-control">
+                            <option value="0" {% if args['user_det']['title'] == 0  %} selected {% endif %}></option>  
+                            <option value="260" {% if args['user_det']['title'] == 260 %} selected {% endif %}>{{ _("Monsieur") }}</option>
+                            <option value="261" {% if args['user_det']['title'] == 261 %} selected {% endif %}>{{ _("Madame") }}</option>
+                            <option value="262" {% if args['user_det']['title'] == 262 %} selected {% endif %}>{{ _("Mademoiselle") }}</option>
+                            <option value="263" {% if args['user_det']['title'] == 263 %} selected {% endif %}>{{ _("Docteur") }}</option>
+                            <option value="264" {% if args['user_det']['title'] == 264 %} selected {% endif %}>{{ _("Professeur") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="initial" class="col-form-label col-3 text-right optional mt-2">{{ _("Initiales") }}</label>
+                    <div>					
+                        <input type="text" name="initial" id="initial" value="{{ args['user_det']['initial'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="birth" class="col-form-label col-3 text-right optional mt-2">{{ _("Date de naissance") }}</label>
+                    <div>					
+                        <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['birth'] }}" name="birth" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <div>					
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['user_det']['address'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="col-form-label col-3 text-right optional mt-2">{{ _("Numéro de téléphone") }}</label>
+                    <div>					
+                        <input type="text" name="phone" id="phone" value="{{ args['user_det']['phone'] }}" class="form-control">			
+                    </div>
+                </div>
+                 <div class="form-group row">
+                    <label for="arrived" class="col-form-label col-3 text-right optional mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
+                    <div>					
+                        <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['arrived'] }}" name="arrived" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="position" class="col-form-label col-3 text-right optional mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
+                    <div>					
+                        <input type="text" name="position" id="position" value="{{ args['user_det']['position'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cv" class="col-form-label col-3 text-right optional mt-2">{{ _("CV") }}</label>
+                    <div>					
+                        <textarea id="cv" name="cv" rows="4" cols="50" class="form-control">{{ args['user_det']['cv'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                    <input id="USCV" name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_USCV"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="diploma" class="col-form-label col-3 text-right optional mt-2">{{ _("Diplômes") }}</label>
+                    <div>					
+                        <textarea id="diploma" name="diploma" rows="4" cols="50" class="form-control">{{ args['user_det']['diploma'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                    <input id="USDI" name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_USDI"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="training" class="col-form-label col-3 text-right optional mt-2">{{ _("Formations continues") }}</label>
+                    <div>					
+                        <textarea id="training" name="training" rows="4" cols="50" class="form-control">{{ args['user_det']['training'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                    <input id="USTR" name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_USTR"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="section" class="col-form-label col-3 text-right optional mt-2">{{ _("Section de travail") }}</label>
+                    <div>					
+                        <select id="section" name="section" class="form-control">
+                            <option value="0" {% if args['user_det']['section'] == 0 %} selected {% endif %}>TODO load list</option>  
+                            <option value="1038" {% if args['user_det']['section'] == 1038 %} selected {% endif %}>{{ _("Administration") }}</option>
+                            <option value="1039" {% if args['user_det']['section'] == 1039 %} selected {% endif %}>{{ _("Prélèvement") }}</option>
+                            <option value="1040" {% if args['user_det']['section'] == 1040 %} selected {% endif %}>{{ _("Biochimie") }}</option>
+                            <option value="1041" {% if args['user_det']['section'] == 1041 %} selected {% endif %}>{{ _("Hématologie") }}</option>
+                            <option value="1042" {% if args['user_det']['section'] == 1042 %} selected {% endif %}>{{ _("Sérologie") }}</option>
+                            <option value="1043" {% if args['user_det']['section'] == 1043 %} selected {% endif %}>{{ _("Microbiologie") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="last_eval" class="col-form-label col-3 text-right optional mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
+                    <div>					
+                        <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['last_eval'] }}" name="last_eval" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                    <input id="USEV" name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_USEV"></tbody>
+                        </table>
+                    </div>
+                </div>
+                    
+                <div class="form-group row">
+                    <label for="comment" class="col-form-label col-3 text-right optional mt-2">{{ _("Commentaires") }}</label>
+                    <div>					
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['user_det']['comment'] }}</textarea>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_USCV = {% if args['data_USCV'] %}{{ args['data_USCV']|safe }}{% else %}[]{% endif %} ;
+var data_USDI = {% if args['data_USDI'] %}{{ args['data_USDI']|safe }}{% else %}[]{% endif %} ;
+var data_USTR = {% if args['data_USTR'] %}{{ args['data_USTR']|safe }}{% else %}[]{% endif %} ;
+var data_USEV = {% if args['data_USEV'] %}{{ args['data_USEV']|safe }}{% else %}[]{% endif %} ;
+
+function save_user()
+{
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_user   = {{ args['user_id']|safe }} ;
+var lastname  = $("#lastname").val()  ;
+var firstname = $("#firstname").val() ;
+var email     = $("#email").val()     ;
+var title     = $("#title").val()     ;
+var initial   = $("#initial").val()   ;
+var birth     = $("#birth").val()     ; 
+var phone     = $("#phone").val()     ;
+var arrived   = $("#arrived").val()   ;
+var position  = $("#position").val()  ;
+var section   = $("#section").val()   ;
+var last_eval = $("#last_eval").val() ;
+var address   = JSON.stringify( $("#address").val() )  ;
+var cv        = JSON.stringify( $("#cv").val() )       ;
+var diploma   = JSON.stringify( $("#diploma").val() )  ;
+var training  = JSON.stringify( $("#training").val() ) ;
+var comment   = JSON.stringify( $("#comment").val() )  ;
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_user":' + id_user + ', ' +
+              '"lastname":"' + lastname + '", ' +
+              '"firstname":"' + firstname + '", ' +
+              '"email":"' + email + '", ' +
+              '"title":' + title + ', ' +
+              '"initial":"' + initial + '", ' +
+              '"birth":"' + birth + '", ' +
+              '"phone":"' + phone + '", ' +
+              '"arrived":"' + arrived + '", ' +
+              '"position":"' + position + '", ' +
+              '"section":' + section + ', ' +
+              '"last_eval":"' + last_eval + '", ' +
+              '"address":' + address + ', ' +   // No quotes with stringify
+              '"cv":' + cv + ', ' +             // No quotes with stringify
+              '"diploma":' + diploma + ', ' +   // No quotes with stringify
+              '"training":' + training + ', ' + // No quotes with stringify
+              '"comment":' + comment + '}' ; // No quotes with stringify
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/user/staff/det/" + id_user,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           upload_file("USCV", id_user) ;
+           upload_file("USDI", id_user) ;
+           upload_file("USTR", id_user) ;
+           upload_file("USEV", id_user) ;
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST user staff det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function load_data()
+{
+$("#tbody_file_USCV").empty() ;
+$("#tbody_file_USDI").empty() ;
+$("#tbody_file_USTR").empty() ;
+$("#tbody_file_USEV").empty() ;
+
+    for( i in data_USCV )
+    {
+    load_file( data_USCV[i], "USCV" ) ;
+    }
+
+    for( i in data_USDI )
+    {
+    load_file( data_USDI[i], "USDI" ) ;
+    }
+
+    for( i in data_USTR )
+    {
+    load_file( data_USTR[i], "USTR" ) ;
+    }
+
+    for( i in data_USEV )
+    {
+    load_file( data_USEV[i], "USEV" ) ;
+    }
+}
+
+function load_file( data, type_ref )
+{
+let tr_file = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'' + type_ref + '\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\',' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file_" + type_ref).append(tr_file) ;
+}
+
+function upload_file(type_ref, id_ref)
+{
+let param_form = new FormData() ;
+let input_file = $('#' + type_ref)[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    param_form.append('file', input_file.files[0]) ;
+
+        $.ajax(
+        {
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + type_ref + "/" + id_ref,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: param_form,
+            success : function(response)
+            {
+            console.log( "success upload ") ;
+            },
+            error: function(response)
+            {
+            console.log("ERROR upload file") ;
+            alert("Une erreur est survenue lors du dépot d'un fichier") ;
+            }
+        } ) ;
+    }
+}
+
+function delete_file( type_ref, id_file )
+{
+// TODO check user role rights
+    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    {
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE document file") ;
+            alert("Erreur lors de la suppression d'un fichier") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

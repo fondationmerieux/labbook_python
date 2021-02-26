@@ -1,0 +1,205 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Prescripteur") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Prescipteur") }}</span></h2>
+            <form autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Accès") }}</h3>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="code" class="col-form-label col-3 text-right mt-2">{{ _("Code") }}</label>
+                    <div>					
+                        <input type="text" name="code" id="code" value="{{ args['code'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="col-form-label col-3 text-right optional mt-2">{{ _("Titre") }}</label>
+                    <div>					
+                        <select id="title" name="title" class="form-control">
+                            <option value="0" {% if args['titre'] == 0  %} selected {% endif %}></option>  
+                            <option value="260" {% if args['titre'] == 260 %} selected {% endif %}>{{ _("Monsieur") }}</option>
+                            <option value="261" {% if args['titre'] == 261 %} selected {% endif %}>{{ _("Madame") }}</option>
+                            <option value="262" {% if args['titre'] == 262 %} selected {% endif %}>{{ _("Mademoiselle") }}</option>
+                            <option value="263" {% if args['titre'] == 263 %} selected {% endif %}>{{ _("Docteur") }}</option>
+                            <option value="264" {% if args['titre'] == 264 %} selected {% endif %}>{{ _("Professeur") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lastname" class="col-form-label col-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="lastname" id="lastname" value="{{ args['nom'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="firstname" class="col-form-label col-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <div class="">					
+                        <input type="text" name="firstname" id="firstname" value="{{ args['prenom'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="initial" class="col-form-label col-3 text-right optional mt-2">{{ _("Initiales") }}</label>
+                    <div>					
+                        <input type="text" name="initial" id="initial" value="{{ args['initiale'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="work_place" class="col-form-label col-3 text-right optional mt-2">{{ _("Lieu de travail") }}</label>
+                    <div>					
+                        <input type="text" name="work_place" id="work_place" value="{{ args['etablissement'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="service" class="col-form-label col-3 text-right optional mt-2">{{ _("Service") }}</label>
+                    <div>					
+                        <input type="text" name="service" id="service" value="{{ args['service'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <div>					
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['adresse'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="city" class="col-form-label col-3 text-right optional mt-2">{{ _("Ville") }}</label>
+                    <div>					
+                        <input type="text" name="city" id="city" value="{{ args['ville'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="spe" class="col-form-label col-3 text-right optional mt-2">{{ _("Spécialité") }}</label>
+                    <div>					
+                        <select id="spe" name="title" class="form-control">
+                            <option value="0" selected></option>  
+                            <!-- TODO load spe -->  
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="col-form-label col-3 text-right optional mt-2">{{ _("Téléphone fixe") }}</label>
+                    <div>					
+                        <input type="tel" name="phone" id="phone" value="{{ args['tel'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="mobile" class="col-form-label col-3 text-right optional mt-2">{{ _("Téléphone mobile") }}</label>
+                    <div>					
+                        <input type="tel" name="mobile" id="mobile" value="{{ args['mobile'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="fax" class="col-form-label col-3 text-right optional mt-2">{{ _("Fax") }}</label>
+                    <div>					
+                        <input type="tel" name="fax" id="fax" value="{{ args['fax'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <div>					
+                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_doctor();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save_doctor()
+{
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_doctor = {{ args['id_doctor']|safe }} ;
+var code      = $("#code").val()      ;
+var title     = $("#title").val()     ;
+var lastname  = $("#lastname").val()  ;
+var firstname = $("#firstname").val() ;
+var initial   = $("#initial").val()   ;
+var work_place= $("#work_place").val();
+var service   = $("#service").val()   ;
+var address   = JSON.stringify( $("#address").val() ) ;
+var city      = $("#city").val()   ;
+var spe       = $("#spe").val()    ;
+var phone     = $("#phone").val()  ;
+var mobile    = $("#mobile").val() ;
+var fax       = $("#fax").val()    ; 
+var email     = $("#email").val()  ;
+
+var msg = "" ;
+
+    if (lastname == "")
+    msg += "{{ _("Veuillez saisir un nom.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_doctor":' + id_doctor + ', ' +
+              '"code":"' + code + '", ' +
+              '"title":' + title + ', ' +
+              '"lastname":"' + lastname + '", ' +
+              '"firstname":"' + firstname + '", ' +
+              '"initial":"' + initial + '", ' +
+              '"work_place":"' + work_place + '", ' +
+              '"service":"' + service + '", ' +
+              '"address":' + address + ', ' +   // No quotes with stringify
+              '"city":"' + city + '", ' +
+              '"spe":' + spe + ', ' +
+              '"phone":"' + phone + '", ' +
+              '"mobile":"' + mobile + '", ' +
+              '"fax":"' + fax + '", ' +
+              '"email":"' + email + '"}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/doctor/det/" + id_doctor,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST doctor det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

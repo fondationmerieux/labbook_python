@@ -9,6 +9,7 @@ from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Analysis import *
 from app.models.Constants import *
+from app.models.Dict import *
 from app.models.File import *
 from app.models.Pdf import *
 from app.models.Record import *
@@ -114,7 +115,7 @@ class ResultList(Resource):
 
             # init list of answer
             if type_res:
-                result['res_answer'] = Various.getDicoList(str(type_res))
+                result['res_answer'] = Dict.getDictDetails(str(type_res))
 
             # Replace None by empty string
             for key, value in result.items():

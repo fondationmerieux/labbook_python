@@ -2,13 +2,72 @@
 import logging
 import mysql.connector
 
-# from app.models.Constants import *
+from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
 
 
 class Product:
     log = logging.getLogger('log_db')
+
+    @staticmethod
+    def getProductDet(id_prod):
+        cursor = DB.cursor()
+
+        req = 'select id_data, id_owner, date_prel as prod_date, type_prel as prod_type, '\
+              'quantite as qty, statut as stat, id_dos as id_rec, preleveur as sampler, '\
+              'date_reception as receipt_date, time_format(heure_reception, "%T") as receipt_time, '\
+              'commentaire as comment, lieu_prel as prod_location, lieu_prel_plus as prod_location_accu, '\
+              'localisation as storage '\
+              'from sigl_01_data '\
+              'where id_data=%s'
+
+        cursor.execute(req, (id_prod,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getProductList(args):
+        cursor = DB.cursor()
+
+        filter_cond = 'type_prel is not NULL '
+
+        if not args:
+            limit = 'LIMIT 1000'
+
+            # show only products from non-validated records by default
+            filter_cond += ' and rec.statut != 256 '
+        else:
+            limit = 'LIMIT 15000'
+
+        # take lastest product of blood, stool, urine and other for each record
+        req = 'select if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(rec.num_dos_mois from 7), rec.num_dos_mois), '\
+              'if(param_num_dos.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '\
+              'date_format(rec.date_dos, %s) as rec_date, '\
+              'pat.nom as lastname, pat.nom_jf as maidenname, pat.prenom as firstname, '\
+              'MAX(CASE when (prod.type_prel in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142) and prod.statut in (8, 9, 10)) '\
+              'then prod.id_data END) as id_prod_blood, '\
+              'MAX(CASE when (prod.type_prel = 141 and prod.statut IN (8, 9, 10)) then prod.id_data END) as id_prod_stool, '\
+              'MAX(CASE when (prod.type_prel in (153, 154, 155, 156, 157, 158, 159, 160, 161) and prod.statut in (9,10)) '\
+              'then prod.id_data END) as id_prod_urine, '\
+              'MAX(CASE when (prod.type_prel not in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142, 141, 153, 154, 155, 156, 157, 158, 159, 160, 161) '\
+              'and prod.statut in (9,10)) then prod.id_data END) as id_prod_other, '\
+              'MAX(CASE when (prod.type_prel in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142)) then prod.statut END) as stat_blood, '\
+              'MAX(CASE when (prod.type_prel = 141) then prod.statut END) as stat_stool, '\
+              'MAX(CASE when (prod.type_prel in (153, 154, 155, 156, 157, 158, 159, 160, 161)) then prod.statut END) as stat_urine, '\
+              'MAX(CASE when (prod.type_prel not in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142, 141, 153, 154, 155, 156, 157, 158, 159, 160, 161)) '\
+              'then prod.statut END) as stat_other, '\
+              'prod.id_dos as id_rec '\
+              'from sigl_01_data as prod '\
+              'inner join sigl_02_data as rec on prod.id_dos=rec.id_data '\
+              'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '\
+              'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '\
+              'where ' + filter_cond +\
+              'group by prod.id_dos order by rec.num_dos_an desc ' + limit
+
+        cursor.execute(req, (Constants.cst_isodate,))
+
+        return cursor.fetchall()
 
     @staticmethod
     def getProductReq(id_rec):
@@ -46,6 +105,26 @@ class Product:
         except mysql.connector.Error as e:
             Product.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def updateProduct(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_01_data '
+                           'set date_prel=%(date_prel)s, type_prel=%(type_prel)s, quantite=%(quantite)s, '
+                           'statut=%(statut)s, id_dos=%(id_dos)s, preleveur=%(preleveur)s, '
+                           'date_reception=%(date_reception)s, heure_reception=%(heure_reception)s, '
+                           'commentaire=%(commentaire)s, lieu_prel=%(lieu_prel)s, '
+                           'lieu_prel_plus=%(lieu_prel_plus)s, localisation=%(localisation)s '
+                           'where id_data=%(id_data)s', params)
+
+            Product.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Product.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def insertProductReqGroup(**params):

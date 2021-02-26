@@ -29,6 +29,145 @@ class AnalysisSearch(Resource):
         return compose_ret(l_analysis, Constants.cst_content_type_json)
 
 
+class AnalysisList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_analyzes = Analysis.getAnalyzesList(args)
+
+        if not l_analyzes:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisList not found')
+
+        for analysis in l_analyzes:
+            # Replace None by empty string
+            for key, value in analysis.items():
+                if analysis[key] is None:
+                    analysis[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisList')
+        return compose_ret(l_analyzes, Constants.cst_content_type_json)
+
+
+class AnalysisHistoExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_data = [['id_data', 'code', 'fam_name', 'name']]
+
+        if 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : AnalysisHistoExport ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        args['limit'] = 50000  # for overpassed default limit
+
+        dict_data = Analysis.getAnalyzesHistoList(args)
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['id_data'])
+                data.append(d['code'])
+                data.append(d['fam_name'])
+                data.append(d['name'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            self.log.info(Logs.fileline() + ' : TRACE AnalysisHistoExport NOT FOUND')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'analyzes_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post AnalysisHistoExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisHistoExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class AnalysisHistoList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : AnalysisHistoList ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        args['limit'] = 7000
+
+        l_analyzes = Analysis.getAnalyzesHistoList(args)
+
+        if not l_analyzes:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisHistoList not found')
+
+        for analysis in l_analyzes:
+            # Replace None by empty string
+            for key, value in analysis.items():
+                if analysis[key] is None:
+                    analysis[key] = ''
+
+            nb_ana = Analysis.getNbAnalysis(args['date_beg'], args['date_end'], analysis['id_data'])
+
+            if nb_ana:
+                analysis['nb_ana'] = nb_ana['total']
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisHistoList')
+        return compose_ret(l_analyzes, Constants.cst_content_type_json)
+
+
+class AnalysisHistoDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args or 'id_ana' not in args:
+            self.log.error(Logs.fileline() + ' : AnalysisHistoDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        args['limit'] = 7000
+
+        l_datas = Analysis.getAnalyzesHistoDet(args)
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisHistoDet not found')
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in data.items():
+                if data[key] is None:
+                    data[key] = ''
+
+            if data['date_prescr']:
+                data['date_prescr'] = datetime.strftime(data['date_prescr'], '%Y-%m-%d')
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisHistoDet')
+        return compose_ret(l_datas, Constants.cst_content_type_json)
+
+
 class AnalysisDet(Resource):
     log = logging.getLogger('log_services')
 

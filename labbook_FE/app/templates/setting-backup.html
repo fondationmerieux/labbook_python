@@ -1,0 +1,183 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage de la sauvegarde") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de la sauvegarde") }}</span></h2>
+            <form autocomplete="off" class="row mt-3">
+                <div class="col-6">
+                    <div class="form-group form-inline">
+                        <label for="script-pwd" class="col-form-label col-5 text-right mt-2">{{ _("Mot de passe") }} *</label>
+                        <div>
+                            <input type="password" name="script-pwd" id="script-pwd" value="{{  args['bks_pwd'] }}" class="form-control"> 
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="script-pwd2" class="col-form-label col-5 text-right mt-2">{{ _("Confirmation du mot de passe") }} *</label>
+                        <div>
+                            <input type="password" name="script-pwd2" id="script-pwd2" value="{{  args['bks_pwd'] }}" class="form-control"> 
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="start-time" class="col-form-label col-5 text-right mt-2">{{ _("Heure de sauvegarde") }} *</label>
+                        <div>
+                            <input  type="time" name="start-time" id="start-time" class="form-control" maxlength="10" size="10" value="{{  args['bks_start_time'] }}" style="color: #888;">     
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 text-center">
+                    <input type="button" onclick="run_keygen();" id="btn_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                </div>
+            </form>
+
+            <div class="mb-5 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save()
+{
+    if ( window.confirm("{{ _("Merci de confirmer l'enregistrement du mot de passe et de l'heure de sauvegarde.") }}") )
+    {
+/*
+var script_pwd  = $("#script-pwd").val()  ;
+var script_pwd2 = $("#script-pwd2").val() ;
+var start_time  = $("#start-time").val()  ;
+
+    if (script_pwd == "")
+    msg += "{{ _("Veuillez saisir un mot de passe.") }}\n" ;
+
+    if (script_pwd2 == "")
+    msg += "{{ _("Veuillez confirmer votre mot de passe.") }}\n" ;
+
+    if (script_pwd2 != script_pwd)
+    msg += "{{ _("Les mots de passe ne correspondent pas !") }}\n" ;
+
+    if (start_time == "")
+    msg += "{{ _("Veuillez saisir une heure de sauvegarde.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+start_time = start_time + ':00' ;  // add second default values
+
+var param = '{ "pwd":"' + script_pwd  + '", ' +
+              '"start_time":"' + start_time + '"}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/setting/backup",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 1000) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST setting backup") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+    */
+    }
+}
+
+function run_keygen()
+{
+    if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la génération de clefs de sauvegarde.") }}") )
+    {
+        $.ajax( {
+           type: "POST",
+           url: "/services/setting/script/keygen",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
+               {
+               tempAlert("Enregistrement réussi", 1000) ;
+               },
+           error: function(data)
+               {
+               console.log("ERROR POST setting keygen") ;
+               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+               }
+        } ) ;
+    }
+}
+
+function run_backup()
+{
+    if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la sauvegarde.") }}") )
+    {
+        $.ajax( {
+           type: "POST",
+           url: "/services/setting/script/backup",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
+               {
+               tempAlert("Enregistrement réussi", 1000) ;
+               },
+           error: function(data)
+               {
+               console.log("ERROR POST setting backup") ;
+               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+               }
+        } ) ;
+    }
+}
+
+function run_restore()
+{
+    if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la restauration.") }}") )
+    {
+        $.ajax( {
+           type: "POST",
+           url: "/services/setting/script/restore",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
+               {
+               tempAlert("Enregistrement réussi", 1000) ;
+               },
+           error: function(data)
+               {
+               console.log("ERROR POST setting backup") ;
+               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+               }
+        } ) ;
+    }
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+}
+</script>
+{% endblock %}

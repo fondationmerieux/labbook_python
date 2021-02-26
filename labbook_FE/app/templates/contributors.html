@@ -7,7 +7,7 @@
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/labbook.css') }}?0" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/labbook.css') }}" media="screen" rel="stylesheet" type="text/css">
 </head>
 
 <body class="">
@@ -20,32 +20,32 @@
                     </h1>
                 </div>
             </div>
-        </header><!-- ferme le header -->
+        </header><!-- close header -->
         <div id="content">
             <div class="inner">
                 <div id="main row">
                     <h2 class="page-title"><span>{{ _("Contributeurs") }}</span></h2>
-                    <div class="col-md-7">
-                        <p>LabBook est un logiciel de gestion de laboratoire Opensource.</p>
-                        <!--<p>Il a été développé dans le cadre du projet RESAOLAB par la Fondation Mérieux.</p>-->
-                        <p>LabBook est co-financé par l’AFD et la Fondation Mérieux.</p>
-                        <p>La société Epiconcept a développé le logiciel Labbook jusqu'en 2019.<br />
-                           La société &AElig;GL&Eacute; a pris le relais à partir de 2020.</p>
-                        <p>© LabBbook / Fondation Mérieux :<br>
+                    <div class="row">
+                    <div class="col-xs-7 ml-auto">
+                        <p>{{ _("LabBook est un logiciel de gestion de laboratoire Opensource.") }}</p>
+                        <p>{{ _("LabBook est co-financé par l’AFD et la Fondation Mérieux.") }}</p>
+                        <p>{{ _("La société Epiconcept a développé le logiciel Labbook jusqu'en 2019.") }}<br />
+                           {{ _("La société &AElig;GL&Eacute; a pris le relais à partir de 2020.") }}</p>
+                        <p>© LabBook / Fondation Mérieux :<br>
                             <a href="https://www.lab-book.org" onclick="window.open('https://www.lab-book.org', 'globe'); return false;">https://www.lab-book.org</a>
                         </p>
                         <p>© Société &AElig;GL&Eacute; :<br>
                             <a href="https://www.aegle.fr" onclick="window.open('https://www.aegle.fr', 'AEGLE'); return false;">https://www.aegle.fr</a>
                         </p>
-                        <p>Le logiciel est sous licence GNU.</p>
+                        <p>{{ _("Le logiciel est sous licence GNU.") }}</p>
                     </div>
-                    <div class="col-md-5 mr-auto" style="text-align: center;">
-                        <!--<a href="http://resaolab.globe-network.org" onclick="window.open('http://resaolab.globe-network.org', 'resaolab'); return false;"><img src="/assets/images/resaolab.png" alt="RESAOLAB"></a><br>-->
+                    <div class="col-xs-5 mr-auto" style="text-align: center;">
                         <a href="https://www.afd.fr" onclick="window.open('https://www.afd.fr', 'afd'); return false;"><img src="{{ url_for('static', filename='img/afd.png') }}" alt="AFD"></a>
                         <br /><br />
                         <a href="https://www.fondation-merieux.org" onclick="window.open('https://www.fondation-merieux.org', 'fmx'); return false;"><img src="{{ url_for('static', filename='img/fmx.png') }}" alt="Fondation Mérieux"></a>
                         <br /><br />
                         <a href="https://www.aegle.fr/" onclick="window.open('https://www.aegle.fr/', 'AEGLE'); return false;"><img src="{{ url_for('static', filename='img/aegle.jpg') }}" alt="AEGLE" width="150px"></a>
+                    </div>
                     </div>
                 </div>
             </div> 
@@ -53,6 +53,6 @@
         <footer>
             <div class="version">{{ _('Version : ') }}{{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors/">{{ _("Contributeurs") }}</a></div>
         </footer>
-    </div><!-- ferme la page -->
+    </div><!-- close page -->
 </body>
 </html>

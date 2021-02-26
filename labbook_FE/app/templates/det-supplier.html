@@ -1,0 +1,163 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Fournisseur") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Fournisseur") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row mt-3">
+                    <label for="supplier" class="col-form-label col-3 text-right mt-2">{{ _("Nom fournisseur") }}</label>
+                    <div>					
+                        <input type="text" name="supplier" id="supplier" value="{{ args['supplier'] }}" class="form-control">			
+                    </div>
+                </div>
+
+                <div class="panel-heading row mt-3">
+                    <h3 class="panel-title">{{ _("Contact") }}</h3>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="lastname" class="col-form-label col-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="firstname" class="col-form-label col-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <div class="">					
+                        <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="funct" class="col-form-label col-3 text-right optional mt-2">{{ _("Fonction") }}</label>
+                    <div>					
+                        <input type="text" name="funct" id="funct" value="{{ args['funct'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <div>					
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['address'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="col-form-label col-3 text-right optional mt-2">{{ _("Téléphone fixe") }}</label>
+                    <div>					
+                        <input type="tel" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="mobile" class="col-form-label col-3 text-right optional mt-2">{{ _("Téléphone mobile") }}</label>
+                    <div>					
+                        <input type="tel" name="mobile" id="mobile" value="{{ args['mobile'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="fax" class="col-form-label col-3 text-right optional mt-2">{{ _("Fax") }}</label>
+                    <div>					
+                        <input type="tel" name="fax" id="fax" value="{{ args['fax'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <div>					
+                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="comment" class="col-form-label col-3 text-right optional mt-2">{{ _("Commentaire") }}</label>
+                    <div>					
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save_item()
+{
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_item   = {{ args['id_supplier']|safe }} ;
+var supplier  = $("#supplier").val()  ;
+var lastname  = $("#lastname").val()  ;
+var firstname = $("#firstname").val() ;
+var funct     = $("#funct").val()     ;
+var address   = JSON.stringify( $("#address").val() ) ;
+var phone     = $("#phone").val()  ;
+var mobile    = $("#mobile").val() ;
+var fax       = $("#fax").val()    ; 
+var email     = $("#email").val()  ;
+var comment   = JSON.stringify( $("#comment").val() ) ;
+
+var msg = "" ;
+
+    if (supplier == "")
+    msg += "{{ _("Veuillez saisir un fournisseur.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_item":' + id_item + ', ' +
+              '"supplier":"' + supplier + '", ' +
+              '"lastname":"' + lastname + '", ' +
+              '"firstname":"' + firstname + '", ' +
+              '"funct":"' + funct + '", ' +
+              '"address":' + address + ', ' +   // No quotes with stringify
+              '"phone":"' + phone + '", ' +
+              '"mobile":"' + mobile + '", ' +
+              '"fax":"' + fax + '", ' +
+              '"email":"' + email + '", ' +
+              '"comment":' + comment + '}' ;  // No quotes with stringify
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/supplier/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

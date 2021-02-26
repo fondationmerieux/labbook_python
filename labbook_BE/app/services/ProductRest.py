@@ -12,6 +12,103 @@ from app.models.User import *
 from app.models.Logs import Logs
 
 
+class ProductDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_prod):
+        prod = Product.getProductDet(id_prod)
+
+        if not prod:
+            self.log.error(Logs.fileline() + ' : TRACE ProductDet not found')
+
+        for key, value in prod.items():
+            if prod[key] is None:
+                prod[key] = ''
+
+        if prod['prod_date']:
+            prod['prod_date'] = datetime.strftime(prod['prod_date'], '%Y-%m-%d')
+
+        if prod['receipt_date']:
+            prod['receipt_date'] = datetime.strftime(prod['receipt_date'], '%Y-%m-%d')
+
+        self.log.info(Logs.fileline() + ' : TRACE ProductDet ' + str(id_prod))
+        return compose_ret(prod, Constants.cst_content_type_json)
+
+    def post(self, id_prod):
+        args = request.get_json()
+
+        if 'stat' not in args or 'type' not in args or 'storage' not in args or 'qty' not in args or \
+           'prod_date' not in args or 'sampler' not in args or 'location' not in args or \
+           'location_accu' not in args or 'receipt_date' not in args or 'receipt_time' not in args or \
+           'comment' not in args:
+            self.log.error(Logs.fileline() + ' : ProductDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        if id_prod > 0:
+
+            ret = Product.updateProduct(id_data=id_prod,
+                                        date_prel=args['prod_date'],
+                                        type_prel=args['type'],
+                                        quantite=args['qty'],
+                                        statut=args['stat'],
+                                        id_dos=args['id_rec'],
+                                        preleveur=args['sampler'],
+                                        date_reception=args['receipt_date'],
+                                        heure_reception=args['receipt_time'],
+                                        commentaire=args['comment'],
+                                        lieu_prel=args['location'],
+                                        lieu_prel_plus=args['location_accu'],
+                                        localisation=args['storage'])
+
+            if ret is False:
+                self.log.info(Logs.fileline() + ' : TRACE ProductDet ERROR update product')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        else:
+            if 'id_owner' not in args:
+                self.log.error(Logs.fileline() + ' : ProductDet ERROR args missing')
+                return compose_ret('', Constants.cst_content_type_json, 400)
+
+            ret = Product.insertProductReq(id_owner=args['id_owner'],
+                                           date_prel=args['prod_date'],
+                                           type_prel=args['type'],
+                                           quantite=args['qty'],
+                                           statut=args['stat'],
+                                           id_dos=args['id_rec'],
+                                           preleveur=args['sampler'],
+                                           date_reception=args['receipt_date'],
+                                           heure_reception=args['receipt_time'],
+                                           commentaire=args['comment'],
+                                           lieu_prel=args['location'],
+                                           lieu_prel_plus=args['location_accu'],
+                                           localisation=args['storage'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : ProductDet ERROR insert product')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ProductDet')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ProductList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_products = Product.getProductList(args)
+
+        if not l_products:
+            self.log.error(Logs.fileline() + ' : TRACE ProductList not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE ProductList')
+        return compose_ret(l_products, Constants.cst_content_type_json)
+
+
 class ProductReq(Resource):
     log = logging.getLogger('log_services')
 
@@ -49,8 +146,6 @@ class ProductReq(Resource):
 
         # Loop on list_prod
         for prod in args['list_prod']:
-            self.log.error(Logs.fileline() + ' : DEBUG ProductReq insert')
-
             if 'id_owner' not in prod or 'date_samp' not in prod or 'type_samp' not in prod or 'qty' not in prod or 'stat' not in prod or \
                'id_rec' not in prod or 'sampler' not in prod or 'date_receipt' not in prod or 'time_receipt' not in prod or \
                'comm' not in prod or 'locat_samp' not in prod or 'locat_samp_more' not in prod or 'location' not in prod:

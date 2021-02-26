@@ -10,57 +10,57 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des préférences") }}</span></h2>
-            <form class="row justify-content-md-center" id="pref-list">
-                <table class="table table-striped table-hover col-md-11 table-lbk">
+            <form class="row justify-content-center" id="pref-list">
+                <table class="table table-striped table-hover col-11 table-lbk">
                     <thead>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Libellé") }}</th>
-                            <th class="col-md-6">{{ _("Valeur") }}</th>
+                            <th class="col-6">{{ _("Libellé") }}</th>
+                            <th class="col-6">{{ _("Valeur") }}</th>
                     </thead>
                     <tbody>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Prix unitaire des actes de prélévements et d'analyses") }}</th>
-                            <td class="col-md-6"><input type="number" id="pref_deed_price" name="pref_deed_price" min="1" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][0]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Prix unitaire des actes de prélévements et d'analyses") }}</th>
+                            <td class="col-6"><input type="number" id="pref_deed_price" name="pref_deed_price" min="1" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][0]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document 1") }}</th>
-                            <td class="col-md-6"><input class="input-large" type="text" id="pref_head_1" name="pref_head_1" value="{% if args['pref_list'] %}{{ args['pref_list'][1]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document 1") }}</th>
+                            <td class="col-6"><input class="input-large" type="text" id="pref_head_1" name="pref_head_1" value="{% if args['pref_list'] %}{{ args['pref_list'][1]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document 2") }}</th>
-                            <td class="col-md-6"><input class="input-large" type="text" id="pref_head_2" name="pref_head_2" value="{% if args['pref_list'] %}{{ args['pref_list'][2]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document 2") }}</th>
+                            <td class="col-6"><input class="input-large" type="text" id="pref_head_2" name="pref_head_2" value="{% if args['pref_list'] %}{{ args['pref_list'][2]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document 3") }}</th>
-                            <td class="col-md-6"><input class="input-large" type="text" id="pref_head_3" name="pref_head_3" value="{% if args['pref_list'] %}{{ args['pref_list'][3]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document 3") }}</th>
+                            <td class="col-6"><input class="input-large" type="text" id="pref_head_3" name="pref_head_3" value="{% if args['pref_list'] %}{{ args['pref_list'][3]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document - Adresse") }}</th>
-                            <td class="col-md-6"><input class="input-large" type="text" id="pref_addr" name="pref_addr" value="{% if args['pref_list'] %}{{ args['pref_list'][4]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document - Adresse") }}</th>
+                            <td class="col-6"><input class="input-large" type="text" id="pref_addr" name="pref_addr" value="{% if args['pref_list'] %}{{ args['pref_list'][4]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document - Téléphone") }}</th>
-                            <td class="col-md-6"><input type="text" id="pref_phone" name="pref_phone" value="{% if args['pref_list'] %}{{ args['pref_list'][5]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document - Téléphone") }}</th>
+                            <td class="col-6"><input type="text" id="pref_phone" name="pref_phone" value="{% if args['pref_list'] %}{{ args['pref_list'][5]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document - Fax") }}</th>
-                            <td class="col-md-6"><input type="text" id="pref_fax" name="pref_fax" value="{% if args['pref_list'] %}{{ args['pref_list'][6]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document - Fax") }}</th>
+                            <td class="col-6"><input type="text" id="pref_fax" name="pref_fax" value="{% if args['pref_list'] %}{{ args['pref_list'][6]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document - Email") }}</th>
-                            <td class="col-md-6"><input class="input-large" type="text" id="pref_email" name="pref_email" value="{% if args['pref_list'] %}{{ args['pref_list'][7]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document - Email") }}</th>
+                            <td class="col-6"><input class="input-large" type="text" id="pref_email" name="pref_email" value="{% if args['pref_list'] %}{{ args['pref_list'][7]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Entête de document - Ville") }}</th>
-                            <td class="col-md-6"><input class="input-large" type="text" id="pref_city" name="pref_city" value="{% if args['pref_list'] %}{{ args['pref_list'][8]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Entête de document - Ville") }}</th>
+                            <td class="col-6"><input class="input-large" type="text" id="pref_city" name="pref_city" value="{% if args['pref_list'] %}{{ args['pref_list'][8]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Facturation des patients hospitalisés") }}</th>
-                            <td class="col-md-6"><input type="checkbox" id="pref_fact_hosp" name="pref_fact_hosp" value="{% if args['pref_list'] %}{{ args['pref_list'][9]['value'] }}{% endif %}" {% if args['pref_list'] and args['pref_list'][9]['value'] == '1' %} checked="checked"{% endif %}></td>
+                            <th class="col-6">{{ _("Facturation des patients hospitalisés") }}</th>
+                            <td class="col-6"><input type="checkbox" id="pref_fact_hosp" name="pref_fact_hosp" value="1" {% if args['pref_list'] and args['pref_list'][9]['value'] == '1' %} checked="checked"{% endif %}></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Unité de l'age par défaut (Jours, Semaines, Mois, Années)") }}</th>
-                            <td class="col-md-6">
+                            <th class="col-6">{{ _("Unité de l'age par défaut (Jours, Semaines, Mois, Années)") }}</th>
+                            <td class="col-6">
                                 <select id="pref_age_unit" name="pref_age_unit">
                                     <option value="Jours" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Jours" %} selected {% endif %}>{{ _("Jours") }}</option>
                                     <option value="Semaines" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Semaines" %} selected {% endif %}>{{ _("Semaines") }}</option>
@@ -70,26 +70,26 @@
                             </td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Déconnexion automatique (mn)") }}</th>
-                            <td class="col-md-6"><input type="number" id="pref_logout" name="pref_logout"  min="1" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][11]['value'] }}{% endif %}"></td>
+                            <th class="col-6">{{ _("Déconnexion automatique (mn)") }}</th>
+                            <td class="col-6"><input type="number" id="pref_logout" name="pref_logout"  min="1" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][11]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Module qualité activé") }}</th>
-                            <td class="col-md-6"><input type="checkbox" id="pref_quality" name="pref_quality" value="{% if args['pref_list'] %}{{ args['pref_list'][12]['value'] }}{% endif %}" {% if args['pref_list'] and args['pref_list'][12]['value'] == '1' %} checked="checked"{% endif %}></td>
+                            <th class="col-6">{{ _("Module qualité activé") }}</th>
+                            <td class="col-6"><input type="checkbox" id="pref_quality" name="pref_quality" value="1" {% if args['pref_list'] and args['pref_list'][12]['value'] == '1' %} checked="checked"{% endif %}></td>
                         </tr>
                         <tr class="d-flex">
-                            <th class="col-md-6">{{ _("Module facturation activé") }}</th>
-                            <td class="col-md-6"><input type="checkbox" id="pref_bill" name="pref_bill" value="{% if args['pref_list'] %}{{ args['pref_list'][13]['value'] }}{% endif %}" {% if args['pref_list'] and args['pref_list'][13]['value'] == '1' %} checked="checked"{% endif %}></td>
+                            <th class="col-6">{{ _("Module facturation activé") }}</th>
+                            <td class="col-6"><input type="checkbox" id="pref_bill" name="pref_bill" value="1" {% if args['pref_list'] and args['pref_list'][13]['value'] == '1' %} checked="checked"{% endif %}></td>
                         </tr>
                     </tbody>
                 </table>
             </form>
             <div class="row">
-                <div class="offset-md-1">
-                    <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success">
+                <div class="offset-1">
+                    <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div style="margin-left:20px;">
-                    <input type="button" onclick="return_home();" id="btn_exit" value="{{ _("Quitter") }}" class="btn btn-success">
+                    <input type="button" onclick="return_home();" id="btn_exit" value="{{ _("Quitter") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
             </div>
         </div><!-- close main -->
@@ -105,7 +105,7 @@ var id_owner   = {{ session['user_id_group']|safe}} ;
 var deed_price = $("#pref_deed_price").val() ;
 var head_1     = $("#pref_head_1").val() ;
 var head_2     = $("#pref_head_2").val() ;
-var head_3     = $("#pref_head_2").val() ;
+var head_3     = $("#pref_head_3").val() ;
 var addr       = $("#pref_addr").val() ;
 var phone      = $("#pref_phone").val() ;
 var fax        = $("#pref_fax").val() ;
@@ -118,13 +118,13 @@ var quality    = 0 ;
 var bill       = 0 ;
 
     if ( $("#pref_fact_hosp").is(":checked") )
-    fact_hosp = $("#pref_fact_hosp").val()
+    fact_hosp = $("#pref_fact_hosp").val() ;
 
     if ( $("#pref_quality").is(":checked") )
-    quality = $("#pref_quality").val()
+    quality = $("#pref_quality").val() ;
 
     if ( $("#pref_bill").is(":checked") )
-    bill = $("#pref_bill").val()
+    bill = $("#pref_bill").val() ;
 
 var param = '{ "prix_acte":"' + deed_price + '", ' +
               '"entete_1":"' + head_1 + '", ' +
@@ -163,7 +163,7 @@ console.log("DEBUG param="+JSON.stringify(param));
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
 }
 </script>
 {% endblock %}

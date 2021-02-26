@@ -1,0 +1,238 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Intervalles d'âge") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Intervalles d'âge") }}</span></h2>
+            <form autocomplete="off">
+                <div class="panel-name row mt-3">
+                    <div class="col-12">
+                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter un intervalle") }}" class="btn btn-{{ session['user_role']|safe }} ml-2 float-right">
+                    </div>
+                </div>
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Intervalles") }}</h3>
+                </div>
+            </form>
+
+            <form class="row justify-content-center mt-3" id="value-list">
+                <table class="table table-striped table-hover col-12 table-lbk">
+                    <thead>
+                        <tr>
+                            <th class="col" hidden>{{ _("serial") }}</th>
+                            <th class="d-inline-block col-2 text-center">{{ _("Action") }}</th>
+                            <th class="d-inline-block col-3 text-left">{{ _("Age inférieur") }}</th>
+                            <th class="d-inline-block col-3 text-left">{{ _("Age supérieur") }}</th>
+                            <th class="d-inline-block col-2 text-left">{{ _("Position") }}</th>
+                    </thead>
+                    <tbody id="tbody_value">
+                    </tbody>
+                </table>
+            </form>
+            
+            <div class="clearfix my-2">
+                <div class="float-left">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var struct_val  = {"id_ihm":0, "ais_ser":0 ,"ais_lower_bound":"", "ais_upper_bound":"", "ais_rank":0} ;
+var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var ind_values  = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
+
+function add_value()
+{
+let tmp_struct_val = JSON.parse(JSON.stringify(struct_val)) ;
+
+tmp_struct_val.id_ihm = ind_values++ ;
+
+data_values.push(tmp_struct_val) ;
+
+load_value( tmp_struct_val ) ;
+}
+
+function load_value( data )
+{
+let tr_value = '' ;
+    
+let obj = data ;
+
+    if ( obj.id_ihm >= 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+
+    let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+
+    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
+    tmp_tr += create_td("", btn, " text-center d-inline-block col-2", "") ; // actions
+    tmp_tr += create_td("", create_input("lower_"+obj.id_ihm, "number", obj.ais_lower_bound, 0, 100, ""), "d-inline-block col-3", "") ;
+    tmp_tr += create_td("", create_input("upper_"+obj.id_ihm, "number", obj.ais_upper_bound, 0, 100, ""), "d-inline-block col-3", "") ;
+    tmp_tr += create_td("", create_input("rank_"+obj.id_ihm, "number", obj.ais_rank, 0, 20, ""), "d-inline-block col-2", "") ;
+    tmp_tr += '</tr>' ;
+
+    tr_value += tmp_tr ;
+    }
+
+$("#tbody_value").append(tr_value) ;
+}
+
+function del_value( id_ihm )
+{
+    if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
+    {
+        for( i in data_values )
+        {
+            if (data_values[i].id_ihm == id_ihm)
+            {
+            delete data_values[i] ;
+
+            break ;
+            }
+        }
+    }
+    else
+    return false ;
+}
+
+function load_data()
+{
+// clear table tbody
+$("#tbody_value").empty() ;
+
+    for( i in data_values )
+    {
+    load_value( data_values[i] ) ;
+    }
+}
+
+function create_td(id, val, cls, style)
+{
+let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
+             '<div>' + val + '</div></td>' ;
+
+return tmp_td ;
+}
+
+function create_input(id, type, val, min, max, fct)
+{
+let other_fct = '' ;
+
+    // example : onchange for price
+    if ( fct != "" )
+    other_fct += fct + '(this);" ' ;
+
+let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+
+    if (type == "number")
+    tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
+    else if (type == "text" && max != "")
+    tmp_input += 'maxlength="' + max + '"'
+
+tmp_input += '>' ;
+
+return tmp_input ;
+}
+
+function change_data( elem )
+{
+// Get new value from select or input
+let val = $(elem).val() ;
+
+// Change value in data structure
+let id_elem = elem.id ;
+let split_id = id_elem.split("_") ;
+let id_ihm  = split_id[split_id.length -1] ; 
+
+    for( i in data_values )
+    {
+        if (data_values[i].id_ihm == id_ihm )
+        {
+            if ( split_id[0] == "lower" )
+            data_values[i].ais_lower_bound = val ;
+            else if ( split_id[0] == "upper" )
+            data_values[i].ais_upper_bound = val ;
+            else if ( split_id[0] == "rank" )
+            data_values[i].ais_rank = val ;
+
+        break ;
+        }
+    }
+}
+
+function save_dict()
+{
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var param = '{ "list_val":[ ';
+
+    for( i in data_values )
+    {
+        if (i > 0)
+        param += ', ' ;
+
+    let lower = data_values[i].ais_lower_bound ;
+    let upper = data_values[i].ais_upper_bound ;
+
+        if (lower == "")
+        lower = -1 ;
+
+        if (upper == "")
+        upper = -1 ;
+
+    var param_val = '{ "id_owner":' + id_owner + ', ' +
+                      '"ais_ser":' + data_values[i].ais_ser + ', ' +
+                      '"ais_lower_bound":' + lower + ', ' +
+                      '"ais_upper_bound":' + upper + ', ' +
+                      '"ais_rank":' + data_values[i].ais_rank + '}' ;
+
+    param += param_val ;
+    }
+
+param += ' ] }';
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/setting/age/interval",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 2000) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST age interval") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

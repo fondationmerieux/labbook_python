@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+- export DHIS2
+- import/export users
+- finish Analysis repository module (add/modify/import/export)
+- finish patient management module
+- finish non-conformity module
+- backup module
+
+## [3.0.0] - 2021-02-26
+### Added
+- Quality : General / Laboratory / Staff / Prescribers / Equipment / Supplier / Manual / Procedure / Meeting
+- Storage management
+- Setting : Dictionnaries / Users / Age range / Stickers
+- Reports : Epidemiology / Statistic / End of day / Daily invoice
+- Patient history
+- Analysis history
+- Work list technician and biologist
+- Status of current samples
+
+## [3.0.0-alpha.2] - 2020-12-17
+### Changed
+- List users
+- Change password
+- Disabled user
+- Search user
+- Setting Record number
+- Setting Report
+- Enable/Disable Billing
+- Enable/Disable Quality
 
 ## [3.0.0-alpha.2] - 2020-12-17
 ### Changed

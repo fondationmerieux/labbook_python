@@ -96,3 +96,134 @@ class Setting:
         except mysql.connector.Error as e:
             Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getStickerSetting():
+        cursor = DB.cursor()
+
+        req = 'select sts_ser, sts_width, sts_height, sts_margin_top, sts_margin_bottom, '\
+              'sts_margin_left, sts_margin_right '\
+              'from sticker_setting '\
+              'order by sts_ser desc limit 1'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def updateStickerSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sticker_setting '
+                           'set sts_width=%(sts_width)s, sts_height=%(sts_height)s, '
+                           'sts_margin_top=%(sts_margin_top)s, sts_margin_bottom=%(sts_margin_bottom)s, '
+                           'sts_margin_left=%(sts_margin_left)s, sts_margin_right=%(sts_margin_right)s '
+                           'where sts_ser=%(sts_ser)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getAgeInterval():
+        cursor = DB.cursor()
+
+        req = 'select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '\
+              'from age_interval_setting '\
+              'order by ais_rank asc'
+
+        cursor.execute(req,)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getAgeIntervalById(ais_ser):
+        cursor = DB.cursor()
+
+        req = 'select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '\
+              'from age_interval_setting '\
+              'where ais_ser=%s'
+
+        cursor.execute(req, (ais_ser,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertAgeInterval(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into age_interval_setting '
+                           '(ais_rank, ais_lower_bound, ais_upper_bound) '
+                           'values (%(ais_rank)s, %(ais_lower_bound)s, %(ais_upper_bound)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateAgeInterval(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update age_interval_setting '
+                           'set ais_rank=%(ais_rank)s, ais_lower_bound= %(ais_lower_bound)s, '
+                           'ais_upper_bound=%(ais_upper_bound)s '
+                           'where ais_ser=%(ais_ser)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteAgeInterval(ais_ser):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from age_interval_setting '
+                           'where ais_ser=%s', (ais_ser,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getBackupSetting():
+        cursor = DB.cursor()
+
+        req = 'select bks_ser, bks_pwd, bks_start_time '\
+              'from backup_setting '\
+              'order by bks_ser desc limit 1'
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def updateBackupSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update backup_setting '
+                           'set bks_pwd=%(bks_pwd)s, bks_start_time=%(bks_start_time)s '
+                           'where bks_ser=1', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

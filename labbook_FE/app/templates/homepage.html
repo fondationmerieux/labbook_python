@@ -2,95 +2,73 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _('Accueil') }}</title>
+    <title>{{ _("Accueil") }}</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/Chart.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<div id="content">
-    <div class="inner">
+<div id="content" class="text-center">
+    <div class="inner text-center">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _('Accueil') }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Accueil") }}</span></h2>
 
             {% if session['user_role'] == 'A' %}
             <div class="module">
                 <div class="links">
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users/" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
                     <!--<a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>-->
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pref/" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
-                    <a href="#" class="list-group-item admin-referentiel">{{ _("Réferentiel") }}</a>
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-report/" class="list-group-item admin-conf-cr">{{ _("Configuration des comptes-rendu") }}</a>
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-rec-num/" class="list-group-item admin-num-doss">{{ _("Configuration des numéros de dossier") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pref" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes" class="list-group-item admin-referentiel">{{ _("Réferentiel") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-report" class="list-group-item admin-conf-cr">{{ _("Configuration des comptes-rendu") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-rec-num" class="list-group-item admin-num-doss">{{ _("Configuration des numéros de dossier") }}</a>
                     <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ args['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
 
                     <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ args['pref_quality'] }});" class="list-group-item admin-qualite-{{ args['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
                 </div>
             </div>
-            {% elif  session['user_role'] == 'B' %}
+            {% else %}
+                {% if  session['user_role'] == 'B' %}
+            <div class="module">
+                <div class="links {% if args['nb_emer'] > 0 %}mw-100 mx-5{% endif %}">
+                    {% if args['nb_emer'] > 0 %}
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
+                    {% endif %}
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records" class="list-group-item f-list-bio">{{ _("Liste des dossiers") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B" class="list-group-item b-list-bio">{{ _("Liste de travail biologiste") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products" class="list-group-item prel-bio">{{ _("Etat des prélèvements en cours") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results" class="list-group-item res-bio">{{ _("Saisie des résultats") }}</a>
+                    <a href="#" class="list-group-item home-qualite">{{ _("Management de la Qualité") }}</a>
+                </div>
+            </div>
+                {% elif  session['user_role'] == 'T' %}
             <div class="module">
                 <div class="links">
-                    <a href="#" class="list-group-item f-list-bio">{{ _("Liste des dossiers") }}</a>
-                    <a href="#" class="list-group-item b-list-bio">{{ _("Liste de travail biologiste") }}</a>
-                    <a href="#" class="list-group-item prel-bio">{{ _("Etat des prélèvements en cours") }}</a>
-                    <a href="#" class="list-group-item res-bio">{{ _("Saisie des résultats") }}</a>
-                    <a href="#" class="list-group-item home-qualite">{{ _("Management de la Qaulité") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records" class="list-group-item f-list-tec">Liste des dossiers</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/T" class="list-group-item t-list-tec">Liste de travail technicien</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products" class="list-group-item prel-tec">Etat des prélèvements en cours</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results" class="list-group-item res-tec">Saisie des résultats</a>
                 </div>
             </div>
-            <div class="home-stat row">
-                <div class="home-graph col-md-6">
-                    <h3>Validations à effectuer</h3>
-                    TODO IMG GRAPH
-                </div>
-                <div class="home-activity col-md-6">
-                    <h3>Activité du laboratoire</h3>
-                    <ul>
-                        <li>Dernier numéro utilisé : <strong><span class="num-dos">TODO</span></strong></li>
-                        <li>Nombre de dossiers validés aujourd'hui : <strong>TODO</strong></li>
-                        <li>Nombre de dossiers enregistrés : <strong>TODO</strong></li>
-                    </ul>
-                </div>
-            </div>
-            {% elif  session['user_role'] == 'T' %}
+                {% elif  session['user_role'] == 'S' %}
             <div class="module">
                 <div class="links">
-                    <a href="#" class="list-group-item f-list-tec">Liste des dossiers</a>
-                    <a href="#" class="list-group-item t-list-tec">Liste de travail technicien</a>
-                    <a href="#" class="list-group-item prel-tec">Etat des prélèvements en cours</a>
-                    <a href="#" class="list-group-item res-tec">Saisie des résultats</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records" class="list-group-item f-list-sec">Liste des dossiers</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-ext" class="list-group-item new-dos-ext-sec">Nouvelle demande externe</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-int" class="list-group-item new-dos-int-sec">Nouvelle demande hospitalisé</a>
                 </div>
             </div>
+                {% endif %}
             <div class="home-stat row">
-                <div class="home-graph col-md-6">
-                    <h3>Validations à effectuer</h3>
-                    TODO IMG GRAPH
+                <div class="home-graph col-6">
+                    <h5 class="mr-5 pr-4">{{ _("Validations à effectuer") }}</h5>
+                    <canvas id="chart" width="350px" height="250px"></canvas>
                 </div>
-                <div class="home-activity col-md-6">
-                    <h3>Activité du laboratoire</h3>
+                <div class="home-activity col-6 text-left">
+                    <h5>{{ _("Activité du laboratoire") }}</h5>
                     <ul>
-                        <li>Dernier numéro utilisé : <strong><span class="num-dos">TODO</span></strong></li>
-                        <li>Nombre de dossiers validés aujourd'hui : <strong>TODO</strong></li>
-                        <li>Nombre de dossiers enregistrés : <strong>TODO</strong></li>
-                    </ul>
-                </div>
-            </div>
-            {% elif  session['user_role'] == 'S' %}
-            <div class="module">
-                <div class="links">
-                    <a href="#" class="list-group-item f-list-sec">Liste des dossiers</a>
-                    <a href="#" class="list-group-item new-dos-ext-sec">Nouvelle demande externe</a>
-                    <a href="#" class="list-group-item new-dos-int-sec">Nouvelle demande hospitalisé</a>
-                </div>
-            </div>
-            <div class="home-stat row">
-                <div class="home-graph col-md-6">
-                    <h3>Validations à effectuer</h3>
-                    TODO IMG GRAPH
-                </div>
-                <div class="home-activity col-md-6">
-                    <h3>Activité du laboratoire</h3>
-                    <ul>
-                        <li>Dernier numéro utilisé : <strong><span class="num-dos">TODO</span></strong></li>
-                        <li>Nombre de dossiers validés aujourd'hui : <strong>TODO</strong></li>
-                        <li>Nombre de dossiers enregistrés : <strong>TODO</strong></li>
+                        <li>{{ _("Dernier numéro utilisé") }} : <strong><span class="rec-num" id="num_rec"></span></strong></li>
+                        <li>{{ _("Nombre de dossiers validés aujourd'hui") }} : <strong>{{ args['nb_rec_today'] }}</strong></li>
+                        <li>{{ _("Nombre de dossiers enregistrés") }} : <strong>{{ args['nb_rec'] }}</strong></li>
                     </ul>
                 </div>
             </div>
@@ -103,6 +81,7 @@
 
 {% block add_script %}
 <script>
+var pieData = [{value: "{{ args['nb_rec_bio'] }}", label: "{{ _("Biologique") }}", color: "#8330E2"}, {value: "{{ args['nb_rec_tech'] }}", label: "{{ _("Technique") }}", color: "#00ADEE"}] ;
 var val_bill    = {{ args['pref_bill'] }} ;
 var val_quality = {{ args['pref_quality'] }} ;
 
@@ -142,5 +121,23 @@ let ico      = "admin-gest-fact-" ;
            }
     } ) ;
 }
+
+$( document ).ready( function()
+{
+let rec_num = "" ;
+
+{% if args['record'] %}
+    {% if session['record_period'] == 1070 %} // Month period
+rec_num = {{ args['record']['num_dos_mois'] }} ;
+    {% else %} // Annual period
+rec_num = {{ args['record']['num_dos_an'] }} ;
+    {% endif %}
+rec_num = fmt_num_rec( rec_num, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+
+    $("#num_rec").html(rec_num) ;
+{% endif %}
+
+new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
+} ) ;
 </script>
 {% endblock %}

@@ -1,0 +1,242 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Produits pathologiques") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}        
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+                <span>{{ _("Produits pathologiques") }}</span>
+            </h2>
+            <form autocomplete="off">
+                <div class="form-group form-inline">
+                    <span>{{ _("Dossier") }} :</span>
+                    <span class="rec-num ml-1" id="rec_num"></span>
+                </div>
+                <fieldset class="row border p-2 mt-3 mx-1">
+                    <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
+                    <div class="col-12">
+                        {% if args['patient'] and args['patient']['code_patient'] %}
+                        <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
+                        {% endif %}
+                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
+                    </div>
+                    <div class="col-12 mt-2">
+                        {% if args['patient'] and args['patient']['anonyme'] != 4 %}
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
+                        {% else %}
+                        <span class="font-info">{{ _("Patient anonyme") }}.</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 mt-2">
+                        <span>{{ _("Né(e) le") }}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}{{ _("années") }}
+                                                {% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}
+                                                {% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}
+                                                {% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
+                                                {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
+                                                {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
+                    </div>
+                </fieldset>
+            </form>
+
+            <form autocomplete="off">
+                <fieldset class="row border p-2 mt-3 mx-1">
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Statut") }} *</div>
+                        <div>
+                            <select name="prod_stat" id="prod_stat" class="form-control ml-1">
+                                <option value="0" selected="selected"></option>
+                                {% for prod_stat in ihm['products_statut'] %}
+                                <option value="{{ prod_stat['id_data'] }}" {% if args['product']['stat'] == prod_stat['id_data'] %} selected {% endif %}>{{ prod_stat['label'] }}</option>
+                                {% endfor %}
+                            </select>       
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Produit pathologique") }} *</div>
+                        <div>
+                            <select name="prod_type" id="prod_type" class="form-control ml-1">
+                                <option value="0" selected="selected"></option>
+                                {% for prod_type in ihm['products'] %}
+                                <option value="{{ prod_type['id_data'] }}" {% if args['product']['prod_type'] == prod_type['id_data'] %} selected {% endif %}>{{ prod_type['label'] }}</option>
+                                {% endfor %}
+                            </select>       
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Localisation prélèvement") }}</div>
+                        <div>
+                            <input type="text" name="prod_storage" id="prod_storage" value="{{ args['product']['storage'] }}" class="form-control">     
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Quantité") }}</div>
+                        <div>
+                            <input type="number" name="prod_qty" id="prod_qty" value="{{ args['product']['qty'] }}" class="form-control">       
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Date du prélèvement") }}</div>
+                        <div>
+                            <input id="prod_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['product']['prod_date'] }}" name="prod_date" style="color: #888;">      
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Préleveur") }}</div>
+                        <div>
+                            <input type="text" name="prod_sampler" id="prod_sampler" value="{{ args['product']['sampler'] }}" class="form-control">     
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Lieu de prélèvement") }}</div>
+                        <div>
+                            <select name="prod_location" id="prod_location" class="form-control ml-1">
+                                <option value="0" selected="selected"></option>
+                                {% for prod_location in ihm['products_location'] %}
+                                <option value="{{ prod_location['id_data'] }}" {% if args['product']['prod_location'] == prod_location['id_data'] %} selected {% endif %}>{{ prod_location['label'] }}</option>
+                                {% endfor %}
+                            </select>                                   
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Précision lieu") }}</div>
+                        <div>
+                            <input type="text" name="prod_location_accu" id="prod_location_accu" value="{{ args['product']['prod_location_accu'] }}" class="form-control">       
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Date de réception") }}</div>
+                        <div>
+                            <input id="prod_receipt_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['product']['receipt_date'] }}" name="prod_receipt_date" style="color: #888;">       
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Heure de réception") }}</div>
+                        <div>
+                            <input id="prod_receipt_time" class="form-control" type="time" maxlength="10" size="10" value="{{ args['product']['receipt_time'] }}" step=1 name="prod_receipt_time" style="color: #888;">     
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-12">
+                        <div class="control-label col-2 text-right">{{ _("Commentaire") }}</div>
+                        <div>
+                            <input type="text" name="prod_comm" id="prod_comm" value="{{ args['product']['comment'] }}" class="form-control">       
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <div class="row mb-4 mt-3">
+                <div class="col-12 clearfix">
+                    <div class="float-left" style="margin-left:0px;">
+                        <input type="button" onclick="go_back();" id="btn_return" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Retour") }}">
+                    </div>
+                    <div class="float-right mr-2">
+                        <input type="button" onclick="save_prod();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}">
+                    </div>
+                </div>
+            </div>
+
+      </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}        
+
+{% block add_script %}
+<script>
+function save_prod()
+{
+var id_owner      = {{ session['user_id_group']|safe }}  ;
+var id_rec        = {{ args['record']['id_data']|safe }} ;
+var id_prod       = {{ args['id_prod']|safe }}     ;
+var stat          = $("#prod_stat").val()          ;
+var type          = $("#prod_type").val()          ;
+var storage       = $("#prod_storage").val()       ;
+var prod_qty      = $("#prod_qty").val()           ;
+var prod_date     = $("#prod_date").val()          ;
+var sampler       = $("#prod_sampler").val()       ;
+var prod_location = $("#prod_location").val()      ;
+var location_accu = $("#prod_location_accu").val() ;
+var receipt_date  = $("#prod_receipt_date").val()  ; 
+var receipt_time  = $("#prod_receipt_time").val()  ;
+var comment       = $("#prod_comm").val()          ;
+
+var msg = "" ;
+
+    if (stat == 0)
+    msg += "{{ _("Veuillez saisir un statut.") }}\n" ;
+
+    if (type == 0)
+    msg += "{{ _("Veuillez choisir un produit pathologique.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_rec":' + id_rec + ', ' +
+              '"stat":' + stat + ', ' +
+              '"type":' + type + ', ' +
+              '"storage":"' + storage + '", ' +
+              '"qty":' + prod_qty + ', ' +
+              '"prod_date":"' + prod_date + '", ' +
+              '"sampler":"' + sampler + '", ' +
+              '"location":' + prod_location + ', ' +
+              '"location_accu":"' + location_accu + '", ' +
+              '"receipt_date":"' + receipt_date + '", ' +
+              '"receipt_time":"' + receipt_time + '", ' +
+              '"comment":"' + comment + '"}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/product/det/" + id_prod,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST product det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function go_back()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+{% if session['record_period'] == 1070 %} // Month period
+let rec_num = {{ args['record']['num_dos_mois'] }} ;
+{% else %} // Annual period
+let rec_num = {{ args['record']['num_dos_an'] }} ;
+{% endif %}
+
+rec_num = fmt_num_rec( rec_num, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+
+$("#rec_num").text( rec_num ) ;
+} ) ;
+</script>
+{% endblock %}

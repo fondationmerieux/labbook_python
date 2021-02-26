@@ -2,7 +2,7 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _('Patient externe') }}</title>
+    <title>{{ _("Patient externe") }}</title>
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
 {% endblock %}
@@ -11,28 +11,29 @@
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title form-patient_externe"><span>{{ _("Demande d'analyses patient externe") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Demande d'analyses patient externe") }}</span></h2>
 
-            <form id="form_main" class="vzn-form form-horizontal row" autocomplete="off">
-                <div class="panel panel-1 panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ _('Chercher un patient') }}</h3>
-                    </div>
-                    <div class="panel-body ">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="statictext col-lg-3 control-label">
-                                    <span>{{ _("Nom, prénom ou code du patient") }}</span>
-                                </div>
-                                <div class="field col-lg-4">
-                                    <select id="search_patient" style="width:450px"></select>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="form-group button">
-                                    <input type="button" onclick="new_pat();" id="new_patient" class="btn undefined btn-default" value="{{ _('Nouveau patient') }}">
-                                    <input type="button" onclick="return_home();" id="exit" class="btn undefined btn-default" value="{{ _('Quitter') }}">
-                                </div>
+            <form autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Chercher un patient") }}</h3>
+                </div>
+                <div class="panel-patient row mt-3">
+                    <div class="col-10">
+                        <div class="form-group row">
+                            <label for="search_patient" class="col-form-label col-4 text-right optional">{{ _("Nom, prénom ou code du patient") }}</label>
+                            <div>
+                                <select id="search_patient" style="width:450px"></select>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="float-left" style="margin-left:0px;">
+                            <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
+                        </div>
+                        <div class="float-right mr-2">
+                            <input type="button" onclick="new_pat();" id="new_patient" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Nouveau patient") }}">
                         </div>
                     </div>
                 </div>
@@ -46,8 +47,10 @@
 <script>
 $("#search_patient").select2(
 {
-    placeholder: "Cliquer pour commencer une recherche",
-    tokenSeparators: [',', ' '],
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: true,
+    tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
         url: "{{ session['server_ext'] }}/services/patient/search",
@@ -120,7 +123,7 @@ window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] 
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/sigl/homepage/";
+window.location.href = "{{ session['server_ext'] }}/sigl/homepage";
 }
 </script>
 {% endblock %}

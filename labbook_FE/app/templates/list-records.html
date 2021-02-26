@@ -2,205 +2,157 @@
 
 {% block head %}
 {{ super() }}
-    <title>Liste des dossiers</title>
-    <link href="{{ session['server_ext'] }}/datepicker/css/bootstrap-datepicker3.min.css" media="screen, print" rel="stylesheet" type="text/css" />
-    <style>
-        .menu-act
-        {
-        color   : rgba(0, 0, 0, 0);
-        padding : 3px !important;
-        }
-
-        .menu-act:hover
-        {
-        color         : black;
-        padding       : 3px !important;
-        padding-left  : 10px !important;
-        padding-right : 10px !important;
-        }
-
-        .menu-act-drop
-        {
-        background-color : #F08739 !important;
-        color            : white !important;
-        }
-
-        .menu-act-item:hover
-        {
-        background-color : #DD6512 !important;
-        color            : white !important;
-        }
-    </style>
+    <title>{{ _("Liste des dossiers") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title  form-liste_des_dossiers"><span>Liste des dossiers</span></h2>
-            <form id="form_main" class="vzn-form form-horizontal row" autocomplete="off">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des dossiers") }}</span></h2>
+            <form autocomplete="off">
                 <!-- Filter -->
-                <div id="f-list-filter-group" class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Filtre</h3></div>
-                    <div class="panel-body " id="f-list-filter-group_body">
-                        <div class="row">
-                            <div id="f-list-filter" class="col-xs-12">
-                                <div class="form-group">
-                                    <div class="statictext control-label col-lg-1 col-md-1 col-sm-4"><span>N° dossier</span></div>
-                                    <div class="field col-lg-2 col-md-2 col-sm-8">
-                                        <input id="f_num_rec" type="text" value="" maxlength="10" class="form-control" style="width: 120px;" null="">
-                                    </div>
-                                    <div class="statictext control-label col-lg-2 col-md-2 col-sm-4"><span>Statut du dossier</span></div>
-                                    <div class="field col-lg-3 col-md-3 col-sm-8">
-                                        <select id="f_stat_rec" class="form-control">
-                                            <option value="0" selected=""></option>
-                                            <option value="181">Nouveau</option>
-                                            <option value="182">Validé administrativement</option>
-                                            <option value="253">Intermédiaire (validé admin.)</option>
-                                            <option value="254">Validé techniquement</option>
-                                            <option value="255">Intermédiaire (validé tech.)</option>
-                                            <option value="256">Validé biologiquement</option>
-                                        </select>
-                                    </div>
-                                    <div class="statictext control-label col-lg-1 col-md-1 col-sm-4"><span>Patient</span></div>
-                                    <div class="field col-lg-3 col-md-3 col-sm-8">
-                                        <input id="f_patient" type="text" value="" maxlength="40" class="form-control" style="width: 320px;" null="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="statictext control-label col-lg-2"><span>Date dossier supérieure à</span></div>
-                                    <div class="field date-fields form-inline col-lg-2">
-                                        <input id="f_date_beg" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
-                                    </div>
-                                    <div class="statictext control-label col-lg-2"><span>Date dossier inférieure à</span></div>
-                                    <div class="field date-fields form-inline col-lg-2">
-                                        <input id="f_date_end" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
-                                    </div>
-                                    <div class="statictext control-label col-lg-1"><span>Urgent</span></div>
-                                    <div class="radio-group col-lg-2">
-                                        <label class="radio-inline undefined"><input type="radio" name="f_emer" value="4">Oui</label>
-                                        <label class="radio-inline undefined"><input type="radio" name="f_emer" value="5" {% if not args or not args['urgent'] %} checked="checked" {% endif %}>Non</label>
-                                    </div>
-                                </div>
-                                <div class="form-group button">
-                                    <input type="button" onclick="filter_record();return false;" class="btn undefined btn-default" value="Appliquer le filtre">
-                                </div>
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Rechercher") }}</h3>
+                </div>
+                <div class="panel-filter row mt-3">
+                    <div class="col-3">
+                        <div class="form-group form-inline">
+                            <label for="f_num_rec" class="col-form-label text-right mr-1">{{ _("N° dossier") }}</label>
+                            <div>					
+                                <input id="f_num_rec" type="text" value="" maxlength="10" class="form-control" style="width:120px;">
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group form-inline">
+                            <label for="f_date_beg" class="col-form-label text-right mr-1">{{ _("Date du") }}</label>
+                            <div>
+                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                            </div>
+                            <label for="f_date_end" class="col-form-label text-right ml-2 mr-1">{{ _("au") }}</label>
+                            <div>					
+                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group form-inline">
+                            <label for="f_emer" class="col-form-label text-right mr-1">{{ _("Urgent uniquement") }}</label>
+                            <div>
+                                <input type="checkbox" id="f_emer" name="f_mer" class="mt-2" value="4" {% if args and args['urgent'] == 4 %} checked="checked"{% endif %}>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="col-8">
+                        <div class="form-group form-inline">
+                            <label for="lastname" class="col-form-label text-right mt-2 mr-1">{{ _("Nom") }}</label>
+                            <div class="">					
+                                <input type="text" name="lastname" id="lastname" value="" class="form-control cnx_trigger">			
+                            </div>
+                            <label for="firstname" class="col-form-label text-right mt-2 ml-3 mr-1">{{ _("Prénom") }}</label>
+                            <div>					
+                                <input type="text" name="firstname" id="firstname" value="" class="form-control cnx_trigger">			
+                            </div>
+                            <label for="code" class="col-form-label text-right mt-2 ml-3 mr-1">{{ _("Code") }}</label>
+                            <div>					
+                                <input type="text" name="code" id="code" value="" class="form-control cnx_trigger" style="width:120px;">			
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group form-inline">
+                            <label for="f_stat_rec" class="col-form-label text-right mr-1">{{ _("Statut") }}</label>
+                            <div>					
+                                <select id="f_stat_rec" class="form-control">
+                                    <option value="0" selected=""></option>
+                                    <option value="181">{{ _("Nouveau") }}</option>
+                                    <option value="182">{{ _("Validé administrativement") }}</option>
+                                    <option value="253">{{ _("Intermédiaire (validé admin.)") }}</option>
+                                    <option value="254">{{ _("Validé techniquement") }}</option>
+                                    <option value="255">{{ _("Intermédiaire (validé tech.)") }}</option>
+                                    <option value="256">{{ _("Validé biologiquement") }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="float-right">
+                            <button type="button" onclick="filter_record();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
 
                 <!-- List records -->
                 <div class="panel panel-1 panel-primary" style="">
-                    <div class="panel-heading"><h3 class="panel-title">Liste des dossiers</h3></div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ _("Liste des dossiers") }}</h3>
+                    </div>
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
+                        <div class="row mt-3">
                                 <div class="listing_total_info" id="listing_dos_total_info">
-                                    <span class="listing_total_label" id="listing_dos_total_label">Nombre total de lignes :</span>
+                                    <span class="listing_total_label" id="listing_dos_total_label">{{ _("Nombre total de lignes") }} :</span>
                                     <span class="listing_total" id="listing_dos_total">{% if not args %}0{% endif %}</span>
                                 </div>
-                                <div class="listing table-responsive yui-dt" id="listing_dos">
-                                    <div id="yui-dt0-paginator0" class="yui-dt-paginator yui-pg-container" style="">
-                                        <span id="yui-pg0-0-first-span23" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">Premier</a></span>
-                                        <span id="yui-pg0-0-prev-span25" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">Précédent</a></span>
-                                        <span id="num_page_t" class="yui-pg-pages" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
-                                        <span id="yui-pg0-0-next-span28" class="yui-pg-next"><a id="next_rec" onclick="display_record(1000);">Suivant</a></span>
-                                        <span id="yui-pg0-0-last-span30" class="yui-pg-last"><a id="last_rec" onclick="display_record(p_max);">Dernier</a></span>
+                                <div class="listing table-responsive" id="listing_dos">
+                                    <div style="">
+                                        <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _("Premier") }}</a></span>
+                                        <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _("Précédent") }}</a></span>
+                                        <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _("Suivant") }}</a></span>
+                                        <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _("Dernier") }}</a></span>
                                     </div>
-                                    <div class="yui-dt-mask" style="display: none;"></div>
-                                    <table summary="" id="yuievtautoid-0">
+                                    <table id="table_records" class="table table-striped table-hover col-12 table-lbk tablesorter">
                                         <colgroup><col><col><col><col><col><col><col><col><col></colgroup>
                                         <thead>
-                                            <tr class="yui-dt-first yui-dt-last">
-                                                <th id="yui-dt0-th-id_data" rowspan="1" colspan="1" class="yui-dt0-col-id_data yui-dt-col-id_data yui-dt-hidden yui-dt-first">
-                                                    <div id="yui-dt0-th-id_data-liner" class="yui-dt-liner"><span class="yui-dt-label">id_data</span></div>
+                                            <tr>
+                                                <th class="text-center" hidden>
+                                                    <span>id_data</span>
                                                 </th>
-                                                <th id="yui-dt0-th-action" rowspan="1" colspan="1" class="yui-dt0-col-action yui-dt-col-action">
-                                                    <div id="yui-dt0-th-action-liner" class="yui-dt-liner"><span class="yui-dt-label">Action</span></div>
+                                                <th class="text-center">
+                                                    <span>{{ _("Action") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-statut_court" rowspan="1" colspan="1" class="string yui-dt0-col-statut_court yui-dt-col-statut_court yui-dt-sortable">
-                                                    <div id="yui-dt0-th-statut_court-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-statut_court" title="Click to sort ascending" class="yui-dt-sortable">Statut</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("Statut") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-urgent" rowspan="1" colspan="1" class="string yui-dt0-col-urgent yui-dt-col-urgent yui-dt-sortable">
-                                                    <div id="yui-dt0-th-urgent-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-urgent" title="Click to sort ascending" class="yui-dt-sortable">Urgent</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("Urgent") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-num_dos" rowspan="1" colspan="1" class="integer yui-dt0-col-num_dos yui-dt-col-num_dos yui-dt-sortable">
-                                                    <div id="yui-dt0-th-num_dos-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-num_dos" title="Click to sort ascending" class="yui-dt-sortable">N° dossier</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("N° dossier") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-date_dos" rowspan="1" colspan="1" class="date yui-dt0-col-date_dos yui-dt-col-date_dos yui-dt-sortable">
-                                                    <div id="yui-dt0-th-date_dos-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-date_dos" title="Click to sort ascending" class="yui-dt-sortable">Création dossier</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("Création dossier") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-code" rowspan="1" colspan="1" class="string yui-dt0-col-code yui-dt-col-code yui-dt-sortable">
-                                                    <div id="yui-dt0-th-code-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-code" title="Click to sort ascending" class="yui-dt-sortable">Code patient</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("Code patient") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-nom" rowspan="1" colspan="1" class="string yui-dt0-col-nom yui-dt-col-nom yui-dt-sortable">
-                                                    <div id="yui-dt0-th-nom-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-nom" title="Click to sort ascending" class="yui-dt-sortable">Nom</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("Nom") }}</span>
                                                 </th>
-                                                <th id="yui-dt0-th-prenom" rowspan="1" colspan="1" class="string yui-dt0-col-prenom yui-dt-col-prenom yui-dt-sortable yui-dt-last">
-                                                    <div id="yui-dt0-th-prenom-liner" class="yui-dt-liner">
-                                                        <span class="yui-dt-label">
-                                                            <a href="yui-dt0-href-prenom" title="Click to sort ascending" class="yui-dt-sortable">Prénom</a>
-                                                        </span>
-                                                    </div>
+                                                <th class="text-center cursor-act">
+                                                    <span>{{ _("Prénom") }}</span>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody id="tbody_records" class="yui-dt-message" style=""></tbody>
+                                        <tbody id="tbody_records" style=""></tbody>
                                     </table>
-                                    <div id="yui-dt0-paginator1" class="yui-dt-paginator yui-pg-container" style="">
-                                        <span id="yui-pg0-1-first-span33" class="yui-pg-first"><a id="first_rec" onclick="display_record(1);">{{ _('Premier') }}</a></span>
-                                        <span id="yui-pg0-1-prev-span35" class="yui-pg-previous"><a id="prev_rec" onclick="display_record(-1000);">{{ _('Précédent') }}</a></span>
-                                        <span id="num_page_b" class="yui-pg-pages" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
-                                        <span id="yui-pg0-1-next-span38" class="yui-pg-next"><a id="next_rec" onclick="display_record(1000);">{{ _('Suivant') }}</a></span>
-                                        <span id="yui-pg0-1-last-span40" class="yui-pg-last"><a id="last_rec" onclick="display_record(p_max);">{{ _('Dernier') }}</a></span>
+                                    <div style="">
+                                        <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _('Premier') }}</a></span>
+                                        <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _('Précédent') }}</a></span>
+                                        <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _('Suivant') }}</a></span>
+                                        <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _('Dernier') }}</a></span>
                                     </div>
                                 </div>
                                 <div class="clear"></div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </form>
-
-            <!-- Popup waiting -->
-            <div class="modal fade" id="dial_wait" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dlg-cancel" style="background:#EEE;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h4>{{ _('Processus en cours') }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <span data-field="reason">{{ _('Veuillez patienter') }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div><!-- close main -->
     </div>
@@ -216,46 +168,59 @@ var p_max        = Math.ceil( data_records.length / p_step ) ;
 
 function filter_record()
 {
-let num_rec  = $("#f_num_rec").val()  ;
-let stat_rec = $("#f_stat_rec").val() ;
-let patient  = $("#f_patient").val()  ;
-let date_beg = $("#f_date_beg").val() ;
-let date_end = $("#f_date_end").val() ;
-let emer     = $("input:radio[name=f_emer]:checked").val() ;
+let num_rec   = $("#f_num_rec").val()  ;
+let stat_rec  = $("#f_stat_rec").val() ;
+let lastname  = $("#lastname").val()   ;
+let firstname = $("#firstname").val()  ;
+let code      = $("#code").val()       ;
+let date_beg  = $("#f_date_beg").val() ;
+let date_end  = $("#f_date_end").val() ;
+let emer      = 5 ;
+
+    if ( $("#f_emer").is(":checked") )
+    emer = $("#f_emer").val() ;
 
 let param = '{ "num_rec":"' + num_rec + '", ' +
             '"stat_rec":' + stat_rec  + ', ' +
-            '"patient":"' + patient  + '", ' +
+            '"lastname":"' + lastname  + '", ' +
+            '"firstname":"' + firstname  + '", ' +
+            '"code":"' + code  + '", ' +
             '"date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '", ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    $( "#dial-wait" ).modal( "show" ) ;
 
     $.ajax( {
-       type: "POST",
-       url: "/services/record/list/" + {{ session['user_id_group']|safe}},
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           data_records = data ;
+        type: "POST",
+        url: "/services/record/list/" + {{ session['user_id_group']|safe}},
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            data_records = data ;
+ 
+            p_max = Math.ceil( data.length / p_step ) ;
+ 
+            display_record( 1 ) ;
 
-           p_max = Math.ceil( data.length / p_step ) ;
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+            },
+        error: function(data)
+            {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
 
-           display_record( 1 ) ;
-
-           $( "#dial_wait" ).modal( "hide" ) ;
-           },
-       error: function(data)
-           {
-           $( "#dial_wait" ).modal( "hide" ) ;
-
-           console.log("ERROR record list") ;
-           alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
-           }
+            console.log("ERROR record list") ;
+            alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
+            }
     } ) ;
 }
 
@@ -278,9 +243,9 @@ let res = ''
     $("#tbody_records").empty() ;
 
 {% if not args %}
-res = '<tr class="yui-dt-first yui-dt-last">' +
-      '<td colspan="9" class="yui-dt-empty">' +
-      '<div class="yui-dt-liner">Aucune donnée à afficher</div></td></tr>' ;
+res = '<tr>' +
+      '<td colspan="9">' +
+      '<div>Aucune donnée à afficher</div></td></tr>' ;
 {% else %}
 let data_len = data_records.length ;
 let i_start  = (p_cur -1) * p_step ;
@@ -291,39 +256,43 @@ $("#listing_dos_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    let menu_act = '<ul class="nav navbar-nav">' +
-                   '<li class="dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">Action</a>' +
-                   '<ul class="dropdown-menu menu-act-drop">' +
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/administrative-record/E/' + data_records[i].id_data + '">Dossier administratif</a></li>' +
+    let menu_act = '<nav class="">' +
+                   '<ul class="navbar-nav">' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' +
                    {% if session['user_id_role'] < 4 %}
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/enter-result/' + data_records[i].id_data + '">Saisie de résultats</a></li>' +
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/technical-validation/' + data_records[i].id_data + '">Validation technique</a></li>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' +
                    {% if session['user_id_role'] < 3 %}
-                   '<li><a class="menu-act-item" href="{{ session['server_ext'] }}/labbook_FE/biological-validation/' + data_records[i].id_data + '">Validation biologique</a></li>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' +
                    {% endif %}{% endif %}
-                   '<li><hr style="border-top:1px solid #DDD;"></li>' +
-                   '<li><a class="menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">Supprimer</a></li></ul></ul>' ;
+                   '<a class="dropdown-item menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">{{ _("Supprimer") }}</a>' ;
+                   
+                   menu_act += '</div></li></ul>' ;
 
         if ( data_records[i].urgent == "O" )
         tr_style = 'style="background-color:#FFD5D6;"' ;
         else
         tr_style = '' ;
 
-    res += '<tr ' + tr_style + '><td class="yui-dt-hidden"><div class="yui-dt-liner">' + data_records[i].id_data + '</div></td>' +
-           '<td><div class="yui-dt-liner">' + menu_act + '</div></td>' +
-           '<td><div class="yui-dt-liner string" style="text-align:center;">' + status_rec( data_records[i].stat ) + '</div></td>' +
-           '<td><div class="yui-dt-liner string" style="text-align:center;">' + emer( data_records[i].urgent ) + '</div></td>' +
-           '<td><div class="yui-dt-liner integer" style="text-align:center;"><span class="num-dos">' + data_records[i].num_dos + '</span></div></td>' +
-           '<td><div class="yui-dt-liner date" style="text-align:center;">' + data_records[i].date_dos + '</div></td>' +
-           '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].code + '</div></td>' +
-           '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].nom + '</div></td>' +
-           '<td><div class="yui-dt-liner string" style="text-align:center;">' + data_records[i].prenom + '</div></td></tr>' ;
+    res += '<tr ' + tr_style + '><td hidden><div>' + data_records[i].id_data + '</div></td>' +
+           '<td><div class="text-center">' + menu_act + '</div></td>' +
+           '<td><div class="text-center">' + status_rec( data_records[i].stat ) + '</div></td>' +
+           '<td><div class="text-center">' + emer( data_records[i].urgent ) + '</div></td>' +
+           '<td><div class="text-center"><span class="rec-num" title="' + data_records[i].num_dos_long + '">' + data_records[i].num_dos + '</span></div></td>' +
+           '<td><div class="text-center">' + data_records[i].date_dos + '</div></td>' +
+           '<td><div class="text-center">' + data_records[i].code + '</div></td>' +
+           '<td><div class="text-center">' + data_records[i].nom + '</div></td>' +
+           '<td><div class="text-center">' + data_records[i].prenom + '</div></td></tr>' ;
     }
 {% endif %}
 
     $("#tbody_records").append(res) ;
     $("#num_page_t").text( p_cur ) ;
     $("#num_page_b").text( p_cur ) ;
+
+    $("#table_records").tablesorter() ;  // sort only data on screen
 }
 
 function del_record( id_rec )
@@ -348,6 +317,15 @@ function del_record( id_rec )
     else
     return false ;
 }
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
 
 $( document ).ready( function()
 {

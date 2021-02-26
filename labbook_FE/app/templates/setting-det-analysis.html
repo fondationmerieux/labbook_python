@@ -1,0 +1,730 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Analyse") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Analyse") }}</span></h2>
+            <form autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Analyse") }}</h3>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <label for="code" class="col-form-label col-5 text-right mt-1 ">{{ _("Code") }} *</label>
+                            <input type="text" name="code" id="code" value="" class="form-control" style="width:50%">			
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="name" class="col-form-label col-4 text-right mt-1 ">{{ _("Désignation de l'acte") }} *</label>
+                            <input type="text" name="name" id="name" value="" class="form-control" style="width:60%">			
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="abbr" class="col-form-label col-3 text-right mt-1 ">{{ _("Abbréviation") }}</label>
+                            <div>					
+                                <input type="text" name="abbr" id="abbr" value="" class="form-control">			
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="type_ana" class="col-form-label col-3 text-right mt-1 ">{{ _("Famille d'analyse") }}</label>
+                            <div>
+                                <select name="type_ana" id="type_ana" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for type_ana in ihm['type_ana'] %}
+                                    <option value="{{ type_ana['id_data'] }}">{{ type_ana['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="sample" class="col-form-label col-4 text-right mt-1 ">{{ _("Type de prélèvement") }}</label>
+                            <div>					
+                                <select name="type_prod" id="type_prod" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for product in ihm['products'] %}
+                                    <option value="{{ product['id_data'] }}">{{ product['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <label for="unit" class="col-form-label col-6 text-right mt-1 ">{{ _("Unité de cotation") }}</label>
+                            <input type="text" name="unit" id="unit" value="" class="form-control" style="width:30%">			
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="value" class="col-form-label col-5 text-right mt-1 ">{{ _("Valeur de cotation") }}</label>
+                            <input type="number" name="value" id="value" min="0" step="1" value="" class="form-control" style="width:40%">			
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-form-label col-4 text-right  mt-2">{{ _("Analyse active") }}</label>
+                            <label class="col-form-label text-right mt-2 mr-3">
+                                <input type="radio" name="stat" value="4" {% if args['stat'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                            </label>
+                            <label class="col-form-label text-right mt-2 mr-3">
+                                <input type="radio" name="stat" value="5" {% if args['stat'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="comment" class="col-form-label col-3 text-right  mt-2">{{ _("Commentaires") }}</label>
+                            <div>					
+                                <textarea id="comment" name="comment" rows="3" cols="30" class="form-control">{{ args['comment'] }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form id="form_var" autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Variables") }}</h3>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="form-group row">
+                            <label for="search_var" class="col-form-label col-3 text-right ">{{ _("Chercher une variable") }}</label>
+                            <div>
+                                <select id="search_var" style="width:450px"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="var_label" class="col-form-label col-3 text-right mt-1 ">{{ _("Libellé") }}</label>
+                            <div>					
+                                <input type="text" name="var_label" id="var_label" value="" class="form-control">			
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="var_descrip" class="col-form-label col-3 text-right mt-1 ">{{ _("Description") }}</label>
+                            <div>					
+                                <input type="text" name="var_descrip" id="var_descrip" value="" class="form-control">			
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="var_type_res" class="col-form-label col-4 text-right mt-1 ">{{ _("Type de résultat") }}</label>
+                            <div>					
+                                <select name="var_type_res" id="var_type_res" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for product in ihm['products'] %}
+                                    <option value="{{ product['id_data'] }}">{{ product['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="var_unit" class="col-form-label col-4 text-right mt-1 ">{{ _("Unité") }}</label>
+                            <div>					
+                                <select name="var_unit" id="var_unit" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for product in ihm['products'] %}
+                                    <option value="{{ product['id_data'] }}">{{ product['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for=var_accu" class="col-form-label col-5 text-right mt-1 ">{{ _("Précision") }}</label>
+                            <input type="number" name="var_accu" id="var_accu" min="0" step="1" value="" class="form-control" style="width:40%">			
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="var_formula" class="col-form-label col-3 text-right mt-1 ">{{ _("Formule") }}</label>
+                            <div>					
+                                <input type="text" name="var_formula" id="var_formula" value="" class="form-control">			
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="var_min" class="col-form-label col-4 text-right mt-1 ">{{ _("Valeur normale min.") }}</label>
+                            <div>					
+                                <input type="text" name="var_min" id="var_min" value="" class="form-control">			
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="var_max" class="col-form-label col-4 text-right mt-1 ">{{ _("Valeur normale max.") }}</label>
+                            <div>					
+                                <input type="text" name="var_max" id="var_max" value="" class="form-control">			
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group row">
+                            <label for="var_formula2" class="col-form-label col-6 text-right mt-1 ">{{ _("Formule de conversion unité 2") }}</label>
+                            <div>					
+                                <input type="text" name="var_formula2" id="var_formula2" value="" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="var_unit2" class="col-form-label col-4 text-right mt-1 ">{{ _("Unité 2") }}</label>
+                            <div>					
+                                <select name="var_unit2" id="var_unit2" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for product in ihm['products'] %}
+                                    <option value="{{ product['id_data'] }}">{{ product['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <label for=var_accu2" class="col-form-label col-5 text-right mt-1 ">{{ _("Précision 2") }}</label>
+                            <input type="number" name="var_accu2" id="var_accu2" min="0" step="1" value="" class="form-control" style="width:40%">			
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="var_comment" class="col-form-label col-3 text-right  mt-2">{{ _("Commentaires") }}</label>
+                            <div>					
+                                <textarea id="var_comment" name="var_comment" rows="3" cols="30" class="form-control">{{ args['comment'] }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="col-form-label col-4 text-right  mt-2">{{ _("Résultat obligatoire") }}</label>
+                            <label class="col-form-label text-right mt-2 mr-3">
+                                <input type="radio" name="var_mandatory" value="4" {% if args['stat'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                            </label>
+                            <label class="col-form-label text-right mt-2 mr-3">
+                                <input type="radio" name="var_mandatory" value="5" {% if args['stat'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Sous analyses") }}</h3>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="form-group row">
+                            <label for="search_ana" class="col-form-label col-3 text-right ">{{ _("Ajouter une analyse") }}</label>
+                            <div>
+                                <select id="search_ana" style="width:450px"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Produit biologique") }}</h3>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="form-group row">
+                            <label for="search_prod" class="col-form-label col-3 text-right ">{{ _("Chercher un produit biologique") }}</label>
+                            <div>
+                                <select id="search_prod" style="width:450px"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="save_ana();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} float-right">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var struct_val  = {"id_data":0 ,"label":"", "code":"", "short_label":"", "position":0} ;
+var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var ind_values  = 0 ;
+
+$("#search_var").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: true,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id_group'] }},
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_analysis").text(),
+        data: function (params) {
+            return JSON.stringify(
+            {
+                term: params.term
+            } ) ;
+        },
+        processResults: function (data) {
+            return {
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
+        }
+    },
+    templateResult: formatRepoVar
+} ) ;
+
+function formatRepoVar(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ;
+
+var name = "" ;
+
+    if (repo.name)
+    name += repo.name ;
+
+var cat = "" ;
+
+    if (repo.label)
+    cat += repo.label ;
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__code'><b>" + code + "</b></div>" +
+            "<div class='select2-result-repository__name'>" + name + "</div>" +
+            "<div class='select2-result-repository__category'>" + cat + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+return display ;
+}
+
+$("#search_var").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+// TODO
+} ) ;
+
+$("#search_ana").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: true,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id_group'] }},
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_analysis").text(),
+        data: function (params) {
+            return JSON.stringify(
+            {
+                term: params.term
+            } ) ;
+        },
+        processResults: function (data) {
+            return {
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
+        }
+    },
+    templateResult: formatRepoAna
+} ) ;
+
+function formatRepoAna(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ;
+
+var name = "" ;
+
+    if (repo.name)
+    name += repo.name ;
+
+var cat = "" ;
+
+    if (repo.label)
+    cat += repo.label ;
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__code'><b>" + code + "</b></div>" +
+            "<div class='select2-result-repository__name'>" + name + "</div>" +
+            "<div class='select2-result-repository__category'>" + cat + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+return display ;
+}
+
+$("#search_ana").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+// TODO
+} ) ;
+
+$("#search_prod").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: true,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id_group'] }},
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_analysis").text(),
+        data: function (params) {
+            return JSON.stringify(
+            {
+                term: params.term
+            } ) ;
+        },
+        processResults: function (data) {
+            return {
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
+        }
+    },
+    templateResult: formatRepoProd
+} ) ;
+
+function formatRepoProd(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ;
+
+var name = "" ;
+
+    if (repo.name)
+    name += repo.name ;
+
+var cat = "" ;
+
+    if (repo.label)
+    cat += repo.label ;
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__code'><b>" + code + "</b></div>" +
+            "<div class='select2-result-repository__name'>" + name + "</div>" +
+            "<div class='select2-result-repository__category'>" + cat + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+return display ;
+}
+
+$("#search_prod").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+// TODO
+} ) ;
+
+function add_value()
+{
+let tmp_struct_val = JSON.parse(JSON.stringify(struct_val)) ;
+
+tmp_struct_val.id_data = ind_values++ ;
+
+data_values.push(tmp_struct_val) ;
+
+load_value( tmp_struct_val ) ;
+}
+
+function load_value( data )
+{
+let tr_value = '' ;
+    
+let obj = data ;
+
+    if ( obj.id_data >= 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+
+    let btn = '<input type="button" onclick="del_value(' + obj.id_data + ');load_data(0);" value="' + '{{ _("Supprimer") }}' + '">' ;
+
+    tmp_tr += create_td(obj.id_data, obj.id_data, "col", "display:none;") ;
+    tmp_tr += create_td("", btn, " text-center d-inline-block col-2", "") ; // actions
+    tmp_tr += create_td("", create_input("val_label_"+obj.id_data, "text", obj.label, true), "d-inline-block col-3", "") ;
+    tmp_tr += create_td("", create_input("val_code_"+obj.id_data, "text", obj.code, true), "d-inline-block col-2", "") ;
+    tmp_tr += create_td("", create_input("val_short_"+obj.id_data, "text", obj.short_label, 0, 0, ""), "d-inline-block col-3", "") ;
+    tmp_tr += create_td("", create_input("val_pos_"+obj.id_data, "number", obj.position, 0, 10, ""), "d-inline-block col-2", "") ;
+    tmp_tr += '</tr>' ;
+
+    tr_value += tmp_tr ;
+    }
+
+    $("#tbody_value").append(tr_value) ;
+
+    $("#table_value").tablesorter() ;  // sort only data on screen
+}
+
+function del_value( id_data )
+{
+    if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
+    {
+        for( i in data_values )
+        {
+            if (data_values[i].id_data == id_data)
+            {
+            delete data_values[i] ;
+
+            break ;
+            }
+        }
+    }
+    else
+    return false ;
+}
+
+function load_data()
+{
+// clear table tbody
+$("#tbody_value").empty() ;
+
+    for( i in data_values )
+    {
+    load_value( data_values[i] ) ;
+    }
+}
+
+function create_td(id, val, cls, style)
+{
+let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
+             '<div>' + val + '</div></td>' ;
+
+return tmp_td ;
+}
+
+function create_input(id, type, val, min, max, fct)
+{
+let other_fct = '' ;
+
+    // example : onchange for price
+    if ( fct != "" )
+    other_fct += fct + '(this);" ' ;
+
+let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+
+    if (type == "number")
+    tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
+
+tmp_input += '>' ;
+
+return tmp_input ;
+}
+
+function change_data( elem )
+{
+// Get new value from select or input
+let val = $(elem).val() ;
+
+// Change value in data structure
+let id_elem = elem.id ;
+let split_id = id_elem.split("_") ;
+let id_data  = split_id[split_id.length -1] ; 
+
+    if ( split_id[0] == "prod" )
+    {
+        for( i in data_values )
+        {
+            if (data_values[i].id_data == id_data )
+            {
+                if ( split_id[1] == "label" )
+                data_values[i].label = val ;
+                else if ( split_id[1] == "code" )
+                data_values[i].code = val ;
+                else if ( split_id[1] == "short_label" )
+                data_values[i].short_label = val ;
+                else if ( split_id[1] == "position" )
+                data_values[i].pos = val ;
+
+            break ;
+            }
+        }
+    }
+}
+
+function save_dict()
+{
+   /* TODO 
+var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_dict   = {{ args['dict_name']|safe }} ;
+var login     = $("#login").val()     ;
+var cps       = $("#cps").val()       ;
+var rpps      = $("#rpps").val()      ;
+var firstname = $("#firstname").val() ;
+var lastname  = $("#lastname").val()  ;
+var email     = $("#email").val()     ;
+var title     = $("#title").val()     ;
+var initial   = $("#initial").val()   ;
+var birth     = $("#birth").val()     ; 
+var phone     = $("#phone").val()     ;
+var arrived   = $("#arrived").val()   ;
+var position  = $("#position").val()  ;
+var section   = $("#section").val()   ;
+var last_eval = $("#last_eval").val() ;
+var lang      = $("input:radio[name=lang]:checked").val() ;
+var address   = JSON.stringify( $("#address").val() )  ;
+var cv        = JSON.stringify( $("#cv").val() )       ;
+var diploma   = JSON.stringify( $("#diploma").val() )  ;
+var training  = JSON.stringify( $("#training").val() ) ;
+var comment   = JSON.stringify( $("#comment").val() )  ;
+var id_role   = $("#role").val()   ;
+
+var msg = "" ;
+
+    if (login == "")
+    msg += "{{ _("Veuillez saisir un identifiant.") }}\n" ;
+
+    if (lang == "")
+    msg += "{{ _("Veuillez choisir une langue.") }}\n" ;
+
+    if (id_role == 0)
+    msg += "{{ _("Veuillez choisir un rôle.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_dict":' + id_dict + ', ' +
+              '"login":"' + login + '", ' +
+              '"firstname":"' + firstname + '", ' +
+              '"lastname":"' + lastname + '", ' +
+              '"lang":' + lang + ', ' +
+              '"email":"' + email + '", ' +
+              '"title":' + title + ', ' +
+              '"initial":"' + initial + '", ' +
+              '"birth":"' + birth + '", ' +
+              '"phone":"' + phone + '", ' +
+              '"arrived":"' + arrived + '", ' +
+              '"position":"' + position + '", ' +
+              '"section":' + section + ', ' +
+              '"last_eval":"' + last_eval + '", ' +
+              '"address":' + address + ', ' +   // No quotes with stringify
+              '"cv":' + cv + ', ' +             // No quotes with stringify
+              '"diploma":' + diploma + ', ' +   // No quotes with stringify
+              '"training":' + training + ', ' + // No quotes with stringify
+              '"comment":' + comment + ', ' +   // No quotes with stringify
+              '"id_role":' + id_role + '}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/dict/det/" + id_dict,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST dict det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+    */
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+{% if args['dict_name'] %}
+load_data() ;
+{% else %}
+add_value() ;
+{% endif %}
+} ) ;
+</script>
+{% endblock %}

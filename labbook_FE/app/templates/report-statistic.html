@@ -1,0 +1,441 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Rapport statistique") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport statistique") }}</span></h2>
+            <form autocomplete="off">
+                <fieldset class="row border mx-1 p-2">
+                    <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label for="f_date_beg" class="col-form-label col-4 text-right">{{ _("Date du") }}</label>
+                                <div>
+                                    <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label for="f_date_end" class="col-form-label col-2 text-right">{{ _("au") }}</label>
+                                <div>					
+                                    <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="float-right">
+                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            </div>
+                        </div>
+                </fieldset>
+            </form>
+
+            <form id="html_report">
+                <fieldset class="row border mx-1 mt-3 p-2">
+                    <legend class="legend-lbk">{{ _("Répartition dossiers") }}</legend>
+                        <table class="table table-striped table-hover col-12 table-lbk">
+                            <thead id="thead_stat_patient"></thead>
+                            <tbody id="tbody_stat_patient"></tbody>
+                        </table>
+                </fieldset>
+
+                <fieldset class="row border mx-1 mt-2 p-2">
+                    <legend class="legend-lbk">{{ _("Prescripteurs") }}</legend>
+                    <table class="table table-striped table-hover col-12 table-lbk">
+                        <tbody id="tbody_stat_prescr"></tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset class="row border mx-1 mt-2 p-2">
+                    <legend class="legend-lbk">{{ _("Préleveurs") }}</legend>
+                    <table class="table table-striped table-hover col-12 table-lbk">
+                        <tbody id="tbody_stat_sampler"></tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset class="row border mx-1 mt-2 p-2">
+                    <legend class="legend-lbk">{{ _("Prélèvements") }}</legend>
+                    <table class="table table-striped table-hover col-12 table-lbk">
+                        <tbody id="tbody_stat_product"></tbody>
+                    </table>
+                </fieldset>
+            </form>
+
+            <div class="float-right mt-3 mb-5">
+                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+            </div>
+
+        </div><!-- close main -->
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_stats = {{ args['stat']|safe }} ;
+var data_interval = {{ ihm['age_interval']|safe }} ;
+
+function filter_data()
+{
+let date_beg = $("#f_date_beg").val() ;
+let date_end = $("#f_date_end").val() ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '"}' ;
+
+    // popup wait
+    $( "#dial-wait" ).modal( "show" ) ;
+
+    $.ajax( {
+        type: "POST",
+        url: "/services/report/stat",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            data_stats = data ;
+ 
+            display_data() ;
+
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+            },
+        error: function(data)
+            {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+
+            console.log("ERROR report stat") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+            }
+    } ) ;
+}
+
+function display_data()
+{
+    $("#thead_stat_patient").empty() ;
+    $("#tbody_stat_patient").empty() ;
+    $("#tbody_stat_prescr").empty()  ;
+    $("#tbody_stat_sampler").empty() ;
+    $("#tbody_stat_product").empty() ;
+
+{% if args %}
+display_patient(data_stats.patient) ;
+display_prescr(data_stats.prescr)   ;
+display_sampler(data_stats.sampler) ;
+display_product(data_stats.product) ;
+{% endif %}
+}
+
+function display_patient( data )
+{
+let len_data = data_interval.length ;
+let res_head = '<tr><td></td>' ;
+let res_body = '' ;
+
+let val_1 = [] ;
+let val_2 = [] ;
+let val_3 = [] ;
+let val_4 = [] ;
+let val_5 = [] ;
+let val_6 = [] ;
+
+    // init val_x with 0 (for interval and no value and total)
+    for( i = 0; i < len_data +2; i++ )
+    {
+    val_1.push(0) ;
+    val_2.push(0) ;
+    val_3.push(0) ;
+    val_4.push(0) ;
+    val_5.push(0) ;
+    val_6.push(0) ;
+    }
+
+    // calculate statistic
+    for( i = 0; i < data.length; i++ )
+    {
+    let nb_rec = data[i].nb_rec ;
+
+        if ( data[i].age == null )
+        {
+        val_6[len_data+1] += data[i].nb_rec ;
+
+            if ( data[i].sex == 1 )
+            {
+            val_1[len_data]   += data[i].nb_rec ;
+            val_1[len_data+1] += data[i].nb_rec ;
+            val_6[len_data]   += data[i].nb_rec ;
+            }
+            else if ( data[i].sex == 2 )
+            {
+            val_2[len_data]   += data[i].nb_rec ;
+            val_2[len_data+1] += data[i].nb_rec ;
+            val_6[len_data]   += data[i].nb_rec ;
+            }
+            else
+            {
+            val_3[len_data]   += data[i].nb_rec ;
+            val_3[len_data+1] += data[i].nb_rec ;
+            val_6[len_data]   += data[i].nb_rec ;
+            }
+
+            if ( data[i].rec_type == 184 )
+            {
+            val_4[len_data]   += data[i].nb_rec ;
+            val_4[len_data+1] += data[i].nb_rec ;
+            }
+            else
+            {
+            val_5[len_data]   += data[i].nb_rec ;
+            val_5[len_data+1] += data[i].nb_rec ;
+            }
+
+        }{% for obj in ihm['age_interval'] %}
+        else if ( (data_interval[{{loop.index0}}].ais_lower_bound == "" || data[i].age > data_interval[{{loop.index0}}].ais_lower_bound) &&
+                  (data_interval[{{loop.index0}}].ais_upper_bound == "" || data[i].age <= data_interval[{{loop.index0}}].ais_upper_bound) )
+        {
+        val_6[len_data+1] += data[i].nb_rec ;
+
+            if ( data[i].sex == 1 )
+            {
+            val_1[{{loop.index0}}] += data[i].nb_rec ;
+            val_1[len_data+1]      += data[i].nb_rec ;
+            val_6[{{loop.index0}}] += data[i].nb_rec ;
+            }
+            else if ( data[i].sex == 2 )
+            {
+            val_2[{{loop.index0}}] += data[i].nb_rec ;
+            val_2[len_data+1]      += data[i].nb_rec ;
+            val_6[{{loop.index0}}] += data[i].nb_rec ;
+            }
+            else
+            {
+            val_3[{{loop.index0}}] += data[i].nb_rec ;
+            val_3[len_data+1]      += data[i].nb_rec ;
+            val_6[{{loop.index0}}] += data[i].nb_rec ;
+            }
+
+            if ( data[i].rec_type == 184 )
+            {
+            val_4[{{loop.index0}}] += data[i].nb_rec ;
+            val_4[len_data+1]      += data[i].nb_rec ;
+            }
+            else
+            {
+            val_5[{{loop.index0}}] += data[i].nb_rec ;
+            val_5[len_data+1]      += data[i].nb_rec ;
+            }
+        }{% endfor %}
+    }
+
+// init line of table
+let tr_1 = '<tr><td class="text-left font-info">{{ _("Masculin") }}</td>' ;
+let tr_2 = '<tr><td class="text-left font-info">{{ _("Féminin") }}</td>' ;
+let tr_3 = '<tr><td class="text-left font-info">{{ _("Inconnu") }}</td>' ;
+let tr_4 = '<tr><td class="text-left font-info">{{ _("Interne") }}</td>' ;
+let tr_5 = '<tr><td class="text-left font-info">{{ _("Externe") }}</td>' ;
+let tr_6 = '<tr><td class="text-left font-info">{{ _("Total") }}</td>' ;
+
+    // prepare columns age interval
+    for( i = 0; i < len_data; i++ )
+    {
+    let head_name = '' ;
+    
+        if (data_interval[i].ais_lower_bound == "")
+        head_name = '{{ _("Moins de") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+        else if (data_interval[i].ais_upper_bound == "")
+        head_name = '{{ _("Plus de") }} ' + data_interval[i].ais_lower_bound + ' {{ _("ans") }}' ;
+        else
+        head_name = data_interval[i].ais_lower_bound + ' {{ _("à") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+
+    res_head += '<th class="text-center font-info">' + head_name  + '</th>' ;
+
+    tr_1 += '<td class="text-center">'+ val_1[i] +'</td>' ;
+    tr_2 += '<td class="text-center">'+ val_2[i] +'</td>' ;
+    tr_3 += '<td class="text-center">'+ val_3[i] +'</td>' ;
+    tr_4 += '<td class="text-center">'+ val_4[i] +'</td>' ;
+    tr_5 += '<td class="text-center">'+ val_5[i] +'</td>' ;
+    tr_6 += '<td class="text-center">'+ val_6[i] +'</td>' ;
+    }
+
+res_head += '<th class="text-center font-info">{{ _("Non renseigné") }}</th>' +
+            '<th class="text-center font-info">{{ _("Total") }}</th></tr>' ;
+
+// add column unknown value and total
+tr_1 += '<td class="text-center">'+ val_1[len_data] +'</td><td class="text-center">'+ val_1[len_data+1] +'</td></tr>' ;
+tr_2 += '<td class="text-center">'+ val_2[len_data] +'</td><td class="text-center">'+ val_2[len_data+1] +'</td></tr>' ;
+tr_3 += '<td class="text-center">'+ val_3[len_data] +'</td><td class="text-center">'+ val_3[len_data+1] +'</td></tr>' ;
+tr_4 += '<td class="text-center">'+ val_4[len_data] +'</td><td class="text-center">'+ val_4[len_data+1] +'</td></tr>' ;
+tr_5 += '<td class="text-center">'+ val_5[len_data] +'</td><td class="text-center">'+ val_5[len_data+1] +'</td></tr>' ;
+tr_6 += '<td class="text-center">'+ val_6[len_data] +'</td><td class="text-center">'+ val_6[len_data+1] +'</td></tr>' ;
+
+res_body += tr_1 + tr_2 + tr_3 + tr_4 + tr_5 + tr_6 ;
+
+    $("#thead_stat_patient").append(res_head) ;
+    $("#tbody_stat_patient").append(res_body) ;
+}
+
+function display_prescr( data )
+{
+let res = '' ;
+let tot_rec = 0 ;
+
+    for( i = 0; i < data.length; i++ )
+    {
+    let ident   = "" ;
+    let nb_rec  = data[i].nb_rec ;
+
+    tot_rec = tot_rec + nb_rec ;
+
+        if ( data[i].lastname != null )
+        ident += data[i].lastname + " " ;
+
+        if ( data[i].firstname != null )
+        ident += data[i].firstname ;
+
+        if ( ident == "" )
+        ident = "{{ _("Non renseigné") }}" ;
+
+    res += '<tr><td class="text-left font-info">' + ident + '</td>' +
+           '<td class="text-right">' + nb_rec + '</td></tr>' ;
+    }
+
+    res += '<tr><td class="text-left font-info">{{ _("Total") }}</td>' +
+           '<td class="text-right">' + tot_rec + '</td></tr>' ;
+
+    $("#tbody_stat_prescr").append(res) ;
+}
+
+function display_sampler( data )
+{
+let res = '' ;
+let tot_prod = 0 ;
+
+    for( i = 0; i < data.length; i++ )
+    {
+    let ident   = "" ;
+    let nb_prod  = data[i].nb_prod ;
+
+    tot_prod = tot_prod + nb_prod ;
+
+        if ( data[i].sampler != null )
+        ident += data[i].sampler ;
+
+        if ( ident == "" )
+        ident = "{{ _("Non renseigné") }}" ;
+
+    res += '<tr><td class="text-left font-info">' + ident + '</td>' +
+           '<td class="text-right">' + nb_prod + '</td></tr>' ;
+    }
+
+res += '<tr><td class="text-left font-info">{{ _("Total") }}</td>' +
+       '<td class="text-right">' + tot_prod + '</td></tr>' ;
+
+    $("#tbody_stat_sampler").append(res) ;
+}
+
+function display_product( data )
+{
+let res = '' ;
+let tot_prod = 0 ;
+
+    for( i = 0; i < data.length; i++ )
+    {
+    let product = "" ;
+    let nb_prod = data[i].nb_prod ;
+
+    tot_prod = tot_prod + nb_prod ;
+
+        if ( data[i].product != null )
+        product += data[i].product ;
+
+        if ( product == "" )
+        ident = "{{ _("Non renseigné") }}" ;
+
+    res += '<tr><td class="text-left font-info">' + product + '</td>' +
+           '<td class="text-right">' + nb_prod + '</td></tr>' ;
+    }
+
+res += '<tr><td class="text-left font-info">{{ _("Total") }}</td>' +
+       '<td class="text-right">' + tot_prod + '</td></tr>' ;
+
+    $("#tbody_stat_product").append(res) ;
+}
+
+function download_report()
+{
+var html_report = JSON.stringify($("#html_report")[0].outerHTML) ;
+html_report = html_report.replaceAll("border:0", "border:1px solid #000") ;
+
+var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
+              '"filename": "statistic"}' ;
+
+    // popup wait
+    $( "#dial_wait" ).modal( "show" ) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+
+        let filename = "statistic_" + today + ".pdf" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+$( document ).ready( function()
+{
+display_data() ;
+} ) ;
+</script>
+{% endblock %}

@@ -2,8 +2,8 @@
 
 {% block head %}
 {{ super() }}
-    <title>Saisie de résultats</title>
-    <link href="{{ session['server_ext'] }}/css/result.css?0" media="screen" rel="stylesheet" type="text/css">
+    <title>{{ _("Saisie de résultats") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
 {% endblock %}
@@ -12,107 +12,73 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title saisie-resultat">
-                <span>Saisie de résultats</span>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+                <span>{{ _("Saisie de résultats") }}</span> - <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
             </h2>
-            <div class="statictext"><span>Dossier :</span></div>
-            <div class="form-control-static field readonly-field div-inline">
-                <span class="num-dos" id="num_rec"></span>
-            </div>
-            <div class="form-control-static field readonly-field div-inline">
-                <span class="icon file-status" id="rec_stat"></span>
-            </div>
-            <form class="vzn-form form-horizontal row">
-                <fieldset id="pat-group-group" class="group group-1">
-                    <legend>Identité</legend>
-                    <div class="row">
-                        <div id="pat-group" class="col-xs-12">
-                            <div class="form-group form-inline">
-                                <div id="anon-code-ro" class="field"><span>{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span></div>
-                            </div>
-                            <fieldset class="group group-2">
-                                <div class="row">
-                                    <div class="form-inline col-xs-12">
-                                        <div class="readonly-field form-control-static">
-                                            <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset class="group group-2">
-                                <div class="row">
-                                    <div class="form-inline col-xs-12">
-                                        <div class="statictext">
-                                            <span>Né le</span>
-                                        </div>
-                                        <div class="form-control-static field readonly-field div-inline label-rightMargin">
-                                            <span>{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
-                                        </div>
-                                        <div class="statictext"><span> - </span></div>
-                                        <div class="form-control-static field readonly-field div-inline label-rightMargin">
-                                            <span>{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}</span>
-                                        </div>
-                                        <div class="statictext"><span>{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}ans.
-                                                                      {% elif args['patient']['unite'] == 1036 %}mois.
-                                                                      {% elif args['patient']['unite'] == 1035 %}semaines.
-                                                                      {% elif args['patient']['unite'] == 1034 %}jours.{% endif %}{% endif %}</span></div>
-                                        <div class="form-control-static field readonly-field div-inline label-rightMargin">
-                                            <span>{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}Masculin
-                                                  {% elif args['patient']['sexe'] == 2 %}Féminin
-                                                  {% elif args['patient']['sexe'] == 3 %}Inconnu{% endif %}{% endif %}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
+            <form id="benchsheet" autocomplete="off">
+                <div class="row ml-3 mt-1">
+                    <span>{{ _("Dossier") }} :&nbsp;</span> 
+                    <span class="rec-num" id="num_rec"></span>
+                    <div class="ml-2" id="rec_stat"></div>
+                </div>
+                <fieldset class="row border p-2">
+                    <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
+                    <div class="col-12">
+                        {% if args['patient'] and args['patient']['code_patient'] %}
+                        <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
+                        {% endif %}
+                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
+                    </div>
+                    <div class="col-12 mt-2">
+                        {% if args['patient'] and args['patient']['anonyme'] != 4 %}
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
+                        {% else %}
+                        <span class="font-info">{{ _("Patient anonyme") }}.</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 mt-2">
+                        <span>{{ _("Né(e) le") }}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}{{ _("années") }}
+                                                {% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}
+                                                {% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}
+                                                {% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
+                                                {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
+                                                {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                     </div>
                 </fieldset>
+
+                <div id="no_result" class="error mt-3">{{ _("Aucune analyse") }}</div>
+                <div id="list_result" class="mt-3"></div>
             </form>
-
-            <div id="no_result" class="error">Aucune analyse</div>
-            <div id="list_result"></div>
-            <div id="list_result_test"></div>
-
-            <!-- Popup history -->
-            <div class="modal fade" id="dial_history" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog" style="background:#EEE;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h4>Historique</h4>
-                    </div>
-                    <div class="modal-body">  
-                        <div class="yui-dt listing">
-                            <table>
-                                <tbody id="tbody_histo"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">OK</button>
-                    </div>
-                </div>
+            <div class="float-right mt-3 mb-3">
+                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Feuille de paillasse') }}">
             </div>
 
             {% if args['list_res'] %}
-            <form id="form-new-analyses" enctype="application/x-www-form-urlencoded" method="post" action="">
-                <div class="subform">
-                    <fieldset class="group group-1">
-                        <legend>Ajouter de nouvelles analyses</legend>
+            <form autocomplete="off">
+                <div class="mt-3">
+                    <fieldset class="row border p-2">
+                        <legend class="legend-lbk">{{ _("Ajouter de nouvelles analyses") }}</legend>
                         <div class="form-group">
                             <select id="search_analysis" style="width:450px"></select>
                         </div>
                         <div id="new_analysis" class="row"></div>
                         <div id="div_add_analysis" class="form-group button" style="display:none">
-                            <input type="button" class="button btn btn-success" name="btn_add_analysis" id="btn_add_analysis" value="Ajouter"  onclick="add_analysis();">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_add_analysis" id="btn_add_analysis" value="{{ _("Ajouter") }}"  onclick="add_analysis();">
                         </div>
                     </fieldset>
                 </div>
             </form>
             {% endif %}
 
-        </div><!-- ferme inner -->
-    </div><!-- ferme main -->
-</div><!-- ferme le corps -->
+      </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
 {% endblock %}        
 
 {% block add_script %}
@@ -125,67 +91,6 @@ var num_rec      = "" ;
 var per_rec      = "" ;
 var rec_stat     = 0  ;
 
-function display_histo( i )
-{
-$("#tbody_histo").empty() ;
-
-let tr_histo = '<tr><td class="icon-container status"><span class="icon status-n">N</span></td>' +
-               '<td><span id="date_rec">' + data_res[i].date_dos + '</span></td>' +
-               '<td><ul style="padding:10px;"><li>Création du dossier (' + 
-               {% if session['record_period'] == 1070 %}data_res[i].num_dos_mois{% else %}data_res[i].num_dos_an{% endif %} + ').</li>' +
-               '<li>Analyse demandée : ' + data_res[i].nom + '</li>' +
-               '<li>Date de prescription : ' + data_res[i].date_prescr + '.</li></ul></td></tr>' ;
-
-    $.ajax( 
-    {
-        type: "GET",
-        url: "/services/result/history/" + data_res[i].id_res,
-        success: function(data_histo)
-        {
-            for( i in data_histo )
-            {
-            ident = '' ;
-            extra = '' ;
-
-                if ( data_histo[i].user != null )
-                {
-                    if ( data_histo[i].user.firstname  != "" )
-                    ident += data_histo[i].user.firstname + ' ' ;
-
-                    if ( data_histo[i].user.lastname  != "" )
-                    ident += data_histo[i].user.lastname ;
-
-                    if ( ident == "" )
-                    ident += data_histo[i].user.username ;
-                }
-
-                if ( data_histo[i].motif_annulation != "" )
-                extra += '<li><span>ANNULE ' + data_histo[i].dico_cancel.label +'</span></li>' ;
-
-                if ( data_histo[i].commentaire != "" )
-                extra += '<li><span>Commentaire : ' + data_histo[i].commentaire +'</span></li>'
-
-            tr_histo += '<tr><td class="icon-container status" id="stat_res">' + status_res( data_histo[i].type_validation ) + '</td>' +
-                        '<td><span>' + data_histo[i].date_validation +'</span></td>' +
-                        '<td><ul style="padding:10px;"><li><span>' + ident + '</span></li>' +
-                        '<li><span>Validation ' + data_histo[i].dico_valid.label +'</span></li>' + extra + '</ul></td></tr>' ;
-            }
-
-            $("#tbody_histo").append(tr_histo) ;
-
-            setTimeout(function()
-            {
-                $( "#dial_history" ).modal( "show" ) ;
-            }, 600) ;
-        },
-        error: function(data_ana)
-        {
-            console.log("ERROR GET result history");
-            alert("Erreur lors la récupération des informations d'historiques de ce résultat") ;
-        }
-    } ) ;
-}
-
 function check_range(id_res, min, max)
 {
 let val = $( "#res_"+id_res ).val() ;
@@ -193,12 +98,12 @@ let val = $( "#res_"+id_res ).val() ;
     if ((min != '' && val < parseFloat(min)) || (max != '' && val > parseFloat(max)))
     {
         $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('hide') ;
+        $("#limit_"+id_res).removeClass('d-none') ;
         //$("#res_"+id_res).addClass('error') ;
     }
     else
     {
-        $("#limit_"+id_res).addClass('hide') ;
+        $("#limit_"+id_res).addClass('d-none') ;
         $("#limit_"+id_res).removeClass('show') ;
         //$("#res_"+id_res).removeClass('error') ;
     }
@@ -238,7 +143,7 @@ param_list_answer += ' ] }' ;
         error: function(data)
             {
             console.log("ERROR result list") ;
-            alert("Une erreur est survenue lors de l'enregistrement des valeurs saisies") ;
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement des valeurs saisies") }}") ;
             }
     } ) ;
 }
@@ -266,7 +171,7 @@ let old_value = $("#old_res_"+id_res).val() ;
 
     if ( new_value != old_value ) 
     {
-    $("#span_valid_"+id_rec+"_"+ref_ana).addClass('hide') ;
+    $("#span_valid_"+id_rec+"_"+ref_ana).addClass('d-none') ;
     $("#span_valid_"+id_rec+"_"+ref_ana).removeClass('show') ;
     }
 }
@@ -310,7 +215,7 @@ param_list_valid += ' ] }' ;
         error: function(data)
             {
             console.log("ERROR result valid") ;
-            alert("Une erreur est survenue lors de validation technique des valeurs saisies") ;
+            alert("{{ _("Une erreur est survenue lors de validation technique des valeurs saisies") }}") ;
             }
     } ) ;
 }
@@ -322,7 +227,7 @@ let id_rec    = 0  ;
 let ref_ana_p = 0  ;
 let id_res_p  = 0  ;
 
-let disp_valid = "hide" ;
+let disp_valid = "d-none" ;
 
     {% if args['list_res'] %}
     for( i in data )
@@ -335,23 +240,17 @@ let disp_valid = "hide" ;
         if ( ref_ana_p != 0 && ref_ana != ref_ana_p )
         {
         // close the form and table
-        res += '</tbody></table></div></fieldset>' +
-               '<div class="form-group button tech">' +
-                   '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">Enregistrer</button>&nbsp;&nbsp;' +
-                   '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
-                       '<span class="date-realisation">' +
-                           '<label>Date de validation </label>&nbsp;' +
-                           '<div class="field date-fields form-inline">' +
-                               '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
-                               '<span class="calendar-img" id="quick_calendar_button_validation-date-10_img">' +
-                                   '<img id="validation-date-10_img" src="/assets/widgets/calendar.gif">' +
-                               '</span>' +
-                           '</div>' +
-                       '</span>' +
-                       '<span class="realisation">' +
-                           '<label for="validator_' + id_rec +'_'+ ref_ana_p  + '">Technicien</label>&nbsp;' +
-                           '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p  + '" class="form-control">' +
-                               '<option value="0"> </option>' ;
+        res += '</tbody></table>' +
+               '<div class="form-group form-inline" style="vld-block;">' +
+                   '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec +'_'+ ref_ana_p + ' mr-2" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>' +
+                   '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
+                       '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} </label>' +
+                       '<div class="form-inline">' +
+                           '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
+                       '</div>' +
+                       '<label class="col-form-label text-right ml-3 mr-1" for="validator_' + id_rec +'_'+ ref_ana_p  + '">{{ _("Technicien") }}</label>' +
+                       '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p  + '" class="form-control ml-1">' +
+                           '<option value="0"> </option>' ;
 
         // fill technical choice
         for ( k in tech_list )
@@ -370,18 +269,13 @@ let disp_valid = "hide" ;
         res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
         }
 
-        res +=             '</select>&nbsp;' +
-                       '</span>' +
-                       '<span class="valider">' +
-                           '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" value="Valider" class="btn btn-default" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">Valider</button>' +
-                       '</span>' +
-                       '<clear></clear>' +
+        res +=         '</select>' +
+                       '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" class="btn btn-{{ session['user_role']|safe }} ml-3" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">{{ _("Valider") }}</button>' +
                    '</span>' +
-               '</div>' +
                '</fieldset>' +
                '</form>' ;
 
-        disp_valid = "hide" ;
+        disp_valid = "d-none" ;
         }
 
         // new analysis so new form
@@ -392,14 +286,12 @@ let disp_valid = "hide" ;
 
             if (res_fam.length < 4) res_fam = "" ;
 
-        res += '<form enctype="application/x-www-form-urlencoded" method="post" action="" class="vzn-form form-horizontal row" autocomplete="off">' +
-               '<fieldset class="subform group group-1">' +
-               '<legend>' + res_name + res_fam + '</legend>' +
-               '<fieldset>' +
-               '<legend><span class="num-dos">' + num_rec + '</span>&nbsp;' + per_rec + '</legend>' +
-               '<div class="listing table-responsive yui-dt">' +
-               '<table class="main">' +
-               '<tbody class="yui-dt-data">' ;
+        res += '<form autocomplete="off">' +
+               '<fieldset class="row border p-2 mt-2">' +
+               '<legend class="legend-lbk">' + res_name + res_fam + '</legend>' +
+               '<span class="rec-num mr-2 mb-2">' + num_rec + '</span>' + per_rec +
+               '<table class="table table-striped table-hover table-lbk">' +
+               '<tbody class="row mx-1">' ;
         }
 
         // new analysis so new result line
@@ -420,31 +312,29 @@ let disp_valid = "hide" ;
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" )
             {
-            let ico_limit = "hide" ;
+            let ico_limit = "d-none" ;
 
                 if ( (value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max)) && value != "" )
                 ico_limit = "show" ;
 
-            res_limit = '<span id="limit_' + id_res + '" class="oor ' + ico_limit + '"><span class="normals">[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]</span></span>' ;
+                res_limit = '<span id="limit_' + id_res + '" class="warning ' + ico_limit + '" title="[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]"></span>' ;
             }
 
-        res += '<tr class="yui-dt-rec">' +
-                   '<td></td>' +
-                   '<td class="icon-container">' + res_limit + '</td>' +
-                   '<td class="icon-container">' + res_emer + '</td>' +
-                   '<td class="icon-container status">' + res_stat +
+        res += '<tr class="col-12 p-0">' +
+                   '<td class="d-inline-block col-1 align-middle border-0 p-1">' + res_limit + '</td>' +
+                   '<td class="d-inline-block col-1 align-middle text-center border-0 p-1">' + res_emer + '</td>' +
+                   '<td class="d-inline-block align-middle text-center border-0 p-1">' + res_stat + '</td>' +
+                   '<td class="d-inline-block align-middle text-center border-0 p-1">' +
+                       '<div class="history" onclick="display_histo(' + i + ');"></div>' +
                    '</td>' +
-                   '<td class="icon-container history">' +
-                       '<div class="history-icon" onclick="display_histo(' + i + ');"></div>' +
-                   '</td>' +
-                   '<td class="icon-container var-label">' + res_label + '</td>' ;
+                   '<td class="d-inline-block col-5 align-middle text-center border-0 p-1">' + res_label + '</td>' ;
 
-        res += '<td class="value"><span class="value">' ;
+        res += '<td class="d-inline-block form-inline align-middle text-center border-0 p-1"><span class="value">' ;
 
             // CANCEL RESULT
             if ( res_valid == 252 && value == "" )
             {
-            res += 'ANNULE</span>&nbsp;' ;
+            res += '{{ _("ANNULE") }}</span>&nbsp;' ;
             }
             // SELECT CHOICE RESULT
             else if ( res_answer.length > 1 )
@@ -553,8 +443,7 @@ let disp_valid = "hide" ;
                 }
             }
 
-        res += '<span class="unit show">' + res_unit + '</span></td>' +
-               '<td class="optionnal">&nbsp;</td></tr>' ;
+        res += '<span class="unit show">' + res_unit + '</span></td></tr>' ;
         }
 
     ref_ana_p = ref_ana ;
@@ -565,23 +454,17 @@ let disp_valid = "hide" ;
     if ( res != "" )
     {
     // close the form and table
-    res += '</tbody></table></div></fieldset>' +
-           '<div class="form-group button tech">' +
-               '<button type="button" value="Enregistrer" class="btn btn-success btn_save_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">Enregistrer</button>&nbsp;&nbsp;' +
-               '<span class="validation validation-tech action ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
-                   '<span class="date-realisation">' +
-                       '<label>Date de validation </label>&nbsp;' +
-                       '<div class="field date-fields form-inline">' +
-                           '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
-                           '<span class="calendar-img" id="quick_calendar_button_validation-date-10_img">' +
-                               '<img id="validation-date-10_img" src="/assets/widgets/calendar.gif">' +
-                           '</span>' +
-                       '</div>' +
-                   '</span>' +
-                   '<span class="realisation">' +
-                       '<label for="validator_' + id_rec +'_'+ ref_ana_p + '">Technicien</label>&nbsp;' +
-                       '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p + '" class="form-control">' +
-                           '<option value="0"> </option>' ;
+    res += '</tbody></table>' +
+           '<div class="form-group form-inline" style="vld-block;">' +
+               '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;' +
+               '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
+                   '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} </label>&nbsp;' +
+                   '<div class="form-inline">' +
+                       '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="">' +
+                   '</div>' +
+                   '<label class="col-form-label text-right ml-3 mr-1" for="validator_' + id_rec +'_'+ ref_ana_p + '">{{ _("Technicien") }}</label>&nbsp;' +
+                   '<select name="validator_' + id_rec +'_'+ ref_ana_p  + '" id="validator_' + id_rec +'_'+ ref_ana_p + '" class="form-control">' +
+                       '<option value="0"> </option>' ;
 
     // fill technical choice
     for ( k in tech_list )
@@ -600,21 +483,15 @@ let disp_valid = "hide" ;
     res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
     }
 
-    res +=             '</select>&nbsp;' +
-                   '</span>' +
-                   '<span class="valider">' +
-                       '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" value="Valider" class="btn btn-default" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">Valider</button>' +
-                   '</span>' +
-                   '<clear></clear>' +
+    res +=         '</select>&nbsp;' +
+                   '<button name="validate_' + id_rec +'_'+ ref_ana_p  + '" id="validate_' + id_rec +'_'+ ref_ana_p  + '" type="button" class="btn btn-{{ session['user_role']|safe }} ml-3" onclick="save_valid(' + id_rec +','+ ref_ana_p + ');">{{ _("Valider") }}</button>' +
                '</span>' +
-           '</div>' +
            '</fieldset>' +
            '</form>' ;
     }
 
     $("#list_result").html( res ) ;
     {% endif %}
-// $("#list_result_test").text( JSON.stringify(data) ) ;
 }
 
 function add_analysis()
@@ -688,29 +565,31 @@ param_list_res += ' ] }';
                         error: function(response)
                         {
                         console.log("ERROR record stat") ;
-                        alert("Une erreur est survenue du changement de statut du dossier") ;
+                        alert("{{ _("Une erreur est survenue du changement de statut du dossier") }}") ;
                         }
                     } ) ;
                 },
                 error: function(response)
                 {
                 console.log("ERROR result create") ;
-                alert("Une erreur est survenue lors de création des résultats") ;
+                alert("{{ _("Une erreur est survenue lors de création des résultats") }}") ;
                 }
             } ) ;
         },
         error: function(ret_ana)
         {
         console.log("ERROR analysis list req") ;
-        alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
         } 
     } ) ;
 }
 
 $("#search_analysis").select2(
 {
-    placeholder: "Cliquer pour commencer une recherche",
-    tokenSeparators: [',', ' '],
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: true,
+    tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
         url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id_group'] }},
@@ -790,10 +669,62 @@ $("#div_add_analysis").show() ;
         error: function(data_ana)
             {
             console.log("ERROR GET det analysis");
-            alert("Erreur lors de la récupération d'une analyse") ;
+            alert("{{ _("Erreur lors de la récupération d'une analyse") }}") ;
             }
         } ) ;
 } ) ;
+
+function download_report()
+{
+var html_report = JSON.stringify($("#benchsheet")[0].outerHTML) ;
+html_report = html_report.replaceAll("border:0", "border:1px solid #000") ;
+html_report = html_report.replaceAll("vld-block;", "display:none;") ;
+
+var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
+              '"filename": "benchsheet"}' ;
+
+    // popup wait
+    $( "#dial_wait" ).modal( "show" ) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+
+        let filename = "benchsheet_" + today + ".pdf" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 1000) ;
+
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+{% include 'display_histo.js' %}
 
 $( document ).ready( function()
 {

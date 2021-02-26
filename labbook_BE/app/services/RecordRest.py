@@ -287,6 +287,47 @@ class RecordDet(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class RecordLast(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        record = Record.getLastRecord()
+
+        if not record:
+            self.log.error(Logs.fileline() + ' : ' + 'RecordLast ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in record.items():
+            if record[key] is None:
+                record[key] = ''
+
+        record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
+        record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
+
+        if record['date_reception_colis']:
+            record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')
+
+        if record['date_hosp']:
+            record['date_hosp'] = datetime.strftime(record['date_hosp'], '%Y-%m-%d')
+
+        # decimal number not serializable in JSON, convert except if empty string
+        if record['prix'] != '':
+            record['prix'] = float(record['prix'])
+
+        if record['remise_pourcent'] != '':
+            record['remise_pourcent'] = float(record['remise_pourcent'])
+
+        if record['assu_pourcent'] != '':
+            record['assu_pourcent'] = float(record['assu_pourcent'])
+
+        if record['a_payer'] != '':
+            record['a_payer'] = float(record['a_payer'])
+
+        self.log.info(Logs.fileline() + ' : RecordLast')
+        return compose_ret(record, Constants.cst_content_type_json, 200)
+
+
 class RecordFile(Resource):
     log = logging.getLogger('log_services')
 
@@ -304,6 +345,23 @@ class RecordFile(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordFile')
         return compose_ret(l_files, Constants.cst_content_type_json)
+
+
+class RecordNext(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec):
+        id_rec_next = 0
+
+        rec = Record.getRecordNext(id_rec)
+
+        if not rec:
+            self.log.error(Logs.fileline() + ' : TRACE RecordNext not found')
+        else:
+            id_rec_next = rec['id_data']
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordNext')
+        return compose_ret(id_rec_next, Constants.cst_content_type_json)
 
 
 class RecordStat(Resource):
@@ -324,3 +382,85 @@ class RecordStat(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordStat')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class RecordNbEmer(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        res = Record.getRecordNbEmer()
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE RecordNbEmer not found')
+            nb_emer = 0
+        else:
+            nb_emer = res['nb_emer']
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordNbEmer')
+        return compose_ret(nb_emer, Constants.cst_content_type_json)
+
+
+class RecordNbRecTech(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        res = Record.getRecordNbRecTech()
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE RecordNbRecTech not found')
+            nb_rec_tech = 0
+        else:
+            nb_rec_tech = res['nb_rec_tech']
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordNbRecTech')
+        return compose_ret(nb_rec_tech, Constants.cst_content_type_json)
+
+
+class RecordNbRecBio(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        res = Record.getRecordNbRecBio()
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE RecordNbRecBio not found')
+            nb_rec_bio = 0
+        else:
+            nb_rec_bio = res['nb_rec_bio']
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordNbRecBio')
+        return compose_ret(nb_rec_bio, Constants.cst_content_type_json)
+
+
+class RecordNbRec(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        res = Record.getRecordNbRec()
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE RecordNbRec not found')
+            nb_rec = 0
+        else:
+            nb_rec = res['nb_rec']
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordNbRec')
+        return compose_ret(nb_rec, Constants.cst_content_type_json)
+
+
+class RecordNbRecToday(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        num_today = datetime.now().strftime("%Y%m%d")
+
+        res = Record.getRecordNbRecToday(num_today)
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE RecordNbRecToday not found')
+            nb_rec_today = 0
+        else:
+            nb_rec_today = res['nb_rec_today']
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordNbRecToday')
+        return compose_ret(nb_rec_today, Constants.cst_content_type_json)

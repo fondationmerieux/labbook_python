@@ -1,0 +1,651 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Equipement") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Equipement") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row mt-3">
+                    <label for="name" class="col-form-label col-3 text-right mt-2">{{ _("Nom de l'équipement") }}</label>
+                    <div>					
+                        <input type="text" name="name" id="name" value="{{ args['name'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="maker" class="col-form-label col-3 text-right mt-2">{{ _("Nom du fabricant") }}</label>
+                    <div>					
+                        <input type="text" name="maker" id="maker" value="{{ args['maker'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="model" class="col-form-label col-3 text-right mr-1">{{ _("modèle") }}</label>
+                    <div>					
+                        <input type="text" name="model" id="model" value="{{ args['model'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="photo" class="col-form-label col-3 text-right mr-1">{{ _("Photo") }}</label>
+                    <div class="text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="EQPH" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQPH"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="funct" class="col-form-label col-3 text-right mr-1">{{ _("Fonction") }}</label>
+                    <div>					
+                        <input type="text" name="funct" id="funct" value="{{ args['funct'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="location" class="col-form-label col-3 text-right mr-1">{{ _("Localisation") }}</label>
+                    <div>					
+                        <input type="text" name="location" id="location" value="{{ args['location'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section") }}</label>
+                    <div>					
+                        <select id="section" name="section" class="form-control">
+                            <option value="0" {% if args['section'] == 0 %} selected {% endif %}>TODO load list</option>  
+                            <option value="1038" {% if args['section'] == 1038 %} selected {% endif %}>{{ _("Administration") }}</option>
+                            <option value="1039" {% if args['section'] == 1039 %} selected {% endif %}>{{ _("Prélèvement") }}</option>
+                            <option value="1040" {% if args['section'] == 1040 %} selected {% endif %}>{{ _("Biochimie") }}</option>
+                            <option value="1041" {% if args['section'] == 1041 %} selected {% endif %}>{{ _("Hématologie") }}</option>
+                            <option value="1042" {% if args['section'] == 1042 %} selected {% endif %}>{{ _("Sérologie") }}</option>
+                            <option value="1043" {% if args['section'] == 1043 %} selected {% endif %}>{{ _("Microbiologie") }}</option>
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Fournisseur") }}</label>
+                    <div>
+                        <select id="search_supplier" style="width:450px"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="serial" class="col-form-label col-3 text-right mr-1">{{ _("Numéro de série") }}</label>
+                    <div>					
+                        <input type="text" name="serial" id="serial" value="{{ args['serial'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inventory" class="col-form-label col-3 text-right mr-1">{{ _("Numéro d'inventaire") }}</label>
+                    <div>					
+                        <input type="text" name="inventory" id="inventory" value="{{ args['inventory'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_incharge" class="col-form-label col-3 text-right mr-1">{{ _("Responsable") }}</label>
+                    <div>
+                        <select id="search_incharge" style="width:450px"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_manual" class="col-form-label col-3 text-right mr-1">{{ _("Manuel") }}</label>
+                    <div>
+                        <select id="search_manual" style="width:450px"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="search_procedure" class="col-form-label col-3 text-right mr-1">{{ _("Procédure") }}</label>
+                    <div>
+                        <select id="search_procedure" style="width:450px"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="breakdown" class="col-form-label col-3 text-right mt-2">{{ _("Liste des pannes et réparation") }}</label>
+                    <div>					
+                        <textarea id="breakdown" name="breakdown" rows="4" cols="50" class="form-control">{{ args['breakdown'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="EQBD" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQBD"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="maintenance" class="col-form-label col-3 text-right mt-2">{{ _("Maintenance préventive") }}</label>
+                    <div>					
+                        <textarea id="maintenance" name="maintenance" rows="4" cols="50" class="form-control">{{ args['maintenance'] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="EQPM" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQPM"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="calibration" class="col-form-label col-3 text-right mr-1">{{ _("Certificat d'étalonnage") }}</label>
+                    <div>					
+                        <input type="text" name="calibration" id="calibration" value="{{ args['calibration'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="EQCC" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQCC"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="contract" class="col-form-label col-3 text-right mr-1">{{ _("Contrat de maintenance") }}</label>
+                    <div>					
+                        <input type="text" name="contract" id="contract" value="{{ args['contract'] }}" class="form-control">			
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-3 text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="EQMC" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQMC"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_endcontract" class="col-form-label col-3 text-right mt-2">{{ _("Date de fin de contrat de maintenance") }}</label>
+                    <div>					
+                        <input id="date_endcontract" class="form-control" type="date" maxlength="10" size="10" value="{{ args['birth'] }}" name="date_endcontract" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-3 text-right">{{ _("Facture") }}</label>
+                    <div class="text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="EQBI" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQBI"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="date_receipt" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
+                    <div>					
+                        <input id="date_receipt" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_receipt'] }}" name="date_receipt" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_buy" class="col-form-label col-3 text-right mt-2">{{ _("Date d'achat") }}</label>
+                    <div>					
+                        <input id="date_buy" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_buy'] }}" name="date_buy" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_procur" class="col-form-label col-3 text-right mt-2">{{ _("Date d'acquisition") }}</label>
+                    <div>					
+                        <input id="date_procur" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_procur'] }}" name="date_procur" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_onduty" class="col-form-label col-3 text-right mt-2">{{ _("Date de mise en service") }}</label>
+                    <div>					
+                        <input id="date_onduty" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_onduty'] }}" name="date_onduty" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date_revoc" class="col-form-label col-3 text-right mt-2">{{ _("Date de retrait du laboratoire") }}</label>
+                    <div>					
+                        <input id="date_revoc" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_revoc'] }}" name="date_revoc" style="color: #888;">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaires") }}</label>
+                    <div>					
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_EQPH = {% if args['data_EQPH'] %}{{ args['data_EQPH']|safe }}{% else %}[]{% endif %} ;
+var data_EQBD = {% if args['data_EQBD'] %}{{ args['data_EQBD']|safe }}{% else %}[]{% endif %} ;
+var data_EQPM = {% if args['data_EQPM'] %}{{ args['data_EQPM']|safe }}{% else %}[]{% endif %} ;
+var data_EQCC = {% if args['data_EQCC'] %}{{ args['data_EQCC']|safe }}{% else %}[]{% endif %} ;
+var data_EQMC = {% if args['data_EQMC'] %}{{ args['data_EQMC']|safe }}{% else %}[]{% endif %} ;
+var data_EQBI = {% if args['data_EQBI'] %}{{ args['data_EQBI']|safe }}{% else %}[]{% endif %} ;
+
+$("#search_supplier").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/supplier/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_supplier").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_supplier").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+$("#search_incharge").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/user/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_incharge").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_incharge").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+$("#search_manual").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/manual/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_manual").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_manual").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+$("#search_procedure").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/procedure/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_procedure").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_procedure").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+function save_item()
+{
+var id_owner    = {{ session['user_id_group']|safe }} ;
+var id_item     = {{ args['id_eqp']|safe }}    ;
+var name        = $("#name").val()             ;
+var maker       = $("#maker").val()            ;
+var model       = $("#model").val()            ;
+var funct       = $("#funct").val()         ;
+var locat       = $("#location").val()         ;
+var section     = $("#section").val()          ;
+var supplier    = $("#search_supplier").val()  ;
+var serial      = $("#serial").val()           ;
+var inventory   = $("#inventory").val()        ;
+var incharge    = $("#search_incharge").val()  ;
+var manual      = $("#search_manual").val()    ;
+var procedure   = $("#search_procedure").val() ;
+var calibration = $("#calibration").val()      ;
+var contract    = $("#contract").val()         ;
+
+var breakdown   = JSON.stringify( $("#breakdown").val() )   ;
+var maintenance = JSON.stringify( $("#maintenance").val() ) ;
+var comment     = JSON.stringify( $("#comment").val() )     ;
+
+var date_endcontract = $("#date_endcontract").val() ;
+var date_receipt     = $("#date_receipt").val()     ;
+var date_buy         = $("#date_buy").val()         ;
+var date_procur      = $("#date_procur").val()      ;
+var date_onduty      = $("#date_onduty").val()      ;
+var date_revoc       = $("#date_revoc").val()       ;
+
+    if (supplier == null)
+    supplier = 0;
+
+    if (incharge == null)
+    incharge = 0;
+
+    if (manual == null)
+    manual = 0;
+
+    if (procedure == null)
+    procedure = 0;
+
+var msg = "" ;
+
+    if (name == "")
+    msg += "{{ _("Veuillez saisir un nom d'équipement.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"id_item":' + id_item + ', ' +
+              '"name":"' + name + '", ' +
+              '"maker":"' + maker + '", ' +
+              '"model":"' + model + '", ' +
+              '"funct":"' + funct + '", ' +
+              '"location":"' + locat + '", ' +
+              '"section":' + section + ', ' +
+              '"supplier":' + supplier + ', ' +
+              '"serial":"' + serial + '", ' +
+              '"inventory":"' + inventory + '", ' +
+              '"incharge":' + incharge + ', ' +
+              '"manual":' + manual + ', ' +
+              '"procedure":' + procedure + ', ' +
+              '"calibration":"' + calibration + '", ' +
+              '"contract":"' + contract + '", ' +
+              '"date_endcontract":"' + date_endcontract + '", ' +
+              '"date_receipt":"' + date_receipt + '", ' + 
+              '"date_buy":"' + date_buy + '", ' +
+              '"date_procur":"' + date_procur + '", ' +
+              '"date_onduty":"' + date_onduty + '", ' + 
+              '"date_revoc":"' + date_revoc + '", ' +
+              '"breakdown":' + breakdown + ', ' +     // No quotes with stringify
+              '"maintenance":' + maintenance + ', ' + // No quotes with stringify
+              '"comment":' + comment + '}' ;          // No quotes with stringify
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/equipment/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           let ref = JSON.stringify(data) ;
+
+           upload_file("EQCC", ref);  // Calibration Certificat 
+           upload_file("EQMC", ref);  // Maintenance Contract
+           upload_file("EQBI", ref);  // Bill
+           upload_file("EQPM", ref);  // Preventive maintenance
+           upload_file("EQBD", ref);  // Breakdown
+           upload_file("EQPH", ref);  // Photo
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function load_data()
+{
+$("#tbody_file_EQPH").empty() ;
+$("#tbody_file_EQBD").empty() ;
+$("#tbody_file_EQPM").empty() ;
+$("#tbody_file_EQCC").empty() ;
+$("#tbody_file_EQMC").empty() ;
+$("#tbody_file_EQBI").empty() ;
+
+    for( i in data_EQPH )
+    {
+    load_file( data_EQPH[i], "EQPH" ) ;
+    }
+
+    for( i in data_EQBD )
+    {
+    load_file( data_EQBD[i], "EQBD" ) ;
+    }
+
+    for( i in data_EQPM )
+    {
+    load_file( data_EQPM[i], "EQPM" ) ;
+    }
+
+    for( i in data_EQCC )
+    {
+    load_file( data_EQCC[i], "EQCC" ) ;
+    }
+
+    for( i in data_EQMC )
+    {
+    load_file( data_EQMC[i], "EQMC" ) ;
+    }
+
+    for( i in data_EQBI )
+    {
+    load_file( data_EQBI[i], "EQBI" ) ;
+    }
+}
+
+function load_file( data, type_ref )
+{
+let tr_file = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file_"+type_ref).append(tr_file) ;
+}
+
+function upload_file(type_ref, ref)
+{
+let param_form = new FormData() ;
+let input_file = $('#' + type_ref)[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    param_form.append('file', input_file.files[0]) ;
+
+        $.ajax(
+        {
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + type_ref + "/" + ref,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: param_form,
+            success : function(response)
+            {
+            console.log( "success upload ") ;
+            },
+            error: function(response)
+            {
+            console.log("ERROR upload file") ;
+            alert("Une erreur est survenue lors du dépot d'un fichier") ;
+            }
+        } ) ;
+    }    
+}
+
+function delete_file( type_ref, id_file )
+{
+// TODO check user role rights
+    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    {
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE document file") ;
+            alert("Erreur lors de la suppression d'un fichier") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

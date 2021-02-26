@@ -11,19 +11,6 @@ class Various:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getDicoList(dico_name):
-        cursor = DB.cursor()
-
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
-              'from sigl_dico_data '\
-              'where dico_name = %s '\
-              'order by position'
-
-        cursor.execute(req, (dico_name,))
-
-        return cursor.fetchall()
-
-    @staticmethod
     def getDicoById(id_data):
         cursor = DB.cursor()
 

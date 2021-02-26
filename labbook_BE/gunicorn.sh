@@ -102,6 +102,7 @@ exec gunicorn \
     --pid ${GUNICORN_DIR}/gunicorn.pid \
     --bind ${HOST}:${PORT} \
     --access-logfile ${LOGS_DIR}/gunicorn-access.log \
+    --access-logformat "%(h)s %(l)s %(u)s %(t)s \"%(r)s\" %(s)s %(b)s \"%(f)s\" \"%(a)s\" \"%({uniqueid}i)s\"" \
     --error-logfile ${LOGS_DIR}/gunicorn-error.log \
     rungunicorn:app > ${LOGS_DIR}/gunicorn.out 2>&1
 

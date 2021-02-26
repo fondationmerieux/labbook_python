@@ -10,9 +10,9 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Mise à jour du mot de passe") }}</span></h2>
-            <form id="form_main" autocomplete="off">
+            <form autocomplete="off">
                 <div class="form-group row mt-3">
-                    <label for="new-pwd" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Mot de passe") }} *</label>
+                    <label for="new-pwd" class="col-form-label col-3 text-right mt-2">{{ _("Mot de passe") }} *</label>
                     <div>					
                         <input type="password" name="new-pwd" id="new-pwd" value="" class="form-control">
                     </div>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="renew-pwd" class="form-control-label col-md-3 text-right optional mt-2">{{ _("Confirmation du mot de passe") }} *</label>
+                    <label for="renew-pwd" class="col-form-label col-3 text-right mt-2">{{ _("Confirmation du mot de passe") }} *</label>
                     <div>					
                         <input type="password" name="renew-pwd" id="renew-pwd" value="" class="form-control">
                     </div>
@@ -30,10 +30,10 @@
 
             <div class="mb-5">
                 <div class="float-left" style="margin-left:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-success">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-success ml-2">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -48,7 +48,7 @@
 function save()
 {
 var id_owner = {{ session['user_id_group']|safe}} ;
-var id_user  = {{ args['id_user'] }} ;
+var id_user  = {{ args['user_id'] }} ;
 var pwd1     = $("#new-pwd").val() ;
 var pwd2     = $("#renew-pwd").val() ;
 
@@ -98,7 +98,7 @@ var x = document.getElementById("new-pwd") ;
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
 }
 </script>
 {% endblock %}

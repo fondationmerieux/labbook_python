@@ -1,0 +1,20 @@
+<!-- Popup history -->
+<div class="modal fade" id="dial-history" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  w-75 mw-100" style="background:#EEE;">
+        <div class="modal-header">
+            <h5 class="modal-title">{{ _("Historique") }}</h5>
+            <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">x</button>
+        </div>
+        <div class="modal-body">  
+            <div>
+                <table>
+                    <tbody id="tbody_histo"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("OK") }}</button>
+        </div>
+    </div>
+</div>
+

@@ -1,14 +1,3 @@
-
-.modal-dialog
-{
-width : 750px;
-}
-
-.modal-dlg-cancel
-{ 
-width : 500px; !important
-}
-
 .modal-body
 {
 max-height : 350px;
@@ -25,6 +14,16 @@ font-style  : normal;
 font-family : Arial, Helvetica, sans-serif;
 font-size   : 14px;
 color       : #666;
+}
+
+.cursor-act
+{
+cursor      : pointer;
+}
+
+.mt-n4
+{
+margin-top  : -1rem ; 
 }
 
 a, a:visited, a:link, a:active, a:focus, a:hover, a:focus
@@ -163,13 +162,13 @@ color      : #FFF;
 {
 position         : fixed;
 top              : 75px;
-max-width        : 1200px;
-width            : 100%;
+max-width        : 100%;
+width            : 95%;
 height           : 34px;
 line-height      : 34px;
 text-align       : center;
 z-index          : 9;
-font-size        : 16px;
+font-size        : 1rem;
 font-weight      : bold;
 }
 
@@ -238,6 +237,30 @@ background-image : url("/static/img/tech-profile.png")
 .role-S
 {
 background-image : url("/static/img/sec-profile.png")
+}
+
+.btn-A
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-B
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-T
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-S
+{
+background-color : #71B330 ;
+color            : #FFF;
 }
 
 .role ul 
@@ -658,6 +681,11 @@ background : transparent url(/static/img/new-dos-ext-sec.png) center top no-repe
 background : transparent url(/static/img/new-dos-int-sec.png) center top no-repeat;
 }
 
+.module .emergency 
+{ 
+background : transparent url(/static/img/urgence.png) center top no-repeat;
+}
+
 .links
 {
 max-width : 800px;
@@ -757,4 +785,128 @@ color            : white !important;
 {
 background-color : #DD6512 !important;
 color            : white !important;
+}
+
+.rec-num
+{
+background-color : #C7AD70;
+color            : #FFF;
+display          : inline-block;
+min-width        : 26px;
+height           : 26px;
+line-height      : 26px;
+font-size        : 1rem;
+font-weight      : bold;
+text-align       : center;
+padding          : 0 8px;
+}
+
+.pat-num
+{
+background-color : #C7AD70;
+color            : #FFF;
+display          : inline-block;
+min-width        : 0px;
+height           : 26px;
+line-height      : 26px;
+font-size        : 1rem;
+font-weight      : bold;
+text-align       : center;
+padding          : 0 8px;
+}
+
+.icon
+{
+display          : inline-block;
+min-width        : 24px;
+height           : 24px;
+line-height      : 24px;
+text-align       : center;
+vertical-align   : middle;
+}
+
+.stat-A
+{
+background-color : #F08739;
+color            : #666;
+font-weight      : bold;
+}
+
+.stat-B
+{
+background-color : #8330E2;
+color            : #FFF;
+font-weight      : bold;
+}
+
+.stat-T
+{
+background-color : #00ADEE;
+color            : #666;
+font-weight      : bold;
+}
+
+.font-info
+{
+font-weight      : bold;
+}
+
+.legend-lbk
+{
+font-size        : 1.25rem;
+}
+
+.color-B
+{
+color : #8330E2;
+}
+
+.bgcolor-B
+{
+background-color : #8330E2;
+color            : #FFF;
+}
+
+.error
+{
+background-color : #F1D9D5;
+color            : #B42C16;
+font-weight      : bold;
+border           : 1px solid #B42C16;
+}
+
+.emer
+{
+display             : inline-block;
+background-color    : transparent;
+background-repeat   : no-repeat;
+background-image    : url("/static/img/urgent.png");
+background-position : center center;
+height              : 12px;
+width               : 14px;
+vertical-align      : middle;
+}
+
+.warning
+{
+display             : inline-block;
+background-color    : transparent;
+background-repeat   : no-repeat;
+background-image    : url("/static/img/warning.png");
+background-position : center center;
+height              : 18px;
+width               : 21px;
+vertical-align      : middle;
+}
+
+.history
+{
+display             : inline-block;
+background-color    : transparent;
+background-repeat   : no-repeat;
+background-image    : url("/static/img/info.png");
+background-position : center center;
+height              : 21px;
+width               : 21px;
+vertical-align      : middle;
 }

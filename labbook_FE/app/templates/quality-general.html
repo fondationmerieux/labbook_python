@@ -1,0 +1,66 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Général") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Général") }}</span></h2>
+            <form>
+                <div class="row mt-3">
+                    <label class="col-form-label col-6 text-right">{{ _("Nombre de personnel dans le laboratoire") }}</label>
+                    <div class="col mt-1">					
+                        <span class="font-info">{% if args['nb_users'] %}{{ args['nb_users'] }}{% endif %}</span>    
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-6 text-right"> {{ _("Nombre de manuels sauvegardés") }}</label>
+                    <div class="col mt-1">					
+                        <span class="font-info">{% if args['nb_manuals'] %}{{ args['nb_manuals'] }}{% endif %}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-6 text-right"> {{ _("Date de la dernière réunion d'équipe") }}</label>
+                    <div class="col mt-1">					
+                        <span class="font-info">{% if args['meeting'] %}{{ args['meeting']['date'] }}{% endif %}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-6 text-right"> {{ _("Nombre de non-conformité en cours") }}</label>
+                    <div class="col mt-1">					
+                        <span class="font-info">{% if args['nb_noncompliances_open'] %}{{ args['nb_noncompliances_open'] }}{% endif %}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-6 text-right"> {{ _("Nombre de non-conformité depuis un mois") }}</label>
+                    <div class="col mt-1">					
+                        <span class="font-info">{% if args['nb_noncompliances_month'] %}{{ args['nb_noncompliances_month'] }}{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="float-left mt-3">
+                        <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+console.log("DEBUG nb_users={{ args['nb_users'] }}");
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage" ;
+}
+</script>
+{% endblock %}

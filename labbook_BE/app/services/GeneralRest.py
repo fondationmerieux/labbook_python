@@ -25,26 +25,6 @@ class Test(Resource):
         return compose_ret('args = ' + str(args), Constants.cst_content_type_json)
 
 
-class DicoList(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self, dico_name):
-        l_dico = Various.getDicoList(dico_name)
-
-        if not l_dico:
-            self.log.error(Logs.fileline() + ' : TRACE DicoList not found : ' + dico_name)
-            l_dico = {}
-
-        for dico in l_dico:
-            # Replace None by empty string
-            for key, value in dico.items():
-                if dico[key] is None:
-                    dico[key] = ''
-
-        self.log.info(Logs.fileline() + ' : TRACE DicoList : ' + dico_name)
-        return compose_ret(l_dico, Constants.cst_content_type_json)
-
-
 class DicoById(Resource):
     log = logging.getLogger('log_services')
 

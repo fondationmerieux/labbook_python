@@ -14,16 +14,23 @@ class Analysis:
     def getAnalysisSearch(text, id_lab, id_group):
         cursor = DB.cursor()
 
-        code = text
-        text = '%' + text + '%'
+        l_words = text.split(' ')
 
-        req = 'SELECT ref_ana.id_data AS id, CONCAT(ref_ana.code, " ", COALESCE(ref_ana.abbr, "")) AS code, ref_ana.nom AS name,  COALESCE(dico.label, "") AS label '\
-              'FROM sigl_05_data AS ref_ana '\
-              'LEFT JOIN sigl_dico_data AS dico ON dico.id_data=ref_ana.famille '\
-              'WHERE (ref_ana.actif = 4 AND (ref_ana.code = %s or ref_ana.nom like %s or ref_ana.abbr like %s)) '\
-              'ORDER BY nom ASC LIMIT 7000'
+        cond = 'ref.actif = 4'
 
-        cursor.execute(req, (code, text, text,))
+        for word in l_words:
+            cond = (cond +
+                    ' and (ref.code like "' + word + '%" or '
+                    'ref.nom like "%' + word + '%" or '
+                    'ref.abbr like "%' + word + '%") ')
+
+        req = 'select ref.id_data as id, CONCAT(ref.code, " ", COALESCE(ref.abbr, "")) as code, '\
+              'ref.nom as name,  COALESCE(dict.label, "") as label '\
+              'from sigl_05_data as ref '\
+              'left join sigl_dico_data as dict on dict.id_data=ref.famille '\
+              'where ' + cond + ' order by nom asc limit 1000'
+
+        cursor.execute(req)
 
         return cursor.fetchall()
 
@@ -169,3 +176,124 @@ class Analysis:
         except mysql.connector.Error as e:
             Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getAnalyzesList(args):
+        cursor = DB.cursor()
+
+        filter_cond = ''
+
+        if not args:
+            limit = 'LIMIT 2000'
+
+            filter_cond += ' ana.actif=4 '  # remove deleted analyzes by default
+        else:
+            limit = 'LIMIT 2000'
+
+            filter_cond += ' '  # remove deleted analyzes by default
+            # filter conditions
+            if args['status'] and args['status'] > 0:
+                filter_cond += ' ana.actif=' + str(args['status']) + ' '
+            else:
+                filter_cond += ' ana.actif=4 '  # keep only activated analyzes by default
+
+            if args['name']:
+                filter_cond += ' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") '
+
+            if args['type_ana'] and args['type_ana'] > 0:
+                filter_cond += ' and ana.famille=' + args['type_ana'] + ' '
+
+            if args['type_prod'] and args['type_prod'] > 0:
+                filter_cond += ' and ana.type_prel=' + args['type_prod'] + ' '
+
+        req = 'select ana.id_data, ana.code, ana.nom as name, ana.abbr, ana.actif as stat, '\
+              'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '\
+              'from sigl_05_data as ana '\
+              'left join sigl_dico_data as dico on dico.id_data=ana.famille '\
+              'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '\
+              'where ' + filter_cond +\
+              'group by ana.code order by ana.code asc ' + limit
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getAnalyzesHistoList(args):
+        cursor = DB.cursor()
+
+        filter_cond = ' '
+
+        limit    = 'LIMIT 500'
+        date_beg = args['date_beg']
+        date_end = args['date_end']
+
+        if 'limit' in args and args['limit'] > 0:
+            limit = 'LIMIT ' + str(args['limit'])
+
+        # filter conditions
+        if 'name' in args and args['name']:
+            filter_cond += ' and (ref.nom LIKE "%' + args['name'] + '%" or ref.abbr LIKE "%' + args['name'] + '%") '
+
+        if 'code' in args and args['code']:
+            filter_cond += ' and (ref.code LIKE "%' + args['code'] + '%" or ref.abbr LIKE "%' + args['code'] + '%") '
+
+        if 'type_ana' in args and args['type_ana'] > 0:
+            filter_cond += ' and ref.famille=' + args['type_ana'] + ' '
+
+        req = ('select ref.id_data, ref.code, dict.label as fam_name, ref.nom as name '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse and ref.cote_unite != "PB" '
+               'left join sigl_dico_data as dict on dict.id_data=ref.famille '
+               'where (rec.date_dos between %s and %s) and ref.actif=4 ' + filter_cond +
+               'group by ref.code order by ref.code asc ' + limit)
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getNbAnalysis(date_beg, date_end, id_ana):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as total '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse and ref.cote_unite != "PB" '
+               'where (rec.date_dos between %s and %s) and ana.ref_analyse = %s and ref.actif=4')
+
+        cursor.execute(req, (date_beg, date_end, id_ana))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getAnalyzesHistoDet(args):
+        cursor = DB.cursor()
+
+        date_beg = args['date_beg']
+        date_end = args['date_end']
+        id_ana   = args['id_ana']
+        limit    = 'LIMIT ' + str(args['limit'])
+
+        req = ('select ref.id_data, rec.date_prescription as date_prescr, '
+               'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
+               'rec.num_dos_mois), '
+               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '
+               'ref_var.libelle as variable, '
+               'IF("dico_" = SUBSTRING(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse=ana.id_data '
+               'inner join sigl_07_data as ref_var on ref_var.id_data=res.ref_variable '
+               'left join sigl_05_07_data as ref_link on ref_link.id_data=res.ref_variable '
+               'left join sigl_dico_data as dict_type on dict_type.id_data=ref_var.type_resultat '
+               'left join sigl_dico_data as dict_res on dict_res.id_data=res.valeur '
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data = 1 '
+               'where (rec.date_dos between %s and %s) and ref.id_data=%s '
+               'order by rec.num_dos_an desc ' + limit)
+
+        cursor.execute(req, (date_beg, date_end, id_ana))
+
+        return cursor.fetchall()
