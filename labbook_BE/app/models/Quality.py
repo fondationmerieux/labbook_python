@@ -143,18 +143,46 @@ class Quality:
             return False
 
     @staticmethod
-    def getStockList():
+    def getStockList(args):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, fournisseur_nom as supplier, contact_nom as lastname, '\
-              'contact_prenom as firstname, contact_fonction as funct, fournisseur_adresse as address, '\
-              'contact_tel as phone, contact_mobile as mobile, contact_fax as fax, contact_email as email, '\
-              'commentaire as comment, date_format(sys_creation_date, %s) as date_create, '\
-              'date_format(sys_last_mod_date, %s) as date_update, sys_last_mod_user as id_user_upd '\
-              'from sigl_fournisseurs_data '\
-              'order by supplier asc, lastname asc, firstname asc'
+        filter_cond = ' prd_name is not null '
 
-        cursor.execute(req, (Constants.cst_isodatetime, Constants.cst_isodatetime,))
+        if not args:
+            limit = 'LIMIT 1000'
+        else:
+            if 'limit' in args and args['limit'] > 0:
+                limit = 'LIMIT ' + str(args['limit'])
+            else:
+                limit = 'LIMIT 500'
+
+            # filter conditions
+            if args['prod_name']:
+                filter_cond += ' and prd_name LIKE "%' + args['prod_name'] + '%" '
+
+            if args['prod_type']:
+                filter_cond += ' and prd_type = ' + str(args['prod_type'])
+
+            if args['prod_stat']:
+                filter_cond += ' and prs_status = ' + str(args['prod_stat'])
+
+        req = ('select prs_ser, prd_name, sum(prs_nb_pack) as prs_nb_pack, prd_nb_by_pack, '
+               'sum(pru_nb_pack) as pru_nb_pack, '
+               'dict1.label as type, max(prs_receipt_date) as receipt_date, prs_rack, dict2.label as conserv, '
+               'min(prs_expir_date) as expir_date, prs_batch_num, dict3.label as status, '
+               'sup.fournisseur_nom as supplier, prs_buy_price, prs_sell_price '
+               'from product_supply '
+               'inner join product_details on prd_ser=prs_prd '
+               'left join product_use on pru_prs=prs_ser '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
+               'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
+               'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
+               'left join sigl_dico_data as dict3 on dict3.id_data=prs_status '
+               'where ' + filter_cond +
+               'group by prd_name, prd_nb_by_pack '
+               'order by expir_date asc, prd_name asc')
+
+        cursor.execute(req)
 
         return cursor.fetchall()
 
@@ -178,12 +206,33 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
+    def getStockProductSearch(text):
+        cursor = DB.cursor()
+
+        l_words = text.split(' ')
+
+        cond = 'prd_ser > 0 '
+
+        for word in l_words:
+            cond = (cond + ' and (prd_name like "%' + word + '%") ')
+
+        req = 'select prd_name as field_value, prd_ser as id_item '\
+              'from product_details '\
+              'where ' + cond + ' order by field_value asc limit 1000'
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getStockProduct(id_item):
         cursor = DB.cursor()
 
-        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv '
+        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, '
+               'sup.fournisseur_nom as supplier_name ' 
                'from product_details '
-               'where id_data=%s')
+               'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
+               'where prd_ser=%s')
 
         cursor.execute(req, (id_item,))
 
@@ -214,7 +263,7 @@ class Quality:
 
             cursor.execute('update product_details '
                            'set prd_name=%(prd_name)s, prd_type=%(prd_type)s, prd_nb_by_pack=%(prd_nb_by_pack)s, '
-                           'prd_supplier=%(prd_supplier)s, prd_ref_supplier=%(prd_ref_supplier)s, prd_conserv=%(prd_conserv)s, '
+                           'prd_supplier=%(prd_supplier)s, prd_ref_supplier=%(prd_ref_supplier)s, prd_conserv=%(prd_conserv)s '
                            'where prd_ser=%(prd_ser)s', params)
 
             Quality.log.info(Logs.fileline())
@@ -238,6 +287,42 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def insertStockSupply(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into product_supply '
+                           '(prs_date, prs_prd, prs_nb_pack, prs_status, prs_receipt_date, prs_expir_date, '
+                           'prs_rack, prs_batch_num, prs_buy_price, prs_sell_price) '
+                           'values '
+                           '(NOW(), %(prs_prd)s, %(prs_nb_pack)s, %(prs_status)s, %(prs_receipt_date)s, '
+                           '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s, %(prs_sell_price)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def insertStockUse(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into product_use '
+                           '(pru_date, pru_user, pru_prs, pru_nb_pack) '
+                           'values '
+                           '(NOW(), %(pru_user)s, %(pru_prs)s, %(pru_nb_pack)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
 
     @staticmethod
     def getSupplierList():
@@ -369,7 +454,8 @@ class Quality:
                'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as auditor, '
                'TRIM(CONCAT(u3.lastname," ",u3.firstname," - ",u3.username)) as approver, '
                'manu.redacteur_id as writer_id, manu.verificateur_id as auditor_id, '
-               'manu.approbateur_id as approver_id, date_insert, date_apply, date_update, section '
+               'manu.approbateur_id as approver_id, manu.date_insert, manu.date_apply, '
+               'manu.date_update, manu.section '
                'from sigl_manuels_data as manu '
                'left join sigl_user_data as u1 on u1.id_data=manu.redacteur_id '
                'left join sigl_user_data as u2 on u2.id_data=manu.verificateur_id '

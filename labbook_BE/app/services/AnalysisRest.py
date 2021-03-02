@@ -258,20 +258,5 @@ class AnalysisReq(Resource):
             res = {}
             res['id_req'] = ret
 
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(ana['id_owner'])
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : AnalysisReq ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_04_data_group
-            ret = Analysis.insertAnalysisReqGroup(id_data=res['id_req'],
-                                                  id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : AnalysisReq ERROR  insert group')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
         self.log.info(Logs.fileline() + ' : TRACE AnalysisReq')
         return compose_ret('', Constants.cst_content_type_json)

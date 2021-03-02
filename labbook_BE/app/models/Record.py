@@ -31,13 +31,13 @@ class Record:
             if args['stat_rec'] and args['stat_rec'] > 0:
                 filter_cond += ' and dos.statut=' + str(args['stat_rec']) + ' '
 
-            if args['lastname']:
+            if 'lastname' in args and args['lastname']:
                 filter_cond += ' and pat.nom LIKE "' + args['lastname'] + '%" '
 
-            if args['firstname']:
+            if 'firstname' in args and args['firstname']:
                 filter_cond += ' and pat.prenom LIKE "' + args['firstname'] + '%" '
 
-            if args['code']:
+            if 'code' in args and args['code']:
                 filter_cond += ' and (pat.code LIKE "%' + args['code'] + '%" or pat.code_patient LIKE "%' + args['code'] + '%") '
 
             if args['date_beg']:
@@ -53,7 +53,7 @@ class Record:
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = 'select dos.statut as stat, '\
               'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), dos.num_dos_mois), '\
-              'if(param_num_dos.format=1072, substring(dos.num_dos_an from 5), dos.num_dos_an)) as num_dos, '\
+              'if(param_num_dos.format=1072, substring(dos.num_dos_an from 7), dos.num_dos_an)) as num_dos, '\
               'if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '\
               'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, pat.prenom as prenom, pat.id_data as id_pat '\
               'from sigl_02_data as dos '\
@@ -112,6 +112,22 @@ class Record:
         return cursor.fetchone()
 
     @staticmethod
+    def getRecordListAnalysis(id_rec):
+        cursor = DB.cursor()
+
+        req = ('select refana.nom as name, max(vld.type_validation) as last_vld '
+               'from sigl_04_data as ana '
+               'inner join sigl_05_data as refana on refana.id_data=ana.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse=ana.id_data '
+               'inner join sigl_10_data as vld on vld.id_resultat=res.id_data '
+               'where (refana.cote_unite != "PB" or refana.cote_unite is null) and ana.id_dos=%s '
+               'group by name order by last_vld asc, name asc')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getRecordNext(id_rec):
         cursor = DB.cursor()
 
@@ -158,23 +174,6 @@ class Record:
             return 0
 
     @staticmethod
-    def insertRecordGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_02_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Record.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
     def updateRecordStat(id_rec, stat):
         try:
             cursor = DB.cursor()
@@ -205,12 +204,6 @@ class Record:
                            'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, '
                            'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois '
                            'from sigl_02_data '
-                           'where id_data=%s', (id_rec,))
-
-            cursor.execute('delete from sigl_02_data_group_mode '
-                           'where id_data_group=%s', (id_rec,))
-
-            cursor.execute('delete from sigl_02_data_group '
                            'where id_data=%s', (id_rec,))
 
             cursor.execute('delete from sigl_02_data '

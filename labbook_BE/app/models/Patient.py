@@ -126,23 +126,6 @@ class Patient:
             return 0
 
     @staticmethod
-    def insertPatientGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_03_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Patient.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
     def newPatientCode():
         import random
 
@@ -182,9 +165,9 @@ class Patient:
         req = ('select rec.id_data, rec.date_prescription as date_prescr, ref.nom as analysis, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
-               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '
+               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
                'ref_var.libelle as variable, '
-               'IF("dico_" = SUBSTRING(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
+               'IF("dico_" = substring(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
                'from sigl_03_data as pat '
                'inner join sigl_02_data as rec on rec.id_patient=pat.id_data '
                'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '

@@ -444,7 +444,7 @@ let data_exist = false ;
 
     // check if this analysis is not already used
     if ( !$.isEmptyObject(data_analysis) )
-    $.map(data_analysis,function(val,key) { if(val.id_data == id_item) { data_exist = true; } } ) ;
+    $.map(data_analysis,function(val,key) { if( val != null && val.id_data == id_item ) { data_exist = true; } } ) ;
 
     if (!data_exist)
     {
@@ -475,7 +475,7 @@ let data_exist = false ;
                     {
                     // check if this analysis is not already used
                     if (!$.isEmptyObject(data_samples) )
-                    $.map(data_samples,function(val,key) { if ( val.id_data == data_ana.produit_biologique ) { data_exist = true; } } ) ;
+                    $.map(data_samples,function(val,key) { if ( val != null && val.id_data == data_ana.produit_biologique ) { data_exist = true; } } ) ;
 
                         if (!data_exist)
                         {
@@ -517,7 +517,7 @@ let data_exist = false ;
 
                     // check if this analysis is not already used
                     if (!$.isEmptyObject(data_products) )
-                    $.map(data_products,function(val,key) { if ( val.type == data_ana.type_prel ) { data_exist = true; } } ) ;
+                    $.map(data_products,function(val,key) { if ( val != null && val.type == data_ana.type_prel ) { data_exist = true; } } ) ;
 
                         if (!data_exist)
                         {
@@ -1154,31 +1154,38 @@ var param = '{ "id_owner":' + id_group + ', ' +
                 if (i > 0)
                 param_list_ana += ', ' ;
 
-            var param_ana = '{ "id_owner":' + id_group + ', ' +
-                              '"id_rec":' + id_rec  + ', ' +
-                              '"id_ana":' + data_analysis[i].id_data + ', ' +
-                              '"price":' + data_analysis[i].price + ', ' +
-                              '"paid": 5, ' +
-                              '"emer":' + data_analysis[i].emer + ', ' +
-                              '"req":' + data_analysis[i].req + '}' ;
+                if (data_analysis[i] != null)
+                {
+                var param_ana = '{ "id_owner":' + id_group + ', ' +
+                                  '"id_rec":' + id_rec  + ', ' +
+                                  '"id_ana":' + data_analysis[i].id_data + ', ' +
+                                  '"price":' + data_analysis[i].price + ', ' +
+                                  '"paid": 5, ' +
+                                  '"emer":' + data_analysis[i].emer + ', ' +
+                                  '"req":' + data_analysis[i].req + '}' ;
 
-            param_list_ana += param_ana ;
+                param_list_ana += param_ana ;
+                }
             }
 
             // Add samples
             for( i in data_samples )
             {
-            param_list_ana += ', ' ;
+                if (i > 0)
+                param_list_ana += ', ' ;
 
-            var param_samp = '{ "id_owner":' + id_group + ', ' +
-                               '"id_rec":' + id_rec  + ', ' +
-                               '"id_ana":' + data_samples[i].id_data + ', ' +
-                               '"price":' + data_samples[i].price + ', ' +
-                               '"paid": 5, ' +
-                               '"emer": 5, ' +
-                               '"req":' + data_samples[i].req + '}' ;
+                if (data_samples[i] != null)
+                {
+                var param_samp = '{ "id_owner":' + id_group + ', ' +
+                                   '"id_rec":' + id_rec  + ', ' +
+                                   '"id_ana":' + data_samples[i].id_data + ', ' +
+                                   '"price":' + data_samples[i].price + ', ' +
+                                   '"paid": 5, ' +
+                                   '"emer": 5, ' +
+                                   '"req":' + data_samples[i].req + '}' ;
 
-            param_list_ana += param_samp ;
+                param_list_ana += param_samp ;
+                }
             }
 
         param_list_ana += ' ] }';
@@ -1200,21 +1207,24 @@ var param = '{ "id_owner":' + id_group + ', ' +
                         if (i > 0)
                         param_list_prod += ', ' ;
 
-                    var param_prod = '{ "id_owner":' + id_group + ', ' +
-                                       '"date_samp":"' + data_products[i].dateSamp + '", ' +
-                                       '"type_samp":"' + data_products[i].type + '", ' +
-                                       '"qty":' + data_products[i].qty + ', ' +
-                                       '"stat":' + data_products[i].stat + ', ' +
-                                       '"id_rec":' + id_rec + ', ' +
-                                       '"sampler":"' + data_products[i].sampler + '", ' +
-                                       '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
-                                       '"time_receipt":"", ' +
-                                       '"comm":"' + data_products[i].comm + '", ' +
-                                       '"locat_samp":"", ' +
-                                       '"locat_samp_more":"", ' +
-                                       '"location":""}' ;
+                        if (data_products[i] != null)
+                        {
+                        var param_prod = '{ "id_owner":' + id_group + ', ' +
+                                           '"date_samp":"' + data_products[i].dateSamp + '", ' +
+                                           '"type_samp":"' + data_products[i].type + '", ' +
+                                           '"qty":' + data_products[i].qty + ', ' +
+                                           '"stat":' + data_products[i].stat + ', ' +
+                                           '"id_rec":' + id_rec + ', ' +
+                                           '"sampler":"' + data_products[i].sampler + '", ' +
+                                           '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
+                                           '"time_receipt":"", ' +
+                                           '"comm":"' + data_products[i].comm + '", ' +
+                                           '"locat_samp":"", ' +
+                                           '"locat_samp_more":"", ' +
+                                           '"location":""}' ;
 
-                    param_list_prod += param_prod ;
+                        param_list_prod += param_prod ;
+                        }
                     }
 
                 param_list_prod += ' ] }';

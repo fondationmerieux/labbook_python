@@ -223,21 +223,6 @@ class ResultCreate(Resource):
                     res = {}
                     res['id_res'] = ret
 
-                    # Get id_group of lab with id_group of user
-                    id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-                    if not id_group_lab:
-                        self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    # insert sigl_09_data_group
-                    ret = Result.insertResultGroup(id_data=res['id_res'],
-                                                   id_group=id_group_lab['id_group_parent'])
-
-                    if ret <= 0:
-                        self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
                     # insert corresponding validation
                     ret = Result.insertValidation(id_owner=args['id_owner'],
                                                   id_resultat=res['id_res'],
@@ -254,21 +239,6 @@ class ResultCreate(Resource):
 
                     res = {}
                     res['id_valid'] = ret
-
-                    # Get id_group of lab with id_group of user
-                    id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-                    if not id_group_lab:
-                        self.log.error(Logs.fileline() + ' : ResultCreate ERROR group not found')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    # insert sigl_10_data_group
-                    ret = Result.insertValidationGroup(id_data=res['id_valid'],
-                                                       id_group=id_group_lab['id_group_parent'])
-
-                    if ret <= 0:
-                        self.log.error(Logs.alert() + ' : ResultCreate ERROR  insert group validation')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ResultCreate')
         return compose_ret('', Constants.cst_content_type_json)
@@ -318,21 +288,6 @@ class ResultValid(Resource):
             res = {}
             res['id_valid'] = ret
 
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(id_owner)
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : ResultValid ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_10_data_group
-            ret = Result.insertValidationGroup(id_data=res['id_valid'],
-                                               id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : ResultValid ERROR  insert group validation')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
         # check if it was the last validation to do
         l_res = Result.getResultRecord(id_rec)
 
@@ -367,21 +322,6 @@ class ResultValid(Resource):
 
             res = {}
             res['id_file'] = ret
-
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(id_owner)
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : ResultValid ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_11_data_group
-            ret = File.insertFileReportGroup(id_data=res['id_file'],
-                                             id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : ResultValid ERROR  insert group validation')
-                return compose_ret('', Constants.cst_content_type_json, 500)
 
             # Get uuid filename and create pdf
             fileReport = File.getFileReport(id_rec)
@@ -428,21 +368,6 @@ class ResultReset(Resource):
 
         res = {}
         res['id_valid'] = ret
-
-        # Get id_group of lab with id_group of user
-        id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-        if not id_group_lab:
-            self.log.error(Logs.fileline() + ' : ResultReset ERROR group not found')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        # insert sigl_10_data_group
-        ret = Result.insertValidationGroup(id_data=res['id_valid'],
-                                           id_group=id_group_lab['id_group_parent'])
-
-        if ret <= 0:
-            self.log.error(Logs.alert() + ' : ResultReset ERROR  insert group validation')
-            return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Update record status to status administrative intermediate
         stat_rec = 253
@@ -493,21 +418,6 @@ class ResultCancel(Resource):
 
         res = {}
         res['id_valid'] = ret
-
-        # Get id_group of lab with id_group of user
-        id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-        if not id_group_lab:
-            self.log.error(Logs.fileline() + ' : ResultCancel ERROR group not found')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        # insert sigl_10_data_group
-        ret = Result.insertValidationGroup(id_data=res['id_valid'],
-                                           id_group=id_group_lab['id_group_parent'])
-
-        if ret <= 0:
-            self.log.error(Logs.alert() + ' : ResultCancel ERROR  insert group validation')
-            return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Update record status to status administrative intermediate
         stat_rec = 253

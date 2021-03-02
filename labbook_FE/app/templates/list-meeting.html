@@ -47,7 +47,7 @@
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
 
-            <div class="mb-5 mt-3">
+            <div class="clearfix mb-5 mt-3">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
@@ -56,7 +56,6 @@
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une réunion") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-            <div class="clearfix"></div>
 
         </div><!-- close main -->
     </div><!-- close inner -->
@@ -197,7 +196,11 @@ var param = '{}' ;
 
         if (month < 10) month = '0' + month ;
 
-        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
 
         let filename = "meeting_" + today + ".csv" ;
 

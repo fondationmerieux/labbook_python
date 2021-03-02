@@ -69,13 +69,10 @@
                     <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section d'application") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-control">
-                            <option value="0" {% if args['manual_det']['section'] == 0 %} selected {% endif %}>TODO load list</option>  
-                            <option value="1038" {% if args['manual_det']['section'] == 1038 %} selected {% endif %}>{{ _("Administration") }}</option>
-                            <option value="1039" {% if args['manual_det']['section'] == 1039 %} selected {% endif %}>{{ _("Prélèvement") }}</option>
-                            <option value="1040" {% if args['manual_det']['section'] == 1040 %} selected {% endif %}>{{ _("Biochimie") }}</option>
-                            <option value="1041" {% if args['manual_det']['section'] == 1041 %} selected {% endif %}>{{ _("Hématologie") }}</option>
-                            <option value="1042" {% if args['manual_det']['section'] == 1042 %} selected {% endif %}>{{ _("Sérologie") }}</option>
-                            <option value="1043" {% if args['manual_det']['section'] == 1043 %} selected {% endif %}>{{ _("Microbiologie") }}</option>
+                            <option value="0" {% if args['manual_det']['section'] == 0 %} selected {% endif %}></option>  
+                            {% for section in ihm['sections'] %}
+                            <option value="{{ section['id_data'] }}" {% if args['section'] == section['id_data'] %} selected {% endif %}>{{ section['label'] }}</option>
+                            {% endfor %}
                         </select>			
                     </div>
                 </div> 

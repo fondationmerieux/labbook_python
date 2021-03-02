@@ -136,8 +136,7 @@ var id_owner = {{ session['user_id_group']|safe}} ;
 
     if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
     {
-    var param = '{ "id_owner":' + id_owner + ', ' +
-                  '"id_user":' + id_user + '}' ;
+    var param = '{ "id_owner":' + id_owner + '}' ;
 
         $.ajax( 
         {
@@ -195,7 +194,11 @@ var param = '{}' ;
 
         if (month < 10) month = '0' + month ;
 
-        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
 
         let filename = "equipment_" + today + ".csv" ;
 

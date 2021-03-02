@@ -36,7 +36,7 @@ let tr_histo = '<tr class="row"><td class=" col-1 icon"><span class="icon status
                 extra += '<li><span>{{ _("ANNULE") }} ' + data_histo[i].dico_cancel.label +'</span></li>' ;
 
                 if ( data_histo[i].commentaire != "" )
-                extra += '<li><span>{{ _("Commentaire") }} : ' + data_histo[i].commentaire +'</span></li>'
+                extra += '<li><span>{{ _("Commentaire") }} : ' + data_histo[i].commentaire +'</span></li>' ;
 
             tr_histo += '<tr class="row"><td class="col-1 icon" id="stat_res">' + status_res( data_histo[i].type_validation ) + '</td>' +
                         '<td class="col-2"><span>' + data_histo[i].date_validation +'</span></td>' +

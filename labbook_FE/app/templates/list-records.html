@@ -154,6 +154,8 @@
                 </div>
             </form>
 
+            {% include 'popup_det_rec.html' %}
+
         </div><!-- close main -->
     </div>
 </div><!-- close content -->
@@ -278,7 +280,7 @@ $("#listing_dos_total").html( data_len ) ;
 
     res += '<tr ' + tr_style + '><td hidden><div>' + data_records[i].id_data + '</div></td>' +
            '<td><div class="text-center">' + menu_act + '</div></td>' +
-           '<td><div class="text-center">' + status_rec( data_records[i].stat ) + '</div></td>' +
+           '<td><div class="text-center">' + status_rec_with_det( data_records[i].stat, data_records[i].id_data, data_records[i].num_dos_long ) + '</div></td>' +
            '<td><div class="text-center">' + emer( data_records[i].urgent ) + '</div></td>' +
            '<td><div class="text-center"><span class="rec-num" title="' + data_records[i].num_dos_long + '">' + data_records[i].num_dos + '</span></div></td>' +
            '<td><div class="text-center">' + data_records[i].date_dos + '</div></td>' +
@@ -317,6 +319,8 @@ function del_record( id_rec )
     else
     return false ;
 }
+
+{% include 'stat_rec_with_det.js' %}
 
 $(".cnx_trigger").keyup( function(event) 
 {

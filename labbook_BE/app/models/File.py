@@ -250,12 +250,6 @@ class File:
                                'from sigl_dos_valisedoc__file_data '
                                'where id_data=%s', (filedata['id_data'],))
 
-                cursor.execute('delete from sigl_dos_valisedoc__file_data_group_mode '
-                               'where id_data_group=%s', (filedata['id_data'],))
-
-                cursor.execute('delete from sigl_dos_valisedoc__file_data_group '
-                               'where id_data=%s', (filedata['id_data'],))
-
                 cursor.execute('delete from sigl_dos_valisedoc__file_data '
                                'where id_data=%s', (filedata['id_data'],))
 
@@ -337,25 +331,6 @@ class File:
             File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
-    """ OBSOLETE IN V3
-    @staticmethod
-    def insertFileReportGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_11_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            File.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-    """
-
     @staticmethod
     def deleteFileReportByRecord(id_rec):
         try:
@@ -373,14 +348,6 @@ class File:
                                'select id_data, id_owner, id_dos, file, file_type, doc_type, date '
                                'from sigl_11_data '
                                'where id_data=%s', (filedata['id_data'],))
-
-                """ OBSOLETE IN V3
-                cursor.execute('delete from sigl_11_data_group_mode '
-                               'where id_data_group=%s', (filedata['id_data'],))
-
-                cursor.execute('delete from sigl_11_data_group '
-                               'where id_data=%s', (filedata['id_data'],))
-                """
 
                 cursor.execute('delete from sigl_11_data '
                                'where id_data=%s', (filedata['id_data'],))

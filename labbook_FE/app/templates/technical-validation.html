@@ -13,7 +13,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
-                <span>{{ _("Validation technique") }}</span>
+                <span>{{ _("Validation technique") }}</span><span id="info_pat_title"></span>
             </h2>
             <form autocomplete="off">
                 <div class="row ml-3 mt-1">
@@ -349,7 +349,7 @@ let disp_valid = "d-none" ;
         disp_valid = "show" ;
 
         if ( value != "" )
-        res += '<span>' + value + '</span><input id="res_' + id_res + '" class="res-' + id_rec + '-' + ref_ana + '" type="hidden" value="' + data[i].valeur + '"><span class="unit show ml-1">' + res_unit + '</span>' ;' ;
+        res += '<span>' + value + '</span><input id="res_' + id_res + '" class="res-' + id_rec + '-' + ref_ana + '" type="hidden" value="' + data[i].valeur + '"><span class="unit show ml-1">' + res_unit + '</span>' ;
         else if ( res_valid == 252 )
         {
         res += '<span>{{ _("ANNULE") }}</span>' ;
@@ -498,6 +498,28 @@ $("#div_add_analysis").show() ;
         } ) ;
 } ) ;
 
+function info_pat_title()
+{
+{% if args['patient'] %}
+let info = "" ;
+
+info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_patient'] }} {% endif %}" +
+           "{% if args['patient']['code'] %}{{ args['patient']['code'] }}{% endif %} - " +
+           "{% if args['patient']['prenom'] %}{{ args['patient']['prenom'] }} {% endif %}" +
+           "{% if args['patient']['nom'] %}{{ args['patient']['nom'] }} {% endif %}" +
+           "{% if args['patient']['nom_jf'] %}{{ args['patient']['nom_jf'] }} {% endif %} - " +
+           "{% if args['patient']['ddn'] %}{{ _("Né(e) le") }} {{ args['patient']['ddn'] }} {% endif %}" +
+           "{% if args['patient']['age'] %} - {{ args['patient']['age'] }} {% endif %}" +
+           "{% if args['patient']['unite'] == 1037 %}{{ _("années") }}" +
+           "{% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}" +
+           "{% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}" +
+           "{% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}" ;
+
+    if (info != "")
+    $("#info_pat_title").text(info) ;
+{% endif %}
+}
+
 {% include 'display_histo.js' %}
 
 $( document ).ready( function()
@@ -518,6 +540,8 @@ rec_stat = status_rec(data_res[0].stat) ;
     $("#rec_stat").html(rec_stat) ;
 
 display_result( 1 ) ;
+
+info_pat_title() ;
 } ) ;
 </script>
 {% endblock %}

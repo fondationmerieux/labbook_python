@@ -958,6 +958,8 @@ class StockList(Resource):
 
         l_stocks = Quality.getStockList(args)
 
+        self.log.error(Logs.fileline() + ' : DEBUG l_stocks=' + str(l_stocks))
+
         if not l_stocks:
             self.log.error(Logs.fileline() + ' : TRACE StockList not found')
 
@@ -967,21 +969,48 @@ class StockList(Resource):
                 if stock[key] is None:
                     stock[key] = ''
 
-            if item['date_receipt']:
-                item['date_receipt'] = datetime.strftime(item['date_receipt'], '%Y-%m-%d')
+            if stock['pru_nb_pack']:
+                stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
+            else:
+                stock['pru_nb_pack'] = 0
 
-            if item['date_expir']:
-                item['date_expir'] = datetime.strftime(item['date_expir'], '%Y-%m-%d')
+            if stock['prs_nb_pack']:
+                stock['prs_nb_pack'] = float(stock['prs_nb_pack']) - float(stock['pru_nb_pack'])
+            else:
+                stock['prs_nb_pack'] = 0
+
+            stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'] )
+
+            if stock['receipt_date']:
+                stock['receipt_date'] = datetime.strftime(stock['receipt_date'], '%Y-%m-%d')
+
+            if stock['expir_date']:
+                stock['expir_date'] = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
 
         self.log.info(Logs.fileline() + ' : TRACE StockList')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 
+class StockProductSearch(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_items = Quality.getStockProductSearch(args['term'])
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE StockProductSearch not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE StockProductSearch')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
 class StockProductDet(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_stock):
-        stock = Quality.getStock(id_stock)
+    def get(self, id_item):
+        stock = Quality.getStockProduct(id_item)
 
         if not stock:
             self.log.error(Logs.fileline() + ' : ' + 'StockProductDet ERROR not found')
@@ -992,16 +1021,10 @@ class StockProductDet(Resource):
             if stock[key] is None:
                 stock[key] = ''
 
-        if item['date_receipt']:
-            item['date_receipt'] = datetime.strftime(item['date_receipt'], '%Y-%m-%d')
-
-        if item['date_expir']:
-            item['date_expir'] = datetime.strftime(item['date_expir'], '%Y-%m-%d')
-
-        self.log.info(Logs.fileline() + ' : StockProductDet id_stock=' + str(id_stock))
+        self.log.info(Logs.fileline() + ' : StockProductDet id_item=' + str(id_item))
         return compose_ret(stock, Constants.cst_content_type_json, 200)
 
-    def post(self, id_stock):
+    def post(self, id_item):
         args = request.get_json()
 
         if 'prd_name' not in args or 'prd_type' not in args or 'prd_nb_by_pack' not in args or \
@@ -1010,8 +1033,8 @@ class StockProductDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update stock product
-        if id_stock > 0:
-            ret = Quality.updateStockProduct(prd_ser=id_stock,
+        if id_item > 0:
+            ret = Quality.updateStockProduct(prd_ser=id_item,
                                              prd_name=args['prd_name'],
                                              prd_type=args['prd_type'],
                                              prd_nb_by_pack=args['prd_nb_by_pack'],
@@ -1036,9 +1059,82 @@ class StockProductDet(Resource):
                 self.log.error(Logs.alert() + ' : StockProductDet ERROR  insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-            id_stock = ret
+            id_item = ret
 
-        self.log.info(Logs.fileline() + ' : TRACE StockProductDet id_stock=' + str(id_stock))
+        self.log.info(Logs.fileline() + ' : TRACE StockProductDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockSupplyDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_status' not in args or \
+           'prs_receipt_date' not in args or 'prs_expir_date' not in args or 'prs_rack' not in args or \
+           'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_sell_price' not in args:
+            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update stock product
+        if id_item > 0:
+            ret = Quality.updateStockProduct(prs_ser=id_item,
+                                             prs_prd=args['prs_prd'],
+                                             prs_nb_pack=args['prs_nb_pack'],
+                                             prs_status=args['prs_status'],
+                                             prs_receipt_date=args['prs_receipt_date'],
+                                             prs_expir_date=args['prs_expir_date'],
+                                             prs_rack=args['prs_rack'],
+                                             prs_batch_num=args['prs_batch_num'],
+                                             prs_buy_price=args['prs_buy_price'],
+                                             prs_sell_price=args['prs_sell_price'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : StockSupplyDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new supply product
+        else:
+            ret = Quality.insertStockSupply(prs_prd=args['prs_prd'],
+                                            prs_nb_pack=args['prs_nb_pack'],
+                                            prs_status=args['prs_status'],
+                                            prs_receipt_date=args['prs_receipt_date'],
+                                            prs_expir_date=args['prs_expir_date'],
+                                            prs_rack=args['prs_rack'],
+                                            prs_batch_num=args['prs_batch_num'],
+                                            prs_buy_price=args['prs_buy_price'],
+                                            prs_sell_price=args['prs_sell_price'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : StockSupplyDet ERROR insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE StockSupplyDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockUse(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'pru_user' not in args or 'pru_prs' not in args or 'pru_nb_pack' not in args:
+            self.log.error(Logs.fileline() + ' : StockUse ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.insertStockUse(pru_user=args['pru_user'],
+                                     pru_prs=args['pru_prs'],
+                                     pru_nb_pack=args['pru_nb_pack'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : StockUse ERROR insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StockUse pru_prs=' + str(args['pru_prs']))
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1053,31 +1149,29 @@ class StockExport(Resource):
 
         args['limit'] = 50000  # for overpassed default limit
 
-        l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'city',
-                   'work_place', 'spe', 'phone', 'mobile', 'fax', 'email', 'title',
-                   'initial', 'service', 'address', ]]
+        l_data = [['prs_ser', 'name', 'nb_pack', 'nb_by_pack', 'nb_total', 'type', 'receipt_date', 'rack', 'conserv',
+                   'expir_date', 'batch_num', 'status', 'supplier', 'buy_price', 'sell_price', ]]
         dict_data = Quality.getStockList(args)
 
         if dict_data:
             for d in dict_data:
                 data = []
 
-                data.append(d['id_data'])
-                data.append(d['id_owner'])
-                data.append(d['code'])
-                data.append(d['lastname'])
-                data.append(d['firstname'])
-                data.append(d['city'])
-                data.append(d['work_place'])
-                data.append(d['spe'])
-                data.append(d['phone'])
-                data.append(d['mobile'])
-                data.append(d['fax'])
-                data.append(d['email'])
-                data.append(d['title'])
-                data.append(d['initial'])
-                data.append(d['service'])
-                data.append(d['address'])
+                data.append(d['prs_ser'])
+                data.append(d['name'])
+                data.append(d['nb_pack'])
+                data.append(d['nb_by_pack'])
+                data.append(d['nb_total'])
+                data.append(d['type'])
+                data.append(d['receipt_date'])
+                data.append(d['rack'])
+                data.append(d['conserv'])
+                data.append(d['expir_date'])
+                data.append(d['batch_num'])
+                data.append(d['status'])
+                data.append(d['supplier'])
+                data.append(d['buy_price'])
+                data.append(d['sell_price'])
 
                 l_data.append(data)
 

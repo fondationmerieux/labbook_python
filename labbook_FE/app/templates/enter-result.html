@@ -13,7 +13,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
-                <span>{{ _("Saisie de résultats") }}</span> - <span>{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
+                <span>{{ _("Saisie de résultats") }}</span><span id="info_pat_title"></span>
             </h2>
             <form id="benchsheet" autocomplete="off">
                 <div class="row ml-3 mt-1">
@@ -706,7 +706,11 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
 
         if (month < 10) month = '0' + month ;
 
-        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
 
         let filename = "benchsheet_" + today + ".pdf" ;
 
@@ -722,6 +726,28 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         alert("{{ _("Erreur lors de la génération du fichier") }}") ;
         }
     } ) ;
+}
+
+function info_pat_title()
+{
+{% if args['patient'] %}
+let info = "" ;
+
+info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_patient'] }} {% endif %}" +
+           "{% if args['patient']['code'] %}{{ args['patient']['code'] }}{% endif %} - " +
+           "{% if args['patient']['prenom'] %}{{ args['patient']['prenom'] }} {% endif %}" +
+           "{% if args['patient']['nom'] %}{{ args['patient']['nom'] }} {% endif %}" +
+           "{% if args['patient']['nom_jf'] %}{{ args['patient']['nom_jf'] }} {% endif %} - " +
+           "{% if args['patient']['ddn'] %}{{ _("Né(e) le") }} {{ args['patient']['ddn'] }} {% endif %}" +
+           "{% if args['patient']['age'] %} - {{ args['patient']['age'] }} {% endif %}" +
+           "{% if args['patient']['unite'] == 1037 %}{{ _("années") }}" +
+           "{% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}" +
+           "{% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}" +
+           "{% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}" ;
+
+    if (info != "")
+    $("#info_pat_title").text(info) ;
+{% endif %}
 }
 
 {% include 'display_histo.js' %}
@@ -744,6 +770,8 @@ rec_stat = status_rec(data_res[0].stat) ;
     $("#rec_stat").html(rec_stat) ;
 
 display_result( 1 ) ;
+
+info_pat_title() ;
 } ) ;
 </script>
 {% endblock %}

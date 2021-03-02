@@ -21,6 +21,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Analysis history
 - Work list technician and biologist
 - Status of current samples
+- patient information in some title bar
+
+### Fixed
+- delete then add a analysis in external or internal pages fixed
+- sort column
+- hand icon cursor on head of column sortable
+- popup when click on status of a record in list of record and list of work
+- English translations
 
 ## [3.0.0-alpha.2] - 2020-12-17
 ### Changed

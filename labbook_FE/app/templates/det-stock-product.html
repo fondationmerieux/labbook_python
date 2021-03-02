@@ -2,71 +2,91 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Détails produit") }}</title>
+    <title>{{ _("Approvisionner un produit") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
 {% endblock %}
+
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Détails produit") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Approvisionner un produit") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row mt-3">
-                    <label for="prd_name" class="col-form-label col-3 text-right mr-1">{{ _("Nom du produit") }}</label>
+                <div class="form-group row">
+                    <label for="search_product" class="col-form-label col-3 text-right mr-1">{{ _("Produit") }}</label>
                     <div>
-                        <input id="prd_name" type="text" value="{{ args['stock_product']['prd_name'] }}" maxlength="50" class="form-control">
+                        {% if args['prs_ser'] == 0 %}
+                        <select id="search_product" style="width:400px"></select>
+                        <button type="button" onclick="new_product();" id="btn_product" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                        {% endif %}
+                        <span class="ml-2">{{ args['stock_product']['prd_name'] }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label for="prs_nb_pack" class="col-form-label col-3 text-right mr-1">{{ _("Nombre de paquets") }}</label>
+                    <div>
+                        <input id="prs_nb_pack" type="number" value="{{ args['stock_product']['prs_nb_pack'] }}" min="1" step="1" class="form-control">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mr-1">{{ _("Type produit") }}</label>
+                    <label class="col-form-label col-3 text-right mr-1">{{ _("Etat du produit") }}</label>
                     <div>
-                        <select name="prd_type" id="prd_type" class="form-control">
+                        <select name="prs_status" id="prs_status" class="form-control">
                             <option value="0" selected="selected"></option>
-                            {% for prd_type in ihm['product_type'] %}
-                            <option value="{{ prd_type['id_data'] }}" {% if args['stock_product']['prd_type'] == prd_type['id_data'] %} selected {% endif %}>{{ prd_type['label'] }}</option>
+                            {% for prod_stat in ihm['product_status'] %}
+                            <option value="{{ prod_stat['id_data'] }}" {% if args['stock_product']['prs_status'] == prod_stat['id_data'] %} selected {% endif %}>{{ prod_stat['label'] }}</option>
                             {% endfor %}
                         </select>       
                     </div>
                 </div> 
 
                 <div class="form-group row">
-                    <label for="prd_nb_by_pack" class="col-form-label col-3 text-right mt-2">{{ _("Nombre par paquet") }}</label>
+                    <label for="prs_receipt_date" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
+                    <div>					
+                        <input id="prs_receipt_date" name="prs_receipt_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_receipt_date'] }}" style="color: #888;">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="prs_expir_date" class="col-form-label col-3 text-right mt-2">{{ _("Date d'expiration") }}</label>
+                    <div>					
+                        <input id="prs_expir_date" name="prs_expir_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_expir_date'] }}" style="color: #888;">
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Etagère") }}</label>
+                    <div>					
+                        <input type="text" name="prs_rack" id="prs_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control">			
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Numéro de lot") }}</label>
+                    <div>					
+                        <input type="text" name="prs_batch_num" id="prs_batch_num" value="{{ args['stock_product']['prs_batch_num'] }}" class="form-control">			
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="prs_buy_price" class="col-form-label col-3 text-right mt-2">{{ _("Prix d'achat") }}</label>
                     <div class="">					
-                        <input type="number" name="prd_nb_by_pack" id="prd_nb_by_pack" value="{{ args['stock_product']['prd_nb_by_pack'] }}" min="1" step="1" class="form-control">			
+                        <input type="number" name="prs_buy_price" id="prs_buy_price" value="{{ args['stock_product']['prs_buy_price'] }}" min="0" step="0.01" class="form-control">			
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="search_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Fournisseur") }}</label>
-                    <div>
-                        <select id="search_supplier" style="width:400px"></select>
-                        <button type="button" onclick="new_supplier();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
-                        <span class="ml-2">{{ args['stock_product']['prd_supplier'] }}</span>
+                    <label for="prs_sell_price" class="col-form-label col-3 text-right mt-2">{{ _("Prix de vente") }}</label>
+                    <div class="">					
+                        <input type="number" name="prs_sell_price" id="prs_sell_price" value="{{ args['stock_product']['prs_sell_price'] }}" min="0" step="0.01" class="form-control">			
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="prd_ref_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Réference fournisseur") }}</label>
-                    <div>
-                        <input id="prd_ref_supplier" type="text" value="{{ args['stock_product']['prd_ref_supplier'] }}" maxlength="50" class="form-control" style="">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mr-1">{{ _("Conservation") }}</label>
-                    <div>
-                        <select name="prd_conserv" id="prd_conserv" class="form-control">
-                            <option value="0" selected="selected"></option>
-                            {% for prd_conserv in ihm['product_conserv'] %}
-                            <option value="{{ prd_conserv['id_data'] }}" {% if args['stock_product']['prd_conserv'] == prd_conserv['id_data'] %} selected {% endif %}>{{ prd_conserv['label'] }}</option>
-                            {% endfor %}
-                        </select>       
-                    </div>
-                </div>
-                
             </form>
             
             <div class="my-2 clearfix">
@@ -85,7 +105,7 @@
 {% block add_script %}
 <script>
 
-$("#search_supplier").select2(
+$("#search_product").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
@@ -93,11 +113,11 @@ $("#search_supplier").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/supplier/search",
+        url: "{{ session['server_ext'] }}/services/quality/stock/product/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        term: $("#search_supplier").text(),
+        term: $("#search_product").text(),
         data: function (params) {
 
             return JSON.stringify({
@@ -109,7 +129,7 @@ $("#search_supplier").select2(
                 results: $.map(data, function (item) {
                     return {
                         text: item.field_value,
-                        id: item.id_data
+                        id: item.id_item
                     }
                 })
             };
@@ -117,7 +137,7 @@ $("#search_supplier").select2(
     }
 } ) ;
 
-$("#search_supplier").on("select2:select", function (e) 
+$("#search_product").on("select2:select", function (e) 
 {
 let id_item = $(e.currentTarget).val();
 } ) ;
@@ -125,15 +145,24 @@ let id_item = $(e.currentTarget).val();
 function save_item()
 {
 var id_owner     = {{ session['user_id_group']|safe }} ;
-var id_product   = {{ args['id_product']|safe }} ;
-var type         = $("#type").val()              ;
-var supplier     = $("#search_supplier").val()   ;
-var report       = JSON.stringify( $("#report").val() ) ;
+var prs_ser      = {{ args['prs_ser']|safe }} ;
+var prs_prd      = {% if args['prs_ser'] == 0 %}$("#search_product").val(){% else %}{{ args['stock_product']['prs_prd']|safe }}{% endif %} ;
+var prs_nb_pack  = $("#prs_nb_pack").val()      ;
+var prs_status   = $("#prs_status").val()       ;
+var receipt_date = $("#prs_receipt_date").val() ;
+var expir_date   = $("#prs_expir_date").val()   ;
+var rack         = $("#prs_rack").val()         ;
+var batch_num    = $("#prs_batch_num").val()    ;
+var buy_price    = $("#prs_buy_price").val()  * 100 ;
+var sell_price   = $("#prs_sell_price").val() * 100 ;
 
 var msg = "" ;
 
-    if (id_product == "")
-    msg += "{{ _("Veuillez saisir une date de réunion.") }}\n" ;
+    if (prs_prd == "")
+    msg += "{{ _("Veuillez choisir un produit à approvisionner") }}\n" ;
+
+    if (prs_nb_pack <= 0)
+    msg += "{{ _("Veuillez saisir un nombre de paquet supérieur à 0.") }}\n" ;
 
     if (msg != "")
     {
@@ -141,24 +170,22 @@ var msg = "" ;
     return false ;
     }
 
-    if (id_product > 0)
-    {
-        if (supplier < 1)
-        supplier = {% if args['stock_product']['supplier_id'] %}{{ args['stock_product']['supplier_id']|safe }}{% else %}0{% endif %} ;
-    }
-
 var param = '{ "id_owner":' + id_owner + ', ' +
-              '"id_item":' + id_stock_product + ', ' +
-              '"date_stock_product":"' + date_stock_product + '", ' +
-              '"type":' + type + ', ' +
-              '"supplier":' + supplier + ', ' +
-              '"report":' + report + '}' ;  // No quotes with stringify
+              '"prs_prd":' + prs_prd + ', ' +
+              '"prs_nb_pack":' + prs_nb_pack + ', ' +
+              '"prs_status":' + prs_status + ', ' +
+              '"prs_receipt_date":"' + receipt_date + '", ' +
+              '"prs_expir_date":"' + expir_date + '", ' +
+              '"prs_rack":"' + rack + '", ' +
+              '"prs_batch_num":"' + batch_num + '", ' +
+              '"prs_buy_price":' + buy_price + ', ' +
+              '"prs_sell_price":' + sell_price + '}' ;
 
 console.log("DEBUG param=" + JSON.stringify(param)) ;
 
     $.ajax( {
        type: "POST",
-       url: "/services/quality/stock/product/det/" + id_product,
+       url: "/services/quality/stock/supply/det/" + prs_ser,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
@@ -178,9 +205,9 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
     } ) ;
 }
 
-function new_supplier()
+function new_product()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-supplier/0";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/0";
 }
 
 function cancel()

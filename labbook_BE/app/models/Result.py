@@ -127,23 +127,6 @@ class Result:
             return 0
 
     @staticmethod
-    def insertResultGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_09_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Result.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
     def deleteResult(id_res):
         try:
             cursor = DB.cursor()
@@ -159,12 +142,6 @@ class Result:
                                '(id_data, id_owner, id_analyse, ref_variable, valeur, obligatoire) '
                                'select id_data, id_owner, id_analyse, ref_variable, valeur, obligatoire '
                                'from sigl_09_data '
-                               'where id_data=%s', (result['id_data'],))
-
-                cursor.execute('delete from sigl_09_data_group_mode '
-                               'where id_data_group=%s', (result['id_data'],))
-
-                cursor.execute('delete from sigl_09_data_group '
                                'where id_data=%s', (result['id_data'],))
 
                 cursor.execute('delete from sigl_09_data '
@@ -240,23 +217,6 @@ class Result:
             return 0
 
     @staticmethod
-    def insertValidationGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_10_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Result.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
     def deleteValidationByResult(id_res):
         try:
             cursor = DB.cursor()
@@ -272,12 +232,6 @@ class Result:
                                '(id_data, id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation ) '
                                'select id_data, id_owner, id_resultat, date_validation, utilisateur, valeur, type_validation, commentaire, motif_annulation '
                                'from sigl_10_data '
-                               'where id_data=%s', (valid['id_data'],))
-
-                cursor.execute('delete from sigl_10_data_group_mode '
-                               'where id_data_group=%s', (valid['id_data'],))
-
-                cursor.execute('delete from sigl_10_data_group '
                                'where id_data=%s', (valid['id_data'],))
 
                 cursor.execute('delete from sigl_10_data '

@@ -102,23 +102,6 @@ class Analysis:
             return 0
 
     @staticmethod
-    def insertAnalysisReqGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_04_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Analysis.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
     def getRefVariable(id_ana):
         cursor = DB.cursor()
 
@@ -159,12 +142,6 @@ class Analysis:
                                '(id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande ) '
                                'select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande '
                                'from sigl_04_data '
-                               'where id_data=%s', (ana['id_data'],))
-
-                cursor.execute('delete from sigl_04_data_group_mode '
-                               'where id_data_group=%s', (ana['id_data'],))
-
-                cursor.execute('delete from sigl_04_data_group '
                                'where id_data=%s', (ana['id_data'],))
 
                 cursor.execute('delete from sigl_04_data '
@@ -279,9 +256,9 @@ class Analysis:
         req = ('select ref.id_data, rec.date_prescription as date_prescr, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
-               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '
+               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
                'ref_var.libelle as variable, '
-               'IF("dico_" = SUBSTRING(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
+               'IF("dico_" = substring(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '

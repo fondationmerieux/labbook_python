@@ -8,7 +8,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des stocks") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
@@ -26,16 +26,26 @@
                     <div class="col-4">
                         <div class="form-group row">
                             <label for="prod_type" class="col-form-label col-3 text-right mt-2">{{ _("Type") }}</label>
-                            <div class="">					
-                                <input type="text" name="prod_type" id="prod_type" value="" class="form-control cnx_trigger">			
+                            <div>
+                                <select name="prod_type" id="prod_type" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for prod_type in ihm['product_type'] %}
+                                    <option value="{{ prod_type['id_data'] }}">{{ prod_type['label'] }}</option>
+                                    {% endfor %}
+                                </select>       
                             </div>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="supplier" class="col-form-label col-3 text-right mt-2">{{ _("Fournisseur") }}</label>
-                            <div>					
-                                <input type="text" name="supplier" id="supplier" value="" class="form-control cnx_trigger">			
+                            <label for="prod_status" class="col-form-label col-5 text-right mt-2">{{ _("Etat du produit") }}</label>
+                            <div>
+                                <select name="prod_status" id="prod_status" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for prod_status in ihm['product_status'] %}
+                                    <option value="{{ prod_status['id_data'] }}">{{ prod_status['label'] }}</option>
+                                    {% endfor %}
+                                </select>       
                             </div>
                         </div>
                     </div>
@@ -76,7 +86,7 @@
                             <th class="text-center cursor-act">{{ _("Date péremp.") }}</th>
                             <th class="text-center cursor-act">{{ _("N° lot") }}</th>
                             <th class="text-center cursor-act">{{ _("Etat") }}</th>
-                            <th class="text-center cursor-act">{{ _("Producteur") }}</th>
+                            <th class="text-center cursor-act">{{ _("Fournisseur") }}</th>
                             <th class="text-center cursor-act">{{ _("Prix achat") }}</th>
                             <th class="text-center cursor-act">{{ _("Prix vente") }}</th>
                         </tr>
@@ -94,17 +104,40 @@
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
 
-            <div class="mb-5">
+            <div class="clearfix mb-5">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
+                    <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
                     <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-            <div class="clearfix"></div>
+
+            <!-- Popup use item -->
+            <div class="modal fade" id="dial-use-item" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Indiquer la quantité de paquet utilisée") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-inline">
+                                <label class="col-form-label mr-1">{{ _("Quantité de paquet") }}</label>
+                                <div>
+                                    <input id="pru_nb_pack" type="number" value="1" min="1" step="1" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_use_item" id="btn_use_item" value="{{ _("Valider") }}"  onclick="send_use_item();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div><!-- close main -->
     </div><!-- close inner -->
@@ -113,31 +146,28 @@
 
 {% block add_script %}
 <script>
-var data_items = {{ args|safe }} ;
-var p_step     = 20 ;
-var p_cur      = 1 ;
-var p_max      = Math.ceil( data_items.length / p_step ) ;
+var id_use_item = 0 ;
+var data_items  = {{ args|safe }} ;
+var p_step      = 20 ;
+var p_cur       = 1 ;
+var p_max       = Math.ceil( data_items.length / p_step ) ;
 
 function filter_items()
 {
-let name      = $("#name").val()      ;
-let prod_type  = $("#prod_type").val()  ;
-let firstname = $("#firstname").val() ;
-let service   = $("#service").val()   ;
-let city      = $("#city").val()      ;
+let prod_name = $("#name").val()      ;
+let prod_type = $("#prod_type").val() ;
+let prod_stat = $("#prod_status").val()  ;
 
-let param = '{ "name":"' + name + '", ' +
-            '"prod_type":"' + prod_type  + '", ' +
-            '"firstname":"' + firstname  + '", ' +
-            '"service":"' + service  + '", ' +
-            '"city":"' + city  + '"}' ;
+let param = '{ "prod_name":"' + prod_name + '", ' +
+              '"prod_type":"' + prod_type + '", ' +
+              '"prod_stat":"' + prod_stat + '"}' ;
 
     // popup wait
     $( "#dial-wait" ).modal( "show" ) ;
 
     $.ajax( {
         type: "POST",
-        url: "/services/doctor/list",
+        url: "/services/quality/stock/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -162,7 +192,7 @@ let param = '{ "name":"' + name + '", ' +
                  }, 1000) ;
 
             console.log("ERROR doctor list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste des prescripteurs") }}") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
     } ) ;
 }
@@ -203,25 +233,28 @@ $("#list_items_total").html( data_len ) ;
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-doctor/' + data_items[i].id_data + '">{{ _("Editer") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/delete-item/' + data_items[i].id_data + '">{{ _("Supprimer") }}</a>';   
+                   '<a class="dropdown-item menu-act-item" href="#" onclick="display_use_item(' + data_items[i].prs_ser + ')">{{ _("Indiquer la quantité utilisée") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/' + data_items[i].prs_ser + '">{{ _("Editer la fiche produit") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prs_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
         
     menu_act += '</div></ul></nav>' ;
 
-    res += '<tr><td hidden><div>' + data_items[i].id_data + '</div></td>' +
+    res += '<tr><td hidden><div>' + data_items[i].prs_ser + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].name + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].prod_type + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].firstname + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].initial + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].work_place + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].service + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].address + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].city + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].phone + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].mobile + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].fax + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].email + '</div></td></tr>' ;
+           '<td><div class="text-center">' + data_items[i].prd_name + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].prs_nb_pack + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].prd_nb_by_pack + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].nb_total + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].type + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].receipt_date + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].prs_rack + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].conserv + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].expir_date + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].prs_batch_num + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].status + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].supplier + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].prs_buy_price + '</div></td>' +
+           '<td><div class="text-center">' + data_items[i].prs_sell_price + '</div></td></tr>' ;
     }
 {% endif %}
 
@@ -232,20 +265,60 @@ $("#list_items_total").html( data_len ) ;
     $("#table_items").tablesorter() ;  // sort only data on screen
 }
 
-function change_status(id_item, stat)
+function display_use_item(id_item)
 {
-var id_owner = {{ session['user_id_group']|safe}} ;
+id_use_item = id_item ;
 
-    if ( window.confirm("{{ _("Merci de confirmer la modification de statut") }}") )
+    setTimeout(function()
     {
-    var param = '{ "id_owner":' + id_owner + ', ' +
-                  '"id_user":' + id_user + ', ' +
-                  '"status":' + stat + '}' ;
+        $( "#dial-use-item" ).modal( "show" ) ;
+    }, 600) ; 
+}
+
+function send_use_item()
+{
+let id_user     = {{ session['user_id_group']|safe}} ;
+let pru_nb_pack = $("#pru_nb_pack").val() ;
+let param       = '{ "pru_user": ' + id_user + ', ' +
+                    '"pru_prs":' + id_use_item + ', ' +
+                    '"pru_nb_pack":' + pru_nb_pack + '}' ;
+
+    setTimeout(function()
+        {
+        $('#dial-use-item').modal("hide") ;
+        }, 1000) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/quality/stock/use",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            location.reload() ;
+            },
+        error: function(data)
+            {
+            console.log("ERROR stock use") ;
+            alert("Une erreur est survenue lors du traitement des données") ;
+            }
+    } ) ;
+}
+
+function delete_item(id_item)
+{
+let id_owner = {{ session['user_id_group']|safe}} ;
+
+    if ( window.confirm("{{ _("Merci de confirmer la suppression du produit") }}") )
+    {
+    let param = '{ "id_owner":' + id_owner + '}' ;
 
         $.ajax( 
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/user/status",
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/quality/stock/product/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -257,8 +330,8 @@ var id_owner = {{ session['user_id_group']|safe}} ;
             },
             error: function(ret)
             {
-            console.log("ERROR POST doctor status") ;
-            alert("{{ _("Erreur lors du changement de statut de l'utilisateur") }}") ;
+            console.log("ERROR DELETE item") ;
+            alert("{{ _("Erreur lors de la suppression") }}") ;
             }
         } ) ;
     }
@@ -266,24 +339,25 @@ var id_owner = {{ session['user_id_group']|safe}} ;
     return false ; 
 }
 
-function new_item()
+function stock_item()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-stock-product/0";
 }
 
+function new_item()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/0";
+}
+
 function export_data()
 {
-let name      = $("#name").val()      ;
-let prod_type  = $("#prod_type").val()  ;
-let firstname = $("#firstname").val() ;
-let service   = $("#service").val()   ;
-let city      = $("#city").val()      ;
+let prod_name = $("#name").val()      ;
+let prod_type = $("#prod_type").val() ;
+let prod_stat = $("#prod_stat").val() ;
 
-let param = '{ "name":"' + name + '", ' +
-            '"prod_type":"' + prod_type  + '", ' +
-            '"firstname":"' + firstname  + '", ' +
-            '"service":"' + service  + '", ' +
-            '"city":"' + city  + '"}' ;
+let param = '{ "prod_name":"' + prod_name + '", ' +
+              '"prod_type":"' + prod_type  + '", ' +
+              '"prod_stat":"' + prod_stat  + '"}' ;
 
     // popup wait
     $( "#dial_wait" ).modal( "show" ) ;
@@ -291,7 +365,7 @@ let param = '{ "name":"' + name + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/doctor/export",
+        url: "{{ session['server_ext'] }}/services/quality/stock/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -308,9 +382,13 @@ let param = '{ "name":"' + name + '", ' +
 
         if (month < 10) month = '0' + month ;
 
-        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+        let day = today.getDate() ;
 
-        let filename = "doctor_" + today + ".csv" ;
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "stock_" + today + ".csv" ;
 
         download_file( "PY", filename, "GEN", 0 ) ;
         },

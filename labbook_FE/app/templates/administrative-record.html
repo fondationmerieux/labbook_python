@@ -10,7 +10,7 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
-                <span>{{ _("Dossier administratif") }}</span>
+                <span>{{ _("Dossier administratif") }}</span><span id="info_pat_title"></span>
             </h2>
             <form autocomplete="off">
                 <div class="row ml-3">
@@ -518,6 +518,28 @@ function print_barcode()
     } ) ;
 }
 
+function info_pat_title()
+{
+{% if args['patient'] %}
+let info = "" ;
+
+info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_patient'] }} {% endif %}" +
+           "{% if args['patient']['code'] %}{{ args['patient']['code'] }}{% endif %} - " +
+           "{% if args['patient']['prenom'] %}{{ args['patient']['prenom'] }} {% endif %}" +
+           "{% if args['patient']['nom'] %}{{ args['patient']['nom'] }} {% endif %}" +
+           "{% if args['patient']['nom_jf'] %}{{ args['patient']['nom_jf'] }} {% endif %} - " +
+           "{% if args['patient']['ddn'] %}{{ _("Né(e) le") }} {{ args['patient']['ddn'] }} {% endif %}" +
+           "{% if args['patient']['age'] %} - {{ args['patient']['age'] }} {% endif %}" +
+           "{% if args['patient']['unite'] == 1037 %}{{ _("années") }}" +
+           "{% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}" +
+           "{% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}" +
+           "{% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}" ;
+
+    if (info != "")
+    $("#info_pat_title").text(info) ;
+{% endif %}
+}
+
 function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
@@ -536,7 +558,9 @@ let num_rec = {{ args['record']['num_dos_an'] }} ;
 let num_rec_fmt = fmt_num_rec( num_rec, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
 
     $("#num_rec").text( num_rec_fmt ) ;
-    load_data() ;
+    
+load_data() ;
+info_pat_title() ;
 } ) ;
 </script>
 {% endblock %}

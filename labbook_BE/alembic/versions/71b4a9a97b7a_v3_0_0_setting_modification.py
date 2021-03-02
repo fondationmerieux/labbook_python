@@ -172,21 +172,14 @@ def upgrade():
     try:
         conn.execute("insert into sigl_dico_data "
                      "(id_owner, dico_name, label, short_label, position, code) "
-                     "values (100, 'product_type', 'Consommables', 'consommables', 40, 'consommables')")
-    except:
-        print("ERROR insert into sigl_dico_data a product_type (consommables)")
-
-    try:
-        conn.execute("insert into sigl_dico_data "
-                     "(id_owner, dico_name, label, short_label, position, code) "
-                     "values (100, 'product_type', 'Matériel de prélèvement', 'materiel_prel', 50, 'materiel_prel')")
+                     "values (100, 'product_type', 'Matériel de prélèvement', 'materiel_prel', 40, 'materiel_prel')")
     except:
         print("ERROR insert into sigl_dico_data a product_type (materiel_prel)")
 
     try:
         conn.execute("insert into sigl_dico_data "
                      "(id_owner, dico_name, label, short_label, position, code) "
-                     "values (100, 'product_type', 'Matériel microscopie', 'materiel_micro', 60, 'materiel_micro' )")
+                     "values (100, 'product_type', 'Matériel microscopie', 'materiel_micro', 50, 'materiel_micro' )")
     except:
         print("ERROR insert into sigl_dico_data a product_type (materiel_micro)")
 
@@ -233,6 +226,14 @@ def upgrade():
                      "values (100, 'product_conserv', '-18°C', 'congel', 30, 'congel' )")
     except:
         print("ERROR insert into sigl_dico_data a product_conserv (congel)")
+
+    # ADD default storage path
+    try:
+        conn.execute("insert into sigl_storage_data "
+                     "(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) "
+                     "values (100, NOW(), NOW(), 100, '/space/applisdata/labbook/storage' )")
+    except:
+        print("ERROR insert into sigl_storage_data a default storage path")
 
 
 def downgrade():

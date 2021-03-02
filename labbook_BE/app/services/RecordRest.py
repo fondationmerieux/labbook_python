@@ -187,21 +187,6 @@ class RecordDet(Resource):
             res = {}
             res['id_rec'] = ret
 
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : RecordDet ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_02_data_group
-            ret = Record.insertRecordGroup(id_data=res['id_rec'],
-                                           id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : RecordDet ERROR  insert group')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
             # insert in sigl_pj_sequence num_dos_jour
             pattern = num_dos_jour[:8] + "%04d"  # make pattern for table
             end_num = int(num_dos_jour[8:])      # get end number without 0
@@ -382,6 +367,26 @@ class RecordStat(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordStat')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class RecordListAna(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec):
+        l_datas = Record.getRecordListAnalysis(id_rec)
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'RecordListAna ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in data.items():
+                if data[key] is None:
+                    datza[key] = ''
+
+        self.log.info(Logs.fileline() + ' : RecordListAna id_rec=' + str(id_rec))
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)
 
 
 class RecordNbEmer(Resource):

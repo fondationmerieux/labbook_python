@@ -1,0 +1,199 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Détails produit") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Détails produit") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row mt-3">
+                    <label for="prd_name" class="col-form-label col-3 text-right mr-1">{{ _("Nom du produit") }}</label>
+                    <div>
+                        <input id="prd_name" type="text" value="{{ args['stock_product']['prd_name'] }}" maxlength="50" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-3 text-right mr-1">{{ _("Type produit") }}</label>
+                    <div>
+                        <select name="prd_type" id="prd_type" class="form-control">
+                            <option value="0" selected="selected"></option>
+                            {% for prd_type in ihm['product_type'] %}
+                            <option value="{{ prd_type['id_data'] }}" {% if args['stock_product']['prd_type'] == prd_type['id_data'] %} selected {% endif %}>{{ prd_type['label'] }}</option>
+                            {% endfor %}
+                        </select>       
+                    </div>
+                </div> 
+
+                <div class="form-group row">
+                    <label for="prd_nb_by_pack" class="col-form-label col-3 text-right mt-2">{{ _("Nombre par paquet") }}</label>
+                    <div class="">					
+                        <input type="number" name="prd_nb_by_pack" id="prd_nb_by_pack" value="{{ args['stock_product']['prd_nb_by_pack'] }}" min="1" step="1" class="form-control">			
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="search_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Fournisseur") }}</label>
+                    <div>
+                        <select id="search_supplier" style="width:400px"></select>
+                        <button type="button" onclick="new_supplier();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                        <span class="ml-2">{{ args['stock_product']['supplier_name'] }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="prd_ref_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Réference fournisseur") }}</label>
+                    <div>
+                        <input id="prd_ref_supplier" type="text" value="{{ args['stock_product']['prd_ref_supplier'] }}" maxlength="50" class="form-control" style="">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-3 text-right mr-1">{{ _("Conservation") }}</label>
+                    <div>
+                        <select name="prd_conserv" id="prd_conserv" class="form-control">
+                            <option value="0" selected="selected"></option>
+                            {% for prd_conserv in ihm['product_conserv'] %}
+                            <option value="{{ prd_conserv['id_data'] }}" {% if args['stock_product']['prd_conserv'] == prd_conserv['id_data'] %} selected {% endif %}>{{ prd_conserv['label'] }}</option>
+                            {% endfor %}
+                        </select>       
+                    </div>
+                </div>
+                
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+
+$("#search_supplier").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/supplier/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_supplier").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_supplier").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+function save_item()
+{
+var id_owner     = {{ session['user_id_group']|safe }} ;
+var prd_ser      = {{ args['prd_ser']|safe }}   ;
+var name         = $("#prd_name").val()         ;
+var type         = $("#prd_type").val()         ;
+var nb_by_pack   = $("#prd_nb_by_pack").val()   ;
+var supplier     = $("#search_supplier").val()  ;
+var ref_supplier = $("#prd_ref_supplier").val() ;
+var conserv      = $("#prd_conserv").val()      ;
+
+var msg = "" ;
+
+    if (name == "")
+    msg += "{{ _("Veuillez saisir un nom de produit.") }}\n" ;
+
+    if (nb_by_pack <= 0)
+    msg += "{{ _("Veuillez saisir un nombre de produit par paquet supérieur à 0.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+    if (prd_ser > 0)
+    {
+        if (supplier < 1)
+        supplier = {% if args['stock_product']['prd_supplier'] %}{{ args['stock_product']['prd_supplier']|safe }}{% else %}0{% endif %} ;
+    }
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"prd_ser":' + prd_ser + ', ' +
+              '"prd_name":"' + name + '", ' +
+              '"prd_type":' + type + ', ' +
+              '"prd_nb_by_pack":' + nb_by_pack + ', ' +
+              '"prd_supplier":' + supplier + ', ' +
+              '"prd_ref_supplier":"' + ref_supplier + '", ' +
+              '"prd_conserv":' + conserv + '}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param)) ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/stock/product/det/" + prd_ser,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           console.log("DEBUG data=" + JSON.stringify(data)) ;
+
+           tempAlert("Enregistrement réussi", 2000) ;
+
+           window.history.back() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function new_supplier()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-supplier/0";
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

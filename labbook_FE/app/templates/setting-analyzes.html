@@ -106,10 +106,10 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="import_analyzes();" id="btn_import" value="{{ _("Importer le référentiel") }}" class="btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="export_analyzes();" id="btn_export" value="{{ _("Exporter le référentiel") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
-                    <input type="button" onclick="export_list();" id="btn_list" value="{{ _("Enregistrer la liste") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
-                    <input type="button" onclick="add_analysis();" id="btn_add" value="{{ _("Ajouter une analyse") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="import_analyzes();" id="btn_import" value="{{ _("Importer le référentiel") }}" class="btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="export_analyzes();" id="btn_export" value="{{ _("Exporter le référentiel") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="export_list();" id="btn_list" value="{{ _("Enregistrer la liste") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="add_analysis();" id="btn_add" value="{{ _("Ajouter une analyse") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
                 </div>
             </div>
 

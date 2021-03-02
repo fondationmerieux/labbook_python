@@ -181,7 +181,7 @@ let total_remain = 0 ;
     if (data_today.length <= 0)
     {
     res = '<tr>' +
-          '<td colspan="5">' +
+          '<td colspan="6">' +
           '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
     }
     else
@@ -248,7 +248,11 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
         if (month < 10) month = '0' + month ;
 
-        today = today.getFullYear() + '' + month + '' + today.getDate() ;
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
 
         let filename = "report_today_" + today + ".csv" ;
 

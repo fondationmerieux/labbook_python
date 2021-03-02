@@ -80,7 +80,9 @@
                     <div>					
                         <select id="spe" name="title" class="form-control">
                             <option value="0" selected></option>  
-                            <!-- TODO load spe -->  
+                            {% for spe in ihm['spe_list'] %}
+                            <option value="{{ spe['id_data'] }}" {% if args['specialite'] == spe['id_data'] %} selected {% endif %}>{{ spe['label'] }}</option>
+                            {% endfor %}
                         </select>			
                     </div>
                 </div>

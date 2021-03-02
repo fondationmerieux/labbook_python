@@ -123,9 +123,9 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
-                    <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
                     <input type="button" onclick="add_user();" id="btn_add" value="{{ _("Ajouter un utilisateur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>

@@ -42,7 +42,7 @@ class Product:
 
         # take lastest product of blood, stool, urine and other for each record
         req = 'select if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(rec.num_dos_mois from 7), rec.num_dos_mois), '\
-              'if(param_num_dos.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '\
+              'if(param_num_dos.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '\
               'date_format(rec.date_dos, %s) as rec_date, '\
               'pat.nom as lastname, pat.nom_jf as maidenname, pat.prenom as firstname, '\
               'MAX(CASE when (prod.type_prel in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142) and prod.statut in (8, 9, 10)) '\
@@ -127,23 +127,6 @@ class Product:
             return False
 
     @staticmethod
-    def insertProductReqGroup(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_01_data_group '
-                           '(id_data, id_group) '
-                           'values '
-                           '(%(id_data)s, %(id_group)s )', params)
-
-            Product.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            Product.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
     def deleteProductByRecord(id_rec):
         try:
             cursor = DB.cursor()
@@ -161,12 +144,6 @@ class Product:
                                'select id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
                                'commentaire, lieu_prel, lieu_prel_plus, localisation '
                                'from sigl_01_data '
-                               'where id_data=%s', (product['id_data'],))
-
-                cursor.execute('delete from sigl_01_data_group_mode '
-                               'where id_data_group=%s', (product['id_data'],))
-
-                cursor.execute('delete from sigl_01_data_group '
                                'where id_data=%s', (product['id_data'],))
 
                 cursor.execute('delete from sigl_01_data '

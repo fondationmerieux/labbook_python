@@ -44,7 +44,7 @@ let ret = "" ;
 return ret ;
 }
 
-function status_rec( id_stat )
+function status_rec( id_stat, with_det )
 {
 let res = '' ;
 

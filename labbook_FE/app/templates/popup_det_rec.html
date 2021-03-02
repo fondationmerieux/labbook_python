@@ -1,15 +1,15 @@
 <!-- Popup history -->
-<div class="modal fade" id="dial-history" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog  w-75 mw-100" style="background:#EEE;">
+<div class="modal fade" id="dial-det-rec" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  w-75 mw-75" style="background:#EEE;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ _("Historique") }}</h5>
+                <h5 class="modal-title">{{ _("Liste des analyses du dossier") }} <span id="det_rec_num"><span></h5>
                 <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">x</button>
             </div>
             <div class="modal-body">  
                 <div>
-                    <table>
-                        <tbody id="tbody_histo"></tbody>
+                    <table class="table table-striped table-lbk">
+                        <tbody id="tbody_det_rec"></tbody>
                     </table>
                 </div>
             </div>

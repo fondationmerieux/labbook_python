@@ -176,7 +176,7 @@ class Report:
         req = ('select rec.id_data, rec.date_dos as rec_date, ref.nom as analysis, dict_fam.label as family, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
-               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 5), rec.num_dos_an)) as rec_num, '
+               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
                'group_concat(distinct dict.label order by dict.position asc separator ", ") as vld_type '
                'from `sigl_10_data` as vld '
                'inner join sigl_dico_data AS dict on dict.id_data=vld.type_validation '

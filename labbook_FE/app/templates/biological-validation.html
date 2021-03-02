@@ -13,7 +13,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
-                <span>{{ _("Validation biologique") }}</span>
+                <span>{{ _("Validation biologique") }}</span><span id="info_pat_title"></span>
             </h2>
             <form autocomplete="off">
                 <div class="row ml-3 mt-1">
@@ -103,27 +103,29 @@
             <!-- Popup cancel -->
             <div class="modal fade" id="dial-cancel" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
-                    <div class="modal-header">
-                        <h5>{{ _("Commentaire et motif annulation") }}</h5>
-                        <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label class="control-label col-lg-2" style=""><span data-field="reason">{{ _("Motif") }} </span></label>
-                            <select id="cancel_reason">
-                                {% for reason in ihm['cancel_reason'] %}
-                                <option value="{{ reason['id_data'] }}">{{ _(reason['label']) }}</option>
-                                {% endfor %}
-                            </select>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Commentaire et motif annulation") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-3" style=""><span data-field="comment">{{ _("Commentaire") }}</span></label>
-                            <textarea id="cancel_comm" rows="3" cols="80" class="form-control"></textarea>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="control-label col-2" style=""><span data-field="reason">{{ _("Motif") }} </span></label>
+                                <select id="cancel_reason">
+                                    {% for reason in ihm['cancel_reason'] %}
+                                    <option value="{{ reason['id_data'] }}">{{ _(reason['label']) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-3" style=""><span data-field="comment">{{ _("Commentaire") }}</span></label>
+                                <textarea id="cancel_comm" rows="3" cols="80" class="form-control"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_cancel_res" id="btn_cancel_res" value="{{ _("Ajouter") }}"  onclick="send_cancel();">
-                        <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_cancel_res" id="btn_cancel_res" value="{{ _("Ajouter") }}"  onclick="send_cancel();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -675,6 +677,28 @@ $("#div_add_analysis").show() ;
         } ) ;
 } ) ;
 
+function info_pat_title()
+{
+{% if args['patient'] %}
+let info = "" ;
+
+info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_patient'] }} {% endif %}" +
+           "{% if args['patient']['code'] %}{{ args['patient']['code'] }}{% endif %} - " +
+           "{% if args['patient']['prenom'] %}{{ args['patient']['prenom'] }} {% endif %}" +
+           "{% if args['patient']['nom'] %}{{ args['patient']['nom'] }} {% endif %}" +
+           "{% if args['patient']['nom_jf'] %}{{ args['patient']['nom_jf'] }} {% endif %} - " +
+           "{% if args['patient']['ddn'] %}{{ _("Né(e) le") }} {{ args['patient']['ddn'] }} {% endif %}" +
+           "{% if args['patient']['age'] %} - {{ args['patient']['age'] }} {% endif %}" +
+           "{% if args['patient']['unite'] == 1037 %}{{ _("années") }}" +
+           "{% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}" +
+           "{% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}" +
+           "{% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}" ;
+
+    if (info != "")
+    $("#info_pat_title").text(info) ;
+{% endif %}
+}
+
 function return_home()
 {
     if ( window.confirm("Attention vous allez quitter ce dossier sans l'avoir validé.") )
@@ -715,6 +739,8 @@ display_result( 1 ) ;
 fill_bio_list() ;
 
 load_data() ;
+
+info_pat_title() ;
 } ) ;
 </script>
 {% endblock %}

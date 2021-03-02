@@ -682,21 +682,16 @@ class Pdf:
 
         page_body = """<div style="width:1000px;">""" + html_part + """</div>"""
 
-        page_footer = """\
-                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                    <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page 1/1</span></div>
-                </div>"""
-
-        page_footer += '</div>'
+        page_footer = '</div>'
 
         form_cont = page_header + page_body + page_footer
 
         options = {'--encoding': 'utf-8',
                    'page-size': 'A4',
-                   'margin-top': '0.00mm',
-                   'margin-right': '0.00mm',
-                   'margin-bottom': '0.00mm',
-                   'margin-left': '0.00mm',
+                   'margin-top': '0mm',
+                   'margin-right': '0mm',
+                   'margin-bottom': '0mm',
+                   'margin-left': '0mm',
                    'no-outline': None}
 
         pdfkit.from_string(form_cont, path + filename, options=options)

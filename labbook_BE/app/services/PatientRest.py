@@ -237,21 +237,6 @@ class PatientDet(Resource):
             res = {}
             res['id_pat'] = ret
 
-            # Get id_group of lab with id_group of user
-            id_group_lab = User.getUserGroupParent(args['id_owner'])
-
-            if not id_group_lab:
-                self.log.error(Logs.fileline() + ' : PatientDet ERROR group not found')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # insert sigl_03_data_group
-            ret = Patient.insertPatientGroup(id_data=res['id_pat'],
-                                             id_group=id_group_lab['id_group_parent'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : PatientDet ERROR  insert group')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
         self.log.info(Logs.fileline() + ' : TRACE PatientDet id_pat=' + str(res['id_pat']))
         return compose_ret(res, Constants.cst_content_type_json)
 

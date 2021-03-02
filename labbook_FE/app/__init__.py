@@ -420,7 +420,19 @@ def setting_det_user(user_id=0):
     session['current_page'] = 'setting-det-user/' + str(user_id)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load sections
+    try:
+        url = session['server_int'] + '/services/dict/det/sections'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['sections'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url) 
 
     if user_id > 0:
         # Load user details
@@ -436,7 +448,7 @@ def setting_det_user(user_id=0):
 
     json_data['user_id'] = user_id
 
-    return render_template('setting-det-user.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-det-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : setting new password for a user
@@ -560,6 +572,20 @@ def setting_analyzes():
         log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
 
     return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : import analyzes list
+@app.route('/import-analyzes')
+def import_analyzes():
+    log.info(Logs.fileline() + ' : TRACE import analyzes')
+
+    session['current_page'] = 'import-analyzes'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    return render_template('import-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : details analysis
@@ -1199,7 +1225,19 @@ def det_doctor(id_doctor=0):
     session['current_page'] = 'det-doctor/' + str(id_doctor)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load speciality
+    try:
+        url = session['server_int'] + '/services/dict/det/specialite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['spe_list'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests speciality list failed, err=%s , url=%s', err, url)
 
     if id_doctor > 0:
         # Load doctor details
@@ -1215,7 +1253,7 @@ def det_doctor(id_doctor=0):
 
     json_data['id_doctor'] = id_doctor
 
-    return render_template('det-doctor.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-doctor.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : new external request
@@ -2207,18 +2245,6 @@ def report_dhis2():
 
     json_data = {}
 
-    """
-    try:
-        url = session['server_int'] + '/services/setting/pref/list'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_data['pref_list'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
-        """
-
     return render_template('report-dhis2.html', args=json_data, rand=random.randint(0, 999))
 
 
@@ -2574,7 +2600,19 @@ def det_staff(user_id=0):
     session['current_page'] = 'det-staff/' + str(user_id)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load sections
+    try:
+        url = session['server_int'] + '/services/dict/det/sections'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['sections'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     # Load User CV files
     try:
@@ -2636,7 +2674,7 @@ def det_staff(user_id=0):
 
     json_data['user_id'] = user_id
 
-    return render_template('det-staff.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-staff.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list equipment
@@ -2670,7 +2708,19 @@ def det_equipment(id_eqp=0):
     session['current_page'] = 'det-equipment/' + str(id_eqp)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load sections
+    try:
+        url = session['server_int'] + '/services/dict/det/sections'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['sections'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     if id_eqp > 0:
         # Load Equipment Photo files
@@ -2752,7 +2802,7 @@ def det_equipment(id_eqp=0):
 
     json_data['id_eqp'] = id_eqp
 
-    return render_template('det-equipment.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-equipment.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : suppliers list
@@ -2837,9 +2887,21 @@ def det_manual(id_manual=0):
     session['current_page'] = 'det-manual/' + str(id_manual)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
     json_data['manual_det'] = []
+
+    # Load sections
+    try:
+        url = session['server_int'] + '/services/dict/det/sections'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['sections'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     if id_manual > 0:
         # Load Manual files
@@ -2866,7 +2928,7 @@ def det_manual(id_manual=0):
 
     json_data['id_manual'] = id_manual
 
-    return render_template('det-manual.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-manual.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list procedure
@@ -2900,9 +2962,21 @@ def det_procedure(id_procedure=0):
     session['current_page'] = 'det-procedure/' + str(id_procedure)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
     json_data['procedure'] = []
+
+    # Load sections
+    try:
+        url = session['server_int'] + '/services/dict/det/sections'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['sections'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     if id_procedure > 0:
         # Load procdeure files
@@ -2929,18 +3003,41 @@ def det_procedure(id_procedure=0):
 
     json_data['id_procedure'] = id_procedure
 
-    return render_template('det-procedure.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-procedure.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list stock
 @app.route('/list-stock')
-def manage_stock():
+def list_stock():
     log.info(Logs.fileline() + ' : TRACE list stock')
 
     session['current_page'] = 'list-stock'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load product_type
+    try:
+        url = session['server_int'] + '/services/dict/det/product_type'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_type'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product type failed, err=%s , url=%s', err, url)
+
+    # Load product_status
+    try:
+        url = session['server_int'] + '/services/dict/det/product_status'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_status'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)
 
     try:
         url = session['server_int'] + '/services/quality/stock/list'
@@ -2952,15 +3049,15 @@ def manage_stock():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-stock.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
-# Page : details a stock product
-@app.route('/det-stock-product/<int:id_product>')
-def det_stock_product(id_product=0):
-    log.info(Logs.fileline() + ' : TRACE setting det stock product=' + str(id_product))
+# Page : details of a product
+@app.route('/det-new-product/<int:prd_ser>')
+def det_new_product(prd_ser=0):
+    log.info(Logs.fileline() + ' : TRACE setting det new product=' + str(prd_ser))
 
-    session['current_page'] = 'det-stock-product/' + str(id_product)
+    session['current_page'] = 'det-new-product/' + str(prd_ser)
     session.modified = True
 
     json_ihm  = {}
@@ -2990,10 +3087,10 @@ def det_stock_product(id_product=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests product conserv failed, err=%s , url=%s', err, url)
 
-    if id_product > 0:
+    if prd_ser > 0:
         # Load stock product details
         try:
-            url = session['server_int'] + '/services/quality/stock/product/det/' + str(id_product)
+            url = session['server_int'] + '/services/quality/stock/product/det/' + str(prd_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3002,7 +3099,48 @@ def det_stock_product(id_product=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
 
-    json_data['id_product'] = id_product
+    json_data['prd_ser'] = prd_ser
+
+    return render_template('det-new-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : details a stock product
+@app.route('/det-stock-product/<int:prs_ser>')
+def det_stock_product(prs_ser=0):
+    log.info(Logs.fileline() + ' : TRACE setting det stock product=' + str(prs_ser))
+
+    session['current_page'] = 'det-stock-product/' + str(prs_ser)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['stock_product'] = []
+
+    # Load product_status
+    try:
+        url = session['server_int'] + '/services/dict/det/product_status'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_status'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)
+
+    if prs_ser > 0:
+        # Load stock product details
+        try:
+            url = session['server_int'] + '/services/quality/stock/product/det/' + str(prs_ser)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['stock_product'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
+
+    json_data['prs_ser'] = prs_ser
 
     return render_template('det-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
