@@ -2,7 +2,7 @@
     <div class="container-fluid nav-cust-cont">
         <ul class="navbar-nav">
             <!-- Dropdown Admin -->
-            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+            {% if session['user_role'] == 'B' or 
                   session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
                   session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
@@ -33,7 +33,7 @@
             {% endif %}
 
             <!-- Dropdown Report -->
-            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+            {% if session['user_role'] == 'B' or 
                   session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
                   session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
