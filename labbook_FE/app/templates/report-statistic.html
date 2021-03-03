@@ -73,15 +73,15 @@
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div>
 
-        </div><!-- close main -->
+        </div>
     </div>
 </div><!-- close content -->
 {% endblock %}
 
 {% block add_script %}
 <script>
-var data_stats = {{ args['stat']|safe }} ;
-var data_interval = {{ ihm['age_interval']|safe }} ;
+var data_stats = {% if args['stat'] %}{{ args['stat']|safe }}{% else %}[]{% endif %} ;
+var data_interval = {% if ihm['age_interval'] %}{{ ihm['age_interval']|safe }}{% else %}[]{% endif %} ;
 
 function filter_data()
 {
@@ -109,14 +109,14 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             console.log("ERROR report stat") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;

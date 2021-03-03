@@ -235,6 +235,77 @@ def upgrade():
     except:
         print("ERROR insert into sigl_storage_data a default storage path")
 
+    # ADD NEW USER ROLE
+    try:
+        conn.execute("insert into sigl_pj_role "
+                     "(name, label) "
+                     "values ('technicien avance', 'Technicien avancé')")
+    except:
+        print("ERROR insert into sigl_pj_role (technicien avance)")
+
+    try:
+        conn.execute("insert into sigl_dico_data "
+                     "(id_owner, dico_name, label, short_label, position, code) "
+                     "values (100, 'profil', 'Technicien avancé', 'tech_avance', 22, 'tech_avance' )")
+    except:
+        print("ERROR insert into sigl_dico_data new profil (Technicien avancé)")
+
+    try:
+        conn.execute("insert into sigl_pj_role "
+                     "(name, label) "
+                     "values ('technicien qualiticien', 'Technicien qualiticien')")
+    except:
+        print("ERROR insert into sigl_pj_role (technicien qualiticien)")
+
+    try:
+        conn.execute("insert into sigl_dico_data "
+                     "(id_owner, dico_name, label, short_label, position, code) "
+                     "values (100, 'profil', 'Technicien qualiticien', 'tech_qualiticien', 24, 'tech_qualiticien' )")
+    except:
+        print("ERROR insert into sigl_dico_data new profil (Technicien qualiticien)")
+
+    try:
+        conn.execute("insert into sigl_pj_role "
+                     "(name, label) "
+                     "values ('secretaire avancee', 'secrétaire avancée')")
+    except:
+        print("ERROR insert into sigl_pj_role (secretaire avancee)")
+
+    try:
+        conn.execute("insert into sigl_dico_data "
+                     "(id_owner, dico_name, label, short_label, position, code) "
+                     "values (100, 'profil', 'Secretaire avancée', 'secr_avance', 12, 'secr_avance' )")
+    except:
+        print("ERROR insert into sigl_dico_data new profil (Secretaire avancée)")
+
+    try:
+        conn.execute("insert into sigl_pj_role "
+                     "(name, label) "
+                     "values ('qualiticien', 'Qualiticien')")
+    except:
+        print("ERROR insert into sigl_pj_role (qualiticien)")
+
+    try:
+        conn.execute("insert into sigl_dico_data "
+                     "(id_owner, dico_name, label, short_label, position, code) "
+                     "values (100, 'profil', 'Qualiticien', 'qualiticien', 14, 'qualiticien' )")
+    except:
+        print("ERROR insert into sigl_dico_data new profil (Qualiticien)")
+
+    try:
+        conn.execute("insert into sigl_pj_role "
+                     "(name, label) "
+                     "values ('prescripteur', 'Prescripteur')")
+    except:
+        print("ERROR insert into sigl_pj_role (prescripteur)")
+
+    try:
+        conn.execute("insert into sigl_dico_data "
+                     "(id_owner, dico_name, label, short_label, position, code) "
+                     "values (100, 'profil', 'Prescripteur', 'prescripteur', 16, 'prescripteur' )")
+    except:
+        print("ERROR insert into sigl_dico_data new profil (Prescripteur)")
+
 
 def downgrade():
     pass

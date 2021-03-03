@@ -64,15 +64,21 @@ class Quality:
     def getEquipment(id_item):
         cursor = DB.cursor()
 
-        req = ('select id_data, nom as name, nom_fabriquant as maker, modele as model, fonction as funct, '
-               'localisation as location, section, fournisseur_id as supplier, no_serie as serial, '
-               'no_inventaire as inventory, responsable_id as incharge, manuel_id as manual, '
-               'procedures_id as procedure, pannes as breakdown, maintenance_preventive as maintenance, '
-               'certif_etalonnage as calibration, contrat_maintenance as contract, date_fin_contrat as date_endcontract, '
-               'date_reception as date_receipt, date_achat as date_buy, date_acquisition as date_procur, '
-               'date_mise_en_service as date_onduty, date_de_retrait as date_revoc, commentaires as comment '
-               'from sigl_equipement_data '
-               'where id_data=%s')
+        req = ('select eqp.id_data, eqp.nom as name, eqp.nom_fabriquant as maker, eqp.modele as model, eqp.fonction as funct, '
+               'eqp.localisation as location, eqp.section, eqp.fournisseur_id as supplier_id, eqp.no_serie as serial, '
+               'eqp.no_inventaire as inventory, eqp.responsable_id as incharge_id, eqp.manuel_id as manual_id, '
+               'eqp.procedures_id as procedur_id, eqp.pannes as breakdown, eqp.maintenance_preventive as maintenance, '
+               'eqp.certif_etalonnage as calibration, eqp.contrat_maintenance as contract, eqp.date_fin_contrat as date_endcontract, '
+               'eqp.date_reception as date_receipt, eqp.date_achat as date_buy, eqp.date_acquisition as date_procur, '
+               'eqp.date_mise_en_service as date_onduty, eqp.date_de_retrait as date_revoc, eqp.commentaires as comment, '
+               'u1.fournisseur_nom as supplier, u3.titre as manual, u4.titre as procedur, '
+               'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as incharge '
+               'from sigl_equipement_data as eqp '
+               'left join sigl_fournisseurs_data as u1 on u1.id_data=eqp.fournisseur_id '
+               'left join sigl_user_data as u2 on u2.id_data=eqp.responsable_id '
+               'left join sigl_manuels_data as u3 on u3.id_data=eqp.manuel_id '
+               'left join sigl_procedures_data as u4 on u4.id_data=eqp.procedures_id '
+               'where eqp.id_data=%s')
 
         cursor.execute(req, (id_item,))
 
@@ -92,7 +98,7 @@ class Quality:
                            'values '
                            '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(name)s, %(maker)s, %(model)s, '
                            '%(funct)s, %(location)s, %(section)s, %(supplier)s, %(serial)s, %(inventory)s, '
-                           '%(incharge)s, %(manual)s, %(procedure)s, %(breakdown)s, %(maintenance)s, '
+                           '%(incharge)s, %(manual)s, %(procedur)s, %(breakdown)s, %(maintenance)s, '
                            '%(calibration)s, %(contract)s, %(date_endcontract)s, %(date_receipt)s, %(date_buy)s, '
                            '%(date_procur)s, %(date_onduty)s, %(date_revoc)s, %(comment)s)', params)
 
@@ -112,7 +118,7 @@ class Quality:
                            'set nom=%(name)s, nom_fabriquant=%(maker)s, '
                            'modele=%(model)s, fonction=%(funct)s, localisation=%(location)s, section=%(section)s, '
                            'fournisseur_id=%(supplier)s, no_serie=%(serial)s, no_inventaire=%(inventory)s, '
-                           'responsable_id=%(incharge)s, manuel_id=%(manual)s, procedures_id=%(procedure)s, '
+                           'responsable_id=%(incharge)s, manuel_id=%(manual)s, procedures_id=%(procedur)s, '
                            'pannes=%(breakdown)s, maintenance_preventive=%(maintenance)s, '
                            'certif_etalonnage=%(calibration)s, contrat_maintenance=%(contract)s, '
                            'date_fin_contrat=%(date_endcontract)s, date_reception=%(date_receipt)s, '
@@ -146,7 +152,7 @@ class Quality:
     def getStockList(args):
         cursor = DB.cursor()
 
-        filter_cond = ' prd_name is not null '
+        filter_cond = ' prs_ser > 0 '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -160,11 +166,13 @@ class Quality:
             if args['prod_name']:
                 filter_cond += ' and prd_name LIKE "%' + args['prod_name'] + '%" '
 
-            if args['prod_type']:
+            if 'prod_type' in args and args['prod_type'] > 0:
                 filter_cond += ' and prd_type = ' + str(args['prod_type'])
 
-            if args['prod_stat']:
+            if 'prod_stat' in args and args['prod_stat'] > 0:
                 filter_cond += ' and prs_status = ' + str(args['prod_stat'])
+
+        Quality.log.error(Logs.fileline() + ' : filter_cond=' + filter_cond)
 
         req = ('select prs_ser, prd_name, sum(prs_nb_pack) as prs_nb_pack, prd_nb_by_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, '
@@ -178,9 +186,9 @@ class Quality:
                'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
                'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
                'left join sigl_dico_data as dict3 on dict3.id_data=prs_status '
-               'where ' + filter_cond +
+               'where ' + filter_cond + ' ' +
                'group by prd_name, prd_nb_by_pack '
-               'order by expir_date asc, prd_name asc')
+               'order by expir_date asc, prd_name asc ' + limit)
 
         cursor.execute(req)
 
@@ -229,7 +237,7 @@ class Quality:
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, '
-               'sup.fournisseur_nom as supplier_name ' 
+               'sup.fournisseur_nom as supplier_name '
                'from product_details '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'where prd_ser=%s')
@@ -446,6 +454,25 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
+    def getManualSearch(text):
+        cursor = DB.cursor()
+
+        l_words = text.split(' ')
+
+        cond = '(titre is not NULL or reference is not NULL) '
+
+        for word in l_words:
+            cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
+
+        req = 'select CONCAT(titre," / ref: ",reference) as field_value, id_data '\
+              'from sigl_manuels_data '\
+              'where ' + cond + ' order by field_value asc limit 1000'
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getManual(id_item):
         cursor = DB.cursor()
 
@@ -610,6 +637,25 @@ class Quality:
                'left join sigl_user_data as u3 on u3.id_data=proc.approbateur_id '
                'left join sigl_dico_data as dict on dict.id_data=proc.section '
                'order by title asc ')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getProcedureSearch(text):
+        cursor = DB.cursor()
+
+        l_words = text.split(' ')
+
+        cond = '(titre is not NULL or reference is not NULL) '
+
+        for word in l_words:
+            cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
+
+        req = 'select CONCAT(titre," / ref: ",reference) as field_value, id_data '\
+              'from sigl_procedures_data '\
+              'where ' + cond + ' order by field_value asc limit 1000'
 
         cursor.execute(req)
 

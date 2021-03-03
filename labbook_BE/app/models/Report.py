@@ -114,9 +114,9 @@ class Report:
 
         req = 'select doctor.nom as lastname, doctor.prenom as firstname, count(*) as nb_rec '\
               'from sigl_02_data as rec '\
-              'left join sigl_08_data as doctor on doctor.id_data = rec.med_prescripteur '\
+              'inner join sigl_08_data as doctor on doctor.id_data = rec.med_prescripteur '\
               'where (date_prescription between %s and %s) '\
-              'group by doctor.id_data asc order by lastname asc, firstname asc'
+              'group by doctor.id_data order by lastname asc, firstname asc'
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -129,7 +129,7 @@ class Report:
         req = 'select preleveur as sampler, count(*) as nb_prod '\
               'from sigl_01_data '\
               'where (date_prel between %s and %s) '\
-              'group by sampler asc order by sampler asc'
+              'group by sampler order by sampler asc'
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -143,7 +143,7 @@ class Report:
               'from sigl_01_data as prod '\
               'inner join sigl_dico_data as dict on dict.id_data = prod.type_prel '\
               'where (prod.date_prel between %s and %s) '\
-              'group by product asc order by product asc'
+              'group by product order by product asc'
 
         cursor.execute(req, (date_beg, date_end,))
 

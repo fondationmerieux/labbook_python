@@ -190,7 +190,37 @@ background-color : #00ADEE;
 color            : #FFF;
 }
 
+.page-title-TA
+{
+background-color : #00ADEE;
+color            : #FFF;
+}
+
+.page-title-TQ
+{
+background-color : #00ADEE;
+color            : #FFF;
+}
+
 .page-title-S
+{
+background-color : #F08739;
+color            : #FFF;
+}
+
+.page-title-SA
+{
+background-color : #F08739;
+color            : #FFF;
+}
+
+.page-title-Q
+{
+background-color : #F08739;
+color            : #FFF;
+}
+
+.page-title-P
 {
 background-color : #F08739;
 color            : #FFF;
@@ -234,7 +264,32 @@ background-image : url("/static/img/bio-profile.png")
 background-image : url("/static/img/tech-profile.png")
 }
 
+.role-TA
+{
+background-image : url("/static/img/tech-profile.png")
+}
+
+.role-TQ
+{
+background-image : url("/static/img/tech-profile.png")
+}
+
 .role-S
+{
+background-image : url("/static/img/sec-profile.png")
+}
+
+.role-SA
+{
+background-image : url("/static/img/sec-profile.png")
+}
+
+.role-Q
+{
+background-image : url("/static/img/sec-profile.png")
+}
+
+.role-P
 {
 background-image : url("/static/img/sec-profile.png")
 }
@@ -257,7 +312,37 @@ background-color : #71B330 ;
 color            : #FFF;
 }
 
+.btn-TA
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-TQ
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
 .btn-S
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-SA
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-Q
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-P
 {
 background-color : #71B330 ;
 color            : #FFF;
@@ -327,6 +412,36 @@ color           : #024C71 !important;
 text-decoration : none !important; 
 }
 
+.role-TA a 
+{
+display    : block;
+background : #29B4ED !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-TA a:hover 
+{
+background      : #1499D2 !important;
+color           : #024C71 !important;
+text-decoration : none !important; 
+}
+
+.role-TQ a 
+{
+display    : block;
+background : #29B4ED !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-TQ a:hover 
+{
+background      : #1499D2 !important;
+color           : #024C71 !important;
+text-decoration : none !important; 
+}
+
 .role-S a 
 {
 display    : block;
@@ -337,6 +452,54 @@ color      : #FFF !important;
 }
 
 .role-S a:hover 
+{
+background      : #D36818 !important;
+color           : #FFF !important;
+text-decoration : none !important; 
+}
+
+.role-SA a 
+{
+display    : block;
+width      : 100px;
+background : #EF8839 !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-SA a:hover 
+{
+background      : #D36818 !important;
+color           : #FFF !important;
+text-decoration : none !important; 
+}
+
+.role-Q a 
+{
+display    : block;
+width      : 100px;
+background : #EF8839 !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-Q a:hover 
+{
+background      : #D36818 !important;
+color           : #FFF !important;
+text-decoration : none !important; 
+}
+
+.role-P a 
+{
+display    : block;
+width      : 100px;
+background : #EF8839 !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-P a:hover 
 {
 background      : #D36818 !important;
 color           : #FFF !important;
@@ -539,6 +702,32 @@ background-color : #0486A4 !important;
 color            : #FFF !important;
 }
 
+.nav-TA a
+{
+background-color : #00ADEE !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-TA a:hover
+{
+background-color : #0486A4 !important;
+color            : #FFF !important;
+}
+
+.nav-TQ a
+{
+background-color : #00ADEE !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-TQ a:hover
+{
+background-color : #0486A4 !important;
+color            : #FFF !important;
+}
+
 .nav-S a
 {
 background-color : #F08739 !important;
@@ -547,6 +736,45 @@ border           : 0;
 }
 
 .nav-S a:hover
+{
+background-color : #DD7512 !important;
+color            : #FFF !important;
+}
+
+.nav-SA a
+{
+background-color : #F08739 !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-SA a:hover
+{
+background-color : #DD7512 !important;
+color            : #FFF !important;
+}
+
+.nav-Q a
+{
+background-color : #F08739 !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-Q a:hover
+{
+background-color : #DD7512 !important;
+color            : #FFF !important;
+}
+
+.nav-P a
+{
+background-color : #F08739 !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-P a:hover
 {
 background-color : #DD7512 !important;
 color            : #FFF !important;

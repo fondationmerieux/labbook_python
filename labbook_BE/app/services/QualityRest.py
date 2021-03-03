@@ -258,7 +258,7 @@ class EquipmentDet(Resource):
         if 'id_owner' not in args or 'id_item' not in args or 'name' not in args or 'maker' not in args or 'model' not in args or \
            'funct' not in args or 'location' not in args or 'section' not in args or 'supplier' not in args or \
            'serial' not in args or 'inventory' not in args or 'incharge' not in args or 'manual' not in args or  \
-           'procedure' not in args or 'breakdown' not in args or 'maintenance' not in args or 'calibration' not in args or \
+           'procedur' not in args or 'breakdown' not in args or 'maintenance' not in args or 'calibration' not in args or \
            'contract' not in args or 'date_endcontract' not in args or 'date_receipt' not in args or 'date_buy' not in args or \
            'date_procur' not in args or 'date_onduty' not in args or 'date_revoc' not in args or 'comment' not in args:
             self.log.error(Logs.fileline() + ' : EquipmentDet ERROR args missing')
@@ -279,7 +279,7 @@ class EquipmentDet(Resource):
                                           inventory=args['inventory'],
                                           incharge=args['incharge'],
                                           manual=args['manual'],
-                                          procedure=args['procedure'],
+                                          procedur=args['procedur'],
                                           breakdown=args['breakdown'],
                                           maintenance=args['maintenance'],
                                           calibration=args['calibration'],
@@ -310,7 +310,7 @@ class EquipmentDet(Resource):
                                           inventory=args['inventory'],
                                           incharge=args['incharge'],
                                           manual=args['manual'],
-                                          procedure=args['procedure'],
+                                          procedur=args['procedur'],
                                           breakdown=args['breakdown'],
                                           maintenance=args['maintenance'],
                                           calibration=args['calibration'],
@@ -565,6 +565,21 @@ class ManualExport(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE ExportManual')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class ManualSearch(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_items = Quality.getManualSearch(args['term'])
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE ManualSearch not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE ManualSearch')
+        return compose_ret(l_items, Constants.cst_content_type_json)
 
 
 class MeetingList(Resource):
@@ -894,6 +909,21 @@ class ProcedureExport(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class ProcedureSearch(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_items = Quality.getProcedureSearch(args['term'])
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE ProcedureSearch not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE ProcedureSearch')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
 class StaffExport(Resource):
     log = logging.getLogger('log_services')
 
@@ -979,7 +1009,7 @@ class StockList(Resource):
             else:
                 stock['prs_nb_pack'] = 0
 
-            stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'] )
+            stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'])
 
             if stock['receipt_date']:
                 stock['receipt_date'] = datetime.strftime(stock['receipt_date'], '%Y-%m-%d')
@@ -1157,21 +1187,39 @@ class StockExport(Resource):
             for d in dict_data:
                 data = []
 
+                if d['pru_nb_pack']:
+                    d['pru_nb_pack'] = float(d['pru_nb_pack'])
+                else:
+                    d['pru_nb_pack'] = 0
+
+                if d['prs_nb_pack']:
+                    d['prs_nb_pack'] = float(d['prs_nb_pack']) - float(d['pru_nb_pack'])
+                else:
+                    d['prs_nb_pack'] = 0
+
+                d['nb_total'] = float(d['prs_nb_pack'] * d['prd_nb_by_pack'])
+
+                if d['receipt_date']:
+                    d['receipt_date'] = datetime.strftime(d['receipt_date'], '%Y-%m-%d')
+
+                if d['expir_date']:
+                    d['expir_date'] = datetime.strftime(d['expir_date'], '%Y-%m-%d')
+
                 data.append(d['prs_ser'])
-                data.append(d['name'])
-                data.append(d['nb_pack'])
-                data.append(d['nb_by_pack'])
+                data.append(d['prd_name'])
+                data.append(d['prs_nb_pack'])
+                data.append(d['prd_nb_by_pack'])
                 data.append(d['nb_total'])
                 data.append(d['type'])
                 data.append(d['receipt_date'])
-                data.append(d['rack'])
+                data.append(d['prs_rack'])
                 data.append(d['conserv'])
                 data.append(d['expir_date'])
-                data.append(d['batch_num'])
+                data.append(d['prs_batch_num'])
                 data.append(d['status'])
                 data.append(d['supplier'])
-                data.append(d['buy_price'])
-                data.append(d['sell_price'])
+                data.append(d['prs_buy_price'])
+                data.append(d['prs_sell_price'])
 
                 l_data.append(data)
 

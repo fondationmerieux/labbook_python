@@ -38,9 +38,9 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="prod_status" class="col-form-label col-5 text-right mt-2">{{ _("Etat du produit") }}</label>
+                            <label for="prod_stat" class="col-form-label col-5 text-right mt-2">{{ _("Etat du produit") }}</label>
                             <div>
-                                <select name="prod_status" id="prod_status" class="form-control">
+                                <select name="prod_stat" id="prod_stat" class="form-control">
                                     <option value="0" selected="selected"></option>
                                     {% for prod_status in ihm['product_status'] %}
                                     <option value="{{ prod_status['id_data'] }}">{{ prod_status['label'] }}</option>
@@ -111,7 +111,7 @@
                 <div class="float-right">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
                     <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}disabled{% endif %}>
                 </div>
             </div>
 
@@ -156,11 +156,11 @@ function filter_items()
 {
 let prod_name = $("#name").val()      ;
 let prod_type = $("#prod_type").val() ;
-let prod_stat = $("#prod_status").val()  ;
+let prod_stat = $("#prod_stat").val() ;
 
 let param = '{ "prod_name":"' + prod_name + '", ' +
-              '"prod_type":"' + prod_type + '", ' +
-              '"prod_stat":"' + prod_stat + '"}' ;
+              '"prod_type":' + prod_type + ', ' +
+              '"prod_stat":' + prod_stat + '}' ;
 
     // popup wait
     $( "#dial-wait" ).modal( "show" ) ;
@@ -356,8 +356,8 @@ let prod_type = $("#prod_type").val() ;
 let prod_stat = $("#prod_stat").val() ;
 
 let param = '{ "prod_name":"' + prod_name + '", ' +
-              '"prod_type":"' + prod_type  + '", ' +
-              '"prod_stat":"' + prod_stat  + '"}' ;
+              '"prod_type":' + prod_type  + ', ' +
+              '"prod_stat":' + prod_stat  + '}' ;
 
     // popup wait
     $( "#dial_wait" ).modal( "show" ) ;

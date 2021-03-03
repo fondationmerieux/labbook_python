@@ -925,11 +925,17 @@ var bed_num       = $("#bed_num").val() ;
 var bill_num      = "" ;
 var stat          = 181 ;
 
-    if (id_med == null)
+    if (id_med == null || id_med == "")
     id_med = 0 ;
 
     if (parcel == null)
     parcel = 5 ;
+
+    if (data_analysis.length < 1)
+    {
+    alert( "{{ _("Veuillez sélectionner au moins une analyse") }}" ) ;
+    return false ;
+    }
 
     if (per_discount == "")
     per_discount = 0 ;
@@ -969,6 +975,7 @@ var stat          = 181 ;
         return false ;
         }
 
+        /* ISSUE 1 17/10/2020
         if (data_products[i].dateReceipt == "")
         {
         alert( "{{ _("Veuillez renseigner toutes les dates de réception") }}" ) ;
@@ -980,6 +987,7 @@ var stat          = 181 ;
         alert( "{{ _("Veuillez renseigner toutes les identités des préleveurs") }}" ) ;
         return false ;
         }
+        */
     }
 
 var param = '{ "id_owner":' + id_group + ', ' +

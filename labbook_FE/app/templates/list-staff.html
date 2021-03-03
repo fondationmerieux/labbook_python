@@ -115,6 +115,8 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
+    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+          session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
@@ -122,6 +124,9 @@ $("#list_items_total").html( data_len ) ;
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-staff/' + data_items[i].id_data + '">{{ _("Editer") }}</a>' ;
         
     menu_act += '</div></ul></nav>' ;
+    {% else %}
+    let menu_act = '' ;
+    {% endif %}
 
     res += '<tr><td hidden><div>' + data_items[i].id_data + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +

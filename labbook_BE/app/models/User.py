@@ -212,6 +212,12 @@ class User:
         # Biologist  = 2
         # Technician = 3
         # Secretary  = 4
+        # Advanced technician = 5
+        # quality technician  = 6
+        # Advanced secretary  = 7
+        # Qualitician         = 8
+        # Prescriber          = 9
+
         cursor = DB.cursor()
 
         req = 'select g.id_group, g.name, g.id_axis, '\
@@ -242,8 +248,8 @@ class User:
             if args['login']:
                 filter_cond += ' and username LIKE "%' + args['login'] + '%" '
 
-            if args['group'] and args['group'] > 0:
-                filter_cond += ' and group=' + args['group'] + ' '
+            if 'group' in args and args['group'] > 0:
+                filter_cond += ' and group=' + str(args['group']) + ' '
 
             if args['firstname']:
                 filter_cond += ' and firstname LIKE "%' + args['firstname'] + '%" '
@@ -251,7 +257,7 @@ class User:
             if args['lastname']:
                 filter_cond += ' and lastname LIKE "%' + args['lastname'] + '%" '
 
-            if args['status'] and args['status'] > 0:
+            if 'status' in args and args['status'] > 0:
                 stat = 'status=' + str(args['status'])
 
                 # Keep compatibility with old delete user where status = 31
@@ -262,8 +268,8 @@ class User:
             else:
                 filter_cond += ' and status=29 '  # keep only activated users by default
 
-            if args['role'] and args['role'] > 0:
-                filter_cond += ' and role=' + args['role'] + ' '
+            if 'role' in args and args['role'] > 0:
+                filter_cond += ' and r.id_role=' + str(args['role']) + ' '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = 'select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '\

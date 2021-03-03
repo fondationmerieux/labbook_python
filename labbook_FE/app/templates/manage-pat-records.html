@@ -15,14 +15,24 @@
 
             <form autocomplete="off">
                 <div class="panel-heading row">
-                    <h3 class="panel-title">{{ _("Chercher un patient") }}</h3>
+                    <h3 class="panel-title">{{ _("Fusionner 2 dossiers patients") }}</h3>
                 </div>
                 <div class="panel-patient row mt-3">
                     <div class="col-10">
                         <div class="form-group row">
-                            <label for="search_patient" class="col-form-label col-4 text-right optional">{{ _("Nom, prénom ou code du patient") }}</label>
+                            <label for="search_patient1" class="col-form-label col-4 text-right optional">{{ _("Nom, prénom ou code du patient") }}</label>
                             <div>
-                                <select id="search_patient" style="width:450px"></select>
+                                <select id="search_patient1" style="width:450px"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-patient row mt-3">
+                    <div class="col-10">
+                        <div class="form-group row">
+                            <label for="search_patient2" class="col-form-label col-4 text-right optional">{{ _("Nom, prénom ou code du patient") }}</label>
+                            <div>
+                                <select id="search_patient2" style="width:450px"></select>
                             </div>
                         </div>
                     </div>
@@ -33,7 +43,7 @@
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
                         <div class="float-right mr-2">
-                            <input type="button" onclick="new_pat();" id="new_patient" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Nouveau patient") }}">
+                            <input type="button" onclick="save_request();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Fusionner") }}" disabled>
                         </div>
                     </div>
                 </div>
@@ -45,11 +55,14 @@
 
 {% block add_script %}
 <script>
-$("#search_patient").select2(
+var id_pat1 = 0 ;
+var id_pat2 = 0 ;
+
+$("#search_patient1").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
-    multiple: true,
+    multiple: false,
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
@@ -57,7 +70,35 @@ $("#search_patient").select2(
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        term: $("#search_patient").text(),
+        term: $("#search_patient1").text(),
+        data: function (params) {
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
+        }
+    },
+    templateResult: formatRepo
+} ) ;
+
+$("#search_patient2").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/patient/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_patient2").text(),
         data: function (params) {
             return JSON.stringify({
                 term: params.term
@@ -110,15 +151,19 @@ var display = $(
 return display ;
 }
 
-$("#search_patient").on("select2:select", function (e) 
+$("#search_patient1").on("select2:select", function (e) 
 {
-  var id_pat = $(e.currentTarget).val();
-  window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-ext/Y/" + id_pat ;
+id_pat1 = $(e.currentTarget).val();
 } ) ;
 
-function new_pat() 
+$("#search_patient2").on("select2:select", function (e) 
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/0";
+id_pat2 = $(e.currentTarget).val();
+} ) ;
+
+function save_request()
+{
+console.log("TODO save_request") ;
 }
 
 function return_home()

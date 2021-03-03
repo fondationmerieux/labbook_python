@@ -168,8 +168,23 @@ def get_user_data(login):
             elif session['user_id_role'] == 3:
                 session['user_role'] = 'T'  # Technician
                 session.modified = True
+            elif session['user_id_role'] == 5:
+                session['user_role'] = 'TA'  # Advanced Technician
+                session.modified = True
+            elif session['user_id_role'] == 6:
+                session['user_role'] = 'TQ'  # Qualitician Technician
+                session.modified = True
             elif session['user_id_role'] == 4:
                 session['user_role'] = 'S'  # Secretary
+                session.modified = True
+            elif session['user_id_role'] == 7:
+                session['user_role'] = 'SA'  # Advacnced Secretary
+                session.modified = True
+            elif session['user_id_role'] == 8:
+                session['user_role'] = 'Q'  # Qualitician
+                session.modified = True
+            elif session['user_id_role'] == 9:
+                session['user_role'] = 'P'  # Prescriber
                 session.modified = True
             else:
                 log.error(Logs.fileline() + ' : TRACE unknow role')
@@ -432,7 +447,7 @@ def setting_det_user(user_id=0):
             json_ihm['sections'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url) 
+        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     if user_id > 0:
         # Load user details
@@ -2156,13 +2171,12 @@ def report_epidemio(date_beg='', date_end=''):
     json_ihm  = {}
     json_data = {}
 
-    # load data for statistic
+    # load data for epiodemio
     try:
         if not date_beg:
             date_beg = date.today()
             date_beg = date_beg - timedelta(days=31)
             date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
-            # date_beg = "2019-01-01"  # TEST
 
         if not date_end:
             date_end = date.today()
@@ -2710,6 +2724,8 @@ def det_equipment(id_eqp=0):
 
     json_ihm  = {}
     json_data = {}
+
+    json_data['det_eqp'] = {}
 
     # Load sections
     try:
@@ -3433,6 +3449,8 @@ def upload_logo():
 
         filepath  = '/space/www/apps/labbook/current/resources/images/'
         logo_name = 'logo.png'
+
+        log.info(Logs.fileline())
 
         try:
             f.save(os.path.join(filepath, logo_name))

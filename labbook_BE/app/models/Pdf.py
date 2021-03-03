@@ -56,12 +56,12 @@ class Pdf:
                 Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfBarcode no sticker setting found')
                 return False
 
-            sts_width         = args['sts_width'] + 2   # +2 for border 1px
-            sts_height        = args['sts_height'] + 2  # +2 for border 1px
-            sts_margin_top    = max(args['sts_margin_top'], 10)     # impossible to reduce margin under 10 !
-            sts_margin_bottom = max(args['sts_margin_bottom'], 10)  # impossible to reduce margin under 10 !
-            sts_margin_left   = max(args['sts_margin_left'], 10)    # impossible to reduce margin under 10 !
-            sts_margin_right  = max(args['sts_margin_right'], 10)   # impossible to reduce margin under 10 !
+            sts_width         = setting['sts_width'] + 2   # +2 for border 1px
+            sts_height        = setting['sts_height'] + 2  # +2 for border 1px
+            sts_margin_top    = max(setting['sts_margin_top'], 10)     # impossible to reduce margin under 10 !
+            sts_margin_bottom = max(setting['sts_margin_bottom'], 10)  # impossible to reduce margin under 10 !
+            sts_margin_left   = max(setting['sts_margin_left'], 10)    # impossible to reduce margin under 10 !
+            sts_margin_right  = max(setting['sts_margin_right'], 10)   # impossible to reduce margin under 10 !
 
         # Generate barcode code39 type
         try:
@@ -880,7 +880,7 @@ class Pdf:
             fax = ''
 
         if head_email['value']:
-            email = """<span class="ft_header">EMAIL : """ + str(head_email['value']) + """&nbsp;</span></div>"""
+            email = """<span class="ft_header">EMAIL : """ + str(head_email['value']) + """&nbsp;</span>"""
         else:
             email = ''
 

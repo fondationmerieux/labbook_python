@@ -8,7 +8,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Changement de logo pour les documents") }}</span></h2>
             <div class="row justify-content-center" id="pref-logo">
                 <label>{{ _("Logo actuel") }} :</label>
@@ -40,7 +40,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-logo/",
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-logo",
         dataType: 'json',
         contentType: false,
         processData: false,

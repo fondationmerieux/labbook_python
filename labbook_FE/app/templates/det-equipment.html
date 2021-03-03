@@ -17,19 +17,19 @@
                 <div class="form-group row mt-3">
                     <label for="name" class="col-form-label col-3 text-right mt-2">{{ _("Nom de l'équipement") }}</label>
                     <div>					
-                        <input type="text" name="name" id="name" value="{{ args['name'] }}" class="form-control">			
+                        <input type="text" name="name" id="name" value="{{ args['det_eqp']['name'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row mt-3">
                     <label for="maker" class="col-form-label col-3 text-right mt-2">{{ _("Nom du fabricant") }}</label>
                     <div>					
-                        <input type="text" name="maker" id="maker" value="{{ args['maker'] }}" class="form-control">			
+                        <input type="text" name="maker" id="maker" value="{{ args['det_eqp']['maker'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="model" class="col-form-label col-3 text-right mr-1">{{ _("modèle") }}</label>
                     <div>					
-                        <input type="text" name="model" id="model" value="{{ args['model'] }}" class="form-control">			
+                        <input type="text" name="model" id="model" value="{{ args['det_eqp']['model'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
@@ -49,22 +49,22 @@
                 <div class="form-group row">
                     <label for="funct" class="col-form-label col-3 text-right mr-1">{{ _("Fonction") }}</label>
                     <div>					
-                        <input type="text" name="funct" id="funct" value="{{ args['funct'] }}" class="form-control">			
+                        <input type="text" name="funct" id="funct" value="{{ args['det_eqp']['funct'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="location" class="col-form-label col-3 text-right mr-1">{{ _("Localisation") }}</label>
                     <div>					
-                        <input type="text" name="location" id="location" value="{{ args['location'] }}" class="form-control">			
+                        <input type="text" name="location" id="location" value="{{ args['det_eqp']['location'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-control">
-                            <option value="0" {% if args['section'] == 0 %} selected {% endif %}></option>  
+                            <option value="0" {% if args['det_eqp']['section'] == 0 %} selected {% endif %}></option>  
                             {% for section in ihm['sections'] %}
-                            <option value="{{ section['id_data'] }}" {% if args['section'] == section['id_data'] %} selected {% endif %}>{{ section['label'] }}</option>
+                            <option value="{{ section['id_data'] }}" {% if args['det_eqp']['section'] == section['id_data'] %} selected {% endif %}>{{ section['label'] }}</option>
                             {% endfor %}
                         </select>			
                     </div>
@@ -73,42 +73,46 @@
                     <label for="search_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Fournisseur") }}</label>
                     <div>
                         <select id="search_supplier" style="width:450px"></select>
+                        <span class="ml-2">{{ args['det_eqp']['supplier'] }}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="serial" class="col-form-label col-3 text-right mr-1">{{ _("Numéro de série") }}</label>
                     <div>					
-                        <input type="text" name="serial" id="serial" value="{{ args['serial'] }}" class="form-control">			
+                        <input type="text" name="serial" id="serial" value="{{ args['det_eqp']['serial'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inventory" class="col-form-label col-3 text-right mr-1">{{ _("Numéro d'inventaire") }}</label>
                     <div>					
-                        <input type="text" name="inventory" id="inventory" value="{{ args['inventory'] }}" class="form-control">			
+                        <input type="text" name="inventory" id="inventory" value="{{ args['det_eqp']['inventory'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="search_incharge" class="col-form-label col-3 text-right mr-1">{{ _("Responsable") }}</label>
                     <div>
                         <select id="search_incharge" style="width:450px"></select>
+                        <span class="ml-2">{{ args['det_eqp']['incharge'] }}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="search_manual" class="col-form-label col-3 text-right mr-1">{{ _("Manuel") }}</label>
                     <div>
                         <select id="search_manual" style="width:450px"></select>
+                        <span class="ml-2">{{ args['det_eqp']['manual'] }}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="search_procedure" class="col-form-label col-3 text-right mr-1">{{ _("Procédure") }}</label>
                     <div>
                         <select id="search_procedure" style="width:450px"></select>
+                        <span class="ml-2">{{ args['det_eqp']['procedur'] }}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="breakdown" class="col-form-label col-3 text-right mt-2">{{ _("Liste des pannes et réparation") }}</label>
                     <div>					
-                        <textarea id="breakdown" name="breakdown" rows="4" cols="50" class="form-control">{{ args['breakdown'] }}</textarea>
+                        <textarea id="breakdown" name="breakdown" rows="4" cols="50" class="form-control">{{ args['det_eqp']['breakdown'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -127,7 +131,7 @@
                 <div class="form-group row">
                     <label for="maintenance" class="col-form-label col-3 text-right mt-2">{{ _("Maintenance préventive") }}</label>
                     <div>					
-                        <textarea id="maintenance" name="maintenance" rows="4" cols="50" class="form-control">{{ args['maintenance'] }}</textarea>
+                        <textarea id="maintenance" name="maintenance" rows="4" cols="50" class="form-control">{{ args['det_eqp']['maintenance'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -146,7 +150,7 @@
                 <div class="form-group row">
                     <label for="calibration" class="col-form-label col-3 text-right mr-1">{{ _("Certificat d'étalonnage") }}</label>
                     <div>					
-                        <input type="text" name="calibration" id="calibration" value="{{ args['calibration'] }}" class="form-control">			
+                        <input type="text" name="calibration" id="calibration" value="{{ args['det_eqp']['calibration'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
@@ -165,7 +169,7 @@
                 <div class="form-group row">
                     <label for="contract" class="col-form-label col-3 text-right mr-1">{{ _("Contrat de maintenance") }}</label>
                     <div>					
-                        <input type="text" name="contract" id="contract" value="{{ args['contract'] }}" class="form-control">			
+                        <input type="text" name="contract" id="contract" value="{{ args['det_eqp']['contract'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
@@ -184,7 +188,7 @@
                 <div class="form-group row">
                     <label for="date_endcontract" class="col-form-label col-3 text-right mt-2">{{ _("Date de fin de contrat de maintenance") }}</label>
                     <div>					
-                        <input id="date_endcontract" class="form-control" type="date" maxlength="10" size="10" value="{{ args['birth'] }}" name="date_endcontract" style="color: #888;">
+                        <input id="date_endcontract" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['birth'] }}" name="date_endcontract" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -205,37 +209,37 @@
                 <div class="form-group row">
                     <label for="date_receipt" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
                     <div>					
-                        <input id="date_receipt" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_receipt'] }}" name="date_receipt" style="color: #888;">
+                        <input id="date_receipt" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_receipt'] }}" name="date_receipt" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date_buy" class="col-form-label col-3 text-right mt-2">{{ _("Date d'achat") }}</label>
                     <div>					
-                        <input id="date_buy" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_buy'] }}" name="date_buy" style="color: #888;">
+                        <input id="date_buy" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_buy'] }}" name="date_buy" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date_procur" class="col-form-label col-3 text-right mt-2">{{ _("Date d'acquisition") }}</label>
                     <div>					
-                        <input id="date_procur" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_procur'] }}" name="date_procur" style="color: #888;">
+                        <input id="date_procur" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_procur'] }}" name="date_procur" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date_onduty" class="col-form-label col-3 text-right mt-2">{{ _("Date de mise en service") }}</label>
                     <div>					
-                        <input id="date_onduty" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_onduty'] }}" name="date_onduty" style="color: #888;">
+                        <input id="date_onduty" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_onduty'] }}" name="date_onduty" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date_revoc" class="col-form-label col-3 text-right mt-2">{{ _("Date de retrait du laboratoire") }}</label>
                     <div>					
-                        <input id="date_revoc" class="form-control" type="date" maxlength="10" size="10" value="{{ args['date_revoc'] }}" name="date_revoc" style="color: #888;">
+                        <input id="date_revoc" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_revoc'] }}" name="date_revoc" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaires") }}</label>
                     <div>					
-                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['det_eqp']['comment'] }}</textarea>
                     </div>
                 </div>
             </form>
@@ -425,7 +429,7 @@ var serial      = $("#serial").val()           ;
 var inventory   = $("#inventory").val()        ;
 var incharge    = $("#search_incharge").val()  ;
 var manual      = $("#search_manual").val()    ;
-var procedure   = $("#search_procedure").val() ;
+var procedur    = $("#search_procedure").val() ;
 var calibration = $("#calibration").val()      ;
 var contract    = $("#contract").val()         ;
 
@@ -449,8 +453,8 @@ var date_revoc       = $("#date_revoc").val()       ;
     if (manual == null)
     manual = 0;
 
-    if (procedure == null)
-    procedure = 0;
+    if (procedur == null)
+    procedur = 0;
 
 var msg = "" ;
 
@@ -476,7 +480,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"inventory":"' + inventory + '", ' +
               '"incharge":' + incharge + ', ' +
               '"manual":' + manual + ', ' +
-              '"procedure":' + procedure + ', ' +
+              '"procedur":' + procedur + ', ' +
               '"calibration":"' + calibration + '", ' +
               '"contract":"' + contract + '", ' +
               '"date_endcontract":"' + date_endcontract + '", ' +

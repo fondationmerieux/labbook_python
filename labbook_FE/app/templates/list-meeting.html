@@ -53,7 +53,7 @@
                 </div>
                 <div class="float-right">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une réunion") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une réunion") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}disabled{% endif %}>
                 </div>
             </div>
 

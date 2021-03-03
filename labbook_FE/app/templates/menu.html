@@ -2,7 +2,9 @@
     <div class="container-fluid nav-cust-cont">
         <ul class="navbar-nav">
             <!-- Dropdown Admin -->
-            {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
+            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
+                  session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-admin">
                   <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-toggle="dropdown">
@@ -12,14 +14,14 @@
                     {% if session['user_role'] == 'B' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B">{{ _("Liste de travail biologiste") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'T' %}
+                    {% if session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-ext">{{ _("Nouvelle demande externe") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-int">{{ _("Nouvelle demande hospitalisé") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' %}
+                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products">{{ _("Etat des prélèvements en cours") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
@@ -31,7 +33,9 @@
             {% endif %}
 
             <!-- Dropdown Report -->
-            {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
+            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
+                  session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-report">
                   <a class="nav-link dropdown-toggle report" href="#" id="navbardrop" data-toggle="dropdown">
@@ -52,7 +56,9 @@
             {% endif %}
 
             <!-- Dropdown Setting -->
-            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %}
+            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
+                  session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
                   <a class="nav-link dropdown-toggle setting" href="#" id="navbardrop" data-toggle="dropdown">
@@ -88,7 +94,9 @@
             {% endif %}
 
             <!-- Dropdown Quality -->
-            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'S'  %} 
+            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or 
+                  session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q' %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
                   <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-toggle="dropdown">

@@ -32,9 +32,9 @@
                     </div>
                 </div>
                 <div class="col-6 text-center">
-                    <input type="button" onclick="run_keygen();" id="btn_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_keygen();" id="btn_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
                 </div>
             </form>
 
@@ -43,7 +43,7 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
                 </div>
             </div>
 

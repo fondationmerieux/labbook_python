@@ -84,12 +84,13 @@
                     </tbody>
                 </table>
             </form>
-            <div class="row">
-                <div class="offset-1">
-                    <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }}">
+
+            <div class="clearfix mb-5 mt-3">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Quitter") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div style="margin-left:20px;">
-                    <input type="button" onclick="return_home();" id="btn_exit" value="{{ _("Quitter") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-right">
+                    <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
         </div><!-- close main -->
