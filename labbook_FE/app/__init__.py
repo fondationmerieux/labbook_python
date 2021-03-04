@@ -101,11 +101,24 @@ def get_locale():
 
 def get_init_var():
     # init external server
-    root = request.url_root
+    root    = request.url_root
+    headers = request.headers
     log.info(Logs.fileline() + ' : URL : %s', root)
 
     if root.endswith('/'):
         root = root[:-1]
+
+    # HTTPS TREATMENT
+    # X-Forwarded-Proto
+    if 'X-Forwarded-Proto' in headers and headers['X-Forwarded-Proto'] == 'https':
+        log.info(Logs.fileline() + ' : headers X-Forwarded-Proto https')
+        # replace http by https (lost in redirection)
+        prefixe_http  = 'http://'
+        prefixe_https = 'https://'
+
+        if root.startsWith(prefixe_http):
+            root = root[len(prefixe_http):]
+            root = prefixe_https + root
 
     session['server_ext'] = root
     session.modified = True
