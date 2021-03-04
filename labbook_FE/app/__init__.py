@@ -116,7 +116,7 @@ def get_init_var():
         prefixe_http  = 'http://'
         prefixe_https = 'https://'
 
-        if root.startsWith(prefixe_http):
+        if root.startswith(prefixe_http):
             root = root[len(prefixe_http):]
             root = prefixe_https + root
 
