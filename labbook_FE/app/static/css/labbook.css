@@ -216,13 +216,13 @@ color            : #FFF;
 
 .page-title-Q
 {
-background-color : #D73773;
+background-color : #E23176;
 color            : #FFF;
 }
 
 .page-title-P
 {
-background-color : #956632;
+background-color : #996633;
 color            : #FFF;
 }
 
@@ -478,7 +478,7 @@ text-decoration : none !important;
 {
 display    : block;
 width      : 100px;
-background : #D73773 !important;
+background : #E23176 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
 }
@@ -494,7 +494,7 @@ text-decoration : none !important;
 {
 display    : block;
 width      : 100px;
-background : #956632 !important;
+background : #996633 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
 }
@@ -756,7 +756,7 @@ color            : #FFF !important;
 
 .nav-Q a
 {
-background-color : #D73773 !important;
+background-color : #E23176 !important;
 color            : #FFF; !important
 border           : 0;
 }
@@ -769,7 +769,7 @@ color            : #FFF !important;
 
 .nav-P a
 {
-background-color : #956632 !important;
+background-color : #996633 !important;
 color            : #FFF; !important
 border           : 0;
 }
