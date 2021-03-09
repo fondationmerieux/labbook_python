@@ -17,13 +17,13 @@
                 <div class="panel-filter row mt-3">
                     <div class="col-12">
                         <div class="form-group row">
-                            <label for="name" class="col-form-label col-3 text-right mt-1 optional">{{ _("Désignation de l'acte") }}</label>
+                            <label for="name" class="col-form-label col-3 text-right mt-1">{{ _("Désignation de l'acte") }}</label>
                             <div>					
                                 <input type="text" name="name" id="name" value="" class="form-control">			
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="type_ana" class="col-form-label col-3 text-right mt-1 optional">{{ _("Famille d'analyse") }}</label>
+                            <label for="type_ana" class="col-form-label col-3 text-right mt-1">{{ _("Famille d'analyse") }}</label>
                             <div>
                                 <select name="type_ana" id="type_ana" class="form-control">
                                     <option value="0" selected="selected"></option>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="sample" class="col-form-label col-3 text-right mt-1 optional">{{ _("Type de prélèvement") }}</label>
+                            <label for="sample" class="col-form-label col-3 text-right mt-1">{{ _("Type de prélèvement") }}</label>
                             <div>					
                                 <select name="type_prod" id="type_prod" class="form-control">
                                     <option value="0" selected="selected"></option>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="status" class="col-form-label col-3 text-right mt-1 optional">{{ _("Analyse active") }}</label>
+                            <label for="status" class="col-form-label col-3 text-right mt-1">{{ _("Analyse active") }}</label>
                             <div>					
                                 <select id="status" name="status" class="form-control">
                                     <!--<option value="0"></option>-->
@@ -70,7 +70,7 @@
             <div>
                 <span><a class="link" id="first_analysis" onclick="display_analysis(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_analysis" onclick="display_analysis(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_analysis" onclick="display_analysis(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_analysis" onclick="display_analysis(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -96,7 +96,7 @@
             <div>
                 <span><a class="link" id="first_analysis" onclick="display_analysis(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_analysis" onclick="display_analysis(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_analysis" onclick="display_analysis(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_analysis" onclick="display_analysis(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -113,8 +113,8 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -167,7 +167,7 @@ let param = '{ "name":"' + name + '", ' +
                 }, 1000) ;
 
             console.log("ERROR analysis list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste des analyses") }}") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
     } ) ;
 }
@@ -260,14 +260,12 @@ var id_owner = {{ session['user_id_group']|safe}} ;
             data: param,
             success: function(ret)
             {
-            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR POST analysis status") ;
-            alert("{{ _("Erreur lors du changement de statut de l'analyse") }}") ;
+            alert("{{ _("Erreur lors du changement de statut") }}") ;
             }
         } ) ;
     }

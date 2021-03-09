@@ -86,7 +86,6 @@
                         <input type="number" name="prs_sell_price" id="prs_sell_price" value="{{ args['stock_product']['prs_sell_price'] }}" min="0" step="0.01" class="form-control">			
                     </div>
                 </div>
-
             </form>
             
             <div class="my-2 clearfix">
@@ -191,10 +190,6 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           console.log("DEBUG data=" + JSON.stringify(data)) ;
-
-           tempAlert("Enregistrement réussi", 2000) ;
-
            window.history.back() ;
            },
        error: function(data)

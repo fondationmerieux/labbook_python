@@ -83,6 +83,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <div id="tempAnchor"></div>
             </form>
 
             <div class="clearfix mb-5 mt-3">
@@ -93,9 +94,9 @@
                     <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-        </div><!-- close main -->
-    </div><!-- close inner -->
-</div><!-- close content -->
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block add_script %}
@@ -152,7 +153,7 @@ console.log("DEBUG param="+JSON.stringify(param));
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 1000) ;
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
            },
        error: function(data)
            {

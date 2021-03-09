@@ -85,7 +85,7 @@
             <div>
                 <span><a class="link" id="first_user" onclick="display_user(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_user" onclick="display_user(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_user" onclick="display_user(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_user" onclick="display_user(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -113,7 +113,7 @@
             <div>
                 <span><a class="link" id="first_user" onclick="display_user(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_user" onclick="display_user(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_user" onclick="display_user(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_user" onclick="display_user(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -189,7 +189,7 @@ let param = '{ "login":"' + login + '", ' +
                  }, 1000) ;
 
             console.log("ERROR user list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste des utilisateurs") }}") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
     } ) ;
 }
@@ -288,14 +288,12 @@ var id_owner = {{ session['user_id_group']|safe}} ;
             data: param,
             success: function(ret)
             {
-            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR POST user status") ;
-            alert("{{ _("Erreur lors du changement de statut de l'utilisateur") }}") ;
+            alert("{{ _("Erreur lors du changement de statut") }}") ;
             }
         } ) ;
     }

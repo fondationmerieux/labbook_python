@@ -453,7 +453,7 @@ let data_exist = false ;
 
     // check if this analysis is not already used
     if ( !$.isEmptyObject(data_analysis) )
-    $.map(data_analysis,function(val,key) { if(val != null && val.id_data == id_item) { data_exist = true; } } ) ;
+    $.map(data_analysis,function(val,key) { if( val != null && val.id_data == id_item) { data_exist = true; } } ) ;
 
     if (!data_exist)
     {

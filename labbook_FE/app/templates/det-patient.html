@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-5">
                         <div class="form-group row">
-                            <label for="ddn" class="col-form-label text-right optional mr-1">{{ _("Date de naissance") }}</label>
+                            <label for="ddn" class="col-form-label text-right mr-1">{{ _("Date de naissance") }}</label>
                             <div>
                                 <input id="ddn" class="form-control" type="date" maxlength="10" size="10" value="{{ args['ddn'] }}" placeholder="" style="color: #888;">
                                 <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
@@ -123,7 +123,7 @@
                     </div>
                     <div class="col">
                         <div class="form-group row">
-                            <label for="unite" class="col-form-label text-right optional mr-1">{{ _("unité") }}</label>
+                            <label for="unite" class="col-form-label text-right mr-1">{{ _("unité") }}</label>
                             <div>					
                                 <select name="unite" id="unite" class="form-control">
                                     <option value="1034" {% if args['unite'] == 1034 %} selected {% endif %}>{{ _("Jours") }}</option>
@@ -188,7 +188,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="clearfix row mb-4">
                     <div class="col-12">
                         <div class="float-left" style="margin-left:0px;">
                             <input type="button" onclick="return_back();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Retour") }}">
@@ -198,11 +198,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
             </form>
         </div>
     </div>
-</div><!-- ferme le corps -->
+</div><!-- close content -->
 {% endblock %}
 
 {% block add_script %}

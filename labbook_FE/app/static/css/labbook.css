@@ -216,13 +216,13 @@ color            : #FFF;
 
 .page-title-Q
 {
-background-color : #F08739;
+background-color : #D73773;
 color            : #FFF;
 }
 
 .page-title-P
 {
-background-color : #F08739;
+background-color : #956632;
 color            : #FFF;
 }
 
@@ -286,12 +286,12 @@ background-image : url("/static/img/sec-profile.png")
 
 .role-Q
 {
-background-image : url("/static/img/sec-profile.png")
+background-image : url("/static/img/qua-profile.png")
 }
 
 .role-P
 {
-background-image : url("/static/img/sec-profile.png")
+background-image : url("/static/img/pre-profile.png")
 }
 
 .btn-A
@@ -478,14 +478,14 @@ text-decoration : none !important;
 {
 display    : block;
 width      : 100px;
-background : #EF8839 !important;
+background : #D73773 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
 }
 
 .role-Q a:hover 
 {
-background      : #D36818 !important;
+background      : #AB2759 !important;
 color           : #FFF !important;
 text-decoration : none !important; 
 }
@@ -494,14 +494,14 @@ text-decoration : none !important;
 {
 display    : block;
 width      : 100px;
-background : #EF8839 !important;
+background : #956632 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
 }
 
 .role-P a:hover 
 {
-background      : #D36818 !important;
+background      : #623201 !important;
 color           : #FFF !important;
 text-decoration : none !important; 
 }
@@ -756,27 +756,27 @@ color            : #FFF !important;
 
 .nav-Q a
 {
-background-color : #F08739 !important;
+background-color : #D73773 !important;
 color            : #FFF; !important
 border           : 0;
 }
 
 .nav-Q a:hover
 {
-background-color : #DD7512 !important;
+background-color : #AB2759 !important;
 color            : #FFF !important;
 }
 
 .nav-P a
 {
-background-color : #F08739 !important;
+background-color : #956632 !important;
 color            : #FFF; !important
 border           : 0;
 }
 
 .nav-P a:hover
 {
-background-color : #DD7512 !important;
+background-color : #623201 !important;
 color            : #FFF !important;
 }
 
@@ -804,7 +804,7 @@ text-align     : center;
 background : transparent url(/static/img/admin-crea-profil.png) center top no-repeat;
 }
 
-.module .admin-gest-role 
+.module .admin-gest-oole 
 { 
 background : transparent url(/static/img/admin-gestion-role.png) center top no-repeat;
 }

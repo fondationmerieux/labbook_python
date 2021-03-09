@@ -17,7 +17,7 @@
                 <div class="panel-filter row mt-3">
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="name" class="col-form-label col-3 text-right mt-2 optional">{{ _("Nom") }}</label>
+                            <label for="name" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
                             <div>					
                                 <input type="text" name="name" id="name" value="" class="form-control cnx_trigger">			
                             </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="label" class="col-form-label col-3 text-right mt-2 optional">{{ _("Libellé") }}</label>
+                            <label for="label" class="col-form-label col-3 text-right mt-2">{{ _("Libellé") }}</label>
                             <div>					
                                 <input type="text" name="label" id="label" value="" class="form-control cnx_trigger">			
                             </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-4">
                        <div class="form-group row">
-                            <label for="code" class="col-form-label col-3 text-right mt-2 optional">{{ _("Code") }}</label>
+                            <label for="code" class="col-form-label col-3 text-right mt-2">{{ _("Code") }}</label>
                             <div>					
                                 <input type="text" name="code" id="code" value="" class="form-control cnx_trigger">			
                             </div>
@@ -54,7 +54,7 @@
             <div>
                 <span><a class="link" id="first_dict" onclick="display_dict(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_dict" onclick="display_dict(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_dict" onclick="display_dict(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_dict" onclick="display_dict(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -75,7 +75,7 @@
             <div>
                 <span><a class="link" id="first_dict" onclick="display_dict(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_dict" onclick="display_dict(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_dict" onclick="display_dict(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_dict" onclick="display_dict(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -89,8 +89,8 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -131,17 +131,17 @@ let param = '{ "name":"' + name + '", ' +
            setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
            },
        error: function(data)
            {
            setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
            console.log("ERROR dict list") ;
-           alert("{{ _("Une erreur est survenue lors de la récupération de la liste des dictionnaires") }}") ;
+           alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
            }
     } ) ;
 }
@@ -217,14 +217,12 @@ var id_owner = {{ session['user_id_group']|safe}} ;
             data: param,
             success: function(ret)
             {
-            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR POST dict det") ;
-            alert("{{ _("Erreur lors du changement de la suppresion du dictionnaire") }}") ;
+            alert("{{ _("Erreur lors de la suppression des données") }}") ;
             }
         } ) ;
     }

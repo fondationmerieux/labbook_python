@@ -48,7 +48,7 @@ let tr_det_rec = '' ;
             if (ret.status != 404)
             {
             console.log("ERROR GET record list analysis ret=" + ret.status);
-            alert("{{ _("Erreur lors la récupération des informations") }}") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
         }
     } ) ;

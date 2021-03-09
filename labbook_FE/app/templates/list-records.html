@@ -101,7 +101,7 @@
                                     <div style="">
                                         <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _("Premier") }}</a></span>
                                         <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _("Précédent") }}</a></span>
-                                        <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                                         <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _("Suivant") }}</a></span>
                                         <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _("Dernier") }}</a></span>
                                     </div>
@@ -143,7 +143,7 @@
                                     <div style="">
                                         <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _('Premier') }}</a></span>
                                         <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _('Précédent') }}</a></span>
-                                        <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                                         <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _('Suivant') }}</a></span>
                                         <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _('Dernier') }}</a></span>
                                     </div>
@@ -211,14 +211,14 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             console.log("ERROR record list") ;
             alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;

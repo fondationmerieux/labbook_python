@@ -14,7 +14,7 @@
                 <div class="panel-name row mt-3">
                     <div class="col-6">
                         <div class="form-group row">
-                            <label for="name" class="col-form-label col-4 text-right mt-2 optional">{{ _("Nom du dictionnaire") }}</label>
+                            <label for="name" class="col-form-label col-4 text-right mt-2">{{ _("Nom du dictionnaire") }}</label>
                             <div>					
                                 <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control" maxlength="20">			
                             </div>
@@ -73,19 +73,21 @@
                     </tbody>
                 </table>
             </form>
+
+            <div id="tempAnchor"></div>
             
             <div class="my-2">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}disabled{% endif %}>
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
                 </div>
             </div>
             <div class="clearfix"></div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -287,9 +289,7 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 2000) ;
-
-           //window.history.back() ;
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
            },
        error: function(data)
            {
@@ -335,7 +335,6 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
         data: param_form,
         success : function(response)
         {
-        console.log( "success upload ") ;
         location.reload() ;
         },
         error: function(response)

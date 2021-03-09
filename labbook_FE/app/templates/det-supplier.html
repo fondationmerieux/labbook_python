@@ -22,55 +22,55 @@
                     <h3 class="panel-title">{{ _("Contact") }}</h3>
                 </div>
                 <div class="form-group row mt-3">
-                    <label for="lastname" class="col-form-label col-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <label for="lastname" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
                     <div>					
                         <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row mt-3">
-                    <label for="firstname" class="col-form-label col-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <label for="firstname" class="col-form-label col-3 text-right mt-2">{{ _("Prénom") }}</label>
                     <div class="">					
                         <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="funct" class="col-form-label col-3 text-right optional mt-2">{{ _("Fonction") }}</label>
+                    <label for="funct" class="col-form-label col-3 text-right mt-2">{{ _("Fonction") }}</label>
                     <div>					
                         <input type="text" name="funct" id="funct" value="{{ args['funct'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="address" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <label for="address" class="col-form-label col-3 text-right mt-2">{{ _("Adresse") }}</label>
                     <div>					
                         <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['address'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="phone" class="col-form-label col-3 text-right optional mt-2">{{ _("Téléphone fixe") }}</label>
+                    <label for="phone" class="col-form-label col-3 text-right mt-2">{{ _("Téléphone fixe") }}</label>
                     <div>					
                         <input type="tel" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="mobile" class="col-form-label col-3 text-right optional mt-2">{{ _("Téléphone mobile") }}</label>
+                    <label for="mobile" class="col-form-label col-3 text-right mt-2">{{ _("Téléphone mobile") }}</label>
                     <div>					
                         <input type="tel" name="mobile" id="mobile" value="{{ args['mobile'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="fax" class="col-form-label col-3 text-right optional mt-2">{{ _("Fax") }}</label>
+                    <label for="fax" class="col-form-label col-3 text-right mt-2">{{ _("Fax") }}</label>
                     <div>					
                         <input type="tel" name="fax" id="fax" value="{{ args['fax'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <label for="email" class="col-form-label col-3 text-right mt-2">{{ _("Adresse email") }}</label>
                     <div>					
                         <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="comment" class="col-form-label col-3 text-right optional mt-2">{{ _("Commentaire") }}</label>
+                    <label for="comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaire") }}</label>
                     <div>					
                         <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
                     </div>
@@ -85,8 +85,8 @@
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -141,10 +141,6 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           console.log("DEBUG data=" + JSON.stringify(data)) ;
-
-           tempAlert("Enregistrement réussi", 2000) ;
-
            window.history.back() ;
            },
        error: function(data)

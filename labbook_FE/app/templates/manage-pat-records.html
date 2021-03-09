@@ -10,7 +10,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Gestion dossier patient") }}</span></h2>
 
             <form autocomplete="off">
@@ -20,7 +20,7 @@
                 <div class="panel-patient row mt-3">
                     <div class="col-10">
                         <div class="form-group row">
-                            <label for="search_patient1" class="col-form-label col-4 text-right optional">{{ _("Nom, prénom ou code du patient") }}</label>
+                            <label for="search_patient1" class="col-form-label col-5 text-right">{{ _("Nom, prénom ou code du patient") }} <b class="text-success ml-2">{{ _("A CONSERVER") }}</b></label>
                             <div>
                                 <select id="search_patient1" style="width:450px"></select>
                             </div>
@@ -30,27 +30,409 @@
                 <div class="panel-patient row mt-3">
                     <div class="col-10">
                         <div class="form-group row">
-                            <label for="search_patient2" class="col-form-label col-4 text-right optional">{{ _("Nom, prénom ou code du patient") }}</label>
+                            <label for="search_patient2" class="col-form-label col-5 text-right">{{ _("Nom, prénom ou code du patient") }} <b class="text-danger ml-2">{{ _("A SUPPRIMER") }}</b></label>
                             <div>
                                 <select id="search_patient2" style="width:450px"></select>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-3">
+                    <!-- PATIENT LEFT -->
+                    <div id="form_pat_1" class="col-6 d-none">
+                        <div class="panel-heading row">
+                            <h3 class="panel-title">{{ _("Identité patient") }} <b class="text-success ml-2">{{ _("A CONSERVER") }}</b></h3>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mx-3">{{ _("Anonyme") }}</label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="anonyme-4_1" name="anonyme_1" value="4">&nbsp;{{ _("Oui") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="anonyme-5_1" name="anonyme_1" value="5">&nbsp;{{ _("Non") }}</input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-4 text-right" style="">{{ _("Code laboratoire") }}</label>
+                                    <div>
+                                        <input id="code_patient_1" type="text" value="" maxlength="8" class="form-control" style="width:100px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="3">
+                                <div class="form-group form-inline">
+                                    <div class="pat-num" id="anon-code-ro">
+                                        <span id="code_1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right" style="">{{ _("Nom") }}</label>
+                                    <div>
+                                        <input id="nom_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right" style="">{{ _("Nom de jeune fille") }}</label>
+                                    <div>
+                                        <input id="nom_jf_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right" style="">{{ _("Prénom(s)") }}</label>
+                                    <div>
+                                        <input id="prenom_1" type="text" value="" maxlength="80" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Date de naissance") }}</label>
+                                    <div>
+                                        <input id="ddn_1" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                        <input id="date_current_1" type="hidden" maxlength="10" size="10" value="" name="date_current" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mr-3">{{ _("Date de naissance approximative") }}</label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="ddn_approx-4_1" name="ddn_approx_1" value="4">&nbsp;{{ _("Oui") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="ddn_approx-5_1" name="ddn_approx_1" value="5">&nbsp;{{ _("Non") }}</input>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group form-inline">
+                                    <span class="col-form-label text-center" style="">{{ _("ou") }}</span>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Age") }}</label>
+                                    <div>
+                                        <input name="age" id="age_1" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label text-right mr-1">{{ _("unité") }}</label>
+                                    <div>					
+                                        <select name="unite" id="unite_1" class="form-control">
+                                            <option value="1034" id="unite-1034_1">{{ _("Jours") }}</option>
+                                            <option value="1035" id="unite-1035_1">{{ _("Semaines") }}</option>
+                                            <option value="1036" id="unite-1036_1">{{ _("Mois") }}</option>
+                                            <option value="1037" id="unite-1037_1">{{ _("Années") }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mx-3">{{ _("Sexe") }}</label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="sexe-1_1" name="sexe_1" value="1">&nbsp;{{ _("Masculin") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="sexe-2_1" name="sexe_1" value="2">&nbsp;{{ _("Féminin") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="sexe-3_1" name="sexe_1" value="3">&nbsp;{{ _("Inconnu") }}</input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <div id="tempAnchor"></div>
+
+                        <div class="panel-heading row">
+                            <h3 class="panel-title">{{ _("Coordonnées") }}</h3>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Adresse") }}</label>
+                                    <div>
+                                        <textarea id="adresse_1" rows="4" cols="50" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Boite postale") }}</label>
+                                    <div>
+                                        <input id="bp_1" type="text" value="" maxlength="10" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Quartier / Secteur") }}</label>
+                                    <div>
+                                        <input id="quartier_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Code postal") }}</label>
+                                    <div>
+                                        <input id="cp_1" type="text" value="" maxlength="10" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Ville / Village") }}</label>
+                                    <div>
+                                        <input id="ville_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }}</label>
+                                    <div>
+                                        <input id="tel_1" type="text" value="" maxlength="20" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Profession") }}</label>
+                                    <div>
+                                        <input id="profession_1" type="text" value="" maxlength="50" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="float-right mr-2 mb-5">
+                            <input type="button" onclick="save_pat();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Modifier la fiche patient") }}"> 
+                        </div>
+                    </div>
+
+                    <!-- PATIENT RIGHT -->
+                    <div id="form_pat_2" class="col-6 d-none">
+                        <div class="panel-heading row">
+                            <h3 class="panel-title">{{ _("Identité patient") }} <b class="text-danger ml-2">{{ _("A SUPPRIMER") }}</b></h3>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mx-3">{{ _("Anonyme") }}</label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="anonyme-4_2" name="anonyme" value="4">&nbsp;{{ _("Oui") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="anonyme-5_2" name="anonyme" value="5">&nbsp;{{ _("Non") }}</input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-4 text-right" style="">{{ _("Code laboratoire") }}</label>
+                                    <div>
+                                        <input id="code_patient_2" type="text" value="" maxlength="8" class="form-control" style="width:100px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="3">
+                                <div class="form-group form-inline">
+                                    <div class="pat-num" id="anon-code-ro">
+                                        <span id="code_2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right" style="">{{ _("Nom") }}</label>
+                                    <div>
+                                        <input id="nom_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right" style="">{{ _("Nom de jeune fille") }}</label>
+                                    <div>
+                                        <input id="nom_jf_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right" style="">{{ _("Prénom(s)") }}</label>
+                                    <div>
+                                        <input id="prenom_2" type="text" value="" maxlength="80" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Date de naissance") }}</label>
+                                    <div>
+                                        <input id="ddn_2" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                        <input id="date_current_2" type="hidden" maxlength="10" size="10" value="" name="date_current" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mr-3">{{ _("Date de naissance approximative") }}</label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="ddn_approx-4_2" name="ddn_approx" value="4">&nbsp;{{ _("Oui") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="ddn_approx-5_2" name="ddn_approx" value="5">&nbsp;{{ _("Non") }}</input>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group form-inline">
+                                    <span class="col-form-label text-center" style="">{{ _("ou") }}</span>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Age") }}</label>
+                                    <div>
+                                        <input name="age" id="age_2" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label text-right mr-1">{{ _("unité") }}</label>
+                                    <div>					
+                                        <select name="unite" id="unite_2" class="form-control">
+                                            <option value="1034" id="unite-1034_2">{{ _("Jours") }}</option>
+                                            <option value="1035" id="unite-1035_2">{{ _("Semaines") }}</option>
+                                            <option value="1036" id="unite-1036_2">{{ _("Mois") }}</option>
+                                            <option value="1037" id="unite-1037_2">{{ _("Années") }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-inline">
+                                    <label class="col-form-label col-3 text-right mx-3">{{ _("Sexe") }}</label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="sexe-1_2" name="sexe" value="1">&nbsp;{{ _("Masculin") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="sexe-2_2" name="sexe" value="2">&nbsp;{{ _("Féminin") }}</input>
+                                    </label>
+                                    <label class="col-form-label text-right mr-3">
+                                        <input type="radio" id="sexe-3_2" name="sexe" value="3">&nbsp;{{ _("Inconnu") }}</input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <div class="panel-heading row">
+                            <h3 class="panel-title">{{ _("Coordonnées") }}</h3>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Adresse") }}</label>
+                                    <div>
+                                        <textarea id="adresse_2" rows="4" cols="50" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Boite postale") }}</label>
+                                    <div>
+                                        <input id="bp_2" type="text" value="" maxlength="10" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Quartier / Secteur") }}</label>
+                                    <div>
+                                        <input id="quartier_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Code postal") }}</label>
+                                    <div>
+                                        <input id="cp_2" type="text" value="" maxlength="10" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Ville / Village") }}</label>
+                                    <div>
+                                        <input id="ville_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }}</label>
+                                    <div>
+                                        <input id="tel_2" type="text" value="" maxlength="20" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Profession") }}</label>
+                                    <div>
+                                        <input id="profession_2" type="text" value="" maxlength="50" class="form-control" style="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-12">
                         <div class="float-left" style="margin-left:0px;">
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
                         <div class="float-right mr-2">
-                            <input type="button" onclick="save_request();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Fusionner") }}" disabled>
+                            <input type="button" onclick="save_request();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Fusionner") }}">
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div><!-- ferme le corps -->
+</div>
 {% endblock %}
 
 {% block add_script %}
@@ -151,19 +533,219 @@ var display = $(
 return display ;
 }
 
+function save_pat() 
+{
+var id_owner      = {{ session['user_id_group']|safe}} ;
+var anonyme       = $("input:radio[name=anonyme_1]:checked").val() ;
+var code          = $("#code_1").text() ;
+var code_patient  = $("#code_patient_1").val() ;
+var nom           = $("#nom_1").val() ;
+var prenom        = $("#prenom_1").val() ;
+var ddn           = $("#ddn_1").val() ;
+var sexe          = $("input:radio[name=sexe_1]:checked").val() ;
+var ethnie        = '' ; // useless
+var adresse       = JSON.stringify( $("#adresse_1").val() ) ;
+var cp            = $("#cp_1").val() ;
+var ville         = $("#ville_1").val() ;
+var tel           = $("#tel_1").val() ;
+var profession    = $("#profession_1").val() ;
+var nom_jf        = $("#nom_jf_1").val() ;
+var quartier      = $("#quartier_1").val() ;
+var bp            = $("#bp_1").val() ;
+var ddn_approx    = $("input:radio[name=ddn_approx_1]:checked").val() ;
+var age           = $("#age_1").val() ;
+var annee_naiss   = 0 ; // useless
+var semaine_naiss = 0 ; // useless
+var mois_naiss    = 0 ; // useless
+var unite         = $("#unite_1").val() ;
+
+    // date de naissance obligatoire
+    if (ddn == "" && age == "")
+    {
+    alert( "{{ _("Veuillez sélectionner une date de naissance ou saisir un age") }}" ) ;
+    return false;
+    }
+ 
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"anonyme":' + anonyme  + ', ' +
+              '"code":"' + code + '", ' +
+              '"code_patient":"' + code_patient + '", ' +
+              '"nom":"' + nom + '", ' +
+              '"prenom":"' + prenom + '", ' +
+              '"ddn":"' + ddn + '", ' +
+              '"sexe":' + sexe + ', ' +
+              '"ethnie":"' + ethnie + '", ' +
+              '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
+              '"cp":"' + cp + '", ' +
+              '"ville":"' + ville + '", ' +
+              '"tel":"' + tel + '", ' +
+              '"profession":"' + profession + '", ' +
+              '"nom_jf":"' + nom_jf + '", ' +
+              '"quartier":"' + quartier + '", ' +
+              '"bp":"' + bp + '", ' +
+              '"ddn_approx":' + ddn_approx + ', ' +
+              '"age":' + age + ', ' +
+              '"annee_naiss":' + annee_naiss + ', ' +
+              '"semaine_naiss":' + semaine_naiss + ', ' +
+              '"mois_naiss":' + mois_naiss + ', ' +
+              '"unite":' + unite + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/patient/det/" + id_pat1,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ; 
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST patient det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
 $("#search_patient1").on("select2:select", function (e) 
 {
 id_pat1 = $(e.currentTarget).val();
+
+    $("#id_pat_1").val(id_pat2) ;
+
+    // Get data patient in form
+    $.ajax( 
+    {
+        type: "GET",
+        url: "/services/patient/det/" + id_pat1,
+        success: function(data_pat1)
+            {
+            load_data_pat(data_pat1, 1) ;
+            },
+        error: function(ret)
+            {
+            console.log("ERROR GET det patient");
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+            }
+    } ) ;
 } ) ;
 
 $("#search_patient2").on("select2:select", function (e) 
 {
 id_pat2 = $(e.currentTarget).val();
+
+    $("#id_pat_2").val(id_pat2) ;
+
+    // Get data patient in form
+    $.ajax( 
+    {
+        type: "GET",
+        url: "/services/patient/det/" + id_pat2,
+        success: function(data_pat2)
+            {
+            load_data_pat(data_pat2, 2) ;
+            },
+        error: function(ret)
+            {
+            console.log("ERROR GET det patient");
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+            }
+    } ) ;
 } ) ;
+
+function load_data_pat( data, num )
+{
+    $("#form_pat_" + num ).removeClass('d-none') ;
+
+    $("#anonyme-" + data.anonyme + "_" + num ).prop("checked", true) ;
+    $("#code_patient_" + num ).val( data.code_patient ) ;
+    $("#code_" + num ).text( data.code ) ;
+    $("#nom_" + num ).val( data.nom ) ;
+    $("#nom_jf_" + num ).val( data.nom_jf ) ;
+    $("#prenom_" + num ).val( data.prenom ) ;
+    $("#ddn_" + num ).val( data.ddn ) ;
+    $("#ddn_approx-" + data.ddn_approx + "_" + num ).prop("checked", true) ;
+    $("#sexe-" + data.sexe + "_" + num ).prop("checked", true) ;
+    $("#age_" + num ).val( data.age ) ;
+    $("#unite-" + data.unite + "_" + num ).prop("checked", true) ;
+    $("#adresse_" + num ).val( data.adresse ) ;
+    $("#bp_" + num ).val( data.bp ) ;
+    $("#quartier_" + num ).val( data.quartier ) ;
+    $("#tel_" + num ).val( data.tel ) ;
+    $("#cp_" + num ).val( data.cp ) ;
+    $("#profession_" + num ).val( data.profession ) ;
+    $("#ville_" + num ).val( data.ville ) ;
+
+    if (num == 1)
+    {
+    let anonyme       = $("input:radio[name=anonyme_1]:checked").val() ;
+    let sexe          = $("input:radio[name=sexe_1]:checked").val() ;
+    let ddn_approx    = $("input:radio[name=ddn_approx_1]:checked").val() ;
+
+        if (anonyme == undefined)
+        $("#anonyme-5_1").prop("checked", true) ;
+
+        if (sexe == undefined)
+        $("#sexe-3_1").prop("checked", true) ;
+
+        if (ddn_approx == undefined)
+        $("#ddn_approx-4_1").prop("checked", true) ;
+    }
+}
 
 function save_request()
 {
-console.log("TODO save_request") ;
+    if (id_pat1 == 0 && id_pat2 == 0)
+    {
+    alert("{{ _("Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion.") }}") ;
+    return false ;
+    }
+
+    if ( id_pat1 == id_pat2 )
+    {
+    alert("{{ _("Les fiches patients sont les mêmes dans la base de données.") }}") ;
+    return false ;
+    }
+
+    if (id_pat1 == 0 || id_pat2 == 0)
+    {
+    alert("{{ _("Il manque une fiche patient pour effectuer la fusion de dossier.") }}") ;
+    return false ;
+    }
+
+    if ( window.confirm("{{ _("Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)") }}") )
+    {
+        // popup wait
+        $( "#dial-wait" ).modal( "show" ) ;
+
+        $.ajax( 
+        {
+        type: "POST",
+        url: "/services/patient/combine/" + id_pat1 + "/" + id_pat2,
+        success: function(data_pat2)
+            {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 600) ;
+
+            location.reload() ;
+            },
+        error: function(ret)
+            {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 600) ;
+
+            console.log("ERROR POST fusion patient");
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false;
 }
 
 function return_home()

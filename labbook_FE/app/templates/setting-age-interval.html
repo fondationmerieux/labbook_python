@@ -34,6 +34,7 @@
                     <tbody id="tbody_value">
                     </tbody>
                 </table>
+                <div id="tempAnchor"></div>
             </form>
             
             <div class="clearfix my-2">
@@ -45,8 +46,8 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -215,7 +216,7 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 2000) ;
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
            },
        error: function(data)
            {

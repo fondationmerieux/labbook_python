@@ -51,6 +51,7 @@
                         <input type="number" name="sts_margin_right" id="sts_margin_right" value="{{ args['sts_margin_right'] }}" min="0" step="1" class="form-control">			
                     </div>
                 </div>
+                <div id="tempAnchor"></div>
             </form>
             
             <div class="clearfix my-2">
@@ -62,8 +63,8 @@
                     <input type="button" onclick="save_det();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -99,7 +100,7 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 2000) ;
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
            },
        error: function(data)
            {

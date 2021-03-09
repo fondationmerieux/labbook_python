@@ -36,6 +36,7 @@
                     <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
                     <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
                 </div>
+                <div id="tempAnchor"></div>
             </form>
 
             <div class="mb-5 clearfix">
@@ -47,9 +48,9 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
-</div><!-- close content -->
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block add_script %}
@@ -94,7 +95,7 @@ var param = '{ "pwd":"' + script_pwd  + '", ' +
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 1000) ;
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
            },
        error: function(data)
            {
@@ -118,7 +119,7 @@ function run_keygen()
            data: param,
            success: function(data)
                {
-               tempAlert("Enregistrement réussi", 1000) ;
+               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
                },
            error: function(data)
                {
@@ -141,7 +142,7 @@ function run_backup()
            data: param,
            success: function(data)
                {
-               tempAlert("Enregistrement réussi", 1000) ;
+               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
                },
            error: function(data)
                {
@@ -164,7 +165,7 @@ function run_restore()
            data: param,
            success: function(data)
                {
-               tempAlert("Enregistrement réussi", 1000) ;
+               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
                },
            error: function(data)
                {

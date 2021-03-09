@@ -8,7 +8,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des fournisseurs") }}</span></h2>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
@@ -17,7 +17,7 @@
             <div>
                 <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -42,12 +42,12 @@
             <div>
                 <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
 
-            <div class="mb-5 mt-3">
+            <div class="clearfix mb-5 mt-3">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
@@ -56,11 +56,10 @@
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter un fournisseur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}disabled{% endif %}>
                 </div>
             </div>
-            <div class="clearfix"></div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
-</div><!-- close content -->
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block add_script %}
@@ -145,14 +144,12 @@ var id_owner = {{ session['user_id_group']|safe}} ;
             data: param,
             success: function(ret)
             {
-            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE item") ;
-            alert("{{ _("Erreur lors de la suppression") }}") ;
+            alert("{{ _("Erreur lors de la suppression des données") }}") ;
             }
         } ) ;
     }

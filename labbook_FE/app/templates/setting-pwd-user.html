@@ -38,9 +38,9 @@
             </div>
             <div class="clearfix"></div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
-</div><!-- close content -->
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block add_script %}
@@ -73,8 +73,6 @@ var pwd2     = $("#renew-pwd").val() ;
            data: param,
            success: function(data)
                {
-               tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
                window.history.back() ;
                },
            error: function(data)

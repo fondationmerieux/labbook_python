@@ -17,7 +17,7 @@
                 <div class="panel-filter row mt-3">
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="code" class="col-form-label col-3 text-right mt-2 optional">{{ _("Code") }}</label>
+                            <label for="code" class="col-form-label col-3 text-right mt-2">{{ _("Code") }}</label>
                             <div>					
                                 <input type="text" name="code" id="code" value="" class="form-control cnx_trigger">			
                             </div>
@@ -25,13 +25,13 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="lastname" class="col-form-label col-3 text-right mt-2 optional">{{ _("Nom") }}</label>
+                            <label for="lastname" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
                             <div>					
                                 <input type="text" name="lastname" id="lastname" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="firstname" class="col-form-label col-3 text-right mt-2 optional">{{ _("Prénom") }}</label>
+                            <label for="firstname" class="col-form-label col-3 text-right mt-2">{{ _("Prénom") }}</label>
                             <div class="">					
                                 <input type="text" name="firstname" id="firstname" value="" class="form-control cnx_trigger">			
                             </div>
@@ -39,13 +39,13 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="service" class="col-form-label col-3 text-right mt-2 optional">{{ _("Service") }}</label>
+                            <label for="service" class="col-form-label col-3 text-right mt-2">{{ _("Service") }}</label>
                             <div>					
                                 <input type="text" name="service" id="service" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="city" class="col-form-label col-3 text-right mt-2 optional">{{ _("Ville") }}</label>
+                            <label for="city" class="col-form-label col-3 text-right mt-2">{{ _("Ville") }}</label>
                             <div class="">					
                                 <input type="text" name="city" id="city" value="" class="form-control cnx_trigger">			
                             </div>
@@ -66,7 +66,7 @@
             <div>
                 <span><a class="link" id="first_doctor" onclick="display_doctor(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_doctor" onclick="display_doctor(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_doctor" onclick="display_doctor(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_doctor" onclick="display_doctor(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -99,24 +99,23 @@
             <div>
                 <span><a class="link" id="first_doctor" onclick="display_doctor(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_doctor" onclick="display_doctor(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_doctor" onclick="display_doctor(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_doctor" onclick="display_doctor(p_max);">{{ _("Dernier") }}</a></span>
             </div>
 
-            <div class="mb-5">
+            <div class="clearfix mb-5">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}disabled{% endif %}>
+                    <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
                 </div>
             </div>
-            <div class="clearfix"></div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -171,7 +170,7 @@ let param = '{ "code":"' + code + '", ' +
                  }, 1000) ;
 
             console.log("ERROR doctor list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste des prescripteurs") }}") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
     } ) ;
 }
@@ -260,14 +259,12 @@ var id_owner = {{ session['user_id_group']|safe}} ;
             data: param,
             success: function(ret)
             {
-            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR POST doctor status") ;
-            alert("{{ _("Erreur lors du changement de statut de l'utilisateur") }}") ;
+            alert("{{ _("Erreur lors du changement de statut") }}") ;
             }
         } ) ;
     }

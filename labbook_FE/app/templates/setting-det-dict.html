@@ -14,7 +14,7 @@
                 <div class="panel-name row mt-3">
                     <div class="col-6">
                         <div class="form-group row">
-                            <label for="name" class="col-form-label col-4 text-right mt-2 optional">{{ _("Nom du dictionnaire") }}</label>
+                            <label for="name" class="col-form-label col-4 text-right mt-2">{{ _("Nom du dictionnaire") }}</label>
                             <div>					
                                 <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control" maxlength="20">			
                             </div>
@@ -44,6 +44,7 @@
                     <tbody id="tbody_value">
                     </tbody>
                 </table>
+                <div id="tempAnchor"></div>
             </form>
             
             <div class="my-2 clearfix">
@@ -55,8 +56,8 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -244,9 +245,7 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 2000) ;
-
-           //window.history.back() ;
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
            },
        error: function(data)
            {

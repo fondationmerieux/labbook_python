@@ -56,8 +56,6 @@
 
 {% block add_script %}
 <script>
-console.log("DEBUG nb_users={{ args['nb_users'] }}");
-
 function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage" ;

@@ -19,7 +19,7 @@
                 <div class="panel-filter row mt-3">
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="f_date_beg" class="col-form-label col-6 text-right optional">{{ _("Date dossier supérieure à") }}</label>
+                            <label for="f_date_beg" class="col-form-label col-6 text-right">{{ _("Date dossier supérieure à") }}</label>
                             <div>
                                 <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                             </div>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="f_date_end" class="col-form-label col-6 text-right optional">{{ _("Date dossier inférieure à") }}</label>
+                            <label for="f_date_end" class="col-form-label col-6 text-right">{{ _("Date dossier inférieure à") }}</label>
                             <div>					
                                 <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                             </div>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="f_emer" class="col-form-label col-5 text-right optional">{{ _("Urgent uniquement") }}</label>
+                            <label for="f_emer" class="col-form-label col-5 text-right">{{ _("Urgent uniquement") }}</label>
                             <div>
                                 <input type="checkbox" id="f_emer" name="f_mer" class="mt-2" value="4" {% if ihm and ihm['emer'] == 'E' %} checked="checked"{% endif %}>
                             </div>
@@ -63,7 +63,7 @@
                                     <div style="">
                                         <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _("Premier") }}</a></span>
                                         <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _("Précédent") }}</a></span>
-                                        <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                                         <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _("Suivant") }}</a></span>
                                         <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _("Dernier") }}</a></span>
                                     </div>
@@ -105,7 +105,7 @@
                                     <div style="">
                                         <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _('Premier') }}</a></span>
                                         <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _('Précédent') }}</a></span>
-                                        <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                                        <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                                         <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _('Suivant') }}</a></span>
                                         <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _('Dernier') }}</a></span>
                                     </div>
@@ -127,7 +127,7 @@
 
             {% include 'popup_det_rec.html' %}
 
-        </div><!-- close main -->
+        </div>
     </div>
 </div><!-- close content -->
 {% endblock %}

@@ -122,6 +122,24 @@ class PatientCode(Resource):
         return compose_ret(code, Constants.cst_content_type_json)
 
 
+class PatientCombine(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_pat1, id_pat2):
+        if id_pat1 <= 0 or id_pat2 <= 0:
+            self.log.error(Logs.fileline() + ' : ' + 'PatientCombine ERROR wrong id_pat')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        ret = Patient.combinePatients(id_pat1, id_pat2)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR PatientCombine')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PatientCombine id_pat1=' + str(id_pat1) + ' | id_pat2=' + str(id_pat2))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class PatientDet(Resource):
     log = logging.getLogger('log_services')
 

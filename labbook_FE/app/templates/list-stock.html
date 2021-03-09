@@ -64,7 +64,7 @@
             <div>
                 <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -99,7 +99,7 @@
             <div>
                 <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
                 <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
                 <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
@@ -111,7 +111,7 @@
                 <div class="float-right">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
                     <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}disabled{% endif %}>
+                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
                 </div>
             </div>
 
@@ -139,8 +139,8 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -301,8 +301,8 @@ let param       = '{ "pru_user": ' + id_user + ', ' +
             },
         error: function(data)
             {
-            console.log("ERROR stock use") ;
-            alert("Une erreur est survenue lors du traitement des données") ;
+            console.log("ERROR POST stock use") ;
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
             }
     } ) ;
 }
@@ -324,14 +324,12 @@ let id_owner = {{ session['user_id_group']|safe}} ;
             data: param,
             success: function(ret)
             {
-            tempAlert("{{ _("Enregistrement réussi") }}", 1000) ;
-
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE item") ;
-            alert("{{ _("Erreur lors de la suppression") }}") ;
+            alert("{{ _("Erreur lors de la suppression des données") }}") ;
             }
         } ) ;
     }

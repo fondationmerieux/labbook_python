@@ -66,7 +66,6 @@
                         </select>       
                     </div>
                 </div>
-                
             </form>
             
             <div class="my-2 clearfix">
@@ -77,9 +76,9 @@
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-        </div><!-- close main -->
-    </div><!-- close inner -->
-</div><!-- close content -->
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block add_script %}
@@ -172,10 +171,6 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           console.log("DEBUG data=" + JSON.stringify(data)) ;
-
-           tempAlert("Enregistrement réussi", 2000) ;
-
            window.history.back() ;
            },
        error: function(data)

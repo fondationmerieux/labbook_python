@@ -13,25 +13,25 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Personnel") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group row">
-                    <label for="lastname" class="col-form-label col-3 text-right optional mt-2">{{ _("Nom") }}</label>
+                    <label for="lastname" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
                     <div>					
                         <input type="text" name="lastname" id="lastname" value="{{ args['user_det']['lastname'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row mt-3">
-                    <label for="firstname" class="col-form-label col-3 text-right optional mt-2">{{ _("Prénom") }}</label>
+                    <label for="firstname" class="col-form-label col-3 text-right mt-2">{{ _("Prénom") }}</label>
                     <div class="">					
                         <input type="text" name="firstname" id="firstname" value="{{ args['user_det']['firstname'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse email") }}</label>
+                    <label for="email" class="col-form-label col-3 text-right mt-2">{{ _("Adresse email") }}</label>
                     <div>					
                         <input type="email" name="email" id="email" value="{{ args['user_det']['email'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="title" class="col-form-label col-3 text-right optional mt-2">{{ _("Titre") }}</label>
+                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Titre") }}</label>
                     <div>					
                         <select id="title" name="title" class="form-control">
                             <option value="0" {% if args['user_det']['title'] == 0  %} selected {% endif %}></option>  
@@ -44,43 +44,43 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="initial" class="col-form-label col-3 text-right optional mt-2">{{ _("Initiales") }}</label>
+                    <label for="initial" class="col-form-label col-3 text-right mt-2">{{ _("Initiales") }}</label>
                     <div>					
                         <input type="text" name="initial" id="initial" value="{{ args['user_det']['initial'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="birth" class="col-form-label col-3 text-right optional mt-2">{{ _("Date de naissance") }}</label>
+                    <label for="birth" class="col-form-label col-3 text-right mt-2">{{ _("Date de naissance") }}</label>
                     <div>					
                         <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['birth'] }}" name="birth" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="address" class="col-form-label col-3 text-right optional mt-2">{{ _("Adresse") }}</label>
+                    <label for="address" class="col-form-label col-3 text-right mt-2">{{ _("Adresse") }}</label>
                     <div>					
                         <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['user_det']['address'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="phone" class="col-form-label col-3 text-right optional mt-2">{{ _("Numéro de téléphone") }}</label>
+                    <label for="phone" class="col-form-label col-3 text-right mt-2">{{ _("Numéro de téléphone") }}</label>
                     <div>					
                         <input type="text" name="phone" id="phone" value="{{ args['user_det']['phone'] }}" class="form-control">			
                     </div>
                 </div>
                  <div class="form-group row">
-                    <label for="arrived" class="col-form-label col-3 text-right optional mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
+                    <label for="arrived" class="col-form-label col-3 text-right mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
                     <div>					
                         <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['arrived'] }}" name="arrived" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="position" class="col-form-label col-3 text-right optional mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
+                    <label for="position" class="col-form-label col-3 text-right mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
                     <div>					
                         <input type="text" name="position" id="position" value="{{ args['user_det']['position'] }}" class="form-control">			
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="cv" class="col-form-label col-3 text-right optional mt-2">{{ _("CV") }}</label>
+                    <label for="cv" class="col-form-label col-3 text-right mt-2">{{ _("CV") }}</label>
                     <div>					
                         <textarea id="cv" name="cv" rows="4" cols="50" class="form-control">{{ args['user_det']['cv'] }}</textarea>
                     </div>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="diploma" class="col-form-label col-3 text-right optional mt-2">{{ _("Diplômes") }}</label>
+                    <label for="diploma" class="col-form-label col-3 text-right mt-2">{{ _("Diplômes") }}</label>
                     <div>					
                         <textarea id="diploma" name="diploma" rows="4" cols="50" class="form-control">{{ args['user_det']['diploma'] }}</textarea>
                     </div>
@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="training" class="col-form-label col-3 text-right optional mt-2">{{ _("Formations continues") }}</label>
+                    <label for="training" class="col-form-label col-3 text-right mt-2">{{ _("Formations continues") }}</label>
                     <div>					
                         <textarea id="training" name="training" rows="4" cols="50" class="form-control">{{ args['user_det']['training'] }}</textarea>
                     </div>
@@ -155,7 +155,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="section" class="col-form-label col-3 text-right optional mt-2">{{ _("Section de travail") }}</label>
+                    <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section de travail") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-control">
                             <option value="0" {% if args['user_det']['section'] == 0 %} selected {% endif %}></option>  
@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="last_eval" class="col-form-label col-3 text-right optional mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
+                    <label for="last_eval" class="col-form-label col-3 text-right mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
                     <div>					
                         <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['last_eval'] }}" name="last_eval" style="color: #888;">
                     </div>
@@ -192,14 +192,14 @@
                 </div>
                     
                 <div class="form-group row">
-                    <label for="comment" class="col-form-label col-3 text-right optional mt-2">{{ _("Commentaires") }}</label>
+                    <label for="comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaires") }}</label>
                     <div>					
                         <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['user_det']['comment'] }}</textarea>
                     </div>
                 </div>
             </form>
             
-            <div class="my-2">
+            <div class="clearfix my-2">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
@@ -207,9 +207,8 @@
                     <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-            <div class="clearfix"></div>
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -270,8 +269,6 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           tempAlert("Enregistrement réussi", 2000) ;
-
            upload_file("USCV", id_user) ;
            upload_file("USDI", id_user) ;
            upload_file("USTR", id_user) ;

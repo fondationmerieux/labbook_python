@@ -2,7 +2,7 @@
 var disconnect_page = "/sigl/disconnect" ;
 var page_timeout    = 0 ;
 
-function tempAlert(msg,duration)
+function tempAlert(msg,duration, id_parent)
 {
 var el = document.createElement("div") ;
 
@@ -14,7 +14,7 @@ el.innerHTML = '<div style="display:table-cell;vertical-align:middle;">' + msg +
     el.parentNode.removeChild(el) ;
     }, duration) ;
 
-document.body.appendChild(el);
+$("#" + id_parent).append(el) ;
 }
 
 // Return formatted record number

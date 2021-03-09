@@ -158,10 +158,6 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
        data: param,
        success: function(data)
            {
-           console.log("DEBUG data=" + JSON.stringify(data)) ;
-
-           tempAlert("Enregistrement réussi", 2000) ;
-
            let ref = JSON.stringify(data) ;
 
            upload_file(ref);

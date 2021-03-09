@@ -7,9 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - export DHIS2
 - import/export users
 - finish Analysis repository module (add/modify/import/export)
-- finish patient management module
 - finish non-conformity module
 - backup module
+
+## [3.0.1] - 2021-03-09
+### Added
+- Patient management : details and combine records
+- new icon qualitician and prescriber profils
+- full translation
 
 ## [3.0.0] - 2021-02-26
 ### Added

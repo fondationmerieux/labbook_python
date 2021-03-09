@@ -53,8 +53,8 @@ let tr_histo = '<tr class="row"><td class=" col-1 icon"><span class="icon status
         },
         error: function(data_ana)
         {
-            console.log("ERROR GET result history");
-            alert("{{ _("Erreur lors la récupération des informations d'historiques de ce résultat") }}") ;
+        console.log("ERROR GET result history");
+        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
         }
     } ) ;
 }

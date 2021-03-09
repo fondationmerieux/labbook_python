@@ -15,65 +15,64 @@
                 <div class="panel panel-1 panel-primary">
                     <div class="panel-body">
                         <div class="row mt-3">
-                                <div>
-                                    <span>{{ _("Nombre total de lignes") }} :</span>
-                                    <span id="listing_prod_total">{% if not args %}0{% endif %}</span>
+                            <div>
+                                <span>{{ _("Nombre total de lignes") }} :</span>
+                                <span id="listing_prod_total">{% if not args %}0{% endif %}</span>
+                            </div>
+                            <div class="table-responsive" id="listing_prod">
+                                <div style="">
+                                    <span><a class="link" id="first_prod" onclick="display_product(1);">{{ _("Premier") }}</a></span>
+                                    <span><a class="link" id="prev_prod" onclick="display_product(-1000);">{{ _("Précédent") }}</a></span>
+                                    <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                                    <span><a class="link" id="next_prod" onclick="display_product(1000);">{{ _("Suivant") }}</a></span>
+                                    <span><a class="link" id="last_prod" onclick="display_product(p_max);">{{ _("Dernier") }}</a></span>
                                 </div>
-                                <div class="table-responsive" id="listing_prod">
-                                    <div style="">
-                                        <span><a class="link" id="first_prod" onclick="display_product(1);">{{ _("Premier") }}</a></span>
-                                        <span><a class="link" id="prev_prod" onclick="display_product(-1000);">{{ _("Précédent") }}</a></span>
-                                        <span id="num_page_t" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
-                                        <span><a class="link" id="next_prod" onclick="display_product(1000);">{{ _("Suivant") }}</a></span>
-                                        <span><a class="link" id="last_prod" onclick="display_product(p_max);">{{ _("Dernier") }}</a></span>
-                                    </div>
-                                    <table class="table table-striped table-hover col-12 table-lbk">
-                                        <colgroup><col><col><col><col><col><col><col><col></colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" hidden>
-                                                    <span>id_data</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("N° dossier") }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("Date dossier") }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("Patient") }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("Sang") }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("Selles") }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("Urine") }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span>{{ _("Autre") }}</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody_products" style=""></tbody>
-                                    </table>
-                                    <div style="">
-                                        <span><a class="link" id="first_prod" onclick="display_product(1);">{{ _("Premier") }}</a></span>
-                                        <span><a class="link" id="prev_prod" onclick="display_product(-1000);">{{ _("Précédent") }}</a></span>
-                                        <span id="num_page_b" style="font-weight:bold;">{% if not args %}0{% else %}1{% endif %}</span>
-                                        <span><a class="link" id="next_prod" onclick="display_product(1000);">{{ _("Suivant") }}</a></span>
-                                        <span><a class="link" id="last_prod" onclick="display_product(p_max);">{{ _("Dernier") }}</a></span>
-                                    </div>
+                                <table class="table table-striped table-hover col-12 table-lbk">
+                                    <colgroup><col><col><col><col><col><col><col><col></colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" hidden>
+                                                <span>id_data</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("N° dossier") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Date dossier") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Patient") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Sang") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Selles") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Urine") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Autre") }}</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_products" style=""></tbody>
+                                </table>
+                                <div style="">
+                                    <span><a class="link" id="first_prod" onclick="display_product(1);">{{ _("Premier") }}</a></span>
+                                    <span><a class="link" id="prev_prod" onclick="display_product(-1000);">{{ _("Précédent") }}</a></span>
+                                    <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                                    <span><a class="link" id="next_prod" onclick="display_product(1000);">{{ _("Suivant") }}</a></span>
+                                    <span><a class="link" id="last_prod" onclick="display_product(p_max);">{{ _("Dernier") }}</a></span>
                                 </div>
-                                <div class="clear"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </form>
 
-        </div><!-- close main -->
+        </div>
     </div>
 </div><!-- close content -->
 {% endblock %}
