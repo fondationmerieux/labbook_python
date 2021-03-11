@@ -507,7 +507,7 @@ msgstr "The company Epiconcept has developed the Labbook software until 2019."
 
 #: templates/contributors.html:33
 msgid "La société &AElig;GL&Eacute; a pris le relais à partir de 2020."
-msgstr "The company &Elig;GL&Eacute; took over from 2020."
+msgstr "The company ÆGLÉ took over from 2020."
 
 #: templates/contributors.html:40
 msgid "Le logiciel est sous licence GNU."
@@ -1657,10 +1657,6 @@ msgstr "Role management"
 #: templates/homepage.html:20 templates/menu.html:85
 msgid "Préférences"
 msgstr "Preferences"
-
-#: templates/homepage.html:21
-msgid "Réferentiel"
-msgstr "Reference"
 
 #: templates/homepage.html:22
 msgid "Configuration des comptes-rendu"

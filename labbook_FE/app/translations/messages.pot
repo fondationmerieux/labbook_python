@@ -1657,10 +1657,6 @@ msgstr ""
 msgid "Préférences"
 msgstr ""
 
-#: templates/homepage.html:21
-msgid "Réferentiel"
-msgstr ""
-
 #: templates/homepage.html:22
 msgid "Configuration des comptes-rendu"
 msgstr ""

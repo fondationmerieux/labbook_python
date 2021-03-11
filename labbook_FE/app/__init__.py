@@ -1034,12 +1034,18 @@ def list_records():
     session['current_page'] = 'list-records'
     session.modified = True
 
+    id_pres = 0
+
+    if session['user_role'] == 'P':
+        id_pres = session['user_id']
+
+    json_ihm  = {}
     json_data = {}
 
     dt_start_req = datetime.now()
     # Load list records
     try:
-        url = session['server_int'] + '/services/record/list/' + str(session['user_id_group'])
+        url = session['server_int'] + '/services/record/list/' + str(id_pres)
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -1048,11 +1054,13 @@ def list_records():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests records list failed, err=%s , url=%s', err, url)
 
+    json_ihm['id_pres'] = id_pres
+
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : DEBUG list-records processing time = ' + str(dt_time_req))
-    return render_template('list-records.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 @app.route('/list-works/<string:user_role>')
@@ -1090,7 +1098,7 @@ def list_works(user_role='', emer=''):
 
         json_ihm['stat_work'] = payload['stat_work']
 
-        url = session['server_int'] + '/services/record/list/' + str(session['user_id_group'])
+        url = session['server_int'] + '/services/record/list/0'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:

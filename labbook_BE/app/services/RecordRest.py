@@ -21,15 +21,13 @@ from app.models.Logs import Logs
 class RecordList(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self, id_group):
+    def post(self, id_pres):
         args = request.get_json()
-
-        id_lab = User.getUserGroupParent(id_group)
 
         if not args:
             args = {}
 
-        l_records = Record.getRecordList(args, id_lab['id_group_parent'], id_group)
+        l_records = Record.getRecordList(args, id_pres)
 
         if not l_records:
             self.log.error(Logs.fileline() + ' : TRACE RecordList not found')

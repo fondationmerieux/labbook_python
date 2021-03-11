@@ -140,7 +140,7 @@
                                         </thead>
                                         <tbody id="tbody_records" style=""></tbody>
                                     </table>
-                                    <div style="">
+                                    <div>
                                         <span><a class="link" id="first_rec" onclick="display_record(1);">{{ _('Premier') }}</a></span>
                                         <span><a class="link" id="prev_rec" onclick="display_record(-1000);">{{ _('Précédent') }}</a></span>
                                         <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
@@ -148,7 +148,6 @@
                                         <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _('Dernier') }}</a></span>
                                     </div>
                                 </div>
-                                <div class="clear"></div>
                         </div>
                     </div>
                 </div>
@@ -156,7 +155,7 @@
 
             {% include 'popup_det_rec.html' %}
 
-        </div><!-- close main -->
+        </div>
     </div>
 </div><!-- close content -->
 {% endblock %}
@@ -196,7 +195,7 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "/services/record/list/" + {{ session['user_id_group']|safe}},
+        url: "/services/record/list/" + {{ ihm['id_pres']|safe}},
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,

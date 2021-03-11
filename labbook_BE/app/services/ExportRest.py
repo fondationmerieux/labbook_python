@@ -88,7 +88,7 @@ class ExportWhonet(Resource):
         try:
             import csv
 
-            filename = 'whonet_' + args['date_beg'] + '_' + args['date_end'] + '.csv'
+            filename = 'whonet_' + args['date_beg'] + '_' + args['date_end'] + '.txt'
 
             with open('tmp/' + filename, mode='w') as file:
                 writer = csv.writer(file, delimiter='\t')

@@ -2,7 +2,7 @@
     <div class="container-fluid nav-cust-cont">
         <ul class="navbar-nav">
             <!-- Dropdown Admin -->
-            {% if session['user_role'] == 'B' or 
+            {% if session['user_role'] == 'B' or session['user_role'] == 'P' or
                   session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
                   session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
@@ -10,19 +10,27 @@
                   <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                    {% if session['user_role'] != 'P' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records">{{ _("Liste des dossiers") }}</a>
+                    {% endif %}
                     {% if session['user_role'] == 'B' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B">{{ _("Liste de travail biologiste") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
+                    {% if session['user_role'] != 'P' %}
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-ext">{{ _("Nouvelle demande externe") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-int">{{ _("Nouvelle demande hospitalisé") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                    {% endif %}
+                    {% if session['user_role'] == 'B' or 
+                          session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products">{{ _("Etat des prélèvements en cours") }}</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'B' or session['user_role'] == 'SA' or
+                          session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-doctors">{{ _("Liste des prescripteurs") }}</a>
@@ -123,7 +131,7 @@
             </span>
             {% endif %}
 
-            <!-- Link -->
+            <!-- Non conformity -->
             <span class="nav-cust-btn">
                 <li class="nav-item">
                   <a class="nav-link non-conformite" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/non-conformity/0"></a>

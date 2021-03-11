@@ -12,7 +12,7 @@ class Record:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getRecordList(args, id_lab, id_group):
+    def getRecordList(args, id_pres):
         cursor = DB.cursor()
 
         filter_cond = 'length(dos.num_dos_an) = 10 '
@@ -49,6 +49,10 @@ class Record:
             # 4 in base for yes
             if args['emer'] and args['emer'] == 4:
                 filter_cond += ' and ana.urgent=4 '
+
+        # Prescriber list
+        if id_pres > 0:
+            filter_cond += ' and dos.med_prescripteur=' + str(id_pres) + ' '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = 'select dos.statut as stat, '\
