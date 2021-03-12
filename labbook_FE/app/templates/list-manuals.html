@@ -27,16 +27,16 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-center">{{ _("Action") }}</th>
-                            <th class="text-center cursor-act">{{ _("Titre") }}</th>
-                            <th class="text-center cursor-act">{{ _("Référence") }}</th>
-                            <th class="text-center cursor-act">{{ _("Rédacteur") }}</th>
-                            <th class="text-center cursor-act">{{ _("Vérificateur") }}</th>
-                            <th class="text-center cursor-act">{{ _("Approbateur") }}</th>
-                            <th class="text-center cursor-act">{{ _("Date création") }}</th>
-                            <th class="text-center cursor-act">{{ _("Date d'application") }}</th>
-                            <th class="text-center cursor-act">{{ _("Date de modification") }}</th>
-                            <th class="text-center cursor-act">{{ _("Manuel") }}</th>
+                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-left cursor-act">{{ _("Titre") }}</th>
+                            <th class="text-left cursor-act">{{ _("Référence") }}</th>
+                            <th class="text-left cursor-act">{{ _("Rédacteur") }}</th>
+                            <th class="text-left cursor-act">{{ _("Vérificateur") }}</th>
+                            <th class="text-left cursor-act">{{ _("Approbateur") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date création") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date d'application") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date de modification") }}</th>
+                            <th class="text-left cursor-act">{{ _("Manuel") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -62,8 +62,8 @@
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -108,7 +108,7 @@ $("#list_items_total").html( data_len ) ;
     {
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-manual/' + data_items[i].id_data + '">{{ _("Editer") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')">{{ _("Supprimer") }}</a>';   
@@ -124,13 +124,13 @@ $("#list_items_total").html( data_len ) ;
            '<td><div>' + menu_act + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].title + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].reference + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].writer + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].auditor + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].approver + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].date_insert + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].date_apply + '</div></td>' +
-           '<td><div class="text-center">' + data_items[i].date_update + '</div></td>' +
-           '<td><div class="text-center">' + link_manual + '</div></td></tr>' ;
+           '<td><div class="text-left">' + data_items[i].writer + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].auditor + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].approver + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].date_insert + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].date_apply + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].date_update + '</div></td>' +
+           '<td><div class="text-left">' + link_manual + '</div></td></tr>' ;
     }
 {% endif %}
 

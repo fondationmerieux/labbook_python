@@ -62,15 +62,17 @@ class User:
     def getUserDetails(id_user):
         cursor = DB.cursor()
 
-        req = 'select username, cps_id as cps, rpps, status as stat, firstname, lastname, '\
-              'locale as lang, email, titre as title, initiale as initial, adresse as address, '\
-              'ddn as birth, tel as phone, darrive as arrived, position, cv, diplome as diploma, '\
-              'formation as training, section, deval as last_eval, commentaire as comment, '\
-              'l.id_role as id_role '\
-              'from sigl_user_data '\
-              'inner join sigl_pj_group as g on g.name = username '\
+        req = 'select u.username, u.cps_id as cps, u.rpps, u.status as stat, u.firstname, u.lastname, '\
+              'u.locale as lang, u.email, u.titre as title, u.initiale as initial, u.adresse as address, '\
+              'u.ddn as birth, u.tel as phone, u.darrive as arrived, u.position, u.cv, u.diplome as diploma, '\
+              'u.formation as training, u.section, u.deval as last_eval, u.commentaire as comment, '\
+              'l.id_role as id_role, u.side_account, '\
+              'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '\
+              'from sigl_user_data as u '\
+              'inner join sigl_pj_group as g on g.name = u.username '\
               'inner join sigl_pj_group_link as l on l.id_group = g.id_group '\
-              'where id_data=%s'
+              'left join sigl_08_data as pres on pres.id_data=u.side_account '\
+              'where u.id_data=%s'
 
         cursor.execute(req, (id_user,))
 
@@ -88,7 +90,7 @@ class User:
                            'values (NOW(), %(id_owner)s, %(id_group)s, %(username)s, %(password)s, %(cps_id)s, %(rpps)s, '
                            '%(status)s, %(firstname)s, %(lastname)s, %(locale)s, %(email)s, %(titre)s, %(initiale)s, '
                            '%(ddn)s, %(adresse)s, %(tel)s, %(darrive)s, %(position)s, %(cv)s, %(diplome)s, %(formation)s, '
-                           '%(section)s, %(deval)s, %(commentaire)s)', params)
+                           '%(section)s, %(deval)s, side_account=%(side_account)s, %(commentaire)s)', params)
 
             User.log.info(Logs.fileline())
 
@@ -107,7 +109,8 @@ class User:
                            'firstname=%(firstname)s, lastname=%(lastname)s, locale=%(locale)s, email=%(email)s, '
                            'titre=%(titre)s, initiale=%(initiale)s, ddn=%(ddn)s, adresse=%(adresse)s, tel=%(tel)s, '
                            'darrive=%(darrive)s, position=%(position)s, cv=%(cv)s, diplome=%(diplome)s, '
-                           'formation=%(formation)s, section=%(section)s, deval=%(deval)s, commentaire=%(commentaire)s '
+                           'formation=%(formation)s, section=%(section)s, deval=%(deval)s, '
+                           'side_account=%(side_account)s, commentaire=%(commentaire)s '
                            'where id_data=%(id_data)s', params)
 
             User.log.info(Logs.fileline())

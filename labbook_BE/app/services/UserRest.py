@@ -121,7 +121,7 @@ class UserDet(Resource):
            'title' not in args or 'initial' not in args or 'birth' not in args or 'phone' not in args or \
            'arrived' not in args or 'position' not in args or 'section' not in args or 'last_eval' not in args or \
            'address' not in args or 'cv' not in args or 'diploma' not in args or 'training' not in args or \
-           'comment' not in args or 'id_role' not in args:
+           'comment' not in args or 'id_role' not in args or 'id_pres' not in args:
             self.log.error(Logs.fileline() + ' : UserDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -169,6 +169,7 @@ class UserDet(Resource):
                                   formation=args['training'],
                                   section=args['section'],
                                   deval=args['last_eval'],
+                                  side_account=args['id_pres'],
                                   commentaire=args['comment'])
 
             if ret is False:
@@ -243,6 +244,7 @@ class UserDet(Resource):
                                   formation=args['training'],
                                   section=args['section'],
                                   deval=args['last_eval'],
+                                  side_account=args['id_pres'],
                                   commentaire=args['comment'])
 
             if ret <= 0:
@@ -300,6 +302,7 @@ class UserStaffDet(Resource):
                                   formation=args['training'],
                                   section=args['section'],
                                   deval=args['last_eval'],
+                                  side_account=user['side_account'],
                                   commentaire=args['comment'])
 
             if ret is False:

@@ -35,7 +35,7 @@
                     <thead>
                         <tr>
                             <th class="col" hidden>{{ _("serial") }}</th>
-                            <th class="d-inline-block col-2 text-center">{{ _("Action") }}</th>
+                            <th class="d-inline-block col-2 text-left">{{ _("Action") }}</th>
                             <th class="d-inline-block col-3 text-left">{{ _("Libéllé") }} *</th>
                             <th class="d-inline-block col-2 text-left">{{ _("Code") }} *</th>
                             <th class="d-inline-block col-3 text-left">{{ _("Libéllé court") }}</th>
@@ -91,7 +91,7 @@ let obj = data ;
     let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
 
     tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
-    tmp_tr += create_td("", btn, " text-center d-inline-block col-2", "") ; // actions
+    tmp_tr += create_td("", btn, " text-left d-inline-block col-2", "") ; // actions
     tmp_tr += create_td("", create_input("label_"+obj.id_ihm, "text", obj.label, "","", ""), "d-inline-block col-3", "") ;
     tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "d-inline-block col-2", "") ;
     tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "d-inline-block col-3", "") ;

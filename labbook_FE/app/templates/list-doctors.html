@@ -76,19 +76,19 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-center">{{ _("Action") }}</th>
-                            <th class="text-center cursor-act">{{ _("Code") }}</th>
-                            <th class="text-center cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-center cursor-act">{{ _("Prénom") }}</th>
-                            <th class="text-center cursor-act">{{ _("Initiale") }}</th>
-                            <th class="text-center cursor-act">{{ _("Lieu trav.") }}</th>
-                            <th class="text-center cursor-act">{{ _("Service") }}</th>
-                            <th class="text-center cursor-act">{{ _("Adresse") }}</th>
-                            <th class="text-center cursor-act">{{ _("Ville") }}</th>
-                            <th class="text-center cursor-act">{{ _("Tél. fixe") }}</th>
-                            <th class="text-center cursor-act">{{ _("Mobile") }}</th>
-                            <th class="text-center cursor-act">{{ _("Fax") }}</th>
-                            <th class="text-center cursor-act">{{ _("Email") }}</th>
+                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-left cursor-act">{{ _("Code") }}</th>
+                            <th class="text-left cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-left cursor-act">{{ _("Prénom") }}</th>
+                            <th class="text-left cursor-act">{{ _("Initiale") }}</th>
+                            <th class="text-left cursor-act">{{ _("Lieu trav.") }}</th>
+                            <th class="text-left cursor-act">{{ _("Service") }}</th>
+                            <th class="text-left cursor-act">{{ _("Adresse") }}</th>
+                            <th class="text-left cursor-act">{{ _("Ville") }}</th>
+                            <th class="text-left cursor-act">{{ _("Tél. fixe") }}</th>
+                            <th class="text-left cursor-act">{{ _("Mobile") }}</th>
+                            <th class="text-left cursor-act">{{ _("Fax") }}</th>
+                            <th class="text-left cursor-act">{{ _("Email") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_doctors">
@@ -209,7 +209,7 @@ $("#list_doctors_total").html( data_len ) ;
     {
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-doctor/' + data_doctors[i].id_data + '">{{ _("Editer") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/delete-doctor/' + data_doctors[i].id_data + '">{{ _("Supprimer") }}</a>';   
@@ -218,18 +218,18 @@ $("#list_doctors_total").html( data_len ) ;
 
     res += '<tr><td hidden><div>' + data_doctors[i].id_data + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].code + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].lastname + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].firstname + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].initial + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].work_place + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].service + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].address + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].city + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].phone + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].mobile + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].fax + '</div></td>' +
-           '<td><div class="text-center">' + data_doctors[i].email + '</div></td></tr>' ;
+           '<td><div class="text-left">' + data_doctors[i].code + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].lastname + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].firstname + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].initial + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].work_place + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].service + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].address + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].city + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].phone + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].mobile + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].fax + '</div></td>' +
+           '<td><div class="text-left">' + data_doctors[i].email + '</div></td></tr>' ;
     }
 {% endif %}
 

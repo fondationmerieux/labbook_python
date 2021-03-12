@@ -3065,13 +3065,13 @@ def list_stock():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests product type failed, err=%s , url=%s', err, url)
 
-    # Load product_status
+    # Load product_conserv
     try:
-        url = session['server_int'] + '/services/dict/det/product_status'
+        url = session['server_int'] + '/services/dict/det/product_conserv'
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_ihm['product_status'] = req.json()
+            json_ihm['product_conserv'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)

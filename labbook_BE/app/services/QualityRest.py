@@ -1011,12 +1011,6 @@ class StockList(Resource):
 
             stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'])
 
-            if stock['receipt_date']:
-                stock['receipt_date'] = datetime.strftime(stock['receipt_date'], '%Y-%m-%d')
-
-            if stock['expir_date']:
-                stock['expir_date'] = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
-
         self.log.info(Logs.fileline() + ' : TRACE StockList')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
@@ -1179,8 +1173,7 @@ class StockExport(Resource):
 
         args['limit'] = 50000  # for overpassed default limit
 
-        l_data = [['prs_ser', 'name', 'nb_pack', 'nb_by_pack', 'nb_total', 'type', 'receipt_date', 'rack', 'conserv',
-                   'expir_date', 'batch_num', 'status', 'supplier', 'buy_price', 'sell_price', ]]
+        l_data = [['prs_ser', 'name', 'nb_pack', 'nb_total', 'type', 'conserv', 'supplier']]
         dict_data = Quality.getStockList(args)
 
         if dict_data:
@@ -1199,27 +1192,13 @@ class StockExport(Resource):
 
                 d['nb_total'] = float(d['prs_nb_pack'] * d['prd_nb_by_pack'])
 
-                if d['receipt_date']:
-                    d['receipt_date'] = datetime.strftime(d['receipt_date'], '%Y-%m-%d')
-
-                if d['expir_date']:
-                    d['expir_date'] = datetime.strftime(d['expir_date'], '%Y-%m-%d')
-
                 data.append(d['prs_ser'])
                 data.append(d['prd_name'])
                 data.append(d['prs_nb_pack'])
-                data.append(d['prd_nb_by_pack'])
                 data.append(d['nb_total'])
                 data.append(d['type'])
-                data.append(d['receipt_date'])
-                data.append(d['prs_rack'])
                 data.append(d['conserv'])
-                data.append(d['expir_date'])
-                data.append(d['prs_batch_num'])
-                data.append(d['status'])
                 data.append(d['supplier'])
-                data.append(d['prs_buy_price'])
-                data.append(d['prs_sell_price'])
 
                 l_data.append(data)
 

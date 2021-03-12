@@ -71,31 +71,31 @@
                                         <colgroup><col><col><col><col><col><col><col><col><col></colgroup>
                                         <thead>
                                             <tr>
-                                                <th class="text-center" hidden>
+                                                <th class="text-left" hidden>
                                                     <span>id_data</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Action") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Statut") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Urgent") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("N° dossier") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Création dossier") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Code patient") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Nom") }}</span>
                                                 </th>
-                                                <th class="text-center">
+                                                <th class="text-left">
                                                     <span>{{ _("Prénom") }}</span>
                                                 </th>
                                             </tr>
@@ -225,7 +225,7 @@ $("#listing_dos_total").html( data_len ) ;
     {
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown">{{ _("Action") }}</a>' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' +
                    {% if session['user_id_role'] < 4 %}
@@ -244,14 +244,14 @@ $("#listing_dos_total").html( data_len ) ;
         tr_style = '' ;
 
     res += '<tr ' + tr_style + '><td hidden><div>' + data_records[i].id_data + '</div></td>' +
-           '<td><div class="text-center">' + menu_act + '</div></td>' +
-           '<td><div class="text-center">' + status_rec_with_det( data_records[i].stat, data_records[i].id_data, data_records[i].num_dos_long ) + '</div></td>' +
-           '<td><div class="text-center">' + emer( data_records[i].urgent ) + '</div></td>' +
-           '<td><div class="text-center"><span class="rec-num" title="' + data_records[i].num_dos_long + '">' + data_records[i].num_dos + '</span></div></td>' +
-           '<td><div class="text-center">' + data_records[i].date_dos + '</div></td>' +
-           '<td><div class="text-center">' + data_records[i].code + '</div></td>' +
-           '<td><div class="text-center">' + data_records[i].nom + '</div></td>' +
-           '<td><div class="text-center">' + data_records[i].prenom + '</div></td></tr>' ;
+           '<td><div class="text-left">' + menu_act + '</div></td>' +
+           '<td><div class="text-left">' + status_rec_with_det( data_records[i].stat, data_records[i].id_data, data_records[i].num_dos_long ) + '</div></td>' +
+           '<td><div class="text-left">' + emer( data_records[i].urgent ) + '</div></td>' +
+           '<td><div class="text-left"><span class="rec-num" title="' + data_records[i].num_dos_long + '">' + data_records[i].num_dos + '</span></div></td>' +
+           '<td><div class="text-left">' + data_records[i].date_dos + '</div></td>' +
+           '<td><div class="text-left">' + data_records[i].code + '</div></td>' +
+           '<td><div class="text-left">' + data_records[i].nom + '</div></td>' +
+           '<td><div class="text-left">' + data_records[i].prenom + '</div></td></tr>' ;
     }
 {% endif %}
 

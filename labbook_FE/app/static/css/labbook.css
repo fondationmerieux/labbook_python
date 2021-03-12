@@ -989,18 +989,21 @@ color         : #71B330;
 
 .menu-act
 {
-color         : rgba(0, 0, 0, 0);
 padding       : 3px !important;
-padding-left  : 10px !important;
-padding-right : 10px !important;
+padding-left  : 30px !important;
+padding-right : 30px !important;
+background-color    : transparent;
+background-repeat   : no-repeat;
+background-image    : url("/static/img/info.png");
+background-position : left center;
 }
 
 .menu-act:hover
 {
 color         : black;
 padding       : 3px !important;
-padding-left  : 10px !important;
-padding-right : 10px !important;
+padding-left  : 30px !important;
+padding-right : 30px !important;
 }
 
 .menu-act-drop

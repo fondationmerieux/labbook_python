@@ -169,26 +169,22 @@ class Quality:
             if 'prod_type' in args and args['prod_type'] > 0:
                 filter_cond += ' and prd_type = ' + str(args['prod_type'])
 
-            if 'prod_stat' in args and args['prod_stat'] > 0:
-                filter_cond += ' and prs_status = ' + str(args['prod_stat'])
+            if 'prod_conserv' in args and args['prod_conserv'] > 0:
+                filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
 
-        Quality.log.error(Logs.fileline() + ' : filter_cond=' + filter_cond)
-
-        req = ('select prs_ser, prd_name, sum(prs_nb_pack) as prs_nb_pack, prd_nb_by_pack, '
+        req = ('select prs_ser, prs_prd, prd_name, sum(prs_nb_pack) as prs_nb_pack, prd_nb_by_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, '
-               'dict1.label as type, max(prs_receipt_date) as receipt_date, prs_rack, dict2.label as conserv, '
-               'min(prs_expir_date) as expir_date, prs_batch_num, dict3.label as status, '
-               'sup.fournisseur_nom as supplier, prs_buy_price, prs_sell_price '
+               'dict1.label as type,  dict2.label as conserv, '
+               'sup.fournisseur_nom as supplier '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
                'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
-               'left join sigl_dico_data as dict3 on dict3.id_data=prs_status '
                'where ' + filter_cond + ' ' +
                'group by prd_name, prd_nb_by_pack '
-               'order by expir_date asc, prd_name asc ' + limit)
+               'order by prd_name asc ' + limit)
 
         cursor.execute(req)
 
