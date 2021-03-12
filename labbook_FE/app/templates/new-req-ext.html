@@ -49,7 +49,7 @@ $("#search_patient").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
-    multiple: true,
+    multiple: false,
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
@@ -118,7 +118,7 @@ $("#search_patient").on("select2:select", function (e)
 
 function new_pat() 
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/0";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/E/0";
 }
 
 function return_home()

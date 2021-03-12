@@ -341,14 +341,14 @@ var opt_yorn      = {{ ihm['yorn']|safe }} ;
 {% if entry == 'Y' %}
 function change_pat( id_pat ) 
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/" + id_pat ;
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/E/" + id_pat ;
 }
 
 $("#search_doctor").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
-    multiple: true,
+    multiple: false,
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
@@ -380,7 +380,7 @@ $("#search_analysis").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
-    multiple: true,
+    multiple: false,
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {

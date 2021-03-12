@@ -1315,11 +1315,11 @@ def new_req_int():
 
 
 # Page : patient details
-@app.route('/det-patient/<int:id_pat>')
-def det_patient(id_pat=0):
+@app.route('/det-patient/<string:type_req>/<int:id_pat>')
+def det_patient(type_req='E', id_pat=0):
     log.info(Logs.fileline() + ' : TRACE det-patient id_pat = ' + str(id_pat))
 
-    session['current_page'] = 'det-patient/' + str(id_pat)
+    session['current_page'] = 'det-patient/' + type_req + '/' + str(id_pat)
     session.modified = True
 
     json_data = {}
@@ -1355,7 +1355,7 @@ def det_patient(id_pat=0):
 
     log.info(Logs.fileline() + ' : DEBUG det-patient processing time = ' + str(dt_time_req))
 
-    return render_template('det-patient.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-patient.html', type_req=type_req, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : external request details

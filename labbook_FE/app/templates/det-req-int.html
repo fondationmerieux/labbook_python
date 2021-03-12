@@ -350,7 +350,7 @@ var opt_yorn      = {{ ihm['yorn']|safe }} ;
 {% if entry == 'Y' %}
 function change_pat( id_pat ) 
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/" + id_pat ;
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/I/" + id_pat ;
 }
 
 $("#search_doctor").select2(
