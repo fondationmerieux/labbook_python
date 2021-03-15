@@ -86,11 +86,11 @@ class User:
             cursor.execute('insert into sigl_user_data '
                            '(creation_date, id_owner, id_group, username, password, cps_id, rpps, status, firstname, '
                            'lastname, locale, email, titre, initiale, ddn, adresse, tel, darrive, position, cv, diplome, '
-                           'formation, section, deval, commentaire) '
+                           'formation, section, deval, side_account, commentaire) '
                            'values (NOW(), %(id_owner)s, %(id_group)s, %(username)s, %(password)s, %(cps_id)s, %(rpps)s, '
                            '%(status)s, %(firstname)s, %(lastname)s, %(locale)s, %(email)s, %(titre)s, %(initiale)s, '
                            '%(ddn)s, %(adresse)s, %(tel)s, %(darrive)s, %(position)s, %(cv)s, %(diplome)s, %(formation)s, '
-                           '%(section)s, %(deval)s, side_account=%(side_account)s, %(commentaire)s)', params)
+                           '%(section)s, %(deval)s, %(side_account)s, %(commentaire)s)', params)
 
             User.log.info(Logs.fileline())
 
@@ -244,47 +244,49 @@ class User:
         if not args:
             limit = 'LIMIT 500'
 
-            filter_cond += ' and status=29 '  # remove deleted users by default
+            filter_cond += ' and u.status=29 '  # remove deleted users by default
         else:
             limit = 'LIMIT 500'
             # filter conditions
             if args['login']:
-                filter_cond += ' and username LIKE "%' + args['login'] + '%" '
+                filter_cond += ' and u.username LIKE "%' + args['login'] + '%" '
 
             if 'group' in args and args['group'] > 0:
                 filter_cond += ' and group=' + str(args['group']) + ' '
 
             if args['firstname']:
-                filter_cond += ' and firstname LIKE "%' + args['firstname'] + '%" '
+                filter_cond += ' and u.firstname LIKE "%' + args['firstname'] + '%" '
 
             if args['lastname']:
-                filter_cond += ' and lastname LIKE "%' + args['lastname'] + '%" '
+                filter_cond += ' and u.lastname LIKE "%' + args['lastname'] + '%" '
 
             if 'status' in args and args['status'] > 0:
-                stat = 'status=' + str(args['status'])
+                stat = 'u.status=' + str(args['status'])
 
                 # Keep compatibility with old delete user where status = 31
                 if args['status'] == 30:
-                    stat = "(status=30 or status=31)"
+                    stat = "(u.status=30 or u.status=31)"
 
                 filter_cond += ' and ' + stat + ' '
             else:
-                filter_cond += ' and status=29 '  # keep only activated users by default
+                filter_cond += ' and u.status=29 '  # keep only activated users by default
 
             if 'role' in args and args['role'] > 0:
                 filter_cond += ' and r.id_role=' + str(args['role']) + ' '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
-        req = 'select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '\
-              'u.initiale as initial, u.ddn as birth, u.adresse as address, u.tel as phone, u.email, '\
-              'u.darrive as arrived, u.position as position, dict.label as section, u.deval as last_eval, '\
-              'date_format(u.creation_date, %s) as date_create, r.label as role, u.oauth_provider_id_user as id_origin '\
-              'from sigl_pj_group_link as gl '\
-              'inner join sigl_user_data as u on u.id_group=gl.id_group '\
-              'inner join sigl_pj_role as r on gl.id_role=r.id_role '\
-              'left join sigl_dico_data as dict on dict.id_data=u.section '\
-              'where gl.id_group_parent=%s ' + filter_cond +\
-              'group by u.id_data order by u.creation_date asc ' + limit
+        req = ('select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '
+               'u.initiale as initial, u.ddn as birth, u.adresse as address, u.tel as phone, u.email, '
+               'u.darrive as arrived, u.position as position, dict.label as section, u.deval as last_eval, '
+               'date_format(u.creation_date, %s) as date_create, r.label as role, u.oauth_provider_id_user as id_origin, '
+               'COALESCE(u2.username, "") as origin '
+               'from sigl_pj_group_link as gl '
+               'inner join sigl_user_data as u on u.id_group=gl.id_group '
+               'inner join sigl_pj_role as r on gl.id_role=r.id_role '
+               'left join sigl_user_data as u2 on u2.id_data=u.oauth_provider_id_user '
+               'left join sigl_dico_data as dict on dict.id_data=u.section '
+               'where gl.id_group_parent=%s ' + filter_cond +
+               'group by u.id_data order by u.creation_date asc ' + limit)
 
         cursor.execute(req, (Constants.cst_isodate, id_lab,))
 

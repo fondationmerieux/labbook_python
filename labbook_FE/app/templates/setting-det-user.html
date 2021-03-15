@@ -37,8 +37,12 @@
                 <div id="search_account" class="form-group row {% if args['id_role'] != 9 %}d-none{% endif %}">
                     <label for="search_doctor" class="col-form-label col-3 text-right">{{ _("Prescripteur associé") }}</label>
                     <div>
-                        <select id="search_doctor" style="width:330px"></select>
-                        <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                        <select id="search_doctor" style="width:450px"></select>
+                        {% if args['side_account'] == 0 %}
+                        <button type="button" onclick="new_doctor();" id="btn_doctor" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                        {% else %}
+                        <br /><div class="mt-2">{{ args['prescriber'] }}</div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -293,7 +297,7 @@ var id_pres   = $("#search_doctor").val() ;
 
 var msg = "" ;
 
-    if (id_pres == "")
+    if (id_pres == "" || id_pres == null)
     id_pres= 0 ;
 
     if (login == "")
@@ -384,6 +388,11 @@ let val = $(elem).val() ;
     $("#search_account").removeClass('d-none') ;
     else
     $("#search_account").addClass('d-none') ;
+}
+
+function new_doctor()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-doctor/0";
 }
 
 function cancel()

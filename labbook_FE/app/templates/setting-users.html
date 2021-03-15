@@ -118,7 +118,7 @@
                 <span><a class="link" id="last_user" onclick="display_user(p_max);">{{ _("Dernier") }}</a></span>
             </div>
 
-            <div class="mb-5">
+            <div class="clearfix mb-5">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
@@ -129,10 +129,9 @@
                     <input type="button" onclick="add_user();" id="btn_add" value="{{ _("Ajouter un utilisateur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-            <div class="clearfix"></div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -179,14 +178,14 @@ let param = '{ "login":"' + login + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                  {
                  $('#dial-wait').modal("hide") ;
-                 }, 1000) ;
+                 }, 600) ;
 
             console.log("ERROR user list") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
@@ -258,7 +257,7 @@ $("#list_users_total").html( data_len ) ;
            '<td><div class="text-left">' + data_users[i].date_create + '</div></td>' +
            '<td><div class="text-left">' + data_users[i].role + '</div></td>' +
            '<td><div class="text-left">' + data_users[i].section + '</div></td>' +
-           '<td><div class="text-left">' + data_users[i].id_origin + '</div></td></tr>' ;
+           '<td><div class="text-left">' + data_users[i].origin + '</div></td></tr>' ;
     }
 {% endif %}
 
