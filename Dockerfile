@@ -33,13 +33,13 @@ RUN mkdir -p /home/supervisor/log \
 COPY supervisor/etc /home/supervisor/etc
 
 # alias
-RUN cat <<%     >> /root/.bashrc \
+RUN cat >> /root/.bashrc <<% \
 alias ls='ls --color=auto' \
 alias l.='ls -d .* --color=auto' \
 alias l='ls -CF' \
 alias la='ls -A' \
 alias ll='ls -alF' \
-%
+% 
 
 # install venv labbook_FE
 COPY labbook_FE/requirements.txt /home/apps/labbook_FE/labbook_FE
