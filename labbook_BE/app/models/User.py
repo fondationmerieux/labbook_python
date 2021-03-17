@@ -5,6 +5,7 @@ import mysql.connector
 from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class User:
@@ -25,13 +26,27 @@ class User:
         if not res or res['nb_user'] != 1:
             return False
 
+        # save in sigl_evtlog_data this connection
+        req = 'select id_data '\
+              'from sigl_user_data '\
+              'where status != 31 and username=%s and password=%s'  # 31 = deleted user
+
+        cursor.execute(req, (login, pwd,))
+
+        res = cursor.fetchone()
+
+        Various.insertEvent(id_user=res['id_data'],
+                            type='17',
+                            name='EVT_LOGIN',
+                            message='')
+
         return True
 
     @staticmethod
     def getUserByLogin(login):
         cursor = DB.cursor()
 
-        req = 'select g.id_group, g.name, g.id_axis, l.id_role, '\
+        req = 'select g.id_group, g.name, g.id_axis, l.id_role, u.side_account, '\
               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '\
               'from sigl_pj_group as g '\
@@ -47,7 +62,7 @@ class User:
     def getUserByIdGroup(id_group):
         cursor = DB.cursor()
 
-        req = 'select g.id_group, g.name, g.id_axis, '\
+        req = 'select g.id_group, g.name, g.id_axis, u.side_account, '\
               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '\
               'from sigl_pj_group as g '\
@@ -223,7 +238,7 @@ class User:
 
         cursor = DB.cursor()
 
-        req = 'select g.id_group, g.name, g.id_axis, '\
+        req = 'select g.id_group, g.name, g.id_axis, u.side_account, '\
               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '\
               'from sigl_pj_group as g '\
@@ -324,6 +339,23 @@ class User:
         ret = {}
 
         return ret
+
+    @staticmethod
+    def getUserConnections(date_beg, date_end):
+        cursor = DB.cursor()
+
+        limit = ' limit 50000'
+
+        req = ('select e.id_owner as id_user, COALESCE(u.username, "") as username, e.evt_datetime as date, '
+               'e.evt_name as event, e.message '
+               'from sigl_evtlog_data as e '
+               'left join sigl_user_data as u on u.id_data=e.id_owner '
+               'where (e.evt_datetime between %s and %s) and e.evt_type=17 '
+               'order by e.evt_datetime ' + limit)
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
 
     @staticmethod
     def getPasswordDB(pwd, salt=''):

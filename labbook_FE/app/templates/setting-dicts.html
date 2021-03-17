@@ -112,7 +112,10 @@ let param = '{ "name":"' + name + '", ' +
               '"code":"' + code + '"}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( {
        type: "POST",

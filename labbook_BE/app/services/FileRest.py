@@ -141,7 +141,7 @@ class FileStorage(Resource):
         if not storage:
             self.log.error(Logs.fileline() + ' : TRACE FileStorage not found')
             # We create a first storage
-            ret = File.insertStorage(id_owner=id_group, path='/space/applisdata/labbook/storage')
+            ret = File.insertStorage(id_owner=id_group, path=Constants.cst_storage)
 
             if ret <= 0:
                 self.log.info(Logs.fileline() + ' : TRACE FileStorage ERROR insert storage')

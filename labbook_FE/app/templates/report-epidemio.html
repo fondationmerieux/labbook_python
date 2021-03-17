@@ -79,7 +79,7 @@
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div>
 
-        </div><!-- close main -->
+        </div>
     </div>
 </div><!-- close content -->
 {% endblock %}
@@ -112,7 +112,10 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "epidemio"}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( 
     {
@@ -124,9 +127,9 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         success: function(ret)
         {
             setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 600) ;
         
         let today = new Date();
         
@@ -147,9 +150,9 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         error: function(ret)
         {
             setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 600) ;
 
         alert("{{ _("Erreur lors de la génération du fichier") }}") ;
         }

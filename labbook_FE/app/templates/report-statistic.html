@@ -384,7 +384,10 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "statistic"}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( 
     {
@@ -396,9 +399,9 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         success: function(ret)
         {
             setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 1000) ;
         
         let today = new Date();
         
@@ -419,9 +422,9 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         error: function(ret)
         {
             setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 1000) ;
 
         alert("{{ _("Erreur lors de la génération du fichier") }}") ;
         }

@@ -16,7 +16,7 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Approvisionner un produit") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group row">
-                    <label for="search_product" class="col-form-label col-3 text-right mr-1">{{ _("Produit") }}</label>
+                    <label for="search_product" class="col-form-label col-3 text-right mr-1">{{ _("Produit") }} *</label>
                     <div>
                         {% if args['prs_ser'] == 0 %}
                         <select id="search_product" style="width:400px"></select>
@@ -27,23 +27,11 @@
                 </div>
 
                 <div class="form-group row mt-3">
-                    <label for="prs_nb_pack" class="col-form-label col-3 text-right mr-1">{{ _("Nombre de paquets") }}</label>
+                    <label for="prs_nb_pack" class="col-form-label col-3 text-right mr-1">{{ _("Nombre de paquets") }} *</label>
                     <div>
                         <input id="prs_nb_pack" type="number" value="{{ args['stock_product']['prs_nb_pack'] }}" min="1" step="1" class="form-control">
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mr-1">{{ _("Etat du produit") }}</label>
-                    <div>
-                        <select name="prs_status" id="prs_status" class="form-control">
-                            <option value="0" selected="selected"></option>
-                            {% for prod_stat in ihm['product_status'] %}
-                            <option value="{{ prod_stat['id_data'] }}" {% if args['stock_product']['prs_status'] == prod_stat['id_data'] %} selected {% endif %}>{{ prod_stat['label'] }}</option>
-                            {% endfor %}
-                        </select>       
-                    </div>
-                </div> 
 
                 <div class="form-group row">
                     <label for="prs_receipt_date" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
@@ -53,14 +41,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="prs_expir_date" class="col-form-label col-3 text-right mt-2">{{ _("Date d'expiration") }}</label>
+                    <label for="prs_expir_date" class="col-form-label col-3 text-right mt-2">{{ _("Date d'expiration") }} *</label>
                     <div>					
                         <input id="prs_expir_date" name="prs_expir_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_expir_date'] }}" style="color: #888;">
                     </div>
                 </div>
 
                 <div class="form-group row mt-3">
-                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Etagère") }}</label>
+                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Localisation") }}</label>
                     <div>					
                         <input type="text" name="prs_rack" id="prs_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control">			
                     </div>
@@ -79,13 +67,7 @@
                         <input type="number" name="prs_buy_price" id="prs_buy_price" value="{{ args['stock_product']['prs_buy_price'] }}" min="0" step="0.01" class="form-control">			
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    <label for="prs_sell_price" class="col-form-label col-3 text-right mt-2">{{ _("Prix de vente") }}</label>
-                    <div class="">					
-                        <input type="number" name="prs_sell_price" id="prs_sell_price" value="{{ args['stock_product']['prs_sell_price'] }}" min="0" step="0.01" class="form-control">			
-                    </div>
-                </div>
+                
             </form>
             
             <div class="my-2 clearfix">
@@ -96,8 +78,8 @@
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -147,7 +129,6 @@ var id_owner     = {{ session['user_id_group']|safe }} ;
 var prs_ser      = {{ args['prs_ser']|safe }} ;
 var prs_prd      = {% if args['prs_ser'] == 0 %}$("#search_product").val(){% else %}{{ args['stock_product']['prs_prd']|safe }}{% endif %} ;
 var prs_nb_pack  = $("#prs_nb_pack").val()      ;
-var prs_status   = $("#prs_status").val()       ;
 var receipt_date = $("#prs_receipt_date").val() ;
 var expir_date   = $("#prs_expir_date").val()   ;
 var rack         = $("#prs_rack").val()         ;
@@ -172,7 +153,6 @@ var msg = "" ;
 var param = '{ "id_owner":' + id_owner + ', ' +
               '"prs_prd":' + prs_prd + ', ' +
               '"prs_nb_pack":' + prs_nb_pack + ', ' +
-              '"prs_status":' + prs_status + ', ' +
               '"prs_receipt_date":"' + receipt_date + '", ' +
               '"prs_expir_date":"' + expir_date + '", ' +
               '"prs_rack":"' + rack + '", ' +

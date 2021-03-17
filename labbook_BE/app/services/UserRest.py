@@ -442,3 +442,57 @@ class UserCount(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE UserNbUsers')
         return compose_ret(nb_users, Constants.cst_content_type_json)
+
+
+class UserConnExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_data = [['id_user', 'username', 'date', 'event', ]]
+
+        if 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : UserConnExport ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        dict_data = User.getUserConnections(args['date_beg'], args['date_end'])
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['id_user'])
+                data.append(d['username'])
+
+                if d['date']:
+                    d['date'] = datetime.strftime(d['date'], '%Y-%m-%d')
+                else:
+                    d['date'] = ''
+
+                data.append(d['date'])
+                data.append(d['event'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            filename = 'user-conn_' + args['date_beg'] + '_' + args['date_end'] + '.csv'
+
+            with open('tmp/' + filename, mode='w') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post UserConnExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE UserConnExport')
+        return compose_ret('', Constants.cst_content_type_json)

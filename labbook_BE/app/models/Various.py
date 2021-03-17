@@ -11,6 +11,23 @@ class Various:
     log = logging.getLogger('log_db')
 
     @staticmethod
+    def insertEvent(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_evtlog_data '
+                           '(id_owner, evt_datetime, evt_type, evt_name, message) '
+                           'values '
+                           '(%(id_user)s, NOW(), %(type)s, %(name)s, %(message)s)', params)
+
+            Various.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Various.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
     def getDicoById(id_data):
         cursor = DB.cursor()
 

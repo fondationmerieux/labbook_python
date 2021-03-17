@@ -504,7 +504,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"valid_res":' + valid_res + '}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( {
         type: "POST",
@@ -521,14 +524,14 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             console.log("ERROR result list") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des résultats") }}") ;

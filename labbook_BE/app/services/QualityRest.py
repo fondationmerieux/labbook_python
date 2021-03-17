@@ -999,6 +999,14 @@ class StockList(Resource):
                 if stock[key] is None:
                     stock[key] = ''
 
+            if stock['expir_date']:
+                delta = stock['expir_date'] - datetime.now()
+                stock['day_to_expir'] = delta.days
+                stock['expir_date']   = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
+            else:
+                stock['day_to_expir'] = 0
+                stock['expir_date'] = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
+
             if stock['pru_nb_pack']:
                 stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
             else:
@@ -1012,6 +1020,46 @@ class StockList(Resource):
             stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'])
 
         self.log.info(Logs.fileline() + ' : TRACE StockList')
+        return compose_ret(l_stocks, Constants.cst_content_type_json)
+
+
+class StockListDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        l_stocks = Quality.getStockListDet(id_item)
+
+        if not l_stocks:
+            self.log.error(Logs.fileline() + ' : TRACE StockListDet not found')
+
+        for stock in l_stocks:
+            # Replace None by empty string
+            for key, value in stock.items():
+                if stock[key] is None:
+                    stock[key] = ''
+
+            if stock['prs_receipt_date']:
+                stock['prs_receipt_date'] = datetime.strftime(stock['prs_receipt_date'], '%Y-%m-%d')
+
+            if stock['prs_expir_date']:
+                delta = stock['prs_expir_date'] - datetime.now()
+                stock['day_to_expir'] = delta.days
+                stock['prs_expir_date']   = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
+            else:
+                stock['day_to_expir'] = 0
+                stock['prs_expir_date'] = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
+
+            if stock['pru_nb_pack']:
+                stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
+            else:
+                stock['pru_nb_pack'] = 0
+
+            if stock['prs_nb_pack']:
+                stock['prs_nb_pack'] = float(stock['prs_nb_pack']) - float(stock['pru_nb_pack'])
+            else:
+                stock['prs_nb_pack'] = 0
+
+        self.log.info(Logs.fileline() + ' : TRACE StockListDet')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 
@@ -1052,7 +1100,8 @@ class StockProductDet(Resource):
         args = request.get_json()
 
         if 'prd_name' not in args or 'prd_type' not in args or 'prd_nb_by_pack' not in args or \
-           'prd_supplier' not in args or 'prd_ref_supplier' not in args or 'prd_conserv' not in args:
+           'prd_supplier' not in args or 'prd_ref_supplier' not in args or \
+           'prd_conserv' not in args or 'prd_safe_limit' not in args:
             self.log.error(Logs.fileline() + ' : StockProductDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -1062,6 +1111,7 @@ class StockProductDet(Resource):
                                              prd_name=args['prd_name'],
                                              prd_type=args['prd_type'],
                                              prd_nb_by_pack=args['prd_nb_by_pack'],
+                                             prd_safe_limit=args['prd_safe_limit'],
                                              prd_supplier=args['prd_supplier'],
                                              prd_ref_supplier=args['prd_ref_supplier'],
                                              prd_conserv=args['prd_conserv'])
@@ -1075,6 +1125,7 @@ class StockProductDet(Resource):
             ret = Quality.insertStockProduct(prd_name=args['prd_name'],
                                              prd_type=args['prd_type'],
                                              prd_nb_by_pack=args['prd_nb_by_pack'],
+                                             prd_safe_limit=args['prd_safe_limit'],
                                              prd_supplier=args['prd_supplier'],
                                              prd_ref_supplier=args['prd_ref_supplier'],
                                              prd_conserv=args['prd_conserv'])
@@ -1095,9 +1146,9 @@ class StockSupplyDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_status' not in args or \
+        if 'prs_prd' not in args or 'prs_nb_pack' not in args or \
            'prs_receipt_date' not in args or 'prs_expir_date' not in args or 'prs_rack' not in args or \
-           'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_sell_price' not in args:
+           'prs_batch_num' not in args or 'prs_buy_price' not in args:
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -1106,13 +1157,11 @@ class StockSupplyDet(Resource):
             ret = Quality.updateStockProduct(prs_ser=id_item,
                                              prs_prd=args['prs_prd'],
                                              prs_nb_pack=args['prs_nb_pack'],
-                                             prs_status=args['prs_status'],
                                              prs_receipt_date=args['prs_receipt_date'],
                                              prs_expir_date=args['prs_expir_date'],
                                              prs_rack=args['prs_rack'],
                                              prs_batch_num=args['prs_batch_num'],
-                                             prs_buy_price=args['prs_buy_price'],
-                                             prs_sell_price=args['prs_sell_price'])
+                                             prs_buy_price=args['prs_buy_price'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StockSupplyDet ERROR update')
@@ -1122,13 +1171,11 @@ class StockSupplyDet(Resource):
         else:
             ret = Quality.insertStockSupply(prs_prd=args['prs_prd'],
                                             prs_nb_pack=args['prs_nb_pack'],
-                                            prs_status=args['prs_status'],
                                             prs_receipt_date=args['prs_receipt_date'],
                                             prs_expir_date=args['prs_expir_date'],
                                             prs_rack=args['prs_rack'],
                                             prs_batch_num=args['prs_batch_num'],
-                                            prs_buy_price=args['prs_buy_price'],
-                                            prs_sell_price=args['prs_sell_price'])
+                                            prs_buy_price=args['prs_buy_price'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : StockSupplyDet ERROR insert')
@@ -1157,6 +1204,17 @@ class StockUse(Resource):
         if ret <= 0:
             self.log.error(Logs.alert() + ' : StockUse ERROR insert')
             return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # check if it is the last pack to use
+        PackSupply = Quality.getNbStockSupply(args['pru_prs'])
+        PackUse    = Quality.getNbStockUse(args['pru_prs'])
+
+        if (PackSupply['nb_pack'] - PackUse['nb_pack']) == 0:
+            ret = Quality.emptyStockSupply(args['pru_prs'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : StockUse ERROR empty prs_ser=' + str(args['pru_prs']))
+                return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockUse pru_prs=' + str(args['pru_prs']))
         return compose_ret('', Constants.cst_content_type_json)

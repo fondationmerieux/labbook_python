@@ -292,7 +292,10 @@ let param = '{ "code":"' + code + '", ' +
             '"city":"' + city  + '"}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( 
     {
@@ -306,7 +309,7 @@ let param = '{ "code":"' + code + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
         
         let today = new Date();
 
@@ -329,7 +332,7 @@ let param = '{ "code":"' + code + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             if (ret.status == 404)
             alert("{{ _("Aucun prescripteur à exporter !") }}") ;

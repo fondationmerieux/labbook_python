@@ -14,7 +14,19 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Détails produit") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group row mt-3">
-                    <label for="prd_name" class="col-form-label col-3 text-right mr-1">{{ _("Nom du produit") }}</label>
+                    <label for="search_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Fournisseur") }}</label>
+                    <div>
+                        <select id="search_supplier" style="width:400px"></select>
+                        {% if  args['prd_ser'] == 0 %}
+                        <button type="button" onclick="new_supplier();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                        {% else %}
+                        <br /><span class="ml-2">{{ args['stock_product']['supplier_name'] }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="prd_name" class="col-form-label col-3 text-right mr-1">{{ _("Nom du produit") }} *</label>
                     <div>
                         <input id="prd_name" type="text" value="{{ args['stock_product']['prd_name'] }}" maxlength="50" class="form-control">
                     </div>
@@ -33,18 +45,16 @@
                 </div> 
 
                 <div class="form-group row">
-                    <label for="prd_nb_by_pack" class="col-form-label col-3 text-right mt-2">{{ _("Nombre par paquet") }}</label>
+                    <label for="prd_nb_by_pack" class="col-form-label col-3 text-right mt-2">{{ _("Nombre par paquet") }} *</label>
                     <div class="">					
                         <input type="number" name="prd_nb_by_pack" id="prd_nb_by_pack" value="{{ args['stock_product']['prd_nb_by_pack'] }}" min="1" step="1" class="form-control">			
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="search_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Fournisseur") }}</label>
-                    <div>
-                        <select id="search_supplier" style="width:400px"></select>
-                        <button type="button" onclick="new_supplier();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
-                        <span class="ml-2">{{ args['stock_product']['supplier_name'] }}</span>
+                    <label for="prd_safe_limit" class="col-form-label col-3 text-right mt-2">{{ _("Seuil de sécurité") }} *</label>
+                    <div class="">					
+                        <input type="number" name="prd_safe_limit" id="prd_safe_limit" value="{{ args['stock_product']['prd_safe_limit'] }}" min="0" step="1" class="form-control">			
                     </div>
                 </div>
 
@@ -128,6 +138,7 @@ var prd_ser      = {{ args['prd_ser']|safe }}   ;
 var name         = $("#prd_name").val()         ;
 var type         = $("#prd_type").val()         ;
 var nb_by_pack   = $("#prd_nb_by_pack").val()   ;
+var safe_limit   = $("#prd_safe_limit").val()   ;
 var supplier     = $("#search_supplier").val()  ;
 var ref_supplier = $("#prd_ref_supplier").val() ;
 var conserv      = $("#prd_conserv").val()      ;
@@ -157,6 +168,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prd_name":"' + name + '", ' +
               '"prd_type":' + type + ', ' +
               '"prd_nb_by_pack":' + nb_by_pack + ', ' +
+              '"prd_safe_limit":' + safe_limit + ', ' +
               '"prd_supplier":' + supplier + ', ' +
               '"prd_ref_supplier":"' + ref_supplier + '", ' +
               '"prd_conserv":' + conserv + '}' ;

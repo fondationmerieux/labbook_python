@@ -175,7 +175,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"id_user":' + id_user + '}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( {
         type: "POST",
@@ -194,14 +197,14 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             console.log("ERROR billing list") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
@@ -270,7 +273,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
               '"id_user":0}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( 
     {
@@ -284,7 +290,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
         
         let today = new Date();
         
@@ -307,7 +313,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
         alert("{{ _("Erreur lors de la génération du fichier") }}") ;
         }

@@ -8,3 +8,11 @@ class Constants:
     cst_date_eu  = '%d/%m/%Y'
     cst_date_us  = '%m/%d/%Y'
     cst_date_ymd = '%Y%m%d'
+
+    cst_storage  = '/storage'
+    cst_io       = '/storage/io/'
+    cst_report   = '/storage/report/'
+    cst_resource = '/storage/resource/'
+    cst_upload   = '/storage/upload/'
+
+    cst_tmp = '/home/apps/labbook_BE/labbook_BE/tmp/'

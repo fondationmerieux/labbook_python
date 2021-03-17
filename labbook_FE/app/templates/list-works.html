@@ -157,7 +157,10 @@ let param = '{ "num_rec": "", ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( {
         type: "POST",
@@ -176,14 +179,14 @@ let param = '{ "num_rec": "", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             console.log("ERROR record works list") ;
             alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;

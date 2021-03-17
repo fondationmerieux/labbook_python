@@ -152,7 +152,7 @@ class Quality:
     def getStockList(args):
         cursor = DB.cursor()
 
-        filter_cond = ' prs_ser > 0 '
+        filter_cond = ' prs_empty="N" '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -173,9 +173,9 @@ class Quality:
                 filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
 
         req = ('select prs_ser, prs_prd, prd_name, sum(prs_nb_pack) as prs_nb_pack, prd_nb_by_pack, '
-               'sum(pru_nb_pack) as pru_nb_pack, '
+               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, '
                'dict1.label as type,  dict2.label as conserv, '
-               'sup.fournisseur_nom as supplier '
+               'sup.fournisseur_nom as supplier, Min(prs_expir_date) as expir_date '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser '
@@ -187,6 +187,23 @@ class Quality:
                'order by prd_name asc ' + limit)
 
         cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStockListDet(prd_ser):
+        cursor = DB.cursor()
+
+        req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, prs_batch_num, '
+               'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack '
+               'from product_supply '
+               'inner join product_details on prd_ser=prs_prd '
+               'left join product_use on pru_prs=prs_ser '
+               'where prs_empty="N" and prd_ser=%s '
+               'group by prs_ser '
+               'order by prs_expir_date asc ')
+
+        cursor.execute(req, (prd_ser,))
 
         return cursor.fetchall()
 
@@ -233,7 +250,7 @@ class Quality:
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, '
-               'sup.fournisseur_nom as supplier_name '
+               'sup.fournisseur_nom as supplier_name, prd_safe_limit '
                'from product_details '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'where prd_ser=%s')
@@ -248,10 +265,10 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('insert into product_details '
-                           '(prd_date, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv) '
+                           '(prd_date, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, prd_safe_limit) '
                            'values '
                            '(NOW(), %(prd_name)s, %(prd_type)s, %(prd_nb_by_pack)s, %(prd_supplier)s, '
-                           '%(prd_ref_supplier)s, %(prd_conserv)s)', params)
+                           '%(prd_ref_supplier)s, %(prd_conserv)s, %(prd_safe_limit)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -267,7 +284,8 @@ class Quality:
 
             cursor.execute('update product_details '
                            'set prd_name=%(prd_name)s, prd_type=%(prd_type)s, prd_nb_by_pack=%(prd_nb_by_pack)s, '
-                           'prd_supplier=%(prd_supplier)s, prd_ref_supplier=%(prd_ref_supplier)s, prd_conserv=%(prd_conserv)s '
+                           'prd_supplier=%(prd_supplier)s, prd_ref_supplier=%(prd_ref_supplier)s, '
+                           'prd_conserv=%(prd_conserv)s, prd_safe_limit=%(prd_safe_limit)s '
                            'where prd_ser=%(prd_ser)s', params)
 
             Quality.log.info(Logs.fileline())
@@ -276,6 +294,31 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getNbStockSupply(id_item):
+        cursor = DB.cursor()
+
+        req = ('select prs_nb_pack as nb_pack '
+               'from product_supply '
+               'where prs_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getNbStockUse(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sum(pru_nb_pack) as nb_pack '
+               'from product_use '
+               'where pru_prs=%s '
+               'group by pru_prs')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
 
     @staticmethod
     def deleteStockProduct(id_item):
@@ -298,11 +341,11 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('insert into product_supply '
-                           '(prs_date, prs_prd, prs_nb_pack, prs_status, prs_receipt_date, prs_expir_date, '
-                           'prs_rack, prs_batch_num, prs_buy_price, prs_sell_price) '
+                           '(prs_date, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
+                           'prs_rack, prs_batch_num, prs_buy_price) '
                            'values '
-                           '(NOW(), %(prs_prd)s, %(prs_nb_pack)s, %(prs_status)s, %(prs_receipt_date)s, '
-                           '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s, %(prs_sell_price)s)', params)
+                           '(NOW(), %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
+                           '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -310,6 +353,22 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def emptyStockSupply(prs_ser):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update product_supply '
+                           'set prs_empty="Y" '
+                           'where prs_ser=%s', (prs_ser,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def insertStockUse(**params):

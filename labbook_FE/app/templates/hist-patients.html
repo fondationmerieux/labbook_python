@@ -126,7 +126,10 @@ let param = '{ "code":"' + code + '", ' +
             '"firstname":"' + firstname  + '"}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( {
         type: "POST",
@@ -145,14 +148,14 @@ let param = '{ "code":"' + code + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
             },
         error: function(data)
             {
             setTimeout(function()
                  {
                  $('#dial-wait').modal("hide") ;
-                 }, 1000) ;
+                 }, 600) ;
 
             console.log("ERROR patient list") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;

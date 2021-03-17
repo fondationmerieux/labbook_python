@@ -43,7 +43,7 @@
         </div>
     </div>
 
-</div><!-- ferme le corps -->
+</div><!-- close content -->
 {% endblock %}
 
 {% block add_script %}
@@ -54,6 +54,12 @@ var date_beg = $("#date_beg").val() ;
 var date_end = $("#date_end").val() ;
 var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
 
+    // popup wait
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
+
     $.ajax( 
     {
         type: "POST",
@@ -63,11 +69,23 @@ var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' 
         data: param,
         success: function(ret)
         {
+            setTimeout(function()
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 600) ;
+
         download_file( "PY", "whonet_" + date_beg + "_" + date_end + ".txt", "GEN", 0 ) ;
         },
         error: function(ret)
         {
-        console.log("ERROR POST export whonet");
+            setTimeout(function()
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 600) ;
+
+        if (ret.status == 404)
+        alert("{{ _("Aucun résultats à exporter !") }}") ;
+        else
         alert("{{ _("Erreur lors de la génération du fichier") }}") ;
         }
     } ) ;

@@ -717,7 +717,10 @@ function save_request()
     if ( window.confirm("{{ _("Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)") }}") )
     {
         // popup wait
-        $( "#dial-wait" ).modal( "show" ) ;
+        setTimeout(function()
+        {
+        $('#dial-wait').modal("show") ;
+        }, 600) ;
 
         $.ajax( 
         {
@@ -725,7 +728,7 @@ function save_request()
         url: "/services/patient/combine/" + id_pat1 + "/" + id_pat2,
         success: function(data_pat2)
             {
-            setTimeout(function()
+                setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
                 }, 600) ;
@@ -734,7 +737,7 @@ function save_request()
             },
         error: function(ret)
             {
-            setTimeout(function()
+                setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
                 }, 600) ;

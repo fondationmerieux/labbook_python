@@ -227,14 +227,6 @@ def upgrade():
     except:
         print("ERROR insert into sigl_dico_data a product_conserv (congel)")
 
-    # ADD default storage path
-    try:
-        conn.execute("insert into sigl_storage_data "
-                     "(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) "
-                     "values (100, NOW(), NOW(), 100, '/space/applisdata/labbook/storage' )")
-    except:
-        print("ERROR insert into sigl_storage_data a default storage path")
-
     # ADD NEW USER ROLE
     try:
         conn.execute("insert into sigl_pj_role "

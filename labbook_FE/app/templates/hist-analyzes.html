@@ -258,7 +258,10 @@ let param = '{ "date_beg":"' + date_beg + '", ' +
               '"name":"' + name  + '"}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( 
     {
@@ -272,7 +275,7 @@ let param = '{ "date_beg":"' + date_beg + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
         
         let today = new Date();
 
@@ -295,7 +298,7 @@ let param = '{ "date_beg":"' + date_beg + '", ' +
             setTimeout(function()
                 {
                 $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                }, 600) ;
 
             if (ret.status == 404)
             alert("{{ _("Aucun résultats à exporter !") }}") ;

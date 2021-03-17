@@ -125,7 +125,7 @@
                 <div class="float-right">
                     <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }}" disabled>
                     <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
-                    <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                     <input type="button" onclick="add_user();" id="btn_add" value="{{ _("Ajouter un utilisateur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
@@ -159,7 +159,10 @@ let param = '{ "login":"' + login + '", ' +
             '"status":' + stat + '}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
 
     $.ajax( {
         type: "POST",
@@ -298,6 +301,11 @@ var id_owner = {{ session['user_id_group']|safe}} ;
     }
     else
     return false ; 
+}
+
+function export_conn()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/user-conn-export";
 }
 
 function add_user()

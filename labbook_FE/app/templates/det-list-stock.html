@@ -1,0 +1,302 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Liste détaillé du stock pour ce produit") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste détaillé du stock pour ce produit") }}</span></h2>
+
+            <div>
+                <span>{{ _("Nombre total de lignes") }} :</span>
+                <span id="list_items_total">{% if not args %}0{% endif %}</span>
+            </div>
+            <div>
+                <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <form class="row justify-content-center mt-3" id="items-list">
+                <table id="table_items" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>{{ _("serial") }}</th>
+                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-left cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-left cursor-act">{{ _("Nb de paq.") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date recept.") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date expir.") }}</th>
+                            <th class="text-left cursor-act">{{ _("Localisation") }}</th>
+                            <th class="text-left cursor-act">{{ _("N° lot") }}</th>
+                            <th class="text-left cursor-act">{{ _("Prix d'achat") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_items">
+                    </tbody>
+                </table>
+            </form>
+
+            <div>
+                <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <div class="clearfix mb-5">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="hist_use_item();" id="btn_hist" value="{{ _("Historique consommation") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+
+            <!-- Popup use item -->
+            <div class="modal fade" id="dial-use-item" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Indiquer la quantité de paquet utilisée") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-inline">
+                                <label class="col-form-label mr-1">{{ _("Quantité de paquet") }}</label>
+                                <div>
+                                    <input id="pru_nb_pack" type="number" value="1" min="1" step="1" max="???" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_use_item" id="btn_use_item" value="{{ _("Valider") }}"  onclick="send_use_item();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var id_use_item = 0 ;
+var data_items  = {{ args['det_list_stock']|safe }} ;
+var p_step      = 20 ;
+var p_cur       = 1 ;
+var p_max       = Math.ceil( data_items.length / p_step ) ;
+
+function display_item( num_page )
+{
+let res = ''
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+    $("#tbody_items").empty() ;
+
+{% if not args %}
+res = '<tr>' +
+      '<td colspan="8">' +
+      '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
+{% else %}
+let data_len = data_items.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = '' ;
+
+$("#list_items_total").html( data_len ) ;
+
+    for( i = i_start; i < i_stop; i++ )
+    {
+    let menu_act = '<nav class="">' +
+                   '<ul class="navbar-nav">' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                   '<a class="dropdown-item menu-act-item" href="#" onclick="display_use_item(' + data_items[i].prs_ser + ')">{{ _("Indiquer la quantité utilisée") }}</a>' ;   
+        
+    menu_act += '</div></ul></nav>' ;
+
+    if ( data_items[i].day_to_expir <= 0 )
+    tr_style = 'style="background-color:#FFD5D6;"' ;
+    else if ( data_items[i].day_to_expir <= 14 )
+    tr_style = 'style="background-color:#FFCC66;"' ;
+    else
+    tr_style = '' ;
+
+    res += '<tr ' + tr_style + '><td hidden><div>' + data_items[i].prs_ser + '</div></td>' +
+           '<td><div>' + menu_act + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].prd_name + '</div></td>' +
+           '<td><div class="text-left" id="max_' + data_items[i].prs_ser + '">' + data_items[i].prs_nb_pack + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].prs_receipt_date + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].prs_expir_date + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].prs_rack + '</div></td>' +
+           '<td><div class="text-left">' + data_items[i].prs_batch_num + '</div></td>' +
+           '<td><div class="text-left">' + Number(data_items[i].prs_buy_price / 100 ).toFixed(2) + '</div></td></tr>' ;
+    }
+{% endif %}
+
+    $("#tbody_items").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
+
+    $("#table_items").tablesorter() ;  // sort only data on screen
+}
+
+function display_use_item(id_item)
+{
+id_use_item = id_item ;
+
+let max_item = $("#max_"+id_use_item).html() ;
+
+    if (max_item > 0)
+    {
+        $("#pru_nb_pack").attr("max",max_item) ;    
+
+        setTimeout(function()
+        {
+            $( "#dial-use-item" ).modal( "show" ) ;
+        }, 600) ;
+    }
+}
+
+function send_use_item()
+{
+let id_user     = {{ session['user_id']|safe}} ;
+let pru_nb_pack = $("#pru_nb_pack").val() ;
+let param       = '{ "pru_user": ' + id_user + ', ' +
+                    '"pru_prs":' + id_use_item + ', ' +
+                    '"pru_nb_pack":' + pru_nb_pack + '}' ;
+
+    setTimeout(function()
+        {
+        $('#dial-use-item').modal("hide") ;
+        }, 1000) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/quality/stock/use",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            location.reload() ;
+            },
+        error: function(data)
+            {
+            console.log("ERROR POST stock use") ;
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+            }
+    } ) ;
+}
+
+function hist_use_item()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-stock-product/{{args['prd_ser']|safe }}";
+}
+
+/*
+function export_data()
+{
+let prod_name    = $("#name").val()      ;
+let prod_type    = $("#prod_type").val() ;
+let prod_conserv = $("#prod_conserv").val() ;
+
+let param = '{ "prod_name":"' + prod_name + '", ' +
+              '"prod_type":' + prod_type  + ', ' +
+              '"prod_conserv":' + prod_conserv  + '}' ;
+
+    // popup wait
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/quality/stock/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 600) ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "stock_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            setTimeout(function()
+                {
+                $('#dial-wait').modal("hide") ;
+                }, 600) ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun prescripteur à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+*/
+
+function return_back()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-stock";
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+$( document ).ready( function()
+{
+display_item( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

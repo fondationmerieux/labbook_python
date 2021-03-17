@@ -33,7 +33,7 @@
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                     {% endif %}
                     {% if session['user_role'] != 'Q' %}
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records" class="list-group-item f-list-bio">{{ _("Liste des dossiers") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B" class="list-group-item b-list-bio">{{ _("Liste de travail biologiste") }}</a>
@@ -43,8 +43,8 @@
                     {% endif %}
                     {% if session['user_role'] == 'B' or
                           session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products" class="list-group-item prel-bio">{{ _("Etat des prélèvements en cours") }}</a>
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results" class="list-group-item res-bio">{{ _("Saisie des résultats") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products" class="list-group-item {% if session['user_role'] == 'B' %}prel-bio{% else %}prel-tec{% endif %}">{{ _("Etat des prélèvements en cours") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results" class="list-group-item {% if session['user_role'] == 'B' %}res-bio{% else %}res-tec{% endif %}">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}
                     <a href="#" class="list-group-item home-qualite">{{ _("Management de la Qualité") }}</a>

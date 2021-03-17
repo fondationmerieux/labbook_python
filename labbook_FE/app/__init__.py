@@ -164,12 +164,13 @@ def get_user_data(login):
         if req.status_code == 200:
             json = req.json()
 
-            session['user_id']        = json['id_data']  # not used for now
+            session['user_id']        = json['id_data']
             session['user_id_role']   = json['id_role']
             session['user_id_group']  = json['id_group']
             session['user_name']      = json['username']
             session['user_firstname'] = json['firstname']
             session['user_lastname']  = json['lastname']
+            session['user_side_account'] = json['side_account']
             session.modified = True
 
             if session['user_id_role'] == 1:
@@ -477,6 +478,17 @@ def setting_det_user(user_id=0):
     json_data['user_id'] = user_id
 
     return render_template('setting-det-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : users connection export
+@app.route('/user-conn-export')
+def user_conn_export():
+    log.info(Logs.fileline() + ' : TRACE user-conn-export')
+
+    session['current_page'] = 'user-conn-export'
+    session.modified = True
+
+    return render_template('user-conn-export.html', rand=random.randint(0, 999))
 
 
 # Page : setting new password for a user
@@ -1037,7 +1049,7 @@ def list_records():
     id_pres = 0
 
     if session['user_role'] == 'P':
-        id_pres = session['user_id']
+        id_pres = session['user_side_account']
 
     json_ihm  = {}
     json_data = {}
@@ -3089,6 +3101,66 @@ def list_stock():
     return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
+# Page : details list stock
+@app.route('/det-list-stock/<int:prd_ser>')
+def det_list_stock(prd_ser=0):
+    log.info(Logs.fileline() + ' : TRACE setting det list stock=' + str(prd_ser))
+
+    session['current_page'] = 'det-list-stock/' + str(prd_ser)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['det_list_stock'] = []
+
+    if prd_ser > 0:
+        # Load stock product details
+        try:
+            url = session['server_int'] + '/services/quality/stock/list/det/' + str(prd_ser)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['det_list_stock'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
+
+    json_data['prd_ser'] = prd_ser
+
+    return render_template('det-list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : history of supply and use of a product
+@app.route('/hist-stock-product/<int:prd_ser>')
+def hist_stock_product(prd_ser=0):
+    log.info(Logs.fileline() + ' : TRACE setting hist stock product=' + str(prd_ser))
+
+    session['current_page'] = 'hist-stock-product/' + str(prd_ser)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['hist_stock_prod'] = []
+
+    if prd_ser > 0:
+        # Load history stock product
+        try:
+            url = session['server_int'] + '/services/quality/stock/history/product/' + str(prd_ser)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['hist_stock_prod'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests history stock product failed, err=%s , url=%s', err, url)
+
+    json_data['prd_ser'] = prd_ser
+
+    return render_template('hist-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
 # Page : details of a product
 @app.route('/det-new-product/<int:prd_ser>')
 def det_new_product(prd_ser=0):
@@ -3153,17 +3225,6 @@ def det_stock_product(prs_ser=0):
     json_data = {}
 
     json_data['stock_product'] = []
-
-    # Load product_status
-    try:
-        url = session['server_int'] + '/services/dict/det/product_status'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_ihm['product_status'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)
 
     if prs_ser > 0:
         # Load stock product details
@@ -3329,7 +3390,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # RP => Report
 
     if type == 'PY':
-        filepath = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        filepath = Constants.cst_tmp
         generated_name = filename
     elif type == 'JF':
         # ref = id_file
@@ -3341,7 +3402,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
                 file_info = req.json()
 
                 if file_info:
-                    filepath = os.path.join(file_info['storage'] + '/' + session['redirect_name'], file_info['path'])
+                    filepath = os.path.join(file_info['storage'] + '/upload', file_info['path'])
                     generated_name = file_info['generated_name']
                 else:
                     return False
@@ -3349,7 +3410,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests file document failed, err=%s , url=%s', err, url)
     elif type == 'RP':
-        filepath = '/space/www/apps/labbook/labbook_2.05/files/'
+        filepath = Constants.cst_report
         generated_name = filename
 
         filename = 'cr_' + ref + '.pdf'
@@ -3468,7 +3529,7 @@ def upload_logo():
             log.error(Logs.fileline() + ' : upload-logo failed to get file from request, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-        filepath  = '/space/www/apps/labbook/current/resources/images/'
+        filepath  = Constants.cst_resource
         logo_name = 'logo.png'
 
         log.info(Logs.fileline())

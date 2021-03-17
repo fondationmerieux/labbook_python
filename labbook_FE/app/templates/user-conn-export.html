@@ -1,0 +1,109 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Export connexions utilisateurs") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Export  connexions utilisateurs") }}</span></h2>
+            <form>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group row mt-3">
+                            <label for="date_beg" class="col-form-label col-6 text-right">{{ _("Date du") }} </label>
+                            <div>					
+                                <input id="date_beg" class="form-control" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row mt-3">
+                            <label for="date_end" class="col-form-label col-2 text-right"> {{ _("au") }} </label>
+                            <div>					
+                                <input id="date_end" class="form-control" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="float-left" style="margin-left:0px;">
+                        <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    </div>
+                    <div class="float-right mr-2" style="margin-left:0px;">
+                        <input type="button" onclick="export_conn();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Récupérer les données") }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function export_conn()
+{
+var date_beg = $("#date_beg").val() ;
+var date_end = $("#date_end").val() ;
+var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
+
+    // popup wait
+    setTimeout(function()
+    {
+    $('#dial-wait').modal("show") ;
+    }, 600) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/user/connection/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            setTimeout(function()
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 600) ;
+
+        download_file( "PY", "user-conn_" + date_beg + "_" + date_end + ".csv", "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            setTimeout(function()
+            {
+            $('#dial-wait').modal("hide") ;
+            }, 600) ;
+
+        if (ret.status == 404)
+        alert("{{ _("Aucun résultats à exporter !") }}");
+        else
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage" ;
+}
+
+$( document ).ready( function()
+{
+let year = new Date().getFullYear() ;
+
+let date_beg = year + "-01-01" ;
+
+    $("#date_beg").val( date_beg ) ;
+    $("#date_end").val( "{{ now|date_now }}" ) ;
+} ) ;
+</script>
+{% endblock %}

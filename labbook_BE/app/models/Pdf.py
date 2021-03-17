@@ -9,7 +9,7 @@ from datetime import datetime
 from app.models.Analysis import Analysis
 from app.models.DB import DB
 from app.models.Logs import Logs
-# from app.models.Constants import Constants
+from app.models.Constants import Constants
 from app.models.Patient import Patient
 from app.models.Record import Record
 from app.models.Result import Result
@@ -82,7 +82,7 @@ class Pdf:
             return False
 
         # Generate PDF
-        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        path = Constants.cst_tmp
 
         page_w = int(210 - (sts_margin_left + sts_margin_right))
         page_h = int(297 - (sts_margin_top + sts_margin_bottom))
@@ -128,7 +128,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBill(id_rec):
-        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        path = Constants.cst_tmp
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -282,7 +282,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBillList(l_datas, date_beg, date_end):
-        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        path = Constants.cst_tmp
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -363,10 +363,7 @@ class Pdf:
 
     @staticmethod
     def getPdfReport(id_rec, filename):
-        path = '/space/www/apps/labbook/labbook_2.05/files/'
-        # UNCOMMENT PATH AND FILENAME TO EASY VIEW TEST PDF
-        # path = '/space/www/apps/labbook/labbook_2.05/public/test_pdf_python/'
-        # filename = 'cr_test.pdf'
+        path = Constants.cst_report
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -662,7 +659,7 @@ class Pdf:
 
     @staticmethod
     def getPdfReportGeneric(html_part, filename=''):
-        path = '/home/apps/labbook_BE/labbook_BE/tmp/'
+        path = Constants.cst_tmp
 
         date_now = datetime.now()
         today    = date_now.strftime("%Y%m%d")
@@ -852,7 +849,7 @@ class Pdf:
                 </style>
                 <div style='padding:50px;width:1000px;height:1410px;border:0px;font-family:arial;background-color:#FFF;color:black;font-size:20px;'>"""
 
-        head_logo = '<img src="/space/www/apps/labbook/labbook_2.05/resources/images/logo.png" width="230px;">'
+        head_logo = '<img src="' + Constants.cst_resource + 'logo.png" width="230px;">'
 
         head_name  = Various.getDefaultValue('entete_1')
         head_line2 = Various.getDefaultValue('entete_2')

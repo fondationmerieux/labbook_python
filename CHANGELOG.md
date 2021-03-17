@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - finish non-conformity module
 - backup module
 
+## [3.0.2] - 2021-03-17
+### Changed
+- No more PHP containers
+- Storage management v2
+
 ## [3.0.1] - 2021-03-09
 ### Added
 - Patient management : details and combine records
