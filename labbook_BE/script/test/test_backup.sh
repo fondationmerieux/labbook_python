@@ -22,6 +22,8 @@ VOLUME_NAME="labbook-config-test-volume"
 WORK_DIRECTORY="/tmp/test_backup"
 ENV_PASS="LABBOOK_KEY_PWD"
 PASS_TEST="abcdef"
+ENV_TEST_OK="LABBOOK_TEST_OK"
+ENV_TEST_KO="LABBOOK_TEST_KO"
 KPRI_TEST1="kpri.test1.asc"
 KPUB_TEST1="kpub.test1.asc"
 KPRI_TEST2="kpri.test2.asc"
@@ -125,6 +127,8 @@ $WORK_DIRECTORY/$BACKUP_CMD"
 -v /dev/urandom:/dev/random \
 -v $WORK_DIRECTORY:$WORK_DIRECTORY \
 -e $ENV_PASS \
+-e $ENV_TEST_OK \
+-e $ENV_TEST_KO \
 $TEST_IMAGE \
 $WORK_DIRECTORY/$BACKUP_CMD"
 
@@ -217,6 +221,7 @@ test_genkey() {
     rm -rf "$genkey_dir"
     mkdir -p "$genkey_dir"
 
+    # generate in empty directory
     cmd_stderr=$($run_cmd -d "$genkey_dir" genkey 2>&1)
     status=$?
 
@@ -235,6 +240,40 @@ test_genkey() {
 
     ${_ASSERT_EQUALS_} '"[kpub=$kpub]"' '1' '${#kpub[@]}'
     ${_ASSERT_TRUE_} '"[kpub=$kpub]"' '"[ -f $kpub ]"'
+
+    # (re)generate in non empty directory
+    cmd_stderr=$($run_cmd -d "$genkey_dir" genkey 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    [[ $verbose -eq 1 ]] && ls -l "$genkey_dir"
+
+    kpri=("$genkey_dir"/kpri.*.asc)
+
+    ${_ASSERT_EQUALS_} '"[kpri=$kpri]"' '2' '${#kpri[@]}'
+    ${_ASSERT_TRUE_} '"[kpri=$kpri]"' '"[ -f $kpri ]"'
+
+    kpub=("$genkey_dir"/kpub.*.asc)
+
+    ${_ASSERT_EQUALS_} '"[kpub=$kpub]"' '2' '${#kpub[@]}'
+    ${_ASSERT_TRUE_} '"[kpub=$kpub]"' '"[ -f $kpub ]"'
+
+    # fake fail if asked to
+    export $ENV_TEST_KO="genkey"
+
+    cmd_stderr=$($run_cmd -d "$genkey_dir" genkey 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "status=$status cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "faking" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
 
     return 0
 }
@@ -622,6 +661,20 @@ test_keyexist() {
     status=$?
 
     ${_ASSERT_TRUE_} '$status'
+
+    # fake fail if asked to
+    export $ENV_TEST_KO="keyexist"
+
+    cmd_stderr=$($run_cmd -v -d "$keys_dir" keyexist 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "status=$status cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "faking" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
 }
 
 test_savefiles_nofilepaths() {
@@ -954,6 +1007,43 @@ test_restorefiles_noroot() {
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing root dir"'
 }
 
+test_fake_mode() {
+    local cmd_stderr=""
+    local status=0
+
+    # failing command should fail even if asked to fake OK
+    export $ENV_TEST_OK="genkey"
+
+    cmd_stderr=$($run_cmd genkey 2>&1)
+    status=$?
+
+    ${_ASSERT_FALSE_} '$status'
+
+    # detect command name at the beginning
+    export $ENV_TEST_OK="genkey,other"
+
+    cmd_stderr=$($run_cmd genkey 2>&1)
+    status=$?
+
+    ${_ASSERT_FALSE_} '$status'
+
+    # detect command name in the middle
+    export $ENV_TEST_OK="other,genkey,other"
+
+    cmd_stderr=$($run_cmd genkey 2>&1)
+    status=$?
+
+    ${_ASSERT_FALSE_} '$status'
+
+    # detect command name at the end
+    export $ENV_TEST_OK="other,genkey"
+
+    cmd_stderr=$($run_cmd genkey 2>&1)
+    status=$?
+
+    ${_ASSERT_FALSE_} '$status'
+}
+
 oneTimeTearDown() {
     if [[ $verbose -eq 1 ]]; then
         echo "Verbose mode: skipping rm -rf $WORK_DIRECTORY"
@@ -968,7 +1058,7 @@ docker_cmd=""
 run_cmd=""
 run_cmd_noenv=""
 # change this flag manually for debug phase
-verbose=0
+verbose=1
 this_script=$(basename "$0")
 saved_dir=$(pwd)
 

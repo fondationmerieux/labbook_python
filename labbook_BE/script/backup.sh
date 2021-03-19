@@ -6,6 +6,11 @@
 #
 ENV_PASS="LABBOOK_KEY_PWD"
 ENV_KEY_DIR="LABBOOK_KEY_DIR"
+ENV_STATUS_DIR="LABBOOK_STATUS_DIR"
+ENV_LOG_DIR="LABBOOK_LOG_DIR"
+ENV_TEST_OK="LABBOOK_TEST_OK"
+ENV_TEST_KO="LABBOOK_TEST_KO"
+ENV_USER="LABBOOK_USER"
 KEY_REAL_NAME="LabBook Backup Key"
 WORK_DIRECTORY="/tmp"
 
@@ -36,6 +41,8 @@ usage()
     echo "Commands as described in api.md:"
     echo "  genkey            Create key pair in DIR"
     echo "  keyexist          Check key pair exist in DIR"
+    echo "  initmedia         Initialize media"
+    echo "  listmedia         List medias"
     echo
     echo "Internal commands used for testing:"
     echo "  encrypt           Encrypt INPUT_FILE to DIR/INPUT_FILE.gpg and copy keys to DIR"
@@ -46,6 +53,7 @@ usage()
     echo "                    ARCHIVE_PATH can be omitted"
     echo "  restorefiles      Decrypt INPUT_FILE to ARCHIVE_PATH then restore to ROOT_PATH or VOLUME moutpoint"
     echo "  mountpoint        Display mountpoint directory for VOLUME. Used for testing"
+    echo "  testfake          Display faking mode. Used for testing"
     echo
     echo "Options:"
     echo "  -h                Display this help and exit"
@@ -57,6 +65,9 @@ usage()
     echo "  -V VOLUME         Container volume"
     echo "  -R ROOT_PATH      Root path"
     echo "  -p FILE_PATH      File path, may be repeated"
+    echo "  -s STATUS_FILE    Status file [default=$ENV_STATUS_DIR/command]"
+    echo "  -u USER           Linux user [default=$ENV_USER]"
+    echo "  -U                Include uninitialized medias in list"
     echo
 
     exit 2
@@ -89,7 +100,7 @@ fn_keyexist() {
             ret_status=0
             break
         else
-            [[ $verbose -eq 1 ]] && echo_message "Cannot found $pubkey_file matching $privkey_file"
+            [[ $verbose -eq 1 ]] && echo_message "Cannot find $pubkey_file matching $privkey_file"
         fi
     done
 
@@ -545,7 +556,29 @@ fn_get_mountpoint() {
 # Display error message on stderr and exit
 #
 error_exit() {
-    echo "[$(date +'%Y-%m-%dT%H:%M:%S')] $*" >&2
+    log_message "$*"
+
+    case "$status_format" in
+        backup)
+            if [[ -n "$*" ]]; then
+                backup_message "$*"
+            else
+                backup_message "UNKNOWN ERROR"
+            fi
+            ;;
+
+        *)
+            if [[ -n "$*" ]]; then
+                status_message ""
+                status_message "$*"
+            else
+                status_message ""
+                status_message "UNKNOWN ERROR"
+            fi
+            ;;
+    esac
+
+
     cleanup
     exit 1
 }
@@ -570,24 +603,97 @@ echo_message() {
     echo "[$(date +'%Y-%m-%dT%H:%M:%S')] $*" >&2
 }
 
+#
+# Log message to file or stderr
+#
+log_message() {
+    if [[ -n "$log_file" ]]; then
+        echo "[$(date +'%Y-%m-%dT%H:%M:%S')] $*" >> "$log_file"
+    else
+        echo "[$(date +'%Y-%m-%dT%H:%M:%S')] $*" >&2
+    fi
+}
+
+#
+# Write message to status file
+# If message is empty clears status file
+#
+status_message() {
+    if [[ -n "$status_file" ]]; then
+        if [[ -n "$*" ]]; then
+            echo "$*" >> "$status_file"
+        else
+            true > "$status_file"
+        fi
+    fi
+}
+
+#
+# Write backup message to status file
+#
+# Empty message 
+# OK;YYYY-MM-DD HH:MM:SS
+#
+# Non-empty message
+# ERROR;YYYY-MM-DD HH:MM:SS;message
+#
+backup_message() {
+    if [[ -n "$status_file" ]]; then
+        if [[ -z "$*" ]]; then
+            echo "OK;$(date +'%Y-%m-%d %H:%M:%S')" > "$status_file"
+        else
+            echo "ERROR;$(date +'%Y-%m-%d %H:%M:%S');$*" > "$status_file"
+        fi
+    fi
+}
+
+#
+# Initialize fake mode and fake status
+# Fake mode is active if 'cmd' appears in ENV_TEST_OK or ENV_TEST_KO (of the form cmd,cmd,cmd)
+#
+# Param:
+# - command name
+#
+init_fake_mode() {
+    local cmd_name="$1"
+
+    [[ ",$(printenv $ENV_TEST_OK)," == *,$cmd_name,* ]] && {
+        fake_mode=1
+        fake_status=0
+    }
+
+    [[ ",$(printenv $ENV_TEST_KO)," == *,$cmd_name,* ]] && {
+        fake_mode=1
+        fake_status=1
+    }
+}
+
 #######################
 # Program starts here #
 #######################
 debug=0
 verbose=0
+fake_mode=0
+fake_status=0
 exit_status=0
 saved_dir="$(pwd)"
 tmp_workdir=""
 input_file=""
 output_file=""
+status_file=""
+status_format=""
+log_file=""
 arg_dir=""
 cmd=""
 root_dir="."
 volume=""
 archive=""
 file_paths=()
+user=""
+with_uninitialized=0
+media=""
 
-while getopts "hvi:o:d:V:R:a:p:" option; do
+while getopts "hvi:o:d:V:R:a:p:s:u:Um:" option; do
     case "$option" in
         h)
             usage
@@ -603,6 +709,10 @@ while getopts "hvi:o:d:V:R:a:p:" option; do
 
         o)
             output_file="$OPTARG"
+            ;;
+
+        s)
+            status_file="$OPTARG"
             ;;
 
         d)
@@ -625,6 +735,18 @@ while getopts "hvi:o:d:V:R:a:p:" option; do
             file_paths=("${file_paths[@]}" "$OPTARG")
             ;;
 
+        u)
+            user="$OPTARG"
+            ;;
+
+        U)
+            with_uninitialized=1
+            ;;
+
+        m)
+            media="$OPTARG"
+            ;;
+
         *)
             usage
             ;;
@@ -635,39 +757,176 @@ shift $((OPTIND -1))
 
 cmd="$1"
 
-[[ $verbose -eq 1 ]] && echo_message "cmd=$cmd"
+# Initialize log file
+def_log_dir=$(printenv $ENV_LOG_DIR)
+
+[[ -n "$def_log_dir" ]] && log_file=$(realpath "$def_log_dir/$cmd")
+
+init_fake_mode "$cmd"
+
+[[ $verbose -eq 1 ]] && log_message "cmd=$cmd fake_mode=$fake_mode fake_status=$fake_status"
+
+# Initialize default status file if -s argument was not used.
+# It can stay empty if ENV_STATUS_DIR is not defined, will be verified by each command that needs it.
+if [[ -z "$status_file" ]]; then
+def_status_dir=$(printenv $ENV_STATUS_DIR)
+
+    [[ -n "$def_status_dir" ]] && status_file=$(realpath "$def_status_dir/$cmd")
+fi
 
 case "$cmd" in
     genkey)
         [[ -n "$arg_dir" ]] || arg_dir=$(printenv $ENV_KEY_DIR)
 
-        [[ -n "$arg_dir" ]] || error_exit "missing directory, use -d argument or $ENV_KEY_DIR env variable"
+        [[ -n "$arg_dir" ]] || error_exit "$cmd: missing directory, use -d argument or $ENV_KEY_DIR env variable"
 
         if [[ -n $(printenv $ENV_PASS) ]]; then
-            fn_genkey "$arg_dir" || exit_status=1
+            if [[ $fake_mode -eq 0 ]]; then
+                fn_genkey "$arg_dir" || exit_status=1
+            elif [[ $fake_status -eq 1 ]]; then
+                error_exit "$cmd: faking failure"
+            fi
         else
-            error_exit "cannot find passphrase in $ENV_PASS"
+            error_exit "$cmd: cannot find passphrase in $ENV_PASS"
         fi
+
+        [[ $exit_status -eq 0 ]] && status_message ""
         ;;
 
     keyexist)
         [[ -n "$arg_dir" ]] || arg_dir=$(printenv $ENV_KEY_DIR)
 
-        [[ -n "$arg_dir" ]] || error_exit "missing directory, use -d argument or $ENV_KEY_DIR env variable"
+        [[ -n "$arg_dir" ]] || error_exit "$cmd: missing directory, use -d argument or $ENV_KEY_DIR env variable"
 
-        fn_keyexist "$arg_dir" || exit_status=1
+        if [[ $fake_mode -eq 0 ]]; then
+            fn_keyexist "$arg_dir" || exit_status=1
+        elif [[ $fake_status -eq 1 ]]; then
+            error_exit "$cmd: faking failure"
+        fi
+
+        [[ $exit_status -eq 0 ]] && status_message ""
+        ;;
+
+    initmedia)
+        [[ -n "$user" ]] || user=$(printenv $ENV_USER)
+
+        [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
+
+        [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
+
+        if [[ $fake_mode -eq 0 ]]; then
+            error_exit "$cmd $media: not implemented"
+        elif [[ $fake_status -eq 1 ]]; then
+            error_exit "$cmd: faking failure"
+        fi
+
+        [[ $exit_status -eq 0 ]] && status_message ""
+        ;;
+
+    listmedia)
+        [[ -n "$user" ]] || user=$(printenv $ENV_USER)
+
+        [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
+
+        [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
+
+        if [[ $fake_mode -eq 0 ]]; then
+            error_exit "$cmd $with_uninitialized: not implemented"
+        else
+            if [[ $fake_status -eq 0 ]]; then
+                status_message "USB"
+            else
+                error_exit "$cmd: faking failure"
+            fi
+        fi
+        ;;
+
+    listarchive)
+        [[ -n "$user" ]] || user=$(printenv $ENV_USER)
+
+        [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
+
+        [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
+
+        [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
+
+        if [[ $fake_mode -eq 0 ]]; then
+            error_exit "$cmd $media: not implemented"
+        else
+            if [[ $fake_status -eq 0 ]]; then
+                status_message "backup_SIGL_2018-04-13_15h58m51s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_15h58m52s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_15h58m53s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_16h01m19s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_16h03m12s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_16h06m42s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_16h08m21s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_16h10m02s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_18h38m32s.tar.gz"
+                status_message "backup_SIGL_2018-04-13_18h46m16s.tar.gz"
+                status_message "backup_SIGL_2018-04-15_16h54m15s.tar.gz"
+                status_message "backup_SIGL_2018-04-24_15h55m54s.tar.gz"
+                status_message "backup_SIGL_2018-04-25_09h11m57s.tar.gz"
+                status_message "backup_SIGL_2018-04-26_13h46m54s.tar.gz"
+                status_message "backup_SIGL_2018-05-03_13h51m04s.tar.gz"
+            else
+                error_exit "$cmd: faking failure"
+            fi
+        fi
+        ;;
+
+    backup)
+        status_format="$cmd"  # backup style error format
+
+        [[ -n "$user" ]] || user=$(printenv $ENV_USER)
+
+        [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
+
+        [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
+
+        if [[ -z "$media" ]]; then
+            error_exit "$cmd with unique media: not implemented"
+        fi
+
+        if [[ $fake_mode -eq 0 ]]; then
+            error_exit "$cmd $media: not implemented"
+        else
+            if [[ $fake_status -eq 0 ]]; then
+                backup_message ""
+            else
+                error_exit "$cmd $media: faking failure"
+            fi
+        fi
+        ;;
+
+    restore)
+        [[ -n "$user" ]] || user=$(printenv $ENV_USER)
+
+        [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
+
+        [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
+
+        [[ -n "$archive" ]] || error_exit "$cmd: missing archive, use -a argument"
+
+        if [[ $fake_mode -eq 0 ]]; then
+            error_exit "$cmd $media $archive: not implemented"
+        elif [[ $fake_status -eq 1 ]]; then
+            error_exit "$cmd $media $archive: faking failure"
+        fi
+
+        [[ $exit_status -eq 0 ]] && status_message ""
         ;;
 
     encrypt)
-        [[ -n "$input_file" ]] ||  error_exit "missing input file, use -i argument"
+        [[ -n "$input_file" ]] ||  error_exit "$cmd: missing input file, use -i argument"
 
-        [[ -n "$arg_dir" ]] ||  error_exit "missing directory, use -d argument"
+        [[ -n "$arg_dir" ]] ||  error_exit "$cmd: missing directory, use -d argument"
 
         fn_encrypt "$input_file" "$arg_dir" || exit_status=1
         ;;
 
     decrypt)
-        [[ -n "$input_file" ]] ||  error_exit "missing input file, use -i argument"
+        [[ -n "$input_file" ]] ||  error_exit "$cmd: missing input file, use -i argument"
 
         [[ -n "$output_file" ]] ||  error_exit "missing output file, use -o argument"
 
@@ -733,6 +992,10 @@ case "$cmd" in
         else
             fn_restorefiles "$input_file" "$archive" "" "$root_dir" || exit_status=1
         fi
+        ;;
+
+    testfake)
+        log_message "fake_mode=$fake_mode fake_status=$fake_status"
         ;;
 
     *)

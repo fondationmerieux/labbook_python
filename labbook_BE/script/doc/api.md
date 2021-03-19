@@ -2,9 +2,10 @@
 
 ## Introduction
 
-Scripts are in DIR_SCRIPTS=/usr/local/bin (not shared with Labbook_BE)
+labbook_BE uses a script `backup.sh` to execute the various actions needed to perform backups and restores.
+This documents describes the API between labbook_BE and `backup.sh`.
 
-Default definitions are in environment variables (to discuss)
+Shared definitions between labbook_BE and `backup.sh` are in environment variables:
 
 - LABBOOK_KEY_DIR=/storage/key
 - LABBOOK_DB_HOST=10.88.0.1
@@ -14,18 +15,25 @@ Default definitions are in environment variables (to discuss)
 - LABBOOK_STATUS_DIR=/storage/io
 - LABBOOK_LOG_DIR=/storage/log
 
-Input : parameters except 
-- GPG private key passphrase in LABBOOK_KEY_PWD
-- DB key passphrase in LABBOOK_DB_PWD
+It can be useful during development to fake `backup.sh` commands.
+Place command names into these variables to fake execution with status OK or ERROR:
 
-Output : depends on status
+- LABBOOK_TEST_OK=command[,...]
+- LABBOOK_TEST_KO=command[,...]
+
+`labbook.sh` input is taken from parameters except for:
+
+- GPG private key passphrase in LABBOOK_KEY_PWD
+- DB user password in LABBOOK_DB_PWD
+
+Output: depends on status
 
 - if status = 0 output is empty or consists of one or more lines of semicolon (;) separated fields
 - if status > 0 output is an error message
 
-backup.sh writes a logfile into LABBOOK_LOG_DIR/backup.out
+backup.sh writes a logfile into LABBOOK_LOG_DIR/backup.out (or to stderr if LABBOOK_LOG_DIR is not defined)
 
-Add a mode without container for dev/test ?
+Scripts are in DIR_SCRIPTS=/usr/local/bin (not shared with Labbook_BE)
 
 ## Check GPG key exist
 
