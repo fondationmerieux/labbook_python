@@ -42,7 +42,10 @@ usage()
     echo "  genkey            Create key pair in DIR"
     echo "  keyexist          Check key pair exist in DIR"
     echo "  initmedia         Initialize media"
-    echo "  listmedia         List medias"
+    echo "  listmedia         List medias in /media/USER"
+    echo "  listarchive       List archives in MEDIA"
+    echo "  backup            Backup"
+    echo "  restore           Restore ARCHIVE from MEDIA"
     echo
     echo "Internal commands used for testing:"
     echo "  encrypt           Encrypt INPUT_FILE to DIR/INPUT_FILE.gpg and copy keys to DIR"
@@ -61,12 +64,13 @@ usage()
     echo "  -i INPUT_FILE     Input file"
     echo "  -o OUTPUT_FILE    Output file"
     echo "  -d DIR            Directory for input or output"
-    echo "  -a ARCHIVE_PATH   Archive path"
+    echo "  -a ARCHIVE        Archive"
     echo "  -V VOLUME         Container volume"
     echo "  -R ROOT_PATH      Root path"
     echo "  -p FILE_PATH      File path, may be repeated"
     echo "  -s STATUS_FILE    Status file [default=$ENV_STATUS_DIR/command]"
     echo "  -u USER           Linux user [default=$ENV_USER]"
+    echo "  -m MEDIA          Media"
     echo "  -U                Include uninitialized medias in list"
     echo
 
@@ -907,6 +911,20 @@ case "$cmd" in
         [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
 
         [[ -n "$archive" ]] || error_exit "$cmd: missing archive, use -a argument"
+
+        if [[ $fake_mode -eq 0 ]]; then
+            error_exit "$cmd $media $archive: not implemented"
+        elif [[ $fake_status -eq 1 ]]; then
+            error_exit "$cmd $media $archive: faking failure"
+        fi
+
+        [[ $exit_status -eq 0 ]] && status_message ""
+        ;;
+
+    restart)
+        [[ -n "$user" ]] || user=$(printenv $ENV_USER)
+
+        [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
 
         if [[ $fake_mode -eq 0 ]]; then
             error_exit "$cmd $media $archive: not implemented"
