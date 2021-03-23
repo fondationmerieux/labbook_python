@@ -11,19 +11,14 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de la sauvegarde") }}</span></h2>
             <form autocomplete="off" class="row mt-3">
+                <div class="col-6 text-center">
+                    <input type="button" onclick="run_media();" id="btn_media" value="{{ _("INITIALISER LE MEDIA") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_keygen();" id="btn_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                </div>
+                <div id="tempAnchor"></div>
                 <div class="col-6">
-                    <div class="form-group form-inline">
-                        <label for="script-pwd" class="col-form-label col-5 text-right mt-2">{{ _("Mot de passe") }} *</label>
-                        <div>
-                            <input type="password" name="script-pwd" id="script-pwd" value="{{  args['bks_pwd'] }}" class="form-control"> 
-                        </div>
-                    </div>
-                    <div class="form-group form-inline">
-                        <label for="script-pwd2" class="col-form-label col-5 text-right mt-2">{{ _("Confirmation du mot de passe") }} *</label>
-                        <div>
-                            <input type="password" name="script-pwd2" id="script-pwd2" value="{{  args['bks_pwd'] }}" class="form-control"> 
-                        </div>
-                    </div>
                     <div class="form-group form-inline">
                         <label for="start-time" class="col-form-label col-5 text-right mt-2">{{ _("Heure de sauvegarde") }} *</label>
                         <div>
@@ -31,12 +26,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 text-center">
-                    <input type="button" onclick="run_keygen();" id="btn_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                </div>
-                <div id="tempAnchor"></div>
             </form>
 
             <div class="mb-5 clearfix">
@@ -44,7 +33,7 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
 
@@ -57,53 +46,86 @@
 <script>
 function save()
 {
-    if ( window.confirm("{{ _("Merci de confirmer l'enregistrement du mot de passe et de l'heure de sauvegarde.") }}") )
+    if ( window.confirm("{{ _("Merci de confirmer la modification de l'heure de sauvegarde quotidienne.") }}") )
     {
-/*
-var script_pwd  = $("#script-pwd").val()  ;
-var script_pwd2 = $("#script-pwd2").val() ;
-var start_time  = $("#start-time").val()  ;
+    let start_time  = $("#start-time").val()  ;
+    let msg = "" ;
 
-    if (script_pwd == "")
-    msg += "{{ _("Veuillez saisir un mot de passe.") }}\n" ;
+        if (start_time == "")
+        msg += "{{ _("Veuillez saisir une heure de sauvegarde.") }}\n" ;
 
-    if (script_pwd2 == "")
-    msg += "{{ _("Veuillez confirmer votre mot de passe.") }}\n" ;
+        if (msg != "")
+        {
+        alert( msg ) ;
+        return false ;
+        }
 
-    if (script_pwd2 != script_pwd)
-    msg += "{{ _("Les mots de passe ne correspondent pas !") }}\n" ;
+    start_time = start_time + ':00' ;  // add second default values
 
-    if (start_time == "")
-    msg += "{{ _("Veuillez saisir une heure de sauvegarde.") }}\n" ;
+    var param = '{ "start_time":"' + start_time + '"}' ;
 
-    if (msg != "")
-    {
-    alert( msg ) ;
-    return false ;
+        $.ajax( {
+           type: "POST",
+           url: "/services/setting/backup",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
+               {
+               tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+               },
+           error: function(data)
+               {
+               console.log("ERROR POST setting backup") ;
+               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+               }
+        } ) ;
     }
+}
 
-start_time = start_time + ':00' ;  // add second default values
-
-var param = '{ "pwd":"' + script_pwd  + '", ' +
-              '"start_time":"' + start_time + '"}' ;
-
+function run_keyexist()
+{
     $.ajax( {
-       type: "POST",
-       url: "/services/setting/backup",
+       type: "GET",
+       url: "/services/setting/script/keyexist",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           //tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
+           console.log("data="+JSON.stringify(data)) ;
            },
-       error: function(data)
+       error: function(ret)
            {
-           console.log("ERROR POST setting backup") ;
-           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           console.log("ERROR POST setting restore") ;
+           console.log("ret="+JSON.stringify(ret)) ;
            }
     } ) ;
-    */
+}
+
+function run_listmedia()
+{
+    if ( window.confirm("{{ _("Merci") }}") )
+    {
+        
+
+        $.ajax( {
+           type: "POST",
+           url: "/services/setting/script/listmedia",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
+               {
+               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
+               },
+           error: function(data)
+               {
+               console.log("ERROR POST setting listmedia") ;
+               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+               }
+        } ) ;
     }
 }
 
@@ -169,7 +191,7 @@ function run_restore()
                },
            error: function(data)
                {
-               console.log("ERROR POST setting backup") ;
+               console.log("ERROR POST setting restore") ;
                alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
                }
         } ) ;
@@ -180,5 +202,10 @@ function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
 }
+
+$( document ).ready( function()
+{
+run_keyexist() ;
+} ) ;
 </script>
 {% endblock %}

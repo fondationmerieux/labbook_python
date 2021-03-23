@@ -159,40 +159,34 @@ let param = '{ "login":"' + login + '", ' +
             '"status":' + stat + '}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( {
-        type: "POST",
-        url: "/services/user/list/" + {{ session['user_id_group']|safe}},
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
-            {
-            data_users = data ;
-
-            p_max = Math.ceil( data.length / p_step ) ;
-
-            display_user( 1 ) ;
-
-            setTimeout(function()
+        $.ajax( {
+            type: "POST",
+            url: "/services/user/list/" + {{ session['user_id_group']|safe}},
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-            },
-        error: function(data)
-            {
-            setTimeout(function()
-                 {
-                 $('#dial-wait').modal("hide") ;
-                 }, 600) ;
+                data_users = data ;
 
-            console.log("ERROR user list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
+                p_max = Math.ceil( data.length / p_step ) ;
+
+                display_user( 1 ) ;
+
+                    $("#dial-wait").modal("hide") ;
+                },
+            error: function(data)
+                {
+                     $("#dial-wait").modal("hide") ;
+
+                console.log("ERROR user list") ;
+                alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+                }
+        } ) ;
     } ) ;
 }
 

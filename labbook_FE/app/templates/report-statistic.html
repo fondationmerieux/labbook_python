@@ -92,35 +92,32 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '"}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    $("#dial-wait").modal("show") ;
 
-    $.ajax( {
-        type: "POST",
-        url: "/services/report/stat",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( {
+            type: "POST",
+            url: "/services/report/stat",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
             {
             data_stats = data ;
  
             display_data() ;
 
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                $("#dial-wait").modal("hide") ;
             },
-        error: function(data)
+            error: function(data)
             {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                $("#dial-wait").modal("hide") ;
 
             console.log("ERROR report stat") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
+        } ) ;
     } ) ;
 }
 
@@ -384,50 +381,44 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "statistic"}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( 
-    {
-        type: "POST",
-        url: "/services/pdf/report/generic",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
+            type: "POST",
+            url: "/services/pdf/report/generic",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
             {
-            $('#dial-wait').modal("hide") ;
-            }, 1000) ;
-        
-        let today = new Date();
-        
-        let month = today.getMonth() + 1 ;
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
+            
+            let month = today.getMonth() + 1 ;
 
-        if (month < 10) month = '0' + month ;
+            if (month < 10) month = '0' + month ;
 
-        let day = today.getDate() ;
+            let day = today.getDate() ;
 
-        if (day < 10) day = '0' + day ;
+            if (day < 10) day = '0' + day ;
 
-        today = today.getFullYear() + '' + month + '' + day ;
+            today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "statistic_" + today + ".pdf" ;
+            let filename = "statistic_" + today + ".pdf" ;
 
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
             {
-            $('#dial-wait').modal("hide") ;
-            }, 1000) ;
+                $("#dial-wait").modal("hide") ;
 
-        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

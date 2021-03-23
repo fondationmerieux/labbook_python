@@ -22,6 +22,8 @@ RUN yum install -y epel-release
 
 RUN yum install -y sshpass
 
+RUN yum clean all
+
 # install supervisor
 RUN pip3 install supervisor
 
@@ -31,6 +33,16 @@ RUN mkdir -p /home/supervisor/log \
              /home/apps/labbook_BE/labbook_BE
 
 COPY supervisor/etc /home/supervisor/etc
+
+RUN ln -s /storage /var/www/html/
+
+RUN echo  "alias ls='ls --color=auto'" >> /root/.bashrc
+RUN echo  "alias l.='ls -d .* --color=auto'" >> /root/.bashrc
+RUN echo  "alias l='ls -CF'" >> /root/.bashrc
+RUN echo  "alias la='ls -A'" >> /root/.bashrc
+RUN echo  "alias ll='ls -alF'" >> /root/.bashrc
+
+COPY etc/httpd/conf/httpd.conf /etc/httpd/conf/
 
 # install venv labbook_FE
 COPY labbook_FE/requirements.txt /home/apps/labbook_FE/labbook_FE

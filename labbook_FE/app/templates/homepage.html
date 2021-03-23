@@ -15,12 +15,12 @@
             {% if session['user_role'] == 'A' %}
             <div class="module">
                 <div class="links">
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pref" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
                     <!--<a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>-->
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pref" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes" class="list-group-item admin-referentiel">{{ _("Référentiel des analyses") }}</a>
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-report" class="list-group-item admin-conf-cr">{{ _("Configuration des comptes-rendu") }}</a>
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-rec-num" class="list-group-item admin-num-doss">{{ _("Configuration des numéros de dossier") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-dicts" class="list-group-item admin-conf-cr">{{ _("Dictionnaires") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-backup" class="list-group-item admin-num-doss">{{ _("Gestion sauvegarde") }}</a>
                     <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ args['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
 
                     <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ args['pref_quality'] }});" class="list-group-item admin-qualite-{{ args['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
@@ -79,7 +79,9 @@
 
 {% block add_script %}
 <script>
+{% if session['user_role'] != 'A' and session['user_role'] != 'P' %}
 var pieData = [{value: "{{ args['nb_rec_bio'] }}", label: "{{ _("Biologique") }}", color: "#8330E2"}, {value: "{{ args['nb_rec_tech'] }}", label: "{{ _("Technique") }}", color: "#00ADEE"}] ;
+{% endif %}
 var val_bill    = {{ args['pref_bill'] }} ;
 var val_quality = {{ args['pref_quality'] }} ;
 
@@ -122,6 +124,7 @@ let ico      = "admin-gest-fact-" ;
 
 $( document ).ready( function()
 {
+{% if session['user_role'] != 'A' and session['user_role'] != 'P' %}
 let rec_num = "" ;
 
 {% if args['record'] %}
@@ -136,6 +139,7 @@ rec_num = fmt_num_rec( rec_num, {{ session['record_format'] }}, {{ session['reco
 {% endif %}
 
 new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
+{% endif %}
 } ) ;
 </script>
 {% endblock %}

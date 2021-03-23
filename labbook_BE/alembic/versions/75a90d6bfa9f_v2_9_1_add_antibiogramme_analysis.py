@@ -8,6 +8,7 @@ Create Date: 2020-10-13 16:13:02.229354
 """
 from alembic import op
 
+from datetime import datetime
 
 # revision identifiers, used by Alembic.
 revision = '75a90d6bfa9f'
@@ -17,6 +18,9 @@ depends_on = None
 
 
 def upgrade():
+    print("--- " + str(datetime.today()) + "---")
+    print("START of migration v2.9.1_add_antibiogramme_analysis revision=75a90d6bfa9f ")
+
     # Get the current
     conn = op.get_bind()
 
@@ -2375,6 +2379,8 @@ def upgrade():
                               from sigl_07_data where libelle='CMI Doxycycline' order by id_data desc limit 1")
             except:
                 print("ERROR insert links for B678 analysis")
+
+    print("END of migration v2.9.1_add_antibiogramme_analysis revision=75a90d6bfa9f")
 
 
 def downgrade():

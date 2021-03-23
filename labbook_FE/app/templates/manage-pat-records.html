@@ -717,34 +717,28 @@ function save_request()
     if ( window.confirm("{{ _("Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)") }}") )
     {
         // popup wait
-        setTimeout(function()
+        $("#dial-wait").modal("show") ;
+
+        $("#dial-wait").on('shown.bs.modal', function () 
         {
-        $('#dial-wait').modal("show") ;
-        }, 600) ;
-
-        $.ajax( 
-        {
-        type: "POST",
-        url: "/services/patient/combine/" + id_pat1 + "/" + id_pat2,
-        success: function(data_pat2)
+            $.ajax( 
             {
-                setTimeout(function()
+            type: "POST",
+            url: "/services/patient/combine/" + id_pat1 + "/" + id_pat2,
+            success: function(data_pat2)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                    $("#dial-wait").modal("hide") ;
 
-            location.reload() ;
-            },
-        error: function(ret)
-            {
-                setTimeout(function()
+                location.reload() ;
+                },
+            error: function(ret)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                    $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR POST fusion patient");
-            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-            }
+                console.log("ERROR POST fusion patient");
+                alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                }
+            } ) ;
         } ) ;
     }
     else

@@ -54,7 +54,7 @@
                 <div class="form-group row">
                     <label for="prd_safe_limit" class="col-form-label col-3 text-right mt-2">{{ _("Seuil de sécurité") }} *</label>
                     <div class="">					
-                        <input type="number" name="prd_safe_limit" id="prd_safe_limit" value="{{ args['stock_product']['prd_safe_limit'] }}" min="0" step="1" class="form-control">			
+                        <input type="number" name="prd_safe_limit" id="prd_safe_limit" value="{% if args['stock_product']['prd_safe_limit'] %}{{ args['stock_product']['prd_safe_limit'] }}{% else %}0{% endif %}" min="0" step="1" class="form-control">			
                     </div>
                 </div>
 

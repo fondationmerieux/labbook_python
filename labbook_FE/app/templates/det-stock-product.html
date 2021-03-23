@@ -138,11 +138,14 @@ var sell_price   = $("#prs_sell_price").val() * 100 ;
 
 var msg = "" ;
 
-    if (prs_prd == "")
+    if (prs_prd == "" || prs_prd == null )
     msg += "{{ _("Veuillez choisir un produit à approvisionner") }}\n" ;
 
     if (prs_nb_pack <= 0)
     msg += "{{ _("Veuillez saisir un nombre de paquet supérieur à 0.") }}\n" ;
+
+    if (expir_date == "")
+    msg += "{{ _("Veuillez saisir une date d'expiration.") }}\n" ;
 
     if (msg != "")
     {
@@ -160,8 +163,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prs_buy_price":' + buy_price + ', ' +
               '"prs_sell_price":' + sell_price + '}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/quality/stock/supply/det/" + prs_ser,
@@ -174,7 +175,7 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
            },
        error: function(data)
            {
-           console.log("ERROR POST item det") ;
+           console.log("ERROR POST stock supply det") ;
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;

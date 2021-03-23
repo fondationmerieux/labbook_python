@@ -278,12 +278,11 @@ class SettingBackup(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'script_user' not in args or 'script_pwd' not in args or 'start_time' not in args:
+        if 'start_time' not in args:
             self.log.error(Logs.fileline() + ' : SettingBackup ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        ret = Setting.updateBackupSetting(bks_pwd=args['script_pwd'],
-                                          bks_start_time=args['start_time'])
+        ret = Setting.updateBackupSetting(bks_start_time=args['start_time'])
 
         if ret is False:
             self.log.error(Logs.alert() + ' : SettingBackup ERROR update')
@@ -291,6 +290,22 @@ class SettingBackup(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE SettingBackup')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class ScriptKeyexist(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        # TODO run script
+        import os
+        nom = "toto"
+        cmd = 'sh ' + Constants.cst_script + '/' + Constants.cst_io_keyexist + ' -p ' + str(666) + ' -n "' + nom + '" >> /tmp/file_TODO.log 2>&1 &'
+
+        self.log.error(Logs.fileline() + ' : ScriptKeyexist cmd=' + cmd)
+        ret = os.system(cmd)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptKeyexist')
+        return compose_ret(ret, Constants.cst_content_type_json)
 
 
 class ScriptBackup(Resource):

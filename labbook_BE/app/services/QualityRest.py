@@ -988,8 +988,6 @@ class StockList(Resource):
 
         l_stocks = Quality.getStockList(args)
 
-        self.log.error(Logs.fileline() + ' : DEBUG l_stocks=' + str(l_stocks))
-
         if not l_stocks:
             self.log.error(Logs.fileline() + ' : TRACE StockList not found')
 
@@ -1012,7 +1010,9 @@ class StockList(Resource):
             else:
                 stock['pru_nb_pack'] = 0
 
-            if stock['prs_nb_pack']:
+            nb_supply = Quality.getSumStockSupply(stock['prs_prd'])
+            if nb_supply:
+                stock['prs_nb_pack'] = nb_supply['total']
                 stock['prs_nb_pack'] = float(stock['prs_nb_pack']) - float(stock['pru_nb_pack'])
             else:
                 stock['prs_nb_pack'] = 0
@@ -1060,6 +1060,69 @@ class StockListDet(Resource):
                 stock['prs_nb_pack'] = 0
 
         self.log.info(Logs.fileline() + ' : TRACE StockListDet')
+        return compose_ret(l_stocks, Constants.cst_content_type_json)
+
+
+class StockProductHist(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : StockProductHist ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_stocks = Quality.getStockProductHist(id_item, args['date_beg'], args['date_end'])
+
+        if not l_stocks:
+            self.log.error(Logs.fileline() + ' : TRACE StockProductHist not found')
+
+        for stock in l_stocks:
+            # Replace None by empty string
+            for key, value in stock.items():
+                if stock[key] is None:
+                    stock[key] = ''
+
+            if 'prs_ser' not in stock:
+                stock['prs_ser'] = 0
+
+            if 'username' not in stock:
+                stock['username'] = ''
+
+            if 'prs_rack' not in stock:
+                stock['prs_rack'] = ''
+
+            if 'prs_batch_num' not in stock:
+                stock['prs_batch_num'] = ''
+
+            if 'prs_buy_price' not in stock:
+                stock['prs_buy_price'] = ''
+
+            if 'prs_receipt_date' in stock and stock['prs_receipt_date']:
+                stock['prs_receipt_date'] = datetime.strftime(stock['prs_receipt_date'], '%Y-%m-%d')
+            else:
+                stock['prs_receipt_date'] = ''
+
+            if 'prs_expir_date' in stock and stock['prs_expir_date']:
+                stock['prs_expir_date']   = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
+            else:
+                stock['prs_expir_date'] = ''
+
+            if 'pru_nb_pack' in stock and stock['pru_nb_pack']:
+                stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
+            else:
+                stock['pru_nb_pack'] = 0
+
+            if 'prs_nb_pack' in stock and stock['prs_nb_pack']:
+                stock['prs_nb_pack'] = float(stock['prs_nb_pack'])
+            else:
+                stock['prs_nb_pack'] = 0
+
+            if stock['date_create']:
+                stock['date_create'] = datetime.strftime(stock['date_create'], '%Y-%m-%d %H:%M')
+
+        self.log.info(Logs.fileline() + ' : TRACE StockProductHist')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 

@@ -8,6 +8,7 @@ Create Date: 2021-03-12 09:59:44.663714
 from alembic import op
 import sqlalchemy as sa
 
+from datetime import datetime
 
 # revision identifiers, used by Alembic.
 revision = 'e23db03512eb'
@@ -17,6 +18,9 @@ depends_on = None
 
 
 def upgrade():
+    print("--- " + str(datetime.today()) + "---")
+    print("START of migration v3_0_1_stock_and_prescribers_change revision=e23db03512eb")
+
     # Get the current
     conn = op.get_bind()
 
@@ -154,6 +158,11 @@ def upgrade():
             conn.execute('update sigl_user_data set side_account=0')
         except:
             print("ERROR update sigl_user_data set side_account=0")
+
+    # ADD and REPLACE MANUALS
+    ## TODO
+
+    print("END of migration v3_0_1_stock_and_prescribers_change revision=e23db03512eb")
 
 
 def downgrade():

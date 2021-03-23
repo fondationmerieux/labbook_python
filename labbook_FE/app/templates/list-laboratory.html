@@ -21,7 +21,10 @@
                         </div>
                     </div>
                     <div class="col-6">
+                        {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
                         <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2 float-right">
+                        {% endif %}
                     </div>
                 </div>
             </form>
@@ -35,7 +38,10 @@
                             <div>
                                 <div>
                                     <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                        {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+                                              session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
                                         <input name="file" type="file" style="margin-bottom:4px"/>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -50,7 +56,10 @@
                         </div>
                     </div>
                     <div>
+                        {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+                              session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
                         <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
+                        {% endif %}
                     </div>
                 </div>
             </form>
@@ -76,15 +85,17 @@
 
             <div id="tempAnchor"></div>
             
-            <div class="my-2">
+            <div class="clearfix my-2">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
+                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+                          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    {% endif %}
                 </div>
             </div>
-            <div class="clearfix"></div>
 
         </div>
     </div>
@@ -119,7 +130,12 @@ let obj = data ;
     {
     let tmp_tr = '<tr style="">' ;
 
+    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
     let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+    {% else %}
+    let btn = "" ;
+    {% endif %}
 
     tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
     tmp_tr += create_td("", btn, " text-left d-inline-block col-2", "") ; // actions
@@ -310,8 +326,11 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">Télécharger</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
-    tmp_tr += '</tr>' ;
+    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a>' ;
+    {% endif %}
+    tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;
     }

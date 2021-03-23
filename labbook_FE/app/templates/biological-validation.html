@@ -333,10 +333,7 @@ function cancel_res( id_rec, id_res )
     id_res_tmp = id_res ;
 
         // popup reason and comment
-        setTimeout(function()
-        {
-            $( "#dial-cancel" ).modal( "show" ) ;
-        }, 600) ;
+        $( "#dial-cancel" ).modal( "show" ) ;
     }
     else
     {
@@ -354,10 +351,7 @@ let param_res = '{ "id_owner": {{ session['user_id_group'] }}, ' +
                   '"reason":' + reason + ',' +
                   '"comment":' + comment  + '}' ; // NO QUOTE DUE TO STRINGIFY PROCESS
 
-    setTimeout(function()
-        {
-        $('#dial-cancel').modal("hide") ;
-        }, 1000) ;
+    $('#dial-cancel').modal("hide") ;
 
     // result to cancel
     $.ajax( 

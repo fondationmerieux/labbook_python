@@ -191,40 +191,34 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( {
-        type: "POST",
-        url: "/services/record/list/" + {{ ihm['id_pres']|safe}},
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
-            {
-            data_records = data ;
- 
-            p_max = Math.ceil( data.length / p_step ) ;
- 
-            display_record( 1 ) ;
-
-            setTimeout(function()
+        $.ajax( {
+            type: "POST",
+            url: "/services/record/list/" + {{ ihm['id_pres']|safe}},
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-            },
-        error: function(data)
-            {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                data_records = data ;
+     
+                p_max = Math.ceil( data.length / p_step ) ;
+     
+                display_record( 1 ) ;
 
-            console.log("ERROR record list") ;
-            alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
-            }
+                    $("#dial-wait").modal("hide") ;
+                },
+            error: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
+
+                console.log("ERROR record list") ;
+                alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
+                }
+        } ) ;
     } ) ;
 }
 
@@ -265,16 +259,23 @@ $("#listing_dos_total").html( data_len ) ;
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' +
-                   {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
+
+                   {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'P' or 
                          session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' +
+    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' +
+                   {% endif %}
+                   {% if session['user_role'] == 'P' or session['user_role'] == 'S' %}'' ;{% endif %}
                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
                          session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' +{% endif %}
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' +
+                   {% endif %}
                    {% if session['user_role'] == 'B' or session['user_role'] == 'TA' %}
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' +
-                   {% endif %}{% endif %}
+                   {% endif %}
+                   {% if session['user_role'] == 'B' or session['user_role'] == 'TA' or
+                         session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
                    '<a class="dropdown-item menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">{{ _("Supprimer") }}</a>' ;
+                   {% endif %}
                    
                    menu_act += '</div></li></ul>' ;
 

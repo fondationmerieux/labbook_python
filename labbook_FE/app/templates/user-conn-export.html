@@ -55,39 +55,33 @@ var date_end = $("#date_end").val() ;
 var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( 
-    {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/user/connection/export",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/user/connection/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
             {
-            $('#dial-wait').modal("hide") ;
-            }, 600) ;
+                $("#dial-wait").modal("hide") ;
 
-        download_file( "PY", "user-conn_" + date_beg + "_" + date_end + ".csv", "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
+            download_file( "PY", "user-conn_" + date_beg + "_" + date_end + ".csv", "GEN", 0 ) ;
+            },
+            error: function(ret)
             {
-            $('#dial-wait').modal("hide") ;
-            }, 600) ;
+                $("#dial-wait").modal("hide") ;
 
-        if (ret.status == 404)
-        alert("{{ _("Aucun résultats à exporter !") }}");
-        else
-        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}");
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

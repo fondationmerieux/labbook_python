@@ -204,7 +204,7 @@ class Setting:
     def getBackupSetting():
         cursor = DB.cursor()
 
-        req = 'select bks_ser, bks_pwd, bks_start_time '\
+        req = 'select bks_ser, bks_start_time '\
               'from backup_setting '\
               'order by bks_ser desc limit 1'
 
@@ -218,7 +218,7 @@ class Setting:
             cursor = DB.cursor()
 
             cursor.execute('update backup_setting '
-                           'set bks_pwd=%(bks_pwd)s, bks_start_time=%(bks_start_time)s '
+                           'set bks_start_time=%(bks_start_time)s '
                            'where bks_ser=1', params)
 
             Setting.log.info(Logs.fileline())

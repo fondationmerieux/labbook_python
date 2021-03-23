@@ -157,18 +157,17 @@ let param = '{ "num_rec": "", ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
-    setTimeout(function()
-    {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
+    $("#dial-wait").modal("show") ;
 
-    $.ajax( {
-        type: "POST",
-        url: "/services/record/list/0",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( {
+            type: "POST",
+            url: "/services/record/list/0",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
             {
             data_records = data ;
 
@@ -176,21 +175,16 @@ let param = '{ "num_rec": "", ' +
 
             display_record( 1 ) ;
 
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                $("#dial-wait").modal("hide") ;
             },
-        error: function(data)
+            error: function(data)
             {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                $("#dial-wait").modal("hide") ;
 
             console.log("ERROR record works list") ;
             alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
             }
+        } ) ;
     } ) ;
 }
 

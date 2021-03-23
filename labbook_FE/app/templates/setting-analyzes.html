@@ -138,40 +138,34 @@ let param = '{ "name":"' + name + '", ' +
             '"status":' + stat + '}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( {
-        type: "POST",
-        url: "/services/analysis/list",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
-            {
-            data_analyzes = data ;
-
-            p_max = Math.ceil( data.length / p_step ) ;
-
-            display_analysis( 1 ) ;
-
-            setTimeout(function()
+        $.ajax( {
+            type: "POST",
+            url: "/services/analysis/list",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-            },
-        error: function(data)
-            {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                data_analyzes = data ;
 
-            console.log("ERROR analysis list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
+                p_max = Math.ceil( data.length / p_step ) ;
+
+                display_analysis( 1 ) ;
+
+                    $("#dial-wait").modal("hide") ;
+                },
+            error: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
+
+                console.log("ERROR analysis list") ;
+                alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+                }
+        } ) ;
     } ) ;
 }
 

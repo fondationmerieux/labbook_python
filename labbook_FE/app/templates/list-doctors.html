@@ -110,7 +110,9 @@
                 </div>
                 <div class="float-right">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
+                    {% if session['user_role'] != 'P' %}
+                    <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    {% endif %}
                 </div>
             </div>
 
@@ -143,35 +145,32 @@ let param = '{ "code":"' + code + '", ' +
     // popup wait
     $( "#dial-wait" ).modal( "show" ) ;
 
-    $.ajax( {
-        type: "POST",
-        url: "/services/doctor/list",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
-            {
-            data_doctors = data ;
-
-            p_max = Math.ceil( data.length / p_step ) ;
-
-            display_doctor( 1 ) ;
-
-            setTimeout(function()
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( {
+            type: "POST",
+            url: "/services/doctor/list",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 1000) ;
-            },
-        error: function(data)
-            {
-            setTimeout(function()
-                 {
-                 $('#dial-wait').modal("hide") ;
-                 }, 1000) ;
+                data_doctors = data ;
 
-            console.log("ERROR doctor list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
+                p_max = Math.ceil( data.length / p_step ) ;
+
+                display_doctor( 1 ) ;
+
+                    $("#dial-wait").modal("hide") ;
+                },
+            error: function(data)
+                {
+                     $("#dial-wait").modal("hide") ;
+
+                console.log("ERROR doctor list") ;
+                alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+                }
+        } ) ;
     } ) ;
 }
 
@@ -292,53 +291,47 @@ let param = '{ "code":"' + code + '", ' +
             '"city":"' + city  + '"}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( 
-    {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/doctor/export",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-        
-        let today = new Date();
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/doctor/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
 
-        let month = today.getMonth() + 1 ;
+            let month = today.getMonth() + 1 ;
 
-        if (month < 10) month = '0' + month ;
+            if (month < 10) month = '0' + month ;
 
-        let day = today.getDate() ;
+            let day = today.getDate() ;
 
-        if (day < 10) day = '0' + day ;
+            if (day < 10) day = '0' + day ;
 
-        today = today.getFullYear() + '' + month + '' + day ;
+            today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "doctor_" + today + ".csv" ;
+            let filename = "doctor_" + today + ".csv" ;
 
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
 
-            if (ret.status == 404)
-            alert("{{ _("Aucun prescripteur à exporter !") }}") ;
-            else
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+                if (ret.status == 404)
+                alert("{{ _("Aucun prescripteur à exporter !") }}") ;
+                else
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

@@ -8,6 +8,7 @@ Create Date: 2021-03-16 16:07:15.000345
 from alembic import op
 import sqlalchemy as sa
 
+from datetime import datetime
 
 # revision identifiers, used by Alembic.
 revision = '5b3058a99439'
@@ -17,8 +18,17 @@ depends_on = None
 
 
 def upgrade():
+    print("--- " + str(datetime.today()) + "---")
+    print("START of migration v3_0_2_stock_and_add_new_manual revision=5b3058a99439")
+
     # Get the current
     conn = op.get_bind()
+
+    # DROP COLUMN TO PRODUCT SUPPLY TABLE
+    try:
+        op.drop_column('backup_setting', sa.Column('bks_pwd'))
+    except:
+        print("ERROR drop column bks_pwd to backup_setting")
 
     # ADD COLUMN TO PRODUCT DETAILS TABLE
     try:
@@ -33,6 +43,20 @@ def upgrade():
             conn.execute('update product_details set prd_safe_limit=0')
         except:
             print("ERROR update product_details set prd_safe_limit=0")
+
+    # ADD COLUMN TO PRODUCT SUPPLY TABLE
+    try:
+        op.add_column('product_supply', sa.Column('prs_user', sa.Integer, 0))
+    except:
+        print("ERROR add column prd_user to product_supply")
+    else:
+        # UPDATE NEW COLUMN prd_user IN product_supply
+        try:
+            conn = op.get_bind()
+
+            conn.execute('update product_supply set prs_user=0')
+        except:
+            print("ERROR update product_supply set prs_user=0")
 
     # DROP COLUMN TO PRODUCT SUPPLY TABLE
     try:
@@ -69,10 +93,12 @@ def upgrade():
     # ADD default storage path
     try:
         conn.execute("insert into sigl_storage_data "
-                     "(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) "
-                     "values (100, NOW(), NOW(), 100, '/storage' )")
+                     "(id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) "
+                     "values (1, 100, NOW(), NOW(), 100, '/storage' )")
     except:
         print("ERROR insert into sigl_storage_data a default storage path")
+
+    print("END of migration v3_0_2_stock_and_add_new_manual revision=5b3058a99439")
 
 
 def downgrade():

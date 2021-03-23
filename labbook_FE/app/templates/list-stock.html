@@ -76,8 +76,9 @@
                             <th hidden>{{ _("serial") }}</th>
                             <th class="text-left">{{ _("Action") }}</th>
                             <th class="text-left cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-left cursor-act">{{ _("Nb de paq.") }}</th>
-                            <th class="text-left cursor-act">{{ _("Nb total") }}</th>
+                            <th class="text-right cursor-act">{{ _("Nb de paq.") }}</th>
+                            <th class="text-right cursor-act">{{ _("Nb par paq.") }}</th>
+                            <th class="text-right cursor-act">{{ _("Nb total") }}</th>
                             <th class="text-center">{{ _("Seuil") }}</th>
                             <th class="text-left cursor-act">{{ _("Type") }}</th>
                             <th class="text-left cursor-act">{{ _("Conservation") }}</th>
@@ -102,9 +103,11 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
+                    {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
                     <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
+                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    {% endif %}
                 </div>
             </div>
 
@@ -132,15 +135,17 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
               '"prod_conserv":' + prod_conserv + '}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    $("#dial-wait").modal( "show" ) ;
 
-    $.ajax( {
-        type: "POST",
-        url: "/services/quality/stock/list",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( {
+            type: "POST",
+            url: "/services/quality/stock/list",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
             {
             data_items = data ;
 
@@ -148,21 +153,16 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
 
             display_item( 1 ) ;
 
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+                $("#dial-wait").modal("hide") ;
             },
-        error: function(data)
+            error: function(data)
             {
-            setTimeout(function()
-                 {
-                 $('#dial-wait').modal("hide") ;
-                 }, 1000) ;
+                 $("#dial-wait").modal("hide") ;
 
             console.log("ERROR doctor list") ;
             alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
             }
+        } ) ;
     } ) ;
 }
 
@@ -203,7 +203,8 @@ $("#list_items_total").html( data_len ) ;
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-list-stock/' + data_items[i].prs_prd + '">{{ _("Détails du stock") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/' + data_items[i].prs_ser + '">{{ _("Editer la fiche produit") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-stock-product/' + data_items[i].prs_prd + '">{{ _("Historique de ce produit") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/' + data_items[i].prs_prd + '">{{ _("Editer la fiche produit") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prs_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
         
     menu_act += '</div></ul></nav>' ;
@@ -222,11 +223,12 @@ $("#list_items_total").html( data_len ) ;
     else if ( data_items[i].nb_total <= data_items[i].prd_safe_limit )
     prod_limit = '<span class="warning" title="{{ _("Seuil de") }} ' + data_items[i].prd_safe_limit + '">&nbsp;</span>' ;
 
-    res += '<tr ' + tr_style + '><td hidden><div>' + data_items[i].prs_ser + '</div></td>' +
+    res += '<tr ' + tr_style + '><td hidden><div>' + data_items[i].prs_prd + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].prd_name + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].prs_nb_pack + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].nb_total + '</div></td>' +
+           '<td><div class="text-right">' + data_items[i].prs_nb_pack + '</div></td>' +
+           '<td><div class="text-right">' + data_items[i].prd_nb_by_pack + '</div></td>' +
+           '<td><div class="text-right">' + data_items[i].nb_total + '</div></td>' +
            '<td><div class="text-center">' + prod_limit + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].type + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].conserv + '</div></td>' +
@@ -292,53 +294,47 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
               '"prod_conserv":' + prod_conserv  + '}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( 
-    {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/stock/export",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-        
-        let today = new Date();
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/quality/stock/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
 
-        let month = today.getMonth() + 1 ;
+            let month = today.getMonth() + 1 ;
 
-        if (month < 10) month = '0' + month ;
+            if (month < 10) month = '0' + month ;
 
-        let day = today.getDate() ;
+            let day = today.getDate() ;
 
-        if (day < 10) day = '0' + day ;
+            if (day < 10) day = '0' + day ;
 
-        today = today.getFullYear() + '' + month + '' + day ;
+            today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "stock_" + today + ".csv" ;
+            let filename = "stock_" + today + ".csv" ;
 
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
 
-            if (ret.status == 404)
-            alert("{{ _("Aucun prescripteur à exporter !") }}") ;
-            else
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+                if (ret.status == 404)
+                alert("{{ _("Aucun prescripteur à exporter !") }}") ;
+                else
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

@@ -57,8 +57,11 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
+                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+                          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter un manuel") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %} {% else %}disabled{% endif %}>
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter un manuel") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    {% endif %}
                 </div>
             </div>
 
@@ -106,6 +109,8 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
+    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
@@ -114,6 +119,9 @@ $("#list_items_total").html( data_len ) ;
                    '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')">{{ _("Supprimer") }}</a>';   
         
     menu_act += '</div></ul></nav>' ;
+    {% else %}
+    let menu_act = "" ;
+    {% endif %}
 
     if ( data_items[i].id_file > 0)
     link_manual = '<a href="#" onclick="download_file(\'JF\', \'' + data_items[i].filename + '\', \'MANU\', ' + data_items[i].id_file + ');"><span class="fa fa-download"></span></a>' ;
@@ -181,53 +189,47 @@ function export_data()
 var param = '{}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( 
-    {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/manual/export",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-        
-        let today = new Date();
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/quality/manual/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
 
-        let month = today.getMonth() + 1 ;
+            let month = today.getMonth() + 1 ;
 
-        if (month < 10) month = '0' + month ;
+            if (month < 10) month = '0' + month ;
 
-        let day = today.getDate() ;
+            let day = today.getDate() ;
 
-        if (day < 10) day = '0' + day ;
+            if (day < 10) day = '0' + day ;
 
-        today = today.getFullYear() + '' + month + '' + day ;
+            today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "manual_" + today + ".csv" ;
+            let filename = "manual_" + today + ".csv" ;
 
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
 
-            if (ret.status == 404)
-            alert("{{ _("Aucun résultats à exporter !") }}") ;
-            else
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+                if (ret.status == 404)
+                alert("{{ _("Aucun résultats à exporter !") }}") ;
+                else
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

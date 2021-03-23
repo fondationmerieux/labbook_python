@@ -55,11 +55,13 @@
                 <div id="no_result" class="error mt-3">{{ _("Aucune analyse") }}</div>
                 <div id="list_result" class="mt-3"></div>
             </form>
+            {% if session['user_role'] == 'A' %}
             <div class="float-right mt-3 mb-3">
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Feuille de paillasse') }}">
             </div>
+            {% endif %}
 
-            {% if args['list_res'] %}
+            {% if args['list_res'] and session['user_role'] != 'P' %}
             <form autocomplete="off">
                 <div class="mt-3">
                     <fieldset class="row border p-2">
@@ -76,13 +78,14 @@
             </form>
             {% endif %}
 
-      </div><!-- close main -->
-    </div><!-- close inner -->
+      </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}        
 
 {% block add_script %}
 <script>
+var user_role    = "{{ session['user_role']|safe }}" ;
 var data_res     = [] ;
 var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
 var list_id_ana  = [] ;
@@ -99,13 +102,11 @@ let val = $( "#res_"+id_res ).val() ;
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
-        //$("#res_"+id_res).addClass('error') ;
     }
     else
     {
         $("#limit_"+id_res).addClass('d-none') ;
         $("#limit_"+id_res).removeClass('show') ;
-        //$("#res_"+id_res).removeClass('error') ;
     }
 }
 
@@ -298,152 +299,157 @@ let disp_valid = "d-none" ;
         if ( id_res != id_res_p )
         {
         let res_valid  = data[i].validation.type_validation
-        let res_stat   = status_res(res_valid) ;
-        let res_emer   = emer(data[i].urgent) ;
-        let res_label  = data[i].libelle ;
-        let res_unit   = data[i].unit ;
-        let res_limit  = '' ;
-        let res_answer = data[i].res_answer ;
-        let value      = data[i].valeur ;
 
-            // LABEL TYPE
-            if ( data[i].type_resultat == 265 )
-            res_label = "<b>" + res_label + "</b>" ;
-
-            if ( data[i].normal_min != "" && data[i].normal_max != "" )
+            // For prescribers show only validted results 
+            if (user_role != "P" || (user_role == "P" && res_valid == 252))
             {
-            let ico_limit = "d-none" ;
+            let res_stat   = status_res(res_valid) ;
+            let res_emer   = emer(data[i].urgent) ;
+            let res_label  = data[i].libelle ;
+            let res_unit   = data[i].unit ;
+            let res_limit  = '' ;
+            let res_answer = data[i].res_answer ;
+            let value      = data[i].valeur ;
 
-                if ( (value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max)) && value != "" )
-                ico_limit = "show" ;
-
-                res_limit = '<span id="limit_' + id_res + '" class="warning ' + ico_limit + '" title="[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]"></span>' ;
-            }
-
-        res += '<tr class="col-12 p-0">' +
-                   '<td class="d-inline-block col-1 align-middle border-0 p-1">' + res_limit + '</td>' +
-                   '<td class="d-inline-block col-1 align-middle text-center border-0 p-1">' + res_emer + '</td>' +
-                   '<td class="d-inline-block align-middle text-center border-0 p-1">' + res_stat + '</td>' +
-                   '<td class="d-inline-block align-middle text-center border-0 p-1">' +
-                       '<div class="history" onclick="display_histo(' + i + ');"></div>' +
-                   '</td>' +
-                   '<td class="d-inline-block col-5 align-middle text-center border-0 p-1">' + res_label + '</td>' ;
-
-        res += '<td class="d-inline-block form-inline align-middle text-center border-0 p-1"><span class="value">' ;
-
-            // CANCEL RESULT
-            if ( res_valid == 252 && value == "" )
-            {
-            res += '{{ _("ANNULE") }}</span>&nbsp;' ;
-            }
-            // SELECT CHOICE RESULT
-            else if ( res_answer.length > 1 )
-            {
-            let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ')"' ;
-
-                // Validated
-                if (res_valid != 250)
-                change = 'disabled' ;
-
-            res += '<select id="res_' + id_res + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')"' + change + ' >' +
-                   '<option value="0"> </option>' ;
-
-            value = "0" ;
-
-                for ( j in res_answer )
-                {
-                let selected = "" ;
-
-                    if ( data[i].valeur == res_answer[j].id_data )
-                    {
-                    selected = "selected" ;
-                    value    = data[i].valeur ;
-
-                        if (res_valid == 250)
-                        disp_valid = "show" ;
-                    }
-                    // NOTE : works because 1013 is always the last choice
-                    else if ( selected == "" && value == "0" && res_answer[j].id_data == 1013 )
-                    {
-                    selected = "selected" ;
-                    value    = res_answer[j].id_data ;
-                    }
-
-                res += '<option value="' + res_answer[j].id_data + '" ' + selected + '>' + res_answer[j].label + '</option>' ;
-                }
-
-            res += '</select>' ;
-            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
-            }
-            // WRITE RESULT
-            else if ( data[i].type_resultat != 229 && data[i].type_resultat != 265 ) // not calc and not label
-            {
-            let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ');' ;
-
-                if ( value != "" && res_valid == 250 )
-                disp_valid = "show" ;
+                // LABEL TYPE
+                if ( data[i].type_resultat == 265 )
+                res_label = "<b>" + res_label + "</b>" ;
 
                 if ( data[i].normal_min != "" && data[i].normal_max != "" )
-                change += 'check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
-
-                // Num var
-                if (data[i].num_var > 0)
                 {
-                change += 'calc(' + id_rec + ', ' + ref_ana + ', ' + id_res + ', ' + data[i].num_var + ');"' ;
+                let ico_limit = "d-none" ;
 
-                res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                    if ( (value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max)) && value != "" )
+                    ico_limit = "show" ;
 
-                    // Convert formula
-                    if (data[i].formule_unite2 != "")
-                    {
-                    res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
-                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
-                    }
+                    res_limit = '<span id="limit_' + id_res + '" class="warning ' + ico_limit + '" title="[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]"></span>' ;
                 }
-                else
-                change += '"' ;
 
-                // Validated
-                if (res_valid != 250)
-                change = 'disabled' ;
+            res += '<tr class="col-12 p-0">' +
+                       '<td class="d-inline-block col-1 align-middle border-0 p-1">' + res_limit + '</td>' +
+                       '<td class="d-inline-block col-1 align-middle text-center border-0 p-1">' + res_emer + '</td>' +
+                       '<td class="d-inline-block align-middle text-center border-0 p-1">' + res_stat + '</td>' +
+                       '<td class="d-inline-block align-middle text-center border-0 p-1">' +
+                           '<div class="history" onclick="display_histo(' + i + ');"></div>' +
+                       '</td>' +
+                       '<td class="d-inline-block col-5 align-middle text-center border-0 p-1">' + res_label + '</td>' ;
 
-            res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
-            res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
-            res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
-            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
-            }
-            // READONLY RESULT
-            else
-            {
-            let value = data[i].valeur ;
+            res += '<td class="d-inline-block form-inline align-middle text-center border-0 p-1"><span class="value">' ;
 
-                // if not label type
-                if ( data[i].type_resultat != 265 )
+                // CANCEL RESULT
+                if ( res_valid == 252 && value == "" )
                 {
+                res += '{{ _("ANNULE") }}</span>&nbsp;' ;
+                }
+                // SELECT CHOICE RESULT
+                else if ( res_answer.length > 1 )
+                {
+                let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ')"' ;
+
+                    // Validated
+                    if (res_valid != 250)
+                    change = 'disabled' ;
+
+                res += '<select id="res_' + id_res + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')"' + change + ' >' +
+                       '<option value="0"> </option>' ;
+
+                value = "0" ;
+
+                    for ( j in res_answer )
+                    {
+                    let selected = "" ;
+
+                        if ( data[i].valeur == res_answer[j].id_data )
+                        {
+                        selected = "selected" ;
+                        value    = data[i].valeur ;
+
+                            if (res_valid == 250)
+                            disp_valid = "show" ;
+                        }
+                        // NOTE : works because 1013 is always the last choice
+                        else if ( selected == "" && value == "0" && res_answer[j].id_data == 1013 )
+                        {
+                        selected = "selected" ;
+                        value    = res_answer[j].id_data ;
+                        }
+
+                    res += '<option value="' + res_answer[j].id_data + '" ' + selected + '>' + res_answer[j].label + '</option>' ;
+                    }
+
+                res += '</select>' ;
+                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                }
+                // WRITE RESULT
+                else if ( data[i].type_resultat != 229 && data[i].type_resultat != 265 ) // not calc and not label
+                {
+                let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ');' ;
+
+                    if ( value != "" && res_valid == 250 )
+                    disp_valid = "show" ;
+
+                    if ( data[i].normal_min != "" && data[i].normal_max != "" )
+                    change += 'check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
+
                     // Num var
                     if (data[i].num_var > 0)
+                    {
+                    change += 'calc(' + id_rec + ', ' + ref_ana + ', ' + id_res + ', ' + data[i].num_var + ');"' ;
+
                     res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
 
-                    // Formula
-                    if (data[i].formule != "")
-                    res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
-
-                    // Convert formula
-                    if (data[i].formule_unite2 != "")
-                    {
-                    res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
-                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
+                        // Convert formula
+                        if (data[i].formule_unite2 != "")
+                        {
+                        res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
+                        res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
+                        }
                     }
+                    else
+                    change += '"' ;
 
-                res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
+                    // Validated
+                    if (res_valid != 250)
+                    change = 'disabled' ;
+
+                res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
                 res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
-                res += '<input type="hidden" id="accu_' + id_res + '" value="' + data[i].precision + '">' ; // precision
                 res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
                 res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
                 }
-            }
+                // READONLY RESULT
+                else
+                {
+                let value = data[i].valeur ;
 
-        res += '<span class="unit show">' + res_unit + '</span></td></tr>' ;
+                    // if not label type
+                    if ( data[i].type_resultat != 265 )
+                    {
+                        // Num var
+                        if (data[i].num_var > 0)
+                        res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+
+                        // Formula
+                        if (data[i].formule != "")
+                        res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
+
+                        // Convert formula
+                        if (data[i].formule_unite2 != "")
+                        {
+                        res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
+                        res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
+                        }
+
+                    res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
+                    res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
+                    res += '<input type="hidden" id="accu_' + id_res + '" value="' + data[i].precision + '">' ; // precision
+                    res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
+                    res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                    }
+                }
+
+            res += '<span class="unit show">' + res_unit + '</span></td></tr>' ;
+            }
         }
 
     ref_ana_p = ref_ana ;
@@ -684,50 +690,44 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "benchsheet"}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( 
-    {
-        type: "POST",
-        url: "/services/pdf/report/generic",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-        
-        let today = new Date();
-        
-        let month = today.getMonth() + 1 ;
+            type: "POST",
+            url: "/services/pdf/report/generic",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
+            
+            let month = today.getMonth() + 1 ;
 
-        if (month < 10) month = '0' + month ;
+            if (month < 10) month = '0' + month ;
 
-        let day = today.getDate() ;
+            let day = today.getDate() ;
 
-        if (day < 10) day = '0' + day ;
+            if (day < 10) day = '0' + day ;
 
-        today = today.getFullYear() + '' + month + '' + day ;
+            today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "benchsheet_" + today + ".pdf" ;
+            let filename = "benchsheet_" + today + ".pdf" ;
 
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
 
-        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

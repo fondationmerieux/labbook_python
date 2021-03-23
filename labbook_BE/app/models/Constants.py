@@ -15,4 +15,16 @@ class Constants:
     cst_resource = '/storage/resource/'
     cst_upload   = '/storage/upload/'
 
-    cst_tmp = '/home/apps/labbook_BE/labbook_BE/tmp/'
+    cst_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
+    cst_script = '/home/apps/labbook_BE/labbook_BE/script/'
+
+    cst_user_script = 'user_labbook'
+
+    # CMD LIST for backup & restore
+    cst_io_backup      = 'backup'
+    cst_io_genkey      = 'genkey'
+    cst_io_initmedia   = 'initmedia'
+    cst_io_keyexist    = 'keyexist'
+    cst_io_listmedia   = 'listmedia'
+    cst_io_listarchive = 'listarchive'
+    cst_io_restore     = 'restore'

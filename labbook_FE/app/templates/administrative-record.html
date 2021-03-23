@@ -202,7 +202,9 @@
                                 <div>
                                     <div>
                                         <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                            {% if session['user_role'] != 'P' %}
                                             <input name="file" type="file" style="margin-bottom:4px"/>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -216,7 +218,9 @@
                                 </table>
                             </div>
                         </div>
+                        {% if session['user_role'] != 'P' %}
                         <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file({{ args['record']['id_data'] }});">
+                        {% endif %}
                     </div>
                 </div>
 
@@ -225,16 +229,18 @@
                         <div class="float-left">
                             <input type="button" onclick="return_home();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
+                        {% if session['user_role'] != 'P' %}
                         <div class="float-right">
                             <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Imprimer la facture') }}">
                             <input type="button" onclick="print_barcode();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Code barre') }}">
-                        </div> 
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-            </form><!-- close form -->
+            </form>
             
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
@@ -346,8 +352,10 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'REC\', ' + obj.id_data + ');">Télécharger</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
-    tmp_tr += '</tr>' ;
+    {% if session['user_role'] != 'P' and session['user_role'] != 'S' %}
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a>' ;
+    {% endif %}
+    tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;
     }

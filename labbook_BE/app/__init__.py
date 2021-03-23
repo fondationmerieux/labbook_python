@@ -71,6 +71,12 @@ config_envvar = 'LOCAL_SETTINGS'
 if config_envvar in os.environ:
     print("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar]))
     app.config.from_envvar(config_envvar)
+
+    # Put in os.environ DB variables
+    os.environ['DB_USER'] = app.config['DB_USER']
+    os.environ['DB_PWD']  = app.config['DB_PWD']
+    os.environ['DB_HOST'] = app.config['DB_HOST']
+    os.environ['DB_NAME'] = app.config['DB_NAME']
 else:
     print("No local configuration available: {} is undefined in the environment".format(config_envvar))
 
@@ -177,9 +183,11 @@ api.add_resource(SettingReport,       '/services/setting/report')
 api.add_resource(SettingBackup,       '/services/setting/backup')
 api.add_resource(SettingSticker,      '/services/setting/sticker', '/services/setting/sticker/<int:sts_ser>')
 api.add_resource(ScriptBackup,        '/services/setting/script/backup')
+api.add_resource(ScriptKeyexist,      '/services/setting/script/keyexist')
 api.add_resource(ScriptRestore,       '/services/setting/script/restore')
 api.add_resource(StaffExport,         '/services/quality/staff/export')
 api.add_resource(StockProductDet,     '/services/quality/stock/product/det/<int:id_item>')
+api.add_resource(StockProductHist,    '/services/quality/stock/product/history/<int:id_item>')
 api.add_resource(StockProductSearch,  '/services/quality/stock/product/search')
 api.add_resource(StockSupplyDet,      '/services/quality/stock/supply/det/<int:id_item>')
 api.add_resource(StockExport,         '/services/quality/stock/export')

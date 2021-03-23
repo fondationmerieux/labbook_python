@@ -126,40 +126,34 @@ let param = '{ "code":"' + code + '", ' +
             '"firstname":"' + firstname  + '"}' ;
 
     // popup wait
-    setTimeout(function()
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
-
-    $.ajax( {
-        type: "POST",
-        url: "/services/patient/list",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
-            {
-            data_patients = data ;
-
-            p_max = Math.ceil( data.length / p_step ) ;
-
-            display_patient( 1 ) ;
-
-            setTimeout(function()
+        $.ajax( {
+            type: "POST",
+            url: "/services/patient/list",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
                 {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
-            },
-        error: function(data)
-            {
-            setTimeout(function()
-                 {
-                 $('#dial-wait').modal("hide") ;
-                 }, 600) ;
+                data_patients = data ;
 
-            console.log("ERROR patient list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
+                p_max = Math.ceil( data.length / p_step ) ;
+
+                display_patient( 1 ) ;
+
+                    $("#dial-wait").modal("hide") ;
+                },
+            error: function(data)
+                {
+                     $("#dial-wait").modal("hide") ;
+
+                console.log("ERROR patient list") ;
+                alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+                }
+        } ) ;
     } ) ;
 }
 
@@ -246,50 +240,47 @@ let param = '{ "code":"' + code + '", ' +
             '"firstname":"' + firstname  + '"}' ;
 
     // popup wait
-    $( "#dial_wait" ).modal( "show" ) ;
+    $("#dial-wait").modal( "show" ) ;
 
-    $.ajax( 
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/list/export",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(ret)
+        $.ajax( 
         {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 1000) ;
-        
-        let today = new Date();
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/patient/list/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
 
-        let month = today.getMonth() + 1 ;
+            let month = today.getMonth() + 1 ;
 
-        if (month < 10) month = '0' + month ;
+            if (month < 10) month = '0' + month ;
 
-        let day = today.getDate() ;
+            let day = today.getDate() ;
 
-        if (day < 10) day = '0' + day ;
+            if (day < 10) day = '0' + day ;
 
-        today = today.getFullYear() + '' + month + '' + day ;
+            today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "patients_" + today + ".csv" ;
+            let filename = "patients_" + today + ".csv" ;
 
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 1000) ;
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
 
-            if (ret.status == 404)
-            alert("{{ _("Aucun résultats à exporter !") }}") ;
-            else
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
+                if (ret.status == 404)
+                alert("{{ _("Aucun résultats à exporter !") }}") ;
+                else
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

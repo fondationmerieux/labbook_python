@@ -339,78 +339,91 @@ def homepage(login=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests pref_bill failed, err=%s , url=%s', err, url)
 
-    # Load nb_emer
-    try:
-        url = session['server_int'] + '/services/record/count/emergency'
-        req = requests.get(url)
+    # Prescriber homepage
+    if session['user_role'] == 'P':
+        session['current_page'] = 'list-records'
+        session.modified = True
 
-        if req.status_code == 200:
-            json_data['nb_emer'] = req.json()
+        return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+    # Qualitican homepage
+    elif session['user_role'] == 'Q':
+        session['current_page'] = 'quality-general'
+        session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count ermergency failed, err=%s , url=%s', err, url)
+        return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+    else:
+        # Load nb_emer
+        try:
+            url = session['server_int'] + '/services/record/count/emergency'
+            req = requests.get(url)
 
-    # Load nb_rec_tech
-    try:
-        url = session['server_int'] + '/services/record/count/technician'
-        req = requests.get(url)
+            if req.status_code == 200:
+                json_data['nb_emer'] = req.json()
 
-        if req.status_code == 200:
-            json_data['nb_rec_tech'] = req.json()
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests count ermergency failed, err=%s , url=%s', err, url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count technician records failed, err=%s , url=%s', err, url)
+        # Load nb_rec_tech
+        try:
+            url = session['server_int'] + '/services/record/count/technician'
+            req = requests.get(url)
 
-    # Load nb_rec_bio
-    try:
-        url = session['server_int'] + '/services/record/count/biologist'
-        req = requests.get(url)
+            if req.status_code == 200:
+                json_data['nb_rec_tech'] = req.json()
 
-        if req.status_code == 200:
-            json_data['nb_rec_bio'] = req.json()
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests count technician records failed, err=%s , url=%s', err, url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count biologist records failed, err=%s , url=%s', err, url)
+        # Load nb_rec_bio
+        try:
+            url = session['server_int'] + '/services/record/count/biologist'
+            req = requests.get(url)
 
-    # Load nb_rec
-    try:
-        url = session['server_int'] + '/services/record/count'
-        req = requests.get(url)
+            if req.status_code == 200:
+                json_data['nb_rec_bio'] = req.json()
 
-        if req.status_code == 200:
-            json_data['nb_rec'] = req.json()
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests count biologist records failed, err=%s , url=%s', err, url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count records failed, err=%s , url=%s', err, url)
+        # Load nb_rec
+        try:
+            url = session['server_int'] + '/services/record/count'
+            req = requests.get(url)
 
-    # Load nb_rec_today
-    try:
-        url = session['server_int'] + '/services/record/count/today'
-        req = requests.get(url)
+            if req.status_code == 200:
+                json_data['nb_rec'] = req.json()
 
-        if req.status_code == 200:
-            json_data['nb_rec_today'] = req.json()
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests count records failed, err=%s , url=%s', err, url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count today validated records failed, err=%s , url=%s', err, url)
+        # Load nb_rec_today
+        try:
+            url = session['server_int'] + '/services/record/count/today'
+            req = requests.get(url)
 
-    # Load last_record
-    try:
-        url = session['server_int'] + '/services/record/last'
-        req = requests.get(url)
+            if req.status_code == 200:
+                json_data['nb_rec_today'] = req.json()
 
-        if req.status_code == 200:
-            json_data['record'] = req.json()
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests count today validated records failed, err=%s , url=%s', err, url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests last records failed, err=%s , url=%s', err, url)
+        # Load last_record
+        try:
+            url = session['server_int'] + '/services/record/last'
+            req = requests.get(url)
 
-    dt_stop_req = datetime.now()
-    dt_time_req = dt_stop_req - dt_start_req
+            if req.status_code == 200:
+                json_data['record'] = req.json()
 
-    log.info(Logs.fileline() + ' : DEBUG homepage processing time = ' + str(dt_time_req))
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests last records failed, err=%s , url=%s', err, url)
 
-    return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))
+        dt_stop_req = datetime.now()
+        dt_time_req = dt_stop_req - dt_start_req
+
+        log.info(Logs.fileline() + ' : DEBUG homepage processing time = ' + str(dt_time_req))
+
+        return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))
 
 
 # --------------------
@@ -3142,16 +3155,28 @@ def hist_stock_product(prd_ser=0):
     json_ihm  = {}
     json_data = {}
 
-    json_data['hist_stock_prod'] = []
+    json_data['hist_stock_product'] = []
 
     if prd_ser > 0:
         # Load history stock product
         try:
-            url = session['server_int'] + '/services/quality/stock/history/product/' + str(prd_ser)
-            req = requests.get(url)
+            date_end = datetime.today()
+            date_beg = (date_end - timedelta(days=1)).replace(month=1, day=1, hour=0, minute=0)
+            date_end = date_end + timedelta(days=1)
+
+            date_beg = datetime.strftime(date_beg, Constants.cst_isodate)
+            date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+            json_data['date_beg'] = date_beg
+            json_data['date_end'] = date_end
+
+            payload = {'date_beg': date_beg, 'date_end': date_end}
+
+            url = session['server_int'] + '/services/quality/stock/product/history/' + str(prd_ser)
+            req = requests.post(url, json=payload)
 
             if req.status_code == 200:
-                json_data['hist_stock_prod'] = req.json()
+                json_data['hist_stock_product'] = req.json()
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests history stock product failed, err=%s , url=%s', err, url)

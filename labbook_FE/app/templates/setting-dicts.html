@@ -112,18 +112,17 @@ let param = '{ "name":"' + name + '", ' +
               '"code":"' + code + '"}' ;
 
     // popup wait
-    setTimeout(function()
-    {
-    $('#dial-wait').modal("show") ;
-    }, 600) ;
+    $("#dial-wait").modal("show") ;
 
-    $.ajax( {
-       type: "POST",
-       url: "/services/dict/list" ,
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( {
+           type: "POST",
+           url: "/services/dict/list" ,
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
            {
            data_dicts = data ;
 
@@ -131,21 +130,16 @@ let param = '{ "name":"' + name + '", ' +
 
            display_dict( 1 ) ;
 
-           setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                $("#dial-wait").modal("hide") ;
            },
-       error: function(data)
+           error: function(data)
            {
-           setTimeout(function()
-                {
-                $('#dial-wait').modal("hide") ;
-                }, 600) ;
+                $("#dial-wait").modal("hide") ;
 
            console.log("ERROR dict list") ;
            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
            }
+        } ) ;
     } ) ;
 }
 

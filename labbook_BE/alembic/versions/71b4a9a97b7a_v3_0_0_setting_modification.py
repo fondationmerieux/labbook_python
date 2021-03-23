@@ -9,6 +9,7 @@ Create Date: 2021-02-03 10:46:43.668497
 from alembic import op
 import sqlalchemy as sa
 
+from datetime import datetime
 
 # revision identifiers, used by Alembic.
 revision = '71b4a9a97b7a'
@@ -18,6 +19,9 @@ depends_on = None
 
 
 def upgrade():
+    print("--- " + str(datetime.today()) + "---")
+    print("START of migration v3.0.0_setting_modification revision=71b4a9a97b7a")
+
     # Get the current
     conn = op.get_bind()
 
@@ -70,7 +74,6 @@ def upgrade():
         # Create table for backup setting
         conn.execute("create table backup_setting("
                      "bks_ser int not NULL AUTO_INCREMENT,"
-                     "bks_pwd varchar(50) NOT NULL,"
                      "bks_start_time TIME NOT NULL,"
                      "PRIMARY KEY (bks_ser))")
     except:
@@ -78,7 +81,7 @@ def upgrade():
     else:
         try:
             # insert backup setting by default
-            conn.execute("insert into backup_setting (bks_pwd, bks_start_time) values ('', '12:00:00')")
+            conn.execute("insert into backup_setting (bks_start_time) values ('12:00:00')")
         except:
             print("ERROR insert default value for backup_setting")
 
@@ -297,6 +300,8 @@ def upgrade():
                      "values (100, 'profil', 'Prescripteur', 'prescripteur', 16, 'prescripteur' )")
     except:
         print("ERROR insert into sigl_dico_data new profil (Prescripteur)")
+
+    print("END of migration v3.0.0_setting_modification revision=71b4a9a97b7a")
 
 
 def downgrade():

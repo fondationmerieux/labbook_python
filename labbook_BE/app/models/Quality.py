@@ -152,7 +152,7 @@ class Quality:
     def getStockList(args):
         cursor = DB.cursor()
 
-        filter_cond = ' prs_empty="N" '
+        filter_cond = ' prs_ser > 0 '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -172,7 +172,7 @@ class Quality:
             if 'prod_conserv' in args and args['prod_conserv'] > 0:
                 filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
 
-        req = ('select prs_ser, prs_prd, prd_name, sum(prs_nb_pack) as prs_nb_pack, prd_nb_by_pack, '
+        req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, '
                'dict1.label as type,  dict2.label as conserv, '
                'sup.fournisseur_nom as supplier, Min(prs_expir_date) as expir_date '
@@ -183,7 +183,7 @@ class Quality:
                'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
                'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
                'where ' + filter_cond + ' ' +
-               'group by prd_name, prd_nb_by_pack '
+               'group by prd_name '
                'order by prd_name asc ' + limit)
 
         cursor.execute(req)
@@ -191,7 +191,19 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
-    def getStockListDet(prd_ser):
+    def getSumStockSupply(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sum(prs_nb_pack) as total '
+               'from product_supply '
+               'where prs_prd=%s group by prs_prd')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getStockListDet(id_item):
         cursor = DB.cursor()
 
         req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, prs_batch_num, '
@@ -203,7 +215,7 @@ class Quality:
                'group by prs_ser '
                'order by prs_expir_date asc ')
 
-        cursor.execute(req, (prd_ser,))
+        cursor.execute(req, (id_item,))
 
         return cursor.fetchall()
 
@@ -258,6 +270,34 @@ class Quality:
         cursor.execute(req, (id_item,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getStockProductHist(id_item, date_beg, date_end):
+        cursor = DB.cursor()
+
+        # Take all supply  for this product
+        req = ('select prs_ser, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
+               'prs_batch_num, prs_buy_price, prs_date as date_create, username '
+               'from product_supply '
+               'left join sigl_user_data on id_data=prs_user '
+               'where prs_prd=%s and (prs_date between %s and %s)')
+
+        cursor.execute(req, (id_item, date_beg, date_end,))
+
+        ret = cursor.fetchall()
+
+        # Take all use for this product
+        req = ('select pru_ser, pru_nb_pack, username, pru_date as date_create '
+               'from product_use '
+               'inner join product_supply on prs_ser=pru_prs '
+               'left join sigl_user_data on id_data=pru_user '
+               'where prs_prd=%s and (pru_date between %s and %s)')
+
+        cursor.execute(req, (id_item, date_beg, date_end,))
+
+        ret = ret + cursor.fetchall()
+
+        return ret
 
     @staticmethod
     def insertStockProduct(**params):
