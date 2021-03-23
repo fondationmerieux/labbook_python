@@ -4,15 +4,18 @@
 #
 # 2021-03-18
 #
-ENV_PASS="LABBOOK_KEY_PWD"
+ENV_KEY_PASS="LABBOOK_KEY_PWD"
 ENV_KEY_DIR="LABBOOK_KEY_DIR"
 ENV_STATUS_DIR="LABBOOK_STATUS_DIR"
 ENV_LOG_DIR="LABBOOK_LOG_DIR"
 ENV_TEST_OK="LABBOOK_TEST_OK"
 ENV_TEST_KO="LABBOOK_TEST_KO"
 ENV_USER="LABBOOK_USER"
+ENV_USER_PASS="LABBOOK_USER_PWD"
 KEY_REAL_NAME="LabBook Backup Key"
 WORK_DIRECTORY="/tmp"
+MEDIA_DIRECTORY="/media"
+BACKUPS_DIRECTORY="SIGL_sauvegardes"
 
 #############
 # Functions #
@@ -36,16 +39,18 @@ usage()
     echo
     echo "  $(basename "$0") [options] command"
     echo
-    echo "Passphrase for gpg operations is read from $ENV_PASS environment variable"
+    echo "Passphrase for gpg operations is read from $ENV_KEY_PASS environment variable"
+    echo "Password for user operations is read from $ENV_USER_PASS environment variable"
     echo
     echo "Commands as described in api.md:"
     echo "  genkey            Create key pair in DIR"
     echo "  keyexist          Check key pair exist in DIR"
     echo "  initmedia         Initialize media"
-    echo "  listmedia         List medias in /media/USER"
+    echo "  listmedia         List initialized medias in /media/USER"
     echo "  listarchive       List archives in MEDIA"
     echo "  backup            Backup"
     echo "  restore           Restore ARCHIVE from MEDIA"
+    echo "  restart           Restart LabBook container"
     echo
     echo "Internal commands used for testing:"
     echo "  encrypt           Encrypt INPUT_FILE to DIR/INPUT_FILE.gpg and copy keys to DIR"
@@ -67,11 +72,13 @@ usage()
     echo "  -a ARCHIVE        Archive"
     echo "  -V VOLUME         Container volume"
     echo "  -R ROOT_PATH      Root path"
+    echo "  -P TEST_PATH      Test path"
     echo "  -p FILE_PATH      File path, may be repeated"
     echo "  -s STATUS_FILE    Status file [default=$ENV_STATUS_DIR/command]"
     echo "  -u USER           Linux user [default=$ENV_USER]"
     echo "  -m MEDIA          Media"
     echo "  -U                Include uninitialized medias in list"
+    echo "  -T                Test mode"
     echo
 
     exit 2
@@ -145,7 +152,7 @@ Name-Real: $KEY_REAL_NAME
 Expire-Date: 0
 EOF
 
-    passwd=$(printenv $ENV_PASS)
+    passwd=$(printenv $ENV_KEY_PASS)
 
     [[ $verbose -eq 1 ]] && echo_message "Generating keys with file=$gen_key_cmd_file"
 
@@ -322,7 +329,7 @@ fn_decrypt() {
             return 1
         }
 
-        passwd=$(printenv $ENV_PASS)
+        passwd=$(printenv $ENV_KEY_PASS)
 
         # shellcheck disable=SC2086
         echo "$passwd" | gpg --pinentry-mode loopback --batch --passphrase-fd 0 \
@@ -468,7 +475,7 @@ fn_restorefiles() {
             return 1
         }
 
-        passwd=$(printenv $ENV_PASS)
+        passwd=$(printenv $ENV_KEY_PASS)
 
         if [[ -n "$clear_archive" ]]; then
             # shellcheck disable=SC2086
@@ -554,6 +561,121 @@ fn_get_mountpoint() {
         echo_message "error in $docker_cmd volume inspect $volume_name"
         return 1
     fi
+}
+
+#
+# Init media
+#
+# Param:
+# - user
+# - media
+# - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
+#
+fn_initmedia() {
+    local user="$1"
+    local media="$2"
+    local media_dir="$3"
+    local media_path=""
+    local backup_path=""
+
+    [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
+
+    [[ -d "$media_dir" ]] || {
+        log_message "cannot find directory $media_dir"
+        return 1
+    }
+
+    media_path="$media_dir/$user/$media"
+
+    [[ $verbose -eq 1 ]] && log_message "Initializing $media_path"
+
+    [[ -d "$media_path" ]] || {
+        log_message "cannot find media $media_path"
+        return 1
+    }
+
+    backup_path="$media_path/$BACKUPS_DIRECTORY"
+
+    mkdir -p "$backup_path" || {
+        log_message "cannot create directory $backup_path"
+        return 1
+    }
+
+    return 0
+}
+
+#
+# List medias
+#
+# Param:
+# - user
+# - status file
+# - list only initialized medias (0) or all medias (1)
+# - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
+#
+# Output in status_file: media names, one per line
+#
+fn_listmedia() {
+    local user="$1"
+    local status_file="$2"
+    local with_uninitialized="$3"
+    local media_dir="$4"
+
+    [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
+
+    [[ -d "$media_dir" ]] || {
+        log_message "cannot find directory $media_dir"
+        return 1
+    }
+
+    status_message ""
+
+    [[ $verbose -eq 1 ]] && log_message "Listing content of $media_dir/$user"
+
+    for media in "$media_dir"/"$user"/*; do
+        [[ -e "$media" ]] || break
+
+        [[ $with_uninitialized -eq 1 ]] || {
+            is_initialized "$media" || continue
+        }
+
+        status_message "$(basename "$media")"
+    done
+
+    return 0
+}
+
+#
+# Check if a media is initialized
+#
+# Param:
+# - path to media
+#
+is_initialized() {
+    local media_path="$1"
+
+    [[ -d "$media_path/$BACKUPS_DIRECTORY" ]] || return 1
+
+    return 0
+}
+
+#
+# Restart LabBook container
+#
+# Param:
+# - user
+#
+fn_restart() {
+    local user="$1"
+
+    [[ $verbose -eq 1 ]] && log_message "Restarting container as $user"
+
+    [[ $test_mode -eq 0 ]] && {
+        true
+        # ssh -o "StrictHostKeyChecking no" user_labbook@10.88.0.1 sudo service labbook restart
+    }
+
+    return 0
 }
 
 #
@@ -653,7 +775,8 @@ backup_message() {
 
 #
 # Initialize fake mode and fake status
-# Fake mode is active if 'cmd' appears in ENV_TEST_OK or ENV_TEST_KO (of the form cmd,cmd,cmd)
+# Fake mode is active if 'cmd' appears in ENV_TEST_OK or ENV_TEST_KO
+# Both variables are in the form cmd,cmd,....
 #
 # Param:
 # - command name
@@ -690,14 +813,16 @@ log_file=""
 arg_dir=""
 cmd=""
 root_dir="."
+test_path=""
 volume=""
 archive=""
 file_paths=()
 user=""
 with_uninitialized=0
 media=""
+test_mode=0
 
-while getopts "hvi:o:d:V:R:a:p:s:u:Um:" option; do
+while getopts "hvi:o:d:V:R:a:p:s:u:Um:P:T" option; do
     case "$option" in
         h)
             usage
@@ -751,6 +876,14 @@ while getopts "hvi:o:d:V:R:a:p:s:u:Um:" option; do
             media="$OPTARG"
             ;;
 
+        P)
+            test_path="$OPTARG"
+            ;;
+
+        T)
+            test_mode=1
+            ;;
+
         *)
             usage
             ;;
@@ -784,14 +917,14 @@ case "$cmd" in
 
         [[ -n "$arg_dir" ]] || error_exit "$cmd: missing directory, use -d argument or $ENV_KEY_DIR env variable"
 
-        if [[ -n $(printenv $ENV_PASS) ]]; then
+        if [[ -n $(printenv $ENV_KEY_PASS) ]]; then
             if [[ $fake_mode -eq 0 ]]; then
                 fn_genkey "$arg_dir" || exit_status=1
             elif [[ $fake_status -eq 1 ]]; then
                 error_exit "$cmd: faking failure"
             fi
         else
-            error_exit "$cmd: cannot find passphrase in $ENV_PASS"
+            error_exit "$cmd: cannot find passphrase in $ENV_KEY_PASS"
         fi
 
         [[ $exit_status -eq 0 ]] && status_message ""
@@ -819,7 +952,7 @@ case "$cmd" in
         [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
 
         if [[ $fake_mode -eq 0 ]]; then
-            error_exit "$cmd $media: not implemented"
+            fn_initmedia "$user" "$media" "$test_path" || exit_status=1
         elif [[ $fake_status -eq 1 ]]; then
             error_exit "$cmd: faking failure"
         fi
@@ -835,7 +968,7 @@ case "$cmd" in
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
         if [[ $fake_mode -eq 0 ]]; then
-            error_exit "$cmd $with_uninitialized: not implemented"
+            fn_listmedia "$user" "$status_file" "$with_uninitialized" "$test_path" || exit_status=1
         else
             if [[ $fake_status -eq 0 ]]; then
                 status_message "USB"
@@ -927,7 +1060,7 @@ case "$cmd" in
         [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
 
         if [[ $fake_mode -eq 0 ]]; then
-            error_exit "$cmd $media $archive: not implemented"
+            fn_restart "$user" || exit_status=1
         elif [[ $fake_status -eq 1 ]]; then
             error_exit "$cmd $media $archive: faking failure"
         fi
@@ -949,10 +1082,10 @@ case "$cmd" in
         [[ -n "$output_file" ]] ||  error_exit "missing output file, use -o argument"
 
         if [[ -n "$arg_dir" ]]; then
-            if [[ -n $(printenv $ENV_PASS) ]]; then
+            if [[ -n $(printenv $ENV_KEY_PASS) ]]; then
                 fn_decrypt "$input_file" "$output_file" "$arg_dir" || exit_status=1
             else
-                error_exit "cannot find passphrase in $ENV_PASS"
+                error_exit "cannot find passphrase in $ENV_KEY_PASS"
             fi
         else
             fn_decrypt "$input_file" "$output_file" "" || exit_status=1
@@ -1002,10 +1135,10 @@ case "$cmd" in
         [[ -n "$root_dir" ]] ||  error_exit "missing root dir, use -R or -V argument"
 
         if [[ -n "$arg_dir" ]]; then
-            if [[ -n $(printenv $ENV_PASS) ]]; then
+            if [[ -n $(printenv $ENV_KEY_PASS) ]]; then
                 fn_restorefiles "$input_file" "$archive" "$arg_dir" "$root_dir" || exit_status=1
             else
-                error_exit "cannot find passphrase in $ENV_PASS"
+                error_exit "cannot find passphrase in $ENV_KEY_PASS"
             fi
         else
             fn_restorefiles "$input_file" "$archive" "" "$root_dir" || exit_status=1

@@ -28,6 +28,7 @@ KPRI_TEST1="kpri.test1.asc"
 KPUB_TEST1="kpub.test1.asc"
 KPRI_TEST2="kpri.test2.asc"
 KPUB_TEST2="kpub.test2.asc"
+BACKUPS_DIRECTORY="SIGL_sauvegardes"
 
 oneTimeSetUp() {
     local dockerfile=""
@@ -1042,6 +1043,199 @@ test_fake_mode() {
     status=$?
 
     ${_ASSERT_FALSE_} '$status'
+}
+
+test_initmedia() {
+    local cmd_stderr=""
+    local first_line=""
+    local status=0
+
+    # missing user
+    cmd_stderr=$($run_cmd_noenv initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing user"'
+
+    # missing media
+    cmd_stderr=$($run_cmd_noenv -u user initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing media"'
+
+    media_dir="$WORK_DIRECTORY/media"
+    user="someuser"
+    media="USB"
+    expected_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
+
+    mkdir -p "$media_dir/$user"
+
+    # wrong media
+    cmd_stderr=$($run_cmd -u "$user" -m "wrongmedia" -P "$media_dir" initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "media" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"cannot find media"'
+
+    # simulate a media
+    mkdir -p "$media_dir/$user/$media"
+
+    # initialize media
+    cmd_stderr=$($run_cmd -u "$user" -m "$media" -P "$media_dir" initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # verify expectation
+    [[ $verbose -eq 1 ]] && ls -l "$expected_dir"
+
+    test -d "$expected_dir"
+    status=$?
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # second initialization must succeed
+    cmd_stderr=$($run_cmd -u "$user" -m "$media" -P "$media_dir" initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+}
+
+test_listmedia() {
+    local cmd_stderr=""
+    local first_line=""
+    local status=0
+
+    # missing user
+    cmd_stderr=$($run_cmd_noenv listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing user"'
+
+    # missing status file
+    cmd_stderr=$($run_cmd_noenv -u user listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing status file"'
+
+    # we use the same statusfile for all commands
+    status_file="$WORK_DIRECTORY/listmedia"
+    expected_file="$WORK_DIRECTORY/expected"
+
+    media_dir="$WORK_DIRECTORY/media"
+    user="someuser"
+    media1="USB1"
+    media2="USB2"
+
+    # simulate no media
+    mkdir -p "$media_dir/$user"
+
+    # empty list
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -P "$media_dir" listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    true > "$expected_file"
+
+    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # simulate some media
+    mkdir -p "$media_dir/$user/$media1"
+    mkdir -p "$media_dir/$user/$media2"
+    mkdir -p "$media_dir/$user/$media2/$BACKUPS_DIRECTORY"  # media2 is initialized
+
+    # list all media even unitialized
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -U -P "$media_dir" listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    cat > "$expected_file" <<%
+$media1
+$media2
+%
+
+    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # list all initialized media
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -P "$media_dir" listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    cat > "$expected_file" <<%
+$media2
+%
+
+    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
 }
 
 oneTimeTearDown() {

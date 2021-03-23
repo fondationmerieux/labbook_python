@@ -57,7 +57,7 @@ $ LABBOOK_KEY_PWD=passphrase backup.sh [-d DIR] [-s FILE] genkey && echo "key ge
 Useful to avoid writing to a media that is not intended for backup
 
 ~~~
-$ backup.sh [-u USER] [-o FILE] [-U] initmedia || echo "error searching for medias"
+$ backup.sh [-u USER] [-o FILE] -m MEDIA initmedia || echo "error searching for medias"
 
     -u USER     : connected user with mounted USB device [DEFAULT=LABBOOK_USER]
     -o FILE     : output file [DEFAULT=stdout]
@@ -148,7 +148,7 @@ UX:
 - choose media
 - choose archive
 - enter private key passphrase
-- (if restore successful) message prepare for application restart
+- (if restore successful) message prepare for application restart, enter user password
 
 Script steps:
 
@@ -172,9 +172,9 @@ $ LABBOOK_KEY_PWD=passphrase backup.sh -m MEDIA -a ARCHIVE \
     -d DIR      : directory containing GPG keys [DEFAULT=LABBOOK_KEY_DIR]
     -b DATABASE : database [DEFAULT=LABBOOK_DB_NAME]
 
-$ backup.sh [-o FILE] restart || echo "Failed to restart container"
+$ LABBOOK_USER_PWD=password backup.sh [-u USER] restart || echo "Failed to restart container"
 
-    -o FILE     : output file [DEFAULT=stdout]
+    -u USER     : user authorized to restart LabBook container without providing sudo password [DEFAULT=LABBOOK_USER]
 ~~~
 
 ## NOTES
