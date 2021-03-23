@@ -27,3 +27,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# ignore gpg private keys
+kpri.*.asc
+
+# except gpg private keys in test
+! script/test/kpri.*.asc
+
+# Dockerfile in test is build dynamically
+script/test/Dockerfile
+
