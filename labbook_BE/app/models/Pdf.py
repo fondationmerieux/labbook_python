@@ -82,7 +82,7 @@ class Pdf:
             return False
 
         # Generate PDF
-        path = Constants.cst_tmp
+        path = Constants.cst_path_tmp
 
         page_w = int(210 - (sts_margin_left + sts_margin_right))
         page_h = int(297 - (sts_margin_top + sts_margin_bottom))
@@ -128,7 +128,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBill(id_rec):
-        path = Constants.cst_tmp
+        path = Constants.cst_path_tmp
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -282,7 +282,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBillList(l_datas, date_beg, date_end):
-        path = Constants.cst_tmp
+        path = Constants.cst_path_tmp
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -659,7 +659,7 @@ class Pdf:
 
     @staticmethod
     def getPdfReportGeneric(html_part, filename=''):
-        path = Constants.cst_tmp
+        path = Constants.cst_path_tmp
 
         date_now = datetime.now()
         today    = date_now.strftime("%Y%m%d")

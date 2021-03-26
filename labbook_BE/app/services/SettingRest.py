@@ -262,7 +262,7 @@ class SettingBackup(Resource):
 
         if not setting:
             self.log.error(Logs.fileline() + ' : ERROR SettingBackup not found')
-            return compose_ret('', Constants.cst_content_type_json, 404)
+            return compose_ret('1', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
         for key, value in setting.items():
@@ -275,58 +275,193 @@ class SettingBackup(Resource):
         self.log.info(Logs.fileline() + ' : TRACE SettingBackup')
         return compose_ret(setting, Constants.cst_content_type_json)
 
+
+class ScriptBackup(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, media):
+        import os
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' ' + Constants.cst_io_backup
+
+        self.log.error(Logs.fileline() + ' : ScriptBackup cmd=' + cmd)
+        ret = os.system(cmd) 
+
+        # read backup file
+        if ret == 0:
+            try:
+                ret = ''
+                f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
+                for line in f:
+                    ret += line
+            except:
+                self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
+                return compose_ret(ret, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptBackup ret=' + str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class ScriptGenkey(Resource):
+    log = logging.getLogger('log_services')
+
     def post(self):
+        import os
+
         args = request.get_json()
 
-        if 'start_time' not in args:
-            self.log.error(Logs.fileline() + ' : SettingBackup ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
+        if 'pwd_key' not in args:
+            self.log.error(Logs.fileline() + ' : ScriptGenkey ERROR args missing')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
 
-        ret = Setting.updateBackupSetting(bks_start_time=args['start_time'])
+        os.environ['LABBOOK_KEY_PWD'] = args['pwd_key']
 
-        if ret is False:
-            self.log.error(Logs.alert() + ' : SettingBackup ERROR update')
-            return compose_ret('', Constants.cst_content_type_json, 500)
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + Constants.cst_io_genkey
 
-        self.log.info(Logs.fileline() + ' : TRACE SettingBackup')
-        return compose_ret('', Constants.cst_content_type_json)
+        self.log.error(Logs.fileline() + ' : ScriptGenkey cmd=' + cmd)
+        ret = os.system(cmd)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptGenkey ret=' + str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class ScriptInitmedia(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, media):
+        import os
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' ' + Constants.cst_io_initmedia
+
+        self.log.error(Logs.fileline() + ' : ScriptInitMedia cmd=' + cmd)
+        ret = os.system(cmd)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptInitMedia ret=' + str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)
 
 
 class ScriptKeyexist(Resource):
     log = logging.getLogger('log_services')
 
     def get(self):
-        # TODO run script
         import os
-        nom = "toto"
-        cmd = 'sh ' + Constants.cst_script + '/' + Constants.cst_io_keyexist + ' -p ' + str(666) + ' -n "' + nom + '" >> /tmp/file_TODO.log 2>&1 &'
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + Constants.cst_io_keyexist
 
         self.log.error(Logs.fileline() + ' : ScriptKeyexist cmd=' + cmd)
         ret = os.system(cmd)
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptKeyexist')
+        self.log.info(Logs.fileline() + ' : TRACE ScriptKeyexist ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)
 
 
-class ScriptBackup(Resource):
+class ScriptListarchive(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self):
+    def post(self, media):
+        import os
+
         args = request.get_json()
 
-        if 'script_user' not in args or 'script_pwd' not in args:
-            self.log.error(Logs.fileline() + ' : ScriptBackup ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
+        if 'user_pwd' not in args:
+            self.log.error(Logs.fileline() + ' : ScriptListmedia ERROR args missing')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
 
-        # TODO run script
-        import os
-        cmd = 'sh PATH/NOM_DU_SCRIPT.sh -p ' + str(666) + ' -n "' + args['nom'] + '" >> /tmp/file_TODO.log 2>&1 &'
+        os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        self.log.error(Logs.fileline() + ' : ScriptBackup cmd=' + cmd)
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' ' + Constants.cst_io_listarchive
+
+        self.log.error(Logs.fileline() + ' : ScriptListarchive cmd=' + cmd)
         ret = os.system(cmd)
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptBackup')
-        return compose_ret('', Constants.cst_content_type_json)
+        l_archive = {}
+
+        l_archive['ret']   = ret
+        l_archive['archive'] = []
+
+        # read listarchive file
+        if ret == 0:
+            try:
+                f = open(os.path.join(Constants.cst_io, 'listarchive'), 'r')
+                for archive in f:
+                    l_archive['archive'].append(archive)
+            except:
+                self.log.info(Logs.fileline() + ' : ERROR ScriptListarchive impossible to open listarchive file')
+                return compose_ret(l_archive, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptListarchive l_archive=' + str(l_archive))
+        return compose_ret(l_archive, Constants.cst_content_type_json)
+
+
+class ScriptListmedia(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, type):
+        import os
+        if type == "U":
+            type = ' -U '
+        else:
+            type = ' '
+
+        args = request.get_json()
+
+        if 'user_pwd' not in args:
+            self.log.error(Logs.fileline() + ' : ScriptListmedia ERROR args missing')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
+
+        os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
+
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + type + Constants.cst_io_listmedia
+
+        self.log.error(Logs.fileline() + ' : ScriptListmedia cmd=' + cmd)
+        ret = os.system(cmd)
+
+        l_media = {}
+
+        l_media['ret']   = ret
+        l_media['media'] = []
+
+        # read listmedia file
+        if ret == 0:
+            try:
+                f = open(os.path.join(Constants.cst_io, 'listmedia'), 'r')
+                for media in f:
+                    l_media['media'].append(media)
+            except:
+                self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
+                return compose_ret(l_media, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptListmedia l_media=' + str(l_media))
+        return compose_ret(l_media, Constants.cst_content_type_json)
+
+
+class ScriptProgbackup(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, hour):
+        args = request.get_json()
+
+        if 'start_time' not in args or 'user_pwd' not in args:
+            self.log.error(Logs.fileline() + ' : ScriptProgbackup ERROR args missing')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
+
+        start_time = str(args['start_time'])
+
+        import os
+        os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
+
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -w ' + start_time + ' ' + Constants.cst_io_progbackup
+
+        self.log.error(Logs.fileline() + ' : ScriptProgbackup cmd=' + cmd)
+        ret = os.system(cmd)
+
+        if ret == 0:
+            start_time = start_time + ':00'  # add seconds default value
+            ret_db = Setting.updateBackupSetting(bks_start_time=start_time)
+
+            if ret_db is False:
+                self.log.error(Logs.alert() + ' : ScriptProgbackup ERROR update')
+                return compose_ret('1', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptProgbackup ret=' +str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)
 
 
 class ScriptRestore(Resource):
@@ -335,16 +470,20 @@ class ScriptRestore(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'script_user' not in args or 'script_pwd' not in args:
+        if 'media' not in args or 'pwd_key' not in args or 'file_restore' not in args:
             self.log.error(Logs.fileline() + ' : ScriptRestore ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
+            return compose_ret('1', Constants.cst_content_type_json, 400)
 
-        # TODO run script
+        media        = str(args['media'])
+        file_restore = str(args['file_restore'])
+
         import os
-        cmd = 'sh PATH/NOM_DU_SCRIPT.sh -p ' + str(666) + ' -n "' + args['nom'] + '" >> /tmp/file_TODO.log 2>&1 &'
+        os.environ['LABBOOK_KEY_PWD'] = args['pwd_key']
+
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' -a ' + file_restore + ' ' + Constants.cst_io_restore
 
         self.log.error(Logs.fileline() + ' : ScriptRestore cmd=' + cmd)
         ret = os.system(cmd)
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptRestore')
-        return compose_ret('', Constants.cst_content_type_json)
+        self.log.info(Logs.fileline() + ' : TRACE ScriptRestore ret=' +str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)

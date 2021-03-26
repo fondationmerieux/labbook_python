@@ -11,14 +11,17 @@ class Constants:
 
     cst_storage  = '/storage'
     cst_io       = '/storage/io/'
+    cst_key      = '/storage/key/'
+    cst_log      = '/storage/log/'
     cst_report   = '/storage/report/'
     cst_resource = '/storage/resource/'
     cst_upload   = '/storage/upload/'
 
-    cst_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
-    cst_script = '/home/apps/labbook_BE/labbook_BE/script/'
+    cst_path_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
+    cst_path_script = '/home/apps/labbook_BE/labbook_BE/script/'
 
-    cst_user_script = 'user_labbook'
+    cst_script_user   = 'user_labbook'
+    cst_script_backup = 'backup.sh '
 
     # CMD LIST for backup & restore
     cst_io_backup      = 'backup'
@@ -27,4 +30,5 @@ class Constants:
     cst_io_keyexist    = 'keyexist'
     cst_io_listmedia   = 'listmedia'
     cst_io_listarchive = 'listarchive'
+    cst_io_progbackup  = 'progbackup'
     cst_io_restore     = 'restore'

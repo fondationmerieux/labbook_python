@@ -159,9 +159,6 @@ def upgrade():
         except:
             print("ERROR update sigl_user_data set side_account=0")
 
-    # ADD and REPLACE MANUALS
-    ## TODO
-
     print("END of migration v3_0_1_stock_and_prescribers_change revision=e23db03512eb")
 
 

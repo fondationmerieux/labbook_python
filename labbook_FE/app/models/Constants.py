@@ -10,4 +10,4 @@ class Constants:
     cst_resource = '/storage/resource/'
     cst_upload   = '/storage/upload/'
 
-    cst_tmp = '/home/apps/labbook_BE/labbook_BE/tmp/'
+    cst_path_tmp = '/home/apps/labbook_BE/labbook_BE/tmp/'

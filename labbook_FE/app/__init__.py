@@ -759,13 +759,45 @@ def setting_backup():
     session.modified = True
 
     json_data = {}
+    json_data['stat_backup'] = ''
+    json_data['date_backup'] = ''
+    json_data['last_backup'] = ''
+    json_data['bks_data']    = []
 
+    # read backup
+    try:
+        ret = ''
+
+        f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
+        for line in f:
+            ret += line
+
+        if ret:
+            ret = ret.split(';')
+            json_data['stat_backup'] = ret[0]
+            json_data['date_backup'] = ret[1][:-1]
+    except:
+        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io +'backup')
+
+    # get modification time from last_backup_ok
+    try:
+        import pathlib
+
+        f = pathlib.Path(Constants.cst_io + 'last_backup_ok') 
+
+        if f.exists():
+            json_data['last_backup_ok'] = str(datetime.fromtimestamp(f.stat().st_mtime))
+            json_data['last_backup_ok'] = json_data['last_backup_ok'][:19]
+    except Exception as err:
+        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io +'last_backup_ok , err=%s', err)
+
+    # load start_time
     try:
         url = session['server_int'] + '/services/setting/backup'
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_data = req.json()
+            json_data['bks_data'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
@@ -3415,7 +3447,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # RP => Report
 
     if type == 'PY':
-        filepath = Constants.cst_tmp
+        filepath = Constants.cst_path_tmp
         generated_name = filename
     elif type == 'JF':
         # ref = id_file

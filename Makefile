@@ -20,8 +20,9 @@ endif
 .PHONY: help
 help:
 	@echo 'Usage:'
-	@echo '  make build [VERSION=version]       build docker image $(FULL_IMAGE_NAME):VERSION_NAME'
+	@echo '  make build [VERSION=version]       build docker image $(FULL_IMAGE_NAME):version'
 	@echo '  make save [VERSION=version]        save docker image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)_VERSION_NAME.tar'
+	@echo '  make clean [VERSION=version]       clean docker image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)_VERSION_NAME.tar'
 	@echo 'Default version value in VERSION file=$(DEFAULT_VERSION) VERSION_NAME=$(VERSION_NAME)'
 
 .PHONY: build
@@ -39,4 +40,12 @@ ifdef BUILD_VERSION
 	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(BUILD_VERSION)
 else
 	@echo 'missing version'
+endif
+
+.PHONY: clean
+clean:
+ifdef BUILD_VERSION
+	$(DOCKER_COMMAND) rmi $(FULL_IMAGE_NAME):$(VERSION_NAME)
+else
+	$(DOCKER_COMMAND) rmi $(FULL_IMAGE_NAME)
 endif

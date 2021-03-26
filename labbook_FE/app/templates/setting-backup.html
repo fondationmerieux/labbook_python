@@ -12,17 +12,30 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de la sauvegarde") }}</span></h2>
             <form autocomplete="off" class="row mt-3">
                 <div class="col-6 text-center">
-                    <input type="button" onclick="run_media();" id="btn_media" value="{{ _("INITIALISER LE MEDIA") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="run_keygen();" id="btn_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="run_backup();" id="btn_run_save" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="run_restore();" id="btn_run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_time();" id="btn-run_savetime" value="{{ _("MODIFIER HEURE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_media();" id="btn-run_media" value="{{ _("INITIALISER LE MEDIA") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_key();" id="btn-run_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_backup();" id="btn-run_backup" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_restore();" id="btn-run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div id="tempAnchor"></div>
                 <div class="col-6">
                     <div class="form-group form-inline">
-                        <label for="start-time" class="col-form-label col-5 text-right mt-2">{{ _("Heure de sauvegarde") }} *</label>
+                        <label for="start-time" class="col-form-label col-5 text-right mt-2">{{ _("Heure de sauvegarde") }}</label>
                         <div>
-                            <input  type="time" name="start-time" id="start-time" class="form-control" maxlength="10" size="10" value="{{  args['bks_start_time'] }}" style="color: #888;">     
+                            <input type="time" name="start-time" id="start-time" class="form-control" maxlength="10" size="10" value="{{  args['bks_data']['bks_start_time'] }}" style="color: #888;">     
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-form-label col-5 text-right">{{ _("Dernière sauvegarde") }} :</label>
+                        <div>
+                            <span class="font-info">{{ args['stat_backup'] }} {{ args['date_backup'] }}</span>     
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-form-label col-5 text-right">{{ _("Dernière sauvegarde OK") }} :</label>
+                        <div>
+                            <span class="font-info">{{ args['last_backup_ok'] }}</span>
                         </div>
                     </div>
                 </div>
@@ -30,10 +43,111 @@
 
             <div class="mb-5 clearfix">
                 <div class="float-left" style="margin-left:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="return_home();" id="btn-return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+            </div>
+
+            <!-- Popup ask password user -->
+            <div class="modal fade" id="dial-pwd-user" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Veuillez saisir le mot de passe de l'utilisateur user_labbook") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-inline">
+                                <label class="col-form-label mr-1">{{ _("Mot de passe système") }}</label>
+                                <div>
+                                    <input id="pwd-user" type="password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_pwd_user" id="btn_pwd_user" value="{{ _("Valider") }}"  onclick="after_pwd_user();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popup ask password key -->
+            <div class="modal fade" id="dial-pwd-key" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Veuillez saisir le mot de passe pour générer la clef de sauvegarde") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-inline">
+                                <label class="col-form-label col-3 mr-1">{{ _("Mot de passe") }}</label>
+                                <div>
+                                    <input id="pwd-key" type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group form-inline">
+                                <label class="col-form-label col-3 mr-1">{{ _("Confirmation") }}</label>
+                                <div>
+                                    <input id="pwd-key2" type="password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn-pwd-key" id="btn-pwd-key" value="{{ _("Valider") }}"  onclick="after_pwd_key();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popup list media -->
+            <div class="modal fade" id="dial-list-media" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Veuillez sélectionner le média") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-inline">
+                                <label class="col-form-label mr-1">{{ _("Liste des médias disponibles") }}</label>
+                                <div>
+                                    <select name="list-media" id="list-media" class="form-control ml-1">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn-vld-media" id="btn-vld-media" value="{{ _("Valider") }}"  onclick="after_listmedia();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popup list archive  -->
+            <div class="modal fade" id="dial-list-archive" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Veuillez sélectionner la sauvegarde à restaurer") }}</h5>
+                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-inline">
+                                <label class="col-form-label mr-1">{{ _("Liste des sauvegardes disponibles") }}</label>
+                                <div>
+                                    <select name="list-archive" id="list-archive" class="form-control ml-1">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_restore_list" id="btn_restore_list" value="{{ _("Valider") }}"  onclick="restore();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -44,139 +158,388 @@
 
 {% block add_script %}
 <script>
-function save()
+var action   = "" ; // "T"ime, "M"edia, "K"ey, "B"ackup, "R"estore
+var pwd_user = "" ;
+var pwd_key  = "" ;
+
+function run_time()
 {
     if ( window.confirm("{{ _("Merci de confirmer la modification de l'heure de sauvegarde quotidienne.") }}") )
     {
-    let start_time  = $("#start-time").val()  ;
-    let msg = "" ;
+    action = "T" ;
 
-        if (start_time == "")
-        msg += "{{ _("Veuillez saisir une heure de sauvegarde.") }}\n" ;
-
-        if (msg != "")
-        {
-        alert( msg ) ;
-        return false ;
-        }
-
-    start_time = start_time + ':00' ;  // add second default values
-
-    var param = '{ "start_time":"' + start_time + '"}' ;
-
-        $.ajax( {
-           type: "POST",
-           url: "/services/setting/backup",
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
-               {
-               tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
-               },
-           error: function(data)
-               {
-               console.log("ERROR POST setting backup") ;
-               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-               }
-        } ) ;
+        $( "#dial-pwd-user" ).modal( "show" ) ;
     }
 }
 
-function run_keyexist()
+function run_media()
 {
-    $.ajax( {
-       type: "GET",
-       url: "/services/setting/script/keyexist",
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           //tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
-           console.log("data="+JSON.stringify(data)) ;
-           },
-       error: function(ret)
-           {
-           console.log("ERROR POST setting restore") ;
-           console.log("ret="+JSON.stringify(ret)) ;
-           }
-    } ) ;
+action = "M" ;
+
+    $( "#dial-pwd-user" ).modal( "show" ) ;
 }
 
-function run_listmedia()
+function run_key()
 {
-    if ( window.confirm("{{ _("Merci") }}") )
+action = "K" ;
+
+    if ( run_keyexist )
     {
-        
+    let msg = "{{ _("Une clef existe déjà si vous re-générer une clef les anciennes sauvegardes seront non récupérables\\nVous confirmez la génération d\'une nouvelle clef ?") }}" ;
 
-        $.ajax( {
-           type: "POST",
-           url: "/services/setting/script/listmedia",
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
-               {
-               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
-               },
-           error: function(data)
-               {
-               console.log("ERROR POST setting listmedia") ;
-               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-               }
-        } ) ;
+        if ( window.confirm(msg) )
+        $( "#dial-pwd-key" ).modal( "show" ) ;
     }
-}
-
-function run_keygen()
-{
-    if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la génération de clefs de sauvegarde.") }}") )
-    {
-        $.ajax( {
-           type: "POST",
-           url: "/services/setting/script/keygen",
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
-               {
-               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
-               },
-           error: function(data)
-               {
-               console.log("ERROR POST setting keygen") ;
-               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-               }
-        } ) ;
-    }
+    else
+    $( "#dial-pwd-key" ).modal( "show" ) ;
 }
 
 function run_backup()
 {
-    if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la sauvegarde.") }}") )
-    {
-        $.ajax( {
-           type: "POST",
-           url: "/services/setting/script/backup",
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
-               {
-               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
-               },
-           error: function(data)
-               {
-               console.log("ERROR POST setting backup") ;
-               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-               }
-        } ) ;
-    }
+action = "B" ;
+
+    $( "#dial-pwd-user" ).modal( "show" ) ;
 }
 
 function run_restore()
 {
+action = "R" ;
+
+    $( "#dial-pwd-user" ).modal( "show" ) ;
+}
+
+function after_pwd_user()
+{
+pwd_user = $("#pwd-user").val() ;
+
+    if (pwd_user == "")
+    {
+    alert("{{ _("Vous devez saisir un mot de passe") }}") ;
+    return false;
+    }
+
+$( "#dial-pwd-user" ).modal( "hide" ) ;
+
+    if (action == "T")
+    savetime() ;
+    else if (action == "M")
+    listmedia("U") ;
+    else if (action == "B")
+    listmedia("I") ;
+    else if (action == "R")
+    $( "#dial-pwd-key" ).modal( "show" ) ;
+}
+
+function after_listmedia()
+{
+let media = $("#list-media").val() ;
+
+    if (media == "")
+    {
+    alert("{{ _("Vous devez sélectionner un média") }}") ;
+    return false;
+    }
+
+$( "#dial-list-media" ).modal( "hide" ) ;
+
+    if (action == "M")
+    initmedia(media) ;
+    else if (action == "B")
+    backup(media) ;
+    else if (action == "R")
+    list_archive(media) ;
+}
+
+function after_pwd_key()
+{
+pwd_key = $( "#pwd-key" ).val()  ;
+
+let pwd_key2 = $( "#pwd-key2" ).val() ;
+
+    if (pwd_key == "")
+    {
+    alert("{{ _("Vous devez saisir un mot de passe") }}") ;
+    return false;
+    }
+
+    if ( pwd_key == "" || pwd_key != pwd_key2 )
+    {
+    alert("{{ _("Les mots de passes ne correspondent pas !") }}") ;
+    return false ;
+    }
+
+$( "#dial-pwd-key" ).modal( "hide" ) ;
+
+    if (action == "K")
+    genkey() ;
+    else if (action == "R")
+    listmedia("I") ;
+}
+
+function savetime() 
+{
+pwd_user = $("#pwd-user").val()   ;
+
+let start_time = $("#start-time").val() ;
+let msg = "" ;
+
+action = "" ;
+
+    if (start_time == "")
+    msg += "{{ _("Veuillez saisir une heure de sauvegarde.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "start_time":"' + start_time + '", ' + 
+              '"user_pwd":"' + pwd_user + '"}' ;
+
+    $.ajax( 
+    {
+       type: "POST",
+       url: "/services/setting/script/progbackup",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+       {
+       console.log("progbackup ret="+JSON.stringify(data)) ;
+
+           if (data == 0)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           return true ;
+           }
+
+       alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+       return false ; 
+       },
+       error: function(ret)
+       {
+       console.log("ERROR POST progbackup") ;
+       console.log("ret="+JSON.stringify(ret)) ;
+       alert("{{ _("Une erreur est survenue lors de la vérification de clef de sauvegarde") }}") ;
+       return false ;
+       }
+    } ) ;
+}
+
+function listmedia(type)
+{
+pwd_user = $("#pwd-user").val() ;
+
+var param = '{ "user_pwd":"' + pwd_user + '"}' ;
+
+    // list of media Initialized or Unitialized
+    $.ajax( 
+    {
+        type: "POST",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        url: "/services/setting/script/listmedia/" + type,
+        success: function(data)
+        {
+        console.log("listmedia ret="+JSON.stringify(data)) ;
+
+            // Dialog list media
+            if (data.ret == 0)
+            {
+            // Dialog list media
+            $("#list-media").empty() ;
+            for( i in data.media)
+            {
+                $("#list-media").append('<option value="' + data.media[i] + '">' + data.media[i] + '</option>');
+            }
+
+            $( "#dial-list-media" ).modal( "show" ) ;
+
+            return true ;
+            }
+            else
+            alert("{{ _("Une erreur est survenue lors de la récupération de la liste de media") }}") ;
+
+        return false ;
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST setting listmedia") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
+    } ) ;
+}
+
+function run_keyexist()
+{
+    $.ajax( 
+    {
+       type: "GET",
+       url: "/services/setting/script/keyexist",
+       success: function(data)
+       {
+       console.log("keyexist ret="+JSON.stringify(data)) ;
+
+           // enabled backup
+           if (data == 0)
+           {
+               $("#btn-run_backup").prop("disabled", false) ;
+            
+           return true ;
+           }
+
+       return false ; 
+       },
+       error: function(ret)
+       {
+       console.log("ERROR POST setting restore") ;
+       console.log("ret="+JSON.stringify(ret)) ;
+       alert("{{ _("Une erreur est survenue lors de la vérification de clef de sauvegarde") }}") ;
+       return false ;
+       }
+    } ) ;
+}
+
+function initmedia(media)
+{
+    if (media == "" || media == null)
+    {
+    alert("{{ _("Une erreur est survenue le media choisi est incorrect") }}") ;
+    return false ;
+    }
+
+    $( "#dial-list-media" ).modal( "hide" ) ;
+
+    // GET list of media
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/setting/script/initmedia/" + media,
+        success: function(data)
+        {
+        console.log("initmedia ret="+JSON.stringify(data)) ;
+
+            if (data == 0)
+            {
+            tempAlert("{{ _("Initialisation réussie") }}", 2000, "tempAnchor") ;
+            return true ;
+            }
+            else
+            alert("{{ _("Une erreur est survenue lors de l'initialisation du media") }}") ;
+
+        return false ;
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST setting initmedia") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
+    } ) ;
+}
+
+function genkey()
+{
+var param = '{ "pwd_key":"' + pwd_key + '"}' ;
+
+    $( "#dial-pwd-key" ).modal( "hide" ) ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/setting/script/genkey",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        tempAlert("{{ _("Génération réussie") }}", 2000, "tempAnchor") ;
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST setting keygen") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
+    } ) ;
+}
+
+function backup(media)
+{
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/setting/script/backup/" + media,
+        success: function(data)
+        {
+            if ( data.startsWith("OK;") )
+            {
+            tempAlert("{{ _("Sauvegarde réussie") }}", 2000, "tempAnchor") ;
+            }
+            else
+            alert("{{ _("Une erreur est survenue lors de la sauvegarde") }}") ;
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST setting backup") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
+    } ) ;
+}
+
+function list_archive(media)
+{
+pwd_user = $("#pwd-user").val() ;
+
+var param = '{ "user_pwd":"' + pwd_user + '"}' ;
+
+    // list of archive
+    $.ajax( 
+    {
+        type: "POST",
+        url: "/services/setting/script/listarchive/" + media,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        console.log("restore ret="+JSON.stringify(data)) ;
+
+            // Dialog list archive
+            if (data.ret == 0)
+            {
+            // Dialog list media
+            $("#list-archive").empty() ;
+            for( i in data.restore)
+            {
+                $("#list-archive").append('<option value="' + data.restore[i] + '">' + data.restore[i] + '</option>');
+            }
+
+            $( "#dial-list-archive" ).modal( "show" ) ;
+
+            return true ;
+            }
+            else
+            alert("{{ _("Une erreur est survenue lors de la récupération de la liste d'archives") }}") ;
+
+        return false ;
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST setting listarchive") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
+    } ) ;
+}
+
+function restore()
+{
+pwd_key = $( "#pwd-key" ).val() ;
+
+var param = '{ "pwd_key":"' + pwd_key + '"}' ;
+
+    $( "#dial-list-archive" ).modal( "hide" ) ;
+
     if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la restauration.") }}") )
     {
         $.ajax( {

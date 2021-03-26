@@ -8,12 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - import/export users
 - finish Analysis repository module (add/modify/import/export)
 - finish non-conformity module
-- backup module
 
 ## [3.0.2] - 2021-03-23
 ### Changed
 - No more PHP containers
 - Storage management v2
+- backup and restore module
 
 ## [3.0.1] - 2021-03-09
 ### Added
