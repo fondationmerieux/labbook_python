@@ -29,6 +29,13 @@ KPUB_TEST1="kpub.test1.asc"
 KPRI_TEST2="kpri.test2.asc"
 KPUB_TEST2="kpub.test2.asc"
 BACKUPS_DIRECTORY="SIGL_sauvegardes"
+ENV_DB_NAME="LABBOOK_DB_NAME"
+ENV_DB_USER="LABBOOK_DB_USER"
+ENV_DB_PASS="LABBOOK_DB_PWD"
+TEST_DB_NAME="TEST_SIGL"
+TEST_DB_USER="root"
+TEST_DB_PASS="root"
+DUMP_TEST1="TEST_SIGL.sql"
 
 oneTimeSetUp() {
     local dockerfile=""
@@ -1189,7 +1196,6 @@ test_listmedia() {
 
     # simulate some media
     mkdir -p "$media_dir/$user/$media1"
-    mkdir -p "$media_dir/$user/$media2"
     mkdir -p "$media_dir/$user/$media2/$BACKUPS_DIRECTORY"  # media2 is initialized
 
     # list all media even unitialized
@@ -1234,6 +1240,226 @@ $media2
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+}
+
+test_listarchive() {
+    local cmd_stderr=""
+    local first_line=""
+    local status=0
+
+    # missing user
+    cmd_stderr=$($run_cmd_noenv listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing user"'
+
+    # missing status file
+    cmd_stderr=$($run_cmd_noenv -u user listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing status file"'
+
+    # we use the same statusfile for all commands
+    status_file="$WORK_DIRECTORY/listarchive"
+    expected_file="$WORK_DIRECTORY/expected"
+
+    media_dir="$WORK_DIRECTORY/media"
+    user="someuser"
+    media="USB"
+
+    # missing media
+    cmd_stderr=$($run_cmd_noenv -u "$user" -s "$status_file" listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing media"'
+
+    # media absent
+    mkdir -p "$media_dir/$user"
+
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "media" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"cannot find media"'
+
+    # media not initialized
+    mkdir -p "$media_dir/$user/$media"
+
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "media" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"not initialized"'
+
+    # initialize media
+    backup_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
+    mkdir -p "$backup_dir"
+
+    # empty list
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    true > "$expected_file"
+
+    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # simulate some archives
+    backup1="backup_SIGL_2018-04-13_15h58m51s.tar.gz"
+    backup2="backup_SIGL_2018-04-13_15h58m52s.tar.gz"
+    backup3="backup_SIGL_2018-04-13_15h58m53s.tar.gz"
+    backup4="backup_SIGL_2018-04-13_16h01m19s.tar.gz"
+
+    touch "$backup_dir/$backup1"
+    touch "$backup_dir/$backup2"
+    touch "$backup_dir/$backup3"
+    touch "$backup_dir/$backup4"
+
+    # list archives
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    cat > "$expected_file" <<%
+$backup1
+$backup2
+$backup3
+$backup4
+%
+
+    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+}
+
+test_mountpoint() {
+    local cmd_stderr=""
+    local first_line=""
+    local status=0
+
+    # this command must run on the host, not in the container
+    [[ $verbose -eq 1 ]] && echo "cmd=$WORK_DIRECTORY/$BACKUP_CMD -V $VOLUME_NAME mountpoint"
+
+    cmd_stderr=$($WORK_DIRECTORY/$BACKUP_CMD -V "$VOLUME_NAME" mountpoint 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"$VOLUME_NAME"'
+}
+
+test_database() {
+    local cmd_stderr=""
+    local first_line=""
+    local status=0
+
+    # skip if mysql is not available or if we dont have access
+    type mysql > /dev/null 2>&1 || startSkipping
+    type mysqldump > /dev/null 2>&1 || startSkipping
+
+    echo "drop database if exists $TEST_DB_NAME;" | \
+        mysql --user "$TEST_DB_USER" --password="$TEST_DB_PASS" > /dev/null 2>&1 || startSkipping
+
+    # we do not use containers for this test
+    export $ENV_DB_NAME="$TEST_DB_NAME"
+    export $ENV_DB_USER="$TEST_DB_USER"
+    export $ENV_DB_PASS="$TEST_DB_PASS"
+
+    [[ $verbose -eq 1 ]] && echo "cmd=$WORK_DIRECTORY/$BACKUP_CMD -V $VOLUME_NAME loaddb"
+
+    # load database
+    input_file="$WORK_DIRECTORY/input.sql"
+
+    cp "$DUMP_TEST1" "$input_file" || return 1
+
+    cmd_stderr=$($WORK_DIRECTORY/$BACKUP_CMD -i "$input_file" -T loaddb 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # verify database is present
+    cmd_stderr=$(echo "use $TEST_DB_NAME;" | mysql --user "$TEST_DB_USER" --password="$TEST_DB_PASS" > /dev/null 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # dump database
+    output_file="$WORK_DIRECTORY/output.sql"
+
+    cmd_stderr=$($WORK_DIRECTORY/$BACKUP_CMD -o "$output_file" -T dumpdb 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # output file should be present
+    test -f "$output_file"
+    status=$?
 
     ${_ASSERT_TRUE_} '$status'
 }

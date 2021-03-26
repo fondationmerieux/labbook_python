@@ -5,7 +5,9 @@
 labbook_BE uses a script `backup.sh` to execute the various actions needed to perform backups and restores.
 This documents describes the API between labbook_BE and `backup.sh`.
 
-Shared definitions between labbook_BE and `backup.sh` are in environment variables:
+Shared definitions between labbook_BE and `backup.sh` are in environment variables.
+
+List of variables with default values:
 
 - LABBOOK_KEY_DIR=/storage/key
 - LABBOOK_DB_HOST=10.88.0.1
@@ -18,13 +20,14 @@ Shared definitions between labbook_BE and `backup.sh` are in environment variabl
 It can be useful during development to fake `backup.sh` commands.
 Place command names into these variables to fake execution with status OK or ERROR:
 
-- LABBOOK_TEST_OK=command[,...]
-- LABBOOK_TEST_KO=command[,...]
+- LABBOOK_TEST_OK=cmd1,cmd2,...
+- LABBOOK_TEST_KO=cmd1,cmd2,...
 
-`labbook.sh` input is taken from parameters except for:
+`backup.sh` input is taken from parameters except for:
 
 - GPG private key passphrase in LABBOOK_KEY_PWD
 - DB user password in LABBOOK_DB_PWD
+- user password in LABBOOK_USER_PWD
 
 Output: depends on status
 
@@ -57,7 +60,8 @@ $ LABBOOK_KEY_PWD=passphrase backup.sh [-d DIR] [-s FILE] genkey && echo "key ge
 Useful to avoid writing to a media that is not intended for backup
 
 ~~~
-$ backup.sh [-u USER] [-o FILE] -m MEDIA initmedia || echo "error searching for medias"
+$ LABBOOK_USER_PWD=password \
+  backup.sh [-u USER] [-o FILE] -m MEDIA initmedia || echo "error searching for medias"
 
     -u USER     : connected user with mounted USB device [DEFAULT=LABBOOK_USER]
     -o FILE     : output file [DEFAULT=stdout]
@@ -66,7 +70,8 @@ $ backup.sh [-u USER] [-o FILE] -m MEDIA initmedia || echo "error searching for 
 ## List
 
 ~~~
-$ backup.sh [-u USER] [-o FILE] [-U] listmedia || echo "error searching for medias"
+$ LABBOOK_USER_PWD=password \
+  backup.sh [-u USER] [-o FILE] [-U] listmedia || echo "error searching for medias"
 
     -u USER     : connected user with mounted USB device [DEFAULT=LABBOOK_USER]
     -o FILE     : output file [DEFAULT=stdout]
@@ -79,7 +84,8 @@ USB
 ~~~
 
 ~~~
-$ backup.sh [-u USER] [-o FILE] -m MEDIA listarchive || echo "error searching for archives"
+$ LABBOOK_USER_PWD=password \
+  backup.sh [-u USER] [-o FILE] -m MEDIA listarchive || echo "error searching for archives"
 
     -u USER     : connected user with mounted USB device [DEFAULT=LABBOOK_USER]
     -o FILE     : output file [DEFAULT=stdout]
@@ -114,13 +120,15 @@ UX:
 
 Script steps:
 
-- dump DB
-- create archive from DB dump file and other files
-- encrypts archive to keys present in directory
-- result in last_backup file
+- dump DB into LABBOOK_STATUS_DIR
+- create archive of DB dump and other files
+- encrypts archive to keys present in LABBOOK_KEY_DIR
+- result in status file
+- touch last_backup_ok if successful
 
 ~~~
-$ backup.sh [-u USER] [-o FILE] [-m MEDIA] [-s FILE] [-d DIR] [-b DATABASE] [-p PATTERN ...] backup && echo "backup was successful"
+$ LABBOOK_USER_PWD=password \
+  backup.sh [-u USER] [-o FILE] [-m MEDIA] [-s FILE] [-d DIR] [-b DATABASE] [-p PATTERN ...] backup && echo "backup was successful"
 
     -u USER     : connected user with mounted USB device [DEFAULT=LABBOOK_USER]
     -o FILE     : output file [DEFAULT=stdout]
@@ -131,8 +139,10 @@ $ backup.sh [-u USER] [-o FILE] [-m MEDIA] [-s FILE] [-d DIR] [-b DATABASE] [-p 
     -p PATTERN  : file patterns to backup (can be repeated). If absent use predefined list.
 
 The backup is a gpg encrypted archive in the form `backup_v30_database_timestamp.tar.gz.gpg` containing
-  - db/dump.sql : database dump
-  - files/...   : files
+  - dump/dump.sql
+  - report/
+  - upload/
+  - resource/
 
 Output:
 OK;YYYY-MM-DD HH:MM:SS
@@ -150,31 +160,44 @@ UX:
 - enter private key passphrase
 - (if restore successful) message prepare for application restart, enter user password
 
-Script steps:
+Restore steps:
 
 - decrypt backup
 - restore DB
 - restore files
 - exit value is status
 - exit message in file
-- container restart
 
 ~~~
-$ LABBOOK_KEY_PWD=passphrase backup.sh -m MEDIA -a ARCHIVE \
-                                       [-u USER] [-o FILE]  [-s FILE] [-d DIR] [-b DATABASE] [-p PATTERN ...] \
-                                       restore && echo "restored successfully"
+$ LABBOOK_KEY_PWD=passphrase \
+  LABBOOK_USER_PWD=password \
+  LABBOOK_KEY_DIR=dir \
+  LABBOOK_DB_NAME=name \
+  backup.sh -m MEDIA -a ARCHIVE [-u USER] [-s FILE] restore && echo "restored successfully"
 
     -u USER     : connected user with mounted USB device [DEFAULT=LABBOOK_USER]
-    -o FILE     : output file [DEFAULT=stdout]
     -m MEDIA    : media to restore backup from. If absent, there should be only one initialized media.
     -a ARCHIVE  : encrypted archive to restore from
     -s FILE     : status file
-    -d DIR      : directory containing GPG keys [DEFAULT=LABBOOK_KEY_DIR]
-    -b DATABASE : database [DEFAULT=LABBOOK_DB_NAME]
 
 $ LABBOOK_USER_PWD=password backup.sh [-u USER] restart || echo "Failed to restart container"
 
     -u USER     : user authorized to restart LabBook container without providing sudo password [DEFAULT=LABBOOK_USER]
+~~~
+
+## Program daily backup
+
+UX:
+
+- choose a time
+- ask for LABBOOK_USER password
+
+~~~
+$ LABBOOK_USER_PWD=password backup.sh -w WHEN [-u USER] [-V VOLUME] progbackup || echo "Failed to program daily backup"
+
+    -w WHEN     : time in the form HH:MM
+    -u USER     : user [DEFAULT=LABBOOK_USER]
+    -V VOLUME   : volume name [DEFAULT=Labbook_space]
 ~~~
 
 ## NOTES
@@ -256,8 +279,13 @@ sigl@labbook3-test:~$ sudo podman exec -it labbook_php bash
    sudo podman run --rm -v "/media:/media" localhost/labbook-python:v3.0.1 ls -R /media/user_labbook > /tmp/out
 ~~~
 
+~~~
+sudo podman ps --format '{{.Image}}' | grep labbook-python | head -1
+~~~
+
 ### QUESTIONS
 
+- time in container ?
 
 ### TODO
 
