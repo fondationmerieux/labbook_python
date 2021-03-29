@@ -418,10 +418,30 @@ class Pdf:
         # Block det record
         date_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
 
-        rec_div  = '<div style="width:465px;height:80px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:left;">'
+        rec_div  = '<div style="width:465px;height:100px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:left;">'
 
         rec_div += '<div><span class="ft_rec_det">Dossier ' + str(num_rec_y) + ' de ' + str(pat['prenom']) + '&nbsp;' + str(pat['nom']) + '</span></div>'
-        rec_div += '<div><span class="ft_rec_det">' + str(birth) + str(age) + ' - ' + str(sex) + ' - Code ' + str(pat['code']) + '</span></div>'
+        rec_div += '<div><span class="ft_rec_det">' + str(birth) + str(age) + ' - ' + str(sex) + ' - Code '
+
+        if pat['code_patient']:
+            rec_div += str(pat['code_patient']) + ' / ' + str(pat['code']) + '</span></div>'
+        else:
+            rec_div += str(pat['code']) + '</span></div>'
+
+        if 'type' in record and record['type'] == 184:
+            rec_div += '<div><span class="ft_rec_det">'
+
+            if record['date_hosp']:
+                rec_div += 'Admis le ' + datetime.strftime(record['date_hosp'], '%d/%m/%Y') + ' '
+
+            if record['service_interne']:
+                rec_div += 'en ' + str(record['service_interne']) + ' - '
+
+            if record['num_lit']:
+                rec_div += 'Lit ' + str(record['num_lit'])
+
+            rec_div += '</span></div>'
+            
         rec_div += '<div><span class="ft_rec_det">Examen prescrit le ' + datetime.strftime(record['date_prescription'], '%d/%m/%Y') + '</span></div>'
         rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + str(date_now) + '</span></div>'
 
@@ -431,7 +451,7 @@ class Pdf:
         addr_div = ''
 
         if pat:
-            addr_div += '<div style="width:465px;height:80px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:right;">'
+            addr_div += '<div style="width:465px;height:100px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:right;">'
 
             if pat['nom'] or pat['prenom']:
                 pat_lname = ''

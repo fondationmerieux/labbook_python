@@ -61,8 +61,8 @@
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Feuille de paillasse') }}">
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}        
 
@@ -222,7 +222,7 @@ let disp_valid = "d-none" ;
         // close the form and table
         res += '</tbody></table>' +
                '<div class="form-group form-inline" style="vld-block;">' +
-                   '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec_p +'_'+ ref_ana_p + ' mr-2" disabled onclick="save_res(' + id_rec_p + ', '  + ref_ana_p + ');">{{ _("Enregistrer") }}</button>' +
+                   '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec_p +'_'+ ref_ana_p + ' mr-2" id="anchor_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p + ', '  + ref_ana_p + ');">{{ _("Enregistrer") }}</button>' +
                    '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec_p +'_'+ ref_ana_p  + '">' +
                        '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} </label>' +
                        '<div class="form-inline">' +
@@ -444,7 +444,7 @@ let disp_valid = "d-none" ;
     // close the form and table
     res += '</tbody></table>' +
            '<div class="form-group form-inline" style="vld-block;">' +
-               '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;' +
+               '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec_p +'_'+ ref_ana_p + '" id="anchor_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;' +
                '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec_p +'_'+ ref_ana_p  + '">' +
                    '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} </label>&nbsp;' +
                    '<div class="form-inline">' +

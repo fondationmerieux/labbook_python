@@ -69,9 +69,11 @@
                         <div class="form-group">
                             <select id="search_analysis" style="width:450px"></select>
                         </div>
-                        <div id="new_analysis" class="row"></div>
-                        <div id="div_add_analysis" class="form-group button" style="display:none">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_add_analysis" id="btn_add_analysis" value="{{ _("Ajouter") }}"  onclick="add_analysis();">
+                        <div class="col-12">
+                            <div id="new_analysis"></div>
+                            <div id="div_add_analysis" class="form-group button" style="display:none">
+                                <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_add_analysis" id="btn_add_analysis" value="{{ _("Ajouter") }}"  onclick="add_analysis();">
+                            </div>
                         </div>
                     </fieldset>
                 </div>
@@ -139,7 +141,7 @@ param_list_answer += ' ] }' ;
         data: param_list_answer,
         success: function(data)
             {
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec ;
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
             },
         error: function(data)
             {
@@ -243,7 +245,7 @@ let disp_valid = "d-none" ;
         // close the form and table
         res += '</tbody></table>' +
                '<div class="form-group form-inline" style="vld-block;">' +
-                   '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec +'_'+ ref_ana_p + ' mr-2" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>' +
+                   '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec +'_'+ ref_ana_p + ' mr-2" id="anchor_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>' +
                    '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
                        '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} </label>' +
                        '<div class="form-inline">' +
@@ -462,7 +464,7 @@ let disp_valid = "d-none" ;
     // close the form and table
     res += '</tbody></table>' +
            '<div class="form-group form-inline" style="vld-block;">' +
-               '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;' +
+               '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec +'_'+ ref_ana_p + '" id="anchor_' + id_rec +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec +','+ ref_ana_p + ');">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;' +
                '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
                    '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} </label>&nbsp;' +
                    '<div class="form-inline">' +
@@ -775,6 +777,13 @@ rec_stat = status_rec(data_res[0].stat) ;
 display_result( 1 ) ;
 
 info_pat_title() ;
+
+    {% if ihm['anchor'] %}
+    setTimeout(function()
+    {
+        $(document).scrollTop( $("{{ ihm['anchor'] }}").offset().top ) ;
+    }, 400);
+    {% endif %}
 } ) ;
 </script>
 {% endblock %}

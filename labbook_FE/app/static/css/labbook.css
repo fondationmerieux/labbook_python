@@ -1141,3 +1141,10 @@ height              : 21px;
 width               : 21px;
 vertical-align      : middle;
 }
+
+.report a
+{
+color   : #FFF !important;
+outline : none;
+cursor  : pointer;
+}

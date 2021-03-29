@@ -77,7 +77,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group form-inline">
+                                <div class="form-group form-inline identity-group_1">
                                     <label class="col-form-label col-3 text-right" style="">{{ _("Nom") }}</label>
                                     <div>
                                         <input id="nom_1" type="text" value="" maxlength="40" class="form-control" style="">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group form-inline">
+                                <div class="form-group form-inline identity-group_1">
                                     <label class="col-form-label col-3 text-right" style="">{{ _("Nom de jeune fille") }}</label>
                                     <div>
                                         <input id="nom_jf_1" type="text" value="" maxlength="40" class="form-control" style="">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group form-inline">
+                                <div class="form-group form-inline identity-group_1">
                                     <label class="col-form-label col-3 text-right" style="">{{ _("Prénom(s)") }}</label>
                                     <div>
                                         <input id="prenom_1" type="text" value="" maxlength="80" class="form-control" style="">
@@ -156,7 +156,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group form-inline">
+                                <div class="form-group form-inline identity-group_1">
                                     <label class="col-form-label col-3 text-right mx-3">{{ _("Sexe") }}</label>
                                     <label class="col-form-label text-right mr-3">
                                         <input type="radio" id="sexe-1_1" name="sexe_1" value="1">&nbsp;{{ _("Masculin") }}</input>
@@ -607,6 +607,25 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            }
     } ) ;
 }
+
+$("input[type=radio][name=anonyme_1]").change(function() 
+{
+    if (this.value == '4') 
+    {
+    // Clean and hide input nom, prenom, nom_jf, sexe
+    $("#nom_1").val("")    ;
+    $("#nom_jf_1").val("") ;
+    $("#prenom_1").val("") ;
+    $("#sexe-3_1").prop('checked', true) ;
+    $(".identity-group_1").hide() ;
+    }
+    else if (this.value == '5') 
+    {
+    // Show input nom, prenom, nom_jf, sexe
+    $(".identity-group_1").show() ;
+    $("#sexe-3_1").prop('checked', true) ;
+    }
+} ) ;
 
 $("#search_patient1").on("select2:select", function (e) 
 {

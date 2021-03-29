@@ -317,7 +317,7 @@ var pwd2 = $("#pwd2").val() ;
     msg += "{{ _("Les mots de passe ne correspondent pas !") }}\n" ;
 {% endif %}
 
-    if (lang == "")
+    if (lang == "" || lang == undefined)
     msg += "{{ _("Veuillez choisir une langue.") }}\n" ;
 
     if (id_role == 0)

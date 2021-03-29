@@ -959,13 +959,19 @@ def list_results():
 
 # Page : enter result
 @app.route('/enter-result/<int:id_rec>')
-def enter_result(id_rec=0):
+@app.route('/enter-result/<int:id_rec>/<string:anchor>')
+def enter_result(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
 
     json_ihm  = {}
     json_data = {}
 
     id_pat = 0
+
+    json_ihm['anchor'] = ''
+
+    if anchor:
+        json_ihm['anchor'] = '#' + anchor
 
     dt_start_req = datetime.now()
     # Load list results
@@ -1967,7 +1973,10 @@ def technical_validation(id_rec=0):
 
                             if req.status_code == 200:
                                 dico_tmp = req.json()
-                                res['res_label'] = dico_tmp['label']
+                                if 'label' in dico_tmp:
+                                    res['res_label'] = dico_tmp['label']
+                                else:
+                                    res['res_label'] = ''
 
                         except requests.exceptions.RequestException as err:
                             log.error(Logs.fileline() + ' : requests result label failed, err=%s , url=%s', err, url)

@@ -64,7 +64,6 @@
 
             <div id="no_result" class="error mt-3">{{ _("Aucune analyse") }}</div>
             <div id="list_result" class="mt-3"></div>
-            <div id="list_result_test" class="mt-3"></div>
 
             <div id="valid_div">
                 <fieldset class="row border p-2 mt-1">
@@ -137,10 +136,12 @@
                         <legend>{{ _("Ajouter de nouvelles analyses") }}</legend>
                         <div class="form-group">
                             <select id="search_analysis" style="width:450px"></select>
-                        </div>
-                        <div id="new_analysis" class="row"></div>
-                        <div id="div_add_analysis" class="form-group button" style="display:none">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_add_analysis" id="btn_add_analysis" value="{{ _("Ajouter") }}"  onclick="add_analysis();">
+                        </div><br />
+                        <div class="col-12">
+                            <div id="new_analysis"></div>
+                            <div id="div_add_analysis" class="form-group button" style="display:none">
+                                <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_add_analysis" id="btn_add_analysis" value="{{ _("Ajouter") }}"  onclick="add_analysis();">
+                            </div>
                         </div>
                     </fieldset>
                 </div>
@@ -382,7 +383,7 @@ let comm_valid = JSON.stringify( $("#comm_valid").val() ) ;
 let param_list_valid = '{ "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
 
     // GET id_res and value
-    $(".cbx-" + id_rec ).each( function(i, elem)
+    $(".cbx-" + id_rec + ":checked" ).each( function(i, elem)
     {
     let id_res  = $(this).attr("id").substr(4) ;
     let val_res = $("#res_"+id_res).val() ;
@@ -543,7 +544,6 @@ let disp_valid = "d-none" ;
 
     $("#list_result").html( res ) ;
     {% endif %}
-// $("#list_result_test").text( JSON.stringify(data) ) ;
 }
 
 function load_report( data )
@@ -555,7 +555,7 @@ let obj = data ;
     {
     let tmp_div = '<span style="padding-left:40px;">' ;
 
-    tmp_div += '<a class="report current" onclick="download_file(\'RP\', \'' + obj.file + '\', \'GEN\', ' + num_rec_y + ');">' + obj.date + '</a>' ;
+    tmp_div += '<a class="report" style="color:#FFF;" onclick="download_file(\'RP\', \'' + obj.file + '\', \'GEN\', ' + num_rec_y + ');"><img src="{{ url_for('static', filename='img/ico_pdf.png') }}" class="mr-2">' + obj.date + '</a>' ;
     tmp_div += '</span><br />' ;
 
     div_report += tmp_div ;

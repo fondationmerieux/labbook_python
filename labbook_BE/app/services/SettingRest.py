@@ -428,7 +428,7 @@ class ScriptListmedia(Resource):
 class ScriptProgbackup(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self, hour):
+    def post(self):
         args = request.get_json()
 
         if 'start_time' not in args or 'user_pwd' not in args:

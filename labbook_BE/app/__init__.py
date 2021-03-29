@@ -77,11 +77,20 @@ if config_envvar in os.environ:
     os.environ['LABBOOK_LOG_DIR']    = Constants.cst_log
     os.environ['LABBOOK_USER']       = Constants.cst_script_user
 
+    log.info(Logs.fileline() + ' : LABBOOK_KEY_DIR=' + str(os.environ['LABBOOK_KEY_DIR']))
+    log.info(Logs.fileline() + ' : LABBOOK_STATUS_DIR=' + str(os.environ['LABBOOK_STATUS_DIR']))
+    log.info(Logs.fileline() + ' : LABBOOK_LOG_DIR=' + str(os.environ['LABBOOK_LOG_DIR']))
+    log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
+
     # Put in os.environ DB variables
     os.environ['LABBOOK_DB_USER'] = app.config['DB_USER']
     os.environ['LABBOOK_DB_PWD']  = app.config['DB_PWD']
     os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
     os.environ['LABBOOK_DB_NAME'] = app.config['DB_NAME']
+
+    log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
+    log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
+    log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))
 
     # ONLY FOR TESTS
     # os.environ['LABBOOK_TEST_OK']= Constants.cst_io_keyexist + ',' + Constants.cst_io_listmedia + ',' + Constants.cst_io_progbackup + ',' + Constants.cst_io_initmedia + ',' + Constants.cst_io_backup + ',' + Constants.cst_io_listarchive + ',' + Constants.cst_io_restore
@@ -197,7 +206,7 @@ api.add_resource(ScriptInitmedia,     '/services/setting/script/initmedia/<strin
 api.add_resource(ScriptKeyexist,      '/services/setting/script/keyexist')
 api.add_resource(ScriptListarchive,   '/services/setting/script/listarchive/<string:media>')
 api.add_resource(ScriptListmedia,     '/services/setting/script/listmedia/<string:type>')
-api.add_resource(ScriptProgbackup,    '/services/setting/script/progbackup/<string:hour>')
+api.add_resource(ScriptProgbackup,    '/services/setting/script/progbackup')
 api.add_resource(ScriptRestart,       '/services/setting/script/restart')
 api.add_resource(ScriptRestore,       '/services/setting/script/restore')
 api.add_resource(StaffExport,         '/services/quality/staff/export')

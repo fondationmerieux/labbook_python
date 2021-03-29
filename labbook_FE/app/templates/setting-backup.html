@@ -76,7 +76,7 @@
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5>{{ _("Veuillez saisir le mot de passe pour générer la clef de sauvegarde") }}</h5>
+                            <h5>{{ _("Veuillez saisir le mot de passe pour générer la clé de sauvegarde") }}</h5>
                             <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
                         </div>
                         <div class="modal-body">
@@ -184,9 +184,9 @@ function run_key()
 {
 action = "K" ;
 
-    if ( run_keyexist )
+    if ( run_keyexist() == true )
     {
-    let msg = "{{ _("Une clef existe déjà si vous re-générer une clef les anciennes sauvegardes seront non récupérables\\nVous confirmez la génération d\'une nouvelle clef ?") }}" ;
+    let msg = "{{ _("Une clé existe déjà si vous re-générez une clé les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d\'une nouvelle clé ?") }}" ;
 
         if ( window.confirm(msg) )
         $( "#dial-pwd-key" ).modal( "show" ) ;
@@ -322,7 +322,7 @@ var param = '{ "start_time":"' + start_time + '", ' +
        {
        console.log("ERROR POST progbackup") ;
        console.log("ret="+JSON.stringify(ret)) ;
-       alert("{{ _("Une erreur est survenue lors de la vérification de clef de sauvegarde") }}") ;
+       alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
        return false ;
        }
     } ) ;
@@ -397,7 +397,7 @@ function run_keyexist()
        {
        console.log("ERROR POST setting keyexist") ;
        console.log("ret="+JSON.stringify(ret)) ;
-       alert("{{ _("Une erreur est survenue lors de la vérification de clef de sauvegarde") }}") ;
+       alert("{{ _("Une erreur est survenue lors de la vérification de clé de sauvegarde") }}") ;
        return false ;
        }
     } ) ;
@@ -459,7 +459,7 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
         },
         error: function(data)
         {
-        console.log("ERROR POST setting keygen") ;
+        console.log("ERROR POST setting genkey") ;
         alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
         }
     } ) ;

@@ -91,6 +91,27 @@
                 </div>
             </form>
 
+            {% if type_req == 'I' %}
+            <!-- Hospitalization -->
+            <div class="panel-heading row mt-2">
+                <h3 class="panel-title">{{ _("Hospitalisation") }}</h3>
+            </div>
+            <div class="row ml-3">
+                <div class="col-12 mt-3">
+                    <span class="mr-1">{{ _("Date d'admission") }}</span>
+                    <span class="font-info">{{ args['record']['date_hosp']|date_format }}</span>
+                </div>
+                <div class="col-12 mt-3">
+                    <span class="mr-1">{{ _("Service demandeur") }}</span>
+                    <span class="font-info">{{ args['record']['service_interne'] }}</span>
+                </div>
+                <div class="col-12 mt-3">
+                    <span class="mr-1">{{ _("Numéro de lit") }}</span>
+                    <span class="font-info">{{ args['record']['num_lit'] }}</span>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- Analyzes -->
             <div class="panel-heading row mt-2">
                 <h3 class="panel-title">{{ _("Analyses et actes de prélèvement") }}</h3>
@@ -536,7 +557,7 @@ info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_pati
            "{% if args['patient']['prenom'] %}{{ args['patient']['prenom'] }} {% endif %}" +
            "{% if args['patient']['nom'] %}{{ args['patient']['nom'] }} {% endif %}" +
            "{% if args['patient']['nom_jf'] %}{{ args['patient']['nom_jf'] }} {% endif %} - " +
-           "{% if args['patient']['ddn'] %}{{ _("Né(e) le") }} {{ args['patient']['ddn'] }} {% endif %}" +
+           "{% if args['patient']['ddn'] %}{{ _("Né(e) le") }} {{ args['patient']['ddn']|date_format }} {% endif %}" +
            "{% if args['patient']['age'] %} - {{ args['patient']['age'] }} {% endif %}" +
            "{% if args['patient']['unite'] == 1037 %}{{ _("années") }}" +
            "{% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}" +

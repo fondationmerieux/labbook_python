@@ -48,7 +48,7 @@
 
                 <div class="row">
                     <div class="col-5">
-                        <div class="form-group row">
+                        <div class="form-group row identity-group">
                             <label for="nom" class="col-form-label col-4 text-right" style="">{{ _("Nom") }}</label>
                             <div>
                                 <input id="nom" type="text" value="{{ args['nom'] }}" maxlength="40" class="form-control" style="">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-5">
-                        <div class="form-group row">
+                        <div class="form-group row identity-group">
                             <label for="nom_jf" class="col-form-label col-4 text-right" style="">{{ _("Nom de jeune fille") }}</label>
                             <div>
                                 <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control" style="">
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="col-5">
-                        <div class="form-group row">
+                        <div class="form-group row identity-group">
                             <label for="prenom" class="col-form-label col-4 text-right" style="">{{ _("Prénom(s)") }}</label>
                             <div>
                                 <input id="prenom" type="text" value="{{ args['prenom'] }}" maxlength="80" class="form-control" style="">
@@ -100,7 +100,7 @@
 
                 <div class="row">
                     <div class="col-5">
-                        <div class="form-group row">
+                        <div class="form-group row identity-group">
                             <label class="col-form-label text-right mx-3">{{ _("Sexe") }}</label>
                             <label class="col-form-label text-right mr-3">
                                 <input type="radio" name="sexe" value="1" {% if args['sexe'] == 1 %} checked="checked" {% endif %}>&nbsp;{{ _("Masculin") }}</input>
@@ -109,7 +109,7 @@
                                 <input type="radio" name="sexe" value="2" {% if args['sexe'] == 2 %} checked="checked" {% endif %}>&nbsp;{{ _("Féminin") }}</input>
                             </label>
                             <label class="col-form-label text-right mr-3">
-                                <input type="radio" name="sexe" value="3" {% if not args['sexe'] or args['sexe'] == 3 %} checked="checked" {% endif %}>&nbsp;{{ _("Inconnu") }}</input>
+                                <input type="radio" name="sexe" id="unknown_sex" value="3" {% if not args['sexe'] or args['sexe'] == 3 %} checked="checked" {% endif %}>&nbsp;{{ _("Inconnu") }}</input>
                             </label>
                         </div>
                     </div>
@@ -295,13 +295,13 @@ $("input[type=radio][name=anonyme]").change(function()
     $("#nom").val("")    ;
     $("#nom_jf").val("") ;
     $("#prenom").val("") ;
-    $("input:radio[name=sexe]:checked").prop('checked', false) ;
-    $("#patient-nom-prenom").hide() ;
+    $("#unknown_sex").prop('checked', true) ;
+    $(".identity-group").hide() ;
     }
     else if (this.value == '5') 
     {
     // Show input nom, prenom, nom_jf, sexe
-    $("#patient-nom-prenom").show() ;
+    $(".identity-group").show() ;
     $("#unknown_sex").prop('checked', true) ;
     }
 } ) ;
