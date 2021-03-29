@@ -37,7 +37,7 @@ endif
 .PHONY: save
 save:
 ifdef BUILD_VERSION
-	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(BUILD_VERSION)
+	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(VERSION_NAME)
 else
 	@echo 'missing version'
 endif

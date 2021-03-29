@@ -39,7 +39,7 @@ MAP_MEDIA="/media:/media"
 MAP_STORAGE="$DEF_VOLUME_NAME:$MOUNTDIR_STORAGE"
 LAST_BACKUP_OK="last_backup_ok"
 FMX_KPUB_FILENAME="kpub.fondation-merieux.asc"
-BACKUPAUTO_SETTINGS="backupauto_settings.sh"
+BACKUP_SETTINGS="backup_settings.sh"
 
 #############
 # Functions #
@@ -99,6 +99,7 @@ usage()
     echo "  -v                Verbose mode"
     echo "  -i INPUT_FILE     Input file"
     echo "  -o OUTPUT_FILE    Output file"
+    echo "  -e SETTINGS_FILE  Read settings from file"
     echo "  -d DIR            Directory for input or output"
     echo "  -a ARCHIVE        Archive"
     echo "  -V VOLUME         Container volume"
@@ -129,7 +130,7 @@ fn_keyexist() {
     local ret_status=1
 
     [[ -d "$keys_dir" ]] || {
-        echo_message "cannot find directory $keys_dir"
+        log_message "cannot find directory $keys_dir"
         return 1
     }
 
@@ -1013,7 +1014,7 @@ fn_progbackup() {
     local status=0
     local image=""
     local my_absolute_path=""
-    local settings_file=""
+    local env_file=""
 
     [[ $verbose -eq 1 ]] && echo_message "Programming daily backup at $when as $user on $host"
 
@@ -1041,7 +1042,7 @@ fn_progbackup() {
     image=$(fn_get_my_image "$user" "$host")
 
     [[ -n "$image" ]] || {
-        echo_message "cannot get my image name with $user@$host"
+        log_message "cannot get my image name with $user@$host"
         return 1
     }
 
@@ -1049,10 +1050,10 @@ fn_progbackup() {
 
     [[ -n "$my_absolute_path" ]] || my_absolute_path="$SCRIPT_ABSOLUTE_DIR/backup.sh"
 
-    settings_file="$(printenv $ENV_STATUS_DIR)/$BACKUPAUTO_SETTINGS"
+    env_file="$(printenv $ENV_STATUS_DIR)/$BACKUP_SETTINGS"
 
     cat > "$cron_file" <<%
-$minute_i $hour_i * * * sudo podman run --rm -v $MAP_MEDIA -v $MAP_STORAGE $image $my_absolute_path -i $settings_file backupauto
+$minute_i $hour_i * * * sudo podman run --rm -v $MAP_MEDIA -v $MAP_STORAGE $image $my_absolute_path -e $env_file backupauto
 %
 
     [[ $test_mode -eq 0 ]] && {
@@ -1067,26 +1068,15 @@ $minute_i $hour_i * * * sudo podman run --rm -v $MAP_MEDIA -v $MAP_STORAGE $imag
 
     rm -f "$cron_file"
 
-    [[ $status -eq 0 ]] || return $status
-
-    [[ $verbose -eq 1 ]] && echo_message "Creating settings file in $settings_file"
-
-    cat > "$settings_file" <<%
-# Settings for automatic LabBook backups
-# This file is generated when automatic backups are scheduled. DO NOT EDIT !!
-export $ENV_USER=$(printenv $ENV_USER)
-export $ENV_STATUS_DIR=$(printenv $ENV_STATUS_DIR)
-export $ENV_KEY_DIR=$(printenv $ENV_KEY_DIR)
-export $ENV_LOG_DIR=$(printenv $ENV_LOG_DIR)
-export $ENV_DB_HOST=$(printenv $ENV_DB_HOST)
-export $ENV_DB_USER=$(printenv $ENV_DB_USER)
-export $ENV_DB_PASS=$(printenv $ENV_DB_PASS)
-export $ENV_DB_NAME=$(printenv $ENV_DB_NAME)
-%
-    status=$?
-
     [[ $status -eq 0 ]] || {
-        echo_message "cannot create settings file in $settings_file"
+        log_message "cannot install crontab for $user@$host"
+        return $status
+    }
+
+    [[ $verbose -eq 1 ]] && echo_message "Creating settings file in $env_file"
+
+    fn_make_settings "$env_file" || {
+        log_message "cannot create settings file in $env_file"
         return 1
     }
 
@@ -1552,6 +1542,7 @@ run_in_container() {
     local host="$2"
     local image=""
     local my_absolute_path=""
+    local env_file=""
     local status=0
 
     shift 2
@@ -1561,7 +1552,14 @@ run_in_container() {
     image=$(fn_get_my_image "$user" "$host")
 
     [[ -n "$image" ]] || {
-        echo_message "cannot get my image name with $user@$host"
+        log_message "cannot get my image name with $user@$host"
+        return 1
+    }
+
+    env_file="$(printenv $ENV_STATUS_DIR)/$BACKUP_SETTINGS"
+
+    fn_make_settings "$env_file" || {
+        log_message "cannot create settings file in $env_file"
         return 1
     }
 
@@ -1569,12 +1567,16 @@ run_in_container() {
 
     [[ -n "$my_absolute_path" ]] || my_absolute_path="$SCRIPT_ABSOLUTE_DIR/backup.sh"
 
+    [[ $verbose -eq 1 ]] && set -x
+
     SSHPASS=$(printenv $ENV_USER_PASS) \
         sshpass -e \
         ssh -o "StrictHostKeyChecking no" "$user@$host" \
-        sudo podman run --rm -v "$MAP_MEDIA" -v "$MAP_STORAGE" "$image" "$my_absolute_path" \
+        sudo podman run --rm -v "$MAP_MEDIA" -v "$MAP_STORAGE" "$image" "$my_absolute_path" -e "$env_file" \
         "$@"
     status=$?
+
+    [[ $verbose -eq 1 ]] && set +x
 
     return $status
 }
@@ -1611,6 +1613,32 @@ fn_install_pubkey() {
     }
 
     return 0
+}
+
+#
+# Create settings file for execution in another container
+#
+# Param:
+# - file
+#
+fn_make_settings() {
+    local env_file="$1"
+
+    cat > "$env_file" <<%
+# Settings for LabBook backup.sh
+# This file is generated automatically !! DO NOT EDIT !!
+export $ENV_USER=$(printenv $ENV_USER)
+export $ENV_STATUS_DIR=$(printenv $ENV_STATUS_DIR)
+export $ENV_KEY_DIR=$(printenv $ENV_KEY_DIR)
+export $ENV_LOG_DIR=$(printenv $ENV_LOG_DIR)
+export $ENV_DB_HOST=$(printenv $ENV_DB_HOST)
+export $ENV_DB_USER=$(printenv $ENV_DB_USER)
+export $ENV_DB_PASS=$(printenv $ENV_DB_PASS)
+export $ENV_DB_NAME=$(printenv $ENV_DB_NAME)
+%
+    status=$?
+
+    return $status
 }
 
 #
@@ -1750,6 +1778,7 @@ status_file=""
 status_filename=""
 status_format=""
 log_file=""
+settings_file=""
 arg_dir=""
 cmd=""
 root_dir=""
@@ -1762,11 +1791,10 @@ with_uninitialized=0
 media=""
 when=""
 host=""
-params_from_file=""
 last_backup_ok_file=""
 test_mode=0
 
-while getopts "hvi:o:d:V:R:a:p:s:u:Um:w:F:P:T" option; do
+while getopts "hvi:o:e:d:V:R:a:p:s:u:Um:w:P:T" option; do
     case "$option" in
         h)
             usage
@@ -1782,6 +1810,10 @@ while getopts "hvi:o:d:V:R:a:p:s:u:Um:w:F:P:T" option; do
 
         o)
             output_file="$OPTARG"
+            ;;
+
+        e)
+            settings_file="$OPTARG"
             ;;
 
         s)
@@ -1824,10 +1856,6 @@ while getopts "hvi:o:d:V:R:a:p:s:u:Um:w:F:P:T" option; do
             when="$OPTARG"
             ;;
 
-        F)
-            params_from_file="$OPTARG"
-            ;;
-
         P)
             test_path="$OPTARG"
             ;;
@@ -1846,17 +1874,10 @@ shift $((OPTIND -1))
 
 cmd="$1"
 
-# for this command we must initialize environment
-[[ "$cmd" == "backupauto" ]] && {
-    [[ -n "$input_file" ]] || error_exit "$cmd: missing settings file, use -i argument"
-
+# when commands are run within a newly started container we must initialize environment
+[[ -n "$settings_file" ]] && {
     # shellcheck disable=SC1090
-    source "$input_file"
-}
-
-[[ -n "$params_from_file" ]] && {
-    # shellcheck disable=SC1090
-    source "$params_from_file"
+    source "$settings_file"
 }
 
 # Initialize log file
@@ -1942,13 +1963,17 @@ case "$cmd" in
 
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
-        [[ -n $(printenv $ENV_HOST) ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
-
     host=$(printenv $ENV_HOST)
+
+        [[ -n "$host" ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$host" -u "$user" -s "$status_file" "$cmd"
+                if [[ $with_uninitialized -eq 1 ]]; then
+                    run_in_container "$user" "$host" -u "$user" -s "$status_file" -U "$cmd" || exit_status=1
+                else
+                    run_in_container "$user" "$host" -u "$user" -s "$status_file" "$cmd" || exit_status=1
+                fi
             else
                 fn_listmedia "$user" "$status_file" "$with_uninitialized" "$test_path" || exit_status=1
             fi
@@ -1973,7 +1998,7 @@ case "$cmd" in
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd"
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
             else
                 fn_listarchive "$user" "$status_file" "$media" "$test_path" || exit_status=1
             fi
@@ -2030,9 +2055,9 @@ case "$cmd" in
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$(printenv $ENV_HOST)" -u "$user" -s "$status_file" -m "$media" "$cmd"
+                run_in_container "$user" "$(printenv $ENV_HOST)" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
             else
-                fn_backup "$media" "$user" "$test_path"
+                fn_backup "$media" "$user" "$test_path" || exit_status=1
             fi
         else
             if [[ $fake_status -eq 0 ]]; then
