@@ -777,19 +777,19 @@ def setting_backup():
             json_data['stat_backup'] = ret[0]
             json_data['date_backup'] = ret[1][:-1]
     except:
-        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io +'backup')
+        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'backup')
 
     # get modification time from last_backup_ok
     try:
         import pathlib
 
-        f = pathlib.Path(Constants.cst_io + 'last_backup_ok') 
+        f = pathlib.Path(Constants.cst_io + 'last_backup_ok')
 
         if f.exists():
             json_data['last_backup_ok'] = str(datetime.fromtimestamp(f.stat().st_mtime))
             json_data['last_backup_ok'] = json_data['last_backup_ok'][:19]
     except Exception as err:
-        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io +'last_backup_ok , err=%s', err)
+        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok , err=%s', err)
 
     # load start_time
     try:

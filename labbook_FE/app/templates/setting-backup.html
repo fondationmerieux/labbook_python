@@ -161,6 +161,7 @@
 var action   = "" ; // "T"ime, "M"edia, "K"ey, "B"ackup, "R"estore
 var pwd_user = "" ;
 var pwd_key  = "" ;
+var media    = "" ;
 
 function run_time()
 {
@@ -232,9 +233,9 @@ $( "#dial-pwd-user" ).modal( "hide" ) ;
 
 function after_listmedia()
 {
-let media = $("#list-media").val() ;
+media = $("#list-media").val() ;
 
-    if (media == "")
+    if (media == "" || media == null)
     {
     alert("{{ _("Vous devez sélectionner un média") }}") ;
     return false;
@@ -394,7 +395,7 @@ function run_keyexist()
        },
        error: function(ret)
        {
-       console.log("ERROR POST setting restore") ;
+       console.log("ERROR POST setting keyexist") ;
        console.log("ret="+JSON.stringify(ret)) ;
        alert("{{ _("Une erreur est survenue lors de la vérification de clef de sauvegarde") }}") ;
        return false ;
@@ -503,16 +504,16 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         data: param,
         success: function(data)
         {
-        console.log("restore ret="+JSON.stringify(data)) ;
+        console.log("list_archive ret="+JSON.stringify(data)) ;
 
             // Dialog list archive
             if (data.ret == 0)
             {
             // Dialog list media
             $("#list-archive").empty() ;
-            for( i in data.restore)
+            for( i in data.archive)
             {
-                $("#list-archive").append('<option value="' + data.restore[i] + '">' + data.restore[i] + '</option>');
+                $("#list-archive").append('<option value="' + data.archive[i] + '">' + data.archive[i] + '</option>');
             }
 
             $( "#dial-list-archive" ).modal( "show" ) ;
@@ -534,29 +535,58 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
 
 function restore()
 {
-pwd_key = $( "#pwd-key" ).val() ;
+pwd_key = $("#pwd-key").val() ;
+archive = $("#list-archive").val() ;
 
-var param = '{ "pwd_key":"' + pwd_key + '"}' ;
+    if (media == "" || media == null)
+    {
+    alert("{{ _("Vous deviez sélectionner un média") }}") ;
+    return false;
+    }
+
+var param = '{ "pwd_key":"' + pwd_key + '", "archive":"' + archive + '", "media":"' + media + '"}' ;
 
     $( "#dial-list-archive" ).modal( "hide" ) ;
 
     if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la restauration.") }}") )
     {
-        $.ajax( {
-           type: "POST",
-           url: "/services/setting/script/restore",
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
-               {
-               tempAlert("{{ _("Lancement réussi") }}", 2000, "tempAnchor") ;
-               },
-           error: function(data)
-               {
-               console.log("ERROR POST setting restore") ;
-               alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-               }
+        $.ajax( 
+        {
+            type: "POST",
+            url: "/services/setting/script/restore",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
+            {
+                if ( window.confirm("{{ _("Lancez le redémarrage de l'application ?") }}") )
+                {
+                var param = '{ "pwd_user":"' + pwd_user + '"}' ;
+
+                    $.ajax( 
+                    {
+                        type: "POST",
+                        url: "/services/setting/script/restart",
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        data: param,
+                        success: function(data)
+                        {
+                        tempAlert("{{ _("Redémarrage activé") }}", 2000, "tempAnchor") ;
+                        },
+                        error: function(data)
+                        {
+                        console.log("ERROR POST setting restart") ;
+                        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                        }
+                } ) ;
+                }
+            },
+            error: function(data)
+            {
+            console.log("ERROR POST setting restore") ;
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+            }
         } ) ;
     }
 }

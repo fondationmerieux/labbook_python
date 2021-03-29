@@ -114,7 +114,7 @@ def upgrade():
     except:
         print("ERROR delete from sigl_file_data where id_data in (5,7,12,13)")
 
-    ### ADD NEW MANUALS ###
+    # --- ADD NEW MANUALS ---
 
     # Laboratory biosafety manual 4th ed.
     try:

@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import logging
+import os
 
 from datetime import datetime
 from flask import request
@@ -280,11 +281,10 @@ class ScriptBackup(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
-        import os
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' ' + Constants.cst_io_backup
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_backup
 
         self.log.error(Logs.fileline() + ' : ScriptBackup cmd=' + cmd)
-        ret = os.system(cmd) 
+        ret = os.system(cmd)
 
         # read backup file
         if ret == 0:
@@ -305,8 +305,6 @@ class ScriptGenkey(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
-        import os
-
         args = request.get_json()
 
         if 'pwd_key' not in args:
@@ -328,8 +326,7 @@ class ScriptInitmedia(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
-        import os
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' ' + Constants.cst_io_initmedia
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_initmedia
 
         self.log.error(Logs.fileline() + ' : ScriptInitMedia cmd=' + cmd)
         ret = os.system(cmd)
@@ -342,7 +339,6 @@ class ScriptKeyexist(Resource):
     log = logging.getLogger('log_services')
 
     def get(self):
-        import os
         cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + Constants.cst_io_keyexist
 
         self.log.error(Logs.fileline() + ' : ScriptKeyexist cmd=' + cmd)
@@ -356,8 +352,6 @@ class ScriptListarchive(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
-        import os
-
         args = request.get_json()
 
         if 'user_pwd' not in args:
@@ -366,7 +360,7 @@ class ScriptListarchive(Resource):
 
         os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' ' + Constants.cst_io_listarchive
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_listarchive
 
         self.log.error(Logs.fileline() + ' : ScriptListarchive cmd=' + cmd)
         ret = os.system(cmd)
@@ -394,7 +388,6 @@ class ScriptListmedia(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, type):
-        import os
         if type == "U":
             type = ' -U '
         else:
@@ -444,10 +437,9 @@ class ScriptProgbackup(Resource):
 
         start_time = str(args['start_time'])
 
-        import os
         os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -w ' + start_time + ' ' + Constants.cst_io_progbackup
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -w "' + start_time + '" ' + Constants.cst_io_progbackup
 
         self.log.error(Logs.fileline() + ' : ScriptProgbackup cmd=' + cmd)
         ret = os.system(cmd)
@@ -460,7 +452,28 @@ class ScriptProgbackup(Resource):
                 self.log.error(Logs.alert() + ' : ScriptProgbackup ERROR update')
                 return compose_ret('1', Constants.cst_content_type_json, 500)
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptProgbackup ret=' +str(ret))
+        self.log.info(Logs.fileline() + ' : TRACE ScriptProgbackup ret=' + str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class ScriptRestart(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'pwd_user' not in args:
+            self.log.error(Logs.fileline() + ' : ScriptRestart ERROR args missing')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
+
+        os.environ['LABBOOK_USER_PWD'] = args['pwd_user']
+
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + Constants.cst_io_restart
+
+        self.log.error(Logs.fileline() + ' : ScriptRestart cmd=' + cmd)
+        ret = os.system(cmd)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptRestart ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)
 
 
@@ -470,20 +483,19 @@ class ScriptRestore(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'media' not in args or 'pwd_key' not in args or 'file_restore' not in args:
+        if 'media' not in args or 'pwd_key' not in args or 'archive' not in args:
             self.log.error(Logs.fileline() + ' : ScriptRestore ERROR args missing')
             return compose_ret('1', Constants.cst_content_type_json, 400)
 
-        media        = str(args['media'])
-        file_restore = str(args['file_restore'])
+        media   = str(args['media'])
+        archive = str(args['archive'])
 
-        import os
         os.environ['LABBOOK_KEY_PWD'] = args['pwd_key']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m ' + media + ' -a ' + file_restore + ' ' + Constants.cst_io_restore
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" -a "' + archive + '" ' + Constants.cst_io_restore
 
         self.log.error(Logs.fileline() + ' : ScriptRestore cmd=' + cmd)
         ret = os.system(cmd)
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptRestore ret=' +str(ret))
+        self.log.info(Logs.fileline() + ' : TRACE ScriptRestore ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)

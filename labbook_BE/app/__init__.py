@@ -83,8 +83,8 @@ if config_envvar in os.environ:
     os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
     os.environ['LABBOOK_DB_NAME'] = app.config['DB_NAME']
 
-    # ONLY FOR TESTS 
-    #os.environ['LABBOOK_TEST_OK']= Constants.cst_io_keyexist + ',' + Constants.cst_io_listmedia + ',' + Constants.cst_io_progbackup + ',' + Constants.cst_io_initmedia + ',' + Constants.cst_io_backup + ',' + Constants.cst_io_listarchive + ',' + Constants.cst_io_restore
+    # ONLY FOR TESTS
+    # os.environ['LABBOOK_TEST_OK']= Constants.cst_io_keyexist + ',' + Constants.cst_io_listmedia + ',' + Constants.cst_io_progbackup + ',' + Constants.cst_io_initmedia + ',' + Constants.cst_io_backup + ',' + Constants.cst_io_listarchive + ',' + Constants.cst_io_restore
     # os.environ['LABBOOK_TEST_KO']= Constants.cst_io_genkey + ',' + Constants.cst_io_initmedia
 else:
     print("No local configuration available: {} is undefined in the environment".format(config_envvar))
@@ -198,6 +198,7 @@ api.add_resource(ScriptKeyexist,      '/services/setting/script/keyexist')
 api.add_resource(ScriptListarchive,   '/services/setting/script/listarchive/<string:media>')
 api.add_resource(ScriptListmedia,     '/services/setting/script/listmedia/<string:type>')
 api.add_resource(ScriptProgbackup,    '/services/setting/script/progbackup/<string:hour>')
+api.add_resource(ScriptRestart,       '/services/setting/script/restart')
 api.add_resource(ScriptRestore,       '/services/setting/script/restore')
 api.add_resource(StaffExport,         '/services/quality/staff/export')
 api.add_resource(StockProductDet,     '/services/quality/stock/product/det/<int:id_item>')

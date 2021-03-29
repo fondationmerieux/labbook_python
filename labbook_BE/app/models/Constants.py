@@ -31,4 +31,5 @@ class Constants:
     cst_io_listmedia   = 'listmedia'
     cst_io_listarchive = 'listarchive'
     cst_io_progbackup  = 'progbackup'
+    cst_io_restart     = 'restart'
     cst_io_restore     = 'restore'
