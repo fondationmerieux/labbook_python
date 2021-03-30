@@ -11,7 +11,7 @@ else
 BUILD_VERSION=$(DEFAULT_VERSION)
 endif
 
-VERSION_NAME=v$(BUILD_VERSION)
+TAG_NAME=v$(BUILD_VERSION)
 
 ifeq (, $(shell type podman 2> /dev/null))
 DOCKER_COMMAND=docker
@@ -21,15 +21,15 @@ endif
 help:
 	@echo 'Usage:'
 	@echo '  make build [VERSION=version]       build docker image $(FULL_IMAGE_NAME):version'
-	@echo '  make save [VERSION=version]        save docker image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)_VERSION_NAME.tar'
-	@echo '  make clean [VERSION=version]       clean docker image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)_VERSION_NAME.tar'
-	@echo 'Default version value in VERSION file=$(DEFAULT_VERSION) VERSION_NAME=$(VERSION_NAME)'
+	@echo '  make save [VERSION=version]        save docker image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)-VERSION.tar'
+	@echo '  make clean [VERSION=version]       clean docker image $(FULL_IMAGE_NAME):version'
+	@echo 'Default version value in VERSION file=$(DEFAULT_VERSION) TAG_NAME=$(TAG_NAME)'
 
 .PHONY: build
 build:
 ifdef BUILD_VERSION
-	git checkout $(VERSION_NAME)
-	$(DOCKER_COMMAND) build . -t $(FULL_IMAGE_NAME):$(VERSION_NAME)
+	git checkout $(TAG_NAME)
+	$(DOCKER_COMMAND) build . -t $(FULL_IMAGE_NAME):$(BUILD_VERSION)
 else
 	@echo 'missing version'
 endif
@@ -38,7 +38,7 @@ endif
 save:
 ifdef BUILD_VERSION
 	rm -f $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar
-	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(VERSION_NAME)
+	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(BUILD_VERSION)
 else
 	@echo 'missing version'
 endif
@@ -46,7 +46,7 @@ endif
 .PHONY: clean
 clean:
 ifdef BUILD_VERSION
-	$(DOCKER_COMMAND) rmi $(FULL_IMAGE_NAME):$(VERSION_NAME)
+	$(DOCKER_COMMAND) rmi $(FULL_IMAGE_NAME):$(BUILD_VERSION)
 else
 	$(DOCKER_COMMAND) rmi $(FULL_IMAGE_NAME)
 endif
