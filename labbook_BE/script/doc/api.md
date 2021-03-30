@@ -147,7 +147,7 @@ The backup is a gpg encrypted archive in the form `backup_v30_database_timestamp
 Output:
 OK;YYYY-MM-DD HH:MM:SS
 or
-ERROR;YYYY-MM-DD HH:MM:SS;message
+ERR;YYYY-MM-DD HH:MM:SS;message
 ~~~
 
 ## Restore

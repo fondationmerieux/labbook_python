@@ -40,6 +40,7 @@ MAP_STORAGE="$DEF_VOLUME_NAME:$MOUNTDIR_STORAGE"
 LAST_BACKUP_OK="last_backup_ok"
 FMX_KPUB_FILENAME="kpub.fondation-merieux.asc"
 BACKUP_SETTINGS="backup_settings.sh"
+CONTAINER_SETTINGS="container_settings.sh"
 
 #############
 # Functions #
@@ -1053,7 +1054,7 @@ fn_progbackup() {
     env_file="$(printenv $ENV_STATUS_DIR)/$BACKUP_SETTINGS"
 
     cat > "$cron_file" <<%
-$minute_i $hour_i * * * sudo podman run --rm -v $MAP_MEDIA -v $MAP_STORAGE $image $my_absolute_path -e $env_file backupauto
+$minute_i $hour_i * * * sudo podman run --rm --tz=local -v $MAP_MEDIA -v $MAP_STORAGE $image $my_absolute_path -e $env_file backupauto
 %
 
     [[ $test_mode -eq 0 ]] && {
@@ -1075,7 +1076,7 @@ $minute_i $hour_i * * * sudo podman run --rm -v $MAP_MEDIA -v $MAP_STORAGE $imag
 
     [[ $verbose -eq 1 ]] && echo_message "Creating settings file in $env_file"
 
-    fn_make_settings "$env_file" || {
+    fn_make_settings "$env_file" 0 || {
         log_message "cannot create settings file in $env_file"
         return 1
     }
@@ -1556,9 +1557,10 @@ run_in_container() {
         return 1
     }
 
-    env_file="$(printenv $ENV_STATUS_DIR)/$BACKUP_SETTINGS"
+    env_file="$(printenv $ENV_STATUS_DIR)/$CONTAINER_SETTINGS"
 
-    fn_make_settings "$env_file" || {
+    # we write the environment in a file, including the private key password when we restore.
+    fn_make_settings "$env_file" 1 || {
         log_message "cannot create settings file in $env_file"
         return 1
     }
@@ -1572,11 +1574,14 @@ run_in_container() {
     SSHPASS=$(printenv $ENV_USER_PASS) \
         sshpass -e \
         ssh -o "StrictHostKeyChecking no" "$user@$host" \
-        sudo podman run --rm -v "$MAP_MEDIA" -v "$MAP_STORAGE" "$image" "$my_absolute_path" -e "$env_file" \
-        "$@"
+        sudo podman run --rm --tz=local -v "$MAP_MEDIA" -v "$MAP_STORAGE" "$image" \
+             "$my_absolute_path" -e "$env_file" "$@"
     status=$?
 
     [[ $verbose -eq 1 ]] && set +x
+
+    # remove the environment file as soon as we can
+    rm -f "$env_file"
 
     return $status
 }
@@ -1620,9 +1625,12 @@ fn_install_pubkey() {
 #
 # Param:
 # - file
+# - if 1 and ENV_KEY_PASS is defined add it in file
 #
 fn_make_settings() {
     local env_file="$1"
+    local with_env_key_pass="$2"
+    local key_pass=""
 
     cat > "$env_file" <<%
 # Settings for LabBook backup.sh
@@ -1637,6 +1645,17 @@ export $ENV_DB_PASS=$(printenv $ENV_DB_PASS)
 export $ENV_DB_NAME=$(printenv $ENV_DB_NAME)
 %
     status=$?
+
+    [[ $status -eq 0 && $with_env_key_pass -eq 1 ]] && {
+        key_pass="$(printenv $ENV_KEY_PASS)"
+
+        [[ -n "$key_pass" ]] && {
+            cat >> "$env_file" <<%
+export $ENV_KEY_PASS=$key_pass
+%
+            status=$?
+        }
+    }
 
     return $status
 }
@@ -1728,14 +1747,14 @@ status_message() {
 # OK;YYYY-MM-DD HH:MM:SS
 #
 # Non-empty message
-# ERROR;YYYY-MM-DD HH:MM:SS;message
+# ERR;YYYY-MM-DD HH:MM:SS;message
 #
 backup_message() {
     if [[ -n "$status_file" ]]; then
         if [[ -z "$*" ]]; then
             echo "OK;$(date +'%Y-%m-%d %H:%M:%S')" > "$status_file"
         else
-            echo "ERROR;$(date +'%Y-%m-%d %H:%M:%S');$*" > "$status_file"
+            echo "ERR;$(date +'%Y-%m-%d %H:%M:%S');$*" > "$status_file"
         fi
     fi
 }
@@ -1947,8 +1966,16 @@ case "$cmd" in
 
         [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
 
+        host=$(printenv $ENV_HOST)
+
+        [[ -n "$host" ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
+
         if [[ $fake_mode -eq 0 ]]; then
-            fn_initmedia "$user" "$media" "$test_path" || exit_status=1
+            if in_app_container; then
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
+            else
+                fn_initmedia "$user" "$media" "$test_path" || exit_status=1
+            fi
         elif [[ $fake_status -eq 1 ]]; then
             error_exit "$cmd: faking failure"
         fi
@@ -1963,7 +1990,7 @@ case "$cmd" in
 
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
-    host=$(printenv $ENV_HOST)
+        host=$(printenv $ENV_HOST)
 
         [[ -n "$host" ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
 
@@ -1995,6 +2022,10 @@ case "$cmd" in
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
         [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
+
+        host=$(printenv $ENV_HOST)
+
+        [[ -n "$host" ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
@@ -2045,7 +2076,9 @@ case "$cmd" in
 
         [[ -n $(printenv $ENV_DB_PASS) ]] || error_exit "$cmd: cannot find DB password in $ENV_DB_PASS"
 
-        [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
+        host=$(printenv $ENV_HOST)
+
+        [[ -n "$host" ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
 
         [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m option"
 
@@ -2055,7 +2088,7 @@ case "$cmd" in
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$(printenv $ENV_HOST)" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
             else
                 fn_backup "$media" "$user" "$test_path" || exit_status=1
             fi
@@ -2125,9 +2158,11 @@ case "$cmd" in
 
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
-        [[ -n $(printenv $ENV_KEY_PASS) ]] || error_exit "$cmd: cannot find key passphrase in $ENV_KEY_PASS"
+        host=$(printenv $ENV_HOST)
 
-        [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
+        [[ -n "$host" ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
+
+        [[ -n $(printenv $ENV_KEY_PASS) ]] || error_exit "$cmd: cannot find key passphrase in $ENV_KEY_PASS"
 
         [[ -n $(printenv $ENV_KEY_DIR) ]] || error_exit "$cmd: cannot find key directory in $ENV_KEY_DIR"
 
@@ -2140,7 +2175,17 @@ case "$cmd" in
         [[ -n $(printenv $ENV_DB_PASS) ]] || error_exit "$cmd: cannot find DB password in $ENV_DB_PASS"
 
         if [[ $fake_mode -eq 0 ]]; then
-            fn_restore "$media" "$archive" "$user" "$test_path" || exit_status=1
+            if in_app_container; then
+                [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
+
+                # The private key password is written to a temporary file when we run the container.
+                # We could avoid this by copying the encrypted archive and the keys to disk,
+                # and then restoring from these in the current container.
+                # But obviously with this extra copy we could run out of space.
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" -a "$archive" "$cmd" || exit_status=1
+            else
+                fn_restore "$media" "$archive" "$user" "$test_path" || exit_status=1
+            fi
         elif [[ $fake_status -eq 1 ]]; then
             error_exit "$cmd $media $archive: faking failure"
         fi
@@ -2155,7 +2200,7 @@ case "$cmd" in
 
         [[ -n $(printenv $ENV_HOST) ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
 
-    host=$(printenv $ENV_HOST)
+        host=$(printenv $ENV_HOST)
 
         [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
 
@@ -2177,7 +2222,7 @@ case "$cmd" in
 
         [[ -n $(printenv $ENV_HOST) ]] || error_exit "$cmd: cannot find host in $ENV_HOST"
 
-    host=$(printenv $ENV_HOST)
+        host=$(printenv $ENV_HOST)
 
         [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
 
