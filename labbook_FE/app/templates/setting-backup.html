@@ -272,7 +272,7 @@ let pwd_key2 = $( "#pwd-key2" ).val() ;
     return false;
     }
 
-    if ( pwd_key == "" || pwd_key != pwd_key2 )
+    if ( action == "K" && (pwd_key == "" || pwd_key != pwd_key2) )
     {
     alert("{{ _("Les mots de passes ne correspondent pas !") }}") ;
     return false ;
