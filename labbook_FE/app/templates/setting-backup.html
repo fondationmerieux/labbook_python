@@ -29,13 +29,13 @@
                     <div class="form-group form-inline">
                         <label class="col-form-label col-5 text-right">{{ _("Dernière sauvegarde") }} :</label>
                         <div>
-                            <span class="font-info">{{ args['stat_backup'] }} {{ args['date_backup'] }}</span>     
+                            <span class="font-info" id="date_backup">{{ args['stat_backup'] }} {{ args['date_backup'] }}</span>     
                         </div>
                     </div>
                     <div class="form-group form-inline">
                         <label class="col-form-label col-5 text-right">{{ _("Dernière sauvegarde OK") }} :</label>
                         <div>
-                            <span class="font-info">{{ args['last_backup_ok'] }}</span>
+                            <span class="font-info" id="last_backup_ok">{{ args['last_backup_ok'] }}</span>
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                                     <input id="pwd-key" type="password" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group form-inline">
+                            <div class="form-group form-inline conf-key-div">
                                 <label class="col-form-label col-3 mr-1">{{ _("Confirmation") }}</label>
                                 <div>
                                     <input id="pwd-key2" type="password" class="form-control">
@@ -189,10 +189,16 @@ action = "K" ;
     let msg = "{{ _("Une clé existe déjà si vous re-générez une clé les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d\'une nouvelle clé ?") }}" ;
 
         if ( window.confirm(msg) )
+        {
+        $( ".conf-key-div" ).show() ;
         $( "#dial-pwd-key" ).modal( "show" ) ;
+        }
     }
     else
+    {
+    $( ".conf-key-div" ).show() ;
     $( "#dial-pwd-key" ).modal( "show" ) ;
+    }
 }
 
 function run_backup()
@@ -228,7 +234,10 @@ $( "#dial-pwd-user" ).modal( "hide" ) ;
     else if (action == "B")
     listmedia("I") ;
     else if (action == "R")
+    {
+    $( ".conf-key-div" ).hide() ;
     $( "#dial-pwd-key" ).modal( "show" ) ;
+    }
 }
 
 function after_listmedia()
@@ -467,24 +476,40 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
 
 function backup(media)
 {
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        url: "/services/setting/script/backup/" + media,
-        success: function(data)
+        $.ajax( 
         {
-            if ( data.startsWith("OK;") )
+            type: "POST",
+            url: "/services/setting/script/backup/" + media,
+            success: function(data)
             {
-            tempAlert("{{ _("Sauvegarde réussie") }}", 2000, "tempAnchor") ;
+                $("#dial-wait").modal("hide") ;
+
+                data = data.split(";") ;
+
+                if ( data[0] == "OK" )
+                {
+                tempAlert("{{ _("Sauvegarde réussie") }}", 2000, "tempAnchor") ;
+                $("#last_backup_ok").html( data[1] ) ;
+                }
+                else
+                alert("{{ _("Une erreur est survenue lors de la sauvegarde") }}") ;
+
+                // update ihm
+                $("#date_backup").html( data[0] + " " + data[1] ) ;
+            },
+            error: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR POST setting backup") ;
+            alert("{{ _("Une erreur est survenue") }}") ;
             }
-            else
-            alert("{{ _("Une erreur est survenue lors de la sauvegarde") }}") ;
-        },
-        error: function(data)
-        {
-        console.log("ERROR POST setting backup") ;
-        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-        }
+        } ) ;
     } ) ;
 }
 
@@ -550,43 +575,53 @@ var param = '{ "pwd_key":"' + pwd_key + '", "archive":"' + archive + '", "media"
 
     if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la restauration.") }}") )
     {
-        $.ajax( 
-        {
-            type: "POST",
-            url: "/services/setting/script/restore",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-            {
-                if ( window.confirm("{{ _("Lancez le redémarrage de l'application ?") }}") )
-                {
-                var param = '{ "pwd_user":"' + pwd_user + '"}' ;
+        // popup wait
+        $("#dial-wait").modal("show") ;
 
-                    $.ajax( 
-                    {
-                        type: "POST",
-                        url: "/services/setting/script/restart",
-                        dataType: 'json',
-                        contentType: "application/json; charset=utf-8",
-                        data: param,
-                        success: function(data)
-                        {
-                        tempAlert("{{ _("Redémarrage activé") }}", 2000, "tempAnchor") ;
-                        },
-                        error: function(data)
-                        {
-                        console.log("ERROR POST setting restart") ;
-                        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-                        }
-                } ) ;
-                }
-            },
-            error: function(data)
+        $("#dial-wait").on('shown.bs.modal', function () 
+        {
+            $.ajax( 
             {
-            console.log("ERROR POST setting restore") ;
-            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-            }
+                type: "POST",
+                url: "/services/setting/script/restore",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param,
+                success: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
+
+                    if ( window.confirm("{{ _("Lancez le redémarrage de l'application ?") }}") )
+                    {
+                    var param = '{ "pwd_user":"' + pwd_user + '"}' ;
+
+                        $.ajax( 
+                        {
+                            type: "POST",
+                            url: "/services/setting/script/restart",
+                            dataType: 'json',
+                            contentType: "application/json; charset=utf-8",
+                            data: param,
+                            success: function(data)
+                            {
+                            tempAlert("{{ _("Redémarrage activé") }}", 2000, "tempAnchor") ;
+                            },
+                            error: function(data)
+                            {
+                            console.log("ERROR POST setting restart") ;
+                            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                            }
+                    } ) ;
+                    }
+                },
+                error: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
+
+                console.log("ERROR POST setting restore") ;
+                alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                }
+            } ) ;
         } ) ;
     }
 }

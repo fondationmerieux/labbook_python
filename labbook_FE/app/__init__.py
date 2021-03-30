@@ -775,7 +775,7 @@ def setting_backup():
         if ret:
             ret = ret.split(';')
             json_data['stat_backup'] = ret[0]
-            json_data['date_backup'] = ret[1][:-1]
+            json_data['date_backup'] = ret[1]
     except:
         log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'backup')
 

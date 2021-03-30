@@ -249,6 +249,24 @@ class EquipmentDet(Resource):
             if item[key] is None:
                 item[key] = ''
 
+        if item['date_endcontract']:
+            item['date_endcontract'] = datetime.strftime(item['date_endcontract'], '%Y-%m-%d')
+
+        if item['date_receipt']:
+            item['date_receipt'] = datetime.strftime(item['date_receipt'], '%Y-%m-%d')
+
+        if item['date_buy']:
+            item['date_buy'] = datetime.strftime(item['date_buy'], '%Y-%m-%d')
+
+        if item['date_procur']:
+            item['date_procur'] = datetime.strftime(item['date_procur'], '%Y-%m-%d')
+
+        if item['date_onduty']:
+            item['date_onduty'] = datetime.strftime(item['date_onduty'], '%Y-%m-%d')
+
+        if item['date_revoc']:
+            item['date_revoc'] = datetime.strftime(item['date_revoc'], '%Y-%m-%d')
+
         self.log.info(Logs.fileline() + ' : EquipmentDet id_item=' + str(id_item))
         return compose_ret(item, Constants.cst_content_type_json, 200)
 

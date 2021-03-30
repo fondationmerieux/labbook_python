@@ -131,3 +131,18 @@ class Doctor:
         except mysql.connector.Error as e:
             Doctor.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def deleteDoctor(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from sigl_08_data '
+                           'where id_data=%s', (id_item,))
+
+            Doctor.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Doctor.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
