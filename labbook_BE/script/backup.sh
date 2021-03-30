@@ -989,7 +989,7 @@ fn_restart() {
         SSHPASS=$(printenv $ENV_USER_PASS) \
             sshpass -e \
             ssh -o "StrictHostKeyChecking no" "$user@$host" \
-            sudo service labbook restart
+            sudo systemctl restart labbook
     }
 
     return 0
@@ -2091,6 +2091,13 @@ case "$cmd" in
                 run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
             else
                 fn_backup "$media" "$user" "$test_path" || exit_status=1
+
+                if [[ $exit_status -eq 0 ]]; then
+                    backup_message ""
+                    touch "$last_backup_ok_file"
+                else
+                    error_exit "$cmd: error"
+                fi
             fi
         else
             if [[ $fake_status -eq 0 ]]; then
@@ -2145,6 +2152,13 @@ case "$cmd" in
         last_backup_ok_file="$(dirname "$status_file")/$LAST_BACKUP_OK"
 
         fn_backup "$media" "$user" "" || exit_status=1
+
+        if [[ $exit_status -eq 0 ]]; then
+            backup_message ""
+            touch "$last_backup_ok_file"
+        else
+            error_exit "$cmd: error"
+        fi
         ;;
 
     restore)

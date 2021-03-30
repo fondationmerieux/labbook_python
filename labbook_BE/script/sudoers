@@ -3,7 +3,7 @@
 #
 User_Alias LABBOOK_USER = user_labbook
 
-Cmnd_Alias LABBOOK_RESTART = /usr/sbin/service labbook restart
+Cmnd_Alias LABBOOK_RESTART = /usr/bin/systemctl restart labbook
 Cmnd_Alias LABBOOK_PODMAN = /usr/bin/podman *
 
 LABBOOK_USER ALL = NOPASSWD: LABBOOK_RESTART, LABBOOK_PODMAN
