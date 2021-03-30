@@ -162,6 +162,7 @@ var action   = "" ; // "T"ime, "M"edia, "K"ey, "B"ackup, "R"estore
 var pwd_user = "" ;
 var pwd_key  = "" ;
 var media    = "" ;
+var keyexist = 0  ;
 
 function run_time()
 {
@@ -184,7 +185,7 @@ function run_key()
 {
 action = "K" ;
 
-    if ( run_keyexist() == true )
+    if ( keyexist == 0 )
     {
     let msg = "{{ _("Une clé existe déjà si vous re-générez une clé les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d\'une nouvelle clé ?") }}" ;
 
@@ -392,22 +393,22 @@ function run_keyexist()
        {
        console.log("keyexist ret="+JSON.stringify(data)) ;
 
-           // enabled backup
+           // enabled backup button if key exist
            if (data == 0)
            {
                $("#btn-run_backup").prop("disabled", false) ;
             
-           return true ;
+           keyexist = 0 ;
            }
-
-       return false ; 
+           else
+           keyexist = 1 ; 
        },
        error: function(ret)
        {
        console.log("ERROR POST setting keyexist") ;
        console.log("ret="+JSON.stringify(ret)) ;
        alert("{{ _("Une erreur est survenue lors de la vérification de clé de sauvegarde") }}") ;
-       return false ;
+       keyexist = 1 ;
        }
     } ) ;
 }
@@ -465,6 +466,7 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
         success: function(data)
         {
         tempAlert("{{ _("Génération réussie") }}", 2000, "tempAnchor") ;
+        run_keyexist() ;
         },
         error: function(data)
         {
@@ -570,6 +572,8 @@ archive = $("#list-archive").val() ;
     }
 
 var param = '{ "pwd_key":"' + pwd_key + '", "archive":"' + archive + '", "media":"' + media + '"}' ;
+
+console.log("restore param=" + param) ;
 
     $( "#dial-list-archive" ).modal( "hide" ) ;
 

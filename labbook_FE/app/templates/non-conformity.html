@@ -15,13 +15,13 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Non-conformité") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group row mt-3">
-                    <label for="name" class="col-form-label col-3 text-right mt-2">{{ _("Nom de la non-conformité") }}</label>
+                    <label for="name" class="col-form-label col-3 text-right mt-2">{{ _("Nom de la non-conformité") }} *</label>
                     <div>					
                         <input type="text" name="name" id="name" value="{{ args['details']['name'] }}" class="form-control">			
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label for="search_reporter" class="col-form-label col-3 text-right mr-1">{{ _("Rapporteur") }}</label>
+                    <label for="search_reporter" class="col-form-label col-3 text-right mr-1">{{ _("Rapporteur") }} *</label>
                     <div>
                         <select id="search_reporter" style="width:400px"></select>
                         <span class="ml-2">{{ args['details']['reporter'] }}</span>
@@ -413,7 +413,13 @@
                             <textarea id="sub_eqp_cat6" name="sub_eqp_cat6" rows="4" cols="50" class="form-control"></textarea>
                         </div>
                     </div>
-                    <!-- TODO add search equipment -->
+                    <div class="form-group row row sub_eqp d-none">
+                        <label for="search_eqp" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Equipement") }}</label>
+                        <div>
+                            <select id="search_eqp" style="width:400px"></select>
+                            <span class="ml-2">{{ args['details']['equipment'] }}</span>
+                        </div>
+                    </div>
 
                     <!-- CONSUMABLE category -->
                     <div class="form-group row mt-n4">
@@ -460,7 +466,13 @@
                             <textarea id="sub_consu_cat6" name="sub_consu_cat6" rows="4" cols="50" class="form-control"></textarea>
                         </div>
                     </div>
-                    <!-- TODO add search supplier -->
+                    <div class="form-group row sub_consu d-none">
+                        <label for="search_supplier" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Fournisseur") }}</label>
+                        <div>
+                            <select id="search_supplier" style="width:400px"></select>
+                            <span class="ml-2">{{ args['details']['supplier'] }}</span>
+                        </div>
+                    </div>
 
                     <!-- LOCAL category -->
                     <div class="form-group row mt-n4">
@@ -907,6 +919,80 @@ $("#search_validate").on("select2:select", function (e)
 let id_item = $(e.currentTarget).val();
 } ) ;
 
+$("#search_eqp").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/equipment/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_eqp").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_eqp").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+$("#search_supplier").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/supplier/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_supplier").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_supplier").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
 function cat_change( elem )
 {
 let id_elem   = $(elem).attr('id') ;
@@ -946,50 +1032,126 @@ let class_sub_elem = ".sub_" + id_elem ;
 
 function save_item()
 {
-var id_owner     = {{ session['user_id_group']|safe }} ;
-var id_details   = {{ args['id_det']|safe }}   ;
-var name         = $("#name").val()            ;
-var reporter     = $("#search_reporter").val() ;
+var id_owner   = {{ session['user_id_group']|safe }} ;
+var id_details = {{ args['id_det']|safe }}   ;
+var name       = $("#name").val()            ;
+var reporter   = $("#search_reporter").val() ;
 
 /* --- Declaration of non-conformity ---*/
-var report_date  = $("#report_date").val()     ;
+var report_date = $("#report_date").val()     ;
 
 // PREANA category
-var cat_preana   = $("#cat_preana").val()      ;
+var cat_preana      = replaceUndefined($("#cat_preana:checked").val())      ;
+var sub_preana_cat1 = replaceUndefined($("#sub_preana_cat1:checked").val()) ;
+var sub_preana_cat2 = replaceUndefined($("#sub_preana_cat2:checked").val()) ;
+var sub_preana_cat3 = replaceUndefined($("#sub_preana_cat3:checked").val()) ;
+var sub_preana_cat4 = replaceUndefined($("#sub_preana_cat4:checked").val()) ;
+var sub1_sub_preana_cat4 = replaceUndefined($("#sub1_sub_preana_cat4:checked").val()) ;
+var sub2_sub_preana_cat4 = replaceUndefined($("#sub2_sub_preana_cat4:checked").val()) ;
+var sub3_sub_preana_cat4 = replaceUndefined($("#sub3_sub_preana_cat4:checked").val()) ;
+var sub_preana_cat5 = replaceUndefined($("#sub_preana_cat5:checked").val()) ;
+var sub_preana_cat6 = replaceUndefined($("#sub_preana_cat6:checked").val()) ;
+var sub_preana_cat7 = replaceUndefined($("#sub_preana_cat7:checked").val()) ;
+var sub_preana_cat8 = replaceUndefined($("#sub_preana_cat8:checked").val()) ;
+var sub_preana_cat9 = replaceUndefined($("#sub_preana_cat9:checked").val()) ;
+var sub_preana_cat10= JSON.stringify( $("#sub_preana_cat10").val() ) ;
 
 // ANALY category
-var cat_analy    = $("#cat_analy").val()       ;
+var cat_analy      = replaceUndefined($("#cat_analy:checked").val())      ;
+var sub_analy_cat1 = replaceUndefined($("#sub_analy_cat1:checked").val()) ;
+var sub_analy_cat2 = replaceUndefined($("#sub_analy_cat2:checked").val()) ;
+var sub_analy_cat3 = replaceUndefined($("#sub_analy_cat3:checked").val()) ;
+var sub_analy_cat4 = replaceUndefined($("#sub_analy_cat4:checked").val()) ;
+var sub_analy_cat5 = replaceUndefined($("#sub_analy_cat5:checked").val()) ;
+var sub_analy_cat6 = replaceUndefined($("#sub_analy_cat6:checked").val()) ;
+var sub_analy_cat7 = replaceUndefined($("#sub_analy_cat7:checked").val()) ;
+var sub_analy_cat8 = replaceUndefined($("#sub_analy_cat8:checked").val()) ;
+var sub_analy_cat9 = replaceUndefined($("#sub_analy_cat9:checked").val()) ;
+var sub_analy_cat10= replaceUndefined($("#sub_analy_cat10:checked").val());
+var sub_analy_cat11= JSON.stringify( $("#sub_analy_cat11").val() ) ;
 
 // POSTANA category
-var cat_postana  = $("#cat_postana").val()     ;
+var cat_postana      = replaceUndefined($("#cat_postana:checked").val())      ;
+var sub_postana_cat1 = replaceUndefined($("#sub_postana_cat1:checked").val()) ;
+var sub_postana_cat2 = replaceUndefined($("#sub_postana_cat2:checked").val()) ;
+var sub_postana_cat3 = replaceUndefined($("#sub_postana_cat3:checked").val()) ;
+var sub_postana_cat4 = replaceUndefined($("#sub_postana_cat4:checked").val()) ;
+var sub_postana_cat5 = replaceUndefined($("#sub_postana_cat5:checked").val()) ;
+var sub_postana_cat6 = replaceUndefined($("#sub_postana_cat6:checked").val()) ;
+var sub_postana_cat7 = replaceUndefined($("#sub_postana_cat7:checked").val()) ;
+var sub_postana_cat8 = replaceUndefined($("#sub_postana_cat8:checked").val()) ;
+var sub_postana_cat9 = replaceUndefined($("#sub_postana_cat9:checked").val()) ;
+var sub_postana_cat10= JSON.stringify( $("#sub_postana_cat10").val() ) ;
 
 // RES category
-var cat_res      = $("#cat_res").val()         ;
+var cat_res      = replaceUndefined($("#cat_res:checked").val())      ;
+var sub_res_cat1 = replaceUndefined($("#sub_res_cat1:checked").val()) ;
+var sub_res_cat2 = replaceUndefined($("#sub_res_cat2:checked").val()) ;
+var sub_res_cat3 = replaceUndefined($("#sub_res_cat3:checked").val()) ;
+var sub_res_cat4 = replaceUndefined($("#sub_res_cat4:checked").val()) ;
+var sub_res_cat5 = replaceUndefined($("#sub_res_cat5:checked").val()) ;
+var sub_res_cat6 = replaceUndefined($("#sub_res_cat6:checked").val()) ;
+var sub_res_cat7 = JSON.stringify( $("#sub_res_cat7").val() ) ;
 
 // HR category
-var cat_hr       = $("#cat_hr").val()          ;
+var cat_hr      = replaceUndefined($("#cat_hr:checked").val())      ;
+var sub_hr_cat1 = replaceUndefined($("#sub_hr_cat1:checked").val()) ;
+var sub_hr_cat2 = replaceUndefined($("#sub_hr_cat2:checked").val()) ;
+var sub_hr_cat3 = replaceUndefined($("#sub_hr_cat3:checked").val()) ;
+var sub_hr_cat4 = replaceUndefined($("#sub_hr_cat4:checked").val()) ;
+var sub_hr_cat5 = JSON.stringify( $("#sub_hr_cat5").val() ) ;
 
 // EQUIPMENT category
-var cat_eqp      = $("#cat_eqp").val()         ;
+var cat_eqp      = replaceUndefined($("#cat_eqp:checked").val())      ;
+var sub_eqp_cat1 = replaceUndefined($("#sub_eqp_cat1:checked").val()) ;
+var sub_eqp_cat2 = replaceUndefined($("#sub_eqp_cat2:checked").val()) ;
+var sub_eqp_cat3 = replaceUndefined($("#sub_eqp_cat3:checked").val()) ;
+var sub_eqp_cat4 = replaceUndefined($("#sub_eqp_cat4:checked").val()) ;
+var sub_eqp_cat5 = replaceUndefined($("#sub_eqp_cat5:checked").val()) ;
+var sub_eqp_cat6 = JSON.stringify( $("#sub_eqp_cat6").val() ) ;
+var equipment    = $("#search_eqp").val() ;
 
 // CONSUMABLE category
-var cat_consu    = $("#cat_consu").val()       ;
+var cat_consu      = replaceUndefined($("#cat_consu:checked").val())      ;
+var sub_consu_cat1 = replaceUndefined($("#sub_consu_cat1:checked").val()) ;
+var sub_consu_cat2 = replaceUndefined($("#sub_consu_cat2:checked").val()) ;
+var sub_consu_cat3 = replaceUndefined($("#sub_consu_cat3:checked").val()) ;
+var sub_consu_cat4 = replaceUndefined($("#sub_consu_cat4:checked").val()) ;
+var sub_consu_cat5 = replaceUndefined($("#sub_consu_cat5:checked").val()) ;
+var sub_consu_cat6 = JSON.stringify( $("#sub_consu_cat6").val() ) ;
+var supplier       = $("#search_supplier").val();
 
 // LOCAL category
-var cat_local    = $("#cat_local").val()       ;
+var cat_local      = replaceUndefined($("#cat_local:checked").val())      ;
+var sub_local_cat1 = replaceUndefined($("#sub_local_cat1:checked").val()) ;
+var sub_local_cat2 = replaceUndefined($("#sub_local_cat2:checked").val()) ;
+var sub_local_cat3 = replaceUndefined($("#sub_local_cat3:checked").val()) ;
+var sub_local_cat4 = replaceUndefined($("#sub_local_cat4:checked").val()) ;
+var sub_local_cat5 = replaceUndefined($("#sub_local_cat5:checked").val()) ;
+var sub_local_cat6 = JSON.stringify( $("#sub_local_cat6").val() ) ;
 
 // SI category
-var cat_si       = $("#cat_si").val()          ;
+var cat_si      = replaceUndefined($("#cat_si:checked").val())      ;
+var sub_si_cat1 = replaceUndefined($("#sub_si_cat1:checked").val()) ;
+var sub_si_cat2 = replaceUndefined($("#sub_si_cat2:checked").val()) ;
+var sub_si_cat3 = replaceUndefined($("#sub_si_cat3:checked").val()) ;
+var sub_si_cat4 = replaceUndefined($("#sub_si_cat4:checked").val()) ;
+var sub_si_cat5 = replaceUndefined($("#sub_si_cat5:checked").val()) ;
+var sub_si_cat6 = JSON.stringify( $("#sub_si_cat6").val() ) ;
 
 // CONTRACT category
-var cat_contract = $("#cat_contract").val()    ;
+var cat_contract      = replaceUndefined($("#cat_contract:checked").val())      ;
+var sub_contract_cat1 = replaceUndefined($("#sub_contract_cat1:checked").val()) ;
+var sub_contract_cat2 = replaceUndefined($("#sub_contract_cat2:checked").val()) ;
+var sub_contract_cat3 = replaceUndefined($("#sub_contract_cat3:checked").val()) ;
+var sub_contract_cat4 = replaceUndefined($("#sub_contract_cat4:checked").val()) ;
+var sub_contract_cat5 = JSON.stringify( $("#sub_contract_cat5").val() ) ;
 
 // CLIENT category
-var cat_client   = JSON.stringify( $("#cat_client").val() ) ;
+var cat_client = JSON.stringify( $("#cat_client").val() ) ;
 
 // OTHER category
-var cat_other    = JSON.stringify( $("#cat_other").val() ) ;
-
+var cat_other = JSON.stringify( $("#cat_other").val() ) ;
 
 var about_pat_rec= $("input:radio[name=about_pat_rec]:checked").val() ;
 var description  = JSON.stringify( $("#description").val() )          ;
@@ -997,21 +1159,32 @@ var impact_pat   = $("input:radio[name=impact_pat]:checked").val()    ;
 var impact_user  = $("input:radio[name=impact_user]:checked").val()   ;
 
 /* --- Follow-up of non-conformity ---*/
+var followed          = $("#search_followed").val()             ;
+var flwd_what         = JSON.stringify( $("#flwd_what").val() ) ;
+var flwd_when         = $("#flwd_when").val()                   ;
+var impl_action       = $("input:radio[name=impl_action]:checked").val();
+var flwd_descr_action = JSON.stringify( $("#flwd_descr_action").val() ) ;
+var flwd_action_date  = $("#flwd_action_date").val() ;
+var incharge          = $("#search_incharge").val()  ;
 
 /* --- Closing of non-conformity ---*/
+var close_comment = JSON.stringify( $("#close_comment").val() ) ;
+var validate      = $("#search_validate").val() ;
+var close_date    = $("#close_date").val()      ;
 
-/* TODO variables obligatoires
 var msg = "" ;
 
-    if (date_meeting == "")
-    msg += "{{ _("Veuillez saisir une date de réunion.") }}\n" ;
+    if (name == "")
+    msg += "{{ _("Veuillez saisir un nom à cette non-conformité.") }}\n" ;
+
+    if (id_details == 0 && reporter == 0)
+    msg += "{{ _("Veuillez sélectionner un rapporteur.") }}\n" ;
 
     if (msg != "")
     {
     alert( msg ) ;
     return false ;
     }
-    */
 
     if (id_details > 0)
     {
@@ -1026,19 +1199,124 @@ var msg = "" ;
 
         if (validate < 1)
         validate = {% if args['details']['validate_id'] %}{{ args['details']['validate_id']|safe }}{% else %}0{% endif %} ;
+
+        if (equipment < 1)
+        equipment = {% if args['details']['equipment_id'] %}{{ args['details']['equipment_id']|safe }}{% else %}0{% endif %} ;
+
+        if (supplier < 1)
+        supplier = {% if args['details']['supplier_id'] %}{{ args['details']['supplier_id']|safe }}{% else %}0{% endif %} ;
     }
 
 var param = '{ "id_owner":' + id_owner + ', ' +
               '"id_item":' + id_details + ', ' +
-              '"date_meeting":"' + date_meeting + '", ' +
-              '"type":' + type + ', ' +
+              '"name":"' + name + '", ' +
               '"reporter":' + reporter + ', ' +
+              '"report_date":"' + report_date + '", ' +
+              '"cat_preana":' + cat_preana + ', ' +
+              '"sub_preana_cat1":' + sub_preana_cat1 + ', ' +
+              '"sub_preana_cat2":' + sub_preana_cat2 + ', ' +
+              '"sub_preana_cat3":' + sub_preana_cat3 + ', ' +
+              '"sub_preana_cat4":' + sub_preana_cat4 + ', ' +
+              '"sub1_sub_preana_cat4":' + sub1_sub_preana_cat4 + ', ' +
+              '"sub2_sub_preana_cat4":' + sub2_sub_preana_cat4 + ', ' +
+              '"sub3_sub_preana_cat4":' + sub3_sub_preana_cat4 + ', ' +
+              '"sub_preana_cat5":' + sub_preana_cat5 + ', ' +
+              '"sub_preana_cat6":' + sub_preana_cat6 + ', ' +
+              '"sub_preana_cat7":' + sub_preana_cat7 + ', ' +
+              '"sub_preana_cat8":' + sub_preana_cat8 + ', ' +
+              '"sub_preana_cat9":' + sub_preana_cat9 + ', ' +
+              '"sub_preana_cat10":' + sub_preana_cat10 + ', ' +
+              '"cat_analy":' + cat_analy + ', ' +
+              '"sub_analy_cat1":' + sub_analy_cat1 + ', ' +
+              '"sub_analy_cat2":' + sub_analy_cat2 + ', ' +
+              '"sub_analy_cat3":' + sub_analy_cat3 + ', ' +
+              '"sub_analy_cat4":' + sub_analy_cat4 + ', ' +
+              '"sub_analy_cat5":' + sub_analy_cat5 + ', ' +
+              '"sub_analy_cat6":' + sub_analy_cat6 + ', ' +
+              '"sub_analy_cat7":' + sub_analy_cat7 + ', ' +
+              '"sub_analy_cat8":' + sub_analy_cat8 + ', ' +
+              '"sub_analy_cat9":' + sub_analy_cat9 + ', ' +
+              '"sub_analy_cat10":' + sub_analy_cat10 + ', ' +
+              '"sub_analy_cat11":' + sub_analy_cat11 + ', ' +
+              '"cat_postana":' + cat_postana + ', ' +
+              '"sub_postana_cat1":' + sub_postana_cat1 + ', ' +
+              '"sub_postana_cat2":' + sub_postana_cat2 + ', ' +
+              '"sub_postana_cat3":' + sub_postana_cat3 + ', ' +
+              '"sub_postana_cat4":' + sub_postana_cat4 + ', ' +
+              '"sub_postana_cat5":' + sub_postana_cat5 + ', ' +
+              '"sub_postana_cat6":' + sub_postana_cat6 + ', ' +
+              '"sub_postana_cat7":' + sub_postana_cat7 + ', ' +
+              '"sub_postana_cat8":' + sub_postana_cat8 + ', ' +
+              '"sub_postana_cat9":' + sub_postana_cat9 + ', ' +
+              '"sub_postana_cat10":' + sub_postana_cat10 + ', ' +
+              '"cat_res":' + cat_res + ', ' +
+              '"sub_res_cat1":' + sub_res_cat1 + ', ' +
+              '"sub_res_cat2":' + sub_res_cat2 + ', ' +
+              '"sub_res_cat3":' + sub_res_cat3 + ', ' +
+              '"sub_res_cat4":' + sub_res_cat4 + ', ' +
+              '"sub_res_cat5":' + sub_res_cat5 + ', ' +
+              '"sub_res_cat6":' + sub_res_cat6 + ', ' +
+              '"sub_res_cat7":' + sub_res_cat7 + ', ' +
+              '"cat_hr":' + cat_hr + ', ' +
+              '"sub_hr_cat1":' + sub_hr_cat1 + ', ' +
+              '"sub_hr_cat2":' + sub_hr_cat2 + ', ' +
+              '"sub_hr_cat3":' + sub_hr_cat3 + ', ' +
+              '"sub_hr_cat4":' + sub_hr_cat4 + ', ' +
+              '"sub_hr_cat5":' + sub_hr_cat5 + ', ' +
+              '"cat_eqp":' + cat_eqp + ', ' +
+              '"sub_eqp_cat1":' + sub_eqp_cat1 + ', ' +
+              '"sub_eqp_cat2":' + sub_eqp_cat2 + ', ' +
+              '"sub_eqp_cat3":' + sub_eqp_cat3 + ', ' +
+              '"sub_eqp_cat4":' + sub_eqp_cat4 + ', ' +
+              '"sub_eqp_cat5":' + sub_eqp_cat5 + ', ' +
+              '"sub_eqp_cat6":' + sub_eqp_cat6 + ', ' +
+              '"equipment":' + equipment + ', ' +
+              '"cat_consu":' + cat_consu + ', ' +
+              '"sub_consu_cat1":' + sub_consu_cat1 + ', ' +
+              '"sub_consu_cat2":' + sub_consu_cat2 + ', ' +
+              '"sub_consu_cat3":' + sub_consu_cat3 + ', ' +
+              '"sub_consu_cat4":' + sub_consu_cat4 + ', ' +
+              '"sub_consu_cat5":' + sub_consu_cat5 + ', ' +
+              '"sub_consu_cat6":' + sub_consu_cat6 + ', ' +
+              '"supplier":' + supplier + ', ' +
+              '"cat_local":' + cat_local + ', ' +
+              '"sub_local_cat1":' + sub_local_cat1 + ', ' +
+              '"sub_local_cat2":' + sub_local_cat2 + ', ' +
+              '"sub_local_cat3":' + sub_local_cat3 + ', ' +
+              '"sub_local_cat4":' + sub_local_cat4 + ', ' +
+              '"sub_local_cat5":' + sub_local_cat5 + ', ' +
+              '"sub_local_cat6":' + sub_local_cat6 + ', ' +
+              '"cat_si":' + cat_si + ', ' +
+              '"sub_si_cat1":' + sub_si_cat1 + ', ' +
+              '"sub_si_cat2":' + sub_si_cat2 + ', ' +
+              '"sub_si_cat3":' + sub_si_cat3 + ', ' +
+              '"sub_si_cat4":' + sub_si_cat4 + ', ' +
+              '"sub_si_cat5":' + sub_si_cat5 + ', ' +
+              '"sub_si_cat6":' + sub_si_cat6 + ', ' +
+              '"cat_contract":' + cat_contract + ', ' +
+              '"sub_contract_cat1":' + sub_contract_cat1 + ', ' +
+              '"sub_contract_cat2":' + sub_contract_cat2 + ', ' +
+              '"sub_contract_cat3":' + sub_contract_cat3 + ', ' +
+              '"sub_contract_cat4":' + sub_contract_cat4 + ', ' +
+              '"sub_contract_cat5":' + sub_contract_cat5 + ', ' +
+              '"cat_client":' + cat_client + ', ' +
+              '"cat_other":' + cat_other + ', ' +
+              '"about_pat_rec":' + about_pat_rec + ', ' +
+              '"description":' + description + ', ' +
+              '"impact_pat":' + impact_pat + ', ' +
+              '"impact_user":' + impact_user + ', ' +
               '"followed":' + followed + ', ' +
+              '"flwd_what":' + flwd_what + ', ' +
+              '"flwd_when":"' + flwd_when + '", ' +
+              '"impl_action":' + impl_action + ', ' +
+              '"flwd_descr_action":' + flwd_descr_action + ', ' +
+              '"flwd_action_date":"' + flwd_action_date + '", ' +
               '"incharge":' + incharge + ', ' +
+              '"close_comment":' + close_comment + ', ' +
               '"validate":' + validate + ', ' +
-              '"report":' + report + '}' ;  // No quotes with stringify
+              '"close_date":"' + close_date + '"}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
+console.log("DEBUG param=" + param) ;
 
     $.ajax( {
        type: "POST",
@@ -1058,6 +1336,14 @@ console.log("DEBUG param=" + JSON.stringify(param)) ;
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;
+}
+
+function replaceUndefined(vl)
+{
+    if (typeof(vl) === "undefined")
+    return 5 ;
+    else
+    return vl;
 }
 
 function cancel()

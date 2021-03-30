@@ -375,7 +375,7 @@ class ScriptListarchive(Resource):
             try:
                 f = open(os.path.join(Constants.cst_io, 'listarchive'), 'r')
                 for archive in f:
-                    l_archive['archive'].append(archive)
+                    l_archive['archive'].append(archive[:-1])
             except:
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListarchive impossible to open listarchive file')
                 return compose_ret(l_archive, Constants.cst_content_type_json, 500)
@@ -416,7 +416,7 @@ class ScriptListmedia(Resource):
             try:
                 f = open(os.path.join(Constants.cst_io, 'listmedia'), 'r')
                 for media in f:
-                    l_media['media'].append(media)
+                    l_media['media'].append(media[:-1])
             except:
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
                 return compose_ret(l_media, Constants.cst_content_type_json, 500)

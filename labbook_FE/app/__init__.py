@@ -895,6 +895,19 @@ def setting_age_interval():
     return render_template('setting-age-interval.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : setting dhis2
+@app.route('/setting-dhis2')
+def setting_dhis2():
+    log.info(Logs.fileline() + ' : TRACE setting dhis2')
+
+    session['current_page'] = 'setting-dhis2'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))
+
+
 # ---------------------------
 # --- Administrative page ---
 # ---------------------------

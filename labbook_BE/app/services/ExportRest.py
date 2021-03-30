@@ -25,8 +25,8 @@ class ExportWhonet(Resource):
 
         # Data
         l_data = [['Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth', 'Age',
-                   'Date of admission', 'Patient location', 'Type of location', 'Exam number',
-                   'Specimen date', 'Specimen type', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
+                   'Date of admission', 'Service', 'Type of location', 'Exam number',
+                   'Specimen date', 'Specimen type', 'Specimen comment', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
         if dict_data:
@@ -52,17 +52,40 @@ class ExportWhonet(Resource):
                 if d['date_hosp']:
                     d['date_hosp'] = datetime.strftime(d['date_hosp'], '%Y-%m-%d')
                     data.append(d['date_hosp'])
+                else:
+                    data.append('')
 
-                data.append(d['service_interne'])
-                data.append(d['rec_type'])
-                data.append(d['ana_code'])
+                if d['service_interne']:
+                    data.append(d['service_interne'])
+                else:
+                    data.append('')
+
+                if d['rec_type']:
+                    data.append(d['rec_type'])
+                else:
+                    data.append('')
+
+                if d['ana_code']:
+                    data.append(d['ana_code'])
+                else:
+                    data.append('')
 
                 # specimen part
                 if d['spec_date']:
                     d['spec_date'] = datetime.strftime(d['spec_date'], '%Y-%m-%d')
+                    data.append(d['spec_date'])
+                else:
+                    data.append('')
 
-                data.append(d['spec_date'])
-                data.append(d['spec_type'])
+                if d['spec_type']:
+                    data.append(d['spec_type'])
+                else:
+                    data.append('')
+
+                if d['spec_comment']:
+                    data.append(d['spec_comment'])
+                else:
+                    data.append('')
 
                 if d['ana_name']:
                     ana_name = d['ana_name']

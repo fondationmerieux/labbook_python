@@ -61,6 +61,25 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
+    def getEquipmentSearch(text):
+        cursor = DB.cursor()
+
+        l_words = text.split(' ')
+
+        cond = 'nom is not NULL '
+
+        for word in l_words:
+            cond = (cond + ' and (nom like "%' + word + '%") ')
+
+        req = 'select nom as field_value, id_data '\
+              'from sigl_equipement_data '\
+              'where ' + cond + ' order by field_value asc limit 1000'
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getEquipment(id_item):
         cursor = DB.cursor()
 

@@ -1,0 +1,66 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage de l'export DHIS2") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de l'export DHIS2") }}</span></h2>
+            
+
+            <div class="clearfix mb-5">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save()
+{
+/*
+var id_owner = {{ session['user_id_group']|safe}} ;
+var header   = $("input:radio[name=header]:checked").val() ;
+var comment  = $("input:radio[name=comment]:checked").val() ;
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"header":' + header + ', ' +
+              '"comment":' + comment + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/setting/report",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST setting report") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+    */
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+}
+</script>
+{% endblock %}

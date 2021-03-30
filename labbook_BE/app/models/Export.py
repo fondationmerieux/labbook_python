@@ -89,7 +89,7 @@ class Export:
 
         for res in l_res:
             if id_rec_p != res['id_rec']:
-                req = 'select id_dos, date_prel, dico.label as type_prod '\
+                req = 'select id_dos, date_prel, dico.label as type_prod, commentaire as comment '\
                       'from sigl_01_data as prod '\
                       'inner join sigl_dico_data as dico on prod.type_prel=dico.id_data and dico.dico_name="type_prel" '\
                       'where prod.statut=8 and prod.id_dos=%s'
@@ -105,9 +105,11 @@ class Export:
                     if res['id_rec'] == prod['id_dos']:
                         res['spec_date'] = prod['date_prel']
                         res['spec_type'] = prod['type_prod']
+                        res['spec_comment'] = prod['comment']
             else:
                 res['spec_date'] = ''
                 res['spec_type'] = ''
+                res['spec_comment'] = ''
 
         # patient details
         for res in l_res:

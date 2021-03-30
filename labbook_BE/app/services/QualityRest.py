@@ -234,6 +234,21 @@ class EquipmentList(Resource):
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
+class EquipmentSearch(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_items = Quality.getEquipmentSearch(args['term'])
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE EquipmentSearch not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE EquipmentSearch')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
 class EquipmentDet(Resource):
     log = logging.getLogger('log_services')
 
