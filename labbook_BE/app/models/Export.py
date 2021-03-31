@@ -111,7 +111,16 @@ class Export:
                 res['spec_type'] = ''
                 res['spec_comment'] = ''
 
-        # patient details
+        # Laboratory information
+        req = 'select entete_1 as lab_name, entete_adr as lab_addr, entete_ville as lab_city '\
+              'from sigl_06_data '\
+              'limit 1'
+
+        cursor.execute(req,)
+
+        lab_info = cursor.fetchone()
+
+        # patient details and add lab info
         for res in l_res:
             req = 'select pat.code as pat_code, pat.nom as pat_name, pat.prenom as pat_fname, ddn, age, dico.label as sex '\
                   'from sigl_03_data as pat '\
@@ -121,5 +130,14 @@ class Export:
             cursor.execute(req, (res['id_patient'],))
 
             res.update(cursor.fetchone())
+
+            if lab_info:
+                res['lab_name'] = lab_info['lab_name']
+                res['lab_addr'] = lab_info['lab_addr']
+                res['lab_city'] = lab_info['lab_city']
+            else:
+                res['lab_name'] = ''
+                res['lab_addr'] = ''
+                res['lab_city'] = ''
 
         return l_res

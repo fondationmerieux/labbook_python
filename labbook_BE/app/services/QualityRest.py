@@ -87,7 +87,7 @@ class ConformityDet(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, id_item):
-        item = Quality.getConformity(id_item)
+        item = Quality.getNonConformity(id_item)
 
         if not item:
             self.log.error(Logs.fileline() + ' : ' + 'ConformityDet ERROR not found')
@@ -113,13 +113,49 @@ class ConformityDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'id_item' not in args or 'date_meeting' not in args or \
-           'type' not in args or 'promoter' not in args or 'report' not in args:
+        if 'id_owner' not in args or 'id_item' not in args or 'name' not in args or 'reporter' not in args or \
+           'report_date' not in args or 'cat_preana' not in args or 'sub_preana_cat1' not in args or \
+           'sub_preana_cat2' not in args or 'sub_preana_cat3' not in args or 'sub_preana_cat4' not in args or \
+           'sub1_sub_preana_cat4' not in args or 'sub2_sub_preana_cat4' not in args or \
+           'sub3_sub_preana_cat4' not in args or 'sub_preana_cat5' not in args or 'sub_preana_cat6' not in args or \
+           'sub_preana_cat7' not in args or 'sub_preana_cat8' not in args or 'sub_preana_cat9' not in args or \
+           'sub_preana_cat10' not in args or 'cat_analy' not in args or 'sub_analy_cat1' not in args or \
+           'sub_analy_cat2' not in args or 'sub_analy_cat3' not in args or 'sub_analy_cat4' not in args or \
+           'sub_analy_cat5' not in args or 'sub_analy_cat6' not in args or 'sub_analy_cat7' not in args or \
+           'sub_analy_cat8' not in args or 'sub_analy_cat9' not in args or 'sub_analy_cat10' not in args or \
+           'sub_analy_cat11' not in args or 'cat_postana' not in args or 'sub_postana_cat1' not in args or \
+           'sub_postana_cat2' not in args or 'sub_postana_cat3' not in args or 'sub_postana_cat4' not in args or \
+           'sub_postana_cat5' not in args or 'sub_postana_cat6' not in args or 'sub_postana_cat7' not in args or \
+           'sub_postana_cat8' not in args or 'sub_postana_cat9' not in args or 'sub_postana_cat10' not in args or \
+           'cat_res' not in args or 'sub_res_cat1' not in args or 'sub_res_cat2' not in args or \
+           'sub_res_cat3' not in args or 'sub_res_cat4' not in args or 'sub_res_cat5' not in args or \
+           'sub_res_cat6' not in args or 'sub_res_cat7' not in args or 'cat_hr' not in args or \
+           'sub_hr_cat1' not in args or 'sub_hr_cat2' not in args or 'sub_hr_cat3' not in args or \
+           'sub_hr_cat4' not in args or 'sub_hr_cat5' not in args or 'cat_eqp' not in args or \
+           'sub_eqp_cat1' not in args or 'sub_eqp_cat2' not in args or 'sub_eqp_cat3' not in args or \
+           'sub_eqp_cat4' not in args or 'sub_eqp_cat5' not in args or 'sub_eqp_cat6' not in args or \
+           'equipment' not in args or 'cat_consu' not in args or 'sub_consu_cat1' not in args or \
+           'sub_consu_cat2' not in args or 'sub_consu_cat3' not in args or 'sub_consu_cat4' not in args or \
+           'sub_consu_cat5' not in args or 'sub_consu_cat6' not in args or 'supplier' not in args or \
+           'cat_local' not in args or 'sub_local_cat1' not in args or 'sub_local_cat2' not in args or \
+           'sub_local_cat3' not in args or 'sub_local_cat4' not in args or 'sub_local_cat5' not in args or \
+           'sub_local_cat6' not in args or 'cat_si' not in args or 'sub_si_cat1' not in args or \
+           'sub_si_cat2' not in args or 'sub_si_cat3' not in args or 'sub_si_cat4' not in args or \
+           'sub_si_cat5' not in args or 'sub_si_cat6' not in args or 'cat_contract' not in args or \
+           'sub_contract_cat1' not in args or 'sub_contract_cat2' not in args or 'sub_contract_cat3' not in args or \
+           'sub_contract_cat4' not in args or 'sub_contract_cat5' not in args or 'cat_client' not in args or \
+           'cat_other' not in args or 'about_pat_rec' not in args or 'description' not in args or \
+           'impact_pat' not in args or 'impact_user' not in args or 'followed' not in args or \
+           'flwd_what' not in args or 'flwd_when' not in args or 'impl_action' not in args or \
+           'flwd_descr_action' not in args or 'flwd_action_date' not in args or 'incharge' not in args or \
+           'close_comment' not in args or 'validate' not in args or 'close_date' not in args:
             self.log.error(Logs.fileline() + ' : ConformityDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
         if id_item > 0:
+            self.log.info(Logs.fileline() + ' : TRACE update conformityDet')
+            """
             ret = Quality.updateConformity(id_data=id_item,
                                            id_owner=args['id_owner'],
                                            date_meeting=args['date_meeting'],
@@ -129,15 +165,118 @@ class ConformityDet(Resource):
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : ConformityDet ERROR update')
-                return compose_ret('', Constants.cst_content_type_json, 500)
+                return compose_ret('', Constants.cst_content_type_json, 500)"""
 
         # Insert new item
         else:
-            ret = Quality.insertConformity(id_owner=args['id_owner'],
-                                           date_meeting=args['date_meeting'],
-                                           type=args['type'],
-                                           promoter=args['promoter'],
-                                           report=args['report'])
+            self.log.info(Logs.fileline() + ' : TRACE insert NonConformity')
+            ret = Quality.insertNonConformity(id_owner=args['id_owner'],
+                                              name=args['name'],
+                                              reporter=args['reporter'],
+                                              report_date=args['report_date'],
+                                              cat_preana=args['cat_preana'],
+                                              sub_preana_cat1=args['sub_preana_cat1'],
+                                              sub_preana_cat2=args['sub_preana_cat2'],
+                                              sub_preana_cat3=args['sub_preana_cat3'],
+                                              sub_preana_cat4=args['sub_preana_cat4'],
+                                              sub1_sub_preana_cat4=args['sub1_sub_preana_cat4'],
+                                              sub2_sub_preana_cat4=args['sub2_sub_preana_cat4'],
+                                              sub3_sub_preana_cat4=args['sub3_sub_preana_cat4'],
+                                              sub_preana_cat5=args['sub_preana_cat5'],
+                                              sub_preana_cat6=args['sub_preana_cat6'],
+                                              sub_preana_cat7=args['sub_preana_cat7'],
+                                              sub_preana_cat8=args['sub_preana_cat8'],
+                                              sub_preana_cat9=args['sub_preana_cat9'],
+                                              sub_preana_cat10=args['sub_preana_cat10'],
+                                              cat_analy=args['cat_analy'],
+                                              sub_analy_cat1=args['sub_analy_cat1'],
+                                              sub_analy_cat2=args['sub_analy_cat2'],
+                                              sub_analy_cat3=args['sub_analy_cat3'],
+                                              sub_analy_cat4=args['sub_analy_cat4'],
+                                              sub_analy_cat5=args['sub_analy_cat5'],
+                                              sub_analy_cat6=args['sub_analy_cat6'],
+                                              sub_analy_cat7=args['sub_analy_cat7'],
+                                              sub_analy_cat8=args['sub_analy_cat8'],
+                                              sub_analy_cat9=args['sub_analy_cat9'],
+                                              sub_analy_cat10=args['sub_analy_cat10'],
+                                              sub_analy_cat11=args['sub_analy_cat11'],
+                                              cat_postana=args['cat_postana'],
+                                              sub_postana_cat1=args['sub_postana_cat1'],
+                                              sub_postana_cat2=args['sub_postana_cat2'],
+                                              sub_postana_cat3=args['sub_postana_cat3'],
+                                              sub_postana_cat4=args['sub_postana_cat4'],
+                                              sub_postana_cat5=args['sub_postana_cat5'],
+                                              sub_postana_cat6=args['sub_postana_cat6'],
+                                              sub_postana_cat7=args['sub_postana_cat7'],
+                                              sub_postana_cat8=args['sub_postana_cat8'],
+                                              sub_postana_cat9=args['sub_postana_cat9'],
+                                              sub_postana_cat10=args['sub_postana_cat10'],
+                                              cat_res=args['cat_res'],
+                                              sub_res_cat1=args['sub_res_cat1'],
+                                              sub_res_cat2=args['sub_res_cat2'],
+                                              sub_res_cat3=args['sub_res_cat3'],
+                                              sub_res_cat4=args['sub_res_cat4'],
+                                              sub_res_cat5=args['sub_res_cat5'],
+                                              sub_res_cat6=args['sub_res_cat6'],
+                                              sub_res_cat7=args['sub_res_cat7'],
+                                              cat_hr=args['cat_hr'],
+                                              sub_hr_cat1=args['sub_hr_cat1'],
+                                              sub_hr_cat2=args['sub_hr_cat2'],
+                                              sub_hr_cat3=args['sub_hr_cat3'],
+                                              sub_hr_cat4=args['sub_hr_cat4'],
+                                              sub_hr_cat5=args['sub_hr_cat5'],
+                                              cat_eqp=args['cat_eqp'],
+                                              sub_eqp_cat1=args['sub_eqp_cat1'],
+                                              sub_eqp_cat2=args['sub_eqp_cat2'],
+                                              sub_eqp_cat3=args['sub_eqp_cat3'],
+                                              sub_eqp_cat4=args['sub_eqp_cat4'],
+                                              sub_eqp_cat5=args['sub_eqp_cat5'],
+                                              sub_eqp_cat6=args['sub_eqp_cat6'],
+                                              equipment=args['equipment'],
+                                              cat_consu=args['cat_consu'],
+                                              sub_consu_cat1=args['sub_consu_cat1'],
+                                              sub_consu_cat2=args['sub_consu_cat2'],
+                                              sub_consu_cat3=args['sub_consu_cat3'],
+                                              sub_consu_cat4=args['sub_consu_cat4'],
+                                              sub_consu_cat5=args['sub_consu_cat5'],
+                                              sub_consu_cat6=args['sub_consu_cat6'],
+                                              supplier=args['supplier'],
+                                              cat_local=args['cat_local'],
+                                              sub_local_cat1=args['sub_local_cat1'],
+                                              sub_local_cat2=args['sub_local_cat2'],
+                                              sub_local_cat3=args['sub_local_cat3'],
+                                              sub_local_cat4=args['sub_local_cat4'],
+                                              sub_local_cat5=args['sub_local_cat5'],
+                                              sub_local_cat6=args['sub_local_cat6'],
+                                              cat_si=args['cat_si'],
+                                              sub_si_cat1=args['sub_si_cat1'],
+                                              sub_si_cat2=args['sub_si_cat2'],
+                                              sub_si_cat3=args['sub_si_cat3'],
+                                              sub_si_cat4=args['sub_si_cat4'],
+                                              sub_si_cat5=args['sub_si_cat5'],
+                                              sub_si_cat6=args['sub_si_cat6'],
+                                              cat_contract=args['cat_contract'],
+                                              sub_contract_cat1=args['sub_contract_cat1'],
+                                              sub_contract_cat2=args['sub_contract_cat2'],
+                                              sub_contract_cat3=args['sub_contract_cat3'],
+                                              sub_contract_cat4=args['sub_contract_cat4'],
+                                              sub_contract_cat5=args['sub_contract_cat5'],
+                                              cat_client=args['cat_client'],
+                                              cat_other=args['cat_other'],
+                                              about_pat_rec=args['about_pat_rec'],
+                                              description=args['description'],
+                                              impact_pat=args['impact_pat'],
+                                              impact_user=args['impact_user'],
+                                              followed=args['followed'],
+                                              flwd_what=args['flwd_what'],
+                                              flwd_when=args['flwd_when'],
+                                              impl_action=args['impl_action'],
+                                              flwd_descr_action=args['flwd_descr_action'],
+                                              flwd_action_date=args['flwd_action_date'],
+                                              incharge=args['incharge'],
+                                              close_comment=args['close_comment'],
+                                              validate=args['validate'],
+                                              close_date=args['close_date'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : ConformityDet ERROR  insert')

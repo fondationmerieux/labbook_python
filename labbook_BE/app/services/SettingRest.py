@@ -287,7 +287,7 @@ class ScriptBackup(Resource):
         ret = os.system(cmd)
 
         # read backup file
-        if ret == 0:
+        if ret:
             try:
                 ret = ''
                 f = open(os.path.join(Constants.cst_io, 'backup'), 'r')

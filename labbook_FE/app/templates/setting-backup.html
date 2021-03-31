@@ -378,7 +378,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         error: function(data)
         {
         console.log("ERROR POST setting listmedia") ;
-        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
         }
     } ) ;
 }
@@ -445,7 +445,7 @@ function initmedia(media)
         error: function(data)
         {
         console.log("ERROR POST setting initmedia") ;
-        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
         }
     } ) ;
 }
@@ -471,7 +471,7 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
         error: function(data)
         {
         console.log("ERROR POST setting genkey") ;
-        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
         }
     } ) ;
 }
@@ -509,7 +509,7 @@ function backup(media)
                 $("#dial-wait").modal("hide") ;
 
             console.log("ERROR POST setting backup") ;
-            alert("{{ _("Une erreur est survenue") }}") ;
+            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
             }
         } ) ;
     } ) ;
@@ -555,7 +555,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         error: function(data)
         {
         console.log("ERROR POST setting listarchive") ;
-        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
         }
     } ) ;
 }
@@ -595,7 +595,7 @@ console.log("restore param=" + param) ;
                 {
                     $("#dial-wait").modal("hide") ;
 
-                    if ( window.confirm("{{ _("Lancez le redémarrage de l'application ?") }}") )
+                    if ( window.confirm("{{ _("La restauration est terminée, nous allons redémarrer les services de l'application") }}") )
                     {
                     var param = '{ "pwd_user":"' + pwd_user + '"}' ;
 
@@ -608,12 +608,13 @@ console.log("restore param=" + param) ;
                             data: param,
                             success: function(data)
                             {
+                            // Never go through this
                             tempAlert("{{ _("Redémarrage activé") }}", 2000, "tempAnchor") ;
                             },
                             error: function(data)
                             {
-                            console.log("ERROR POST setting restart") ;
-                            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                            console.log("POST setting restart") ;
+                            alert("{{ _("Les services ont redémarrer ou une erreur est survenue lors de la demande de redémarrage\nveuillez recharger la page") }}") ;
                             }
                     } ) ;
                     }
@@ -623,7 +624,7 @@ console.log("restore param=" + param) ;
                     $("#dial-wait").modal("hide") ;
 
                 console.log("ERROR POST setting restore") ;
-                alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                alert("{{ _("Une erreur est survenue lors de la restauration") }}") ;
                 }
             } ) ;
         } ) ;

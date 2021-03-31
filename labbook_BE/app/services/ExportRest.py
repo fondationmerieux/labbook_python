@@ -24,7 +24,7 @@ class ExportWhonet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Data
-        l_data = [['Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth', 'Age',
+        l_data = [['Laboratory', 'Lab address', ' Lab city', 'Patient number', 'Firstname', 'Lastname', 'Sex', 'Date of birth', 'Age',
                    'Date of admission', 'Service', 'Type of location', 'Exam number',
                    'Specimen date', 'Specimen type', 'Specimen comment', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
@@ -32,6 +32,10 @@ class ExportWhonet(Resource):
         if dict_data:
             for d in dict_data:
                 data = []
+
+                data.append(d['lab_name'])
+                data.append(d['lab_addr'])
+                data.append(d['lab_city'])
 
                 data.append(d['pat_code'])
                 data.append(d['pat_fname'])

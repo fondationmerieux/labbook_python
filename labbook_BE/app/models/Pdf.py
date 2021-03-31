@@ -441,7 +441,7 @@ class Pdf:
                 rec_div += 'Lit ' + str(record['num_lit'])
 
             rec_div += '</span></div>'
-            
+
         rec_div += '<div><span class="ft_rec_det">Examen prescrit le ' + datetime.strftime(record['date_prescription'], '%d/%m/%Y') + '</span></div>'
         rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + str(date_now) + '</span></div>'
 

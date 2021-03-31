@@ -24,6 +24,13 @@ def upgrade():
     # Get the current
     conn = op.get_bind()
 
+    # DELETE B603 ANALYSIS Recherche de Plasmodium
+    try:
+        conn.execute("delete from sigl_05_data "
+                     "where code='B603' and famille=15")
+    except:
+        print("ERROR delete from sigl_05_data where code='B603' and famille=15")
+
     # DROP COLUMN TO PRODUCT SUPPLY TABLE
     try:
         op.drop_column('backup_setting', sa.Column('bks_pwd'))

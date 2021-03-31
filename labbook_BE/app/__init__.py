@@ -91,10 +91,6 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))
-
-    # ONLY FOR TESTS
-    # os.environ['LABBOOK_TEST_OK']= Constants.cst_io_keyexist + ',' + Constants.cst_io_listmedia + ',' + Constants.cst_io_progbackup + ',' + Constants.cst_io_initmedia + ',' + Constants.cst_io_backup + ',' + Constants.cst_io_listarchive + ',' + Constants.cst_io_restore
-    # os.environ['LABBOOK_TEST_KO']= Constants.cst_io_genkey + ',' + Constants.cst_io_initmedia
 else:
     print("No local configuration available: {} is undefined in the environment".format(config_envvar))
 
