@@ -29,6 +29,7 @@ KPUB_TEST1="kpub.test1.asc"
 KPRI_TEST2="kpri.test2.asc"
 KPUB_TEST2="kpub.test2.asc"
 BACKUPS_DIRECTORY="SIGL_sauvegardes"
+ENV_DB_HOST="LABBOOK_DB_HOST"
 ENV_DB_NAME="LABBOOK_DB_NAME"
 ENV_DB_USER="LABBOOK_DB_USER"
 ENV_DB_PASS="LABBOOK_DB_PWD"
@@ -137,6 +138,7 @@ $WORK_DIRECTORY/$BACKUP_CMD"
 -e $ENV_PASS \
 -e $ENV_TEST_OK \
 -e $ENV_TEST_KO \
+-e $ENV_DB_HOST \
 $TEST_IMAGE \
 $WORK_DIRECTORY/$BACKUP_CMD"
 
@@ -249,7 +251,7 @@ test_genkey() {
     ${_ASSERT_EQUALS_} '"[kpub=$kpub]"' '1' '${#kpub[@]}'
     ${_ASSERT_TRUE_} '"[kpub=$kpub]"' '"[ -f $kpub ]"'
 
-    # (re)generate in non empty directory
+    # (re)generate in non empty directory, should remove previous keys
     cmd_stderr=$($run_cmd -d "$genkey_dir" genkey 2>&1)
     status=$?
 
@@ -261,12 +263,12 @@ test_genkey() {
 
     kpri=("$genkey_dir"/kpri.*.asc)
 
-    ${_ASSERT_EQUALS_} '"[kpri=$kpri]"' '2' '${#kpri[@]}'
+    ${_ASSERT_EQUALS_} '"[kpri=$kpri]"' '1' '${#kpri[@]}'
     ${_ASSERT_TRUE_} '"[kpri=$kpri]"' '"[ -f $kpri ]"'
 
     kpub=("$genkey_dir"/kpub.*.asc)
 
-    ${_ASSERT_EQUALS_} '"[kpub=$kpub]"' '2' '${#kpub[@]}'
+    ${_ASSERT_EQUALS_} '"[kpub=$kpub]"' '1' '${#kpub[@]}'
     ${_ASSERT_TRUE_} '"[kpub=$kpub]"' '"[ -f $kpub ]"'
 
     # fake fail if asked to
@@ -407,7 +409,7 @@ test_encrypt_to_one() {
 
     cp "$KPRI_TEST1" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt 2>&1)
+    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -465,7 +467,7 @@ test_encrypt_to_two() {
     rm -f "$output_file" || return 1
     cp "$KPRI_TEST1" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt 2>&1)
+    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -485,7 +487,7 @@ test_encrypt_to_two() {
     rm -f "$output_dir/$KPRI_TEST1" || return 1
     cp "$KPRI_TEST2" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt 2>&1)
+    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -507,7 +509,7 @@ test_decrypt_noinput() {
     local input_file=""
     local status=0
 
-    cmd_stderr=$($run_cmd_noenv decrypt 2>&1)
+    cmd_stderr=$($run_cmd_noenv decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -521,7 +523,7 @@ test_decrypt_noinput() {
 
     input_file="not_a_file"
 
-    cmd_stderr=$($run_cmd_noenv -i "$input_file" -o /dev/null decrypt 2>&1)
+    cmd_stderr=$($run_cmd_noenv -i "$input_file" -o /dev/null decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -539,7 +541,7 @@ test_decrypt_nooutput() {
     local first_line=""
     local status=0
 
-    cmd_stderr=$($run_cmd_noenv -i nofile decrypt 2>&1)
+    cmd_stderr=$($run_cmd_noenv -i nofile decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -565,7 +567,7 @@ test_decrypt_dir_not_found() {
 
     export $ENV_PASS="$PASS_TEST"
 
-    cmd_stderr=$($run_cmd -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decrypt 2>&1)
+    cmd_stderr=$($run_cmd -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -589,7 +591,7 @@ test_decrypt_nopass() {
 
     cp "$this_script" "$WORK_DIRECTORY" || return 1
 
-    cmd_stderr=$($run_cmd_noenv -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decrypt 2>&1)
+    cmd_stderr=$($run_cmd_noenv -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -857,7 +859,7 @@ test_savefiles() {
 
     cp "$KPRI_TEST1" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$output_file1" -o "$output_file"  -d "$output_dir" decrypt 2>&1)
+    cmd_stderr=$($run_cmd -i "$output_file1" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -1162,6 +1164,8 @@ test_listmedia() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing status file"'
 
+    export $ENV_DB_HOST="$PASS_TEST"
+
     # we use the same statusfile for all commands
     status_file="$WORK_DIRECTORY/listmedia"
     expected_file="$WORK_DIRECTORY/expected"
@@ -1274,6 +1278,8 @@ test_listarchive() {
 
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing status file"'
+
+    export $ENV_DB_HOST="$PASS_TEST"
 
     # we use the same statusfile for all commands
     status_file="$WORK_DIRECTORY/listarchive"

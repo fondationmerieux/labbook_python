@@ -23,20 +23,25 @@ Place command names into these variables to fake execution with status OK or ERR
 - LABBOOK_TEST_OK=cmd1,cmd2,...
 - LABBOOK_TEST_KO=cmd1,cmd2,...
 
-`backup.sh` input is taken from parameters except for:
+`backup.sh` input is taken from parameters except for keys and passwords to avoid exposing them as parameters:
 
 - GPG private key passphrase in LABBOOK_KEY_PWD
 - DB user password in LABBOOK_DB_PWD
 - user password in LABBOOK_USER_PWD
 
-Output: depends on status
+Output is written to LABBOOK_STATUS_DIR/name_of_command
 
-- if status = 0 output is empty or consists of one or more lines of semicolon (;) separated fields
+- if status = 0 when command produce a simple status output is empty, otherwise it consists of one or more lines of semicolon (;) separated fields
 - if status > 0 output is an error message
 
-backup.sh writes a logfile into LABBOOK_LOG_DIR/backup.out (or to stderr if LABBOOK_LOG_DIR is not defined)
+`backup.sh` writes logfiles into LABBOOK_LOG_DIR/name_of_command (or to stderr if LABBOOK_LOG_DIR is not defined)
 
-Scripts are in DIR_SCRIPTS=/usr/local/bin (not shared with Labbook_BE)
+`backup.sh` is either started by labbook_BE or by cron for automatic backups:
+
+- when started by labbook_BE, if it needs an access to the media, it has to start in turn another container because media visibility is not dynamic.
+- the command in `user_labbook` crontab is also a `podman run` command.
+
+The absolute path to the script is `/home/apps/labbook_BE/labbook_BE/script/backup.sh`.
 
 ## Check GPG key exist
 

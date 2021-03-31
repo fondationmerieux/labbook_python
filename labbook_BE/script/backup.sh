@@ -1251,23 +1251,26 @@ fn_backup() {
     rm -f "$dump_file"
 
     # copy keys
+    # notes:
+    # - cp -p fails with cp: failed to preserve ownership for '...': Operation not permitted
+    # - type cp gives: cp is aliased to `cp -i'
     # shellcheck disable=SC2012
     privkey_file=$(ls "$keys_dir"/kpri.*.asc | head -1)
     pubkey_file=${privkey_file/kpri/kpub}
     fmx_pubkey_file="$keys_dir/$FMX_KPUB_FILENAME"
 
-    cp -p "$privkey_file" "$backups_dir" || {
-        log_message "error copying $privkey_file"
+    cp "$privkey_file" "$backups_dir" || {
+        log_message "error copying $privkey_file to $backups_dir"
         return 1
     }
 
-    cp -p "$pubkey_file" "$backups_dir" || {
-        log_message "error copying $pubkey_file"
+    cp "$pubkey_file" "$backups_dir" || {
+        log_message "error copying $pubkey_file to $backups_dir"
         return 1
     }
 
-    cp -p "$fmx_pubkey_file" "$backups_dir" || {
-        log_message "error copying $fmx_pubkey_file"
+    cp "$fmx_pubkey_file" "$backups_dir" || {
+        log_message "error copying $fmx_pubkey_file to $backups_dir"
         return 1
     }
 
@@ -2192,10 +2195,11 @@ case "$cmd" in
             if in_app_container; then
                 [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
 
+                # Because we use ssh+podman to start the container, it is difficult to pass the environment.
                 # The private key password is written to a temporary file when we run the container.
                 # We could avoid this by copying the encrypted archive and the keys to disk,
                 # and then restoring from these in the current container.
-                # But obviously with this extra copy we could run out of space.
+                # Note that there is a risk to run out of disk space with this extra copy.
                 run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" -a "$archive" "$cmd" || exit_status=1
             else
                 fn_restore "$media" "$archive" "$user" "$test_path" || exit_status=1
