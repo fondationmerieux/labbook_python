@@ -193,6 +193,8 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
     // popup wait
     $("#dial-wait").modal("show") ;
 
+    $("#dial-wait").off() ;
+
     $("#dial-wait").on('shown.bs.modal', function () 
     {
         $.ajax( {

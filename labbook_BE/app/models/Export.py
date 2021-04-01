@@ -18,15 +18,20 @@ class Export:
         l_tmp = []
 
         # Records list between two date
-        req = 'select rec.id_data as id_rec, date_hosp, service_interne, dico.label as rec_type, id_patient '\
-              'from sigl_02_data as rec '\
-              'inner join sigl_dico_data as dico on rec.type=dico.id_data and dico.dico_name = "type_dossier" '\
-              'where statut=256 and date_dos >= %s and date_dos <= %s '\
-              'order by rec.id_data asc'
+        req = ('select rec.id_data as id_rec, date_hosp, service_interne, dico.label as rec_type, id_patient, '
+               'ifnull(dict_med.label, "") as med_spe '
+               'from sigl_02_data as rec '
+               'inner join sigl_dico_data as dico on rec.type=dico.id_data and dico.dico_name = "type_dossier" '
+               'left join sigl_08_data as med on med.id_data=rec.med_prescripteur '
+               'left join sigl_dico_data as dict_med on dict_med.id_data=med.specialite '
+               'where statut=256 and date_dos >= %s and date_dos <= %s '
+               'order by rec.id_data asc')
 
         cursor.execute(req, (date_beg, date_end,))
 
         l_rec = cursor.fetchall()
+
+        # Export.log.info(Logs.fileline() + ' : l_rec=' + str(l_rec))
 
         for rec in l_rec:
             # check this list for whonet analyzes
@@ -38,6 +43,8 @@ class Export:
             cursor.execute(req, (rec['id_rec'],))
 
             l_ana = cursor.fetchall()
+
+            # Export.log.info(Logs.fileline() + ' : l_ana=' + str(l_ana))
 
             if l_ana:
 
@@ -100,7 +107,7 @@ class Export:
                 id_rec_p = res['id_rec']
 
             if l_products:
-                # Export.log.info(Logs.fileline() + ' : l_products=' + str(l_products))
+                Export.log.info(Logs.fileline() + ' : l_products=' + str(l_products))
                 for prod in l_products:
                     if res['id_rec'] == prod['id_dos']:
                         res['spec_date'] = prod['date_prel']
@@ -112,13 +119,37 @@ class Export:
                 res['spec_comment'] = ''
 
         # Laboratory information
-        req = 'select entete_1 as lab_name, entete_adr as lab_addr, entete_ville as lab_city '\
+        lab_info = {}
+
+        req = 'select value '\
               'from sigl_06_data '\
-              'limit 1'
+              'where identifiant="entete_1"'
 
         cursor.execute(req,)
 
-        lab_info = cursor.fetchone()
+        ret_info = cursor.fetchone()
+
+        lab_info['lab_name'] = ret_info['value']
+
+        req = 'select value '\
+              'from sigl_06_data '\
+              'where identifiant="entete_adr"'
+
+        cursor.execute(req,)
+
+        ret_info = cursor.fetchone()
+
+        lab_info['lab_addr'] = ret_info['value']
+
+        req = 'select value '\
+              'from sigl_06_data '\
+              'where identifiant="entete_ville"'
+
+        cursor.execute(req,)
+
+        ret_info = cursor.fetchone()
+
+        lab_info['lab_city'] = ret_info['value']
 
         # patient details and add lab info
         for res in l_res:
@@ -131,7 +162,7 @@ class Export:
 
             res.update(cursor.fetchone())
 
-            if lab_info:
+            if lab_info and lab_info['lab_name'] and lab_info['lab_addr'] and lab_info['lab_city']:
                 res['lab_name'] = lab_info['lab_name']
                 res['lab_addr'] = lab_info['lab_addr']
                 res['lab_city'] = lab_info['lab_city']

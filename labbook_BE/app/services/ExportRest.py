@@ -17,6 +17,8 @@ class ExportWhonet(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
+        self.log.error(Logs.fileline() + ' : TRACE ExportWhonet START DEBUG')
+
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args:
@@ -24,7 +26,7 @@ class ExportWhonet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Data
-        l_data = [['Laboratory', 'Lab address', 'Lab city', 'Identification number', 'First name', 'Last name', 'Sex', 'Date of birth', 'Age',
+        l_data = [['Laboratory', 'Lab address', 'Lab city', 'Speciality', 'Identification number', 'First name', 'Last name', 'Sex', 'Date of birth', 'Age',
                    'Date of admission', 'Service', 'Type of location', 'Exam number',
                    'Specimen date', 'Specimen type', 'Specimen comment', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
@@ -36,6 +38,11 @@ class ExportWhonet(Resource):
                 data.append(d['lab_name'])
                 data.append(d['lab_addr'])
                 data.append(d['lab_city'])
+
+                if d['med_spe']:
+                    data.append(d['med_spe'])
+                else:
+                    data.append('')
 
                 data.append(d['pat_code'])
                 data.append(d['pat_fname'])

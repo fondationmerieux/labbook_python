@@ -128,6 +128,8 @@ let param = '{ "code":"' + code + '", ' +
     // popup wait
     $("#dial-wait").modal("show") ;
 
+    $("#dial-wait").off() ;
+
     $("#dial-wait").on('shown.bs.modal', function () 
     {
         $.ajax( {
@@ -241,6 +243,8 @@ let param = '{ "code":"' + code + '", ' +
 
     // popup wait
     $("#dial-wait").modal( "show" ) ;
+
+    $("#dial-wait").off() ;
 
     $("#dial-wait").on('shown.bs.modal', function () 
     {

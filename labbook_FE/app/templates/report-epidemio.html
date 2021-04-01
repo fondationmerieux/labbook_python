@@ -114,6 +114,8 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
     // popup wait
     $("#dial-wait").modal("show") ;
 
+    $("#dial-wait").off() ;
+
     $("#dial-wait").on('shown.bs.modal', function () 
     {
         $.ajax( 

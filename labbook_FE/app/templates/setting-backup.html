@@ -481,6 +481,8 @@ function backup(media)
     // popup wait
     $("#dial-wait").modal("show") ;
 
+    $("#dial-wait").off() ;
+
     $("#dial-wait").on('shown.bs.modal', function () 
     {
         $.ajax( 
@@ -581,6 +583,8 @@ console.log("restore param=" + param) ;
     {
         // popup wait
         $("#dial-wait").modal("show") ;
+
+        $("#dial-wait").off() ;
 
         $("#dial-wait").on('shown.bs.modal', function () 
         {

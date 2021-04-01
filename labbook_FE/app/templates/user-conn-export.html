@@ -57,6 +57,8 @@ var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' 
     // popup wait
     $("#dial-wait").modal("show") ;
 
+    $("#dial-wait").off() ;
+
     $("#dial-wait").on('shown.bs.modal', function () 
     {
         $.ajax( 
