@@ -1933,7 +1933,8 @@ def administrative_record(type_req='E', id_rec=0):
 
 # Page : technical validation
 @app.route('/technical-validation/<int:id_rec>')
-def technical_validation(id_rec=0):
+@app.route('/technical-validation/<int:id_rec>/<string:anchor>')
+def technical_validation(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : TRACE technical-validation id_rec = ' + str(id_rec))
 
     session['current_page'] = 'technical-validation/' + str(id_rec)
@@ -1943,6 +1944,11 @@ def technical_validation(id_rec=0):
     json_data = {}
 
     id_pat = 0
+
+    json_ihm['anchor'] = ''
+
+    if anchor:
+        json_ihm['anchor'] = '#' + anchor
 
     dt_start_req = datetime.now()
     # Load list results
@@ -3545,7 +3551,7 @@ def upload_file(type_ref='', id_ref=0):
             log.error(Logs.fileline() + ' : upload-file failed requests storage, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-        filepath = storage['path'] + '/sigl/'
+        filepath = Constants.cst_upload
 
         try:
             pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)

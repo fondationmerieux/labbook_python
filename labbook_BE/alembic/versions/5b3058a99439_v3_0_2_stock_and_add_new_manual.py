@@ -399,7 +399,7 @@ def upgrade():
         conn.execute("insert into sigl_manuels_data "
                      "(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, titre , reference, "
                      "redacteur_id, verificateur_id, approbateur_id, date_insert, date_apply, date_update, section) "
-                     "values (100, now(), now(), 100, '', '', 0, 0, 0, now(), now(), now(), 0)")
+                     "values (100, now(), now(), 100, 'EUCAST Dosages v11.0 2021', '', 0, 0, 0, now(), now(), now(), 0)")
     except:
         print("ERROR insert into sigl_manuels_data ")
 

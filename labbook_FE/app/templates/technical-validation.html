@@ -230,7 +230,7 @@ param_list_valid += ' ] }' ;
         data: param_list_valid,
         success: function(data)
             {
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/" + id_rec ;
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/" + id_rec + "/validate_" + id_rec +"_"+ ref_ana ;
             },
         error: function(data)
             {
@@ -543,6 +543,13 @@ rec_stat = status_rec(data_res[0].stat) ;
 display_result( 1 ) ;
 
 info_pat_title() ;
+
+    {% if ihm['anchor'] %}
+    setTimeout(function()
+    {
+        $(document).scrollTop( $("{{ ihm['anchor'] }}").offset().top ) ;
+    }, 400);
+    {% endif %}
 } ) ;
 </script>
 {% endblock %}

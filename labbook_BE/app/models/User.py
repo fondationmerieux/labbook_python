@@ -236,6 +236,11 @@ class User:
         # Qualitician         = 8
         # Prescriber          = 9
 
+        extra = ''
+
+        if id_role == 3:
+            extra = ' or l.id_role=5 or l.id_role=6 or l.id_role=2'
+
         cursor = DB.cursor()
 
         req = 'select g.id_group, g.name, g.id_axis, u.side_account, '\
@@ -244,7 +249,7 @@ class User:
               'from sigl_pj_group as g '\
               'inner join sigl_user_data AS u ON g.id_group = u.id_group '\
               'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '\
-              'where u.status != "31" and l.id_role=%s'  # 31 correspond à l'utilisateur "supprimé"
+              'where u.status != "31" and l.id_role=%s' + extra  # 31 correspond à l'utilisateur "supprimé"
 
         cursor.execute(req, (id_role,))
 
