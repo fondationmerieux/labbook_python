@@ -22,6 +22,8 @@ RUN yum install -y epel-release
 
 RUN yum install -y sshpass
 
+RUN yum install -y mod_ssl
+
 RUN yum clean all
 
 # install supervisor
@@ -43,6 +45,7 @@ RUN echo  "alias la='ls -A'" >> /root/.bashrc
 RUN echo  "alias ll='ls -alF'" >> /root/.bashrc
 
 COPY etc/httpd/conf/httpd.conf /etc/httpd/conf/
+COPY etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/
 
 # install venv labbook_FE
 COPY labbook_FE/requirements.txt /home/apps/labbook_FE/labbook_FE

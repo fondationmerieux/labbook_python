@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - finish Analysis repository module (add/modify/import/export)
 - finish non-conformity module
 
-## [3.0.2] - 2021-03-23
+## [3.0.2] - 2021-04-01
 ### Changed
 - No more PHP containers
 - Storage management v2

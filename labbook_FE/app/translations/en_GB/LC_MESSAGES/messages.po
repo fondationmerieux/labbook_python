@@ -56,7 +56,7 @@ msgstr "Anonymous patient"
 #: templates/technical-validation.html:40
 #: templates/technical-validation.html:511
 msgid "Né(e) le"
-msgstr "Born to"
+msgstr "Date of birth"
 
 #: templates/administrative-record.html:43
 #: templates/administrative-record.html:533
@@ -155,7 +155,7 @@ msgstr "Prescriber"
 #: templates/administrative-record.html:80 templates/det-req-ext.html:105
 #: templates/det-req-int.html:108
 msgid "Colis"
-msgstr "Parcel"
+msgstr "Package"
 
 #: templates/administrative-record.html:82 templates/det-patient.html:25
 #: templates/det-patient.html:79 templates/det-req-ext.html:108
@@ -170,12 +170,12 @@ msgstr "Yes"
 #: templates/administrative-record.html:83 templates/det-req-ext.html:124
 #: templates/det-req-int.html:127
 msgid "Identification du colis"
-msgstr "Parcel number"
+msgstr "Package identification number"
 
 #: templates/administrative-record.html:85 templates/det-req-ext.html:128
 #: templates/det-req-int.html:131
 msgid "Date de réception du colis"
-msgstr "Parcel receipt date"
+msgstr "Package reception date"
 
 #: templates/administrative-record.html:88 templates/det-patient.html:28
 #: templates/det-patient.html:82 templates/det-req-ext.html:111
@@ -327,7 +327,7 @@ msgstr "Percentage of discount"
 #: templates/administrative-record.html:171 templates/det-req-ext.html:233
 #: templates/det-req-int.html:244
 msgid "Pourcentage assurance maladie / mutuelle"
-msgstr "Percentage health insurance /  mutual"
+msgstr "Health insurance coverage"
 
 #: templates/administrative-record.html:175 templates/det-req-ext.html:241
 #: templates/det-req-int.html:252 templates/report-billing.html:106
@@ -422,7 +422,7 @@ msgstr "Comment"
 #: templates/enter-result.html:487 templates/list-results.html:253
 #: templates/list-results.html:475 templates/list-stock.html:135
 msgid "Valider"
-msgstr "Validate"
+msgstr "Validation"
 
 #: templates/biological-validation.html:98
 msgid "Compte rendu"
@@ -430,7 +430,7 @@ msgstr "Report"
 
 #: templates/biological-validation.html:108
 msgid "Commentaire et motif annulation"
-msgstr "Comment and cancel reason"
+msgstr "Reason for cancellation and comments"
 
 #: templates/biological-validation.html:113
 msgid "Motif"
@@ -499,7 +499,7 @@ msgstr "LabBook is an Opensource laboratory management software."
 
 #: templates/contributors.html:31
 msgid "LabBook est co-financé par l’AFD et la Fondation Mérieux."
-msgstr "LabBook is co-financed by AFD and Fondation Mérieux."
+msgstr "LabBook is co-financed by AFD and the Mérieux Foundation."
 
 #: templates/contributors.html:32
 msgid "La société Epiconcept a développé le logiciel Labbook jusqu'en 2019."
@@ -723,7 +723,7 @@ msgstr "Procedure"
 
 #: templates/det-equipment.html:113
 msgid "Liste des pannes et réparation"
-msgstr "List of faults and repairs"
+msgstr "List of failures and repairs"
 
 #: templates/det-equipment.html:132
 msgid "Maintenance préventive"
@@ -760,11 +760,11 @@ msgstr "Acquisition date"
 
 #: templates/det-equipment.html:228
 msgid "Date de mise en service"
-msgstr "Date of commissioning"
+msgstr "Commissioning date"
 
 #: templates/det-equipment.html:234
 msgid "Date de retrait du laboratoire"
-msgstr "Date of withdrawal from the laboratory"
+msgstr "Withdrawal date from laboratory"
 
 #: templates/det-equipment.html:240 templates/det-staff.html:195
 #: templates/setting-det-analysis.html:97
@@ -1064,7 +1064,7 @@ msgstr "Executive meeting"
 
 #: templates/det-meeting.html:37 templates/list-meeting.html:33
 msgid "Organisateur"
-msgstr "Promoter"
+msgstr "Host"
 
 #: templates/det-meeting.html:44 templates/list-meeting.html:34
 msgid "Compte-rendu"
@@ -1491,7 +1491,7 @@ msgstr "Shelf"
 
 #: templates/det-stock-product.html:70
 msgid "Numéro de lot"
-msgstr "Batch number"
+msgstr "Lot number"
 
 #: templates/det-stock-product.html:77
 msgid "Prix d'achat"
@@ -2072,7 +2072,7 @@ msgstr "Expir. date"
 
 #: templates/list-stock.html:87
 msgid "N° lot"
-msgstr "Batch No."
+msgstr "Lot number"
 
 #: templates/list-stock.html:88
 msgid "Etat"
@@ -2560,11 +2560,11 @@ msgstr "CLOSURE OF NON-CONFORMITY"
 
 #: templates/non-conformity.html:328
 msgid "Validé par"
-msgstr "Validate by"
+msgstr "Validated by"
 
 #: templates/popup_det_rec.html:6
 msgid "Liste des analyses du dossier"
-msgstr "List of analyzes of the record"
+msgstr "List of record analyzes"
 
 #: templates/popup_det_rec.html:17 templates/popup_history.html:17
 msgid "OK"
