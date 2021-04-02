@@ -47,6 +47,10 @@ RUN echo  "alias ll='ls -alF'" >> /root/.bashrc
 COPY etc/httpd/conf/httpd.conf /etc/httpd/conf/
 COPY etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/
 
+RUN mkdir -p /home/apps/apache
+
+COPY apache/apache.sh /home/apps/apache/
+
 # install venv labbook_FE
 COPY labbook_FE/requirements.txt /home/apps/labbook_FE/labbook_FE
 
