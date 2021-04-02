@@ -409,7 +409,7 @@ test_encrypt_to_one() {
 
     cp "$KPRI_TEST1" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
+    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -467,7 +467,7 @@ test_encrypt_to_two() {
     rm -f "$output_file" || return 1
     cp "$KPRI_TEST1" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
+    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -487,7 +487,7 @@ test_encrypt_to_two() {
     rm -f "$output_dir/$KPRI_TEST1" || return 1
     cp "$KPRI_TEST2" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
+    cmd_stderr=$($run_cmd -i "$input_file" -o "$output_file"  -d "$output_dir" decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -509,7 +509,7 @@ test_decrypt_noinput() {
     local input_file=""
     local status=0
 
-    cmd_stderr=$($run_cmd_noenv decrypt29 2>&1)
+    cmd_stderr=$($run_cmd_noenv decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -523,7 +523,7 @@ test_decrypt_noinput() {
 
     input_file="not_a_file"
 
-    cmd_stderr=$($run_cmd_noenv -i "$input_file" -o /dev/null decrypt29 2>&1)
+    cmd_stderr=$($run_cmd_noenv -i "$input_file" -o /dev/null decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -541,7 +541,7 @@ test_decrypt_nooutput() {
     local first_line=""
     local status=0
 
-    cmd_stderr=$($run_cmd_noenv -i nofile decrypt29 2>&1)
+    cmd_stderr=$($run_cmd_noenv -i nofile decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -567,7 +567,7 @@ test_decrypt_dir_not_found() {
 
     export $ENV_PASS="$PASS_TEST"
 
-    cmd_stderr=$($run_cmd -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decrypt29 2>&1)
+    cmd_stderr=$($run_cmd -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -591,7 +591,7 @@ test_decrypt_nopass() {
 
     cp "$this_script" "$WORK_DIRECTORY" || return 1
 
-    cmd_stderr=$($run_cmd_noenv -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decrypt29 2>&1)
+    cmd_stderr=$($run_cmd_noenv -i "$WORK_DIRECTORY/$this_script" -o /dev/null -d "$output_dir" decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -859,7 +859,7 @@ test_savefiles() {
 
     cp "$KPRI_TEST1" "$output_dir" || return 1
 
-    cmd_stderr=$($run_cmd -i "$output_file1" -o "$output_file"  -d "$output_dir" decrypt29 2>&1)
+    cmd_stderr=$($run_cmd -i "$output_file1" -o "$output_file"  -d "$output_dir" decryptgpg 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -981,6 +981,110 @@ test_savefiles() {
     ${_ASSERT_TRUE_} '$status'
 }
 
+test_copydir() {
+    local work_dir=""
+    local source_dir=""
+    local destination_dir=""
+    local cmd_stderr=""
+    local first_line=""
+    local status=0
+
+    # missing input param
+    cmd_stderr=$($run_cmd_noenv copydir 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing input directory"'
+
+    # missing output param
+    cmd_stderr=$($run_cmd_noenv -i input copydir 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "missing" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing output directory"'
+
+    # missing source dir
+    cmd_stderr=$($run_cmd_noenv -i donotexist -o donotexit copydir 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "cannot" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"cannot find source directory"'
+
+    # copy
+    work_dir="$WORK_DIRECTORY/copydir"
+    rm -rf "$work_dir"
+    mkdir -p "$work_dir" || return 1
+
+    cp "$this_script" "$WORK_DIRECTORY" || return 1
+
+    # reference archive to work with
+    export reference_archive="$WORK_DIRECTORY/repo.tar.gz"
+
+    # It seems there is no way to archive the whole repo from a subdirectory with the <path> argument
+    # see https://stackoverflow.com/questions/27451658/git-archive-inside-subdirectory
+    # Now we are in labbook_python this is a big archive
+    #(cd "$(git rev-parse --show-toplevel)" && git archive --format=tar.gz HEAD) > "$reference_archive" || return 1
+    (cd .. && tar czf - --exclude='.*.sw?' .) > "$reference_archive" || return 1
+
+    # extract reference archive in source dir
+    export source_dir="$work_dir/source"
+
+    mkdir -p "$source_dir" || return 1
+
+    (cd "$source_dir" && tar xf "$reference_archive") || return 1
+
+    # missing destination dir
+    cmd_stderr=$($run_cmd_noenv -i "$source_dir" -o donotexit copydir 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "cannot" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"cannot find destination directory"'
+
+    # copy source to destination
+    destination_dir="$work_dir/destination"
+
+    mkdir -p "$destination_dir" || return 1
+
+    cmd_stderr=$($run_cmd_noenv -i "$source_dir" -o "$destination_dir" copydir 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # compare source and destination
+    cmd_stderr=$(diff "$source_dir" "$destination_dir" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+}
+
 test_restorefiles_noinput() {
     local cmd_stderr=""
     local first_line=""
@@ -1085,10 +1189,15 @@ test_initmedia() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing media"'
 
+    export $ENV_DB_HOST="localhost"
+
     media_dir="$WORK_DIRECTORY/media"
     user="someuser"
     media="USB"
     expected_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
+
+    # start clean
+    rm -rf "$media_dir"
 
     mkdir -p "$media_dir/$user"
 
@@ -1164,7 +1273,7 @@ test_listmedia() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing status file"'
 
-    export $ENV_DB_HOST="$PASS_TEST"
+    export $ENV_DB_HOST="localhost"
 
     # we use the same statusfile for all commands
     status_file="$WORK_DIRECTORY/listmedia"
@@ -1174,6 +1283,9 @@ test_listmedia() {
     user="someuser"
     media1="USB1"
     media2="USB2"
+
+    # start clean
+    rm -rf "$media_dir"
 
     # simulate no media
     mkdir -p "$media_dir/$user"
@@ -1279,7 +1391,7 @@ test_listarchive() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing status file"'
 
-    export $ENV_DB_HOST="$PASS_TEST"
+    export $ENV_DB_HOST="localhost"
 
     # we use the same statusfile for all commands
     status_file="$WORK_DIRECTORY/listarchive"
@@ -1288,6 +1400,9 @@ test_listarchive() {
     media_dir="$WORK_DIRECTORY/media"
     user="someuser"
     media="USB"
+
+    # start clean
+    rm -rf "$media_dir"
 
     # missing media
     cmd_stderr=$($run_cmd_noenv -u "$user" -s "$status_file" listarchive 2>&1)
@@ -1427,6 +1542,7 @@ test_database() {
         mysql --user "$TEST_DB_USER" --password="$TEST_DB_PASS" > /dev/null 2>&1 || startSkipping
 
     # we do not use containers for this test
+    export $ENV_DB_HOST=""
     export $ENV_DB_NAME="$TEST_DB_NAME"
     export $ENV_DB_USER="$TEST_DB_USER"
     export $ENV_DB_PASS="$TEST_DB_PASS"
@@ -1484,7 +1600,7 @@ docker_cmd=""
 run_cmd=""
 run_cmd_noenv=""
 # change this flag manually for debug phase
-verbose=1
+verbose=0
 this_script=$(basename "$0")
 saved_dir=$(pwd)
 

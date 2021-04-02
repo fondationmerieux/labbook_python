@@ -28,6 +28,8 @@ LB25_KPRI_FILENAME="$LB25_KPRI_CLEAR_FILENAME.crypt"
 LB25_KPRI_PASSWORD="eiKie7di"
 LB25_DUMP_FILENAME="SIGL.sql"
 LB29_KPRI_FILENAME="clef_sauvegarde.privee.gpg"
+LB29_FILES_DIRNAME="files"
+LB29_FILES_ARCHIVE="$LB29_FILES_DIRNAME.tar.gz.gpg"
 LB30_DUMP_DIR="dump"
 LB30_DUMP_FILENAME="dump.sql"
 LB30_REPORT_DIR="report"
@@ -81,7 +83,7 @@ usage()
     echo
     echo "Internal commands:"
     echo "  encrypt           Encrypt INPUT_FILE to DIR/INPUT_FILE.gpg and copy keys to DIR"
-    echo "  decrypt29         Decrypt a LabBook 2.9 INPUT_FILE to OUTPUT_FILE using key in DIR"
+    echo "  decryptgpg        Decrypt a LabBook 2.9 INPUT_FILE to OUTPUT_FILE using key in DIR"
     echo "                    If DIR is omitted key should be in the current keyring"
     echo "  decrypt25         Decrypt a LabBook 2.5 INPUT_FILE to OUTPUT_FILE"
     echo "  savefiles         Archive FILE_PATH(s) to ARCHIVE_PATH then encrypt archive to OUTPUT_FILE using keys in DIR"
@@ -94,6 +96,7 @@ usage()
     echo "  loaddb            Load database from INPUT_FILE"
     echo "  islb30            Is INPUT_FILE a LabBook 3 archive ?"
     echo "  islb25            Is INPUT_FILE a LabBook 2.5 archive ?"
+    echo "  copydir           Copy files from INPUT_DIR to OUTPUT_DIR"
     echo
     echo "Options:"
     echo "  -h                Display this help and exit"
@@ -374,14 +377,14 @@ EOF
 }
 
 #
-# Decrypt a LabBook 2.9 backup
+# Decrypt a GPG encrypted file.
 #
 # Params:
 # - input file to decrypt
 # - output file
 # - directory containing private key (if empty use current keyring)
 #
-fn_decrypt29() {
+fn_decryptgpg() {
     local input_file="$1"
     local output_file="$2"
     local keys_dir="$3"
@@ -540,6 +543,153 @@ fn_decrypt25() {
             return 1
         }
     fi
+
+    clear_archive_key=$(basename "$input_file").key
+
+    [[ $verbose -eq 1 ]] && echo_message "Decrypting archive key file $encrypted_archive_key to $clear_archive_key"
+
+    openssl rsautl \
+        -decrypt \
+        -inkey "$LB25_KPRI_CLEAR_FILENAME" \
+        -in "$encrypted_archive_key" \
+        -out "$clear_archive_key" || {
+        echo_message "cannot decrypt archive key $encrypted_archive_key"
+        return 1
+    }
+
+    [[ -r "$clear_archive_key" ]] || {
+        echo_message "cannot read archive key $clear_archive_key"
+        return 1
+    }
+
+    # archive key file contains K and iv data encryption parameters in the form K=iv
+    K=$(cut -d= -f1 "$clear_archive_key")
+    iv=$(cut -d= -f2 "$clear_archive_key")
+
+    [[ $verbose -eq 1 ]] && echo_message "Decrypting archive data file $encrypted_archive_data to $absolute_output_file"
+
+    openssl enc \
+        -d -aes-256-cbc -nosalt \
+        -in "$encrypted_archive_data" \
+        -out "$absolute_output_file" \
+        -K "$K" -iv "$iv" || {
+        echo_message "cannot decrypt archive data $encrypted_archive_data"
+        return 1
+    }
+
+    cd "$saved_workdir" || {
+        echo_message "cannot cd to $saved_workdir"
+        return 1
+    }
+
+    return 0
+}
+
+#
+# Decrypt a LabBook 2.9 database backup
+#
+# Main steps:
+# - extract archive content yields archive data and archive key
+# - decrypt private key with fixed password
+# - decrypt archive key with decrypted private key
+# - decrypt archive data with decrypted archive key
+#
+# Params:
+# - input file to decrypt
+# - output file
+# - directory containing private key
+#
+fn_decrypt29() {
+    local input_file="$1"
+    local output_file="$2"
+    local keys_dir="$3"
+    local absolute_input_file=""
+    local absolute_output_file=""
+    local encrypted_privkey_file=""
+    local absolute_encrypted_privkey_file=""
+    local saved_workdir=""
+    local encrypted_archive_key=""
+    local clear_archive_key=""
+
+    [[ -f "$input_file" && -r "$input_file" ]] || {
+        echo_message "cannot read file $input_file"
+        return 1
+    }
+
+    [[ -d "$keys_dir" ]] || {
+        echo_message "cannot find directory $keys_dir"
+        return 1
+    }
+
+    encrypted_privkey_file="$keys_dir/$LB29_KPRI_FILENAME"
+
+    [[ -f "$encrypted_privkey_file" && -r "$encrypted_privkey_file" ]] || {
+        echo_message "cannot find private key file $encrypted_privkey_file"
+        return 1
+    }
+
+    tmp_workdir=$(mktemp -d) || {
+        echo_message "cannot create temporary working directory"
+        return 1
+    }
+
+    # since we change directory, we need the absolute paths to the input, output and key files
+    case "$input_file" in
+        /*) absolute_input_file="$input_file" ;;
+        *)  absolute_input_file=$(realpath "$(pwd)/$input_file") ;;
+    esac
+
+    [[ $verbose -eq 1 ]] && echo_message "Absolute encrypted archive path is $absolute_input_file"
+
+    case "$output_file" in
+        /*) absolute_output_file="$output_file" ;;
+        *)  absolute_output_file=$(realpath "$(pwd)/$output_file") ;;
+    esac
+
+    [[ $verbose -eq 1 ]] && echo_message "Absolute decrypted archive path is $absolute_output_file"
+
+    case "$encrypted_privkey_file" in
+        /*) absolute_encrypted_privkey_file="$encrypted_privkey_file" ;;
+        *)  absolute_encrypted_privkey_file=$(realpath "$(pwd)/$encrypted_privkey_file") ;;
+    esac
+
+    [[ $verbose -eq 1 ]] && echo_message "Absolute encrypted private key path is $absolute_encrypted_privkey_file"
+
+    saved_workdir=$(pwd)
+
+    cd "$tmp_workdir" || {
+        echo_message "cannot cd to $tmp_workdir"
+        return 1
+    }
+
+    [[ $verbose -eq 1 ]] && echo_message "Extracting $absolute_input_file content into $(pwd)"
+
+    tar xf "$absolute_input_file" || {
+        echo_message "cannot extract $absolute_input_file content"
+        return 1
+    }
+
+    # verify expected result of untar : encrypted archive key and encrypted archive data
+    encrypted_archive_key=$(basename "$input_file").tar.key
+    encrypted_archive_data=$(basename "$input_file").tar.crypt
+
+    [[ -r "$encrypted_archive_key" ]] || {
+        echo_message "cannot read encrypted archive key file $encrypted_archive_key"
+        return 1
+    }
+
+    [[ -r "$encrypted_archive_data" ]] || {
+        echo_message "cannot read encrypted archive data file $encrypted_archive_data"
+        return 1
+    }
+
+    [[ $verbose -eq 1 ]] && echo_message "Decrypting $absolute_encrypted_privkey_file to $LB25_KPRI_CLEAR_FILENAME"
+
+    fn_decryptgpg "$absolute_encrypted_privkey_file" "$LB25_KPRI_CLEAR_FILENAME" \
+                  "$(dirname "$absolute_encrypted_privkey_file")" || {
+        echo_message "cannot decrypt private key $absolute_encrypted_privkey_file with GPG"
+        return 1
+    }
 
     clear_archive_key=$(basename "$input_file").key
 
@@ -1326,7 +1476,7 @@ fn_restore() {
     is_lb30_archive "$archive_path" && {
         [[ $verbose -eq 1 ]] && log_message "Restoring LabBook 3 archive $archive_path"
 
-        fn_restore_lb30 "$archive_path" "$user" || {
+        fn_restore_lb30 "$archive_path" || {
             log_message "error restoring LabBook 3 archive $archive_path"
             return 1
         }
@@ -1337,7 +1487,7 @@ fn_restore() {
     is_lb25_archive "$archive_path" && {
         [[ $verbose -eq 1 ]] && log_message "Restoring LabBook 2.5 archive $archive_path"
 
-        fn_restore_lb25 "$archive_path" "$user" || {
+        fn_restore_lb25 "$archive_path" || {
             log_message "error restoring LabBook 2.5 archive $archive_path"
             return 1
         }
@@ -1348,7 +1498,7 @@ fn_restore() {
     is_lb29_archive "$archive_path" && {
         [[ $verbose -eq 1 ]] && log_message "Restoring LabBook 2.9 archive $archive_path"
 
-        fn_restore_lb29 "$archive_path" "$user" || {
+        fn_restore_lb29 "$archive_path" || {
             log_message "error restoring LabBook 2.9 archive $archive_path"
             return 1
         }
@@ -1365,11 +1515,9 @@ fn_restore() {
 #
 # Param:
 # - archive
-# - user
 #
 fn_restore_lb25() {
     local encrypted_archive="$1"
-    local user="$2"
     local archive_name=""
     local archive_dir=""
     local clear_archive=""
@@ -1407,15 +1555,123 @@ fn_restore_lb25() {
 }
 
 #
+# Restore LabBook 2.9 backup
+#
+# In the same directory as the archive there should be:
+# - clef_sauvegarde.privee.gpg
+# - files.tar.gz.gpg
+# - kpri.fingerprint.asc
+# - kpri.fingerprint.asc
+#
+# Param:
+# - archive
+#
+fn_restore_lb29() {
+    local encrypted_archive="$1"
+    local archive_name=""
+    local archive_dir=""
+    local clear_archive=""
+    local dump_file=""
+    local files_encrypted_archive=""
+    local files_dir=""
+    local lb29dir=""
+    local lb30dir=""
+
+    archive_name="$(basename "$encrypted_archive")"
+    archive_dir="$(dirname "$encrypted_archive")"
+    clear_archive="$WORK_DIRECTORY/$archive_name"
+
+    # restore database
+    fn_decrypt29 "$encrypted_archive" "$clear_archive" "$archive_dir" || {
+        log_message "error decrypting LabBook 2.9 database archive $encrypted_archive"
+        return 1
+    }
+
+    # archive structure: tar tf ARCHIVE --no-anchored SIGL.sql would give:
+    # backup_SIGL_2019-10-07_23h16m55s/db/SIGL.sql
+    tar xf "$clear_archive" --directory="$WORK_DIRECTORY" --strip-components=2 --no-anchored "$LB25_DUMP_FILENAME" || {
+        log_message "error extracting SQL dump file $LB25_DUMP_FILENAME from LabBook 2.5 archive $encrypted_archive"
+        return 1
+    }
+
+    dump_file="$WORK_DIRECTORY/$LB25_DUMP_FILENAME"
+
+    [[ -f "$dump_file" && -r "$dump_file" ]] || {
+        log_message "cannot read SQL dump file $dump_file"
+        return 1
+    }
+
+    [[ $verbose -eq 1 ]] && echo_message "Loading database from $dump_file"
+
+    fn_loaddb "$dump_file" || {
+        log_message "error loading database from SQL dump file $dump_file"
+        return 1
+    }
+
+    # restore files to temporary location
+    files_encrypted_archive="$archive_dir/$LB29_FILES_ARCHIVE"
+
+    [[ -f "$files_encrypted_archive" && -r "$files_encrypted_archive" ]] || {
+        log_message "cannot find files encrypted archive $files_encrypted_archive"
+        return 1
+    }
+
+    files_dir="$WORK_DIRECTORY/$LB29_FILES_DIRNAME"
+
+    mkdir -p "$files_dir" || {
+        log_message "error creating $files_dir"
+        return 1
+    }
+
+    [[ $verbose -eq 1 ]] && echo_message "Restoring files from $files_encrypted_archive to $files_dir"
+
+    fn_restorefiles "$files_encrypted_archive" "" "$archive_dir" "$files_dir" || {
+        log_message "cannot restore files from $files_encrypted_archive to $files_dir"
+        return 1
+    }
+
+    # move files from 2.9 locations to 3.0 locations
+    lb29dir="$files_dir/www/apps/labbook/labbook_2.05/files"
+    lb30dir="$MOUNTDIR_STORAGE/report"
+
+    [[ $verbose -eq 1 ]] && echo_message "Copying files from $lb29dir to $lb30dir"
+
+    fn_copydir "$lb29dir" "$lb30dir" || {
+        log_message "cannot copy files from $lb29dir to $lb30dir"
+        return 1
+    }
+
+    lb29dir="$files_dir/applisdata/labbook/storage/sigl"
+    lb30dir="$MOUNTDIR_STORAGE/upload"
+
+    [[ $verbose -eq 1 ]] && echo_message "Copying files from $lb29dir to $lb30dir"
+
+    fn_copydir "$lb29dir" "$lb30dir" || {
+        log_message "cannot copy files from $lb29dir to $lb30dir"
+        return 1
+    }
+
+    lb29dir="$files_dir/www/apps/labbook/labbook_2.05/resources/images"
+    lb30dir="$MOUNTDIR_STORAGE/resource"
+
+    [[ $verbose -eq 1 ]] && echo_message "Copying files from $lb29dir to $lb30dir"
+
+    fn_copydir "$lb29dir" "$lb30dir" || {
+        log_message "cannot copy files from $lb29dir to $lb30dir"
+        return 1
+    }
+
+    return 0
+}
+
+#
 # Restore LabBook 3 backup
 #
 # Param:
 # - archive
-# - user
 #
 fn_restore_lb30() {
     local encrypted_archive="$1"
-    local user="$2"
     local archive_name=""
     local archive_dir=""
     local clear_archive=""
@@ -1426,7 +1682,7 @@ fn_restore_lb30() {
     clear_archive="$WORK_DIRECTORY/$archive_name"
 
     # decrypt archive with key in archive directory
-    fn_decrypt29 "$encrypted_archive" "$clear_archive" "$archive_dir" || {
+    fn_decryptgpg "$encrypted_archive" "$clear_archive" "$archive_dir" || {
         log_message "error decrypting LabBook 3 archive $encrypted_archive"
         return 1
     }
@@ -1518,6 +1774,35 @@ is_lb29_archive() {
     kpri_path="$(dirname "$archive_path")/$LB29_KPRI_FILENAME"
 
     [[ -f "$kpri_path" ]] || return 1
+
+    return 0
+}
+
+#
+# Copy directory content
+#
+# Param:
+# - source dir
+# - destination dir (must exist)
+#
+fn_copydir() {
+    local source_dir="$1"
+    local destination_dir="$2"
+
+    [[ -d "$source_dir" ]] || {
+        log_message "cannot find source directory $source_dir"
+        return 1
+    }
+
+    [[ -d "$destination_dir" ]] || {
+        log_message "cannot find destination directory $destination_dir"
+        return 1
+    }
+
+    # we use tar because:
+    # - cp is difficult to use when destination dir exists
+    # - rsync is not in the container
+    (cd "$source_dir" && tar cf - .) | (cd "$destination_dir" && tar xf -) || return 1
 
     return 0
 }
@@ -2261,19 +2546,19 @@ case "$cmd" in
         fn_encrypt "$input_file" "$arg_dir" || exit_status=1
         ;;
 
-    decrypt29)
+    decryptgpg)
         [[ -n "$input_file" ]] ||  error_exit "$cmd: missing input file, use -i argument"
 
         [[ -n "$output_file" ]] ||  error_exit "missing output file, use -o argument"
 
         if [[ -n "$arg_dir" ]]; then
             if [[ -n $(printenv $ENV_KEY_PASS) ]]; then
-                fn_decrypt29 "$input_file" "$output_file" "$arg_dir" || exit_status=1
+                fn_decryptgpg "$input_file" "$output_file" "$arg_dir" || exit_status=1
             else
                 error_exit "cannot find passphrase in $ENV_KEY_PASS"
             fi
         else
-            fn_decrypt29 "$input_file" "$output_file" "" || exit_status=1
+            fn_decryptgpg "$input_file" "$output_file" "" || exit_status=1
         fi
         ;;
 
@@ -2382,6 +2667,14 @@ case "$cmd" in
         [[ -n "$input_file" ]] ||  error_exit "missing input file, use -i argument"
 
         is_lb25_archive "$input_file" || exit_status=1
+        ;;
+
+    copydir)
+        [[ -n "$input_file" ]] ||  error_exit "missing input directory, use -i argument"
+
+        [[ -n "$output_file" ]] ||  error_exit "missing output directory, use -o argument"
+
+        fn_copydir "$input_file" "$output_file" || exit_status=1
         ;;
 
     testfake)
