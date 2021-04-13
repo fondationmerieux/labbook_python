@@ -49,6 +49,7 @@
                   </a>
                   <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] != 'S' %}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-activity">{{ _("Rapport activité") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-epidemio">{{ _("Rapport épidémiologique") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-statistic">{{ _("Rapport statistique") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-dhis2">{{ _("Rapport DHIS2") }}</a>

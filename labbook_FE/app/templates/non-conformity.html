@@ -23,8 +23,12 @@
                 <div class="form-group row">
                     <label for="search_reporter" class="col-form-label col-3 text-right mr-1">{{ _("Rapporteur") }} *</label>
                     <div>
+                        {% if args['details']['reporter_id'] and args['details']['reporter_id'] == 0 %}
                         <select id="search_reporter" style="width:400px"></select>
+                        {% else %}
                         <span class="ml-2">{{ args['details']['reporter'] }}</span>
+                        <input type="hidden" id="reporter_id" value="{{ args['details']['reporter_id'] }}">
+                        {% endif %}
                     </div>
                 </div>
 
@@ -33,7 +37,7 @@
                     <div class="form-group row">
                         <label for="report_date" class="col-form-label col-3 text-right mt-2">{{ _("Date") }}</label>
                         <div>					
-                            <input id="report_date" name="report_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['report_date'] }}" style="color: #888;">
+                            <input id="report_date" name="report_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['date_create'] }}" style="color: #888;">
                         </div>
                     </div>
 
@@ -126,7 +130,7 @@
                     <div class="form-group row mt-n4 sub_preana d-none">
                         <label for="sub_preana_cat10" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_preana_cat10" name="sub_preana_cat10" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_preana_cat10" name="sub_preana_cat10" rows="4" cols="50" class="form-control">{{ args['details']['sub_preana_cat10'] }}</textarea>
                         </div>
                     </div>
 
@@ -202,7 +206,7 @@
                     <div class="form-group row mt-n4 sub_analy d-none">
                         <label for="sub_analy_cat11" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_analy_cat11" name="sub_analy_cat11" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_analy_cat11" name="sub_analy_cat11" rows="4" cols="50" class="form-control">{{ args['details']['sub_analy_cat11'] }}</textarea>
                         </div>
                     </div>
 
@@ -272,7 +276,7 @@
                     <div class="form-group row mt-n4 sub_postana d-none">
                         <label for="sub_postana_cat10" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_postana_cat10" name="sub_postana_cat10" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_postana_cat10" name="sub_postana_cat10" rows="4" cols="50" class="form-control">{{ args['details']['sub_postana_cat10'] }}</textarea>
                         </div>
                     </div>
                     
@@ -324,7 +328,7 @@
                     <div class="form-group row mt-n4 sub_res d-none">
                         <label for="sub_res_cat7" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_res_cat7" name="sub_res_cat7" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_res_cat7" name="sub_res_cat7" rows="4" cols="50" class="form-control">{{ args['details']['sub_res_cat7'] }}</textarea>
                         </div>
                     </div>
 
@@ -364,7 +368,7 @@
                     <div class="form-group row mt-n4 sub_hr d-none">
                         <label for="sub_hr_cat5" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_hr_cat5" name="sub_hr_cat5" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_hr_cat5" name="sub_hr_cat5" rows="4" cols="50" class="form-control">{{ args['details']['sub_hr_cat5'] }}</textarea>
                         </div>
                     </div>
 
@@ -410,13 +414,13 @@
                     <div class="form-group row mt-n4 sub_eqp d-none">
                         <label for="sub_eqp_cat6" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_eqp_cat6" name="sub_eqp_cat6" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_eqp_cat6" name="sub_eqp_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_eqp_cat6'] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group row row sub_eqp d-none">
                         <label for="search_eqp" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Equipement") }}</label>
                         <div>
-                            <select id="search_eqp" style="width:400px"></select>
+                            <select id="search_eqp" style="width:400px"></select><br />
                             <span class="ml-2">{{ args['details']['equipment'] }}</span>
                         </div>
                     </div>
@@ -463,13 +467,13 @@
                     <div class="form-group row mt-n4 sub_consu d-none">
                         <label for="sub_consu_cat6" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_consu_cat6" name="sub_consu_cat6" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_consu_cat6" name="sub_consu_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_consu_cat6'] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group row sub_consu d-none">
                         <label for="search_supplier" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Fournisseur") }}</label>
                         <div>
-                            <select id="search_supplier" style="width:400px"></select>
+                            <select id="search_supplier" style="width:400px"></select><br />
                             <span class="ml-2">{{ args['details']['supplier'] }}</span>
                         </div>
                     </div>
@@ -516,7 +520,7 @@
                     <div class="form-group row mt-n4 sub_local d-none">
                         <label for="sub_local_cat6" class="col-form-label col-4 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_local_cat6" name="sub_local_cat6" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_local_cat6" name="sub_local_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_local_cat6'] }}</textarea>
                         </div>
                     </div>
 
@@ -562,7 +566,7 @@
                     <div class="form-group row mt-n4 sub_si d-none">
                         <label for="sub_si_cat6" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_si_cat6" name="sub_si_cat6" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_si_cat6" name="sub_si_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_si_cat6'] }}</textarea>
                         </div>
                     </div>
 
@@ -602,7 +606,7 @@
                     <div class="form-group row mt-n4 sub_contract d-none">
                         <label for="sub_contract_cat5" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_contract_cat5" name="sub_contract_cat5" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="sub_contract_cat5" name="sub_contract_cat5" rows="4" cols="50" class="form-control">{{ args['details']['sub_contract_cat5'] }}</textarea>
                         </div>
                     </div>
 
@@ -610,7 +614,7 @@
                     <div class="form-group row">
                         <label for="cat_client" class="col-form-label col-3 text-right ml-1 mr-2">{{ _("Réclamations clients") }}</label>
                         <div class="form-inline">
-                            <textarea id="cat_client" name="cat_client" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="cat_client" name="cat_client" rows="4" cols="50" class="form-control">{{ args['details']['cat_client'] }}</textarea>
                         </div>
                     </div>
 
@@ -618,7 +622,7 @@
                     <div class="form-group row">
                         <label for="cat_other" class="col-form-label col-3 text-right ml-1 mr-2">{{ _("Autre") }}</label>
                         <div class="form-inline">
-                            <textarea id="cat_other" name="cat_other" rows="4" cols="50" class="form-control"></textarea>
+                            <textarea id="cat_other" name="cat_other" rows="4" cols="50" class="form-control">{{ args['details']['cat_other'] }}</textarea>
                         </div>
                     </div>
                     
@@ -626,12 +630,20 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-right mt-2">{{ _("Est ce que cette non-conformité concerne un dossier patient ?") }}</label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="about_pat_rec" value="4">{{ _("Oui") }}</input>
+                            <input type="radio" class="mr-1" name="about_pat_rec" value="4" onchange="pat_rec_change(this);" id="about_pat_rec_yes">{{ _("Oui") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="about_pat_rec" value="5" checked="checked">{{ _("Non") }}</input>
+                            <input type="radio" class="mr-1" name="about_pat_rec" value="5" onchange="pat_rec_change(this);" checked="checked">{{ _("Non") }}</input>
                         </label>
                     </div>
+
+                    <div class="form-group row d-none" id="group_pat_rec_num">
+                        <label for="pat_rec_num" class="col-form-label col-3 text-right ml-1 mr-2">{{ _("Numéro de dossier") }}</label>
+                        <div class="form-inline">
+                            <input id="pat_rec_num" name="pat_rec" type="text" value="{{ args['details']['pat_rec_num'] }}">
+                        </div>
+                    </div>
+
 
                     <!-- DESCRIPTION -->
                     <div class="form-group row mt-3">
@@ -645,16 +657,16 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-right mt-2">{{ _("Impact sur le patient") }}</label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_pat" value="4">{{ _("Faible") }}</input>
+                            <input type="radio" class="mr-1" name="impact_pat" value="4" {% if args['details']['impact_pat'] == 4 %}checked{% endif %}>{{ _("Faible") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_pat" value="5">{{ _("Important") }}</input>
+                            <input type="radio" class="mr-1" name="impact_pat" value="5" {% if args['details']['impact_pat'] == 5 %}checked{% endif %}>{{ _("Important") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_pat" value="6">{{ _("Grave") }}</input>
+                            <input type="radio" class="mr-1" name="impact_pat" value="6" {% if args['details']['impact_pat'] == 6 %}checked{% endif %}>{{ _("Grave") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_pat" value="7" checked="checked">{{ _("Aucun") }}</input>
+                            <input type="radio" class="mr-1" name="impact_pat" value="7" {% if not args['details'] or args['details']['impact_pat'] == 7 %}checked{% endif %}>{{ _("Aucun") }}</input>
                         </label>
                     </div>
 
@@ -662,16 +674,16 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-right mt-2">{{ _("Impact sur le personnel/visiteur") }}</label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_user" value="4">{{ _("Faible") }}</input>
+                            <input type="radio" class="mr-1" name="impact_user" value="4" {% if args['details']['impact_user'] == 4 %}checked{% endif %}>{{ _("Faible") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_user" value="5">{{ _("Important") }}</input>
+                            <input type="radio" class="mr-1" name="impact_user" value="5" {% if args['details']['impact_user'] == 5 %}checked{% endif %}>{{ _("Important") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_user" value="6">{{ _("Grave") }}</input>
+                            <input type="radio" class="mr-1" name="impact_user" value="6" {% if args['details']['impact_user'] == 6 %}checked{% endif %}>{{ _("Grave") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impact_user" value="7" checked="checked">{{ _("Aucun") }}</input>
+                            <input type="radio" class="mr-1" name="impact_user" value="7" {% if not args['details'] or args['details']['impact_user'] == 7 %}checked{% endif %}>{{ _("Aucun") }}</input>
                         </label>
                     </div>
                 </fieldset>
@@ -682,7 +694,7 @@
                     <div class="form-group row">
                         <label for="search_followed" class="col-form-label col-3 text-right mr-1">{{ _("Qui") }}</label>
                         <div>
-                            <select id="search_followed" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select>
+                            <select id="search_followed" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select><br />
                             <span class="ml-2">{{ args['details']['followed'] }}</span>
                         </div>
                     </div>
@@ -703,10 +715,10 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-right mt-2">{{ _("Mise en place d’une action correctrice") }}</label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impl_action" value="4" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>{{ _("Oui") }}</input>
+                            <input type="radio" class="mr-1" name="impl_action" value="4" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %} {% if args['details']['impl_action'] == 4 %}checked{% endif %}>{{ _("Oui") }}</input>
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
-                            <input type="radio" class="mr-1" name="impl_action" value="5" checked="checked" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>{{ _("Non") }}</input>
+                            <input type="radio" class="mr-1" name="impl_action" value="5" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %} {% if not args['details'] or args['details']['impl_action'] == 5 %}checked{% endif %}>{{ _("Non") }}</input>
                         </label>
                     </div>
 
@@ -725,7 +737,7 @@
                     <div class="form-group row">
                         <label for="search_incharge" class="col-form-label col-3 text-right mr-1">{{ _("Responsable de l'action") }}</label>
                         <div>
-                            <select id="search_incharge" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select>
+                            <select id="search_incharge" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select><br />
                             <span class="ml-2">{{ args['details']['incharge'] }}</span>
                         </div>
                     </div>
@@ -743,8 +755,8 @@
                     <div class="form-group row">
                         <label for="search_validate" class="col-form-label col-3 text-right mr-1">{{ _("Validé par") }}</label>
                         <div>
-                            <select id="search_validate" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select>
-                            <span class="ml-2">{{ args['details']['close_vld'] }}</span>
+                            <select id="search_validate" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select><br />
+                            <span class="ml-2">{{ args['details']['validate'] }}</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -771,6 +783,8 @@
 
 {% block add_script %}
 <script>
+var data_det = {% if args['details'] %}{{ args['details']|safe }}{% else %}[]{% endif %} ;
+
 $("#search_reporter").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
@@ -1030,12 +1044,30 @@ let class_sub_elem = ".sub_" + id_elem ;
     }
 }
 
+function pat_rec_change( elem )
+{
+let val_elem = $(elem).val() ;
+
+console.log("DEBUG val_elem="+val_elem);
+
+    if ( val_elem == "4" )
+    {
+    $("#group_pat_rec_num").removeClass('d-none') ;   
+    }
+    else
+    {
+    $("#pat_rec_num").val("") ;
+    $("#group_pat_rec_num").addClass('d-none') ;
+    }
+
+}
+
 function save_item()
 {
 var id_owner   = {{ session['user_id_group']|safe }} ;
 var id_details = {{ args['id_det']|safe }}   ;
 var name       = $("#name").val()            ;
-var reporter   = $("#search_reporter").val() ;
+var reporter   = {% if args['id_det'] > 0 %}$("#reporter_id").val(){% else %}$("#search_reporter").val(){% endif %} ;
 
 /* --- Declaration of non-conformity ---*/
 var report_date = $("#report_date").val()     ;
@@ -1154,6 +1186,7 @@ var cat_client = JSON.stringify( $("#cat_client").val() ) ;
 var cat_other = JSON.stringify( $("#cat_other").val() ) ;
 
 var about_pat_rec= $("input:radio[name=about_pat_rec]:checked").val() ;
+var pat_rec_num  = $("#pat_rec_num").val()                            ;
 var description  = JSON.stringify( $("#description").val() )          ;
 var impact_pat   = $("input:radio[name=impact_pat]:checked").val()    ;
 var impact_user  = $("input:radio[name=impact_user]:checked").val()   ;
@@ -1188,9 +1221,6 @@ var msg = "" ;
 
     if (id_details > 0)
     {
-        if (reporter < 1)
-        reporter = {% if args['details']['reporter_id'] %}{{ args['details']['reporter_id']|safe }}{% else %}0{% endif %} ;
-
         if (followed < 1)
         followed = {% if args['details']['followed_id'] %}{{ args['details']['followed_id']|safe }}{% else %}0{% endif %} ;
 
@@ -1302,6 +1332,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"cat_client":' + cat_client + ', ' +
               '"cat_other":' + cat_other + ', ' +
               '"about_pat_rec":' + about_pat_rec + ', ' +
+              '"pat_rec_num":"' + pat_rec_num + '", ' +
               '"description":' + description + ', ' +
               '"impact_pat":' + impact_pat + ', ' +
               '"impact_user":' + impact_user + ', ' +
@@ -1320,7 +1351,7 @@ console.log("DEBUG param=" + param) ;
 
     $.ajax( {
        type: "POST",
-       url: "/services/quality/conformity/det/" + id_details,
+       url: "/services/quality/nonconformity/det/" + id_details,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
@@ -1338,6 +1369,104 @@ console.log("DEBUG param=" + param) ;
     } ) ;
 }
 
+// usefull to deploy sub response if checkbox is checked
+function load_data()
+{
+    // category
+    if ( data_det.cat_preana == 4 )   { $("#cat_preana").prop("checked", true)  ; cat_change( $("#cat_preana") ) ; }
+    if ( data_det.cat_analy == 4 )    { $("#cat_analy").prop("checked", true)   ; cat_change( $("#cat_analy") ) ; }
+    if ( data_det.cat_postana == 4 )  { $("#cat_postana").prop("checked", true) ; cat_change( $("#cat_postana") ) ; }
+    if ( data_det.cat_res == 4 )      { $("#cat_res").prop("checked", true)     ; cat_change( $("#cat_res") ) ; }
+    if ( data_det.cat_hr == 4 )       { $("#cat_hr").prop("checked", true)      ; cat_change( $("#cat_hr") ) ; }
+    if ( data_det.cat_eqp == 4 )      { $("#cat_eqp").prop("checked", true)     ; cat_change( $("#cat_eqp") ) ; }
+    if ( data_det.cat_consu == 4 )    { $("#cat_consu").prop("checked", true)   ; cat_change( $("#cat_consu") ) ; }
+    if ( data_det.cat_local == 4 )    { $("#cat_local").prop("checked", true)   ; cat_change( $("#cat_local") ) ; }
+    if ( data_det.cat_si == 4 )       { $("#cat_si").prop("checked", true)      ; cat_change( $("#cat_si") ) ; }
+    if ( data_det.cat_contract == 4 ) { $("#cat_contract").prop("checked", true); cat_change( $("#cat_contract") ) ; }
+
+    if ( data_det.sub_preana_cat1 == 4 ) { $("#sub_preana_cat1").prop("checked", true) ; }
+    if ( data_det.sub_preana_cat2 == 4 ) { $("#sub_preana_cat2").prop("checked", true) ; }
+    if ( data_det.sub_preana_cat3 == 4 ) { $("#sub_preana_cat3").prop("checked", true) ; }
+
+    // sub category with sub sub cat
+    if ( data_det.sub_preana_cat4 == 4 ) { $("#sub_preana_cat4").prop("checked", true) ; sub_cat_change( $("#sub_preana_cat4") ) ; }
+
+    if ( data_det.sub1_sub_preana_cat4 == 4 ) { $("#sub1_sub_preana_cat4").prop("checked", true) ; }
+    if ( data_det.sub2_sub_preana_cat4 == 4 ) { $("#sub2_sub_preana_cat4").prop("checked", true) ; }
+    if ( data_det.sub3_sub_preana_cat4 == 4 ) { $("#sub3_sub_preana_cat4").prop("checked", true) ; }
+
+    if ( data_det.sub_preana_cat5 == 4 ) { $("#sub_preana_cat5").prop("checked", true) ; }
+    if ( data_det.sub_preana_cat6 == 4 ) { $("#sub_preana_cat6").prop("checked", true) ; }
+    if ( data_det.sub_preana_cat7 == 4 ) { $("#sub_preana_cat7").prop("checked", true) ; }
+    if ( data_det.sub_preana_cat8 == 4 ) { $("#sub_preana_cat8").prop("checked", true) ; }
+    if ( data_det.sub_preana_cat9 == 4 ) { $("#sub_preana_cat9").prop("checked", true) ; }
+
+    if ( data_det.sub_analy_cat1 == 4 ) { $("#sub_analy_cat1").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat2 == 4 ) { $("#sub_analy_cat2").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat3 == 4 ) { $("#sub_analy_cat3").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat4 == 4 ) { $("#sub_analy_cat4").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat5 == 4 ) { $("#sub_analy_cat5").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat6 == 4 ) { $("#sub_analy_cat6").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat7 == 4 ) { $("#sub_analy_cat7").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat8 == 4 ) { $("#sub_analy_cat8").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat9 == 4 ) { $("#sub_analy_cat9").prop("checked", true) ; }
+    if ( data_det.sub_analy_cat10 == 4 ){ $("#sub_analy_cat10").prop("checked", true); }
+
+    if ( data_det.sub_postana_cat1 == 4 ) { $("#sub_postana_cat1").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat2 == 4 ) { $("#sub_postana_cat2").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat3 == 4 ) { $("#sub_postana_cat3").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat4 == 4 ) { $("#sub_postana_cat4").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat5 == 4 ) { $("#sub_postana_cat5").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat6 == 4 ) { $("#sub_postana_cat6").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat7 == 4 ) { $("#sub_postana_cat7").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat8 == 4 ) { $("#sub_postana_cat8").prop("checked", true) ; }
+    if ( data_det.sub_postana_cat9 == 4 ) { $("#sub_postana_cat9").prop("checked", true) ; }
+
+    if ( data_det.sub_res_cat1 == 4 ) { $("#sub_res_cat1").prop("checked", true) ; }
+    if ( data_det.sub_res_cat2 == 4 ) { $("#sub_res_cat2").prop("checked", true) ; }
+    if ( data_det.sub_res_cat3 == 4 ) { $("#sub_res_cat3").prop("checked", true) ; }
+    if ( data_det.sub_res_cat4 == 4 ) { $("#sub_res_cat4").prop("checked", true) ; }
+    if ( data_det.sub_res_cat5 == 4 ) { $("#sub_res_cat5").prop("checked", true) ; }
+    if ( data_det.sub_res_cat6 == 4 ) { $("#sub_res_cat6").prop("checked", true) ; }
+
+    if ( data_det.sub_hr_cat1 == 4 ) { $("#sub_hr_cat1").prop("checked", true) ; }
+    if ( data_det.sub_hr_cat2 == 4 ) { $("#sub_hr_cat2").prop("checked", true) ; }
+    if ( data_det.sub_hr_cat3 == 4 ) { $("#sub_hr_cat3").prop("checked", true) ; }
+    if ( data_det.sub_hr_cat4 == 4 ) { $("#sub_hr_cat4").prop("checked", true) ; }
+
+    if ( data_det.sub_eqp_cat1 == 4 ) { $("#sub_eqp_cat1").prop("checked", true) ; }
+    if ( data_det.sub_eqp_cat2 == 4 ) { $("#sub_eqp_cat2").prop("checked", true) ; }
+    if ( data_det.sub_eqp_cat3 == 4 ) { $("#sub_eqp_cat3").prop("checked", true) ; }
+    if ( data_det.sub_eqp_cat4 == 4 ) { $("#sub_eqp_cat4").prop("checked", true) ; }
+    if ( data_det.sub_eqp_cat5 == 4 ) { $("#sub_eqp_cat5").prop("checked", true) ; }
+
+    if ( data_det.sub_consu_cat1 == 4 ) { $("#sub_consu_cat1").prop("checked", true) ; }
+    if ( data_det.sub_consu_cat2 == 4 ) { $("#sub_consu_cat2").prop("checked", true) ; }
+    if ( data_det.sub_consu_cat3 == 4 ) { $("#sub_consu_cat3").prop("checked", true) ; }
+    if ( data_det.sub_consu_cat4 == 4 ) { $("#sub_consu_cat4").prop("checked", true) ; }
+    if ( data_det.sub_consu_cat5 == 4 ) { $("#sub_consu_cat5").prop("checked", true) ; }
+
+    if ( data_det.sub_local_cat1 == 4 ) { $("#sub_local_cat1").prop("checked", true) ; }
+    if ( data_det.sub_local_cat2 == 4 ) { $("#sub_local_cat2").prop("checked", true) ; }
+    if ( data_det.sub_local_cat3 == 4 ) { $("#sub_local_cat3").prop("checked", true) ; }
+    if ( data_det.sub_local_cat4 == 4 ) { $("#sub_local_cat4").prop("checked", true) ; }
+    if ( data_det.sub_local_cat5 == 4 ) { $("#sub_local_cat5").prop("checked", true) ; }
+
+    if ( data_det.sub_si_cat1 == 4 ) { $("#sub_si_cat1").prop("checked", true) ; }
+    if ( data_det.sub_si_cat2 == 4 ) { $("#sub_si_cat2").prop("checked", true) ; }
+    if ( data_det.sub_si_cat3 == 4 ) { $("#sub_si_cat3").prop("checked", true) ; }
+    if ( data_det.sub_si_cat4 == 4 ) { $("#sub_si_cat4").prop("checked", true) ; }
+    if ( data_det.sub_si_cat5 == 4 ) { $("#sub_si_cat5").prop("checked", true) ; }
+
+    if ( data_det.sub_contract_cat1 == 4 ) { $("#sub_contract_cat1").prop("checked", true) ; }
+    if ( data_det.sub_contract_cat2 == 4 ) { $("#sub_contract_cat2").prop("checked", true) ; }
+    if ( data_det.sub_contract_cat3 == 4 ) { $("#sub_contract_cat3").prop("checked", true) ; }
+    if ( data_det.sub_contract_cat4 == 4 ) { $("#sub_contract_cat4").prop("checked", true) ; }
+
+    // about_pat_rec
+    if ( data_det.about_pat_rec == 4 ) { $("#about_pat_rec_yes").prop("checked", true) ; pat_rec_change( $("#about_pat_rec_yes") ) ; }
+}
+
 function replaceUndefined(vl)
 {
     if (typeof(vl) === "undefined")
@@ -1350,5 +1479,10 @@ function cancel()
 {
 window.history.back() ;
 }
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
 </script>
 {% endblock %}

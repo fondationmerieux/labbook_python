@@ -11,12 +11,17 @@ class Analysis:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getAnalysisSearch(text, id_lab, id_group):
+    def getAnalysisSearch(text, type="A"):
         cursor = DB.cursor()
 
         l_words = text.split(' ')
 
         cond = 'ref.actif = 4'
+
+        if type == "A":
+            cond += ' and ref.cote_unite != "PB"'
+        elif type == "P":
+            cond += ' and ref.cote_unite = "PB"'
 
         for word in l_words:
             cond = (cond +
@@ -35,13 +40,34 @@ class Analysis:
         return cursor.fetchall()
 
     @staticmethod
+    def getAnalysisVarSearch(text):
+        cursor = DB.cursor()
+
+        l_words = text.split(' ')
+
+        cond = 'libelle is not NULL '
+
+        for word in l_words:
+            cond = (cond + ' and (libelle like "%' + word + '%") ')
+
+        req = ('select libelle as field_value, id_data '
+               'from sigl_07_data '
+               'where ' + cond + ' order by field_value asc limit 1000')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getAnalysis(id_ana):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, code, nom, abbr, famille, paillasse, cote_unite, cote_valeur, '\
-              'commentaire, produit_biologique, type_prel, type_analyse, actif '\
-              'from sigl_05_data '\
-              'where id_data=%s'
+        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
+               'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label '
+               'from sigl_05_data as ana '
+               'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
+               'where ana.id_data=%s')
 
         cursor.execute(req, (id_ana,))
 
@@ -100,6 +126,25 @@ class Analysis:
         except mysql.connector.Error as e:
             Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def getListVariable(id_ana):
+        cursor = DB.cursor()
+
+        req = ('select var.id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
+               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
+               'formule_unite2 as formula2, formule as formula, var.precision as accu, precision2 as accu2, '
+               'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.id_data as id_link, '
+               'd1.label as unit_label '
+               'from sigl_07_data as var '
+               'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
+               'left join sigl_dico_data as d1 on d1.id_data=var.unite '
+               'where link.id_refanalyse=%s '
+               'order by link.position, link.id_data')
+
+        cursor.execute(req, (id_ana,))
+
+        return cursor.fetchall()
 
     @staticmethod
     def getRefVariable(id_ana):
@@ -178,10 +223,10 @@ class Analysis:
                 filter_cond += ' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") '
 
             if args['type_ana'] and args['type_ana'] > 0:
-                filter_cond += ' and ana.famille=' + args['type_ana'] + ' '
+                filter_cond += ' and ana.famille=' + str(args['type_ana']) + ' '
 
             if args['type_prod'] and args['type_prod'] > 0:
-                filter_cond += ' and ana.type_prel=' + args['type_prod'] + ' '
+                filter_cond += ' and ana.type_prel=' + str(args['type_prod']) + ' '
 
         req = 'select ana.id_data, ana.code, ana.nom as name, ana.abbr, ana.actif as stat, '\
               'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '\
@@ -216,7 +261,7 @@ class Analysis:
             filter_cond += ' and (ref.code LIKE "%' + args['code'] + '%" or ref.abbr LIKE "%' + args['code'] + '%") '
 
         if 'type_ana' in args and args['type_ana'] > 0:
-            filter_cond += ' and ref.famille=' + args['type_ana'] + ' '
+            filter_cond += ' and ref.famille=' + str(args['type_ana']) + ' '
 
         req = ('select ref.id_data, ref.code, dict.label as fam_name, ref.nom as name '
                'from sigl_02_data as rec '

@@ -1,0 +1,486 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Rapport activité") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport activité") }}</span></h2>
+            <form autocomplete="off">
+                <fieldset class="row border mx-1 p-2">
+                    <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
+                        <div class="form-group col-12 form-inline">
+                            <label for="f_date_beg" class="col-form-label col-2 text-right">{{ _("Date du") }}</label>
+                            <div>
+                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                            </div>
+                            <label for="f_date_end" class="col-form-label col-1 text-right">{{ _("au") }}</label>
+                            <div>					
+                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                            </div>
+                        </div>
+                        <div class="form-group col-12 form-inline">
+                            <label for="type_ana" class="col-form-label col-2 text-right mt-1">{{ _("Famille d'analyse") }}</label>
+                            <div>
+                                <select name="type_ana" id="type_ana" class="form-control">
+                                    <option value="0" selected="selected"></option>
+                                    {% for type_ana in ihm['type_ana'] %}
+                                    <option value="{{ type_ana['id_data'] }}">{{ type_ana['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="float-right">
+                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            </div>
+                        </div>
+                </fieldset>
+            </form>
+
+            <form id="html_report">
+                <fieldset class="row border mx-1 mt-3 p-2">
+                    <legend class="legend-lbk">{{ _("Analyses par type de demande") }}</legend>
+                        <table class="table table-striped table-hover col-12 table-lbk">
+                            <thead id="thead_stat_by_type"></thead>
+                            <tbody id="tbody_stat_by_type"></tbody>
+                        </table>
+                </fieldset>
+                <br />
+                <fieldset class="row border mx-1 mt-3 p-2">
+                    <legend class="legend-lbk">{{ _("Analyses par tranche d'âge") }}</legend>
+                        <table class="table table-striped table-hover col-12 table-lbk">
+                            <thead id="thead_stat_by_age"></thead>
+                            <tbody id="tbody_stat_by_age"></tbody>
+                        </table>
+                </fieldset>
+            </form>
+
+            <div class="float-right mt-3 mb-5">
+                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_stats = {% if args['stat'] %}{{ args['stat']|safe }}{% else %}[]{% endif %} ;
+var data_interval = {% if ihm['age_interval'] %}{{ ihm['age_interval']|safe }}{% else %}[]{% endif %} ;
+
+function filter_data()
+{
+let date_beg = $("#f_date_beg").val() ;
+let date_end = $("#f_date_end").val() ;
+let type_ana = $("#type_ana").val()   ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+              '"date_end":"' + date_end  + '", ' +
+              '"type_ana":' + type_ana + '}' ;
+
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( {
+            type: "POST",
+            url: "/services/report/activity",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
+            {
+            data_stats = data ;
+ 
+            display_data() ;
+
+                $("#dial-wait").modal("hide") ;
+            },
+            error: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR report stat") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+            }
+        } ) ;
+    } ) ;
+}
+
+function display_data()
+{
+    $("#thead_stat_by_type").empty() ;
+    $("#tbody_stat_by_type").empty() ;
+    $("#thead_stat_by_age").empty() ;
+    $("#tbody_stat_by_age").empty() ;
+
+{% if args %}
+    if (data_stats.type != undefined)
+    display_by_type(data_stats.type) ;
+
+    if (data_stats.age != undefined)
+    display_by_age(data_stats.age) ;
+{% endif %}
+}
+
+function display_by_type( data )
+{
+let len_data = data_interval.length ;
+let res_head = '<tr><th>{{ _("Analyses") }}</th><th colspan="2">{{ _("Externes") }}</th>' +
+               '<th colspan="2">{{ _("Hospitalisés") }}</th><th colspan="2">{{ _("Total") }}</th></tr>' +
+               '<tr><td></td><td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td>' +
+               '<td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td>' +
+               '<td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td></tr>' ;
+let res_body = '' ;
+
+let val_E_M = {} ;
+let val_E_F = {} ;
+let val_I_M = {} ;
+let val_I_F = {} ;
+let val_T_M = {} ;
+let val_T_F = {} ;
+
+    // calculate statistic
+    for( i = 0; i < data.length; i++ )
+    {
+    let nb_ana = data[i].nb_ana ;
+
+    if (data[i].rec_type == 183)
+    {
+        if ( data[i].sex == 1 )
+        {
+            if (val_E_M[data[i].code] != undefined)
+            val_E_M[data[i].code] += data[i].nb_ana ;
+            else
+            val_E_M[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_M[data[i].code] != undefined)
+            val_T_M[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_M[data[i].code] = data[i].nb_ana ;
+
+        }
+        else if ( data[i].sex == 2 )
+        {
+            if (val_E_F[data[i].code] != undefined)
+            val_E_F[data[i].code] += data[i].nb_ana ;
+            else
+            val_E_F[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_F[data[i].code] != undefined)
+            val_T_F[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_F[data[i].code] = data[i].nb_ana ;
+        }
+    }
+    else
+    {
+        if ( data[i].sex == 1 )
+        {
+            if (val_I_M[data[i].code] != undefined)
+            val_I_M[data[i].code] += data[i].nb_ana ;
+            else
+            val_I_M[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_M[data[i].code] != undefined)
+            val_T_M[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_M[data[i].code] = data[i].nb_ana ;
+
+        }
+        else if ( data[i].sex == 2 )
+        {
+            if (val_I_F[data[i].code] != undefined)
+            val_I_F[data[i].code] += data[i].nb_ana ;
+            else
+            val_I_F[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_F[data[i].code] != undefined)
+            val_T_F[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_F[data[i].code] = data[i].nb_ana ;
+        }
+
+    }
+        
+        // avoid undefined total
+        if (val_E_M[data[i].code] == undefined)
+        val_E_M[data[i].code] = 0 ;
+
+        if (val_E_F[data[i].code] == undefined)
+        val_E_F[data[i].code] = 0 ;
+
+        if (val_I_M[data[i].code] == undefined)
+        val_I_M[data[i].code] = 0 ;
+
+        if (val_I_F[data[i].code] == undefined)
+        val_I_F[data[i].code] = 0 ;
+
+        if (val_T_M[data[i].code] == undefined)
+        val_T_M[data[i].code] = 0 ;
+
+        if (val_T_F[data[i].code] == undefined)
+        val_T_F[data[i].code] = 0 ;
+    }
+
+let line   = '' ;
+let code_p = '' ;
+
+    for( i = 0; i < data.length; i++ )
+    {
+        if (code_p != data[i].code )
+        {
+        code_p = data[i].code ;
+
+        line += '<tr><td class="text-left">'+ data[i].analysis + ' [' + data[i].code +']</td>' ;
+
+        line += '<td class="text-right">' + val_E_M[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_E_F[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_I_M[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_I_F[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_T_M[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_T_F[data[i].code] +'</td></tr>' ;
+
+        res_body += line ;
+
+        line = '' ;
+        }
+    }
+
+    $("#thead_stat_by_type").append(res_head) ;
+    $("#tbody_stat_by_type").append(res_body) ;
+}
+
+function display_by_age( data )
+{
+let len_data = data_interval.length ;
+let res_head = '<tr><th>{{ _("Analyses") }}</th>' ;
+let res_sub  = '<tr><td></td>' ;
+let sub_head = '<td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td>' ;
+let res_body = '' ;
+
+{% for obj in ihm['age_interval'] %}
+let val_{{loop.index0}}_M = {} ;
+let val_{{loop.index0}}_F = {} ;
+{% endfor %}
+
+let val_U_M = {} ;
+let val_U_F = {} ;
+let val_T_M = {} ;
+let val_T_F = {} ;
+
+    // calculate statistic
+    for( i = 0; i < data.length; i++ )
+    {
+    let nb_ana = data[i].nb_ana ;
+
+        if ( data[i].age == null )
+        {
+            if ( data[i].sex == 1 )
+            {
+                if (val_U_M[data[i].code] != undefined)
+                val_U_M[data[i].code] += data[i].nb_ana ;
+                else
+                val_U_M[data[i].code] = data[i].nb_ana ;
+
+                if (val_T_M[data[i].code] != undefined)
+                val_T_M[data[i].code] += data[i].nb_ana ;
+                else
+                val_T_M[data[i].code] = data[i].nb_ana ;
+
+            }
+            else if ( data[i].sex == 2 )
+            {
+                if (val_U_F[data[i].code] != undefined)
+                val_U_F[data[i].code] += data[i].nb_ana ;
+                else
+                val_U_F[data[i].code] = data[i].nb_ana ;
+
+                if (val_T_F[data[i].code] != undefined)
+                val_T_F[data[i].code] += data[i].nb_ana ;
+                else
+                val_T_F[data[i].code] = data[i].nb_ana ;
+            }
+
+        }{% for obj in ihm['age_interval'] %}
+        else if ( (data_interval[{{loop.index0}}].ais_lower_bound == "" || data[i].age > data_interval[{{loop.index0}}].ais_lower_bound) &&
+                  (data_interval[{{loop.index0}}].ais_upper_bound == "" || data[i].age <= data_interval[{{loop.index0}}].ais_upper_bound) )
+        {
+            if ( data[i].sex == 1 )
+            {
+                if (val_{{loop.index0}}_M[data[i].code] != undefined)
+                val_{{loop.index0}}_M[data[i].code] += data[i].nb_ana ;
+                else
+                val_{{loop.index0}}_M[data[i].code] = data[i].nb_ana ;
+
+                if (val_T_M[data[i].code] != undefined)
+                val_T_M[data[i].code] += data[i].nb_ana ;
+                else
+                val_T_M[data[i].code] = data[i].nb_ana
+            }
+            else if ( data[i].sex == 2 )
+            {
+                if (val_{{loop.index0}}_F[data[i].code] != undefined)
+                val_{{loop.index0}}_F[data[i].code] += data[i].nb_ana ;
+                else
+                val_{{loop.index0}}_F[data[i].code] = data[i].nb_ana ;
+
+                if (val_T_F[data[i].code] != undefined)
+                val_T_F[data[i].code] += data[i].nb_ana ;
+                else
+                val_T_F[data[i].code] = data[i].nb_ana
+            }
+        }{% endfor %}
+        
+        // avoid undefined total
+        if (val_U_M[data[i].code] == undefined)
+        val_U_M[data[i].code] = 0 ;
+
+        if (val_U_F[data[i].code] == undefined)
+        val_U_F[data[i].code] = 0 ;
+
+        if (val_T_M[data[i].code] == undefined)
+        val_T_M[data[i].code] = 0 ;
+
+        if (val_T_F[data[i].code] == undefined)
+        val_T_F[data[i].code] = 0 ;
+    }
+
+    // prepare columns age interval
+    for( i = 0; i < len_data; i++ )
+    {
+    let head_name = '' ;
+    
+        if (data_interval[i].ais_lower_bound == "")
+        head_name = '{{ _("Moins de") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+        else if (data_interval[i].ais_upper_bound == "")
+        head_name = '{{ _("Plus de") }} ' + data_interval[i].ais_lower_bound + ' {{ _("ans") }}' ;
+        else
+        head_name = data_interval[i].ais_lower_bound + ' {{ _("à") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+
+    res_head += '<th class="text-center font-info" colspan="2">' + head_name  + '</th>' ;
+    res_sub  += sub_head ;
+    }
+
+res_head += '<th class="text-center font-info" colspan="2">{{ _("Non renseigné") }}</th><th class="text-center font-info" colspan="2">{{ _("Total") }}</th></tr>' ;
+res_sub  += sub_head + sub_head + '</tr>' ;
+
+res_head += res_sub ;
+
+let line   = '' ;
+let code_p = '' ;
+
+    for( i = 0; i < data.length; i++ )
+    {
+        if (code_p != data[i].code )
+        {
+        code_p = data[i].code ;
+
+        line += '<tr><td class="text-left">'+ data[i].analysis + ' [' + data[i].code +']</td>' ;
+
+        {% for obj in ihm['age_interval'] %}
+        val_M = 0 ;
+        val_F = 0 ;
+
+            if (val_{{loop.index0}}_M[data[i].code] != undefined)
+            val_M = val_{{loop.index0}}_M[data[i].code] ;
+
+            if (val_{{loop.index0}}_F[data[i].code] != undefined)
+            val_F = val_{{loop.index0}}_F[data[i].code] ;
+
+        line += '<td class="text-right">' + val_M +'</td>' ;
+        line += '<td class="text-right">' + val_F +'</td>' ;
+        {% endfor %}
+
+        line += '<td class="text-right">' + val_U_M[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_U_F[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_T_M[data[i].code] +'</td>' ;
+        line += '<td class="text-right">' + val_T_F[data[i].code] +'</td></tr>' ;
+
+        res_body += line ;
+
+        line = '' ;
+        }
+    }
+
+    $("#thead_stat_by_age").append(res_head) ;
+    $("#tbody_stat_by_age").append(res_body) ;
+}
+
+function download_report()
+{
+var html_report = JSON.stringify($("#html_report")[0].outerHTML) ;
+html_report = html_report.replaceAll("border:0", "border:1px solid #000") ;
+
+var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
+              '"filename": "activity"}' ;
+
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "/services/pdf/report/generic",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
+            
+            let month = today.getMonth() + 1 ;
+
+            if (month < 10) month = '0' + month ;
+
+            let day = today.getDate() ;
+
+            if (day < 10) day = '0' + day ;
+
+            today = today.getFullYear() + '' + month + '' + day ;
+
+            let filename = "activity_" + today + ".pdf" ;
+
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
+    } ) ;
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+$( document ).ready( function()
+{
+display_data() ;
+} ) ;
+</script>
+{% endblock %}

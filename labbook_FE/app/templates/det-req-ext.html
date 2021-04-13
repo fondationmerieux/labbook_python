@@ -384,7 +384,7 @@ $("#search_analysis").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id_group'] }},
+        url: "{{ session['server_ext'] }}/services/analysis/search/A",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",

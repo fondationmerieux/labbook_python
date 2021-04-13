@@ -88,6 +88,34 @@ class ReportEpidemio(Resource):
         return compose_ret(data, Constants.cst_content_type_json)
 
 
+class ReportActivity(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args or 'type_ana' not in args:
+            self.log.error(Logs.fileline() + ' : ReportActivity ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        stat = {}
+
+        stat['type'] = Report.getActivityType(args['date_beg'], args['date_end'], args['type_ana'])
+
+        if not stat['type']:
+            self.log.error(Logs.fileline() + ' : TRACE stat type not found')
+            stat['type'] = []
+
+        stat['age'] = Report.getActivityAge(args['date_beg'], args['date_end'], args['type_ana'])
+
+        if not stat['age']:
+            self.log.error(Logs.fileline() + ' : TRACE stat age not found')
+            stat['age'] = []
+
+        self.log.info(Logs.fileline() + ' : TRACE ReportActivity')
+        return compose_ret(stat, Constants.cst_content_type_json)
+
+
 class ReportStat(Resource):
     log = logging.getLogger('log_services')
 

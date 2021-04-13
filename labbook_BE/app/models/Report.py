@@ -95,6 +95,48 @@ class Report:
         return cursor.fetchone()
 
     @staticmethod
+    def getActivityAge(date_beg, date_end, type_ana):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if type_ana > 0:
+            cond = ' and ana.famille= ' + str(type_ana) + ' '
+
+        req = ('select ana.nom as analysis, ana.code as code, pat.sexe as sex, pat.age, count(*) as nb_ana '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse and ana.cote_unite != "PB" '
+               'where (rec.date_dos between %s and %s) and rec.statut=256 ' + cond +
+               'group by ana.id_data, pat.age, pat.sexe order by ana.nom asc')
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getActivityType(date_beg, date_end, type_ana):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if type_ana > 0:
+            cond = ' and ana.famille= ' + str(type_ana) + ' '
+
+        req = ('select ana.nom as analysis, ana.code as code, pat.sexe as sex, rec.type as rec_type, count(*) as nb_ana '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse and ana.cote_unite != "PB" '
+               'where (rec.date_dos between %s and %s) and rec.statut=256 ' + cond +
+               'group by ana.id_data, rec.type, pat.sexe order by ana.nom asc')
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getStatPatient(date_beg, date_end):
         cursor = DB.cursor()
 

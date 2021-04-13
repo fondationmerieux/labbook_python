@@ -47,16 +47,105 @@ class Quality:
         return cursor.fetchone()
 
     @staticmethod
+    def getConformityList(date_beg, date_end):
+        cursor = DB.cursor()
+
+        req = ('select id_data, id_owner, nom as name, date as date_create, impact_patient, '
+               'impacts_perso_visit as impact_user, traitement_quand as date_correction, '
+               'traitement_action_corrective as correction, cloture_date as close_date '
+               'from sigl_non_conformite_data '
+               'where (date between %s and %s) order by date')
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getNonConformity(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sigl_non_conformite_data.id_data, sigl_non_conformite_data.nom as name, user_id as reporter_id, '
+               'date as date_create, pre_analytique as cat_preana, '
+               'analytique as cat_analy, post_analytique as cat_postana, transmission_resultats as cat_res, rh as cat_hr, '
+               'equipements as cat_eqp, reactifs_consommables as cat_consu, locaux_environnement as cat_local, '
+               'systemes_informatiques as cat_si, sous_traitance as cat_contract, pre_analytique_prescription as sub_preana_cat1, '
+               'pre_analytique_oubli_examen_error as sub_preana_cat2, pre_analytique_dossier_pat as sub_preana_cat3, '
+               'pre_analytique_prel as sub_preana_cat4, pre_analytique_heure_prel as sub1_sub_preana_cat4, '
+               'pre_analytique_vol_prel as sub2_sub_preana_cat4, pre_analytique_ident_prel as sub3_sub_preana_cat4, '
+               'pre_analytique_renseignement_clin as sub_preana_cat5, pre_analytique_transport_echant as sub_preana_cat6, '
+               'pre_analytique_respect_proc as sub_preana_cat7, pre_analytique_urgence as sub_preana_cat8, '
+               'pre_analytique_tracabilite as sub_preana_cat9, pre_analytique_autre_content as sub_preana_cat10, '
+               'analytique_conservation as sub_analy_cat1, analytique_urgence as sub_analy_cat2, '
+               'analytique_centrifugation as sub_analy_cat3, analytique_aliquotage as sub_analy_cat4, '
+               'analytique_ctrl_qualite_int as sub_analy_cat5, analytique_ctrl_qualite_ext as sub_analy_cat6, '
+               'analytique_tracabilite as sub_analy_cat7, analytique_procedures as sub_analy_cat8, '
+               'analytique_absence_resultat as sub_analy_cat9, analytique_critere_de_repasse as sub_analy_cat10, '
+               'analytique_autre_content as sub_analy_cat11, post_analytique_dos_non_valide as sub_postana_cat1, '
+               'post_analytique_validation_partiel as sub_postana_cat2, post_analytique_res_errone as sub_postana_cat3, '
+               'post_analytique_absence_resultat as sub_postana_cat4, post_analytique_erreur_saisie as sub_postana_cat5, '
+               'post_analytique_interpretation as sub_postana_cat6, post_analytique_presta_conseil as sub_postana_cat7, '
+               'post_analytique_conservation as sub_postana_cat8, post_analytique_procedures as sub_postana_cat9, '
+               'post_analytique_autre_content as sub_postana_cat10, transmission_resultats_non_transmis_patient as sub_res_cat1, '
+               'transmission_resultats_non_transmis_presc as sub_res_cat2, transmission_resultats_acces_result as sub_res_cat3, '
+               'transmission_resultats_date_rendu as sub_res_cat4, transmission_resultats_delai_non_resp as sub_res_cat5, '
+               'transmission_resultats_procedure as sub_res_cat6, transmission_resultats_autre_content as sub_res_cat7, '
+               'rh_procedures as sub_hr_cat1, rh_absence as sub_hr_cat2, rh_habilitation as sub_hr_cat3, '
+               'rh_aes_hygiene_secu as sub_hr_cat4, rh_autre_contenu as sub_hr_cat5, equipements_etalonnage as sub_eqp_cat1, '
+               'equipements_calibration as sub_eqp_cat2, equipements_alarme as sub_eqp_cat3, equipements_panne as sub_eqp_cat4, '
+               'equipements_procedures as sub_eqp_cat5, equipements_autre_content as sub_eqp_cat6, equipements_autre as equipment_id, '
+               'reactifs_consommables_reception as sub_consu_cat1, reactifs_consommables_delais as sub_consu_cat2, '
+               'reactifs_consommables_reactifs as sub_consu_cat3, reactifs_consommables_rupture as sub_consu_cat4, '
+               'reactifs_consommables_destockage as sub_consu_cat5, reactifs_consommables_autre_content as sub_consu_cat6, '
+               'reactifs_consommables_autre as supplier_id, locaux_environnement_nettoyage as sub_local_cat1, '
+               'locaux_environnement_entretien as sub_local_cat2, locaux_environnement_coupure_elec as sub_local_cat3, '
+               'locaux_environnement_coupure_eau as sub_local_cat4, locaux_environnement_dechets as sub_local_cat5, '
+               'locaux_environnement_autre_content as sub_local_cat6, systemes_informatiques_absence as sub_si_cat1, '
+               'systemes_informatiques_erreur as sub_si_cat2, systemes_informatiques_panne_reseau as sub_si_cat3, '
+               'systemes_informatiques_panne_systeme as sub_si_cat4, systemes_informatiques_panne_materiel as sub_si_cat5, '
+               'systemes_informatiques_autre_content as sub_si_cat6, sous_traitance_delai as sub_contract_cat1, '
+               'sous_traitance_erreur as sub_contract_cat2, sous_traitance_conservation as sub_contract_cat3, '
+               'sous_traitance_facturation as sub_contract_cat4, sous_traitance_autre_content as sub_contract_cat5, '
+               'autre_contenu as cat_other, reclamations_clients_contenu as cat_client, relation_dos_client as about_pat_rec, '
+               'no_dos as pat_rec_num, description, impact_patient as impact_pat, impacts_perso_visit as impact_user, '
+               'traitement_qui_id as followed_id, traitement_quoi as flwd_what, traitement_quand as flwd_when, '
+               'traitement_action_corrective as impl_action, traitement_action_description as flwd_descr_action, '
+               'traitement_date_real as flwd_action_date, traitement_correctif_responsable_id as incharge_id, '
+               'cloture_commentaire as close_comment, cloture_validateur_id as validate_id, cloture_date as close_date, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as reporter, '
+               'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as followed, '
+               'TRIM(CONCAT(u3.lastname," ",u3.firstname," - ",u3.username)) as incharge, '
+               'TRIM(CONCAT(u4.lastname," ",u4.firstname," - ",u4.username)) as validate, '
+               'eqp.nom as equipment, sup.fournisseur_nom as supplier '
+               'from sigl_non_conformite_data '
+               'left join sigl_user_data as u1 on u1.id_data=user_id '
+               'left join sigl_user_data as u2 on u2.id_data=traitement_qui_id '
+               'left join sigl_user_data as u3 on u3.id_data=traitement_correctif_responsable_id '
+               'left join sigl_user_data as u4 on u4.id_data=cloture_validateur_id '
+               'left join sigl_equipement_data as eqp on eqp.id_data=equipements_autre '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=reactifs_consommables_autre '
+               'where sigl_non_conformite_data.id_data=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertNonConformity(**params):
         try:
             cursor = DB.cursor()
 
-            # equipment and supplier ? TODO add no_dos
+            # useless :
+            # pre_analytique_autre, analytique_autre, post_analytique_autre, transmission_resultats_autre, rh_autre
+            # reactifs_consommables_tracabilite, locaux_environnement_autre, systemes_informatiques_autre
+            # sous_traitance_autre, autre
+
+            # reactifs_consommables_autre == supplier
+            # equipements_autre == equipment
 
             cursor.execute('insert into sigl_non_conformite_data '
                            '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, nom, user_id, date, '
                             'pre_analytique, analytique, post_analytique, transmission_resultats, rh, equipements, reactifs_consommables, '
-                            'locaux_environnement, systemes_informatiques, sous_traitance, reclamations_clients, '
+                            'locaux_environnement, systemes_informatiques, sous_traitance, '
                             'pre_analytique_prescription, pre_analytique_oubli_examen_error, pre_analytique_dossier_pat, '
                             'pre_analytique_prel, pre_analytique_heure_prel, pre_analytique_vol_prel, pre_analytique_ident_prel, '
                             'pre_analytique_renseignement_clin, pre_analytique_transport_echant, pre_analytique_respect_proc, '
@@ -71,23 +160,23 @@ class Quality:
                             'transmission_resultats_acces_result, transmission_resultats_date_rendu, transmission_resultats_delai_non_resp, '
                             'transmission_resultats_procedure, transmission_resultats_autre_content, rh_procedures, rh_absence, '
                             'rh_habilitation, rh_aes_hygiene_secu, rh_autre_contenu, equipements_etalonnage, equipements_calibration, '
-                            'equipements_alarme, equipements_panne, equipements_procedures, equipements_autre_content, '
+                            'equipements_alarme, equipements_panne, equipements_procedures, equipements_autre_content, equipements_autre, '
                             'reactifs_consommables_reception, reactifs_consommables_delais, reactifs_consommables_reactifs, '
-                            'reactifs_consommables_rupture, reactifs_consommables_destockage, reactifs_consommables_tracabilite, '
-                            'reactifs_consommables_autre, reactifs_consommables_autre_content, locaux_environnement_nettoyage, '
-                            'locaux_environnement_entretien, locaux_environnement_coupure_elec, locaux_environnement_coupure_eau, '
+                            'reactifs_consommables_rupture, reactifs_consommables_destockage, reactifs_consommables_autre_content, '
+                            'reactifs_consommables_autre, locaux_environnement_nettoyage, locaux_environnement_entretien, '
+                            'locaux_environnement_coupure_elec, locaux_environnement_coupure_eau, '
                             'locaux_environnement_dechets, locaux_environnement_autre_content, systemes_informatiques_absence, '
                             'systemes_informatiques_erreur, systemes_informatiques_panne_reseau, systemes_informatiques_panne_systeme, '
                             'systemes_informatiques_panne_materiel, systemes_informatiques_autre_content, sous_traitance_delai, '
                             'sous_traitance_erreur, sous_traitance_conservation, sous_traitance_facturation, sous_traitance_autre_content, '
-                            'autre_contenu, reclamations_clients_contenu, relation_dos_client, description, impact_patient, '
+                            'autre_contenu, reclamations_clients_contenu, relation_dos_client, no_dos, description, impact_patient, '
                             'impacts_perso_visit, traitement_qui_id, traitement_quoi, traitement_quand, traitement_action_corrective, '
                             'traitement_action_description, traitement_date_real, traitement_correctif_responsable_id, cloture_commentaire, '
                             'cloture_validateur_id, cloture_date) '
                             'values '
                             '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(name)s, %(reporter)s, %(report_date)s, '
                             '%(cat_preana)s, %(cat_analy)s, %(cat_postana)s, %(cat_res)s, %(cat_hr)s, %(cat_eqp)s, '
-                            '%(cat_consu)s, %(cat_local)s, %(cat_si)s, %(cat_contract)s, %(cat_client)s, '
+                            '%(cat_consu)s, %(cat_local)s, %(cat_si)s, %(cat_contract)s, '
                             '%(sub_preana_cat1)s, %(sub_preana_cat2)s, %(sub_preana_cat3)s, %(sub_preana_cat4)s, %(sub1_sub_preana_cat4)s, '
                             '%(sub2_sub_preana_cat4)s, %(sub3_sub_preana_cat4)s, %(sub_preana_cat5)s, %(sub_preana_cat6)s, '
                             '%(sub_preana_cat7)s, %(sub_preana_cat8)s, %(sub_preana_cat9)s, %(sub_preana_cat10)s, %(sub_analy_cat1)s,'
@@ -98,12 +187,12 @@ class Quality:
                             '%(sub_res_cat1)s, %(sub_res_cat2)s, %(sub_res_cat3)s, %(sub_res_cat4)s, %(sub_res_cat5)s, '
                             '%(sub_res_cat6)s, %(sub_res_cat7)s, %(sub_hr_cat1)s, %(sub_hr_cat2)s, %(sub_hr_cat3)s, '
                             '%(sub_hr_cat4)s, %(sub_hr_cat5)s, %(sub_eqp_cat1)s, %(sub_eqp_cat2)s, %(sub_eqp_cat3)s, '
-                            '%(sub_eqp_cat4)s, %(sub_eqp_cat5)s, %(sub_eqp_cat6)s, %(sub_consu_cat1)s, %(sub_consu_cat2)s, '
-                            '%(sub_consu_cat3)s, %(sub_consu_cat4)s, %(sub_consu_cat5)s, %(sub_consu_cat6)s, %(sub_local_cat1)s, '
+                            '%(sub_eqp_cat4)s, %(sub_eqp_cat5)s, %(sub_eqp_cat6)s, %(equipment)s, %(sub_consu_cat1)s, %(sub_consu_cat2)s, '
+                            '%(sub_consu_cat3)s, %(sub_consu_cat4)s, %(sub_consu_cat5)s, %(sub_consu_cat6)s, %(supplier)s, %(sub_local_cat1)s, '
                             '%(sub_local_cat2)s, %(sub_local_cat3)s, %(sub_local_cat4)s, %(sub_local_cat5)s, %(sub_local_cat6)s, '
                             '%(sub_si_cat1)s, %(sub_si_cat2)s, %(sub_si_cat3)s, %(sub_si_cat4)s, %(sub_si_cat5)s,  %(sub_si_cat6)s, '
                             '%(sub_contract_cat1)s, %(sub_contract_cat2)s, %(sub_contract_cat3)s, %(sub_contract_cat4)s, %(sub_contract_cat5)s, '
-                            '%(cat_other)s, %(about_pat_rec)s, %(description)s, %(impact_pat)s, %(impact_user)s, %(followed)s, '
+                            '%(cat_other)s, %(cat_client)s, %(about_pat_rec)s, %(pat_rec_num)s, %(description)s, %(impact_pat)s, %(impact_user)s, %(followed)s, '
                             '%(flwd_what)s, %(flwd_when)s, %(impl_action)s, %(flwd_descr_action)s, %(flwd_action_date)s, '
                             '%(incharge)s, %(close_comment)s, %(validate)s, %(close_date)s)', params)
 
@@ -113,6 +202,85 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def updateNonConformity(**params):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update sigl_non_conformite_data set id_owner=%(id_owner)s,'
+                   'nom=%(name)s, user_id=%(reporter)s, date=%(report_date)s, pre_analytique=%(cat_preana)s, '
+                   'analytique=%(cat_analy)s, post_analytique=%(cat_postana)s, transmission_resultats=%(cat_res)s, '
+                   'rh=%(cat_hr)s, equipements=%(cat_eqp)s, reactifs_consommables=%(cat_consu)s, '
+                   'locaux_environnement=%(cat_local)s, systemes_informatiques=%(cat_si)s, '
+                   'sous_traitance=%(cat_contract)s, pre_analytique_prescription=%(sub_preana_cat1)s, '
+                   'pre_analytique_oubli_examen_error=%(sub_preana_cat2)s, pre_analytique_dossier_pat=%(sub_preana_cat3)s, '
+                   'pre_analytique_prel=%(sub_preana_cat4)s, pre_analytique_heure_prel=%(sub1_sub_preana_cat4)s, '
+                   'pre_analytique_vol_prel=%(sub2_sub_preana_cat4)s, pre_analytique_ident_prel=%(sub3_sub_preana_cat4)s, '
+                   'pre_analytique_renseignement_clin=%(sub_preana_cat5)s, '
+                   'pre_analytique_transport_echant=%(sub_preana_cat6)s, pre_analytique_respect_proc=%(sub_preana_cat7)s, '
+                   'pre_analytique_urgence=%(sub_preana_cat8)s, pre_analytique_tracabilite=%(sub_preana_cat9)s, '
+                   'pre_analytique_autre_content=%(sub_preana_cat10)s, analytique_conservation=%(sub_analy_cat1)s, '
+                   'analytique_urgence=%(sub_analy_cat2)s, analytique_centrifugation=%(sub_analy_cat3)s, '
+                   'analytique_aliquotage=%(sub_analy_cat4)s, analytique_ctrl_qualite_int=%(sub_analy_cat5)s, '
+                   'analytique_ctrl_qualite_ext=%(sub_analy_cat6)s, analytique_tracabilite=%(sub_analy_cat7)s, '
+                   'analytique_procedures=%(sub_analy_cat8)s, analytique_absence_resultat=%(sub_analy_cat9)s, '
+                   'analytique_critere_de_repasse=%(sub_analy_cat10)s, analytique_autre_content=%(sub_analy_cat11)s, '
+                   'post_analytique_dos_non_valide=%(sub_postana_cat1)s, '
+                   'post_analytique_validation_partiel=%(sub_postana_cat2)s, '
+                   'post_analytique_res_errone=%(sub_postana_cat3)s, '
+                   'post_analytique_absence_resultat=%(sub_postana_cat4)s, '
+                   'post_analytique_erreur_saisie=%(sub_postana_cat5)s, '
+                   'post_analytique_interpretation=%(sub_postana_cat6)s, '
+                   'post_analytique_presta_conseil=%(sub_postana_cat7)s, '
+                   'post_analytique_conservation=%(sub_postana_cat8)s, '
+                   'post_analytique_procedures=%(sub_postana_cat9)s, '
+                   'post_analytique_autre_content=%(sub_postana_cat10)s, '
+                   'transmission_resultats_non_transmis_patient=%(sub_res_cat1)s, '
+                   'transmission_resultats_non_transmis_presc=%(sub_res_cat2)s, '
+                   'transmission_resultats_acces_result=%(sub_res_cat3)s, '
+                   'transmission_resultats_date_rendu=%(sub_res_cat4)s, '
+                   'transmission_resultats_delai_non_resp=%(sub_res_cat5)s, '
+                   'transmission_resultats_procedure=%(sub_res_cat6)s, '
+                   'transmission_resultats_autre_content=%(sub_res_cat7)s, rh_procedures=%(sub_hr_cat1)s, '
+                   'rh_absence=%(sub_hr_cat2)s, rh_habilitation=%(sub_hr_cat3)s, rh_aes_hygiene_secu=%(sub_hr_cat4)s, '
+                   'rh_autre_contenu=%(sub_hr_cat5)s, equipements_etalonnage=%(sub_eqp_cat1)s, '
+                   'equipements_calibration=%(sub_eqp_cat2)s, equipements_alarme=%(sub_eqp_cat3)s, '
+                   'equipements_panne=%(sub_eqp_cat4)s, equipements_procedures=%(sub_eqp_cat5)s, '
+                   'equipements_autre_content=%(sub_eqp_cat6)s, equipements_autre=%(equipment)s, '
+                   'reactifs_consommables_reception=%(sub_consu_cat1)s, reactifs_consommables_delais=%(sub_consu_cat2)s, '
+                   'reactifs_consommables_reactifs=%(sub_consu_cat3)s, reactifs_consommables_rupture=%(sub_consu_cat4)s, '
+                   'reactifs_consommables_destockage=%(sub_consu_cat5)s, '
+                   'reactifs_consommables_autre_content=%(sub_consu_cat6)s, reactifs_consommables_autre=%(supplier)s, '
+                   'locaux_environnement_nettoyage=%(sub_local_cat1)s, locaux_environnement_entretien=%(sub_local_cat2)s, '
+                   'locaux_environnement_coupure_elec=%(sub_local_cat3)s, '
+                   'locaux_environnement_coupure_eau=%(sub_local_cat4)s, locaux_environnement_dechets=%(sub_local_cat5)s, '
+                   'locaux_environnement_autre_content=%(sub_local_cat6)s, '
+                   'systemes_informatiques_absence=%(sub_si_cat1)s, systemes_informatiques_erreur=%(sub_si_cat2)s, '
+                   'systemes_informatiques_panne_reseau=%(sub_si_cat3)s, '
+                   'systemes_informatiques_panne_systeme=%(sub_si_cat4)s, '
+                   'systemes_informatiques_panne_materiel=%(sub_si_cat5)s, '
+                   'systemes_informatiques_autre_content=%(sub_si_cat6)s, '
+                   'sous_traitance_delai=%(sub_contract_cat1)s, sous_traitance_erreur=%(sub_contract_cat2)s, '
+                   'sous_traitance_conservation=%(sub_contract_cat3)s, sous_traitance_facturation=%(sub_contract_cat4)s, '
+                   'sous_traitance_autre_content=%(sub_contract_cat5)s, autre_contenu=%(cat_other)s, '
+                   'reclamations_clients_contenu=%(cat_client)s, relation_dos_client=%(about_pat_rec)s, '
+                   'no_dos=%(pat_rec_num)s, description=%(description)s, impact_patient=%(impact_pat)s, '
+                   'impacts_perso_visit=%(impact_user)s, traitement_qui_id=%(followed)s, traitement_quoi=%(flwd_what)s, '
+                   'traitement_quand=%(flwd_when)s, traitement_action_corrective=%(impl_action)s, '
+                   'traitement_action_description=%(flwd_descr_action)s, traitement_date_real=%(flwd_action_date)s, '
+                   'traitement_correctif_responsable_id=%(incharge)s, cloture_commentaire=%(close_comment)s, '
+                   'cloture_validateur_id=%(validate)s, cloture_date=%(close_date)s '
+                   'where id_data=%(id_data)s')
+
+            cursor.execute(req, params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getEquipmentList():

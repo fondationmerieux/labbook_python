@@ -652,6 +652,9 @@ def setting_det_analysis(analysis_id=0):
     json_ihm  = {}
     json_data = {}
 
+    json_data['details'] = []
+    json_data['var'] = []
+
     # Load analysis type
     try:
         url = session['server_int'] + '/services/dict/det/famille_analyse'
@@ -674,6 +677,28 @@ def setting_det_analysis(analysis_id=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
 
+    # Load type result
+    try:
+        url = session['server_int'] + '/services/dict/det/type_resultat'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_res'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests type result list failed, err=%s , url=%s', err, url)
+
+    # Load unit
+    try:
+        url = session['server_int'] + '/services/dict/det/unite_valeur'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['unit'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests unit list failed, err=%s , url=%s', err, url)
+
     if analysis_id > 0:
         # Load analysis details
         try:
@@ -681,10 +706,23 @@ def setting_det_analysis(analysis_id=0):
             req = requests.get(url)
 
             if req.status_code == 200:
-                json_data = req.json()
+                json_data['details'] = req.json()
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests analysis det failed, err=%s , url=%s', err, url)
+
+        # Load analysis variables list
+        try:
+            url = session['server_int'] + '/services/analysis/variable/list/' + str(analysis_id)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['var'] = req.json()
+
+                log.error(Logs.fileline() + ' : DEBUG var=' + str(json_data['var']))
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests analysis var list failed, err=%s , url=%s', err, url)
 
     json_data['analysis_id'] = analysis_id
 
@@ -2265,6 +2303,67 @@ def biological_validation(mode='', id_rec=0):
 # --- Report page ---
 # --------------------
 
+# Page : report activity
+@app.route('/report-activity')
+def report_activity():
+    log.info(Logs.fileline() + ' : TRACE report activity')
+
+    session['current_page'] = 'report-activity'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
+    # load age interval setting
+    try:
+        url = session['server_int'] + '/services/setting/age/interval'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['age_interval'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests age interval setting failed, err=%s , url=%s', err, url)
+
+    # load data for activity
+    try:
+        date_beg = date.today()
+        date_beg = date_beg - timedelta(days=31)
+        date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
+
+        date_end = date.today()
+        date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg,
+                   'date_end': date_end,
+                   'type_ana': 0}
+
+        url = session['server_int'] + '/services/report/activity'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['stat'] = json.dumps(req.json())
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report activity failed, err=%s , url=%s', err, url)
+
+    return render_template('report-activity.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
 # Page : report epidemiological
 @app.route('/report-epidemio')
 @app.route('/report-epidemio/<string:date_beg>/<string:date_end>')
@@ -3350,7 +3449,7 @@ def list_nonconformities():
 
         payload = {'date_beg': date_beg, 'date_end': date_end}
 
-        url = session['server_int'] + '/services/quality/conformity/list'
+        url = session['server_int'] + '/services/quality/nonconformity/list'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -3380,6 +3479,7 @@ def non_conformity(id_det=0):
 
         if req.status_code == 200:
             json_data['details'] = req.json()
+            log.error(Logs.fileline() + ' : details=' + str(json_data['details']))
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests non-conformity details failed, err=%s , url=%s', err, url)

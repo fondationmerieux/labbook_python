@@ -59,7 +59,6 @@
                             <th class="text-left">{{ _("Action") }}</th>
                             <th class="text-left cursor-act">{{ _("Date de création") }}</th>
                             <th class="text-left cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-left cursor-act">{{ _("Catégorie") }}</th>
                             <th class="text-left cursor-act">{{ _("Impact sur le patient") }}</th>
                             <th class="text-left cursor-act">{{ _("Impact sur le personnel") }}</th>
                             <th class="text-left cursor-act">{{ _("Mise en place d'une action correctrice") }}</th>
@@ -85,19 +84,19 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3" disabled>
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une non-conformité") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une non-conformité") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}
 
 {% block add_script %}
 <script>
-var data_items = {{ args['item_list']|safe }} ;
+var data_items = {% if args['item_list'] %}{{ args['item_list']|safe }}{% else %}[]{% endif %} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -119,7 +118,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/quality/conformity/list",
+            url: "/services/quality/nonconformity/list",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -164,7 +163,7 @@ let res = ''
 
 {% if not args %}
 res = '<tr>' +
-      '<td colspan="10">' +
+      '<td colspan="9">' +
       '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
 {% else %}
 let data_len = data_items.length ;
@@ -185,16 +184,19 @@ $("#list_items_total").html( data_len ) ;
         
     menu_act += '</div></ul></nav>' ;
 
+    let impact_patient = data_items[i].impact_patient ;
+    let impact_user    = data_items[i].impact_user    ;
+    let correction     = data_items[i].correction     ;
+
     res += '<tr><td hidden><div>' + data_items[i].id_data + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].date_create + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].name + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].category + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].impact_patient + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].impact_user + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].correction + '</div></td>' +
+           '<td><div class="text-left">' + convert_yes_no(impact_patient) + '</div></td>' +
+           '<td><div class="text-left">' + convert_yes_no(impact_user) + '</div></td>' +
+           '<td><div class="text-left">' + convert_yes_no(correction) + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].date_correction + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].date_close + '</div></td></tr>' ;
+           '<td><div class="text-left">' + data_items[i].close_date + '</div></td></tr>' ;
     }
 {% endif %}
 
@@ -203,6 +205,18 @@ $("#list_items_total").html( data_len ) ;
     $("#num_page_b").text( p_cur ) ;
 
     $("#table_items").tablesorter() ;  // sort only data on screen
+}
+
+function convert_yes_no( val )
+{
+let val_str = "" ;
+
+    if ( val == 4 )
+    val_str = "{{ _("Oui") }}" ;
+    else
+    val_str = "{{ _("Non") }}" ;
+
+return val_str ;
 }
 
 function add_item()
@@ -228,7 +242,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/quality/conformity/export",
+            url: "{{ session['server_ext'] }}/services/quality/nonconformity/export",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -248,7 +262,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
             today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "conformity_" + today + ".csv" ;
+            let filename = "nonconformity_" + today + ".csv" ;
 
             download_file( "PY", filename, "GEN", 0 ) ;
             },

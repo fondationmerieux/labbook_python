@@ -7,7 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - export DHIS2
 - import/export users
 - finish Analysis repository module (add/modify/import/export)
-- finish non-conformity module
+
+## [3.0.3] - 2021-04-08
+### Added
+- Ct unit
+- 5 analyzes for SARS-CoV-2 (COVID 19) added
+
+### Changed
+- Non conformity module finished
+- Paludisme and VIH formula modified for epidemio
+- B136 formula modified
+- size of column for analyzes codes
 
 ## [3.0.2] - 2021-04-01
 ### Changed

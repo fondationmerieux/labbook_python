@@ -15,18 +15,31 @@ from app.models.Logs import Logs
 class AnalysisSearch(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self, id_group):
+    def post(self, type):
         args = request.get_json()
 
-        id_lab = User.getUserGroupParent(id_group)
-
-        l_analysis = Analysis.getAnalysisSearch(args['term'], id_lab['id_group_parent'], id_group)
+        l_analysis = Analysis.getAnalysisSearch(args['term'], type)
 
         if not l_analysis:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisSearch not found')
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisSearch')
         return compose_ret(l_analysis, Constants.cst_content_type_json)
+
+
+class AnalysisVarSearch(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_vars = Analysis.getAnalysisVarSearch(args['term'])
+
+        if not l_vars:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisVarSearch not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisVarSearch')
+        return compose_ret(l_vars, Constants.cst_content_type_json)
 
 
 class AnalysisList(Resource):
@@ -185,6 +198,26 @@ class AnalysisDet(Resource):
 
         self.log.info(Logs.fileline() + ' : AnalysisDet id_data=' + str(id_ana))
         return compose_ret(analysis, Constants.cst_content_type_json, 200)
+
+
+class AnalysisVarList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_ana):
+        l_vars = Analysis.getListVariable(id_ana)
+
+        if not l_vars:
+            self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarList ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for var in l_vars:
+            # Replace None by empty string
+            for key, value in var.items():
+                if var[key] is None:
+                    var[key] = ''
+
+        self.log.info(Logs.fileline() + ' : AnalysisVarList id_data=' + str(id_ana))
+        return compose_ret(l_vars, Constants.cst_content_type_json, 200)
 
 
 class AnalysisTypeProd(Resource):
