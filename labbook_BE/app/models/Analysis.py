@@ -133,7 +133,7 @@ class Analysis:
 
         req = ('select var.id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
-               'formule_unite2 as formula2, formule as formula, var.precision as accu, precision2 as accu2, '
+               'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.id_data as id_link, '
                'd1.label as unit_label '
                'from sigl_07_data as var '
