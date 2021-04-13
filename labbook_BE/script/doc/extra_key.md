@@ -4,7 +4,7 @@
 
 Starting with version 2.9.0, LabBook backups are encrypted using GPG, which allows multiple recipients when encrypting.
 LabBook backups are therefore encrypted to the local public key as well as another public key.
-LabBook is distributed with a special `fondation-merieux` key which allows [Fondation Mérieux](www.fondation-merieux.org)
+LabBook is distributed with a special `fondation-merieux` key which allows [Fondation Mérieux](https://www.fondation-merieux.org)
 to be able to decrypt a backup should the passphrase to the local private key be lost.
 
 This document describe how to generate such an extra keys pair, change the private key passphrase
@@ -38,7 +38,7 @@ sec  2048R/8E57A7A1 2021-03-25 LabBook Backup Key
 
 A similar key pair was generated for LabBook 3 and the public key is included in the `labbook_python` project as `labbook_python/labbook_BE/script/kpub.fondation-merieux.asc`.
 It is copied on every LabBook 3 backup media.
-The corresponding private key is stored safely by [Fondation Mérieux](www.fondation-merieux.org).
+The corresponding private key is stored safely by [Fondation Mérieux](https://www.fondation-merieux.org).
 
 ## Modifying the private key passphrase
 

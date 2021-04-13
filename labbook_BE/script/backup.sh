@@ -1561,7 +1561,6 @@ fn_restore_lb25() {
 # - clef_sauvegarde.privee.gpg
 # - files.tar.gz.gpg
 # - kpri.fingerprint.asc
-# - kpri.fingerprint.asc
 #
 # Param:
 # - archive
