@@ -23,7 +23,7 @@
                 <div class="form-group row">
                     <label for="search_reporter" class="col-form-label col-3 text-right mr-1">{{ _("Rapporteur") }} *</label>
                     <div>
-                        {% if args['details']['reporter_id'] and args['details']['reporter_id'] == 0 %}
+                        {% if args['id_det'] == 0 %}
                         <select id="search_reporter" style="width:400px"></select>
                         {% else %}
                         <span class="ml-2">{{ args['details']['reporter'] }}</span>

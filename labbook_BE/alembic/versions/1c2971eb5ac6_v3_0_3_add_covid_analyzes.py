@@ -116,9 +116,10 @@ def upgrade():
         try:
             conn.execute('insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, cote_valeur, '
                          'produit_biologique, type_prel, type_analyse, commentaire, actif) '
-                         'values (1000, "B5271b", "Recherche de l\'ARN de virus SARS-CoV-2 (COVID 19) par RT-LAMP", "", '
-                         '23, "B", 160, 13, 163, 170, "Recherche du génome du SARS-CoV-2 par RT-LAMP, '
-                         'les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2", 4)')
+                         'values (1000, "B5271b", "Recherche de l\'ARN de virus SARS-CoV-2 (COVID 19) par RT-LAMP", '
+                         '"RT-LAMP SARS-CoV-2", 23, "B", 160, 13, 163, 170, "Recherche du génome du SARS-CoV-2 '
+                         'par RT-LAMP, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome '
+                         'du SARS COV2", 4)')
         except:
             print("ERROR insert B5271b analysis")
         else:
