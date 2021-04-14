@@ -290,7 +290,7 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/quality/supplier/det/" + id_item,
+            url: "{{ session['server_ext'] }}/services/quality/nonconformity/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
