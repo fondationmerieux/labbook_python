@@ -287,15 +287,14 @@ class ScriptBackup(Resource):
         ret = os.system(cmd)
 
         # read backup file
-        if ret:
-            try:
-                ret = ''
-                f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
-                for line in f:
-                    ret += line
-            except:
-                self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
-                return compose_ret(ret, Constants.cst_content_type_json, 500)
+        try:
+            ret = ''
+            f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
+            for line in f:
+                ret += line
+        except:
+            self.log.info(Logs.fileline() + ' : ERROR ScriptBackup impossible to open listmedia file')
+            return compose_ret(ret, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptBackup ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)

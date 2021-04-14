@@ -283,6 +283,21 @@ class Quality:
             return False
 
     @staticmethod
+    def deleteNonConformity(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from sigl_non_conformite_data '
+                           'where id_data=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getEquipmentList():
         cursor = DB.cursor()
 

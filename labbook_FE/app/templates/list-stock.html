@@ -247,11 +247,11 @@ $("#list_items_total").html( data_len ) ;
 
 function delete_item(id_item)
 {
-let id_owner = {{ session['user_id_group']|safe}} ;
+var id_user = {{ session['user_id']|safe}} ;
 
     if ( window.confirm("{{ _("Merci de confirmer la suppression du produit") }}") )
     {
-    let param = '{ "id_owner":' + id_owner + '}' ;
+    var param = '{ "id_user":' + id_user + '}' ;
 
         $.ajax( 
         {

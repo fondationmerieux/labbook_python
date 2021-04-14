@@ -399,7 +399,7 @@ class ConformityDet(Resource):
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     def delete(self, id_item):
-        ret = Quality.deleteConformity(id_item)
+        ret = Quality.deleteNonConformity(id_item)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : TRACE ConformityDet delete ERROR')
