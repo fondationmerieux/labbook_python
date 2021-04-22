@@ -153,10 +153,12 @@ class Export:
 
         # patient details and add lab info
         for res in l_res:
-            req = 'select pat.code as pat_code, pat.nom as pat_name, pat.prenom as pat_fname, ddn, age, dico.label as sex '\
-                  'from sigl_03_data as pat '\
-                  'inner join sigl_dico_data as dico on pat.sexe=dico.id_data and dico.dico_name="sexe" '\
-                  'where pat.id_data=%s'
+            req = ('select pat.code as pat_code, pat.nom as pat_name, pat.prenom as pat_fname, ddn, age, '
+                   'dico.label as sex, pat.adresse as pat_addr, pat.ville as pat_city, pat.cp as pat_zip, '
+                   'pat.tel as pat_phone, pat.profession as pat_class, pat.unite as cat_age '
+                   'from sigl_03_data as pat '
+                   'inner join sigl_dico_data as dico on pat.sexe=dico.id_data and dico.dico_name="sexe" '
+                   'where pat.id_data=%s')
 
             cursor.execute(req, (res['id_patient'],))
 

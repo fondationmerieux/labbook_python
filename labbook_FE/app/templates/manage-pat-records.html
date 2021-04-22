@@ -111,7 +111,7 @@
                                     <label class="col-form-label col-3 text-right mr-1">{{ _("Date de naissance") }}</label>
                                     <div>
                                         <input id="ddn_1" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
-                                        <input id="date_current_1" type="hidden" maxlength="10" size="10" value="" name="date_current" >
+                                        <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
                                     </div>
                                 </div>
                             </div>
@@ -303,7 +303,6 @@
                                     <label class="col-form-label col-3 text-right mr-1">{{ _("Date de naissance") }}</label>
                                     <div>
                                         <input id="ddn_2" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
-                                        <input id="date_current_2" type="hidden" maxlength="10" size="10" value="" name="date_current" >
                                     </div>
                                 </div>
                             </div>
@@ -327,7 +326,7 @@
                                 <div class="form-group form-inline">
                                     <label class="col-form-label col-3 text-right mr-1">{{ _("Age") }}</label>
                                     <div>
-                                        <input name="age" id="age_2" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                                        <input id="age_2" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +334,7 @@
                                 <div class="form-group form-inline">
                                     <label class="col-form-label text-right mr-1">{{ _("unité") }}</label>
                                     <div>					
-                                        <select name="unite" id="unite_2" class="form-control">
+                                        <select id="unite_2" class="form-control">
                                             <option value="1034" id="unite-1034_2">{{ _("Jours") }}</option>
                                             <option value="1035" id="unite-1035_2">{{ _("Semaines") }}</option>
                                             <option value="1036" id="unite-1036_2">{{ _("Mois") }}</option>
@@ -627,6 +626,41 @@ $("input[type=radio][name=anonyme_1]").change(function()
     }
 } ) ;
 
+$("#ddn_1").change(function() 
+{
+// after date change calculate age and put unit
+var start = $("#ddn_1").val() ;
+var end   = $("#date_current").val() ;
+
+// end - start returns difference in milliseconds 
+var diff = new Date(Date.parse(end) - Date.parse(start));
+
+// get days
+var days = diff/1000/60/60/24;
+
+    if (days > 730)
+    {
+    $("#age_1").val( (days / 365).toFixed(0) ) ;
+    $("#unite_1").val("1037") ;
+    }
+    else if (days > 28)
+    {
+    $("#age_1").val( (days / 30).toFixed(0) ) ;
+    $("#unite_1").val("1036") ;
+    }
+    else if (days > 6)
+    {
+    $("#age_1").val( (days / 7).toFixed(0) ) ;
+    $("#unite_1").val("1035") ;
+    }
+    else
+    {
+    $("#age_1").val( (days).toFixed(0) ) ;
+    $("#unite_1").val("1034") ;
+    }
+
+} ) ;
+
 $("#search_patient1").on("select2:select", function (e) 
 {
 id_pat1 = $(e.currentTarget).val();
@@ -687,7 +721,7 @@ function load_data_pat( data, num )
     $("#ddn_approx-" + data.ddn_approx + "_" + num ).prop("checked", true) ;
     $("#sexe-" + data.sexe + "_" + num ).prop("checked", true) ;
     $("#age_" + num ).val( data.age ) ;
-    $("#unite-" + data.unite + "_" + num ).prop("checked", true) ;
+    $("#unite-" + data.unite + "_" + num ).prop("selected", true) ;
     $("#adresse_" + num ).val( data.adresse ) ;
     $("#bp_" + num ).val( data.bp ) ;
     $("#quartier_" + num ).val( data.quartier ) ;
@@ -757,7 +791,7 @@ function save_request()
                     $("#dial-wait").modal("hide") ;
 
                 console.log("ERROR POST fusion patient");
-                alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                alert("{{ _("Une erreur est survenue lors de la fusion") }}") ;
                 }
             } ) ;
         } ) ;
@@ -770,5 +804,10 @@ function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/sigl/homepage";
 }
+
+$( document ).ready( function()
+{
+    $("#date_current").val( "{{ now|date_now }}" ) ;
+} ) ;
 </script>
 {% endblock %}

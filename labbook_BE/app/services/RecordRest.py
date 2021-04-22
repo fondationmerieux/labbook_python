@@ -32,6 +32,17 @@ class RecordList(Resource):
         if not l_records:
             self.log.error(Logs.fileline() + ' : TRACE RecordList not found')
 
+        for record in l_records:
+            # Replace None by empty string
+            for key, value in record.items():
+                if record[key] is None:
+                    record[key] = ''
+
+            if record['type_rec'] and record['type_rec'] == 183:
+                record['type_rec'] = 'E'
+            else:
+                record['type_rec'] = 'I'
+
         self.log.info(Logs.fileline() + ' : TRACE RecordList')
         return compose_ret(l_records, Constants.cst_content_type_json)
 

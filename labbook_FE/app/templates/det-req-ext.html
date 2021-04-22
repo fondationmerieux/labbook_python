@@ -1159,11 +1159,11 @@ var param = '{ "id_owner":' + id_group + ', ' +
             // Add analysis
             for( i in data_analysis )
             {
-                if (i > 0)
-                param_list_ana += ', ' ;
-
                 if (data_analysis[i] != null)
                 {
+                    if (i > 0)
+                    param_list_ana += ', ' ;
+
                 var param_ana = '{ "id_owner":' + id_group + ', ' +
                                   '"id_rec":' + id_rec  + ', ' +
                                   '"id_ana":' + data_analysis[i].id_data + ', ' +
@@ -1179,10 +1179,10 @@ var param = '{ "id_owner":' + id_group + ', ' +
             // Add samples
             for( i in data_samples )
             {
-                param_list_ana += ', ' ;
-
                 if (data_samples[i] != null)
                 {
+                param_list_ana += ', ' ;
+
                 var param_samp = '{ "id_owner":' + id_group + ', ' +
                                    '"id_rec":' + id_rec  + ', ' +
                                    '"id_ana":' + data_samples[i].id_data + ', ' +
@@ -1211,11 +1211,11 @@ var param = '{ "id_owner":' + id_group + ', ' +
 
                     for( i in data_products )
                     {
-                        if (i > 0)
-                        param_list_prod += ', ' ;
-
                         if (data_products[i] != null)
                         {
+                            if (i > 0)
+                            param_list_prod += ', ' ;
+
                         var param_prod = '{ "id_owner":' + id_group + ', ' +
                                            '"date_samp":"' + data_products[i].dateSamp + '", ' +
                                            '"type_samp":"' + data_products[i].type + '", ' +

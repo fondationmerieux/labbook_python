@@ -208,7 +208,7 @@ class Patient:
     def getPatientHistoric(id_pat):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data, rec.date_prescription as date_prescr, ref.nom as analysis, '
+        req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.date_prescription as date_prescr, ref.nom as analysis, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
                'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '

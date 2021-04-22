@@ -773,7 +773,7 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('update sigl_fournisseurs_data '
-                           'set fournisseur_nom=%(supplier)s, contact_nom=%(lastname)s, contact_prenom=%(prenom)s, '
+                           'set fournisseur_nom=%(supplier)s, contact_nom=%(lastname)s, contact_prenom=%(firstname)s, '
                            'contact_fonction=%(funct)s, fournisseur_adresse=%(address)s, contact_tel=%(phone)s, '
                            'contact_email=%(email)s, contact_mobile=%(mobile)s, contact_fax=%(fax)s, commentaire=%(comment)s '
                            'where id_data=%(id_data)s', params)

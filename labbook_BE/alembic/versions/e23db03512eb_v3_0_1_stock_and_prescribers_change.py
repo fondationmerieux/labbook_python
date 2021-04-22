@@ -147,7 +147,8 @@ def upgrade():
 
     # ADD COLUMN TO USER TABLE FOR ASSOCIATE A SIDE ACCOUNT
     try:
-        op.add_column('sigl_user_data', sa.Column('side_account', sa.Integer))
+        # DOESNT WORK op.add_column('sigl_user_data', sa.Column('side_account', sa.Integer))
+        conn.execute("alter table sigl_user_data add column side_account int default 0")
     except:
         print("ERROR add column side_account to sigl_user_data")
     else:

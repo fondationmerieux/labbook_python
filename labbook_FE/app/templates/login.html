@@ -66,8 +66,6 @@ function send_login()
 let login = $("#login").val() ;
 let pwd   = $("#password").val() ;
 
-console.log( "DEBUG login="+login + " | pwd="+pwd ) ;
-
 var param = '{ "login":"' + login + '", "pwd":"' + pwd + '"}' ;
 
     $.ajax( 

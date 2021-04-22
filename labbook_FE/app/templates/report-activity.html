@@ -61,8 +61,13 @@
                 </fieldset>
             </form>
 
+            <br />
+            <p>* {{ _("H = Homme, F = Femme, I = Inconnu") }}</p>
+
             <div class="float-right mt-3 mb-5">
-                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+                <input type="button" onclick="export_by_type();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Export par type") }}">
+                <input type="button" onclick="export_by_age();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Export par age") }}">
+                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Télécharger le rapport") }}">
             </div>
 
         </div>
@@ -74,6 +79,10 @@
 <script>
 var data_stats = {% if args['stat'] %}{{ args['stat']|safe }}{% else %}[]{% endif %} ;
 var data_interval = {% if ihm['age_interval'] %}{{ ihm['age_interval']|safe }}{% else %}[]{% endif %} ;
+
+var csv_type= "" ;
+var csv_age = "" ;
+var csv_head_age = "{{ _("Analyses") }};" ;
 
 function filter_data()
 {
@@ -136,19 +145,24 @@ function display_data()
 function display_by_type( data )
 {
 let len_data = data_interval.length ;
-let res_head = '<tr><th>{{ _("Analyses") }}</th><th colspan="2">{{ _("Externes") }}</th>' +
-               '<th colspan="2">{{ _("Hospitalisés") }}</th><th colspan="2">{{ _("Total") }}</th></tr>' +
-               '<tr><td></td><td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td>' +
-               '<td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td>' +
-               '<td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td></tr>' ;
+let res_head = '<tr><th>{{ _("Analyses") }}</th><th colspan="3">{{ _("Externes") }}</th>' +
+               '<th colspan="3">{{ _("Hospitalisés") }}</th><th colspan="2">{{ _("Total") }}</th></tr>' +
+               '<tr><td></td><td class="text-center font-info">{{ _("H") }}</td><td class="text-center font-info">{{ _("F") }}</td>' +
+               '<td class="text-center font-info">{{ _("I") }}</td><td class="text-center font-info">{{ _("H") }}</td>' +
+               '<td class="text-center font-info">{{ _("F") }}</td><td class="text-center font-info">{{ _("I") }}</td>' +
+               '<td class="text-center font-info">{{ _("H") }}</td><td class="text-center font-info">{{ _("F") }}</td>' +
+               '<td class="text-center font-info">{{ _("I") }}</td></tr>' ;
 let res_body = '' ;
 
 let val_E_M = {} ;
 let val_E_F = {} ;
+let val_E_I = {} ;
 let val_I_M = {} ;
 let val_I_F = {} ;
+let val_I_I = {} ;
 let val_T_M = {} ;
 let val_T_F = {} ;
+let val_T_I = {} ;
 
     // calculate statistic
     for( i = 0; i < data.length; i++ )
@@ -163,6 +177,8 @@ let val_T_F = {} ;
             val_E_M[data[i].code] += data[i].nb_ana ;
             else
             val_E_M[data[i].code] = data[i].nb_ana ;
+
+
 
             if (val_T_M[data[i].code] != undefined)
             val_T_M[data[i].code] += data[i].nb_ana ;
@@ -181,6 +197,18 @@ let val_T_F = {} ;
             val_T_F[data[i].code] += data[i].nb_ana ;
             else
             val_T_F[data[i].code] = data[i].nb_ana ;
+        }
+        else
+        {
+            if (val_E_I[data[i].code] != undefined)
+            val_E_I[data[i].code] += data[i].nb_ana ;
+            else
+            val_E_I[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_I[data[i].code] != undefined)
+            val_T_I[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_I[data[i].code] = data[i].nb_ana ;
         }
     }
     else
@@ -210,6 +238,18 @@ let val_T_F = {} ;
             else
             val_T_F[data[i].code] = data[i].nb_ana ;
         }
+        else
+        {
+            if (val_I_I[data[i].code] != undefined)
+            val_I_I[data[i].code] += data[i].nb_ana ;
+            else
+            val_I_I[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_I[data[i].code] != undefined)
+            val_T_I[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_I[data[i].code] = data[i].nb_ana ;
+        }
 
     }
         
@@ -220,17 +260,26 @@ let val_T_F = {} ;
         if (val_E_F[data[i].code] == undefined)
         val_E_F[data[i].code] = 0 ;
 
+        if (val_E_I[data[i].code] == undefined)
+        val_E_I[data[i].code] = 0 ;
+
         if (val_I_M[data[i].code] == undefined)
         val_I_M[data[i].code] = 0 ;
 
         if (val_I_F[data[i].code] == undefined)
         val_I_F[data[i].code] = 0 ;
 
+        if (val_I_I[data[i].code] == undefined)
+        val_I_I[data[i].code] = 0 ;
+
         if (val_T_M[data[i].code] == undefined)
         val_T_M[data[i].code] = 0 ;
 
         if (val_T_F[data[i].code] == undefined)
         val_T_F[data[i].code] = 0 ;
+
+        if (val_T_I[data[i].code] == undefined)
+        val_T_I[data[i].code] = 0 ;
     }
 
 let line   = '' ;
@@ -242,16 +291,24 @@ let code_p = '' ;
         {
         code_p = data[i].code ;
 
-        line += '<tr><td class="text-left">'+ data[i].analysis + ' [' + data[i].code +']</td>' ;
+        line += '<tr><td class="text-center">'+ data[i].analysis + ' [' + data[i].code +']</td>' ;
 
-        line += '<td class="text-right">' + val_E_M[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_E_F[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_I_M[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_I_F[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_T_M[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_T_F[data[i].code] +'</td></tr>' ;
+        line += '<td class="text-center">' + val_E_M[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_E_F[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_E_I[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_I_M[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_I_F[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_I_I[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_T_M[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_T_F[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_T_I[data[i].code] +'</td></tr>' ;
 
         res_body += line ;
+
+        csv_type += data[i].analysis + ' [' + data[i].code +'];' + val_E_M[data[i].code] + ';' + 
+                    val_E_F[data[i].code] + ';' + val_E_I[data[i].code] + ';' + val_I_M[data[i].code] + ';' +
+                    val_I_F[data[i].code] + ';' + val_I_I[data[i].code] + ';' + val_T_M[data[i].code] + ';' +
+                    val_T_F[data[i].code] + ';' + val_T_I[data[i].code] + '\n' ;
 
         line = '' ;
         }
@@ -266,18 +323,18 @@ function display_by_age( data )
 let len_data = data_interval.length ;
 let res_head = '<tr><th>{{ _("Analyses") }}</th>' ;
 let res_sub  = '<tr><td></td>' ;
-let sub_head = '<td class="font-info">{{ _("Homme") }}</td><td class="font-info">{{ _("Femme") }}</td>' ;
+let sub_head = '<td class="text-center font-info">{{ _("H") }}</td><td class="text-center font-info">{{ _("F") }}</td><td class="text-center font-info">{{ _("I") }}</td>' ;
 let res_body = '' ;
 
 {% for obj in ihm['age_interval'] %}
 let val_{{loop.index0}}_M = {} ;
 let val_{{loop.index0}}_F = {} ;
+let val_{{loop.index0}}_I = {} ;
 {% endfor %}
 
-let val_U_M = {} ;
-let val_U_F = {} ;
 let val_T_M = {} ;
 let val_T_F = {} ;
+let val_T_I = {} ;
 
     // calculate statistic
     for( i = 0; i < data.length; i++ )
@@ -288,11 +345,6 @@ let val_T_F = {} ;
         {
             if ( data[i].sex == 1 )
             {
-                if (val_U_M[data[i].code] != undefined)
-                val_U_M[data[i].code] += data[i].nb_ana ;
-                else
-                val_U_M[data[i].code] = data[i].nb_ana ;
-
                 if (val_T_M[data[i].code] != undefined)
                 val_T_M[data[i].code] += data[i].nb_ana ;
                 else
@@ -301,16 +353,19 @@ let val_T_F = {} ;
             }
             else if ( data[i].sex == 2 )
             {
-                if (val_U_F[data[i].code] != undefined)
-                val_U_F[data[i].code] += data[i].nb_ana ;
-                else
-                val_U_F[data[i].code] = data[i].nb_ana ;
-
                 if (val_T_F[data[i].code] != undefined)
                 val_T_F[data[i].code] += data[i].nb_ana ;
                 else
                 val_T_F[data[i].code] = data[i].nb_ana ;
             }
+            else
+            {
+                if (val_T_I[data[i].code] != undefined)
+                val_T_I[data[i].code] += data[i].nb_ana ;
+                else
+                val_T_I[data[i].code] = data[i].nb_ana ;
+            }
+
 
         }{% for obj in ihm['age_interval'] %}
         else if ( (data_interval[{{loop.index0}}].ais_lower_bound == "" || data[i].age > data_interval[{{loop.index0}}].ais_lower_bound) &&
@@ -340,20 +395,29 @@ let val_T_F = {} ;
                 else
                 val_T_F[data[i].code] = data[i].nb_ana
             }
+            else
+            {
+                if (val_{{loop.index0}}_I[data[i].code] != undefined)
+                val_{{loop.index0}}_I[data[i].code] += data[i].nb_ana ;
+                else
+                val_{{loop.index0}}_I[data[i].code] = data[i].nb_ana ;
+
+                if (val_T_I[data[i].code] != undefined)
+                val_T_I[data[i].code] += data[i].nb_ana ;
+                else
+                val_T_I[data[i].code] = data[i].nb_ana
+            }
         }{% endfor %}
         
         // avoid undefined total
-        if (val_U_M[data[i].code] == undefined)
-        val_U_M[data[i].code] = 0 ;
-
-        if (val_U_F[data[i].code] == undefined)
-        val_U_F[data[i].code] = 0 ;
-
         if (val_T_M[data[i].code] == undefined)
         val_T_M[data[i].code] = 0 ;
 
         if (val_T_F[data[i].code] == undefined)
         val_T_F[data[i].code] = 0 ;
+
+        if (val_T_I[data[i].code] == undefined)
+        val_T_I[data[i].code] = 0 ;
     }
 
     // prepare columns age interval
@@ -362,23 +426,43 @@ let val_T_F = {} ;
     let head_name = '' ;
     
         if (data_interval[i].ais_lower_bound == "")
+        {
         head_name = '{{ _("Moins de") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
-        else if (data_interval[i].ais_upper_bound == "")
-        head_name = '{{ _("Plus de") }} ' + data_interval[i].ais_lower_bound + ' {{ _("ans") }}' ;
-        else
-        head_name = data_interval[i].ais_lower_bound + ' {{ _("à") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
 
-    res_head += '<th class="text-center font-info" colspan="2">' + head_name  + '</th>' ;
+        csv_head_age += "< " + data_interval[i].ais_upper_bound + " H;" + 
+                        "< " + data_interval[i].ais_upper_bound + " F;" +
+                        "< " + data_interval[i].ais_upper_bound + " I;"
+        }
+        else if (data_interval[i].ais_upper_bound == "")
+        {
+        head_name = '{{ _("Plus de") }} ' + data_interval[i].ais_lower_bound + ' {{ _("ans") }}' ;
+
+        csv_head_age += "> " + data_interval[i].ais_lower_bound + " H;" +
+                        "> " + data_interval[i].ais_lower_bound + " F;" +
+                        "> " + data_interval[i].ais_lower_bound + " I;" ;
+        }
+        else
+        {
+        head_name = data_interval[i].ais_lower_bound + ' {{ _("à") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+        csv_head_age += data_interval[i].ais_lower_bound + " - " + data_interval[i].ais_upper_bound + " H;" +
+                        data_interval[i].ais_lower_bound + " - " + data_interval[i].ais_upper_bound + " F;" +
+                        data_interval[i].ais_lower_bound + " - " + data_interval[i].ais_upper_bound + " I;" ;
+        }
+
+    res_head += '<th class="text-center font-info" colspan="3">' + head_name  + '</th>' ;
     res_sub  += sub_head ;
     }
 
-res_head += '<th class="text-center font-info" colspan="2">{{ _("Non renseigné") }}</th><th class="text-center font-info" colspan="2">{{ _("Total") }}</th></tr>' ;
-res_sub  += sub_head + sub_head + '</tr>' ;
+csv_head_age += "Total H;Total F;Total I\n" ;
+
+res_head += '<th class="text-center font-info" colspan="3">{{ _("Total") }}</th></tr>' ;
+res_sub  += sub_head + '</tr>' ;
 
 res_head += res_sub ;
 
 let line   = '' ;
 let code_p = '' ;
+let csv_line = '' ;
 
     for( i = 0; i < data.length; i++ )
     {
@@ -386,11 +470,16 @@ let code_p = '' ;
         {
         code_p = data[i].code ;
 
-        line += '<tr><td class="text-left">'+ data[i].analysis + ' [' + data[i].code +']</td>' ;
+        console.log("TRACE i="+i + " | code=" + data[i].code) ;
+
+        line += '<tr><td class="text-center">'+ data[i].analysis + ' [' + data[i].code +']</td>' ;
+
+        csv_line += data[i].analysis + ' [' + data[i].code +'];' ;
 
         {% for obj in ihm['age_interval'] %}
         val_M = 0 ;
         val_F = 0 ;
+        val_I = 0 ;
 
             if (val_{{loop.index0}}_M[data[i].code] != undefined)
             val_M = val_{{loop.index0}}_M[data[i].code] ;
@@ -398,23 +487,144 @@ let code_p = '' ;
             if (val_{{loop.index0}}_F[data[i].code] != undefined)
             val_F = val_{{loop.index0}}_F[data[i].code] ;
 
-        line += '<td class="text-right">' + val_M +'</td>' ;
-        line += '<td class="text-right">' + val_F +'</td>' ;
+            if (val_{{loop.index0}}_I[data[i].code] != undefined)
+            val_I = val_{{loop.index0}}_I[data[i].code] ;
+
+        line += '<td class="text-center">' + val_M +'</td>' ;
+        line += '<td class="text-center">' + val_F +'</td>' ;
+        line += '<td class="text-center">' + val_I +'</td>' ;
+
+        csv_line += val_M + ";" + val_F + ";" + val_I + ";" ;
         {% endfor %}
 
-        line += '<td class="text-right">' + val_U_M[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_U_F[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_T_M[data[i].code] +'</td>' ;
-        line += '<td class="text-right">' + val_T_F[data[i].code] +'</td></tr>' ;
+        line += '<td class="text-center">' + val_T_M[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_T_F[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_T_I[data[i].code] +'</td></tr>' ;
+
+        csv_line += val_T_M[data[i].code] + ";" + val_T_F[data[i].code] + ";" + val_T_I[data[i].code] + "\n" ;
 
         res_body += line ;
+        csv_age  += csv_line ;
 
         line = '' ;
+        csv_line = '' ;
         }
     }
 
     $("#thead_stat_by_age").append(res_head) ;
     $("#tbody_stat_by_age").append(res_body) ;
+}
+
+function export_by_type()
+{
+    if (csv_type == "")
+    return false ;
+
+csv_type = "{{ _("Analyses") }};Ext H;Ext F;Ext I;Int H;Int F;Int I;Total H;Total F;Total I\n" + csv_type ;
+
+csv_type = JSON.stringify(csv_type) ; 
+
+let today = new Date();
+
+let month = today.getMonth() + 1 ;
+
+    if (month < 10) month = '0' + month ;
+
+let day = today.getDate() ;
+
+    if (day < 10) day = '0' + day ;
+
+today = today.getFullYear() + '' + month + '' + day ;
+
+var filename = "activity_by_type_" + today + ".csv" ;
+
+var param = '{ "filename":"' + filename + '", ' +
+              '"csv_str":' + csv_type + '}' ;
+
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/export/csv",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
+    } ) ;
+}
+
+function export_by_age()
+{
+    if (csv_age == "")
+    return false ;
+
+csv_age = csv_head_age + csv_age ;
+
+csv_age = JSON.stringify(csv_age) ; 
+
+let today = new Date();
+
+let month = today.getMonth() + 1 ;
+
+    if (month < 10) month = '0' + month ;
+
+let day = today.getDate() ;
+
+    if (day < 10) day = '0' + day ;
+
+today = today.getFullYear() + '' + month + '' + day ;
+
+var filename = "activity_by_age_" + today + ".csv" ;
+
+var param = '{ "filename":"' + filename + '", ' +
+              '"csv_str":' + csv_age + '}' ;
+
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/export/csv",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
+    } ) ;
 }
 
 function download_report()

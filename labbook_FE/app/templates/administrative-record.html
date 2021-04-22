@@ -99,7 +99,7 @@
             <div class="row ml-3">
                 <div class="col-12 mt-3">
                     <span class="mr-1">{{ _("Date d'admission") }}</span>
-                    <span class="font-info">{{ args['record']['date_hosp']|date_format }}</span>
+                    <span class="font-info">{% if args['record']['date_hosp'] %}{{ args['record']['date_hosp']|date_format }}{% endif %}</span>
                 </div>
                 <div class="col-12 mt-3">
                     <span class="mr-1">{{ _("Service demandeur") }}</span>

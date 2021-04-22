@@ -55,25 +55,26 @@ class Record:
             filter_cond += ' and dos.med_prescripteur=' + str(id_pres) + ' '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
-        req = 'select dos.statut as stat, '\
-              'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), dos.num_dos_mois), '\
-              'if(param_num_dos.format=1072, substring(dos.num_dos_an from 7), dos.num_dos_an)) as num_dos, '\
-              'if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '\
-              'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, pat.prenom as prenom, pat.id_data as id_pat '\
-              'from sigl_02_data as dos '\
-              'inner join sigl_03_data as pat on dos.id_patient=pat.id_data '\
-              'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '\
-              'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '\
-              'where ' + filter_cond +\
-              'group by dos.id_data order by dos.num_dos_an desc ' + limit
+        req = ('select dos.statut as stat, dos.type as type_rec, '
+               'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), '
+               'dos.num_dos_mois), if(param_num_dos.format=1072, substring(dos.num_dos_an from 7), dos.num_dos_an)) '
+               'as num_dos, if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '
+               'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, '
+               'pat.prenom as prenom, pat.id_data as id_pat '
+               'from sigl_02_data as dos '
+               'inner join sigl_03_data as pat on dos.id_patient=pat.id_data '
+               'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '
+               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '
+               'where ' + filter_cond +
+               'group by dos.id_data order by dos.num_dos_an desc ' + limit)
 
         cursor.execute(req, (Constants.cst_isodate,))
 
         l_rec = cursor.fetchall()
 
-        req = 'select count(*) as nb_emer '\
-              'from sigl_04_data '\
-              'where id_dos=%s and urgent=4 '
+        req = ('select count(*) as nb_emer '
+               'from sigl_04_data '
+               'where id_dos=%s and urgent=4 ')
 
         # Search for emergency status
         for rec in l_rec:
@@ -91,11 +92,11 @@ class Record:
     def getRecord(id_rec):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, date_prescription, service_interne, num_lit, '\
-              'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, '\
-              'date_hosp '\
-              'from sigl_02_data '\
-              'where id_data=%s'
+        req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+               'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
+               'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp '
+               'from sigl_02_data '
+               'where id_data=%s')
 
         cursor.execute(req, (id_rec,))
 
@@ -105,11 +106,11 @@ class Record:
     def getLastRecord():
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, date_prescription, service_interne, num_lit, '\
-              'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, '\
-              'date_hosp '\
-              'from sigl_02_data '\
-              'order by id_data desc limit 1'
+        req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+               'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
+               'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp '
+               'from sigl_02_data '
+               'order by id_data desc limit 1')
 
         cursor.execute(req)
 

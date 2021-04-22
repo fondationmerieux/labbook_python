@@ -116,20 +116,40 @@ function save_res( id_rec, ref_ana )
 {
 let param_list_answer = '{ "list_answer":[ ' ;
 
+let oblig_ok = true ;
+
     // GET answer 
     $(".res-" + id_rec +"-"+ ref_ana ).each( function(i, elem)
     {
+    let tmp_id_res  = ($(this).attr("id")).substr(4) ;
+    let tmp_val_res = $(this).val() ;
+    let type_res    = $("#type_res_" + tmp_id_res ).val()
+    let oblig_stat  = $("#oblig_res_" + tmp_id_res ).val() ;
+    
+
+        if ( oblig_stat == 4 )
+        {
+            if ((type_res == "S" && tmp_val_res == 0) || (type_res == "W" && tmp_val_res == ""))
+            oblig_ok = false ;
+        }
+
         if (i > 0)
         param_list_answer += ', ' ;
 
     let param_answer = '{ "id_owner":' + {{ session['user_id_group'] }} + ', ' +
-                         '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
-                         '"value":"' + $(this).val() + '"}' ;
+                         '"id_res":' + tmp_id_res + ', ' +
+                         '"value":"' + tmp_val_res + '"}' ;
 
     param_list_answer += param_answer ;
     } ) ;
 
 param_list_answer += ' ] }' ;
+
+    if (!oblig_ok)
+    {
+    alert("{{ _("Certains résultats obligatoires ne sont pas saisis") }}") ;
+    return false;
+    }
 
     // UPDATE value
     $.ajax( 
@@ -213,7 +233,7 @@ param_list_valid += ' ] }' ;
         data: param_list_valid,
         success: function(data)
             {
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec ;
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
             },
         error: function(data)
             {
@@ -346,6 +366,10 @@ let disp_valid = "d-none" ;
                 // SELECT CHOICE RESULT
                 else if ( res_answer.length > 1 )
                 {
+                    // ADD a mark if obligatory result
+                    if (data[i].oblig == 4)
+                    res += '*&nbsp;' ;
+
                 let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ')"' ;
 
                     // Validated
@@ -380,11 +404,17 @@ let disp_valid = "d-none" ;
                     }
 
                 res += '</select>' ;
-                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
+                res += '<input type="hidden" id="type_res_' + id_res + '" value="S">' ;
+                res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
                 }
                 // WRITE RESULT
                 else if ( data[i].type_resultat != 229 && data[i].type_resultat != 265 ) // not calc and not label
                 {
+                    // ADD a mark if obligatory result
+                    if (data[i].oblig == 4)
+                    res += '*&nbsp;' ;
+
                 let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ');' ;
 
                     if ( value != "" && res_valid == 250 )
@@ -417,7 +447,9 @@ let disp_valid = "d-none" ;
                 res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
                 res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
                 res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
-                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
+                res += '<input type="hidden" id="type_res_' + id_res + '" value="W">' ;
+                res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
                 }
                 // READONLY RESULT
                 else

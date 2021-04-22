@@ -131,14 +131,14 @@ class DoctorDet(Resource):
         self.log.info(Logs.fileline() + ' : TRACE DoctorDet id_doctor=' + str(id_doctor))
         return compose_ret('', Constants.cst_content_type_json)
 
-    def delete(self, id_item):
-        ret = Doctor.deleteDoctor(id_item)
+    def delete(self, id_doctor):
+        ret = Doctor.deleteDoctor(id_doctor)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : TRACE DoctorDet delete ERROR')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
-        self.log.info(Logs.fileline() + ' : TRACE DoctorDet delete id_item=' + str(id_item))
+        self.log.info(Logs.fileline() + ' : TRACE DoctorDet delete id_item=' + str(id_doctor))
         return compose_ret('', Constants.cst_content_type_json)
 
 

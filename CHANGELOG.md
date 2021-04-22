@@ -4,11 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-- export DHIS2
+- setting and export DHIS2
 - import/export users
-- finish Analysis repository module (add/modify/import/export)
+- import/export Analysis repository
+- fixed report records
 
-## [3.0.3] - 2021-04-08
+## [3.0.4] - 2021-04-15
+### Added
+- Analysis repository module
+- csv export for report activity module
+
+### Changed
+- remove B171 analysis
+- rename and add column in WHONET export 
+
+### Fixed
+- way for add and remove column for 3.0.2, 3.0.1 and 2.9.1
+
+## [3.0.3] - 2021-04-14
 ### Added
 - Ct unit
 - 5 analyzes for SARS-CoV-2 (COVID 19) added

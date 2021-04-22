@@ -13,12 +13,34 @@ from app.models.Logs import Logs
 # from app.models.User import *
 
 
+class ExportCSV(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'filename' not in args or 'csv_str' not in args:
+            self.log.error(Logs.fileline() + ' : TRACE ExportCSV ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # write csv file
+        try:
+            f = open('tmp/' + args['filename'], "w")
+            f.write(args['csv_str'])
+            f.close()
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post ExportWhonet failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE ExportCSV')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class ExportWhonet(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
-        self.log.error(Logs.fileline() + ' : TRACE ExportWhonet START DEBUG')
-
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args:
@@ -26,28 +48,63 @@ class ExportWhonet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Data
-        l_data = [['Laboratory', 'Lab address', 'Lab city', 'Speciality', 'Identification number', 'First name', 'Last name', 'Sex', 'Date of birth', 'Age',
-                   'Date of admission', 'Service', 'Type of location', 'Exam number',
-                   'Specimen date', 'Specimen type', 'Specimen comment', 'Organism', 'Antibiotic', 'Method', 'Method value', 'Result']]
+        l_data = [["Laboratoire", "Lab adresse", "Lab ville", "Specialité", "Numéro d'identification", "Nom de famille",
+                   "Prénom", "Nom et prénom ", "Sexe", "Date de naissance", "Age", "Catégorie d'âge", "Adresse (patient)",
+                   "Ville (patient)", "Code postal (patient)", "Téléphone (patient)", "Profession (patient)",
+                   "Date d'admission", "Service", "Type patient", "Isolate number",
+                   "Date de prélèvement", "Type de prélèvement", "Commentaire", "Micro-organisme",
+                   "Nom de l'antibiotique 1", "Methode de détermination",
+                   "Method value", "Resultat d'antibiotique 1"]]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
         if dict_data:
             for d in dict_data:
                 data = []
 
-                data.append(d['lab_name'])
-                data.append(d['lab_addr'])
-                data.append(d['lab_city'])
+                if d['lab_name']:
+                    data.append(d['lab_name'])
+                else:
+                    data.append('')
+
+                if d['lab_addr']:
+                    data.append(d['lab_addr'])
+                else:
+                    data.append('')
+
+                if d['lab_city']:
+                    data.append(d['lab_city'])
+                else:
+                    data.append('')
 
                 if d['med_spe']:
                     data.append(d['med_spe'])
                 else:
                     data.append('')
 
-                data.append(d['pat_code'])
-                data.append(d['pat_fname'])
-                data.append(d['pat_name'])
-                data.append(d['sex'])
+                if d['pat_code']:
+                    data.append(d['pat_code'])
+                else:
+                    data.append('')
+
+                if d['pat_name']:
+                    data.append(d['pat_name'])
+                else:
+                    data.append('')
+
+                if d['pat_fname']:
+                    data.append(d['pat_fname'])
+                else:
+                    data.append('')
+
+                if d['pat_name'] and d['pat_fname']:
+                    data.append(d['pat_name'] + ' ' + d['pat_fname'])
+                else:
+                    data.append('')
+
+                if d['sex']:
+                    data.append(d['sex'])
+                else:
+                    data.append('Inconnu')
 
                 if d['ddn']:
                     d['ddn'] = datetime.strftime(d['ddn'], '%Y-%m-%d')
@@ -57,6 +114,45 @@ class ExportWhonet(Resource):
 
                 if d['age']:
                     data.append(d['age'])
+                else:
+                    data.append('')
+
+                if d['cat_age']:
+                    if d['cat_age'] == 1037:
+                        data.append('Années')
+                    elif d['cat_age'] == 1036:
+                        data.append('Mois')
+                    elif d['cat_age'] == 1035:
+                        data.append('Semaines')
+                    elif d['cat_age'] == 1034:
+                        data.append('Jours')
+                    else:
+                        data.append('')
+                else:
+                    data.append('')
+
+                if d['pat_addr']:
+                    data.append(d['pat_addr'])
+                else:
+                    data.append('')
+
+                if d['pat_city']:
+                    data.append(d['pat_city'])
+                else:
+                    data.append('')
+
+                if d['pat_zip']:
+                    data.append(d['pat_zip'])
+                else:
+                    data.append('')
+
+                if d['pat_phone']:
+                    data.append(d['pat_phone'])
+                else:
+                    data.append('')
+
+                if d['pat_class']:
+                    data.append(d['pat_class'])
                 else:
                     data.append('')
 

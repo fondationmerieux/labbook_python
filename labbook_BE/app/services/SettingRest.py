@@ -293,7 +293,7 @@ class ScriptBackup(Resource):
             for line in f:
                 ret += line
         except:
-            self.log.info(Logs.fileline() + ' : ERROR ScriptBackup impossible to open listmedia file')
+            self.log.info(Logs.fileline() + ' : ERROR ScriptBackup impossible to open file')
             return compose_ret(ret, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptBackup ret=' + str(ret))

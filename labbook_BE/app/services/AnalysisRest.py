@@ -177,8 +177,27 @@ class AnalysisHistoDet(Resource):
             if data['date_prescr']:
                 data['date_prescr'] = datetime.strftime(data['date_prescr'], '%Y-%m-%d')
 
+            if data['type_rec'] and data['type_rec'] == 183:
+                data['type_rec'] = 'E'
+            else:
+                data['type_rec'] = 'I'
+
         self.log.info(Logs.fileline() + ' : TRACE AnalysisHistoDet')
         return compose_ret(l_datas, Constants.cst_content_type_json)
+
+
+class AnalysisCode(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, code):
+        ret = Analysis.checkCodeAnalysis(code)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ' + 'AnalysisCode WARNING code already exist')
+            return compose_ret(1, Constants.cst_content_type_json, 200)
+        else:
+            self.log.info(Logs.fileline() + ' : AnalysisCode code ok :' + str(code))
+            return compose_ret(0, Constants.cst_content_type_json, 200)
 
 
 class AnalysisDet(Resource):
@@ -199,6 +218,242 @@ class AnalysisDet(Resource):
         self.log.info(Logs.fileline() + ' : AnalysisDet id_data=' + str(id_ana))
         return compose_ret(analysis, Constants.cst_content_type_json, 200)
 
+    def post(self, id_ana):
+        args = request.get_json()
+
+        if 'id_ana' not in args or 'code' not in args or 'name' not in args or 'abbr' not in args or \
+           'type_ana' not in args or 'type_prod' not in args or 'unit' not in args or 'value' not in args or \
+           'stat' not in args or 'comment' not in args or 'product' not in args or 'list_var' not in args or \
+           'whonet' not in args:
+            self.log.error(Logs.fileline() + ' : AnalysisDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        id_ana = args['id_ana']
+
+        # check if analysis already exist
+        analysis = Analysis.getAnalysis(id_ana)
+
+        # UPDATE ANALYSIS...
+        if analysis and analysis['id_data'] == id_ana:
+            self.log.error(Logs.fileline() + ' : AnalysisDet UPDATE analysis')
+
+            # update analysis
+            ret = Analysis.updateAnalysis(id_data=id_ana,
+                                          id_owner=args['id_owner'],
+                                          code=args['code'],
+                                          name=args['name'],
+                                          abbr=args['abbr'],
+                                          type_ana=args['type_ana'],
+                                          type_prod=args['type_prod'],
+                                          unit=args['unit'],
+                                          value=args['value'],
+                                          stat=args['stat'],
+                                          comment=args['comment'],
+                                          product=args['product'],
+                                          whonet=args['whonet'])
+
+            for var in args['list_var']:
+                if var['id_var'] > 0:
+                    # update variable which already exist
+                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'],
+                                                     id_owner=args['id_owner'],
+                                                     label=var['var_label'],
+                                                     descr=var['var_descr'],
+                                                     type_res=var['var_type_res'],
+                                                     var_min=var['var_min'],
+                                                     var_max=var['var_max'],
+                                                     comment=var['var_comment'],
+                                                     formula=var['var_formula'],
+                                                     unit=var['var_unit'],
+                                                     accu=var['var_accu'],
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    # new link with analysis
+                    if var['id_link'] == 0:
+                        ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
+                                                         id_refana=id_ana,
+                                                         id_refvar=var['id_var'],
+                                                         var_pos=var['var_pos'],
+                                                         var_num=var['var_num'],
+                                                         oblig=var['var_oblig'])
+
+                        if ret <= 0:
+                            self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
+                            return compose_ret('', Constants.cst_content_type_json, 500)
+                    else:
+                        ret = Analysis.updateRefVariable(id_data=var['id_link'],
+                                                         id_owner=args['id_owner'],
+                                                         id_refana=id_ana,
+                                                         id_refvar=var['id_var'],
+                                                         var_pos=var['var_pos'],
+                                                         var_num=var['var_num'],
+                                                         oblig=var['var_oblig'])
+
+                        if ret <= 0:
+                            self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update link var to analysis')
+                            return compose_ret('', Constants.cst_content_type_json, 500)
+
+                else:
+                    # insert new variable
+                    ret = Analysis.insertAnalysisVar(id_owner=args['id_owner'],
+                                                     label=var['var_label'],
+                                                     descr=var['var_descr'],
+                                                     type_res=var['var_type_res'],
+                                                     var_min=var['var_min'],
+                                                     var_max=var['var_max'],
+                                                     comment=var['var_comment'],
+                                                     formula=var['var_formula'],
+                                                     unit=var['var_unit'],
+                                                     accu=var['var_accu'],
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    id_var = ret
+
+                    # link variable
+                    ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
+                                                     id_refana=id_ana,
+                                                     id_refvar=id_var,
+                                                     var_pos=var['var_pos'],
+                                                     var_num=var['var_num'],
+                                                     oblig=var['var_oblig'])
+
+                    if ret <= 0:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # delete missing link to variable compared to analysis
+            db_l_var = Analysis.getListVariable(id_ana)
+
+            for db_var in db_l_var:
+                exist = False
+                for ihm_var in args['list_var']:
+                    if db_var['id_data'] == ihm_var['id_var']:
+                        exist = True
+
+                if not exist:
+                    ret = Analysis.deleteRefVar(db_var['id_data'])
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR delete link var analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # INSERT NEW ANALYSIS...
+        else:
+            self.log.error(Logs.fileline() + ' : AnalysisDet INSERT analysis')
+
+            # insert analysis
+            ret = Analysis.insertAnalysis(id_owner=args['id_owner'],
+                                          code=args['code'],
+                                          name=args['name'],
+                                          abbr=args['abbr'],
+                                          type_ana=args['type_ana'],
+                                          type_prod=args['type_prod'],
+                                          unit=args['unit'],
+                                          value=args['value'],
+                                          stat=args['stat'],
+                                          comment=args['comment'],
+                                          product=args['product'],
+                                          whonet=args['whonet'])
+
+            if ret <= 0:
+                self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert analysis')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_ana = ret
+
+            for var in args['list_var']:
+                if var['id_var'] > 0:
+                    # update variable which already exist
+                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'],
+                                                     id_owner=args['id_owner'],
+                                                     label=var['var_label'],
+                                                     descr=var['var_descr'],
+                                                     type_res=var['var_type_res'],
+                                                     var_min=var['var_min'],
+                                                     var_max=var['var_max'],
+                                                     comment=var['var_comment'],
+                                                     formula=var['var_formula'],
+                                                     unit=var['var_unit'],
+                                                     accu=var['var_accu'],
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    # link variable
+                    ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
+                                                     id_refana=id_ana,
+                                                     id_refvar=var['id_var'],
+                                                     var_pos=var['var_pos'],
+                                                     var_num=var['var_num'],
+                                                     oblig=var['var_oblig'])
+
+                    if ret <= 0:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                else:
+                    # insert new variable
+                    ret = Analysis.insertAnalysisVar(id_owner=args['id_owner'],
+                                                     label=var['var_label'],
+                                                     descr=var['var_descr'],
+                                                     type_res=var['var_type_res'],
+                                                     var_min=var['var_min'],
+                                                     var_max=var['var_max'],
+                                                     comment=var['var_comment'],
+                                                     formula=var['var_formula'],
+                                                     unit=var['var_unit'],
+                                                     accu=var['var_accu'],
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    id_var = ret
+
+                    # link variable
+                    ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
+                                                     id_refana=id_ana,
+                                                     id_refvar=id_var,
+                                                     var_pos=var['var_pos'],
+                                                     var_num=var['var_num'],
+                                                     oblig=var['var_oblig'])
+
+                    if ret <= 0:
+                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet id_ana=' + str(id_ana))
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_ana):
+        ret = Analysis.deleteAnalysis(id_ana)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet delete id_item=' + str(id_ana))
+        return compose_ret('', Constants.cst_content_type_json)
+
 
 class AnalysisVarList(Resource):
     log = logging.getLogger('log_services')
@@ -218,6 +473,25 @@ class AnalysisVarList(Resource):
 
         self.log.info(Logs.fileline() + ' : AnalysisVarList id_data=' + str(id_ana))
         return compose_ret(l_vars, Constants.cst_content_type_json, 200)
+
+
+class AnalysisVarDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_var):
+        ana_var = Analysis.getAnalysisVar(id_var)
+
+        if not ana_var:
+            self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in ana_var.items():
+            if ana_var[key] is None:
+                ana_var[key] = ''
+
+        self.log.info(Logs.fileline() + ' : AnalysisVarDet id_data=' + str(id_var))
+        return compose_ret(ana_var, Constants.cst_content_type_json, 200)
 
 
 class AnalysisTypeProd(Resource):

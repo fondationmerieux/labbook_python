@@ -296,6 +296,11 @@ class PatientHistoric(Resource):
             if ana['date_prescr']:
                 ana['date_prescr'] = datetime.strftime(ana['date_prescr'], '%Y-%m-%d')
 
+            if ana['type_rec'] and ana['type_rec'] == 183:
+                ana['type_rec'] = 'E'
+            else:
+                ana['type_rec'] = 'I'
+
         l_datas['analyzes'] = analyzes
 
         self.log.info(Logs.fileline() + ' : PatientHistoric id_pat=' + str(id_pat))

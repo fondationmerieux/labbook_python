@@ -203,7 +203,7 @@ class Report:
         req = ('select rec.id_data, rec.num_dos_jour as rec_num, rec.num_fact as bill_num, '
                'rec.prix as bill_price, rec.a_payer as bill_remain, rec.num_quittance as receipt_num '
                'from sigl_02_data as rec '
-               'inner join sigl_user_data as user on rec.id_owner=user.id_group '
+               'left join sigl_user_data as user on rec.id_owner=user.id_group '
                'where (rec.date_dos between %s and %s) ' + cond +
                'order by rec.id_data asc limit 7000')
 
@@ -215,7 +215,7 @@ class Report:
     def getTodayList(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data, rec.date_dos as rec_date, ref.nom as analysis, dict_fam.label as family, '
+        req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.date_dos as rec_date, ref.nom as analysis, dict_fam.label as family, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
                'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '

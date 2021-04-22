@@ -33,13 +33,15 @@ def upgrade():
 
     # DROP COLUMN TO PRODUCT SUPPLY TABLE
     try:
-        op.drop_column('backup_setting', sa.Column('bks_pwd'))
+        # DOESNT WORK op.drop_column('backup_setting', sa.Column('bks_pwd'))
+        conn.execute("alter table backup_setting drop column bks_pwd")
     except:
         print("ERROR drop column bks_pwd to backup_setting")
 
     # ADD COLUMN TO PRODUCT DETAILS TABLE
     try:
-        op.add_column('product_details', sa.Column('prd_safe_limit', sa.Integer, 0))
+        # DOESNT WORK op.add_column('product_details', sa.Column('prd_safe_limit', sa.Integer, 0))
+        conn.execute("alter table product_details add column prd_safe_limit int default 0")
     except:
         print("ERROR add column prd_safe_limit to product_details")
     else:
@@ -53,7 +55,8 @@ def upgrade():
 
     # ADD COLUMN TO PRODUCT SUPPLY TABLE
     try:
-        op.add_column('product_supply', sa.Column('prs_user', sa.Integer, 0))
+        # DOESNT WORK op.add_column('product_supply', sa.Column('prs_user', sa.Integer, 0))
+        conn.execute("alter table product_supply add column prs_user int default 0")
     except:
         print("ERROR add column prd_user to product_supply")
     else:
@@ -67,19 +70,22 @@ def upgrade():
 
     # DROP COLUMN TO PRODUCT SUPPLY TABLE
     try:
-        op.drop_column('product_supply', sa.Column('prs_status'))
+        # DOESNT WORK op.drop_column('product_supply', sa.Column('prs_status'))
+        conn.execute("alter table product_supply drop column prs_status")
     except:
         print("ERROR drop column prs_status to product_supply")
 
     # DROP COLUMN TO PRODUCT SUPPLY TABLE
     try:
-        op.drop_column('product_supply', sa.Column('prs_sell_price'))
+        # DOESNT WORK op.drop_column('product_supply', sa.Column('prs_sell_price'))
+        conn.execute("alter table product_supply drop column prs_sell_price")
     except:
         print("ERROR drop column prs_sell_price to product_supply")
 
     # ADD COLUMN TO PRODUCT SUPPLY TABLE
     try:
-        op.add_column('product_supply', sa.Column('prs_empty', sa.String(1), 'N'))
+        # DOESNT WORK op.add_column('product_supply', sa.Column('prs_empty', sa.String(1), 'N'))
+        conn.execute("alter table product_supply add column prs_empty varchar(1) not null default 'N'")
     except:
         print("ERROR add column prs_empty to product_supply")
     else:

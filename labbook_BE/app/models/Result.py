@@ -36,22 +36,23 @@ class Result:
 
         # ref_ana, id_ana, id_dos, nom, famille, id_res, valeur, ref_var.*, num_dos_mois, num_dos_an,
         # date_dos, date_prescr, stat, urgent, id_owner
-        req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
-              'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
-              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '\
-              'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '\
-              'ana.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var '\
-              'from sigl_04_data as ana '\
-              'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
-              'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
-              'left join sigl_dico_data as fam on fam.id_data = ref.famille '\
-              'inner join sigl_09_data as res on ana.id_data = res.id_analyse '\
-              'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
-              'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
-              'and ref.id_data = var_pos.id_refanalyse '\
-              'where substring(num_dos_jour, 1, 8) >= %s and '\
-              'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +\
-              'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit
+        req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '
+               'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
+               'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
+               'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
+               'ana.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
+               'var_pos.obligatoire as oblig '
+               'from sigl_04_data as ana '
+               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '
+               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '
+               'left join sigl_dico_data as fam on fam.id_data = ref.famille '
+               'inner join sigl_09_data as res on ana.id_data = res.id_analyse '
+               'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
+               'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
+               'and ref.id_data = var_pos.id_refanalyse '
+               'where substring(num_dos_jour, 1, 8) >= %s and '
+               'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +
+               'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -67,22 +68,22 @@ class Result:
         if not empty:
             cond = ' and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
 
-        req = 'select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '\
-              'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '\
-              'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '\
-              'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '\
-              'ana.id_owner as id_owner, dos.id_patient as id_pat, '\
-              'var_pos.position as position, var_pos.num_var as num_var '\
-              'from sigl_04_data as ana '\
-              'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '\
-              'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '\
-              'left join sigl_dico_data as fam on fam.id_data = ref.famille '\
-              'inner join sigl_09_data as res on ana.id_data = res.id_analyse '\
-              'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '\
-              'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '\
-              'and ref.id_data = var_pos.id_refanalyse '\
-              'where id_dos=%s ' + cond + \
-              'order by nom asc, id_ana asc, position asc'
+        req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '
+               'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
+               'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
+               'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
+               'ana.id_owner as id_owner, dos.id_patient as id_pat, '
+               'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig '
+               'from sigl_04_data as ana '
+               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '
+               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '
+               'left join sigl_dico_data as fam on fam.id_data = ref.famille '
+               'inner join sigl_09_data as res on ana.id_data = res.id_analyse '
+               'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
+               'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
+               'and ref.id_data = var_pos.id_refanalyse '
+               'where id_dos=%s ' + cond +
+               'order by nom asc, id_ana asc, position asc')
 
         cursor.execute(req, (id_rec,))
 

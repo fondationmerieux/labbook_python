@@ -22,7 +22,15 @@ def upgrade():
     print("--- " + str(datetime.today()) + "---")
     print("START of migration v2.9.1-beta.1 01 revision=73570c0407b1")
 
-    op.add_column('sigl_02_data', sa.Column('date_hosp', sa.Date))
+    # op.add_column('sigl_02_data', sa.Column('date_hosp', sa.Date))
+    # Get the current
+    conn = op.get_bind()
+
+    # ADD COLUMN TO PRODUCT DETAILS TABLE
+    try:
+        conn.execute("alter table sigl_02_data add column date_hosp date")
+    except:
+        print("ERROR add column date_hosp to sigl_02_data")
 
     print("END of migration v2.9.1-beta.1 01 revision=73570c0407b1")
 

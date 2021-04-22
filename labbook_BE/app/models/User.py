@@ -52,7 +52,7 @@ class User:
               'from sigl_pj_group as g '\
               'inner join sigl_user_data AS u ON g.id_group = u.id_group '\
               'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '\
-              'where u.status != 31 and g.name=%s'  # 31 correspond à l'utilisateur "supprimé", 29 désactivé
+              'where u.status=29 and g.name=%s'  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
 
         cursor.execute(req, (login,))
 

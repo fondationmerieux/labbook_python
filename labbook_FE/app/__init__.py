@@ -233,8 +233,11 @@ def get_software_settings():
 
 @app.template_filter('date_format')
 def date_format(date_iso):
-    date_tmp = datetime.strptime(date_iso, Constants.cst_isodate)
-    return datetime.strftime(date_tmp, session['date_format'])
+    if date_iso:
+        date_tmp = datetime.strptime(date_iso, Constants.cst_isodate)
+        return datetime.strftime(date_tmp, session['date_format'])
+    else:
+        return
 
 
 @app.template_filter('date_now')
@@ -718,8 +721,6 @@ def setting_det_analysis(analysis_id=0):
 
             if req.status_code == 200:
                 json_data['var'] = req.json()
-
-                log.error(Logs.fileline() + ' : DEBUG var=' + str(json_data['var']))
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests analysis var list failed, err=%s , url=%s', err, url)
@@ -2760,7 +2761,6 @@ def list_laboratory():
 
         if req.status_code == 200:
             json_data['data_files'] = req.json()
-            log.error(Logs.fileline() + ' : DEBUG json data file=' + str(json_data['data_files']))
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests laboratory files failed, err=%s , url=%s', err, url)

@@ -112,7 +112,7 @@ $("#list_items_total").html( data_len ) ;
     {
     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
           session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-    let menu_act = '<nav class="">' +
+    let menu_act = '<nav>' +
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +

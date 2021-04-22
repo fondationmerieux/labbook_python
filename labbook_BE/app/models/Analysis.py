@@ -64,7 +64,7 @@ class Analysis:
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
                'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
-               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet '
                'from sigl_05_data as ana '
                'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
                'where ana.id_data=%s')
@@ -72,6 +72,61 @@ class Analysis:
         cursor.execute(req, (id_ana,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def insertAnalysis(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_05_data '
+                           '(id_owner, code, nom, abbr, famille, type_prel, cote_unite, cote_valeur, commentaire, '
+                           'produit_biologique, type_analyse, actif, ana_whonet) '
+                           'values '
+                           '(%(id_owner)s, %(code)s, %(name)s, %(abbr)s, %(type_ana)s, %(type_prod)s, %(unit)s, '
+                           '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s)', params)
+
+            Analysis.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateAnalysis(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_05_data '
+                           'set id_owner=%(id_owner)s, code=%(code)s, nom=%(name)s, abbr=%(abbr)s, actif=%(stat)s, '
+                           'famille=%(type_ana)s, type_prel=%(type_prod)s, cote_unite=%(unit)s, cote_valeur=%(value)s, '
+                           'commentaire=%(comment)s, produit_biologique=%(product)s, ana_whonet=%(whonet)s '
+                           'where id_data=%(id_data)s', params)
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteAnalysis(id_ana):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from sigl_05_data '
+                           'where id_data=%s', (id_ana,))
+
+            cursor.execute('delete from sigl_05_07_data '
+                           'where id_refanalyse=%s', (id_ana,))
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getProductType(id_data):
@@ -135,7 +190,7 @@ class Analysis:
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.id_data as id_link, '
-               'd1.label as unit_label '
+               'd1.label as unit_label, var.id_data as id_item '
                'from sigl_07_data as var '
                'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
                'left join sigl_dico_data as d1 on d1.id_data=var.unite '
@@ -145,6 +200,60 @@ class Analysis:
         cursor.execute(req, (id_ana,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getAnalysisVar(id_var):
+        cursor = DB.cursor()
+
+        req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
+               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2 '
+               'from sigl_07_data '
+               'where id_data=%s')
+
+        cursor.execute(req, (id_var,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertAnalysisVar(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_07_data '
+                           '(id_owner, libelle, description, unite, normal_min, normal_max, commentaire, type_resultat, '
+                           'unite2, formule_unite2, formule, accuracy, precision2) '
+                           'values '
+                           '(%(id_owner)s, %(label)s, %(descr)s, %(unit)s, %(var_min)s, %(var_max)s, '
+                           '%(comment)s, %(type_res)s, %(unit2)s, %(formula2)s, %(formula)s, '
+                           '%(accu)s, %(accu2)s)', params)
+
+            Analysis.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateAnalysisVar(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_07_data '
+                           'set id_owner=%(id_owner)s, libelle=%(label)s, description=%(descr)s, '
+                           'unite=%(unit)s, normal_min=%(var_min)s, normal_max=%(var_max)s, '
+                           'commentaire=%(comment)s, type_resultat=%(type_res)s, unite2=%(unit2)s, '
+                           'formule_unite2=%(formula2)s, formule=%(formula)s, accuracy=%(accu)s, '
+                           'precision2=%(accu2)s '
+                           'where id_data=%(id_data)s', params)
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getRefVariable(id_ana):
@@ -157,6 +266,55 @@ class Analysis:
         cursor.execute(req, (id_ana,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def insertRefVariable(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_05_07_data '
+                           '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire) '
+                           'values '
+                           '(%(id_owner)s, %(id_refana)s, %(id_refvar)s, %(var_pos)s, %(var_num)s, %(oblig)s)', params)
+
+            Analysis.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateRefVariable(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_05_07_data '
+                           'set id_owner=%(id_owner)s, id_refanalyse=%(id_refana)s, id_refvariable=%(id_refvar)s, '
+                           'position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s '
+                           'where id_data=%(id_data)s', params)
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteRefVar(id_refana, id_refvar):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from sigl_05_07_data '
+                           'where id_refanalyse=%s and id_refvariable=%s', (id_refana, id_refvar,))
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getLastAnalysisReqByRefAna(ref_ana):
@@ -228,13 +386,13 @@ class Analysis:
             if args['type_prod'] and args['type_prod'] > 0:
                 filter_cond += ' and ana.type_prel=' + str(args['type_prod']) + ' '
 
-        req = 'select ana.id_data, ana.code, ana.nom as name, ana.abbr, ana.actif as stat, '\
-              'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '\
-              'from sigl_05_data as ana '\
-              'left join sigl_dico_data as dico on dico.id_data=ana.famille '\
-              'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '\
-              'where ' + filter_cond +\
-              'group by ana.code order by ana.code asc ' + limit
+        req = ('select ana.id_data, ana.code, ana.nom as name, ana.abbr, ana.actif as stat, '
+               'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '
+               'from sigl_05_data as ana '
+               'left join sigl_dico_data as dico on dico.id_data=ana.famille '
+               'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
+               'where ' + filter_cond +
+               'group by ana.code order by ana.code asc ' + limit)
 
         cursor.execute(req)
 
@@ -298,7 +456,7 @@ class Analysis:
         id_ana   = args['id_ana']
         limit    = 'LIMIT ' + str(args['limit'])
 
-        req = ('select ref.id_data, rec.date_prescription as date_prescr, '
+        req = ('select ref.id_data, rec.id_data as id_rec, rec.date_prescription as date_prescr, rec.type as type_rec, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
                'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
@@ -319,3 +477,22 @@ class Analysis:
         cursor.execute(req, (date_beg, date_end, id_ana))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def checkCodeAnalysis(code):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select count(*) as nb_code '
+                           'from sigl_05_data '
+                           'where code=%s', (code,))
+
+            ret = cursor.fetchone()
+
+            if ret and ret['nb_code'] == 0:
+                return True
+            else:
+                return False
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

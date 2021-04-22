@@ -205,6 +205,11 @@ class ReportToday(Resource):
             if data['rec_date'] != '':
                 data['rec_date'] = datetime.strftime(data['rec_date'], '%Y-%m-%d')
 
+            if data['type_rec'] and data['type_rec'] == 183:
+                data['type_rec'] = 'E'
+            else:
+                data['type_rec'] = 'I'
+
         self.log.info(Logs.fileline() + ' : TRACE ReportToday')
         return compose_ret(l_datas, Constants.cst_content_type_json)
 
@@ -215,7 +220,7 @@ class ReportTodayExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['id_data', 'rec_date', 'rec_num', 'family', 'analysis', 'vld_type']]
+        l_data = [['id_rec', 'rec_date', 'rec_num', 'family', 'analysis', 'vld_type']]
 
         if 'date_beg' not in args or 'date_end' not in args:
             self.log.error(Logs.fileline() + ' : ReportTodayExport ERROR args missing')
@@ -227,7 +232,7 @@ class ReportTodayExport(Resource):
             for d in dict_data:
                 data = []
 
-                data.append(d['id_data'])
+                data.append(d['id_rec'])
                 data.append(d['rec_date'])
                 data.append(d['rec_num'])
                 data.append(d['family'])
