@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - import/export Analysis repository
 - fixed report records
 
-## [3.0.4] - 2021-04-15
+## [3.0.4] - 2021-04-22
 ### Added
 - Analysis repository module
 - csv export for report activity module
