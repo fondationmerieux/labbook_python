@@ -43,6 +43,7 @@ The corresponding private key is stored safely by [Fondation Mérieux](https://w
 ## Modifying the private key passphrase
 
 To modify the passphrase associated with a private key, you have to import it into your keyring first:
+(depending on your gpg version, you may have to provide the corresponding passphrase to import the private key)
 
 ~~~
 $ gpg --import kpri.my-extra-key.asc
@@ -77,10 +78,12 @@ $ gpg --export-secret-keys --armor --yes --output kpri.my-extra-key.asc 336D32CB
 
 The backup you are restoring must have been encrypted with the public key corresponding to your private extra key.
 You should first import the private key into your keyring :
+(depending on your gpg version, you may have to provide the corresponding passphrase to import the private key)
 
 ~~~
 $ gpg --import kpri.my-extra-key.asc
 ~~~
+
 
 Then you can decrypt the backup:
 

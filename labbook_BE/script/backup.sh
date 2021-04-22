@@ -2424,8 +2424,6 @@ case "$cmd" in
 
         [[ $nb_media -eq 1 ]] && media=$(cat "$tmp_status_file")
 
-        log_message "user=$user nb_media=$nb_media media=$media)"
-
         rm -f "$tmp_status_file"
 
         if [[ $nb_media -eq 0 ]]; then

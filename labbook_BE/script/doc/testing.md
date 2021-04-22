@@ -18,27 +18,50 @@ Prepare the environment:
 - remove or rename the `SIGL_sauvegardes` directory at the root of the media,
 - remove keys in /storage/key
 
-Steps:
+### Basic tests
 
 - program automatic backup. Verify `user_labbook` crontab.
 - initialize media. Verify presence of `SIGL_sauvegardes` directory.
-- generate backup key. Verify presence in `/storage/key`.
-- backup. Verify presence in `SIGL_sauvegardes`
+- generate backup key. Verify presence in `/storage/key`, backup button becomes active.
+- backup. Verify presence in `SIGL_sauvegardes` and last backup information update.
 - restore a LabBook 3 backup.
+- automatic backup. Verify presence in `SIGL_sauvegardes` and last backup information update.
 
 ### Restore a LabBook 2.9 backup
 
 Prepare a media containing only:
+
 - the archive
 - clef_sauvegarde.privee.gpg
 - files.tar.gz.gpg
 - kpri.fingerprint.asc
+
+Verify:
+
+- files have been restored in /storage/report and /storage/upload
+- database has been upgraded in /storage/log/alembic.out
 
 ### Restore a LabBook 2.5 backup
 
 Prepare a media containing only:
 - the archive
 - clef_sauvegarde.privee.crypt
+
+Verify:
+
+- database has been upgraded in /storage/log/alembic.out
+
+### Verify trusted tier decrypt
+
+If you have access to the `fondation-merieux` private key you can verify that you can decrypt a backup
+as described in [extra_key.md](extra_key.md).
+
+### Additional tests
+
+- automatic backup with no media.
+- automatic backup with uninitialized media.
+
+Verify last backup ERR information on screen.
 
 ## Command line access to the LabBook container
 
