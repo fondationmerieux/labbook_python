@@ -29,8 +29,8 @@ def upgrade():
     # ADD COLUMN TO PRODUCT DETAILS TABLE
     try:
         conn.execute("alter table sigl_02_data add column date_hosp date")
-    except:
-        print("ERROR add column date_hosp to sigl_02_data")
+    except Exception as err:
+        print("ERROR add column date_hosp to sigl_02_data,\n\terr=" + str(err))
 
     print("END of migration v2.9.1-beta.1 01 revision=73570c0407b1")
 

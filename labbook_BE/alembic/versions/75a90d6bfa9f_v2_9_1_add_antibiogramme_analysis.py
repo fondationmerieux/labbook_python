@@ -206,14 +206,14 @@ def upgrade():
                       values (1000, 'CMI Tobramycine', 228)")
         conn.execute("insert into sigl_07_data (id_owner, libelle, type_resultat) \
                       values (1000, 'CMI Vancomycine', 228)")
-    except:
-        print("ERROR insert new variables for analyzes")
+    except Exception as err:
+        print("ERROR insert new variables for analyzes,\n\terr=" + str(err))
     else:
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B650', 'Antibiogramme Méningocoques [DISK]', 'ABG Méningocoques', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B650 analysis")
+        except Exception as err:
+            print("ERROR insert B650 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B650
@@ -272,14 +272,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B650') as id_refanalyse, id_data,16, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Rifamycine' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B650 analysis")
+            except Exception as err:
+                print("ERROR insert links for B650 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B651', 'Antibiogramme Staphylococcus aureus [DISK]', 'ABG Staphylo. aureus', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B651 analysis")
+        except Exception as err:
+            print("ERROR insert B651 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B671
@@ -401,14 +401,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B651') as id_refanalyse, id_data,34, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Cotrimoxazole' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B651 analysis")
+            except Exception as err:
+                print("ERROR insert links for B651 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B652', 'Antibiogramme Pneumocoques [DISK]', 'ABG Pneumocoques', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B652 analysis")
+        except Exception as err:
+            print("ERROR insert B652 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B652
@@ -516,14 +516,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B652') as id_refanalyse, id_data,30, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Cotrimoxazole' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B652 analysis")
+            except Exception as err:
+                print("ERROR insert links for B652 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B653', 'Antibiogramme Haemophilus influenzae [DISK]', 'ABG H. influenzae', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B653 analysis")
+        except Exception as err:
+            print("ERROR insert B653 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B653
@@ -597,14 +597,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B653') as id_refanalyse, id_data,20, 4 \
                               from sigl_07_data where libelle='Diam. inhibition B-lactamase' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B653 analysis")
+            except Exception as err:
+                print("ERROR insert links for B653 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B654', 'Antibiogramme Pseudomonas [DISK]', 'ABG Pseudomonas', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B654 analysis")
+        except Exception as err:
+            print("ERROR insert B654 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B654
@@ -719,14 +719,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B654') as id_refanalyse, id_data,32, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Ciprofloxacine' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B654 analysis")
+            except Exception as err:
+                print("ERROR insert links for B654 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B655', 'Antibiogramme Acinetobacter [DISK]', 'ABG Acinetobacter', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B655 analysis")
+        except Exception as err:
+            print("ERROR insert B655 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B655
@@ -841,14 +841,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B655') as id_refanalyse, id_data,32, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Ciprofloxacine' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B655 analysis")
+            except Exception as err:
+                print("ERROR insert links for B655 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B656', 'Antibiogramme Escherichia coli [DISK]', 'ABG Escherichia coli', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B656 analysis")
+        except Exception as err:
+            print("ERROR insert B656 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B656
@@ -991,14 +991,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B656') as id_refanalyse, id_data,40, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Doxycycline' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B656 analysis")
+            except Exception as err:
+                print("ERROR insert links for B656 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B657', 'Antibiogramme Salmonella spp [DISK]', 'ABG Salmonella spp', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B657 analysis")
+        except Exception as err:
+            print("ERROR insert B657 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B657
@@ -1141,14 +1141,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B657') as id_refanalyse, id_data,40, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Doxycycline' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B657 analysis")
+            except Exception as err:
+                print("ERROR insert links for B657 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B658', 'Antibiogramme Shigella spp [DISK]', 'ABG Shigella spp', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B658 analysis")
+        except Exception as err:
+            print("ERROR insert B658 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B658
@@ -1291,15 +1291,15 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B658') as id_refanalyse, id_data,40, 4 \
                               from sigl_07_data where libelle='Diam. inhibition Doxycycline' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B658 analysis")
+            except Exception as err:
+                print("ERROR insert links for B658 analysis,\n\terr=" + str(err))
 
         # Insert Antibiogramme [CMI]
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B670', 'Antibiogramme Méningocoques [CMI]', 'ABG Méningocoques', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B670 analysis")
+        except Exception as err:
+            print("ERROR insert B670 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B670
@@ -1358,14 +1358,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B670') as id_refanalyse, id_data,16, 4 \
                               from sigl_07_data where libelle='CMI Rifamycine' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B670 analysis")
+            except Exception as err:
+                print("ERROR insert links for B670 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B671', 'Antibiogramme Staphylococcus aureus [CMI]', 'ABG Staphylo. aureus', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B671 analysis")
+        except Exception as err:
+            print("ERROR insert B671 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B671
@@ -1487,14 +1487,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B671') as id_refanalyse, id_data,34, 4 \
                               from sigl_07_data where libelle='CMI Cotrimoxazole' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B671 analysis")
+            except Exception as err:
+                print("ERROR insert links for B671 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B672', 'Antibiogramme Pneumocoques [CMI]', 'ABG Pneumocoques', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B672 analysis")
+        except Exception as err:
+            print("ERROR insert B672 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B672
@@ -1602,14 +1602,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B672') as id_refanalyse, id_data,30, 4 \
                               from sigl_07_data where libelle='CMI Cotrimoxazole' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B672 analysis")
+            except Exception as err:
+                print("ERROR insert links for B672 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B673', 'Antibiogramme Haemophilus influenzae [CMI]', 'ABG H. influenzae', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B673 analysis")
+        except Exception as err:
+            print("ERROR insert B673 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B673
@@ -1683,14 +1683,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B673') as id_refanalyse, id_data,20, 4 \
                               from sigl_07_data where libelle='CMI B-lactamase' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B673 analysis")
+            except Exception as err:
+                print("ERROR insert links for B673 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B674', 'Antibiogramme Pseudomonas [CMI]', 'ABG Pseudomonas', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B674 analysis")
+        except Exception as err:
+            print("ERROR insert B674 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B674
@@ -1805,14 +1805,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B674') as id_refanalyse, id_data,32, 4 \
                               from sigl_07_data where libelle='CMI Ciprofloxacine' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B674 analysis")
+            except Exception as err:
+                print("ERROR insert links for B674 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B675', 'Antibiogramme Acinetobacter [CMI]', 'ABG Acinetobacter', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B675 analysis")
+        except Exception as err:
+            print("ERROR insert B675 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B675
@@ -1927,14 +1927,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B675') as id_refanalyse, id_data,32, 4 \
                               from sigl_07_data where libelle='CMI Ciprofloxacine' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B675 analysis")
+            except Exception as err:
+                print("ERROR insert links for B675 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B676', 'Antibiogramme Escherichia coli [CMI]', 'ABG Escherichia coli', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B676 analysis")
+        except Exception as err:
+            print("ERROR insert B676 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B676
@@ -2077,14 +2077,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B676') as id_refanalyse, id_data,40, 4 \
                               from sigl_07_data where libelle='CMI Doxycycline' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B676 analysis")
+            except Exception as err:
+                print("ERROR insert links for B676 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B677', 'Antibiogramme Salmonella spp [CMI]', 'ABG Salmonella spp', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B677 analysis")
+        except Exception as err:
+            print("ERROR insert B677 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B677
@@ -2227,14 +2227,14 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B677') as id_refanalyse, id_data,40, 4 \
                               from sigl_07_data where libelle='CMI Doxycycline' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B677 analysis")
+            except Exception as err:
+                print("ERROR insert links for B677 analysis,\n\terr=" + str(err))
 
         try:
             conn.execute("insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, commentaire, actif) \
                           values (1000, 'B678', 'Antibiogramme Shigella spp [CMI]', 'ABG Shigella spp', 18, 'B', '[WHONET]', 4)")
-        except:
-            print("ERROR insert B678 analysis")
+        except Exception as err:
+            print("ERROR insert B678 analysis,\n\terr=" + str(err))
         else:
             try:
                 # Insert links for B678
@@ -2377,8 +2377,8 @@ def upgrade():
                 conn.execute("insert into sigl_05_07_data (id_owner, id_refanalyse, id_refvariable, position, obligatoire) \
                               select 1000, (select id_data from sigl_05_data where code='B678') as id_refanalyse, id_data,40, 4 \
                               from sigl_07_data where libelle='CMI Doxycycline' order by id_data desc limit 1")
-            except:
-                print("ERROR insert links for B678 analysis")
+            except Exception as err:
+                print("ERROR insert links for B678 analysis,\n\terr=" + str(err))
 
     print("END of migration v2.9.1_add_antibiogramme_analysis revision=75a90d6bfa9f")
 
