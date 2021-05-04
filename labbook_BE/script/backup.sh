@@ -1028,6 +1028,8 @@ fn_initmedia() {
 #
 # Output in status_file: media names, one per line
 #
+# WARNING : character set of media names is not checked but labbook_BE expects UTF8 encoding.
+#
 fn_listmedia() {
     local user="$1"
     local status_file="$2"

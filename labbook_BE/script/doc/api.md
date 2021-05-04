@@ -43,6 +43,8 @@ Output is written to LABBOOK_STATUS_DIR/name_of_command
 
 The absolute path to the script is `/home/apps/labbook_BE/labbook_BE/script/backup.sh`.
 
+WARNING : character set of media names is not checked by backup.sh but labbook_BE expects UTF8 encoding.
+
 ## Check GPG key exist
 
 ~~~
@@ -87,6 +89,8 @@ Output: media names
 Ex:
 USB
 ~~~
+
+WARNING : character set of media names is not checked by backup.sh but labbook_BE expects UTF8 encoding
 
 ~~~
 $ LABBOOK_USER_PWD=password \

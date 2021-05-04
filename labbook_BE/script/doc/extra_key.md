@@ -106,3 +106,23 @@ upload/8c/42/
 upload/8c/42/8c42586eb5e771edd6f94ce1be236c05
 ...
 ~~~
+
+## Re encrypting a LabBook v3 backup to a different key
+
+If you want to restore a backup you have decrypted on a LabBook v3 machine,
+you must first re encrypt the archive to the public key of the corresponding machine.
+
+For information about obtaining a copy of the public key file `kpub.[fingerprint].asc`
+please see `Command line access to the LabBook container` in [testing.md](testting.md).
+
+~~~
+$ gpg --output /tmp/backup_v30_SIGL_2021-03-31_18h03m10s.tar.gz.gpg \
+      --recipient-file /tmp/kpub.[fingerprint].asc \
+      --encrypt /tmp/backup_v30_SIGL_2021-03-31_18h03m10s.tar.gz
+~~~
+
+Notes:
+
+- gpg may add the public key in you keyring,
+- you may have to confirm that the key belongs to the person named in the user ID,
+- for older gpg versions, you may have to import the public key in your keyring and use the `--recipient` option.
