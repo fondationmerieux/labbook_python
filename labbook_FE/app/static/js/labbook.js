@@ -132,7 +132,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
         //console.log("DEBUG calc num_var found in f1") ;
 
         // GET current value for all var in this formula
-        // TODO if num var greater than 9 ???
+        // NOTE if num var greater than 9 ???
         let l_var   = [] ;
         let k_var_p = 0  ;
 
@@ -211,7 +211,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
         //console.log("DEBUG calc num_var found in f2") ;
 
         // GET current value for all var in this formula
-        // TODO if num var greater than 9 ???
+        // NOTE if num var greater than 9 ???
         let l_var   = [] ;
         let k_var_p = 0  ;
 
@@ -305,7 +305,7 @@ let f2   = "" ;
     {
     f2 = $("#formula2_" + id_rec + "-" + id_res).val() ;
 
-    // TODO if num var greater than 9 ???
+    // NOTE if num var greater than 9 ???
     let l_var   = [] ;
     let i_var_p = 0 ;
 

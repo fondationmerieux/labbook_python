@@ -93,13 +93,14 @@ def upgrade():
         print("ERROR update sigl_file_data set id_storage=1 where id_storage is null,\n\terr=" + str(err))
 
     # wrong character in manual table
+    """ Not working everytime and its deprecated because this manual it delete in v3.0.2 
     try:
         # update id_storage for sigl_manuels_data
         conn.execute("update sigl_manuels_data"
                      "set titre='Guide pratique sur l\'application du Règlement relatif au transport des matières infectieuses 2013-2014'"
                      "where titre like 'Guide pratique sur l\'application du R%'")
     except Exception as err:
-        print("ERROR update sigl_manuels_data for wrong character in one title,\n\terr=" + str(err))
+        print("ERROR update sigl_manuels_data for wrong character in one title,\n\terr=" + str(err))"""
 
     # PRODUCT STORAGE
     try:

@@ -148,8 +148,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"promoter":' + promoter + ', ' +
               '"report":' + report + '}' ;  // No quotes with stringify
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/quality/meeting/det/" + id_meeting,

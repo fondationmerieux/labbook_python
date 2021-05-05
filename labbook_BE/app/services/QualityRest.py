@@ -981,7 +981,7 @@ class MeetingExport(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
-        l_data = [['id_data', 'date_meeting', 'type', 'promoter', 'report', ]]
+        l_data = [['id_data', 'date_meeting', 'type', 'type_id', 'promoter', 'report', ]]
         dict_data = Quality.getMeetingList()
 
         if dict_data:
@@ -991,6 +991,7 @@ class MeetingExport(Resource):
                 data.append(d['id_data'])
                 data.append(d['date_meeting'])
                 data.append(d['type'])
+                data.append(d['type_id'])
                 data.append(d['promoter'])
                 data.append(d['report'])
 

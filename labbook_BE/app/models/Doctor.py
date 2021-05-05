@@ -14,7 +14,7 @@ class Doctor:
     def getDoctorList(args):
         cursor = DB.cursor()
 
-        filter_cond = ' nom is not NULL '
+        filter_cond = ' pres.nom is not NULL '
 
         if not args:
             limit = 'LIMIT 500'
@@ -26,26 +26,28 @@ class Doctor:
 
             # filter conditions
             if args['code']:
-                filter_cond += ' and code LIKE "%' + args['code'] + '%" '
+                filter_cond += ' and pres.code LIKE "%' + args['code'] + '%" '
 
             if args['lastname']:
-                filter_cond += ' and nom LIKE "%' + args['lastname'] + '%" '
+                filter_cond += ' and pres.nom LIKE "%' + args['lastname'] + '%" '
 
             if args['firstname']:
-                filter_cond += ' and prenom LIKE "%' + args['firstname'] + '%" '
+                filter_cond += ' and pres.prenom LIKE "%' + args['firstname'] + '%" '
 
             if args['service']:
-                filter_cond += ' and service LIKE "%' + args['service'] + '%" '
+                filter_cond += ' and pres.service LIKE "%' + args['service'] + '%" '
 
             if args['city']:
-                filter_cond += ' and ville LIKE "%' + args['city'] + '%" '
+                filter_cond += ' and pres.ville LIKE "%' + args['city'] + '%" '
 
-        req = 'select id_data, id_owner, code, nom as lastname, prenom as firstname, ville as city, '\
-              'etablissement as work_place, specialite as spe, tel as phone, email, titre as title, '\
-              'initiale as initial, service, adresse as address, mobile, fax '\
-              'from sigl_08_data '\
-              'where ' + filter_cond +\
-              'order by lastname asc, firstname asc ' + limit
+        req = ('select pres.id_data, pres.id_owner, pres.code, pres.nom as lastname, pres.prenom as firstname, '
+               'pres.ville as city, pres.etablissement as work_place, pres.specialite as spe_id, pres.tel as phone, '
+               'pres.email, pres.titre as title, pres.initiale as initial, pres.service, pres.adresse as address, '
+               'pres.mobile, pres.fax, d1.label as spe '
+               'from sigl_08_data as pres '
+               'left join sigl_dico_data as d1 on d1.id_data = pres.specialite '
+               'where ' + filter_cond +
+               'order by lastname asc, firstname asc ' + limit)
 
         cursor.execute(req)
 

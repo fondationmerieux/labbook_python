@@ -1011,8 +1011,6 @@ function cat_change( elem )
 {
 let id_elem   = $(elem).attr('id') ;
 
-console.log("DEBUG id_elem="+id_elem);
-
 let class_sub_elem = ".sub_" + id_elem.substr(4) ;
 
     if ( $(elem).is(':checked') )
@@ -1021,6 +1019,20 @@ let class_sub_elem = ".sub_" + id_elem.substr(4) ;
     }
     else
     {
+    beg_sub_id = class_sub_elem.substr(1) ;
+
+        $("input[id*='" + beg_sub_id + "']").each( function(i, elem)
+        {
+        var $elem = $(elem) ;
+        $elem.prop("checked", false) ;
+        } ) ;
+
+        $("div[class*='" + beg_sub_id + "']").each( function(i, elem)
+        {
+        var $elem = $(elem) ;
+        $elem.addClass('d-none') ;
+        } ) ;
+
     $(class_sub_elem).addClass('d-none') ;
     }
 
@@ -1029,8 +1041,6 @@ let class_sub_elem = ".sub_" + id_elem.substr(4) ;
 function sub_cat_change( elem )
 {
 let id_elem = $(elem).attr('id') ;
-
-console.log("DEBUG id_elem="+id_elem);
 
 let class_sub_elem = ".sub_" + id_elem ;
 
@@ -1047,8 +1057,6 @@ let class_sub_elem = ".sub_" + id_elem ;
 function pat_rec_change( elem )
 {
 let val_elem = $(elem).val() ;
-
-console.log("DEBUG val_elem="+val_elem);
 
     if ( val_elem == "4" )
     {
@@ -1347,8 +1355,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"validate":' + validate + ', ' +
               '"close_date":"' + close_date + '"}' ;
 
-console.log("DEBUG param=" + param) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/quality/nonconformity/det/" + id_details,
@@ -1357,8 +1363,6 @@ console.log("DEBUG param=" + param) ;
        data: param,
        success: function(data)
            {
-           console.log("DEBUG data=" + JSON.stringify(data)) ;
-
            window.history.back() ;
            },
        error: function(data)

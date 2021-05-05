@@ -199,8 +199,6 @@ class ResultCreate(Resource):
             # get list of all analysis for this record (even samples)
             l_ana = Analysis.getAnalysisReq(id_rec, 'A')
 
-        self.log.error(Logs.fileline() + ' : DEBUG ResultCreate l_ana=' + str(l_ana))
-
         if not l_ana:
             self.log.error(Logs.fileline() + ' : ' + 'ResultCreate ERROR l_ana not found')
             return compose_ret('', Constants.cst_content_type_json, 404)

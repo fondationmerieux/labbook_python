@@ -143,8 +143,6 @@ var param = '{ "prix_acte":"' + deed_price + '", ' +
               '"qualite":"' + quality + '", ' +
               '"facturation":"' + bill  + '"}' ;
 
-console.log("DEBUG param="+JSON.stringify(param));
-
     $.ajax( {
        type: "POST",
        url: "/services/setting/pref/list/" + id_owner,

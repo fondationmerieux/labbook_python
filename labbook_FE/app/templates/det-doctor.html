@@ -174,8 +174,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"fax":"' + fax + '", ' +
               '"email":"' + email + '"}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/doctor/det/" + id_doctor,

@@ -154,7 +154,7 @@ class DoctorExport(Resource):
         args['limit'] = 50000  # for overpassed default limit
 
         l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'city',
-                   'work_place', 'spe', 'phone', 'mobile', 'fax', 'email', 'title',
+                   'work_place', 'spe', 'spe_id', 'phone', 'mobile', 'fax', 'email', 'title',
                    'initial', 'service', 'address', ]]
         dict_data = Doctor.getDoctorList(args)
 
@@ -170,6 +170,7 @@ class DoctorExport(Resource):
                 data.append(d['city'])
                 data.append(d['work_place'])
                 data.append(d['spe'])
+                data.append(d['spe_id'])
                 data.append(d['phone'])
                 data.append(d['mobile'])
                 data.append(d['fax'])

@@ -493,8 +493,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"maintenance":' + maintenance + ', ' + // No quotes with stringify
               '"comment":' + comment + '}' ;          // No quotes with stringify
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/quality/equipment/det/" + id_item,
@@ -615,7 +613,6 @@ let input_file = $('#' + type_ref)[0] ;
 
 function delete_file( type_ref, id_file )
 {
-// TODO check user role rights
     if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
         $.ajax( 

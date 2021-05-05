@@ -2625,7 +2625,7 @@ msgstr "Non-conformity name"
 
 #: templates/non-conformity.html:24
 msgid "Rapporteur"
-msgstr "Rapporteur"
+msgstr "Reporter"
 
 #: templates/non-conformity.html:36
 msgid "DECLARATION DE LA NON-CONFORMITE"

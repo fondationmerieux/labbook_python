@@ -914,10 +914,11 @@ class Quality:
     def getMeetingList():
         cursor = DB.cursor()
 
-        req = ('select meet.id_data, meet.date as date_meeting, meet.type_reu as type, '
-               'u1.initiale as promoter, meet.cr as report '
+        req = ('select meet.id_data, meet.date as date_meeting, meet.type_reu as type_id, '
+               'u1.initiale as promoter, meet.cr as report, d1.label as type '
                'from sigl_reunion_data as meet '
                'left join sigl_user_data as u1 on u1.id_data=meet.organisateur_id '
+               'left join sigl_dico_data as d1 on d1.id_data=meet.type_reu '
                'order by date_meeting desc ')
 
         cursor.execute(req)

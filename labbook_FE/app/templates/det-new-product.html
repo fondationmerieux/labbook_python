@@ -173,8 +173,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prd_ref_supplier":"' + ref_supplier + '", ' +
               '"prd_conserv":' + conserv + '}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/quality/stock/product/det/" + prd_ser,

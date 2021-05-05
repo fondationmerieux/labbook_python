@@ -475,7 +475,6 @@ return display ;
 $("#search_ana").on("select2:select", function (e) 
 {
 let id_item = $(e.currentTarget).val();
-// TODO load data in input fields
 } ) ;
 */
 
@@ -892,8 +891,6 @@ var msg = "" ;
                           '"comment":' + comment + ', ' +   // No quotes with stringify
                           '"product":' + product + ', ' +
                           list_var + '}' ;
-
-            console.log("DEBUG param=" + JSON.stringify(param)) ;
 
                 $.ajax( {
                    type: "POST",

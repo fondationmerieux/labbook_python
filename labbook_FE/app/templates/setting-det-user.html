@@ -360,8 +360,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"id_role":' + id_role + ', ' + 
               '"id_pres":' + id_pres + '}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/user/det/" + id_user,

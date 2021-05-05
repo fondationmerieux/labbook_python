@@ -12,11 +12,11 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Changement de logo pour les documents") }}</span></h2>
             <div class="row ml-5">
                 <label>{{ _("Logo original") }} :</label>
-                <img src="{{ session['server_ext'] }}/storage/resource/logo.png?{{ rand }}">
+                <img src="{{ session['server_ext'] }}/storage/resource/logo.png?{{ rand }}" alt="logo">
             </div>
             <div class="row ml-5">
                 <label>{{ _("Logo tel qu'il apparaitra dans l'entête de rapport") }}<br />{{ _("Largeur forcée à 230 pixels et conserve les proportions") }} :</label>
-                <img src="{{ session['server_ext'] }}/storage/resource/logo.png?{{ rand }}" width="230px;">
+                <img src="{{ session['server_ext'] }}/storage/resource/logo.png?{{ rand }}" width="230px;" alt="resized_logo">
             </div>
             <br />
             <p class="ml-5">{{ _("Le fichier doit être au format png ou jpg") }}</p>
