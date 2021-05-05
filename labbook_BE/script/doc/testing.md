@@ -18,6 +18,16 @@ Prepare the environment:
 - remove or rename the `SIGL_sauvegardes` directory at the root of the media,
 - remove keys in /storage/key
 
+If you don't have access to a physical USB port, you can simulate a connected USB drive.
+Being logged in as `sigl`:
+
+~~~
+# you can replace USB with whatever media name you want to use
+$ sudo install --owner=user_labbook --group=user_labbook --mode=755 \
+               --directory /media/user_labbook /media/user_labbook/USB
+~~~
+
+
 ### Basic tests
 
 - program automatic backup. Verify `user_labbook` crontab.
