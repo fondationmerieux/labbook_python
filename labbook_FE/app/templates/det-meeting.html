@@ -192,8 +192,8 @@ let obj = data ;
     let tmp_tr = '<tr style="">' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'MEET\', ' + obj.id_data + ');">Télécharger</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'MEET\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
     tmp_tr += '</tr>' ;
 
     tr_file += tmp_tr ;
@@ -227,7 +227,7 @@ let input_file = $("#MEET")[0] ;
             error: function(response)
             {
             console.log("ERROR upload file") ;
-            alert("Une erreur est survenue lors du dépot d'un fichier") ;
+            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
             }
         } ) ;
     }    

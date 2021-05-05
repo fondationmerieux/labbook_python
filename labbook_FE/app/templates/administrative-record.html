@@ -153,7 +153,7 @@
                 </table>
             </form>
             {% endif %}
-
+            
             <!-- Reports -->
             <div class="panel-heading row mt-2">
                 <h3 class="panel-title">{{ _("Compte-rendus") }}</h3>
@@ -229,8 +229,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div></div>
-                                <div></div>
                                 <table class=table-responsive">
                                     <thead>
                                         <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
@@ -347,7 +345,8 @@ let obj = data ;
 
     if ( obj.id_data > 0 )
     {
-    let menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj.file + '\', \'REC\', ' + num_rec_y + ');">Télécharger</a>' ;
+        let menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj.file + '\', \'REC\', ' + num_rec_y + ');">{{ _("Télécharger") }}</a>'
+        {% if session['user_role'] != 'P' and session['user_role'] != 'S' %} + '<br /><a class="menu-act-item mt-1" onclick="reedit_report({{ args['record']['id_data'] }},\'' + obj.file + '\')">{{ _("Ré-éditer") }}</a>' ;{% else %};{% endif %}
 
     let tmp_tr = '<tr style="">' ;
 
@@ -372,7 +371,7 @@ let obj = data ;
     let tmp_tr = '<tr style="">' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'REC\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'REC\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
     {% if session['user_role'] != 'P' and session['user_role'] != 'S' %}
     tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a>' ;
     {% endif %}
@@ -399,7 +398,7 @@ $("#tbody_file").empty() ;
 
     if (data_analysis.length < 1)
     {
-    let tr_ana = '<tr class=""><td colspan="8"><div>Aucune donnée à afficher</div></td></tr>' ;
+    let tr_ana = '<tr class=""><td colspan="8"><div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
 
     $("#tbody_analysis").append(tr_ana) ;
     }
@@ -412,7 +411,7 @@ $("#tbody_file").empty() ;
 
     if (data_samples.length < 1)
     {
-    let tr_sample = '<tr class=""><td colspan="7"><div>Aucune donnée à afficher</div></td></tr>' ;
+    let tr_sample = '<tr class=""><td colspan="7"><div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
 
     $("#tbody_sample").append(tr_sample) ;
     }
@@ -420,7 +419,7 @@ $("#tbody_file").empty() ;
 
     if (data_reports.length < 1)
     {
-    let tr_report = '<tr><td colspan="3"><div>Aucune donnéee à afficher</div></td></tr>' ;
+    let tr_report = '<tr><td colspan="3"><div>{{ _("Aucune donnéee à afficher") }}</div></td></tr>' ;
 
     $("#tbody_report").append(tr_report) ;
     }
@@ -436,7 +435,7 @@ $("#tbody_file").empty() ;
 
     if (data_files.length < 1)
     {
-    let tr_file = '<tr><td colspan="2"><div>Aucun fichier déposé</div></td></tr>' ;
+    let tr_file = '<tr><td colspan="2"><div>{{ _("Aucun fichier déposé") }}</div></td></tr>' ;
 
     $("#tbody_file").append(tr_file) ;
     }
@@ -456,6 +455,28 @@ return tmp_td ;
 function format_rate(rate, price)
 {
 return rate + '(' + price + ')' ;
+}
+
+function reedit_report( id_rec, filename )
+{
+    if ( window.confirm("{{ _("Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)") }}") )
+    {
+        $.ajax(
+        {
+            type : 'GET',
+            url : "{{ session['server_ext'] }}/services/pdf/report/" + id_rec + "/" + filename + "/Y",
+            success : function(response)
+            {
+            console.log( "success reeedit report") ;
+            location.reload();
+            },
+            error: function(response)
+            {
+            console.log("ERROR reeedit report") ;
+            alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
+            }
+        } ) ;
+    }
 }
 
 function upload_file( id_rec )
@@ -480,16 +501,14 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
         error: function(response)
         {
         console.log("ERROR upload file") ;
-        alert("Une erreur est survenue lors du dépot d'un fichier") ;
+        alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
         }
     } ) ;
-    
 }
 
 function delete_file( id_file )
 {
-// TODO check user role rights
-    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
         $.ajax( 
         {
@@ -502,7 +521,7 @@ function delete_file( id_file )
             error: function(ret)
             {
             console.log("ERROR DELETE document file") ;
-            alert("Erreur lors de la suppression d'un fichier") ;
+            alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
             }
         } ) ;
     }
@@ -512,7 +531,6 @@ function delete_file( id_file )
 
 function print_bill( id_rec )
 {
-// TODO check user role rights ?
     $.ajax( 
     {
         type: "GET",
@@ -524,7 +542,7 @@ function print_bill( id_rec )
         error: function(ret)
         {
         console.log("ERROR GET pdf bill");
-        alert("Erreur lors de la génération du PDF facture") ;
+        alert("{{ _("Erreur lors de la génération du PDF facture") }}") ;
         }
     } ) ;
 }
@@ -542,7 +560,7 @@ function print_barcode()
         error: function(ret)
         {
         console.log("ERROR GET pdf barcode");
-        alert("Erreur lors de la génération du PDF code barre") ;
+        alert("{{ _("Erreur lors de la génération du PDF code barre") }}") ;
         }
     } ) ;
 }

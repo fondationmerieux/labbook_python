@@ -10,17 +10,37 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de l'export DHIS2") }}</span></h2>
-            
 
+            <div class="row m-3">
+                <div class="form-group">
+                    <div class="text-left upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                    <input name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer la feuille de calcul") }}" onclick="upload_dhis2();">
+                </div>
+            </div>
+
+            <div id="tempAnchor"></div>
+            
             <div class="clearfix mb-5">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
-                </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -28,39 +48,102 @@
 
 {% block add_script %}
 <script>
-function save()
+var data_dhis2 = {% if args['data_dhis2'] %}{{ args['data_dhis2']|safe }}{% else %}[]{% endif %} ;
+
+function upload_dhis2()
 {
-/*
-var id_owner = {{ session['user_id_group']|safe}} ;
-var header   = $("input:radio[name=header]:checked").val() ;
-var comment  = $("input:radio[name=comment]:checked").val() ;
+let param_form = new FormData() ;
 
-var param = '{ "id_owner":' + id_owner + ', ' +
-              '"header":' + header + ', ' +
-              '"comment":' + comment + '}' ;
+param_form.append('file', $('input[type=file]')[0].files[0]) ;
 
-    $.ajax( {
-       type: "POST",
-       url: "/services/setting/report",
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
-           },
-       error: function(data)
-           {
-           console.log("ERROR POST setting report") ;
-           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-           }
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-dhis2",
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
+        {
+        tempAlert("{{ _("Dépôt réussi") }}", 2000, "tempAnchor") ;
+        console.log("success upload dhis2") ;
+        location.reload() ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR upload logo") ;
+        alert("{{ _("Une erreur est survenue lors du dépot du fichier") }}") ;
+        }
     } ) ;
-    */
+    
+}
+
+function load_data()
+{
+    for( i in data_dhis2 )
+    {
+    load_file( data_dhis2[i] ) ;
+    }
+
+    if (data_dhis2.length < 1)
+    {
+    let tr_file = '<tr><td colspan="2"><div>{{ _("Aucun fichier déposé") }}</div></td></tr>' ;
+
+    $("#tbody_file").append(tr_file) ;
+    }
+}
+
+function load_file( filename )
+{
+let tr_file = '' ;
+
+    if ( filename != "" && filename != undefined )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'DH\', \'' + filename + '\', \'DHIS2\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + filename + '\');">{{ _("Supprimer") }}</a>' ;
+    tmp_tr += '</div></td></tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function delete_file( filename )
+{
+    if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
+    {
+        $.ajax( 
+        {
+            type: "GET",
+            url: "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/delete-file/DH/" + filename,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE DHIS2 file") ;
+            alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
 }
 
 function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
 }
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
 </script>
 {% endblock %}

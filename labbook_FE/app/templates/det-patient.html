@@ -2,7 +2,7 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Details patient") }}</title>
+    <title>{{ _("Détails patient") }}</title>
     <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
@@ -235,7 +235,7 @@ var unite         = $("#unite").val() ;
     // date de naissance obligatoire
     if (ddn == "" && age == "")
     {
-    alert( "Veuillez sélectionner une date de naissance ou saisir un age" ) ;
+    alert("{{ _("Veuillez sélectionner une date de naissance ou saisir un age") }}") ;
     return false;
     }
  
@@ -282,7 +282,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        error: function(data)
            {
            console.log("ERROR POST patient det") ;
-           alert("Une erreur est survenue lors de la modification/ajout d'un patient") ;
+           alert("{{ _("Une erreur est survenue lors de la modification/ajout d'un patient") }}") ;
            }
     } ) ;
 }

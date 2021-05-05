@@ -81,7 +81,7 @@
                             <th class="text-left">{{ _("Action") }}</th>
                             <th class="text-left cursor-act">{{ _("Code") }}</th>
                             <th class="text-left cursor-act">{{ _("Désignation") }}</th>
-                            <th class="text-left cursor-act">{{ _("Abbréviation") }}</th>
+                            <th class="text-left cursor-act">{{ _("Abréviation") }}</th>
                             <th class="text-left cursor-act">{{ _("Famille") }}</th>
                             <th class="text-left cursor-act">{{ _("Statut") }}</th>
                             <th class="text-left cursor-act">{{ _("Produit bio.") }}</th>
@@ -104,9 +104,11 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="import_analyzes();" id="btn_import" value="{{ _("Importer le référentiel") }}" class="btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="export_analyzes();" id="btn_export" value="{{ _("Exporter le référentiel") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="import_analyzes();" id="btn_import" value="{{ _("Importer le référentiel") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="export_analyzes();" id="btn_export" value="{{ _("Exporter le référentiel") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <!--
                     <input type="button" onclick="export_list();" id="btn_list" value="{{ _("Enregistrer la liste") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    -->
                     <input type="button" onclick="add_analysis();" id="btn_add" value="{{ _("Ajouter une analyse") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
             </div>
@@ -242,7 +244,7 @@ function delete_item(id_ana)
 {
 var id_user = {{ session['user_id']|safe}} ;
 
-    if ( window.confirm("{{ _("Merci de confirmer la suppression du cette analyse\\nAttention les possibles dossiers associés à cette analyse seront en erreurs") }}") )
+    if ( window.confirm("{{ _("Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs") }}") )
     {
     var param = '{ "id_user":' + id_user + '}' ;
 
@@ -276,6 +278,60 @@ $(".cnx_trigger").keyup( function(event)
     $("#btn_search").click() ;
     }
 } ) ;
+
+function import_analyzes()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/analysis-import";
+}
+
+function export_analyzes()
+{
+var id_user  = {{ session['user_id']|safe}} ;
+var param    = '{"id_user":' + id_user + '}' ;
+
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/analysis/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
+
+            let month = today.getMonth() + 1 ;
+
+            if (month < 10) month = '0' + month ;
+
+            let day = today.getDate() ;
+
+            if (day < 10) day = '0' + day ;
+
+            today = today.getFullYear() + '' + month + '' + day ;
+
+            let filename = "analyzes_" + today + ".csv" ;
+
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR POST export analyzes");
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
+    } ) ;
+}
 
 function add_analysis()
 {

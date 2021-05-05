@@ -45,7 +45,7 @@
                 </div> 
 
                 <div class="form-group row">
-                    <label for="prd_nb_by_pack" class="col-form-label col-3 text-right mt-2">{{ _("Quantité") }} *</label>
+                    <label for="prd_nb_by_pack" class="col-form-label col-3 text-right mt-2">{{ _("Nombre par paquet") }} *</label>
                     <div class="">					
                         <input type="number" name="prd_nb_by_pack" id="prd_nb_by_pack" value="{{ args['stock_product']['prd_nb_by_pack'] }}" min="1" step="1" class="form-control">			
                     </div>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="prd_ref_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Réference fournisseur") }}</label>
+                    <label for="prd_ref_supplier" class="col-form-label col-3 text-right mr-1">{{ _("Référence fournisseur") }}</label>
                     <div>
                         <input id="prd_ref_supplier" type="text" value="{{ args['stock_product']['prd_ref_supplier'] }}" maxlength="50" class="form-control" style="">
                     </div>
@@ -149,7 +149,7 @@ var msg = "" ;
     msg += "{{ _("Veuillez saisir un nom de produit.") }}\n" ;
 
     if (nb_by_pack <= 0)
-    msg += "{{ _("Veuillez saisir un nombre de produit par paquet supérieur à 0.") }}\n" ;
+    msg += "{{ _("Veuillez saisir un nombre de produits par paquet supérieur à 0.") }}\n" ;
 
     if (msg != "")
     {

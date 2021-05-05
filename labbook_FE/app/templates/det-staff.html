@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="last_eval" class="col-form-label col-3 text-right mt-2">{{ _("Dernière évalutaion des compétences") }}</label>
+                    <label for="last_eval" class="col-form-label col-3 text-right mt-2">{{ _("Dernière évaluation des compétences") }}</label>
                     <div>					
                         <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['last_eval'] }}" name="last_eval" style="color: #888;">
                     </div>
@@ -322,8 +322,8 @@ let obj = data ;
     let tmp_tr = '<tr style="">' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'' + type_ref + '\', ' + obj.id_data + ');">Télécharger</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\',' + obj.id_data + ');">Supprimer</a></div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\',' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
     tmp_tr += '</tr>' ;
 
     tr_file += tmp_tr ;
@@ -357,7 +357,7 @@ let input_file = $('#' + type_ref)[0] ;
             error: function(response)
             {
             console.log("ERROR upload file") ;
-            alert("Une erreur est survenue lors du dépot d'un fichier") ;
+            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
             }
         } ) ;
     }
@@ -366,7 +366,7 @@ let input_file = $('#' + type_ref)[0] ;
 function delete_file( type_ref, id_file )
 {
 // TODO check user role rights
-    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
         $.ajax( 
         {
@@ -379,7 +379,7 @@ function delete_file( type_ref, id_file )
             error: function(ret)
             {
             console.log("ERROR DELETE document file") ;
-            alert("Erreur lors de la suppression d'un fichier") ;
+            alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
             }
         } ) ;
     }

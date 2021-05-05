@@ -79,7 +79,7 @@ class PatientListExport(Resource):
 
             filename = 'patients_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)

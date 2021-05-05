@@ -289,7 +289,7 @@
                             <th class="text-center cursor-act">{{ _("Date prél.") }}</th>
                             <th class="text-center cursor-act">{{ _("Date réception") }}</th>
                             <th class="text-center cursor-act">{{ _("Préleveur") }}</th>
-                            <th class="text-center cursor-act">{{ _("Qtté") }}</th>
+                            <th class="text-center cursor-act">{{ _("Qté") }}</th>
                             <th class="text-center cursor-act">{{ _("Commentaire") }}</th>
                     </thead>
                     <tbody id="tbody_product"></tbody>
@@ -1102,7 +1102,7 @@ var param = '{ "id_owner":' + id_group + ', ' +
                         error: function(ret_prod)
                         {
                         console.log("ERROR product list req") ;
-                        alert("{{ _("Une erreur est survenue lors de l'enregistrement des prelevements") }}") ;
+                        alert("{{ _("Une erreur est survenue lors de l'enregistrement des prélèvements") }}") ;
                         } 
                     } ) ;
                 },
@@ -1156,14 +1156,14 @@ let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}
                 error: function(response)
                 {
                 console.log("ERROR record stat") ;
-                alert("{{ _("Une erreur est survenue du changement de statut du dossier") }}") ;
+                alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
                 }
             } ) ;
         },
         error: function(response)
         {
         console.log("ERROR result create") ;
-        alert("{{ _("Une erreur est survenue lors de création des résultats") }}") ;
+        alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
         }
     } ) ;
 }

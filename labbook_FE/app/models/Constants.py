@@ -5,6 +5,7 @@ class Constants:
     cst_date_us  = '%m/%d/%Y'
     cst_date_ymd = '%Y%m%d'
 
+    cst_dhis2    = '/storage/resource/dhis2/'
     cst_io       = '/storage/io/'
     cst_report   = '/storage/report/'
     cst_resource = '/storage/resource/'

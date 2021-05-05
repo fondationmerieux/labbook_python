@@ -39,6 +39,22 @@ class User:
                             type='17',
                             name='EVT_LOGIN',
                             message='')
+        return True
+
+    @staticmethod
+    def exist(firstname, lastname, username):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_user '
+               'from sigl_user_data '
+               'where firstname=%s and lastname=%s and username=%s')
+
+        cursor.execute(req, (firstname, lastname, username,))
+
+        res = cursor.fetchone()
+
+        if not res or res['nb_user'] != 1:
+            return False
 
         return True
 
@@ -127,6 +143,25 @@ class User:
                            'formation=%(formation)s, section=%(section)s, deval=%(deval)s, '
                            'side_account=%(side_account)s, commentaire=%(commentaire)s '
                            'where id_data=%(id_data)s', params)
+
+            User.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def updateUserByImport(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_user_data '
+                           'set cps_id=%(cps_id)s, rpps=%(rpps)s, status=%(status)s, locale=%(locale)s, email=%(email)s, '
+                           'titre=%(titre)s, initiale=%(initiale)s, ddn=%(ddn)s, adresse=%(adresse)s, tel=%(tel)s, '
+                           'darrive=%(darrive)s, position=%(position)s, cv=%(cv)s, diplome=%(diplome)s, otp_phone_number=%(phone)s,'
+                           'formation=%(formation)s, section=%(section)s, deval=%(deval)s, commentaire=%(commentaire)s '
+                           'where username=%(username)s and firstname=%(firstname)s and lastname=%(lastname)s', params)
 
             User.log.info(Logs.fileline())
 
@@ -254,6 +289,23 @@ class User:
               'where u.status != "31" and ' + l_id_role  # 31 correspond à l'utilisateur "supprimé"
 
         cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getUserExport():
+        cursor = DB.cursor()
+
+        req = ('select u.firstname, u.lastname, u.username, u.password, u.titre, u.email, u.status, u.cps_id, u.locale, '
+               'u.rpps, u.otp_phone_number, u.initiale, date_format(u.ddn, %s) as ddn, u.position, u.adresse, u.tel, '
+               'date_format(u.darrive, %s) as darrive, u.cv, u.diplome, u.formation, date_format(u.deval, %s) as deval, '
+               'u.section, u.commentaire, u.side_account, gl.id_role '
+               'from sigl_pj_group_link as gl '
+               'inner join sigl_user_data as u on u.id_group=gl.id_group '
+               'where gl.id_group_parent=1000 and u.username != "root" '
+               'group by u.id_data order by gl.id_role asc')
+
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate))
 
         return cursor.fetchall()
 

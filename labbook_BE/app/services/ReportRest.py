@@ -44,12 +44,11 @@ class ReportEpidemio(Resource):
                     # Parse formula for result request
                     req_part = ''
 
-                    req_part = Report.ParseFormula(formula)
+                    req_part = Report.ParseFormula(formula, id_prod)
 
                     # self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
                     result = Report.getResultEpidemio(inner_req=req_part['inner'],
                                                       end_req=req_part['end'],
-                                                      id_prod=id_prod,
                                                       date_beg=args['date_beg'],
                                                       date_end=args['date_end'])
 
@@ -253,7 +252,7 @@ class ReportTodayExport(Resource):
 
             filename = 'report_today_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)

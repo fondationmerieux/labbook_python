@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-- setting and export DHIS2
-- import/export users
 - import/export Analysis repository
 - fixed report records
+
+## [3.0.5] - 2021-04-29
+### Added
+- setting and export DHIS2
+- import/export users
 
 ## [3.0.4] - 2021-04-22
 ### Added

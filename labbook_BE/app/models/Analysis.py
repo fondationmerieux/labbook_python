@@ -78,12 +78,22 @@ class Analysis:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_05_data '
-                           '(id_owner, code, nom, abbr, famille, type_prel, cote_unite, cote_valeur, commentaire, '
-                           'produit_biologique, type_analyse, actif, ana_whonet) '
-                           'values '
-                           '(%(id_owner)s, %(code)s, %(name)s, %(abbr)s, %(type_ana)s, %(type_prod)s, %(unit)s, '
-                           '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s)', params)
+            # try to insert to a specidfic id_data
+            if 'id_data' in params and params['id_data'] > 0:
+                lid_data = 'id_data, '
+                vid_data = str(params['id_data']) + ', '
+            else:
+                lid_data = ''
+                vid_data = ''
+
+            req = ('insert into sigl_05_data '
+                   '(' + lid_data + 'id_owner, code, nom, abbr, famille, type_prel, cote_unite, cote_valeur, commentaire, '
+                   'produit_biologique, type_analyse, actif, ana_whonet) '
+                   'values '
+                   '(' + vid_data + '%(id_owner)s, %(code)s, %(name)s, %(abbr)s, %(type_ana)s, %(type_prod)s, %(unit)s, '
+                   '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s)')
+
+            cursor.execute(req, params)
 
             Analysis.log.info(Logs.fileline())
 
@@ -212,6 +222,21 @@ class Analysis:
                'where id_data=%s')
 
         cursor.execute(req, (id_var,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getAnalysisVarExist(label, type_res, unit, var_min, var_max, accu):
+        cursor = DB.cursor()
+
+        req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
+               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2 '
+               'from sigl_07_data '
+               'where libelle=%s and type_resultat=%s and unite=%s and normal_min=%s and normal_max=%s and accuracy=%s '
+               'limit 1 order by id_data asc')
+
+        cursor.execute(req, (label, type_res, unit, var_min, var_max, accu,))
 
         return cursor.fetchone()
 
@@ -479,7 +504,7 @@ class Analysis:
         return cursor.fetchall()
 
     @staticmethod
-    def checkCodeAnalysis(code):
+    def exist(code):
         try:
             cursor = DB.cursor()
 
@@ -490,9 +515,47 @@ class Analysis:
             ret = cursor.fetchone()
 
             if ret and ret['nb_code'] == 0:
+                return False
+            else:
+                return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return -1
+
+    @staticmethod
+    def freeIdAna(id_ana):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select count(*) as nb_ana '
+                           'from sigl_05_data '
+                           'where id_data=%s', (id_ana,))
+
+            ret = cursor.fetchone()
+
+            if ret and ret['nb_ana'] == 0:
                 return True
             else:
                 return False
         except mysql.connector.Error as e:
             Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return False
+            return -1
+
+    @staticmethod
+    def getAnalysisExport():
+        cursor = DB.cursor()
+
+        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.paillasse, '
+               'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
+               'ana.type_analyse, ana.actif, ana.ana_whonet, link.id_data as id_link, link.id_refanalyse, '
+               'link.id_refvariable, link.position, link.num_var, link.obligatoire, var.id_data as id_var, var.libelle, '
+               'var.description, var.unite, var.normal_min, var.normal_max, var.commentaire as var_comm, var.type_resultat, '
+               'var.unite2, var.formule_unite2, var.formule, var.accuracy, var.precision2 '
+               'from sigl_05_data as ana '
+               'left join sigl_05_07_data as link on link.id_refanalyse=ana.id_data '
+               'left join sigl_07_data as var on var.id_data=link.id_refvariable '
+               'order by ana.id_data asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()

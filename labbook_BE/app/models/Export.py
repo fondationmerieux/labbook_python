@@ -18,8 +18,8 @@ class Export:
         l_tmp = []
 
         # Records list between two date
-        req = ('select rec.id_data as id_rec, date_hosp, service_interne, dico.label as rec_type, id_patient, '
-               'ifnull(dict_med.label, "") as med_spe '
+        req = ('select rec.id_data as id_rec, date_hosp, service_interne, num_lit, dico.label as rec_type, id_patient, '
+               'ifnull(dict_med.label, "") as med_spe, num_dos_an '
                'from sigl_02_data as rec '
                'inner join sigl_dico_data as dico on rec.type=dico.id_data and dico.dico_name = "type_dossier" '
                'left join sigl_08_data as med on med.id_data=rec.med_prescripteur '
@@ -35,10 +35,10 @@ class Export:
 
         for rec in l_rec:
             # check this list for whonet analyzes
-            req = 'select ana.id_data as id_ana, req.id_data as id_req, code as ana_code, nom as ana_name '\
-                  'from sigl_04_data as req '\
-                  'left join sigl_05_data as ana on req.ref_analyse=ana.id_data '\
-                  'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s'
+            req = ('select ana.id_data as id_ana, req.id_data as id_req, code as ana_code, nom as ana_name '
+                   'from sigl_04_data as req '
+                   'left join sigl_05_data as ana on req.ref_analyse=ana.id_data '
+                   'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s')
 
             cursor.execute(req, (rec['id_rec'],))
 
@@ -55,14 +55,14 @@ class Export:
 
         # get results
         for ana in l_tmp:
-            req = 'select res.id_data as id_res, res.valeur, var.libelle, var.type_resultat as type_res '\
-                  'from sigl_09_data as res '\
-                  'inner join sigl_07_data as var on var.id_data = res.ref_variable '\
-                  'inner join sigl_05_07_data as pos on var.id_data = pos.id_refvariable and pos.id_refanalyse=%s '\
-                  'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '\
-                  'where res.id_analyse=%s and vld.type_validation=252 and vld.motif_annulation is NULL '\
-                  'and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '\
-                  'order by pos.position asc'
+            req = ('select res.id_data as id_res, res.valeur, var.libelle, var.type_resultat as type_res '
+                   'from sigl_09_data as res '
+                   'inner join sigl_07_data as var on var.id_data = res.ref_variable '
+                   'inner join sigl_05_07_data as pos on var.id_data = pos.id_refvariable and pos.id_refanalyse=%s '
+                   'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
+                   'where res.id_analyse=%s and vld.type_validation=252 and vld.motif_annulation is NULL '
+                   'and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
+                   'order by pos.position asc')
 
             cursor.execute(req, (ana['id_ana'], ana['id_req'],))
 
@@ -96,10 +96,10 @@ class Export:
 
         for res in l_res:
             if id_rec_p != res['id_rec']:
-                req = 'select id_dos, date_prel, dico.label as type_prod, commentaire as comment '\
-                      'from sigl_01_data as prod '\
-                      'inner join sigl_dico_data as dico on prod.type_prel=dico.id_data and dico.dico_name="type_prel" '\
-                      'where prod.statut=8 and prod.id_dos=%s'
+                req = ('select id_dos, date_prel, dico.label as type_prod, commentaire as comment '
+                       'from sigl_01_data as prod '
+                       'inner join sigl_dico_data as dico on prod.type_prel=dico.id_data and dico.dico_name="type_prel" '
+                       'where prod.statut=8 and prod.id_dos=%s')
 
                 cursor.execute(req, (res['id_rec'],))
 
@@ -118,12 +118,12 @@ class Export:
                 res['spec_type'] = ''
                 res['spec_comment'] = ''
 
-        # Laboratory information
+        # Laboratory name
         lab_info = {}
 
-        req = 'select value '\
-              'from sigl_06_data '\
-              'where identifiant="entete_1"'
+        req = ('select value '
+               'from sigl_06_data '
+               'where identifiant="entete_1"')
 
         cursor.execute(req,)
 
@@ -131,9 +131,10 @@ class Export:
 
         lab_info['lab_name'] = ret_info['value']
 
-        req = 'select value '\
-              'from sigl_06_data '\
-              'where identifiant="entete_adr"'
+        # Laboratory address
+        req = ('select value '
+               'from sigl_06_data '
+               'where identifiant="entete_adr"')
 
         cursor.execute(req,)
 
@@ -141,9 +142,10 @@ class Export:
 
         lab_info['lab_addr'] = ret_info['value']
 
-        req = 'select value '\
-              'from sigl_06_data '\
-              'where identifiant="entete_ville"'
+        # Laboratory city
+        req = ('select value '
+               'from sigl_06_data '
+               'where identifiant="entete_ville"')
 
         cursor.execute(req,)
 
@@ -151,11 +153,33 @@ class Export:
 
         lab_info['lab_city'] = ret_info['value']
 
+        # Laboratory phone
+        req = ('select value '
+               'from sigl_06_data '
+               'where identifiant="entete_tel"')
+
+        cursor.execute(req,)
+
+        ret_info = cursor.fetchone()
+
+        lab_info['lab_phone'] = ret_info['value']
+
+        # Laboratory email
+        req = ('select value '
+               'from sigl_06_data '
+               'where identifiant="entete_email"')
+
+        cursor.execute(req,)
+
+        ret_info = cursor.fetchone()
+
+        lab_info['lab_email'] = ret_info['value']
+
         # patient details and add lab info
         for res in l_res:
             req = ('select pat.code as pat_code, pat.nom as pat_name, pat.prenom as pat_fname, ddn, age, '
                    'dico.label as sex, pat.adresse as pat_addr, pat.ville as pat_city, pat.cp as pat_zip, '
-                   'pat.tel as pat_phone, pat.profession as pat_class, pat.unite as cat_age '
+                   'pat.tel as pat_phone, pat.profession as pat_class, pat.unite as cat_age, pat.code_patient '
                    'from sigl_03_data as pat '
                    'inner join sigl_dico_data as dico on pat.sexe=dico.id_data and dico.dico_name="sexe" '
                    'where pat.id_data=%s')
@@ -164,13 +188,18 @@ class Export:
 
             res.update(cursor.fetchone())
 
-            if lab_info and lab_info['lab_name'] and lab_info['lab_addr'] and lab_info['lab_city']:
-                res['lab_name'] = lab_info['lab_name']
-                res['lab_addr'] = lab_info['lab_addr']
-                res['lab_city'] = lab_info['lab_city']
+            if lab_info and lab_info['lab_name'] and lab_info['lab_addr'] and lab_info['lab_city'] and \
+               lab_info['lab_phone'] and lab_info['lab_email']:
+                res['lab_name']  = lab_info['lab_name']
+                res['lab_addr']  = lab_info['lab_addr']
+                res['lab_city']  = lab_info['lab_city']
+                res['lab_phone'] = lab_info['lab_phone']
+                res['lab_email'] = lab_info['lab_email']
             else:
-                res['lab_name'] = ''
-                res['lab_addr'] = ''
-                res['lab_city'] = ''
+                res['lab_name']  = ''
+                res['lab_addr']  = ''
+                res['lab_city']  = ''
+                res['lab_phone'] = ''
+                res['lab_email'] = ''
 
         return l_res

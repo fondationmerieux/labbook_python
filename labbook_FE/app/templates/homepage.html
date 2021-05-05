@@ -20,7 +20,7 @@
                     <!--<a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>-->
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes" class="list-group-item admin-referentiel">{{ _("Référentiel des analyses") }}</a>
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-dicts" class="list-group-item admin-conf-cr">{{ _("Dictionnaires") }}</a>
-                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-backup" class="list-group-item admin-num-doss">{{ _("Gestion sauvegarde") }}</a>
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-backup" class="list-group-item admin-num-doss">{{ _("Gestion des sauvegardes") }}</a>
                     <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ args['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
 
                     <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ args['pref_quality'] }});" class="list-group-item admin-qualite-{{ args['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>

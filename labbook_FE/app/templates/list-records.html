@@ -218,7 +218,7 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
                     $("#dial-wait").modal("hide") ;
 
                 console.log("ERROR record list") ;
-                alert("Une erreur est survenue lors de la récupération de la liste des dossiers") ;
+                alert("{{ _("Une erreur est survenue lors de la récupération de la liste des dossiers") }}") ;
                 }
         } ) ;
     } ) ;
@@ -307,7 +307,7 @@ $("#listing_dos_total").html( data_len ) ;
 
 function del_record( id_rec )
 {
-    if ( window.confirm("Merci de confirmer la suppression") )
+    if ( window.confirm("{{ _("Veuillez confirmer la suppression") }}") )
     {
         $.ajax( 
         {
@@ -320,7 +320,7 @@ function del_record( id_rec )
             error: function(ret)
             {
             console.log("ERROR DELETE record") ;
-            alert("Erreur lors de la suppression d'un dossier") ;
+            alert("{{ _("Erreur lors de la suppression d'un dossier") }}") ;
             }
         } ) ;
     }

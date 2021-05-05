@@ -90,8 +90,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"sts_margin_left":' + sts_margin_left + ', ' +
               '"sts_margin_right":' + sts_margin_right + '}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "/services/setting/sticker/" + sts_ser,
@@ -140,7 +138,7 @@ var param = '{ "sts_width":' + sts_width + ', ' +
         error: function(ret)
         {
         console.log("ERROR POST pdf barcode");
-        alert("Erreur lors de la génération du PDF code barre") ;
+        alert("{{ _("Erreur lors de la génération du PDF code barre") }}") ;
         }
     } ) ;
 }

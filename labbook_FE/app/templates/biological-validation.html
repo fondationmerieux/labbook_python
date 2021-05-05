@@ -154,8 +154,8 @@
             </div>
             {% endif %}
 
-        </div><!-- close main -->
-    </div><!-- close inner -->
+        </div>
+    </div>
 </div><!-- close content -->
 {% endblock %}        
 
@@ -269,21 +269,21 @@ param_list_res += ' ] }';
                         error: function(response)
                         {
                         console.log("ERROR record stat") ;
-                        alert("Une erreur est survenue du changement de statut du dossier") ;
+                        alert("{{ _("Une erreur est survenue du changement de statut du dossier") }}") ;
                         }
                     } ) ;
                 },
                 error: function(response)
                 {
                 console.log("ERROR result create") ;
-                alert("Une erreur est survenue lors de création des résultats") ;
+                alert("{{ _("Une erreur est survenue lors de création des résultats") }}") ;
                 }
             } ) ;
         },
         error: function(ret_ana)
         {
         console.log("ERROR analysis list req") ;
-        alert("Une erreur est survenue lors de l'enregistrement des analyses") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
         } 
     } ) ;
 }
@@ -301,7 +301,7 @@ gen_ihm_res( data_res ) ;
 
 function reset_res( id_rec, id_res )
 {
-    if ( window.confirm("Etes-vous sur de vouloir effacer ce résultat ?") )
+    if ( window.confirm("{{ _("Etes-vous sur de vouloir effacer ce résultat ?") }}") )
     {
     let param_res = '{ "id_owner": {{ session['user_id_group'] }}, "id_res":' + id_res + '}' ;
 
@@ -320,7 +320,7 @@ function reset_res( id_rec, id_res )
             error: function(data)
                 {
                 console.log("ERROR result reset") ;
-                alert("Une erreur est survenue lors de réinitialisation d'une valeur saisie") ;
+                alert("{{ _("Une erreur est survenue lors de réinitialisation d'une valeur saisie") }}") ;
                 }
         } ) ;
     }
@@ -328,7 +328,7 @@ function reset_res( id_rec, id_res )
 
 function cancel_res( id_rec, id_res )
 {
-    if ( window.confirm("Etes-vous sur de vouloir annuler ce résultat ?\nCette action est irreversible.") )
+    if ( window.confirm("{{ _("Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible.") }}") )
     {
     id_rec_tmp = id_rec ;
     id_res_tmp = id_res ;
@@ -369,7 +369,7 @@ let param_res = '{ "id_owner": {{ session['user_id_group'] }}, ' +
         error: function(data)
             {
             console.log("ERROR result cancel") ;
-            alert("Une erreur est survenue lors de l'annulation d'une valeur saisie") ;
+            alert("{{ _("Une erreur est survenue lors de l'annulation d'une valeur saisie") }}") ;
             }
     } ) ;
 }
@@ -417,7 +417,7 @@ param_list_valid += ' ] }' ;
         error: function(data)
             {
             console.log("ERROR result valid bio") ;
-            alert("Une erreur est survenue lors de validation biologique des valeurs saisies") ;
+            alert("{{ _("Une erreur est survenue lors de validation biologique des valeurs saisies") }}") ;
             }
     } ) ;
 }
@@ -666,7 +666,7 @@ $("#div_add_analysis").show() ;
         error: function(data_ana)
             {
             console.log("ERROR GET det analysis");
-            alert("Erreur lors de la récupération d'une analyse") ;
+            alert("{{ _("Erreur lors de la récupération d'une analyse") }}") ;
             }
         } ) ;
 } ) ;
@@ -695,7 +695,7 @@ info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_pati
 
 function return_home()
 {
-    if ( window.confirm("Attention vous allez quitter ce dossier sans l'avoir validé.") )
+    if ( window.confirm("{{ _("Attention vous allez quitter ce dossier sans l'avoir validé.") }}") )
     {
     window.location.href = "{{ session['server_ext'] }}/sigl/homepage" ;
     }

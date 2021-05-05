@@ -92,11 +92,15 @@ class Record:
     def getRecord(id_rec):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
-               'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
-               'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp '
-               'from sigl_02_data '
-               'where id_data=%s')
+        req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.date_dos, rec.num_dos_jour, '
+               'rec.num_dos_an, rec.med_prescripteur, rec.date_prescription, rec.service_interne, rec.num_lit, '
+               'rec.id_colis, rec.date_reception_colis, rec.rc, rec.colis, rec.prix, rec.remise, '
+               'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
+               'rec.num_dos_mois, rec.date_hosp, '
+               'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
+               'from sigl_02_data as rec '
+               'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
+               'where rec.id_data=%s')
 
         cursor.execute(req, (id_rec,))
 

@@ -45,8 +45,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div></div>
-                            <div></div>
                             <table class=table-responsive">
                                 <thead>
                                     <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
@@ -73,9 +71,9 @@
                         <tr>
                             <th class="col" hidden>{{ _("serial") }}</th>
                             <th class="d-inline-block col-2 text-left">{{ _("Action") }}</th>
-                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Libéllé") }} *</th>
+                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Libellé") }} *</th>
                             <th class="d-inline-block col-2 text-left cursor-act">{{ _("Code") }} *</th>
-                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Libéllé court") }}</th>
+                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Libellé court") }}</th>
                             <th class="d-inline-block col-2 text-left cursor-act">{{ _("Position") }}</th>
                     </thead>
                     <tbody id="tbody_value">
@@ -265,7 +263,7 @@ var dict_name = $("#name").val() ;
     {
         if (data_values[i].label == "")
         {
-        alert( "{{ _("Veuillez renseigner le(s) libéllé(s).") }}" ) ;
+        alert( "{{ _("Veuillez renseigner le(s) libellé(s).") }}" ) ;
         return false ;
         }
 
@@ -325,10 +323,10 @@ let obj = data ;
     let tmp_tr = '<tr style="">' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">Télécharger</a>';
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
           session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a>' ;
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a>' ;
     {% endif %}
     tmp_tr += '</div></td></tr>' ;
 
@@ -359,15 +357,14 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
         error: function(response)
         {
         console.log("ERROR upload file") ;
-        alert("Une erreur est survenue lors du dépot d'un fichier") ;
+        alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
         }
     } ) ;
 }
 
 function delete_file( id_file )
 {
-// TODO check user role rights
-    if ( window.confirm("Le fichier sera définitivement supprimé") )
+    if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
         $.ajax( 
         {
@@ -380,7 +377,7 @@ function delete_file( id_file )
             error: function(ret)
             {
             console.log("ERROR DELETE document file") ;
-            alert("Erreur lors de la suppression d'un fichier") ;
+            alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
             }
         } ) ;
     }

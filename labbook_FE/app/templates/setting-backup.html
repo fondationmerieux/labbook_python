@@ -106,7 +106,7 @@
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5>{{ _("Veuillez sélectionner le média") }}</h5>
+                            <h5>{{ _("Veuillez sélectionner un média") }}</h5>
                             <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
                         </div>
                         <div class="modal-body">
@@ -166,7 +166,7 @@ var keyexist = 0  ;
 
 function run_time()
 {
-    if ( window.confirm("{{ _("Merci de confirmer la modification de l'heure de sauvegarde quotidienne.") }}") )
+    if ( window.confirm("{{ _("Veuillez confirmer la modification de l'heure de sauvegarde quotidienne.") }}") )
     {
     action = "T" ;
 
@@ -187,7 +187,7 @@ action = "K" ;
 
     if ( keyexist == 0 )
     {
-    let msg = "{{ _("Une clé existe déjà si vous re-générez une clé les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d\'une nouvelle clé ?") }}" ;
+    let msg = "{{ _("Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d\'une nouvelle clé ?") }}" ;
 
         if ( window.confirm(msg) )
         {
@@ -222,7 +222,7 @@ pwd_user = $("#pwd-user").val() ;
 
     if (pwd_user == "")
     {
-    alert("{{ _("Vous devez saisir un mot de passe") }}") ;
+    alert("{{ _("Veuillez saisir un mot de passe") }}") ;
     return false;
     }
 
@@ -247,7 +247,7 @@ media = $("#list-media").val() ;
 
     if (media == "" || media == null)
     {
-    alert("{{ _("Vous devez sélectionner un média") }}") ;
+    alert("{{ _("Veuillez sélectionner un média") }}") ;
     return false;
     }
 
@@ -269,13 +269,13 @@ let pwd_key2 = $( "#pwd-key2" ).val() ;
 
     if (pwd_key == "")
     {
-    alert("{{ _("Vous devez saisir un mot de passe") }}") ;
+    alert("{{ _("Veuillez saisir un mot de passe") }}") ;
     return false;
     }
 
     if ( action == "K" && (pwd_key == "" || pwd_key != pwd_key2) )
     {
-    alert("{{ _("Les mots de passes ne correspondent pas !") }}") ;
+    alert("{{ _("Les mots de passe ne correspondent pas !") }}") ;
     return false ;
     }
 
@@ -371,7 +371,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
             return true ;
             }
             else
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste de media") }}") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération de la liste de média") }}") ;
 
         return false ;
         },
@@ -417,7 +417,7 @@ function initmedia(media)
 {
     if (media == "" || media == null)
     {
-    alert("{{ _("Une erreur est survenue le media choisi est incorrect") }}") ;
+    alert("{{ _("Une erreur est survenue le média choisi est incorrect") }}") ;
     return false ;
     }
 
@@ -438,7 +438,7 @@ function initmedia(media)
             return true ;
             }
             else
-            alert("{{ _("Une erreur est survenue lors de l'initialisation du media") }}") ;
+            alert("{{ _("Une erreur est survenue lors de l'initialisation du média") }}") ;
 
         return false ;
         },
@@ -569,7 +569,7 @@ archive = $("#list-archive").val() ;
 
     if (media == "" || media == null)
     {
-    alert("{{ _("Vous deviez sélectionner un média") }}") ;
+    alert("{{ _("Veuillez sélectionner un média") }}") ;
     return false;
     }
 
@@ -599,7 +599,7 @@ console.log("restore param=" + param) ;
                 {
                     $("#dial-wait").modal("hide") ;
 
-                    if ( window.confirm("{{ _("La restauration est terminée, nous allons redémarrer les services de l'application") }}") )
+                    if ( window.confirm("{{ _("La restauration est terminée, LabBook va redémarrer les services de l'application") }}") )
                     {
                     var param = '{ "pwd_user":"' + pwd_user + '"}' ;
 

@@ -36,7 +36,7 @@
             <div class="inner">
                 <div id="logo">
                     <h1>
-                        <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage">{{ _('LABBOOK') }}</a>
+                        <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage">{{ _('LabBook') }}</a>
                     </h1>
                 </div>
                 <div id="user-info">
@@ -87,7 +87,6 @@ $("#header_name").text( name ) ;
 
 function download_file( type, filename, type_ref, ref )
 {
-// TODO check user role rights ?
 window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref ;
 }
 

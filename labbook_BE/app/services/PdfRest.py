@@ -106,8 +106,8 @@ class PdfBillList(Resource):
 class PdfReport(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_rec, filename):
-        ret = Pdf.getPdfReport(id_rec, filename)
+    def get(self, id_rec, filename, reedit='N'):
+        ret = Pdf.getPdfReport(id_rec, filename, reedit)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : PdfReport failed id_rec=%s', str(id_rec))

@@ -248,7 +248,7 @@ class Report:
         return cursor.fetchone()
 
     @staticmethod
-    def ParseFormula(formula):
+    def ParseFormula(formula, id_prod):
         req = {}
 
         if formula != 'N/A':
@@ -263,7 +263,10 @@ class Report:
                             'inner join sigl_10_data as vld' + str(idx) +
                             ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-            req['end'] = (' and ref' + str(idx) + '.type_prel=%(id_prod)s and vld' + str(idx) + '.type_validation=252 ')
+            if id_prod == 0:
+                req['end'] = (' and vld' + str(idx) + '.type_validation=252 ')
+            else:
+                req['end'] = (' and ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
             formula = ' '.join(formula.split())  # take off redundant white space
             formula = formula.replace(', ', ',')
@@ -286,6 +289,22 @@ class Report:
 
                     if id_var:
                         req['end'] = req['end'] + ' and res' + str(idx) + '.ref_variable=' + id_var + ' and res' + str(idx) + '.valeur '
+                # {id_var,id_var,...} pattern
+                elif word.startswith('{') and word.endswith('}'):
+                    # Report.log.error('### {id_var,id_var,...} pattern ###')
+                    # Report.log.error('word = ' + word)
+                    l_id_var = word[1:-1].split(',')
+
+                    # Report.log.error('l_id_var=' + str(l_id_var))
+
+                    # add a  '('
+                    req['end'] = req['end'] + ' and ('
+
+                    for id_var in l_id_var:
+                        req['end'] = req['end'] + 'res' + str(idx) + '.ref_variable=' + id_var + ' or '
+
+                    # take of last 'or' and add a ')'
+                    req['end'] = req['end'][:-3] + ') and res' + str(idx) + '.valeur '
 
                 # [dict_name.code] pattern
                 elif word.startswith('[') and word.endswith(']'):
@@ -330,7 +349,10 @@ class Report:
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-                        req['end'] = (req['end'] + ' ' + word + ' ref' + str(idx) + '.type_prel=%(id_prod)s and vld' + str(idx) + '.type_validation=252 ')
+                        if id_prod == 0:
+                            req['end'] = (req['end'] + ' ' + word + ' vld' + str(idx) + '.type_validation=252 ')
+                        else:
+                            req['end'] = (req['end'] + ' ' + word + ' ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
                     # Report.log.error('###  ELSE ###')
                     # Report.log.error('word = ' + word)

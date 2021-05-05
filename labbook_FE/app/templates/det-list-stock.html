@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Liste détaillé du stock pour ce produit") }}</title>
+    <title>{{ _("Liste détaillée du stock pour ce produit") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste détaillé du stock pour ce produit") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste détaillée du stock pour ce produit") }}</span></h2>
 
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
@@ -65,12 +65,12 @@
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5>{{ _("Indiquer la quantité de paquet utilisée") }}</h5>
+                            <h5>{{ _("Indiquer le nombre de paquets utilisée") }}</h5>
                             <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
-                                <label class="col-form-label mr-1">{{ _("Quantité de paquet") }}</label>
+                                <label class="col-form-label mr-1">{{ _("Nombre de paquets") }}</label>
                                 <div>
                                     <input id="pru_nb_pack" type="number" value="1" min="1" step="1" max="???" class="form-control">
                                 </div>

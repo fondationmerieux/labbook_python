@@ -459,7 +459,7 @@ class ConformityExport(Resource):
 
             filename = 'nonconformity_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -666,7 +666,7 @@ class EquipmentExport(Resource):
 
             filename = 'equipment_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -844,7 +844,7 @@ class ManualExport(Resource):
 
             filename = 'manual_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -1008,7 +1008,7 @@ class MeetingExport(Resource):
 
             filename = 'meeting_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -1186,7 +1186,7 @@ class ProcedureExport(Resource):
 
             filename = 'procedure_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -1254,7 +1254,7 @@ class StaffExport(Resource):
 
             filename = 'staff_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -1625,7 +1625,7 @@ class StockExport(Resource):
 
             filename = 'stock_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)
@@ -1795,7 +1795,7 @@ class SupplierExport(Resource):
 
             filename = 'supplier_' + str(today) + '.csv'
 
-            with open('tmp/' + filename, mode='w') as file:
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=';')
                 for line in l_data:
                     writer.writerow(line)

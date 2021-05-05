@@ -534,13 +534,13 @@
 
                     <!-- SI SUB category -->
                     <div class="form-group row mt-n4 sub_si d-none">
-                        <label for="sub_si_cat1" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Abscence de connexion") }}</label>
+                        <label for="sub_si_cat1" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Absence de connexion") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat1" name="sub_si_cat1" type="checkbox" value="4">
                         </div>
                     </div>
                     <div class="form-group row mt-n4 sub_si d-none">
-                        <label for="sub_si_cat2" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Errer de paramétrage") }}</label>
+                        <label for="sub_si_cat2" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Erreur de paramétrage") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat2" name="sub_si_cat2" type="checkbox" value="4">
                         </div>
@@ -558,7 +558,7 @@
                         </div>
                     </div>
                     <div class="form-group row mt-n4 sub_si d-none">
-                        <label for="sub_si_cat5" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Pannes matériel informatique") }}</label>
+                        <label for="sub_si_cat5" class="col-form-label col-5 text-right ml-1 mr-2">{{ _("Panne matériel informatique") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat5" name="sub_si_cat5" type="checkbox" value="4">
                         </div>
@@ -760,7 +760,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="close_date" class="col-form-label col-3 text-right mt-2">{{ _("Date de clotûre") }}</label>
+                        <label for="close_date" class="col-form-label col-3 text-right mt-2">{{ _("Date de clôture") }}</label>
                         <div>					
                             <input id="close_date" name="close_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['close_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>
                         </div>
@@ -1208,7 +1208,7 @@ var close_date    = $("#close_date").val()      ;
 var msg = "" ;
 
     if (name == "")
-    msg += "{{ _("Veuillez saisir un nom à cette non-conformité.") }}\n" ;
+    msg += "{{ _("Veuillez saisir un nom pour cette non-conformité.") }}\n" ;
 
     if (id_details == 0 && reporter == 0)
     msg += "{{ _("Veuillez sélectionner un rapporteur.") }}\n" ;

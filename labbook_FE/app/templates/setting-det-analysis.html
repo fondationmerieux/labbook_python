@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group form-inline">
-                            <label for="abbr" class="col-form-label col-3 text-right mt-1 ">{{ _("Abbréviation") }}</label>
+                            <label for="abbr" class="col-form-label col-3 text-right mt-1 ">{{ _("Abréviation") }}</label>
                             <div>					
                                 <input type="text" name="abbr" id="abbr" value="{{ args['details']['abbr'] }}" class="form-control">			
                             </div>
@@ -137,6 +137,10 @@
                         <label for="var_descr" class="col-form-label col-2 text-right mt-1 ">{{ _("Description") }}</label>
                         <div>					
                             <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
+                        </div>
+                        <label for="var_id" class="col-form-label col-1 text-right mt-1 ">{{ _("Id") }}</label>
+                        <div>					
+                            <input type="text" name="var_id" id="var_id" value="{% if args['var'] %}{{ args['var'][0]['id_data'] }}{% endif %}" class="form-control" readonly style="width:90px;">			
                         </div>
                     </div>
 
@@ -283,6 +287,8 @@
                     </div>
                 </div>
             </form>
+
+            <div id="tempAnchor"></div>
 
             <div class="clearfix row mt-3">
                 <div class="col-12">
@@ -630,6 +636,7 @@ ind_sel_var = id_item ;
 
 $("#var_label").val( det_var.label ) ;
 $("#var_descr").val( det_var.descr ) ;
+$("#var_id").val( det_var.id_data ) ;
 $("#var_type_res").val( det_var.type_res ) ;
 $("#var_min").val( det_var.min ) ;
 $("#var_max").val( det_var.max ) ;

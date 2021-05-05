@@ -68,7 +68,7 @@ VENV_DIR=${APP_DIR}/venv
 LOGS_DIR=${HOME_APP}/logs
 LOGS_PERM=/storage/log
 GUNICORN_DIR=${HOME_APP}/gunicorn
-GUNICORN_TIMEOUT=60
+GUNICORN_TIMEOUT=0  # Because restore and backup scripts that run synchronously
 
 source ${VENV_DIR}/bin/activate
 

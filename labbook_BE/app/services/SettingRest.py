@@ -289,6 +289,7 @@ class ScriptBackup(Resource):
         # read backup file
         try:
             ret = ''
+            # No encoding forced because script return list from system so its depend of encoding of operating system
             f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
             for line in f:
                 ret += line
@@ -372,6 +373,7 @@ class ScriptListarchive(Resource):
         # read listarchive file
         if ret == 0:
             try:
+                # No encoding forced because script return list from system so its depend of encoding of operating system
                 f = open(os.path.join(Constants.cst_io, 'listarchive'), 'r')
                 for archive in f:
                     l_archive['archive'].append(archive[:-1])
@@ -413,6 +415,7 @@ class ScriptListmedia(Resource):
         # read listmedia file
         if ret == 0:
             try:
+                # No encoding forced because script return list from system so its depend of encoding of operating system
                 f = open(os.path.join(Constants.cst_io, 'listmedia'), 'r')
                 for media in f:
                     l_media['media'].append(media[:-1])

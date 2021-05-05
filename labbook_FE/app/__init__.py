@@ -507,6 +507,17 @@ def user_conn_export():
     return render_template('user-conn-export.html', rand=random.randint(0, 999))
 
 
+# Page : users import
+@app.route('/user-import')
+def user_import():
+    log.info(Logs.fileline() + ' : TRACE user-import')
+
+    session['current_page'] = 'user-import'
+    session.modified = True
+
+    return render_template('user-import.html', rand=random.randint(0, 999))
+
+
 # Page : setting new password for a user
 @app.route('/setting-pwd-user/<int:user_id>')
 def setting_pwd_user(user_id=0):
@@ -631,17 +642,17 @@ def setting_analyzes():
 
 
 # Page : import analyzes list
-@app.route('/import-analyzes')
-def import_analyzes():
-    log.info(Logs.fileline() + ' : TRACE import analyzes')
+@app.route('/analysis-import')
+def analysis_import():
+    log.info(Logs.fileline() + ' : TRACE import analysis')
 
-    session['current_page'] = 'import-analyzes'
+    session['current_page'] = 'analysis-import'
     session.modified = True
 
     json_ihm  = {}
     json_data = {}
 
-    return render_template('import-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('analysis-import.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : details analysis
@@ -943,6 +954,19 @@ def setting_dhis2():
     session.modified = True
 
     json_data = {}
+
+    json_data['data_dhis2'] = []
+
+    # Load dhis2 files in dhis2 directory
+    try:
+        path = Constants.cst_dhis2
+
+        for filename in os.listdir(path):
+            if not os.path.isdir(os.path.join(path, filename)) and filename.endswith('.csv'):
+                json_data['data_dhis2'].append(filename)
+
+    except Exception as err:
+        log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
 
     return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))
 
@@ -2465,6 +2489,19 @@ def report_dhis2():
 
     json_data = {}
 
+    json_data['data_dhis2'] = []
+
+    # Load dhis2 files in dhis2 directory
+    try:
+        path = Constants.cst_dhis2
+
+        for filename in os.listdir(path):
+            if not os.path.isdir(os.path.join(path, filename)) and filename.endswith('.csv'):
+                json_data['data_dhis2'].append(filename)
+
+    except Exception as err:
+        log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
+
     return render_template('report-dhis2.html', args=json_data, rand=random.randint(0, 999))
 
 
@@ -3573,6 +3610,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # PY => Python : BarCode, Bill, Whonet
     # JF => Join File
     # RP => Report
+    # DH => DHIS2 spreadsheet
 
     if type == 'PY':
         filepath = Constants.cst_path_tmp
@@ -3599,6 +3637,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
         generated_name = filename
 
         filename = 'cr_' + ref + '.pdf'
+    elif type == 'DH':
+        filepath = Constants.cst_dhis2
+        generated_name = filename
     else:
         return False
 
@@ -3728,6 +3769,87 @@ def upload_logo():
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
     return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload a spreadsheet for DHIS2
+@app.route('/upload-dhis2', methods=['POST'])
+def upload_dhis2():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-dhis2 failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_dhis2
+
+        log.info(Logs.fileline())
+
+        # check if this file is a csv
+        if not filename.endswith('.csv'):
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-dhis2 failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload temp file for import
+@app.route('/upload-import', methods=['POST'])
+def upload_import():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-import failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_path_tmp
+
+        log.info(Logs.fileline())
+
+        # check if this file is a csv
+        if not filename.endswith('.csv'):
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-import failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : delete a file
+@app.route('/delete-file/<string:type>/<string:filename>')
+def delete_file(type='', filename=''):
+    log.info(Logs.fileline())
+
+    filepath = Constants.cst_dhis2
+
+    try:
+        if os.path.exists(os.path.join(filepath, filename)):
+            os.remove(os.path.join(filepath, filename))
+    except Exception as err:
+        log.error(Logs.fileline() + ' : delete-file failed to delete file, err=%s', err)
+        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 # if __name__ == "__main__":

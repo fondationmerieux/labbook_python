@@ -101,7 +101,7 @@
                             <th class="text-left cursor-act">{{ _("Nom") }}</th>
                             <th class="text-left cursor-act">{{ _("Statut") }}</th>
                             <th class="text-left cursor-act">{{ _("Date création") }}</th>
-                            <th class="text-left cursor-act">{{ _("Role") }}</th>
+                            <th class="text-left cursor-act">{{ _("Rôle") }}</th>
                             <th class="text-left cursor-act">{{ _("Section") }}</th>
                             <th class="text-left cursor-act">{{ _("Origine") }}</th>
                     </thead>
@@ -123,8 +123,8 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-right">
-                    <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2" disabled>
+                    <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                     <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                     <input type="button" onclick="add_user();" id="btn_add" value="{{ _("Ajouter un utilisateur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                 </div>
@@ -271,7 +271,7 @@ function change_status(id_user, stat)
 {
 var id_owner = {{ session['user_id_group']|safe}} ;
 
-    if ( window.confirm("{{ _("Merci de confirmer la modification de statut") }}") )
+    if ( window.confirm("{{ _("Veuillez confirmer la modification de statut") }}") )
     {
     var param = '{ "id_owner":' + id_owner + ', ' +
                   '"id_user":' + id_user + ', ' +
@@ -299,9 +299,63 @@ var id_owner = {{ session['user_id_group']|safe}} ;
     return false ; 
 }
 
+function import_users()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/user-import";
+}
+
 function export_conn()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/user-conn-export";
+}
+
+function export_users()
+{
+var id_user  = {{ session['user_id']|safe}} ;
+var param    = '{"id_user":' + id_user + '}' ;
+
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/user/export",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
+
+            let month = today.getMonth() + 1 ;
+
+            if (month < 10) month = '0' + month ;
+
+            let day = today.getDate() ;
+
+            if (day < 10) day = '0' + day ;
+
+            today = today.getFullYear() + '' + month + '' + day ;
+
+            let filename = "users_" + today + ".csv" ;
+
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR POST export users");
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
+    } ) ;
 }
 
 function add_user()

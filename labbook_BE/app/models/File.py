@@ -370,3 +370,19 @@ class File:
         cursor.execute(req)
 
         return cursor.fetchone()
+
+    @staticmethod
+    def updateReportDate(filename):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_11_data '
+                           'set date=now() '
+                           'where file=%s', (filename,))
+
+            File.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
