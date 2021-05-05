@@ -72,7 +72,7 @@ def upgrade():
             conn.execute('insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, cote_valeur, '
                          'produit_biologique, type_prel, type_analyse, commentaire, actif) '
                          'values (1000, "E02", "Recherche dans la bouche de l\'ADN viral de la maladie à virus Ebola par RT-PCR", '
-                         '"MVE RT-PCR Sang", 17, "", 0, 15, 50, 170, "", 4)')
+                         '"MVE RT-PCR Buccal", 17, "", 0, 15, 50, 170, "", 4)')
         except Exception as err:
             print("ERROR insert E02 analysis,\n\terr=" + str(err))
         else:
@@ -95,7 +95,7 @@ def upgrade():
             conn.execute('insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, cote_valeur, '
                          'produit_biologique, type_prel, type_analyse, commentaire, actif) '
                          'values (1000, "E03", "Recherche dans le sang de l\'ADN viral de la maladie à virus Ebola par RT-PCR", '
-                         '"MVE RT-PCR Sang", 17, "", 0, 3, 153, 170, "", 4)')
+                         '"MVE RT-PCR Urine", 17, "", 0, 3, 153, 170, "", 4)')
         except Exception as err:
             print("ERROR insert E03 analysis,\n\terr=" + str(err))
         else:
@@ -118,7 +118,7 @@ def upgrade():
             conn.execute('insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, cote_valeur, '
                          'produit_biologique, type_prel, type_analyse, commentaire, actif) '
                          'values (1000, "E04", "Recherche dans le sang de l\'ADN viral de la maladie à virus Ebola par RT-PCR", '
-                         '"MVE RT-PCR Sang", 17, "", 0, 22, 152, 170, "", 4)')
+                         '"MVE RT-PCR Sperme", 17, "", 0, 22, 152, 170, "", 4)')
         except Exception as err:
             print("ERROR insert E04 analysis,\n\terr=" + str(err))
         else:
@@ -141,7 +141,7 @@ def upgrade():
             conn.execute('insert into sigl_05_data (id_owner, code, nom, abbr, famille, cote_unite, cote_valeur, '
                          'produit_biologique, type_prel, type_analyse, commentaire, actif) '
                          'values (1000, "E05", "Recherche dans le sang de l\'ADN viral de la maladie à virus Ebola par RT-PCR", '
-                         '"MVE RT-PCR Sang", 17, "", 0, 4, 141, 170, "", 4)')
+                         '"MVE RT-PCR Selles", 17, "", 0, 4, 141, 170, "", 4)')
         except Exception as err:
             print("ERROR insert E05 analysis,\n\terr=" + str(err))
         else:
