@@ -100,6 +100,7 @@ def get_locale():
 
 
 def get_init_var():
+    log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var begins')
     # init external server
     root    = request.url_root
     headers = request.headers
@@ -140,16 +141,26 @@ def get_init_var():
 
     # Load auto_logout
     try:
+        log.info(Logs.fileline() + 'LABBOOK_FE first request to LABBOOK_BE')
         url = session['server_int'] + '/services/default/val/auto_logout'
         req = requests.get(url)
 
         if req.status_code == 200:
             ret_json = req.json()
+            log.error(Logs.fileline() + ' : DEBUG ret_json=' + str(ret_json))
             session['auto_logout'] = ret_json['value']
+            session['labbook_BE_OK'] = True
+            session.modified = True
+        else:
+            session['labbook_BE_OK'] = False
             session.modified = True
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests auto_logout failed, err=%s , url=%s', err, url)
+        session['labbook_BE_OK'] = False
+        session.modified = True
+
+    log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var ends')
 
 
 def get_user_data(login):
@@ -252,12 +263,25 @@ def date_now(date_now):
 @app.route("/")
 def index():
     if not session or 'current_page' not in session:
-        log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Login')
+        log.info(Logs.fileline() + ' : TRACE Labbook_FE get_init_var()')
         get_init_var()
-        return render_template('login.html', rand=random.randint(0, 999))
+        if session and 'labbook_BE_OK' in session and session['labbook_BE_OK']:
+            log.info(Logs.fileline() + ' : TRACE Labbook_FE no current_page => Login')
+            return render_template('login.html', rand=random.randint(0, 999))
+        else:
+            log.info(Logs.fileline() + ' : TRACE Labbook_FE no current_page AND labbook_BE not OK or problem with session')
+            return render_template('initialization.html', rand=random.randint(0, 999))
     else:
-        log.info(Logs.fileline() + ' : TRACE Labbook FRONT END Current')
+        log.info(Logs.fileline() + ' : TRACE Labbook FRONT END current_page=' + str(session['current_page']))
         return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+
+
+# Page : labbook_BE not ready
+@app.route('/initialization')
+def initialization():
+    log.info(Logs.fileline() + ' : TRACE initialization')
+
+    return render_template('initialization.html', rand=random.randint(0, 999))
 
 
 # Change la langue

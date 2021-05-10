@@ -94,6 +94,7 @@ if config_envvar in os.environ:
 else:
     print("No local configuration available: {} is undefined in the environment".format(config_envvar))
 
+
 # ######################################
 # REST initialization
 # ######################################
@@ -242,6 +243,8 @@ api.add_resource(UserRights,          '/services/user/rights/<string:role>')
 api.add_resource(UserStatus,          '/services/user/status')
 api.add_resource(UserSearch,          '/services/user/search')
 api.add_resource(UserPassword,        '/services/user/password')
+
+log.info(Logs.fileline() + ' : LABBOOK_BE is ready')
 
 # if __name__ == "__main__":
 #    app.run()
