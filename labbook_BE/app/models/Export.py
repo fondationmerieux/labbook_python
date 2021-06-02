@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
 
 from app.models.DB import DB
 from app.models.Logs import Logs
@@ -38,7 +37,7 @@ class Export:
             req = ('select ana.id_data as id_ana, req.id_data as id_req, code as ana_code, nom as ana_name '
                    'from sigl_04_data as req '
                    'left join sigl_05_data as ana on req.ref_analyse=ana.id_data '
-                   'where ana.famille=18 and ana.commentaire like "%[WHONET]%" and req.id_dos=%s')
+                   'where ana.famille=18 and ana.ana_whonet=4 and req.id_dos=%s')
 
             cursor.execute(req, (rec['id_rec'],))
 
@@ -61,7 +60,7 @@ class Export:
                    'inner join sigl_05_07_data as pos on var.id_data = pos.id_refvariable and pos.id_refanalyse=%s '
                    'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
                    'where res.id_analyse=%s and vld.type_validation=252 and vld.motif_annulation is NULL '
-                   'and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
+                   'and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 and pos.var_whonet=4 '
                    'order by pos.position asc')
 
             cursor.execute(req, (ana['id_ana'], ana['id_req'],))

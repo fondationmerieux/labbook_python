@@ -58,7 +58,7 @@ class AnalysisList(Resource):
 
         for analysis in l_analyzes:
             # Replace None by empty string
-            for key, value in analysis.items():
+            for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
 
@@ -138,7 +138,7 @@ class AnalysisHistoList(Resource):
 
         for analysis in l_analyzes:
             # Replace None by empty string
-            for key, value in analysis.items():
+            for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
 
@@ -170,7 +170,7 @@ class AnalysisHistoDet(Resource):
 
         for data in l_datas:
             # Replace None by empty string
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
 
@@ -215,7 +215,7 @@ class AnalysisDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in analysis.items():
+        for key, value in list(analysis.items()):
             if analysis[key] is None:
                 analysis[key] = ''
 
@@ -266,6 +266,7 @@ class AnalysisDet(Resource):
                     ret = Analysis.updateAnalysisVar(id_data=var['id_var'],
                                                      id_owner=args['id_owner'],
                                                      label=var['var_label'],
+                                                     code_var=var['var_code'],
                                                      descr=var['var_descr'],
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
@@ -289,7 +290,8 @@ class AnalysisDet(Resource):
                                                          id_refvar=var['id_var'],
                                                          var_pos=var['var_pos'],
                                                          var_num=var['var_num'],
-                                                         oblig=var['var_oblig'])
+                                                         oblig=var['var_oblig'],
+                                                         var_whonet=var['var_whonet'])
 
                         if ret <= 0:
                             self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -301,7 +303,8 @@ class AnalysisDet(Resource):
                                                          id_refvar=var['id_var'],
                                                          var_pos=var['var_pos'],
                                                          var_num=var['var_num'],
-                                                         oblig=var['var_oblig'])
+                                                         oblig=var['var_oblig'],
+                                                         var_whonet=var['var_whonet'])
 
                         if not ret:
                             self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update link var to analysis')
@@ -311,6 +314,7 @@ class AnalysisDet(Resource):
                     # insert new variable
                     ret = Analysis.insertAnalysisVar(id_owner=args['id_owner'],
                                                      label=var['var_label'],
+                                                     code_var=var['var_code'],
                                                      descr=var['var_descr'],
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
@@ -335,7 +339,8 @@ class AnalysisDet(Resource):
                                                      id_refvar=id_var,
                                                      var_pos=var['var_pos'],
                                                      var_num=var['var_num'],
-                                                     oblig=var['var_oblig'])
+                                                     oblig=var['var_oblig'],
+                                                     var_whonet=var['var_whonet'])
 
                     if ret <= 0:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -387,6 +392,7 @@ class AnalysisDet(Resource):
                     ret = Analysis.updateAnalysisVar(id_data=var['id_var'],
                                                      id_owner=args['id_owner'],
                                                      label=var['var_label'],
+                                                     code_var=var['var_code'],
                                                      descr=var['var_descr'],
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
@@ -409,7 +415,8 @@ class AnalysisDet(Resource):
                                                      id_refvar=var['id_var'],
                                                      var_pos=var['var_pos'],
                                                      var_num=var['var_num'],
-                                                     oblig=var['var_oblig'])
+                                                     oblig=var['var_oblig'],
+                                                     var_whonet=var['var_whonet'])
 
                     if ret <= 0:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -419,6 +426,7 @@ class AnalysisDet(Resource):
                     # insert new variable
                     ret = Analysis.insertAnalysisVar(id_owner=args['id_owner'],
                                                      label=var['var_label'],
+                                                     code_var=var['var_code'],
                                                      descr=var['var_descr'],
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
@@ -443,7 +451,8 @@ class AnalysisDet(Resource):
                                                      id_refvar=id_var,
                                                      var_pos=var['var_pos'],
                                                      var_num=var['var_num'],
-                                                     oblig=var['var_oblig'])
+                                                     oblig=var['var_oblig'],
+                                                     var_whonet=var['var_whonet'])
 
                     if ret <= 0:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -475,7 +484,7 @@ class AnalysisVarList(Resource):
 
         for var in l_vars:
             # Replace None by empty string
-            for key, value in var.items():
+            for key, value in list(var.items()):
                 if var[key] is None:
                     var[key] = ''
 
@@ -494,7 +503,7 @@ class AnalysisVarDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in ana_var.items():
+        for key, value in list(ana_var.items()):
             if ana_var[key] is None:
                 ana_var[key] = ''
 
@@ -513,7 +522,7 @@ class AnalysisTypeProd(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in type_prod.items():
+        for key, value in list(type_prod.items()):
             if type_prod[key] is None:
                 type_prod[key] = ''
 
@@ -533,7 +542,7 @@ class AnalysisReq(Resource):
 
         for analysis in l_ana:
             # Replace None by empty string
-            for key, value in analysis.items():
+            for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
 
@@ -587,7 +596,7 @@ class AnalysisExport(Resource):
                    'commentaire', 'produit_biologique', 'type_prel', 'type_analyse', 'actif', 'ana_whonet', 'id_link',
                    'id_refanalyse', 'id_refvariable', 'position', 'num_var', 'obligatoire', 'id_var', 'libelle',
                    'description', 'unite', 'normal_min', 'normal_max', 'var_comm', 'type_resultat', 'unite2',
-                   'formule_unite2', 'formule', 'accuracy', 'precision2', 'version']]
+                   'formule_unite2', 'formule', 'accuracy', 'precision2', 'version', 'code_var', 'var_whonet']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -774,6 +783,16 @@ class AnalysisExport(Resource):
 
                 data.append('v1')
 
+                if d['code_var']:
+                    data.append(d['code_var'])
+                else:
+                    data.append('')
+
+                if d['var_whonet']:
+                    data.append(d['var_whonet'])
+                else:
+                    data.append('')
+
                 l_data.append(data)
 
         # if no result to export
@@ -881,6 +900,9 @@ class AnalysisImport(Resource):
                     accuracy           = l[32]
                     precision2         = l[33]
 
+                    code_var           = l[35]
+                    var_whonet         = l[36]
+
                     ret = Analysis.exist(code)
 
                     if ret == -1:
@@ -921,6 +943,7 @@ class AnalysisImport(Resource):
                                 ret = Analysis.updateAnalysisVar(id_data=id_var,
                                                                  id_owner=id_owner,
                                                                  label=libelle,
+                                                                 code_var=code_var,
                                                                  descr=description,
                                                                  type_res=type_resultat,
                                                                  var_min=normal_min,
@@ -944,7 +967,8 @@ class AnalysisImport(Resource):
                                                                  id_refvar=id_var,
                                                                  var_pos=position,
                                                                  var_num=num_var,
-                                                                 oblig=obligatoire)
+                                                                 oblig=obligatoire,
+                                                                 var_whonet=var_whonet)
 
                                 if not ret:
                                     self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update link var to analysis')
@@ -992,6 +1016,8 @@ class AnalysisImport(Resource):
                     formule            = l[31]
                     accuracy           = l[32]
                     precision2         = l[33]
+                    code_var           = l[34]
+                    var_whonet         = l[35]
 
                     ret = Analysis.exist(code)
 
@@ -1047,6 +1073,7 @@ class AnalysisImport(Resource):
                             # INSERT UNKNOW VAR
                             ret = Analysis.insertAnalysisVar(id_owner=id_owner,
                                                              label=libelle,
+                                                             code_var=code_var,
                                                              descr=description,
                                                              type_res=type_resultat,
                                                              var_min=normal_min,
@@ -1071,7 +1098,8 @@ class AnalysisImport(Resource):
                                                          id_refvar=id_var,
                                                          var_pos=position,
                                                          var_num=num_var,
-                                                         oblig=obligatoire)
+                                                         oblig=obligatoire,
+                                                         var_whonet=var_whonet)
 
                         if ret <= 0:
                             self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert link var to analysis')

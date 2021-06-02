@@ -4,7 +4,6 @@ import mysql.connector
 
 from app.models.DB import DB
 from app.models.Logs import Logs
-from app.models.Constants import Constants
 
 
 class Various:

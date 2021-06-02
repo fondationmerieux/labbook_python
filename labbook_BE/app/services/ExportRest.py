@@ -99,7 +99,7 @@ class ExportDHIS2(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Data
-        l_data = [["dataelemnt", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value", "storedby",
+        l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value", "storedby",
                    "lastupdated", "comment", "followup", "deleted"]]
 
         date_now = datetime.now()
@@ -175,7 +175,7 @@ class ExportDHIS2(Resource):
             filename = 'dhis2_' + args['filename'][:-4] + '_' + args['date_beg'] + '.csv'
 
             with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
-                writer = csv.writer(file, delimiter=';')
+                writer = csv.writer(file, delimiter=',')
                 for line in l_data:
                     writer.writerow(line)
 

@@ -1,10 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
 
 from app.models.DB import DB
-from app.models.Logs import Logs
-from app.models.Constants import Constants
 
 
 class Report:
@@ -14,12 +11,12 @@ class Report:
     def getListEpidemio():
         cursor = DB.cursor()
 
-        req = 'select epi.id_data, epi.id_owner, epi.surveillance as disease, epi.nature_prel as id_prod, '\
-              'epi.dhis2_tab, epi.dhis2_tab_num, dict.label as product '\
-              'from sigl_14_data as epi '\
-              'left join sigl_dico_data as dict on dict.id_data = epi.nature_prel '\
-              'where epi.surveillance is not NULL '\
-              'order by disease asc'
+        req = ('select epi.id_data, epi.id_owner, epi.surveillance as disease, epi.nature_prel as id_prod, '
+               'epi.dhis2_tab, epi.dhis2_tab_num, dict.label as product '
+               'from sigl_14_data as epi '
+               'left join sigl_dico_data as dict on dict.id_data = epi.nature_prel '
+               'where epi.surveillance is not NULL '
+               'order by disease asc')
 
         cursor.execute(req)
 
@@ -29,11 +26,11 @@ class Report:
     def getStatEpidemio(id_disease):
         cursor = DB.cursor()
 
-        req = 'select nom_amont as res_cat, formule as formula, id_surveillance as id_disease, '\
-              'libelle_ind as res_label, nature_prel as id_prod '\
-              'from sigl_15_data '\
-              'where id_surveillance = %s '\
-              'order by id_data asc'
+        req = ('select nom_amont as res_cat, formule as formula, id_surveillance as id_disease, '
+               'libelle_ind as res_label, nature_prel as id_prod '
+               'from sigl_15_data '
+               'where id_surveillance = %s '
+               'order by id_data asc')
 
         cursor.execute(req, (id_disease,))
 
@@ -43,13 +40,13 @@ class Report:
     def getNbResultRecevied(l_id_var, id_prod, date_beg, date_end):
         cursor = DB.cursor()
 
-        req = 'select count(distinct rec.id_data) as total '\
-              'from sigl_02_data as rec '\
-              'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '\
-              'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '\
-              'inner join sigl_09_data as res on res.id_analyse = ana.id_data '\
-              'where (rec.date_dos between %s and %s) and ref.type_prel = %s '\
-              'and res.ref_variable in ('
+        req = ('select count(distinct rec.id_data) as total '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'where (rec.date_dos between %s and %s) and ref.type_prel = %s '
+               'and res.ref_variable in (')
 
         for id_var in l_id_var:
             req = req + str(id_var) + ','
@@ -64,14 +61,14 @@ class Report:
     def getNbResultAnalyzed(l_id_var, id_prod, date_beg, date_end):
         cursor = DB.cursor()
 
-        req = 'select count(distinct rec.id_data) as total '\
-              'from sigl_02_data as rec '\
-              'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '\
-              'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '\
-              'inner join sigl_09_data as res on res.id_analyse = ana.id_data '\
-              'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '\
-              'where (rec.date_dos between %s and %s) and ref.type_prel = %s '\
-              'and vld.type_validation = 252 and res.ref_variable in ('
+        req = ('select count(distinct rec.id_data) as total '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
+               'where (rec.date_dos between %s and %s) and ref.type_prel = %s '
+               'and vld.type_validation = 252 and res.ref_variable in (')
 
         for id_var in l_id_var:
             req = req + str(id_var) + ','
@@ -330,6 +327,17 @@ class Report:
                             req['end'] = req['end'] + str(id_val) + ','
 
                     req['end'] = req['end'][:len(req['end']) - 1] + ')'
+                # ON a list of analyzes codes
+                elif word.startswith('ON(') and word.endswith(')'):
+                    # Report.log.error('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
+                    l_code_ana = list(word[2:])
+                    # Report.log.error('l_code_ana = ' + str(l_code_ana))
+                    l_cond_ana = ''
+
+                    for code_ana in l_code_ana:
+                        l_cond_ana = l_cond_ana + ', ' + str(code_ana)
+
+                    req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
                 else:
                     # TODO rule for OR
                     if word == 'OR':

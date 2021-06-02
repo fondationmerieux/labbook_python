@@ -74,7 +74,7 @@ class ResultList(Resource):
                 result['validation']['date_validation'] = datetime.strftime(result['validation']['date_validation'], '%Y-%m-%d')
 
             # Replace None by empty string
-            for key, value in result['validation'].items():
+            for key, value in list(result['validation'].items()):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
 
@@ -83,7 +83,7 @@ class ResultList(Resource):
 
             if result['user']:
                 # Replace None by empty string
-                for key, value in result['user'].items():
+                for key, value in list(result['user'].items()):
                     if result['user'][key] is None:
                         result['user'][key] = ''
 
@@ -118,7 +118,7 @@ class ResultList(Resource):
                 result['res_answer'] = Dict.getDictDetails(str(type_res))
 
             # Replace None by empty string
-            for key, value in result.items():
+            for key, value in list(result.items()):
                 if result[key] is None:
                     result[key] = ''
 
@@ -150,7 +150,7 @@ class ResultRecord(Resource):
                 result['validation']['date_validation'] = datetime.strftime(result['validation']['date_validation'], '%Y-%m-%d')
 
             # Replace None by empty string
-            for key, value in result['validation'].items():
+            for key, value in list(result['validation'].items()):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
 
@@ -159,7 +159,7 @@ class ResultRecord(Resource):
 
             if result['user']:
                 # Replace None by empty string
-                for key, value in result['user'].items():
+                for key, value in list(result['user'].items()):
                     if result['user'][key] is None:
                         result['user'][key] = ''
 
@@ -168,7 +168,7 @@ class ResultRecord(Resource):
             result['stat_label'] = tmp['label']
 
             # Replace None by empty string
-            for key, value in result.items():
+            for key, value in list(result.items()):
                 if result[key] is None:
                     result[key] = ''
 
@@ -443,7 +443,7 @@ class ResultHisto(Resource):
 
         for valid in l_valid:
             # Replace None by empty string
-            for key, value in valid.items():
+            for key, value in list(valid.items()):
                 if valid[key] is None:
                     valid[key] = ''
 

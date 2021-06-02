@@ -24,7 +24,7 @@ class SettingAgeInterval(Resource):
 
         for data in l_datas:
             # Replace None by empty string
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
 
@@ -98,7 +98,7 @@ class SettingPref(Resource):
 
         for pref in l_prefs:
             # Replace None by empty string
-            for key, value in pref.items():
+            for key, value in list(pref.items()):
                 if pref[key] is None:
                     pref[key] = ''
 
@@ -115,7 +115,7 @@ class SettingPref(Resource):
             self.log.error(Logs.fileline() + ' : SettingPref ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        for key, value in args.items():
+        for key, value in list(args.items()):
             ret = Setting.updatePref(id_owner, key, value)
 
             if ret is False:
@@ -137,7 +137,7 @@ class SettingRecNum(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in setting.items():
+        for key, value in list(setting.items()):
             if setting[key] is None:
                 setting[key] = ''
 
@@ -180,7 +180,7 @@ class SettingReport(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in setting.items():
+        for key, value in list(setting.items()):
             if setting[key] is None:
                 setting[key] = ''
 
@@ -223,7 +223,7 @@ class SettingSticker(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in setting.items():
+        for key, value in list(setting.items()):
             if setting[key] is None:
                 setting[key] = ''
 
@@ -266,7 +266,7 @@ class SettingBackup(Resource):
             return compose_ret('1', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in setting.items():
+        for key, value in list(setting.items()):
             if setting[key] is None:
                 setting[key] = ''
 

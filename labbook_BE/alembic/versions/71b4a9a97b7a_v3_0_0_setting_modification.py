@@ -7,7 +7,6 @@ Create Date: 2021-02-03 10:46:43.668497
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -93,7 +92,7 @@ def upgrade():
         print("ERROR update sigl_file_data set id_storage=1 where id_storage is null,\n\terr=" + str(err))
 
     # wrong character in manual table
-    """ Not working everytime and its deprecated because this manual it delete in v3.0.2 
+    """ Not working everytime and its deprecated because this manual it delete in v3.0.2
     try:
         # update id_storage for sigl_manuels_data
         conn.execute("update sigl_manuels_data"
@@ -302,7 +301,7 @@ def upgrade():
     except Exception as err:
         print("ERROR insert into sigl_dico_data new profil (Prescripteur),\n\terr=" + str(err))
 
-    print("END of migration v3.0.0_setting_modification revision=71b4a9a97b7a")
+    print(str(datetime.today()) + " : END of migration v3.0.0_setting_modification revision=71b4a9a97b7a")
 
 
 def downgrade():

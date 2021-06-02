@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_0_4_modify_dict_for_stock
 
 Revision ID: 3fec2eab4253
@@ -6,7 +7,6 @@ Create Date: 2021-04-21 10:01:55.510209
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -92,7 +92,7 @@ def upgrade():
     except Exception as err:
         print("ERROR mkdir -p /storage/resource/dhis2,\n\terr=" + str(err))
 
-    print("END of migration v3_0_4_modify_dict_for_stock revision=3fec2eab4253")
+    print(str(datetime.today()) + " : END of migration v3_0_4_modify_dict_for_stock revision=3fec2eab4253")
 
 
 def downgrade():

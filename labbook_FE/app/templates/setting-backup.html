@@ -489,6 +489,7 @@ function backup(media)
         {
             type: "POST",
             url: "/services/setting/script/backup/" + media,
+            timeout: 9000000,
             success: function(data)
             {
                 $("#dial-wait").modal("hide") ;
@@ -511,7 +512,8 @@ function backup(media)
                 $("#dial-wait").modal("hide") ;
 
             console.log("ERROR POST setting backup") ;
-            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+            //alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+            location.reload() ;
             }
         } ) ;
     } ) ;
@@ -595,6 +597,7 @@ console.log("restore param=" + param) ;
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
+                timeout: 9000000,
                 success: function(data)
                 {
                     $("#dial-wait").modal("hide") ;
@@ -628,7 +631,7 @@ console.log("restore param=" + param) ;
                     $("#dial-wait").modal("hide") ;
 
                 console.log("ERROR POST setting restore") ;
-                alert("{{ _("Une erreur est survenue lors de la restauration") }}") ;
+                alert("{{ _("Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée.") }}") ;
                 }
             } ) ;
         } ) ;

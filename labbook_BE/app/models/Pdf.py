@@ -472,7 +472,7 @@ class Pdf:
 
             rec_div += '</span></div>'
 
-        if full_comm and record['prescriber']:
+        if full_comm is True and record['prescriber']:
             prescriber = ' par ' + str(record['prescriber'])
         else:
             prescriber = ''

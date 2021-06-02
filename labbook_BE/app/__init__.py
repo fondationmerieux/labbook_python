@@ -69,7 +69,7 @@ app.config.from_object('default_settings')
 config_envvar = 'LOCAL_SETTINGS'
 
 if config_envvar in os.environ:
-    print("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar]))
+    print(("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar])))
     app.config.from_envvar(config_envvar)
 
     os.environ['LABBOOK_KEY_DIR']    = Constants.cst_key
@@ -92,7 +92,7 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))
 else:
-    print("No local configuration available: {} is undefined in the environment".format(config_envvar))
+    print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
 
 # ######################################

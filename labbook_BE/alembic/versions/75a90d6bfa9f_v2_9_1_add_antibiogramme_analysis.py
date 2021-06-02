@@ -2380,7 +2380,7 @@ def upgrade():
             except Exception as err:
                 print("ERROR insert links for B678 analysis,\n\terr=" + str(err))
 
-    print("END of migration v2.9.1_add_antibiogramme_analysis revision=75a90d6bfa9f")
+    print(str(datetime.today()) + " : END of migration v2.9.1_add_antibiogramme_analysis revision=75a90d6bfa9f")
 
 
 def downgrade():

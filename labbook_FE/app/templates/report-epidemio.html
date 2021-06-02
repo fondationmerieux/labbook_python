@@ -14,16 +14,12 @@
             <form autocomplete="off">
                 <fieldset class="row border mx-1 p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
-                        <div class="col-3">
-                            <div class="form-group row">
+                        <div class="col-12">
+                            <div class="form-group form-inline">
                                 <label for="f_date_beg" class="col-form-label col-4 text-right">{{ _("Date du") }}</label>
                                 <div>
                                     <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group row">
                                 <label for="f_date_end" class="col-form-label col-2 text-right">{{ _("au") }}</label>
                                 <div>					
                                     <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">

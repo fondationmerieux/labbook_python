@@ -3,9 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [3.0.6] - 2021-05-07
+## [3.0.7] - 2021-06-02
 ### Added
 - initialization page wait for labbook_BE
+- new ABG B659, B660, B661, B679, B680, B681
+- Add Phenotype
+- Code var for unique identifier (not finish)
+
+### Changed
+- DHIS2 reporting weekly
+- SARS-CoV-2 analyzes modified
+- Export WHONET with or without on analysis and variables
 
 ## [3.0.5] - 2021-05-05
 ### Added

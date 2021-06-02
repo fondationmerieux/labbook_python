@@ -89,7 +89,7 @@ class PdfBillList(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         for data in l_datas:
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
 

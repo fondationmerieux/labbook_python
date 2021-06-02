@@ -263,27 +263,40 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"mois_naiss":' + mois_naiss + ', ' +
               '"unite":' + unite + '}' ;
 
-    $.ajax( {
-       type: "POST",
-       url: "/services/patient/det/" + id_pat,
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           id_pat = data.id_pat ;
+    // popup wait
+    $("#dial-wait").modal("show") ;
 
-           {% if type_req == 'E' %}
-           window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-ext/Y/" + id_pat ;
-           {% else %}
-           window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-int/Y/" + id_pat ;
-           {% endif %}
-           },
-       error: function(data)
-           {
-           console.log("ERROR POST patient det") ;
-           alert("{{ _("Une erreur est survenue lors de la modification/ajout d'un patient") }}") ;
-           }
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "/services/patient/det/" + id_pat,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            id_pat = data.id_pat ;
+
+            {% if type_req == 'E' %}
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-ext/Y/" + id_pat ;
+            {% else %}
+            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-int/Y/" + id_pat ;
+            {% endif %}
+            },
+            error: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR POST patient det") ;
+            alert("{{ _("Une erreur est survenue lors de la modification/ajout d'un patient") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

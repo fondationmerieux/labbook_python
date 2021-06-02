@@ -28,7 +28,7 @@ class PatientList(Resource):
 
         for patient in l_patients:
             # Replace None by empty string
-            for key, value in patient.items():
+            for key, value in list(patient.items()):
                 if patient[key] is None:
                     patient[key] = ''
 
@@ -154,7 +154,7 @@ class PatientDet(Resource):
             patient['ddn'] = datetime.strftime(patient['ddn'], '%Y-%m-%d')
 
         # Replace None by empty string
-        for key, value in patient.items():
+        for key, value in list(patient.items()):
             if patient[key] is None:
                 patient[key] = ''
 
@@ -275,7 +275,7 @@ class PatientHistoric(Resource):
             patient['ddn'] = datetime.strftime(patient['ddn'], '%Y-%m-%d')
 
         # Replace None by empty string
-        for key, value in patient.items():
+        for key, value in list(patient.items()):
             if patient[key] is None:
                 patient[key] = ''
 
@@ -289,7 +289,7 @@ class PatientHistoric(Resource):
 
         for ana in analyzes:
             # Replace None by empty string
-            for key, value in ana.items():
+            for key, value in list(ana.items()):
                 if ana[key] is None:
                     ana[key] = ''
 

@@ -57,10 +57,10 @@ app.config.from_object('default_settings')
 config_envvar = 'LOCAL_SETTINGS'
 
 if config_envvar in os.environ:
-    print("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar]))
+    print(("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar])))
     app.config.from_envvar(config_envvar)
 else:
-    print("No local configuration available: {} is undefined in the environment".format(config_envvar))
+    print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
 babel = Babel(app)
 
@@ -90,12 +90,14 @@ def locale():
 # Selection de langues avec Babel
 @babel.localeselector
 def get_locale():
-    lang = request.accept_languages.best_match(LANGUAGES.keys())
+    lang = request.accept_languages.best_match(list(LANGUAGES.keys()))
     if not session or 'lang' not in session:
         session['lang'] = lang
         session.modified = True
+        log.info(Logs.fileline() + ' :default lang=' + str(lang))
     elif session and 'lang' in session:
         lang = session['lang']
+        log.info(Logs.fileline() + ' :session lang=' + str(lang))
     return lang
 
 

@@ -199,8 +199,8 @@ class Analysis:
         req = ('select var.id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
-               'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.id_data as id_link, '
-               'd1.label as unit_label, var.id_data as id_item '
+               'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.var_whonet, '
+               'link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, var.code_var '
                'from sigl_07_data as var '
                'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
                'left join sigl_dico_data as d1 on d1.id_data=var.unite '
@@ -216,8 +216,8 @@ class Analysis:
         cursor = DB.cursor()
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
-               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
-               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2 '
+               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, var_whonet, '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var '
                'from sigl_07_data '
                'where id_data=%s')
 
@@ -231,7 +231,7 @@ class Analysis:
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
-               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2 '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var '
                'from sigl_07_data '
                'where libelle=%s and type_resultat=%s and unite=%s and normal_min=%s and normal_max=%s and accuracy=%s '
                'limit 1 order by id_data asc')
@@ -247,15 +247,37 @@ class Analysis:
 
             cursor.execute('insert into sigl_07_data '
                            '(id_owner, libelle, description, unite, normal_min, normal_max, commentaire, type_resultat, '
-                           'unite2, formule_unite2, formule, accuracy, precision2) '
+                           'unite2, formule_unite2, formule, accuracy, precision2, code_var) '
                            'values '
                            '(%(id_owner)s, %(label)s, %(descr)s, %(unit)s, %(var_min)s, %(var_max)s, '
                            '%(comment)s, %(type_res)s, %(unit2)s, %(formula2)s, %(formula)s, '
-                           '%(accu)s, %(accu2)s)', params)
+                           '%(accu)s, %(accu2)s, %(code_var)s)', params)
 
             Analysis.log.info(Logs.fileline())
 
-            return cursor.lastrowid
+            id_var = cursor.lastrowid
+
+            # if code_var is empty update with id_data
+            if not params['code_var']:
+                Analysis.updateAnalysisVar(id_data=id_var,
+                                           id_owner=params['id_owner'],
+                                           label=params['label'],
+                                           code_var=id_var,
+                                           descr=params['descr'],
+                                           type_res=params['type_res'],
+                                           var_min=params['var_min'],
+                                           var_max=params['var_max'],
+                                           comment=params['comment'],
+                                           formula=params['formula'],
+                                           unit=params['unit'],
+                                           accu=params['accu'],
+                                           formula2=params['formula2'],
+                                           unit2=params['unit2'],
+                                           accu2=params['accu2'])
+
+                Analysis.log.info(Logs.fileline() + ' : update and init code_var')
+
+            return id_var
         except mysql.connector.Error as e:
             Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
@@ -270,7 +292,7 @@ class Analysis:
                            'unite=%(unit)s, normal_min=%(var_min)s, normal_max=%(var_max)s, '
                            'commentaire=%(comment)s, type_resultat=%(type_res)s, unite2=%(unit2)s, '
                            'formule_unite2=%(formula2)s, formule=%(formula)s, accuracy=%(accu)s, '
-                           'precision2=%(accu2)s '
+                           'precision2=%(accu2)s, code_var=%(code_var)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -284,7 +306,7 @@ class Analysis:
     def getRefVariable(id_ana):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire '\
+        req = 'select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet '\
               'from sigl_05_07_data '\
               'where id_refanalyse=%s'
 
@@ -298,9 +320,9 @@ class Analysis:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_05_07_data '
-                           '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire) '
+                           '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet) '
                            'values '
-                           '(%(id_owner)s, %(id_refana)s, %(id_refvar)s, %(var_pos)s, %(var_num)s, %(oblig)s)', params)
+                           '(%(id_owner)s, %(id_refana)s, %(id_refvar)s, %(var_pos)s, %(var_num)s, %(oblig)s, %(var_whonet)s)', params)
 
             Analysis.log.info(Logs.fileline())
 
@@ -316,7 +338,7 @@ class Analysis:
 
             cursor.execute('update sigl_05_07_data '
                            'set id_owner=%(id_owner)s, id_refanalyse=%(id_refana)s, id_refvariable=%(id_refvar)s, '
-                           'position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s '
+                           'position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s, var_whonet=%(var_whonet)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -548,9 +570,10 @@ class Analysis:
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.paillasse, '
                'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
                'ana.type_analyse, ana.actif, ana.ana_whonet, link.id_data as id_link, link.id_refanalyse, '
-               'link.id_refvariable, link.position, link.num_var, link.obligatoire, var.id_data as id_var, var.libelle, '
-               'var.description, var.unite, var.normal_min, var.normal_max, var.commentaire as var_comm, var.type_resultat, '
-               'var.unite2, var.formule_unite2, var.formule, var.accuracy, var.precision2 '
+               'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, '
+               'var.id_data as id_var, var.libelle, var.description, var.unite, var.normal_min, var.normal_max, '
+               'var.commentaire as var_comm, var.type_resultat, var.unite2, var.formule_unite2, var.formule, '
+               'var.accuracy, var.precision2, var.code_var '
                'from sigl_05_data as ana '
                'left join sigl_05_07_data as link on link.id_refanalyse=ana.id_data '
                'left join sigl_07_data as var on var.id_data=link.id_refvariable '

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_0_5_add_Ebola_analyzes
 
 Revision ID: 3c7d8a35d79a
@@ -6,7 +7,6 @@ Create Date: 2021-05-04 17:36:43.920214
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -159,7 +159,7 @@ def upgrade():
             except Exception as err:
                 print("ERROR insert links for E05 analysis,\n\terr=" + str(err))
 
-    print("END of migration v3_0_5_add_Ebola_analyzes revision=3c7d8a35d79a")
+    print(str(datetime.today()) + " : END of migration v3_0_5_add_Ebola_analyzes revision=3c7d8a35d79a")
 
 
 def downgrade():

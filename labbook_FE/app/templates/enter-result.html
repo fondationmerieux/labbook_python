@@ -151,23 +151,35 @@ param_list_answer += ' ] }' ;
     return false;
     }
 
-    // UPDATE value
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        url: "/services/result/list/value" ,
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param_list_answer,
-        success: function(data)
+        // UPDATE value
+        $.ajax( 
+        {
+            type: "POST",
+            url: "/services/result/list/value" ,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param_list_answer,
+            success: function(data)
             {
+                $("#dial-wait").modal("hide") ;
+
             window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
             },
-        error: function(data)
+            error: function(data)
             {
+                $("#dial-wait").modal("hide") ;
+
             console.log("ERROR result list") ;
             alert("{{ _("Une erreur est survenue lors de l'enregistrement des valeurs saisies") }}") ;
             }
+        } ) ;
     } ) ;
 }
 
@@ -223,23 +235,35 @@ let param_list_valid = '{ "list_valid":[ ' ;
 
 param_list_valid += ' ] }' ;
 
-    // result to validate
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        url: "/services/result/valid/T/" + id_rec,
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param_list_valid,
-        success: function(data)
+        // result to validate
+        $.ajax( 
+        {
+            type: "POST",
+            url: "/services/result/valid/T/" + id_rec,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param_list_valid,
+            success: function(data)
             {
+                $("#dial-wait").modal("hide") ;
+
             window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
             },
-        error: function(data)
+            error: function(data)
             {
+                $("#dial-wait").modal("hide") ;
+
             console.log("ERROR result valid") ;
             alert("{{ _("Une erreur est survenue lors de validation technique des valeurs saisies") }}") ;
             }
+        } ) ;
     } ) ;
 }
 

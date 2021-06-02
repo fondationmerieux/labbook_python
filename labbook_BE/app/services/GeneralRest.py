@@ -36,7 +36,7 @@ class DicoById(Resource):
             dico = {}
 
         # Replace None by empty string
-        for key, value in dico.items():
+        for key, value in list(dico.items()):
             if dico[key] is None:
                 dico[key] = ''
 
@@ -55,7 +55,7 @@ class DefaultValue(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in val.items():
+        for key, value in list(val.items()):
             if val[key] is None:
                 val[key] = ''
 

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_0_2_stock_and_add_new_manual
 
 Revision ID: 5b3058a99439
@@ -6,7 +7,6 @@ Create Date: 2021-03-16 16:07:15.000345
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -427,7 +427,7 @@ def upgrade():
     except Exception as err:
         print("ERROR insert into sigl_manuels_document__file_data,\n\terr=" + str(err))
 
-    print("END of migration v3_0_2_stock_and_add_new_manual revision=5b3058a99439")
+    print(str(datetime.today()) + " : END of migration v3_0_2_stock_and_add_new_manual revision=5b3058a99439")
 
 
 def downgrade():

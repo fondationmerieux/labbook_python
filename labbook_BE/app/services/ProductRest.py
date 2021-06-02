@@ -21,7 +21,7 @@ class ProductDet(Resource):
         if not prod:
             self.log.error(Logs.fileline() + ' : TRACE ProductDet not found')
 
-        for key, value in prod.items():
+        for key, value in list(prod.items()):
             if prod[key] is None:
                 prod[key] = ''
 
@@ -121,7 +121,7 @@ class ProductReq(Resource):
 
         for prod in l_prod:
             # Replace None by empty string
-            for key, value in prod.items():
+            for key, value in list(prod.items()):
                 if prod[key] is None:
                     prod[key] = ''
 

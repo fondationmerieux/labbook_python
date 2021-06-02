@@ -25,7 +25,7 @@ class FileDocList(Resource):
 
         for files in l_files:
             # Replace None by empty string
-            for key, value in files.items():
+            for key, value in list(files.items()):
                 if files[key] is None:
                     files[key] = ''
 
@@ -51,7 +51,7 @@ class FileDoc(Resource):
         filedata['storage'] = filestorage['path']
 
         # Replace None by empty string
-        for key, value in filedata.items():
+        for key, value in list(filedata.items()):
             if filedata[key] is None:
                 filedata[key] = ''
 
@@ -121,7 +121,7 @@ class FileReport(Resource):
             self.log.error(Logs.fileline() + ' : TRACE FileReport not found')
         else:
             # Replace None by empty string
-            for key, value in report.items():
+            for key, value in list(report.items()):
                 if report[key] is None:
                     report[key] = ''
 
@@ -150,7 +150,7 @@ class FileStorage(Resource):
             storage = File.getLastFileStorage()
 
         # Replace None by empty string
-        for key, value in storage.items():
+        for key, value in list(storage.items()):
             if storage[key] is None:
                 storage[key] = ''
 

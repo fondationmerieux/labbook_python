@@ -22,7 +22,7 @@ class DictDet(Resource):
 
         for dict in l_dicts:
             # Replace None by empty string
-            for key, value in dict.items():
+            for key, value in list(dict.items()):
                 if dict[key] is None:
                     dict[key] = ''
 
@@ -132,7 +132,7 @@ class DictList(Resource):
 
         for dict in l_dicts:
             # Replace None by empty string
-            for key, value in dict.items():
+            for key, value in list(dict.items()):
                 if dict[key] is None:
                     dict[key] = ''
 

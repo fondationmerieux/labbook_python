@@ -23,7 +23,7 @@ class QualityLastMeeting(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in meeting.items():
+        for key, value in list(meeting.items()):
             if meeting[key] is None:
                 meeting[key] = ''
 
@@ -70,7 +70,7 @@ class ConformityList(Resource):
 
         for item in l_items:
             # Replace None by empty string
-            for key, value in item.items():
+            for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
 
@@ -98,7 +98,7 @@ class ConformityDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in item.items():
+        for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
 
@@ -483,7 +483,7 @@ class EquipmentList(Resource):
 
         for item in l_items:
             # Replace None by empty string
-            for key, value in item.items():
+            for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
 
@@ -517,7 +517,7 @@ class EquipmentDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in item.items():
+        for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
 
@@ -690,7 +690,7 @@ class ManualList(Resource):
 
         for item in l_items:
             # Replace None by empty string
-            for key, value in item.items():
+            for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
 
@@ -731,7 +731,7 @@ class ManualDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in item.items():
+        for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
 
@@ -883,7 +883,7 @@ class MeetingList(Resource):
 
         for item in l_items:
             # Replace None by empty string
-            for key, value in item.items():
+            for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
 
@@ -918,7 +918,7 @@ class MeetingDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in item.items():
+        for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
 
@@ -1033,7 +1033,7 @@ class ProcedureList(Resource):
 
         for item in l_items:
             # Replace None by empty string
-            for key, value in item.items():
+            for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
 
@@ -1074,7 +1074,7 @@ class ProcedureDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in item.items():
+        for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
 
@@ -1284,7 +1284,7 @@ class StockList(Resource):
 
         for stock in l_stocks:
             # Replace None by empty string
-            for key, value in stock.items():
+            for key, value in list(stock.items()):
                 if stock[key] is None:
                     stock[key] = ''
 
@@ -1325,7 +1325,7 @@ class StockListDet(Resource):
 
         for stock in l_stocks:
             # Replace None by empty string
-            for key, value in stock.items():
+            for key, value in list(stock.items()):
                 if stock[key] is None:
                     stock[key] = ''
 
@@ -1371,7 +1371,7 @@ class StockProductHist(Resource):
 
         for stock in l_stocks:
             # Replace None by empty string
-            for key, value in stock.items():
+            for key, value in list(stock.items()):
                 if stock[key] is None:
                     stock[key] = ''
 
@@ -1443,7 +1443,7 @@ class StockProductDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in stock.items():
+        for key, value in list(stock.items()):
             if stock[key] is None:
                 stock[key] = ''
 
@@ -1650,7 +1650,7 @@ class SupplierList(Resource):
 
         for item in l_items:
             # Replace None by empty string
-            for key, value in item.items():
+            for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
 
@@ -1684,7 +1684,7 @@ class SupplierDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in item.items():
+        for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
 

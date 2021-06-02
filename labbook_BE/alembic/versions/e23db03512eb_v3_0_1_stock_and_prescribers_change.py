@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_0_1_stock_and_prescribers_change
 
 Revision ID: e23db03512eb
@@ -6,7 +7,6 @@ Create Date: 2021-03-12 09:59:44.663714
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -160,7 +160,7 @@ def upgrade():
         except Exception as err:
             print("ERROR update sigl_user_data set side_account=0,\n\terr=" + str(err))
 
-    print("END of migration v3_0_1_stock_and_prescribers_change revision=e23db03512eb")
+    print(str(datetime.today()) + " : END of migration v3_0_1_stock_and_prescribers_change revision=e23db03512eb")
 
 
 def downgrade():

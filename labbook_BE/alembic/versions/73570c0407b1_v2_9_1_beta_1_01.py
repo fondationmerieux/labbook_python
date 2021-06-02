@@ -7,7 +7,7 @@ Create Date: 2020-09-24 16:02:11.552434
 
 """
 from alembic import op
-import sqlalchemy as sa
+# import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -32,7 +32,7 @@ def upgrade():
     except Exception as err:
         print("ERROR add column date_hosp to sigl_02_data,\n\terr=" + str(err))
 
-    print("END of migration v2.9.1-beta.1 01 revision=73570c0407b1")
+    print(str(datetime.today()) + " : END of migration v2.9.1-beta.1 01 revision=73570c0407b1")
 
 
 def downgrade():

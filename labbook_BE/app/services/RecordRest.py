@@ -34,7 +34,7 @@ class RecordList(Resource):
 
         for record in l_records:
             # Replace None by empty string
-            for key, value in record.items():
+            for key, value in list(record.items()):
                 if record[key] is None:
                     record[key] = ''
 
@@ -58,7 +58,7 @@ class RecordDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in record.items():
+        for key, value in list(record.items()):
             if record[key] is None:
                 record[key] = ''
 
@@ -292,7 +292,7 @@ class RecordLast(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in record.items():
+        for key, value in list(record.items()):
             if record[key] is None:
                 record[key] = ''
 
@@ -333,7 +333,7 @@ class RecordFile(Resource):
 
         for files in l_files:
             # Replace None by empty string
-            for key, value in files.items():
+            for key, value in list(files.items()):
                 if files[key] is None:
                     files[key] = ''
 
@@ -390,7 +390,7 @@ class RecordListAna(Resource):
 
         for data in l_datas:
             # Replace None by empty string
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 if data[key] is None:
                     datza[key] = ''
 

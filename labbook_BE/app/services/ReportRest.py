@@ -167,7 +167,7 @@ class ReportBilling(Resource):
             self.log.error(Logs.fileline() + ' : TRACE list current billing not found')
 
         for data in l_datas:
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
 
@@ -197,7 +197,7 @@ class ReportToday(Resource):
             self.log.error(Logs.fileline() + ' : TRACE list today record not found')
 
         for data in l_datas:
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
 

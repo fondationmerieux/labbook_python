@@ -28,7 +28,7 @@ class DoctorList(Resource):
 
         for doctor in l_doctors:
             # Replace None by empty string
-            for key, value in doctor.items():
+            for key, value in list(doctor.items()):
                 if doctor[key] is None:
                     doctor[key] = ''
 
@@ -64,7 +64,7 @@ class DoctorDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
-        for key, value in doctor.items():
+        for key, value in list(doctor.items()):
             if doctor[key] is None:
                 doctor[key] = ''
 

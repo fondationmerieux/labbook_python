@@ -58,7 +58,7 @@ class UserByLogin(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Replace None by empty string
-        for key, value in user.items():
+        for key, value in list(user.items()):
             if user[key] is None:
                 user[key] = ''
 
@@ -78,7 +78,7 @@ class UserByRole(Resource):
 
         for user in l_users:
             # Replace None by empty string
-            for key, value in user.items():
+            for key, value in list(user.items()):
                 if user[key] is None:
                     user[key] = ''
 
@@ -106,7 +106,7 @@ class UserDet(Resource):
             user['last_eval'] = datetime.strftime(user['last_eval'], '%Y-%m-%d')
 
         # Replace None by empty string
-        for key, value in user.items():
+        for key, value in list(user.items()):
             if user[key] is None:
                 user[key] = ''
 
@@ -333,7 +333,7 @@ class UserList(Resource):
 
         for user in l_users:
             # Replace None by empty string
-            for key, value in user.items():
+            for key, value in list(user.items()):
                 if user[key] is None:
                     user[key] = ''
 
@@ -363,7 +363,7 @@ class UserSearch(Resource):
 
         for user in l_users:
             # Replace None by empty string
-            for key, value in user.items():
+            for key, value in list(user.items()):
                 if user[key] is None:
                     user[key] = ''
 
@@ -466,7 +466,7 @@ class UserConnExport(Resource):
                 data.append(d['username'])
 
                 if d['date']:
-                    d['date'] = datetime.strftime(d['date'], '%Y-%m-%d')
+                    d['date'] = datetime.strftime(d['date'], '%Y-%m-%d %H:%M:%S')
                 else:
                     d['date'] = ''
 

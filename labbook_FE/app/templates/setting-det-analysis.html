@@ -95,10 +95,10 @@
                         <div class="form-group form-inline">
                             <label class="col-form-label col-6 text-right mt-2">{{ _("Export whonet") }}</label>
                             <label class="col-form-label text-right mt-2 mr-3">
-                                <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                                <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>
                             <label class="col-form-label text-right mt-2 mr-3">
-                                <input type="radio" name="whonet" value="5" {% if not args['details'] or args['details']['ana_whonet'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                                <input type="radio" name="whonet" value="5" {% if not args['details'] or args['details']['ana_whonet'] == 5 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %}>&nbsp;{{ _("Non") }}</input>
                             </label>
                         </div>
                     </div>
@@ -134,9 +134,9 @@
                         <div>					
                             <input type="text" name="var_label" id="var_label" value="{% if args['var'] %}{{ args['var'][0]['label'] }}{% endif %}" class="group-det-var form-control" style="width:300px;" onChange="change_data(this);">			
                         </div>
-                        <label for="var_descr" class="col-form-label col-2 text-right mt-1 ">{{ _("Description") }}</label>
+                        <label for="var_code" class="col-form-label col-2 text-right mt-1 ">{{ _("Code var.") }}</label>
                         <div>					
-                            <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
+                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);" {% if session['user_role'] != 'A' %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
                         </div>
                         <label for="var_id" class="col-form-label col-1 text-right mt-1 ">{{ _("Id") }}</label>
                         <div>					
@@ -153,6 +153,10 @@
                                 <option value="{{ type_res['id_data'] }}" {% if args['var'] and args['var'][0]['type_res'] == type_res['id_data'] %} selected {% endif %}>{{ type_res['label'] }}</option>
                                 {% endfor %}
                             </select>
+                        </div>
+                        <label for="var_descr" class="col-form-label col-2 text-right mt-1 ">{{ _("Description") }}</label>
+                        <div>					
+                            <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
                         </div>
                     </div>
 
@@ -221,6 +225,13 @@
                         </label>
                         <label class="col-form-label text-right mt-2 mr-3">
                             <input type="radio" id="var_oblig_5" name="var_oblig" value="5" {% if not args['var'] or args['var'][0]['oblig'] == 5 %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
+                        </label>
+                        <label class="col-form-label col-2 text-right  mt-2">{{ _("Export whonet") }}</label>
+                        <label class="col-form-label text-right mt-2 mr-3">
+                            <input type="radio" id="var_whonet_4" name="var_whonet" value="4" {% if args['var'] and args['var'][0]['var_whonet'] == 4 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
+                        </label>
+                        <label class="col-form-label text-right mt-2 mr-3">
+                            <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
                     </div>
                 </div>
@@ -304,10 +315,10 @@
 
 {% block add_script %}
 <script>
-var struct_var  = {"id_data":0 ,"label":"", "descr":"", "type_res":"", "min":"", "max":"", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
+var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
 var data_vars   = {% if args['var'] %}{{ args['var']|safe }}{% else %}[]{% endif %} ;
 var ind_var     = 0 ;
-var ind_sel_var = 0 ;
+var ind_sel_var = {% if args['var'] %}1{% else %}0{% endif %} ;
 
 $("#search_var").select2(
 {
@@ -373,6 +384,7 @@ let id_var = $(e.currentTarget).val();
                 tmp_struct_var.id_item    = ind_var ;
                 tmp_struct_var.id_data    = data_var.id_data ;
                 tmp_struct_var.label      = data_var.label ;
+                tmp_struct_var.code_var   = data_var.code_var ;
                 tmp_struct_var.descr      = replaceUndefined(data_var.descr, "") ;
                 tmp_struct_var.type_res   = replaceUndefined(data_var.type_res, 0) ;
                 tmp_struct_var.min        = replaceUndefined(data_var.min, "") ;
@@ -385,6 +397,7 @@ let id_var = $(e.currentTarget).val();
                 tmp_struct_var.accu2      = replaceUndefined(data_var.accu2, 0) ;
                 tmp_struct_var.comment    = replaceUndefined(data_var.comment, "") ;
                 tmp_struct_var.oblig      = 5 ;
+                tmp_struct_var.var_whonet = 5 ;
                 tmp_struct_var.num_var    = 0 ;
                 tmp_struct_var.pos        = 0 ;
                 tmp_struct_var.id_link    = 0 ;
@@ -634,6 +647,7 @@ let det_var = [] ;
 ind_sel_var = id_item ;
 
 $("#var_label").val( det_var.label ) ;
+$("#var_code").val( det_var.code_var ) ;
 $("#var_descr").val( det_var.descr ) ;
 $("#var_id").val( det_var.id_data ) ;
 $("#var_type_res").val( det_var.type_res ) ;
@@ -650,9 +664,22 @@ $("#var_pos").val( det_var.pos ) ;
 $("#var_comment").val( det_var.comment ) ;
 
     if ( det_var.oblig == 4)
+    {
     $("#var_oblig_4").prop("checked", true) ;
-    else
+    }
+    else if ( det_var.oblig == 5)
+    {
     $("#var_oblig_5").prop("checked", true) ;
+    }
+
+    if ( det_var.var_whonet == 4)
+    {
+    $("#var_whonet_4").prop("checked", true)  ;
+    }
+    else if ( det_var.var_whonet == 5)
+    {
+    $("#var_whonet_5").prop("checked", true)  ;
+    }
 }
 
 function del_var( id_item )
@@ -707,7 +734,8 @@ let val = $(elem).val() ;
 // Change value in data structure
 let id_elem = elem.id ;
 
-    if ( id_elem != "var_oblig_4" && id_elem != "var_oblig_5" )
+    if ( id_elem != "var_oblig_4" && id_elem != "var_oblig_5" &&
+         id_elem != "var_whonet_4" && id_elem != "var_whonet_5" )
     {
         for( i in data_vars )
         {
@@ -717,6 +745,8 @@ let id_elem = elem.id ;
 
                 if (id_elem == "var_label")
                 data_vars[i].label = val_elem ;
+                else if (id_elem == "var_code")
+                data_vars[i].code_var = val_elem ;
                 else if (id_elem == "var_descr")
                 data_vars[i].descr = val_elem ; 
                 else if (id_elem == "var_type_res")
@@ -765,6 +795,19 @@ let id_elem = elem.id ;
             }
         }
     }
+    else if ( id_elem == "var_whonet_4" || id_elem == "var_whonet_5" )
+    {
+        for( i in data_vars )
+        {
+            if (data_vars[i].id_item == ind_sel_var )
+            {
+            let val_elem = $("input:radio[name=var_whonet]:checked").val() ;
+            data_vars[i].var_whonet = val_elem ;
+
+            break ;
+            }
+        }
+    }
 
 load_data() ;
 }
@@ -782,7 +825,7 @@ var type_prod = $("#type_prod").val() ;
 var unit      = $("#unit").val()      ;
 var value     = $("#value").val()     ;
 var stat      = $("input:radio[name=stat]:checked").val()   ;
-var whonet    = $("input:radio[name=whonet]:checked").val() ;
+var var_whonet= $("input:radio[name=var_whonet]:checked").val() ;
 var comment   = JSON.stringify( $("#comment").val() ) ;
 
 var product = $("#product").val() ;
@@ -828,6 +871,7 @@ var msg = "" ;
 
                     id_var       = data_vars[i].id_data  ;
                     var_label    = data_vars[i].label    ;
+                    var_codel    = data_vars[i].code_var ;
                     var_descr    = data_vars[i].descr    ;
                     var_type_res = data_vars[i].type_res ;
                     var_min      = data_vars[i].min      ;
@@ -840,6 +884,7 @@ var msg = "" ;
                     var_accu2    = data_vars[i].accu2    ;
                     var_comment  = data_vars[i].comment  ;
                     var_oblig    = data_vars[i].oblig    ;
+                    var_whonet   = data_vars[i].var_whonet ;
                     var_num      = data_vars[i].num_var  ;
                     var_pos      = data_vars[i].pos      ;
                     id_link      = data_vars[i].id_link  ;
@@ -853,7 +898,8 @@ var msg = "" ;
                     if (var_pos == "")   var_pos   = 0 ;
 
                     var param_var = '{ "id_var":' + id_var + ', ' +
-                                      '"var_label":"' + var_label  + '", ' +
+                                      '"var_label":"' + var_label + '", ' +
+                                      '"var_code":"' + var_code + '", ' +
                                       '"var_descr":"' + var_descr + '", ' +
                                       '"var_type_res":' + var_type_res + ', ' +
                                       '"var_min":"' + var_min + '", ' +
@@ -866,6 +912,7 @@ var msg = "" ;
                                       '"var_accu2":' + var_accu2 + ', ' +
                                       '"var_comment":"' + var_comment + '", ' +
                                       '"var_oblig":' + var_oblig + ', ' +
+                                      '"var_whonet":' + var_whonet + ', ' +
                                       '"var_num":' + var_num + ', ' +
                                       '"var_pos":' + var_pos + ', ' +
                                       '"id_link":' + id_link + ', ' +

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_0_3_add_covid_analyzes
 
 Revision ID: 1c2971eb5ac6
@@ -6,7 +7,6 @@ Create Date: 2021-04-12 09:45:58.149424
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 from datetime import datetime
 
@@ -240,7 +240,7 @@ def upgrade():
     except Exception as err:
         print("ERROR update sigl_15_data set formule='$_316 = [posnegind.Positif]' where id_data=45 ...,\n\terr=" + str(err))
 
-    print("END of migration v3_0_3_add_covid_analizes revision=1c2971eb5ac6")
+    print(str(datetime.today()) + " : END of migration v3_0_3_add_covid_analizes revision=1c2971eb5ac6")
 
 
 def downgrade():
