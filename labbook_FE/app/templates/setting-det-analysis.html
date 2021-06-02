@@ -825,7 +825,7 @@ var type_prod = $("#type_prod").val() ;
 var unit      = $("#unit").val()      ;
 var value     = $("#value").val()     ;
 var stat      = $("input:radio[name=stat]:checked").val()   ;
-var var_whonet= $("input:radio[name=var_whonet]:checked").val() ;
+var whonet    = $("input:radio[name=whonet]:checked").val() ;
 var comment   = JSON.stringify( $("#comment").val() ) ;
 
 var product = $("#product").val() ;
@@ -861,7 +861,7 @@ var msg = "" ;
             else
             {
             var list_var = '"list_var":[ ';
-            
+
                 for( i in data_vars )
                 {
                     if (data_vars[i] != null)
@@ -871,7 +871,7 @@ var msg = "" ;
 
                     id_var       = data_vars[i].id_data  ;
                     var_label    = data_vars[i].label    ;
-                    var_codel    = data_vars[i].code_var ;
+                    var_code     = data_vars[i].code_var ;
                     var_descr    = data_vars[i].descr    ;
                     var_type_res = data_vars[i].type_res ;
                     var_min      = data_vars[i].min      ;

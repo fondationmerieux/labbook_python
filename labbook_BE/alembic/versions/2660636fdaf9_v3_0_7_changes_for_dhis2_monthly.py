@@ -80,11 +80,11 @@ def upgrade():
 
     # MODIFY EBOLA ANALYZES Titrage to Ct
     try:
-        conn.execute("update sigl_07_data set libelle='Cycle d\'amplification', "
-                     "unite=(select id_data from sigl_dico_data where label='Ct' limit 1) "
-                     "where libelle='Titrage' and id_data in "
-                     "(select id_refvariable from sigl_05_07_data where id_refanalyse in "
-                     "(select id_data from sigl_05_data where code in ('E01','E02','E03','E04','E05')))")
+        conn.execute('update sigl_07_data set libelle="Cycle d\'amplification", '
+                     'unite=(select id_data from sigl_dico_data where label="Ct" limit 1) '
+                     'where libelle="Titrage" and id_data in '
+                     '(select id_refvariable from sigl_05_07_data where id_refanalyse in '
+                     '(select id_data from sigl_05_data where code in ("E01","E02","E03","E04","E05")))')
     except Exception as err:
         print("ERROR update titrage variable for Ebola analyzes,\n\terr=" + str(err))
 

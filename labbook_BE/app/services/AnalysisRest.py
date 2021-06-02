@@ -260,6 +260,9 @@ class AnalysisDet(Resource):
                 self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update analysis')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
+            # delete missing link to variable compared to analysis (get list before add new var)
+            db_l_var = Analysis.getListVariable(id_ana)
+
             for var in args['list_var']:
                 if var['id_var'] > 0:
                     # update variable which already exist
@@ -346,9 +349,6 @@ class AnalysisDet(Resource):
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
-            # delete missing link to variable compared to analysis
-            db_l_var = Analysis.getListVariable(id_ana)
-
             for db_var in db_l_var:
                 exist = False
                 for ihm_var in args['list_var']:
@@ -356,7 +356,7 @@ class AnalysisDet(Resource):
                         exist = True
 
                 if not exist:
-                    ret = Analysis.deleteRefVar(db_var['id_data'])
+                    ret = Analysis.deleteRefVar(id_ana, db_var['id_data'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR delete link var analysis')
