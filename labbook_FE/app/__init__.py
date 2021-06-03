@@ -90,7 +90,8 @@ def locale():
 # Selection de langues avec Babel
 @babel.localeselector
 def get_locale():
-    lang = request.accept_languages.best_match(list(LANGUAGES.keys()))
+    log.info(Logs.fileline() + ' : LANG = ' + str(os.environ['LANG']))
+    lang = request.accept_languages.best_match(list(LANGUAGES.keys()), default='fr_FR')
     if not session or 'lang' not in session:
         session['lang'] = lang
         session.modified = True

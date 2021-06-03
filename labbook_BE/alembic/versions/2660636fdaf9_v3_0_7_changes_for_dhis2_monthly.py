@@ -80,7 +80,7 @@ def upgrade():
 
     # MODIFY EBOLA ANALYZES Titrage to Ct
     try:
-        conn.execute('update sigl_07_data set libelle="Cycle d\'amplification", '
+        conn.execute('update sigl_07_data set libelle="Cycle amplification", '
                      'unite=(select id_data from sigl_dico_data where label="Ct" limit 1) '
                      'where libelle="Titrage" and id_data in '
                      '(select id_refvariable from sigl_05_07_data where id_refanalyse in '
@@ -1164,7 +1164,7 @@ def upgrade():
         print("ERROR insert new analysis Ebola (poo sample) for epidemio report,\n\terr=" + str(err))
     """
 
-    print(str(datetime.today()) + " : END of migration v3.0.6_changes_for_dhis2_monthly revision=2660636fdaf9")
+    print(str(datetime.today()) + " : END of migration v3.0.7_changes_for_dhis2_monthly revision=2660636fdaf9")
 
 
 def downgrade():
