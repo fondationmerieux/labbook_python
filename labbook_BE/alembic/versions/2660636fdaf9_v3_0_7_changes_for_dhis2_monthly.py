@@ -80,7 +80,7 @@ def upgrade():
 
     # MODIFY EBOLA ANALYZES Titrage to Ct
     try:
-        conn.execute('update sigl_07_data set libelle="Cycle amplification", '
+        conn.execute('update sigl_07_data set libelle="Cycle d\'amplification", '
                      'unite=(select id_data from sigl_dico_data where label="Ct" limit 1) '
                      'where libelle="Titrage" and id_data in '
                      '(select id_refvariable from sigl_05_07_data where id_refanalyse in '
