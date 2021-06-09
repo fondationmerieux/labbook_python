@@ -41,6 +41,10 @@ Output is written to LABBOOK_STATUS_DIR/name_of_command
 - when started by labbook_BE, if it needs an access to the media, it has to start in turn another container because media visibility is not dynamic.
 - the command in `user_labbook` crontab is also a `podman run` command.
 
+Backup and restore are lengthy operations that are started asynchronously.
+They write messages in their status file indicating the operation they are running.
+These messages are displayed by the application.
+
 The absolute path to the script is `/home/apps/labbook_BE/labbook_BE/script/backup.sh`.
 
 WARNING : character set of media names is not checked by backup.sh but labbook_BE expects UTF8 encoding.
@@ -125,6 +129,8 @@ backup_SIGL_2018-05-03_13h51m04s.tar.gz
 UX:
 
 - choose media
+- start backup script in the background
+- poll status file, read last line and display backup progress information based on status keyword
 - refresh last backup status
 
 Script steps:
@@ -153,7 +159,12 @@ The backup is a gpg encrypted archive in the form `backup_v30_database_timestamp
   - upload/
   - resource/
 
-Output:
+Output backup steps in status file:
+
+START;YYYY-MM-DD HH:MM:SS;PID
+DUMPDB;YYYY-MM-DD HH:MM:SS
+MAKEARCHIVE;YYYY-MM-DD HH:MM:SS
+COPYKEYS;YYYY-MM-DD HH:MM:SS
 OK;YYYY-MM-DD HH:MM:SS
 or
 ERR;YYYY-MM-DD HH:MM:SS;message
@@ -167,6 +178,8 @@ UX:
 - choose media
 - choose archive
 - enter private key passphrase
+- start restore script in the background
+- poll status file, read last line and display restore progress information based on status keyword
 - (if restore successful) message prepare for application restart
 
 Restore steps:
@@ -188,6 +201,17 @@ $ LABBOOK_KEY_PWD=passphrase \
     -m MEDIA    : media to restore backup from. If absent, there should be only one initialized media.
     -a ARCHIVE  : encrypted archive to restore from
     -s FILE     : status file
+
+Output restore steps in status file:
+
+START;YYYY-MM-DD HH:MM:SS;PID
+DECRYPT;YYYY-MM-DD HH:MM:SS
+EXTRACTDB;YYYY-MM-DD HH:MM:SS
+LOADDB;YYYY-MM-DD HH:MM:SS
+RESTOREFILES;YYYY-MM-DD HH:MM:SS
+OK;YYYY-MM-DD HH:MM:SS
+or
+ERR;YYYY-MM-DD HH:MM:SS;message
 
 $ LABBOOK_USER_PWD=password backup.sh [-u USER] restart || echo "Failed to restart container"
 
