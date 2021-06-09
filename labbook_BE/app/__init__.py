@@ -216,6 +216,7 @@ api.add_resource(ScriptListmedia,     '/services/setting/script/listmedia/<strin
 api.add_resource(ScriptProgbackup,    '/services/setting/script/progbackup')
 api.add_resource(ScriptRestart,       '/services/setting/script/restart')
 api.add_resource(ScriptRestore,       '/services/setting/script/restore')
+api.add_resource(ScriptStatus,        '/services/setting/script/status/<string:mode>')
 api.add_resource(StaffExport,         '/services/quality/staff/export')
 api.add_resource(StockProductDet,     '/services/quality/stock/product/det/<int:id_item>')
 api.add_resource(StockProductHist,    '/services/quality/stock/product/history/<int:id_item>')

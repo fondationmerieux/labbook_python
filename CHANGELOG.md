@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.0.8] - 2021-06-10
+### Added
+- New analyzes B796, B797, B798, B799, B800, B801, B802, E06
+
+### Changed
+- restore and backup not synchronous anymore
+
 ## [3.0.7] - 2021-06-02
 ### Added
 - initialization page wait for labbook_BE

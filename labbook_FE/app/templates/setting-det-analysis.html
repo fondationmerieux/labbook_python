@@ -882,7 +882,7 @@ var msg = "" ;
                     var_formula2 = data_vars[i].formula2 ;
                     var_unit2    = data_vars[i].unit2    ;
                     var_accu2    = data_vars[i].accu2    ;
-                    var_comment  = data_vars[i].comment  ;
+                    var_comment  = JSON.stringify( data_vars[i].comment ) ;
                     var_oblig    = data_vars[i].oblig    ;
                     var_whonet   = data_vars[i].var_whonet ;
                     var_num      = data_vars[i].num_var  ;
@@ -910,7 +910,7 @@ var msg = "" ;
                                       '"var_formula2":"' + var_formula2 + '", ' +
                                       '"var_unit2":' + var_unit2 + ', ' +
                                       '"var_accu2":' + var_accu2 + ', ' +
-                                      '"var_comment":"' + var_comment + '", ' +
+                                      '"var_comment":' + var_comment + ', ' +
                                       '"var_oblig":' + var_oblig + ', ' +
                                       '"var_whonet":' + var_whonet + ', ' +
                                       '"var_num":' + var_num + ', ' +

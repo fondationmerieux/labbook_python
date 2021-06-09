@@ -99,10 +99,10 @@ class Setting:
     def getStickerSetting():
         cursor = DB.cursor()
 
-        req = 'select sts_ser, sts_width, sts_height, sts_margin_top, sts_margin_bottom, '\
-              'sts_margin_left, sts_margin_right '\
-              'from sticker_setting '\
-              'order by sts_ser desc limit 1'
+        req = ('select sts_ser, sts_width, sts_height, sts_margin_top, sts_margin_bottom, '
+               'sts_margin_left, sts_margin_right '
+               'from sticker_setting '
+               'order by sts_ser desc limit 1')
 
         cursor.execute(req)
 
@@ -130,9 +130,9 @@ class Setting:
     def getAgeInterval():
         cursor = DB.cursor()
 
-        req = 'select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '\
-              'from age_interval_setting '\
-              'order by ais_rank asc'
+        req = ('select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '
+               'from age_interval_setting '
+               'order by ais_rank asc')
 
         cursor.execute(req,)
 
@@ -142,9 +142,9 @@ class Setting:
     def getAgeIntervalById(ais_ser):
         cursor = DB.cursor()
 
-        req = 'select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '\
-              'from age_interval_setting '\
-              'where ais_ser=%s'
+        req = ('select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '
+               'from age_interval_setting '
+               'where ais_ser=%s')
 
         cursor.execute(req, (ais_ser,))
 

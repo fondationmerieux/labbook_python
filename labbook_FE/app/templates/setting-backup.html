@@ -163,6 +163,7 @@ var pwd_user = "" ;
 var pwd_key  = "" ;
 var media    = "" ;
 var keyexist = 0  ;
+var poll_stat= null ;
 
 function run_time()
 {
@@ -489,23 +490,10 @@ function backup(media)
         {
             type: "POST",
             url: "/services/setting/script/backup/" + media,
-            timeout: 9000000,
             success: function(data)
             {
-                $("#dial-wait").modal("hide") ;
-
-                data = data.split(";") ;
-
-                if ( data[0] == "OK" )
-                {
-                tempAlert("{{ _("Sauvegarde réussie") }}", 2000, "tempAnchor") ;
-                $("#last_backup_ok").html( data[1] ) ;
-                }
-                else
-                alert("{{ _("Une erreur est survenue lors de la sauvegarde") }}") ;
-
-                // update ihm
-                $("#date_backup").html( data[0] + " " + data[1] ) ;
+            // POLL WS status restore
+            poll_stat = setInterval( ScriptStatus, 10000, "B" ) ;
             },
             error: function(data)
             {
@@ -597,9 +585,11 @@ console.log("restore param=" + param) ;
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
-                timeout: 9000000,
                 success: function(data)
                 {
+                // POLL WS status restore
+                poll_stat = setInterval( ScriptStatus, 10000, "R" ) ;
+                    /*
                     $("#dial-wait").modal("hide") ;
 
                     if ( window.confirm("{{ _("La restauration est terminée, LabBook va redémarrer les services de l'application") }}") )
@@ -625,6 +615,7 @@ console.log("restore param=" + param) ;
                             }
                     } ) ;
                     }
+                    */
                 },
                 error: function(data)
                 {
@@ -636,6 +627,131 @@ console.log("restore param=" + param) ;
             } ) ;
         } ) ;
     }
+}
+
+function ScriptStatus(mode)
+{
+
+    $.ajax( 
+    {
+        type: "GET",
+        url: "/services/setting/script/status/" + mode,
+        success: function(data)
+        {
+        console.log("status data="+JSON.stringify(data)) ;
+
+        data = data.split(";") ;
+
+            if ( data[0] == "START" )
+            {
+            console.log("START") ;
+                if (mode == "R")
+                $("#wait_status").text("Démarrage du processus de restauration " + data[1] ) ;
+                else if  (mode == "B")
+                $("#wait_status").text("Démarrage du processus de sauvegarde " + data[1]) ;
+            }
+            else if ( data[0] == "DECRYPT" )
+            {
+            console.log("DECRYPT") ;
+            $("#wait_status").text("Déchiffrement de la sauvegarde " + data[1]) ;
+            }
+            else if ( data[0] == "DUMPDB" )
+            {
+            console.log("DUMPDB") ;
+            $("#wait_status").text("Copie de la base de données " + data[1]) ;
+            }
+            else if ( data[0] == "EXTRACTDB" )
+            {
+            console.log("EXTRACTDB") ;
+            $("#wait_status").text("Extraction de la base de données " + data[1]) ;
+            }
+            else if ( data[0] == "LOADDB" )
+            {
+            console.log("LOADDB") ;
+            $("#wait_status").text("Chargement de la base de données " + data[1]) ;
+            }
+            else if ( data[0] == "MAKEARCHIVE" )
+            {
+            console.log("MAKEARCHIVE") ;
+            $("#wait_status").text("Compression de la sauvegarde " + data[1]) ;
+            }
+            else if ( data[0] == "COPYKEYS" )
+            {
+            console.log("COPYKEYS") ;
+            $("#wait_status").text("Copie des clés de chiffrement " + data[1]) ;
+            }
+            else if ( data[0] == "RESTOREFILES" )
+            {
+            console.log("RESTOREFILES") ;
+            $("#wait_status").text("Restauration des fichiers " + data[1]) ;
+            }
+            else if ( data[0] == "OK" )
+            {
+            console.log("OK") ;
+            $("#dial-wait").modal("hide") ;
+
+            clearInterval(poll_stat) ;
+
+                if ( mode == "R" )
+                {
+                    if ( window.confirm("{{ _("La restauration est terminée, LabBook va redémarrer les services de l'application") }}") )
+                    {
+                    var param = '{ "pwd_user":"' + pwd_user + '"}' ;
+
+                        $.ajax( 
+                        {
+                            type: "POST",
+                            url: "/services/setting/script/restart",
+                            dataType: 'json',
+                            contentType: "application/json; charset=utf-8",
+                            data: param,
+                            success: function(data)
+                            {
+                            // Never go through this
+                            tempAlert("{{ _("Redémarrage activé") }}", 2000, "tempAnchor") ;
+                            },
+                            error: function(data)
+                            {
+                            console.log("POST setting restart") ;
+                            alert("{{ _("Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page") }}") ;
+                            }
+                        } ) ;
+                    }
+                }
+                else if ( mode == "B" )
+                alert("{{ _("Sauvegarde réussie") }}") ;
+            }
+            else if ( data[0] == "ERR" )
+            {
+            console.log("ERR") ;
+            $("#dial-wait").modal("hide") ;
+
+            clearInterval(poll_stat) ;
+
+            alert("{{ _("Une erreur est survenue") }} : " + data[1] + " ERROR = " + data[2]) ;
+            }
+            else
+            {
+            console.log("Unknow status : " + data[0] ) ;
+            $("#dial-wait").modal("hide") ;
+
+            clearInterval(poll_stat) ;
+
+            alert("{{ _("Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu") }}") ;
+            }
+            
+        },
+        error: function(ret)
+        {
+        $("#dial-wait").modal("hide") ;
+
+        console.log("ERROR POST setting script status") ;
+        console.log("ret="+JSON.stringify(ret)) ;
+        alert("{{ _("Une erreur est survenue lors de la vérification de l'état en cours") }}") ;
+
+        clearInterval(poll_stat) ;
+        }
+    } ) ;    
 }
 
 function return_home()

@@ -7,7 +7,7 @@ dhis2_label;period;version;filter;type_sample;categorieoptioncombo;attributeopti
 "Candida albicans (Prelevement Uretral)";;;$_344 = [bacterie.33];152;;
 "Chlamydia trachomatis direct (Prelevement Vaginal)";;;$_212 = [absent.present];162;;
 "Chlamydia trachomatis direct (Prelevement Uretral)";;;$_236 = [absent.present];152;;
-"D - S. mansoni"";;;$_641 = [shisto2.S.mansoni];141;;
+"D - S. mansoni";;;$_641 = [shisto2.S.mansoni];141;;
 "Diplocoq. a Gram (-) (Prelevement Uretral)";;;$_353  = [absent.present];152;;
 "Diplocoq. a Gram (-) (Prelevement Vaginal)";;;$_353  = [absent.present];162;;
 "Diplocoque a Gram (-)";;;$_333 = [gram.21];99;;

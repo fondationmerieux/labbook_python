@@ -281,21 +281,10 @@ class ScriptBackup(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_backup
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_backup + ' > ' + Constants.cst_io + 'backup.out 2>&1 &'
 
         self.log.error(Logs.fileline() + ' : ScriptBackup cmd=' + cmd)
         ret = os.system(cmd)
-
-        # read backup file
-        try:
-            ret = ''
-            # No encoding forced because script return list from system so its depend of encoding of operating system
-            f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
-            for line in f:
-                ret += line
-        except:
-            self.log.info(Logs.fileline() + ' : ERROR ScriptBackup impossible to open file')
-            return compose_ret(ret, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptBackup ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)
@@ -494,10 +483,39 @@ class ScriptRestore(Resource):
 
         os.environ['LABBOOK_KEY_PWD'] = args['pwd_key']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" -a "' + archive + '" ' + Constants.cst_io_restore
+        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" -a "' + archive + '" ' + Constants.cst_io_restore + ' > ' + Constants.cst_io + 'restore.out 2>&1 &'
 
         self.log.error(Logs.fileline() + ' : ScriptRestore cmd=' + cmd)
         ret = os.system(cmd)
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptRestore ret=' + str(ret))
+        return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class ScriptStatus(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, mode):
+        try:
+            if mode == 'R':
+                path = os.path.join(Constants.cst_io, Constants.cst_io_restore)
+            elif mode == 'B':
+                path = os.path.join(Constants.cst_io, Constants.cst_io_backup)
+            else:
+                self.log.info(Logs.fileline() + ' : ERROR ScriptStatus wrong mode : ' + str(mode))
+                ret = "ERR;" + str(date_now.strftime("%Y-%m-%d %H:%M:%S")) + ";Wrong mode"
+                return compose_ret(ret, Constants.cst_content_type_json, 500)
+
+            # No encoding forced because script return list from system so its depend of encoding of operating system
+            f = open(path, 'r')
+            for line in f:
+                pass
+
+            ret = line[:-1]
+        except:
+            self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')
+            ret = "ERR;" + str(date_now.strftime("%Y-%m-%d %H:%M:%S")) + ";Impossible to read status file"
+            return compose_ret(ret, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptStatus ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)

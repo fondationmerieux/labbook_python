@@ -2,6 +2,7 @@
 import logging
 
 from app.models.DB import DB
+from app.models.Setting import Setting
 
 
 class Report:
@@ -338,6 +339,59 @@ class Report:
                         l_cond_ana = l_cond_ana + ', ' + str(code_ana)
 
                     req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
+                # CAT filter on category like SEX and/or AGE
+                elif word.startswith('CAT(') and word.endswith(')'):
+                    Report.log.error('### list of category CAT(SEX_x,AGE_x) pattern ###')
+                    l_cat = list(word[3:])
+                    Report.log.error('l_cat = ' + str(l_cat))
+                    sex = 0
+                    age_min = 0
+                    age_max = 0
+                    for cat in l_cat:
+                        if cat.startswith('SEX_'):
+                            Report.log.error('DEBUG SEX cat=' + str(cat))
+                            if cat.endswith('M'):
+                                sex = 1
+                            elif cat.endswith('F'):
+                                sex = 2
+                            else:
+                                sex = 3
+                        elif cat.startswith('AGE_'):
+                            Report.log.error('DEBUG AGE cat=' + str(cat))
+                            num_cat_age = cat[4:] - 1  # AGE_1 <=> interval 0 in list of interval
+                            l_interval = Setting.getAgeInterval()
+
+                            if num_cat_age < 0 or num_cat_age >= len(l_interval):
+                                Report.log.error('ERROR wrong num_cat AGE=' + str(num_cat_age))
+                                return req
+
+                            i = 0
+                            for interval in l_interval:
+                                if i == num_cat_age:
+                                    age_min = interval['ais_lower_bound']
+                                    age_max = interval['ais_upper_bound']
+
+                                    if not age_min:
+                                        age_min = 0
+
+                                    if not age_max:
+                                        age_max = 150
+
+                                i = i + 1
+
+                            # Build SQL part for category
+                            req['inner'] = (req['inner'] +
+                                            'inner join sigl_03_data as pat' + str(idx) +
+                                            'on pat' + str(idx) + '.id_data=rec.id_patient')
+
+                            if sex > 0:
+                                req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
+
+                            if age_min != 0 or age_max != 0:
+                                req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
+                                              'and pat' + str(idx) + '.age <=' + str(age_max) + ')')
+                        else:
+                            Report.log.error('ERROR CAT unknown cat=' + str(cat))
                 else:
                     # TODO rule for OR
                     if word == 'OR':
