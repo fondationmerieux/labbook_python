@@ -56,7 +56,6 @@
         {% block content %}
         <div id="content"></div>
         {% endblock %}
-        {% include 'popup_wait.html' %}
         {% include 'popup_history.html' %}
         {% block footer %}
         <footer>
@@ -64,6 +63,7 @@
         </footer>
         {% endblock %}
     </div><!-- close page -->
+    {% include 'popup_wait.html' %}
 </body>
 {% endblock %}
 

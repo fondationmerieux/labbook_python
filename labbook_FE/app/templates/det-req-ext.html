@@ -1278,42 +1278,56 @@ let id_group  = {{ session['user_id_group']|safe}} ;
 let user_role = "{{ session['user_role']|safe }}"  ;
 let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}' ;
 
-    // create in DB list of results to enter and corresponding validation
-    $.ajax(
-    {
-        type : 'POST',
-        url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param_res,
-        success : function(response)
-        {
-        let param_stat = '{ "stat":182 }' ; 
+    // popup wait
+    $("#dial-wait").modal("show") ;
 
-            // update record stat 181 to 182
-            $.ajax(
-            {
-                type : 'POST',
-                url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                data: param_stat,
-                success : function(response)
-                {
-                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/" + {{ args['record']['id_data'] }} ;
-                },
-                error: function(response)
-                {
-                console.log("ERROR record stat") ;
-                alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
-                }
-            } ) ;
-        },
-        error: function(response)
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        // create in DB list of results to enter and corresponding validation
+        $.ajax(
         {
-        console.log("ERROR result create") ;
-        alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
-        }
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param_res,
+            success : function(response)
+            {
+            let param_stat = '{ "stat":182 }' ; 
+
+                // update record stat 181 to 182
+                $.ajax(
+                {
+                    type : 'POST',
+                    url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    data: param_stat,
+                    success : function(response)
+                    {
+                        $("#dial-wait").modal("hide") ;
+
+                    window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/E/" + {{ args['record']['id_data'] }} ;
+                    },
+                    error: function(response)
+                    {
+                        $("#dial-wait").modal("hide") ;
+
+                    console.log("ERROR record stat") ;
+                    alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
+                    }
+                } ) ;
+            },
+            error: function(response)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR result create") ;
+            alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 {% endif %}

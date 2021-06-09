@@ -192,15 +192,15 @@ $("#list_items_total").html( data_len ) ;
            '<td><div>' + menu_act + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].date_create + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].name + '</div></td>' +
-           '<td><div class="text-left">' + convert_yes_no(impact_patient) + '</div></td>' +
-           '<td><div class="text-left">' + convert_yes_no(impact_user) + '</div></td>' +
+           '<td><div class="text-left">' + convert_impact(impact_patient) + '</div></td>' +
+           '<td><div class="text-left">' + convert_impact(impact_user) + '</div></td>' +
            '<td><div class="text-left">' + convert_yes_no(correction) + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].date_correction + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].close_date + '</div></td></tr>' ;
     }
 {% endif %}
 
-    $("#tbody_items").append(res) ;
+    $("#tbody_items").append(res)  ;
     $("#num_page_t").text( p_cur ) ;
     $("#num_page_b").text( p_cur ) ;
 
@@ -215,6 +215,22 @@ let val_str = "" ;
     val_str = "{{ _("Oui") }}" ;
     else
     val_str = "{{ _("Non") }}" ;
+
+return val_str ;
+}
+
+function convert_impact( val )
+{
+let val_str = "" ;
+
+    if ( val == 4 )
+    val_str = "{{ _("Faible") }}" ;
+    else if  ( val == 5 )
+    val_str = "{{ _("Important") }}" ;
+    else if  ( val == 6 )
+    val_str = "{{ _("Grave") }}" ;
+    else
+    val_str = "{{ _("Aucun") }}" ;
 
 return val_str ;
 }

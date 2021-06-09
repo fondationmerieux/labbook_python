@@ -138,11 +138,11 @@ class Report:
     def getStatPatient(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = 'select pat.sexe as sex, pat.age, count(*) as nb_rec, rec.type as rec_type '\
-              'from sigl_02_data as rec '\
-              'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '\
-              'where (rec.date_dos between %s and %s) '\
-              'group by pat.age order by age asc'
+        req = ('select pat.sexe as sex, pat.age, count(*) as nb_rec, rec.type as rec_type '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'where (rec.date_dos between %s and %s) '
+               'group by pat.age order by age asc')
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -152,11 +152,11 @@ class Report:
     def getStatPrescr(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = 'select doctor.nom as lastname, doctor.prenom as firstname, count(*) as nb_rec '\
-              'from sigl_02_data as rec '\
-              'inner join sigl_08_data as doctor on doctor.id_data = rec.med_prescripteur '\
-              'where (date_prescription between %s and %s) '\
-              'group by doctor.id_data order by lastname asc, firstname asc'
+        req = ('select doctor.nom as lastname, doctor.prenom as firstname, count(*) as nb_rec '
+               'from sigl_02_data as rec '
+               'inner join sigl_08_data as doctor on doctor.id_data = rec.med_prescripteur '
+               'where (date_prescription between %s and %s) '
+               'group by doctor.id_data order by lastname asc, firstname asc')
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -331,25 +331,31 @@ class Report:
                 # ON a list of analyzes codes
                 elif word.startswith('ON(') and word.endswith(')'):
                     # Report.log.error('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
-                    l_code_ana = list(word[2:])
+                    l_code_ana = list(word[3:len(word) - 1].split(','))
                     # Report.log.error('l_code_ana = ' + str(l_code_ana))
                     l_cond_ana = ''
 
+                    i = 0
                     for code_ana in l_code_ana:
-                        l_cond_ana = l_cond_ana + ', ' + str(code_ana)
+                        if i == 0:
+                            l_cond_ana = str(code_ana)
+                        else:
+                            l_cond_ana = l_cond_ana + ', ' + str(code_ana)
+
+                        i = i + 1
 
                     req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
+
                 # CAT filter on category like SEX and/or AGE
                 elif word.startswith('CAT(') and word.endswith(')'):
                     Report.log.error('### list of category CAT(SEX_x,AGE_x) pattern ###')
-                    l_cat = list(word[3:])
+                    l_cat = list(word[4:len(word) - 1].split(','))
                     Report.log.error('l_cat = ' + str(l_cat))
                     sex = 0
                     age_min = 0
                     age_max = 0
                     for cat in l_cat:
                         if cat.startswith('SEX_'):
-                            Report.log.error('DEBUG SEX cat=' + str(cat))
                             if cat.endswith('M'):
                                 sex = 1
                             elif cat.endswith('F'):
@@ -357,8 +363,7 @@ class Report:
                             else:
                                 sex = 3
                         elif cat.startswith('AGE_'):
-                            Report.log.error('DEBUG AGE cat=' + str(cat))
-                            num_cat_age = cat[4:] - 1  # AGE_1 <=> interval 0 in list of interval
+                            num_cat_age = int(cat[4:]) - 1  # AGE_1 <=> interval 0 in list of interval
                             l_interval = Setting.getAgeInterval()
 
                             if num_cat_age < 0 or num_cat_age >= len(l_interval):
@@ -379,17 +384,17 @@ class Report:
 
                                 i = i + 1
 
-                            # Build SQL part for category
-                            req['inner'] = (req['inner'] +
-                                            'inner join sigl_03_data as pat' + str(idx) +
-                                            'on pat' + str(idx) + '.id_data=rec.id_patient')
+                        # Build SQL part for category
+                        req['inner'] = (req['inner'] +
+                                        'inner join sigl_03_data as pat' + str(idx) +
+                                        ' on pat' + str(idx) + '.id_data=rec.id_patient ')
 
-                            if sex > 0:
-                                req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
+                        if sex > 0:
+                            req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
 
-                            if age_min != 0 or age_max != 0:
-                                req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
-                                              'and pat' + str(idx) + '.age <=' + str(age_max) + ')')
+                        if age_min != 0 or age_max != 0:
+                            req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
+                                          ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                         else:
                             Report.log.error('ERROR CAT unknown cat=' + str(cat))
                 else:

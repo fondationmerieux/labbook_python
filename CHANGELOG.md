@@ -6,10 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [3.0.8] - 2021-06-10
 ### Added
 - New analyzes B796, B797, B798, B799, B800, B801, B802, E06
-- DHIS2 filter Sex, Age, Record 
+- DHIS2 filter by Sex and/or Age
+- DHIS2 filter on specific Record(s) 
 
 ### Changed
 - restore and backup not synchronous anymore
+
+### Fixed
+- background stay grey in list-result page
+- add popup wait for validation of internal and external request
 
 ## [3.0.7] - 2021-06-02
 ### Added
