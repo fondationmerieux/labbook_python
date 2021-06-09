@@ -184,6 +184,7 @@ sigl@labbook3-test:~$ sudo podman rmi image_id_from_above
 # or in one step
 sigl@labbook3-test:~$ sudo podman rmi $(sudo podman image ls --format '{{.ID}}' localhost/labbook-python)
 
+# install the new image
 sigl@labbook3-test:~$ sudo mv /tmp/labbook-python-3.0.2.tar /home/LabBook_images
 
 # verify the version number in the startup script

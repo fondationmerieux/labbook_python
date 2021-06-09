@@ -1408,7 +1408,7 @@ fn_backup() {
     # notes:
     # - cp -p fails with cp: failed to preserve ownership for '...': Operation not permitted
     # - type cp gives: cp is aliased to `cp -i'
-    write_br_message "MAKEARCHIVE"
+    write_br_message "COPYKEYS"
 
     # shellcheck disable=SC2012
     privkey_file=$(ls "$keys_dir"/kpri.*.asc | head -1)
@@ -1457,8 +1457,6 @@ fn_restore() {
         backup_message "cannot find directory $media_dir"
         return 1
     }
-
-    status_message ""
 
     media_path="$media_dir/$user/$media"
 
@@ -1733,6 +1731,9 @@ fn_restore_lb30() {
         log_message "error loading database from SQL dump file $dump_file"
         return 1
     }
+
+    # add delay to test long DB load
+    #sleep 600
 
     rm -f "$dump_file"
 
