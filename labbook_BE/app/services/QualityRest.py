@@ -1417,6 +1417,25 @@ class StockProductHist(Resource):
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 
+class StockProductList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_products = Quality.getStockProductList()
+
+        if not l_products:
+            self.log.error(Logs.fileline() + ' : TRACE StockProductList not found')
+
+        for product in l_products:
+            # Replace None by empty string
+            for key, value in list(product.items()):
+                if product[key] is None:
+                    product[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE StockProductList')
+        return compose_ret(l_products, Constants.cst_content_type_json)
+
+
 class StockProductSearch(Resource):
     log = logging.getLogger('log_services')
 

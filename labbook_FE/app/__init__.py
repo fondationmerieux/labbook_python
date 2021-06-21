@@ -847,7 +847,9 @@ def setting_backup():
 
         f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
         for line in f:
-            ret += line
+            pass
+
+        ret = line[:-1]
 
         if ret:
             ret = ret.split(';')
@@ -996,6 +998,32 @@ def setting_dhis2():
         log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
 
     return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting epidemio
+@app.route('/setting-epidemio')
+def setting_epidemio():
+    log.info(Logs.fileline() + ' : TRACE setting epidemio')
+
+    session['current_page'] = 'setting-epidemio'
+    session.modified = True
+
+    json_data = {}
+
+    json_data['data_epidemio'] = []
+
+    # Load epidemio files in epidemio directory
+    try:
+        path = Constants.cst_epidemio
+
+        for filename in os.listdir(path):
+            if not os.path.isdir(os.path.join(path, filename)) and filename == 'epidemio.ini':
+                json_data['data_epidemio'].append(filename)
+
+    except Exception as err:
+        log.error(Logs.fileline() + ' : load epidemio files in epidemio directory failed, err=%s', err)
+
+    return render_template('setting-epidemio.html', args=json_data, rand=random.randint(0, 999))
 
 
 # ---------------------------
@@ -1282,12 +1310,12 @@ def list_works(user_role='', emer=''):
     return render_template('list-works.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
-# Page : List of products to do or modify
-@app.route('/list-products')
-def list_products():
-    log.info(Logs.fileline() + ' : TRACE list-products')
+# Page : List of samples to do or modify
+@app.route('/list-samples')
+def list_samples():
+    log.info(Logs.fileline() + ' : TRACE list-samples')
 
-    session['current_page'] = 'list-products'
+    session['current_page'] = 'list-samples'
     session.modified = True
 
     json_data = {}
@@ -1302,27 +1330,27 @@ def list_products():
             json_data = json.dumps(req.json())
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests samples list failed, err=%s , url=%s', err, url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG list-products processing time = ' + str(dt_time_req))
-    return render_template('list-products.html', args=json_data, rand=random.randint(0, 999))
+    log.info(Logs.fileline() + ' : DEBUG list-samples processing time = ' + str(dt_time_req))
+    return render_template('list-samples.html', args=json_data, rand=random.randint(0, 999))
 
 
-# Page : details of a product
-@app.route('/det-product/<int:id_prod>')
-def det_product(id_prod=0):
-    log.info(Logs.fileline() + ' : TRACE det product=' + str(id_prod))
+# Page : details of a sample
+@app.route('/det-sample/<int:id_prod>')
+def det_sample(id_prod=0):
+    log.info(Logs.fileline() + ' : TRACE det sample=' + str(id_prod))
 
-    session['current_page'] = 'det-product/' + str(id_prod)
+    session['current_page'] = 'det-sample/' + str(id_prod)
     session.modified = True
 
     json_ihm  = {}
     json_data = {}
 
-    # Load products statut
+    # Load samples statut
     try:
         url = session['server_int'] + '/services/dict/det/prel_statut'
         req = requests.get(url)
@@ -1331,9 +1359,9 @@ def det_product(id_prod=0):
             json_ihm['products_statut'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products statut list failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests samples statut list failed, err=%s , url=%s', err, url)
 
-    # Load products type
+    # Load samples type
     try:
         url = session['server_int'] + '/services/dict/det/type_prel'
         req = requests.get(url)
@@ -1342,9 +1370,9 @@ def det_product(id_prod=0):
             json_ihm['products'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products type list failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests samples type list failed, err=%s , url=%s', err, url)
 
-    # Load products location choice
+    # Load samples location choice
     try:
         url = session['server_int'] + '/services/dict/det/lieu_prel'
         req = requests.get(url)
@@ -1353,10 +1381,10 @@ def det_product(id_prod=0):
             json_ihm['products_location'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products location list failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests samples location list failed, err=%s , url=%s', err, url)
 
     if id_prod > 0:
-        # Load product details
+        # Load sample details
         try:
             url = session['server_int'] + '/services/product/det/' + str(id_prod)
             req = requests.get(url)
@@ -1365,7 +1393,7 @@ def det_product(id_prod=0):
                 json_data['product'] = req.json()
 
         except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests product det failed, err=%s , url=%s', err, url)
+            log.error(Logs.fileline() + ' : requests sample det failed, err=%s , url=%s', err, url)
 
         # Load record details
         try:
@@ -1392,7 +1420,7 @@ def det_product(id_prod=0):
 
     json_data['id_prod'] = id_prod
 
-    return render_template('det-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-sample.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : doctors list (prescribers exactly)
@@ -1574,7 +1602,7 @@ def det_req_ext(entry='Y', ref=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests discount bill list failed, err=%s , url=%s', err, url)
 
-        # Load products statut
+        # Load samples statut
         try:
             url = session['server_int'] + '/services/dict/det/prel_statut'
             req = requests.get(url)
@@ -1583,9 +1611,9 @@ def det_req_ext(entry='Y', ref=0):
                 json_ihm['products_statut'] = req.json()
 
         except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests products statut list failed, err=%s , url=%s', err, url)
+            log.error(Logs.fileline() + ' : requests samples statut list failed, err=%s , url=%s', err, url)
 
-        # Load products
+        # Load samples
         try:
             url = session['server_int'] + '/services/dict/det/type_prel'
             req = requests.get(url)
@@ -1594,7 +1622,7 @@ def det_req_ext(entry='Y', ref=0):
                 json_ihm['products'] = req.json()
 
         except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+            log.error(Logs.fileline() + ' : requests samples list failed, err=%s , url=%s', err, url)
 
         # Load prix_acte
         try:
@@ -1663,7 +1691,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load list analysis requested
         try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/O'
+            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/Y'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1862,7 +1890,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load list analysis requested
         try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/O'
+            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/Y'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1971,7 +1999,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load list analysis requested
     try:
-        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/type/O'
+        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/type/Y'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2455,6 +2483,48 @@ def report_epidemio(date_beg='', date_end=''):
         log.error(Logs.fileline() + ' : requests report epidemio failed, err=%s , url=%s', err, url)
 
     return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+"""
+# Page : report epidemiological
+@app.route('/report-epidemio')
+@app.route('/report-epidemio/<string:date_beg>/<string:date_end>')
+def report_epidemio(date_beg='', date_end=''):
+    log.info(Logs.fileline() + ' : TRACE report epidemio')
+
+    session['current_page'] = 'report-epidemio'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # load data for epiodemio
+    try:
+        if not date_beg:
+            date_beg = date.today()
+            date_beg = date_beg - timedelta(days=31)
+            date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
+
+        if not date_end:
+            date_end = date.today()
+            date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg,
+                   'date_end': date_end}
+
+        url = session['server_int'] + '/services/report/epidemio'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['epidemio'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report epidemio failed, err=%s , url=%s', err, url)
+
+    return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))"""
 
 
 # Page : report statistic
@@ -3337,6 +3407,30 @@ def list_stock():
     return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
+# Page : products list
+@app.route('/list-products')
+def list_products():
+    log.info(Logs.fileline() + ' : TRACE list products')
+
+    session['current_page'] = 'list-products'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list products
+    try:
+        url = session['server_int'] + '/services/quality/stock/product/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-products.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : details list stock
 @app.route('/det-list-stock/<int:prd_ser>')
 def det_list_stock(prd_ser=0):
@@ -3638,6 +3732,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # JF => Join File
     # RP => Report
     # DH => DHIS2 spreadsheet
+    # EP => EPIDEMIO spreadsheet
 
     if type == 'PY':
         filepath = Constants.cst_path_tmp
@@ -3666,6 +3761,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
         filename = 'cr_' + ref + '.pdf'
     elif type == 'DH':
         filepath = Constants.cst_dhis2
+        generated_name = filename
+    elif type == 'EP':
+        filepath = Constants.cst_epidemio
         generated_name = filename
     else:
         return False
@@ -3823,6 +3921,38 @@ def upload_dhis2():
             f.save(os.path.join(filepath, filename))
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-dhis2 failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload a spreadsheet for EPIDEMIO
+@app.route('/upload-epidemio', methods=['POST'])
+def upload_epidemio():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-epidemio failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_epidemio
+
+        log.info(Logs.fileline())
+
+        # check if this file is a csv
+        if filename != 'epidemio.ini':
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-epidemio failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

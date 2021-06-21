@@ -1,0 +1,125 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage du rapport épidémiologique") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage du rapport épidémiologique") }}</span></h2>
+
+            <div class="row m-3">
+                <div class="form-group">
+                    <div class="text-left upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                    <input name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer la feuille de calcul") }}" onclick="upload_epidemio();">
+                </div>
+            </div>
+
+            <div id="tempAnchor"></div>
+            
+            <div class="clearfix mb-5">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_epidemio = {% if args['data_epidemio'] %}{{ args['data_epidemio']|safe }}{% else %}[]{% endif %} ;
+
+function upload_epidemio()
+{
+let param_form = new FormData() ;
+
+param_form.append('file', $('input[type=file]')[0].files[0]) ;
+
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-epidemio",
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
+        {
+        tempAlert("{{ _("Dépôt réussi") }}", 2000, "tempAnchor") ;
+        console.log("success upload epidemio") ;
+        location.reload() ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR upload logo") ;
+        alert("{{ _("Une erreur est survenue lors du dépot du fichier") }}") ;
+        }
+    } ) ;
+    
+}
+
+function load_data()
+{
+    for( i in data_epidemio )
+    {
+    load_file( data_epidemio[i] ) ;
+    }
+
+    if (data_epidemio.length < 1)
+    {
+    let tr_file = '<tr><td colspan="2"><div>{{ _("Aucun fichier déposé") }}</div></td></tr>' ;
+
+    $("#tbody_file").append(tr_file) ;
+    }
+}
+
+function load_file( filename )
+{
+let tr_file = '' ;
+
+    if ( filename == "epidemio.ini" && filename != undefined )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'EP\', \'' + filename + '\', \'EPIDEMIO\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += '</div></td></tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

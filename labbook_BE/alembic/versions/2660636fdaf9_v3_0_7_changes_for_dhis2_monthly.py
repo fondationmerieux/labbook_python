@@ -1109,61 +1109,6 @@ def upgrade():
         except Exception as err:
             print("ERROR insert links for B681 analysis,\n\terr=" + str(err))
 
-    # NEW EPIDEMIO ANALYZES
-    # SARS-CoV-2
-    """
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'SARS-CoV-2 (prel. nasal)', 163)")
-    except Exception as err:
-        print("ERROR insert new analysis SARS-CoV-2 (other sample) for epidemio report,\n\terr=" + str(err))
-    else:
-        try:
-            conn.execute("insert into sigl_15_data (id_owner, nom_amont, formule, id_surveillance, libelle_ind, nature_prel) "
-                         "values (100, 'RT-PCR', '$_XXX = [posneg.Positif]', "
-                         "(select id_data from sigl_14_data where surveillance ='SARS-CoV-2 (prel. nasal)' limit 1), "
-                         "'Négatif', 163)")
-        except Exception as err:
-            print("ERROR insert new result RT-PCR SARS-CoV-2 (other sample) for epidemio report,\n\terr=" + str(err))
-
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'SARS-CoV-2 (prel. sang)', 138)")
-    except Exception as err:
-        print("ERROR insert new analysis SARS-CoV-2 (blood sample) for epidemio report,\n\terr=" + str(err))
-
-    # Ebola
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'Ebola (prel. sang)', 138)")
-    except Exception as err:
-        print("ERROR insert new analysis Ebola (blood sample) for epidemio report,\n\terr=" + str(err))
-
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'Ebola (prel. buccal)', 50)")
-    except Exception as err:
-        print("ERROR insert new analysis Ebola (mouth sample) for epidemio report,\n\terr=" + str(err))
-
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'Ebola (prel. urine)', 163)")
-    except Exception as err:
-        print("ERROR insert new analysis Ebola (pi sample) for epidemio report,\n\terr=" + str(err))
-
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'Ebola (prel. sperme)', 152)")
-    except Exception as err:
-        print("ERROR insert new analysis Ebola (cum sample) for epidemio report,\n\terr=" + str(err))
-
-    try:
-        conn.execute("insert into sigl_14_data (id_owner, surveillance, nature_prel) "
-                     "values (100, 'Ebola (prel. selles)', 141)")
-    except Exception as err:
-        print("ERROR insert new analysis Ebola (poo sample) for epidemio report,\n\terr=" + str(err))
-    """
-
     print(str(datetime.today()) + " : END of migration v3.0.7_changes_for_dhis2_monthly revision=2660636fdaf9")
 
 

@@ -49,17 +49,15 @@
                             {% for disease in args['epidemio'] %}
                             <tr style="border:0;">
                                 <td style="border:0;" class="text-center">{{ disease['disease'] }}</td>
-                                <td style="border:0;" class="text-center">{{ disease['product'] }}</td>
+                                <td style="border:0;" class="text-center">{{ disease['sample'] }}</td>
                                 <td style="border:0;" class="text-center">{{ disease['total_received'] }}</td>
                                 <td style="border:0;" class="text-center">{{ disease['total_analyzed'] }}</td>
                                 <td style="border:0;" class="text-left">
                                     {% for res in disease['details'] %}
-                                        {% if loop.changed(res['res_cat']) and res['res_cat'] %}
-                                    <span class="font-info">{{ res['res_cat'] }}</span><br />
-                                        {% endif %}
+                                        {% if res['res_type'] == 'T' %}
+                                    <span class="font-info">{{ res['res_label'] }}</span><br />
+                                        {% else %}
                                     <span>{{ res['res_label'] }} : </span><span>{{ res['res_value'] }}</span><br />
-                                        {% if res['res_value'] == "N/A" %}
-                                    <span class="font-info text-danger">{{ _("Formule non implémentée") }}</span>
                                         {% endif %}
                                     {% endfor %}
                                 </td>

@@ -6,6 +6,7 @@ class Constants:
     cst_date_ymd = '%Y%m%d'
 
     cst_dhis2    = '/storage/resource/dhis2/'
+    cst_epidemio = '/storage/resource/epidemio/'
     cst_io       = '/storage/io/'
     cst_report   = '/storage/report/'
     cst_resource = '/storage/resource/'

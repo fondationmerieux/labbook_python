@@ -16,6 +16,7 @@ class Constants:
     cst_report   = '/storage/report/'
     cst_resource = '/storage/resource/'
     cst_dhis2    = '/storage/resource/dhis2/'
+    cst_epidemio = '/storage/resource/epidemio/'
     cst_upload   = '/storage/upload/'
 
     cst_path_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'

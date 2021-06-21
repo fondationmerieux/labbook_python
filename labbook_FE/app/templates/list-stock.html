@@ -106,6 +106,7 @@
                     {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
                     <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
+                    <input type="button" onclick="list_products();" id="btn_add" value="{{ _("Catalogue des produits") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
                     <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
                     {% endif %}
                 </div>
@@ -278,6 +279,11 @@ var id_user = {{ session['user_id']|safe}} ;
 function stock_item()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-stock-product/0";
+}
+
+function list_products()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products";
 }
 
 function new_item()

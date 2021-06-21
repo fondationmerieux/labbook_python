@@ -570,6 +570,22 @@ class Quality:
         return ret
 
     @staticmethod
+    def getStockProductList():
+        cursor = DB.cursor()
+
+        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, '
+               'sup.fournisseur_nom as supplier_name, prd_safe_limit, d1.label as type, d2.label as conserv '
+               'from product_details '
+               'left join sigl_dico_data as d1 on d1.id_data=prd_type '
+               'left join sigl_dico_data as d2 on d2.id_data=prd_conserv '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
+               'order by prd_name asc, supplier_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def insertStockProduct(**params):
         try:
             cursor = DB.cursor()

@@ -501,7 +501,6 @@ function backup(media)
                 $("#dial-wait").modal("hide") ;
 
             console.log("ERROR POST setting backup") ;
-            //alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
             location.reload() ;
             }
         } ) ;
@@ -695,7 +694,14 @@ function ScriptStatus(mode)
                     }
                 }
                 else if ( mode == "B" )
+                {
+                    $("#wait-status").text("") ;
+                    $("#dial-wait").modal("hide") ;
+
                 alert("{{ _("Sauvegarde réussie") }}") ;
+
+                location.reload() ;
+                }
             }
             else if ( data[0] == "ERR" )
             {

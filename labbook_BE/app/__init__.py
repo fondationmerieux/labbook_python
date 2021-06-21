@@ -220,6 +220,7 @@ api.add_resource(ScriptStatus,        '/services/setting/script/status/<string:m
 api.add_resource(StaffExport,         '/services/quality/staff/export')
 api.add_resource(StockProductDet,     '/services/quality/stock/product/det/<int:id_item>')
 api.add_resource(StockProductHist,    '/services/quality/stock/product/history/<int:id_item>')
+api.add_resource(StockProductList,    '/services/quality/stock/product/list')
 api.add_resource(StockProductSearch,  '/services/quality/stock/product/search')
 api.add_resource(StockSupplyDet,      '/services/quality/stock/supply/det/<int:id_item>')
 api.add_resource(StockExport,         '/services/quality/stock/export')

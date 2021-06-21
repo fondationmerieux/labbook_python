@@ -191,7 +191,7 @@ class Pdf:
 
             addr_div += '</div>'
 
-        l_ana = Analysis.getAnalysisReq(id_rec, '')
+        l_ana = Analysis.getAnalysisReq(id_rec, 'A')
 
         bill_div = ''
         ana_div  = ''
@@ -368,18 +368,30 @@ class Pdf:
 
         form_cont = ''
 
-        h_max = 1380  # maximum page height in pixels
-        h_now = 0     # page height under construction
-        h_fam = 35
-        h_ana = 20
-        h_res = 35
+        h_max  = 1340  # maximum page height in pixels
+        h_now  = 0     # page height under construction
+        h_fam  = 35
+        h_name = 25
+        h_res  = 35
 
-        h_padding = 50
-        h_footer  = 20
+        h_padding = 90
+        h_footer  = 35
 
         num_page = 1
 
         report_status = ''
+
+        # Partial or Full
+        if reedit == 'N':
+            l_req = Analysis.getAnalysisReq(id_rec, 'Y')
+
+            report_status = 'COMPLET'
+
+            for req in l_req:
+                nb_res_vld = Result.countResValidate(req['id_data'])
+
+                if not nb_res_vld or nb_res_vld['nb_vld'] == 0:
+                    report_status = 'PARTIEL'
 
         # regenerated a report
         if reedit == 'Y':
@@ -535,28 +547,28 @@ class Pdf:
             h_now += 60 + 20
 
         # ANALYZES PART
-        l_res = Result.getResultRecord(id_rec, False)
+        l_res = Result.getResultRecordForReport(id_rec)
 
-        id_ana_p = 0
+        id_req_ana_p = 0
         id_res_p = 0
         id_user_valid_p = 0
 
         h_page = h_max - h_now - h_padding - h_footer
 
-        report_div = ''
-        group_res_div = ''
-        res_div    = ''
+        result_div = ''
 
         if l_res:
+            res_fam   = ''
+            res_fam_p = 'vide'
+            with_fam  = False
+
             # ----- LOOP RESULT -----
             for res in l_res:
-                # New analysis div
-                if res['id_ana'] != id_ana_p and res['id_res'] != id_res_p:
+                # NEW ANALYSIS DIV
+                if res['id_req_ana'] != id_req_ana_p and res['id_res'] != id_res_p:
 
-                    # --- close previous analysis div ---
-                    if id_ana_p > 0:
-                        group_res_div = group_res_div + res_div + '</div>'
-
+                    # --- close PREVIOUS analysis ---
+                    if id_req_ana_p > 0:
                         # comment and who make validation
                         res_valid = Result.getResultValidation(id_res_p)
 
@@ -581,41 +593,72 @@ class Pdf:
                             else:
                                 comm_div = ''
 
-                            group_res_div = group_res_div + comm_div + """\
+                            result_div = result_div + comm_div + """\
                                     <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
-                    # --- end of close previous analysis div ---
+                    # --- end of close previous analysis ---
 
-                    id_ana_p = res['id_ana']
+                    id_req_ana_p = res['id_req_ana']
                     id_res_p = res['id_res']
 
-                    # Pdf.log.error(Logs.fileline() + ' : DEBUG id_ana=' + str(id_ana_p) + ' | id_res=' + str(id_res_p) + ' | ref_ana=' + str(res['ref_ana']))
+                    # Pdf.log.error(Logs.fileline() + ' : DEBUG id_req_ana=' + str(id_req_ana_p) + ' | id_res=' + str(id_res_p) + ' | id_ref_ana=' + str(res['id_ref_ana']))
 
-                    res_name = ''
-                    res_fam  = ''
+                    if res['ana_fam'] and res['ana_fam'] != res_fam_p:
+                        res_fam   = res['ana_fam']
+                        res_fam_p = res_fam
+                        with_fam  = True
+                    else:
+                        with_fam = False
 
-                    if res['famille']:
-                        res_fam = res['famille']
-
-                    if res['nom']:
-                        res_name = res['nom']
-
-                    # Start div of an analysis
-                    res_div = '<div>'
-
-                    if res_fam:
-                        res_div = res_div + '<span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">' + res_fam + '</span>'
+                    # ==== ANALYSIS FAMILY ====
+                    if with_fam:
+                        result_div = result_div + '<div><span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">' + res_fam + '</span></div>'
                         h_now += h_fam
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG fam=' + res_fam + ' | h_now=' + str(h_now))
 
-                    if res_name:
-                        res_div = res_div + '<span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">' + res_name + '</span>'
-                        h_now += h_ana
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG ana=' + res_name + ' | h_now=' + str(h_now))
+                        # IF family title on 2 lines
+                        if len(res_fam) > 70:
+                            h_now += h_fam
+
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG FAMILY=' + res_fam + '\n==========')
+
+                    # AFTER a new line CUT PAGE OR NOT
+                    if h_now > (h_max - h_res):
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
+
+                        num_page = num_page + 1
+
+                        # REINIT for next page
+                        h_now  = 0
+                        h_page = h_max - h_footer - h_padding
+
+                        result_div = ''
+
+                    # ==== ANALYSIS NAME ====
+                    if res['ana_name']:
+                        result_div = result_div + '<div><span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">' + res['ana_name'] + '</span></div>'
+                        h_now += h_name
+
+                        # IF name title on 2 lines
+                        if len(res['ana_name']) > 90:
+                            h_now += h_name
+
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG NAME=' + res['ana_name'] + '\n---------')
+
+                    # AFTER a new line CUT PAGE OR NOT
+                    if h_now > (h_max - h_res):
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
+
+                        num_page = num_page + 1
+
+                        # REINIT for next page
+                        h_now  = 0
+                        h_page = h_max - h_footer - h_padding
+
+                        result_div = ''
 
                 # Start to get previous result if exist
                 prev = ''
 
-                res_prev = Result.getPreviousResult(res['id_pat'], res['ref_ana'], res['id_data'], res['id_res'])
+                res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'])
 
                 if res_prev:
                     prev = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y') + ' : '
@@ -628,8 +671,8 @@ class Pdf:
                 else:
                     type_res = ''
 
-                if type_res and res['valeur']:
-                    val = Various.getDicoById(res['valeur'])
+                if type_res and res['value']:
+                    val = Various.getDicoById(res['value'])
                     val = val['label']
 
                     if res_prev and res_prev['valeur']:
@@ -638,7 +681,7 @@ class Pdf:
                     else:
                         prev = ''
                 else:
-                    val = res['valeur']
+                    val = res['value']
                     # Cancel result
                     if not val:
                         val  = 'Annulée'
@@ -659,101 +702,36 @@ class Pdf:
                 if res['normal_min'] and res['normal_max']:
                     ref = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
 
-                # NEW LINE OF RESULT
-                res_div += """<div style="margin-bottom:10px;">\
-                           <span class="ft_res_label" style="width:360px;display:inline-block;text-align:left;padding-left:15px;">""" + str(res['libelle']) + """</span>
+                # ==== ANALYSIS RESULT ====
+                result_div += """<div style="margin-bottom:10px;">\
+                           <span class="ft_res_label" style="width:365px;display:inline-block;text-align:left;padding-left:12px;">""" + str(res['libelle']) + """</span>
                            <span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">""" + str(val) + """</span>
                            <span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">""" + str(ref) + """</span>
                            <span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">""" + str(prev) + """</span></div>"""
                 h_now += h_res
+
+                # IF libelle on 2 lines
+                if len(res['libelle']) > 45:
+                    h_now += h_res
+
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG res[libelle]=' + str(res['libelle']))
+                # Pdf.log.error(Logs.fileline() + ' : DEBUG h_now=' + str(h_now) + ' | h_max - h_res=' + str(h_max - h_res) + '\n')
 
-                # AFTER a new line of result CUT PAGE OR NOT
+                # AFTER a new line CUT PAGE OR NOT
                 if h_now > (h_max - h_res):
-                    if num_page == 1:
-                        if not report_status:
-                            report_status = 'COMPLET'  # TODO how determinate partial or full report ?
-
-                        report_status = '<span style="float:right;padding:2px;border:2px double #000;">' + report_status + '</span>'
-
-                        page_header = Pdf.getPdfHeader(full_header, report_status)
-
-                        report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
-                                      'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
-                                      'background-color:#FFF;">' + group_res_div + '</div>')
-
-                        page_body = """\
-                            <div style="width:1000px;">""" + rec_div + addr_div + """</div>
-                            <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
-                            """ + rec_comm + """
-                            <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
-                                <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
-                                <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
-                                <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
-                                <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
-                            </div>
-                            <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
-                    else:
-                        page_header = ''
-                        page_body   = ''
-
-                        # res_div += '</div>'
-
-                        group_res_div += res_div + '</div>'
-
-                        report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
-                                      'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
-                                      'background-color:#FFF;">' + group_res_div + '</div>')
-
-                        page_body += """\
-                                    <div style="width:1000px;margin-top:100px;">&nbsp;</div>
-                                    <div style="width:1000px;margin-top:50px;margin-bottom:0px;background-color:#FFF;">
-                                        <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
-                                        <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
-                                        <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
-                                        <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
-                                    </div>
-                                    <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
-
-                    page_footer = """\
-                            <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                                <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page """ + str(num_page) + """/tot_page</span></div>
-                            </div>"""
-
-                    # page_footer = page_footer + '</div>'
-
-                    form_cont += page_header + page_body + page_footer
+                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
 
                     num_page = num_page + 1
 
-                    h_now = 0
-
-                    # new group of res for next page
-                    group_res_div = ''
-                    res_div = ''
-
+                    # REINIT for next page
+                    h_now  = 0
                     h_page = h_max - h_footer - h_padding
 
-                    # Start div of an analysis
-                    res_div = '<div>'
+                    result_div = ''
 
-                    if res_fam:
-                        res_div = res_div + '<span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">' + res_fam + '</span>'
-                        h_now += h_fam
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG fam=' + res_fam + ' | h_now=' + str(h_now))
+            # --- END OF LOOP RESULT ---
 
-                    if res_name:
-                        res_div = res_div + '<span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">' + res_name + '</span>'
-                        h_now += h_ana
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG ana=' + res_name + ' | h_now=' + str(h_now))
-
-            # END OF LOOP RESULT
-
-            if res_div:
-                group_res_div = group_res_div + res_div
-
-                report_div = report_div + group_res_div
-
+            if result_div:
                 # comment and who make validation
                 res_valid = Result.getResultValidation(id_res_p)
 
@@ -774,61 +752,10 @@ class Pdf:
                 else:
                     comm_div = ''
 
-                report_div = report_div + comm_div + """\
-                        <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>
-                        </div>"""
+                result_div = result_div + comm_div + """\
+                        <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
 
-            report_div = report_div + '</div>'
-
-            if num_page == 1:
-                if not report_status:
-                    report_status = 'COMPLET'  # TODO how determinate partial or full report ?
-
-                report_status = '<span style="float:right;padding:2px;border:2px double #000;">' + report_status + '</span>'
-
-                page_header = Pdf.getPdfHeader(full_header, report_status)
-
-                report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
-                              'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
-                              'background-color:#FFF;">' + group_res_div)
-
-                page_body = """\
-                    <div style="width:1000px;">""" + rec_div + addr_div + """</div>
-                    <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
-                    """ + rec_comm + """
-                    <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
-                        <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
-                        <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
-                        <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
-                        <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
-                    </div>
-                    <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
-            else:
-                page_header = ''
-                page_body   = ''
-
-                report_div = ('<div style="width:980px;max-height:' + str(h_page) + 'px;' +
-                              'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
-                              'background-color:#FFF;">' + group_res_div)
-
-                page_body += """\
-                            <div style="width:1000px;margin-top:100px;">&nbsp;</div>
-                            <div style="width:1000px;margin-top:50px;margin-bottom:0px;background-color:#FFF;">
-                                <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
-                                <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
-                                <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
-                                <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
-                            </div>
-                            <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
-
-            page_footer = """\
-                    <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                        <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page """ + str(num_page) + """/tot_page</span></div>
-                    </div>"""
-
-            page_footer = '</div>' + page_footer
-
-            form_cont += page_header + page_body + page_footer
+                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
 
             form_cont = form_cont.replace("tot_page", str(num_page))
 
@@ -845,6 +772,52 @@ class Pdf:
         pdfkit.from_string(form_cont, path + filename, options=options)
 
         return True
+
+    @staticmethod
+    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header):
+        report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
+                      'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
+                      'background-color:#FFF;">')
+
+        report_div = report_div + result_div + '</div>'  # closing report_div
+
+        if num_page == 1:
+            report_status = '<span style="float:right;padding:2px;border:2px double #000;">' + report_status + '</span>'
+
+            page_header = Pdf.getPdfHeader(full_header, report_status)
+
+            page_body = """\
+            <div style="width:1000px;">""" + rec_div + addr_div + """</div>
+            <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
+            """ + rec_comm + """
+            <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
+                <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
+                <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
+                <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
+                <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
+            </div>
+            <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
+        else:
+            page_header = ''
+            page_body   = ''
+            page_body += """\
+                    <div style="width:1000px;margin-top:100px;">&nbsp;</div>
+                    <div style="width:1000px;margin-top:50px;margin-bottom:0px;background-color:#FFF;">
+                        <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
+                        <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
+                        <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
+                        <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
+                    </div>
+                    <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
+
+        page_footer = """\
+            <div style="width:1000px;margin-top:5px;background-color:#FFF;">
+                <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page """ + str(num_page) + """/tot_page</span></div>
+            </div>"""
+
+        form_cont += page_header + page_body + page_footer
+
+        return form_cont
 
     @staticmethod
     def getPdfReportGeneric(html_part, filename=''):

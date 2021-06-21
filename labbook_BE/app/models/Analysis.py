@@ -19,7 +19,7 @@ class Analysis:
         cond = 'ref.actif = 4'
 
         if type == "A":
-            cond += ' and ref.cote_unite != "PB"'
+            cond += ' and (ref.cote_unite != "PB" or ref.cote_unite is NULL)'
         elif type == "P":
             cond += ' and ref.cote_unite = "PB"'
 
@@ -29,11 +29,11 @@ class Analysis:
                     'ref.nom like "%' + word + '%" or '
                     'ref.abbr like "%' + word + '%") ')
 
-        req = 'select ref.id_data as id, CONCAT(ref.code, " ", COALESCE(ref.abbr, "")) as code, '\
-              'ref.nom as name,  COALESCE(dict.label, "") as label '\
-              'from sigl_05_data as ref '\
-              'left join sigl_dico_data as dict on dict.id_data=ref.famille '\
-              'where ' + cond + ' order by nom asc limit 1000'
+        req = ('select ref.id_data as id, CONCAT(ref.code, " ", COALESCE(ref.abbr, "")) as code, '
+               'ref.nom as name,  COALESCE(dict.label, "") as label '
+               'from sigl_05_data as ref '
+               'left join sigl_dico_data as dict on dict.id_data=ref.famille '
+               'where ' + cond + ' order by nom asc limit 1000')
 
         cursor.execute(req)
 
@@ -142,9 +142,9 @@ class Analysis:
     def getProductType(id_data):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
-              'from sigl_dico_data '\
-              'where id_data=%s'
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '
+               'from sigl_dico_data '
+               'where id_data=%s')
 
         cursor.execute(req, (id_data,))
 
@@ -155,7 +155,7 @@ class Analysis:
         cursor = DB.cursor()
 
         # Only analysis
-        if type_ana == 'O':
+        if type_ana == 'Y':
             cond = ' and (cote_unite is NULL or cote_unite != "PB")'
         # Only samples
         elif type_ana == 'N':
@@ -164,12 +164,13 @@ class Analysis:
         else:
             cond = ''
 
-        req = 'select req_ana.id_data as id_data, req_ana.id_owner as id_owner, req_ana.id_dos as id_dos, '\
-              'req_ana.ref_analyse as ref_analyse, req_ana.prix as prix, req_ana.paye as paye, req_ana.urgent as urgent, '\
-              'req_ana.demande as demande, ref_ana.code as code, ref_ana.nom as nom, ref_ana.cote_unite as cote_unite, ref_ana.cote_valeur as cote_valeur '\
-              'from sigl_04_data as req_ana '\
-              'LEFT JOIN sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '\
-              'where id_dos=%s' + cond
+        req = ('select req_ana.id_data as id_data, req_ana.id_owner as id_owner, req_ana.id_dos as id_dos, '
+               'req_ana.ref_analyse as ref_analyse, req_ana.prix as prix, req_ana.paye as paye, req_ana.urgent as urgent, '
+               'req_ana.demande as demande, ref_ana.code as code, ref_ana.nom as nom, ref_ana.cote_unite as cote_unite, '
+               'ref_ana.cote_valeur as cote_valeur '
+               'from sigl_04_data as req_ana '
+               'left join sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '
+               'where id_dos=%s' + cond)
 
         cursor.execute(req, (id_rec,))
 

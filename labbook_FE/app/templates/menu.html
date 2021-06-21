@@ -27,7 +27,7 @@
                     {% endif %}
                     {% if session['user_role'] == 'B' or 
                           session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-products">{{ _("Etat des prélèvements en cours") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-samples">{{ _("Etat des prélèvements en cours") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' or session['user_role'] == 'SA' or
                           session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
@@ -106,6 +106,7 @@
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-dhis2">{{ _("Configuration DHIS2") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-epidemio">{{ _("Configuration Epidemio") }}</a>
                     {% endif %}
                   </div>
                 </li>

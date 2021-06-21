@@ -1,0 +1,157 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Etat des prélèvements en cours") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Etat des prélèvements en cours") }}</span></h2>
+            <form autocomplete="off">
+                <!-- List samples -->
+                <div class="panel panel-1 panel-primary">
+                    <div class="panel-body">
+                        <div class="row mt-3">
+                            <div>
+                                <span>{{ _("Nombre total de lignes") }} :</span>
+                                <span id="listing_prod_total">{% if not args %}0{% endif %}</span>
+                            </div>
+                            <div class="table-responsive" id="listing_prod">
+                                <div style="">
+                                    <span><a class="link" id="first_prod" onclick="display_sample(1);">{{ _("Premier") }}</a></span>
+                                    <span><a class="link" id="prev_prod" onclick="display_sample(-1000);">{{ _("Précédent") }}</a></span>
+                                    <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                                    <span><a class="link" id="next_prod" onclick="display_sample(1000);">{{ _("Suivant") }}</a></span>
+                                    <span><a class="link" id="last_prod" onclick="display_sample(p_max);">{{ _("Dernier") }}</a></span>
+                                </div>
+                                <table class="table table-striped table-hover col-12 table-lbk">
+                                    <colgroup><col><col><col><col><col><col><col><col></colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" hidden>
+                                                <span>id_data</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("N° dossier") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Date dossier") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Patient") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Sang") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Selles") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Urine") }}</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>{{ _("Autre") }}</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_samples" style=""></tbody>
+                                </table>
+                                <div style="">
+                                    <span><a class="link" id="first_prod" onclick="display_sample(1);">{{ _("Premier") }}</a></span>
+                                    <span><a class="link" id="prev_prod" onclick="display_sample(-1000);">{{ _("Précédent") }}</a></span>
+                                    <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                                    <span><a class="link" id="next_prod" onclick="display_sample(1000);">{{ _("Suivant") }}</a></span>
+                                    <span><a class="link" id="last_prod" onclick="display_sample(p_max);">{{ _("Dernier") }}</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_samples = {{ args|safe }} ;
+var p_step       = 20 ;
+var p_cur        = 1 ;
+var p_max        = Math.ceil( data_samples.length / p_step ) ;
+
+function display_sample( num_page )
+{
+let res = ''
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+    $("#tbody_samples").empty() ;
+
+{% if not args %}
+res = '<tr>' +
+      '<td colspan="8">' +
+      '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
+{% else %}
+let data_len = data_samples.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = '' ;
+
+$("#listing_prod_total").html( data_len ) ;
+
+    for( i = i_start; i < i_stop; i++ )
+    {
+    let lastname   = "" ;
+    let maidenname = "" ;
+    let firstname  = "" ;
+
+        if (lastname != "" || lastname != null)
+        lastname = data_samples[i].lastname ;
+
+        if (maidenname != "" || maidenname != null)
+        maidenname = data_samples[i].maidenname ;
+
+        if (firstname != "" || firstname != null)
+        firstname = data_samples[i].firstname ;
+
+    res += '<tr><td hidden><div>' + data_samples[i].id_rec + '</div></td>' +
+           '<td><div class="text-center"><span class="rec-num">' + data_samples[i].rec_num + '</span></div></td>' +
+           '<td><div class="text-center">' + data_samples[i].rec_date + '</div></td>' +
+           '<td><div class="text-center">' + pat_ident(lastname, maidenname, firstname) + '</div></td>' +
+           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_blood, data_samples[i].stat_blood) + '</div></td>' +
+           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_stool, data_samples[i].stat_stool) + '</div></td>' +
+           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_urine, data_samples[i].stat_urine) + '</div></td>' +
+           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_other, data_samples[i].stat_other) + '</div></td></tr>' ;
+    }
+{% endif %}
+
+    $("#tbody_samples").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
+}
+
+{% include 'pat_ident.js' %}
+
+{% include 'stat_sample.js' %}
+
+$( document ).ready( function()
+{
+display_sample( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

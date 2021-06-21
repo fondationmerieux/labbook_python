@@ -261,3 +261,43 @@ class Result:
         except mysql.connector.Error as e:
             Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getResultRecordForReport(id_rec):
+        cursor = DB.cursor()
+
+        req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
+               'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
+               'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
+               'rec.date_prescription as prescr_date, rec.statut as rec_stat, '
+               'req.id_owner as id_owner, rec.id_patient as id_pat, link.position as var_pos '
+               'from sigl_04_data as req '
+               'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
+               'left join sigl_dico_data as fam on fam.id_data = ref.famille '
+               'inner join sigl_09_data as res on req.id_data = res.id_analyse '
+               'inner join sigl_07_data as var on var.id_data = res.ref_variable '
+               'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
+               'and ref.id_data = link.id_refanalyse '
+               'where req.id_dos=%s and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
+               'order by ana_fam asc, ana_name asc, id_req_ana asc, var_pos asc')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def countResValidate(id_req_ana):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_vld '
+               'from sigl_04_data as req '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'and (cote_unite is NULL or cote_unite != "PB") '
+               'inner join sigl_09_data as res on res.id_analyse = req.id_data '
+               'inner join sigl_10_data as vld on vld.id_resultat = res.id_data and vld.type_validation=252 '
+               'where req.id_data=%s')
+
+        cursor.execute(req, (id_req_ana,))
+
+        return cursor.fetchone()

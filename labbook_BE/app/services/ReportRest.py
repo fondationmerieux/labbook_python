@@ -1,4 +1,5 @@
 import logging
+import configparser
 
 from datetime import datetime
 from flask import request
@@ -7,8 +8,131 @@ from flask_restful import Resource
 from app.models.General import *
 from app.models.Logs import Logs
 from app.models.Report import Report
+from app.models.Various import Various
 
 
+class ReportEpidemio(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : ReportEpidemio ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        data = []
+
+        # Read epidemio.ini
+        import os
+
+        config = configparser.ConfigParser()
+        config.read(os.path.join(Constants.cst_epidemio, "epidemio.ini"), encoding='utf-8')
+
+        nb_disease = int(config.get('SETTINGS', 'nb_disease'))
+
+        if not config or nb_disease < 1:
+            self.log.error(Logs.fileline() + ' : TRACE epidemio settings not found')
+
+        # Loop on disease
+        for d in range(nb_disease):
+            x = str(d + 1)
+
+            disease = {}
+
+            disease['disease'] = config.get('DISEASE_' + x, 'disease')
+
+            # Get label for sample_type
+            dict_sample = Various.getDicoById(config.get('DISEASE_' + x, 'sample_type'))
+
+            if dict_sample:
+                disease['sample'] = dict_sample['label']
+            else:
+                disease['sample'] = 'UNKNOWN'
+
+            # self.log.error(Logs.fileline() + ' : DEBUG ##########################')
+            # self.log.error(Logs.fileline() + ' : DEBUG disease=' + disease['disease'])
+            # self.log.error(Logs.fileline() + ' : DEBUG sample=' + disease['sample'])
+
+            nb_res = int(config.get('DISEASE_' + x, 'nb_res'))
+
+            disease['details'] = []
+
+            id_prod = 0
+            l_id_var = []
+            # Loop on result to calculate
+            for r in range(nb_res):
+                y = str(r + 1)
+                details = {}
+
+                details['res_label'] = config.get('DISEASE_' + x, 'res_label_' + y)
+
+                # self.log.error(Logs.fileline() + ' : DEBUG res_label=' + details['res_label'])
+
+                formula = config.get('DISEASE_' + x, 'formula_' + y)
+
+                # self.log.error(Logs.fileline() + ' : DEBUG formula=' + formula)
+
+                if not formula:
+                    details['res_type'] = 'T'  # Title
+                elif formula == 'N/A':
+                    formula = ''
+                    details['res_type']  = 'R'
+                    details['res_value'] = 'N/A'
+                else:
+                    details['res_type'] = 'R'  # Result
+
+                    id_prod = config.get('DISEASE_' + x, 'sample_type_' + y)
+
+                    # Parse formula for result request
+                    req_part = ''
+
+                    req_part = Report.ParseFormula(formula, id_prod)
+
+                    # self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
+                    result = Report.getResultEpidemio(inner_req=req_part['inner'],
+                                                      end_req=req_part['end'],
+                                                      date_beg=args['date_beg'],
+                                                      date_end=args['date_end'])
+
+                    if result:
+                        details['res_value'] = result['value']
+
+                    # Parse id_var for NbResult request
+                    id_var = 0
+
+                    idx_beg = formula.find("$_")
+
+                    if idx_beg >= 0:
+                        idx_end = formula.find(" ", idx_beg)
+                        idx_beg = idx_beg + 2
+                        if idx_end > idx_beg:
+                            id_var = int(formula[idx_beg:idx_end])
+
+                    if id_var > 0:
+                        l_id_var.append(id_var)
+
+                disease['details'].append(details)
+
+            l_id_var  = list(set(l_id_var))
+            disease['total_received'] = 0
+
+            received = Report.getNbResultRecevied(l_id_var, id_prod, args['date_beg'], args['date_end'])
+            analyzed = Report.getNbResultAnalyzed(l_id_var, id_prod, args['date_beg'], args['date_end'])
+
+            if received:
+                disease['total_received'] = received['total']
+
+            if analyzed:
+                disease['total_analyzed'] = analyzed['total']
+
+            data.append(disease)
+
+        self.log.info(Logs.fileline() + ' : TRACE ReportEpidemio')
+        return compose_ret(data, Constants.cst_content_type_json)
+
+
+"""
 class ReportEpidemio(Resource):
     log = logging.getLogger('log_services')
 
@@ -84,7 +208,7 @@ class ReportEpidemio(Resource):
                 disease['total_analyzed'] = analyzed['total']
 
         self.log.info(Logs.fileline() + ' : TRACE ReportEpidemio')
-        return compose_ret(data, Constants.cst_content_type_json)
+        return compose_ret(data, Constants.cst_content_type_json)"""
 
 
 class ReportActivity(Resource):
