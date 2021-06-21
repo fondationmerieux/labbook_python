@@ -12,7 +12,7 @@ from datetime import timedelta
 
 DEBUG                      = True
 SECRET_KEY                 = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'  # TODO initiate from gunicorn.sh
-SESSION_COOKIE_SECURE      = True
+# SESSION_COOKIE_SECURE      = True
 PERMANENT_SESSION_LIFETIME = timedelta(days=1)
 BABEL_DEFAULT_LOCALE       = 'fr_FR'
 TEMPLATES_AUTO_RELOAD      = True
