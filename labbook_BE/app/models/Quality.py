@@ -36,10 +36,10 @@ class Quality:
         elif period == 'month':
             cond = ' date > adddate(NOW(), INTERVAL -1 MONTH) '
 
-        # NOTE count with sigl_non_coformite_data too ?
+        # NOTE count with sigl_non_conformite_data too ?
         # Number of non-compliance
         req = 'select count(*) as nb_noncompliance '\
-              'from sigl_non_conf_data '\
+              'from sigl_non_conformite_data '\
               'where ' + cond
 
         cursor.execute(req)

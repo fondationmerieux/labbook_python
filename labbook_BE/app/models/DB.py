@@ -60,3 +60,20 @@ class DB:
         except Exception as e:
             DB.log.critical(Logs.fileline() + ' : open_cnx() error: %s %s', e.errno, e)
             raise DBException(repr(e))
+
+    @staticmethod
+    def insertDbStatus(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into database_status '
+                           '(dbs_date, dbs_stat) '
+                           'values '
+                           '(NOW(), %(stat)s)', params)
+
+            DB.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            DB.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0

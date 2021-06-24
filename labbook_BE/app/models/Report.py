@@ -261,7 +261,7 @@ class Report:
                             'inner join sigl_10_data as vld' + str(idx) +
                             ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-            if id_prod == 0:
+            if int(id_prod) == 0:
                 req['end'] = (' and vld' + str(idx) + '.type_validation=252 ')
             else:
                 req['end'] = (' and ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
@@ -416,7 +416,7 @@ class Report:
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-                        if id_prod == 0:
+                        if int(id_prod) == 0:
                             req['end'] = (req['end'] + ' ' + word + ' vld' + str(idx) + '.type_validation=252 ')
                         else:
                             req['end'] = (req['end'] + ' ' + word + ' ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')

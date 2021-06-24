@@ -549,6 +549,8 @@ class Pdf:
         # ANALYZES PART
         l_res = Result.getResultRecordForReport(id_rec)
 
+        Pdf.log.error(Logs.fileline() + ' : DEBUG l_res=' + str(l_res))
+
         id_req_ana_p = 0
         id_res_p = 0
         id_user_valid_p = 0
@@ -622,7 +624,7 @@ class Pdf:
 
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
 
@@ -645,7 +647,7 @@ class Pdf:
 
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
 
@@ -719,7 +721,7 @@ class Pdf:
 
                 # AFTER a new line CUT PAGE OR NOT
                 if h_now > (h_max - h_res):
-                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
+                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
                     num_page = num_page + 1
 
@@ -755,7 +757,7 @@ class Pdf:
                 result_div = result_div + comm_div + """\
                         <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
 
-                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header)
+                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
             form_cont = form_cont.replace("tot_page", str(num_page))
 
@@ -774,7 +776,7 @@ class Pdf:
         return True
 
     @staticmethod
-    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header):
+    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y):
         report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
                       'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
                       'background-color:#FFF;">')
@@ -810,9 +812,12 @@ class Pdf:
                     </div>
                     <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
 
+        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
+
         page_footer = """\
             <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                <div><span class="ft_footer" style="width:970px;display:inline-block;text-align:right;">Page """ + str(num_page) + """/tot_page</span></div>
+                <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Dossier """ + str(num_rec_y) + """, édité le """ + str(date_now) + """</span>
+                <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page """ + str(num_page) + """/tot_page</span></div>
             </div>"""
 
         form_cont += page_header + page_body + page_footer

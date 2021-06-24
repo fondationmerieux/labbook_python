@@ -3,6 +3,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+- Use code_var instead of id_data for sigl_07_data (variable of analysis)
+- clean async process for import analysis repository
+
+## [3.0.10] - 2021-06-24
+### Added
+- new type of sample : Pus
+
+### Fixed
+- import analysis repository
+- footer of PDF report
+- search variable in details of analysis
+
 ## [3.0.9] - 2021-06-21
 ### Added
 - Configurable epidemio page

@@ -194,9 +194,9 @@ class Patient:
             # check if code not already exist in DB
             cursor = DB.cursor()
 
-            req = 'select code '\
-                  'from sigl_03_data '\
-                  'where code=%s'
+            req = ('select code '
+                   'from sigl_03_data '
+                   'where code=%s')
 
             cursor.execute(req, (code,))
 

@@ -9,6 +9,7 @@ from app.models.General import compose_ret
 from app.models.Constants import *
 from app.models.Analysis import *
 from app.models.User import *
+from app.models.DB import *
 from app.models.Logs import Logs
 
 
@@ -842,7 +843,10 @@ class AnalysisImport(Resource):
 
         if not l_rows or len(l_rows) < 2:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR file empty')
+            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR file empty')
             return compose_ret('', Constants.cst_content_type_json, 500)
+
+        head_line = l_rows[0]
 
         # remove headers line
         l_rows.pop(0)
@@ -850,18 +854,31 @@ class AnalysisImport(Resource):
         # check version
         if l_rows[0][34] != 'v1':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
+            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
-        # check number of column (dont forget version columns)
-        if len(l_rows[0]) != 35:
-            self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong number of column')
-            return compose_ret('', Constants.cst_content_type_json, 409)
+        # check name of column
+        head_list = ['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'paillasse', 'cote_unite', 'cote_valeur',
+                     'commentaire', 'produit_biologique', 'type_prel', 'type_analyse', 'actif', 'ana_whonet', 'id_link',
+                     'id_refanalyse', 'id_refvariable', 'position', 'num_var', 'obligatoire', 'id_var', 'libelle',
+                     'description', 'unite', 'normal_min', 'normal_max', 'var_comm', 'type_resultat', 'unite2',
+                     'formule_unite2', 'formule', 'accuracy', 'precision2', 'version', 'code_var', 'var_whonet']
+
+        i = 0
+        for head in head_line:
+            if head != head_list[i]:
+                self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong column or order : ' + str(head))
+                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong column or order')
+                return compose_ret('', Constants.cst_content_type_json, 409)
+            i = i + 1
 
         # UPDATE MODE
         if type == 'U':
             code_prev = ''
 
+            i = 1
             for l in l_rows:
+                i = i + 1
                 if l:
                     id_ana             = l[0]
                     id_owner           = l[1]
@@ -907,6 +924,7 @@ class AnalysisImport(Resource):
 
                     if ret == -1:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR sql')
+                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify code analysis code=' + str(code))
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
                     # same analysis
@@ -929,7 +947,8 @@ class AnalysisImport(Resource):
                                                           whonet=ana_whonet)
 
                             if ret is False:
-                                self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update analysis')
+                                self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update analysis code: ' + str(code) + ' | csv_line=' + str(i))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update analysis code: ' + str(code))
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             code_prev = code
@@ -957,7 +976,8 @@ class AnalysisImport(Resource):
                                                                  accu2=precision2)
 
                                 if ret is False:
-                                    self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update var analysis')
+                                    self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update var analysis code: ' + str(code) + ' | csv_line=' + str(i))
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update var analysis code: ' + str(code))
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
                                 # UPDATE LINK
@@ -971,14 +991,19 @@ class AnalysisImport(Resource):
                                                                  var_whonet=var_whonet)
 
                                 if not ret:
-                                    self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update link var to analysis')
+                                    self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update link var to analysis code: ' + str(code))
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         # ADD MODE
         elif type == 'A':
             code_prev = ''
 
+            i = 1
             for l in l_rows:
+                i = i + 1
+                self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
+                self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(l))
                 if l:
                     id_ana             = l[0]
                     id_owner           = l[1]
@@ -1016,24 +1041,29 @@ class AnalysisImport(Resource):
                     formule            = l[31]
                     accuracy           = l[32]
                     precision2         = l[33]
-                    code_var           = l[34]
-                    var_whonet         = l[35]
+
+                    code_var           = l[35]
+                    var_whonet         = l[36]
 
                     ret = Analysis.exist(code)
 
                     if ret == -1:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR sql')
+                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify code analysis code=' + str(code))
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
                     # New analysis code or same analysis after insert
                     if not ret or code == code_prev:
+                        self.log.info(Logs.fileline() + ' : DEBUG IMPORT not ret or code == code_prev')
                         # different analysis
                         if code != code_prev:
+                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT code != code_prev')
                             # check if id_data is available
                             ret = Analysis.freeIdAna(id_ana)
 
                             if ret == -1:
                                 self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR sql')
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify id analysis=' + str(id_ana))
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             if ret:
@@ -1041,6 +1071,7 @@ class AnalysisImport(Resource):
                             else:
                                 id_data = 0
 
+                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert analysis code=' + code)
                             # insert analysis
                             ret = Analysis.insertAnalysis(id_owner=id_owner,
                                                           code=code,
@@ -1057,57 +1088,71 @@ class AnalysisImport(Resource):
                                                           id_data=id_data)
 
                             if ret <= 0:
-                                self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR insert analysis')
+                                self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR insert analysis code: ' + str(code) + ' | csv_line=' + str(i))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert analysis code: ' + str(code))
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             id_ana = ret
 
                             code_prev = code
 
-                        # get same variable from these criteria
-                        var = Analysis.getAnalysisVar(libelle, type_resultat, unite, accuracy, normal_min, normal_max)
+                        if id_link and int(id_link) > 0:
+                            # get same variable from these criteria
+                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT criteria code_var=' + str(code_var))
+                            var = Analysis.getAnalysisVarExist(libelle, type_resultat, unite, normal_min, normal_max, code_var)
+                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT criteria var=' + str(var))
 
-                        if var:
-                            id_var = var['id_data']
-                        else:
-                            # INSERT UNKNOW VAR
-                            ret = Analysis.insertAnalysisVar(id_owner=id_owner,
-                                                             label=libelle,
-                                                             code_var=code_var,
-                                                             descr=description,
-                                                             type_res=type_resultat,
-                                                             var_min=normal_min,
-                                                             var_max=normal_max,
-                                                             comment=var_comm,
-                                                             formula=formule,
-                                                             unit=unite,
-                                                             accu=accuracy,
-                                                             formula2=formule_unite2,
-                                                             unit2=unite2,
-                                                             accu2=precision2)
+                            if var:
+                                self.log.info(Logs.fileline() + ' : DEBUG IMPORT variable exist id_data=' + str(var['id_data']))
+                                id_var = var['id_data']
+                            else:
+                                self.log.info(Logs.fileline() + ' : DEBUG IMPORT variable NOT exist')
+                                self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert VAR code_var=' + code_var)
+                                # INSERT UNKNOW VAR
+                                ret = Analysis.insertAnalysisVar(id_owner=id_owner,
+                                                                 label=libelle,
+                                                                 code_var=code_var,
+                                                                 descr=description,
+                                                                 type_res=type_resultat,
+                                                                 var_min=normal_min,
+                                                                 var_max=normal_max,
+                                                                 comment=var_comm,
+                                                                 formula=formule,
+                                                                 unit=unite,
+                                                                 accu=accuracy,
+                                                                 formula2=formule_unite2,
+                                                                 unit2=unite2,
+                                                                 accu2=precision2)
 
-                            if ret is False:
-                                self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert var analysis')
+                                if ret <= 0:
+                                    self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert var analysis code: ' + str(code) + ' | csv_line=' + str(i))
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert var analysis code: ' + str(code))
+                                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                                id_var = ret
+
+                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT id_var=' + str(id_var))
+                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert LINK')
+
+                            # INSERT NEW LINK
+                            ret = Analysis.insertRefVariable(id_owner=id_owner,
+                                                             id_refana=id_ana,
+                                                             id_refvar=id_var,
+                                                             var_pos=position,
+                                                             var_num=num_var,
+                                                             oblig=obligatoire,
+                                                             var_whonet=var_whonet)
+
+                            if ret <= 0:
+                                self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert link var analysis code: ' + str(code))
                                 return compose_ret('', Constants.cst_content_type_json, 500)
-
-                            id_var = ret
-
-                        # INSERT NEW LINK
-                        ret = Analysis.insertRefVariable(id_owner=id_owner,
-                                                         id_refana=id_ana,
-                                                         id_refvar=id_var,
-                                                         var_pos=position,
-                                                         var_num=num_var,
-                                                         oblig=obligatoire,
-                                                         var_whonet=var_whonet)
-
-                        if ret <= 0:
-                            self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert link var to analysis')
-                            return compose_ret('', Constants.cst_content_type_json, 500)
 
         else:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong type')
+            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong type')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisImport')
+        DB.insertDbStatus(stat='OK;AnalysisImport ended OK')
         return compose_ret('', Constants.cst_content_type_json, 200)

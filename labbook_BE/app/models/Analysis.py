@@ -79,7 +79,7 @@ class Analysis:
             cursor = DB.cursor()
 
             # try to insert to a specidfic id_data
-            if 'id_data' in params and params['id_data'] > 0:
+            if 'id_data' in params and int(params['id_data']) > 0:
                 lid_data = 'id_data, '
                 vid_data = str(params['id_data']) + ', '
             else:
@@ -217,7 +217,7 @@ class Analysis:
         cursor = DB.cursor()
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
-               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, var_whonet, '
+               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var '
                'from sigl_07_data '
                'where id_data=%s')
@@ -227,17 +227,17 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
-    def getAnalysisVarExist(label, type_res, unit, var_min, var_max, accu):
+    def getAnalysisVarExist(label, type_res, unit, var_min, var_max, code_var):
         cursor = DB.cursor()
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var '
                'from sigl_07_data '
-               'where libelle=%s and type_resultat=%s and unite=%s and normal_min=%s and normal_max=%s and accuracy=%s '
-               'limit 1 order by id_data asc')
+               'where libelle=%s and type_resultat=%s and unite=%s and normal_min=%s and normal_max=%s and code_var=%s '
+               'order by id_data asc limit 1')
 
-        cursor.execute(req, (label, type_res, unit, var_min, var_max, accu,))
+        cursor.execute(req, (label, type_res, unit, var_min, var_max, code_var,))
 
         return cursor.fetchone()
 
@@ -307,9 +307,9 @@ class Analysis:
     def getRefVariable(id_ana):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet '\
-              'from sigl_05_07_data '\
-              'where id_refanalyse=%s'
+        req = ('select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet '
+               'from sigl_05_07_data '
+               'where id_refanalyse=%s')
 
         cursor.execute(req, (id_ana,))
 
@@ -368,10 +368,10 @@ class Analysis:
     def getLastAnalysisReqByRefAna(ref_ana):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande '\
-              'from sigl_04_data '\
-              'where ref_analyse=%s '\
-              'order by id_data desc limit 1'
+        req = ('select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande '
+               'from sigl_04_data '
+               'where ref_analyse=%s '
+               'order by id_data desc limit 1')
 
         cursor.execute(req, (ref_ana,))
 

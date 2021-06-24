@@ -116,6 +116,8 @@ var type = $("input:radio[name=type_import]:checked").val() ;
             $.ajax( 
             {
                 type: "GET",
+                async: false,
+                timeout: 9000000,
                 url: "{{ session['server_ext'] }}/services/analysis/import/" + filename + "/" + type +"/{{ session['user_id'] }}",
                 success: function(ret)
                 {

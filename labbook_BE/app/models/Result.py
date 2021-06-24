@@ -34,8 +34,6 @@ class Result:
         if args['valid_res'] and args['valid_res'] > 0:
             filter_cond += ' and res.id_data not in (select id_resultat from sigl_10_data where type_validation > 250 and res.id_data=id_resultat) '
 
-        # ref_ana, id_ana, id_dos, nom, famille, id_res, valeur, ref_var.*, num_dos_mois, num_dos_an,
-        # date_dos, date_prescr, stat, urgent, id_owner
         req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
                'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
@@ -95,16 +93,16 @@ class Result:
 
         date_today = datetime.strftime(date.today(), Constants.cst_isodate) + ' 00:00'
 
-        req = 'select res.valeur as valeur, vld.date_validation as date_valid '\
-              'from sigl_09_data as res '\
-              'inner join sigl_05_07_data as ref on ref.id_refvariable = res.ref_variable '\
-              'inner join sigl_04_data as dem on dem.ref_analyse = ref.id_refanalyse and dem.id_data = res.id_analyse '\
-              'inner join sigl_02_data as dos on dos.id_data = dem.id_dos '\
-              'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '\
-              'where dos.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '\
-              'and vld.type_validation=252 and vld.motif_annulation is NULL and res.id_data != %s '\
-              'and vld.date_validation < %s '\
-              'order by vld.date_validation desc limit 1'
+        req = ('select res.valeur as valeur, vld.date_validation as date_valid '
+               'from sigl_09_data as res '
+               'inner join sigl_05_07_data as ref on ref.id_refvariable = res.ref_variable '
+               'inner join sigl_04_data as dem on dem.ref_analyse = ref.id_refanalyse and dem.id_data = res.id_analyse '
+               'inner join sigl_02_data as dos on dos.id_data = dem.id_dos '
+               'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
+               'where dos.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '
+               'and vld.type_validation=252 and vld.motif_annulation is NULL and res.id_data != %s '
+               'and vld.date_validation < %s '
+               'order by vld.date_validation desc limit 1')
 
         cursor.execute(req, (id_pat, ref_ana, ref_var, id_res, date_today))
 
