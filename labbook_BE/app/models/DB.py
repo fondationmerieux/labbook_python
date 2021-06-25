@@ -77,3 +77,13 @@ class DB:
         except mysql.connector.Error as e:
             DB.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def getLastStatus():
+        cursor = DB.cursor()
+
+        cursor.execute('select dbs_date, dbs_stat '
+                       'from database_status '
+                       'order by dbs_date desc limit 1')
+
+        return cursor.fetchone()

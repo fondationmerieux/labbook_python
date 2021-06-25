@@ -14,6 +14,9 @@
             <form>
                 <div class="row">
                     <div class="col-12 my-3">
+                        <span>{{ _("Statut de la dernière importation") }} : </span><span id="stat-imp"></span>
+                    </div>
+                    <div class="col-12 my-3">
                         <div class="form-group">
                             <div class="text-left upload-container">
                                 <div>
@@ -117,7 +120,7 @@ var type = $("input:radio[name=type_import]:checked").val() ;
             {
                 type: "GET",
                 async: false,
-                timeout: 9000000,
+                timeout: 6000000,
                 url: "{{ session['server_ext'] }}/services/analysis/import/" + filename + "/" + type +"/{{ session['user_id'] }}",
                 success: function(ret)
                 {
@@ -131,7 +134,7 @@ var type = $("input:radio[name=type_import]:checked").val() ;
                     $("#dial-wait").modal("hide") ;
 
                 console.log("ERROR import analysis") ;
-                alert("{{ _("Erreur lors du traitement des données") }}") ;
+                alert("{{ _("Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut") }}") ;
                 }
             } ) ;
         } ) ;
@@ -140,9 +143,49 @@ var type = $("input:radio[name=type_import]:checked").val() ;
     return false ;
 }
 
+function check_stat_db()
+{
+    $.ajax( 
+    {
+        type: "GET",
+        url: "/services/db/stat/last",
+        success: function(ret)
+        {
+        data = ret.split(";") ;
+
+            if ( data.length > 0 )
+            {
+            statut = data[0] ;
+
+                if (data[1] == "ERR")
+                {
+                statut = statut + ' ERROR : ' + data[2] ;
+                }
+                else if (data[1] == "OK")
+                statut = statut + ' OK' ;
+
+                $('#stat-imp').text( statut ) ;
+            }
+            else
+                $('#stat-imp').text("{{ _("Aucun statut") }}") ;
+
+        },
+        error: function(data_ana)
+        {
+        console.log("ERROR GET db last stat");
+        alert("{{ _("Une erreur est survenue lors de la vérification du statut de la base de données") }}") ;
+        }
+    } ) ;
+}
+
 function return_back()
 {
 window.history.back() ;
 }
+
+$( document ).ready( function()
+{
+    check_stat_db() ;
+} ) ;
 </script>
 {% endblock %}

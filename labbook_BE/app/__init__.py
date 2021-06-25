@@ -25,6 +25,7 @@ from app.models.Logs import Logs
 from app.services.GeneralRest import *
 from app.services.UserRest import *
 from app.services.AnalysisRest import *
+from app.services.DbRest import *
 from app.services.ExportRest import *
 from app.services.ProductRest import *
 from app.services.DoctorRest import *
@@ -128,6 +129,7 @@ api.add_resource(AnalysisVarDet,      '/services/analysis/variable/det/<int:id_v
 api.add_resource(ConformityList,      '/services/quality/nonconformity/list')
 api.add_resource(ConformityDet,       '/services/quality/nonconformity/det/<int:id_item>')
 api.add_resource(ConformityExport,    '/services/quality/nonconformity/export')
+api.add_resource(DbLastStat,          '/services/db/stat/last')
 api.add_resource(DefaultValue,        '/services/default/val/<string:name>', '/services/default/name/<string:name>/val/<string:value>')
 api.add_resource(DicoById,            '/services/dico/id/<int:id_data>')
 api.add_resource(DictDet,             '/services/dict/det/<string:dict_name>')
