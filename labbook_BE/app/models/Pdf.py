@@ -792,7 +792,7 @@ class Pdf:
         report_div = report_div + result_div + '</div>'  # closing report_div
 
         if num_page == 1:
-            report_status = '<span style="max-height:60px;float:right;padding:2px;border:2px double #000;">' + report_status + '</span>'
+            report_status = '<span style="max-height:60px;padding:2px;border:2px double #000;">' + report_status + '</span>'
 
             page_header = Pdf.getPdfHeader(full_header, report_status)
 
@@ -1066,7 +1066,7 @@ class Pdf:
                         <div>""" + phone + fax + email + """</div>
                     </div>
                 </div>
-                <div style="width:1000px;overflow:auto;margin-bottom:5px;">""" + report_status + """</div>"""
+                <div style="width:1000px;text-align:right;margin-bottom:5px;">""" + report_status + """</div>"""
 
         return header
 
