@@ -419,7 +419,7 @@ class Pdf:
             full_comm = True
 
         # for header page
-        h_now += 140 + 30
+        h_now += 140 + 80
 
         # Get record details
         record = Record.getRecord(id_rec)
@@ -1065,10 +1065,8 @@ class Pdf:
                         <div><span class="ft_header">""" + str(head_addr['value']) + """</span></div>
                         <div>""" + phone + fax + email + """</div>
                     </div>
-                    <div style="float:right;width:350px;">
-                        <div>""" + report_status + """</div>
-                    </div>
-                </div>"""
+                </div>
+                <div style="width:1000px;overflow:auto;margin-bottom:5px;">""" + report_status + """</div>"""
 
         return header
 
