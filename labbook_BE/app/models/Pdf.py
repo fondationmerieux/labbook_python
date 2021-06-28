@@ -1063,7 +1063,10 @@ class Pdf:
                         <div><span class="ft_lab_name">""" + str(head_name['value']) + """</span></div>
                         """ + extra_header + """
                         <div><span class="ft_header">""" + str(head_addr['value']) + """</span></div>
-                        <div>""" + phone + fax + email + report_status + """</div>
+                        <div>""" + phone + fax + email + """</div>
+                    </div>
+                    <div style="float:right;width:350px;">
+                        <div>""" + report_status + """</div>
                     </div>
                 </div>"""
 
