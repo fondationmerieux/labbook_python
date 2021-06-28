@@ -7,12 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.0.10 update] - 2021-06-28
+### Fixed
+- PDF Multipage report 
+
 ## [3.0.10] - 2021-06-24
 ### Added
 - new type of sample : Pus
 
 ### Fixed
 - import analysis repository
+- PDF Multipage report
 - footer of PDF report
 - search variable in details of analysis
 

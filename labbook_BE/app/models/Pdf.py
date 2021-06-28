@@ -2,6 +2,7 @@
 import logging
 import barcode
 import pdfkit
+import math
 
 from barcode.writer import ImageWriter
 from datetime import datetime
@@ -271,7 +272,7 @@ class Pdf:
 
         options = {'--encoding': 'utf-8',
                    'page-size': 'A4',
-                   'margin-top': '0.00mm',
+                   'margin-top': '12.00mm',
                    'margin-right': '0.00mm',
                    'margin-bottom': '0.00mm',
                    'margin-left': '0.00mm',
@@ -352,7 +353,7 @@ class Pdf:
 
         options = {'--encoding': 'utf-8',
                    'page-size': 'A4',
-                   'margin-top': '0.00mm',
+                   'margin-top': '12.00mm',
                    'margin-right': '0.00mm',
                    'margin-bottom': '0.00mm',
                    'margin-left': '0.00mm',
@@ -368,14 +369,15 @@ class Pdf:
 
         form_cont = ''
 
-        h_max  = 1340  # maximum page height in pixels
+        h_max  = 1400  # maximum page height in pixels
         h_now  = 0     # page height under construction
-        h_fam  = 35
-        h_name = 25
-        h_res  = 35
+        h_fam  = 36
+        h_name = 24
+        h_res  = 36
+        h_res2 = 24
 
-        h_padding = 90
-        h_footer  = 35
+        h_header = 30
+        h_footer  = 40
 
         num_page = 1
 
@@ -417,7 +419,7 @@ class Pdf:
             full_comm = True
 
         # for header page
-        h_now += 140 + 20
+        h_now += 140 + 30
 
         # Get record details
         record = Record.getRecord(id_rec)
@@ -533,7 +535,7 @@ class Pdf:
             addr_div += '</div>'
 
         # for details block
-        h_now += 100 + 20
+        h_now += 100 + 30
 
         # CLINICAL INFORMATION (= commentary in record)
         rec_comm = ''
@@ -544,18 +546,18 @@ class Pdf:
             rec_comm += '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>'
 
             # for comment block
-            h_now += 60 + 20
+            h_now += 60 + 25
 
         # ANALYZES PART
         l_res = Result.getResultRecordForReport(id_rec)
 
-        Pdf.log.error(Logs.fileline() + ' : DEBUG l_res=' + str(l_res))
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG l_res=' + str(l_res))
 
         id_req_ana_p = 0
         id_res_p = 0
         id_user_valid_p = 0
 
-        h_page = h_max - h_now - h_padding - h_footer
+        h_page = h_max - h_now - h_header - h_footer
 
         result_div = ''
 
@@ -630,7 +632,7 @@ class Pdf:
 
                         # REINIT for next page
                         h_now  = 0
-                        h_page = h_max - h_footer - h_padding
+                        h_page = h_max - h_footer - h_header
 
                         result_div = ''
 
@@ -653,7 +655,7 @@ class Pdf:
 
                         # REINIT for next page
                         h_now  = 0
-                        h_page = h_max - h_footer - h_padding
+                        h_page = h_max - h_footer - h_header
 
                         result_div = ''
 
@@ -713,8 +715,14 @@ class Pdf:
                 h_now += h_res
 
                 # IF libelle on 2 lines
-                if len(res['libelle']) > 45:
-                    h_now += h_res
+                if len(res['libelle']) > 45 or len(val) > 16 or len(prev) > 16:
+                    nb_lib  = math.ceil(len(res['libelle']) / 45)
+                    nb_val  = math.ceil(len(val) / 16)
+                    nb_prev = math.ceil(len(prev) / 16)
+
+                    nb_line = max(nb_lib, nb_val, nb_prev)
+
+                    h_now = h_now + nb_line * h_res2
 
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG res[libelle]=' + str(res['libelle']))
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG h_now=' + str(h_now) + ' | h_max - h_res=' + str(h_max - h_res) + '\n')
@@ -727,7 +735,7 @@ class Pdf:
 
                     # REINIT for next page
                     h_now  = 0
-                    h_page = h_max - h_footer - h_padding
+                    h_page = h_max - h_footer - h_header
 
                     result_div = ''
 
@@ -761,9 +769,9 @@ class Pdf:
 
             form_cont = form_cont.replace("tot_page", str(num_page))
 
-        options = {'--encoding': 'utf-8',
+        options = {'encoding': 'utf-8',
                    'page-size': 'A4',
-                   'margin-top': '0.00mm',
+                   'margin-top': '12.00mm',
                    'margin-right': '0.00mm',
                    'margin-bottom': '0.00mm',
                    'margin-left': '0.00mm',
@@ -773,7 +781,7 @@ class Pdf:
 
         pdfkit.from_string(form_cont, path + filename, options=options)
 
-        return True
+        return True 
 
     @staticmethod
     def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y):
@@ -803,8 +811,8 @@ class Pdf:
             page_header = ''
             page_body   = ''
             page_body += """\
-                    <div style="width:1000px;margin-top:100px;">&nbsp;</div>
-                    <div style="width:1000px;margin-top:50px;margin-bottom:0px;background-color:#FFF;">
+                    <div style="width:1000px;margin-top:40px;">&nbsp;</div>
+                    <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
                         <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
                         <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
                         <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
@@ -852,7 +860,7 @@ class Pdf:
 
         options = {'--encoding': 'utf-8',
                    'page-size': 'A4',
-                   'margin-top': '0mm',
+                   'margin-top': '12mm',
                    'margin-right': '0mm',
                    'margin-bottom': '0mm',
                    'margin-left': '0mm',
@@ -1014,7 +1022,7 @@ class Pdf:
                 font-style  : italic;
                 }
                 </style>
-                <div style='padding:50px;width:1000px;height:1410px;border:0px;font-family:arial;background-color:#FFF;color:black;font-size:20px;'>"""
+                <div style='padding-top:0px;padding-left:50px;padding-right:50px;padding-bottom:50px;width:1000px;height:1410px;border:0px;font-family:arial;background-color:#FFF;color:black;font-size:20px;'>"""
 
         head_logo = '<img src="' + Constants.cst_resource + 'logo.png" width="230px;" alt="">'
 
