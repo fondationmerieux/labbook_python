@@ -781,7 +781,7 @@ class Pdf:
 
         pdfkit.from_string(form_cont, path + filename, options=options)
 
-        return True 
+        return True
 
     @staticmethod
     def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y):
@@ -792,7 +792,7 @@ class Pdf:
         report_div = report_div + result_div + '</div>'  # closing report_div
 
         if num_page == 1:
-            report_status = '<span style="float:right;padding:2px;border:2px double #000;">' + report_status + '</span>'
+            report_status = '<span style="max-height:60px;float:right;padding:2px;border:2px double #000;">' + report_status + '</span>'
 
             page_header = Pdf.getPdfHeader(full_header, report_status)
 
