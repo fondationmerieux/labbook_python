@@ -369,7 +369,7 @@ class Pdf:
 
         form_cont = ''
 
-        h_max  = 1400  # maximum page height in pixels
+        h_max  = 1410  # maximum page height in pixels
         h_now  = 0     # page height under construction
         h_fam  = 36
         h_name = 24
@@ -377,7 +377,7 @@ class Pdf:
         h_res2 = 24
 
         h_header = 30
-        h_footer  = 40
+        h_footer  = 30
 
         num_page = 1
 
