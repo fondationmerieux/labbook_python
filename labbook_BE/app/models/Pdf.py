@@ -418,7 +418,7 @@ class Pdf:
         if pdfpref and pdfpref['commentaire'] == 1049:
             full_comm = True
 
-        # for header page
+        # FOR header page
         h_now += 140 + 80
 
         # Get record details
@@ -534,7 +534,7 @@ class Pdf:
 
             addr_div += '</div>'
 
-        # for details block
+        # FOR details record and patient block
         h_now += 100 + 30
 
         # CLINICAL INFORMATION (= commentary in record)
@@ -545,8 +545,10 @@ class Pdf:
             rec_comm += '<span class="ft_res_name">Renseignements cliniques</span><br />'
             rec_comm += '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>'
 
-            # for comment block
-            h_now += 60 + 25
+            nb_rc = math.ceil(len(record['rc']) / 134)
+
+            # FOR comment block
+            h_now += 60 + (25 * nb_rc)
 
         # ANALYZES PART
         l_res = Result.getResultRecordForReport(id_rec)
@@ -558,6 +560,8 @@ class Pdf:
         id_user_valid_p = 0
 
         h_page = h_max - h_now - h_header - h_footer
+
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG h_page=' + str(h_page))
 
         result_div = ''
 
@@ -594,11 +598,15 @@ class Pdf:
 
                             if full_comm:
                                 comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + str(res_comm) + '</span></div>'
+
+                                h_now += h_res2
                             else:
                                 comm_div = ''
 
                             result_div = result_div + comm_div + """\
                                     <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
+
+                            h_now += h_res2
                     # --- end of close previous analysis ---
 
                     id_req_ana_p = res['id_req_ana']
@@ -621,11 +629,13 @@ class Pdf:
                         # IF family title on 2 lines
                         if len(res_fam) > 70:
                             h_now += h_fam
+                            # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM on 2 lines h_now=' + str(h_now))
 
                         # Pdf.log.error(Logs.fileline() + ' : DEBUG FAMILY=' + res_fam + '\n==========')
 
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
                         form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
@@ -644,11 +654,13 @@ class Pdf:
                         # IF name title on 2 lines
                         if len(res['ana_name']) > 90:
                             h_now += h_name
+                            # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA on 2 lines h_now=' + str(h_now))
 
                         # Pdf.log.error(Logs.fileline() + ' : DEBUG NAME=' + res['ana_name'] + '\n---------')
 
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
                         form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
@@ -715,20 +727,22 @@ class Pdf:
                 h_now += h_res
 
                 # IF libelle on 2 lines
-                if len(res['libelle']) > 45 or len(val) > 16 or len(prev) > 16:
-                    nb_lib  = math.ceil(len(res['libelle']) / 45)
+                if len(res['libelle']) > 46 or len(val) > 16 or len(prev) > 32:
+                    nb_lib  = math.ceil(len(res['libelle']) / 46)
                     nb_val  = math.ceil(len(val) / 16)
-                    nb_prev = math.ceil(len(prev) / 16)
+                    nb_prev = math.ceil(len(prev) / 32)
 
                     nb_line = max(nb_lib, nb_val, nb_prev)
 
                     h_now = h_now + nb_line * h_res2
+                    # Pdf.log.error(Logs.fileline() + ' : DEBUG RES ' + res['libelle'] + ' on ' + str(nb_line) + ' lines h_now=' + str(h_now))
 
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG res[libelle]=' + str(res['libelle']))
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG h_now=' + str(h_now) + ' | h_max - h_res=' + str(h_max - h_res) + '\n')
 
                 # AFTER a new line CUT PAGE OR NOT
                 if h_now > (h_max - h_res):
+                    # Pdf.log.error(Logs.fileline() + ' : DEBUG RES h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
                     form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
 
                     num_page = num_page + 1
