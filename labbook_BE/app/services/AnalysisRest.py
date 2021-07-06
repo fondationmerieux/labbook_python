@@ -957,7 +957,7 @@ class AnalysisImport(Resource):
                         l_link = Analysis.getListVariable(id_ana)
 
                         for link in l_link:
-                            if link['id_data'] == id_refvariable:
+                            if int(link['id_data']) == int(id_refvariable):
                                 # UPDATE VAR
                                 ret = Analysis.updateAnalysisVar(id_data=id_var,
                                                                  id_owner=id_owner,

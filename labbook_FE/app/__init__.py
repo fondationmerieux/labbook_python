@@ -184,6 +184,7 @@ def get_user_data(login):
             session['user_name']      = json['username']
             session['user_firstname'] = json['firstname']
             session['user_lastname']  = json['lastname']
+            session['user_locale']    = json['locale']
             session['user_side_account'] = json['side_account']
             session.modified = True
 
@@ -269,6 +270,8 @@ def index():
         log.info(Logs.fileline() + ' : TRACE Labbook_FE get_init_var()')
         get_init_var()
         if session and 'labbook_BE_OK' in session and session['labbook_BE_OK']:
+            session['lang_chosen'] = False
+            session.modified = True
             log.info(Logs.fileline() + ' : TRACE Labbook_FE no current_page => Login')
             return render_template('login.html', rand=random.randint(0, 999))
         else:
@@ -304,6 +307,7 @@ def lang(lang='fr_FR'):
         session.modified = True
 
     session['lang']  = lang
+    session['lang_chosen'] = True
     session.modified = True
 
     return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
@@ -338,6 +342,21 @@ def homepage(login=''):
 
     get_user_data(login)
     get_software_settings()
+
+    if 'user_locale' in session and not session['lang_chosen']:
+        log.info(Logs.fileline() + ' : DEBUG user_locale=' + str(session['user_locale']))
+        if session['user_locale'] == 34:
+            session['lang']  = 'en_GB'
+            session.modified = True
+        elif session['user_locale'] == 35:
+            session['lang']  = 'fr_FR'
+            session.modified = True
+        elif session['user_locale'] == 75:
+            session['lang']  = 'en_US'
+            session.modified = True
+        else:
+            session['lang']  = 'fr_FR'
+            session.modified = True
 
     # Load pref_quality
     try:

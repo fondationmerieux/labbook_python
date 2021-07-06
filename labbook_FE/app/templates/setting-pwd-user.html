@@ -73,7 +73,7 @@ var pwd2     = $("#renew-pwd").val() ;
            data: param,
            success: function(data)
                {
-               window.history.back() ;
+               window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users" ;
                },
            error: function(data)
                {

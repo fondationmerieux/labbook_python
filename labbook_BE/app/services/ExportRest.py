@@ -281,13 +281,13 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['cat_age']:
-                    if d['cat_age'] == 1037:
+                    if int(d['cat_age']) == 1037:
                         data.append('Années')
-                    elif d['cat_age'] == 1036:
+                    elif int(d['cat_age']) == 1036:
                         data.append('Mois')
-                    elif d['cat_age'] == 1035:
+                    elif int(d['cat_age']) == 1035:
                         data.append('Semaines')
-                    elif d['cat_age'] == 1034:
+                    elif int(d['cat_age']) == 1034:
                         data.append('Jours')
                     else:
                         data.append('')

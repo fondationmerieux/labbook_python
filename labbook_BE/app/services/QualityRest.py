@@ -1616,7 +1616,9 @@ class StockExport(Resource):
                 else:
                     d['pru_nb_pack'] = 0
 
-                if d['prs_nb_pack']:
+                nb_supply = Quality.getSumStockSupply(d['prs_prd'])
+                if nb_supply:
+                    d['prs_nb_pack'] = nb_supply['total']
                     d['prs_nb_pack'] = float(d['prs_nb_pack']) - float(d['pru_nb_pack'])
                 else:
                     d['prs_nb_pack'] = 0

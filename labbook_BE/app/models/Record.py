@@ -244,9 +244,9 @@ class Record:
         cursor = DB.cursor()
 
         # Number of records to validate by a technician
-        req = 'select count(*) as nb_rec_tech '\
-              'from sigl_02_data '\
-              'where statut in (182,253)'
+        req = ('select count(*) as nb_rec_tech '
+               'from sigl_02_data '
+               'where statut in (182,253)')
 
         cursor.execute(req)
 
@@ -257,9 +257,9 @@ class Record:
         cursor = DB.cursor()
 
         # Number of records to validate by a biologist
-        req = 'select count(*) as nb_rec_bio '\
-              'from sigl_02_data '\
-              'where statut in (254,255)'
+        req = ('select count(*) as nb_rec_bio '
+               'from sigl_02_data '
+               'where statut in (254,255)')
 
         cursor.execute(req)
 
@@ -270,8 +270,8 @@ class Record:
         cursor = DB.cursor()
 
         # Number of records
-        req = 'select count(*) as nb_rec '\
-              'from sigl_02_data'
+        req = ('select count(*) as nb_rec '
+               'from sigl_02_data')
 
         cursor.execute(req)
 
@@ -282,11 +282,11 @@ class Record:
         cursor = DB.cursor()
 
         # Number of records validated today
-        req = 'select count(*) as nb_rec_today '\
-              'from sigl_02_data '\
-              'where statut=256 and num_dos_jour like "%s%"'
+        req = ('select count(*) as nb_rec_today '
+               'from sigl_02_data '
+               'where statut=256 and num_dos_jour like "' + str(num_today) + '%"')
 
-        cursor.execute(req, (num_today,))
+        cursor.execute(req)
 
         return cursor.fetchone()
 
@@ -296,9 +296,9 @@ class Record:
             # Get last number
             cursor = DB.cursor()
 
-            req = 'select num_fact '\
-                  'from sigl_02_data '\
-                  'order by num_fact desc limit 1'
+            req = ('select num_fact '
+                   'from sigl_02_data '
+                   'order by num_fact desc limit 1')
 
             cursor.execute(req)
 
@@ -312,9 +312,9 @@ class Record:
 
             cursor = DB.cursor()
 
-            req = 'update sigl_02_data '\
-                  'set num_fact=%s '\
-                  'where id_data=%s'
+            req = ('update sigl_02_data '
+                   'set num_fact=%s '
+                   'where id_data=%s')
 
             cursor.execute(req, (bill_num, id_rec,))
 

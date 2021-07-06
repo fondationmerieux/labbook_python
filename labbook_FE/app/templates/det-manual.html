@@ -280,7 +280,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
            upload_file(ref);
 
-           window.history.back() ;
+           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-manuals" ;
            },
        error: function(data)
            {

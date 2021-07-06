@@ -1363,7 +1363,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        data: param,
        success: function(data)
            {
-           window.history.back() ;
+           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-nonconformities" ;
            },
        error: function(data)
            {

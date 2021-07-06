@@ -510,7 +510,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            upload_file("EQBD", ref);  // Breakdown
            upload_file("EQPH", ref);  // Photo
 
-           window.history.back() ;
+           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-equipment" ;
            },
        error: function(data)
            {

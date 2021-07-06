@@ -950,7 +950,7 @@ var msg = "" ;
                        console.log("success save_ana") ;
                        tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
 
-                       window.history.back() ;
+                       window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes" ;
                        },
                    error: function(data)
                        {

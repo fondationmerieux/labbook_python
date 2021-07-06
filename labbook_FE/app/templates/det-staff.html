@@ -272,7 +272,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            upload_file("USTR", id_user) ;
            upload_file("USEV", id_user) ;
 
-           window.history.back() ;
+           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-staff" ;
            },
        error: function(data)
            {

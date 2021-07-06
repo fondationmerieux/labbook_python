@@ -713,6 +713,15 @@ $("#search_analysis").on("select2:select", function (e)
 {
 let id_ana = $(e.currentTarget).val() ;
 
+    for ( k in data_res )
+    {
+        if ( data_res[k].ref_ana == id_ana )
+        {
+        alert("{{ _("Analyse déjà présente !") }}") ;
+        return;
+        }
+    }
+
 list_id_ana.push( id_ana ) ;
 
 $("#div_add_analysis").show() ;

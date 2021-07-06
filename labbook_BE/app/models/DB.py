@@ -18,7 +18,7 @@ class DB:
             cursor = DB.open_cnx().cursor()
         else:
             if current_app.config['DB_TYPE'] == 'MYSQL':
-                DB.log.info(Logs.fileline() + ' : cursor() MYSQL')
+                # DB.log.info(Logs.fileline() + ' : cursor() MYSQL')
                 DB.open_cnx()
                 try:
                     cursor = DB.cnx.cursor(dictionary=True)

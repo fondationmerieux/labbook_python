@@ -442,7 +442,7 @@ class Quality:
             if 'prod_conserv' in args and args['prod_conserv'] > 0:
                 filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
 
-        req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, '
+        req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, '
                'dict1.label as type,  dict2.label as conserv, '
                'sup.fournisseur_nom as supplier, Min(prs_expir_date) as expir_date '
