@@ -667,10 +667,10 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('insert into product_supply '
-                           '(prs_date, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
+                           '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
                            'prs_rack, prs_batch_num, prs_buy_price) '
                            'values '
-                           '(NOW(), %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
+                           '(NOW(), %(prs_prd)s, %(prs_user)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
                            '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s)', params)
 
             Quality.log.info(Logs.fileline())
@@ -679,6 +679,24 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def updateStockSupply(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update product_supply '
+                           'set prs_user=%(prs_user)s, prs_prd=%(prs_prd)s, prs_nb_pack=%(prs_nb_pack)s, '
+                           'prs_receipt_date=%(prs_receipt_date)s, prs_expir_date=%(prs_expir_date)s, '
+                           'prs_rack=%(prs_rack)s, prs_batch_num=%(prs_batch_num)s, prs_buy_price=%(prs_buy_price)s '
+                           'where prs_ser=%(prs_ser)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def emptyStockSupply(prs_ser):

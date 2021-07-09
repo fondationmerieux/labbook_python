@@ -126,6 +126,7 @@ let id_item = $(e.currentTarget).val();
 function save_item()
 {
 var id_owner     = {{ session['user_id_group']|safe }} ;
+var id_user      = {{ session['user_id']|safe}} ;
 var prs_ser      = {{ args['prs_ser']|safe }} ;
 var prs_prd      = {% if args['prs_ser'] == 0 %}$("#search_product").val(){% else %}{{ args['stock_product']['prs_prd']|safe }}{% endif %} ;
 var prs_nb_pack  = $("#prs_nb_pack").val()      ;
@@ -134,7 +135,6 @@ var expir_date   = $("#prs_expir_date").val()   ;
 var rack         = $("#prs_rack").val()         ;
 var batch_num    = $("#prs_batch_num").val()    ;
 var buy_price    = $("#prs_buy_price").val()  * 100 ;
-var sell_price   = $("#prs_sell_price").val() * 100 ;
 
 var msg = "" ;
 
@@ -153,15 +153,18 @@ var msg = "" ;
     return false ;
     }
 
+    if (buy_price == "" || buy_price == null )
+    buy_price = 0 ;
+
 var param = '{ "id_owner":' + id_owner + ', ' +
+              '"prs_user":' + id_user + ', ' +
               '"prs_prd":' + prs_prd + ', ' +
               '"prs_nb_pack":' + prs_nb_pack + ', ' +
               '"prs_receipt_date":"' + receipt_date + '", ' +
               '"prs_expir_date":"' + expir_date + '", ' +
               '"prs_rack":"' + rack + '", ' +
               '"prs_batch_num":"' + batch_num + '", ' +
-              '"prs_buy_price":' + buy_price + ', ' +
-              '"prs_sell_price":' + sell_price + '}' ;
+              '"prs_buy_price":' + buy_price + '}' ;
 
     $.ajax( {
        type: "POST",

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-21 10:28+0200\n"
+"POT-Creation-Date: 2021-07-07 16:33+0200\n"
 "PO-Revision-Date: 2021-02-21 15:20+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_FR\n"
@@ -50,51 +50,51 @@ msgstr ""
 #: templates/administrative-record.html:39
 #: templates/administrative-record.html:578
 #: templates/biological-validation.html:40
-#: templates/biological-validation.html:710 templates/det-req-ext.html:51
+#: templates/biological-validation.html:719 templates/det-req-ext.html:51
 #: templates/det-req-int.html:54 templates/det-sample.html:37
-#: templates/enter-result.html:40 templates/enter-result.html:804
+#: templates/enter-result.html:40 templates/enter-result.html:813
 #: templates/technical-validation.html:40
-#: templates/technical-validation.html:539
+#: templates/technical-validation.html:548
 msgid "Né(e) le"
 msgstr ""
 
 #: templates/administrative-record.html:43
 #: templates/administrative-record.html:580
 #: templates/biological-validation.html:44
-#: templates/biological-validation.html:712 templates/det-sample.html:41
-#: templates/enter-result.html:44 templates/enter-result.html:806
+#: templates/biological-validation.html:721 templates/det-sample.html:41
+#: templates/enter-result.html:44 templates/enter-result.html:815
 #: templates/technical-validation.html:44
-#: templates/technical-validation.html:541
+#: templates/technical-validation.html:550
 msgid "années"
 msgstr ""
 
 #: templates/administrative-record.html:44
 #: templates/administrative-record.html:581
 #: templates/biological-validation.html:45
-#: templates/biological-validation.html:713 templates/det-sample.html:42
-#: templates/enter-result.html:45 templates/enter-result.html:807
+#: templates/biological-validation.html:722 templates/det-sample.html:42
+#: templates/enter-result.html:45 templates/enter-result.html:816
 #: templates/technical-validation.html:45
-#: templates/technical-validation.html:542
+#: templates/technical-validation.html:551
 msgid "mois"
 msgstr ""
 
 #: templates/administrative-record.html:45
 #: templates/administrative-record.html:582
 #: templates/biological-validation.html:46
-#: templates/biological-validation.html:714 templates/det-sample.html:43
-#: templates/enter-result.html:46 templates/enter-result.html:808
+#: templates/biological-validation.html:723 templates/det-sample.html:43
+#: templates/enter-result.html:46 templates/enter-result.html:817
 #: templates/technical-validation.html:46
-#: templates/technical-validation.html:543
+#: templates/technical-validation.html:552
 msgid "semaines"
 msgstr ""
 
 #: templates/administrative-record.html:46
 #: templates/administrative-record.html:583
 #: templates/biological-validation.html:47
-#: templates/biological-validation.html:715 templates/det-sample.html:44
-#: templates/enter-result.html:47 templates/enter-result.html:809
+#: templates/biological-validation.html:724 templates/det-sample.html:44
+#: templates/enter-result.html:47 templates/enter-result.html:818
 #: templates/technical-validation.html:47
-#: templates/technical-validation.html:544
+#: templates/technical-validation.html:553
 msgid "jours"
 msgstr ""
 
@@ -379,7 +379,7 @@ msgstr ""
 msgid "Fichier"
 msgstr ""
 
-#: templates/administrative-record.html:241 templates/analysis-import.html:31
+#: templates/administrative-record.html:241 templates/analysis-import.html:34
 #: templates/list-laboratory.html:59 templates/user-import.html:31
 msgid "Enregistrer le document"
 msgstr ""
@@ -449,7 +449,7 @@ msgstr ""
 msgid "Une erreur est survenue lors du traitement"
 msgstr ""
 
-#: templates/administrative-record.html:504 templates/analysis-import.html:95
+#: templates/administrative-record.html:504 templates/analysis-import.html:98
 #: templates/det-equipment.html:608 templates/det-manual.html:348
 #: templates/det-meeting.html:228 templates/det-procedure.html:349
 #: templates/det-staff.html:358 templates/list-laboratory.html:358
@@ -483,61 +483,76 @@ msgstr ""
 msgid "Import d'analyses"
 msgstr ""
 
-#: templates/analysis-import.html:36
+#: templates/analysis-import.html:17
+msgid "Statut de la dernière importation"
+msgstr ""
+
+#: templates/analysis-import.html:39
 msgid "Type d'import"
 msgstr ""
 
-#: templates/analysis-import.html:38
+#: templates/analysis-import.html:41
 msgid "Met à jour les analyses (dont le code est identique)"
 msgstr ""
 
-#: templates/analysis-import.html:41
+#: templates/analysis-import.html:44
 msgid "Ajoute les nouvelles analyses (code non existant en base)"
 msgstr ""
 
-#: templates/analysis-import.html:51 templates/det-list-stock.html:56
+#: templates/analysis-import.html:54 templates/det-list-stock.html:56
 #: templates/det-patient.html:194 templates/det-sample.html:142
-#: templates/hist-stock-product.html:84 templates/import-analyzes.html:17
-#: templates/list-doctors.html:109 templates/list-equipment.html:54
-#: templates/list-laboratory.html:88 templates/list-manuals.html:57
-#: templates/list-meeting.html:52 templates/list-nonconformities.html:84
-#: templates/list-procedure.html:58 templates/list-products.html:55
-#: templates/list-staff.html:66 templates/list-stock.html:103
-#: templates/list-suppliers.html:55 templates/quality-general.html:47
-#: templates/report-dhis2.html:37 templates/setting-age-interval.html:42
-#: templates/setting-analyzes.html:104 templates/setting-backup.html:46
-#: templates/setting-det-dict.html:52 templates/setting-dhis2.html:41
-#: templates/setting-dicts.html:85 templates/setting-epidemio.html:41
-#: templates/setting-pwd-user.html:33 templates/setting-rec-num.html:37
-#: templates/setting-report.html:37 templates/setting-users.html:114
-#: templates/user-conn-export.html:36 templates/user-import.html:40
-#: templates/whonet-export.html:36
+#: templates/hist-stock-product.html:84 templates/list-doctors.html:109
+#: templates/list-equipment.html:54 templates/list-laboratory.html:88
+#: templates/list-manuals.html:57 templates/list-meeting.html:52
+#: templates/list-nonconformities.html:84 templates/list-procedure.html:58
+#: templates/list-products.html:55 templates/list-staff.html:66
+#: templates/list-stock.html:103 templates/list-suppliers.html:55
+#: templates/quality-general.html:47 templates/report-dhis2.html:37
+#: templates/setting-age-interval.html:42 templates/setting-analyzes.html:104
+#: templates/setting-backup.html:46 templates/setting-det-dict.html:52
+#: templates/setting-dhis2.html:41 templates/setting-dicts.html:85
+#: templates/setting-epidemio.html:41 templates/setting-pwd-user.html:33
+#: templates/setting-rec-num.html:37 templates/setting-report.html:37
+#: templates/setting-users.html:114 templates/user-conn-export.html:36
+#: templates/user-import.html:40 templates/whonet-export.html:36
 msgid "Retour"
 msgstr ""
 
-#: templates/analysis-import.html:54
+#: templates/analysis-import.html:57
 msgid "Importer des analyses"
 msgstr ""
 
-#: templates/analysis-import.html:88 templates/setting-dhis2.html:69
+#: templates/analysis-import.html:91 templates/setting-dhis2.html:69
 #: templates/setting-epidemio.html:69 templates/user-import.html:77
 msgid "Dépôt réussi"
 msgstr ""
 
-#: templates/analysis-import.html:100 templates/user-import.html:89
+#: templates/analysis-import.html:103 templates/user-import.html:89
 msgid "Le fichier doit être un csv"
 msgstr ""
 
-#: templates/analysis-import.html:107
+#: templates/analysis-import.html:110
 msgid "Lancer l'import du référentiel d'analyses ?"
 msgstr ""
 
-#: templates/analysis-import.html:124 templates/user-import.html:102
+#: templates/analysis-import.html:129 templates/user-import.html:102
 msgid "Traitement réussi"
 msgstr ""
 
-#: templates/analysis-import.html:132 templates/user-import.html:108
-msgid "Erreur lors du traitement des données"
+#: templates/analysis-import.html:137
+msgid ""
+"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
+"connaître le statut"
+msgstr ""
+
+#: templates/analysis-import.html:170
+msgid "Aucun statut"
+msgstr ""
+
+#: templates/analysis-import.html:176
+msgid ""
+"Une erreur est survenue lors de la vérification du statut de la base de "
+"données"
 msgstr ""
 
 #: templates/biological-validation.html:5
@@ -688,12 +703,17 @@ msgstr ""
 msgid "Cliquer pour commencer une recherche"
 msgstr ""
 
-#: templates/biological-validation.html:695 templates/enter-result.html:736
-#: templates/technical-validation.html:524
+#: templates/biological-validation.html:679 templates/enter-result.html:720
+#: templates/technical-validation.html:508
+msgid "Analyse déjà présente !"
+msgstr ""
+
+#: templates/biological-validation.html:704 templates/enter-result.html:745
+#: templates/technical-validation.html:533
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr ""
 
-#: templates/biological-validation.html:724
+#: templates/biological-validation.html:733
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr ""
 
@@ -1273,7 +1293,7 @@ msgstr ""
 msgid "Aucun prescripteur à exporter !"
 msgstr ""
 
-#: templates/det-list-stock.html:266 templates/enter-result.html:788
+#: templates/det-list-stock.html:266 templates/enter-result.html:797
 #: templates/hist-analyzes.html:301 templates/hist-patients.html:283
 #: templates/hist-stock-product.html:256 templates/list-doctors.html:334
 #: templates/list-equipment.html:221 templates/list-manuals.html:232
@@ -1410,7 +1430,7 @@ msgid "Détails patient"
 msgstr ""
 
 #: templates/det-patient.html:14
-msgid "Demande d'analyses patient externe - Fiche patient"
+msgid "Demande d'analyses patient - Fiche patient"
 msgstr ""
 
 #: templates/det-patient.html:23 templates/manage-pat-records.html:50
@@ -1914,11 +1934,11 @@ msgstr ""
 msgid "Référentiel des analyses"
 msgstr ""
 
-#: templates/homepage.html:22 templates/menu.html:88
+#: templates/homepage.html:22 templates/menu.html:84
 msgid "Dictionnaires"
 msgstr ""
 
-#: templates/homepage.html:23 templates/menu.html:91
+#: templates/homepage.html:23 templates/menu.html:87
 msgid "Gestion des sauvegardes"
 msgstr ""
 
@@ -1998,10 +2018,6 @@ msgstr ""
 msgid "Technique"
 msgstr ""
 
-#: templates/import-analyzes.html:5 templates/import-analyzes.html:13
-msgid "Import du référentiel d'analyses"
-msgstr ""
-
 #: templates/initialization.html:3 templates/initialization.html:20
 #: templates/login.html:3 templates/login.html:20 templates/skeleton.html:39
 msgid "LabBook"
@@ -2074,7 +2090,7 @@ msgid "Ajouter un équipement"
 msgstr ""
 
 #: templates/list-laboratory.html:5 templates/list-laboratory.html:12
-#: templates/menu.html:130
+#: templates/menu.html:126
 msgid "Laboratoire"
 msgstr ""
 
@@ -2203,7 +2219,7 @@ msgid "Aucun"
 msgstr ""
 
 #: templates/list-procedure.html:5 templates/list-procedure.html:12
-#: templates/menu.html:137
+#: templates/menu.html:133
 msgid "Procédures"
 msgstr ""
 
@@ -2567,93 +2583,85 @@ msgstr ""
 msgid "Rapports"
 msgstr ""
 
-#: templates/menu.html:84 templates/setting-analyzes.html:108
-msgid "Exporter le référentiel"
-msgstr ""
-
-#: templates/menu.html:85
-msgid "Importer un référentiel"
-msgstr ""
-
-#: templates/menu.html:93 templates/setting-logo.html:5
+#: templates/menu.html:89 templates/setting-logo.html:5
 msgid "Changement de logo"
 msgstr ""
 
-#: templates/menu.html:96
+#: templates/menu.html:92
 msgid "Etiquettes"
 msgstr ""
 
-#: templates/menu.html:97 templates/setting-age-interval.html:5
+#: templates/menu.html:93 templates/setting-age-interval.html:5
 #: templates/setting-age-interval.html:12
 msgid "Intervalles d'âge"
 msgstr ""
 
-#: templates/menu.html:100
+#: templates/menu.html:96
 msgid "Configuration des comptes-rendu"
 msgstr ""
 
-#: templates/menu.html:101
+#: templates/menu.html:97
 msgid "Configuration des numéros de dossier"
 msgstr ""
 
-#: templates/menu.html:105
+#: templates/menu.html:101
 msgid "Gestion des dossiers patients"
 msgstr ""
 
-#: templates/menu.html:108
+#: templates/menu.html:104
 msgid "Configuration DHIS2"
 msgstr ""
 
-#: templates/menu.html:109
+#: templates/menu.html:105
 msgid "Configuration Epidemio"
 msgstr ""
 
-#: templates/menu.html:113
+#: templates/menu.html:109
 msgid "Paramétrages"
 msgstr ""
 
-#: templates/menu.html:127 templates/quality-general.html:5
+#: templates/menu.html:123 templates/quality-general.html:5
 #: templates/quality-general.html:12
 msgid "Général"
 msgstr ""
 
-#: templates/menu.html:131
+#: templates/menu.html:127
 msgid "Personnels"
 msgstr ""
 
-#: templates/menu.html:132 templates/report-statistic.html:51
+#: templates/menu.html:128 templates/report-statistic.html:51
 msgid "Prescripteurs"
 msgstr ""
 
-#: templates/menu.html:134 templates/non-conformity.html:377
+#: templates/menu.html:130 templates/non-conformity.html:377
 msgid "Equipements"
 msgstr ""
 
-#: templates/menu.html:135
+#: templates/menu.html:131
 msgid "Fournisseurs"
 msgstr ""
 
-#: templates/menu.html:136
+#: templates/menu.html:132
 msgid "Manuels"
 msgstr ""
 
-#: templates/menu.html:139
+#: templates/menu.html:135
 msgid "Gestion des stocks"
 msgstr ""
 
-#: templates/menu.html:142
+#: templates/menu.html:138
 msgid "Module des non-conformités"
 msgstr ""
 
-#: templates/menu.html:144
+#: templates/menu.html:140
 msgid "Réunion du laboratoire"
 msgstr ""
 
-#: templates/menu.html:147
+#: templates/menu.html:143
 msgid "Qualité"
 msgstr ""
 
-#: templates/menu.html:156
+#: templates/menu.html:152
 msgid "Non conformité"
 msgstr ""
 
@@ -3294,6 +3302,10 @@ msgstr ""
 
 #: templates/setting-analyzes.html:107
 msgid "Importer le référentiel"
+msgstr ""
+
+#: templates/setting-analyzes.html:108
+msgid "Exporter le référentiel"
 msgstr ""
 
 #: templates/setting-analyzes.html:110
@@ -3991,6 +4003,10 @@ msgstr ""
 
 #: templates/user-import.html:94
 msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"
+msgstr ""
+
+#: templates/user-import.html:108
+msgid "Erreur lors du traitement des données"
 msgstr ""
 
 #: templates/whonet-export.html:18

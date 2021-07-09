@@ -377,7 +377,7 @@ class Pdf:
         h_res2 = 24
 
         h_header = 30
-        h_footer  = 30
+        h_footer = 30
 
         num_page = 1
 
@@ -419,7 +419,7 @@ class Pdf:
             full_comm = True
 
         # FOR header page
-        h_now += 140 + 80
+        h_now += 150 + 80
 
         # Get record details
         record = Record.getRecord(id_rec)
@@ -550,6 +550,11 @@ class Pdf:
             # FOR comment block
             h_now += 60 + (25 * nb_rc)
 
+        div_first_page = """\
+                <div style="width:1000px;background-color:#FFF;overflow:auto;">""" + rec_div + addr_div + """</div>
+            <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
+            """ + rec_comm
+
         # ANALYZES PART
         l_res = Result.getResultRecordForReport(id_rec)
 
@@ -636,7 +641,7 @@ class Pdf:
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
                         # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
 
@@ -661,7 +666,7 @@ class Pdf:
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
                         # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
 
@@ -743,7 +748,7 @@ class Pdf:
                 # AFTER a new line CUT PAGE OR NOT
                 if h_now > (h_max - h_res):
                     # Pdf.log.error(Logs.fileline() + ' : DEBUG RES h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
+                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
 
                     num_page = num_page + 1
 
@@ -779,7 +784,7 @@ class Pdf:
                 result_div = result_div + comm_div + """\
                         <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
 
-                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y)
+                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
 
             form_cont = form_cont.replace("tot_page", str(num_page))
 
@@ -798,7 +803,7 @@ class Pdf:
         return True
 
     @staticmethod
-    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, rec_div, addr_div, rec_comm, result_div, full_header, num_rec_y):
+    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y):
         report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
                       'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
                       'background-color:#FFF;">')
@@ -810,10 +815,7 @@ class Pdf:
 
             page_header = Pdf.getPdfHeader(full_header, report_status)
 
-            page_body = """\
-            <div style="width:1000px;">""" + rec_div + addr_div + """</div>
-            <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
-            """ + rec_comm + """
+            page_body = div_first_page + """
             <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
                 <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
                 <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
@@ -825,7 +827,7 @@ class Pdf:
             page_header = ''
             page_body   = ''
             page_body += """\
-                    <div style="width:1000px;margin-top:40px;">&nbsp;</div>
+                    <div style="width:1000px;margin-top:55px;">&nbsp;</div>
                     <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
                         <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
                         <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
@@ -1038,7 +1040,7 @@ class Pdf:
                 </style>
                 <div style='padding-top:0px;padding-left:50px;padding-right:50px;padding-bottom:50px;width:1000px;height:1410px;border:0px;font-family:arial;background-color:#FFF;color:black;font-size:20px;'>"""
 
-        head_logo = '<img src="' + Constants.cst_resource + 'logo.png" width="230px;" alt="">'
+        head_logo = '<img src="' + Constants.cst_resource + 'logo.png" max-width="230px;" width="230px;" alt="">'
 
         head_name  = Various.getDefaultValue('entete_1')
         head_line2 = Various.getDefaultValue('entete_2')
@@ -1056,24 +1058,25 @@ class Pdf:
                         <div><span style="font: 15px 'Helvetica';">""" + str(head_line3['value']) + """</span></div>"""
 
         if head_phone['value']:
-            phone = """<span class="ft_header">TEL : """ + str(head_phone['value']) + """&nbsp;</span>"""
+            phone = """<span class="ft_header">Tél : """ + str(head_phone['value']) + """&nbsp;</span>"""
         else:
             phone = ''
 
         if head_fax['value']:
-            fax = """<span class="ft_header">FAX : """ + str(head_fax['value']) + """&nbsp;</span>"""
+            fax = """<span class="ft_header">Fax : """ + str(head_fax['value']) + """&nbsp;</span>"""
         else:
             fax = ''
 
         if head_email['value']:
-            email = """<span class="ft_header">EMAIL : """ + str(head_email['value']) + """&nbsp;</span>"""
+            email = """<span class="ft_header">Email : """ + str(head_email['value']) + """&nbsp;</span>"""
         else:
             email = ''
 
         header += """\
                 <div style="width:1000px;height:140px;background-color:#FFF;">
-                    <div style="float:left;width:250px;">""" + head_logo + """</div>
-                    <div style="float:right;width:750px;">
+                    <div style="float:left;width:235px;background-color:#FFF;">""" + head_logo + """</div>
+
+                    <div style="float:right;width:755px;background-color:#FFF;">
                         <div><span class="ft_lab_name">""" + str(head_name['value']) + """</span></div>
                         """ + extra_header + """
                         <div><span class="ft_header">""" + str(head_addr['value']) + """</span></div>

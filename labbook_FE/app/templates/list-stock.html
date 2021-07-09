@@ -208,7 +208,7 @@ $("#list_items_total").html( data_len ) ;
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-list-stock/' + data_items[i].prs_prd + '">{{ _("Détails du stock") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-stock-product/' + data_items[i].prs_prd + '">{{ _("Historique de ce produit") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/' + data_items[i].prs_prd + '">{{ _("Editer la fiche produit") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prs_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
+                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prs_prd + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
         
     menu_act += '</div></ul></nav>' ;
 

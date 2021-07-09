@@ -7,7 +7,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.0.11] - 2021-07-09
+### Added
+- ANALYZES.md
+- EPIDEMIO.md
+- DHIS2.md
+- TABLES.md 
+- Actions in Product catalog page
+
+### Changed
+- takes into account the users language
+- title of E02 analysis
+
+### Fixed
+- import analysis repository, update variable too
+- refresh table after creating a item
+- blocks duplicate analyses in the same record
+- export of stock
+- switch data between two column of analysis repository table
+- delete a product sheet 
+- control on max use of a product if entered by keyboard
+
 ## [3.0.10 update] - 2021-06-28
+### Added
+- import status of the analysis repository
+
 ### Fixed
 - PDF Multipage report 
 

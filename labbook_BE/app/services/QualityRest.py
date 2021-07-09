@@ -1512,6 +1512,16 @@ class StockProductDet(Resource):
         self.log.info(Logs.fileline() + ' : TRACE StockProductDet id_item=' + str(id_item))
         return compose_ret('', Constants.cst_content_type_json)
 
+    def delete(self, id_item):
+        ret = Quality.deleteStockProduct(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StockProductDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StockProductDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
 
 class StockSupplyDet(Resource):
     log = logging.getLogger('log_services')
@@ -1519,7 +1529,7 @@ class StockSupplyDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        if 'prs_prd' not in args or 'prs_nb_pack' not in args or \
+        if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
            'prs_receipt_date' not in args or 'prs_expir_date' not in args or 'prs_rack' not in args or \
            'prs_batch_num' not in args or 'prs_buy_price' not in args:
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
@@ -1527,14 +1537,15 @@ class StockSupplyDet(Resource):
 
         # Update stock product
         if id_item > 0:
-            ret = Quality.updateStockProduct(prs_ser=id_item,
-                                             prs_prd=args['prs_prd'],
-                                             prs_nb_pack=args['prs_nb_pack'],
-                                             prs_receipt_date=args['prs_receipt_date'],
-                                             prs_expir_date=args['prs_expir_date'],
-                                             prs_rack=args['prs_rack'],
-                                             prs_batch_num=args['prs_batch_num'],
-                                             prs_buy_price=args['prs_buy_price'])
+            ret = Quality.updateStockSupply(prs_ser=id_item,
+                                            prs_user=args['prs_user'],
+                                            prs_prd=args['prs_prd'],
+                                            prs_nb_pack=args['prs_nb_pack'],
+                                            prs_receipt_date=args['prs_receipt_date'],
+                                            prs_expir_date=args['prs_expir_date'],
+                                            prs_rack=args['prs_rack'],
+                                            prs_batch_num=args['prs_batch_num'],
+                                            prs_buy_price=args['prs_buy_price'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StockSupplyDet ERROR update')
@@ -1543,6 +1554,7 @@ class StockSupplyDet(Resource):
         # Insert new supply product
         else:
             ret = Quality.insertStockSupply(prs_prd=args['prs_prd'],
+                                            prs_user=args['prs_user'],
                                             prs_nb_pack=args['prs_nb_pack'],
                                             prs_receipt_date=args['prs_receipt_date'],
                                             prs_expir_date=args['prs_expir_date'],

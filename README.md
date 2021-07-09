@@ -26,3 +26,8 @@ There is some documentation about epidemiological settings:
 There is some documentation about DHIS2 settings:
 
 - describes how to configure a spreadsheet for DHIS2 export [DHIS2.md](DHIS2.md)
+
+
+There is some documentation about tables used in database of this application:
+
+- describes tables [TABLES.md](labbook_BE/TABLES.md)
