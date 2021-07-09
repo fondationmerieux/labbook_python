@@ -548,7 +548,7 @@ class Pdf:
             nb_rc = math.ceil(len(record['rc']) / 134)
 
             # FOR comment block
-            h_now += 60 + (25 * nb_rc)
+            h_now += 55 + (25 * nb_rc)
 
         div_first_page = """\
                 <div style="width:1000px;background-color:#FFF;overflow:auto;">""" + rec_div + addr_div + """</div>
@@ -827,7 +827,7 @@ class Pdf:
             page_header = ''
             page_body   = ''
             page_body += """\
-                    <div style="width:1000px;margin-top:55px;">&nbsp;</div>
+                    <div style="width:1000px;margin-top:58px;">&nbsp;</div>
                     <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
                         <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
                         <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
