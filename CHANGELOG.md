@@ -7,9 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.0.12] - 2021-07-16
+## [3.0.12] - 2021-07-15
 ### Fixed
 - group validation
+- error when creating a record with deleted analysis before saving
 - move to labbook_BE directory ANALYZES.md, EPIDEMIO.md and DHIS2.md
 
 ## [3.0.11] - 2021-07-09

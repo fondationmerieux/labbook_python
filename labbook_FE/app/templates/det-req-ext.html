@@ -1154,14 +1154,16 @@ var param = '{ "id_owner":' + id_group + ', ' +
         {
         var id_rec = ret_rec.id_rec ;
 
-        var param_list_ana = '{ "list_ana":[ ';
+        var param_list_ana = '{ "list_ana":[';
+
+        console.log("DEBUG data_analysis=" + JSON.stringify(data_analysis));
 
             // Add analysis
             for( i in data_analysis )
             {
                 if (data_analysis[i] != null)
                 {
-                    if (i > 0)
+                    if (i > 0 && param_list_ana.slice(-1) != "[" )
                     param_list_ana += ', ' ;
 
                 var param_ana = '{ "id_owner":' + id_group + ', ' +
