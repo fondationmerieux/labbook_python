@@ -29,8 +29,12 @@
             {% else %}
             <div class="module">
                 <div class="links {% if args['nb_emer'] > 0 %}mw-100 mx-5{% endif %}">
-                    {% if session['user_role'] == 'B' and args['nb_emer'] > 0 %}
+                    {% if (session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ') and args['nb_emer'] > 0 %}
+                        {% if session['user_role'] == 'B' %}
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/B/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
+                        {% else %}
+                    <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-works/T/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
+                        {% endif %}
                     {% endif %}
                     {% if session['user_role'] != 'Q' %}
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
