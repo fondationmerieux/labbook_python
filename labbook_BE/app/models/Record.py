@@ -140,10 +140,10 @@ class Record:
     def getRecordNext(id_rec):
         cursor = DB.cursor()
 
-        req = 'select id_data '\
-              'from sigl_02_data '\
-              'where statut in (254,255) or id_data=%s '\
-              'order by num_dos_an desc'
+        req = ('select id_data '
+               'from sigl_02_data '
+               'where statut in (254,255) or id_data=%s '
+               'order by num_dos_an desc')
 
         cursor.execute(req, (id_rec,))
 
@@ -187,9 +187,9 @@ class Record:
         try:
             cursor = DB.cursor()
 
-            req = 'update sigl_02_data '\
-                  'set statut=%s '\
-                  'where id_data=%s'
+            req = ('update sigl_02_data '
+                   'set statut=%s '
+                   'where id_data=%s')
 
             cursor.execute(req, (stat, id_rec,))
 
@@ -229,11 +229,11 @@ class Record:
     def getRecordNbEmer():
         cursor = DB.cursor()
 
-        req = 'select count(*) as nb_emer '\
-              'from sigl_02_data as rec '\
-              'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '\
-              'where ana.urgent=4 and rec.statut in (182,253,254,255) '\
-              'group by rec.id_data'
+        req = ('select count(*) as nb_emer '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '
+               'where ana.urgent=4 and rec.statut in (182,253,254,255) '
+               'group by rec.id_data')
 
         cursor.execute(req)
 

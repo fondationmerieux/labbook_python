@@ -24,9 +24,9 @@ sample_type_xxx : serial corresponding to the type of sample in the database (cf
 LIST OF SAMPLING TYPES
 
 mysql> select id_data, label from sigl_dico_data where dico_name='type_prel';
-+---------+---------------------------------+
+
 | id_data | label                           |
-+---------+---------------------------------+
+|---------|---------------------------------|
 |      34 | Liquide de ponction articulaire |
 |      35 | Liquide de ponction ascite      |
 |      38 | Biopsie                         |
@@ -48,5 +48,3 @@ mysql> select id_data, label from sigl_dico_data where dico_name='type_prel';
 |    1015 | Eau usée                        |
 |    1016 | Eau de surface                  |
 |    1189 | Prélèvement pus                 |
-+---------+---------------------------------+
-21 rows in set (0.00 sec)

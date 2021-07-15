@@ -149,9 +149,15 @@
             {% endif %}
 
             {% if ihm['mode'] == 'G' %}
+                {% if ihm['id_rec_next'] %}
             <div class="float-right clearfix mt-3 mb-5">
                 <button type="button" onclick="next_record();" id="btn_next_valid" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Dossier suivant") }}</span></button>
             </div>
+                {% else %}
+            <div class="float-right clearfix mt-3 mb-5">
+                <span>{{ _("Fin de la liste des dossiers") }}</span>
+            </div>
+                {% endif %}
             {% endif %}
 
         </div>

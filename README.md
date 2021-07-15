@@ -15,17 +15,17 @@ There is some documentation about backups:
 
 There is some documentation about analyzes repository:
 
-- list of analyzes that could conflict with existing in a backup during a restore [ANALYZES.md](ANALYZES.md)
+- list of analyzes that could conflict with existing in a backup during a restore [ANALYZES.md](labbook_BE/ANALYZES.md)
 
 
 There is some documentation about epidemiological settings:
 
-- describes how to configure the epidemiological report [EPIDEMIO.md](EPIDEMIO.md)
+- describes how to configure the epidemiological report [EPIDEMIO.md](labbook_BE/EPIDEMIO.md)
 
 
 There is some documentation about DHIS2 settings:
 
-- describes how to configure a spreadsheet for DHIS2 export [DHIS2.md](DHIS2.md)
+- describes how to configure a spreadsheet for DHIS2 export [DHIS2.md](labbook_BE/DHIS2.md)
 
 
 There is some documentation about tables used in database of this application:

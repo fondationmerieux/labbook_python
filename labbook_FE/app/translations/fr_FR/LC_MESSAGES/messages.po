@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-07 16:33+0200\n"
+"POT-Creation-Date: 2021-07-15 11:06+0200\n"
 "PO-Revision-Date: 2021-02-21 15:20+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_FR\n"
@@ -50,7 +50,7 @@ msgstr ""
 #: templates/administrative-record.html:39
 #: templates/administrative-record.html:578
 #: templates/biological-validation.html:40
-#: templates/biological-validation.html:719 templates/det-req-ext.html:51
+#: templates/biological-validation.html:725 templates/det-req-ext.html:51
 #: templates/det-req-int.html:54 templates/det-sample.html:37
 #: templates/enter-result.html:40 templates/enter-result.html:813
 #: templates/technical-validation.html:40
@@ -61,7 +61,7 @@ msgstr ""
 #: templates/administrative-record.html:43
 #: templates/administrative-record.html:580
 #: templates/biological-validation.html:44
-#: templates/biological-validation.html:721 templates/det-sample.html:41
+#: templates/biological-validation.html:727 templates/det-sample.html:41
 #: templates/enter-result.html:44 templates/enter-result.html:815
 #: templates/technical-validation.html:44
 #: templates/technical-validation.html:550
@@ -71,7 +71,7 @@ msgstr ""
 #: templates/administrative-record.html:44
 #: templates/administrative-record.html:581
 #: templates/biological-validation.html:45
-#: templates/biological-validation.html:722 templates/det-sample.html:42
+#: templates/biological-validation.html:728 templates/det-sample.html:42
 #: templates/enter-result.html:45 templates/enter-result.html:816
 #: templates/technical-validation.html:45
 #: templates/technical-validation.html:551
@@ -81,7 +81,7 @@ msgstr ""
 #: templates/administrative-record.html:45
 #: templates/administrative-record.html:582
 #: templates/biological-validation.html:46
-#: templates/biological-validation.html:723 templates/det-sample.html:43
+#: templates/biological-validation.html:729 templates/det-sample.html:43
 #: templates/enter-result.html:46 templates/enter-result.html:817
 #: templates/technical-validation.html:46
 #: templates/technical-validation.html:552
@@ -91,7 +91,7 @@ msgstr ""
 #: templates/administrative-record.html:46
 #: templates/administrative-record.html:583
 #: templates/biological-validation.html:47
-#: templates/biological-validation.html:724 templates/det-sample.html:44
+#: templates/biological-validation.html:730 templates/det-sample.html:44
 #: templates/enter-result.html:47 templates/enter-result.html:818
 #: templates/technical-validation.html:47
 #: templates/technical-validation.html:553
@@ -637,51 +637,55 @@ msgstr ""
 msgid "Ajouter de nouvelles analyses"
 msgstr ""
 
-#: templates/biological-validation.html:153
+#: templates/biological-validation.html:154
 msgid "Dossier suivant"
 msgstr ""
 
-#: templates/biological-validation.html:282
+#: templates/biological-validation.html:158
+msgid "Fin de la liste des dossiers"
+msgstr ""
+
+#: templates/biological-validation.html:288
 msgid "Une erreur est survenue du changement de statut du dossier"
 msgstr ""
 
-#: templates/biological-validation.html:291
+#: templates/biological-validation.html:297
 msgid "Une erreur est survenue lors de création des résultats"
 msgstr ""
 
-#: templates/biological-validation.html:300 templates/det-req-ext.html:1261
+#: templates/biological-validation.html:306 templates/det-req-ext.html:1261
 #: templates/det-req-int.html:1112 templates/enter-result.html:646
 #: templates/technical-validation.html:193
 msgid "Une erreur est survenue lors de l'enregistrement des analyses"
 msgstr ""
 
-#: templates/biological-validation.html:319
+#: templates/biological-validation.html:325
 msgid "Etes-vous sur de vouloir effacer ce résultat ?"
 msgstr ""
 
-#: templates/biological-validation.html:338
+#: templates/biological-validation.html:344
 msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
 msgstr ""
 
-#: templates/biological-validation.html:346
+#: templates/biological-validation.html:352
 msgid ""
 "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
 "irreversible."
 msgstr ""
 
-#: templates/biological-validation.html:387
+#: templates/biological-validation.html:393
 msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
 msgstr ""
 
-#: templates/biological-validation.html:445
+#: templates/biological-validation.html:451
 msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
 msgstr ""
 
-#: templates/biological-validation.html:517
+#: templates/biological-validation.html:523
 msgid "Réinitialiser la valeur"
 msgstr ""
 
-#: templates/biological-validation.html:612 templates/det-equipment.html:271
+#: templates/biological-validation.html:618 templates/det-equipment.html:271
 #: templates/det-equipment.html:308 templates/det-equipment.html:345
 #: templates/det-equipment.html:382 templates/det-manual.html:113
 #: templates/det-manual.html:150 templates/det-manual.html:187
@@ -703,17 +707,17 @@ msgstr ""
 msgid "Cliquer pour commencer une recherche"
 msgstr ""
 
-#: templates/biological-validation.html:679 templates/enter-result.html:720
+#: templates/biological-validation.html:685 templates/enter-result.html:720
 #: templates/technical-validation.html:508
 msgid "Analyse déjà présente !"
 msgstr ""
 
-#: templates/biological-validation.html:704 templates/enter-result.html:745
+#: templates/biological-validation.html:710 templates/enter-result.html:745
 #: templates/technical-validation.html:533
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr ""
 
-#: templates/biological-validation.html:733
+#: templates/biological-validation.html:739
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr ""
 
@@ -866,10 +870,10 @@ msgid "Veuillez saisir un nom."
 msgstr ""
 
 #: templates/det-doctor.html:190 templates/det-equipment.html:518
-#: templates/det-list-stock.html:204 templates/det-manual.html:288
+#: templates/det-list-stock.html:213 templates/det-manual.html:288
 #: templates/det-meeting.html:168 templates/det-new-product.html:189
 #: templates/det-procedure.html:289 templates/det-sample.html:215
-#: templates/det-staff.html:280 templates/det-stock-product.html:179
+#: templates/det-staff.html:280 templates/det-stock-product.html:182
 #: templates/det-supplier.html:147 templates/homepage.html:120
 #: templates/list-laboratory.html:309 templates/manage-pat-records.html:605
 #: templates/non-conformity.html:1371 templates/setting-age-interval.html:222
@@ -1287,15 +1291,15 @@ msgstr ""
 msgid "Indiquer la quantité utilisée"
 msgstr ""
 
-#: templates/det-list-stock.html:264 templates/hist-stock-product.html:254
+#: templates/det-list-stock.html:273 templates/hist-stock-product.html:256
 #: templates/list-doctors.html:332 templates/list-nonconformities.html:290
 #: templates/list-stock.html:343
 msgid "Aucun prescripteur à exporter !"
 msgstr ""
 
-#: templates/det-list-stock.html:266 templates/enter-result.html:797
+#: templates/det-list-stock.html:275 templates/enter-result.html:797
 #: templates/hist-analyzes.html:301 templates/hist-patients.html:283
-#: templates/hist-stock-product.html:256 templates/list-doctors.html:334
+#: templates/hist-stock-product.html:258 templates/list-doctors.html:334
 #: templates/list-equipment.html:221 templates/list-manuals.html:232
 #: templates/list-meeting.html:222 templates/list-nonconformities.html:292
 #: templates/list-procedure.html:234 templates/list-results.html:617
@@ -2068,8 +2072,9 @@ msgstr ""
 #: templates/list-doctors.html:266 templates/list-equipment.html:163
 #: templates/list-manuals.html:174 templates/list-meeting.html:164
 #: templates/list-nonconformities.html:320 templates/list-procedure.html:176
-#: templates/list-stock.html:271 templates/list-suppliers.html:165
-#: templates/setting-analyzes.html:265 templates/setting-dicts.html:224
+#: templates/list-products.html:153 templates/list-stock.html:271
+#: templates/list-suppliers.html:165 templates/setting-analyzes.html:265
+#: templates/setting-dicts.html:224
 msgid "Erreur lors de la suppression des données"
 msgstr ""
 
@@ -2247,6 +2252,18 @@ msgstr ""
 msgid "Réf. fournisseur"
 msgstr ""
 
+#: templates/list-products.html:107 templates/list-stock.html:210
+msgid "Editer la fiche produit"
+msgstr ""
+
+#: templates/list-products.html:108 templates/list-stock.html:211
+msgid "Supprimer la fiche produit"
+msgstr ""
+
+#: templates/list-products.html:135 templates/list-stock.html:253
+msgid "Merci de confirmer la suppression du produit"
+msgstr ""
+
 #: templates/list-records.html:42 templates/list-works.html:38
 msgid "Urgent uniquement"
 msgstr ""
@@ -2398,20 +2415,8 @@ msgstr ""
 msgid "Historique de ce produit"
 msgstr ""
 
-#: templates/list-stock.html:210
-msgid "Editer la fiche produit"
-msgstr ""
-
-#: templates/list-stock.html:211
-msgid "Supprimer la fiche produit"
-msgstr ""
-
 #: templates/list-stock.html:225 templates/list-stock.html:227
 msgid "Seuil de"
-msgstr ""
-
-#: templates/list-stock.html:253
-msgid "Merci de confirmer la suppression du produit"
 msgstr ""
 
 #: templates/list-suppliers.html:5 templates/list-suppliers.html:12
@@ -4016,3 +4021,4 @@ msgstr ""
 #: templates/whonet-export.html:82
 msgid "Aucun résultat à exporter !"
 msgstr ""
+
