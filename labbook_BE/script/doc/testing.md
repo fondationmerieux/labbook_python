@@ -199,7 +199,6 @@ sigl@labbook3-test:~$ sudo grep PYT_IMG= /etc/init.d/labbook
 PYT_IMG="labbook-python-3.0.2.tar"
 
 # if the script was modified
-sigl@labbook3-test:~$ sudo /usr/bin/systemctl reload labbook
 sigl@labbook3-test:~$ sudo /usr/bin/systemctl daemon-reload
 
 # start labbook
