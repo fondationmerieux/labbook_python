@@ -19,7 +19,7 @@ from logging.handlers import WatchedFileHandler
 
 from flask import Flask
 from flask_restful import Api
-from flask_restful_swagger import swagger
+# from flask_restful_swagger import swagger
 
 from app.models.Logs import Logs
 from app.services.GeneralRest import *
@@ -99,8 +99,8 @@ else:
 # ######################################
 # REST initialization
 # ######################################
-api = swagger.docs(Api(app), apiVersion='0.1')
-
+# api = swagger.docs(Api(app), apiVersion='0.1')
+api = Api(app)
 
 @app.route("/")
 def index():

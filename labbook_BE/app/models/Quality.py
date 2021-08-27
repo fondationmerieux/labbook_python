@@ -670,7 +670,7 @@ class Quality:
                            '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
                            'prs_rack, prs_batch_num, prs_buy_price) '
                            'values '
-                           '(NOW(), %(prs_prd)s, %(prs_user)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
+                           '(NOW(), %(prs_user)s, %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
                            '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s)', params)
 
             Quality.log.info(Logs.fileline())
