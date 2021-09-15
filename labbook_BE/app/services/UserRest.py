@@ -332,7 +332,7 @@ class UserList(Resource):
         if not l_users:
             self.log.error(Logs.fileline() + ' : TRACE UserList not found')
 
-        Various.needTranslationDB
+        Various.needTranslationDB()
 
         for user in l_users:
             # Replace None by empty string

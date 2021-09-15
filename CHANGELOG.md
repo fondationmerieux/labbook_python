@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.1.0] - 2021-08-31
+## [3.1.0] - 2021-09-15
 ### Added
 - New languages avaible : Arabic, Khmer, Laotian, Malagasy, Portuguese
 - Add default language of laboratory in Pref settings (for IHM and Report)
