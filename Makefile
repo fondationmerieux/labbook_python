@@ -37,7 +37,7 @@ endif
 .PHONY: save
 save:
 ifdef BUILD_VERSION
-	rm -f $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar
+	rm -f $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar.xz
 	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(BUILD_VERSION)
 	xz --keep $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar
 	(cd $(SAVE_DIR) && \
