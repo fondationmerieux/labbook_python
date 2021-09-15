@@ -156,7 +156,6 @@ Steps:
 - stop the application,
 - remove the labbook-python image,
 - replace the labbook-python image archive in `/home/LabBook_images`,
-- if the version of the new image is superior, modify `/etc/init.d/labbook`,
 - start the application.
 
 ATTENTION: When the application starts, it upgrades the database if necessary.
@@ -186,20 +185,6 @@ sigl@labbook3-test:~$ sudo podman rmi $(sudo podman image ls --format '{{.ID}}' 
 
 # install the new image
 sigl@labbook3-test:~$ sudo mv /tmp/labbook-python-3.0.2.tar /home/LabBook_images
-
-# verify the version number in the startup script
-sigl@labbook3-test:~$ sudo grep PYT_IMG= /etc/init.d/labbook 
-PYT_IMG="labbook-python-3.0.1.tar"
-
-# if it's different modify the script
-sigl@labbook3-test:~$ sudo vi /etc/init.d/labbook 
-
-# control
-sigl@labbook3-test:~$ sudo grep PYT_IMG= /etc/init.d/labbook 
-PYT_IMG="labbook-python-3.0.2.tar"
-
-# if the script was modified
-sigl@labbook3-test:~$ sudo /usr/bin/systemctl daemon-reload
 
 # start labbook
 sigl@labbook3-test:~$ sudo /usr/bin/systemctl start labbook
