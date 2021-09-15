@@ -35,10 +35,16 @@ class DicoById(Resource):
             self.log.error(Logs.fileline() + ' : TRACE DicoById not found : ' + str(id_data))
             dico = {}
 
+        Various.needTranslationDB()
+
         # Replace None by empty string
         for key, value in list(dico.items()):
             if dico[key] is None:
                 dico[key] = ''
+            elif key == 'label':
+                dico[key] = _(dico[key])
+            elif key == 'short_label':
+                dico[key] = _(dico[key])
 
         self.log.info(Logs.fileline() + ' : TRACE DicoById : ' + str(id_data))
         return compose_ret(dico, Constants.cst_content_type_json)

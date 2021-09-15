@@ -1,26 +1,5 @@
 # -*- coding:utf-8 -*-
-# import informixdb
-
 from app.models.Constants import *
-
-
-'''
-def set_locale(lang, utf8=False):
-    from flask import current_app
-    current_app.config['BABEL_DEFAULT_LOCALE'] = lang
-
-    import locale
-    if lang == 'fr':
-        if utf8:
-            locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
-        else:
-            locale.setlocale(locale.LC_TIME, 'fr_FR')
-    else:
-        locale.setlocale(locale.LC_TIME, 'en_US')
-
-    from flask.ext.babel import refresh
-    refresh()
-'''
 
 
 def compose_ret(ret, type=Constants.cst_content_type_plain, http_code=200, ensure_ascii=True):

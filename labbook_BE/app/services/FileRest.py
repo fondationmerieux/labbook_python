@@ -6,12 +6,9 @@ from flask import request
 from flask_restful import Resource
 
 from app.models.General import compose_ret
-from app.models.Constants import *
-from app.models.Various import *
-from app.models.File import *
+from app.models.Constants import Constants
+from app.models.File import File
 from app.models.Logs import Logs
-from app.models.Quality import *
-from app.models.User import *
 
 
 class FileDocList(Resource):

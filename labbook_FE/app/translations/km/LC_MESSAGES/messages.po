@@ -1,0 +1,2494 @@
+# Khmer translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-07-15 11:06+0200\n"
+"PO-Revision-Date: 2021-09-03 15:20+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: km\n"
+"Language-Team: km <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+msgid "Dossier administratif"
+msgstr "របាយការណ៏រដ្ឋបាល"
+
+msgid "Dossier"
+msgstr "កត់ត្រា"
+
+msgid "Identité"
+msgstr "កំណត់អត្តសញ្ញាណ"
+
+msgid "Patient anonyme"
+msgstr "អ្នកជំងឺអនាមិក"
+
+msgid "Né(e) le"
+msgstr "ថ្ងៃ ខែ ឆ្នាំកំណើត"
+
+msgid "années"
+msgstr "ឆ្នាំ"
+
+msgid "mois"
+msgstr "ខែ"
+
+msgid "semaines"
+msgstr "សប្តាហ៍"
+
+msgid "jours"
+msgstr "ថ្ងៃ"
+
+msgid "Masculin"
+msgstr "ប្រុស"
+
+msgid "Féminin"
+msgstr "ស្រី"
+
+msgid "Inconnu"
+msgstr "មិនស្គាល់"
+
+msgid "Prescription"
+msgstr "វេជ្ជបញ្ជា"
+
+msgid "Date de réception du dossier"
+msgstr "កាលបរិច្ឆេទនៃរបាយការណ៏"
+
+msgid "Date de prescription"
+msgstr "កាលបរិច្ឆេទនៃវេជ្ជបញ្ជា"
+
+msgid "Prescripteur"
+msgstr "អ្នកចេញវេជ្ជបញ្ជា"
+
+msgid "Colis"
+msgstr "កញ្ចប់"
+
+msgid "Oui"
+msgstr "ត្រូវហើយ"
+
+msgid "Identification du colis"
+msgstr "ការកំណត់អត្តសញ្ញាណលេខកូដ នៃកញ្ចប់"
+
+msgid "Date de réception du colis"
+msgstr "កាលបរិច្ឆេទនៃការទទួលកញ្ចប់"
+
+msgid "Non"
+msgstr "ទេ"
+
+msgid "Hospitalisation"
+msgstr "មន្ទីរពេទ្យ"
+
+msgid "Date d'admission"
+msgstr "កាលបរិច្ឆេទនៃ ការចូលសំរាក ឬអនុញ្ញាតចូល"
+
+msgid "Service demandeur"
+msgstr "នាយកដ្ឋានស្នើរសុំ"
+
+msgid "Numéro de lit"
+msgstr "លេខគ្រែ"
+
+msgid "Analyses et actes de prélèvement"
+msgstr "ការវិភាគ និង សកម្មភាពនៃការយកសំណាក"
+
+msgid "Analyses"
+msgstr "ការវិភាគ"
+
+msgid "Code"
+msgstr "កូដ"
+
+msgid "Nom"
+msgstr "នាមត្រកូល"
+
+msgid "Urgent"
+msgstr "បន្ទាន់"
+
+msgid "Demandée"
+msgstr "បានស្នើសុំ"
+
+msgid "Cote"
+msgstr "អត្រា"
+
+msgid "Prix"
+msgstr "តម្លៃ"
+
+msgid "Actes de prélèvement"
+msgstr "ការជ្រើសរើសសំណាកគំរូ"
+
+msgid "Compte-rendus"
+msgstr "របាយការណ៍"
+
+msgid "Action"
+msgstr "សកម្មភាព"
+
+msgid "Date"
+msgstr "ចុះកាលបរិច្ឆេទ"
+
+msgid "Facturation"
+msgstr "វិក្កយបត្រ"
+
+msgid "Prix total"
+msgstr "តម្លៃ​សរុប"
+
+msgid "Remise sur la facturation"
+msgstr "ការបញ្ចុះតំលៃលើវិក្កយបត្រ"
+
+msgid "Pourcentage de la remise"
+msgstr "ភាគរយនៃការបញ្ចុះតម្លៃ"
+
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "បរិមាណនៃការធានារ៉ាប់រងផ្នែកសុខភាព"
+
+msgid "Reste à payer"
+msgstr "ទុកឱ្យបង់"
+
+msgid "Numéro de quittance"
+msgstr "លេខបង្កាន់ដៃ"
+
+msgid "Renseignements / Informations complémentaires"
+msgstr "ព័ត៌មាន / ព័ត៌មានបន្ថែម"
+
+msgid "Valise de documents"
+msgstr "ករណីឯកសារ"
+
+msgid "Fichier"
+msgstr "ឯកសារ"
+
+msgid "Enregistrer le document"
+msgstr "រក្សាទុកឯកសារ"
+
+msgid "Quitter"
+msgstr "ចាកចេញ"
+
+msgid "Imprimer la facture"
+msgstr "បោះពុម្ពវិក្កយបត្រ"
+
+msgid "Code barre"
+msgstr "លេខបារកូដ"
+
+msgid "Télécharger"
+msgstr "ទាញយក"
+
+msgid "Ré-éditer"
+msgstr "កែសម្រួលឡើងវិញ"
+
+msgid "Aucune donnée à afficher"
+msgstr "គ្មានទិន្នន័យត្រូវបង្ហាញ"
+
+msgid "Aucun fichier déposé"
+msgstr "គ្មានឯកសារផ្ទុកឡើងទេ"
+
+msgid "Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)"
+msgstr "តើអ្នកចង់កែសម្រួលរបាយការណ៍ឡើងវិញទេ? (ពាក្យបោះបង់និងជំនួសនឹងបង្ហាញនៅទីនោះ)"
+
+msgid "Une erreur est survenue lors du traitement"
+msgstr "កំហុសមួយបានកើតឡើងកំឡុងពេលដំណើរការ"
+
+msgid "Une erreur est survenue lors du dépot d'un fichier"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលផ្ទុកឯកសារឡើង"
+
+msgid "Le fichier sera définitivement supprimé"
+msgstr "ឯកសារនឹងត្រូវបានលុបជារៀងរហូត"
+
+msgid "Erreur lors de la suppression d'un fichier"
+msgstr "កំហុសក្នុងការលុបឯកសារ"
+
+msgid "Erreur lors de la génération du PDF facture"
+msgstr "កំហុសពេលបង្កើតវិក្កយបត្រ PDF"
+
+msgid "Erreur lors de la génération du PDF code barre"
+msgstr "មានកំហុសខណៈពេលបង្កើត បារកូដ PDF"
+
+msgid "Import d'analyses"
+msgstr "ការនាំចូលនៃការវិភាគ"
+
+msgid "Statut de la dernière importation"
+msgstr "ស្ថានភាពនៃការនាំចូលចុងក្រោយ"
+
+msgid "Type d'import"
+msgstr "ប្រភេទនាំចូល"
+
+msgid "Met à jour les analyses (dont le code est identique)"
+msgstr "ធ្វើបច្ចុប្បន្នភាពនៃការវិភាគ (កូដរបស់វាគឺដូចគ្នាបេះបិទ)"
+
+msgid "Ajoute les nouvelles analyses (code non existant en base)"
+msgstr "បន្ថែមការវិភាគថ្មី (កូដដែលមិនមាននៅក្នុងមូលដ្ឋានទិន្នន័យ)"
+
+msgid "Retour"
+msgstr "ត្រឡប់"
+
+msgid "Importer des analyses"
+msgstr "កំពុងនាំការវិភាគចូល"
+
+msgid "Dépôt réussi"
+msgstr "ការស្នើរសុំត្រូវបានជោគជ័យ"
+
+msgid "Le fichier doit être un csv"
+msgstr "ឯកសារត្រូវតែជា csv"
+
+msgid "Lancer l'import du référentiel d'analyses ?"
+msgstr "ចាប់ផ្ដើមការនាំចូលការវិភាគប្រភពព័ត៌មាន"
+
+msgid "Traitement réussi"
+msgstr "ដំណើរការទទួលជោគជ័យ"
+
+msgid "Aucun statut"
+msgstr "គ្មានឋានៈ"
+
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
+msgstr "មានកំហុសក្នុងការដំណើរការទិន្នន័យផ្ទុកទំព័រឡើងវិញរហូតដល់អ្នកដឹងពីស្ថានភាព"
+
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពនៃឃ្លាំងទិន្នន័យ"
+
+msgid "Validation biologique"
+msgstr "សុពលភាពនៃ ជីវសាស្ត្រ"
+
+msgid "Renseignements cliniques"
+msgstr "ព័ត៌មានគ្លីនិក"
+
+msgid "Aucune analyse"
+msgstr "គ្មានការវិភាគ"
+
+msgid "Validation des résultats cochés"
+msgstr "សុពលភាពនៃលទ្ធផលដែលបានពិនិត្យ"
+
+msgid "Date de validation"
+msgstr "សុពលភាពនៃ កាលបរិច្ឆេទ"
+
+msgid "Biologiste"
+msgstr "ជីវវិទូ"
+
+msgid "Commentaire"
+msgstr "យោបល់"
+
+msgid "Valider"
+msgstr "ធ្វើ​ឱ្យ​មាន​សុពលភាព"
+
+msgid "Compte rendu"
+msgstr "របាយការណ៍"
+
+msgid "Commentaire et motif annulation"
+msgstr "មូលហេតុនៃការលុបចោល និងការផ្ដល់យោបល់"
+
+msgid "Motif"
+msgstr "មូលហេតុ "
+
+msgid "Ajouter"
+msgstr "បន្ថែម"
+
+msgid "Annuler"
+msgstr "រំសាយ"
+
+msgid "Ajouter de nouvelles analyses"
+msgstr "បន្ថែមការវិភាគថ្មី"
+
+msgid "Dossier suivant"
+msgstr "ឯកសារបន្ទាប់"
+
+msgid "Fin de la liste des dossiers"
+msgstr "ចុងបញ្ចប់នៃបញ្ជីឯកសារ"
+
+msgid "Une erreur est survenue du changement de statut du dossier"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងផ្លាស់ប្តូរស្ថានភាពនៃឯកសារ"
+
+msgid "Une erreur est survenue lors de création des résultats"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលបង្កើតលទ្ធផល"
+
+msgid "Une erreur est survenue lors de l'enregistrement des analyses"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលរក្សាទុកការវិភាគ"
+
+msgid "Etes-vous sur de vouloir effacer ce résultat ?"
+msgstr "តើអ្នកប្រាកដថាចង់លុបលទ្ធផលនេះទេ?"
+
+msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំណត់តម្លៃដែលបានបញ្ចូលឡើងវិញ"
+
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "តើអ្នកពិតជាចង់រំសាយលទ្ធផលនេះទេ? \ n សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។"
+
+msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលដែលលុបចោលតម្លៃដែលបានបញ្ចូល"
+
+msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
+msgstr "កំហុសមួយបានកើតឡើងកំឡុងពេលធ្វើសុពលភាពនៃតម្លៃជីវសាស្ត្រដែលបានបញ្ចូល"
+
+msgid "Réinitialiser la valeur"
+msgstr "កំណត់តម្លៃឡើងវិញ"
+
+msgid "Cliquer pour commencer une recherche"
+msgstr "ចុចដើម្បីចាប់ផ្តើមការស្វែងរក"
+
+msgid "Analyse déjà présente !"
+msgstr "ការវិភាគមានវត្តមានរួចហើយ!"
+
+msgid "Erreur lors de la récupération d'une analyse"
+msgstr "កំហុសក្នុងការទាញយកការវិភាគ"
+
+msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
+msgstr "ការប្រុងប្រយ័ត្ន អ្នកនឹងចាកចេញពីឯកសារនេះដោយមិនបានធ្វើឱ្យមានសុពលភាព។"
+
+msgid "Contributeurs"
+msgstr "អ្នកផ្ដល់ ឬអ្នកចូលរួម"
+
+msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
+msgstr "LabBook គឺជាកម្មវិធីគ្រប់គ្រងមន្ទីរពិសោធន៍ដែលបើកទូលាយ។"
+
+msgid "LabBook est co-financé par l’AFD et la Fondation Mérieux."
+msgstr "LabBook ត្រូវបានឧបត្ថម្ភថវិកាដោយ AFD និងមូលនិធិMérieux។"
+
+msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
+msgstr "ក្រុមហ៊ុនអេភីថិនស៊ុបបានបង្កើតកម្មវិធី LabBook ចាប់តាំងពីឆ្នាំ ២០១៩ មក ។"
+
+msgid "La société &AElig;GL&Eacute; a pris le relais à partir de 2020."
+msgstr "ក្រុមហ៊ុន AElig GL និង Eacute​ បានកាន់កាប់តាំងពីឆ្នាំ ២០២០ ។"
+
+msgid "Le logiciel est sous licence GNU."
+msgstr "កម្មវិធីនេះឋិតនៅក្រោមអជ្ញាប័ណ្ណរបស់ក្រុមហ៊ុន GNU ។"
+
+msgid "Version : "
+msgstr "ជំនាន់៖"
+
+msgid "Accès"
+msgstr "ការចូលប្រើ"
+
+msgid "Titre"
+msgstr "ចំណងជើង"
+
+msgid "Monsieur"
+msgstr "លោក។"
+
+msgid "Madame"
+msgstr "អ្នកស្រី"
+
+msgid "Mademoiselle"
+msgstr "នឹក"
+
+msgid "Docteur"
+msgstr "វេជ្ជបណ្ឌិត"
+
+msgid "Professeur"
+msgstr "សាស្រ្តាចារ្យ"
+
+msgid "Prénom"
+msgstr "នាមខ្លួន"
+
+msgid "Initiales"
+msgstr "ដំបូង"
+
+msgid "Lieu de travail"
+msgstr "កន្លែងធ្វើការ"
+
+msgid "Service"
+msgstr "សេវាកម្ម"
+
+msgid "Adresse"
+msgstr "អាសយដ្ឋាន"
+
+msgid "Ville"
+msgstr "ទីក្រុង"
+
+msgid "Spécialité"
+msgstr "ឯកទេស"
+
+msgid "Téléphone fixe"
+msgstr "ទូរស័ព្ទ"
+
+msgid "Téléphone mobile"
+msgstr "ទូរស័ព្ទចល័ត"
+
+msgid "Fax"
+msgstr "ទូរសារ"
+
+msgid "Adresse email"
+msgstr "អាស័យដ្ឋានអ៊ីម៉ែល"
+
+msgid "Enregistrer"
+msgstr "កត់ត្រា"
+
+msgid "Veuillez saisir un nom."
+msgstr "សូមបញ្ចូលឈ្មោះ។"
+
+msgid "Une erreur est survenue lors de l'enregistrement"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលរក្សាទុក"
+
+msgid "Equipement"
+msgstr "ឧបករណ៍"
+
+msgid "Nom de l'équipement"
+msgstr "ឈ្មោះឧបករណ៍"
+
+msgid "Nom du fabricant"
+msgstr "ឈ្មោះរបស់ក្រុមហ៊ុនផលិត"
+
+msgid "modèle"
+msgstr "វត្ថុគំរូ"
+
+msgid "Photo"
+msgstr "រូបថត"
+
+msgid "Fonction"
+msgstr "មុខងារ"
+
+msgid "Localisation"
+msgstr "ទីតាំង"
+
+msgid "Section"
+msgstr "ផ្នែក"
+
+msgid "Fournisseur"
+msgstr "អ្នកផ្តល់"
+
+msgid "Numéro de série"
+msgstr "លេខលំដាប់ថ្នាក់"
+
+msgid "Numéro d'inventaire"
+msgstr "លេខសារពើភ័ណ្ឌ"
+
+msgid "Responsable"
+msgstr "បុគ្គលដែលត្រូវទទួលខុសត្រូវ"
+
+msgid "Manuel"
+msgstr "ហត្ថកម្ម"
+
+msgid "Procédure"
+msgstr "នីតិវិធី"
+
+msgid "Liste des pannes et réparations"
+msgstr "បញ្ជីនៃការខូច និង ការជួសជុល"
+
+msgid "Maintenance préventive"
+msgstr "ការថែទាំការពារ"
+
+msgid "Certificat d'étalonnage"
+msgstr "វិញ្ញាបនប័ត្រការក្រិតខ្នាត"
+
+msgid "Contrat de maintenance"
+msgstr "កិច្ចសន្យាថែទាំ"
+
+msgid "Date de fin de contrat de maintenance"
+msgstr "កិច្ចសន្យានៃបញ្ចប់កាលបរិច្ឆេទនៃថែទាំ"
+
+msgid "Facture"
+msgstr "វិក័យប័ត្រ"
+
+msgid "Date de réception"
+msgstr "កាលបរិច្ឆេទនៃការទទួល"
+
+msgid "Date d'achat"
+msgstr "កាលបរិច្ឆេទ​នៃ​ការ​ទិញ"
+
+msgid "Date d'acquisition"
+msgstr "កាលបរិច្ឆេទទិញយក"
+
+msgid "Date de mise en service"
+msgstr "កាលបរិច្ឆេទនៃកំរៃជើងសារ"
+
+msgid "Date de retrait du laboratoire"
+msgstr "កាលបរិច្ឆេទនៃការដកចេញពីមន្ទីរពិសោធន៍"
+
+msgid "Commentaires"
+msgstr "យោបល់"
+
+msgid "Veuillez saisir un nom d'équipement."
+msgstr "សូមបញ្ចូលឈ្មោះឧបករណ៍។"
+
+msgid "Supprimer"
+msgstr "លុបចោល"
+
+msgid "Historique d'une analyse"
+msgstr "ប្រវត្តិនៃការវិភាគ"
+
+msgid "Liste des dossiers pour cette analyse"
+msgstr "បញ្ជីឯកសារសម្រាប់ការវិភាគនេះ"
+
+msgid "du"
+msgstr "ចេញពី"
+
+msgid "au"
+msgstr "ទៅ"
+
+msgid "Nombre total de lignes"
+msgstr "ចំនួនខ្សែសរុប"
+
+msgid "Premier"
+msgstr "ដំបូង"
+
+msgid "Précédent"
+msgstr "ពីមុន"
+
+msgid "Suivant"
+msgstr "បន្ទាប់"
+
+msgid "Dernier"
+msgstr "ចុងក្រោយ"
+
+msgid "serial"
+msgstr "លំដាប់ថ្នាក់"
+
+msgid "N° dossier"
+msgstr "លេខឯកសារ"
+
+msgid "Date prescr."
+msgstr "កាលបរិច្ឆេទនៃវេជ្ជបញ្ជា"
+
+msgid "Variable"
+msgstr "អថេរ"
+
+msgid "Résultat"
+msgstr "លទ្ធផល"
+
+msgid "Retour à la liste analyses"
+msgstr "ត្រឡប់ទៅបញ្ជីវិភាគ"
+
+msgid "Historique patient"
+msgstr "ប្រវត្តិអ្នកជម្ងឺ"
+
+msgid "Code labo."
+msgstr "លេខកូដមន្ទីរពិសោធន៍។"
+
+msgid "Date de naissance"
+msgstr "ថ្ងៃខែ​ឆ្នាំ​កំណើត"
+
+msgid "Sexe"
+msgstr "ភេទ"
+
+msgid "Liste des analyses"
+msgstr "បញ្ជីនៃការវិភាគ"
+
+msgid "Analyse"
+msgstr "ការវិភាគ"
+
+msgid "Retour à la liste patients"
+msgstr "ត្រលប់ទៅបញ្ជីអ្នកជំងឺវិញ"
+
+msgid "Liste détaillée du stock pour ce produit"
+msgstr "បញ្ជីស្តុកលម្អិតសម្រាប់ផលិតផលនេះ"
+
+msgid "Nb de paq."
+msgstr "ចំនួននៃកញ្ចប់"
+
+msgid "Date recept."
+msgstr "កាលបរិច្ឆេទទទួល"
+
+msgid "Date expir."
+msgstr "កាលបរិច្ឆេទផុតកំណត់។"
+
+msgid "N° lot"
+msgstr "លេខឡូត៏"
+
+msgid "Prix d'achat"
+msgstr "តម្លៃទិញ"
+
+msgid "Historique consommation"
+msgstr "ប្រវត្តិនៃការប្រើប្រាស់ "
+
+msgid "Indiquer le nombre de paquets utilisée"
+msgstr "ចង្អុលបង្ហាញចំនួនកញ្ចប់ដែលបានប្រើ"
+
+msgid "Nombre de paquets"
+msgstr "ចំនួនកញ្ចប់"
+
+msgid "Indiquer la quantité utilisée"
+msgstr "ចង្អុលបង្ហាញបរិមាណដែលបានប្រើ"
+
+msgid "Aucun prescripteur à exporter !"
+msgstr "គ្មានអ្នកចេញវេជ្ជបញ្ជានាំចេញទេ!"
+
+msgid "Erreur lors de la génération du fichier"
+msgstr "មានកំហុសពេលបង្កើតឯកសារ"
+
+msgid "Référence"
+msgstr "ឯកសារយោង"
+
+msgid "Rédacteur"
+msgstr "អ្នកនិពន្ធ"
+
+msgid "Vérificateur"
+msgstr "សវនករ"
+
+msgid "Approbateur"
+msgstr "អ្នកអនុម័ត"
+
+msgid "Date de création"
+msgstr "កាលបរិច្ឆេទ​បង្កើត"
+
+msgid "Date d'application"
+msgstr "កាលបរិច្ឆេទ​នៃ​ការស្នើរ"
+
+msgid "Date de modification"
+msgstr "កាលបរិច្ឆេទកែប្រែ"
+
+msgid "Section d'application"
+msgstr "ផ្នែក"
+
+msgid "Veuillez saisir une référence ou un titre."
+msgstr "សូមបញ្ចូលសេចក្ដីយោងឬចំណងជើង។"
+
+msgid "Réunion"
+msgstr "ការប្រជុំ"
+
+msgid "Type"
+msgstr "ប្រភេទ"
+
+msgid "Réunion d'équipe"
+msgstr "ការប្រជុំក្រុម"
+
+msgid "Réunion qualité"
+msgstr "ការប្រជុំគុណភាព"
+
+msgid "Réunion de direction"
+msgstr "ការប្រជុំគ្រប់គ្រង"
+
+msgid "Organisateur"
+msgstr "អ្នករៀបចំ"
+
+msgid "Compte-rendu"
+msgstr "របាយការណ៍"
+
+msgid "Veuillez saisir une date de réunion."
+msgstr "សូមបញ្ចូលកាលបរិច្ឆេទប្រជុំ។"
+
+msgid "Détails produit"
+msgstr "ព​ត៌​មាន​លម្អិត​នៃ​ផលិតផល"
+
+msgid "Nom du produit"
+msgstr "ឈ្មោះ​អ្នកផលិតផល"
+
+msgid "Type produit"
+msgstr "ប្រភេទ​ផលិតផល"
+
+msgid "Nombre par paquet"
+msgstr "ចំនួនក្នុងមួយកញ្ចប់"
+
+msgid "Seuil de sécurité"
+msgstr "កម្រិតសុវត្ថិភាព"
+
+msgid "Référence fournisseur"
+msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+
+msgid "Conservation"
+msgstr "ការអភិរក្ស"
+
+msgid "Veuillez saisir un nom de produit."
+msgstr "សូមបញ្ចូលឈ្មោះផលិតផល។"
+
+msgid "Veuillez saisir un nombre de produits par paquet supérieur à 0."
+msgstr "សូមបញ្ចូលចំនួនមួយនៃផលិតផល ក្នុងមួយកញ្ចប់ដែលធំជាង ០ ។"
+
+msgid "Détails patient"
+msgstr "ពត៌មានលំអិតរបស់អ្នកជំងឺ"
+
+msgid "Demande d'analyses patient - Fiche patient"
+msgstr "ការស្នើរសុំវិភាគរបស់អ្នកជំងឺ - ទំរង់របស់អ្នកជំងឺ "
+
+msgid "Anonyme"
+msgstr "អនាមិក"
+
+msgid "Code patient interne au laboratoire"
+msgstr "លេខកូដរបស់អ្នកជំងឺក្នុងនៃមន្ទីរពិសោធន៍"
+
+msgid "Nom de jeune fille"
+msgstr "ឈ្មោះដើម"
+
+msgid "Date de naissance approximative"
+msgstr "កាលបរិច្ឆេទត្រឹមត្រូវនៃថ្ងៃ ខែ ឆ្នាំកំណើត"
+
+msgid "Prénom(s)"
+msgstr "នាមខ្លួន"
+
+msgid "ou"
+msgstr "ឬ"
+
+msgid "Age"
+msgstr "អាយុ"
+
+msgid "unité"
+msgstr "ឯកតា"
+
+msgid "Jours"
+msgstr "ថ្ងៃ"
+
+msgid "Semaines"
+msgstr "សប្តាហ៍"
+
+msgid "Mois"
+msgstr "ខែ"
+
+msgid "Années"
+msgstr "ឆ្នាំ"
+
+msgid "Coordonnées"
+msgstr "ព័ត៌មានទំនាក់ទំនង"
+
+msgid "Téléphone"
+msgstr "ទូរស័ព្ទ"
+
+msgid "Profession"
+msgstr "វិជ្ជាជីវៈ"
+
+msgid "Boite postale"
+msgstr "ប្រអប់​សំបុត្រ"
+
+msgid "Quartier / Secteur"
+msgstr "តំបន់ជិតខាង / ផ្នែក"
+
+msgid "Code postal"
+msgstr "លេខ​កូដ​ប្រៃ​ស​ណី​យ"
+
+msgid "Ville / Village"
+msgstr "ភូមិ​ / ទីក្រុង"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un age"
+msgstr "សូមជ្រើសរើសថ្ងៃខែឆ្នាំកំណើត ឬ បញ្ចូលអាយុ"
+
+msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកែប្រែ / បន្ថែមអ្នកជំងឺ"
+
+msgid "Details demande d'analyses"
+msgstr "ការស្នើសុំព័ត៌មានលម្អិតនៃការវិភាគ"
+
+msgid "Demande d'analyses patient externe"
+msgstr "ការស្នើសុំការវិភាគអ្នកជំងឺក្រៅ"
+
+msgid "Modifier le dossier du patient"
+msgstr "កែសម្រួលកំណត់ត្រារបស់អ្នកជំងឺ"
+
+msgid "Rechercher une analyse"
+msgstr "ស្វែងរកការវិភាគ"
+
+msgid "Produits pathologiques"
+msgstr "ផលិតផលរោគសាស្ត្រ"
+
+msgid "Ajouter un prélèvement"
+msgstr "បន្ថែមវត្ថុវិភាគ"
+
+msgid "Prod. pathol."
+msgstr "ផលិតផលរោគសាស្ត្រ"
+
+msgid "Statut"
+msgstr "ស្ថានភាព"
+
+msgid "Date prél."
+msgstr "កាលបរិច្ឆេទនៃការយកវត្ថុវិភាគ"
+
+msgid "Date réception"
+msgstr "កាលបរិច្ឆេទបង្កាន់ដៃ"
+
+msgid "Préleveur"
+msgstr "អ្នកប្រមូលវត្ថុវិភាគ"
+
+msgid "Qté"
+msgstr "បរិមាណ​"
+
+msgid "Erreur lors la récupération des prélèvements"
+msgstr "កំហុសនៅពេលទាញយកវត្ថុវិភាគ"
+
+msgid "Erreur lors la récupération des produits pathologiques"
+msgstr "កំហុសក្នុងកំឡុងពេលនៃការស្តារឡើងវិញនូវផលិតផលរោគសាស្ត្រ"
+
+msgid "Erreur lors de la récupération des analyses"
+msgstr "កំហុសក្នុងកំឡុងពេលនៃការស្តារឡើងវិញនូវផលិតផលរោគសាស្ត្រ"
+
+msgid "Merci de confirmer la suppression"
+msgstr "សូមបញ្ជាក់ការលុបចោល"
+
+msgid "Veuillez sélectionner au moins une analyse"
+msgstr "សូមជ្រើសរើសយ៉ាងហោចណាស់ការវិភាគចំនួនមួយ"
+
+msgid "Veuillez sélectionner une date de réception du dossier"
+msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃទទួលឯកសារចំនួនមួយ"
+
+msgid "Veuillez sélectionner une date de prescription"
+msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃវេជ្ជបញ្ជាចំនួនមួយ"
+
+msgid "Veuillez renseigner le type du produit"
+msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃវេជ្ជបញ្ជាចំនួនមួយ"
+
+msgid "Veuillez renseigner le statut du produit"
+msgstr "សូមបញ្ចូលស្ថានភាពនៃផលិតផល"
+
+msgid "Veuillez renseigner toutes les dates de réception"
+msgstr "សូមបំពេញកាលបរិច្ឆេទទាំងអស់នៃការទទួល"
+
+msgid "Veuillez renseigner toutes les identités des préleveurs"
+msgstr "សូមបំពេញនូវអត្តសញ្ញាណទាំងអស់របស់គំរូវិភាគ"
+
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងកត់ត្រាវិត្ថុវិភាគ"
+
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងរក្សាទុកឯកសារ"
+
+msgid "Une erreur est survenue lors du changement de statut du dossier"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងធ្វើការផ្លាស់ប្តូរស្ថានភាពនៃឯកសារ"
+
+msgid "Une erreur est survenue lors de la création des résultats"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងបង្កើតលទ្ធផល"
+
+msgid "Demande d'analyses patient hospitalisé"
+msgstr "ស្នើសុំតេសន្ត៏វិភាគ សំរាប់អ្នកជំងឺក្នុង"
+
+msgid "Produit pathologique"
+msgstr "ផលិតផលរោគសាស្ត្រ"
+
+msgid "Localisation prélèvement"
+msgstr "ទីតាំងយកគំរូវិភាគ"
+
+msgid "Quantité"
+msgstr "បរិមាណ​"
+
+msgid "Date du prélèvement"
+msgstr "កាលបរិច្ឆេទនៃការប្រមូលសំណាក"
+
+msgid "Lieu de prélèvement"
+msgstr "ទីតាំងប្រមូលវិត្ថុវិភាគ"
+
+msgid "Précision lieu"
+msgstr "ទីតាំងជាក់លាក់"
+
+msgid "Heure de réception"
+msgstr "ពេលវេលាទទួល"
+
+msgid "Veuillez saisir un statut."
+msgstr "សូមបញ្ចូលស្ថានភាព។"
+
+msgid "Veuillez choisir un produit pathologique."
+msgstr "សូមជ្រើសរើសផលិតផលរោគសាស្ត្រ។"
+
+msgid "Personnel"
+msgstr "បុគ្គលិក"
+
+msgid "Numéro de téléphone"
+msgstr "លេខទូរសព្ទ"
+
+msgid "Date d'arrivée au laboratoire"
+msgstr "កាលបរិច្ឆេទការមកដល់មន្ទីរពិសោធន៍"
+
+msgid "Position actuelle dans le laboratoire"
+msgstr "តួនាទីបច្ចុប្ប​ន្ន ក្នុងមន្ទីរពិសោធន៍"
+
+msgid "CV"
+msgstr "ប្រវត្តិរូបសង្ខេប"
+
+msgid "Diplômes"
+msgstr "សញ្ញាប័ត្រ"
+
+msgid "Formations continues"
+msgstr "បន្ត​ការសិក្សា"
+
+msgid "Section de travail"
+msgstr "ផ្នែកការងារ"
+
+msgid "Dernière évaluation des compétences"
+msgstr "ការវាយតម្លៃចុងក្រោយនៃជំនាញសមត្ថភាព"
+
+msgid "Approvisionner un produit"
+msgstr "ការផ្គត់ផ្គង់ផលិតផល"
+
+msgid "Produit"
+msgstr "ផលិតផល"
+
+msgid "Date d'expiration"
+msgstr "កាលបរិច្ឆេទ​ផុតកំណត់"
+
+msgid "Numéro de lot"
+msgstr "លេខឡូត៏"
+
+msgid "Veuillez choisir un produit à approvisionner"
+msgstr "សូមជ្រើសរើសផលិតផលដើម្បីផ្គត់ផ្គង់"
+
+msgid "Veuillez saisir un nombre de paquets supérieur à 0."
+msgstr "សូមបញ្ចូលចំនួនមួយនៃកញ្ចប់ដែលធំជាង ០ ។"
+
+msgid "Veuillez saisir une date d'expiration."
+msgstr "សូមបញ្ចូលកាលបរិច្ឆេទផុតកំណត់។"
+
+msgid "Nom fournisseur"
+msgstr "អ្នកផ្តល់ឈ្មោះ"
+
+msgid "Contact"
+msgstr "ទំនាក់ទំនង"
+
+msgid "Veuillez saisir un fournisseur."
+msgstr "សូមបញ្ចូលអ្នកផ្គត់ផ្គង់។"
+
+msgid "Saisie de résultats"
+msgstr "ការបញ្ចូលទ្ធផល"
+
+msgid "Feuille de paillasse"
+msgstr "សន្លឹក Bench"
+
+msgid "Certains résultats obligatoires ne sont pas saisis"
+msgstr "លទ្ធផលចាំបាច់មួយចំនួនមិនត្រូវបានបញ្ចូល"
+
+msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងរក្សាទុកតម្លៃដែលបានបញ្ចូល"
+
+msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
+msgstr "កំហុសមួយបានកើតឡើងក្នុងអំឡុងពេលធ្វើសុពលភាពបច្ចេកទេសនៃតម្លៃដែលបានបញ្ចូល"
+
+msgid "Technicien"
+msgstr "អ្នកបច្ចេកទេស"
+
+msgid "ANNULE"
+msgstr "បានរំសាយ"
+
+msgid "Liste analyses"
+msgstr "បញ្ជីវិភាគ"
+
+msgid "Rechercher"
+msgstr "ស្វែងរក"
+
+msgid "Date du"
+msgstr "កាលបរិច្ឆេទពី"
+
+msgid "Nb. sur la période"
+msgstr "ចំនួនក្នុងអំឡុងពេល"
+
+msgid "Export des données"
+msgstr "បញ្ចេញទិន្នន័យ"
+
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងស្ដារទិន្នន័យឡើងវិញ"
+
+msgid "Historique"
+msgstr "ប្រវត្តិសាស្ត្រ"
+
+msgid "Aucun résultats à exporter !"
+msgstr "គ្មានលទ្ធផលត្រូវនាំចេញទេ!"
+
+msgid "Liste patients"
+msgstr "បញ្ជីអ្នកជម្ងឺ"
+
+msgid "DDN"
+msgstr "ថ្ងៃ ខែ ឆ្នាំកំណើត"
+
+msgid "Historique des approvisionnements et usages pour ce produit"
+msgstr "ការផ្គត់ផ្គង់ និង ប្រវត្តិនៃការប្រើប្រាស់ផលិតផលនេះ"
+
+msgid "E/S"
+msgstr "ធាតុចូល / ធាតុចេញ (input/Output)"
+
+msgid "Utilisateur"
+msgstr "អ្នក​ប្រើ"
+
+msgid "Date action"
+msgstr "កាលបរិច្ឆេទនៃ សកម្មភាព"
+
+msgid "Accueil"
+msgstr "គេហទំព័រ"
+
+msgid "Préférences"
+msgstr "ការអនុគ្រោះ"
+
+msgid "Gestion des utilisateurs"
+msgstr "ការគ្រប់គ្រងអ្នកប្រើប្រាស់"
+
+msgid "Gestion des rôles"
+msgstr "ការគ្រប់គ្រងតួនាទី"
+
+msgid "Référentiel des analyses"
+msgstr "ឃ្លាំងនៃការវិភាគ"
+
+msgid "Dictionnaires"
+msgstr "វចនានុក្រម"
+
+msgid "Gestion des sauvegardes"
+msgstr "ការគ្រប់គ្រងបម្រុងទុក"
+
+msgid "Gestion de la Facturation"
+msgstr "ការគ្រប់គ្រងវិក័យប័ត្រ"
+
+msgid "Management de la Qualité"
+msgstr "ការគ្រប់គ្រងគុណភាព"
+
+msgid "Analyses urgentes"
+msgstr "ការវិភាគបន្ទាន់"
+
+msgid "Urgences"
+msgstr "សង្គ្រោះ​បន្ទាន់"
+
+msgid "Liste des dossiers"
+msgstr "បញ្ជីឯកសារ"
+
+msgid "Liste de travail biologiste"
+msgstr "បញ្ជីការងារនៃជិវៈវិទូ"
+
+msgid "Liste de travail technicien"
+msgstr "បញ្ជីការងាររបស់អ្នកបច្ចេកទេស"
+
+msgid "Etat des prélèvements en cours"
+msgstr "ស្ថានភាពនៃវត្ថុវិភាគក្នុងដំណើរការ"
+
+msgid "Saisie des résultats"
+msgstr "ការបញ្ចូលលទ្ធផល"
+
+msgid "Nouvelle demande externe"
+msgstr "ការស្នើសុំថ្មីពី ខាងក្រៅ"
+
+msgid "Nouvelle demande hospitalisé"
+msgstr "ការស្នើសុំថ្មីពី ខាងក្នុង"
+
+msgid "Validations à effectuer"
+msgstr "សុពលភាពដែលត្រូវអនុវត្ត"
+
+msgid "Activité du laboratoire"
+msgstr "សកម្មភាពមន្ទីរពិសោធន៍"
+
+msgid "Dernier numéro utilisé"
+msgstr "លេខចុងក្រោយត្រូវបានប្រើ"
+
+msgid "Nombre de dossiers validés aujourd'hui"
+msgstr "ចំនួនឯកសារមានសុពលភាពក្នុងបច្ចុប្បន្ន"
+
+msgid "Nombre de dossiers enregistrés"
+msgstr "ចំនួនឯកសារដែលបានកត់ទុក"
+
+msgid "Biologique"
+msgstr "ជិវៈវិទូ"
+
+msgid "Technique"
+msgstr "បច្ចេកទេស"
+
+msgid "LabBook"
+msgstr "សៀវភៅមន្ទីពិសោធន៏"
+
+msgid "Version"
+msgstr "ជំនាន់"
+
+msgid "Liste des prescripteurs"
+msgstr "បញ្ជីអ្នកចេញវេជ្ជបញ្ជា"
+
+msgid "Initiale"
+msgstr "ដំបូង"
+
+msgid "Lieu trav."
+msgstr "កន្លែងធ្វើការ"
+
+msgid "Tél. fixe"
+msgstr "ទូរស័ព្ទ"
+
+msgid "Mobile"
+msgstr "ចល័ត"
+
+msgid "Email"
+msgstr "អ៊ីមែល"
+
+msgid "Ajouter un prescripteur"
+msgstr "បន្ថែមអ្នកចេញវេជ្ជបញ្ជា"
+
+msgid "Editer"
+msgstr "កែសម្រួល"
+
+msgid "Erreur lors de la suppression des données"
+msgstr "កំហុសពេលលុបទិន្នន័យ"
+
+msgid "Liste des équipements"
+msgstr "បញ្ជីឧបករណ៍"
+
+msgid "Fabricant"
+msgstr "អ្នកផលិត"
+
+msgid "Modèle"
+msgstr "វត្ថុគំរូ"
+
+msgid "Ajouter un équipement"
+msgstr "បន្ថែមឧបករណ៍មួយ"
+
+msgid "Laboratoire"
+msgstr "មន្ទីរពិសោធន៍"
+
+msgid "Nom du dictionnaire"
+msgstr "ឈ្មោះវចនានុក្រម"
+
+msgid "Ajouter une valeur"
+msgstr "បន្ថែម​តម្លៃ"
+
+msgid "Organigramme"
+msgstr "រចនាសម្ព័ន្ធ​អង្គភាព"
+
+msgid "Valeurs"
+msgstr "គុណតម្លៃ"
+
+msgid "Libellé"
+msgstr "ស្លាកសញ្ញា"
+
+msgid "Libellé court"
+msgstr "ស្លាកសញ្ញាពាក្យកាត់"
+
+msgid "Position"
+msgstr "តួនាទី"
+
+msgid "Enregistrer les valeurs"
+msgstr "រក្សាទុកតម្លៃ"
+
+msgid "Veuillez saisir un nom de dictionnaire."
+msgstr "សូមបញ្ចូលឈ្មោះវចនានុក្រម។"
+
+msgid "Veuillez renseigner le(s) libellé(s)."
+msgstr "សូមបំពេញក្នុងស្លាកពាក្យ"
+
+msgid "Veuillez renseigner le(s) code(s)."
+msgstr "សូមបញ្ចូលលេខកូដ។"
+
+msgid "Enregistrement réussi"
+msgstr "ការចុះបញី្ចទទួលបានជោគជ័យ"
+
+msgid "Liste des manuels"
+msgstr "បញ្ជីសៀវភៅណែនាំ"
+
+msgid "Date création"
+msgstr "កាលបរិច្ឆេទ​នៃ ការបង្កើត"
+
+msgid "Ajouter un manuel"
+msgstr "បន្ថែមដោយដៃ"
+
+msgid "Liste des réunions"
+msgstr "បញ្ជីនៃការប្រជុំ"
+
+msgid "Ajouter une réunion"
+msgstr "បន្ថែមការប្រជុំ"
+
+msgid "Liste des non-conformités"
+msgstr "បញ្ជីនៃការមិនអនុលោម"
+
+msgid "Impact sur le patient"
+msgstr "ផលប៉ះពាល់លើអ្នកជំងឺ"
+
+msgid "Impact sur le personnel"
+msgstr "ផលប៉ះពាល់លើបុគ្គលិក"
+
+msgid "Mise en place d'une action correctrice"
+msgstr "ការអនុវត្តនៃ កែតម្រូវសកម្មភាព"
+
+msgid "Date correction"
+msgstr "ការកែតម្រូវ កាលបរិច្ឆេទ"
+
+msgid "Date de clôture"
+msgstr "ការបិទ កាលបរិច្ឆេទ"
+
+msgid "Ajouter une non-conformité"
+msgstr "បន្ថែមការមិនអនុលោមមួយ"
+
+msgid "Faible"
+msgstr "ខ្សោយ"
+
+msgid "Important"
+msgstr "សំខាន់"
+
+msgid "Grave"
+msgstr "ធ្ងន់ធ្ងរ"
+
+msgid "Aucun"
+msgstr "គ្មាន"
+
+msgid "Procédures"
+msgstr "នីតិវិធី"
+
+msgid "Date modification"
+msgstr "កែប្រែកាលបរិច្ឆេទ"
+
+msgid "Ajouter une procédure"
+msgstr "បន្ថែមនីតិវិធីមួយ"
+
+msgid "Liste des produits"
+msgstr "បញ្ជីផលិតផល"
+
+msgid "Nbr par paquet"
+msgstr " ចំនួនក្នុងមួយកញ្ចប់"
+
+msgid "Seuil"
+msgstr "កម្រិត"
+
+msgid "Réf. fournisseur"
+msgstr "យោង អ្នកផ្តល់"
+
+msgid "Editer la fiche produit"
+msgstr "កែតំរូវសន្លឹកផលិតផល"
+
+msgid "Supprimer la fiche produit"
+msgstr "លុបសន្លឹកផលិតផល"
+
+msgid "Merci de confirmer la suppression du produit"
+msgstr "សូមបញ្ជាក់ការលុបផលិតផល"
+
+msgid "Urgent uniquement"
+msgstr "បន្ទាន់តែប៉ុណ្ណោះ"
+
+msgid "Nouveau"
+msgstr "ថ្មី"
+
+msgid "Validé administrativement"
+msgstr "វាយតំលៃផ្នែករដ្ឋបាល"
+
+msgid "Intermédiaire (validé admin.)"
+msgstr "អន្តរការី ផ្នែកវាយតំលៃរដ្ឋបាល"
+
+msgid "Validé techniquement"
+msgstr "វាយតំលៃតាមបច្ចេកទេស​"
+
+msgid "Intermédiaire (validé tech.)"
+msgstr "អន្តរការី ផ្នែកវាយតំលៃបច្ចេកទេស"
+
+msgid "Validé biologiquement"
+msgstr "វាយតំលៃតាមជីវៈសាស្រ្ត"
+
+msgid "Création dossier"
+msgstr "ការបង្កើតឯកសារ"
+
+msgid "Code patient"
+msgstr "លេខកូដអ្នកជម្ងឺ"
+
+msgid "Une erreur est survenue lors de la récupération de la liste des dossiers"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងទាញយកបញ្ជីឯកសារ"
+
+msgid "Validation technique"
+msgstr "សុពលភាពបច្ចេកទេស"
+
+msgid "Veuillez confirmer la suppression"
+msgstr "សូមបញ្ជាក់ការលុប"
+
+msgid "Erreur lors de la suppression d'un dossier"
+msgstr "កំហុសក្នុងការលុបឯកសារ"
+
+msgid "Date de la demande du"
+msgstr "កាលបរិច្ឆេទស្នើសុំពី"
+
+msgid "Afficher uniquement les analyses prioritaires"
+msgstr "បង្ហាញតែកាលវិភាគដែលអាទិភាពប៉ុណ្ណោះ"
+
+msgid "Masquer les résultats déjà validés"
+msgstr "លាក់លទ្ធផលដែលមានសុពលភាពរួចហើយ"
+
+msgid "Une erreur est survenue lors de la récupération des résultats"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងទាញយកលទ្ធផល"
+
+msgid "Date dossier"
+msgstr "កាលបរិច្ឆេទឯកសារ"
+
+msgid "Patient"
+msgstr "អ្នកជំងឺ"
+
+msgid "Sang"
+msgstr "ឈាម"
+
+msgid "Selles"
+msgstr "លាមក"
+
+msgid "Urine"
+msgstr "ទឹកនោម"
+
+msgid "Autre"
+msgstr "ផ្សេងទៀត"
+
+msgid "Liste du personnel"
+msgstr "បញ្ជីបុគ្គលិក"
+
+msgid "Tél"
+msgstr "ទូរស័ព្ទ"
+
+msgid "Date arrivée"
+msgstr "កាលបរិច្ឆេទមកដល់"
+
+msgid "Date éval."
+msgstr "កាលបរិច្ឆេទវាយតំលៃ"
+
+msgid "Identifiant"
+msgstr "ឈ្មោះ​អ្នកប្រើប្រាស់ "
+
+msgid "Formations"
+msgstr "ការបណ្តុះបណ្តាល"
+
+msgid "Evaluations"
+msgstr "ការវាយតម្លៃ"
+
+msgid "Liste des stocks"
+msgstr "បញ្ជីស្តុកទំនិញ"
+
+msgid "Nb par paq."
+msgstr "ចំនូនក្នុងមួយកញ្ចប់"
+
+msgid "Nb total"
+msgstr "ចំនូនសរុប"
+
+msgid "Catalogue des produits"
+msgstr "បញ្ជីឈ្មោះផលិតផល"
+
+msgid "Nouveau produit"
+msgstr "ផលិតផល​ថ្មី"
+
+msgid "Détails du stock"
+msgstr "ព័ត៌មានលម្អិតអំពីស្តុក"
+
+msgid "Historique de ce produit"
+msgstr "ប្រវត្តិនៃផលិតផលនេះ"
+
+msgid "Seuil de"
+msgstr "កម្រិតនៃ"
+
+msgid "Liste des fournisseurs"
+msgstr "បញ្ជីអ្នកផ្គត់ផ្គង់"
+
+msgid "Nom contact"
+msgstr "នាមត្រកូលអ្នកទាក់ទង"
+
+msgid "Prénom contact"
+msgstr "នាមខ្លួនអ្នកទាក់ទង"
+
+msgid "Tél."
+msgstr "ទូរស័ព្ទ "
+
+msgid "Ajouter un fournisseur"
+msgstr "បន្ថែមអ្នកផ្គត់ផ្គង់"
+
+msgid "Note : certains equipements pourraient être associés à ce fournisseur"
+msgstr "សម្គាល់ៈឧបករណ៍មួយចំនួនអាចត្រូវបានផ្សារភ្ជាប់ជាមួយនឹងអ្នកផ្គត់ផ្គង់នេះ"
+
+msgid "Liste de travail"
+msgstr "បញ្ជីការងារ"
+
+msgid "Date dossier supérieure à"
+msgstr "កាលបរិច្ឆេទឯកសារធំជាង"
+
+msgid "Date dossier inférieure à"
+msgstr "កាលបរិច្ឆេទឯកសារតិចជាង"
+
+msgid "Validation groupée"
+msgstr "សុពលភាពក្រុម"
+
+msgid "Commencer la validation groupée"
+msgstr "ចាប់ផ្តើមសុពលភាពក្រុម"
+
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "ឈ្មោះអ្នកប្រើឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។"
+
+msgid "Ouverture de session"
+msgstr "ចូល"
+
+msgid "Mot de passe"
+msgstr "ពាក្យសម្ងាត់"
+
+msgid "Gestion dossier patient"
+msgstr "ការគ្រប់គ្រងកំណត់ត្រាអ្នកជម្ងឺ"
+
+msgid "Fusionner 2 dossiers patients"
+msgstr "បញ្ចូលឯកសារអ្នកជំងឺចំនួនពីរនាក់បញ្ចូលគ្នា "
+
+msgid "Nom, prénom ou code du patient"
+msgstr "នាមត្រកូល នាមខ្លួន ឬលេខកូដរបស់អ្នកជំងឺ"
+
+msgid "A CONSERVER"
+msgstr "រក្សាទុក"
+
+msgid "A SUPPRIMER"
+msgstr "លុបចោល"
+
+msgid "Identité patient"
+msgstr "អត្តសញ្ញាណអ្នកជម្ងឺ"
+
+msgid "Code laboratoire"
+msgstr "លេខកូដមន្ទីរពិសោធន៍"
+
+msgid "Modifier la fiche patient"
+msgstr "កែប្រែឯកសារអ្នកជំងឺ"
+
+msgid "Fusionner"
+msgstr "បញ្ចូលគ្នា"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
+msgstr "សូមជ្រើសរើសថ្ងៃខែឆ្នាំកំណើតឬបញ្ចូលអាយុ"
+
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
+msgstr "អ្នកត្រូវជ្រើសរើសកំណត់ត្រាអ្នកជំងឺពីរផ្សេងគ្នាដើម្បីអនុវត្តការបញ្ចូលចូលគ្នា។"
+
+msgid "Les fiches patients sont les mêmes dans la base de données."
+msgstr "ឯកសារអ្នកជំងឺគឺដូចគ្នានៅក្នុងឃ្លាំងទិន្នន័យ។"
+
+msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
+msgstr "ឯកសារអ្នកជំងឺដែលបាត់ត្រូវអនុវត្តការរួមបញ្ចូលឯកសារ។"
+
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "កំណត់ត្រារបស់អ្នកជម្ងឺដែលត្រូវលុបចោលនឹងត្រូវបានភ្ជាប់ទៅនឹងអ្នកជម្ងឺ៊/អ្នកជំងឺដាក់ត្រូវរក្សាទុក សូមបញ្ជាក់ការបញ្ចូលគ្នានេះ(សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ)"
+
+msgid "Une erreur est survenue lors de la fusion"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលបញ្ចូលគ្នា"
+
+msgid "Administratif"
+msgstr "រដ្ឋបាល"
+
+msgid "Rapport activité"
+msgstr "របាយការណ៍សកម្មភាព"
+
+msgid "Rapport épidémiologique"
+msgstr "របាយការណ៍អេពីដេមីសាស្រ្ត"
+
+msgid "Rapport statistique"
+msgstr "របាយការណ៍ស្ថិតិ"
+
+msgid "Export DHIS2"
+msgstr "ការនាំចេញ DHIS2"
+
+msgid "Export WHONET"
+msgstr "ការនាំចេញ WHONET"
+
+msgid "Historique d'analyse"
+msgstr "ប្រវត្តិវិភាគ"
+
+msgid "Rapport de fin de journée"
+msgstr "បញ្ចប់ថ្ងៃនៃរបាយការណ៍"
+
+msgid "Etat de la facturation journalière"
+msgstr "ស្ថានភាពវិក័យប័ត្រប្រចាំថ្ងៃ"
+
+msgid "Rapports"
+msgstr "របាយការណ៍"
+
+msgid "Changement de logo"
+msgstr "ការផ្លាស់ប្តូររូបយីហោ"
+
+msgid "Etiquettes"
+msgstr "ស្លាក"
+
+msgid "Intervalles d'âge"
+msgstr "ចន្លោះពេលអាយុ"
+
+msgid "Configuration des comptes-rendu"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធរបាយការណ៍"
+
+msgid "Configuration des numéros de dossier"
+msgstr "កំណត់រចនាសម្ព័ន្ធលេខកំណត់ត្រា"
+
+msgid "Gestion des dossiers patients"
+msgstr "ការគ្រប់គ្រងកំណត់ត្រាអ្នកជម្ងឺ"
+
+msgid "Configuration DHIS2"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធ DHIS2"
+
+msgid "Configuration Epidemio"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធអេពីដេមីសាស្រ្ត"
+
+msgid "paramétrages"
+msgstr "ការកំណត់"
+
+msgid "Général"
+msgstr "ទូទៅ"
+
+msgid "Personnels"
+msgstr "បុគ្គលិក"
+
+msgid "Prescripteurs"
+msgstr "អ្នកចេញវេជ្ជបញ្ជា"
+
+msgid "Equipements"
+msgstr "ឧបករណ៍"
+
+msgid "Fournisseurs"
+msgstr "អ្នកផ្គត់ផ្គង់"
+
+msgid "Manuels"
+msgstr "សៀវភៅណែនាំ"
+
+msgid "Gestion des stocks"
+msgstr "ការគ្រប់គ្រង​បញ្ជីសារពើភ័ណ្ឌ"
+
+msgid "Module des non-conformités"
+msgstr "ម៉ូឌុលភាពមិនប្រក្រតី"
+
+msgid "Réunion du laboratoire"
+msgstr "ប្រជុំផ្នែកមន្ទីរពិសោធន៍"
+
+msgid "Qualité"
+msgstr "គុណភាព"
+
+msgid "Non conformité"
+msgstr "ភាពមិនប្រក្រតី"
+
+msgid "Patient externe"
+msgstr "អ្នកជំងឺខាងក្រៅ"
+
+msgid "Chercher un patient"
+msgstr "ស្វែងរកអ្នកជំងឺដែលយើង "
+
+msgid "Nouveau patient"
+msgstr "អ្នកជំងឺថ្មី"
+
+msgid "Non-conformité"
+msgstr "ភាពមិនប្រក្រតី"
+
+msgid "Nom de la non-conformité"
+msgstr "ឈ្មោះភាពមិនប្រក្រតី"
+
+msgid "Rapporteur"
+msgstr "អ្នកចេញរបាយការណ៍"
+
+msgid "DECLARATION DE LA NON-CONFORMITE"
+msgstr "ការប្រកាសប្រាប់ពីភាពមិនប្រក្រតី"
+
+msgid "Catégorie de la non-conformité"
+msgstr "ប្រភេទនៃភាពមិនប្រក្រតី"
+
+msgid "Pré analytique"
+msgstr "មុនកាលវិភាគ"
+
+msgid "Oubli ou examen erroné"
+msgstr "ការវិភាគមានកំហុសឬភ្លេច"
+
+msgid "Dossier du patient / identité patient"
+msgstr "ឯកសារអ្នកជម្ងឺ / អត្តសញ្ញាណអ្នកជម្ងឺ"
+
+msgid "Prélèvement"
+msgstr "វត្ថុវិភាគ "
+
+msgid "Heure de prélèvement"
+msgstr "ពេលវេលាប្រមូលវត្ថុវិភាគ"
+
+msgid "Volume de prélèvement"
+msgstr "បរិមាណវត្ថុវិភាគ"
+
+msgid "Identification du prélèvement"
+msgstr "ការកំណត់អត្តសញ្ញាណវត្ថុវិភាគ"
+
+msgid "Renseignement clinique"
+msgstr "ព័ត៌មានគ្លីនិក"
+
+msgid "Transport de l'échantillon"
+msgstr "ការដឹកជញ្ជូនវត្ថុវិភាគ"
+
+msgid "Respect procédures"
+msgstr "អនុលោមតាមនីតិវិធី"
+
+msgid "Urgence"
+msgstr "អាសន្ន"
+
+msgid "Traçabilité"
+msgstr "ការតាមដានមើលទំនាក់ទំនងលទ្ធផល "
+
+msgid "Autres"
+msgstr "ផ្សេងទៀត"
+
+msgid "Analytique"
+msgstr "ការវិភាគ"
+
+msgid "Conservation échantillon avant analyse"
+msgstr "ការរក្សាទុកវត្ថុវិភាគមុនពេលការវិភាគ"
+
+msgid "Centrifugation"
+msgstr "ការបង្វិលវត្ថុវិភាគ"
+
+msgid "Aliquotage"
+msgstr "ការរំលែកវត្ថុវិភាគ"
+
+msgid "Contrôle qualité interne"
+msgstr "ការគ្រប់គ្រងគុណភាពផ្ទៃក្នុង"
+
+msgid "Contrôle qualité externe"
+msgstr "ការគ្រប់គ្រងគុណភាពខាងក្រៅ"
+
+msgid "Absence de résultats/Résultats aberrants"
+msgstr "អវត្ថមានលទ្ធផល / តម្លៃប្លែកពីគេ"
+
+msgid "Critère de repasse non respecté"
+msgstr "លក្ខណៈវិនិច្ឆ័យធ្វើឡើងវិញមិនត្រូវបានគោរព"
+
+msgid "Post analytique"
+msgstr "ក្រោយវិភាគ"
+
+msgid "Dossier non validé"
+msgstr "ឯកសារមិនមានសុពលភាព"
+
+msgid "Validation partielle non / mal réalisée"
+msgstr "សុពលភាពដោយផ្នែកមិនបាន / អនុវត្តមិនបានល្អ"
+
+msgid "Résultat erroné / aberrant"
+msgstr "លទ្ធផលមិនត្រឹមត្រូវ/ប្លែក"
+
+msgid "Absence de résultat"
+msgstr "គ្មានលទ្ធផល"
+
+msgid "Erreur de saisie"
+msgstr "កំហុសក្នុងការបញ្ចូនទិន្នន័យ "
+
+msgid "Interprétation des résultats"
+msgstr "ការបកស្រាយលទ្ធផល"
+
+msgid "Prestation de conseil"
+msgstr "សេវាកម្មប្រឹក្សា "
+
+msgid "Sérothèque/conservation échantillon après analyse"
+msgstr "សេរ៉ូសាស្រ្ត/ការរក្សាទុកវត្ថុវិភាគបន្ទាប់ពីការវិភាគ"
+
+msgid "Transmission des résultats"
+msgstr "ការបញ្ជូនលទ្ធផល "
+
+msgid "Défaut/Absence de transmission patient"
+msgstr "កំហុសការបញ្ជូនប្រកាន់អ្នកជំងឺ"
+
+msgid "Défaut/Absence de transmission Prescripteur/Correspondant"
+msgstr "កំហុសការបញ្ជូនទៅកាន់អ្នកចេញវេជ្ជបញ្ជា / អ្នកឆ្លើយឆ្លងព័ត៌មាន"
+
+msgid "Accès aux résultats"
+msgstr "ចូលទៅមើលលទ្ធផល "
+
+msgid "Date de rendu erronée"
+msgstr "កាលបរិច្ឆេទចេញរបាយការណ៍ខុស"
+
+msgid "Délai de transmission non respecté"
+msgstr "ការពន្យាពេលក្នុងការបញ្ជូនមិនត្រូវបានគោរព"
+
+msgid "Non respect de la procédure de rendu des résultats"
+msgstr "ភាពមិនប្រក្រតីជាមួយនីតិវិធីចេញលទ្ធផល"
+
+msgid "Ressources humaines"
+msgstr "ធនធានមនុស្ស"
+
+msgid "Non respect procédure"
+msgstr "ភាពមិនអនុលោមតាមនីតិវិធី"
+
+msgid "Absence"
+msgstr "អវត្តមាន"
+
+msgid "Habilitation/maintien des compétences"
+msgstr "ការផ្ដល់អំណាច / ការថែរក្សាជំនាញ"
+
+msgid "Accident exposition au sang / Hygiène et sécurité"
+msgstr "ការប៉ះពាល់ឈាមដោយចៃដន្យ / សុខភាពនិងសុវត្ថិភាព"
+
+msgid "Etalonnage, Certification, Calibrage"
+msgstr "ការកំណត់ភាពត្រឹមត្រូវ ការទទួលស្គាល់ ការកំណត់ភាពត្រឹមត្រូវ"
+
+msgid "Calibration automate"
+msgstr "ការកំណត់ភាពត្រឹមត្រូវរបស់ប្រពន្ធស្វ័យប្រវត្ត"
+
+msgid "Alarme"
+msgstr "សំឡេងរោទិ៍"
+
+msgid "Panne d'un équipement"
+msgstr "ការបរាជ័យឧបករណ៍ "
+
+msgid "Respect procédure"
+msgstr "គោរពនីតិវិធី"
+
+msgid "Réactifs et consommables"
+msgstr "ប្រតិករនិងសម្ភារៈប្រើប្រាស់"
+
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "វិក័យបត្ររបស់ប្រតិករ​និងសម្ភារៈប្រើប្រាស់មិនឆ្លើយតបទៅនឹងការស្នើសុំទេ"
+
+msgid "Délai livraison"
+msgstr "ពេលវេលាដឹកជញ្ជូន"
+
+msgid "Réactifs périmés"
+msgstr "ប្រតិករផុតកំណត់"
+
+msgid "Rupture de stock (cf nom du fournisseur)"
+msgstr "អស់ពីស្តុក (សូមមើលឈ្មោះក្រុមហ៊ុនផ្គត់ផ្គង់)"
+
+msgid "Déstockage produits non conforme"
+msgstr "ការបោសសំអាតផលិតផលមិនអនុលោមតាម"
+
+msgid "Locaux et environnement"
+msgstr "បរិវេណនិងបរិស្ថាន"
+
+msgid "Nettoyage du laboratoire"
+msgstr "ការសម្អាតមន្ទីរពិសោធន៍"
+
+msgid "Entretien du batiment"
+msgstr "ការថែរក្សាអាគារ"
+
+msgid "Coupure d'électricité"
+msgstr "ការដាច់ចរន្តអគ្គិសនី"
+
+msgid "Coupure d'eau"
+msgstr "កង្វះ​ទឹក"
+
+msgid "Gestion des déchets"
+msgstr "ការគ្រប់គ្រងកាកសំណល់"
+
+msgid "Systèmes informatiques"
+msgstr "ប្រព័ន្ធកុំព្យូទ័រ"
+
+msgid "Absence de connexion"
+msgstr "គ្មានការតភ្ជាប់"
+
+msgid "Erreur de paramétrage"
+msgstr "កំហុសក្នុងការកំណត់ "
+
+msgid "Panne réseau"
+msgstr "ការបរាជ័យប្រព័ន្ធទាក់ទង"
+
+msgid "Panne système d'information"
+msgstr "ការបរាជ័យប្រព័ន្ធព័ត៌មាន"
+
+msgid "Panne matériel informatique"
+msgstr "ការបរាជ័យផ្នែករឹង"
+
+msgid "Sous-traitance"
+msgstr "ការចុះកិច្ចសន្យាបន្ត"
+
+msgid "Délai de rendu non respecté"
+msgstr "ថ្ងៃផុតកំណត់នៃការដឹកជញ្ជូនមិនត្រូវបានគោរព"
+
+msgid "Erreur / oubli examen"
+msgstr "កំហុសក្នុងវិភាគ / ភ្លេច"
+
+msgid "Mauvaise conservation lors du transport"
+msgstr "ការរក្សាទុកមិនបានល្អក្នុងកំឡុងពេលដឹកជញ្ជូន"
+
+msgid "Problème de facturation"
+msgstr "បញ្ហាវិក័យប័ត្រ"
+
+msgid "Réclamations clients"
+msgstr "ពាក្យបណ្តឹងរបស់អតិថិជន"
+
+msgid "Est ce que cette non-conformité concerne un dossier patient ?"
+msgstr "តើភាពមិនប្រក្រតីនេះជាប់ទាក់ទងទៅនឹងឯកសាររបស់អ្នកជំងឺដែរឬទេ? "
+
+msgid "Numéro de dossier"
+msgstr "លេខឯកសារ"
+
+msgid "Description de la non-conformité"
+msgstr "ការពិពណ៌នាអំពីភាពមិនប្រក្រតី"
+
+msgid "Impact sur le personnel/visiteur"
+msgstr "ផលប៉ះពាល់លើបុគ្គលិក / ភ្ញៀវ"
+
+msgid "SUIVI DE LA NON-CONFORMITE"
+msgstr "តាមដានមើលភាពមិនប្រក្រតី"
+
+msgid "Qui"
+msgstr "នរណា"
+
+msgid "Quoi"
+msgstr "អ្វី"
+
+msgid "Quand"
+msgstr "ពេលណា​"
+
+msgid "Mise en place d’une action correctrice"
+msgstr "ការអនុវត្តសកម្មភាពកែតម្រូវ"
+
+msgid "Description de l'action correctrice"
+msgstr "ការពិពណ៌នាអំពីសកម្មភាពកែតម្រូវ"
+
+msgid "Date de réalisation de l'action correctrice"
+msgstr "កាលបរិច្ឆេទនៃការបញ្ចប់សកម្មភាពកែតម្រូវ"
+
+msgid "Responsable de l'action"
+msgstr "ទទួលខុសត្រូវចំពោះសកម្មភាព"
+
+msgid "CLOTURE DE LA NON-CONFORMITE"
+msgstr "បញ្ចប់ភាពមិនប្រក្រតី"
+
+msgid "Validé par"
+msgstr "ធ្វើឱ្យមានសុពលភាពដោយ"
+
+msgid "Veuillez saisir un nom pour cette non-conformité."
+msgstr "សូមដាក់ឈ្មោះភាពមិនប្រក្រតីនេះ! "
+
+msgid "Veuillez sélectionner un rapporteur."
+msgstr "សូមជ្រើសរើសអ្នកធ្វើរបាយការណ៍!"
+
+msgid "Liste des analyses du dossier"
+msgstr "បញ្ជីរបាយការណ៍វិភាគ"
+
+msgid "OK"
+msgstr "យល់ព្រម"
+
+msgid "Processus en cours"
+msgstr "ដំណើរការកំពុងបន្ត"
+
+msgid "Veuillez patienter"
+msgstr "សូមរង់ចាំ"
+
+msgid "Nombre de personnels dans le laboratoire"
+msgstr "ចំនួនបុគ្គលិកនៅក្នុងមន្ទីរពិសោធន៍"
+
+msgid "Nombre de manuels sauvegardés"
+msgstr "ចំនួនសៀវភៅត្រូវបានរក្សាទុក"
+
+msgid "Date de la dernière réunion d'équipe"
+msgstr "កាលបរិច្ឆេទនៃការប្រជុំក្រុមចុងក្រោយ"
+
+msgid "Nombre de non-conformités en cours"
+msgstr "ចំនួនភាពមិនប្រក្រតីដែលស្ថិតក្នុងដំណើរការ"
+
+msgid "Nombre de non-conformités depuis un mois"
+msgstr "ចំនួនភាពមិនប្រក្រតីតាំងពីមួយខែមុន"
+
+msgid "Famille d'analyse"
+msgstr "ក្រុមគ្រួសារវិភាគ"
+
+msgid "Analyses par type de demande"
+msgstr "ការវិភាគទៅតាមប្រភេទនៃការស្នើសុំ"
+
+msgid "Analyses par tranche d'âge"
+msgstr "ការវិភាគទៅតាមក្រុមអាយុ"
+
+msgid "H = Homme, F = Femme, I = Inconnu"
+msgstr "M= ប្រុស, F = ស្រី, U = មិនដឹង"
+
+msgid "Export par type"
+msgstr "នាំចេញតាមប្រភេទ"
+
+msgid "Export par âge"
+msgstr "នាំចេញតាមក្រុមអាយុ"
+
+msgid "Télécharger le rapport"
+msgstr "ទាញយករបាយការណ៍"
+
+msgid "Externes"
+msgstr "ខាងក្រៅ"
+
+msgid "Hospitalisés"
+msgstr "អ្នកជំងឺគេងពេទ្យ "
+
+msgid "Total"
+msgstr "សរុប"
+
+msgid "H"
+msgstr "ប្រុស"
+
+msgid "F"
+msgstr "ស្រី"
+
+msgid "I"
+msgstr "មិនដឹង"
+
+msgid "Moins de"
+msgstr "តិចជាង"
+
+msgid "ans"
+msgstr "ឆ្នាំ"
+
+msgid "Plus de"
+msgstr "ច្រើនជាង"
+
+msgid "à"
+msgstr "ទៅកាន់"
+
+msgid "Etat journalier de la facturation"
+msgstr "ស្ថានភាពវិក័យប័ត្រប្រចាំថ្ងៃ"
+
+msgid "Créateur du dossier"
+msgstr "អ្នកបង្កើតថតឯកសារ"
+
+msgid "Liste des facturations en cours"
+msgstr "បញ្ជីវិក័យប័ត្របច្ចុប្បន្ន"
+
+msgid "N° facturation"
+msgstr "លេខវិក្កយបត្រ"
+
+msgid "A payer après remises"
+msgstr "ត្រូវបង់បន្ទាប់ពីមានការបញ្ចុះតម្លៃ"
+
+msgid "Date de début de période "
+msgstr "កាលបរិច្ឆេទចាប់ផ្តើមរយៈពេល"
+
+msgid "Feuille de calcul"
+msgstr "សន្លឹកកិច្ចការ"
+
+msgid "Récupérer les données"
+msgstr "ទាញយកទិន្នន័យ"
+
+msgid "Veuillez sélectionner une feuille de calcul."
+msgstr "សូមជ្រើសរើសសន្លឹកកិច្ចការ"
+
+msgid "Epidémiologie"
+msgstr "អេពីដេមីសាស្រ្ត a "
+
+msgid "Maladie"
+msgstr "ជំងឺ"
+
+msgid "Nature prélèvement"
+msgstr "ប្រភេទវត្ថុវិភាគ"
+
+msgid "Total reçu"
+msgstr "ទទួលបានសរុប"
+
+msgid "Total analysé"
+msgstr "សរុបវិភាគ"
+
+msgid "Résultats"
+msgstr "លទ្ធផល"
+
+msgid "Répartition dossiers"
+msgstr "ការចែកចាយឯកសារ"
+
+msgid "Préleveurs"
+msgstr "អ្នកប្រមូលវត្ថុវិភាគ"
+
+msgid "Prélèvements"
+msgstr "វត្ថុវិភាគ"
+
+msgid "Interne"
+msgstr "ខាងក្នុង"
+
+msgid "Externe"
+msgstr "ខាងក្រៅ"
+
+msgid "Non renseigné"
+msgstr "មិនបានបញ្ជាក់"
+
+msgid "Famille"
+msgstr "គ្រួសារ"
+
+msgid "Validation"
+msgstr "សុពលភាព"
+
+msgid "Ajouter un intervalle"
+msgstr "បន្ថែមចន្លោះ "
+
+msgid "Intervalles"
+msgstr "ចន្លោះ"
+
+msgid "Age inférieur"
+msgstr "អាយុទាប"
+
+msgid "Age supérieur"
+msgstr "អាយុលើ"
+
+msgid "Désignation de l'acte"
+msgstr "ការរចនាសកម្មភាព"
+
+msgid "Type de prélèvement"
+msgstr "ប្រភេទវត្ថុវិភាគ"
+
+msgid "Analyse active"
+msgstr "ការវិភាគដែលសកម្ម"
+
+msgid "Désignation"
+msgstr "ការរចនា"
+
+msgid "Abréviation"
+msgstr "អក្សរកាត់"
+
+msgid "Produit bio."
+msgstr "ផលិតផលជីវសាស្ត្រ"
+
+msgid "Importer le référentiel"
+msgstr "នាំចូលឃ្លាំងវិភាគ"
+
+msgid "Exporter le référentiel"
+msgstr "នាំចេញឃ្លាំង"
+
+msgid "Enregistrer la liste"
+msgstr "រក្សាទុកបញ្ជី"
+
+msgid "Ajouter une analyse"
+msgstr "បន្ថែមការវិភាគ"
+
+msgid "Activé"
+msgstr "បានបើកដំណើរការ"
+
+msgid "Désactivé"
+msgstr "បានធ្វើឱ្យអសកម្ម"
+
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "សូមបញ្ជាក់ពីការលុបនៃការវិភាគនេះ!សូមបញ្ជាក់ថាសារណាមួយដែលទាក់ទងនឹងការវិភាគនេះនឹងមានកំហុស!"
+
+msgid "Paramétrage de la sauvegarde"
+msgstr "ការកំណត់ការបម្រុងទុកទិន្នន័យ"
+
+msgid "MODIFIER HEURE SAUVEGARDE"
+msgstr "ផ្លាស់ប្តូរពេលវេលារក្សារទុកទិន្នន័យ"
+
+msgid "INITIALISER LE MEDIA"
+msgstr "ចាប់ផ្ដើមដំណើរការប្រព័ន្ធផ្សព្វផ្សាយ"
+
+msgid "GENERER CLE DE SAUVEGARDE"
+msgstr "បង្កើតកូនសោរបម្រុងទុកទិន្នន័យ"
+
+msgid "SAUVEGARDER"
+msgstr "រក្សាទុក"
+
+msgid "RESTAURER"
+msgstr "ស្ដារឡើងវិញ"
+
+msgid "Heure de sauvegarde"
+msgstr "ពេលវេលាបម្រុងទុកទិន្នន័យ"
+
+msgid "Dernière sauvegarde"
+msgstr "ទិន្នន័យរក្សារទុកចុងក្រោយ"
+
+msgid "Dernière sauvegarde OK"
+msgstr "ទិន្នន័យរក្សារទុកចុងក្រោយ OK"
+
+msgid "Veuillez saisir le mot de passe de l'utilisateur user_labbook"
+msgstr "សូមបញ្ចូលពាក្យសម្ងាត់សំរាប់ user_labbook"
+
+msgid "Mot de passe système"
+msgstr "ពាក្យសម្ងាត់របស់ប្រព័ន្ធ"
+
+msgid "Veuillez saisir le mot de passe pour la clé de sauvegarde"
+msgstr "សូមបញ្ចូលពាក្យសម្ងាត់សម្រាប់លេខកូដបម្រុងទិន្នន័យ"
+
+msgid "Confirmation"
+msgstr "ការបញ្ជាក់"
+
+msgid "Veuillez sélectionner un média"
+msgstr "សូមជ្រើសរើសប្រព័ន្ធផ្សព្វផ្សាយដែលសមរម្យ"
+
+msgid "Liste des médias disponibles"
+msgstr "បញ្ជីប្រព័ន្ធផ្សព្វផ្សាយដែលមាន"
+
+msgid "Veuillez sélectionner la sauvegarde à restaurer"
+msgstr "សូមជ្រើសរើសការបម្រុងទុកទិន្នន័យដើម្បីស្តារឡើងវិញ"
+
+msgid "Liste des sauvegardes disponibles"
+msgstr "បញ្ជីនៃការបម្រុងទុកទិន្នន័យដែលមាន"
+
+msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
+msgstr "សូមបញ្ជាក់ពីការផ្លាស់ប្តូរពេលវេលាបម្រុងទុកទិន្នន័យប្រចាំថ្ងៃ។"
+
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
+
+msgid "Veuillez saisir un mot de passe"
+msgstr "សូមបញ្ចូលពាក្យសម្ងាត់!"
+
+msgid "Les mots de passe ne correspondent pas !"
+msgstr "លេខសម្ងាត់មិនត្រូវគ្នាទេ!"
+
+msgid "Veuillez saisir une heure de sauvegarde."
+msgstr "សូមបញ្ចូលពេលវេលាបម្រុងទុកទិន្នន័យ! "
+
+msgid "Une erreur est survenue lors de la récupération de la liste de média"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងទាញយកបញ្ជីប្រព័ន្ធផ្សព្វផ្សាយ"
+
+msgid "Une erreur est survenue lors de l'interrogation du service"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងសាកសួរសេវាកម្ម"
+
+msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងពិនិត្យមើលលេខកូដបម្រុងទុកទិន្នន័យ"
+
+msgid "Une erreur est survenue le média choisi est incorrect"
+msgstr "កំហុសមួយបានកើតឡើងជាមួយនឹងការជ្រើសរើសប្រព័ន្ធផ្សព្វផ្សាយ "
+
+msgid "Initialisation réussie"
+msgstr "ការចាប់ផ្តើមទទួលបានជោគជ័យ"
+
+msgid "Une erreur est survenue lors de l'initialisation du média"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលចាប់ផ្តើមប្រព័ន្ធផ្សព្វផ្សាយ"
+
+msgid "Génération réussie"
+msgstr "ការបង្កើតទទួលបានជោគជ័យ "
+
+msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងទាញយកបញ្ជីឯកសារ"
+
+msgid "Merci de confirmer le lancement immédiat de la restauration."
+msgstr "សូមបញ្ជាក់ពីការចាប់ផ្តើមនៃការស្តារឡើងវិញជាបន្ទាន់!"
+
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "មានកំហុសកើតឡើងក្នុងកំឡុងពេលស្តារ សូមទាក់ទងអ្នកគ្រប់គ្រងរបស់អ្នកដើម្បីផ្ទៀងផ្ទាត់ដោយដៃថាការស្តារឡើងវិញបានបញ្ចប់។"
+
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
+msgstr "ការស្តារឡើងវិញរួចរាល់ កម្មវិធីLabBook នឹងចាប់ផ្តើមសេវាកម្មកម្មវិធីឡើងវិញ"
+
+msgid "Redémarrage activé"
+msgstr "បានបើកដំណើរការឡើងវិញ"
+
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "សេវាកម្មបានចាប់ផ្តើមឡើងវិញឬមានកំហុសកើតឡើងខណៈពេលកំពុងស្នើសុំចាប់ផ្តើមឡើងវិញ nplease ផ្ទុកទំព័រឡើងវិញ"
+
+msgid "Sauvegarde réussie"
+msgstr "បានរក្សាទុកដោយជោគជ័យ"
+
+msgid "Une erreur est survenue"
+msgstr "កំហុសមួយបានកើតឡើង"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពបច្ចុប្បន្ន, ស្ថានភាពមិនដឹង "
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពបច្ចុប្បន្ន"
+
+msgid "Unité de cotation"
+msgstr "អត្រាតម្លៃ"
+
+msgid "Valeur de cotation"
+msgstr "តម្លៃដែលបានកំណត់ "
+
+msgid "Export whonet"
+msgstr "ការនាំចេញ Whonet"
+
+msgid "Variables"
+msgstr "អថេរ"
+
+msgid "Chercher une variable"
+msgstr "ស្វែងរកអថេរ"
+
+msgid "Créer une nouvelle variable"
+msgstr "បង្កើតអថេរថ្មី"
+
+msgid "Code var."
+msgstr "លេខកូដអថេរ"
+
+msgid "Par défaut sera l'ID de la variable"
+msgstr "លំនាំដើមនឹងខ្លាយទៅជាលេខសម្គាល់អថេរ"
+
+msgid "Id"
+msgstr "លេខសម្គាល់"
+
+msgid "Type de résultat"
+msgstr "ប្រភេទលទ្ធផល"
+
+msgid "Description"
+msgstr "ការពិពណ៌នា"
+
+msgid "Valeur normale min."
+msgstr "តម្លៃធម្មតាអប្បបរមា"
+
+msgid "Valeur normale max."
+msgstr "អតិបរិមាតម្លៃធម្មតា"
+
+msgid "Formule"
+msgstr "រូបមន្ត"
+
+msgid "Unité"
+msgstr "ឯកតា"
+
+msgid "Précision"
+msgstr "ភាពជាក់លាក់ "
+
+msgid "Formule de conversion unité 2"
+msgstr "រូបមន្តបំលែងឯកតា ២"
+
+msgid "Unité 2"
+msgstr "ឯកតា ២"
+
+msgid "Précision 2"
+msgstr "ភាពជាក់លាក់ ២"
+
+msgid "Num. var pour la formule"
+msgstr "លេខអថេរសម្រាប់រូបមន្ត"
+
+msgid "Position affichage"
+msgstr "ទីតាំងបង្ហាញ"
+
+msgid "Résultat obligatoire"
+msgstr "លទ្ធផលចាំបាច់"
+
+msgid "Min"
+msgstr "អប្បបរមា"
+
+msgid "Max"
+msgstr "អតិបរមា"
+
+msgid "Num. var"
+msgstr "លេខអថេរ "
+
+msgid "Sous analyses"
+msgstr "ស្ថិតក្រោមការវិភាគ "
+
+msgid "Produit biologique"
+msgstr "ផលិតផលជីវសាស្ត្រ"
+
+msgid "Chercher un produit biologique"
+msgstr "ស្វែងរកផលិតផលជីវសាស្ត្រ "
+
+msgid "Variable déjà utilisée dans cette analyse"
+msgstr "អថេរត្រូវបានប្រើរួចហើយនៅក្នុងការវិភាគនេះ "
+
+msgid "Erreur lors la récupération des données"
+msgstr "មានកំហុសក្នុងអំឡុងពេលទាញយកទិន្នន័យមកវិញ"
+
+msgid "Modifier"
+msgstr "កែសម្រួល"
+
+msgid "Veuillez saisir un code."
+msgstr "សូមបញ្ចូលលេខកូដ!"
+
+msgid "Veuillez saisir un nom d'analyse."
+msgstr "សូមបញ្ចូលឈ្មោះស្កេន!"
+
+msgid "Veuillez choisir ou définir au moins une variable."
+msgstr "សូមជ្រើសរើសឬកំណត់យ៉ាងហោចណាស់មួយអថេរ!"
+
+msgid "Ce code existe déjà"
+msgstr "លេខកូដនេះមានរួចហើយ"
+
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលផ្ទៀងផ្ទាត់លេខកូដ"
+
+msgid "Dictionnaire"
+msgstr "វចនានុក្រម"
+
+msgid "Droits utilisateur"
+msgstr "សិទ្ធិអ្នកប្រើប្រាស់"
+
+msgid "Rôle"
+msgstr "តួនាទី"
+
+msgid "Administrateur"
+msgstr "អ្នកគ្រប់គ្រង"
+
+msgid "Technicien avancé"
+msgstr "អ្នកបច្ចេកទេសជាន់ខ្ពស់ "
+
+msgid "Technicien qualiticien"
+msgstr "អ្នកបច្ចេកទេសគុណភាព"
+
+msgid "Secrétaire"
+msgstr "លេខាធិការ"
+
+msgid "Secrétaire avancée"
+msgstr "លេខាធិការជាន់ខ្ពស់"
+
+msgid "Qualiticien"
+msgstr "អ្នកជំនាញផ្នែកគុណភាព"
+
+msgid "Prescripteur associé"
+msgstr "វេជ្ជបញ្ជារង"
+
+msgid "Confirmation du mot de passe"
+msgstr "សូមបញ្ជាក់​ពាក្យ​សម្ងាត់!"
+
+msgid "CPS"
+msgstr "ស៊ីភីអេសCPS"
+
+msgid "Numéro RPPS"
+msgstr "លេខ RPPS"
+
+msgid "Langues *"
+msgstr "ភាសា *"
+
+msgid "Français (FR)"
+msgstr "បារាំង (FR)"
+
+msgid "English (UK)"
+msgstr "អង់គ្លេស (ចក្រភពអង់គ្លេស)"
+
+msgid "English (US)"
+msgstr "អង់គ្លេស (អាមេរិក)"
+
+msgid "Veuillez saisir un identifiant."
+msgstr "សូមបញ្ចូលឈ្មោះអ្នកប្រើ!"
+
+msgid "Veuillez saisir un mot de passe."
+msgstr "សូមបញ្ចូលពាក្យសម្ងាត់!"
+
+msgid "Veuillez confirmer votre mot de passe."
+msgstr "សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក!"
+
+msgid "Veuillez choisir une langue."
+msgstr "សូមជ្រើសរើសភាសា!"
+
+msgid "Veuillez choisir un rôle."
+msgstr "សូមជ្រើសរើសតួនាទី!"
+
+msgid "Paramétrage de l'export DHIS2"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធនាំចេញ DHIS2"
+
+msgid "Enregistrer la feuille de calcul"
+msgstr "រក្សាទុកសន្លឹកកិច្ចការ"
+
+msgid "Une erreur est survenue lors du dépot du fichier"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលផ្ទុកឯកសារឡើង"
+
+msgid "Liste des dictionnaires (choix de réponses)"
+msgstr "បញ្ជីវចនានុក្រម (ជម្រើសចម្លើយ)"
+
+msgid "Ajouter un dictionnaire"
+msgstr "បន្ថែមវចនានុក្រម"
+
+msgid "Paramétrage du rapport épidémiologique"
+msgstr "ការកំណត់របាយការណ៍អេពីដេមីសាស្ត្រ"
+
+msgid "Changement de logo pour les documents"
+msgstr "ការផ្លាស់ប្តូររូបសញ្ញាសម្រាប់ឯកសារ"
+
+msgid "Logo original"
+msgstr "រូបយីហោដើម"
+
+msgid "Logo tel qu'il apparaitra dans l'entête de rapport"
+msgstr "រូបយីហោដូចដែលវានឹងបង្ហាញនៅក្នុងក្បាលរបាយការណ៍"
+
+msgid "Largeur forcée à 230 pixels et conserve les proportions"
+msgstr "ទទឹងដាក់ឲ្យមានទំហំ២៣០​pixelsនិងរក្សាសមាមាត្រ"
+
+msgid "Le fichier doit être au format png ou jpg"
+msgstr "ឯកសារត្រូវមានទម្រង់ជា png ឬ jpg "
+
+msgid "Une erreur est survenue lors du dépot du logo"
+msgstr "មានកំហុសកើតឡើងពេលផ្ទុករូបយីហោ "
+
+msgid "Liste des préférences"
+msgstr "បញ្ជីចំណូលចិត្ត"
+
+msgid "Valeur"
+msgstr "តម្លៃ"
+
+msgid "Prix unitaire des actes de prélévements et d'analyses"
+msgstr "តម្លៃឯកតាសម្រាប់ការប្រមូលវត្ថុវិភាគនិងវិធីវិភាគ"
+
+msgid "Entête de document 1"
+msgstr "ក្បាលឯកសារ ១"
+
+msgid "Entête de document 2"
+msgstr "ក្បាលឯកសារ ២"
+
+msgid "Entête de document 3"
+msgstr "ក្បាលឯកសារ ៣"
+
+msgid "Entête de document - Adresse"
+msgstr "ក្បាលឯកសារ - អាសយដ្ឋាន"
+
+msgid "Entête de document - Téléphone"
+msgstr "ក្បាលឯកសារ - ទូរស័ព្ទ"
+
+msgid "Entête de document - Fax"
+msgstr "ក្បាលឯកសារ - ទូរសារ"
+
+msgid "Entête de document - Email"
+msgstr "ក្បាលឯកសារ - អ៊ីមែល"
+
+msgid "Entête de document - Ville"
+msgstr "ក្បាលឯកសារ - ទីក្រុង"
+
+msgid "Facturation des patients hospitalisés"
+msgstr "ការចេញវិក្កយបត្រអ្នកជំងឺដេកពេទ្យ"
+
+msgid "Unité de l'age par défaut (Jours, Semaines, Mois, Années)"
+msgstr "ឯកតាអាយុស្វាយប្រវត្តិ (ថ្ងៃសប្តាហ៍ខែឆ្នាំ)"
+
+msgid "Déconnexion automatique (mn)"
+msgstr "ការផ្តាច់ដោយស្វ័យប្រវត្តិ (mn)"
+
+msgid "Module qualité activé"
+msgstr "បានធ្វើឱ្យសកម្មម៉ូឌុលគុណភាព"
+
+msgid "Module facturation activé"
+msgstr "បានធ្វើឱ្យសកម្មម៉ូឌុលវិក្កយបត្រ"
+
+msgid "Mise à jour du mot de passe"
+msgstr "ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់"
+
+msgid "Les mots de passe ne sont pas identiques !"
+msgstr "លេខសម្ងាត់មិនដូចគ្នាទេ!"
+
+msgid "Paramétrage numéro dossier"
+msgstr "ការកំណត់លេខឯកសារ"
+
+msgid "Période de numérotation"
+msgstr "រយៈពេលហៅ"
+
+msgid "Année"
+msgstr "ឆ្នាំ"
+
+msgid "Format de numérotation"
+msgstr "ទ្រង់ទ្រាយលេខរៀង"
+
+msgid "Court"
+msgstr "ខ្លី"
+
+msgid "Long"
+msgstr "វែង"
+
+msgid "Paramétrage compte rendu"
+msgstr "កំណត់របាយការណ៍"
+
+msgid "Type d'entête"
+msgstr "ប្រភេទក្បាលទំព័រ"
+
+msgid "Complet"
+msgstr "ពេញលេញ"
+
+msgid "Simple"
+msgstr "សាមញ្ញ"
+
+msgid "Afficher les commentaires"
+msgstr "បង្ហាញយោបល់"
+
+msgid "Gestion impression étiquettes"
+msgstr "ការគ្រប់គ្រងការបោះពុម្ពស្លាក"
+
+msgid "Sur la base d'une page A4 en mode portrait"
+msgstr "ផ្អែកលើមូលដ្ឋានទំព័រ A4 នៅក្នុងទម្រង់បញ្ឈរ"
+
+msgid "Longueur étiquette (mm)"
+msgstr "ប្រវែងស្លាក (មម)"
+
+msgid "Hauteur étiquette (mm)"
+msgstr "កម្ពស់ស្លាក (មម)"
+
+msgid "Marge haute de la page (mm)"
+msgstr "រឹមទំព័រកំពូល (មម)"
+
+msgid "Marge basse de la page (mm)"
+msgstr "រឹមទំព័រក្រោម (មម)"
+
+msgid "Marge gauche de la page (mm)"
+msgstr "រឹមទំព័រខាងឆ្វេង (មម)"
+
+msgid "Marge droite de la page (mm)"
+msgstr "រឹមទំព័រខាងស្តាំ (មម)"
+
+msgid "Générer une planche test"
+msgstr "បង្កើតបន្ទះតេស្ត"
+
+msgid "Liste des utilisateurs"
+msgstr "បញ្ជីអ្នកប្រើប្រាស់"
+
+msgid "Origine"
+msgstr "ប្រភពដើម"
+
+msgid "Importer des utilisateurs"
+msgstr "នាំចូលអ្នកប្រើប្រាស់"
+
+msgid "Export des utilisateurs"
+msgstr "នាំចេញអ្នកប្រើប្រាស់"
+
+msgid "Export des connexions"
+msgstr "នាំចេញការតភ្ជាប់ "
+
+msgid "Ajouter un utilisateur"
+msgstr "បន្ថែមអ្នកប្រើប្រាស់"
+
+msgid "Editer utilisateur"
+msgstr "កែសម្រួលអ្នកប្រើប្រាស់"
+
+msgid "Editer mot de passe"
+msgstr "កែពាក្យសម្ងាត់"
+
+msgid "Activer utilisateur"
+msgstr "ធ្វើឱ្យអ្នកប្រើប្រាស់សកម្ម"
+
+msgid "Désactiver utilisateur"
+msgstr "ធ្វើឱ្យអ្នកប្រើអសកម្ម"
+
+msgid "Veuillez confirmer la modification de statut"
+msgstr "សូមបញ្ជាក់ពីការផ្លាស់ប្តូរស្ថានភាព"
+
+msgid "Erreur lors du changement de statut"
+msgstr "កំហុសនៅពេលផ្លាស់ប្តូរស្ថានភាព"
+
+msgid "Déconnexion"
+msgstr "ចាកចេញ"
+
+msgid "Non rempli"
+msgstr "មិនពេញលេញ"
+
+msgid "Export connexions utilisateurs"
+msgstr "នាំចេញការតភ្ជាប់អ្នកប្រើប្រាស់"
+
+msgid "Import utilisateurs"
+msgstr "នាំចូលអ្នកប្រើប្រាស់"
+
+msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"
+msgstr "ធ្វើបច្ចុប្បន្នភាពបញ្ជីអ្នកប្រើប្រាស់ហើយបន្ថែមឈ្មោះអ្នកអ្ដែលមិនមាន?"
+
+msgid "Erreur lors du traitement des données"
+msgstr "មានកំហុសអំឡុងពេលដំណើរការទិន្នន័យ"
+
+msgid "Date de validation du"
+msgstr "កាលបរិច្ឆេទកំណត់សុពលភាពនៃ"
+
+msgid "Aucun résultat à exporter !"
+msgstr "គ្មានលទ្ធផលត្រូវនាំចេញទេ!"

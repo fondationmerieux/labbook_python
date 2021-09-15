@@ -19,9 +19,9 @@ from logging.handlers import WatchedFileHandler
 
 from flask import Flask
 from flask_restful import Api
-# from flask_restful_swagger import swagger
 
 from app.models.Logs import Logs
+from app.models.Various import *
 from app.services.GeneralRest import *
 from app.services.UserRest import *
 from app.services.AnalysisRest import *
@@ -43,6 +43,11 @@ LANGUAGES = {
     'fr_FR': 'French',
     'en_GB': 'English',
     'en_US': 'English',
+    'ar': 'Arabic',
+    'km': 'Khmer',
+    'lo': 'Laotian',
+    'mg': 'Malagasy',
+    'pt': 'Portuguese',
 }
 
 # ######################################
@@ -99,8 +104,8 @@ else:
 # ######################################
 # REST initialization
 # ######################################
-# api = swagger.docs(Api(app), apiVersion='0.1')
 api = Api(app)
+
 
 @app.route("/")
 def index():

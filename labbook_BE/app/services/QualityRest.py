@@ -6,10 +6,11 @@ from flask import request
 from flask_restful import Resource
 
 from app.models.General import compose_ret
-from app.models.Constants import *
+from app.models.Constants import Constants
 from app.models.Logs import Logs
-from app.models.Quality import *
-from app.models.File import *
+from app.models.Quality import Quality
+from app.models.File import File
+from app.models.Various import Various
 
 
 class QualityLastMeeting(Resource):
@@ -481,11 +482,15 @@ class EquipmentList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE EquipmentList not found')
 
+        Various.needTranslationDB()
+
         for item in l_items:
             # Replace None by empty string
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
+                elif key == 'section':
+                    item[key] = _(item[key])
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentList')
         return compose_ret(l_items, Constants.cst_content_type_json)
@@ -640,6 +645,8 @@ class EquipmentExport(Resource):
         l_data = [['id_data', 'name', 'maker', 'model', 'funct', 'location', 'section', ]]
         dict_data = Quality.getEquipmentList()
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -650,7 +657,8 @@ class EquipmentExport(Resource):
                 data.append(d['model'])
                 data.append(d['funct'])
                 data.append(d['location'])
-                data.append(d['section'])
+                section = d['section']
+                data.append(_(section))
 
                 l_data.append(data)
 
@@ -688,11 +696,15 @@ class ManualList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE ManualList not found')
 
+        Various.needTranslationDB()
+
         for item in l_items:
             # Replace None by empty string
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
+                elif key == 'section':
+                    item[key] = _(item[key])
 
             if item['date_insert']:
                 item['date_insert'] = datetime.strftime(item['date_insert'], '%Y-%m-%d')
@@ -815,6 +827,8 @@ class ManualExport(Resource):
                    'date_apply', 'date_update', 'section', ]]
         dict_data = Quality.getManualList()
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -828,7 +842,8 @@ class ManualExport(Resource):
                 data.append(d['date_insert'])
                 data.append(d['date_apply'])
                 data.append(d['date_update'])
-                data.append(d['section'])
+                section = d['section']
+                data.append(_(section))
 
                 l_data.append(data)
 
@@ -881,11 +896,15 @@ class MeetingList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE MeetingList not found')
 
+        Various.needTranslationDB()
+
         for item in l_items:
             # Replace None by empty string
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
+                elif key == 'type':
+                    item[key] = _(item[key])
 
             if item['date_meeting']:
                 item['date_meeting'] = datetime.strftime(item['date_meeting'], '%Y-%m-%d')
@@ -984,13 +1003,16 @@ class MeetingExport(Resource):
         l_data = [['id_data', 'date_meeting', 'type', 'type_id', 'promoter', 'report', ]]
         dict_data = Quality.getMeetingList()
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
 
                 data.append(d['id_data'])
                 data.append(d['date_meeting'])
-                data.append(d['type'])
+                type = d['type']
+                data.append(_(type))
                 data.append(d['type_id'])
                 data.append(d['promoter'])
                 data.append(d['report'])
@@ -1031,11 +1053,15 @@ class ProcedureList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE ProcedureList not found')
 
+        Various.needTranslationDB()
+
         for item in l_items:
             # Replace None by empty string
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
+                elif key == 'section':
+                    item[key] = _(item[key])
 
             if item['date_insert']:
                 item['date_insert'] = datetime.strftime(item['date_insert'], '%Y-%m-%d')
@@ -1158,6 +1184,8 @@ class ProcedureExport(Resource):
                    'date_apply', 'date_update', 'section', ]]
         dict_data = Quality.getProcedureList()
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -1171,7 +1199,8 @@ class ProcedureExport(Resource):
                 data.append(d['date_insert'])
                 data.append(d['date_apply'])
                 data.append(d['date_update'])
-                data.append(d['section'])
+                section = d['section']
+                data.append(_(section))
 
                 l_data.append(data)
 
@@ -1223,6 +1252,8 @@ class StaffExport(Resource):
                    'phone', 'email', 'arrived', 'position', 'section', 'last_eval', 'username', ]]
         dict_data = Quality.getStaffList()
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -1237,7 +1268,8 @@ class StaffExport(Resource):
                 data.append(d['email'])
                 data.append(d['arrived'])
                 data.append(d['position'])
-                data.append(d['section'])
+                section = d['section']
+                data.append(_(section))
                 data.append(d['last_eval'])
                 data.append(d['username'])
 
@@ -1282,11 +1314,17 @@ class StockList(Resource):
         if not l_stocks:
             self.log.error(Logs.fileline() + ' : TRACE StockList not found')
 
+        Various.needTranslationDB()
+
         for stock in l_stocks:
             # Replace None by empty string
             for key, value in list(stock.items()):
                 if stock[key] is None:
                     stock[key] = ''
+                elif key == 'type':
+                    stock[key] = _(stock[key])
+                elif key == '':
+                    stock[key] = _(stock[key])
 
             if stock['expir_date']:
                 delta = stock['expir_date'] - datetime.now()
@@ -1426,11 +1464,17 @@ class StockProductList(Resource):
         if not l_products:
             self.log.error(Logs.fileline() + ' : TRACE StockProductList not found')
 
+        Various.needTranslationDB()
+
         for product in l_products:
             # Replace None by empty string
             for key, value in list(product.items()):
                 if product[key] is None:
                     product[key] = ''
+                elif key == 'type':
+                    product[key] = _(product[key])
+                elif key == '':
+                    product[key] = _(product[key])
 
         self.log.info(Logs.fileline() + ' : TRACE StockProductList')
         return compose_ret(l_products, Constants.cst_content_type_json)
@@ -1535,6 +1579,7 @@ class StockSupplyDet(Resource):
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        """ USELESS 26/08/2021
         # Update stock product
         if id_item > 0:
             ret = Quality.updateStockSupply(prs_ser=id_item,
@@ -1552,21 +1597,21 @@ class StockSupplyDet(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new supply product
-        else:
-            ret = Quality.insertStockSupply(prs_prd=args['prs_prd'],
-                                            prs_user=args['prs_user'],
-                                            prs_nb_pack=args['prs_nb_pack'],
-                                            prs_receipt_date=args['prs_receipt_date'],
-                                            prs_expir_date=args['prs_expir_date'],
-                                            prs_rack=args['prs_rack'],
-                                            prs_batch_num=args['prs_batch_num'],
-                                            prs_buy_price=args['prs_buy_price'])
+        else:"""
+        ret = Quality.insertStockSupply(prs_prd=args['prs_prd'],
+                                        prs_user=args['prs_user'],
+                                        prs_nb_pack=args['prs_nb_pack'],
+                                        prs_receipt_date=args['prs_receipt_date'],
+                                        prs_expir_date=args['prs_expir_date'],
+                                        prs_rack=args['prs_rack'],
+                                        prs_batch_num=args['prs_batch_num'],
+                                        prs_buy_price=args['prs_buy_price'])
 
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : StockSupplyDet ERROR insert')
-                return compose_ret('', Constants.cst_content_type_json, 500)
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : StockSupplyDet ERROR insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
-            id_item = ret
+        id_item = ret
 
         self.log.info(Logs.fileline() + ' : TRACE StockSupplyDet id_item=' + str(id_item))
         return compose_ret('', Constants.cst_content_type_json)
@@ -1619,6 +1664,8 @@ class StockExport(Resource):
         l_data = [['prs_ser', 'name', 'nb_pack', 'nb_total', 'type', 'conserv', 'supplier']]
         dict_data = Quality.getStockList(args)
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -1641,8 +1688,10 @@ class StockExport(Resource):
                 data.append(d['prd_name'])
                 data.append(d['prs_nb_pack'])
                 data.append(d['nb_total'])
-                data.append(d['type'])
-                data.append(d['conserv'])
+                type = d['type']
+                data.append(_(type))
+                conserv = d['conserv']
+                data.append(_(conserv))
                 data.append(d['supplier'])
 
                 l_data.append(data)

@@ -132,85 +132,6 @@ class ReportEpidemio(Resource):
         return compose_ret(data, Constants.cst_content_type_json)
 
 
-"""
-class ReportEpidemio(Resource):
-    log = logging.getLogger('log_services')
-
-    def post(self):
-        args = request.get_json()
-
-        if 'date_beg' not in args or 'date_end' not in args:
-            self.log.error(Logs.fileline() + ' : ReportEpidemio ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
-
-        data = {}
-
-        data = Report.getListEpidemio()
-
-        if not data:
-            self.log.error(Logs.fileline() + ' : TRACE list epidemio not found')
-
-        for disease in data:
-            disease['details'] = Report.getStatEpidemio(disease['id_data'])
-
-            if not disease['details']:
-                self.log.error(Logs.fileline() + ' : TRACE stat epidemio not found')
-
-            id_prod = 0  # NOTE : id_prod from sigl_15_data (precision) different from sigl_14_data (wide category)
-            l_id_var = []
-            for det in disease['details']:
-                # looking for pattern "$_xxx " to get xxx
-                formula = det['formula']
-
-                if formula and formula != 'N/A':
-                    id_prod = det['id_prod']
-
-                    # Parse formula for result request
-                    req_part = ''
-
-                    req_part = Report.ParseFormula(formula, id_prod)
-
-                    # self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
-                    result = Report.getResultEpidemio(inner_req=req_part['inner'],
-                                                      end_req=req_part['end'],
-                                                      date_beg=args['date_beg'],
-                                                      date_end=args['date_end'])
-
-                    if result:
-                        det['res_value'] = result['value']
-
-                    # Parse id_var for NbResult request
-                    id_var = 0
-
-                    idx_beg = formula.find("$_")
-
-                    if idx_beg >= 0:
-                        idx_end = formula.find(" ", idx_beg)
-                        idx_beg = idx_beg + 2
-                        if idx_end > idx_beg:
-                            id_var = int(formula[idx_beg:idx_end])
-
-                    if id_var > 0:
-                        l_id_var.append(id_var)
-                else:
-                    det['res_value'] = 'N/A'
-
-            l_id_var  = list(set(l_id_var))
-            disease['total_received'] = 0
-
-            received = Report.getNbResultRecevied(l_id_var, id_prod, args['date_beg'], args['date_end'])
-            analyzed = Report.getNbResultAnalyzed(l_id_var, id_prod, args['date_beg'], args['date_end'])
-
-            if received:
-                disease['total_received'] = received['total']
-
-            if analyzed:
-                disease['total_analyzed'] = analyzed['total']
-
-        self.log.info(Logs.fileline() + ' : TRACE ReportEpidemio')
-        return compose_ret(data, Constants.cst_content_type_json)"""
-
-
 class ReportActivity(Resource):
     log = logging.getLogger('log_services')
 
@@ -229,11 +150,21 @@ class ReportActivity(Resource):
             self.log.error(Logs.fileline() + ' : TRACE stat type not found')
             stat['type'] = []
 
+        if Various.needTranslationDB():
+            for stat_type in stat['type']:
+                stat_ana = stat_type['analysis']
+                stat_type['analysis']  = _(stat_ana)
+
         stat['age'] = Report.getActivityAge(args['date_beg'], args['date_end'], args['type_ana'])
 
         if not stat['age']:
             self.log.error(Logs.fileline() + ' : TRACE stat age not found')
             stat['age'] = []
+
+        if Various.needTranslationDB():
+            for stat_age in stat['age']:
+                stat_ana = stat_age['analysis']
+                stat_age['analysis']  = _(stat_ana)
 
         self.log.info(Logs.fileline() + ' : TRACE ReportActivity')
         return compose_ret(stat, Constants.cst_content_type_json)
@@ -320,10 +251,16 @@ class ReportToday(Resource):
         if not l_datas:
             self.log.error(Logs.fileline() + ' : TRACE list today record not found')
 
+        Various.needTranslationDB()
+
         for data in l_datas:
             for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
+                elif key == 'analysis':
+                    data[key] = _(data[key])
+                elif key == 'family':
+                    data[key] = _(data[key])
 
             if data['rec_date'] != '':
                 data['rec_date'] = datetime.strftime(data['rec_date'], '%Y-%m-%d')
@@ -351,6 +288,8 @@ class ReportTodayExport(Resource):
 
         dict_data = Report.getTodayList(args['date_beg'], args['date_end'])
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -358,8 +297,10 @@ class ReportTodayExport(Resource):
                 data.append(d['id_rec'])
                 data.append(d['rec_date'])
                 data.append(d['rec_num'])
-                data.append(d['family'])
-                data.append(d['analysis'])
+                fam = d['family']
+                data.append(_(fam))
+                ana = d['analysis']
+                data.append(_(ana))
                 data.append(d['vld_type'])
 
                 l_data.append(data)

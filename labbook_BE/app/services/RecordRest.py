@@ -5,16 +5,14 @@ from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
-from app.models.Analysis import *
+from app.models.Analysis import Analysis
 from app.models.General import compose_ret
-from app.models.Constants import *
-from app.models.File import *
-from app.models.Product import *
-from app.models.Record import *
-from app.models.Result import *
-from app.models.Various import *
-from app.models.User import *
-from app.models.Setting import *
+from app.models.Constants import Constants
+from app.models.File import File
+from app.models.Product import Product
+from app.models.Record import Record
+from app.models.Result import Result
+from app.models.Various import Various
 from app.models.Logs import Logs
 
 
@@ -388,11 +386,15 @@ class RecordListAna(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'RecordListAna ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         for data in l_datas:
             # Replace None by empty string
             for key, value in list(data.items()):
                 if data[key] is None:
-                    datza[key] = ''
+                    data[key] = ''
+                elif key == 'name':
+                    data[key] = _(data[key])
 
         self.log.info(Logs.fileline() + ' : RecordListAna id_rec=' + str(id_rec))
         return compose_ret(l_datas, Constants.cst_content_type_json, 200)

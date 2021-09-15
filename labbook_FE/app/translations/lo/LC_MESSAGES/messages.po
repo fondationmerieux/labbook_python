@@ -1,0 +1,2494 @@
+# Lao translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-07-15 11:06+0200\n"
+"PO-Revision-Date: 2021-09-03 15:20+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: lo\n"
+"Language-Team: lo <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+msgid "Dossier administratif"
+msgstr "ການບັນທຶກດ້ານບໍລິຫານ"
+
+msgid "Dossier"
+msgstr "ບັນທຶກ"
+
+msgid "Identité"
+msgstr "ຕົວຕົນ"
+
+msgid "Patient anonyme"
+msgstr "ຄົນເຈັບບໍ່ລະບຸຊື່"
+
+msgid "Né(e) le"
+msgstr "ວັນ ເດືອນ ປີ ເກີດ"
+
+msgid "années"
+msgstr "ປີ"
+
+msgid "mois"
+msgstr "ເດືອນ"
+
+msgid "semaines"
+msgstr "ອາທິດ"
+
+msgid "jours"
+msgstr "ມື້"
+
+msgid "Masculin"
+msgstr "ຊາຍ"
+
+msgid "Féminin"
+msgstr "ຍິງ"
+
+msgid "Inconnu"
+msgstr "ບໍ່ຮູ້"
+
+msgid "Prescription"
+msgstr "ໃບສັ່ງຢາ"
+
+msgid "Date de réception du dossier"
+msgstr "ວັນທີຮັບຂໍ້ມູນ"
+
+msgid "Date de prescription"
+msgstr "ວັນທີຂອງໃບສັ່ງຢາ"
+
+msgid "Prescripteur"
+msgstr "ແພດທີ່ສັ່ງ"
+
+msgid "Colis"
+msgstr "ຊຸດ"
+
+msgid "Oui"
+msgstr "ແມ່ນ"
+
+msgid "Identification du colis"
+msgstr "ໝາຍເລກອ້າງອີງຂອງຊຸດ"
+
+msgid "Date de réception du colis"
+msgstr "ວັນທີຮັບຊຸດ"
+
+msgid "Non"
+msgstr "ບໍ່ແມ່ນ"
+
+msgid "Hospitalisation"
+msgstr "ເຂົ້າຮັກສາທີ່ໂຮງໝໍ"
+
+msgid "Date d'admission"
+msgstr "ວັນທີເຂົ້າຮັກສາ"
+
+msgid "Service demandeur"
+msgstr "ພະແນກທີ່ເຂົ້າຮັກສາ"
+
+msgid "Numéro de lit"
+msgstr "ຕໝາຍເລກຕຽງ"
+
+msgid "Analyses et actes de prélèvement"
+msgstr "ການວິເຄາະ ແລະ ການເກັບຕົວຢ່າງ"
+
+msgid "Analyses"
+msgstr "ການວິເຄາະ"
+
+msgid "Code"
+msgstr "ລະຫັດ"
+
+msgid "Nom"
+msgstr "ຊື່"
+
+msgid "Urgent"
+msgstr "ສຸກເສີນ"
+
+msgid "Demandée"
+msgstr "ຄຳຂໍ"
+
+msgid "Cote"
+msgstr "ເລດ"
+
+msgid "Prix"
+msgstr "ລາຄາ"
+
+msgid "Actes de prélèvement"
+msgstr "ການເກັບຕົວຢ່າງ"
+
+msgid "Compte-rendus"
+msgstr "ລາຍງານ"
+
+msgid "Action"
+msgstr "ການປະຕິບັດ"
+
+msgid "Date"
+msgstr "ວັນທີ"
+
+msgid "Facturation"
+msgstr "ໃບເກັບເງິນ"
+
+msgid "Prix total"
+msgstr "ລາຄາທັງໝົດ"
+
+msgid "Remise sur la facturation"
+msgstr "ສ່ວນຫຼຸດໃນໃບເກັບເງິນ"
+
+msgid "Pourcentage de la remise"
+msgstr "ເປີເຊັນສ່ວນຫຼຸດ"
+
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "ປະກັນສຸຂະພາບ"
+
+msgid "Reste à payer"
+msgstr "ສ່ວນທີ່ເຫຼືອຕ້ອງຈ່າຍ"
+
+msgid "Numéro de quittance"
+msgstr "ນ້ຳເບີທີ່ໄດ້ຮັບ"
+
+msgid "Renseignements / Informations complémentaires"
+msgstr "ຂໍ້ມູນ"
+
+msgid "Valise de documents"
+msgstr "ກ່ອງເອກະສານ"
+
+msgid "Fichier"
+msgstr "ຟາຍ"
+
+msgid "Enregistrer le document"
+msgstr "ບັນທຶກເອກະສານ"
+
+msgid "Quitter"
+msgstr "ອອກ"
+
+msgid "Imprimer la facture"
+msgstr "ພິມໃບບິນ"
+
+msgid "Code barre"
+msgstr "ບາໂຄດ"
+
+msgid "Télécharger"
+msgstr "ດາວໂຫຼດ"
+
+msgid "Ré-éditer"
+msgstr "ແກ້ໄຂໃໝ່"
+
+msgid "Aucune donnée à afficher"
+msgstr "ບໍ່ມີຂໍ້ມູນໃຫ້ສະແດງ"
+
+msgid "Aucun fichier déposé"
+msgstr "ບໍ່ມີຟາຍອັບໂຫຼດ"
+
+msgid "Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)"
+msgstr "ທ່ານຕ້ອງການແກ້ໄຂລາຍງານໃໝ່ບໍ່? (ຍົກເລີກ ແລະ ທົດແທນຈະສະແດງຂຶ້ນ)"
+
+msgid "Une erreur est survenue lors du traitement"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນ"
+
+msgid "Une erreur est survenue lors du dépot d'un fichier"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງອັບໂຫຼດຟາຍ"
+
+msgid "Le fichier sera définitivement supprimé"
+msgstr "ຟາຍຈະຖືກລຶບອອກຕະຫຼອດການ"
+
+msgid "Erreur lors de la suppression d'un fichier"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງລຶບຟາຍ"
+
+msgid "Erreur lors de la génération du PDF facture"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງສ້າງໃບບິນ PDF"
+
+msgid "Erreur lors de la génération du PDF code barre"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງສ້າງບາໂຄດ PDF"
+
+msgid "Import d'analyses"
+msgstr "ນຳການວິເຄາະເຂົ້າ"
+
+msgid "Statut de la dernière importation"
+msgstr "ສະຖານະການນຳເຂົ້າສຸດທ້າຍ"
+
+msgid "Type d'import"
+msgstr "ປະເພດການນຳເຂົ້າ"
+
+msgid "Met à jour les analyses (dont le code est identique)"
+msgstr "ອັບເດດການວິເຄາະ (ກັບລະຫັດດຽວກັນ)"
+
+msgid "Ajoute les nouvelles analyses (code non existant en base)"
+msgstr "ເພີ່ມການວິເຄາະໃໝ່ (ບໍ່ມີລະຫັດໃນຖານຂໍ້ມູນ)"
+
+msgid "Retour"
+msgstr "ກັບຄືນ"
+
+msgid "Importer des analyses"
+msgstr "ກຳລັງນຳການວິເຄາະເຂົ້າ"
+
+msgid "Dépôt réussi"
+msgstr "ການສົ່ງສຳເລັດແລ້ວ"
+
+msgid "Le fichier doit être un csv"
+msgstr "ຟາຍຕ້ອງເປັນ csv"
+
+msgid "Lancer l'import du référentiel d'analyses ?"
+msgstr "ຕ້ອງການເລີ່ມຕົ້ນການນຳເຂົ້າທີ່ເກັບການວິເຄາະບໍ່?"
+
+msgid "Traitement réussi"
+msgstr "ການດຳເນີນການສຳເລັດແລ້ວ"
+
+msgid "Aucun statut"
+msgstr "ບໍ່ມີສະຖານະ"
+
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
+msgstr "ຄວາມຜິດພາດເກີດຂືຶ້ນລະຫວ່າງດຳເນີນການກັບຂໍ້ມູນ, ໃຫ້ refresh ໜ້າຈໍຈົນກ່ວາຈະຮູ້ສະຖານະ"
+
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງກວດສອບສະຖານະຖານຂໍ້ມູນ"
+
+msgid "Validation biologique"
+msgstr "ການຢືນຢັນທາງຊີວະພາບ"
+
+msgid "Renseignements cliniques"
+msgstr "ຂໍ້ມູນທາງການແພດ"
+
+msgid "Aucune analyse"
+msgstr "ບໍ່ມີການວິເຄາະ"
+
+msgid "Validation des résultats cochés"
+msgstr "ການຢືນຢັນການກວດສອບຜົນ"
+
+msgid "Date de validation"
+msgstr "ການຢືນຢັນວັນທີ"
+
+msgid "Biologiste"
+msgstr "ນັກຊີວະວິທະຍາ"
+
+msgid "Commentaire"
+msgstr "ຄຳຄິດເຫັນ"
+
+msgid "Valider"
+msgstr "ການຢືນຢັນ"
+
+msgid "Compte rendu"
+msgstr "ການລາຍງານ"
+
+msgid "Commentaire et motif annulation"
+msgstr "ເຫດຜົນການຍົກເລີກ ແລະ ຄຳຄິດເຫັນ"
+
+msgid "Motif"
+msgstr "ເຫດຜົນ"
+
+msgid "Ajouter"
+msgstr "ເພີ່ມ"
+
+msgid "Annuler"
+msgstr "ຍົກເລີກ"
+
+msgid "Ajouter de nouvelles analyses"
+msgstr "ເພີ່ມການວິເຄາະໃໝ່"
+
+msgid "Dossier suivant"
+msgstr "ການບັນທຶກຕໍ່ໃປ"
+
+msgid "Fin de la liste des dossiers"
+msgstr "ສິ້ນສຸດລາຍການບັນທຶກ"
+
+msgid "Une erreur est survenue du changement de statut du dossier"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການປ່ຽນແປງສະຖານະຂອງຟາຍ"
+
+msgid "Une erreur est survenue lors de création des résultats"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການສ້າງຜົນ"
+
+msgid "Une erreur est survenue lors de l'enregistrement des analyses"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງບັນທຶກການວິເຄາະ"
+
+msgid "Etes-vous sur de vouloir effacer ce résultat ?"
+msgstr "ທ່ານແນ່ໃຈທີ່ຈະລຶບຜົນບໍ່?"
+
+msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຕັ້ງຄ່າທີ່ປ້ອນເຂົ້າໃໝ່"
+
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "ທ່ານແນ່ໃຈທີ່ຈະຍົກເລີກຜົນນີ້ບໍ່?\\n ການກະທຳນີ້ແມ່ນບໍ່ສາມາດປ່ຽນຄືນໄດ້"
+
+msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຍົກເລີກຄ່າທີ່ປ້ອນເຂົ້າ"
+
+msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
+msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຢືນຢັນຄ່າທາງຊີວະພາບທີ່ປ້ອນເຂົ້າ"
+
+msgid "Réinitialiser la valeur"
+msgstr "ການຕັ້ງມູນຄ່າຄືນ"
+
+msgid "Cliquer pour commencer une recherche"
+msgstr "ກົດປຸ່ມເພື່ອຄົ້ນຫາ"
+
+msgid "Analyse déjà présente !"
+msgstr "ການຄົ້ນຫາແມ່ນປະກົດຂື້ນມາໃຫ້ເຫັນ"
+
+msgid "Erreur lors de la récupération d'une analyse"
+msgstr "ຄວາມຜິດພາດເວລາຮຽກຄືນການຄົ້ນຫາໃດໜຶ່ງ"
+
+msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
+msgstr "ກະລຸນາເບິ່ງອີກເຈົ້າກຳລັງອອກການບັນທຶກປາດສະຈາກການຢືນຢັນຄືນ"
+
+msgid "Contributeurs"
+msgstr "ຜູ້ມີສ່ວນຮ່ວມ"
+
+msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
+msgstr "ແລັບບຸກແມ່ນຊອບແວໃຊ້ສໍາລັບການຄຸ້ມຄອງຫ້ອງວິເຄາະ"
+
+msgid "LabBook est co-financé par l’AFD et la Fondation Mérieux."
+msgstr "ແລັບບຸກແມ່ນຊອບແວທີໃຊ້ງົບເງິນລະຫວ່າງ ເອເອຟດີ ແລະ ມູນນິທິເມຣິເອີ"
+
+msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
+msgstr "ເອພິຄອນເຊບໄດ້ພັດທະນາກ່ຽວກັບຊອບແວແລັບບຸກຮອດປີ 2019"
+
+msgid "La société &AElig;GL&Eacute; a pris le relais à partir de 2020."
+msgstr "ບໍລິສັດ ເອເກີ ໄດ້ຊື້ມາເປັນຂອງຕົນເອງປີ 2020"
+
+msgid "Le logiciel est sous licence GNU."
+msgstr "ຊອບແວນີ້ແມ່ນຢູ່ພາຍໃຕ້ກຳມະສິດຂອງ GNU"
+
+msgid "Version : "
+msgstr "ຊຸດທີ"
+
+msgid "Accès"
+msgstr "ການເຂົ້າເຖິງ"
+
+msgid "Titre"
+msgstr "ຫົວຂໍ້"
+
+msgid "Monsieur"
+msgstr "ທ້າວ"
+
+msgid "Madame"
+msgstr "ນາງ"
+
+msgid "Mademoiselle"
+msgstr "ນາງສາວ"
+
+msgid "Docteur"
+msgstr "ໝໍ"
+
+msgid "Professeur"
+msgstr "ຊ່ຽວຊານ"
+
+msgid "Prénom"
+msgstr "ຊື່"
+
+msgid "Initiales"
+msgstr "ເລີ່ມຕົ້ນ"
+
+msgid "Lieu de travail"
+msgstr "ສະຖານທີ່ເຮັດວຽກ"
+
+msgid "Service"
+msgstr "ການບໍລິການ"
+
+msgid "Adresse"
+msgstr "ທີ່ຢູ່"
+
+msgid "Ville"
+msgstr "ເມືອງ"
+
+msgid "Spécialité"
+msgstr "ພິເສດ"
+
+msgid "Téléphone fixe"
+msgstr "ໂທລະສັບຕັ້ງໂຕະ"
+
+msgid "Téléphone mobile"
+msgstr "ໂທລະສັບມືຖື"
+
+msgid "Fax"
+msgstr "ໂທລະສານ"
+
+msgid "Adresse email"
+msgstr "ອີເມວ"
+
+msgid "Enregistrer"
+msgstr "ເກັບ"
+
+msgid "Veuillez saisir un nom."
+msgstr "ກະລຸນາປ້ອນຊື່ໃສ່"
+
+msgid "Une erreur est survenue lors de l'enregistrement"
+msgstr "ຄວາມຜິດພາດປະກົດຂື້ນເວລາເກັບຂໍ້ມູນ"
+
+msgid "Equipement"
+msgstr "ອຸປະກອນ"
+
+msgid "Nom de l'équipement"
+msgstr "ຊື່ອຸປະກອນ"
+
+msgid "Nom du fabricant"
+msgstr "ຊື່ຜູ້ຜະລິດ"
+
+msgid "modèle"
+msgstr "ລຸ້ນ"
+
+msgid "Photo"
+msgstr "ຮູບ"
+
+msgid "Fonction"
+msgstr "ໜ້າທີ່"
+
+msgid "Localisation"
+msgstr "ທີ່ຕັ້ງ"
+
+msgid "Section"
+msgstr "ພະແນກ"
+
+msgid "Fournisseur"
+msgstr "ຜູ້ສະໜອງ"
+
+msgid "Numéro de série"
+msgstr "ເລກລໍາດັບການຜະລິດ"
+
+msgid "Numéro d'inventaire"
+msgstr "ເລກທີຢູ່ສາງ"
+
+msgid "Responsable"
+msgstr "ຜູ້ຮັບຜິດຊອບ"
+
+msgid "Manuel"
+msgstr "ຄູ່ມື"
+
+msgid "Procédure"
+msgstr "ວິທີການ"
+
+msgid "Liste des pannes et réparations"
+msgstr "ບັນຊີເຄື່ອງເປເພ ແລະ ສ້ອມແປງ"
+
+msgid "Maintenance préventive"
+msgstr "ການບໍາລຸງຮັກສາລ່ວງໜ້າ"
+
+msgid "Certificat d'étalonnage"
+msgstr "ໃບຢັ້ງຢືນການສອບທຽບ"
+
+msgid "Contrat de maintenance"
+msgstr "ສັນຍາການເຮັດບໍາລຸງຮັກສາ"
+
+msgid "Date de fin de contrat de maintenance"
+msgstr "ວັນທີສີ້ນສຸດການເຮັດສັນຍາບໍາລຸງຮັກສາ"
+
+msgid "Facture"
+msgstr "ໃບເກັບເງິນ"
+
+msgid "Date de réception"
+msgstr "ວັນທີຮັບ"
+
+msgid "Date d'achat"
+msgstr "ວັນທີຊື້"
+
+msgid "Date d'acquisition"
+msgstr "ວັນທີໄດ້ມາ"
+
+msgid "Date de mise en service"
+msgstr "ວັນທີການວ່າຈ້າງ"
+
+msgid "Date de retrait du laboratoire"
+msgstr "ວັນທີການຖອນຈາກຫ້ອງວິເຄາະ"
+
+msgid "Commentaires"
+msgstr "ຄໍາແນະນໍາ"
+
+msgid "Veuillez saisir un nom d'équipement."
+msgstr "ກະລຸນາປ້ອນຊື່ອຸປະກອນ"
+
+msgid "Supprimer"
+msgstr "ລຶບຖິ້ມ"
+
+msgid "Historique d'une analyse"
+msgstr "ປະຫວັດຂອງການວິເຄາະຂໍ້ມູນຜ່ານມາ"
+
+msgid "Liste des dossiers pour cette analyse"
+msgstr "ບັນຊີຟາຍສໍາລັບການວິເຄາະຂໍ້ມູນນີ້"
+
+msgid "du"
+msgstr "ຈາກ"
+
+msgid "au"
+msgstr "ເຖິງ"
+
+msgid "Nombre total de lignes"
+msgstr "ຈໍານວນເລກບັນດາແຖວ"
+
+msgid "Premier"
+msgstr "ທີໜຶ່ງ"
+
+msgid "Précédent"
+msgstr "ຜ່ານມາ"
+
+msgid "Suivant"
+msgstr "ຕໍ່ໄປ"
+
+msgid "Dernier"
+msgstr "ສຸດທ້າຍ"
+
+msgid "serial"
+msgstr "ລໍາດັບ"
+
+msgid "N° dossier"
+msgstr "ເລກບັນທຶກ"
+
+msgid "Date prescr."
+msgstr "ວັນທີການສັ່ງຢາ"
+
+msgid "Variable"
+msgstr "ປ່ຽນແປງ"
+
+msgid "Résultat"
+msgstr "ຜັນ"
+
+msgid "Retour à la liste analyses"
+msgstr "ກັບໄປຫາບັນຊີການວິເຄາະຂໍ້ມູນ"
+
+msgid "Historique patient"
+msgstr "ປະຫວັດຄົນເຈັບ"
+
+msgid "Code labo."
+msgstr "ລະຫັດຫ້ອງວິເຄາະ"
+
+msgid "Date de naissance"
+msgstr "ວັນ ເດືອນ ປີ ເກີດ"
+
+msgid "Sexe"
+msgstr "ເພດ"
+
+msgid "Liste des analyses"
+msgstr "ບັນຊີການວິເຄາະ"
+
+msgid "Analyse"
+msgstr "ການວິເຄາະ"
+
+msgid "Retour à la liste patients"
+msgstr "ກັບໄປຫາລາຍການຄົນເຈັບ"
+
+msgid "Liste détaillée du stock pour ce produit"
+msgstr "ບັນຊີເກັບໄວ້ເພື່ອລາຍການນີ້ສະເພາະ"
+
+msgid "Nb de paq."
+msgstr "ຈໍານວນຫໍ່"
+
+msgid "Date recept."
+msgstr "ວັນທີຮັບ"
+
+msgid "Date expir."
+msgstr "ວັນທີໝົດອາຍຸ"
+
+msgid "N° lot"
+msgstr "ເລກຊຸດຜະລິດ"
+
+msgid "Prix d'achat"
+msgstr "ລາຄາຊື້"
+
+msgid "Historique consommation"
+msgstr "ປະຫວັດການຊົມໃຊ້"
+
+msgid "Indiquer le nombre de paquets utilisée"
+msgstr "ລະບຸເລກຂອງຊຸດຫີບຫໍ່ທີໃຊ້ໄປແລ້ວ"
+
+msgid "Nombre de paquets"
+msgstr "ເລກຈໍານວນຊຸດຫີບຫໍ່"
+
+msgid "Indiquer la quantité utilisée"
+msgstr "ລະບຸຈໍານວນທີໃຊ້ໄປແລ້ວ"
+
+msgid "Aucun prescripteur à exporter !"
+msgstr "ບໍມີຜູ້ສັ່ງຢາຖືກສົ່ງອອກ!"
+
+msgid "Erreur lors de la génération du fichier"
+msgstr "ຄວາມຜິດພາດຊ່ວງໄລຍະການເລືອກຟາຍ"
+
+msgid "Référence"
+msgstr "ການອ້າງອີງ"
+
+msgid "Rédacteur"
+msgstr "ຜູ້ຂຽນ"
+
+msgid "Vérificateur"
+msgstr "ຜູ້ກວດສອບ"
+
+msgid "Approbateur"
+msgstr "ຜູ້ອະນຸມັດ"
+
+msgid "Date de création"
+msgstr "ວັນທີເລີ່ມຕົ້ນ"
+
+msgid "Date d'application"
+msgstr "ວັນທີນໍາໃຊ້"
+
+msgid "Date de modification"
+msgstr "ປັບປຸງວັນທີ"
+
+msgid "Section d'application"
+msgstr "ຂະແໜງ"
+
+msgid "Veuillez saisir une référence ou un titre."
+msgstr "ກະລຸນາປ້ອນລະຫັດອ້າງອີງໃດໜຶ່ງ ຫຼື ຫົວຂໍ້ໃດໜຶ່ງ"
+
+msgid "Réunion"
+msgstr "ການປະຊຸມ"
+
+msgid "Type"
+msgstr "ປະເພດ"
+
+msgid "Réunion d'équipe"
+msgstr "ທີມປະຊຸມ"
+
+msgid "Réunion qualité"
+msgstr "ຄຸນນະພາບຂອງການປະຊຸມ"
+
+msgid "Réunion de direction"
+msgstr "ການບໍລິຫານການປະຊຸມ"
+
+msgid "Organisateur"
+msgstr "ເຈົ້າພາບ"
+
+msgid "Compte-rendu"
+msgstr "ການລາຍງານ"
+
+msgid "Veuillez saisir une date de réunion."
+msgstr "ກະລຸນາປ້ອນວັນທີເຮັດການປະຊຸມ"
+
+msgid "Détails produit"
+msgstr "ລາຍລະອຽດຂອງຜະລິດຕະພັນ"
+
+msgid "Nom du produit"
+msgstr "ຊື່ຜູ້ຜະລິດ"
+
+msgid "Type produit"
+msgstr "ປະເພດຜະລິດຕະພັນ"
+
+msgid "Nombre par paquet"
+msgstr "ຈໍານວນຕໍ່ຊຸດ"
+
+msgid "Seuil de sécurité"
+msgstr "ຂອບເຂດຄວາມປອດໄພ"
+
+msgid "Référence fournisseur"
+msgstr "ການອ້າງອີງຫາຜູ້ສະໜອງ"
+
+msgid "Conservation"
+msgstr "ການຮັກສາ"
+
+msgid "Veuillez saisir un nom de produit."
+msgstr "ກະລຸນາປ້ອນຊື່ຜະລິດຕະພັນ"
+
+msgid "Veuillez saisir un nombre de produits par paquet supérieur à 0."
+msgstr "ກະລຸນາປ້ອນຈໍານວນຜະລິດຕະພັນຕໍ່ຊຸດໃຫ້ໂຕເລກຫຼາຍກວ່າ ສູນ (0)"
+
+msgid "Détails patient"
+msgstr "ລາຍລະອຽດຂອງຄົນເຈັບ"
+
+msgid "Demande d'analyses patient - Fiche patient"
+msgstr "ໃບສັ່ງກວດຂອງຄົນເຈັບ-ແບບຟອມຄົນເຈັບ"
+
+msgid "Anonyme"
+msgstr "ບໍ່ລະບຸຊື່"
+
+msgid "Code patient interne au laboratoire"
+msgstr "ລະຫັດຄົນເຈັບພາຍໃນຫ້ອງວິເຄາະ"
+
+msgid "Nom de jeune fille"
+msgstr "ຊື່ເພດຍິງ"
+
+msgid "Date de naissance approximative"
+msgstr "ວັນ ເດືອນ ປີ ເກີດ"
+
+msgid "Prénom(s)"
+msgstr "ຊື່"
+
+msgid "ou"
+msgstr "ຫຼື"
+
+msgid "Age"
+msgstr "ອາຍຸ"
+
+msgid "unité"
+msgstr "ຫົວໜ່ວຍ"
+
+msgid "Jours"
+msgstr "ວັນ"
+
+msgid "Semaines"
+msgstr "ອາທິດ"
+
+msgid "Mois"
+msgstr "ເດືອນ"
+
+msgid "Années"
+msgstr "ປີ"
+
+msgid "Coordonnées"
+msgstr "ຂໍ້ມູນການຕິດຕໍ່"
+
+msgid "Téléphone"
+msgstr "ໂທລະສັບ"
+
+msgid "Profession"
+msgstr "ອາຊີບ"
+
+msgid "Boite postale"
+msgstr "ທີ່ຢູ່ໄປສະນີ"
+
+msgid "Quartier / Secteur"
+msgstr "ກຸ່ມບ້ານ/ພາກສ່ວນ"
+
+msgid "Code postal"
+msgstr "ລະຫັດຊິບໂຄດ"
+
+msgid "Ville / Village"
+msgstr "ເມືອງ/ບ້ານ"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un age"
+msgstr "ກະລຸນາເລືອກວັນເດືອປີເກີດ ຫຼື ປ້ອນອາຍຸ"
+
+msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາການແກ້ໄຂ/ຕື່ມຈຳນວນຄົນເຈັບ"
+
+msgid "Details demande d'analyses"
+msgstr "ລາຍລະອຽດໃບສັ່ງກວດ"
+
+msgid "Demande d'analyses patient externe"
+msgstr "ໃບສັ່ງກວດຂອງຄົນເຈັບພາຍນອກ"
+
+msgid "Modifier le dossier du patient"
+msgstr "ແກ້ໄຂຂໍ້ມູນຂອງຄົນເຈັບ"
+
+msgid "Rechercher une analyse"
+msgstr "ຄົ້ນຫາການວິເຄາະໃດໜຶ່ງ"
+
+msgid "Produits pathologiques"
+msgstr "ບັນດາເຊື້ອໃຫ້ພະຍາດ"
+
+msgid "Ajouter un prélèvement"
+msgstr "ຕຶ່ມຕົວຢ່າງໃສ່"
+
+msgid "Prod. pathol."
+msgstr "ບັນດາເຊື້ອໃຫ້ພະຍາດ"
+
+msgid "Statut"
+msgstr "ສະຖານະ"
+
+msgid "Date prél."
+msgstr "ວັນທີເກັບຕົວຢ່າງ"
+
+msgid "Date réception"
+msgstr "ວັນທີຮັບ"
+
+msgid "Préleveur"
+msgstr "ຜູ້ເກັບຕົວຢ່າງ"
+
+msgid "Qté"
+msgstr "ຈໍານວນ"
+
+msgid "Erreur lors la récupération des prélèvements"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນເມື່ອດຶງຕົວຢ່າງອອກ"
+
+msgid "Erreur lors la récupération des produits pathologiques"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການຄົ້ນຫາບັນດາເຊື້ອໃຫ້ພະຍາດ"
+
+msgid "Erreur lors de la récupération des analyses"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການຄົ້ນຫາບັນດາເຊື້ອໃຫ້ພະຍາດ"
+
+msgid "Merci de confirmer la suppression"
+msgstr "ກະລຸນາຢືນຢັນກ່ອນລຶບຖີ້ມ"
+
+msgid "Veuillez sélectionner au moins une analyse"
+msgstr "ກະລຸນາເລືອກການວິເຄາະຈໍານວນໜຶ່ງປະເພດ"
+
+msgid "Veuillez sélectionner une date de réception du dossier"
+msgstr "ກະລຸນາເລືອກວັນທີຮັບທີເກັບໃນຄັງນີ້"
+
+msgid "Veuillez sélectionner une date de prescription"
+msgstr "ກະລຸນາເລືອກວັນທີສັ່ງຢາ"
+
+msgid "Veuillez renseigner le type du produit"
+msgstr "ກະລຸນາເລືອກວັນທີສັ່ງຢາ"
+
+msgid "Veuillez renseigner le statut du produit"
+msgstr "ກະລຸນາປ້ອນສະຖານະຂອງຜະລິດຕະພັນ"
+
+msgid "Veuillez renseigner toutes les dates de réception"
+msgstr "ກະລຸນາຕື່ມວັນທີຮັບຕົວຢ່າງທັງໝົດ"
+
+msgid "Veuillez renseigner toutes les identités des préleveurs"
+msgstr "ກະລຸນາຕື່ມເລກລະຫັດຂອງຜູ້ເກັບຕົວຢ່າງທັງໝົດ"
+
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການບັນທຶກຕົວຢ່າງ"
+
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການເກັບການບັນທຶກ"
+
+msgid "Une erreur est survenue lors du changement de statut du dossier"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການປ່ຽນແປງສະຖານະຂອງການບັນທຶກ"
+
+msgid "Une erreur est survenue lors de la création des résultats"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນເວລາສ້າງຜົນ"
+
+msgid "Demande d'analyses patient hospitalisé"
+msgstr "ຄົນເຈັບບໍ່ມີໃບສັ່ງກວດ"
+
+msgid "Produit pathologique"
+msgstr "ບັນດາເຊື້ອໃຫ້ພະຍາດ"
+
+msgid "Localisation prélèvement"
+msgstr "ບ່ອນມ້ຽນຕົວຢ່າງ"
+
+msgid "Quantité"
+msgstr "ຈໍານວນ"
+
+msgid "Date du prélèvement"
+msgstr "ວັນທີເກັບຕົວຢ່າງ"
+
+msgid "Lieu de prélèvement"
+msgstr "ສະຖານທີ່ເກັບຕົວຢ່າງ"
+
+msgid "Précision lieu"
+msgstr "ຈຸດທີ່ຢູ່"
+
+msgid "Heure de réception"
+msgstr "ເວລາຮັບຕົວຢ່າງ"
+
+msgid "Veuillez saisir un statut."
+msgstr "ກະລຸນາປ້ອນສະຖານະ"
+
+msgid "Veuillez choisir un produit pathologique."
+msgstr "ກະລຸນາເລືອກພະຍາດໃດໜຶ່ງ"
+
+msgid "Personnel"
+msgstr "ພະນັກງານ"
+
+msgid "Numéro de téléphone"
+msgstr "ເບີໂທລະສັບ"
+
+msgid "Date d'arrivée au laboratoire"
+msgstr "ວັນທີຕົວຢ່າງຮອດຫ້ອງວິເຄາະ"
+
+msgid "Position actuelle dans le laboratoire"
+msgstr "ຕຳແໜ່ງປະຈຸບັນໃນຫ້ອງວິເຄາະ"
+
+msgid "CV"
+msgstr "ຊີວະປະຫວັດ"
+
+msgid "Diplômes"
+msgstr "ໃບປະກາດສະນິຍະບັດ"
+
+msgid "Formations continues"
+msgstr "ສືບຕໍ່ການສຶກສາ"
+
+msgid "Section de travail"
+msgstr "ພາກສ່ວນວວຽກ"
+
+msgid "Dernière évaluation des compétences"
+msgstr "ການປະເມີນຄວາມສາມາດທີ່ຜ່ານມາ"
+
+msgid "Approvisionner un produit"
+msgstr "ການສະໜອງຜະລິດຕະພັນ"
+
+msgid "Produit"
+msgstr "ຜະລິດຕະພັນ"
+
+msgid "Date d'expiration"
+msgstr "ວັນທີໝົດອາຍຸ"
+
+msgid "Numéro de lot"
+msgstr "ເລກຊຸດຜະລິດ"
+
+msgid "Veuillez choisir un produit à approvisionner"
+msgstr "ກະລຸນາເລືອກຜະລິດຕະພັນໃດໜຶ່ງເພື່ອສະໜອງ"
+
+msgid "Veuillez saisir un nombre de paquets supérieur à 0."
+msgstr "ກະລຸນາປ້ອນຈໍານວນຊຸດໃຫ້ໂຕເລກຫຼາຍກວ່າສູນ (0)"
+
+msgid "Veuillez saisir une date d'expiration."
+msgstr "ກະລຸນາປ້ອນວັນທີໝົດອາຍຸ"
+
+msgid "Nom fournisseur"
+msgstr "ຊື່ຜູ້ສະໜອງ"
+
+msgid "Contact"
+msgstr "ຕິດຕໍ່"
+
+msgid "Veuillez saisir un fournisseur."
+msgstr "ກະລຸນາປ້ອນຜູ້ສະໜອງໃດໜຶ່ງ"
+
+msgid "Saisie de résultats"
+msgstr "ປ້ອນຜົນເຂົ້າ"
+
+msgid "Feuille de paillasse"
+msgstr "ແບບຟອມບັນທຶກການວິເຄາະ"
+
+msgid "Certains résultats obligatoires ne sont pas saisis"
+msgstr "ບາງຜົນການວິເຄາະທີ່ຈຳເປັນບໍ່ໄດ້ຖືກປ້ອນເຂົ້າ"
+
+msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການບັນທຶກຄ່າ"
+
+msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການຢືນຢັນຄ່າທີ່ປ້ອນເຂົ້າ"
+
+msgid "Technicien"
+msgstr "ວິຊາການ"
+
+msgid "ANNULE"
+msgstr "ຍົກເລີກ"
+
+msgid "Liste analyses"
+msgstr "ລາຍການວິເຄາະ"
+
+msgid "Rechercher"
+msgstr "ຄົ້ນຫາ"
+
+msgid "Date du"
+msgstr "ຈາກວັນທີ"
+
+msgid "Nb. sur la période"
+msgstr "ຈໍານວນເລກທີເກີນໄລຍະກໍານົດໄວ້"
+
+msgid "Export des données"
+msgstr "ວັນທີສົ່ງອອກ"
+
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "ມີຂໍ້ຜິດພາດເກີດຂື້ນໃນລະຫວ່າງການກູ້ຂໍ້ມູນ"
+
+msgid "Historique"
+msgstr "ປະຫວັດ"
+
+msgid "Aucun résultats à exporter !"
+msgstr "ບໍ່ມີຜົນການສົ່ງອອກ"
+
+msgid "Liste patients"
+msgstr "ລາຍຊື່ຜູ້ປ່ວຍ"
+
+msgid "DDN"
+msgstr "ວັນ​ເດືອນ​ປີ​ເກີດ"
+
+msgid "Historique des approvisionnements et usages pour ce produit"
+msgstr "ປະຫວັດການສະໜອງ ແລະ ການນຳໃຊ້ຜະລິດຕະພັນນີ້"
+
+msgid "E/S"
+msgstr "ເຂົ້າ/ອອກ"
+
+msgid "Utilisateur"
+msgstr "ຜູ້ໃຊ້ງານ"
+
+msgid "Date action"
+msgstr "ວັນທີປະຕິບັດງານ"
+
+msgid "Accueil"
+msgstr "ໜ້າຫຼັກ"
+
+msgid "Préférences"
+msgstr "ຕົວເລືອກຫຼັກ"
+
+msgid "Gestion des utilisateurs"
+msgstr "ການຄຸ້ມຄອງຜູ້ໃຊ້ງານ"
+
+msgid "Gestion des rôles"
+msgstr "ການຄຸ້ມຄອງພາລະບົດບາດ"
+
+msgid "Référentiel des analyses"
+msgstr "ຫ້ອງການວິເຄາະ"
+
+msgid "Dictionnaires"
+msgstr "ວັດຈະນານຸກົມ"
+
+msgid "Gestion des sauvegardes"
+msgstr "ການຈັດການສຳຮອງ"
+
+msgid "Gestion de la Facturation"
+msgstr "ການຄຸ້ມຄອງໃບເກັບເງິນ"
+
+msgid "Management de la Qualité"
+msgstr "ການຄຸ້ມຄອງຄຸນນະພາບ"
+
+msgid "Analyses urgentes"
+msgstr "ການວິເຄາະດ່ວນ"
+
+msgid "Urgences"
+msgstr "ສຸກເສີນ"
+
+msgid "Liste des dossiers"
+msgstr "ລາຍການບັນທຶກ"
+
+msgid "Liste de travail biologiste"
+msgstr "ລາຍການກ່ຽວກັບວຽກງານດ້ານຊີວະວິທະຍາ"
+
+msgid "Liste de travail technicien"
+msgstr "ລາຍການກ່ຽວກັບວຽກຂອງນັກວິຊາການດ້ານຊີວະວິທະຍາ"
+
+msgid "Etat des prélèvements en cours"
+msgstr "ສະຖານະພາບຂອງຕົວຢ່າງທີ່ກຳລັງດຳເນີນຢູ່"
+
+msgid "Saisie des résultats"
+msgstr "ຜົນໄດ້ຮັບຂາເຂົ້າ"
+
+msgid "Nouvelle demande externe"
+msgstr "ຄຳຮ້ອງຂໍໃໝ່ຈາກພາຍນອກ"
+
+msgid "Nouvelle demande hospitalisé"
+msgstr "ຄຳຮ້ອງຂໍໃໝ່ຈາກພາຍໃນ"
+
+msgid "Validations à effectuer"
+msgstr "ການກວດສອບທີ່ຄວນຈະປະຕິບັດ"
+
+msgid "Activité du laboratoire"
+msgstr "ກິດຈະກຳຫ້ອງທົດລອງ"
+
+msgid "Dernier numéro utilisé"
+msgstr "ຕົວເລກສຸດທ້າຍທີ່ໃຊ້ແລ້ວ"
+
+msgid "Nombre de dossiers validés aujourd'hui"
+msgstr "ຈຳນວນບັນທຶກຂອງມື້"
+
+msgid "Nombre de dossiers enregistrés"
+msgstr "ບັນທຶກຈຳນວນທີ່ລົງທະບຽນ"
+
+msgid "Biologique"
+msgstr "ນັກຊີວະວິທະຍາ"
+
+msgid "Technique"
+msgstr "ວິຊາການ"
+
+msgid "LabBook"
+msgstr "ປຶ້ມຄູ່ມືຫ້ອງທົດລອງ / LabBook"
+
+msgid "Version"
+msgstr "ສະບັບ"
+
+msgid "Liste des prescripteurs"
+msgstr "ບັນຊີລາຍຊື່ຂອງຜູ້ສັ່ງຢາ"
+
+msgid "Initiale"
+msgstr "ຊືາຫຍໍ້"
+
+msgid "Lieu trav."
+msgstr "ສະຖານທີ່ເຮັດວຽກ"
+
+msgid "Tél. fixe"
+msgstr "ໂທລະສັບຕັ້ງໂຕະ"
+
+msgid "Mobile"
+msgstr "ໂທລະສັບມືຖື"
+
+msgid "Email"
+msgstr "ອີເມວ"
+
+msgid "Ajouter un prescripteur"
+msgstr "ຕື່ມຢາຕາມໃບສັ່ງແພດ"
+
+msgid "Editer"
+msgstr "ແກ້ໄຂ "
+
+msgid "Erreur lors de la suppression des données"
+msgstr "ມີຂໍ້ຜິດພາດເມື່ອລຶບຂໍ້ມູນ"
+
+msgid "Liste des équipements"
+msgstr "ລາຍຊື່ອຸປະກອນ"
+
+msgid "Fabricant"
+msgstr "ຜູ້ຜະລິດ"
+
+msgid "Modèle"
+msgstr "ຕົວແບບ"
+
+msgid "Ajouter un équipement"
+msgstr "ເພີ່ມອຸປະກອນ"
+
+msgid "Laboratoire"
+msgstr "ຫ້ອງທົດລອງ"
+
+msgid "Nom du dictionnaire"
+msgstr "ຊື່ວັດຈະນານຸກົມ"
+
+msgid "Ajouter une valeur"
+msgstr "ເພີ່ມມູນຄ່າ"
+
+msgid "Organigramme"
+msgstr "ຕາຕະລາງການຈັດຕັ້ງ"
+
+msgid "Valeurs"
+msgstr "ຄຸນຄ່າ"
+
+msgid "Libellé"
+msgstr "ສະຫຼາກ"
+
+msgid "Libellé court"
+msgstr "ສະຫຼາກຫຍໍ້"
+
+msgid "Position"
+msgstr "ຕຳແໜ່ງ"
+
+msgid "Enregistrer les valeurs"
+msgstr "ເກັບກຳຄ່າຕ່າງໆ"
+
+msgid "Veuillez saisir un nom de dictionnaire."
+msgstr "ກະລຸນາຂຽນຊື່ວັດຈະນານຸກົມ"
+
+msgid "Veuillez renseigner le(s) libellé(s)."
+msgstr "ກະລຸນາຕື່ມໃສ່ສະຫຼາກ"
+
+msgid "Veuillez renseigner le(s) code(s)."
+msgstr "ກະລຸນາໃສ່ລະຫັດ"
+
+msgid "Enregistrement réussi"
+msgstr "ການລົງທະບຽນສຳເລັດ"
+
+msgid "Liste des manuels"
+msgstr "ບັນຊີລາຍຊື່ຄູ່ມື"
+
+msgid "Date création"
+msgstr "ວັນທີສ້າງ"
+
+msgid "Ajouter un manuel"
+msgstr "ເພີ່ມຄູ່ມື"
+
+msgid "Liste des réunions"
+msgstr "ບັນຊີລາຍຊື່ຂອງກອງປະຊຸມ"
+
+msgid "Ajouter une réunion"
+msgstr "ເພີ່ມການປະຊຸມ"
+
+msgid "Liste des non-conformités"
+msgstr "ບັນຊີລາຍຊື່ຂອງການບໍ່ສອດຄ່ອງ"
+
+msgid "Impact sur le patient"
+msgstr "ຜົນກະທົບຕໍ່ຄົນເຈັບ"
+
+msgid "Impact sur le personnel"
+msgstr "ຜົນກະທົບຕໍ່ພະນັກງານ"
+
+msgid "Mise en place d'une action correctrice"
+msgstr "ການຈັດຕັ້ງປະຕິບັດວຽກງານແກ້ໄຂ"
+
+msgid "Date correction"
+msgstr "ວັນທີແກ້ໄຂ"
+
+msgid "Date de clôture"
+msgstr "ວັນທີປິດ"
+
+msgid "Ajouter une non-conformité"
+msgstr "ເພີ່ມຄວາມບໍ່ສອດຄ່ອງ"
+
+msgid "Faible"
+msgstr "ອ່ອນແອ"
+
+msgid "Important"
+msgstr "ສຳຄັນ"
+
+msgid "Grave"
+msgstr "ຮ້າຍແຮງ"
+
+msgid "Aucun"
+msgstr "ບໍ່ລະບຸ"
+
+msgid "Procédures"
+msgstr "ຂັ້ນຕອນ"
+
+msgid "Date modification"
+msgstr "ວັນທີທີ່ຖືກດັດແກ້"
+
+msgid "Ajouter une procédure"
+msgstr "ເພີ່ມຂັ້ນຕອນ"
+
+msgid "Liste des produits"
+msgstr "ລາຍການສິນຄ້າ"
+
+msgid "Nbr par paquet"
+msgstr "ຈຳນວນຕໍ່ຊຸດ"
+
+msgid "Seuil"
+msgstr "ຂອບເຂດຈຳກັດ"
+
+msgid "Réf. fournisseur"
+msgstr "ເອກະສານອ້າງອີງຂອງຜູ້ສະໜອງ."
+
+msgid "Editer la fiche produit"
+msgstr "ແກ້ໄຂເອກະສານຜະລິດຕະພັນ"
+
+msgid "Supprimer la fiche produit"
+msgstr "ລຶບເອກະສານຜະລິດຕະພັນ"
+
+msgid "Merci de confirmer la suppression du produit"
+msgstr "ກະລຸນາຢືນຢັນການລຶບຜະລິດຕະພັນ"
+
+msgid "Urgent uniquement"
+msgstr "ສະເພາະກໍລະນີດ່ວນ"
+
+msgid "Nouveau"
+msgstr "ໃໝ່"
+
+msgid "Validé administrativement"
+msgstr "ກວດກາຈາກຜູ້ຄຸ້ມຄອງລະບົບຫຼັກ"
+
+msgid "Intermédiaire (validé admin.)"
+msgstr "ກວດກາຈາກຜູ້ຄຸ້ມຄອງລະບົບລະດັບກາງ"
+
+msgid "Validé techniquement"
+msgstr "ກວດກາຈາກຂັ້ນເຕັກນິກຫຼັກ"
+
+msgid "Intermédiaire (validé tech.)"
+msgstr "ກວດກາຈາກຂັ້ນເຕິກນິກລະດັບກາງ"
+
+msgid "Validé biologiquement"
+msgstr "ກວດກາດ້ານຊີວະວິທະຍາ"
+
+msgid "Création dossier"
+msgstr "ການສ້າງລະບົບບັນທຶກ"
+
+msgid "Code patient"
+msgstr "ລະຫັດຄົນເຈັບ"
+
+msgid "Une erreur est survenue lors de la récupération de la liste des dossiers"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນຂະນະຮຽກຂໍ້ມູນຈາກລາຍການບັນທຶກ"
+
+msgid "Validation technique"
+msgstr "ກວດກາຄວາມຖືກຕ້ອງດ້ານເຕັກນິກ"
+
+msgid "Veuillez confirmer la suppression"
+msgstr "ກະລຸນາຢືນຢັນການລືບຂໍ້ມູນ"
+
+msgid "Erreur lors de la suppression d'un dossier"
+msgstr "ເກີດຂໍ້ພິດຜາດໃນຂະນະລຶບຂໍ້ມູນບັນທຶກ"
+
+msgid "Date de la demande du"
+msgstr "ວັນທີສະເຫນີ"
+
+msgid "Afficher uniquement les analyses prioritaires"
+msgstr "ສະແດງສະເພາະການບົ່ງມະຕິຕົ້ນຕໍ"
+
+msgid "Masquer les résultats déjà validés"
+msgstr "ເຊື່ອງຜົນທີ່ກວດກາແລ້ວ"
+
+msgid "Une erreur est survenue lors de la récupération des résultats"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນຂະນະຮຽກຂໍ້ມູນຈາກລາຍການຜົນກວດ"
+
+msgid "Date dossier"
+msgstr "ວັນທີບັນທຶກ"
+
+msgid "Patient"
+msgstr "ຄົນເຈັບ"
+
+msgid "Sang"
+msgstr "ເລືອດ"
+
+msgid "Selles"
+msgstr "ອາຈົມ"
+
+msgid "Urine"
+msgstr "ປັດສະວະ"
+
+msgid "Autre"
+msgstr "ອື່ນໆ"
+
+msgid "Liste du personnel"
+msgstr "ລາຍຊື່ພະນັກງານ"
+
+msgid "Tél"
+msgstr "ໂທລະສັບ"
+
+msgid "Date arrivée"
+msgstr "ວັນທີມາຮອດ"
+
+msgid "Date éval."
+msgstr "ວັນທີປະເມີນ"
+
+msgid "Identifiant"
+msgstr "ເຂົ້າລະບົບ"
+
+msgid "Formations"
+msgstr "ຝຶກອົບຮົມ"
+
+msgid "Evaluations"
+msgstr "ການປະເມີນຜົນ"
+
+msgid "Liste des stocks"
+msgstr "ບັນຊີສາງ"
+
+msgid "Nb par paq."
+msgstr "ຈຳນວນຕໍ່ແພັກ"
+
+msgid "Nb total"
+msgstr "ຈຳນວນລວມ"
+
+msgid "Catalogue des produits"
+msgstr "ປື້ມລາຍການຜະລິດຕະພັນ"
+
+msgid "Nouveau produit"
+msgstr "ຜະລິດຕະພັນໃຫມ່"
+
+msgid "Détails du stock"
+msgstr "ລາຍລະອຽດສາງ"
+
+msgid "Historique de ce produit"
+msgstr "ປະຫວັດຂອງຜະລິດຕະພັນນີ້"
+
+msgid "Seuil de"
+msgstr "ຈຸດລິ່ເລີ້ມ"
+
+msgid "Liste des fournisseurs"
+msgstr "ລາຍຊື່ຜູ້ສະຫນອງ"
+
+msgid "Nom contact"
+msgstr "ນາມສະກຸນຜູ້ຕິດຕໍ່"
+
+msgid "Prénom contact"
+msgstr "ຊື່ຜູ້ຕິດຕໍ່"
+
+msgid "Tél."
+msgstr "ໂທລະສັບ"
+
+msgid "Ajouter un fournisseur"
+msgstr "ເພີ່ມລາຍຊື່ຜູ້ສະຫນອງ"
+
+msgid "Note : certains equipements pourraient être associés à ce fournisseur"
+msgstr "ຫມາຍເຫດ: ເຄື່ອງມືອຸປະກອນບາງຊະນິດອາດສາມາດລວມເຂົ້ານຳຜູ້ສະຫນອງນີ້"
+
+msgid "Liste de travail"
+msgstr "ລາຍການວຽກ"
+
+msgid "Date dossier supérieure à"
+msgstr "ວັນທີບັນທຶກຮອດ"
+
+msgid "Date dossier inférieure à"
+msgstr "ວັນທີບັນທຶກຈາກ"
+
+msgid "Validation groupée"
+msgstr "ກວດກາແບບກຸ່ມ"
+
+msgid "Commencer la validation groupée"
+msgstr "ເລີ່ມກວດກາແບບກຸ່ມ"
+
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "ຊື່ຜູ້ນຳໃຊ້ ແລະລະຫັດບໍ່ຖືກຕ້ອງ"
+
+msgid "Ouverture de session"
+msgstr "ເຂົ້າລະບົບ"
+
+msgid "Mot de passe"
+msgstr "ລະຫັດ"
+
+msgid "Gestion dossier patient"
+msgstr "ການຄຸ້ມຄອງເອກະສານຄົນເຈັບ"
+
+msgid "Fusionner 2 dossiers patients"
+msgstr "ລວມເອກະສານຄົນເຈັບ2ຢ່າງເຂົ້າກັນ"
+
+msgid "Nom, prénom ou code du patient"
+msgstr "ນາມສະກຸນ, ຊື່ ຫຼືລະຫັດຄົນເຈັບ"
+
+msgid "A CONSERVER"
+msgstr "ເກັບຮັກສາ"
+
+msgid "A SUPPRIMER"
+msgstr "ລຶບ"
+
+msgid "Identité patient"
+msgstr "ເລກລະຫັດຄົນເຈັບ"
+
+msgid "Code laboratoire"
+msgstr "ລະຫັດຫ້ອງວິເຄາະ"
+
+msgid "Modifier la fiche patient"
+msgstr "ດັດແກ້ເອກະສານຄົນເຈັບ"
+
+msgid "Fusionner"
+msgstr "ລວມເຂົ້າກັນ"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
+msgstr "ກະລຸນາເລືອກວັນເດືອນປີເກິີດ ຫຼືຕື່ມອາຍຸໃສ່"
+
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
+msgstr "ກະລຸນາເລືອກເອກະສານຄົນເຈັບ2ຊຸດທີ່ແຕກຕ່າງ ເພື່ອລວມເຂົ້າກັນ"
+
+msgid "Les fiches patients sont les mêmes dans la base de données."
+msgstr "ເອກະສານຄົນເຈັບແມ່ນອັນດຽວກັນໃນຖານຂໍ້ມູນ"
+
+msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
+msgstr "ຂໍ້ມູນຄົນເຈັບບໍ່ຄົບຖ້ວນ ໃນການລວມແຟັມເອກະສານເຂົ້າກັນ"
+
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "ແຟັມເອກະສານຄົນເຈັບທີ່ຈະຖືກລຶບ ຈະໄດ້ຄັດຕິດກັບແຟັມເອກະສານ ທີ່ຈະເກັບຮັກສາໄວ້ ກະລຸນາຢືນຢັນການລວມເອກະສານ ການດຳເນີນການຄັ້ງນີ້ບໍ່ສາມາດຍ້ອນຄືນໄດ້"
+
+msgid "Une erreur est survenue lors de la fusion"
+msgstr "ເກີດຂໍ້ຜີດພາດຂະນະທີ່ມີການລວມແຟັມເອກະສານ"
+
+msgid "Administratif"
+msgstr "ບໍລິຫານ"
+
+msgid "Rapport activité"
+msgstr "ບົດລາຍງານກິດຈະກຳ"
+
+msgid "Rapport épidémiologique"
+msgstr "ບົດລາຍງານລະບາດວິທະຍາ"
+
+msgid "Rapport statistique"
+msgstr "ບົດລາຍງານສະຖິຕິ"
+
+msgid "Export DHIS2"
+msgstr "ໂອນຂໍ້ມູນຈາກລະບົບ DHIS2"
+
+msgid "Export WHONET"
+msgstr "ໂອນຂໍ້ມູນຈາກລະບົບ WHONET"
+
+msgid "Historique d'analyse"
+msgstr "ປະຫວັດການວິເຄາະ"
+
+msgid "Rapport de fin de journée"
+msgstr "ລາຍງານທ້າຍມື້"
+
+msgid "Etat de la facturation journalière"
+msgstr "ລາຍການລົງບິນປະຈຳວັນ"
+
+msgid "Rapports"
+msgstr "ບົດລາຍງານ"
+
+msgid "Changement de logo"
+msgstr "ປ່ຽນໂລໂກ້"
+
+msgid "Etiquettes"
+msgstr "ສະຕິກເກີ້"
+
+msgid "Intervalles d'âge"
+msgstr "ເກນອາຍຸ"
+
+msgid "Configuration des comptes-rendu"
+msgstr "ການຕັ້ງຄ່າບົດລາຍງານ"
+
+msgid "Configuration des numéros de dossier"
+msgstr "ການຕັ້ງຄ່າລະຫັດເອກະສານ"
+
+msgid "Gestion des dossiers patients"
+msgstr "ການຄຸ້ມຄອງເອກະສານຄົນເຈັບ"
+
+msgid "Configuration DHIS2"
+msgstr "ການຕັ້ງຄ່າລະບົບ DHIS2"
+
+msgid "Configuration Epidemio"
+msgstr "ການຕັ້ງຄ່າການລະບາດ"
+
+msgid "paramétrages"
+msgstr "ການຕັ້ງຄ່າ"
+
+msgid "Général"
+msgstr "ຫົວຫນ້າ"
+
+msgid "Personnels"
+msgstr "ພະນັກງານ"
+
+msgid "Prescripteurs"
+msgstr "ຜູ້ສັ່ງຢາ"
+
+msgid "Equipements"
+msgstr "ເຄື່ອງມືອຸປະກອນ"
+
+msgid "Fournisseurs"
+msgstr "ຜູ້ສະຫນອງ"
+
+msgid "Manuels"
+msgstr "ປື້ມຄູ່ມື"
+
+msgid "Gestion des stocks"
+msgstr "ການຄຸ້ມຄອງສາງ"
+
+msgid "Module des non-conformités"
+msgstr "ຫົວຂໍ້ທີ່ບໍ່ຖືກຕາມຂໍ້ກຳນົດ"
+
+msgid "Réunion du laboratoire"
+msgstr "ກອງປະຊຸມຫ້ອງວິເຄາະ"
+
+msgid "Qualité"
+msgstr "ຄຸນະພາບ"
+
+msgid "Non conformité"
+msgstr "ບໍ່ຖືກຕາມຂໍ້ກຳນົດ"
+
+msgid "Patient externe"
+msgstr "ຄົນເຈັບພາຍນອກ"
+
+msgid "Chercher un patient"
+msgstr "ຊອກຫາຊື່ຄົນເຈັບ"
+
+msgid "Nouveau patient"
+msgstr "ຄົນເຈັບໃຫມ່"
+
+msgid "Non-conformité"
+msgstr "ວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Nom de la non-conformité"
+msgstr "ຊື່ວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Rapporteur"
+msgstr "ຜູ້ລາຍງານ"
+
+msgid "DECLARATION DE LA NON-CONFORMITE"
+msgstr "ການລາຍງານວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Catégorie de la non-conformité"
+msgstr "ປະເພດວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Pré analytique"
+msgstr "ກ່ອນວິເຄາະ"
+
+msgid "Oubli ou examen erroné"
+msgstr "ການກວດກາທີ່ຜິດພາດ ຫຼື ການລືມກວດກາ "
+
+msgid "Dossier du patient / identité patient"
+msgstr "ບັນທຶກຄົນເຈັບ / ລະຫັດຄົນເຈັບ"
+
+msgid "Prélèvement"
+msgstr "ຕົວຢ່າງ"
+
+msgid "Heure de prélèvement"
+msgstr "ເວລາເກັບຕົວຢ່າງ"
+
+msgid "Volume de prélèvement"
+msgstr "ປະລິມານຕົວຢ່າງ"
+
+msgid "Identification du prélèvement"
+msgstr "ລະຫັດຕົວຢ່າງ"
+
+msgid "Renseignement clinique"
+msgstr "ຂໍ້ມູນດ້ານການແພດ"
+
+msgid "Transport de l'échantillon"
+msgstr "ການຂົນສົ່ງຕົວຢ່າງ"
+
+msgid "Respect procédures"
+msgstr "ເຮັດຖືກຕາມຂັ້ນຕອນ"
+
+msgid "Urgence"
+msgstr "ສຸກເສີນ"
+
+msgid "Traçabilité"
+msgstr "ສາມາດສອບກັບໄດ້"
+
+msgid "Autres"
+msgstr "ອື່ນໆ"
+
+msgid "Analytique"
+msgstr "ການວິເຄາະ"
+
+msgid "Conservation échantillon avant analyse"
+msgstr "ການເກັບຮັກສາຕົວຢ່າງກ່ອນການກວດວິເຄາະ"
+
+msgid "Centrifugation"
+msgstr "ການໝູນປິ່ນໃຫ້ຕົກຕະກອນ"
+
+msgid "Aliquotage"
+msgstr "ການແບ່ງຕົວຢ່າງ"
+
+msgid "Contrôle qualité interne"
+msgstr "ການຄວບຄຸມຄຸນະພາບພາຍໃນ"
+
+msgid "Contrôle qualité externe"
+msgstr "ການຄວບຄຸມຄຸນະພາບພາຍນອກ"
+
+msgid "Absence de résultats/Résultats aberrants"
+msgstr "ບໍ່ມີຜົນກວດ / ຄ່າຜິດປົກກະຕິ"
+
+msgid "Critère de repasse non respecté"
+msgstr "ບໍ່ຕົງຕາມເກນທີ່ວາງໄວ້"
+
+msgid "Post analytique"
+msgstr "ຫຼັງວິເຄາະ"
+
+msgid "Dossier non validé"
+msgstr "ບັນທຶກບໍ່ໄດ້ມີການຢືນຢັນ"
+
+msgid "Validation partielle non / mal réalisée"
+msgstr "ບໍ່ມີ / ຂາດບາງສ່ວນຂອງການຢືນຢັນຜົນວິເຄາະ"
+
+msgid "Résultat erroné / aberrant"
+msgstr "ຜົນວິເຄາະບໍ່ຖືກຕ້ອງ / ຜິດພາດ"
+
+msgid "Absence de résultat"
+msgstr "ບໍ່ມີຜົນວິເຄາະ"
+
+msgid "Erreur de saisie"
+msgstr "ປ້ອນຂໍ້ມູນຜິດພາດ"
+
+msgid "Interprétation des résultats"
+msgstr "ການແປຜົນ"
+
+msgid "Prestation de conseil"
+msgstr "ບໍລິການໃຫ້ຄຳປຶກສາ"
+
+msgid "Sérothèque/conservation échantillon après analyse"
+msgstr "ເຊລັມວິທະຍາ / ການຮັກສາຕົວຢ່າງຫຼັງວິເຄາະ"
+
+msgid "Transmission des résultats"
+msgstr "ການສົ່ງຕໍ່ຜົນວິເຄາະ"
+
+msgid "Défaut/Absence de transmission patient"
+msgstr "ຂໍ້ຜິດພາດໃນການສົ່ງຕໍ່ຄົນເຈັບ"
+
+msgid "Défaut/Absence de transmission Prescripteur/Correspondant"
+msgstr "ຂໍ້ຜິດພາດໃນການສົ່ງຕໍ່ໃບສັ່ງຢາ/ ຜູ້ສັ່ງຢາ"
+
+msgid "Accès aux résultats"
+msgstr "ການເຂົ້າເຖິງຂໍມູນຜົນວິເຄາະ"
+
+msgid "Date de rendu erronée"
+msgstr "ວັນທີ່ການລາຍງານຜົນບໍ່ຖືກຕ້ອງ"
+
+msgid "Délai de transmission non respecté"
+msgstr "ໄລຍະເວລາການສົ່ງຕໍ່ຜົນວິເຄາະບໍ່ເປັນໃປຕາມທີ່ກຳນົດ"
+
+msgid "Non respect de la procédure de rendu des résultats"
+msgstr "ຂັ້ນຕອນການລາຍງານຜົນວິເຄາະບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Ressources humaines"
+msgstr "ຊັບພະຍາກອນມະນຸດ"
+
+msgid "Non respect procédure"
+msgstr "ຂັ້ນຕອນປະຕິບັດບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Absence"
+msgstr "ການຂາດແຄນ"
+
+msgid "Habilitation/maintien des compétences"
+msgstr "ການເສີມສ້າງ / ການບຳລຸງຮັກສາ ຄວາມສາມາດ"
+
+msgid "Accident exposition au sang / Hygiène et sécurité"
+msgstr "ອຸບັດຕິເຫດຈາກການສຳພັດເລືອດ / ສຸຂະພາບແລະຄວາມປອດໄພ"
+
+msgid "Etalonnage, Certification, Calibrage"
+msgstr "ການສອບທຽບ, ການຮັບຮອງ, ການສອບທຽບ"
+
+msgid "Calibration automate"
+msgstr "ການສອບທຽບລະບົບອັດຕະໂນມັດ"
+
+msgid "Alarme"
+msgstr "ສັນຍານເຕືອນ"
+
+msgid "Panne d'un équipement"
+msgstr "ອຸປະກອນຂັດຂ້ອງ"
+
+msgid "Respect procédure"
+msgstr "ການປະຕິບັດຕາມຂັ້ນຕອນ"
+
+msgid "Réactifs et consommables"
+msgstr "ນ້ຳຢາ ແລະວັດສະດຸສິ້ນເປືອງ"
+
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "ໃບບິນຮັບເງິນຂອງນ້ຳຢາ ແລະ/ຫຼື ວັດສະດຸສິ້ນເປືອງ ທີ່ບໍ່ສອດຄ່ອງກັບໃບສັ່ງຊື້"
+
+msgid "Délai livraison"
+msgstr "ໄລຍະເວລາການສົ່ງ"
+
+msgid "Réactifs périmés"
+msgstr "ນ້ຳຢາທີ່ໝົດດອາຍຸ"
+
+msgid "Rupture de stock (cf nom du fournisseur)"
+msgstr "ສິນຄ້າທີ່ຂາດແຄນ(ເບິ່ງລາຍຊື່ຜູ້ສະໜອງສິນຄ້າ)"
+
+msgid "Déstockage produits non conforme"
+msgstr "ການກຳຈັດຜະລິດຕະພັນທີ່ບໍ່ເປັນໄປຕາມຂໍ້ກຳນົດ"
+
+msgid "Locaux et environnement"
+msgstr "ອາຄານສະຖານທີ່ແລະສິ່ງແວດລ້ອມ"
+
+msgid "Nettoyage du laboratoire"
+msgstr "ການອະນາໄມຫ້ອງວິເຄາະ"
+
+msgid "Entretien du batiment"
+msgstr "ການບຳລຸງຮັກສາຕຶກອາຄານ"
+
+msgid "Coupure d'électricité"
+msgstr "ໄຟຟ້າດັບ"
+
+msgid "Coupure d'eau"
+msgstr "ນໍ້າຖືກຕັດ"
+
+msgid "Gestion des déchets"
+msgstr "ການຈັດການສິ່ງເສດເຫຼືອ"
+
+msgid "Systèmes informatiques"
+msgstr "ລະບົບຄອມພິວເຕີ້"
+
+msgid "Absence de connexion"
+msgstr "ບໍ່ມີການເຊື່ອມຕໍ່"
+
+msgid "Erreur de paramétrage"
+msgstr "ຂໍ້ຜິດພາດໃນການຕັ້ງຄ່າ"
+
+msgid "Panne réseau"
+msgstr "ເຄືອຂ່າຍລົ້ມເຫຼວ"
+
+msgid "Panne système d'information"
+msgstr "ລະບົບຂໍ້ມູນຂ່າວສານລົ້ມເຫຼວ"
+
+msgid "Panne matériel informatique"
+msgstr "ຄວາມລົ້ມເຫຼວຂອງ Hardware"
+
+msgid "Sous-traitance"
+msgstr "ການຈ້າງເໝົາຍ່ອຍ ຫຼື Subcontracting"
+
+msgid "Délai de rendu non respecté"
+msgstr "ກາຍກຳນົດການສົ່ງເຄື່ອງ"
+
+msgid "Erreur / oubli examen"
+msgstr "ການກວດສອບຜິດພາດ / ການລືມ"
+
+msgid "Mauvaise conservation lors du transport"
+msgstr "ການເກັບຮັກສາບໍ່ໄດ້ດີໃນລະຫວ່າງການຂົນສົ່ງ"
+
+msgid "Problème de facturation"
+msgstr "ປັນຫາໃນໃບບິນ"
+
+msgid "Réclamations clients"
+msgstr "ການຮ້ອງຮຽນຈາກລູກຄ້າ"
+
+msgid "Est ce que cette non-conformité concerne un dossier patient ?"
+msgstr "ວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດກ່ຽວຂ້ອງກັບເອກະສານຄົນເຈັບບໍ່?"
+
+msgid "Numéro de dossier"
+msgstr "ບັນທຶກໝາຍເລກ"
+
+msgid "Description de la non-conformité"
+msgstr "ລາຍລະອຽດຂອງວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Impact sur le personnel/visiteur"
+msgstr "ຜົນກະທົບຕໍ່ພະນັກງານ / ຜູ້ມາຢ້ຽມຢາມ"
+
+msgid "SUIVI DE LA NON-CONFORMITE"
+msgstr "ການຕິດຕາມວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Qui"
+msgstr "ຜູ້ໃດ"
+
+msgid "Quoi"
+msgstr "ແມ່ນ​ຫຍັງ"
+
+msgid "Quand"
+msgstr "ເມື່ອ​ໃດ​"
+
+msgid "Mise en place d’une action correctrice"
+msgstr "ການດຳເນີນການແກ້ໄຂ"
+
+msgid "Description de l'action correctrice"
+msgstr "ລາຍລະອຽດການດຳເນີນການແກ້ໄຂ"
+
+msgid "Date de réalisation de l'action correctrice"
+msgstr "ວັນທີດຳເນີນການແກ້ໄຂສຳເລັດ"
+
+msgid "Responsable de l'action"
+msgstr "ຜູ້ຮັບຜິດຊອບດຳເນີນການ"
+
+msgid "CLOTURE DE LA NON-CONFORMITE"
+msgstr "ການປິດວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດ"
+
+msgid "Validé par"
+msgstr "ຢືນຢັນໂດຍ"
+
+msgid "Veuillez saisir un nom pour cette non-conformité."
+msgstr "ກະລຸນາປ້ອນຊື່ວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດນີ້"
+
+msgid "Veuillez sélectionner un rapporteur."
+msgstr "ກະລຸນາເລືອກຜູ້ລາຍງານ."
+
+msgid "Liste des analyses du dossier"
+msgstr "ລາຍການບັນທຶກການວິເຄາະ"
+
+msgid "OK"
+msgstr "ເຫັນດີ"
+
+msgid "Processus en cours"
+msgstr "ກຳລັງດຳເນີນການ"
+
+msgid "Veuillez patienter"
+msgstr "ກະ​ລຸ​ນາ​ລໍ​ຖ້າ"
+
+msgid "Nombre de personnels dans le laboratoire"
+msgstr "ຈຳນວນພະນັກງານໃນຫ້ອງວິເຄາະ"
+
+msgid "Nombre de manuels sauvegardés"
+msgstr "ຈຳນວນຄູ່ມືທີ່ບັນທຶກໄວ້"
+
+msgid "Date de la dernière réunion d'équipe"
+msgstr "ວັນທີປະຊຸມທີມງານຄັ້ງສຸດທ້າຍ"
+
+msgid "Nombre de non-conformités en cours"
+msgstr "ຈຳນວນວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດທີ່ກຳລັງດຳເນີນການຢູ່"
+
+msgid "Nombre de non-conformités depuis un mois"
+msgstr "ຈຳນວນວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດພາຍໃນ 1 ເດືອນ"
+
+msgid "Famille d'analyse"
+msgstr "ກຸ່ມວິເຄາະ"
+
+msgid "Analyses par type de demande"
+msgstr "ການວິເຄາະໂດຍປະເພດຂອງໃບສັ່ງກວດ"
+
+msgid "Analyses par tranche d'âge"
+msgstr "ການວິເຄາະໂດຍກຸ່ມອາຍຸ"
+
+msgid "H = Homme, F = Femme, I = Inconnu"
+msgstr "M = ຊາຍ, F = ເພດຍິງ, U = ບໍ່ຮູ້ເພດ"
+
+msgid "Export par type"
+msgstr "ສົ່ງອອກຕາມປະເພດ"
+
+msgid "Export par âge"
+msgstr "ສົ່ງອອກຕາມກຸ່ມອາຍຸ"
+
+msgid "Télécharger le rapport"
+msgstr "ດາວໂຫລດລາຍງານ"
+
+msgid "Externes"
+msgstr "ພາຍນອກ"
+
+msgid "Hospitalisés"
+msgstr "ຄົນເຈັບພາຍໃນ"
+
+msgid "Total"
+msgstr "ລວມ"
+
+msgid "H"
+msgstr "ຊາຍ"
+
+msgid "F"
+msgstr "ຍິງ"
+
+msgid "I"
+msgstr "ບໍ່ຮູ້ເພດ"
+
+msgid "Moins de"
+msgstr "ໜ້ອຍກວ່າ"
+
+msgid "ans"
+msgstr "ປີ"
+
+msgid "Plus de"
+msgstr "ຫຼາຍກ່ວາ"
+
+msgid "à"
+msgstr "ເຖິງ"
+
+msgid "Etat journalier de la facturation"
+msgstr "ສະຖານະການອອກໃບບິນ"
+
+msgid "Créateur du dossier"
+msgstr "ຜູ້ສ້າງບັນທຶກ"
+
+msgid "Liste des facturations en cours"
+msgstr "ລາຍການແຈ້ງໜີ້ປັດຈຸບັນ"
+
+msgid "N° facturation"
+msgstr "ໃບແຈ້ງໜີ້"
+
+msgid "A payer après remises"
+msgstr "ມູນຄ່າທີ່ຕ້ອງຊຳລະຫຼັງຈາກຫຼຸດລາຄາ"
+
+msgid "Date de début de période "
+msgstr "ວັນທີເລີ່ມ"
+
+msgid "Feuille de calcul"
+msgstr "Spreadsheet"
+
+msgid "Récupérer les données"
+msgstr "ດຶງຂໍ້ມູນ"
+
+msgid "Veuillez sélectionner une feuille de calcul."
+msgstr "ເລືອກ Spreadsheet"
+
+msgid "Epidémiologie"
+msgstr "ລະບາດວິທະຍາ"
+
+msgid "Maladie"
+msgstr "ພະຍາດ"
+
+msgid "Nature prélèvement"
+msgstr "ປະເພດຂອງຕົວຢ່າງ"
+
+msgid "Total reçu"
+msgstr "ລວມຮັບທັງໜົດ"
+
+msgid "Total analysé"
+msgstr "ລວມວິເຄາະທັງໜົດ"
+
+msgid "Résultats"
+msgstr "ຜົນ"
+
+msgid "Répartition dossiers"
+msgstr "ການແຈກຢາຍບັນທຶກ"
+
+msgid "Préleveurs"
+msgstr "ຜູ້ເກັບຕົວຢ່າງ"
+
+msgid "Prélèvements"
+msgstr "ຕົວຢ່າງ"
+
+msgid "Interne"
+msgstr "ພາຍໃນ"
+
+msgid "Externe"
+msgstr "ພາຍນອກ"
+
+msgid "Non renseigné"
+msgstr "ບໍ່ມີຂໍ້ມູນ"
+
+msgid "Famille"
+msgstr "ຄອບຄົວ"
+
+msgid "Validation"
+msgstr "ການຢືນຢັນ"
+
+msgid "Ajouter un intervalle"
+msgstr "ເພີ່ມໄລຍະຫ່າງ"
+
+msgid "Intervalles"
+msgstr "ໄລຍະຫ່າງ"
+
+msgid "Age inférieur"
+msgstr "ອາຍຸຕໍ່າກວ່າ"
+
+msgid "Age supérieur"
+msgstr "ອາຍຸສຸງກວ່າ"
+
+msgid "Désignation de l'acte"
+msgstr "ກຳນົດການປະຕີບັດ"
+
+msgid "Type de prélèvement"
+msgstr "ປະເພດຂອງຕົວຢ່າງ"
+
+msgid "Analyse active"
+msgstr "ການວິເຄາະທີ່ວອ່ງໄວ"
+
+msgid "Désignation"
+msgstr "ການອອກແບບ"
+
+msgid "Abréviation"
+msgstr "ຕົວຫຍໍ້"
+
+msgid "Produit bio."
+msgstr "ຜະລິດຕະພັນຊີວະພາບ"
+
+msgid "Importer le référentiel"
+msgstr "ນຳເຂົ້າບ່ອນເກັບມ້ຽນການວິເຄາະ"
+
+msgid "Exporter le référentiel"
+msgstr "ສົ່ງອອກບ່ອນເກັບມ້ຽນ"
+
+msgid "Enregistrer la liste"
+msgstr "ບັນທຶກລາຍການ"
+
+msgid "Ajouter une analyse"
+msgstr "ເພີ່ມການວິເຄາະ"
+
+msgid "Activé"
+msgstr "ເປີດໃຊ້ງານແລ້ວ"
+
+msgid "Désactivé"
+msgstr "ປິດການໄຊ້ງານແລ້ວ"
+
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "ຢືນຢັນການລຶບຂໍ້ມູນວິເຄາະນີ້.//ໝາຍເຫດ:​ການບັນທຶກທີ່ກ່ຽວຂ້ອງກັບການວິເຄາະນີ້ຈະມີຂໍ້ຄວາມການຜິດພາດເກີດຂື້ນ"
+
+msgid "Paramétrage de la sauvegarde"
+msgstr "ການຕັ້ງຄ່າສໍາຮອງຂໍ້ມູນ"
+
+msgid "MODIFIER HEURE SAUVEGARDE"
+msgstr "ປ່ຽນຮູບແບບການປະຍັດເວລາ"
+
+msgid "INITIALISER LE MEDIA"
+msgstr "INITIALIZE THE MEDIA"
+
+msgid "GENERER CLE DE SAUVEGARDE"
+msgstr "ສ້າງກະແຈສໍາຮອງຂໍ້ມູນ"
+
+msgid "SAUVEGARDER"
+msgstr "ບັນທຶກ"
+
+msgid "RESTAURER"
+msgstr "ກູ້ຂໍ້ມູນຄືນ"
+
+msgid "Heure de sauvegarde"
+msgstr "ເວລາສຳຮອງຂໍ້ມູນ"
+
+msgid "Dernière sauvegarde"
+msgstr "ສຳຮອງຂໍ້ມູນຄັ້ງສຸດທ້າຍ"
+
+msgid "Dernière sauvegarde OK"
+msgstr "ການສຳຮອງຂໍ້ມູນຄັ້ງສຸດທ້າຍຖືກຕ້ອງ"
+
+msgid "Veuillez saisir le mot de passe de l'utilisateur user_labbook"
+msgstr "ໃສ່ລະຫັດຜ່ານຂອງ user_labbook "
+
+msgid "Mot de passe système"
+msgstr "ລະຫັດຜ່ານລະບົບ"
+
+msgid "Veuillez saisir le mot de passe pour la clé de sauvegarde"
+msgstr "ໃສ່ລະຫັດຜ່ານສຳລັບກະແຈສຳຮອງຂໍ້ມູນ"
+
+msgid "Confirmation"
+msgstr "ການຢືນຢັນ"
+
+msgid "Veuillez sélectionner un média"
+msgstr "ຄວນເລືອກ media ທີ່ເໜາະສົມ"
+
+msgid "Liste des médias disponibles"
+msgstr "ລາຍການ media ທີ່ມີຢູ່"
+
+msgid "Veuillez sélectionner la sauvegarde à restaurer"
+msgstr "ເລືອກຂໍ້ມູນສຳຮອງທີ່ຈະກູ້ຄືນ"
+
+msgid "Liste des sauvegardes disponibles"
+msgstr "ລາຍການຂໍ້ມູນສຳຮອງ"
+
+msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
+msgstr "ຢືນຢັນການປ່ຽນແປງເວລາການສໍາຮອງຂໍ້ມູນປະຈໍາວັນ"
+
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "ມີກະແຈແລ້ວ, ຖ້າມີການສ້າງກະແຈໃໜ່ ຂໍ້ມູນສຳຮອງເກົ່າຈະບໍ່ສາມາດກູ້ຄືນໄດ້// ຢືນຢັນການສ້າງກະແຈໃໜ່"
+
+msgid "Veuillez saisir un mot de passe"
+msgstr "ໃສ່ລະຫັດຜ່ານ"
+
+msgid "Les mots de passe ne correspondent pas !"
+msgstr "ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ"
+
+msgid "Veuillez saisir une heure de sauvegarde."
+msgstr "ກະລຸນາປ້ອນເວລາການສຳຮອງຂໍ້ມູນ"
+
+msgid "Une erreur est survenue lors de la récupération de la liste de média"
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຊອກຫາລາຍການ media "
+
+msgid "Une erreur est survenue lors de l'interrogation du service"
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການສອບຖາມການບໍລິການ"
+
+msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການກວດກະແຈການສຳຮອງ"
+
+msgid "Une erreur est survenue le média choisi est incorrect"
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນກັບ media ທີ່ໄດ້ເລືອກ"
+
+msgid "Initialisation réussie"
+msgstr "ການເລີ່ມຕົ້ນສໍາເລັດ"
+
+msgid "Une erreur est survenue lors de l'initialisation du média"
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການເລີ່ມຕົ້ນເປີດ media "
+
+msgid "Génération réussie"
+msgstr "ການສ້າງສໍາເລັດ"
+
+msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງຊອກຫາລາຍການເອກະສານທີ່ເກັບມ້ຽນ"
+
+msgid "Merci de confirmer le lancement immédiat de la restauration."
+msgstr "ຢືນຢັນການເລີ່ມຕົ້ນຂອງການກູ້ຄືນ."
+
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການກູ້ຂໍ້ມູນຄືນ, ກະລຸນາຕິດຕໍ່ຜູ້ໃຫ້ບໍລິການເພື່ອກວດກາຄວາມສຳເລັດຂອງການກູ້ຄືນ"
+
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
+msgstr "ການກູ້ຄືນສຳເລັດແລ້ວ, LabBook ຈະເລີ່ມເປີດລະບົບໃໝ່ຄືນ"
+
+msgid "Redémarrage activé"
+msgstr "ເປີດຄືນໃໜ່"
+
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "ການບໍລິການໄດ້ເປີດຄືນໃໜ່ ຫຼື ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຂໍເປີດຄືນໃໝ່ // ກະລຸນາໂຫຼດໜ້າຄືນໃໝ່"
+
+msgid "Sauvegarde réussie"
+msgstr "ຂໍ້ມູນສໍາຮອງເລັດແລ້ວ"
+
+msgid "Une erreur est survenue"
+msgstr "ມີຂໍ້​ຜິດ​ພາດ​ເກີດ​ຂຶ້ນ"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+msgstr "ມີຂໍ້​ຜິດ​ພາດ​ເກີດ​ຂຶ້ນລະຫວ່າງການກວດສະຖານະປັດຈຸບັນ, ບໍ່ຮູ້ສະຖານະ"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours"
+msgstr "ມີຂໍ້​ຜິດ​ພາດ​ເກີດ​ຂຶ້ນລະຫວ່າງການກວດສະຖານະປັດຈຸບັນ"
+
+msgid "Unité de cotation"
+msgstr "ຫົວໜ່ວຍໃຫ້ຄະແນນ"
+
+msgid "Valeur de cotation"
+msgstr "ມູນຄ່າໃບສະເໜີລາຄາ"
+
+msgid "Export whonet"
+msgstr "ສົ່ງອອກຈາກ WHONET"
+
+msgid "Variables"
+msgstr "ໂຕປ່ຽນແປງ"
+
+msgid "Chercher une variable"
+msgstr "ຄົ້ນຫາໂຕປ່ຽນແປງ"
+
+msgid "Créer une nouvelle variable"
+msgstr "ສ້າງໂຕປ່ຽນແປງໃໝ່"
+
+msgid "Code var."
+msgstr "ລະຫັດໂຕປ່ຽນແປງ"
+
+msgid "Par défaut sera l'ID de la variable"
+msgstr "ຄ່າເລີ່ມຕົ້ນຈະເປັນ ID ຂອງໂຕປ່ຽນແປງ"
+
+msgid "Id"
+msgstr "ລະຫັດປະຈໍາໂຕ"
+
+msgid "Type de résultat"
+msgstr "ປະເພດຜົນ"
+
+msgid "Description"
+msgstr "ລາຍລະອຽດ"
+
+msgid "Valeur normale min."
+msgstr "ຄ່າທີ່ນ້ອຍທີ່ສຸດ"
+
+msgid "Valeur normale max."
+msgstr "ຄ່າທີ່ຫຼາຍທີ່ສຸດ"
+
+msgid "Formule"
+msgstr "ສູດຄິດໄລ່"
+
+msgid "Unité"
+msgstr "ຫົວໜ່ວຍ"
+
+msgid "Précision"
+msgstr "ຄວາມຖືກຕ້ອງ"
+
+msgid "Formule de conversion unité 2"
+msgstr "ການປ່ຽນສູດ ຫົວໜ່ວຍ 2"
+
+msgid "Unité 2"
+msgstr "ຫົວໜ່ວຍ 2"
+
+msgid "Précision 2"
+msgstr "ຄວາມຖືກຕ້ອງ 2"
+
+msgid "Num. var pour la formule"
+msgstr "ຈຳນວນໂຕປ່ຽນແປງໃນສູດ"
+
+msgid "Position affichage"
+msgstr "ການສະແດງຕຳແໜ່ງ"
+
+msgid "Résultat obligatoire"
+msgstr "ຜົນບັງຄັບໃຊ້"
+
+msgid "Min"
+msgstr "ນ້ອຍທີ່ສຸດ"
+
+msgid "Max"
+msgstr "ຫຼາຍທີ່ສຸດ"
+
+msgid "Num. var"
+msgstr "ຈຳນວນໂຕປ່ຽນແປງ"
+
+msgid "Sous analyses"
+msgstr "ຜົນວິເຄາະຍ່ອຍ"
+
+msgid "Produit biologique"
+msgstr "ຜະລິດຕະພັນດ້ານຊີວະວິທະຍາ"
+
+msgid "Chercher un produit biologique"
+msgstr "ຄົ້ນຫາຜະລິດຕະພັນດ້ານຊີວະວິທະຍາ"
+
+msgid "Variable déjà utilisée dans cette analyse"
+msgstr "ໂຕປ່ຽນແປງໄດ້ຖືກນຳໃຊ້ໃນການວິເຄາະນີ້"
+
+msgid "Erreur lors la récupération des données"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາກູ້ຂໍ້ມູນ"
+
+msgid "Modifier"
+msgstr "ແກ້ໄຂ"
+
+msgid "Veuillez saisir un code."
+msgstr "ກະລຸນາໃສ່ລະຫັດ"
+
+msgid "Veuillez saisir un nom d'analyse."
+msgstr "ກະລຸນາໃສ່ຊື່ວິເຄາະ"
+
+msgid "Veuillez choisir ou définir au moins une variable."
+msgstr "ກະລຸນາເລືອກ ຫຼື ກໍານົດໂຕປ່ຽນແປງຢ່າງໜ້ອຍ 1 ໂຕເລກ"
+
+msgid "Ce code existe déjà"
+msgstr "ລະຫັດນີ້ມີແລ້ວ"
+
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາການກວດກາລະຫັດ"
+
+msgid "Dictionnaire"
+msgstr "ວັດຈະນານຸກົມ"
+
+msgid "Droits utilisateur"
+msgstr "ຄວາມຖືກຕ້ອງຂອງຜູ້ນຳໃຊ້"
+
+msgid "Rôle"
+msgstr "ພາລະບົດບາດ"
+
+msgid "Administrateur"
+msgstr "ຜູ້ບໍລິຫານ"
+
+msgid "Technicien avancé"
+msgstr "ນັກວິຊາການຂັ້ນສູງ"
+
+msgid "Technicien qualiticien"
+msgstr "ນັກວິຊາການດ້ານຄຸນນະພາບ"
+
+msgid "Secrétaire"
+msgstr "ເລຂານຸການ"
+
+msgid "Secrétaire avancée"
+msgstr "ເລຂານຸການຂັ້ນສູງ"
+
+msgid "Qualiticien"
+msgstr "ນັກວິຊາການຄຸນນະພາບ"
+
+msgid "Prescripteur associé"
+msgstr "ຜູ້ສັ່ງຢາທີ່ກ່ຽວຂ້ອງ"
+
+msgid "Confirmation du mot de passe"
+msgstr "ຢືນຢັນລະຫັດຜ່ານ"
+
+msgid "CPS"
+msgstr "CPS"
+
+msgid "Numéro RPPS"
+msgstr "RPPS number"
+
+msgid "Langues *"
+msgstr "ພາສາ"
+
+msgid "Français (FR)"
+msgstr "ຝຣັ່ງ (FR)"
+
+msgid "English (UK)"
+msgstr "ອັງກິດ (UK)"
+
+msgid "English (US)"
+msgstr "ອັງກິດ (US)"
+
+msgid "Veuillez saisir un identifiant."
+msgstr "ກະລຸນາໃສ່ຊື່ຜູ້ນຳໃຊ້"
+
+msgid "Veuillez saisir un mot de passe."
+msgstr "ກະລຸນາໃສ່ລະຫັດຜ່ານ"
+
+msgid "Veuillez confirmer votre mot de passe."
+msgstr "ກະລຸນາຢືນຢັນລະຫັດຜ່ານຂອງເຈົ້າ"
+
+msgid "Veuillez choisir une langue."
+msgstr "ກະລຸນາເລືອກພາສາໃດໜຶ່ງ"
+
+msgid "Veuillez choisir un rôle."
+msgstr "ກະລຸນາເລືອກພາລະບົດບາດໃດໜຶ່ງ"
+
+msgid "Paramétrage de l'export DHIS2"
+msgstr "ຕັ້ງຄ່າການສົ່ງອອກຫາລະບົບ DHIS2"
+
+msgid "Enregistrer la feuille de calcul"
+msgstr "ປ້ອນຂໍ້ມູນລົງໃສ່ໃນແບບຟອມ"
+
+msgid "Une erreur est survenue lors du dépot du fichier"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາປ້ອນຂໍ້ມູນ"
+
+msgid "Liste des dictionnaires (choix de réponses)"
+msgstr "ລາຍການວັດຈະນານຸກົມ (ໃຫ້ເລືອກຄຳຕອບ)"
+
+msgid "Ajouter un dictionnaire"
+msgstr "ເພີ່ມວັດຈະນານຸກົມ"
+
+msgid "Paramétrage du rapport épidémiologique"
+msgstr "ຕັ້ງຄ່າການລາຍງານຜົນດ້ານລະບາດວິທະຍາ"
+
+msgid "Changement de logo pour les documents"
+msgstr "ປ່ຽນໂລໂກ້ສຳລັບເອກະສານ"
+
+msgid "Logo original"
+msgstr "ໂລໂກ້ດັ່ງເດີມ"
+
+msgid "Logo tel qu'il apparaitra dans l'entête de rapport"
+msgstr "ໂລໂກ້ນີ້ຈະໄປປະກົດຢູ່ຫົວຂອງບົດລາຍງານ"
+
+msgid "Largeur forcée à 230 pixels et conserve les proportions"
+msgstr "ຄວາມລະອຽດຂອງໂລໂກ້ຖືກບັງຄັບໃຫ້ຢູ່ທີ່ 230 ພິກເຊວ ແລະ ຕ້ອງຮັກສາສັດສ່ວນນີ້"
+
+msgid "Le fichier doit être au format png ou jpg"
+msgstr "ເອກະສານຕ້ອງໃສ່ນາມສະກຸນເປັນ png ຫຼື jpg"
+
+msgid "Une erreur est survenue lors du dépot du logo"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາປ້ອນໂລໂກ້"
+
+msgid "Liste des préférences"
+msgstr "ລາຍການທີ່ຖືກໃຈ"
+
+msgid "Valeur"
+msgstr "ຄ່າ"
+
+msgid "Prix unitaire des actes de prélévements et d'analyses"
+msgstr "ຫົວໜ່ວຍລາຄາສໍາລັບຄ່າເກັບຕົວຢ່າງ ແລະ ວິທີການວິເຄາະ"
+
+msgid "Entête de document 1"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ 1"
+
+msgid "Entête de document 2"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ 2"
+
+msgid "Entête de document 3"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ 3"
+
+msgid "Entête de document - Adresse"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ - ທີ່ຢູ່"
+
+msgid "Entête de document - Téléphone"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ - ເບີໂທ"
+
+msgid "Entête de document - Fax"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ - ເບີແຟັກ"
+
+msgid "Entête de document - Email"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ - ອີເມວ"
+
+msgid "Entête de document - Ville"
+msgstr "ຫົວເຈັ້ຍຂອງເອກະສານ - ເມືອງ"
+
+msgid "Facturation des patients hospitalisés"
+msgstr "ໃບບິນຄົນເຈັບພາຍໃນ"
+
+msgid "Unité de l'age par défaut (Jours, Semaines, Mois, Années)"
+msgstr "ຫົວໜ່ວຍຍອາຍຸ (ມື້, ອາທິດ, ເດືອນ, ປີ)"
+
+msgid "Déconnexion automatique (mn)"
+msgstr "ອອກຈາກລະບົບແບບອັດຕະໂນມັດ (ນາທີ)"
+
+msgid "Module qualité activé"
+msgstr "ເປີດໃຊ້ພາກຄຸນນະພາບ"
+
+msgid "Module facturation activé"
+msgstr "ເປີດໃຊ້ພາກໃບບິນເກັບເງິນ"
+
+msgid "Mise à jour du mot de passe"
+msgstr "ປັບປຸງລະຫັດຜ່ານ"
+
+msgid "Les mots de passe ne sont pas identiques !"
+msgstr "ລະຫັດຜ່ານບໍ່ຄືກັນ!"
+
+msgid "Paramétrage numéro dossier"
+msgstr "ບັນທຶກການຕັ້ງຄ່າ"
+
+msgid "Période de numérotation"
+msgstr "ໄລຍະເວລາການນັບ"
+
+msgid "Année"
+msgstr "ປີ"
+
+msgid "Format de numérotation"
+msgstr "ຮູບແບບການນັບ"
+
+msgid "Court"
+msgstr "ສັ້ນ"
+
+msgid "Long"
+msgstr "ຍາວ"
+
+msgid "Paramétrage compte rendu"
+msgstr "ຕັ້ງຄ່າການລາຍງານ"
+
+msgid "Type d'entête"
+msgstr "ປະເພດຂອງການຕັ້ງຫົວເຈັ້ຍ"
+
+msgid "Complet"
+msgstr "ເຕັມ"
+
+msgid "Simple"
+msgstr "ທໍາມະດາ"
+
+msgid "Afficher les commentaires"
+msgstr "ສະແດງຄຳຄິດເຫັນ"
+
+msgid "Gestion impression étiquettes"
+msgstr "ການຄຸ້ມຄອງການພິມສະຫຼາກ"
+
+msgid "Sur la base d'une page A4 en mode portrait"
+msgstr "ກໍານົດຂະໜາດເຈ້ຍເປັນ A4  ແລະ ຕັ້ງຄ່າເຈັ້ຍທາງຕັ້ງ"
+
+msgid "Longueur étiquette (mm)"
+msgstr "ຄວາມຍາວຂອງສະຫຼາກ (ມມ)"
+
+msgid "Hauteur étiquette (mm)"
+msgstr "ຄວາມສູງຂອງສະຫຼາກ (ມມ)"
+
+msgid "Marge haute de la page (mm)"
+msgstr "ຂອບເທິງສຸດຂອງໜ້າເຈັ້ຍ (ມມ)"
+
+msgid "Marge basse de la page (mm)"
+msgstr "ຂອບລຸ່ມສຸດຂອງໜ້າເຈັ້ຍ (ມມ)"
+
+msgid "Marge gauche de la page (mm)"
+msgstr "ຂອບຊ້າຍສຸດຂອງໜ້າເຈັ້ຍ (ມມ)"
+
+msgid "Marge droite de la page (mm)"
+msgstr "ຂອບຂວາສຸດຂອງໜ້າເຈັ້ຍ (ມມ)"
+
+msgid "Générer une planche test"
+msgstr "ສ້າງກະດານການວິເຄາະໃດໜຶ່ງ"
+
+msgid "Liste des utilisateurs"
+msgstr "ລາຍການຜູ້ນຳໃຊ້"
+
+msgid "Origine"
+msgstr "ຕົ້ນສະບັບ"
+
+msgid "Importer des utilisateurs"
+msgstr "ນຳເຂົ້າຜູ້ນຳໃຊ້"
+
+msgid "Export des utilisateurs"
+msgstr "ສົ່ງອອກຜູ້ນຳໃຊ້"
+
+msgid "Export des connexions"
+msgstr "ການເຊື່ອມຕໍ່ເພື່ອສົ່ງອອກ"
+
+msgid "Ajouter un utilisateur"
+msgstr "ເພີ່ມຜູ້ນຳໃຊ້"
+
+msgid "Editer utilisateur"
+msgstr "ແກ້ໄຂຜູ້ນຳໃຊ້"
+
+msgid "Editer mot de passe"
+msgstr "ແກ້ໄຂລະຫັດຜ່ານ"
+
+msgid "Activer utilisateur"
+msgstr "ສາມາດອະນຸຍາດຜູ້ນຳໃຊ້"
+
+msgid "Désactiver utilisateur"
+msgstr "ບໍ່ອະນຸຍາດໃຫ້ໃຊ້ຂອງຜູ້ນຳໃຊ້"
+
+msgid "Veuillez confirmer la modification de statut"
+msgstr "ກະລຸນາຢືນຢັນການປ່ຽນແປງສະຖານະ"
+
+msgid "Erreur lors du changement de statut"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາມີການປ່ຽນແປງສະຖານະ"
+
+msgid "Déconnexion"
+msgstr "ຕັດການເຊື່ອມຕໍ່"
+
+msgid "Non rempli"
+msgstr "ບໍ່ໄດ້ຕື່ມໃສ່"
+
+msgid "Export connexions utilisateurs"
+msgstr "ການສົ່ງອອກຂອງການເຊື່ອມຕໍ່ຫາຜູ້ນຳໃຊ້"
+
+msgid "Import utilisateurs"
+msgstr "ການສົ່ງເຂົ້າສໍາລັບຜູ້ນຳໃຊ້"
+
+msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"
+msgstr "ປັບປຸງລາຍການຜູ້ນຳໃຊ້ ແລະ ຕື່ມບັນດາຜູ້ນໍາໃຊ້ທີຍັງບໍ່ມີໃສ່?"
+
+msgid "Erreur lors du traitement des données"
+msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາການຈັດການຂໍ້ມູນ"
+
+msgid "Date de validation du"
+msgstr "ວັນທີຢືນຢັນຄວາມຖືກຕ້ອງ"
+
+msgid "Aucun résultat à exporter !"
+msgstr "ບໍ່ມີຜົນສົ່ງອອກ!"

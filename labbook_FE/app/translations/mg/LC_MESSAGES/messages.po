@@ -1,0 +1,2494 @@
+# Malagasy translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-07-15 11:06+0200\n"
+"PO-Revision-Date: 2021-09-03 15:20+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: mg\n"
+"Language-Team: mg <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+msgid "Dossier administratif"
+msgstr "Rakitra momba azy"
+
+msgid "Dossier"
+msgstr "Tahiry"
+
+msgid "Identité"
+msgstr "Marika manokana"
+
+msgid "Patient anonyme"
+msgstr "Marary tsy fantatra anarana"
+
+msgid "Né(e) le"
+msgstr "Daty nahaterahana"
+
+msgid "années"
+msgstr "taona"
+
+msgid "mois"
+msgstr "volana"
+
+msgid "semaines"
+msgstr "herinandro"
+
+msgid "jours"
+msgstr "andro"
+
+msgid "Masculin"
+msgstr "Lehilahy"
+
+msgid "Féminin"
+msgstr "Vehivavy"
+
+msgid "Inconnu"
+msgstr "Tsy fantatra"
+
+msgid "Prescription"
+msgstr "ireo fanafody hoanina"
+
+msgid "Date de réception du dossier"
+msgstr "Daty nandraisana azy"
+
+msgid "Date de prescription"
+msgstr "Daty nanoratana azy"
+
+msgid "Prescripteur"
+msgstr "Prescripteur"
+
+msgid "Colis"
+msgstr "Entana"
+
+msgid "Oui"
+msgstr "Eny"
+
+msgid "Identification du colis"
+msgstr "Famantarana ny entana"
+
+msgid "Date de réception du colis"
+msgstr "Daty fandraisana ny entana"
+
+msgid "Non"
+msgstr "Tsia"
+
+msgid "Hospitalisation"
+msgstr "Hopitaly"
+
+msgid "Date d'admission"
+msgstr "Daty nidirana"
+
+msgid "Service demandeur"
+msgstr "Service mangataka"
+
+msgid "Numéro de lit"
+msgstr "Laharana fandriana"
+
+msgid "Analyses et actes de prélèvement"
+msgstr "Fitiliana sy fakana singa"
+
+msgid "Analyses"
+msgstr "Fitiliana"
+
+msgid "Code"
+msgstr "Kaody"
+
+msgid "Nom"
+msgstr "Anarana"
+
+msgid "Urgent"
+msgstr "Maika"
+
+msgid "Demandée"
+msgstr "Nangatahana"
+
+msgid "Cote"
+msgstr "Cote"
+
+msgid "Prix"
+msgstr "Vidiny"
+
+msgid "Actes de prélèvement"
+msgstr "Fakana singa"
+
+msgid "Compte-rendus"
+msgstr "Tatitra"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Date"
+msgstr "Daty"
+
+msgid "Facturation"
+msgstr "Faktiora"
+
+msgid "Prix total"
+msgstr "Prix total"
+
+msgid "Remise sur la facturation"
+msgstr "Fihenam-bidy amin'ny faktiora"
+
+msgid "Pourcentage de la remise"
+msgstr "Ny fihenam-bidy"
+
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "Fiantohana ara-pahasalamana"
+
+msgid "Reste à payer"
+msgstr "Ambiny aloa"
+
+msgid "Numéro de quittance"
+msgstr "Laharan'ny rosia"
+
+msgid "Renseignements / Informations complémentaires"
+msgstr "Fampahalalana"
+
+msgid "Valise de documents"
+msgstr "Fitahirizana antontan-taratasy"
+
+msgid "Fichier"
+msgstr "Fichier"
+
+msgid "Enregistrer le document"
+msgstr "Tehirizina"
+
+msgid "Quitter"
+msgstr "Hiala"
+
+msgid "Imprimer la facture"
+msgstr "Hamoaka faktiora"
+
+msgid "Code barre"
+msgstr "Code barre"
+
+msgid "Télécharger"
+msgstr "Halaina"
+
+msgid "Ré-éditer"
+msgstr "Hanova"
+
+msgid "Aucune donnée à afficher"
+msgstr "Tsy misy donnée"
+
+msgid "Aucun fichier déposé"
+msgstr "Tsy misy fichier"
+
+msgid "Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)"
+msgstr "Te-hanitsy ny tatitra ve ianao ? (hiseho eo ny teny Nanafoana sy Nanolo)"
+
+msgid "Une erreur est survenue lors du traitement"
+msgstr "Nisy olana nandritra ny fikarakarana"
+
+msgid "Une erreur est survenue lors du dépot d'un fichier"
+msgstr "Nisy olana teo am-pametrahana ny fichier"
+
+msgid "Le fichier sera définitivement supprimé"
+msgstr "Hofafana tanteraka ilay fichier"
+
+msgid "Erreur lors de la suppression d'un fichier"
+msgstr "Olana teo am-pamafana ny fichier"
+
+msgid "Erreur lors de la génération du PDF facture"
+msgstr "Olana teo am-pamoahana ny PDF faktiora"
+
+msgid "Erreur lors de la génération du PDF code barre"
+msgstr "Olana teo am-pamoahana ny PDF code barre"
+
+msgid "Import d'analyses"
+msgstr "Import fitiliana"
+
+msgid "Statut de la dernière importation"
+msgstr "Endriky ny import natao farany"
+
+msgid "Type d'import"
+msgstr "Karazana import"
+
+msgid "Met à jour les analyses (dont le code est identique)"
+msgstr "Fanavaozana fitiliana (izay mitovy kaody)"
+
+msgid "Ajoute les nouvelles analyses (code non existant en base)"
+msgstr "Manampy fitiliana vaovao (kaody tsy misy ao anaty tahiry)"
+
+msgid "Retour"
+msgstr "Miverina"
+
+msgid "Importer des analyses"
+msgstr "Import ireo fitiliana"
+
+msgid "Dépôt réussi"
+msgstr "Nety ny tahiry"
+
+msgid "Le fichier doit être un csv"
+msgstr "Tsy maintsy csv ilay fichier"
+
+msgid "Lancer l'import du référentiel d'analyses ?"
+msgstr "Alefa ny import ny antonta-pitiliana ?"
+
+msgid "Traitement réussi"
+msgstr "Nety ny fikarakarana"
+
+msgid "Aucun statut"
+msgstr "Tsy misy statut"
+
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
+msgstr "Olana teo amin'ny fikirakirana ny données, havaozy ny pejy mandrapivoakan'ny statut'ny"
+
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
+msgstr "Nisy olana teo am-panamarinana ny statut an'ireo données"
+
+msgid "Validation biologique"
+msgstr "Fanamarinana biolojika"
+
+msgid "Renseignements cliniques"
+msgstr "Fampahalalana klinika"
+
+msgid "Aucune analyse"
+msgstr "Tsy misy fitiliana"
+
+msgid "Validation des résultats cochés"
+msgstr "Fanamarinana ny valiny nosafidiana"
+
+msgid "Date de validation"
+msgstr "Daty fanamarinana"
+
+msgid "Biologiste"
+msgstr "Biolojista"
+
+msgid "Commentaire"
+msgstr "Fanehoan-kevitra"
+
+msgid "Valider"
+msgstr "Hanamafy"
+
+msgid "Compte rendu"
+msgstr "Tatitra"
+
+msgid "Commentaire et motif annulation"
+msgstr "Fanamarihana sy antony fanafoanana"
+
+msgid "Motif"
+msgstr "Antony"
+
+msgid "Ajouter"
+msgstr "Hanampy"
+
+msgid "Annuler"
+msgstr "Hanafoana"
+
+msgid "Ajouter de nouvelles analyses"
+msgstr "Hanampy fitiliana vaovao"
+
+msgid "Dossier suivant"
+msgstr "Dossier manaraka"
+
+msgid "Fin de la liste des dossiers"
+msgstr "Faran'ny lisitr'ireo dossier"
+
+msgid "Une erreur est survenue du changement de statut du dossier"
+msgstr "Nisy olana teo am-pamoahana ny statut an'ny dossier"
+
+msgid "Une erreur est survenue lors de création des résultats"
+msgstr "Nisy olana teo am-panamboarana ireo valiny"
+
+msgid "Une erreur est survenue lors de l'enregistrement des analyses"
+msgstr "Nisy olana teo am-pitahirizana ireo fitiliana"
+
+msgid "Etes-vous sur de vouloir effacer ce résultat ?"
+msgstr "Tena te hamafa an'ity valiny ity ve ianao ?"
+
+msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
+msgstr "Nisy olana teo am-pamerenana izay efa voasoratra"
+
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "Tena te-hanafoana ity valiny ity ve ianao ? \\nTsy mety hiverenana intsony ity."
+
+msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
+msgstr "Nisy olana teo am-panafoanana izay efa voasoratra"
+
+msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
+msgstr "Nisy olana teo am-panamarinana biolojika"
+
+msgid "Réinitialiser la valeur"
+msgstr "Averina amin'ny teo aloha"
+
+msgid "Cliquer pour commencer une recherche"
+msgstr "Kitiho raha hanomboka fikarohana"
+
+msgid "Analyse déjà présente !"
+msgstr "Fitiliana efa misy !"
+
+msgid "Erreur lors de la récupération d'une analyse"
+msgstr "Olana teo am-pangalana ny fitiliana"
+
+msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
+msgstr "Tandremo fa hiala tsy manao fanamarinana ianao."
+
+msgid "Contributeurs"
+msgstr "Mpiara-miasa"
+
+msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
+msgstr "LabBook dia rindrambaiko fitantanana laboratoara tsy vidiana."
+
+msgid "LabBook est co-financé par l’AFD et la Fondation Mérieux."
+msgstr "Ny LabBook dia tohanan'ny AFD sy ny Foundation Mérieux."
+
+msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
+msgstr "Ny orinasa Epiconcept no nanao ny rindrambaiko LabBook hatramin'ny 2019."
+
+msgid "La société &AElig;GL&Eacute; a pris le relais à partir de 2020."
+msgstr "Ny orinasa &AElig;GL&Eacute; no nanohy ny fanamboarana ny taona 2020."
+
+msgid "Le logiciel est sous licence GNU."
+msgstr "Ny fahazoan-dàlana GNU no mifehy ny rindrambaiko."
+
+msgid "Version : "
+msgstr "Version :"
+
+msgid "Accès"
+msgstr "Fidirana"
+
+msgid "Titre"
+msgstr "Lohateny"
+
+msgid "Monsieur"
+msgstr "Andriamatoa"
+
+msgid "Madame"
+msgstr "Ramatoa"
+
+msgid "Mademoiselle"
+msgstr "Ramatoakely"
+
+msgid "Docteur"
+msgstr "Dokotera"
+
+msgid "Professeur"
+msgstr "Professeur"
+
+msgid "Prénom"
+msgstr "Fanampin'anarana"
+
+msgid "Initiales"
+msgstr "Fanafohezana"
+
+msgid "Lieu de travail"
+msgstr "Toeram-piasana"
+
+msgid "Service"
+msgstr "Service"
+
+msgid "Adresse"
+msgstr "Adiresy"
+
+msgid "Ville"
+msgstr "Renivohitra"
+
+msgid "Spécialité"
+msgstr "Spécialité"
+
+msgid "Téléphone fixe"
+msgstr "Finday"
+
+msgid "Téléphone mobile"
+msgstr "Finday"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Adresse email"
+msgstr "Adiresy mailaka"
+
+msgid "Enregistrer"
+msgstr "Tehirizina"
+
+msgid "Veuillez saisir un nom."
+msgstr "Ampidiro anarana azafady."
+
+msgid "Une erreur est survenue lors de l'enregistrement"
+msgstr "Nisy olana teo am-pitahirizana"
+
+msgid "Equipement"
+msgstr "Fitaovana"
+
+msgid "Nom de l'équipement"
+msgstr "Anaran'ny fitaovana"
+
+msgid "Nom du fabricant"
+msgstr "Anaran'ny mpanamboatra"
+
+msgid "modèle"
+msgstr "Modely"
+
+msgid "Photo"
+msgstr "Sary"
+
+msgid "Fonction"
+msgstr "Asa"
+
+msgid "Localisation"
+msgstr "Toerana"
+
+msgid "Section"
+msgstr "Faritra"
+
+msgid "Fournisseur"
+msgstr "Mpamatsy"
+
+msgid "Numéro de série"
+msgstr "Laharam-pamantarana"
+
+msgid "Numéro d'inventaire"
+msgstr "Laharana anaty lisitra"
+
+msgid "Responsable"
+msgstr "Tompon'andraikitra"
+
+msgid "Manuel"
+msgstr "Fitarihana"
+
+msgid "Procédure"
+msgstr "Toro-lalana"
+
+msgid "Liste des pannes et réparations"
+msgstr "Lisitry ny simba sy ny fanamboarana"
+
+msgid "Maintenance préventive"
+msgstr "Fikolokoloana"
+
+msgid "Certificat d'étalonnage"
+msgstr "Certificat d'étalonnage"
+
+msgid "Contrat de maintenance"
+msgstr "Fifanarahana ny fanamboarana"
+
+msgid "Date de fin de contrat de maintenance"
+msgstr "Daty farany ny fifanarahana ny fanamboarana"
+
+msgid "Facture"
+msgstr "Faktiora"
+
+msgid "Date de réception"
+msgstr "Daty nandraisana"
+
+msgid "Date d'achat"
+msgstr "Daty nividianana"
+
+msgid "Date d'acquisition"
+msgstr "Daty nahazoana"
+
+msgid "Date de mise en service"
+msgstr "Daty nanombohana"
+
+msgid "Date de retrait du laboratoire"
+msgstr "Daty nialana teo amin'ny laboratoara"
+
+msgid "Commentaires"
+msgstr "Fanehoan-kevitra"
+
+msgid "Veuillez saisir un nom d'équipement."
+msgstr "Ampidiro ny anaran'ny fitaovana azafady."
+
+msgid "Supprimer"
+msgstr "Fafana"
+
+msgid "Historique d'une analyse"
+msgstr "Tantaran'ny fitiliana"
+
+msgid "Liste des dossiers pour cette analyse"
+msgstr "Lisitr'ireo taratasy momba io fitiliana io"
+
+msgid "du"
+msgstr "ny"
+
+msgid "au"
+msgstr "ao"
+
+msgid "Nombre total de lignes"
+msgstr "Isan'ny andalana"
+
+msgid "Premier"
+msgstr "Voalohany"
+
+msgid "Précédent"
+msgstr "Teo aloha"
+
+msgid "Suivant"
+msgstr "Manaraka"
+
+msgid "Dernier"
+msgstr "Farany"
+
+msgid "serial"
+msgstr "serial"
+
+msgid "N° dossier"
+msgstr "Laharan'ny dossier"
+
+msgid "Date prescr."
+msgstr "Daty prescr."
+
+msgid "Variable"
+msgstr "Variable"
+
+msgid "Résultat"
+msgstr "Valiny"
+
+msgid "Retour à la liste analyses"
+msgstr "Hiverina amin'ny lisitry ny fitiliana"
+
+msgid "Historique patient"
+msgstr "Tantaran'ny marary"
+
+msgid "Code labo."
+msgstr "Kaody labo."
+
+msgid "Date de naissance"
+msgstr "Daty nahaterahana"
+
+msgid "Sexe"
+msgstr "Sexe"
+
+msgid "Liste des analyses"
+msgstr "Lisitry ny fitiliana"
+
+msgid "Analyse"
+msgstr "Fitiliana"
+
+msgid "Retour à la liste patients"
+msgstr "Hiverina amin'ny lisitry ny marary"
+
+msgid "Liste détaillée du stock pour ce produit"
+msgstr "Lisitra feno momba ny tahirin'ity vokatra ity"
+
+msgid "Nb de paq."
+msgstr "Nb an'ny pq."
+
+msgid "Date recept."
+msgstr "Daty recept."
+
+msgid "Date expir."
+msgstr "Daty expir."
+
+msgid "N° lot"
+msgstr "Laharan'ny lot"
+
+msgid "Prix d'achat"
+msgstr "Vidiny"
+
+msgid "Historique consommation"
+msgstr "Tantaran'ny fandaniana"
+
+msgid "Indiquer le nombre de paquets utilisée"
+msgstr "Lazao ny isan'ny fonosana nampiasaina"
+
+msgid "Nombre de paquets"
+msgstr "Isan'ny fonosana"
+
+msgid "Indiquer la quantité utilisée"
+msgstr "Lazao ny habetsaky ny nampiasana"
+
+msgid "Aucun prescripteur à exporter !"
+msgstr "Tsy misy prescripteur ho exporter-na !"
+
+msgid "Erreur lors de la génération du fichier"
+msgstr "Olana teo am-panamboarana ilay fichier"
+
+msgid "Référence"
+msgstr "Reference"
+
+msgid "Rédacteur"
+msgstr "Mpanoratra"
+
+msgid "Vérificateur"
+msgstr "Vérificateur"
+
+msgid "Approbateur"
+msgstr "Approbateur"
+
+msgid "Date de création"
+msgstr "Daty nanamboarana"
+
+msgid "Date d'application"
+msgstr "Datin'ny fampiharana"
+
+msgid "Date de modification"
+msgstr "Daty fanovana"
+
+msgid "Section d'application"
+msgstr "Toeram-pampiharana"
+
+msgid "Veuillez saisir une référence ou un titre."
+msgstr "Mampidira référence na lohateny azafady."
+
+msgid "Réunion"
+msgstr "Fivoriana"
+
+msgid "Type"
+msgstr "Karazany"
+
+msgid "Réunion d'équipe"
+msgstr "Fivorian'ny ekipa"
+
+msgid "Réunion qualité"
+msgstr "Fivoriana kalitao"
+
+msgid "Réunion de direction"
+msgstr "Fivoriana fitantanana"
+
+msgid "Organisateur"
+msgstr "Mpikarakara"
+
+msgid "Compte-rendu"
+msgstr "Tatitra"
+
+msgid "Veuillez saisir une date de réunion."
+msgstr "Ampidiro ny datin'ny fivoriana."
+
+msgid "Détails produit"
+msgstr "Antsipirian'ny vokatra"
+
+msgid "Nom du produit"
+msgstr "Anaran'ny vokatra"
+
+msgid "Type produit"
+msgstr "Karazan'ny vokatra"
+
+msgid "Nombre par paquet"
+msgstr "Isa isaky ny fonosana"
+
+msgid "Seuil de sécurité"
+msgstr "Seuil de sécurité"
+
+msgid "Référence fournisseur"
+msgstr "Référence ny mpamatsy"
+
+msgid "Conservation"
+msgstr "Fitahirizana"
+
+msgid "Veuillez saisir un nom de produit."
+msgstr "Ampidiro ny anaran'ny vokatra."
+
+msgid "Veuillez saisir un nombre de produits par paquet supérieur à 0."
+msgstr "Ampidiro azafady ny isan'ny vokatra isaky ny fonosana mihoatra ny 0."
+
+msgid "Détails patient"
+msgstr "Antsipirian'ny marary"
+
+msgid "Demande d'analyses patient - Fiche patient"
+msgstr "Fangatahana fitiliana ny marary - Taratasin'ny marary"
+
+msgid "Anonyme"
+msgstr "Anonyme"
+
+msgid "Code patient interne au laboratoire"
+msgstr "Kaody anatin'ny marary ao amin'ny laboratoara"
+
+msgid "Nom de jeune fille"
+msgstr "Anaran'ny tovovavy"
+
+msgid "Date de naissance approximative"
+msgstr "Daty manakaiky ny nahaterahana"
+
+msgid "Prénom(s)"
+msgstr "Fanampin'anarana"
+
+msgid "ou"
+msgstr "na"
+
+msgid "Age"
+msgstr "Taona"
+
+msgid "unité"
+msgstr "unité"
+
+msgid "Jours"
+msgstr "Andro"
+
+msgid "Semaines"
+msgstr "Herinandro"
+
+msgid "Mois"
+msgstr "Volana"
+
+msgid "Années"
+msgstr "Taona"
+
+msgid "Coordonnées"
+msgstr "Contact"
+
+msgid "Téléphone"
+msgstr "Finday"
+
+msgid "Profession"
+msgstr "Asa"
+
+msgid "Boite postale"
+msgstr "Boite postale"
+
+msgid "Quartier / Secteur"
+msgstr "Quartier / Secteur"
+
+msgid "Code postal"
+msgstr "Kaody postaly"
+
+msgid "Ville / Village"
+msgstr "Renivohitra"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un age"
+msgstr "Safidio azafady ny daty nahaterahana na mampidira ny taonanao"
+
+msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
+msgstr "Nisy olana teo am-panovana/nanampy marary"
+
+msgid "Details demande d'analyses"
+msgstr "Antsipirian'ny fangatahana fitiliana"
+
+msgid "Demande d'analyses patient externe"
+msgstr "Fangatahana fitiliana marary avy any ivelany"
+
+msgid "Modifier le dossier du patient"
+msgstr "Hovaina ny rakitsoratry ny marary"
+
+msgid "Rechercher une analyse"
+msgstr "Fitadiavana fitiliana"
+
+msgid "Produits pathologiques"
+msgstr "Vokatra pathologiques"
+
+msgid "Ajouter un prélèvement"
+msgstr "Manampy singa"
+
+msgid "Prod. pathol."
+msgstr "Prod. pathol."
+
+msgid "Statut"
+msgstr "Statut"
+
+msgid "Date prél."
+msgstr "Daty prél."
+
+msgid "Date réception"
+msgstr "Daty nandraisana"
+
+msgid "Préleveur"
+msgstr "Préleveur"
+
+msgid "Qté"
+msgstr "Qté"
+
+msgid "Erreur lors la récupération des prélèvements"
+msgstr "Olana teo am-pangalana ny singa"
+
+msgid "Erreur lors la récupération des produits pathologiques"
+msgstr "Olana teo am-pangalana ireo vokatra pathologiques"
+
+msgid "Erreur lors de la récupération des analyses"
+msgstr "Olana teo am-pangalana ireo fitiliana"
+
+msgid "Merci de confirmer la suppression"
+msgstr "Azafady mba hamafiso raha te hamafa"
+
+msgid "Veuillez sélectionner au moins une analyse"
+msgstr "Misafidiana farafahakeliny fitiliana iray azafady"
+
+msgid "Veuillez sélectionner une date de réception du dossier"
+msgstr "Misafidiana daty nandraisana ny dossier"
+
+msgid "Veuillez sélectionner une date de prescription"
+msgstr "Misafidiana daty ny prescription"
+
+msgid "Veuillez renseigner le type du produit"
+msgstr "Ampidiro azafady ny karazan'ny vokatra"
+
+msgid "Veuillez renseigner le statut du produit"
+msgstr "Fenoy azafady ny statut an'ny vokatra"
+
+msgid "Veuillez renseigner toutes les dates de réception"
+msgstr "Fenoy ireo daty nandraisana rehetra"
+
+msgid "Veuillez renseigner toutes les identités des préleveurs"
+msgstr "Fenoy azafady ny momban'ny préleveurs rehetra"
+
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "Nisy olana teo am-pitahirizana ireo singa"
+
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "Nisy olana teo am-pitahirizana ny dossier"
+
+msgid "Une erreur est survenue lors du changement de statut du dossier"
+msgstr "Nisy olana teo am-panovana ny statut an'ny dossier"
+
+msgid "Une erreur est survenue lors de la création des résultats"
+msgstr "Nisy olana teo am-pamoronana ny valiny"
+
+msgid "Demande d'analyses patient hospitalisé"
+msgstr "Fangatahana fitiliana marary avy amin'ny hopitaly"
+
+msgid "Produit pathologique"
+msgstr "Vokatra pathologique"
+
+msgid "Localisation prélèvement"
+msgstr "Toeran'ny singa"
+
+msgid "Quantité"
+msgstr "Fatrany"
+
+msgid "Date du prélèvement"
+msgstr "Daty nangalana singa"
+
+msgid "Lieu de prélèvement"
+msgstr "Toerana nangalana singa"
+
+msgid "Précision lieu"
+msgstr "Toerana mazava tsara"
+
+msgid "Heure de réception"
+msgstr "Ora nandraisana"
+
+msgid "Veuillez saisir un statut."
+msgstr "Mampidira statut azafady."
+
+msgid "Veuillez choisir un produit pathologique."
+msgstr "Misafidiana vokatra pathologique azafady."
+
+msgid "Personnel"
+msgstr "Mpiasa"
+
+msgid "Numéro de téléphone"
+msgstr "Laharan'ny finday"
+
+msgid "Date d'arrivée au laboratoire"
+msgstr "Daty nahatongavana tao amin'ny laboratoara"
+
+msgid "Position actuelle dans le laboratoire"
+msgstr "Toerana ankehitriny ao amin'ny laboratoara"
+
+msgid "CV"
+msgstr "CV"
+
+msgid "Diplômes"
+msgstr "Diplaoma"
+
+msgid "Formations continues"
+msgstr "Fampianarana mitohy"
+
+msgid "Section de travail"
+msgstr "Fizarana asa"
+
+msgid "Dernière évaluation des compétences"
+msgstr "Fitsarana natao farany momba ny fahaiza-manao"
+
+msgid "Approvisionner un produit"
+msgstr "Famenoana ny vokatra"
+
+msgid "Produit"
+msgstr "Vokatra"
+
+msgid "Date d'expiration"
+msgstr "Daty farany"
+
+msgid "Numéro de lot"
+msgstr "Laharana"
+
+msgid "Veuillez choisir un produit à approvisionner"
+msgstr "Misafidiana vokatra iray ho fenoana azafady"
+
+msgid "Veuillez saisir un nombre de paquets supérieur à 0."
+msgstr "Misafidiana isan'ny fonosana mihoatra ny 0 azafady."
+
+msgid "Veuillez saisir une date d'expiration."
+msgstr "Ampidiro ny daty fahalaniana."
+
+msgid "Nom fournisseur"
+msgstr "Anaran'ny mpamatsy"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Veuillez saisir un fournisseur."
+msgstr "Ampidiro ny mpamatsy"
+
+msgid "Saisie de résultats"
+msgstr "Mampiditra valiny"
+
+msgid "Feuille de paillasse"
+msgstr "Feuille de paillasse"
+
+msgid "Certains résultats obligatoires ne sont pas saisis"
+msgstr "Misy valiny tsy maintsy atao mbola tsy tafiditra"
+
+msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
+msgstr "Nisy olana teo am-pitahirizana ireo izay nampidirina"
+
+msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
+msgstr "Nisy olana teo amin'ny fanamarinana ara-teknika an'ireo nampidirana"
+
+msgid "Technicien"
+msgstr "Technicien"
+
+msgid "ANNULE"
+msgstr "FOANANA"
+
+msgid "Liste analyses"
+msgstr "Lisitry ny fitiliana"
+
+msgid "Rechercher"
+msgstr "Karohy"
+
+msgid "Date du"
+msgstr "Daty ny"
+
+msgid "Nb. sur la période"
+msgstr "Nb. nandritra ny vanim-potoana"
+
+msgid "Export des données"
+msgstr "Famoahana ireo données"
+
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "Nisy olana teo am-pangalana ireo données"
+
+msgid "Historique"
+msgstr "Tantara"
+
+msgid "Aucun résultats à exporter !"
+msgstr "Tsy misy valiny azo havoaka !"
+
+msgid "Liste patients"
+msgstr "Lisitry ny marary"
+
+msgid "DDN"
+msgstr "DDN"
+
+msgid "Historique des approvisionnements et usages pour ce produit"
+msgstr "Tantaran'ny famatsiana sy ny fampiasana an'ity vokatra ity"
+
+msgid "E/S"
+msgstr "E/S"
+
+msgid "Utilisateur"
+msgstr "Mpampiasa"
+
+msgid "Date action"
+msgstr "Daty nanaovana"
+
+msgid "Accueil"
+msgstr "Accueil"
+
+msgid "Préférences"
+msgstr "Préférences"
+
+msgid "Gestion des utilisateurs"
+msgstr "Fitantanana ireo mpampiasa"
+
+msgid "Gestion des rôles"
+msgstr "Fitantanana ireo andraikitra"
+
+msgid "Référentiel des analyses"
+msgstr "Ny référence an'ny fitiliana"
+
+msgid "Dictionnaires"
+msgstr "Rakibolana"
+
+msgid "Gestion des sauvegardes"
+msgstr "Fitantanana ny fitahirizana"
+
+msgid "Gestion de la Facturation"
+msgstr "Fitantanana ny faktiora"
+
+msgid "Management de la Qualité"
+msgstr "Fitantanana kalitao"
+
+msgid "Analyses urgentes"
+msgstr "Fitiliana maika"
+
+msgid "Urgences"
+msgstr "Maika"
+
+msgid "Liste des dossiers"
+msgstr "Lisitr'ireo dossiers"
+
+msgid "Liste de travail biologiste"
+msgstr "Lisitrin'ny asa biolojista"
+
+msgid "Liste de travail technicien"
+msgstr "Lisitrin'ny asa teknisiana"
+
+msgid "Etat des prélèvements en cours"
+msgstr "Toetran'ny fangalana singa ankehitriny"
+
+msgid "Saisie des résultats"
+msgstr "Mampiditra valiny"
+
+msgid "Nouvelle demande externe"
+msgstr "Fangatahana vaovao avy any ivelany"
+
+msgid "Nouvelle demande hospitalisé"
+msgstr "Fangatahana vaovao avy amin'ny hopitaly"
+
+msgid "Validations à effectuer"
+msgstr "Fanamarinana tokony ho atao"
+
+msgid "Activité du laboratoire"
+msgstr "Asan'ny laboratoara"
+
+msgid "Dernier numéro utilisé"
+msgstr "Laharana farany nampiasaina"
+
+msgid "Nombre de dossiers validés aujourd'hui"
+msgstr "Isan'ny dossier voamarina androany"
+
+msgid "Nombre de dossiers enregistrés"
+msgstr "Isan'ny dossier voatahiry"
+
+msgid "Biologique"
+msgstr "Biolojika"
+
+msgid "Technique"
+msgstr "Teknika"
+
+msgid "LabBook"
+msgstr "LabBook"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Liste des prescripteurs"
+msgstr "Lisitr'ireo prescripteurs"
+
+msgid "Initiale"
+msgstr "Initiale"
+
+msgid "Lieu trav."
+msgstr "Toerana fiasana"
+
+msgid "Tél. fixe"
+msgstr "Finday"
+
+msgid "Mobile"
+msgstr "Mobile"
+
+msgid "Email"
+msgstr "Mailaka"
+
+msgid "Ajouter un prescripteur"
+msgstr "Manampy prescripteur"
+
+msgid "Editer"
+msgstr "Manova"
+
+msgid "Erreur lors de la suppression des données"
+msgstr "Olana teo am-pamafana ireo données"
+
+msgid "Liste des équipements"
+msgstr "Lisitry ny fitaovana"
+
+msgid "Fabricant"
+msgstr "Mpanamboatra"
+
+msgid "Modèle"
+msgstr "Modely"
+
+msgid "Ajouter un équipement"
+msgstr "Manampy fitaovana"
+
+msgid "Laboratoire"
+msgstr "Laboratoara"
+
+msgid "Nom du dictionnaire"
+msgstr "Anaran'ny diksionera"
+
+msgid "Ajouter une valeur"
+msgstr "Manampy valeur"
+
+msgid "Organigramme"
+msgstr "Organigramme"
+
+msgid "Valeurs"
+msgstr "Valeurs"
+
+msgid "Libellé"
+msgstr "Libellé"
+
+msgid "Libellé court"
+msgstr "Teny fohy"
+
+msgid "Position"
+msgstr "Toerana"
+
+msgid "Enregistrer les valeurs"
+msgstr "Tehirizina ireo valeurs"
+
+msgid "Veuillez saisir un nom de dictionnaire."
+msgstr "Mampidira anarana rakibolana."
+
+msgid "Veuillez renseigner le(s) libellé(s)."
+msgstr "Fenoy ireo libellé azafady."
+
+msgid "Veuillez renseigner le(s) code(s)."
+msgstr "Ampidiro azafady ireo kaody."
+
+msgid "Enregistrement réussi"
+msgstr "Vita ny fitahirizana"
+
+msgid "Liste des manuels"
+msgstr "Lisitry ny boky fitarihana"
+
+msgid "Date création"
+msgstr "Daty famoronana"
+
+msgid "Ajouter un manuel"
+msgstr "Manampy boky fitarihana"
+
+msgid "Liste des réunions"
+msgstr "Lisitry ny fivoriana"
+
+msgid "Ajouter une réunion"
+msgstr "Manampy fivoriana"
+
+msgid "Liste des non-conformités"
+msgstr "Lisitry ny tsy fanarahana"
+
+msgid "Impact sur le patient"
+msgstr "Fiantraikany amin'ny marary"
+
+msgid "Impact sur le personnel"
+msgstr "Fiantraikany amin'ny mpiasa"
+
+msgid "Mise en place d'une action correctrice"
+msgstr "Fametrahana ny rafitra fanitsiana"
+
+msgid "Date correction"
+msgstr "Datin'ny fanitsiana"
+
+msgid "Date de clôture"
+msgstr "Daty famaranana"
+
+msgid "Ajouter une non-conformité"
+msgstr "Manampy izay tsy mifanaraka"
+
+msgid "Faible"
+msgstr "Ambany"
+
+msgid "Important"
+msgstr "Zava-dehibe"
+
+msgid "Grave"
+msgstr "Henjana"
+
+msgid "Aucun"
+msgstr "Tsy misy"
+
+msgid "Procédures"
+msgstr "Toro-lalana"
+
+msgid "Date modification"
+msgstr "Daty nanovana"
+
+msgid "Ajouter une procédure"
+msgstr "Hanampy toro-lalana"
+
+msgid "Liste des produits"
+msgstr "Lisitry ny vokatra"
+
+msgid "Nbr par paquet"
+msgstr "Nbr isaky ny fonosana"
+
+msgid "Seuil"
+msgstr "Fetra"
+
+msgid "Réf. fournisseur"
+msgstr "Lah. mpamatsy"
+
+msgid "Editer la fiche produit"
+msgstr "Hanova ny momban'ny vokatra"
+
+msgid "Supprimer la fiche produit"
+msgstr "Hamafa ny momban'ny vokatra"
+
+msgid "Merci de confirmer la suppression du produit"
+msgstr "Azafady mba hamafiso ny famafana ny vokatra"
+
+msgid "Urgent uniquement"
+msgstr "Maika ihany"
+
+msgid "Nouveau"
+msgstr "Vaovao"
+
+msgid "Validé administrativement"
+msgstr "Voamarina ara-pitantanana"
+
+msgid "Intermédiaire (validé admin.)"
+msgstr "Mpanelanelana (voamarina admin.)"
+
+msgid "Validé techniquement"
+msgstr "Voamarina ara-teknika"
+
+msgid "Intermédiaire (validé tech.)"
+msgstr "Mpanelanelana (voamarina tech.)"
+
+msgid "Validé biologiquement"
+msgstr "Voamarina biolojika"
+
+msgid "Création dossier"
+msgstr "Famoronana dossier"
+
+msgid "Code patient"
+msgstr "Kaody marary"
+
+msgid "Une erreur est survenue lors de la récupération de la liste des dossiers"
+msgstr "Nisy olana teo am-pangalana ny lisitr'ireo dossiers"
+
+msgid "Validation technique"
+msgstr "Fanamarinana ara-teknika"
+
+msgid "Veuillez confirmer la suppression"
+msgstr "Azafady mba hamafiso ny famafana"
+
+msgid "Erreur lors de la suppression d'un dossier"
+msgstr "Olana teo am-pamafana ny dossier"
+
+msgid "Date de la demande du"
+msgstr "Daty fangatahana ny"
+
+msgid "Afficher uniquement les analyses prioritaires"
+msgstr "Ireo fitiliana laharapamehana ihany no asehoy"
+
+msgid "Masquer les résultats déjà validés"
+msgstr "Afeno ny valiny efa voamarina"
+
+msgid "Une erreur est survenue lors de la récupération des résultats"
+msgstr "Nisy olana teo am-pangalana ny valiny"
+
+msgid "Date dossier"
+msgstr "Daty ny dossier"
+
+msgid "Patient"
+msgstr "Marary"
+
+msgid "Sang"
+msgstr "Ra"
+
+msgid "Selles"
+msgstr "Tay"
+
+msgid "Urine"
+msgstr "Hamany"
+
+msgid "Autre"
+msgstr "Hafa"
+
+msgid "Liste du personnel"
+msgstr "Lisitry ny mpiasa"
+
+msgid "Tél"
+msgstr "Finday"
+
+msgid "Date arrivée"
+msgstr "Daty nahatongavana"
+
+msgid "Date éval."
+msgstr "Daty éval."
+
+msgid "Identifiant"
+msgstr "Identifiant"
+
+msgid "Formations"
+msgstr "Fampiofanana"
+
+msgid "Evaluations"
+msgstr "Naoty"
+
+msgid "Liste des stocks"
+msgstr "Lisitra tahiry"
+
+msgid "Nb par paq."
+msgstr "Nb isaky ny fonosana."
+
+msgid "Nb total"
+msgstr "Fitambarany"
+
+msgid "Catalogue des produits"
+msgstr "Ireo karazana vokatra"
+
+msgid "Nouveau produit"
+msgstr "Vokatra vaovao"
+
+msgid "Détails du stock"
+msgstr "Antsipirian'ny tahiry"
+
+msgid "Historique de ce produit"
+msgstr "Tantaran'ity vokatra ity"
+
+msgid "Seuil de"
+msgstr "Fetran'ny"
+
+msgid "Liste des fournisseurs"
+msgstr "Lisitry ny mpamatsy"
+
+msgid "Nom contact"
+msgstr "Anarana hifandraisana"
+
+msgid "Prénom contact"
+msgstr "Fanampin'anarana"
+
+msgid "Tél."
+msgstr "Finday."
+
+msgid "Ajouter un fournisseur"
+msgstr "Manampy mpamatsy"
+
+msgid "Note : certains equipements pourraient être associés à ce fournisseur"
+msgstr "Fanamarihana: misy fitaovana azo ampifandraisina amin'ity mpamatsy ity"
+
+msgid "Liste de travail"
+msgstr "Lisitry ny asa"
+
+msgid "Date dossier supérieure à"
+msgstr "Daty dossier mihoatran'ny"
+
+msgid "Date dossier inférieure à"
+msgstr "Daty dossier latsaky ny"
+
+msgid "Validation groupée"
+msgstr "Fanamarinana miaraka"
+
+msgid "Commencer la validation groupée"
+msgstr "Atomboka ny fanamarinana miaraka"
+
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "Identifiant na teny miafina diso."
+
+msgid "Ouverture de session"
+msgstr "Hiditra"
+
+msgid "Mot de passe"
+msgstr "Teny miafina"
+
+msgid "Gestion dossier patient"
+msgstr "Fitantanana dossier marary"
+
+msgid "Fusionner 2 dossiers patients"
+msgstr "Hanambatra dossier marary 2"
+
+msgid "Nom, prénom ou code du patient"
+msgstr "Anarana, fanampiny na ny kaody ny marary"
+
+msgid "A CONSERVER"
+msgstr "TEHIRIZINA"
+
+msgid "A SUPPRIMER"
+msgstr "FAFANA"
+
+msgid "Identité patient"
+msgstr "Famantarana ny marary"
+
+msgid "Code laboratoire"
+msgstr "Kaody laboratoara"
+
+msgid "Modifier la fiche patient"
+msgstr "Ovao ny taratasin'ny marary"
+
+msgid "Fusionner"
+msgstr "Manambatra"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
+msgstr "Misafidiana azafady daty nahaterahana na ny taonanao"
+
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
+msgstr "Tsy maintsy misafidy marary 2 samihafa ianao hanaovana ny fanakambanana."
+
+msgid "Les fiches patients sont les mêmes dans la base de données."
+msgstr "Ny fiche n'ireo marary dia mitovy daholo anaty base."
+
+msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
+msgstr "Misy taratasin'ny marary tsy ampy hanaovana ny fanambarana ny dossier."
+
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "Ireo dossier ny marary HOFAFANA no horaketina\\n amin'ny marary HOTEHIRIZINA.\\nTena hanambatra ve ianao ?\\n(Hetsika tsy azo hiverenana intsony)"
+
+msgid "Une erreur est survenue lors de la fusion"
+msgstr "Nisy olana teo am-pifandraisana"
+
+msgid "Administratif"
+msgstr "Administratif"
+
+msgid "Rapport activité"
+msgstr "Tatitra arak'asa"
+
+msgid "Rapport épidémiologique"
+msgstr "Tatitra momba ny epidemiolojika"
+
+msgid "Rapport statistique"
+msgstr "Tatitra momba ny statistika"
+
+msgid "Export DHIS2"
+msgstr "Famoahana DHIS2"
+
+msgid "Export WHONET"
+msgstr "Famoahana WHONET"
+
+msgid "Historique d'analyse"
+msgstr "Tantaran'ny fitiliana"
+
+msgid "Rapport de fin de journée"
+msgstr "Tatitra momba ny tontolo andro"
+
+msgid "Etat de la facturation journalière"
+msgstr "Momba ny faktiora isan'andro"
+
+msgid "Rapports"
+msgstr "Tatitra"
+
+msgid "Changement de logo"
+msgstr "Fanovana logo"
+
+msgid "Etiquettes"
+msgstr "Etiquettes"
+
+msgid "Intervalles d'âge"
+msgstr "Elanelana ara-taona"
+
+msgid "Configuration des comptes-rendu"
+msgstr "Fikarakarana momba ireo tatitra"
+
+msgid "Configuration des numéros de dossier"
+msgstr "Fikarakarana ny laharan'ny dossier"
+
+msgid "Gestion des dossiers patients"
+msgstr "Fitantanana ireo dossier ny marary"
+
+msgid "Configuration DHIS2"
+msgstr "Fikirakirana DHIS2"
+
+msgid "Configuration Epidemio"
+msgstr "Fikirakirana Epidemio"
+
+msgid "paramétrages"
+msgstr "Fanamboarana"
+
+msgid "Général"
+msgstr "General"
+
+msgid "Personnels"
+msgstr "Ireo mpiasa"
+
+msgid "Prescripteurs"
+msgstr "Prescripteurs"
+
+msgid "Equipements"
+msgstr "Fitaovana"
+
+msgid "Fournisseurs"
+msgstr "Mpamatsy"
+
+msgid "Manuels"
+msgstr "Toro-lalana"
+
+msgid "Gestion des stocks"
+msgstr "Fitantanana ny tahiry"
+
+msgid "Module des non-conformités"
+msgstr "Module momba ny tsy mifanaraka"
+
+msgid "Réunion du laboratoire"
+msgstr "Fivorian'ny laboratoara"
+
+msgid "Qualité"
+msgstr "Kalitao"
+
+msgid "Non conformité"
+msgstr "Tsy fanarahana"
+
+msgid "Patient externe"
+msgstr "Marary avy ivelany"
+
+msgid "Chercher un patient"
+msgstr "Mitady marary"
+
+msgid "Nouveau patient"
+msgstr "Marary vaovao"
+
+msgid "Non-conformité"
+msgstr "Tsy fanarahana"
+
+msgid "Nom de la non-conformité"
+msgstr "Anaran'ny tsy fitoviana"
+
+msgid "Rapporteur"
+msgstr "Mpitondra teny"
+
+msgid "DECLARATION DE LA NON-CONFORMITE"
+msgstr "FANAMBARANA NY TSY FANARAHANA"
+
+msgid "Catégorie de la non-conformité"
+msgstr "Sokajy ny tsy fanarahana"
+
+msgid "Pré analytique"
+msgstr "Fandinihana mialoha"
+
+msgid "Oubli ou examen erroné"
+msgstr "Fandinoana na examen diso"
+
+msgid "Dossier du patient / identité patient"
+msgstr "Dossier ny marary / famantarana ny marary"
+
+msgid "Prélèvement"
+msgstr "Fangalana singa"
+
+msgid "Heure de prélèvement"
+msgstr "Ora nangalana singa"
+
+msgid "Volume de prélèvement"
+msgstr "Fatran'ny singa nalaina"
+
+msgid "Identification du prélèvement"
+msgstr "Famantarana ny singa"
+
+msgid "Renseignement clinique"
+msgstr "Ny momba ara-klinika"
+
+msgid "Transport de l'échantillon"
+msgstr "Fitaterana ny santionany"
+
+msgid "Respect procédures"
+msgstr "Fanarahana ny toro-lalana"
+
+msgid "Urgence"
+msgstr "Maika"
+
+msgid "Traçabilité"
+msgstr "Fanarahana"
+
+msgid "Autres"
+msgstr "Hafa"
+
+msgid "Analytique"
+msgstr "Mpanadihady"
+
+msgid "Conservation échantillon avant analyse"
+msgstr "Fitahirizana santionany alohan'ny fitiliana"
+
+msgid "Centrifugation"
+msgstr "Centrifugation"
+
+msgid "Aliquotage"
+msgstr "Aliquotage"
+
+msgid "Contrôle qualité interne"
+msgstr "Fanaraha-maso kalitao anatiny"
+
+msgid "Contrôle qualité externe"
+msgstr "Fanaraha-maso kalitao ivelany"
+
+msgid "Absence de résultats/Résultats aberrants"
+msgstr "Tsy fahampian'ny valiny / Valiny tsy mifanaraka"
+
+msgid "Critère de repasse non respecté"
+msgstr "Fepetra fandefasana tsy voahaja"
+
+msgid "Post analytique"
+msgstr "Aorian'ny fitiliana"
+
+msgid "Dossier non validé"
+msgstr "Dossier tsy manankery"
+
+msgid "Validation partielle non / mal réalisée"
+msgstr "Fanamarinana ampahany ts natao / ratsy fanatanterahana"
+
+msgid "Résultat erroné / aberrant"
+msgstr "Valiny diso / tsy mifanaraka"
+
+msgid "Absence de résultat"
+msgstr "Tsy misy valiny"
+
+msgid "Erreur de saisie"
+msgstr "Hadisoana tea am-papidirana"
+
+msgid "Interprétation des résultats"
+msgstr "Famakafakana ireo valiny"
+
+msgid "Prestation de conseil"
+msgstr "Mpikarakara hevitra"
+
+msgid "Sérothèque/conservation échantillon après analyse"
+msgstr "Serothèque / fitehirizana singa aorian'ny fitiliana"
+
+msgid "Transmission des résultats"
+msgstr "Fampitana ny valiny"
+
+msgid "Défaut/Absence de transmission patient"
+msgstr "Olana/Tsy fahampian'ny fampitana marary"
+
+msgid "Défaut/Absence de transmission Prescripteur/Correspondant"
+msgstr "Olana/Tsy fahampian'ny fampitana Prescripteur/Correspondant"
+
+msgid "Accès aux résultats"
+msgstr "Fidirana amin'ireo valiny"
+
+msgid "Date de rendu erronée"
+msgstr "Daty famerenana diso"
+
+msgid "Délai de transmission non respecté"
+msgstr "Fe-potoana famitana tsy voahaja"
+
+msgid "Non respect de la procédure de rendu des résultats"
+msgstr "Tsy fanjana ireo toro-lalana amin'ny famerenana ireo valiny"
+
+msgid "Ressources humaines"
+msgstr "Ressources humaines"
+
+msgid "Non respect procédure"
+msgstr "Tsy fanjana ny toro-lalana"
+
+msgid "Absence"
+msgstr "Tsy fisiana"
+
+msgid "Habilitation/maintien des compétences"
+msgstr "Fahaizana/fikojakojana ny fahaiza-manao"
+
+msgid "Accident exposition au sang / Hygiène et sécurité"
+msgstr "Loza hisehoana ra / Fahadiovana sy fiarovana"
+
+msgid "Etalonnage, Certification, Calibrage"
+msgstr "Etalonnage, Certification, Calibrage"
+
+msgid "Calibration automate"
+msgstr "Calibration PLC"
+
+msgid "Alarme"
+msgstr "Fanairana"
+
+msgid "Panne d'un équipement"
+msgstr "Fahasimban'ny fitaovana"
+
+msgid "Respect procédure"
+msgstr "Fanajana ny toro-lalana"
+
+msgid "Réactifs et consommables"
+msgstr "Réactifs et consommables"
+
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "Fandraisana ireo reactifs sy/na consommables tsy mifanaraka amin'ny nafarana"
+
+msgid "Délai livraison"
+msgstr "Faharetan'ny fanaterana"
+
+msgid "Réactifs périmés"
+msgstr "Réactifs lany daty"
+
+msgid "Rupture de stock (cf nom du fournisseur)"
+msgstr "Tahiry lany (cf anaran'ny mpamatsy)"
+
+msgid "Déstockage produits non conforme"
+msgstr "Fanesorana ny vokatra tsy mifanaraka"
+
+msgid "Locaux et environnement"
+msgstr "Toerana sy tontolo iainana"
+
+msgid "Nettoyage du laboratoire"
+msgstr "Fanadiovana ny laboratoara"
+
+msgid "Entretien du batiment"
+msgstr "Fikolokoloana ny trano"
+
+msgid "Coupure d'électricité"
+msgstr "Jiro tapaka"
+
+msgid "Coupure d'eau"
+msgstr "Fahatapahan-drano"
+
+msgid "Gestion des déchets"
+msgstr "Fitantanana ny fako"
+
+msgid "Systèmes informatiques"
+msgstr "Rafitra informatika"
+
+msgid "Absence de connexion"
+msgstr "Tsy misy connexion"
+
+msgid "Erreur de paramétrage"
+msgstr "Olana eo amin'ny paramètre"
+
+msgid "Panne réseau"
+msgstr "Fahatapahan'ny réseau"
+
+msgid "Panne système d'information"
+msgstr "Fahasimban'ny système d'information"
+
+msgid "Panne matériel informatique"
+msgstr "Fahasimban'ny fitaovana informatika"
+
+msgid "Sous-traitance"
+msgstr "Fifanarahana"
+
+msgid "Délai de rendu non respecté"
+msgstr "Fe-potoana fanaterana tsy voahaja"
+
+msgid "Erreur / oubli examen"
+msgstr "Hadisoana / fanadinoana examen"
+
+msgid "Mauvaise conservation lors du transport"
+msgstr "Ratsy fitahirizana nandritra ny fitaterana"
+
+msgid "Problème de facturation"
+msgstr "Olana amin'ny faktiora"
+
+msgid "Réclamations clients"
+msgstr "Fitarainan'ny mpanjifa"
+
+msgid "Est ce que cette non-conformité concerne un dossier patient ?"
+msgstr "Misy ifandraisany amin'ny dossier marary ve ity tsy fitoviana ity ?"
+
+msgid "Numéro de dossier"
+msgstr "Laharan'ny dossier"
+
+msgid "Description de la non-conformité"
+msgstr "Famaritana ny tsy fanarahana"
+
+msgid "Impact sur le personnel/visiteur"
+msgstr "Fiantraikany amin'ny mpiasa/mpitsidika"
+
+msgid "SUIVI DE LA NON-CONFORMITE"
+msgstr "FANARAHANA NY TSY FITOVIANA"
+
+msgid "Qui"
+msgstr "Iza"
+
+msgid "Quoi"
+msgstr "Inona"
+
+msgid "Quand"
+msgstr "Rahoviana"
+
+msgid "Mise en place d’une action correctrice"
+msgstr "Fametrahana hetsika fanitsiana"
+
+msgid "Description de l'action correctrice"
+msgstr "Famaritana ny hetsika fanitsiana"
+
+msgid "Date de réalisation de l'action correctrice"
+msgstr "Daty nahavitana ny hetsika fanitsiana"
+
+msgid "Responsable de l'action"
+msgstr "Tompon'andraikitry ny hetsika"
+
+msgid "CLOTURE DE LA NON-CONFORMITE"
+msgstr "FANAKATONANA NY TSY FANARAHANA"
+
+msgid "Validé par"
+msgstr "Voamarin'i"
+
+msgid "Veuillez saisir un nom pour cette non-conformité."
+msgstr "Mampidira anarana azafady amin'ity tsy fanarahana ity."
+
+msgid "Veuillez sélectionner un rapporteur."
+msgstr "Misafidiana mpitondra-teny azafady."
+
+msgid "Liste des analyses du dossier"
+msgstr "Lisitry ireo fitiliana ny dossier"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Processus en cours"
+msgstr "Dingana eo an-dalana"
+
+msgid "Veuillez patienter"
+msgstr "Mahandrasa azafady"
+
+msgid "Nombre de personnels dans le laboratoire"
+msgstr "Isan'ny mpiasa ao amin'ny laboratoara"
+
+msgid "Nombre de manuels sauvegardés"
+msgstr "Isan'ny fitarihana voatahiry"
+
+msgid "Date de la dernière réunion d'équipe"
+msgstr "Datin'ny fivorian'ny ekipa farany"
+
+msgid "Nombre de non-conformités en cours"
+msgstr "Isan'ny tsy fetezana mandeha amin'izao"
+
+msgid "Nombre de non-conformités depuis un mois"
+msgstr "Isan'ny tsy fetezana nandritra ny iray volana"
+
+msgid "Famille d'analyse"
+msgstr "Fitiliana iray karazana"
+
+msgid "Analyses par type de demande"
+msgstr "Fitiliana arakaraky ny fangatahana"
+
+msgid "Analyses par tranche d'âge"
+msgstr "Fitiliana arakaraky ny salan-taona"
+
+msgid "H = Homme, F = Femme, I = Inconnu"
+msgstr "H = Lehilahy, F = Vehivavy, I = Tsy fantatra"
+
+msgid "Export par type"
+msgstr "Famoahana araka ny karazany"
+
+msgid "Export par âge"
+msgstr "Famoahana araka ny taonany"
+
+msgid "Télécharger le rapport"
+msgstr "Haka ny tatitra"
+
+msgid "Externes"
+msgstr "Ivelany"
+
+msgid "Hospitalisés"
+msgstr "Hopitaly"
+
+msgid "Total"
+msgstr "Fitambarany"
+
+msgid "H"
+msgstr "H"
+
+msgid "F"
+msgstr "F"
+
+msgid "I"
+msgstr "I"
+
+msgid "Moins de"
+msgstr "Latsaky ny"
+
+msgid "ans"
+msgstr "taona"
+
+msgid "Plus de"
+msgstr "Mihoatra ny"
+
+msgid "à"
+msgstr "any"
+
+msgid "Etat journalier de la facturation"
+msgstr "Fanambarana faktiora isan'andro"
+
+msgid "Créateur du dossier"
+msgstr "Mpamorona dossier"
+
+msgid "Liste des facturations en cours"
+msgstr "Lisitry ny faktiora amin'izao"
+
+msgid "N° facturation"
+msgstr "N° faktiora"
+
+msgid "A payer après remises"
+msgstr "Haloa aorian'ny fihenam-bidy"
+
+msgid "Date de début de période "
+msgstr "Daty fanombohan'ny vanim-potoana"
+
+msgid "Feuille de calcul"
+msgstr "Feuille de calcul"
+
+msgid "Récupérer les données"
+msgstr "Haka ireo données"
+
+msgid "Veuillez sélectionner une feuille de calcul."
+msgstr "Safidio azafady ny takelaka."
+
+msgid "Epidémiologie"
+msgstr "Epidemiolojia"
+
+msgid "Maladie"
+msgstr "Aretina"
+
+msgid "Nature prélèvement"
+msgstr "Karazana singa"
+
+msgid "Total reçu"
+msgstr "Fitambaran'ny voaray"
+
+msgid "Total analysé"
+msgstr "Fitambaran'ny voatily"
+
+msgid "Résultats"
+msgstr "Valiny"
+
+msgid "Répartition dossiers"
+msgstr "Fizarazarana dossiers"
+
+msgid "Préleveurs"
+msgstr "Préleveurs"
+
+msgid "Prélèvements"
+msgstr "Singa"
+
+msgid "Interne"
+msgstr "Anatiny"
+
+msgid "Externe"
+msgstr "Ivelany"
+
+msgid "Non renseigné"
+msgstr "Tsy voasoritra"
+
+msgid "Famille"
+msgstr "Fianakaviana"
+
+msgid "Validation"
+msgstr "Fanamarinana"
+
+msgid "Ajouter un intervalle"
+msgstr "Manampy elanelam-potoana"
+
+msgid "Intervalles"
+msgstr "Elanelam-potoana"
+
+msgid "Age inférieur"
+msgstr "Taona ambany"
+
+msgid "Age supérieur"
+msgstr "Taona ambony"
+
+msgid "Désignation de l'acte"
+msgstr "Fanondroana ilay hetsika"
+
+msgid "Type de prélèvement"
+msgstr "Karazana singa"
+
+msgid "Analyse active"
+msgstr "Fitiliana mandeha"
+
+msgid "Désignation"
+msgstr "Fanondroana"
+
+msgid "Abréviation"
+msgstr "Fanafohezana"
+
+msgid "Produit bio."
+msgstr "Vokatra bio."
+
+msgid "Importer le référentiel"
+msgstr "Hampiditra référentiel"
+
+msgid "Exporter le référentiel"
+msgstr "Hamoaka référentiel"
+
+msgid "Enregistrer la liste"
+msgstr "Tehirizina ny lisitra"
+
+msgid "Ajouter une analyse"
+msgstr "Manampy fitiliana"
+
+msgid "Activé"
+msgstr "Velomina"
+
+msgid "Désactivé"
+msgstr "Vonoina"
+
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "Azafady mba hamafiso ny famafana an'ity fitiliana ity\\nTandremo fa ireo dossiers mifandraika amin'ity fitiliana ity dia hisy olana"
+
+msgid "Paramétrage de la sauvegarde"
+msgstr "Fikirakirana ny fitahirizana"
+
+msgid "MODIFIER HEURE SAUVEGARDE"
+msgstr "HANOVA NY ORA FITAHIRIZANA"
+
+msgid "INITIALISER LE MEDIA"
+msgstr "HAVAOZINA NY MEDIA"
+
+msgid "GENERER CLE DE SAUVEGARDE"
+msgstr "HAMOKATRA NY TENY MIAFIN'NY FITAHIRIZANA"
+
+msgid "SAUVEGARDER"
+msgstr "TAHIRIZINA"
+
+msgid "RESTAURER"
+msgstr "FAMERENANA INDRAY"
+
+msgid "Heure de sauvegarde"
+msgstr "Oran'ny fitahirizana"
+
+msgid "Dernière sauvegarde"
+msgstr "Fitahirizana farany"
+
+msgid "Dernière sauvegarde OK"
+msgstr "Fitahirizana farany OK"
+
+msgid "Veuillez saisir le mot de passe de l'utilisateur user_labbook"
+msgstr "Ampidiro azafady ny teny miafin'ny user_labbook"
+
+msgid "Mot de passe système"
+msgstr "Teny miafin'ny système"
+
+msgid "Veuillez saisir le mot de passe pour la clé de sauvegarde"
+msgstr "Ampidiro azafady ny teny miafina momba ny fitahirizana"
+
+msgid "Confirmation"
+msgstr "Hanamafy"
+
+msgid "Veuillez sélectionner un média"
+msgstr "Misafidiana media iray azafady"
+
+msgid "Liste des médias disponibles"
+msgstr "Lisitry ny media misy"
+
+msgid "Veuillez sélectionner la sauvegarde à restaurer"
+msgstr "Safidio azafady ny backup ho haverina"
+
+msgid "Liste des sauvegardes disponibles"
+msgstr "Lisitry ny backup misy"
+
+msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
+msgstr "Azafady mba hamafiso ny fanovana ny ora fitahirizan isan'andro."
+
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "Efa misy ny clé ao, raha hamerina hamoaka vaovao, tsy ho azo intsony ireo backups taloha\\nManamafy ny famoronana clé vaovao ianao?"
+
+msgid "Veuillez saisir un mot de passe"
+msgstr "Mampidira tenimiafina azafady"
+
+msgid "Les mots de passe ne correspondent pas !"
+msgstr "Tsy mifanaraka ny teny miafina!"
+
+msgid "Veuillez saisir une heure de sauvegarde."
+msgstr "Mampidira ora ny fitahirizana."
+
+msgid "Une erreur est survenue lors de la récupération de la liste de média"
+msgstr "Nisy olana teo am-pangalana ny lisitry ny media"
+
+msgid "Une erreur est survenue lors de l'interrogation du service"
+msgstr "Nisy olana teo am-panontaniana ny serivice"
+
+msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
+msgstr "Nisy olana teo am-panamarinana ny clé an'ny fitahirizana"
+
+msgid "Une erreur est survenue le média choisi est incorrect"
+msgstr "Nisy olana nitranga fa tsy mety ny média voafidy"
+
+msgid "Initialisation réussie"
+msgstr "Nahomby ny fanavaozana"
+
+msgid "Une erreur est survenue lors de l'initialisation du média"
+msgstr "Nisy olana teo am-panavaozana ny média"
+
+msgid "Génération réussie"
+msgstr "Nahomby ny famoahana"
+
+msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+msgstr "Nisy olana teo am-pangalana ny lisitry ny arsiva"
+
+msgid "Merci de confirmer le lancement immédiat de la restauration."
+msgstr "Azafady mba hamafiso ny fanombohan'ny famerenana izao."
+
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "Nisy olana nandritra ny famerenana amin'ny laoniny, azafady mifandraisa amin'ny admin mba hanamariny raha vita izany."
+
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
+msgstr "Vita ny famerenana amin'ny laoniny, hamerina handefa ireo service LabBook"
+
+msgid "Redémarrage activé"
+msgstr "Vita ny famelomana indray"
+
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "Naverina novelomina ireo sevice na nisy tsy fetezana teo am-pangatahna ny famerenanana\\n azafady avereno ahodina ny pejy"
+
+msgid "Sauvegarde réussie"
+msgstr "Vita soa ny tahiry"
+
+msgid "Une erreur est survenue"
+msgstr "Nisy olana nitranga"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+msgstr "Nisy olana teo am-panamarinana ny zava-misy ankehitriny, tsy fantatra ny statut"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours"
+msgstr "Nisy olana teo am-panamarinana ny zava-misy ankehitriny"
+
+msgid "Unité de cotation"
+msgstr "Unité de cotation"
+
+msgid "Valeur de cotation"
+msgstr "Valeur de cotation"
+
+msgid "Export whonet"
+msgstr "Famoahana Whonet"
+
+msgid "Variables"
+msgstr "Variables"
+
+msgid "Chercher une variable"
+msgstr "Mitady variable"
+
+msgid "Créer une nouvelle variable"
+msgstr "Hamorona variable vaovao"
+
+msgid "Code var."
+msgstr "Kaody var."
+
+msgid "Par défaut sera l'ID de la variable"
+msgstr "Par défaut ny ID an'ny variable"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Type de résultat"
+msgstr "Karazana valiny"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Valeur normale min."
+msgstr "Valeur normale min."
+
+msgid "Valeur normale max."
+msgstr "Valeur normale max."
+
+msgid "Formule"
+msgstr "Formule"
+
+msgid "Unité"
+msgstr "Unité"
+
+msgid "Précision"
+msgstr "Précision"
+
+msgid "Formule de conversion unité 2"
+msgstr "Formule de conversion unité 2"
+
+msgid "Unité 2"
+msgstr "Unité 2"
+
+msgid "Précision 2"
+msgstr "Precision 2"
+
+msgid "Num. var pour la formule"
+msgstr "Num. var pour la formule"
+
+msgid "Position affichage"
+msgstr "Asehoy ny toerana"
+
+msgid "Résultat obligatoire"
+msgstr "Valiny tsy maintsy atao"
+
+msgid "Min"
+msgstr "Min"
+
+msgid "Max"
+msgstr "Max"
+
+msgid "Num. var"
+msgstr "Num. var"
+
+msgid "Sous analyses"
+msgstr "Sous analyses"
+
+msgid "Produit biologique"
+msgstr "Vokatra biolojika"
+
+msgid "Chercher un produit biologique"
+msgstr "Mitady vokatra biolojika"
+
+msgid "Variable déjà utilisée dans cette analyse"
+msgstr "Variable efa nampiasaina tamin'ity fitiliana ity"
+
+msgid "Erreur lors la récupération des données"
+msgstr "Olana teo am-pangalana ireo données"
+
+msgid "Modifier"
+msgstr "Hanova"
+
+msgid "Veuillez saisir un code."
+msgstr "Mampidira kaody."
+
+msgid "Veuillez saisir un nom d'analyse."
+msgstr "Mampidira anarana fitiliana."
+
+msgid "Veuillez choisir ou définir au moins une variable."
+msgstr "Misafidiana na mampidira farafahakeliny variable iray."
+
+msgid "Ce code existe déjà"
+msgstr "Efa misy io kaody io"
+
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "Nisy olana teo am-panamarinana ilay kaody"
+
+msgid "Dictionnaire"
+msgstr "Diksionera"
+
+msgid "Droits utilisateur"
+msgstr "Zon'ny mpampiasa"
+
+msgid "Rôle"
+msgstr "Andraikitra"
+
+msgid "Administrateur"
+msgstr "Mpandrindra"
+
+msgid "Technicien avancé"
+msgstr "Technicien avancé"
+
+msgid "Technicien qualiticien"
+msgstr "Technicien qualiticien"
+
+msgid "Secrétaire"
+msgstr "Secrétaire"
+
+msgid "Secrétaire avancée"
+msgstr "Secrétaire avancée"
+
+msgid "Qualiticien"
+msgstr "Qualiticien"
+
+msgid "Prescripteur associé"
+msgstr "Prescripteur mifandray"
+
+msgid "Confirmation du mot de passe"
+msgstr "Fanamafisana ny teny miafina"
+
+msgid "CPS"
+msgstr "CPS"
+
+msgid "Numéro RPPS"
+msgstr "Laharana RPPS"
+
+msgid "Langues *"
+msgstr "Fiteny ​​*"
+
+msgid "Français (FR)"
+msgstr "Frantsay (FR)"
+
+msgid "English (UK)"
+msgstr "Anglisy (UK)"
+
+msgid "English (US)"
+msgstr "Anglisy (Etazonia)"
+
+msgid "Veuillez saisir un identifiant."
+msgstr "Mampidira identifiant."
+
+msgid "Veuillez saisir un mot de passe."
+msgstr "Mampidira teny miafina azafady."
+
+msgid "Veuillez confirmer votre mot de passe."
+msgstr "Azafady mba hamafiso ny teny miafinao."
+
+msgid "Veuillez choisir une langue."
+msgstr "Misafidiana fiteny azafady."
+
+msgid "Veuillez choisir un rôle."
+msgstr "Misafidiana andraikitra iray azafady."
+
+msgid "Paramétrage de l'export DHIS2"
+msgstr "Fikirakirana ny famoahana DHIS2"
+
+msgid "Enregistrer la feuille de calcul"
+msgstr "Tehirizina ny takelaka"
+
+msgid "Une erreur est survenue lors du dépot du fichier"
+msgstr "Nisy olana teo am-pametrahana ilay fichier"
+
+msgid "Liste des dictionnaires (choix de réponses)"
+msgstr "Lisitry ny disksionera (safidin'ny valiny)"
+
+msgid "Ajouter un dictionnaire"
+msgstr "Manampy diksionera"
+
+msgid "Paramétrage du rapport épidémiologique"
+msgstr "Fanamboarana ny tatitra ara-epidemiolojika"
+
+msgid "Changement de logo pour les documents"
+msgstr "Fanovana logo ho an'ireo antontan-taratasy"
+
+msgid "Logo original"
+msgstr "Logo original"
+
+msgid "Logo tel qu'il apparaitra dans l'entête de rapport"
+msgstr "Ny pozin'ny Logo anaty tatitry ny fitiliana"
+
+msgid "Largeur forcée à 230 pixels et conserve les proportions"
+msgstr "Voafetra ho 230 pixels ny habeny ary mitazona ny tahany rehetra"
+
+msgid "Le fichier doit être au format png ou jpg"
+msgstr "Tsy maintsy atao png na jpg ny fichier"
+
+msgid "Une erreur est survenue lors du dépot du logo"
+msgstr "Nisy olana teo am-pametrahana ny logo"
+
+msgid "Liste des préférences"
+msgstr "Lisitry ny singa"
+
+msgid "Valeur"
+msgstr "Valeur"
+
+msgid "Prix unitaire des actes de prélévements et d'analyses"
+msgstr "Vidin'ny fakana singa sy ny fitiliana"
+
+msgid "Entête de document 1"
+msgstr "Lohateny 1"
+
+msgid "Entête de document 2"
+msgstr "Lohateny 2"
+
+msgid "Entête de document 3"
+msgstr "Lohateny 3"
+
+msgid "Entête de document - Adresse"
+msgstr "Lohateny - Adiresy"
+
+msgid "Entête de document - Téléphone"
+msgstr "Lohateny - Finday"
+
+msgid "Entête de document - Fax"
+msgstr "Lohateny - Fax"
+
+msgid "Entête de document - Email"
+msgstr "Lohateny - mailaka"
+
+msgid "Entête de document - Ville"
+msgstr "Lohateny - Renivohitra"
+
+msgid "Facturation des patients hospitalisés"
+msgstr "Faktiora amin'ny mararin'ny hopitaly"
+
+msgid "Unité de l'age par défaut (Jours, Semaines, Mois, Années)"
+msgstr "Fandrefesana taona par défaut (Andro, herinandro, volana, taona)"
+
+msgid "Déconnexion automatique (mn)"
+msgstr "Miala ho azy (mn)"
+
+msgid "Module qualité activé"
+msgstr "Modely kalitao mandeha"
+
+msgid "Module facturation activé"
+msgstr "Modely faktiora mandeha"
+
+msgid "Mise à jour du mot de passe"
+msgstr "Fanavaozana ny teny miafina"
+
+msgid "Les mots de passe ne sont pas identiques !"
+msgstr "Tsy mitovy ny teny miafina!"
+
+msgid "Paramétrage numéro dossier"
+msgstr "Famaritana laharan'ny dossier"
+
+msgid "Période de numérotation"
+msgstr "Fe-potoana handaharana"
+
+msgid "Année"
+msgstr "Taona"
+
+msgid "Format de numérotation"
+msgstr "Fomba fanisana"
+
+msgid "Court"
+msgstr "Fohy"
+
+msgid "Long"
+msgstr "Lava"
+
+msgid "Paramétrage compte rendu"
+msgstr "Fanamboarana tatitra"
+
+msgid "Type d'entête"
+msgstr "Karazana entête"
+
+msgid "Complet"
+msgstr "Feno"
+
+msgid "Simple"
+msgstr "Tsotra"
+
+msgid "Afficher les commentaires"
+msgstr "Aseho ny antotan-kevitra"
+
+msgid "Gestion impression étiquettes"
+msgstr "Fitantanana fanontana marika"
+
+msgid "Sur la base d'une page A4 en mode portrait"
+msgstr "Mihainga amin'ny pejy A4 mode portrait"
+
+msgid "Longueur étiquette (mm)"
+msgstr "Ny halavan'ny marika (mm)"
+
+msgid "Hauteur étiquette (mm)"
+msgstr "Haavo marika (mm)"
+
+msgid "Marge haute de la page (mm)"
+msgstr "Elanelana ambonin'ny pejy (mm)"
+
+msgid "Marge basse de la page (mm)"
+msgstr "Elanelana ambanin'ny pejy (mm)"
+
+msgid "Marge gauche de la page (mm)"
+msgstr "Elanelana havia ny pejy (mm)"
+
+msgid "Marge droite de la page (mm)"
+msgstr "Elanelana havanan'ny pejy (mm)"
+
+msgid "Générer une planche test"
+msgstr "Mamoaka planche handrana"
+
+msgid "Liste des utilisateurs"
+msgstr "Lisitry ny mpampiasa"
+
+msgid "Origine"
+msgstr "Fiaviana"
+
+msgid "Importer des utilisateurs"
+msgstr "Mandray ireo mpampiasa"
+
+msgid "Export des utilisateurs"
+msgstr "Famoahana ireo mpampiasa"
+
+msgid "Export des connexions"
+msgstr "Famoahana ireo fifandraisana"
+
+msgid "Ajouter un utilisateur"
+msgstr "Manampy mpampiasa"
+
+msgid "Editer utilisateur"
+msgstr "Manova ny mpampiasa"
+
+msgid "Editer mot de passe"
+msgstr "Hanova tenimiafina"
+
+msgid "Activer utilisateur"
+msgstr "Ampandehano ny mpampiasa"
+
+msgid "Désactiver utilisateur"
+msgstr "Esory ny mpampiasa"
+
+msgid "Veuillez confirmer la modification de statut"
+msgstr "Hamafiso azafady ny fanovana ny statut"
+
+msgid "Erreur lors du changement de statut"
+msgstr "Hadisoana rehefa manova statut"
+
+msgid "Déconnexion"
+msgstr "Miala"
+
+msgid "Non rempli"
+msgstr "Tsy feno"
+
+msgid "Export connexions utilisateurs"
+msgstr "Export ny fidiran'ny mpampiasa"
+
+msgid "Import utilisateurs"
+msgstr "Maka ireo mpampiasa"
+
+msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"
+msgstr "Hanavao ny lisitry ny mpampiasa ary hanampy ireo izay tsy misy ?"
+
+msgid "Erreur lors du traitement des données"
+msgstr "Olana teo am-pikirakirana ireo données"
+
+msgid "Date de validation du"
+msgstr "Daty fanamarinana ny"
+
+msgid "Aucun résultat à exporter !"
+msgstr "Tsy misy vokatra azo havoaka !"

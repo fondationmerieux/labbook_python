@@ -10,6 +10,7 @@ from app.models.Constants import *
 from app.models.Patient import *
 from app.models.User import *
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class PatientList(Resource):
@@ -164,10 +165,11 @@ class PatientDet(Resource):
     def post(self, id_pat=0):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'anonyme' not in args or 'code' not in args or 'code_patient' not in args or 'nom' not in args or \
-           'prenom' not in args or 'ddn' not in args or 'sexe' not in args or 'ethnie' not in args or 'adresse' not in args or \
-           'cp' not in args or 'ville' not in args or 'tel' not in args or 'profession' not in args or 'nom_jf' not in args or \
-           'quartier' not in args or 'bp' not in args or 'ddn_approx' not in args or 'age' not in args or 'annee_naiss' not in args or \
+        if 'id_owner' not in args or 'anonyme' not in args or 'code' not in args or 'code_patient' not in args or \
+           'nom' not in args or 'prenom' not in args or 'ddn' not in args or 'sexe' not in args or \
+           'ethnie' not in args or 'adresse' not in args or 'cp' not in args or 'ville' not in args or \
+           'tel' not in args or 'profession' not in args or 'nom_jf' not in args or 'quartier' not in args or \
+           'bp' not in args or 'ddn_approx' not in args or 'age' not in args or 'annee_naiss' not in args or \
            'semaine_naiss' not in args or 'mois_naiss' not in args or 'unite' not in args:
             self.log.error(Logs.fileline() + ' : PatientDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
@@ -287,11 +289,19 @@ class PatientHistoric(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'PatientHistoric ERROR not found')
             analyzes = {}
 
+        Various.needTranslationDB()
+
         for ana in analyzes:
             # Replace None by empty string
             for key, value in list(ana.items()):
                 if ana[key] is None:
                     ana[key] = ''
+                elif key == 'analysis':
+                    ana[key] = _(ana[key])
+                elif key == 'variable':
+                    ana[key] = _(ana[key])
+                elif key == 'result':
+                    ana[key] = _(ana[key])
 
             if ana['date_prescr']:
                 ana['date_prescr'] = datetime.strftime(ana['date_prescr'], '%Y-%m-%d')

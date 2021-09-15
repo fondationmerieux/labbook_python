@@ -430,10 +430,6 @@ msgstr "Re-edit"
 msgid "Aucune donnée à afficher"
 msgstr "No data to display"
 
-#: templates/administrative-record.html:422
-msgid "Aucune donnéee à afficher"
-msgstr "No data to display"
-
 #: templates/administrative-record.html:438 templates/setting-dhis2.html:91
 #: templates/setting-epidemio.html:91
 msgid "Aucun fichier déposé"
@@ -1996,7 +1992,7 @@ msgstr "New external request"
 #: templates/homepage.html:54 templates/menu.html:25
 #: templates/new-req-int.html:5
 msgid "Nouvelle demande hospitalisé"
-msgstr "New external request"
+msgstr "New internal request"
 
 #: templates/homepage.html:61
 msgid "Validations à effectuer"

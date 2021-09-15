@@ -21,6 +21,7 @@ class Constants:
 
     cst_path_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
     cst_path_script = '/home/apps/labbook_BE/labbook_BE/script/'
+    cst_path_lang   = '/home/apps/labbook_BE/labbook_BE/app/translations/'
 
     cst_script_user   = 'user_labbook'
     cst_script_backup = 'backup.sh '

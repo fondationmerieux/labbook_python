@@ -1,0 +1,2494 @@
+# Portuguese translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-07-15 11:06+0200\n"
+"PO-Revision-Date: 2021-09-03 15:20+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt\n"
+"Language-Team: pt <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+msgid "Dossier administratif"
+msgstr "Registro administrativo"
+
+msgid "Dossier"
+msgstr "Registro"
+
+msgid "Identité"
+msgstr "Identidade"
+
+msgid "Patient anonyme"
+msgstr "Paciente anónimo"
+
+msgid "Né(e) le"
+msgstr "Data de nascimento"
+
+msgid "années"
+msgstr "anos"
+
+msgid "mois"
+msgstr "meses"
+
+msgid "semaines"
+msgstr "semanas"
+
+msgid "jours"
+msgstr "dias"
+
+msgid "Masculin"
+msgstr "Masculino"
+
+msgid "Féminin"
+msgstr "Feminino"
+
+msgid "Inconnu"
+msgstr "Desconhecido"
+
+msgid "Prescription"
+msgstr "Prescrição"
+
+msgid "Date de réception du dossier"
+msgstr "Data de recepção do registro"
+
+msgid "Date de prescription"
+msgstr "Data de prescrição"
+
+msgid "Prescripteur"
+msgstr "Prescritor"
+
+msgid "Colis"
+msgstr "Embalagem"
+
+msgid "Oui"
+msgstr "Sim"
+
+msgid "Identification du colis"
+msgstr "Número de identificação da embalagem"
+
+msgid "Date de réception du colis"
+msgstr "Data de recepção da embalagem"
+
+msgid "Non"
+msgstr "Não"
+
+msgid "Hospitalisation"
+msgstr "Hospitalização"
+
+msgid "Date d'admission"
+msgstr "Data de admissão"
+
+msgid "Service demandeur"
+msgstr "Departamento da solicitação"
+
+msgid "Numéro de lit"
+msgstr "Número do leito"
+
+msgid "Analyses et actes de prélèvement"
+msgstr "Análise e amostragem"
+
+msgid "Analyses"
+msgstr "Análises"
+
+msgid "Code"
+msgstr "Código"
+
+msgid "Nom"
+msgstr "Nome"
+
+msgid "Urgent"
+msgstr "Emergência"
+
+msgid "Demandée"
+msgstr "Solicitada"
+
+msgid "Cote"
+msgstr "Cotação"
+
+msgid "Prix"
+msgstr "Preço"
+
+msgid "Actes de prélèvement"
+msgstr "Amostragem"
+
+msgid "Compte-rendus"
+msgstr "Relatórios"
+
+msgid "Action"
+msgstr "Ação"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Facturation"
+msgstr "Faturamento"
+
+msgid "Prix total"
+msgstr "Preço total"
+
+msgid "Remise sur la facturation"
+msgstr "Desconto no faturamento"
+
+msgid "Pourcentage de la remise"
+msgstr "Porcentagem de desconto"
+
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "Cobertura do seguro/convênio de saúde"
+
+msgid "Reste à payer"
+msgstr "Restante a ser pago"
+
+msgid "Numéro de quittance"
+msgstr "Número de recibo"
+
+msgid "Renseignements / Informations complémentaires"
+msgstr "Informações  / observações adicionais"
+
+msgid "Valise de documents"
+msgstr "Pasta de documentos"
+
+msgid "Fichier"
+msgstr "Arquivo"
+
+msgid "Enregistrer le document"
+msgstr "Salvar o documento"
+
+msgid "Quitter"
+msgstr "Saída"
+
+msgid "Imprimer la facture"
+msgstr "Imprimir a fatura"
+
+msgid "Code barre"
+msgstr "Código de barras"
+
+msgid "Télécharger"
+msgstr "Baixar"
+
+msgid "Ré-éditer"
+msgstr "Reeditar"
+
+msgid "Aucune donnée à afficher"
+msgstr "Sem dados para exibir"
+
+msgid "Aucun fichier déposé"
+msgstr "Nenhum arquivo carregado"
+
+msgid "Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)"
+msgstr "Gostaria de reeditar o relatório? (O cancelamento e a substituição aparecerão)"
+
+msgid "Une erreur est survenue lors du traitement"
+msgstr "Ocorreu um erro durante o processamento"
+
+msgid "Une erreur est survenue lors du dépot d'un fichier"
+msgstr "Ocorreu um erro durante o carregamento de um arquivo"
+
+msgid "Le fichier sera définitivement supprimé"
+msgstr "O arquivo será apagado definitivamente"
+
+msgid "Erreur lors de la suppression d'un fichier"
+msgstr "Erro ao apagar um arquivo"
+
+msgid "Erreur lors de la génération du PDF facture"
+msgstr "Erro ao gerar a fatura em PDF"
+
+msgid "Erreur lors de la génération du PDF code barre"
+msgstr "Erro ao gerar o código de barras em PDF"
+
+msgid "Import d'analyses"
+msgstr "Importação das análises"
+
+msgid "Statut de la dernière importation"
+msgstr "Status da última importação"
+
+msgid "Type d'import"
+msgstr "Tipo de importação"
+
+msgid "Met à jour les analyses (dont le code est identique)"
+msgstr "Atualizar as análises (com o mesmo código)"
+
+msgid "Ajoute les nouvelles analyses (code non existant en base)"
+msgstr "Adiciona novas análises (código não existente na base de dados)"
+
+msgid "Retour"
+msgstr "Voltar"
+
+msgid "Importer des analyses"
+msgstr "importar as análises"
+
+msgid "Dépôt réussi"
+msgstr "Submissão bem sucedida"
+
+msgid "Le fichier doit être un csv"
+msgstr "O arquivo deve ser um csv"
+
+msgid "Lancer l'import du référentiel d'analyses ?"
+msgstr "Lançar a importação do repositório de análises ?"
+
+msgid "Traitement réussi"
+msgstr "Processamento bem sucedido"
+
+msgid "Aucun statut"
+msgstr "Sem status"
+
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
+msgstr "Erro durante o processamento de dados, atualize a página até saber o status"
+
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
+msgstr "Ocorreu um erro durante a verificação do status da base de dados"
+
+msgid "Validation biologique"
+msgstr "Validação biológica"
+
+msgid "Renseignements cliniques"
+msgstr "Informação clínica"
+
+msgid "Aucune analyse"
+msgstr "Sem análise"
+
+msgid "Validation des résultats cochés"
+msgstr "Validação dos resultados verificados"
+
+msgid "Date de validation"
+msgstr "Data de validação"
+
+msgid "Biologiste"
+msgstr "Biólogo"
+
+msgid "Commentaire"
+msgstr "Comentário"
+
+msgid "Valider"
+msgstr "Validação"
+
+msgid "Compte rendu"
+msgstr "Relatório"
+
+msgid "Commentaire et motif annulation"
+msgstr "Motivo do cancelamento e comentários"
+
+msgid "Motif"
+msgstr "Motivo"
+
+msgid "Ajouter"
+msgstr "Adicionar"
+
+msgid "Annuler"
+msgstr "Cancelar"
+
+msgid "Ajouter de nouvelles analyses"
+msgstr "Adicionar novas análises"
+
+msgid "Dossier suivant"
+msgstr "Próximo registro"
+
+msgid "Fin de la liste des dossiers"
+msgstr "Fim da lista de registros"
+
+msgid "Une erreur est survenue du changement de statut du dossier"
+msgstr "Ocorreu um erro ao alterar o status do arquivo"
+
+msgid "Une erreur est survenue lors de création des résultats"
+msgstr "Ocorreu um erro durante a criação dos resultados"
+
+msgid "Une erreur est survenue lors de l'enregistrement des analyses"
+msgstr "Ocorreu um erro durante o registro das análises"
+
+msgid "Etes-vous sur de vouloir effacer ce résultat ?"
+msgstr "Tem a certeza de querer apagar este resultado?"
+
+msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
+msgstr "Ocorreu um erro ao reiniciar um valor introduzido"
+
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "Tem a certeza de querer cancelar este resultado? Esta ação é irreversível."
+
+msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
+msgstr "Ocorreu um erro durante o cancelamento de um valor introduzido."
+
+msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
+msgstr "Ocorreu um erro ao validar biologicamente os valores introduzidos"
+
+msgid "Réinitialiser la valeur"
+msgstr "Valor de reinicialização"
+
+msgid "Cliquer pour commencer une recherche"
+msgstr "Clique para iniciar uma pesquisa"
+
+msgid "Analyse déjà présente !"
+msgstr "Análise já presente!"
+
+msgid "Erreur lors de la récupération d'une analyse"
+msgstr "Erro na recuperação de uma análise"
+
+msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
+msgstr "Atenção, vai deixar este registro sem tê-lo validado."
+
+msgid "Contributeurs"
+msgstr "Contribuintes"
+
+msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
+msgstr "LabBook é um software de gestão de laboratório Opensource."
+
+msgid "LabBook est co-financé par l’AFD et la Fondation Mérieux."
+msgstr "O LabBook é co-financiado pela AFD e pela Fundação Mérieux."
+
+msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
+msgstr "Epiconcept desenvolveu o software LabBook até 2019."
+
+msgid "La société &AElig;GL&Eacute; a pris le relais à partir de 2020."
+msgstr "A empresa ÆGLÉ assumiu à partir de 2020."
+
+msgid "Le logiciel est sous licence GNU."
+msgstr "O software está sob a licença GNU."
+
+msgid "Version : "
+msgstr "Versão : "
+
+msgid "Accès"
+msgstr "Acesso"
+
+msgid "Titre"
+msgstr "Título"
+
+msgid "Monsieur"
+msgstr "Senhor"
+
+msgid "Madame"
+msgstr "Senhora"
+
+msgid "Mademoiselle"
+msgstr "Senhorita"
+
+msgid "Docteur"
+msgstr "Doutor"
+
+msgid "Professeur"
+msgstr "Professor"
+
+msgid "Prénom"
+msgstr "Primeiro nome"
+
+msgid "Initiales"
+msgstr "Iniciais"
+
+msgid "Lieu de travail"
+msgstr "Local de trabalho"
+
+msgid "Service"
+msgstr "Serviço"
+
+msgid "Adresse"
+msgstr "Endereço"
+
+msgid "Ville"
+msgstr "Cidade"
+
+msgid "Spécialité"
+msgstr "Especialidade"
+
+msgid "Téléphone fixe"
+msgstr "Telefone fixo"
+
+msgid "Téléphone mobile"
+msgstr "Telefone celular/telemovel"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Adresse email"
+msgstr "Email"
+
+msgid "Enregistrer"
+msgstr "Salvar"
+
+msgid "Veuillez saisir un nom."
+msgstr "Por favor digitar um nome"
+
+msgid "Une erreur est survenue lors de l'enregistrement"
+msgstr "Ocorreu um erro ao salvar"
+
+msgid "Equipement"
+msgstr "Equipamento"
+
+msgid "Nom de l'équipement"
+msgstr "Nome do equipamento"
+
+msgid "Nom du fabricant"
+msgstr "Nome do fabricante"
+
+msgid "modèle"
+msgstr "modelo"
+
+msgid "Photo"
+msgstr "Foto"
+
+msgid "Fonction"
+msgstr "Função"
+
+msgid "Localisation"
+msgstr "Localização"
+
+msgid "Section"
+msgstr "Departamento"
+
+msgid "Fournisseur"
+msgstr "Fornecedor"
+
+msgid "Numéro de série"
+msgstr "Número de série"
+
+msgid "Numéro d'inventaire"
+msgstr "Número de inventário"
+
+msgid "Responsable"
+msgstr "Responsável"
+
+msgid "Manuel"
+msgstr "Manual"
+
+msgid "Procédure"
+msgstr "Procedimento"
+
+msgid "Liste des pannes et réparations"
+msgstr "Lista de falhas e reparações"
+
+msgid "Maintenance préventive"
+msgstr "Manutenção preventiva"
+
+msgid "Certificat d'étalonnage"
+msgstr "Certificado de calibragem"
+
+msgid "Contrat de maintenance"
+msgstr "Contrato de manutenção"
+
+msgid "Date de fin de contrat de maintenance"
+msgstr "Data do término do contrato de manutenção"
+
+msgid "Facture"
+msgstr "Fatura"
+
+msgid "Date de réception"
+msgstr "Data de recepção"
+
+msgid "Date d'achat"
+msgstr "Data de compra"
+
+msgid "Date d'acquisition"
+msgstr "Data de aquisição"
+
+msgid "Date de mise en service"
+msgstr "Data de comissionamento/início"
+
+msgid "Date de retrait du laboratoire"
+msgstr "Data de retirada do laboratório"
+
+msgid "Commentaires"
+msgstr "Comentários"
+
+msgid "Veuillez saisir un nom d'équipement."
+msgstr "Por favor introduza um nome de equipamento"
+
+msgid "Supprimer"
+msgstr "Excluir"
+
+msgid "Historique d'une analyse"
+msgstr "História de uma análise"
+
+msgid "Liste des dossiers pour cette analyse"
+msgstr "Lista dos arquivos para esta análise"
+
+msgid "du"
+msgstr "a partir de"
+
+msgid "au"
+msgstr "para"
+
+msgid "Nombre total de lignes"
+msgstr "Número total de linhas"
+
+msgid "Premier"
+msgstr "Primeiro"
+
+msgid "Précédent"
+msgstr "Anterior"
+
+msgid "Suivant"
+msgstr "Próximo"
+
+msgid "Dernier"
+msgstr "Último"
+
+msgid "serial"
+msgstr "em série"
+
+msgid "N° dossier"
+msgstr "Número de registro"
+
+msgid "Date prescr."
+msgstr "Data de prescr."
+
+msgid "Variable"
+msgstr "Variável"
+
+msgid "Résultat"
+msgstr "Resultado"
+
+msgid "Retour à la liste analyses"
+msgstr "Voltar à lista de análises"
+
+msgid "Historique patient"
+msgstr "Histórico do paciente"
+
+msgid "Code labo."
+msgstr "Código do laboratório"
+
+msgid "Date de naissance"
+msgstr "Data de nascimento"
+
+msgid "Sexe"
+msgstr "Sexo"
+
+msgid "Liste des analyses"
+msgstr "Lista de análises"
+
+msgid "Analyse"
+msgstr "Análise"
+
+msgid "Retour à la liste patients"
+msgstr "Voltar à lista de pacientes"
+
+msgid "Liste détaillée du stock pour ce produit"
+msgstr "Lista detalhada de estoque para este produto"
+
+msgid "Nb de paq."
+msgstr "Número de embalagem"
+
+msgid "Date recept."
+msgstr "Data de recepção"
+
+msgid "Date expir."
+msgstr "Data de expiração"
+
+msgid "N° lot"
+msgstr "Número do lote"
+
+msgid "Prix d'achat"
+msgstr "Preço de compra"
+
+msgid "Historique consommation"
+msgstr "Histórico de consumo"
+
+msgid "Indiquer le nombre de paquets utilisée"
+msgstr "Indicar o número de embalagens utilizadas"
+
+msgid "Nombre de paquets"
+msgstr "Número da embalagem"
+
+msgid "Indiquer la quantité utilisée"
+msgstr "Indicar a quantidade utilizada"
+
+msgid "Aucun prescripteur à exporter !"
+msgstr "Sem prescritor para exportar!"
+
+msgid "Erreur lors de la génération du fichier"
+msgstr "Erro durante a geração de arquivos"
+
+msgid "Référence"
+msgstr "Referência"
+
+msgid "Rédacteur"
+msgstr "Editor"
+
+msgid "Vérificateur"
+msgstr "Auditor"
+
+msgid "Approbateur"
+msgstr "Aprovador"
+
+msgid "Date de création"
+msgstr "Data de criação"
+
+msgid "Date d'application"
+msgstr "Data de aplicação"
+
+msgid "Date de modification"
+msgstr "Data de atualização"
+
+msgid "Section d'application"
+msgstr "Seção"
+
+msgid "Veuillez saisir une référence ou un titre."
+msgstr "Por favor, introduza uma referência ou título."
+
+msgid "Réunion"
+msgstr "Reunião"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Réunion d'équipe"
+msgstr "Reunião de equipe"
+
+msgid "Réunion qualité"
+msgstr "Reunião de qualidade"
+
+msgid "Réunion de direction"
+msgstr "Reunião do executivo"
+
+msgid "Organisateur"
+msgstr "Organizador"
+
+msgid "Compte-rendu"
+msgstr "Relatório"
+
+msgid "Veuillez saisir une date de réunion."
+msgstr "Por favor, introduza a data de uma reunião."
+
+msgid "Détails produit"
+msgstr "Detalhes do produto"
+
+msgid "Nom du produit"
+msgstr "Nome do fabricante"
+
+msgid "Type produit"
+msgstr "Tipo de produto"
+
+msgid "Nombre par paquet"
+msgstr "Número por embalagem"
+
+msgid "Seuil de sécurité"
+msgstr "Limite de segurança"
+
+msgid "Référence fournisseur"
+msgstr "Referência do fornecedor"
+
+msgid "Conservation"
+msgstr "Conservação"
+
+msgid "Veuillez saisir un nom de produit."
+msgstr "Por favor, introduza um nome de produto."
+
+msgid "Veuillez saisir un nombre de produits par paquet supérieur à 0."
+msgstr "Por favor, introduza um número de produtos por embalagem superior a 0."
+
+msgid "Détails patient"
+msgstr "Detalhes do paciente"
+
+msgid "Demande d'analyses patient - Fiche patient"
+msgstr "Pedido de análise do paciente - Formulário do paciente"
+
+msgid "Anonyme"
+msgstr "Anônimo"
+
+msgid "Code patient interne au laboratoire"
+msgstr "Código interno do doente do laboratório"
+
+msgid "Nom de jeune fille"
+msgstr "Nome de solteira"
+
+msgid "Date de naissance approximative"
+msgstr "Data aproximada de nascimento"
+
+msgid "Prénom(s)"
+msgstr "Nome(s) próprio(s)"
+
+msgid "ou"
+msgstr "ou"
+
+msgid "Age"
+msgstr "Idade"
+
+msgid "unité"
+msgstr "unidade"
+
+msgid "Jours"
+msgstr "Dias"
+
+msgid "Semaines"
+msgstr "Semanas"
+
+msgid "Mois"
+msgstr "Meses"
+
+msgid "Années"
+msgstr "Anos"
+
+msgid "Coordonnées"
+msgstr "Informação de contacto"
+
+msgid "Téléphone"
+msgstr "Telefone"
+
+msgid "Profession"
+msgstr "Profissão"
+
+msgid "Boite postale"
+msgstr "Caixa Postal"
+
+msgid "Quartier / Secteur"
+msgstr "Bairro / Setor"
+
+msgid "Code postal"
+msgstr "Código Postal"
+
+msgid "Ville / Village"
+msgstr "Cidade / Aldeia"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un age"
+msgstr "Por favor seleccione uma data de nascimento ou introduza uma idade"
+
+msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
+msgstr "Ocorreu um erro ao modificar/adicionar um paciente"
+
+msgid "Details demande d'analyses"
+msgstr "Pedido de análise detalhada"
+
+msgid "Demande d'analyses patient externe"
+msgstr "Pedido de análise de doentes externos"
+
+msgid "Modifier le dossier du patient"
+msgstr "Modificar o registro do paciente"
+
+msgid "Rechercher une analyse"
+msgstr "Pesquisar uma análise"
+
+msgid "Produits pathologiques"
+msgstr "Produtos patológicos"
+
+msgid "Ajouter un prélèvement"
+msgstr "Adicionar uma amostra"
+
+msgid "Prod. pathol."
+msgstr "Pathol. prod."
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Date prél."
+msgstr "Data coleta"
+
+msgid "Date réception"
+msgstr "Data de recepção"
+
+msgid "Préleveur"
+msgstr "Coletador"
+
+msgid "Qté"
+msgstr "Qtd."
+
+msgid "Erreur lors la récupération des prélèvements"
+msgstr "Erro na recuperação de amostras"
+
+msgid "Erreur lors la récupération des produits pathologiques"
+msgstr "Erro durante a recuperação de produtos patológicos"
+
+msgid "Erreur lors de la récupération des analyses"
+msgstr "Erro durante a recuperação das análises"
+
+msgid "Merci de confirmer la suppression"
+msgstr "Favor confirmar a supressão"
+
+msgid "Veuillez sélectionner au moins une analyse"
+msgstr "Por favor selecione pelo menos uma análise"
+
+msgid "Veuillez sélectionner une date de réception du dossier"
+msgstr "Por favor selecione uma data para a recepção do arquivo"
+
+msgid "Veuillez sélectionner une date de prescription"
+msgstr "Por favor selecione uma data de prescrição"
+
+msgid "Veuillez renseigner le type du produit"
+msgstr "Por favor entre o tipo de produto"
+
+msgid "Veuillez renseigner le statut du produit"
+msgstr "Por favor, entre o estado do produto"
+
+msgid "Veuillez renseigner toutes les dates de réception"
+msgstr "Por favor preencha todas as datas de recepção"
+
+msgid "Veuillez renseigner toutes les identités des préleveurs"
+msgstr "Por favor, preencha todas as identidades dos coletadores"
+
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "Ocorreu um erro durante o registro das amostras"
+
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "Ocorreu um erro ao salvar o registro"
+
+msgid "Une erreur est survenue lors du changement de statut du dossier"
+msgstr "Ocorreu um erro ao alterar o status do registro"
+
+msgid "Une erreur est survenue lors de la création des résultats"
+msgstr "Ocorreu um erro durante a criação dos resultados"
+
+msgid "Demande d'analyses patient hospitalisé"
+msgstr "Solicitação de análise de pacientes internados"
+
+msgid "Produit pathologique"
+msgstr "Produto patológico"
+
+msgid "Localisation prélèvement"
+msgstr "Localização da amostra"
+
+msgid "Quantité"
+msgstr "Quantidade"
+
+msgid "Date du prélèvement"
+msgstr "Data de coleta"
+
+msgid "Lieu de prélèvement"
+msgstr "Local de coleta"
+
+msgid "Précision lieu"
+msgstr "Precisão da localização"
+
+msgid "Heure de réception"
+msgstr "Hora da recepção"
+
+msgid "Veuillez saisir un statut."
+msgstr "Por favor, introduza um status"
+
+msgid "Veuillez choisir un produit pathologique."
+msgstr "Por favor, escolha um produto patológico."
+
+msgid "Personnel"
+msgstr "Funcionários"
+
+msgid "Numéro de téléphone"
+msgstr "Número de telefone"
+
+msgid "Date d'arrivée au laboratoire"
+msgstr "Data de chegada ao laboratório"
+
+msgid "Position actuelle dans le laboratoire"
+msgstr "Cargo atual no laboratório"
+
+msgid "CV"
+msgstr "CV"
+
+msgid "Diplômes"
+msgstr "Diploma"
+
+msgid "Formations continues"
+msgstr "Educação contínua"
+
+msgid "Section de travail"
+msgstr "Seção de trabalho"
+
+msgid "Dernière évaluation des compétences"
+msgstr "Última avaliação de competências"
+
+msgid "Approvisionner un produit"
+msgstr "Fornecimento de um produto"
+
+msgid "Produit"
+msgstr "Produto"
+
+msgid "Date d'expiration"
+msgstr "Data de expiração"
+
+msgid "Numéro de lot"
+msgstr "Número do lote"
+
+msgid "Veuillez choisir un produit à approvisionner"
+msgstr "Por favor escolha um produto a fornecer"
+
+msgid "Veuillez saisir un nombre de paquets supérieur à 0."
+msgstr "Por favor, introduza um número de embalagens superior a 0."
+
+msgid "Veuillez saisir une date d'expiration."
+msgstr "Por favor, introduza uma data de validade."
+
+msgid "Nom fournisseur"
+msgstr "Nome do fornecedor"
+
+msgid "Contact"
+msgstr "Contato"
+
+msgid "Veuillez saisir un fournisseur."
+msgstr "Por favor, introduza um fornecedor."
+
+msgid "Saisie de résultats"
+msgstr "Entrada de resultados"
+
+msgid "Feuille de paillasse"
+msgstr "Ficha de bancada"
+
+msgid "Certains résultats obligatoires ne sont pas saisis"
+msgstr "Alguns resultados obrigatórios não são inseridos"
+
+msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
+msgstr "Ocorreu um erro ao salvar os valores inseridos"
+
+msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
+msgstr "Ocorreu um erro durante a validação técnica dos valores inseridos"
+
+msgid "Technicien"
+msgstr "Técnico"
+
+msgid "ANNULE"
+msgstr "CANCELADO"
+
+msgid "Liste analyses"
+msgstr "Lista de análise"
+
+msgid "Rechercher"
+msgstr "Pesquisa"
+
+msgid "Date du"
+msgstr "Data de"
+
+msgid "Nb. sur la période"
+msgstr "Nb. durante o período"
+
+msgid "Export des données"
+msgstr "Exportação de dados"
+
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "Ocorreu um erro durante a recuperação de dados"
+
+msgid "Historique"
+msgstr "Histórico"
+
+msgid "Aucun résultats à exporter !"
+msgstr "Sem resultados para exportar!"
+
+msgid "Liste patients"
+msgstr "Lista de pacientes"
+
+msgid "DDN"
+msgstr "Data de nascimento"
+
+msgid "Historique des approvisionnements et usages pour ce produit"
+msgstr "Histórico de fornecimento e utilização deste produto"
+
+msgid "E/S"
+msgstr "E/S"
+
+msgid "Utilisateur"
+msgstr "Utilizador"
+
+msgid "Date action"
+msgstr "Data da ação"
+
+msgid "Accueil"
+msgstr "Página inicial"
+
+msgid "Préférences"
+msgstr "Preferências"
+
+msgid "Gestion des utilisateurs"
+msgstr "Gestão de usuários"
+
+msgid "Gestion des rôles"
+msgstr "Gestão de funções"
+
+msgid "Référentiel des analyses"
+msgstr "Repositório de análises"
+
+msgid "Dictionnaires"
+msgstr "Dicionários"
+
+msgid "Gestion des sauvegardes"
+msgstr "Gestão de Backups"
+
+msgid "Gestion de la Facturation"
+msgstr "Gestão de Faturamento"
+
+msgid "Management de la Qualité"
+msgstr "Gestão da Qualidade"
+
+msgid "Analyses urgentes"
+msgstr "Análises urgentes"
+
+msgid "Urgences"
+msgstr "Emergências"
+
+msgid "Liste des dossiers"
+msgstr "Lista de registros"
+
+msgid "Liste de travail biologiste"
+msgstr "Lista de trabalho dos biólogos"
+
+msgid "Liste de travail technicien"
+msgstr "Lista de trabalho dos técnicos"
+
+msgid "Etat des prélèvements en cours"
+msgstr "Estado das amostras em curso"
+
+msgid "Saisie des résultats"
+msgstr "Entrada de resultados"
+
+msgid "Nouvelle demande externe"
+msgstr "Novo pedido externo"
+
+msgid "Nouvelle demande hospitalisé"
+msgstr "Novo pedido interno"
+
+msgid "Validations à effectuer"
+msgstr "Validações a realizar"
+
+msgid "Activité du laboratoire"
+msgstr "Atividade laboratorial"
+
+msgid "Dernier numéro utilisé"
+msgstr "Último número utilizado"
+
+msgid "Nombre de dossiers validés aujourd'hui"
+msgstr "Número de registros validados hoje"
+
+msgid "Nombre de dossiers enregistrés"
+msgstr "Número de registros registrados"
+
+msgid "Biologique"
+msgstr "Biólogo"
+
+msgid "Technique"
+msgstr "Técnico"
+
+msgid "LabBook"
+msgstr "LabBook"
+
+msgid "Version"
+msgstr "Versão"
+
+msgid "Liste des prescripteurs"
+msgstr "Lista de prescritores"
+
+msgid "Initiale"
+msgstr "Inicial"
+
+msgid "Lieu trav."
+msgstr "Local de trabalho"
+
+msgid "Tél. fixe"
+msgstr "Telefone"
+
+msgid "Mobile"
+msgstr "Celular"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Ajouter un prescripteur"
+msgstr "Acrescentar um prescritor"
+
+msgid "Editer"
+msgstr "Editar"
+
+msgid "Erreur lors de la suppression des données"
+msgstr "Erro ao apagar dados"
+
+msgid "Liste des équipements"
+msgstr "Lista de equipamento"
+
+msgid "Fabricant"
+msgstr "Fabricante"
+
+msgid "Modèle"
+msgstr "Modelo"
+
+msgid "Ajouter un équipement"
+msgstr "Adicionar um equipamento"
+
+msgid "Laboratoire"
+msgstr "Laboratório"
+
+msgid "Nom du dictionnaire"
+msgstr "Nome do dicionário"
+
+msgid "Ajouter une valeur"
+msgstr "Acrescentar um valor"
+
+msgid "Organigramme"
+msgstr "Organograma"
+
+msgid "Valeurs"
+msgstr "Valores"
+
+msgid "Libellé"
+msgstr "Etiqueta"
+
+msgid "Libellé court"
+msgstr "Etiqueta breve"
+
+msgid "Position"
+msgstr "Posição"
+
+msgid "Enregistrer les valeurs"
+msgstr "Salvar valores"
+
+msgid "Veuillez saisir un nom de dictionnaire."
+msgstr "Por favor, introduza um nome de dicionário."
+
+msgid "Veuillez renseigner le(s) libellé(s)."
+msgstr "Por favor, preencha a(s) etiqueta(s)."
+
+msgid "Veuillez renseigner le(s) code(s)."
+msgstr "Por favor, introduza o(s) código(s)."
+
+msgid "Enregistrement réussi"
+msgstr "Registro bem sucedido"
+
+msgid "Liste des manuels"
+msgstr "Lista de manuais"
+
+msgid "Date création"
+msgstr "Data de criação"
+
+msgid "Ajouter un manuel"
+msgstr "Acrescentar um manual"
+
+msgid "Liste des réunions"
+msgstr "Lista de reuniões"
+
+msgid "Ajouter une réunion"
+msgstr "Acrescentar uma reunião"
+
+msgid "Liste des non-conformités"
+msgstr "Lista de não-conformidades"
+
+msgid "Impact sur le patient"
+msgstr "Impacto sobre o paciente"
+
+msgid "Impact sur le personnel"
+msgstr "Impacto sobre a equipe"
+
+msgid "Mise en place d'une action correctrice"
+msgstr "Implementação de ações correctivas"
+
+msgid "Date correction"
+msgstr "Data de correcção"
+
+msgid "Date de clôture"
+msgstr "Data de encerramento"
+
+msgid "Ajouter une non-conformité"
+msgstr "Acrescentar uma não-conformidade"
+
+msgid "Faible"
+msgstr "Fraco"
+
+msgid "Important"
+msgstr "Importante"
+
+msgid "Grave"
+msgstr "Grave"
+
+msgid "Aucun"
+msgstr "Nenhum"
+
+msgid "Procédures"
+msgstr "Procedimentos"
+
+msgid "Date modification"
+msgstr "Data modificada"
+
+msgid "Ajouter une procédure"
+msgstr "Acrescentar um procedimento"
+
+msgid "Liste des produits"
+msgstr "Lista de produtos"
+
+msgid "Nbr par paquet"
+msgstr "Nº por embalagem"
+
+msgid "Seuil"
+msgstr "Limite"
+
+msgid "Réf. fournisseur"
+msgstr "N° Ref. fornecedor"
+
+msgid "Editer la fiche produit"
+msgstr "Editar a ficha de produto"
+
+msgid "Supprimer la fiche produit"
+msgstr "Eliminar a ficha do produto"
+
+msgid "Merci de confirmer la suppression du produit"
+msgstr "Favor confirmar a eliminação do produto"
+
+msgid "Urgent uniquement"
+msgstr "Urgente apenas"
+
+msgid "Nouveau"
+msgstr "Novo"
+
+msgid "Validé administrativement"
+msgstr "Validado administrativamente"
+
+msgid "Intermédiaire (validé admin.)"
+msgstr "Intermediário (validado Admin.)"
+
+msgid "Validé techniquement"
+msgstr "Tecnicamente validado"
+
+msgid "Intermédiaire (validé tech.)"
+msgstr "Intermediário (validado Tech.)"
+
+msgid "Validé biologiquement"
+msgstr "Biologicamente validado"
+
+msgid "Création dossier"
+msgstr "Criação de registros"
+
+msgid "Code patient"
+msgstr "Código do paciente"
+
+msgid "Une erreur est survenue lors de la récupération de la liste des dossiers"
+msgstr "Ocorreu um erro durante a recuperação da lista de registros"
+
+msgid "Validation technique"
+msgstr "Validação técnica"
+
+msgid "Veuillez confirmer la suppression"
+msgstr "Favor confirmar a eliminação"
+
+msgid "Erreur lors de la suppression d'un dossier"
+msgstr "Erro ao apagar um registro"
+
+msgid "Date de la demande du"
+msgstr "Data do pedido de"
+
+msgid "Afficher uniquement les analyses prioritaires"
+msgstr "Mostrar apenas análises prioritárias"
+
+msgid "Masquer les résultats déjà validés"
+msgstr "Ocultar resultados já validados"
+
+msgid "Une erreur est survenue lors de la récupération des résultats"
+msgstr "Ocorreu um erro durante a recuperação dos resultados"
+
+msgid "Date dossier"
+msgstr "Data de registro"
+
+msgid "Patient"
+msgstr "Paciente"
+
+msgid "Sang"
+msgstr "Sangue"
+
+msgid "Selles"
+msgstr "Fezes"
+
+msgid "Urine"
+msgstr "Urina"
+
+msgid "Autre"
+msgstr "Outros"
+
+msgid "Liste du personnel"
+msgstr "Lista de funcionários"
+
+msgid "Tél"
+msgstr "Tel"
+
+msgid "Date arrivée"
+msgstr "Data de chegada"
+
+msgid "Date éval."
+msgstr "Data de avaliação"
+
+msgid "Identifiant"
+msgstr "Identificador"
+
+msgid "Formations"
+msgstr "Formações"
+
+msgid "Evaluations"
+msgstr "Avaliações"
+
+msgid "Liste des stocks"
+msgstr "Lista de estoque"
+
+msgid "Nb par paq."
+msgstr "N° por embalagem"
+
+msgid "Nb total"
+msgstr "N° total"
+
+msgid "Catalogue des produits"
+msgstr "Catálogo de produtos"
+
+msgid "Nouveau produit"
+msgstr "Novo produto"
+
+msgid "Détails du stock"
+msgstr "Detalhes do estoque"
+
+msgid "Historique de ce produit"
+msgstr "Histórico deste produto"
+
+msgid "Seuil de"
+msgstr "Limiar de"
+
+msgid "Liste des fournisseurs"
+msgstr "Lista de fornecedores"
+
+msgid "Nom contact"
+msgstr "Sobrenome de contato"
+
+msgid "Prénom contact"
+msgstr "Primeiro nome de contato"
+
+msgid "Tél."
+msgstr "Tel."
+
+msgid "Ajouter un fournisseur"
+msgstr "Adicionar um fornecedor"
+
+msgid "Note : certains equipements pourraient être associés à ce fournisseur"
+msgstr "Nota: alguns equipamentos poderiam ser associados a este fornecedor."
+
+msgid "Liste de travail"
+msgstr "Lista de trabalho"
+
+msgid "Date dossier supérieure à"
+msgstr "Data de registro superior a"
+
+msgid "Date dossier inférieure à"
+msgstr "Data de registro inferior a"
+
+msgid "Validation groupée"
+msgstr "Validação de grupo"
+
+msgid "Commencer la validation groupée"
+msgstr "Iniciar a validação de grupo"
+
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "Nome de utilizador ou senha incorretos."
+
+msgid "Ouverture de session"
+msgstr "Iniciar sessão"
+
+msgid "Mot de passe"
+msgstr "Senha"
+
+msgid "Gestion dossier patient"
+msgstr "Gestão dos registros dos pacientes"
+
+msgid "Fusionner 2 dossiers patients"
+msgstr "Combinar 2 arquivos de pacientes"
+
+msgid "Nom, prénom ou code du patient"
+msgstr "Sobrenome, primeiro nome ou código do paciente"
+
+msgid "A CONSERVER"
+msgstr "MANTER"
+
+msgid "A SUPPRIMER"
+msgstr "APAGAR"
+
+msgid "Identité patient"
+msgstr "Identidade do paciente"
+
+msgid "Code laboratoire"
+msgstr "Código do laboratório"
+
+msgid "Modifier la fiche patient"
+msgstr "Modificar o registro do paciente"
+
+msgid "Fusionner"
+msgstr "Fundir"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
+msgstr "Por favor, selecione uma data de nascimento ou introduza uma idade."
+
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
+msgstr "Por favor selecionar 2 registros de pacientes diferentes para realizar uma fusão."
+
+msgid "Les fiches patients sont les mêmes dans la base de données."
+msgstr "Os registros dos pacientes são os mesmos na base de dados."
+
+msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
+msgstr "Falta um registro de paciente para realizar a fusão da pasta."
+
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "Os registros dos pacientes A APAGAR serão anexados ao paciente A SEGUIR KEPT.nPor favor, confirme esta fusão?n(Esta acção é irreversível)"
+
+msgid "Une erreur est survenue lors de la fusion"
+msgstr "Ocorreu um erro durante a fusão"
+
+msgid "Administratif"
+msgstr "Administrativo"
+
+msgid "Rapport activité"
+msgstr "Relatório de atividades"
+
+msgid "Rapport épidémiologique"
+msgstr "Relatório epidemiológico"
+
+msgid "Rapport statistique"
+msgstr "Relatório estatístico"
+
+msgid "Export DHIS2"
+msgstr "Exportação DHIS2 "
+
+msgid "Export WHONET"
+msgstr "Exportação WHONET"
+
+msgid "Historique d'analyse"
+msgstr "Histórico da análise"
+
+msgid "Rapport de fin de journée"
+msgstr "Relatório de fim de dia"
+
+msgid "Etat de la facturation journalière"
+msgstr "Status da facturação diária"
+
+msgid "Rapports"
+msgstr "Relatórios"
+
+msgid "Changement de logo"
+msgstr "Mudança de logotipo"
+
+msgid "Etiquettes"
+msgstr "Etiquetas"
+
+msgid "Intervalles d'âge"
+msgstr "Faixas etárias"
+
+msgid "Configuration des comptes-rendu"
+msgstr "Configuração dos relatórios"
+
+msgid "Configuration des numéros de dossier"
+msgstr "Definições do número de registros"
+
+msgid "Gestion des dossiers patients"
+msgstr "Gestão dos registros dos pacientes"
+
+msgid "Configuration DHIS2"
+msgstr "Configuração do DHIS2"
+
+msgid "Configuration Epidemio"
+msgstr "Configuração Epidemio"
+
+msgid "paramétrages"
+msgstr "configurações"
+
+msgid "Général"
+msgstr "Geral"
+
+msgid "Personnels"
+msgstr "Funcionários"
+
+msgid "Prescripteurs"
+msgstr "Prescriptores"
+
+msgid "Equipements"
+msgstr "Equipamentos"
+
+msgid "Fournisseurs"
+msgstr "Fornecedores"
+
+msgid "Manuels"
+msgstr "Manuais"
+
+msgid "Gestion des stocks"
+msgstr "Gestão de estoque"
+
+msgid "Module des non-conformités"
+msgstr "Módulo de não-conformidades"
+
+msgid "Réunion du laboratoire"
+msgstr "Reunião de laboratório"
+
+msgid "Qualité"
+msgstr "Qualidade"
+
+msgid "Non conformité"
+msgstr "Não conformidade"
+
+msgid "Patient externe"
+msgstr "Paciente externo"
+
+msgid "Chercher un patient"
+msgstr "Procurar um paciente"
+
+msgid "Nouveau patient"
+msgstr "Novo paciente"
+
+msgid "Non-conformité"
+msgstr "Não-conformidade"
+
+msgid "Nom de la non-conformité"
+msgstr "Nome da não-conformidade"
+
+msgid "Rapporteur"
+msgstr "Relator"
+
+msgid "DECLARATION DE LA NON-CONFORMITE"
+msgstr "DECLARAÇÃO DE NÃO-CONFORMIDADE"
+
+msgid "Catégorie de la non-conformité"
+msgstr "Categoria de não-conformidade"
+
+msgid "Pré analytique"
+msgstr "Pré-analítico"
+
+msgid "Oubli ou examen erroné"
+msgstr "Exame esquecido ou erróneo"
+
+msgid "Dossier du patient / identité patient"
+msgstr "Registro do paciente / identidade do paciente"
+
+msgid "Prélèvement"
+msgstr "Amostra"
+
+msgid "Heure de prélèvement"
+msgstr "Horário da coleta "
+
+msgid "Volume de prélèvement"
+msgstr "Volume de amostragem"
+
+msgid "Identification du prélèvement"
+msgstr "Identificação da amostra"
+
+msgid "Renseignement clinique"
+msgstr "Informação clínica"
+
+msgid "Transport de l'échantillon"
+msgstr "Transporte de amostras"
+
+msgid "Respect procédures"
+msgstr "Respeito pelos procedimentos"
+
+msgid "Urgence"
+msgstr "Emergência"
+
+msgid "Traçabilité"
+msgstr "Traçabilidade"
+
+msgid "Autres"
+msgstr "Outros"
+
+msgid "Analytique"
+msgstr "Analítico"
+
+msgid "Conservation échantillon avant analyse"
+msgstr "Conservação de amostras antes da análise"
+
+msgid "Centrifugation"
+msgstr "Centrifugação"
+
+msgid "Aliquotage"
+msgstr "Aliquotagem"
+
+msgid "Contrôle qualité interne"
+msgstr "Controle de qualidade interno"
+
+msgid "Contrôle qualité externe"
+msgstr "Controle de qualidade externo"
+
+msgid "Absence de résultats/Résultats aberrants"
+msgstr "Ausência de resultados/Resultados anormal"
+
+msgid "Critère de repasse non respecté"
+msgstr "Critérios de repetição não cumpridos"
+
+msgid "Post analytique"
+msgstr "Pós-analítico"
+
+msgid "Dossier non validé"
+msgstr "Registro não validado"
+
+msgid "Validation partielle non / mal réalisée"
+msgstr "Validação parcial não- / mal-executada"
+
+msgid "Résultat erroné / aberrant"
+msgstr "Resultado incorrecto/anormal"
+
+msgid "Absence de résultat"
+msgstr "Nenhum resultado"
+
+msgid "Erreur de saisie"
+msgstr "Erro de introdução de dados"
+
+msgid "Interprétation des résultats"
+msgstr "Interpretação dos resultados"
+
+msgid "Prestation de conseil"
+msgstr "Serviços de consultoria"
+
+msgid "Sérothèque/conservation échantillon après analyse"
+msgstr "Sorologia/preservação de amostras após análise"
+
+msgid "Transmission des résultats"
+msgstr "Transmissão de resultados"
+
+msgid "Défaut/Absence de transmission patient"
+msgstr "Falha/Ausência da transmissão ao paciente"
+
+msgid "Défaut/Absence de transmission Prescripteur/Correspondant"
+msgstr "Falha/Ausência da transmissão ao Prescritor/Correspondente"
+
+msgid "Accès aux résultats"
+msgstr "Acesso aos resultados"
+
+msgid "Date de rendu erronée"
+msgstr "Data de comunicação incorreta"
+
+msgid "Délai de transmission non respecté"
+msgstr "Prazo de transmissão não respeitado"
+
+msgid "Non respect de la procédure de rendu des résultats"
+msgstr "Inconformidade com o procedimento de comunicação de resultados"
+
+msgid "Ressources humaines"
+msgstr "Recursos Humanos"
+
+msgid "Non respect procédure"
+msgstr "Inconformidade do procedimento"
+
+msgid "Absence"
+msgstr "Ausência"
+
+msgid "Habilitation/maintien des compétences"
+msgstr "Capacitação/manutenção de competências"
+
+msgid "Accident exposition au sang / Hygiène et sécurité"
+msgstr "Acidente de exposição ao sangue / Saúde e Segurança"
+
+msgid "Etalonnage, Certification, Calibrage"
+msgstr "Aferição, certificação, calibração"
+
+msgid "Calibration automate"
+msgstr "Calibração de sistemas automatizados"
+
+msgid "Alarme"
+msgstr "Alarme"
+
+msgid "Panne d'un équipement"
+msgstr "Falha do equipamento"
+
+msgid "Respect procédure"
+msgstr "Respeito pelo procedimento"
+
+msgid "Réactifs et consommables"
+msgstr "Reagentes e consumíveis"
+
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "Recepção de reagentes e/ou consumíveis não correspondentes à encomenda"
+
+msgid "Délai livraison"
+msgstr "Prazo de entrega"
+
+msgid "Réactifs périmés"
+msgstr "Reagentes expirados"
+
+msgid "Rupture de stock (cf nom du fournisseur)"
+msgstr "Estoque esgotado (ver nome do fornecedor)"
+
+msgid "Déstockage produits non conforme"
+msgstr "Saída de produtos do estoque não-conforme"
+
+msgid "Locaux et environnement"
+msgstr "Instalações e ambiente"
+
+msgid "Nettoyage du laboratoire"
+msgstr "Limpeza do laboratório"
+
+msgid "Entretien du batiment"
+msgstr "Manutenção do edifício"
+
+msgid "Coupure d'électricité"
+msgstr "Interrupção de energia elétrica"
+
+msgid "Coupure d'eau"
+msgstr "Falta de água"
+
+msgid "Gestion des déchets"
+msgstr "Gestão de resíduos"
+
+msgid "Systèmes informatiques"
+msgstr "Sistemas informáticos"
+
+msgid "Absence de connexion"
+msgstr "Sem conexão"
+
+msgid "Erreur de paramétrage"
+msgstr "Erro de configuração"
+
+msgid "Panne réseau"
+msgstr "Pane de rede"
+
+msgid "Panne système d'information"
+msgstr "Pane no sistema de informação"
+
+msgid "Panne matériel informatique"
+msgstr "Pane do hardware do computador"
+
+msgid "Sous-traitance"
+msgstr "Subcontratação"
+
+msgid "Délai de rendu non respecté"
+msgstr "Prazo não cumprido"
+
+msgid "Erreur / oubli examen"
+msgstr "Erro/omissão de exame"
+
+msgid "Mauvaise conservation lors du transport"
+msgstr "Má conservação durante o transporte"
+
+msgid "Problème de facturation"
+msgstr "Problemas de faturamento"
+
+msgid "Réclamations clients"
+msgstr "Reclamações de clientes"
+
+msgid "Est ce que cette non-conformité concerne un dossier patient ?"
+msgstr "Esta não-conformidade diz respeito a um arquivo de paciente?"
+
+msgid "Numéro de dossier"
+msgstr "Número de registro"
+
+msgid "Description de la non-conformité"
+msgstr "Descrição da não-conformidade"
+
+msgid "Impact sur le personnel/visiteur"
+msgstr "Impacto nos funcionários/visitantes"
+
+msgid "SUIVI DE LA NON-CONFORMITE"
+msgstr "ACOMPANHAMENTO DA NÃO-CONFORMIDADE"
+
+msgid "Qui"
+msgstr "Quem"
+
+msgid "Quoi"
+msgstr "O que"
+
+msgid "Quand"
+msgstr "Quando"
+
+msgid "Mise en place d’une action correctrice"
+msgstr "Implementação de ações corretivas"
+
+msgid "Description de l'action correctrice"
+msgstr "Descrição da ação corretiva"
+
+msgid "Date de réalisation de l'action correctrice"
+msgstr "Data de conclusão da ação corretiva"
+
+msgid "Responsable de l'action"
+msgstr "Responsável pela ação"
+
+msgid "CLOTURE DE LA NON-CONFORMITE"
+msgstr "ENCERRAMENTO DA NÃO-CONFORMIDADE"
+
+msgid "Validé par"
+msgstr "Validado por"
+
+msgid "Veuillez saisir un nom pour cette non-conformité."
+msgstr "Por favor, introduza um nome para esta não conformidade."
+
+msgid "Veuillez sélectionner un rapporteur."
+msgstr "Por favor, selecione um relator."
+
+msgid "Liste des analyses du dossier"
+msgstr "Lista de análises de registros"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Processus en cours"
+msgstr "Processo em andamento"
+
+msgid "Veuillez patienter"
+msgstr "Por favor aguarde"
+
+msgid "Nombre de personnels dans le laboratoire"
+msgstr "Número de funcionários no laboratório"
+
+msgid "Nombre de manuels sauvegardés"
+msgstr "Número de manuais salvos"
+
+msgid "Date de la dernière réunion d'équipe"
+msgstr "Data da última reunião de equipe"
+
+msgid "Nombre de non-conformités en cours"
+msgstr "Número de não-conformidades em andamento"
+
+msgid "Nombre de non-conformités depuis un mois"
+msgstr "Número de não-conformidades no último mês"
+
+msgid "Famille d'analyse"
+msgstr "Família de análise"
+
+msgid "Analyses par type de demande"
+msgstr "Análises por tipo de solicitação"
+
+msgid "Analyses par tranche d'âge"
+msgstr "Análises por faixa etária"
+
+msgid "H = Homme, F = Femme, I = Inconnu"
+msgstr "M = Masculino, F = Feminino, D = Desconhecido"
+
+msgid "Export par type"
+msgstr "Exportação por tipo"
+
+msgid "Export par âge"
+msgstr "Exportação por idade"
+
+msgid "Télécharger le rapport"
+msgstr "Baixar o relatório"
+
+msgid "Externes"
+msgstr "Paciente ambulatorial"
+
+msgid "Hospitalisés"
+msgstr "Paciente internado"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "H"
+msgstr "M"
+
+msgid "F"
+msgstr "F"
+
+msgid "I"
+msgstr "D"
+
+msgid "Moins de"
+msgstr "Menos de"
+
+msgid "ans"
+msgstr "anos"
+
+msgid "Plus de"
+msgstr "Mais de que"
+
+msgid "à"
+msgstr "para"
+
+msgid "Etat journalier de la facturation"
+msgstr "Status do faturamento diário"
+
+msgid "Créateur du dossier"
+msgstr "Autor do arquivo"
+
+msgid "Liste des facturations en cours"
+msgstr "Lista das faturas em andamento"
+
+msgid "N° facturation"
+msgstr "N.º da fatura"
+
+msgid "A payer après remises"
+msgstr "A ser pago após descontos"
+
+msgid "Date de début de période "
+msgstr "Data de início do período "
+
+msgid "Feuille de calcul"
+msgstr "Planilha"
+
+msgid "Récupérer les données"
+msgstr "Recuperar dados"
+
+msgid "Veuillez sélectionner une feuille de calcul."
+msgstr "Por favor, selecione uma planilha."
+
+msgid "Epidémiologie"
+msgstr "Epidemiologia"
+
+msgid "Maladie"
+msgstr "Doença"
+
+msgid "Nature prélèvement"
+msgstr "Tipo de amostra"
+
+msgid "Total reçu"
+msgstr "Total recebido"
+
+msgid "Total analysé"
+msgstr "Total analisado"
+
+msgid "Résultats"
+msgstr "Resultados"
+
+msgid "Répartition dossiers"
+msgstr "Distribuição de registros"
+
+msgid "Préleveurs"
+msgstr "Coletadores"
+
+msgid "Prélèvements"
+msgstr "Amostras"
+
+msgid "Interne"
+msgstr "Interno"
+
+msgid "Externe"
+msgstr "Externo"
+
+msgid "Non renseigné"
+msgstr "Não-informado"
+
+msgid "Famille"
+msgstr "Família"
+
+msgid "Validation"
+msgstr "Validação"
+
+msgid "Ajouter un intervalle"
+msgstr "Acrescentar um intervalo"
+
+msgid "Intervalles"
+msgstr "Intervalos"
+
+msgid "Age inférieur"
+msgstr "Idade mais baixa"
+
+msgid "Age supérieur"
+msgstr "Idade mais alta"
+
+msgid "Désignation de l'acte"
+msgstr "Designação do ato"
+
+msgid "Type de prélèvement"
+msgstr "Tipo de amostra"
+
+msgid "Analyse active"
+msgstr "Análise ativa"
+
+msgid "Désignation"
+msgstr "Designação"
+
+msgid "Abréviation"
+msgstr "Abreviatura"
+
+msgid "Produit bio."
+msgstr "Produto biol."
+
+msgid "Importer le référentiel"
+msgstr "Importar o repositório de análise"
+
+msgid "Exporter le référentiel"
+msgstr "Exportar o repositório de análise"
+
+msgid "Enregistrer la liste"
+msgstr "Salvar a lista"
+
+msgid "Ajouter une analyse"
+msgstr "Acrescentar uma análise"
+
+msgid "Activé"
+msgstr "Activado"
+
+msgid "Désactivé"
+msgstr "Desativado"
+
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "Por favor, confirme a exclusão desta análise.//nPor favor, note que os possíveis registros associados a esta análise estarão errados."
+
+msgid "Paramétrage de la sauvegarde"
+msgstr "Configurações de backup (cópia de salvamento)"
+
+msgid "MODIFIER HEURE SAUVEGARDE"
+msgstr "MODIFICAR HORARIO BACKUP"
+
+msgid "INITIALISER LE MEDIA"
+msgstr "INICIALIZAR OS MEIOS DE COMUNICAÇÃO"
+
+msgid "GENERER CLE DE SAUVEGARDE"
+msgstr "GERAR CHAVE DE BACKUP"
+
+msgid "SAUVEGARDER"
+msgstr "SALVAR"
+
+msgid "RESTAURER"
+msgstr "RESTAURAR"
+
+msgid "Heure de sauvegarde"
+msgstr "Horário do backup"
+
+msgid "Dernière sauvegarde"
+msgstr "Último backup"
+
+msgid "Dernière sauvegarde OK"
+msgstr "Último backup OK"
+
+msgid "Veuillez saisir le mot de passe de l'utilisateur user_labbook"
+msgstr "Por favor introduza a senha do usuário user_labbook"
+
+msgid "Mot de passe système"
+msgstr "Senha do sistema"
+
+msgid "Veuillez saisir le mot de passe pour la clé de sauvegarde"
+msgstr "Por favor introduza a senha para a chave de backup"
+
+msgid "Confirmation"
+msgstr "Confirmação"
+
+msgid "Veuillez sélectionner un média"
+msgstr "Por favor, selecione os meios de comunicação apropriados"
+
+msgid "Liste des médias disponibles"
+msgstr "Lista dos meios de comunicação disponíveis"
+
+msgid "Veuillez sélectionner la sauvegarde à restaurer"
+msgstr "Por favor, selecione a cópia de segurança para restaurar"
+
+msgid "Liste des sauvegardes disponibles"
+msgstr "Lista de cópias de segurança disponíveis"
+
+msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
+msgstr "Favor confirmar a alteração do horário do backup diário."
+
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "Já existe uma chave, se uma chave for gerada de novo, os backups antigos não serão recuperáveis. Por favor, confirme a geração de uma nova chave."
+
+msgid "Veuillez saisir un mot de passe"
+msgstr "Por favor, introduza uma senha"
+
+msgid "Les mots de passe ne correspondent pas !"
+msgstr "As senhas não coincidem!"
+
+msgid "Veuillez saisir une heure de sauvegarde."
+msgstr "Por favor, introduza a hora do backup."
+
+msgid "Une erreur est survenue lors de la récupération de la liste de média"
+msgstr "Ocorreu um erro durante a recuperação da lista da mídia"
+
+msgid "Une erreur est survenue lors de l'interrogation du service"
+msgstr "Ocorreu um erro durante ao consultar o serviço"
+
+msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
+msgstr "Ocorreu um erro durante a verificação da chave de backup"
+
+msgid "Une erreur est survenue le média choisi est incorrect"
+msgstr "Ocorreu um erro - a mídia escolhida está incorreta"
+
+msgid "Initialisation réussie"
+msgstr "Inicialização bem sucedida"
+
+msgid "Une erreur est survenue lors de l'initialisation du média"
+msgstr "Ocorreu um erro durante a inicialização da mídia"
+
+msgid "Génération réussie"
+msgstr "Geração bem sucedida"
+
+msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+msgstr "Ocorreu um erro durante a recuperação da lista de arquivos"
+
+msgid "Merci de confirmer le lancement immédiat de la restauration."
+msgstr "Favor confirmar o início imediato do processo de restauração."
+
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "Ocorreu um erro durante a restauração, por favor contacte o seu administrador para verificar manualmente se a restauração está completa."
+
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
+msgstr "A restauração está completa, LabBook reiniciará os serviços da aplicação"
+
+msgid "Redémarrage activé"
+msgstr "Reinício ativado"
+
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "Os serviços foram reiniciados ou ocorreu um erro durante o pedido de reinício\nPor favor, recarregue a página."
+
+msgid "Sauvegarde réussie"
+msgstr "Backup bem sucedidos"
+
+msgid "Une erreur est survenue"
+msgstr "Ocorreu um erro"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+msgstr "Ocorreu um erro durante a verificação do status atual, status desconhecido"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours"
+msgstr "Ocorreu um erro durante a verificação do status atual"
+
+msgid "Unité de cotation"
+msgstr "Unidade de cotação"
+
+msgid "Valeur de cotation"
+msgstr "Valor da cotação"
+
+msgid "Export whonet"
+msgstr "Exportação Whonet"
+
+msgid "Variables"
+msgstr "Variáveis"
+
+msgid "Chercher une variable"
+msgstr "Procura de uma variável"
+
+msgid "Créer une nouvelle variable"
+msgstr "Criar uma nova variável"
+
+msgid "Code var."
+msgstr "Código Var."
+
+msgid "Par défaut sera l'ID de la variable"
+msgstr "O padrão será o ID da variável"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Type de résultat"
+msgstr "Tipo de resultado"
+
+msgid "Description"
+msgstr "Descrição"
+
+msgid "Valeur normale min."
+msgstr "Valor normal min."
+
+msgid "Valeur normale max."
+msgstr "Valor normal máx"
+
+msgid "Formule"
+msgstr "Fórmula"
+
+msgid "Unité"
+msgstr "Unidade"
+
+msgid "Précision"
+msgstr "Precisão"
+
+msgid "Formule de conversion unité 2"
+msgstr " Fórmula de conversão unidade 2"
+
+msgid "Unité 2"
+msgstr "Unidade 2"
+
+msgid "Précision 2"
+msgstr "Precisão 2"
+
+msgid "Num. var pour la formule"
+msgstr "Num. var para a fórmula"
+
+msgid "Position affichage"
+msgstr "Posição de visualização"
+
+msgid "Résultat obligatoire"
+msgstr "Resultado obrigatório"
+
+msgid "Min"
+msgstr "Min"
+
+msgid "Max"
+msgstr "Max"
+
+msgid "Num. var"
+msgstr "Num. var"
+
+msgid "Sous analyses"
+msgstr "Sub-análises"
+
+msgid "Produit biologique"
+msgstr "Produto biológico"
+
+msgid "Chercher un produit biologique"
+msgstr "Buscar de um produto biológico"
+
+msgid "Variable déjà utilisée dans cette analyse"
+msgstr "Variável já utilizada nesta análise"
+
+msgid "Erreur lors la récupération des données"
+msgstr "Erro durante a recuperação de dados"
+
+msgid "Modifier"
+msgstr "Modificar"
+
+msgid "Veuillez saisir un code."
+msgstr "Por favor, introduza um código."
+
+msgid "Veuillez saisir un nom d'analyse."
+msgstr "Por favor, introduza um nome de análise."
+
+msgid "Veuillez choisir ou définir au moins une variable."
+msgstr "Por favor, selecionar ou definir pelo menos uma variável."
+
+msgid "Ce code existe déjà"
+msgstr "Este código já existe"
+
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "Ocorreu um erro durante a verificação do código"
+
+msgid "Dictionnaire"
+msgstr "Dicionário"
+
+msgid "Droits utilisateur"
+msgstr "Direitos do usuário"
+
+msgid "Rôle"
+msgstr "Função"
+
+msgid "Administrateur"
+msgstr "Administrador"
+
+msgid "Technicien avancé"
+msgstr "Técnico avançado"
+
+msgid "Technicien qualiticien"
+msgstr "Técnico de qualidade"
+
+msgid "Secrétaire"
+msgstr "Secretário"
+
+msgid "Secrétaire avancée"
+msgstr "Secretária avançada"
+
+msgid "Qualiticien"
+msgstr "Responsável pela qualidade"
+
+msgid "Prescripteur associé"
+msgstr "Prescritor associado"
+
+msgid "Confirmation du mot de passe"
+msgstr "Confirmação da senha"
+
+msgid "CPS"
+msgstr "CPS"
+
+msgid "Numéro RPPS"
+msgstr "Número RPPS"
+
+msgid "Langues *"
+msgstr "Idiomas *"
+
+msgid "Français (FR)"
+msgstr "Français (FR)"
+
+msgid "English (UK)"
+msgstr "Inglês (Reino Unido)"
+
+msgid "English (US)"
+msgstr "Inglês (US)"
+
+msgid "Veuillez saisir un identifiant."
+msgstr "Por favor, digite um nome de usuário."
+
+msgid "Veuillez saisir un mot de passe."
+msgstr "Por favor, digite uma senha."
+
+msgid "Veuillez confirmer votre mot de passe."
+msgstr "Por favor, confirme sua senha."
+
+msgid "Veuillez choisir une langue."
+msgstr "Por favor, escolha um idioma."
+
+msgid "Veuillez choisir un rôle."
+msgstr "Por favor, escolha uma função."
+
+msgid "Paramétrage de l'export DHIS2"
+msgstr "Configurações de exportação DHIS2"
+
+msgid "Enregistrer la feuille de calcul"
+msgstr "Carregar a planilha"
+
+msgid "Une erreur est survenue lors du dépot du fichier"
+msgstr "Ocorreu um erro durante o carregamento do arquivo"
+
+msgid "Liste des dictionnaires (choix de réponses)"
+msgstr "Lista de dicionários (escolha das respostas)"
+
+msgid "Ajouter un dictionnaire"
+msgstr "Acrescentar um dicionário"
+
+msgid "Paramétrage du rapport épidémiologique"
+msgstr "Elaboração de relatório epidemiológico"
+
+msgid "Changement de logo pour les documents"
+msgstr "Mudança de logótipo para documentos"
+
+msgid "Logo original"
+msgstr "Logotipo original"
+
+msgid "Logo tel qu'il apparaitra dans l'entête de rapport"
+msgstr "Logotipo como aparecerá no cabeçalho do relatório"
+
+msgid "Largeur forcée à 230 pixels et conserve les proportions"
+msgstr "Largura forçada a 230 pixels e mantém as proporções"
+
+msgid "Le fichier doit être au format png ou jpg"
+msgstr "O arquivo deve estar em formato png ou jpg"
+
+msgid "Une erreur est survenue lors du dépot du logo"
+msgstr "Ocorreu um erro durante o carregamento do logótipo"
+
+msgid "Liste des préférences"
+msgstr "Lista de preferências"
+
+msgid "Valeur"
+msgstr "Valor"
+
+msgid "Prix unitaire des actes de prélévements et d'analyses"
+msgstr "Preço unitário para procedimentos de coleta e análise"
+
+msgid "Entête de document 1"
+msgstr "Cabeçalho do documento 1"
+
+msgid "Entête de document 2"
+msgstr "Cabeçalho do documento 2"
+
+msgid "Entête de document 3"
+msgstr "Cabeçalho do documento 3"
+
+msgid "Entête de document - Adresse"
+msgstr "Cabeçalho do documento - Endereço"
+
+msgid "Entête de document - Téléphone"
+msgstr "Cabeçalho do documento - Telefone"
+
+msgid "Entête de document - Fax"
+msgstr "Cabeçalho do documento - Fax"
+
+msgid "Entête de document - Email"
+msgstr "Cabeçalho do documento - Email"
+
+msgid "Entête de document - Ville"
+msgstr "Cabeçalho do documento - Cidade"
+
+msgid "Facturation des patients hospitalisés"
+msgstr "Faturação dos pacientes internados"
+
+msgid "Unité de l'age par défaut (Jours, Semaines, Mois, Années)"
+msgstr "Unidade de idade padrão (Dias, Semanas, Meses, Anos)"
+
+msgid "Déconnexion automatique (mn)"
+msgstr "Desconexão automática (mn)"
+
+msgid "Module qualité activé"
+msgstr "Módulo de qualidade ativado"
+
+msgid "Module facturation activé"
+msgstr "Módulo de faturação ativado"
+
+msgid "Mise à jour du mot de passe"
+msgstr "Atualização da senha"
+
+msgid "Les mots de passe ne sont pas identiques !"
+msgstr "As senhas não são idênticas!"
+
+msgid "Paramétrage numéro dossier"
+msgstr "Configuração do número de registro"
+
+msgid "Période de numérotation"
+msgstr "Período de numeração"
+
+msgid "Année"
+msgstr "Ano"
+
+msgid "Format de numérotation"
+msgstr "Formato de numeração"
+
+msgid "Court"
+msgstr "Curta"
+
+msgid "Long"
+msgstr "Longo"
+
+msgid "Paramétrage compte rendu"
+msgstr "Configurção de relatórios"
+
+msgid "Type d'entête"
+msgstr "Tipo de cabeçalho"
+
+msgid "Complet"
+msgstr "Completo"
+
+msgid "Simple"
+msgstr "Simples"
+
+msgid "Afficher les commentaires"
+msgstr "Mostrar comentários"
+
+msgid "Gestion impression étiquettes"
+msgstr "Gestão da impressão de etiquetas"
+
+msgid "Sur la base d'une page A4 en mode portrait"
+msgstr "Com base em uma página A4 em modo retrato"
+
+msgid "Longueur étiquette (mm)"
+msgstr "Comprimento da etiqueta (mm)"
+
+msgid "Hauteur étiquette (mm)"
+msgstr "Altura da etiqueta (mm)"
+
+msgid "Marge haute de la page (mm)"
+msgstr "Margem superior da página (mm)"
+
+msgid "Marge basse de la page (mm)"
+msgstr "Margem inferior da página (mm)"
+
+msgid "Marge gauche de la page (mm)"
+msgstr "Margem esquerda da página (mm)"
+
+msgid "Marge droite de la page (mm)"
+msgstr "Margem direita da página (mm)"
+
+msgid "Générer une planche test"
+msgstr "Gerar uma tábua de teste"
+
+msgid "Liste des utilisateurs"
+msgstr "Lista de usuários"
+
+msgid "Origine"
+msgstr "Origem"
+
+msgid "Importer des utilisateurs"
+msgstr "Importação de usuários"
+
+msgid "Export des utilisateurs"
+msgstr "Exportação de usuários"
+
+msgid "Export des connexions"
+msgstr "Exportação de conexões"
+
+msgid "Ajouter un utilisateur"
+msgstr "Adicionar um usuário"
+
+msgid "Editer utilisateur"
+msgstr "Editar usuário"
+
+msgid "Editer mot de passe"
+msgstr "Editar senha"
+
+msgid "Activer utilisateur"
+msgstr "Habilitar o usuário"
+
+msgid "Désactiver utilisateur"
+msgstr "Desativar  o usuário"
+
+msgid "Veuillez confirmer la modification de statut"
+msgstr "Por favor confirmar alteração de status"
+
+msgid "Erreur lors du changement de statut"
+msgstr "Erro ao mudar de status"
+
+msgid "Déconnexion"
+msgstr "Desconexão"
+
+msgid "Non rempli"
+msgstr "Não preenchido"
+
+msgid "Export connexions utilisateurs"
+msgstr "Exportar conexões usuários"
+
+msgid "Import utilisateurs"
+msgstr "Importar usuários"
+
+msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"
+msgstr "Atualizar a lista de usuários e adicionar os que não existem ?"
+
+msgid "Erreur lors du traitement des données"
+msgstr "Erro durante o processamento de dados"
+
+msgid "Date de validation du"
+msgstr "Data de validação do"
+
+msgid "Aucun résultat à exporter !"
+msgstr "Nenhum resultado para exportar!"

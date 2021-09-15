@@ -1,0 +1,2495 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-07-15 11:06+0200\n"
+"PO-Revision-Date: 2021-09-03 15:20+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ar\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+msgid "Dossier administratif"
+msgstr "ملف اداري"
+
+msgid "Dossier"
+msgstr "ملف"
+
+msgid "Identité"
+msgstr "هوية"
+
+msgid "Patient anonyme"
+msgstr "مريض مجهول"
+
+msgid "Né(e) le"
+msgstr " تاريخ الولادة"
+
+msgid "années"
+msgstr "سنوات"
+
+msgid "mois"
+msgstr "شهر"
+
+msgid "semaines"
+msgstr "أسابيع"
+
+msgid "jours"
+msgstr "أيام"
+
+msgid "Masculin"
+msgstr "ذكر"
+
+msgid "Féminin"
+msgstr "مؤَنَّث"
+
+msgid "Inconnu"
+msgstr "مجهول"
+
+msgid "Prescription"
+msgstr "  وصفة طبية"
+
+msgid "Date de réception du dossier"
+msgstr "تاريخ استلام الملف"
+
+msgid "Date de prescription"
+msgstr "تاريخ الوصفة"
+
+msgid "Prescripteur"
+msgstr "الواصف"
+
+msgid "Colis"
+msgstr " طرد"
+
+msgid "Oui"
+msgstr "نعم"
+
+msgid "Identification du colis"
+msgstr " تحديد الطرد"
+
+msgid "Date de réception du colis"
+msgstr "تاريخ استلام الطرد"
+
+msgid "Non"
+msgstr "لا"
+
+msgid "Hospitalisation"
+msgstr " المستشفيات"
+
+msgid "Date d'admission"
+msgstr "تاريخ القبول"
+
+msgid "Service demandeur"
+msgstr "الوكالة الطالبة"
+
+msgid "Numéro de lit"
+msgstr "رقم السرير"
+
+msgid "Analyses et actes de prélèvement"
+msgstr "التحليلات وأعمال أخذ العينات"
+
+msgid "Analyses"
+msgstr "التحليلات"
+
+msgid "Code"
+msgstr " شفرة"
+
+msgid "Nom"
+msgstr " اسم"
+
+msgid "Urgent"
+msgstr "العاجلة"
+
+msgid "Demandée"
+msgstr "مطلوب"
+
+msgid "Cote"
+msgstr " معدل"
+
+msgid "Prix"
+msgstr "السعر"
+
+msgid "Actes de prélèvement"
+msgstr " أخذ العينات"
+
+msgid "Compte-rendus"
+msgstr " التقارير     "
+
+msgid "Action"
+msgstr " جهد"
+
+msgid "Date"
+msgstr "تاريخ"
+
+msgid "Facturation"
+msgstr "الفواتير"
+
+msgid "Prix total"
+msgstr "الثمن الجملي"
+
+msgid "Remise sur la facturation"
+msgstr "خصم على الفواتير"
+
+msgid "Pourcentage de la remise"
+msgstr "نسبة الخصم"
+
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "نسبة التأمين الصحي / المتبادل"
+
+msgid "Reste à payer"
+msgstr "تركت للدفع"
+
+msgid "Numéro de quittance"
+msgstr "عدد إيصال"
+
+msgid "Renseignements / Informations complémentaires"
+msgstr "مزيد من المعلومات / المعلومات"
+
+msgid "Valise de documents"
+msgstr "وثيقة القضية"
+
+msgid "Fichier"
+msgstr "ملف"
+
+msgid "Enregistrer le document"
+msgstr "احفظ المستند"
+
+msgid "Quitter"
+msgstr "يغادر"
+
+msgid "Imprimer la facture"
+msgstr "اطبع الفاتورة"
+
+msgid "Code barre"
+msgstr "الرمز الشريطي"
+
+msgid "Télécharger"
+msgstr "تحميل"
+
+msgid "Ré-éditer"
+msgstr "إعادة التحرير"
+
+msgid "Aucune donnée à afficher"
+msgstr "لا توجد بيانات لعرض"
+
+msgid "Aucun fichier déposé"
+msgstr "لم يتم تحميل أي ملف"
+
+msgid "Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)"
+msgstr "هل ترغب في إعادة تحرير التقرير؟ (ستظهر الكلمات "إلغاء واستبدال" هناك)"
+
+msgid "Une erreur est survenue lors du traitement"
+msgstr "حدث خطأ أثناء معالجة"
+
+msgid "Une erreur est survenue lors du dépot d'un fichier"
+msgstr "حدث خطأ أثناء تحميل ملف"
+
+msgid "Le fichier sera définitivement supprimé"
+msgstr "سيتم حذف الملف نهائيًا"
+
+msgid "Erreur lors de la suppression d'un fichier"
+msgstr "خطأ في حذف ملف"
+
+msgid "Erreur lors de la génération du PDF facture"
+msgstr "خطأ أثناء إنشاء فاتورة PDF"
+
+msgid "Erreur lors de la génération du PDF code barre"
+msgstr "خطأ أثناء إنشاء ملف PDF للرمز الشريطي"
+
+msgid "Import d'analyses"
+msgstr "استيراد التحليلات"
+
+msgid "Statut de la dernière importation"
+msgstr "حالة آخر استيراد"
+
+msgid "Type d'import"
+msgstr "نوع الاستيراد"
+
+msgid "Met à jour les analyses (dont le code est identique)"
+msgstr "تحليلات التحديثات (التي رمزها متطابق)"
+
+msgid "Ajoute les nouvelles analyses (code non existant en base)"
+msgstr "إضافة تحليلات جديدة (رمز غير موجود في قاعدة البيانات)"
+
+msgid "Retour"
+msgstr "إرجاع"
+
+msgid "Importer des analyses"
+msgstr "تحليلات الاستيراد"
+
+msgid "Dépôt réussi"
+msgstr "إيداع ناجح"
+
+msgid "Le fichier doit être un csv"
+msgstr "يجب أن يكون الملف بتنسيق csv"
+
+msgid "Lancer l'import du référentiel d'analyses ?"
+msgstr "بدء استيراد مستودع التحليل؟"
+
+msgid "Traitement réussi"
+msgstr "علاج ناجح"
+
+msgid "Aucun statut"
+msgstr "لا توجد حالة"
+
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
+msgstr "خطأ في معالجة البيانات ، قم بتحديث الصفحة حتى تعرف الحالة"
+
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
+msgstr "حدث خطأ أثناء التحقق من حالة قاعدة البيانات"
+
+msgid "Validation biologique"
+msgstr "التحقق البيولوجي"
+
+msgid "Renseignements cliniques"
+msgstr "المعلومات الطبيه"
+
+msgid "Aucune analyse"
+msgstr "لا يوجد تحليل"
+
+msgid "Validation des résultats cochés"
+msgstr "التحقق من صحة النتائج التي تم فحصها"
+
+msgid "Date de validation"
+msgstr "تاريخ الصلاحية"
+
+msgid "Biologiste"
+msgstr "عالم احياء"
+
+msgid "Commentaire"
+msgstr "ملاحظة"
+
+msgid "Valider"
+msgstr " تصديق"
+
+msgid "Compte rendu"
+msgstr "تقرير"
+
+msgid "Commentaire et motif annulation"
+msgstr "التعليق وسبب الإلغاء"
+
+msgid "Motif"
+msgstr "نمط"
+
+msgid "Ajouter"
+msgstr "يضيف"
+
+msgid "Annuler"
+msgstr "لالغاء"
+
+msgid "Ajouter de nouvelles analyses"
+msgstr "أضف تحليلات جديدة"
+
+msgid "Dossier suivant"
+msgstr "الملف التالي"
+
+msgid "Fin de la liste des dossiers"
+msgstr "نهاية قائمة الملفات"
+
+msgid "Une erreur est survenue du changement de statut du dossier"
+msgstr "حدث خطأ أثناء تغيير حالة القضية"
+
+msgid "Une erreur est survenue lors de création des résultats"
+msgstr "حدث خطأ أثناء إنشاء النتائج"
+
+msgid "Une erreur est survenue lors de l'enregistrement des analyses"
+msgstr "حدث خطأ أثناء حفظ التحليلات"
+
+msgid "Etes-vous sur de vouloir effacer ce résultat ?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه النتيجة؟"
+
+msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
+msgstr "حدث خطأ أثناء إعادة تعيين قيمة تم إدخالها"
+
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "هل تريد بالتأكيد التراجع عن هذه النتيجة؟  لا يمكن عكس هذا الإجراء."
+
+msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
+msgstr "حدث خطأ أثناء إلغاء قيمة تم إدخالها"
+
+msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
+msgstr "حدث خطأ أثناء التحقق البيولوجي من القيم التي تم إدخالها"
+
+msgid "Réinitialiser la valeur"
+msgstr "قيمة إعادة التعيين"
+
+msgid "Cliquer pour commencer une recherche"
+msgstr "انقر لبدء البحث"
+
+msgid "Analyse déjà présente !"
+msgstr "التحليل موجود بالفعل!"
+
+msgid "Erreur lors de la récupération d'une analyse"
+msgstr "خطأ في استرداد التحليل"
+
+msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
+msgstr "يرجى ملاحظة أنك ستترك هذا الملف دون التحقق من صحته."
+
+msgid "Contributeurs"
+msgstr "المساهمون"
+
+msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
+msgstr "LabBook هو برنامج إدارة المختبر مفتوح المصدر"
+
+msgid "LabBook est co-financé par l’AFD et la Fondation Mérieux."
+msgstr "يتم تمويل LabBook بالاشتراك بين AFD ومؤسسةMérieux "
+
+msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
+msgstr "طورت شركة Epiconcept برنامج LabBook حتى عام 2019"
+
+msgid "La société &AElig;GL&Eacute; a pris le relais à partir de 2020."
+msgstr "الشركة & AElig؛ GL & Eacute؛ تولى من عام 2020"
+
+msgid "Le logiciel est sous licence GNU."
+msgstr "البرنامج مُرخص بموجب ترخيص GNU"
+
+msgid "Version : "
+msgstr "إصدار"
+
+msgid "Accès"
+msgstr "وصول"
+
+msgid "Titre"
+msgstr "لقب"
+
+msgid "Monsieur"
+msgstr " السيد"
+
+msgid "Madame"
+msgstr " السيدة"
+
+msgid "Mademoiselle"
+msgstr " آنِسَة"
+
+msgid "Docteur"
+msgstr "طبيب"
+
+msgid "Professeur"
+msgstr "أستاذ"
+
+msgid "Prénom"
+msgstr "الاسم الاول"
+
+msgid "Initiales"
+msgstr "الأحرف الأولى"
+
+msgid "Lieu de travail"
+msgstr "مكان العمل"
+
+msgid "Service"
+msgstr "خدمة"
+
+msgid "Adresse"
+msgstr " عنوان   "
+
+msgid "Ville"
+msgstr "مدينة"
+
+msgid "Spécialité"
+msgstr "تخصص"
+
+msgid "Téléphone fixe"
+msgstr "هاتف"
+
+msgid "Téléphone mobile"
+msgstr " هاتف محمول"
+
+msgid "Fax"
+msgstr "فاكس"
+
+msgid "Adresse email"
+msgstr "البريد الإلكتروني"
+
+msgid "Enregistrer"
+msgstr "للتسجيل"
+
+msgid "Veuillez saisir un nom."
+msgstr "الرجاء إدخال اسم"
+
+msgid "Une erreur est survenue lors de l'enregistrement"
+msgstr "حدث خطأ أثناء الحفظ"
+
+msgid "Equipement"
+msgstr "معدات"
+
+msgid "Nom de l'équipement"
+msgstr "اسم الجهاز"
+
+msgid "Nom du fabricant"
+msgstr "اسم الشركة المصنعة"
+
+msgid "modèle"
+msgstr "نموذج"
+
+msgid "Photo"
+msgstr "صورة "
+
+msgid "Fonction"
+msgstr "وظيفة"
+
+msgid "Localisation"
+msgstr "موقع"
+
+msgid "Section"
+msgstr "قسم"
+
+msgid "Fournisseur"
+msgstr "المورد"
+
+msgid "Numéro de série"
+msgstr "رقم سري"
+
+msgid "Numéro d'inventaire"
+msgstr "رقم المخزون"
+
+msgid "Responsable"
+msgstr "مسؤول"
+
+msgid "Manuel"
+msgstr "يدوي"
+
+msgid "Procédure"
+msgstr "إجراء"
+
+msgid "Liste des pannes et réparations"
+msgstr "قائمة الأعطال والإصلاحات"
+
+msgid "Maintenance préventive"
+msgstr "صيانة وقائية"
+
+msgid "Certificat d'étalonnage"
+msgstr "شهادة معايرة"
+
+msgid "Contrat de maintenance"
+msgstr "عقد الصيانة"
+
+msgid "Date de fin de contrat de maintenance"
+msgstr "تاريخ انتهاء عقد الصيانة"
+
+msgid "Facture"
+msgstr "فاتورة"
+
+msgid "Date de réception"
+msgstr "تاريخ الاستقبال"
+
+msgid "Date d'achat"
+msgstr "تاريخ الشراء"
+
+msgid "Date d'acquisition"
+msgstr "تاريخ الاستحواذ"
+
+msgid "Date de mise en service"
+msgstr "تاريخ بداية الخدمة"
+
+msgid "Date de retrait du laboratoire"
+msgstr "تاريخ الانسحاب من المختبر"
+
+msgid "Commentaires"
+msgstr "تعليقات"
+
+msgid "Veuillez saisir un nom d'équipement."
+msgstr "الرجاء إدخال اسم الجهاز"
+
+msgid "Supprimer"
+msgstr "إزالة"
+
+msgid "Historique d'une analyse"
+msgstr "تاريخ التحليل"
+
+msgid "Liste des dossiers pour cette analyse"
+msgstr "قائمة الملفات لهذا التحليل"
+
+msgid "du"
+msgstr " مِنْ"
+
+msgid "au"
+msgstr "  إلى"
+
+msgid "Nombre total de lignes"
+msgstr "العدد الإجمالي للأسطر"
+
+msgid "Premier"
+msgstr " أول"
+
+msgid "Précédent"
+msgstr "سابق"
+
+msgid "Suivant"
+msgstr "التالي"
+
+msgid "Dernier"
+msgstr "الاخير"
+
+msgid "serial"
+msgstr "مسلسل"
+
+msgid "N° dossier"
+msgstr "رقم الملف"
+
+msgid "Date prescr."
+msgstr "التاريخ المحدد"
+
+msgid "Variable"
+msgstr "عامل"
+
+msgid "Résultat"
+msgstr " نتيجة"
+
+msgid "Retour à la liste analyses"
+msgstr "العودة إلى قائمة التحليل"
+
+msgid "Historique patient"
+msgstr "تاريخ المريض"
+
+msgid "Code labo."
+msgstr "كود المعمل"
+
+msgid "Date de naissance"
+msgstr "تاريخ الميلاد"
+
+msgid "Sexe"
+msgstr "الجنس"
+
+msgid "Liste des analyses"
+msgstr "قائمة التحليلات"
+
+msgid "Analyse"
+msgstr " تحليل"
+
+msgid "Retour à la liste patients"
+msgstr "العودة إلى قائمة المرضى"
+
+msgid "Liste détaillée du stock pour ce produit"
+msgstr "قائمة مخزون مفصلة لهذا المنتج"
+
+msgid "Nb de paq."
+msgstr "  عدد من pq"
+
+msgid "Date recept."
+msgstr "ميعاد الاستلام"
+
+msgid "Date expir."
+msgstr "تاريخ انتهاء الصلاحية"
+
+msgid "N° lot"
+msgstr "  رقم دفعة الإنتاج"
+
+msgid "Prix d'achat"
+msgstr "سعر الشراء"
+
+msgid "Historique consommation"
+msgstr "تاريخ الاستهلاك"
+
+msgid "Indiquer le nombre de paquets utilisée"
+msgstr "حدد عدد الحزم المستخدمة"
+
+msgid "Nombre de paquets"
+msgstr "عدد الحزم"
+
+msgid "Indiquer la quantité utilisée"
+msgstr "حدد الكمية المستخدمة"
+
+msgid "Aucun prescripteur à exporter !"
+msgstr "لا يوجد واصف للتصدير!"
+
+msgid "Erreur lors de la génération du fichier"
+msgstr "خطأ أثناء إنشاء الملف"
+
+msgid "Référence"
+msgstr "  إشارة"
+
+msgid "Rédacteur"
+msgstr "محرر"
+
+msgid "Vérificateur"
+msgstr "مدقق حسابات"
+
+msgid "Approbateur"
+msgstr " مُصدق التصريح"
+
+msgid "Date de création"
+msgstr "تاريخ الإنشاء"
+
+msgid "Date d'application"
+msgstr "تاريخ التطبيق"
+
+msgid "Date de modification"
+msgstr "تاريخ التعديل"
+
+msgid "Section d'application"
+msgstr "قسم التطبيق"
+
+msgid "Veuillez saisir une référence ou un titre."
+msgstr "الرجاء إدخال مرجع أو عنوان"
+
+msgid "Réunion"
+msgstr "لقاء"
+
+msgid "Type"
+msgstr "نوع"
+
+msgid "Réunion d'équipe"
+msgstr "اجتماع الفريق"
+
+msgid "Réunion qualité"
+msgstr "لقاء الجودة"
+
+msgid "Réunion de direction"
+msgstr "اجتماع الإدارة"
+
+msgid "Organisateur"
+msgstr "منظم"
+
+msgid "Compte-rendu"
+msgstr "تقرير"
+
+msgid "Veuillez saisir une date de réunion."
+msgstr "الرجاء إدخال تاريخ الاجتماع"
+
+msgid "Détails produit"
+msgstr "تفاصيل المنتج"
+
+msgid "Nom du produit"
+msgstr "إسم المنتوج"
+
+msgid "Type produit"
+msgstr "نوع المنتج"
+
+msgid "Nombre par paquet"
+msgstr "الرقم في كل علبة"
+
+msgid "Seuil de sécurité"
+msgstr "عتبة الأمان"
+
+msgid "Référence fournisseur"
+msgstr "المورد المرجعي"
+
+msgid "Conservation"
+msgstr "الحفاظ على"
+
+msgid "Veuillez saisir un nom de produit."
+msgstr "الرجاء إدخال اسم المنتج"
+
+msgid "Veuillez saisir un nombre de produits par paquet supérieur à 0."
+msgstr "الرجاء إدخال عدد من المنتجات في الحزمة أكبر من 0"
+
+msgid "Détails patient"
+msgstr "تفاصيل المريض"
+
+msgid "Demande d'analyses patient - Fiche patient"
+msgstr "طلب تحاليل المريض - ملف المريض"
+
+msgid "Anonyme"
+msgstr "مجهول"
+
+msgid "Code patient interne au laboratoire"
+msgstr "كود المريض الداخلي للمختبر"
+
+msgid "Nom de jeune fille"
+msgstr "الاسم قبل الزواج"
+
+msgid "Date de naissance approximative"
+msgstr "تاريخ الميلاد التقريبي"
+
+msgid "Prénom(s)"
+msgstr "  الاسم الشخصي"
+
+msgid "ou"
+msgstr "أين"
+
+msgid "Age"
+msgstr "عمر"
+
+msgid "unité"
+msgstr "وحدة"
+
+msgid "Jours"
+msgstr "أيام"
+
+msgid "Semaines"
+msgstr "أسابيع"
+
+msgid "Mois"
+msgstr "شهر"
+
+msgid "Années"
+msgstr "سنوات"
+
+msgid "Coordonnées"
+msgstr "معلومات شخصية"
+
+msgid "Téléphone"
+msgstr "هاتف"
+
+msgid "Profession"
+msgstr "مهنة"
+
+msgid "Boite postale"
+msgstr "   صندوق البريد"
+
+msgid "Quartier / Secteur"
+msgstr "الحي / القطاع"
+
+msgid "Code postal"
+msgstr "الرقم البريدي"
+
+msgid "Ville / Village"
+msgstr "قرية / المدينة"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un age"
+msgstr "الرجاء تحديد تاريخ الميلاد أو إدخال العمر"
+
+msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
+msgstr "حدث خطأ أثناء تعديل / إضافة مريض"
+
+msgid "Details demande d'analyses"
+msgstr "طلب تفاصيل للتحليلات"
+
+msgid "Demande d'analyses patient externe"
+msgstr "طلب تحاليل العيادات الخارجية"
+
+msgid "Modifier le dossier du patient"
+msgstr "تحرير سجل المريض"
+
+msgid "Rechercher une analyse"
+msgstr "ابحث عن تحليل"
+
+msgid "Produits pathologiques"
+msgstr "المنتجات المرضية"
+
+msgid "Ajouter un prélèvement"
+msgstr "أضف  العينة "
+
+msgid "Prod. pathol."
+msgstr "همز. باثول"
+
+msgid "Statut"
+msgstr "حالة"
+
+msgid "Date prél."
+msgstr "تاريخ  العينة "
+
+msgid "Date réception"
+msgstr "تاريخ استلام"
+
+msgid "Préleveur"
+msgstr "أخذ العينات"
+
+msgid "Qté"
+msgstr "الكمية"
+
+msgid "Erreur lors la récupération des prélèvements"
+msgstr "خطأ عند استرجاع العينات"
+
+msgid "Erreur lors la récupération des produits pathologiques"
+msgstr "خطأ أثناء استعادة المنتجات المرضية"
+
+msgid "Erreur lors de la récupération des analyses"
+msgstr "خطأ في استرداد عمليات الفحص"
+
+msgid "Merci de confirmer la suppression"
+msgstr "يرجى تأكيد الحذف"
+
+msgid "Veuillez sélectionner au moins une analyse"
+msgstr "يرجى تحديد تحليل واحد على الأقل"
+
+msgid "Veuillez sélectionner une date de réception du dossier"
+msgstr "الرجاء تحديد تاريخ استلام الملف"
+
+msgid "Veuillez sélectionner une date de prescription"
+msgstr "الرجاء تحديد تاريخ وصفة طبية"
+
+msgid "Veuillez renseigner le type du produit"
+msgstr "الرجاء إدخال نوع المنتج"
+
+msgid "Veuillez renseigner le statut du produit"
+msgstr "الرجاء ملء حالة المنتج"
+
+msgid "Veuillez renseigner toutes les dates de réception"
+msgstr "يرجى ملء جميع تواريخ الاستقبال"
+
+msgid "Veuillez renseigner toutes les identités des préleveurs"
+msgstr "يرجى ملء جميع هويات العينات"
+
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "حدث خطأ أثناء تسجيل الخصم المباشر"
+
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "حدث خطأ أثناء حفظ الحالة"
+
+msgid "Une erreur est survenue lors du changement de statut du dossier"
+msgstr "حدث خطأ أثناء تغيير حالة القضية"
+
+msgid "Une erreur est survenue lors de la création des résultats"
+msgstr "حدث خطأ أثناء إنشاء النتائج"
+
+msgid "Demande d'analyses patient hospitalisé"
+msgstr "طلب تحاليل للمرضى الداخليين"
+
+msgid "Produit pathologique"
+msgstr "منتج مرضي"
+
+msgid "Localisation prélèvement"
+msgstr "موقع أخذ العينات"
+
+msgid "Quantité"
+msgstr "مقدار"
+
+msgid "Date du prélèvement"
+msgstr "تاريخ أخذ العينة"
+
+msgid "Lieu de prélèvement"
+msgstr "  موقع أخذ العينات"
+
+msgid "Précision lieu"
+msgstr "موقع دقيق"
+
+msgid "Heure de réception"
+msgstr "وقت الاستقبال"
+
+msgid "Veuillez saisir un statut."
+msgstr "الرجاء إدخال الحالة"
+
+msgid "Veuillez choisir un produit pathologique."
+msgstr "الرجاء اختيار منتج مرضي"
+
+msgid "Personnel"
+msgstr "العاملين"
+
+msgid "Numéro de téléphone"
+msgstr "رقم الهاتف"
+
+msgid "Date d'arrivée au laboratoire"
+msgstr "تاريخ الوصول إلى المختبر"
+
+msgid "Position actuelle dans le laboratoire"
+msgstr "المنصب الحالي في المختبر"
+
+msgid "CV"
+msgstr "السيرة الذاتية"
+
+msgid "Diplômes"
+msgstr "دبلومات"
+
+msgid "Formations continues"
+msgstr "اكمال التعليم"
+
+msgid "Section de travail"
+msgstr "قسم العمل"
+
+msgid "Dernière évaluation des compétences"
+msgstr " التقييم النهائي للكفاءات"
+
+msgid "Approvisionner un produit"
+msgstr "توريد منتج"
+
+msgid "Produit"
+msgstr "منتج"
+
+msgid "Date d'expiration"
+msgstr "تاريخ نهاية الصلاحية"
+
+msgid "Numéro de lot"
+msgstr "رقم الدفعة"
+
+msgid "Veuillez choisir un produit à approvisionner"
+msgstr "الرجاء اختيار منتج للمصدر"
+
+msgid "Veuillez saisir un nombre de paquets supérieur à 0."
+msgstr "الرجاء إدخال عدد الحزم أكبر من 0"
+
+msgid "Veuillez saisir une date d'expiration."
+msgstr "الرجاء إدخال تاريخ انتهاء الصلاحية"
+
+msgid "Nom fournisseur"
+msgstr " اسم مورد"
+
+msgid "Contact"
+msgstr "اتصال"
+
+msgid "Veuillez saisir un fournisseur."
+msgstr "الرجاء إدخال مورد"
+
+msgid "Saisie de résultats"
+msgstr "دخول النتائج"
+
+msgid "Feuille de paillasse"
+msgstr "ورقة مقعد"
+
+msgid "Certains résultats obligatoires ne sont pas saisis"
+msgstr "لم يتم إدخال بعض النتائج الإلزامية"
+
+msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
+msgstr "حدث خطأ أثناء حفظ القيم المدخلة"
+
+msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
+msgstr "حدث خطأ أثناء التحقق الفني من القيم التي تم إدخالها"
+
+msgid "Technicien"
+msgstr "تقني"
+
+msgid "ANNULE"
+msgstr "ألغيت"
+
+msgid "Liste analyses"
+msgstr "قائمة التحليل"
+
+msgid "Rechercher"
+msgstr "  بحث"
+
+msgid "Date du"
+msgstr "بتاريخ"
+
+msgid "Nb. sur la période"
+msgstr "عدد على مدى الفترة       "
+
+msgid "Export des données"
+msgstr "تصدير البيانات"
+
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "حدث خطأ أثناء استرداد البيانات"
+
+msgid "Historique"
+msgstr "تاريخي"
+
+msgid "Aucun résultats à exporter !"
+msgstr "لا توجد نتائج للتصدير!"
+
+msgid "Liste patients"
+msgstr "قائمة المرضى"
+
+msgid "DDN"
+msgstr "تاريخ الميلاد"
+
+msgid "Historique des approvisionnements et usages pour ce produit"
+msgstr "تاريخ الإمدادات والاستخدامات لهذا المنتج"
+
+msgid "E/S"
+msgstr "I / O داخل وخارج je conseille de laisser le I/O également"
+
+msgid "Utilisateur"
+msgstr "المستعمل"
+
+msgid "Date action"
+msgstr "تاريخ العمل"
+
+msgid "Accueil"
+msgstr "  استقبال"
+
+msgid "Préférences"
+msgstr "التفضيلات"
+
+msgid "Gestion des utilisateurs"
+msgstr "إدارةالمستخدم"
+
+msgid "Gestion des rôles"
+msgstr "إدارة الأدوار"
+
+msgid "Référentiel des analyses"
+msgstr "مستودع التحليلات"
+
+msgid "Dictionnaires"
+msgstr "قواميس"
+
+msgid "Gestion des sauvegardes"
+msgstr "إدارة النسخ الاحتياطي"
+
+msgid "Gestion de la Facturation"
+msgstr "إدارة الفواتير"
+
+msgid "Management de la Qualité"
+msgstr "إدارة الجودة"
+
+msgid "Analyses urgentes"
+msgstr "تحليلات عاجلة"
+
+msgid "Urgences"
+msgstr "غرفة الطوارئ"
+
+msgid "Liste des dossiers"
+msgstr "قائمة الملفات"
+
+msgid "Liste de travail biologiste"
+msgstr "قائمة عمل عالم الأحياء"
+
+msgid "Liste de travail technicien"
+msgstr "  قائمة عمل تقني"
+
+msgid "Etat des prélèvements en cours"
+msgstr "حالة عمليات السحب الحالية"
+
+msgid "Saisie des résultats"
+msgstr "دخول النتائج"
+
+msgid "Nouvelle demande externe"
+msgstr "طلب خارجي جديد"
+
+msgid "Nouvelle demande hospitalisé"
+msgstr "طلب جديد في المستشفى"
+
+msgid "Validations à effectuer"
+msgstr "يجب إجراء عمليات التحقق"
+
+msgid "Activité du laboratoire"
+msgstr "نشاط المختبر"
+
+msgid "Dernier numéro utilisé"
+msgstr "آخر رقم مستخدم"
+
+msgid "Nombre de dossiers validés aujourd'hui"
+msgstr "عدد الملفات التي تم التحقق من صحتها اليوم"
+
+msgid "Nombre de dossiers enregistrés"
+msgstr "عدد الملفات المسجلة"
+
+msgid "Biologique"
+msgstr "عضوي"
+
+msgid "Technique"
+msgstr "اصطلاحي"
+
+msgid "LabBook"
+msgstr "لاب بوك"
+
+msgid "Version"
+msgstr "إصدار"
+
+msgid "Liste des prescripteurs"
+msgstr "قائمة الوصفات"
+
+msgid "Initiale"
+msgstr "مبدئي"
+
+msgid "Lieu trav."
+msgstr "مكان العمل"
+
+msgid "Tél. fixe"
+msgstr "هاتف. مثبت"
+
+msgid "Mobile"
+msgstr "التليفون المحمول"
+
+msgid "Email"
+msgstr "بريد إلكتروني"
+
+msgid "Ajouter un prescripteur"
+msgstr "أضف الواصف"
+
+msgid "Editer"
+msgstr "يحرر"
+
+msgid "Erreur lors de la suppression des données"
+msgstr "خطأ في حذف البيانات"
+
+msgid "Liste des équipements"
+msgstr "قائمة المعدات"
+
+msgid "Fabricant"
+msgstr "صانع"
+
+msgid "Modèle"
+msgstr "نموذج"
+
+msgid "Ajouter un équipement"
+msgstr "أضف المعدات"
+
+msgid "Laboratoire"
+msgstr "معمل"
+
+msgid "Nom du dictionnaire"
+msgstr "اسم القاموس"
+
+msgid "Ajouter une valeur"
+msgstr "إضافة قيمة"
+
+msgid "Organigramme"
+msgstr "الهيكل التنظيمي"
+
+msgid "Valeurs"
+msgstr "قيم"
+
+msgid "Libellé"
+msgstr "الصياغة"
+
+msgid "Libellé court"
+msgstr "صياغة قصيرة"
+
+msgid "Position"
+msgstr "موضع"
+
+msgid "Enregistrer les valeurs"
+msgstr "حفظ القيم"
+
+msgid "Veuillez saisir un nom de dictionnaire."
+msgstr "الرجاء إدخال اسم القاموس"
+
+msgid "Veuillez renseigner le(s) libellé(s)."
+msgstr "يرجى ملء الصياغة (الصياغات)"
+
+msgid "Veuillez renseigner le(s) code(s)."
+msgstr "الرجاء إدخال الرمز (الرموز)"
+
+msgid "Enregistrement réussi"
+msgstr "اكتمل التسجيل"
+
+msgid "Liste des manuels"
+msgstr "قائمة الكتيبات"
+
+msgid "Date création"
+msgstr "تاريخ الإنشاء"
+
+msgid "Ajouter un manuel"
+msgstr "إضافة دليل"
+
+msgid "Liste des réunions"
+msgstr "قائمة الاجتماعات"
+
+msgid "Ajouter une réunion"
+msgstr "أضف اجتماعًا"
+
+msgid "Liste des non-conformités"
+msgstr "قائمة غير المطابقة"
+
+msgid "Impact sur le patient"
+msgstr "التأثير على المريض"
+
+msgid "Impact sur le personnel"
+msgstr "التأثير على الموظفين"
+
+msgid "Mise en place d'une action correctrice"
+msgstr "تنفيذ الإجراءات التصحيحية"
+
+msgid "Date correction"
+msgstr "تاريخ التصحيح"
+
+msgid "Date de clôture"
+msgstr "الموعد النهائي"
+
+msgid "Ajouter une non-conformité"
+msgstr "أضف حالة عدم توافق"
+
+msgid "Faible"
+msgstr "قليل"
+
+msgid "Important"
+msgstr "مهم"
+
+msgid "Grave"
+msgstr "خطير"
+
+msgid "Aucun"
+msgstr "أي"
+
+msgid "Procédures"
+msgstr "إجراءات"
+
+msgid "Date modification"
+msgstr "تاريخ التعديل"
+
+msgid "Ajouter une procédure"
+msgstr "إضافة الإجراء"
+
+msgid "Liste des produits"
+msgstr "قائمة المنتجات"
+
+msgid "Nbr par paquet"
+msgstr " عدد الربطات"
+
+msgid "Seuil"
+msgstr "عتبة"
+
+msgid "Réf. fournisseur"
+msgstr "المرجع المورد"
+
+msgid "Editer la fiche produit"
+msgstr "قم بتحرير ورقة المنتج"
+
+msgid "Supprimer la fiche produit"
+msgstr "احذف ورقة المنتج"
+
+msgid "Merci de confirmer la suppression du produit"
+msgstr "الرجاء تأكيد حذف المنتج"
+
+msgid "Urgent uniquement"
+msgstr "عاجل فقط"
+
+msgid "Nouveau"
+msgstr "جديد"
+
+msgid "Validé administrativement"
+msgstr "تم التحقق من صحتها إدارياً"
+
+msgid "Intermédiaire (validé admin.)"
+msgstr "متوسط ​​(مشرف مصدق عليه)"
+
+msgid "Validé techniquement"
+msgstr " تتثبت من صلاحيتها "
+
+msgid "Intermédiaire (validé tech.)"
+msgstr "متوسط ​​(تقنية معتمدة)"
+
+msgid "Validé biologiquement"
+msgstr "تم التحقق من صحتها بيولوجيا"
+
+msgid "Création dossier"
+msgstr "إنشاء مجلد"
+
+msgid "Code patient"
+msgstr "كود المريض"
+
+msgid "Une erreur est survenue lors de la récupération de la liste des dossiers"
+msgstr "حدث خطأ أثناء استرداد قائمة المجلدات"
+
+msgid "Validation technique"
+msgstr "التحقق الفني"
+
+msgid "Veuillez confirmer la suppression"
+msgstr "الرجاء تأكيد الحذف"
+
+msgid "Erreur lors de la suppression d'un dossier"
+msgstr "خطأ في حذف مجلد"
+
+msgid "Date de la demande du"
+msgstr "تاريخ الطلب من"
+
+msgid "Afficher uniquement les analyses prioritaires"
+msgstr "إظهار عمليات المسح ذات الأولوية فقط"
+
+msgid "Masquer les résultats déjà validés"
+msgstr "إخفاء النتائج التي تم التحقق من صحتها بالفعل"
+
+msgid "Une erreur est survenue lors de la récupération des résultats"
+msgstr "حدث خطأ أثناء استرداد النتائج"
+
+msgid "Date dossier"
+msgstr "تاريخ الملف"
+
+msgid "Patient"
+msgstr "مريض"
+
+msgid "Sang"
+msgstr "دم"
+
+msgid "Selles"
+msgstr "السروج"
+
+msgid "Urine"
+msgstr "البول"
+
+msgid "Autre"
+msgstr "آخر"
+
+msgid "Liste du personnel"
+msgstr "قائمة الموظفين"
+
+msgid "Tél"
+msgstr "هاتف"
+
+msgid "Date arrivée"
+msgstr "تاريخ الوصول"
+
+msgid "Date éval."
+msgstr "تاريخ التقييم"
+
+msgid "Identifiant"
+msgstr "اسم المستخدم"
+
+msgid "Formations"
+msgstr "تمرين"
+
+msgid "Evaluations"
+msgstr "التقييمات"
+
+msgid "Liste des stocks"
+msgstr "قائمة الأسهم"
+
+msgid "Nb par paq."
+msgstr " عدد في كل علبة"
+
+msgid "Nb total"
+msgstr " العدد الإجمالي"
+
+msgid "Catalogue des produits"
+msgstr "بيان المنتج"
+
+msgid "Nouveau produit"
+msgstr "منتج جديد"
+
+msgid "Détails du stock"
+msgstr "تفاصيل المخزون"
+
+msgid "Historique de ce produit"
+msgstr "تاريخ هذا المنتج"
+
+msgid "Seuil de"
+msgstr "عتبة"
+
+msgid "Liste des fournisseurs"
+msgstr "قائمة الموردين"
+
+msgid "Nom contact"
+msgstr "اسم جهة الاتصال"
+
+msgid "Prénom contact"
+msgstr "الاسم الأول جهة الاتصال"
+
+msgid "Tél."
+msgstr "هاتف"
+
+msgid "Ajouter un fournisseur"
+msgstr "أضف موردًا"
+
+msgid "Note : certains equipements pourraient être associés à ce fournisseur"
+msgstr "ملاحظة: يمكن ربط بعض المعدات بهذا المورد"
+
+msgid "Liste de travail"
+msgstr "قائمة العمل"
+
+msgid "Date dossier supérieure à"
+msgstr "تاريخ الملف أكبر من"
+
+msgid "Date dossier inférieure à"
+msgstr "تاريخ الملف أقل من"
+
+msgid "Validation groupée"
+msgstr "التحقق من المجموعة"
+
+msgid "Commencer la validation groupée"
+msgstr "بدء التحقق من المجموعة"
+
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "  اسم المستخدم أو كلمة السر غير صحيح"
+
+msgid "Ouverture de session"
+msgstr "تسجيل الدخول"
+
+msgid "Mot de passe"
+msgstr "كلمة السر"
+
+msgid "Gestion dossier patient"
+msgstr "إدارة سجلات المرضى"
+
+msgid "Fusionner 2 dossiers patients"
+msgstr "دمج 2 ملفات المريض"
+
+msgid "Nom, prénom ou code du patient"
+msgstr "الاسم الأخير ، الاسم الأول ، أو رمز المريض"
+
+msgid "A CONSERVER"
+msgstr "للحفاظ على"
+
+msgid "A SUPPRIMER"
+msgstr "للحذف"
+
+msgid "Identité patient"
+msgstr "هوية المريض"
+
+msgid "Code laboratoire"
+msgstr "كود المختبر"
+
+msgid "Modifier la fiche patient"
+msgstr "تعديل ملف المريض"
+
+msgid "Fusionner"
+msgstr "دمج"
+
+msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
+msgstr "الرجاء تحديد تاريخ الميلاد أو إدخال العمر"
+
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
+msgstr "يجب عليك تحديد سجلين مختلفين للمرضى لإجراء عملية دمج"
+
+msgid "Les fiches patients sont les mêmes dans la base de données."
+msgstr "ملفات المريض هي نفسها في قاعدة البيانات."
+
+msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
+msgstr "ملف المريض مفقود لإجراء عملية دمج الملفات"
+
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "سيتم إرفاق سجلات المريض المراد حذفه \\ n بالمريض ليبقى. \\ n هل تؤكد هذا الدمج؟ \\ n (هذا الإجراء لا رجوع فيه)"
+
+msgid "Une erreur est survenue lors de la fusion"
+msgstr "حدث خطأ أثناء الدمج"
+
+msgid "Administratif"
+msgstr "إداري"
+
+msgid "Rapport activité"
+msgstr "تقرير النشاط"
+
+msgid "Rapport épidémiologique"
+msgstr "تقرير وبائي"
+
+msgid "Rapport statistique"
+msgstr "تقرير احصائي"
+
+msgid "Export DHIS2"
+msgstr "تصدير DHIS2"
+
+msgid "Export WHONET"
+msgstr "تصدير WHONET"
+
+msgid "Historique d'analyse"
+msgstr "تاريخ التحليل"
+
+msgid "Rapport de fin de journée"
+msgstr "تقرير نهاية اليوم"
+
+msgid "Etat de la facturation journalière"
+msgstr "حالة الفواتير اليومية"
+
+msgid "Rapports"
+msgstr "التقارير"
+
+msgid "Changement de logo"
+msgstr "تغيير الشعار"
+
+msgid "Etiquettes"
+msgstr "ملصقات"
+
+msgid "Intervalles d'âge"
+msgstr "فترات العمر"
+
+msgid "Configuration des comptes-rendu"
+msgstr "تكوين التقارير"
+
+msgid "Configuration des numéros de dossier"
+msgstr "تكوين أرقام المجلدات"
+
+msgid "Gestion des dossiers patients"
+msgstr "إدارة سجلات المرضى"
+
+msgid "Configuration DHIS2"
+msgstr "تكوين DHIS2"
+
+msgid "Configuration Epidemio"
+msgstr "تكوين الوباء"
+
+msgid "paramétrages"
+msgstr "الإعدادات"
+
+msgid "Général"
+msgstr "عام"
+
+msgid "Personnels"
+msgstr "شخصي"
+
+msgid "Prescripteurs"
+msgstr "الواصفون"
+
+msgid "Equipements"
+msgstr "المعدات"
+
+msgid "Fournisseurs"
+msgstr "الموردين"
+
+msgid "Manuels"
+msgstr "كتيبات"
+
+msgid "Gestion des stocks"
+msgstr "إدارة المخزون"
+
+msgid "Module des non-conformités"
+msgstr "وحدة عدم المطابقة"
+
+msgid "Réunion du laboratoire"
+msgstr "اجتماع معمل"
+
+msgid "Qualité"
+msgstr "جودة"
+
+msgid "Non conformité"
+msgstr "عدم الامتثال"
+
+msgid "Patient externe"
+msgstr "العيادات الخارجية"
+
+msgid "Chercher un patient"
+msgstr "ابحث عن مريض"
+
+msgid "Nouveau patient"
+msgstr "مريض جديد"
+
+msgid "Non-conformité"
+msgstr "عدم الامتثال"
+
+msgid "Nom de la non-conformité"
+msgstr "اسم عدم المطابقة"
+
+msgid "Rapporteur"
+msgstr "مراسل"
+
+msgid "DECLARATION DE LA NON-CONFORMITE"
+msgstr "إعلان عدم المطابقة"
+
+msgid "Catégorie de la non-conformité"
+msgstr "فئة عدم الامتثال"
+
+msgid "Pré analytique"
+msgstr "قبل التحليلي"
+
+msgid "Oubli ou examen erroné"
+msgstr "فحص نسي أو خاطئ"
+
+msgid "Dossier du patient / identité patient"
+msgstr "ملف المريض / هوية المريض"
+
+msgid "Prélèvement"
+msgstr "اقتطاع"
+
+msgid "Heure de prélèvement"
+msgstr "وقت التجميع"
+
+msgid "Volume de prélèvement"
+msgstr "حجم أخذ العينات"
+
+msgid "Identification du prélèvement"
+msgstr "تحديد العينة"
+
+msgid "Renseignement clinique"
+msgstr " البيانات السريرية"
+
+msgid "Transport de l'échantillon"
+msgstr "نقل العينة"
+
+msgid "Respect procédures"
+msgstr "الامتثال للإجراءات                "
+
+msgid "Urgence"
+msgstr "طارئ"
+
+msgid "Traçabilité"
+msgstr "التتبع"
+
+msgid "Autres"
+msgstr " أخرى"
+
+msgid "Analytique"
+msgstr "تحليلي"
+
+msgid "Conservation échantillon avant analyse"
+msgstr "حفظ العينة قبل التحليل"
+
+msgid "Centrifugation"
+msgstr "الطرد المركزي"
+
+msgid "Aliquotage"
+msgstr "قسمة"
+
+msgid "Contrôle qualité interne"
+msgstr "مراقبة الجودة الداخلية"
+
+msgid "Contrôle qualité externe"
+msgstr "مراقبة الجودة الخارجية"
+
+msgid "Absence de résultats/Résultats aberrants"
+msgstr "عدم وجود نتائج / نتائج خارجية"
+
+msgid "Critère de repasse non respecté"
+msgstr "لم يتم احترام معايير إعادة تمرير"
+
+msgid "Post analytique"
+msgstr "تحليلات المشاركة"
+
+msgid "Dossier non validé"
+msgstr "لم يتم التحقق من صحة الملف"
+
+msgid "Validation partielle non / mal réalisée"
+msgstr "التحقق الجزئي لم يتم / تم تنفيذه بشكل سيء"
+
+msgid "Résultat erroné / aberrant"
+msgstr "نتيجة خاطئة / خارجية"
+
+msgid "Absence de résultat"
+msgstr "لا نتيجة"
+
+msgid "Erreur de saisie"
+msgstr "خطأ في إدخال"
+
+msgid "Interprétation des résultats"
+msgstr "تفسير النتائج"
+
+msgid "Prestation de conseil"
+msgstr "خدمة استشارية"
+
+msgid "Sérothèque/conservation échantillon après analyse"
+msgstr "حفظ الجينات/العينات بعد التحليل"
+
+msgid "Transmission des résultats"
+msgstr "انتقال النتائج"
+
+msgid "Défaut/Absence de transmission patient"
+msgstr "خطأ / عدم انتقال المريض"
+
+msgid "Défaut/Absence de transmission Prescripteur/Correspondant"
+msgstr "خطأ / عدم وجود واصف إرسال / مراسل"
+
+msgid "Accès aux résultats"
+msgstr "الوصول إلى النتائج"
+
+msgid "Date de rendu erronée"
+msgstr "تاريخ التقديم خاطئ"
+
+msgid "Délai de transmission non respecté"
+msgstr "لم يتم احترام موعد الإرسال"
+
+msgid "Non respect de la procédure de rendu des résultats"
+msgstr "عدم الامتثال لإجراءات الإبلاغ عن النتائج"
+
+msgid "Ressources humaines"
+msgstr "الموارد البشرية"
+
+msgid "Non respect procédure"
+msgstr "عدم الامتثال للإجراء"
+
+msgid "Absence"
+msgstr "غياب"
+
+msgid "Habilitation/maintien des compétences"
+msgstr "تأهيل / صيانة المهارات"
+
+msgid "Accident exposition au sang / Hygiène et sécurité"
+msgstr "التعرض للحادث للدم / الصحة والسلامة"
+
+msgid "Etalonnage, Certification, Calibrage"
+msgstr "المعايرة ، التصديق ، المعايرة"
+
+msgid "Calibration automate"
+msgstr "معايرة الأنظمة الآلية"
+
+msgid "Alarme"
+msgstr "إنذار"
+
+msgid "Panne d'un équipement"
+msgstr "تعطل المعدات"
+
+msgid "Respect procédure"
+msgstr "احترام الإجراء"
+
+msgid "Réactifs et consommables"
+msgstr "الكواشف والمواد الاستهلاكية"
+
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "استلام الكواشف و / أو المواد الاستهلاكية التي لا تتوافق مع الطلب"
+
+msgid "Délai livraison"
+msgstr "موعد التسليم"
+
+msgid "Réactifs périmés"
+msgstr "الكواشف منتهية الصلاحية"
+
+msgid "Rupture de stock (cf nom du fournisseur)"
+msgstr "نفذ من المخزون (انظر اسم المورد)"
+
+msgid "Déstockage produits non conforme"
+msgstr "تخليص المنتج غير المتوافق"
+
+msgid "Locaux et environnement"
+msgstr "المباني والبيئة"
+
+msgid "Nettoyage du laboratoire"
+msgstr "تنظيف المختبر"
+
+msgid "Entretien du batiment"
+msgstr "صيانة المباني"
+
+msgid "Coupure d'électricité"
+msgstr "إنقطاع التيار الكهربائي"
+
+msgid "Coupure d'eau"
+msgstr "قطع المياه"
+
+msgid "Gestion des déchets"
+msgstr "إدارة المخلفات"
+
+msgid "Systèmes informatiques"
+msgstr "نظم المعلومات"
+
+msgid "Absence de connexion"
+msgstr "لا يوجد اتصال"
+
+msgid "Erreur de paramétrage"
+msgstr "خطأ في المعاملات"
+
+msgid "Panne réseau"
+msgstr "فشل في الشبكة"
+
+msgid "Panne système d'information"
+msgstr "فشل نظام المعلومات"
+
+msgid "Panne matériel informatique"
+msgstr "فشل أجهزة الكمبيوتر"
+
+msgid "Sous-traitance"
+msgstr "التعاقد من الباطن"
+
+msgid "Délai de rendu non respecté"
+msgstr "لم يتم احترام موعد التسليم"
+
+msgid "Erreur / oubli examen"
+msgstr "خطأ في الامتحان / نسيان"
+
+msgid "Mauvaise conservation lors du transport"
+msgstr "تخزين سيء أثناء النقل"
+
+msgid "Problème de facturation"
+msgstr "مشكلة الفواتير    "
+
+msgid "Réclamations clients"
+msgstr "شكاوى الزبون"
+
+msgid "Est ce que cette non-conformité concerne un dossier patient ?"
+msgstr "هل يتعلق عدم الامتثال هذا بسجل المريض؟"
+
+msgid "Numéro de dossier"
+msgstr "رقم الملف"
+
+msgid "Description de la non-conformité"
+msgstr "وصف عدم المطابقة"
+
+msgid "Impact sur le personnel/visiteur"
+msgstr "التأثير على الموظفين / الزائر"
+
+msgid "SUIVI DE LA NON-CONFORMITE"
+msgstr "متابعة عدم الامتثال"
+
+msgid "Qui"
+msgstr "أي"
+
+msgid "Quoi"
+msgstr "ماذا "
+
+msgid "Quand"
+msgstr "متى"
+
+msgid "Mise en place d’une action correctrice"
+msgstr "تنفيذ الإجراءات التصحيحية"
+
+msgid "Description de l'action correctrice"
+msgstr "وصف الإجراء التصحيحي"
+
+msgid "Date de réalisation de l'action correctrice"
+msgstr "تاريخ انتهاء الإجراء التصحيحي"
+
+msgid "Responsable de l'action"
+msgstr "المسؤول عن العمل"
+
+msgid "CLOTURE DE LA NON-CONFORMITE"
+msgstr "إغلاق عدم الامتثال"
+
+msgid "Validé par"
+msgstr "التحقق من"
+
+msgid "Veuillez saisir un nom pour cette non-conformité."
+msgstr "الرجاء إدخال اسم لعدم المطابقة هذا"
+
+msgid "Veuillez sélectionner un rapporteur."
+msgstr "الرجاء اختيار منقلة"
+
+msgid "Liste des analyses du dossier"
+msgstr "قائمة تحليلات الحالة"
+
+msgid "OK"
+msgstr "حسنا"
+
+msgid "Processus en cours"
+msgstr "عملية مستمرة"
+
+msgid "Veuillez patienter"
+msgstr " الرجاء الانتظار "
+
+msgid "Nombre de personnels dans le laboratoire"
+msgstr "عدد العاملين في المختبر"
+
+msgid "Nombre de manuels sauvegardés"
+msgstr "عدد الكتب المحفوظة"
+
+msgid "Date de la dernière réunion d'équipe"
+msgstr "تاريخ آخر اجتماع للفريق"
+
+msgid "Nombre de non-conformités en cours"
+msgstr "عدد حالات عدم المطابقة قيد التنفيذ"
+
+msgid "Nombre de non-conformités depuis un mois"
+msgstr "عدد حالات عدم المطابقة لمدة شهر"
+
+msgid "Famille d'analyse"
+msgstr "عائلة التحليل"
+
+msgid "Analyses par type de demande"
+msgstr "يحلل حسب نوع الطلب"
+
+msgid "Analyses par tranche d'âge"
+msgstr "تحليلات حسب الفئة العمرية"
+
+msgid "H = Homme, F = Femme, I = Inconnu"
+msgstr "H = ذكر ، F = أنثى ،I = Inconnu مجهول"
+
+msgid "Export par type"
+msgstr "تصدير حسب النوع"
+
+msgid "Export par âge"
+msgstr "تصدير حسب العمر"
+
+msgid "Télécharger le rapport"
+msgstr "قم بتنزيل التقرير"
+
+msgid "Externes"
+msgstr "خارجي"
+
+msgid "Hospitalisés"
+msgstr "في المستشفى"
+
+msgid "Total"
+msgstr "مجموع"
+
+msgid "H"
+msgstr "H"
+
+msgid "F"
+msgstr "F"
+
+msgid "I"
+msgstr "I"
+
+msgid "Moins de"
+msgstr "أقل من"
+
+msgid "ans"
+msgstr "أعوام"
+
+msgid "Plus de"
+msgstr "أكثر من"
+
+msgid "à"
+msgstr "الى"
+
+msgid "Etat journalier de la facturation"
+msgstr "بيان الفواتير اليومية"
+
+msgid "Créateur du dossier"
+msgstr "منشئ المجلد"
+
+msgid "Liste des facturations en cours"
+msgstr "قائمة الفواتير الحالية"
+
+msgid "N° facturation"
+msgstr "رقم الفاتورة"
+
+msgid "A payer après remises"
+msgstr "تدفع بعد الخصومات"
+
+msgid "Date de début de période "
+msgstr "تاريخ بدء الفترة"
+
+msgid "Feuille de calcul"
+msgstr "جدول"
+
+msgid "Récupérer les données"
+msgstr "استعادة البيانات"
+
+msgid "Veuillez sélectionner une feuille de calcul."
+msgstr "الرجاء تحديد ورقة عمل"
+
+msgid "Epidémiologie"
+msgstr "علم الأوبئة"
+
+msgid "Maladie"
+msgstr "مرض"
+
+msgid "Nature prélèvement"
+msgstr "نوع العينة"
+
+msgid "Total reçu"
+msgstr "مجموع وردت"
+
+msgid "Total analysé"
+msgstr "مجموع تحليلها"
+
+msgid "Résultats"
+msgstr "نتائج"
+
+msgid "Répartition dossiers"
+msgstr "توزيع المجلد"
+
+msgid "Préleveurs"
+msgstr "جامعي"
+
+msgid "Prélèvements"
+msgstr "العينات"
+
+msgid "Interne"
+msgstr "داخلي"
+
+msgid "Externe"
+msgstr "خارجي"
+
+msgid "Non renseigné"
+msgstr "ليس مدون"
+
+msgid "Famille"
+msgstr "أسرة"
+
+msgid "Validation"
+msgstr "تصديق"
+
+msgid "Ajouter un intervalle"
+msgstr "أضف فترة"
+
+msgid "Intervalles"
+msgstr "فترات"
+
+msgid "Age inférieur"
+msgstr "عمر أقل"
+
+msgid "Age supérieur"
+msgstr "كبار السن"
+
+msgid "Désignation de l'acte"
+msgstr "تعيين الفعل"
+
+msgid "Type de prélèvement"
+msgstr "نوع العينة"
+
+msgid "Analyse active"
+msgstr "التحليل النشط"
+
+msgid "Désignation"
+msgstr "اسم"
+
+msgid "Abréviation"
+msgstr "اختصار"
+
+msgid "Produit bio."
+msgstr "المنتج الحيوي"
+
+msgid "Importer le référentiel"
+msgstr "قم باستيراد المستودع"
+
+msgid "Exporter le référentiel"
+msgstr "قم بتصدير المستودع"
+
+msgid "Enregistrer la liste"
+msgstr "حفظ القائمة"
+
+msgid "Ajouter une analyse"
+msgstr "أضف التحليل"
+
+msgid "Activé"
+msgstr "نشطة"
+
+msgid "Désactivé"
+msgstr "معطل"
+
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "يرجى تأكيد حذف هذا التحليل \\ n الانتباه إلى أي ملفات مرتبطة بهذا التحليل ستكون في أخطاء"
+
+msgid "Paramétrage de la sauvegarde"
+msgstr "إعدادات النسخ الاحتياطي"
+
+msgid "MODIFIER HEURE SAUVEGARDE"
+msgstr "تغيير وقت النسخ الاحتياطي"
+
+msgid "INITIALISER LE MEDIA"
+msgstr "ابدأ الإعلام"
+
+msgid "GENERER CLE DE SAUVEGARDE"
+msgstr "توليد مفتاح النسخ الاحتياطي"
+
+msgid "SAUVEGARDER"
+msgstr "للحفاظ على"
+
+msgid "RESTAURER"
+msgstr "يعيد"
+
+msgid "Heure de sauvegarde"
+msgstr "وقت النسخ الاحتياطي"
+
+msgid "Dernière sauvegarde"
+msgstr "آخر حفظ"
+
+msgid "Dernière sauvegarde OK"
+msgstr "حفظ آخر حسنا"
+
+msgid "Veuillez saisir le mot de passe de l'utilisateur user_labbook"
+msgstr "الرجاء إدخال كلمة المرور للمستخدم user_labbook"
+
+msgid "Mot de passe système"
+msgstr "كلمة مرور النظام"
+
+msgid "Veuillez saisir le mot de passe pour la clé de sauvegarde"
+msgstr "الرجاء إدخال كلمة المرور لمفتاح النسخ الاحتياطي"
+
+msgid "Confirmation"
+msgstr "تأكيد"
+
+msgid "Veuillez sélectionner un média"
+msgstr "الرجاء تحديد وسائط"
+
+msgid "Liste des médias disponibles"
+msgstr "قائمة الوسائط المتاحة"
+
+msgid "Veuillez sélectionner la sauvegarde à restaurer"
+msgstr "الرجاء تحديد النسخة الاحتياطية لاستعادتها"
+
+msgid "Liste des sauvegardes disponibles"
+msgstr "قائمة النسخ الاحتياطية المتاحة"
+
+msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
+msgstr "يرجى تأكيد تغيير وقت النسخ الاحتياطي اليومي"
+
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "يوجد مفتاح بالفعل ، من خلال إعادة إنشاء مفتاح ، لن تكون النسخ الاحتياطية القديمة قابلة للاسترداد \\ n هل تؤكد إنشاء مفتاح جديد؟"
+
+msgid "Veuillez saisir un mot de passe"
+msgstr "الرجاء إدخال كلمة المرور"
+
+msgid "Les mots de passe ne correspondent pas !"
+msgstr "كلمة المرور غير مطابقة!"
+
+msgid "Veuillez saisir une heure de sauvegarde."
+msgstr "الرجاء إدخال وقت النسخ الاحتياطي"
+
+msgid "Une erreur est survenue lors de la récupération de la liste de média"
+msgstr "حدث خطأ أثناء استرداد قائمة الوسائط"
+
+msgid "Une erreur est survenue lors de l'interrogation du service"
+msgstr "حدث خطأ أثناء الاستعلام عن الخدمة"
+
+msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
+msgstr "حدث خطأ أثناء التحقق من مفتاح النسخ الاحتياطي"
+
+msgid "Une erreur est survenue le média choisi est incorrect"
+msgstr "حدث خطأ في أن الوسائط المختارة غير صحيحة"
+
+msgid "Initialisation réussie"
+msgstr "التهيئة ناجحة"
+
+msgid "Une erreur est survenue lors de l'initialisation du média"
+msgstr "حدث خطأ أثناء تهيئة الوسائط"
+
+msgid "Génération réussie"
+msgstr "جيل ناجح"
+
+msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+msgstr "حدث خطأ أثناء استرداد قائمة الأرشيف"
+
+msgid "Merci de confirmer le lancement immédiat de la restauration."
+msgstr "يرجى تأكيد البدء الفوري لعملية الاستعادة"
+
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "حدث خطأ أثناء الاستعادة ، يرجى الاتصال بالمسؤول للتحقق يدويًا من اكتمال الاستعادة"
+
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
+msgstr "اكتملت عملية الاستعادة ، وسيقوم LabBook بإعادة تشغيل خدمات التطبيق"
+
+msgid "Redémarrage activé"
+msgstr "تمكين إعادة التشغيل"
+
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "تمت إعادة تشغيل الخدمات أو حدث خطأ أثناء طلب إعادة التشغيل \\ n يرجى إعادة تحميل الصفحة"
+
+msgid "Sauvegarde réussie"
+msgstr "حفظ بنجاح"
+
+msgid "Une erreur est survenue"
+msgstr "حدث خطأ"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+msgstr "حدث خطأ أثناء التحقق من الحالة الحالية ، الحالة غير معروفة"
+
+msgid "Une erreur est survenue lors de la vérification de l'état en cours"
+msgstr "حدث خطأ أثناء التحقق من الحالة الحالية"
+
+msgid "Unité de cotation"
+msgstr "وحدة التصنيف"
+
+msgid "Valeur de cotation"
+msgstr "قيمة الاقتباس"
+
+msgid "Export whonet"
+msgstr "تصدير Whonet"
+
+msgid "Variables"
+msgstr "المتغيرات"
+
+msgid "Chercher une variable"
+msgstr "ابحث عن متغير"
+
+msgid "Créer une nouvelle variable"
+msgstr "قم بإنشاء متغير جديد"
+
+msgid "Code var."
+msgstr "كود متغير"
+
+msgid "Par défaut sera l'ID de la variable"
+msgstr "سيكون الافتراضي هو المعرف المتغير"
+
+msgid "Id"
+msgstr "بطاقة تعريف"
+
+msgid "Type de résultat"
+msgstr "نوع النتيجة"
+
+msgid "Description"
+msgstr "وصف"
+
+msgid "Valeur normale min."
+msgstr "الحد الأدنى للقيمة العادية"
+
+msgid "Valeur normale max."
+msgstr "الحد الأقصى للقيمة العادية"
+
+msgid "Formule"
+msgstr "معادلة"
+
+msgid "Unité"
+msgstr "وحدة"
+
+msgid "Précision"
+msgstr "دقة"
+
+msgid "Formule de conversion unité 2"
+msgstr "صيغة تحويل الوحدة 2"
+
+msgid "Unité 2"
+msgstr "الوحدة 2"
+
+msgid "Précision 2"
+msgstr "الدقة 2"
+
+msgid "Num. var pour la formule"
+msgstr "رقم فار للصيغة"
+
+msgid "Position affichage"
+msgstr "عرض الموقف"
+
+msgid "Résultat obligatoire"
+msgstr "نتيجة إلزامية"
+
+msgid "Min"
+msgstr "دقيقة"
+
+msgid "Max"
+msgstr "الأعلى"
+
+msgid "Num. var"
+msgstr " عدد متغير"
+
+msgid "Sous analyses"
+msgstr "تحت التحليلات"
+
+msgid "Produit biologique"
+msgstr "منتج عضوي"
+
+msgid "Chercher un produit biologique"
+msgstr "ابحث عن منتج عضوي"
+
+msgid "Variable déjà utilisée dans cette analyse"
+msgstr "المتغير المستخدم بالفعل في هذا التحليل"
+
+msgid "Erreur lors la récupération des données"
+msgstr "خطأ في استعادة البيانات"
+
+msgid "Modifier"
+msgstr "تعدل "
+
+msgid "Veuillez saisir un code."
+msgstr "الرجاء إدخال رمز"
+
+msgid "Veuillez saisir un nom d'analyse."
+msgstr "الرجاء إدخال اسم التحليل"
+
+msgid "Veuillez choisir ou définir au moins une variable."
+msgstr "يرجى اختيار أو تحديد متغير واحد على الأقل"
+
+msgid "Ce code existe déjà"
+msgstr "هذا الرمز موجود بالفعل"
+
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "حدث خطأ أثناء التحقق من الرمز"
+
+msgid "Dictionnaire"
+msgstr "قاموس"
+
+msgid "Droits utilisateur"
+msgstr "حقوق المستخدم"
+
+msgid "Rôle"
+msgstr "دور"
+
+msgid "Administrateur"
+msgstr "إداري"
+
+msgid "Technicien avancé"
+msgstr "فني متقدم"
+
+msgid "Technicien qualiticien"
+msgstr "التقنيين الجودة"
+
+msgid "Secrétaire"
+msgstr "سكرتير"
+
+msgid "Secrétaire avancée"
+msgstr "سكرتير متقدم"
+
+msgid "Qualiticien"
+msgstr "الجودة"
+
+msgid "Prescripteur associé"
+msgstr "الواصف المنتسب"
+
+msgid "Confirmation du mot de passe"
+msgstr "تأكيد كلمة المرور"
+
+msgid "CPS"
+msgstr "CPS"
+
+msgid "Numéro RPPS"
+msgstr "رقم RPPS"
+
+msgid "Langues *"
+msgstr "اللغات "
+
+msgid "Français (FR)"
+msgstr "الفرنسية (FR)"
+
+msgid "English (UK)"
+msgstr "الإنجليزية (المملكة المتحدة)"
+
+msgid "English (US)"
+msgstr "الإنجليزية (الولايات المتحدة)"
+
+msgid "Veuillez saisir un identifiant."
+msgstr "الرجاء ادخال اسم المستخدم"
+
+msgid "Veuillez saisir un mot de passe."
+msgstr "الرجاء إدخال كلمة المرور"
+
+msgid "Veuillez confirmer votre mot de passe."
+msgstr "يرجى التأكد من صحة كلمة المرور الخاصة بك"
+
+msgid "Veuillez choisir une langue."
+msgstr "الرجاء اختيار لغة"
+
+msgid "Veuillez choisir un rôle."
+msgstr "الرجاء اختيار دور"
+
+msgid "Paramétrage de l'export DHIS2"
+msgstr "تكوين تصدير DHIS2"
+
+msgid "Enregistrer la feuille de calcul"
+msgstr "حفظ ورقة العمل"
+
+msgid "Une erreur est survenue lors du dépot du fichier"
+msgstr "حدث خطأ أثناء تحميل الملف"
+
+msgid "Liste des dictionnaires (choix de réponses)"
+msgstr "قائمة القواميس (اختيار الإجابات)"
+
+msgid "Ajouter un dictionnaire"
+msgstr "أضف القاموس"
+
+msgid "Paramétrage du rapport épidémiologique"
+msgstr "معلمات التقرير الوبائي"
+
+msgid "Changement de logo pour les documents"
+msgstr "تغيير الشعار للمستندات"
+
+msgid "Logo original"
+msgstr "الشعار الأصلي"
+
+msgid "Logo tel qu'il apparaitra dans l'entête de rapport"
+msgstr "الشعار كما سيظهر في رأس التقرير"
+
+msgid "Largeur forcée à 230 pixels et conserve les proportions"
+msgstr "يتم فرض العرض على 230 بكسل والحفاظ على نسبة العرض إلى الارتفاع"
+
+msgid "Le fichier doit être au format png ou jpg"
+msgstr "يجب أن يكون الملف بتنسيق png أو jpg"
+
+msgid "Une erreur est survenue lors du dépot du logo"
+msgstr "حدث خطأ أثناء تحميل الشعار"
+
+msgid "Liste des préférences"
+msgstr "قائمة التفضيلات"
+
+msgid "Valeur"
+msgstr "قيمة"
+
+msgid "Prix unitaire des actes de prélévements et d'analyses"
+msgstr "سعر الوحدة لأخذ العينات والتحليل"
+
+msgid "Entête de document 1"
+msgstr "رأس المستند 1"
+
+msgid "Entête de document 2"
+msgstr "رأس المستند 2"
+
+msgid "Entête de document 3"
+msgstr "رأس المستند 3"
+
+msgid "Entête de document - Adresse"
+msgstr "رأس المستند - العنوان"
+
+msgid "Entête de document - Téléphone"
+msgstr "رأس المستند - الهاتف"
+
+msgid "Entête de document - Fax"
+msgstr "رأس المستند - فاكس"
+
+msgid "Entête de document - Email"
+msgstr "رأس المستند - البريد الإلكتروني"
+
+msgid "Entête de document - Ville"
+msgstr "رأس المستند - المدينة"
+
+msgid "Facturation des patients hospitalisés"
+msgstr "فواتير المرضى الداخليين في المستشفى"
+
+msgid "Unité de l'age par défaut (Jours, Semaines, Mois, Années)"
+msgstr "وحدة العمر الافتراضية (أيام ، أسابيع ، شهور ، سنوات)"
+
+msgid "Déconnexion automatique (mn)"
+msgstr "الفصل التلقائي (مليون)"
+
+msgid "Module qualité activé"
+msgstr "تم تفعيل وحدة الجودة"
+
+msgid "Module facturation activé"
+msgstr "تم تنشيط وحدة الفوترة"
+
+msgid "Mise à jour du mot de passe"
+msgstr "تطوير كلمة السر"
+
+msgid "Les mots de passe ne sont pas identiques !"
+msgstr "كلمة السر غير متطابقة!"
+
+msgid "Paramétrage numéro dossier"
+msgstr "إعداد رقم المجلد"
+
+msgid "Période de numérotation"
+msgstr "فترة الاتصال"
+
+msgid "Année"
+msgstr "عام"
+
+msgid "Format de numérotation"
+msgstr "تنسيق الترقيم"
+
+msgid "Court"
+msgstr "قصير"
+
+msgid "Long"
+msgstr "طويل"
+
+msgid "Paramétrage compte rendu"
+msgstr "إعدادات التقرير"
+
+msgid "Type d'entête"
+msgstr "نوع الرأس"
+
+msgid "Complet"
+msgstr "ممتلئ"
+
+msgid "Simple"
+msgstr "بسيط"
+
+msgid "Afficher les commentaires"
+msgstr "إظهار التعليقات"
+
+msgid "Gestion impression étiquettes"
+msgstr "إدارة طباعة الملصقات"
+
+msgid "Sur la base d'une page A4 en mode portrait"
+msgstr "استنادًا إلى صفحة A4 في الوضع الرأسي"
+
+msgid "Longueur étiquette (mm)"
+msgstr "طول الملصق (مم)"
+
+msgid "Hauteur étiquette (mm)"
+msgstr "ارتفاع الملصق (مم)"
+
+msgid "Marge haute de la page (mm)"
+msgstr "هامش الصفحة العلوية (مم)"
+
+msgid "Marge basse de la page (mm)"
+msgstr "هامش الصفحة السفلي (مم)"
+
+msgid "Marge gauche de la page (mm)"
+msgstr "هامش الصفحة اليسرى (مم)"
+
+msgid "Marge droite de la page (mm)"
+msgstr "هامش الصفحة الأيمن (مم)"
+
+msgid "Générer une planche test"
+msgstr "إنشاء لوحة اختبار"
+
+msgid "Liste des utilisateurs"
+msgstr "قائمة المستخدمين"
+
+msgid "Origine"
+msgstr "أصل"
+
+msgid "Importer des utilisateurs"
+msgstr "استيراد المستخدمين"
+
+msgid "Export des utilisateurs"
+msgstr "تصدير المستخدمين"
+
+msgid "Export des connexions"
+msgstr "اتصالات التصدير"
+
+msgid "Ajouter un utilisateur"
+msgstr "إضافة مستخدم"
+
+msgid "Editer utilisateur"
+msgstr "تحرير العضو"
+
+msgid "Editer mot de passe"
+msgstr "تحرير كلمة المرور"
+
+msgid "Activer utilisateur"
+msgstr "تنشيط المستخدم"
+
+msgid "Désactiver utilisateur"
+msgstr "قم بإلغاء تنشيط المستخدم"
+
+msgid "Veuillez confirmer la modification de statut"
+msgstr "يرجى تأكيد تغيير الحالة"
+
+msgid "Erreur lors du changement de statut"
+msgstr "خطأ عند تغيير الحالة"
+
+msgid "Déconnexion"
+msgstr "تسجيل خروج"
+
+msgid "Non rempli"
+msgstr "شاغرة"
+
+msgid "Export connexions utilisateurs"
+msgstr "تصدير اتصالات المستخدم"
+
+msgid "Import utilisateurs"
+msgstr "استيراد المستخدمين"
+
+msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"
+msgstr "تحديث قائمة المستخدمين وإضافة تلك غير الموجودة؟"
+
+msgid "Erreur lors du traitement des données"
+msgstr "خطأ أثناء معالجة البيانات"
+
+msgid "Date de validation du"
+msgstr "تاريخ التحقق من"
+
+msgid "Aucun résultat à exporter !"
+msgstr "لا توجد نتائج للتصدير!"

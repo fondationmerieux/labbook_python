@@ -1,13 +1,63 @@
 # -*- coding:utf-8 -*-
 import logging
 import mysql.connector
+import gettext
 
+from flask import session
+
+from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
 
 
 class Various:
     log = logging.getLogger('log_db')
+
+    @staticmethod
+    def initSessionLang():
+        if not session or 'lang_pdf' not in session or 'lang_db' not in session:
+            pdf_val = Various.getDefaultValue('default_language')
+            session['lang_pdf'] = pdf_val['value']
+
+            db_val = Various.getDefaultValue('db_language')
+            session['lang_db'] = db_val['value']
+            session.modified = True
+            Various.log.info(Logs.fileline() + ' : lang_pdf in database = ' + session['lang_pdf'])
+            Various.log.info(Logs.fileline() + ' : lang_db in database  = ' + session['lang_db'])
+
+    @staticmethod
+    def needTranslationPDF():
+        Various.initSessionLang()
+
+        if session['lang_pdf'] != 'fr_FR':
+            Various.useLangPDF()
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def needTranslationDB():
+        Various.initSessionLang()
+
+        if session['lang_db'] != 'fr_FR':
+            Various.useLangDB()
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def useLangPDF():
+        Various.initSessionLang()
+
+        langPDF = gettext.translation('messages', Constants.cst_path_lang, session['lang_pdf'].split())
+        langPDF.install()
+
+    @staticmethod
+    def useLangDB():
+        Various.initSessionLang()
+
+        langDB = gettext.translation('messages', Constants.cst_path_lang, session['lang_db'].split())
+        langDB.install()
 
     @staticmethod
     def insertEvent(**params):
@@ -30,10 +80,10 @@ class Various:
     def getDicoById(id_data):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '\
-              'from sigl_dico_data '\
-              'where id_data = %s '\
-              'order by position'
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '
+               'from sigl_dico_data '
+               'where id_data = %s '
+               'order by position')
 
         cursor.execute(req, (id_data,))
 
@@ -43,9 +93,9 @@ class Various:
     def getDefaultValue(name):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, identifiant, label, value '\
-              'from sigl_06_data '\
-              'where identifiant = %s'
+        req = ('select id_data, id_owner, identifiant, label, value '
+               'from sigl_06_data '
+               'where identifiant = %s')
 
         cursor.execute(req, (name,))
 
@@ -56,9 +106,9 @@ class Various:
         try:
             cursor = DB.cursor()
 
-            req = 'update sigl_06_data '\
-                  'set value=%s '\
-                  'where identifiant = %s'
+            req = ('update sigl_06_data '
+                   'set value=%s '
+                   'where identifiant = %s')
 
             cursor.execute(req, (value, name,))
 
@@ -73,9 +123,9 @@ class Various:
     def getLastNumDos():
         cursor = DB.cursor()
 
-        req = 'select num_dos_jour, num_dos_an, num_dos_mois '\
-              'from sigl_02_data '\
-              'order by id_data desc limit 1'
+        req = ('select num_dos_jour, num_dos_an, num_dos_mois '
+               'from sigl_02_data '
+               'order by id_data desc limit 1')
 
         cursor.execute(req)
 

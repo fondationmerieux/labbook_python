@@ -31,6 +31,11 @@ LANGUAGES = {
     'fr_FR': 'French',
     'en_GB': 'English',
     'en_US': 'English',
+    'ar': 'Arabic',
+    'km': 'Khmer',
+    'lo': 'Laotian',
+    'mg': 'Malagasy',
+    'pt': 'Portuguese',
 }
 
 # ######################################
@@ -72,7 +77,11 @@ def locale():
         lang = session['lang']
         log.info(Logs.fileline() + ' : lang = ' + lang)
 
-        if lang == 'en_GB':
+        if lang == 'fr_FR':
+            session['lang_select'] = 'FR'
+            session['date_format'] = Constants.cst_date_eu
+            session.modified = True
+        elif lang == 'en_GB':
             session['lang_select'] = 'UK'
             session['date_format'] = Constants.cst_date_eu
             session.modified = True
@@ -80,10 +89,31 @@ def locale():
             session['lang_select'] = 'US'
             session['date_format'] = Constants.cst_date_us
             session.modified = True
+        elif lang == 'ar':
+            session['lang_select'] = 'AR'
+            session['date_format'] = Constants.cst_date_eu
+            session.modified = True
+        elif lang == 'km':
+            session['lang_select'] = 'KM'
+            session['date_format'] = Constants.cst_date_eu
+            session.modified = True
+        elif lang == 'lo':
+            session['lang_select'] = 'LO'
+            session['date_format'] = Constants.cst_date_eu
+            session.modified = True
+        elif lang == 'mg':
+            session['lang_select'] = 'MG'
+            session['date_format'] = Constants.cst_date_eu
+            session.modified = True
+        elif lang == 'pt':
+            session['lang_select'] = 'PT'
+            session['date_format'] = Constants.cst_date_eu
+            session.modified = True
         else:
             session['lang_select'] = 'FR'
             session['date_format'] = Constants.cst_date_eu
             session.modified = True
+
     return dict(locale=lang)
 
 
@@ -150,7 +180,6 @@ def get_init_var():
 
         if req.status_code == 200:
             ret_json = req.json()
-            log.error(Logs.fileline() + ' : DEBUG ret_json=' + str(ret_json))
             session['auto_logout'] = ret_json['value']
             session['labbook_BE_OK'] = True
             session.modified = True
@@ -162,6 +191,32 @@ def get_init_var():
         log.error(Logs.fileline() + ' : requests auto_logout failed, err=%s , url=%s', err, url)
         session['labbook_BE_OK'] = False
         session.modified = True
+
+    # Load default language
+    try:
+        url = session['server_int'] + '/services/default/val/default_language'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            ret_json = req.json()
+            session['lang_pdf'] = ret_json['value']
+            session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests default_language failed, err=%s , url=%s', err, url)
+
+    # Load db language
+    try:
+        url = session['server_int'] + '/services/default/val/db_language'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            ret_json = req.json()
+            session['lang_db'] = ret_json['value']
+            session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests db_language failed, err=%s , url=%s', err, url)
 
     log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var ends')
 
@@ -293,16 +348,40 @@ def initialization():
 # Change la langue
 @app.route("/lang/<string:lang>")
 def lang(lang='fr_FR'):
-    if lang == 'en_GB':
-        session['lang_select'] = 'en_GB'
+    if lang == 'fr_FR':
+        session['lang_select'] = 'FR'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+    elif lang == 'en_GB':
+        session['lang_select'] = 'UK'
         session['date_format'] = Constants.cst_date_eu
         session.modified = True
     elif lang == 'en_US':
-        session['lang_select'] = 'en_US'
+        session['lang_select'] = 'US'
         session['date_format'] = Constants.cst_date_us
         session.modified = True
+    elif lang == 'ar':
+        session['lang_select'] = 'AR'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+    elif lang == 'km':
+        session['lang_select'] = 'KM'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+    elif lang == 'lo':
+        session['lang_select'] = 'LO'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+    elif lang == 'mg':
+        session['lang_select'] = 'MG'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
+    elif lang == 'pt':
+        session['lang_select'] = 'PT'
+        session['date_format'] = Constants.cst_date_eu
+        session.modified = True
     else:
-        session['lang_select'] = 'fr_FR'
+        session['lang_select'] = 'FR'
         session['date_format'] = Constants.cst_date_eu
         session.modified = True
 
@@ -353,6 +432,21 @@ def homepage(login=''):
             session.modified = True
         elif session['user_locale'] == 75:
             session['lang']  = 'en_US'
+            session.modified = True
+        elif session['user_locale'] == 118:
+            session['lang']  = 'ar'
+            session.modified = True
+        elif session['user_locale'] == 1113:
+            session['lang']  = 'km'
+            session.modified = True
+        elif session['user_locale'] == 1215:
+            session['lang']  = 'lo'
+            session.modified = True
+        elif session['user_locale'] == 137:
+            session['lang']  = 'mg'
+            session.modified = True
+        elif session['user_locale'] == 1620:
+            session['lang']  = 'pt'
             session.modified = True
         else:
             session['lang']  = 'fr_FR'
@@ -1301,13 +1395,13 @@ def list_works(user_role='', emer=''):
                    'emer': emer}
 
         if user_role == 'B':
-            # We lloking for emergency record in more record status
+            # We looking for emergency record in more record status
             if emer == 4:
-                payload['stat_work'] = '(182,253,254,255)'
+                payload['stat_work'] = '(181,182,253,254,255)'
             else:
                 payload['stat_work'] = '(254,255)'
         elif user_role == 'T':
-            payload['stat_work'] = '(182,253)'
+            payload['stat_work'] = '(181,182,253)'
 
         json_ihm['stat_work'] = payload['stat_work']
 

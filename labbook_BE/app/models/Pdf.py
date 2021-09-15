@@ -12,6 +12,7 @@ from app.models.DB import DB
 from app.models.Logs import Logs
 from app.models.Constants import Constants
 from app.models.File import File
+from app.models.General import *
 from app.models.Patient import Patient
 from app.models.Record import Record
 from app.models.Result import Result
@@ -25,6 +26,19 @@ class Pdf:
 
     @staticmethod
     def getPdfBarcode(num, args=''):
+        """Built a PDF Barcode page
+
+        This function is call by administrative record or settings stickers templates.
+
+        Args:
+            num   (int): record serial.
+            args (dict): optional, dictionnary of value, specify size.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
         sts_width         = 62
         sts_height        = 28
         sts_margin_top    = 10
@@ -130,6 +144,18 @@ class Pdf:
 
     @staticmethod
     def getPdfBill(id_rec):
+        """Built a PDF bill
+
+        This function is call by administrative record template
+
+        Args:
+            id_rec (int): record serial.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
         path = Constants.cst_path_tmp
 
         # Get format header
@@ -147,8 +173,10 @@ class Pdf:
         bill_num    = record['num_fact']
         receipt_num = record['num_quittance']
 
+        Various.useLangPDF()
+
         if receipt_num:
-            receipt_num = '<div><span class="ft_bill_rec">N° quittance : ' + str(receipt_num) + '</span></div>'
+            receipt_num = '<div><span class="ft_bill_rec">' + _("N° quittance") + ' : ' + str(receipt_num) + '</span></div>'
         else:
             receipt_num = ''
 
@@ -158,7 +186,8 @@ class Pdf:
         addr_div = ''
 
         if pat:
-            addr_div += '<div style="width:475px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:right;">'
+            addr_div += ('<div style="width:475px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
+                         'background-color:#FFF;float:right;">')
 
             if pat['nom'] or pat['prenom']:
                 pat_lname = ''
@@ -199,31 +228,47 @@ class Pdf:
         samp_div = ''
 
         if l_ana:
-            bill_div += '<div style="width:980px;height:1000px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
+            bill_div += ('<div style="width:980px;height:1000px;border:2px solid dimgrey;border-radius:10px;'
+                         'padding:10px;margin-top:20px;background-color:#FFF;">')
+
+            label01 = _("Analyses demandées")
+            label02 = _("Actes de prélèvements")
+
+            Various.useLangDB()
 
             # LOOP ANALYZES
             for ana in l_ana:
                 # Requested analysis
                 if ana['cote_unite'] is None or ana['cote_unite'] != 'PB':
                     if not ana_div:
-                        ana_div += '<div><span class="ft_bill_det_tit">Analyses demandées</span></div>'
+                        ana_div += '<div><span class="ft_bill_det_tit">' + label01 + '</span></div>'
 
-                    ana_div += """\
-                            <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + str(ana['code']) + """</span>
-                                 <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + str(ana['nom']) + """</span>
-                                 <span class="ft_bill_det" style="width:120px;display:inline-block;text-align:right;">""" + str(ana['prix']) + """</span></div>"""
+                    trans = ana['nom']
+                    ana_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
+                                'text-align:left;">' + str(ana['code']) + '</span>'
+                                '<span class="ft_bill_det" style="width:750px;display:inline-block;">' +
+                                str(_(trans)) + '</span>'
+                                '<span class="ft_bill_det" style="width:120px;display:inline-block;'
+                                'text-align:right;">' + str(ana['prix']) + '</span></div>')
 
                 # Requested samples
                 if ana['cote_unite'] == 'PB':
                     if not samp_div:
-                        samp_div += '<div><span class="ft_bill_det_tit">Actes de prélèvements</span></div>'
+                        samp_div += '<div><span class="ft_bill_det_tit">' + label02 + '</span></div>'
 
                     # No display of samples without price
                     if ana['prix'] > 0:
-                        samp_div += """\
-                                <div><span class="ft_bill_det" style="width:90px;display:inline-block;text-align:left;">""" + str(ana['code']) + """</span>
-                                     <span class="ft_bill_det" style="width:750px;display:inline-block;">""" + str(ana['nom']) + """</span>
-                                     <span class="ft_bill_det" style="width:120px;display:inline-block;text-align:right;">""" + str(ana['prix']) + """</span></div>"""
+                        trans  = ana['code']
+                        trans2 = ana['nom']
+                        trans3 = ana['prix']
+                        samp_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
+                                     'text-align:left;">' + str(trans) + '</span>'
+                                     '<span class="ft_bill_det" style="width:750px;display:inline-block;">' +
+                                     str(_(trans2)) + '</span>'
+                                     '<span class="ft_bill_det" style="width:120px;display:inline-block;'
+                                     'text-align:right;">' + str(trans3) + '</span></div>')
+
+            Various.useLangPDF()
 
             if ana_div:
                 bill_div += ana_div + '<br />'
@@ -232,39 +277,30 @@ class Pdf:
                 bill_div += samp_div + '<br />'
 
             # bill_price and bill_remain
-            bill_div += """\
-                    <div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">Total</span>
-                         <span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;"">""" + str(record['prix']) + """</span>
-                    </div>
-                    <div><span class="ft_bill_det_tit" style="width:160px;display:inline-block;text-align:left;">Total à payer</span>
-                         <span class="ft_bill_det_tot" style="width:810px;display:inline-block;text-align:right;">""" + str(record['a_payer']) + """</span>
-                    </div>"""
-
-            bill_div += '</div>'
+            bill_div += ('<div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">' +
+                         _("Total") + '</span>'
+                         '<span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;"">' +
+                         str(record['prix']) + '</span></div>'
+                         '<div><span class="ft_bill_det_tit" style="width:160px;display:inline-block;text-align:left;">' +
+                         _("Total à payer") + '</span>'
+                         '<span class="ft_bill_det_tot" style="width:810px;display:inline-block;text-align:right;">' +
+                         str(record['a_payer']) + '</span></div></div>')
 
         page_header = Pdf.getPdfHeader(full_header)
 
-        page_body = """\
-                <div style="width:1000px;">
-                    <div style="width:475px;padding:10px;background-color:#FFF;float:left;">
-                        <div><span class="ft_bill_num">FACTURE : """ + str(bill_num) + """</span></div>
-                        <div><span class="ft_bill_rec">N° dossier : """ + str(num_rec_y) + """</span></div>
-                        """ + receipt_num + """
-                    </div>
-                    """ + addr_div + """
-                    <div style="clear:both;"></div>
-                    """ + bill_div + """
-                </div>"""
+        page_body = ('<div style="width:1000px;">'
+                     '<div style="width:475px;padding:10px;background-color:#FFF;float:left;">'
+                     '<div><span class="ft_bill_num">' + _("FACTURE") + ' : ' + str(bill_num) + '</span></div>'
+                     '<div><span class="ft_bill_rec">' + _("N° dossier") + ' : ' + str(num_rec_y) + '</span>'
+                     '</div>' + receipt_num + '</div>' + addr_div + '<div style="clear:both;"></div>' + bill_div + '</div>')
 
         date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
 
-        page_footer = """\
-                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                    <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Facture n°""" + str(bill_num) + """, édité le """ + str(date_now) + """</span>
-                         <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page 1/1</span></div>
-                </div>"""
-
-        page_footer += '</div>'
+        page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
+                       '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
+                       _("Facture n°") + str(bill_num) + ', ' + _("édité le") + ' ' + str(date_now) + '</span>'
+                       '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
+                       _("Page") + ' 1/1</span></div></div></div>')
 
         filename = 'facture_' + num_rec_y + '.pdf'
 
@@ -284,7 +320,23 @@ class Pdf:
 
     @staticmethod
     def getPdfBillList(l_datas, date_beg, date_end):
+        """Built a PDF bill list
+
+        This function is call by report billing template
+
+        Args:
+            l_datas       (json): Billing datas.
+            date_beg  (datetime): Start date of the period.
+            date_end  (datetime): End date of the period.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
         path = Constants.cst_path_tmp
+
+        Various.useLangPDF()
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -299,14 +351,16 @@ class Pdf:
         total_price  = 0
         total_remain = 0
 
-        bill_div += ('<span>ETAT DE LA FACTURATION DU ' + str(date_beg) + ' AU ' + str(date_end) + '</span>'
-                     '<div style="width:980px;height:600px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;background-color:#FFF;">'
+        bill_div += ('<span>' + _("ETAT DE LA FACTURATION DU") + ' ' + str(date_beg) + ' ' + _("AU") + ' ' +
+                     str(date_end) + '</span>'
+                     '<div style="width:980px;height:600px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
+                     'margin-top:20px;background-color:#FFF;">'
                      '<table style="width:100%"><thead>'
-                     '<th style="text-align:left;">N° dossier</th>'
-                     '<th style="text-align:left;">N° quittance</th>'
-                     '<th style="text-align:left;">N° facture</th>'
-                     '<th>Prix</th>'
-                     '<th>A payer</th></thead>'
+                     '<th style="text-align:left;">' + _("N° dossier") + '</th>'
+                     '<th style="text-align:left;">' + _("N° quittance") + '</th>'
+                     '<th style="text-align:left;">' + _("N° facture") + '</th>'
+                     '<th>' + _("Prix") + '</th>'
+                     '<th>' + _("A payer") + '</th></thead>'
                      '<tr><td colspan="5"></td></tr>')
 
         for data in l_datas:
@@ -320,12 +374,10 @@ class Pdf:
             total_remain += data['bill_remain']
 
         # bill_price and bill_remain
-        bill_div += """\
-                <tr><td colspan="5"></td></tr>
-                <tr><td class="ft_bill_det_tit" style="text-align:left;">Total</td>
-                    <td colspan="3" class="ft_bill_det_tot" style="text-align:right;"">""" + str(total_price) + """</td>
-                    <td class="ft_bill_det_tot" style="text-align:right;">""" + str(total_remain) + """</td>
-                </tr>"""
+        bill_div += ('<tr><td colspan="5"></td></tr>'
+                     '<tr><td class="ft_bill_det_tit" style="text-align:left;">' + _("Total") + '</td>'
+                     '<td colspan="3" class="ft_bill_det_tot" style="text-align:right;"">' + str(total_price) + '</td>'
+                     '<td class="ft_bill_det_tot" style="text-align:right;">' + str(total_remain) + '</td></tr>')
 
         bill_div += '</table></div>'
 
@@ -333,16 +385,14 @@ class Pdf:
 
         page_body = bill_div
 
-        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
+        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M")
 
-        page_footer = """\
-                <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                    <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Etat de la facturation, édité le """ + str(date_now) + """</span>
-                         <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page 1/1</span></div>
-                </div>
-                <hr style="width:100%;border-top: 2px dashed dimgrey;">"""
-
-        page_footer += '</div>'
+        page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
+                       '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
+                       _("Etat de la facturation, édité le") + ' ' + str(date_now) + '</span>'
+                       '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
+                       _("Page") + ' 1/1</span></div></div>'
+                       '<hr style="width:100%;border-top: 2px dashed dimgrey;"></div>')
 
         date_now = datetime.now()
         today    = date_now.strftime("%Y%m%d")
@@ -365,7 +415,23 @@ class Pdf:
 
     @staticmethod
     def getPdfReport(id_rec, filename, reedit='N'):
+        """Built a PDF Report
+
+        This function is call by adminstrative record and biological validation template
+
+        Args:
+            id_rec      (int): record serial.
+            filename (string): filename.
+            reedit     (flag): rebuilt (Y) or not (N) this document.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
         path = Constants.cst_report
+
+        Various.useLangPDF()
 
         form_cont = ''
 
@@ -387,20 +453,20 @@ class Pdf:
         if reedit == 'N':
             l_req = Analysis.getAnalysisReq(id_rec, 'Y')
 
-            report_status = 'COMPLET'
+            report_status = _("COMPLET")
 
             for req in l_req:
                 nb_res_vld = Result.countResValidate(req['id_data'])
 
                 if not nb_res_vld or nb_res_vld['nb_vld'] == 0:
-                    report_status = 'PARTIEL'
+                    report_status = _("PARTIEL")
 
         # regenerated a report
         if reedit == 'Y':
             # update date of file
             ret = File.updateReportDate(filename)
 
-            report_status = 'ANNULE ET REMPLACE'
+            report_status = _("ANNULE ET REMPLACE")
 
             if not ret:
                 Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfReport cant update date report')
@@ -430,7 +496,7 @@ class Pdf:
         pat = Patient.getPatient(record['id_patient'])
 
         # Patient birth
-        birth = 'Né le '
+        birth = _("Né le") + ' '
 
         if pat['ddn']:
             birth += datetime.strftime(pat['ddn'], '%d/%m/%Y') + ' - '
@@ -441,31 +507,32 @@ class Pdf:
         age = str(pat['age'])
 
         if pat['unite'] == 1037:
-            age += ' ans'
+            age += ' ' + _('ans')
         elif pat['unite'] == 1036:
-            age += ' mois'
+            age += ' ' + _('mois')
         elif pat['unite'] == 1035:
-            age += ' semaines'
+            age += ' ' + _('semaines')
         elif pat['unite'] == 1034:
-            age += ' jours'
+            age += ' ' + _('jours')
 
         # Patient Sex
         sex = ''
 
         if pat['sexe'] == 1:
-            sex += 'Masculin'
+            sex += _('Masculin')
         elif pat['sexe'] == 2:
-            sex += 'Feminin'
+            sex += _('Feminin')
         elif pat['sexe'] == 3:
-            sex += 'Inconnu'
+            sex += _('Inconnu')
 
         # BLOCK DET RECORD
         date_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
 
-        rec_div  = '<div style="width:465px;height:100px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:left;">'
-
-        rec_div += '<div><span class="ft_rec_det">Dossier ' + str(num_rec_y) + ' de ' + str(pat['prenom']) + '&nbsp;' + str(pat['nom']) + '</span></div>'
-        rec_div += '<div><span class="ft_rec_det">' + str(birth) + str(age) + ' - ' + str(sex) + ' - Code '
+        rec_div  = ('<div style="width:465px;height:100px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
+                    'background-color:#FFF;float:left;">'
+                    '<div><span class="ft_rec_det">' + _("Dossier") + ' ' + str(num_rec_y) + ' ' + _("de") + ' ' +
+                    str(pat['prenom']) + '&nbsp;' + str(pat['nom']) + '</span></div>'
+                    '<div><span class="ft_rec_det">' + str(birth) + str(age) + ' - ' + str(sex) + ' - Code ')
 
         if pat['code_patient']:
             rec_div += str(pat['code_patient']) + ' / ' + str(pat['code']) + '</span></div>'
@@ -476,23 +543,26 @@ class Pdf:
             rec_div += '<div><span class="ft_rec_det">'
 
             if record['date_hosp']:
-                rec_div += 'Admis le ' + datetime.strftime(record['date_hosp'], '%d/%m/%Y') + ' '
+                rec_div += _("Admis le") + ' ' + datetime.strftime(record['date_hosp'], '%d/%m/%Y') + ' '
 
             if record['service_interne']:
-                rec_div += 'en ' + str(record['service_interne']) + ' - '
+                rec_div += _("en") + ' ' + str(record['service_interne']) + ' - '
 
             if record['num_lit']:
-                rec_div += 'Lit ' + str(record['num_lit'])
+                rec_div += _("Lit") + ' ' + str(record['num_lit'])
 
             rec_div += '</span></div>'
 
         if full_comm is True and record['prescriber']:
-            prescriber = ' par ' + str(record['prescriber'])
+            prescriber = ' ' + _("par") + ' ' + str(record['prescriber'])
         else:
             prescriber = ''
 
-        rec_div += '<div><span class="ft_rec_det">Examen prescrit le ' + datetime.strftime(record['date_prescription'], '%d/%m/%Y') + prescriber + '</span></div>'
-        rec_div += '<div><span class="ft_rec_det">Enregistré le ' + datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', édité le ' + str(date_now) + '</span></div>'
+        rec_div += ('<div><span class="ft_rec_det">' + _("Examen prescrit le") + ' ' +
+                    datetime.strftime(record['date_prescription'], '%d/%m/%Y') + prescriber + '</span></div>')
+        rec_div += ('<div><span class="ft_rec_det">' + _("Enregistré le") + ' ' +
+                    datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', ' + _("édité le") + ' ' + str(date_now) +
+                    '</span></div>')
 
         rec_div += '</div>'
 
@@ -500,7 +570,8 @@ class Pdf:
         addr_div = ''
 
         if pat:
-            addr_div += '<div style="width:465px;height:100px;border:2px solid dimgrey;border-radius:10px;padding:10px;background-color:#FFF;float:right;">'
+            addr_div += ('<div style="width:465px;height:100px;border:2px solid dimgrey;'
+                         'border-radius:10px;padding:10px;background-color:#FFF;float:right;">')
 
             if pat['nom'] or pat['prenom']:
                 pat_lname = ''
@@ -541,19 +612,19 @@ class Pdf:
         rec_comm = ''
 
         if full_comm and record['rc']:
-            rec_comm  = '<div style="width:980px;border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:5px;background-color:#FFF;">'
-            rec_comm += '<span class="ft_res_name">Renseignements cliniques</span><br />'
-            rec_comm += '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>'
+            rec_comm  = ('<div style="width:980px;border:2px solid dimgrey;'
+                         'border-radius:10px;padding:10px;margin-top:5px;background-color:#FFF;">'
+                         '<span class="ft_res_name">' + _("Renseignements cliniques") + '</span><br />'
+                         '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>')
 
             nb_rc = math.ceil(len(record['rc']) / 134)
 
             # FOR comment block
             h_now += 55 + (25 * nb_rc)
 
-        div_first_page = """\
-                <div style="width:1000px;background-color:#FFF;overflow:auto;">""" + rec_div + addr_div + """</div>
-            <div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;background-color:#FFF;">Compte rendu</div>
-            """ + rec_comm
+        div_first_page = ('<div style="width:1000px;background-color:#FFF;overflow:auto;">' + rec_div + addr_div + '</div>'
+                          '<div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;'
+                          'background-color:#FFF;">' + _("Compte rendu") + '</div>' + rec_comm)
 
         # ANALYZES PART
         l_res = Result.getResultRecordForReport(id_rec)
@@ -572,7 +643,7 @@ class Pdf:
 
         if l_res:
             res_fam   = ''
-            res_fam_p = 'vide'
+            res_fam_p = 'empty'
             with_fam  = False
 
             # ----- LOOP RESULT -----
@@ -602,14 +673,16 @@ class Pdf:
                                 res_comm = ''
 
                             if full_comm:
-                                comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + str(res_comm) + '</span></div>'
+                                comm_div = ('<div><span class="ft_res_comm" style="width:970px;display:inline-block;'
+                                            'text-align:left;"">' + str(res_comm) + '</span></div>')
 
                                 h_now += h_res2
                             else:
                                 comm_div = ''
 
-                            result_div = result_div + comm_div + """\
-                                    <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
+                            result_div = (result_div + comm_div + '<div><span class="ft_res_valid" '
+                                          'style="width:970px;display:inline-block;text-align:left;">' +
+                                          _("validé par") + ' : ' + str(user) + '</span></div>')
 
                             h_now += h_res2
                     # --- end of close previous analysis ---
@@ -628,8 +701,11 @@ class Pdf:
 
                     # ==== ANALYSIS FAMILY ====
                     if with_fam:
-                        result_div = result_div + '<div><span class="ft_res_fam" style="width:960px;display:inline-block;text-align:center;">' + res_fam + '</span></div>'
+                        Various.useLangDB()
+                        result_div = (result_div + '<div><span class="ft_res_fam" style="width:960px;'
+                                      'display:inline-block;text-align:center;">' + _(res_fam) + '</span></div>')
                         h_now += h_fam
+                        Various.useLangPDF()
 
                         # IF family title on 2 lines
                         if len(res_fam) > 70:
@@ -653,8 +729,12 @@ class Pdf:
 
                     # ==== ANALYSIS NAME ====
                     if res['ana_name']:
-                        result_div = result_div + '<div><span class="ft_res_name" style="width:960px;display:inline-block;text-align:left;">' + res['ana_name'] + '</span></div>'
+                        Various.useLangDB()
+                        trans = res['ana_name']
+                        result_div = (result_div + '<div><span class="ft_res_name" style="width:960px;'
+                                      'display:inline-block;text-align:left;">' + _(trans) + '</span></div>')
                         h_now += h_name
+                        Various.useLangPDF()
 
                         # IF name title on 2 lines
                         if len(res['ana_name']) > 90:
@@ -688,32 +768,56 @@ class Pdf:
                 type_res = Various.getDicoById(res['type_resultat'])
 
                 if type_res and type_res['short_label'].startswith("dico_"):
-                    type_res = type_res['short_label'][5:]
+                    Various.useLangDB()
+                    trans = type_res['short_label'][5:]
+                    type_res = _(trans)
+                    Various.useLangPDF()
                 else:
                     type_res = ''
 
+                # Value to be interpreted
                 if type_res and res['value']:
+                    Various.useLangDB()
                     val = Various.getDicoById(res['value'])
-                    val = val['label']
+                    trans = val['label']
+                    val = _(trans)
 
                     if res_prev and res_prev['valeur']:
                         label_prev = Various.getDicoById(res_prev['valeur'])
-                        prev += label_prev['label']
+                        trans = label_prev['label']
+                        prev += _(trans)
                     else:
                         prev = ''
+
+                    Various.useLangPDF()
+                # Numerical value or canceled
                 else:
+                    is_bold = False
+
                     val = res['value']
                     # Cancel result
                     if not val:
-                        val  = 'Annulée'
+                        val  = _("Annulée")
                         prev = ''
                     elif res_prev and res_prev['valeur']:
                         prev += res_prev['valeur']
 
-                    if res['unite'] and val != 'Annulée':
+                    if res['normal_min'] and res['normal_max']:
+                        if val != _("Annulée"):
+                            # bold style if out of range min/max
+                            if float(val) < float(res['normal_min']) or float(val) > float(res['normal_max']):
+                                val = '<b>' + val + '</b>'
+                                is_bold = True
+
+                    if res['unite'] and val != _("Annulée"):
                         unit = Various.getDicoById(res['unite'])
+
                         if unit:
-                            val  += '&nbsp;' + unit['label']
+                            if is_bold:
+                                val  += '&nbsp;<b>' + unit['label'] + '</b>'
+                            else:
+                                val  += '&nbsp;' + unit['label']
+
                             if prev:
                                 prev += '&nbsp;' + unit['label']
 
@@ -724,23 +828,32 @@ class Pdf:
                     ref = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
 
                 # ==== ANALYSIS RESULT ====
-                result_div += """<div style="margin-bottom:10px;">\
-                           <span class="ft_res_label" style="width:365px;display:inline-block;text-align:left;padding-left:12px;">""" + str(res['libelle']) + """</span>
-                           <span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">""" + str(val) + """</span>
-                           <span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">""" + str(ref) + """</span>
-                           <span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">""" + str(prev) + """</span></div>"""
+                Various.useLangDB()
+                trans = str(res['libelle'])
+                result_div += ('<div style="margin-bottom:10px;">'
+                               '<span class="ft_res_label" style="width:365px;display:inline-block;text-align:left;'
+                               'padding-left:12px;">' + _(trans) + '</span>'
+                               '<span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">' +
+                               str(val) + '</span>'
+                               '<span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">' +
+                               str(ref) + '</span>'
+                               '<span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">' +
+                               str(prev) + '</span></div>')
                 h_now += h_res
 
                 # IF libelle on 2 lines
-                if len(res['libelle']) > 46 or len(val) > 16 or len(prev) > 32:
-                    nb_lib  = math.ceil(len(res['libelle']) / 46)
+                trans = res['libelle']
+                if len(_(trans)) > 46 or len(val) > 16 or len(prev) > 32:
+                    nb_lib  = math.ceil(len(_(trans)) / 46)
                     nb_val  = math.ceil(len(val) / 16)
                     nb_prev = math.ceil(len(prev) / 32)
 
                     nb_line = max(nb_lib, nb_val, nb_prev)
 
                     h_now = h_now + nb_line * h_res2
+
                     # Pdf.log.error(Logs.fileline() + ' : DEBUG RES ' + res['libelle'] + ' on ' + str(nb_line) + ' lines h_now=' + str(h_now))
+                Various.useLangPDF()
 
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG res[libelle]=' + str(res['libelle']))
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG h_now=' + str(h_now) + ' | h_max - h_res=' + str(h_max - h_res) + '\n')
@@ -777,12 +890,14 @@ class Pdf:
                     res_comm = ''
 
                 if full_comm:
-                    comm_div = '<div><span class="ft_res_comm" style="width:970px;display:inline-block;text-align:left;"">' + str(res_comm) + '</span></div>'
+                    comm_div = ('<div><span class="ft_res_comm" style="width:970px;display:inline-block;'
+                                'text-align:left;"">' + str(res_comm) + '</span></div>')
                 else:
                     comm_div = ''
 
-                result_div = result_div + comm_div + """\
-                        <div><span class="ft_res_valid" style="width:970px;display:inline-block;text-align:left;">validé par : """ + str(user) + """</span></div>"""
+                result_div = (result_div + comm_div + '<div><span class="ft_res_valid" style="width:970px;'
+                              'display:inline-block;text-align:left;">' + _("validé par") + ' : ' + str(user) +
+                              '</span></div')
 
                 form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
 
@@ -804,6 +919,28 @@ class Pdf:
 
     @staticmethod
     def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y):
+        """End html of current page for report
+
+        This function is call by getPdfReport
+
+        Args:
+            form_cont      (string): html string of all pages.
+            num_page          (int): current page number.
+            h_page            (int): height of page in pixels.
+            report_status  (string): status of report.
+            div_first_page (string): html string to start a first page.
+            rec_comm       (string): record comment.
+            result_div     (string): html string of last result.
+            full_header    (string): html string of header page.
+            num_rec_y         (int): record number.
+
+        Returns:
+            string: html string.
+
+        """
+
+        Various.useLangPDF()
+
         report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
                       'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
                       'background-color:#FFF;">')
@@ -811,38 +948,44 @@ class Pdf:
         report_div = report_div + result_div + '</div>'  # closing report_div
 
         if num_page == 1:
-            report_status = '<span style="max-height:60px;padding:2px;border:2px double #000;">' + report_status + '</span>'
+            report_status = ('<span style="max-height:60px;padding:2px;border:2px double #000;">' +
+                             _(report_status) + '</span>')
 
             page_header = Pdf.getPdfHeader(full_header, report_status)
 
-            page_body = div_first_page + """
-            <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
-                <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
-                <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
-                <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
-                <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
-            </div>
-            <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
+            page_body = (div_first_page + '<div style="width:1000px;margin-top:10px;margin-bottom:0px;'
+                         'background-color:#FFF;">'
+                         '<span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;'
+                         'padding-left:20px;">' + _("ANALYSE") + '</span>'
+                         '<span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">' +
+                         _("RESULTAT") + '</span>'
+                         '<span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">' +
+                         _("Intervalle de référence") + '</span>'
+                         '<span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;'
+                         'padding-right:20px;">' + _("Antériorités") + '</span></div>'
+                         '<div style="width:1000px;margin-top:-18px;background-color:#FFF;">' + report_div + '</div>')
         else:
             page_header = ''
             page_body   = ''
-            page_body += """\
-                    <div style="width:1000px;margin-top:58px;">&nbsp;</div>
-                    <div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">
-                        <span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;padding-left:20px;">ANALYSE</span>
-                        <span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">RESULTAT</span>
-                        <span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">Intervalle de référence</span>
-                        <span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;padding-right:20px;">Antériorités</span>
-                    </div>
-                    <div style="width:1000px;margin-top:-18px;background-color:#FFF;">""" + report_div + """</div>"""
+            page_body += ('<div style="width:1000px;margin-top:58px;">&nbsp;</div>'
+                          '<div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">'
+                          '<span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;'
+                          'padding-left:20px;">' + _("ANALYSE") + '</span>'
+                          '<span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">' +
+                          _("RESULTAT") + '</span>'
+                          '<span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">' +
+                          _("Intervalle de référence") + '</span>'
+                          '<span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;'
+                          'padding-right:20px;">' + _("Antériorités") + '</span></div>'
+                          '<div style="width:1000px;margin-top:-18px;background-color:#FFF;">' + report_div + '</div>')
 
         date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
 
-        page_footer = """\
-            <div style="width:1000px;margin-top:5px;background-color:#FFF;">
-                <div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">Dossier """ + str(num_rec_y) + """, édité le """ + str(date_now) + """</span>
-                <span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">Page """ + str(num_page) + """/tot_page</span></div>
-            </div>"""
+        page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
+                       '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
+                       _("Dossier") + str(num_rec_y) + ', ' + _("édité le ") + str(date_now) + '</span>'
+                       '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
+                       _("Page") + ' ' + str(num_page) + '/tot_page</span></div></div>')
 
         form_cont += page_header + page_body + page_footer
 
@@ -850,6 +993,19 @@ class Pdf:
 
     @staticmethod
     def getPdfReportGeneric(html_part, filename=''):
+        """Built a Generic PDF Report
+
+        This function is call by report statistic, report epidemio, report activity, enter result and list result templates
+
+        Args:
+            html_part (string): html string.
+            filename  (string): filename.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
         path = Constants.cst_path_tmp
 
         date_now = datetime.now()
@@ -868,7 +1024,7 @@ class Pdf:
 
         page_header = Pdf.getPdfHeader(full_header)
 
-        page_body = """<div style="width:1000px;">""" + html_part + """</div>"""
+        page_body = ('<div style="width:1000px;">' + html_part + '</div>')
 
         page_footer = '</div>'
 
@@ -888,6 +1044,21 @@ class Pdf:
 
     @staticmethod
     def getPdfHeader(full_header, report_status=''):
+        """Start HTML page for PDF document
+
+        This function is call by ??? template
+
+        Args:
+            full_header     (bool): full header or not.
+            report_status (string): status of report (optional).
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        Various.useLangPDF()
+
         # Width 47px <=> 1cm, Height 47px <=> 1cm
         header = """\
                 <style>
@@ -1053,47 +1224,50 @@ class Pdf:
         extra_header = ''
 
         if full_header:
-            extra_header += """\
-                        <div><span style="font: 15px 'Helvetica';">""" + str(head_line2['value']) + """</span></div>
-                        <div><span style="font: 15px 'Helvetica';">""" + str(head_line3['value']) + """</span></div>"""
+            extra_header += ('<div><span style="font:15px Helvetica;">' + str(head_line2['value']) + '</span></div>'
+                             '<div><span style="font:15px Helvetica;">' + str(head_line3['value']) + '</span></div>')
 
         if head_phone['value']:
-            phone = """<span class="ft_header">Tél : """ + str(head_phone['value']) + """&nbsp;</span>"""
+            phone = ('<span class="ft_header">' + _("Tél") + ' : ' + str(head_phone['value']) + '&nbsp;</span>')
         else:
             phone = ''
 
         if head_fax['value']:
-            fax = """<span class="ft_header">Fax : """ + str(head_fax['value']) + """&nbsp;</span>"""
+            fax = ('<span class="ft_header">' + _("Fax") + ' : ' + str(head_fax['value']) + '&nbsp;</span>')
         else:
             fax = ''
 
         if head_email['value']:
-            email = """<span class="ft_header">Email : """ + str(head_email['value']) + """&nbsp;</span>"""
+            email = ('<span class="ft_header">' + _("Email") + ' : ' + str(head_email['value']) + '&nbsp;</span>')
         else:
             email = ''
 
-        header += """\
-                <div style="width:1000px;height:140px;background-color:#FFF;">
-                    <div style="float:left;width:235px;background-color:#FFF;">""" + head_logo + """</div>
-
-                    <div style="float:right;width:755px;background-color:#FFF;">
-                        <div><span class="ft_lab_name">""" + str(head_name['value']) + """</span></div>
-                        """ + extra_header + """
-                        <div><span class="ft_header">""" + str(head_addr['value']) + """</span></div>
-                        <div>""" + phone + fax + email + """</div>
-                    </div>
-                </div>
-                <div style="width:1000px;text-align:right;margin-bottom:5px;">""" + report_status + """</div>"""
+        header += ('<div style="width:1000px;height:140px;background-color:#FFF;">'
+                   '<div style="float:left;width:235px;background-color:#FFF;">' + head_logo + '</div>'
+                   '<div style="float:right;width:755px;background-color:#FFF;">'
+                   '<div><span class="ft_lab_name">' + str(head_name['value']) + '</span></div>' + extra_header +
+                   '<div><span class="ft_header">' + str(head_addr['value']) + '</span></div>'
+                   '<div>' + phone + fax + email + '</div></div></div>'
+                   '<div style="width:1000px;text-align:right;margin-bottom:5px;">' + _(report_status) + '</div>')
 
         return header
 
     @staticmethod
     def getPdfPref():
+        """Get Report settings for PDF
+
+        This function is call by function of this class.
+
+        Returns:
+            dict: flags of header and comment preferences.
+
+        """
+
         cursor = DB.cursor()
 
-        req = 'select id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, entete, commentaire '\
-              'from sigl_param_cr_data '\
-              'limit 1'
+        req = ('select id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, entete, commentaire '
+               'from sigl_param_cr_data '
+               'limit 1')
 
         cursor.execute(req)
 

@@ -10,6 +10,7 @@ from app.models.Constants import *
 from app.models.Doctor import *
 from app.models.User import *
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class DoctorList(Resource):
@@ -26,11 +27,15 @@ class DoctorList(Resource):
         if not l_doctors:
             self.log.error(Logs.fileline() + ' : TRACE DoctorList not found')
 
+        Various.needTranslationDB()
+
         for doctor in l_doctors:
             # Replace None by empty string
             for key, value in list(doctor.items()):
                 if doctor[key] is None:
                     doctor[key] = ''
+                elif key == 'spe':
+                    doctor[key] = _(doctor[key])
 
         self.log.info(Logs.fileline() + ' : TRACE DoctorList')
         return compose_ret(l_doctors, Constants.cst_content_type_json)
@@ -63,10 +68,14 @@ class DoctorDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'DoctorDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         # Replace None by empty string
         for key, value in list(doctor.items()):
             if doctor[key] is None:
                 doctor[key] = ''
+            elif key == 'spe_doctor':
+                doctor[key] = _(doctor[key])
 
         self.log.info(Logs.fileline() + ' : DoctorDet id_doctor=' + str(id_doctor))
         return compose_ret(doctor, Constants.cst_content_type_json, 200)
@@ -158,6 +167,8 @@ class DoctorExport(Resource):
                    'initial', 'service', 'address', ]]
         dict_data = Doctor.getDoctorList(args)
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -169,7 +180,8 @@ class DoctorExport(Resource):
                 data.append(d['firstname'])
                 data.append(d['city'])
                 data.append(d['work_place'])
-                data.append(d['spe'])
+                spe = d['spe']
+                data.append(_(spe))
                 data.append(d['spe_id'])
                 data.append(d['phone'])
                 data.append(d['mobile'])

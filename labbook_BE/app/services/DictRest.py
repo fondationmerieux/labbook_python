@@ -8,6 +8,7 @@ from app.models.General import compose_ret
 from app.models.Constants import *
 from app.models.Dict import *
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class DictDet(Resource):
@@ -20,11 +21,17 @@ class DictDet(Resource):
             self.log.error(Logs.fileline() + ' : TRACE DictDet no l_dicts')
             l_dicts = {}
 
+        Various.needTranslationDB()
+
         for dict in l_dicts:
             # Replace None by empty string
             for key, value in list(dict.items()):
                 if dict[key] is None:
                     dict[key] = ''
+                elif key == 'label':
+                    dict[key] = _(dict[key])
+                elif key == 'short_label':
+                    dict[key] = _(dict[key])
 
         self.log.info(Logs.fileline() + ' : TRACE DictDet')
         return compose_ret(l_dicts, Constants.cst_content_type_json)

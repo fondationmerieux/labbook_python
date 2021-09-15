@@ -7,15 +7,15 @@ from flask_restful import Resource
 
 from app.models.General import compose_ret
 from app.models.Logs import Logs
-from app.models.Analysis import *
-from app.models.Constants import *
-from app.models.Dict import *
-from app.models.File import *
-from app.models.Pdf import *
-from app.models.Record import *
-from app.models.Result import *
-from app.models.User import *
-from app.models.Various import *
+from app.models.Analysis import Analysis
+from app.models.Constants import Constants
+from app.models.Dict import Dict
+from app.models.File import File
+from app.models.Pdf import Pdf
+from app.models.Record import Record
+from app.models.Result import Result
+from app.models.User import User
+from app.models.Various import Various
 
 
 class ResultValue(Resource):
@@ -60,7 +60,26 @@ class ResultList(Resource):
         if not l_results:
             self.log.error(Logs.fileline() + ' : TRACE ResultList not found')
 
+        Various.needTranslationDB()
+
         for result in l_results:
+            # TRANSLATION
+            if result['nom']:
+                name = result['nom']
+                result['nom'] = _(name)
+
+            if result['famille']:
+                fam = result['famille']
+                result['famille'] = _(fam)
+
+            if result['libelle']:
+                libel = result['libelle']
+                result['libelle'] = _(libel)
+
+            if result['commentaire']:
+                comment = result['commentaire']
+                result['commentaire'] = _(comment)
+
             if result['date_dos']:
                 result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
 
@@ -77,6 +96,8 @@ class ResultList(Resource):
             for key, value in list(result['validation'].items()):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
+                elif key == 'label_motif':
+                    result[key] = _(result[key])
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
@@ -136,7 +157,26 @@ class ResultRecord(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'ResultRecord ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         for result in l_results:
+            # TRANSLATION
+            if result['nom']:
+                name = result['nom']
+                result['nom'] = _(name)
+
+            if result['famille']:
+                fam = result['famille']
+                result['famille'] = _(fam)
+
+            if result['libelle']:
+                libel = result['libelle']
+                result['libelle'] = _(libel)
+
+            if result['commentaire']:
+                comment = result['commentaire']
+                result['commentaire'] = _(comment)
+
             if result['date_dos']:
                 result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
 
@@ -153,6 +193,8 @@ class ResultRecord(Resource):
             for key, value in list(result['validation'].items()):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
+                elif key == 'label_motif':
+                    result[key] = _(result[key])
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])

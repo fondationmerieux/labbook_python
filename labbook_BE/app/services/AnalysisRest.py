@@ -11,6 +11,7 @@ from app.models.Analysis import *
 from app.models.User import *
 from app.models.DB import *
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class AnalysisSearch(Resource):
@@ -23,6 +24,14 @@ class AnalysisSearch(Resource):
 
         if not l_analysis:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisSearch not found')
+
+        # TRANSLATION
+        if Various.needTranslationDB():
+            for analysis in l_analysis:
+                ana_name  = analysis['name']
+                ana_label = analysis['label']
+                analysis['name']  = _(ana_name)
+                analysis['label'] = _(ana_label)
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisSearch')
         return compose_ret(l_analysis, Constants.cst_content_type_json)
@@ -38,6 +47,12 @@ class AnalysisVarSearch(Resource):
 
         if not l_vars:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisVarSearch not found')
+
+        # TRANSLATION
+        if Various.needTranslationDB():
+            for var in l_vars:
+                var_libel = var['libelle']
+                var['libelle'] = _(var_libel)
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisVarSearch')
         return compose_ret(l_vars, Constants.cst_content_type_json)
@@ -57,11 +72,19 @@ class AnalysisList(Resource):
         if not l_analyzes:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisList not found')
 
+        Various.needTranslationDB()
+
         for analysis in l_analyzes:
             # Replace None by empty string
             for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
+                elif key == 'name':
+                    analysis[key] = _(analysis[key])
+                elif key == 'type_ana':
+                    analysis[key] = _(analysis[key])
+                elif key == 'product':
+                    analysis[key] = _(analysis[key])
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisList')
         return compose_ret(l_analyzes, Constants.cst_content_type_json)
@@ -83,14 +106,18 @@ class AnalysisHistoExport(Resource):
 
         dict_data = Analysis.getAnalyzesHistoList(args)
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
 
                 data.append(d['id_data'])
                 data.append(d['code'])
-                data.append(d['fam_name'])
-                data.append(d['name'])
+                fam_name = d['fam_name']
+                data.append(_(fam_name))
+                name = d['name']
+                data.append(_(name))
 
                 l_data.append(data)
 
@@ -137,11 +164,17 @@ class AnalysisHistoList(Resource):
         if not l_analyzes:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisHistoList not found')
 
+        Various.needTranslationDB()
+
         for analysis in l_analyzes:
             # Replace None by empty string
             for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
+                elif key == 'fam_name':
+                    analysis[key] = _(analysis[key])
+                elif key == 'name':
+                    analysis[key] = _(analysis[key])
 
             nb_ana = Analysis.getNbAnalysis(args['date_beg'], args['date_end'], analysis['id_data'])
 
@@ -169,11 +202,17 @@ class AnalysisHistoDet(Resource):
         if not l_datas:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisHistoDet not found')
 
+        Various.needTranslationDB()
+
         for data in l_datas:
             # Replace None by empty string
             for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
+                elif key == 'variable':
+                    data[key] = _(data[key])
+                elif key == 'result':
+                    data[key] = _(data[key])
 
             if data['date_prescr']:
                 data['date_prescr'] = datetime.strftime(data['date_prescr'], '%Y-%m-%d')
@@ -215,10 +254,14 @@ class AnalysisDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         # Replace None by empty string
         for key, value in list(analysis.items()):
             if analysis[key] is None:
                 analysis[key] = ''
+            elif key == 'nom':
+                analysis[key] = _(analysis[key])
 
         self.log.info(Logs.fileline() + ' : AnalysisDet id_data=' + str(id_ana))
         return compose_ret(analysis, Constants.cst_content_type_json, 200)
@@ -483,11 +526,17 @@ class AnalysisVarList(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarList ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         for var in l_vars:
             # Replace None by empty string
             for key, value in list(var.items()):
                 if var[key] is None:
                     var[key] = ''
+                elif key == 'label':
+                    var[key] = _(var[key])
+                elif key == 'comment':
+                    var[key] = _(var[key])
 
         self.log.info(Logs.fileline() + ' : AnalysisVarList id_data=' + str(id_ana))
         return compose_ret(l_vars, Constants.cst_content_type_json, 200)
@@ -503,10 +552,16 @@ class AnalysisVarDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         # Replace None by empty string
         for key, value in list(ana_var.items()):
             if ana_var[key] is None:
                 ana_var[key] = ''
+            elif key == 'label':
+                ana_var[key] = _(ana_var[key])
+            elif key == 'comment':
+                ana_var[key] = _(ana_var[key])
 
         self.log.info(Logs.fileline() + ' : AnalysisVarDet id_data=' + str(id_var))
         return compose_ret(ana_var, Constants.cst_content_type_json, 200)
@@ -522,10 +577,14 @@ class AnalysisTypeProd(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisTypeProd ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         # Replace None by empty string
         for key, value in list(type_prod.items()):
             if type_prod[key] is None:
                 type_prod[key] = ''
+            elif key == 'label':
+                type_prod[key] = _(type_prod[key])
 
         self.log.info(Logs.fileline() + ' : AnalysistypeProd id_type_prod' + str(id_type_prod))
         return compose_ret(type_prod, Constants.cst_content_type_json, 200)
@@ -541,11 +600,15 @@ class AnalysisReq(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisReq ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         for analysis in l_ana:
             # Replace None by empty string
             for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
+                elif key == 'nom':
+                    analysis[key] = _(analysis[key])
 
             if analysis['prix'] != '':
                 analysis['prix'] = float(analysis['prix'])
@@ -603,6 +666,8 @@ class AnalysisExport(Resource):
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        Various.needTranslationDB()
+
         dict_data = Analysis.getAnalysisExport()
 
         if dict_data:
@@ -626,7 +691,8 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['nom']:
-                    data.append(d['nom'])
+                    nom = d['nom']
+                    data.append(_(nom))
                 else:
                     data.append('')
 
@@ -656,7 +722,8 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['commentaire']:
-                    data.append(d['commentaire'])
+                    comment = d['commentaire']
+                    data.append(_(comment))
                 else:
                     data.append('')
 
@@ -723,7 +790,8 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['libelle']:
-                    data.append(d['libelle'])
+                    libel = d['libelle']
+                    data.append(_(libel))
                 else:
                     data.append('')
 
@@ -748,7 +816,8 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['commentaire']:
-                    data.append(d['commentaire'])
+                    comment = d['commentaire']
+                    data.append(_(comment))
                 else:
                     data.append('')
 

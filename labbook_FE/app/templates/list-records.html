@@ -106,7 +106,7 @@
                                         <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _("Dernier") }}</a></span>
                                     </div>
                                     <table id="table_records" class="table table-striped table-hover col-12 table-lbk tablesorter">
-                                        <colgroup><col><col><col><col><col><col><col><col><col></colgroup>
+                                        <colgroup><col><col><col><col><col><col><col><col><col><col></colgroup>
                                         <thead>
                                             <tr>
                                                 <th class="text-left" hidden>
@@ -129,6 +129,9 @@
                                                 </th>
                                                 <th class="text-left cursor-act">
                                                     <span>{{ _("Code patient") }}</span>
+                                                </th>
+                                                <th class="text-left cursor-act">
+                                                    <span>{{ _("Code labo.") }}</span>
                                                 </th>
                                                 <th class="text-left cursor-act">
                                                     <span>{{ _("Nom") }}</span>
@@ -293,6 +296,7 @@ $("#listing_dos_total").html( data_len ) ;
            '<td><div class="text-left"><span class="rec-num" title="' + data_records[i].num_dos_long + '">' + data_records[i].num_dos + '</span></div></td>' +
            '<td><div class="text-left">' + data_records[i].date_dos + '</div></td>' +
            '<td><div class="text-left">' + data_records[i].code + '</div></td>' +
+           '<td><div class="text-left">' + data_records[i].code_lab + '</div></td>' +
            '<td><div class="text-left">' + data_records[i].nom + '</div></td>' +
            '<td><div class="text-left">' + data_records[i].prenom + '</div></td></tr>' ;
     }

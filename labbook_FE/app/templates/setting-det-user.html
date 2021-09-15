@@ -110,15 +110,18 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-3 text-right mt-2">{{ _("Langues *") }}</label>
-                    <label class="col-form-label text-right mt-2 mr-3">
-                        <input type="radio" name="lang" value="35" {% if args['lang'] == 35 %} checked="checked" {% endif %}>&nbsp;{{ _("Français (FR)") }}</input>
-                    </label>
-                    <label class="col-form-label text-right mt-2 mr-3">
-                        <input type="radio" name="lang" value="34" {% if args['lang'] == 34 %} checked="checked" {% endif %}>&nbsp;{{ _("English (UK)") }}</input>
-                    </label>
-                    <label class="col-form-label text-right mt-2">
-                        <input type="radio" name="lang" value="75" {% if args['lang'] == 75 %} checked="checked" {% endif %}>&nbsp;{{ _("English (US)") }}</input>
-                    </label>                    
+                    <div>
+                        <select id="lang" name="lang" class="form-control">
+                            <option value="35" {% if args['lang'] == 35 %} selected {% endif %}>{{ _("Français (FR)") }}</option>
+                            <option value="34" {% if args['lang'] == 34 %} selected {% endif %}>{{ _("Anglais (UK)") }}</option>
+                            <option value="75" {% if args['lang'] == 75 %} selected {% endif %}>{{ _("Américain (US)") }}</option>
+                            <option value="118" {% if args['lang'] == 118 %} selected {% endif %}>{{ _("Arabe (AR)") }}</option>
+                            <option value="1113" {% if args['lang'] == 1113 %} selected {% endif %}>{{ _("Khmer (KM)") }}</option>
+                            <option value="1215" {% if args['lang'] == 1215 %} selected {% endif %}>{{ _("Laotien (LO)") }}</option>
+                            <option value="137" {% if args['lang'] == 137 %} selected {% endif %}>{{ _("Malgache (MG)") }}</option>
+                            <option value="1620" {% if args['lang'] == 1620 %} selected {% endif %}>{{ _("Portugais (PT)") }}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label for="email" class="col-form-label col-3 text-right mt-2">{{ _("Adresse email") }}</label>
@@ -286,7 +289,7 @@ var last_eval = $("#last_eval").val() ;
 {% if args['user_id'] > 0 %}
 var stat      = $("input:radio[name=stat]:checked").val() ;
 {% endif %}
-var lang      = $("input:radio[name=lang]:checked").val() ;
+var lang      = $("#lang").val() ;
 var address   = JSON.stringify( $("#address").val() )  ;
 var cv        = JSON.stringify( $("#cv").val() )       ;
 var diploma   = JSON.stringify( $("#diploma").val() )  ;

@@ -60,7 +60,7 @@ class Record:
                'dos.num_dos_mois), if(param_num_dos.format=1072, substring(dos.num_dos_an from 7), dos.num_dos_an)) '
                'as num_dos, if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '
                'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, '
-               'pat.prenom as prenom, pat.id_data as id_pat '
+               'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab '
                'from sigl_02_data as dos '
                'inner join sigl_03_data as pat on dos.id_patient=pat.id_data '
                'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '
@@ -229,11 +229,10 @@ class Record:
     def getRecordNbEmer():
         cursor = DB.cursor()
 
-        req = ('select count(*) as nb_emer '
+        req = ('select count(distinct(rec.id_data)) as nb_emer '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '
-               'where ana.urgent=4 and rec.statut in (182,253,254,255) '
-               'group by rec.id_data')
+               'where ana.urgent=4 and rec.statut in (181,182,253,254,255) ')
 
         cursor.execute(req)
 

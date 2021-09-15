@@ -81,6 +81,30 @@
                             <th class="col-6">{{ _("Module facturation activé") }}</th>
                             <td class="col-6"><input type="checkbox" id="pref_bill" name="pref_bill" value="1" {% if args['pref_list'] and args['pref_list'][13]['value'] == '1' %} checked="checked"{% endif %}></td>
                         </tr>
+                        <tr class="d-flex">
+                            <th class="col-6">{{ _("Langue des rapports") }}</th>
+                            <td class="col-6">
+                                <select id="pref_lang_pdf" name="pref_lang_pdf">
+                                    <option value="fr_FR" {% if args['pref_list'] and args['pref_list'][14]['value'] == "fr_FR" %} selected {% endif %}>{{ _("Français") }}</option>
+                                    <option value="en_GB" {% if args['pref_list'] and args['pref_list'][14]['value'] == "en_GB" %} selected {% endif %}>{{ _("Anglais") }}</option>
+                                    <option value="en_US" {% if args['pref_list'] and args['pref_list'][14]['value'] == "en_US" %} selected {% endif %}>{{ _("Américain") }}</option>
+                                    <option value="ar" {% if args['pref_list'] and args['pref_list'][14]['value'] == "ar" %} selected {% endif %}>{{ _("Arabe") }}</option>
+                                    <option value="km" {% if args['pref_list'] and args['pref_list'][14]['value'] == "km" %} selected {% endif %}>{{ _("Khmer") }}</option>
+                                    <option value="lo" {% if args['pref_list'] and args['pref_list'][14]['value'] == "lo" %} selected {% endif %}>{{ _("Laotien") }}</option>
+                                    <option value="mg" {% if args['pref_list'] and args['pref_list'][14]['value'] == "mg" %} selected {% endif %}>{{ _("Malgache") }}</option>
+                                    <option value="pt" {% if args['pref_list'] and args['pref_list'][14]['value'] == "pt" %} selected {% endif %}>{{ _("Portugais") }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="d-flex">
+                            <th class="col-6">{{ _("Langue du référentiel") }}</th>
+                            <td class="col-6">
+                                <select id="pref_lang_db" name="pref_lang_db">
+                                    <option value="fr_FR" {% if args['pref_list'] and args['pref_list'][15]['value'] == "fr_FR" %} selected {% endif %}>{{ _("Français") }}</option>
+                                    <option value="en_GB" {% if args['pref_list'] and args['pref_list'][15]['value'] == "en_GB" %} selected {% endif %}>{{ _("Anglais") }}</option>
+                                </select>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div id="tempAnchor"></div>
@@ -118,6 +142,8 @@ var age_unit   = $("#pref_age_unit").val() ;
 var logout     = $("#pref_logout").val() ;
 var quality    = 0 ;
 var bill       = 0 ;
+var lang_pdf   = $("#pref_lang_pdf").val() ;
+var lang_db    = $("#pref_lang_db").val() ;
 
     if ( $("#pref_fact_hosp").is(":checked") )
     fact_hosp = $("#pref_fact_hosp").val() ;
@@ -141,7 +167,9 @@ var param = '{ "prix_acte":"' + deed_price + '", ' +
               '"unite_age_defaut":"' + age_unit + '", ' +
               '"auto_logout":"' + logout + '", ' +
               '"qualite":"' + quality + '", ' +
-              '"facturation":"' + bill  + '"}' ;
+              '"facturation":"' + bill + '", ' +
+              '"default_language":"' + lang_pdf + '", ' +
+              '"db_language":"' + lang_db + '"}' ;
 
     $.ajax( {
        type: "POST",

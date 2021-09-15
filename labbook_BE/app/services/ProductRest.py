@@ -10,6 +10,7 @@ from app.models.Constants import *
 from app.models.Product import *
 from app.models.User import *
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class ProductDet(Resource):
@@ -119,11 +120,17 @@ class ProductReq(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisReq ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.needTranslationDB()
+
         for prod in l_prod:
             # Replace None by empty string
             for key, value in list(prod.items()):
                 if prod[key] is None:
                     prod[key] = ''
+                elif key == 'type_prod':
+                    prod[key] = _(prod[key])
+                elif key == 'stat_prod':
+                    prod[key] = _(prod[key])
 
             if prod['date_prel']:
                 prod['date_prel'] = datetime.strftime(prod['date_prel'], '%Y-%m-%d')

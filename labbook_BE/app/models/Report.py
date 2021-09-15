@@ -9,21 +9,6 @@ class Report:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getListEpidemio():
-        cursor = DB.cursor()
-
-        req = ('select epi.id_data, epi.id_owner, epi.surveillance as disease, epi.nature_prel as id_prod, '
-               'epi.dhis2_tab, epi.dhis2_tab_num, dict.label as product '
-               'from sigl_14_data as epi '
-               'left join sigl_dico_data as dict on dict.id_data = epi.nature_prel '
-               'where epi.surveillance is not NULL '
-               'order by disease asc')
-
-        cursor.execute(req)
-
-        return cursor.fetchall()
-
-    @staticmethod
     def getStatEpidemio(id_disease):
         cursor = DB.cursor()
 
@@ -166,10 +151,10 @@ class Report:
     def getStatSampler(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = 'select preleveur as sampler, count(*) as nb_prod '\
-              'from sigl_01_data '\
-              'where (date_prel between %s and %s) '\
-              'group by sampler order by sampler asc'
+        req = ('select preleveur as sampler, count(*) as nb_prod '
+               'from sigl_01_data '
+               'where (date_prel between %s and %s) '
+               'group by sampler order by sampler asc')
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -179,11 +164,11 @@ class Report:
     def getStatProduct(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = 'select dict.label as product, count(*) as nb_prod '\
-              'from sigl_01_data as prod '\
-              'inner join sigl_dico_data as dict on dict.id_data = prod.type_prel '\
-              'where (prod.date_prel between %s and %s) '\
-              'group by product order by product asc'
+        req = ('select dict.label as product, count(*) as nb_prod '
+               'from sigl_01_data as prod '
+               'inner join sigl_dico_data as dict on dict.id_data = prod.type_prel '
+               'where (prod.date_prel between %s and %s) '
+               'group by product order by product asc')
 
         cursor.execute(req, (date_beg, date_end,))
 

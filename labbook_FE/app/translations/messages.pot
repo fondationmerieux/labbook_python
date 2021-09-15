@@ -429,10 +429,6 @@ msgstr ""
 msgid "Aucune donnée à afficher"
 msgstr ""
 
-#: templates/administrative-record.html:422
-msgid "Aucune donnéee à afficher"
-msgstr ""
-
 #: templates/administrative-record.html:438 templates/setting-dhis2.html:91
 #: templates/setting-epidemio.html:91
 msgid "Aucun fichier déposé"

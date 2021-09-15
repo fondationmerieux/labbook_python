@@ -13,9 +13,9 @@ class Dict:
     def getDictValue(id_value):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, archived '\
-              'from sigl_dico_data '\
-              'where id_data = %s'
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived '
+               'from sigl_dico_data '
+               'where id_data = %s')
 
         cursor.execute(req, (id_value,))
 
@@ -40,10 +40,10 @@ class Dict:
     def getDictDetails(dict_name):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, dico_name, label, short_label, position, code, archived '\
-              'from sigl_dico_data '\
-              'where dico_name = %s '\
-              'order by position'
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived '
+               'from sigl_dico_data '
+               'where dico_name = %s '
+               'order by position')
 
         cursor.execute(req, (dict_name,))
 

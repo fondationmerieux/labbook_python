@@ -121,6 +121,8 @@ $("#search_product").select2(
 $("#search_product").on("select2:select", function (e) 
 {
 let id_item = $(e.currentTarget).val();
+
+console.log("DEBUG id_item product=" + id_item) ;
 } ) ;
 
 function save_item()
@@ -165,6 +167,8 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prs_rack":"' + rack + '", ' +
               '"prs_batch_num":"' + batch_num + '", ' +
               '"prs_buy_price":' + buy_price + '}' ;
+
+console.log("DEBUG param="+ JSON.stringify(param));
 
     $.ajax( {
        type: "POST",

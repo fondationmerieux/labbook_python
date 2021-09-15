@@ -3,13 +3,13 @@ import logging
 import os
 
 from datetime import datetime
-from flask import request
+from flask import request, session
 from flask_restful import Resource
 
 from app.models.General import compose_ret
-from app.models.Constants import *
+from app.models.Constants import Constants
 from app.models.Logs import Logs
-from app.models.Setting import *
+from app.models.Setting import Setting
 
 
 class SettingAgeInterval(Resource):
@@ -111,11 +111,20 @@ class SettingPref(Resource):
         if id_owner < 1 or 'prix_acte' not in args or 'entete_1' not in args or 'entete_2' not in args or \
            'entete_3' not in args or 'entete_adr' not in args or 'entete_tel' not in args or 'entete_fax' not in args or \
            'entete_email' not in args or 'entete_ville' not in args or 'facturation_pat_hosp' not in args or \
-           'unite_age_defaut' not in args or 'auto_logout' not in args or 'qualite' not in args or 'facturation' not in args:
+           'unite_age_defaut' not in args or 'auto_logout' not in args or 'qualite' not in args or \
+           'facturation' not in args or 'default_language' not in args or 'db_language' not in args:
             self.log.error(Logs.fileline() + ' : SettingPref ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         for key, value in list(args.items()):
+            if key == 'db_language':
+                session['lang_db'] = value
+                session.modified = True
+
+            if key == 'default_language':
+                session['lang_pdf'] = value
+                session.modified = True
+
             ret = Setting.updatePref(id_owner, key, value)
 
             if ret is False:
@@ -281,7 +290,8 @@ class ScriptBackup(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_backup + ' > ' + Constants.cst_io + 'backup.out 2>&1 &'
+        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
+               '" ' + Constants.cst_io_backup + ' > ' + Constants.cst_io + 'backup.out 2>&1 &')
 
         self.log.error(Logs.fileline() + ' : ScriptBackup cmd=' + cmd)
         ret = os.system(cmd)
@@ -315,7 +325,8 @@ class ScriptInitmedia(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_initmedia
+        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
+               '" ' + Constants.cst_io_initmedia)
 
         self.log.error(Logs.fileline() + ' : ScriptInitMedia cmd=' + cmd)
         ret = os.system(cmd)
@@ -483,7 +494,8 @@ class ScriptRestore(Resource):
 
         os.environ['LABBOOK_KEY_PWD'] = args['pwd_key']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" -a "' + archive + '" ' + Constants.cst_io_restore + ' > ' + Constants.cst_io + 'restore.out 2>&1 &'
+        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
+               '" -a "' + archive + '" ' + Constants.cst_io_restore + ' > ' + Constants.cst_io + 'restore.out 2>&1 &')
 
         self.log.error(Logs.fileline() + ' : ScriptRestore cmd=' + cmd)
         ret = os.system(cmd)
@@ -502,8 +514,9 @@ class ScriptStatus(Resource):
             elif mode == 'B':
                 path = os.path.join(Constants.cst_io, Constants.cst_io_backup)
             else:
+                date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 self.log.info(Logs.fileline() + ' : ERROR ScriptStatus wrong mode : ' + str(mode))
-                ret = "ERR;" + str(date_now.strftime("%Y-%m-%d %H:%M:%S")) + ";Wrong mode"
+                ret = "ERR;" + str(date_now) + ";Wrong mode"
                 return compose_ret(ret, Constants.cst_content_type_json, 500)
 
             # No encoding forced because script return list from system so its depend of encoding of operating system
@@ -513,8 +526,9 @@ class ScriptStatus(Resource):
 
             ret = line[:-1]
         except:
+            date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')
-            ret = "ERR;" + str(date_now.strftime("%Y-%m-%d %H:%M:%S")) + ";Impossible to read status file"
+            ret = "ERR;" + str(date_now) + ";Impossible to read status file"
             return compose_ret(ret, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptStatus ret=' + str(ret))

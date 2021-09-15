@@ -39,7 +39,10 @@ save:
 ifdef BUILD_VERSION
 	rm -f $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar
 	$(DOCKER_COMMAND) save --output=$(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar $(FULL_IMAGE_NAME):$(BUILD_VERSION)
-	sum $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar
+	xz --keep $(SAVE_DIR)/$(IMAGE_NAME)-$(BUILD_VERSION).tar
+	(cd $(SAVE_DIR) && \
+	 md5sum $(IMAGE_NAME)-$(BUILD_VERSION).tar > $(IMAGE_NAME)-$(BUILD_VERSION).tar.md5sum && \
+	 md5sum $(IMAGE_NAME)-$(BUILD_VERSION).tar.xz > $(IMAGE_NAME)-$(BUILD_VERSION).tar.xz.md5sum)
 else
 	@echo 'missing version'
 endif

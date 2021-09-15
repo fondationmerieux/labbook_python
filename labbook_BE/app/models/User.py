@@ -15,9 +15,9 @@ class User:
     def checkUserAccess(login, pwd):
         cursor = DB.cursor()
 
-        req = 'select count(*) as nb_user '\
-              'from sigl_user_data '\
-              'where status != 31 and username=%s and password=%s'  # 31 = deleted user
+        req = ('select count(*) as nb_user '
+               'from sigl_user_data '
+               'where status != 31 and username=%s and password=%s')  # 31 = deleted user
 
         cursor.execute(req, (login, pwd,))
 
@@ -27,9 +27,9 @@ class User:
             return False
 
         # save in sigl_evtlog_data this connection
-        req = 'select id_data '\
-              'from sigl_user_data '\
-              'where status != 31 and username=%s and password=%s'  # 31 = deleted user
+        req = ('select id_data '
+               'from sigl_user_data '
+               'where status != 31 and username=%s and password=%s')  # 31 = deleted user
 
         cursor.execute(req, (login, pwd,))
 
@@ -62,13 +62,13 @@ class User:
     def getUserByLogin(login):
         cursor = DB.cursor()
 
-        req = 'select g.id_group, g.name, g.id_axis, l.id_role, u.side_account, '\
-              'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
-              'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '\
-              'from sigl_pj_group as g '\
-              'inner join sigl_user_data AS u ON g.id_group = u.id_group '\
-              'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '\
-              'where u.status=29 and g.name=%s'  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
+        req = ('select g.id_group, g.name, g.id_axis, l.id_role, u.side_account, '
+               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
+               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
+               'from sigl_pj_group as g '
+               'inner join sigl_user_data AS u ON g.id_group = u.id_group '
+               'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '
+               'where u.status=29 and g.name=%s')  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
 
         cursor.execute(req, (login,))
 
@@ -78,12 +78,12 @@ class User:
     def getUserByIdGroup(id_group):
         cursor = DB.cursor()
 
-        req = 'select g.id_group, g.name, g.id_axis, u.side_account, '\
-              'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
-              'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '\
-              'from sigl_pj_group as g '\
-              'inner join sigl_user_data AS u ON g.id_group = u.id_group '\
-              'where u.status != 31 and g.id_group=%s'  # 31 correspond à l'utilisateur "supprimé"
+        req = ('select g.id_group, g.name, g.id_axis, u.side_account, '
+               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
+               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
+               'from sigl_pj_group as g '
+               'inner join sigl_user_data AS u ON g.id_group = u.id_group '
+               'where u.status != 31 and g.id_group=%s')  # 31 correspond à l'utilisateur "supprimé"
 
         cursor.execute(req, (id_group,))
 
@@ -93,17 +93,17 @@ class User:
     def getUserDetails(id_user):
         cursor = DB.cursor()
 
-        req = 'select u.username, u.cps_id as cps, u.rpps, u.status as stat, u.firstname, u.lastname, '\
-              'u.locale as lang, u.email, u.titre as title, u.initiale as initial, u.adresse as address, '\
-              'u.ddn as birth, u.tel as phone, u.darrive as arrived, u.position, u.cv, u.diplome as diploma, '\
-              'u.formation as training, u.section, u.deval as last_eval, u.commentaire as comment, '\
-              'l.id_role as id_role, u.side_account, '\
-              'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '\
-              'from sigl_user_data as u '\
-              'inner join sigl_pj_group as g on g.name = u.username '\
-              'inner join sigl_pj_group_link as l on l.id_group = g.id_group '\
-              'left join sigl_08_data as pres on pres.id_data=u.side_account '\
-              'where u.id_data=%s'
+        req = ('select u.username, u.cps_id as cps, u.rpps, u.status as stat, u.firstname, u.lastname, '
+               'u.locale as lang, u.email, u.titre as title, u.initiale as initial, u.adresse as address, '
+               'u.ddn as birth, u.tel as phone, u.darrive as arrived, u.position, u.cv, u.diplome as diploma, '
+               'u.formation as training, u.section, u.deval as last_eval, u.commentaire as comment, '
+               'l.id_role as id_role, u.side_account, '
+               'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
+               'from sigl_user_data as u '
+               'inner join sigl_pj_group as g on g.name = u.username '
+               'inner join sigl_pj_group_link as l on l.id_group = g.id_group '
+               'left join sigl_08_data as pres on pres.id_data=u.side_account '
+               'where u.id_data=%s')
 
         cursor.execute(req, (id_user,))
 
@@ -238,9 +238,9 @@ class User:
     def getUserGroupParent(id_group):
         cursor = DB.cursor()
 
-        req = 'select id_group_parent '\
-              'from sigl_pj_group_link '\
-              'where id_group = %s'
+        req = ('select id_group_parent '
+               'from sigl_pj_group_link '
+               'where id_group = %s')
 
         cursor.execute(req, (id_group,))
 
@@ -250,9 +250,9 @@ class User:
     def getUserIdGroup(username):
         cursor = DB.cursor()
 
-        req = 'select id_group '\
-              'from sigl_pj_group '\
-              'where name = %s'
+        req = ('select id_group '
+               'from sigl_pj_group '
+               'where name = %s')
 
         cursor.execute(req, (username,))
 
@@ -280,13 +280,13 @@ class User:
 
         cursor = DB.cursor()
 
-        req = 'select g.id_group, g.name, g.id_axis, u.side_account, '\
-              'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '\
-              'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '\
-              'from sigl_pj_group as g '\
-              'inner join sigl_user_data AS u ON g.id_group = u.id_group '\
-              'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '\
-              'where u.status != "31" and ' + l_id_role  # 31 correspond à l'utilisateur "supprimé"
+        req = ('select g.id_group, g.name, g.id_axis, u.side_account, '
+               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
+               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
+               'from sigl_pj_group as g '
+               'inner join sigl_user_data AS u ON g.id_group = u.id_group '
+               'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '
+               'where u.status != "31" and ' + l_id_role)  # 31 correspond à l'utilisateur "supprimé"
 
         cursor.execute(req)
 
@@ -477,9 +477,9 @@ class User:
         cursor = DB.cursor()
 
         # Number of records
-        req = 'select count(*) as nb_users '\
-              'from sigl_user_data '\
-              'where status=29'
+        req = ('select count(*) as nb_users '
+               'from sigl_user_data '
+               'where status=29')
 
         cursor.execute(req)
 

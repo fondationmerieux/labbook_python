@@ -15,10 +15,10 @@ class Quality:
     def getLastMeeting():
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, '\
-              'date, organisateur_id as id_promoter, type_reu as type, cr as report '\
-              'from sigl_reunion_data '\
-              'order by date desc limit 1'
+        req = ('select id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, '
+               'date, organisateur_id as id_promoter, type_reu as type, cr as report '
+               'from sigl_reunion_data '
+               'order by date desc limit 1')
 
         cursor.execute(req)
 
@@ -735,13 +735,13 @@ class Quality:
     def getSupplierList():
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, fournisseur_nom as supplier, contact_nom as lastname, '\
-              'contact_prenom as firstname, contact_fonction as funct, fournisseur_adresse as address, '\
-              'contact_tel as phone, contact_mobile as mobile, contact_fax as fax, contact_email as email, '\
-              'commentaire as comment, date_format(sys_creation_date, %s) as date_create, '\
-              'date_format(sys_last_mod_date, %s) as date_update, sys_last_mod_user as id_user_upd '\
-              'from sigl_fournisseurs_data '\
-              'order by supplier asc, lastname asc, firstname asc'
+        req = ('select id_data, id_owner, fournisseur_nom as supplier, contact_nom as lastname, '
+               'contact_prenom as firstname, contact_fonction as funct, fournisseur_adresse as address, '
+               'contact_tel as phone, contact_mobile as mobile, contact_fax as fax, contact_email as email, '
+               'commentaire as comment, date_format(sys_creation_date, %s) as date_create, '
+               'date_format(sys_last_mod_date, %s) as date_update, sys_last_mod_user as id_user_upd '
+               'from sigl_fournisseurs_data '
+               'order by supplier asc, lastname asc, firstname asc')
 
         cursor.execute(req, (Constants.cst_isodatetime, Constants.cst_isodatetime,))
 
@@ -758,9 +758,9 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (fournisseur_nom like "%' + word + '%") ')
 
-        req = 'select fournisseur_nom as field_value, id_data '\
-              'from sigl_fournisseurs_data '\
-              'where ' + cond + ' order by field_value asc limit 1000'
+        req = ('select fournisseur_nom as field_value, id_data '
+               'from sigl_fournisseurs_data '
+               'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
 
@@ -770,12 +770,12 @@ class Quality:
     def getSupplier(id_item):
         cursor = DB.cursor()
 
-        req = 'select id_data ,id_owner, fournisseur_nom as supplier, contact_nom as lastname, '\
-              'contact_prenom as firstname, contact_fonction as funct, contact_tel as phone, '\
-              'contact_email as email, fournisseur_adresse as address, '\
-              'contact_mobile as mobile, contact_fax as fax, commentaire as comment '\
-              'from sigl_fournisseurs_data '\
-              'where id_data=%s'
+        req = ('select id_data ,id_owner, fournisseur_nom as supplier, contact_nom as lastname, '
+               'contact_prenom as firstname, contact_fonction as funct, contact_tel as phone, '
+               'contact_email as email, fournisseur_adresse as address, '
+               'contact_mobile as mobile, contact_fax as fax, commentaire as comment '
+               'from sigl_fournisseurs_data '
+               'where id_data=%s')
 
         cursor.execute(req, (id_item,))
 

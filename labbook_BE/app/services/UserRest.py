@@ -6,9 +6,10 @@ from flask import request
 from flask_restful import Resource
 
 from app.models.General import compose_ret
-from app.models.Constants import *
-from app.models.User import *
+from app.models.Constants import Constants
+from app.models.User import User
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class UserAccess(Resource):
@@ -331,11 +332,15 @@ class UserList(Resource):
         if not l_users:
             self.log.error(Logs.fileline() + ' : TRACE UserList not found')
 
+        Various.needTranslationDB
+
         for user in l_users:
             # Replace None by empty string
             for key, value in list(user.items()):
                 if user[key] is None:
                     user[key] = ''
+                elif key == 'section':
+                    user[key] = _(user[key])
 
             if user['birth']:
                 user['birth'] = datetime.strftime(user['birth'], '%Y-%m-%d')

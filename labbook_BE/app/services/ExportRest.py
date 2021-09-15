@@ -6,12 +6,12 @@ from flask import request
 from flask_restful import Resource
 
 from app.models.General import compose_ret
-from app.models.Constants import *
-from app.models.Various import *
-from app.models.Export import *
-from app.models.Report import *
+from app.models.Constants import Constants
+from app.models.Various import Various
+from app.models.Export import Export
+from app.models.Report import Report
 from app.models.Logs import Logs
-from app.models.User import *
+from app.models.User import User
 
 
 class ExportCSV(Resource):
@@ -53,7 +53,7 @@ class ExportDHIS2(Resource):
 
         from csv import reader
 
-        path   = Constants.cst_dhis2
+        path = Constants.cst_dhis2
 
         with open(os.path.join(path, args['filename']), 'r', encoding='utf-8') as csv_file:
             csv_reader = reader(csv_file, delimiter=';')
@@ -208,6 +208,8 @@ class ExportWhonet(Resource):
                    "Resultat d'antibiotique"]]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
+        Various.needTranslationDB()
+
         if dict_data:
             for d in dict_data:
                 data = []
@@ -239,7 +241,8 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['med_spe']:
-                    data.append(d['med_spe'])
+                    spe = d['med_spe']
+                    data.append(_(spe))
                 else:
                     data.append('')
 
@@ -282,13 +285,13 @@ class ExportWhonet(Resource):
 
                 if d['cat_age']:
                     if int(d['cat_age']) == 1037:
-                        data.append('Années')
+                        data.append(_('Années'))
                     elif int(d['cat_age']) == 1036:
-                        data.append('Mois')
+                        data.append(_('Mois'))
                     elif int(d['cat_age']) == 1035:
-                        data.append('Semaines')
+                        data.append(_('Semaines'))
                     elif int(d['cat_age']) == 1034:
-                        data.append('Jours')
+                        data.append(_('Jours'))
                     else:
                         data.append('')
                 else:
@@ -326,7 +329,8 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['service_interne']:
-                    data.append(d['service_interne'])
+                    service = d['service_interne']
+                    data.append(_(service))
                 else:
                     data.append('')
 
@@ -336,7 +340,8 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['rec_type']:
-                    data.append(d['rec_type'])
+                    rec_type = d['rec_type']
+                    data.append(_(rec_type))
                 else:
                     data.append('')
 
@@ -359,7 +364,8 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['spec_type']:
-                    data.append(d['spec_type'])
+                    spec_type = d['spec_type']
+                    data.append(_(spec_type))
                 else:
                     data.append('')
 
@@ -380,8 +386,9 @@ class ExportWhonet(Resource):
 
                     ana_name = ana_name[0:start_meth - 1]
 
-                    data.append(ana_name)
-                    data.append(d['libelle'])
+                    data.append(_(ana_name))
+                    libel = d['libelle']
+                    data.append(_(libel))
                     data.append(method_name)
                     data.append(d['method_value'])
                     data.append(d['valeur'])
