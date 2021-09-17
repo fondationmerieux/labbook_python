@@ -490,7 +490,7 @@ class EquipmentList(Resource):
                 if item[key] is None:
                     item[key] = ''
                 elif key == 'section':
-                    item[key] = _(item[key])
+                    item[key] = _(item[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentList')
         return compose_ret(l_items, Constants.cst_content_type_json)
@@ -658,7 +658,7 @@ class EquipmentExport(Resource):
                 data.append(d['funct'])
                 data.append(d['location'])
                 section = d['section']
-                data.append(_(section))
+                data.append(_(section.strip()))
 
                 l_data.append(data)
 
@@ -704,7 +704,7 @@ class ManualList(Resource):
                 if item[key] is None:
                     item[key] = ''
                 elif key == 'section':
-                    item[key] = _(item[key])
+                    item[key] = _(item[key].strip())
 
             if item['date_insert']:
                 item['date_insert'] = datetime.strftime(item['date_insert'], '%Y-%m-%d')
@@ -843,7 +843,7 @@ class ManualExport(Resource):
                 data.append(d['date_apply'])
                 data.append(d['date_update'])
                 section = d['section']
-                data.append(_(section))
+                data.append(_(section.strip()))
 
                 l_data.append(data)
 
@@ -904,7 +904,7 @@ class MeetingList(Resource):
                 if item[key] is None:
                     item[key] = ''
                 elif key == 'type':
-                    item[key] = _(item[key])
+                    item[key] = _(item[key].strip())
 
             if item['date_meeting']:
                 item['date_meeting'] = datetime.strftime(item['date_meeting'], '%Y-%m-%d')
@@ -1012,7 +1012,7 @@ class MeetingExport(Resource):
                 data.append(d['id_data'])
                 data.append(d['date_meeting'])
                 type = d['type']
-                data.append(_(type))
+                data.append(_(type.strip()))
                 data.append(d['type_id'])
                 data.append(d['promoter'])
                 data.append(d['report'])
@@ -1061,7 +1061,7 @@ class ProcedureList(Resource):
                 if item[key] is None:
                     item[key] = ''
                 elif key == 'section':
-                    item[key] = _(item[key])
+                    item[key] = _(item[key].strip())
 
             if item['date_insert']:
                 item['date_insert'] = datetime.strftime(item['date_insert'], '%Y-%m-%d')
@@ -1200,7 +1200,7 @@ class ProcedureExport(Resource):
                 data.append(d['date_apply'])
                 data.append(d['date_update'])
                 section = d['section']
-                data.append(_(section))
+                data.append(_(section.strip()))
 
                 l_data.append(data)
 
@@ -1269,7 +1269,7 @@ class StaffExport(Resource):
                 data.append(d['arrived'])
                 data.append(d['position'])
                 section = d['section']
-                data.append(_(section))
+                data.append(_(section.strip()))
                 data.append(d['last_eval'])
                 data.append(d['username'])
 
@@ -1322,9 +1322,9 @@ class StockList(Resource):
                 if stock[key] is None:
                     stock[key] = ''
                 elif key == 'type':
-                    stock[key] = _(stock[key])
-                elif key == '':
-                    stock[key] = _(stock[key])
+                    stock[key] = _(stock[key].strip())
+                elif key == 'conserv':
+                    stock[key] = _(stock[key].strip())
 
             if stock['expir_date']:
                 delta = stock['expir_date'] - datetime.now()
@@ -1472,9 +1472,9 @@ class StockProductList(Resource):
                 if product[key] is None:
                     product[key] = ''
                 elif key == 'type':
-                    product[key] = _(product[key])
-                elif key == '':
-                    product[key] = _(product[key])
+                    product[key] = _(product[key].strip())
+                elif key == 'conserv':
+                    product[key] = _(product[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE StockProductList')
         return compose_ret(l_products, Constants.cst_content_type_json)
@@ -1689,9 +1689,9 @@ class StockExport(Resource):
                 data.append(d['prs_nb_pack'])
                 data.append(d['nb_total'])
                 type = d['type']
-                data.append(_(type))
+                data.append(_(type.strip()))
                 conserv = d['conserv']
-                data.append(_(conserv))
+                data.append(_(conserv.strip()))
                 data.append(d['supplier'])
 
                 l_data.append(data)

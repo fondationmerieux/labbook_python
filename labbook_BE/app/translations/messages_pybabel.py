@@ -2184,7 +2184,7 @@ _("Waaler-Rose")
 # ----------------------------------------------------------------------------
 _("Normales : Enfant : 0.5 - 3.5 / Adultes : 1.5 - 5.5")
 _("0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - 60 ans: 34 - 48")
-_("0 CFU pour 100 ml dans 95% des échantillons d'eaux traitées")
+_("0 CFU pour 100 ml dans 95%. des échantillons d'eaux traitées")
 _("0 CFU/100 ml")
 _("1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   femme : 45 - 103   homme : 55 - 120")
 _("Biochimie LDP")

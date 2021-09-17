@@ -66,19 +66,19 @@ class ResultList(Resource):
             # TRANSLATION
             if result['nom']:
                 name = result['nom']
-                result['nom'] = _(name)
+                result['nom'] = _(name.strip())
 
             if result['famille']:
                 fam = result['famille']
-                result['famille'] = _(fam)
+                result['famille'] = _(fam.strip())
 
             if result['libelle']:
                 libel = result['libelle']
-                result['libelle'] = _(libel)
+                result['libelle'] = _(libel.strip())
 
             if result['commentaire']:
                 comment = result['commentaire']
-                result['commentaire'] = _(comment)
+                result['commentaire'] = _(comment.strip())
 
             if result['date_dos']:
                 result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
@@ -97,7 +97,7 @@ class ResultList(Resource):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
                 elif key == 'label_motif':
-                    result[key] = _(result[key])
+                    result[key] = _(result[key].strip())
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
@@ -163,19 +163,19 @@ class ResultRecord(Resource):
             # TRANSLATION
             if result['nom']:
                 name = result['nom']
-                result['nom'] = _(name)
+                result['nom'] = _(name.strip())
 
             if result['famille']:
                 fam = result['famille']
-                result['famille'] = _(fam)
+                result['famille'] = _(fam.strip())
 
             if result['libelle']:
                 libel = result['libelle']
-                result['libelle'] = _(libel)
+                result['libelle'] = _(libel.strip())
 
             if result['commentaire']:
                 comment = result['commentaire']
-                result['commentaire'] = _(comment)
+                result['commentaire'] = _(comment.strip())
 
             if result['date_dos']:
                 result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
@@ -194,7 +194,7 @@ class ResultRecord(Resource):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
                 elif key == 'label_motif':
-                    result[key] = _(result[key])
+                    result[key] = _(result[key].strip())
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])

@@ -153,7 +153,7 @@ class ReportActivity(Resource):
         if Various.needTranslationDB():
             for stat_type in stat['type']:
                 stat_ana = stat_type['analysis']
-                stat_type['analysis']  = _(stat_ana)
+                stat_type['analysis']  = _(stat_ana.strip())
 
         stat['age'] = Report.getActivityAge(args['date_beg'], args['date_end'], args['type_ana'])
 
@@ -164,7 +164,7 @@ class ReportActivity(Resource):
         if Various.needTranslationDB():
             for stat_age in stat['age']:
                 stat_ana = stat_age['analysis']
-                stat_age['analysis']  = _(stat_ana)
+                stat_age['analysis']  = _(stat_ana.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE ReportActivity')
         return compose_ret(stat, Constants.cst_content_type_json)
@@ -258,9 +258,9 @@ class ReportToday(Resource):
                 if data[key] is None:
                     data[key] = ''
                 elif key == 'analysis':
-                    data[key] = _(data[key])
+                    data[key] = _(data[key].strip())
                 elif key == 'family':
-                    data[key] = _(data[key])
+                    data[key] = _(data[key].strip())
 
             if data['rec_date'] != '':
                 data['rec_date'] = datetime.strftime(data['rec_date'], '%Y-%m-%d')
@@ -298,9 +298,9 @@ class ReportTodayExport(Resource):
                 data.append(d['rec_date'])
                 data.append(d['rec_num'])
                 fam = d['family']
-                data.append(_(fam))
+                data.append(_(fam.strip()))
                 ana = d['analysis']
-                data.append(_(ana))
+                data.append(_(ana.strip()))
                 data.append(d['vld_type'])
 
                 l_data.append(data)

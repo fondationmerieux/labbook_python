@@ -297,11 +297,11 @@ class PatientHistoric(Resource):
                 if ana[key] is None:
                     ana[key] = ''
                 elif key == 'analysis':
-                    ana[key] = _(ana[key])
+                    ana[key] = _(ana[key].strip())
                 elif key == 'variable':
-                    ana[key] = _(ana[key])
+                    ana[key] = _(ana[key].strip())
                 elif key == 'result':
-                    ana[key] = _(ana[key])
+                    ana[key] = _(ana[key].strip())
 
             if ana['date_prescr']:
                 ana['date_prescr'] = datetime.strftime(ana['date_prescr'], '%Y-%m-%d')

@@ -128,9 +128,9 @@ class ProductReq(Resource):
                 if prod[key] is None:
                     prod[key] = ''
                 elif key == 'type_prod':
-                    prod[key] = _(prod[key])
+                    prod[key] = _(prod[key].strip())
                 elif key == 'stat_prod':
-                    prod[key] = _(prod[key])
+                    prod[key] = _(prod[key].strip())
 
             if prod['date_prel']:
                 prod['date_prel'] = datetime.strftime(prod['date_prel'], '%Y-%m-%d')

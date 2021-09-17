@@ -242,7 +242,7 @@ class ExportWhonet(Resource):
 
                 if d['med_spe']:
                     spe = d['med_spe']
-                    data.append(_(spe))
+                    data.append(_(spe.strip()))
                 else:
                     data.append('')
 
@@ -330,7 +330,7 @@ class ExportWhonet(Resource):
 
                 if d['service_interne']:
                     service = d['service_interne']
-                    data.append(_(service))
+                    data.append(_(service.strip()))
                 else:
                     data.append('')
 
@@ -341,7 +341,7 @@ class ExportWhonet(Resource):
 
                 if d['rec_type']:
                     rec_type = d['rec_type']
-                    data.append(_(rec_type))
+                    data.append(_(rec_type.strip()))
                 else:
                     data.append('')
 
@@ -365,7 +365,7 @@ class ExportWhonet(Resource):
 
                 if d['spec_type']:
                     spec_type = d['spec_type']
-                    data.append(_(spec_type))
+                    data.append(_(spec_type.strip()))
                 else:
                     data.append('')
 
@@ -386,9 +386,9 @@ class ExportWhonet(Resource):
 
                     ana_name = ana_name[0:start_meth - 1]
 
-                    data.append(_(ana_name))
+                    data.append(_(ana_name.strip()))
                     libel = d['libelle']
-                    data.append(_(libel))
+                    data.append(_(libel.strip()))
                     data.append(method_name)
                     data.append(d['method_value'])
                     data.append(d['valeur'])

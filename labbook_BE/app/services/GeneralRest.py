@@ -42,9 +42,9 @@ class DicoById(Resource):
             if dico[key] is None:
                 dico[key] = ''
             elif key == 'label':
-                dico[key] = _(dico[key])
+                dico[key] = _(dico[key].strip())
             elif key == 'short_label':
-                dico[key] = _(dico[key])
+                dico[key] = _(dico[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DicoById : ' + str(id_data))
         return compose_ret(dico, Constants.cst_content_type_json)

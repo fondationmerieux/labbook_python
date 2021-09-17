@@ -30,8 +30,8 @@ class AnalysisSearch(Resource):
             for analysis in l_analysis:
                 ana_name  = analysis['name']
                 ana_label = analysis['label']
-                analysis['name']  = _(ana_name)
-                analysis['label'] = _(ana_label)
+                analysis['name']  = _(ana_name.strip())
+                analysis['label'] = _(ana_label.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisSearch')
         return compose_ret(l_analysis, Constants.cst_content_type_json)
@@ -52,7 +52,7 @@ class AnalysisVarSearch(Resource):
         if Various.needTranslationDB():
             for var in l_vars:
                 var_libel = var['libelle']
-                var['libelle'] = _(var_libel)
+                var['libelle'] = _(var_libel.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisVarSearch')
         return compose_ret(l_vars, Constants.cst_content_type_json)
@@ -80,11 +80,11 @@ class AnalysisList(Resource):
                 if analysis[key] is None:
                     analysis[key] = ''
                 elif key == 'name':
-                    analysis[key] = _(analysis[key])
+                    analysis[key] = _(analysis[key].strip())
                 elif key == 'type_ana':
-                    analysis[key] = _(analysis[key])
+                    analysis[key] = _(analysis[key].strip())
                 elif key == 'product':
-                    analysis[key] = _(analysis[key])
+                    analysis[key] = _(analysis[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisList')
         return compose_ret(l_analyzes, Constants.cst_content_type_json)
@@ -115,9 +115,9 @@ class AnalysisHistoExport(Resource):
                 data.append(d['id_data'])
                 data.append(d['code'])
                 fam_name = d['fam_name']
-                data.append(_(fam_name))
+                data.append(_(fam_name.strip()))
                 name = d['name']
-                data.append(_(name))
+                data.append(_(name.strip()))
 
                 l_data.append(data)
 
@@ -172,9 +172,9 @@ class AnalysisHistoList(Resource):
                 if analysis[key] is None:
                     analysis[key] = ''
                 elif key == 'fam_name':
-                    analysis[key] = _(analysis[key])
+                    analysis[key] = _(analysis[key].strip())
                 elif key == 'name':
-                    analysis[key] = _(analysis[key])
+                    analysis[key] = _(analysis[key].strip())
 
             nb_ana = Analysis.getNbAnalysis(args['date_beg'], args['date_end'], analysis['id_data'])
 
@@ -210,9 +210,9 @@ class AnalysisHistoDet(Resource):
                 if data[key] is None:
                     data[key] = ''
                 elif key == 'variable':
-                    data[key] = _(data[key])
+                    data[key] = _(data[key].strip())
                 elif key == 'result':
-                    data[key] = _(data[key])
+                    data[key] = _(data[key].strip())
 
             if data['date_prescr']:
                 data['date_prescr'] = datetime.strftime(data['date_prescr'], '%Y-%m-%d')
@@ -261,7 +261,7 @@ class AnalysisDet(Resource):
             if analysis[key] is None:
                 analysis[key] = ''
             elif key == 'nom':
-                analysis[key] = _(analysis[key])
+                analysis[key] = _(analysis[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysisDet id_data=' + str(id_ana))
         return compose_ret(analysis, Constants.cst_content_type_json, 200)
@@ -534,9 +534,9 @@ class AnalysisVarList(Resource):
                 if var[key] is None:
                     var[key] = ''
                 elif key == 'label':
-                    var[key] = _(var[key])
+                    var[key] = _(var[key].strip())
                 elif key == 'comment':
-                    var[key] = _(var[key])
+                    var[key] = _(var[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysisVarList id_data=' + str(id_ana))
         return compose_ret(l_vars, Constants.cst_content_type_json, 200)
@@ -559,9 +559,9 @@ class AnalysisVarDet(Resource):
             if ana_var[key] is None:
                 ana_var[key] = ''
             elif key == 'label':
-                ana_var[key] = _(ana_var[key])
+                ana_var[key] = _(ana_var[key].strip())
             elif key == 'comment':
-                ana_var[key] = _(ana_var[key])
+                ana_var[key] = _(ana_var[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysisVarDet id_data=' + str(id_var))
         return compose_ret(ana_var, Constants.cst_content_type_json, 200)
@@ -584,7 +584,7 @@ class AnalysisTypeProd(Resource):
             if type_prod[key] is None:
                 type_prod[key] = ''
             elif key == 'label':
-                type_prod[key] = _(type_prod[key])
+                type_prod[key] = _(type_prod[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysistypeProd id_type_prod' + str(id_type_prod))
         return compose_ret(type_prod, Constants.cst_content_type_json, 200)
@@ -608,7 +608,7 @@ class AnalysisReq(Resource):
                 if analysis[key] is None:
                     analysis[key] = ''
                 elif key == 'nom':
-                    analysis[key] = _(analysis[key])
+                    analysis[key] = _(analysis[key].strip())
 
             if analysis['prix'] != '':
                 analysis['prix'] = float(analysis['prix'])
@@ -692,7 +692,7 @@ class AnalysisExport(Resource):
 
                 if d['nom']:
                     nom = d['nom']
-                    data.append(_(nom))
+                    data.append(_(nom.strip()))
                 else:
                     data.append('')
 
@@ -723,7 +723,7 @@ class AnalysisExport(Resource):
 
                 if d['commentaire']:
                     comment = d['commentaire']
-                    data.append(_(comment))
+                    data.append(_(comment.strip()))
                 else:
                     data.append('')
 
@@ -791,7 +791,7 @@ class AnalysisExport(Resource):
 
                 if d['libelle']:
                     libel = d['libelle']
-                    data.append(_(libel))
+                    data.append(_(libel.strip()))
                 else:
                     data.append('')
 
@@ -817,7 +817,7 @@ class AnalysisExport(Resource):
 
                 if d['commentaire']:
                     comment = d['commentaire']
-                    data.append(_(comment))
+                    data.append(_(comment.strip()))
                 else:
                     data.append('')
 

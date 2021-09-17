@@ -340,7 +340,7 @@ class UserList(Resource):
                 if user[key] is None:
                     user[key] = ''
                 elif key == 'section':
-                    user[key] = _(user[key])
+                    user[key] = _(user[key].strip())
 
             if user['birth']:
                 user['birth'] = datetime.strftime(user['birth'], '%Y-%m-%d')

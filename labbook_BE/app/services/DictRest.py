@@ -29,9 +29,9 @@ class DictDet(Resource):
                 if dict[key] is None:
                     dict[key] = ''
                 elif key == 'label':
-                    dict[key] = _(dict[key])
+                    dict[key] = _(dict[key].strip())
                 elif key == 'short_label':
-                    dict[key] = _(dict[key])
+                    dict[key] = _(dict[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DictDet')
         return compose_ret(l_dicts, Constants.cst_content_type_json)

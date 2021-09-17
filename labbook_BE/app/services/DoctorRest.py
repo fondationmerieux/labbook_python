@@ -35,7 +35,7 @@ class DoctorList(Resource):
                 if doctor[key] is None:
                     doctor[key] = ''
                 elif key == 'spe':
-                    doctor[key] = _(doctor[key])
+                    doctor[key] = _(doctor[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DoctorList')
         return compose_ret(l_doctors, Constants.cst_content_type_json)
@@ -75,7 +75,7 @@ class DoctorDet(Resource):
             if doctor[key] is None:
                 doctor[key] = ''
             elif key == 'spe_doctor':
-                doctor[key] = _(doctor[key])
+                doctor[key] = _(doctor[key].strip())
 
         self.log.info(Logs.fileline() + ' : DoctorDet id_doctor=' + str(id_doctor))
         return compose_ret(doctor, Constants.cst_content_type_json, 200)
@@ -181,7 +181,7 @@ class DoctorExport(Resource):
                 data.append(d['city'])
                 data.append(d['work_place'])
                 spe = d['spe']
-                data.append(_(spe))
+                data.append(_(spe.strip()))
                 data.append(d['spe_id'])
                 data.append(d['phone'])
                 data.append(d['mobile'])

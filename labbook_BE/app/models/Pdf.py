@@ -243,7 +243,7 @@ class Pdf:
                     if not ana_div:
                         ana_div += '<div><span class="ft_bill_det_tit">' + label01 + '</span></div>'
 
-                    trans = ana['nom']
+                    trans = ana['nom'].strip()
                     ana_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
                                 'text-align:left;">' + str(ana['code']) + '</span>'
                                 '<span class="ft_bill_det" style="width:750px;display:inline-block;">' +
@@ -258,8 +258,8 @@ class Pdf:
 
                     # No display of samples without price
                     if ana['prix'] > 0:
-                        trans  = ana['code']
-                        trans2 = ana['nom']
+                        trans  = ana['code'].strip()
+                        trans2 = ana['nom'].strip()
                         trans3 = ana['prix']
                         samp_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
                                      'text-align:left;">' + str(trans) + '</span>'
@@ -703,12 +703,12 @@ class Pdf:
                     if with_fam:
                         Various.useLangDB()
                         result_div = (result_div + '<div><span class="ft_res_fam" style="width:960px;'
-                                      'display:inline-block;text-align:center;">' + _(res_fam) + '</span></div>')
+                                      'display:inline-block;text-align:center;">' + _(res_fam.strip()) + '</span></div>')
                         h_now += h_fam
                         Various.useLangPDF()
 
                         # IF family title on 2 lines
-                        if len(res_fam) > 70:
+                        if len(res_fam.strip()) > 70:
                             h_now += h_fam
                             # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM on 2 lines h_now=' + str(h_now))
 
@@ -730,14 +730,14 @@ class Pdf:
                     # ==== ANALYSIS NAME ====
                     if res['ana_name']:
                         Various.useLangDB()
-                        trans = res['ana_name']
+                        trans = res['ana_name'].strip()
                         result_div = (result_div + '<div><span class="ft_res_name" style="width:960px;'
                                       'display:inline-block;text-align:left;">' + _(trans) + '</span></div>')
                         h_now += h_name
                         Various.useLangPDF()
 
                         # IF name title on 2 lines
-                        if len(res['ana_name']) > 90:
+                        if len(_(trans)) > 90:
                             h_now += h_name
                             # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA on 2 lines h_now=' + str(h_now))
 
@@ -983,7 +983,7 @@ class Pdf:
 
         page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
                        '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
-                       _("Dossier") + str(num_rec_y) + ', ' + _("édité le ") + str(date_now) + '</span>'
+                       _("Dossier") + str(num_rec_y) + ', ' + _("édité le") + ' ' + str(date_now) + '</span>'
                        '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
                        _("Page") + ' ' + str(num_page) + '/tot_page</span></div></div>')
 
@@ -1043,7 +1043,7 @@ class Pdf:
         return True
 
     @staticmethod
-    def getPdfHeader(full_header, report_status=''):
+    def getPdfHeader(full_header, report_status='&nbsp;'):
         """Start HTML page for PDF document
 
         This function is call by ??? template

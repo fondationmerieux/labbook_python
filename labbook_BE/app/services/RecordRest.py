@@ -394,7 +394,7 @@ class RecordListAna(Resource):
                 if data[key] is None:
                     data[key] = ''
                 elif key == 'name':
-                    data[key] = _(data[key])
+                    data[key] = _(data[key].strip())
 
         self.log.info(Logs.fileline() + ' : RecordListAna id_rec=' + str(id_rec))
         return compose_ret(l_datas, Constants.cst_content_type_json, 200)

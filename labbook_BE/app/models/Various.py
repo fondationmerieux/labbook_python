@@ -25,6 +25,9 @@ class Various:
             Various.log.info(Logs.fileline() + ' : lang_pdf in database = ' + session['lang_pdf'])
             Various.log.info(Logs.fileline() + ' : lang_db in database  = ' + session['lang_db'])
 
+            # need to initiate once, if not _() is not defined
+            Various.useLangPDF()
+
     @staticmethod
     def needTranslationPDF():
         Various.initSessionLang()
