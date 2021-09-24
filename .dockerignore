@@ -13,3 +13,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+### used for development only ###
+etc/sql/
+devrun*/

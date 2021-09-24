@@ -33,6 +33,8 @@ kpri.*.asc
 # except gpg private keys in test
 ! script/test/kpri.*.asc
 
-# Dockerfile in test is build dynamically
+# Dockerfile in test is built dynamically
 script/test/Dockerfile
 
+# used when running in development 
+devrun*/
