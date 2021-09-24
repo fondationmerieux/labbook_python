@@ -235,7 +235,7 @@ padding : 0;
 #user-info .name 
 { 
 position : absolute; 
-right    : 130px; 
+right    : 160px; 
 top      : 21px; 
 color    : #777; 
 }
@@ -245,53 +245,62 @@ color    : #777;
 position : absolute;
 right    : 40px;
 top      : 21px;
-width    : 80px;
+width    : 110px;
 height   : 26px;
 }
 
 .role-A
 {
-background-image : url("/static/img/admin-profile.png")
+background-image  : url("/static/img/admin-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-B
 {
-background-image : url("/static/img/bio-profile.png")
+background-image  : url("/static/img/bio-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-T
 {
-background-image : url("/static/img/tech-profile.png")
+background-image  : url("/static/img/tech-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-TA
 {
-background-image : url("/static/img/tech-profile.png")
+background-image  : url("/static/img/tech-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-TQ
 {
-background-image : url("/static/img/tech-profile.png")
+background-image  : url("/static/img/tech-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-S
 {
-background-image : url("/static/img/sec-profile.png")
+background-image  : url("/static/img/sec-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-SA
 {
-background-image : url("/static/img/sec-profile.png")
+background-image  : url("/static/img/sec-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-Q
 {
-background-image : url("/static/img/qua-profile.png")
+background-image  : url("/static/img/qua-profile.png");
+background-repeat : no-repeat;
 }
 
 .role-P
 {
-background-image : url("/static/img/pre-profile.png")
+background-image  : url("/static/img/pre-profile.png");
+background-repeat : no-repeat;
 }
 
 .btn-A
@@ -532,7 +541,7 @@ border-top : 1px solid #e5e5e5;
 .nav-cust-btn
 {
 height         : 70px;
-width          : 100px;
+width          : 120px;
 vertical-align : top;
 text-align     : center;
 justify-content : center;

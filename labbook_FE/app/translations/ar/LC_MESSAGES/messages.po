@@ -1254,7 +1254,7 @@ msgstr "قائمة مخزون مفصلة لهذا المنتج"
 #: templates/det-list-stock.html:33 templates/hist-stock-product.html:59
 #: templates/list-stock.html:79
 msgid "Nb de paq."
-msgstr "  عدد من pq"
+msgstr "عدد الحزم"
 
 #: templates/det-list-stock.html:34 templates/hist-stock-product.html:60
 msgid "Date recept."
@@ -1903,7 +1903,7 @@ msgstr "تاريخ الإمدادات والاستخدامات لهذا المن
 
 #: templates/hist-stock-product.html:58
 msgid "E/S"
-msgstr "I / O داخل وخارج je conseille de laisser le I/O également"
+msgstr "I/O"
 
 #: templates/hist-stock-product.html:65 templates/setting-det-user.html:5
 #: templates/setting-det-user.html:15
@@ -2239,7 +2239,7 @@ msgstr "قائمة المنتجات"
 
 #: templates/list-products.html:33
 msgid "Nbr par paquet"
-msgstr " عدد الربطات"
+msgstr "عدد الحزم"
 
 #: templates/list-products.html:34 templates/list-stock.html:82
 msgid "Seuil"
@@ -3111,7 +3111,7 @@ msgstr "تحليلات حسب الفئة العمرية"
 
 #: templates/report-activity.html:65
 msgid "H = Homme, F = Femme, I = Inconnu"
-msgstr "H = ذكر ، F = أنثى ،I = Inconnu مجهول"
+msgstr "M = ذكر ، F = أنثى ، U = مجهول"
 
 #: templates/report-activity.html:68
 msgid "Export par type"
@@ -3144,17 +3144,17 @@ msgstr "مجموع"
 #: templates/report-activity.html:150 templates/report-activity.html:151
 #: templates/report-activity.html:153 templates/report-activity.html:326
 msgid "H"
-msgstr "H"
+msgstr "ذكر "
 
 #: templates/report-activity.html:150 templates/report-activity.html:152
 #: templates/report-activity.html:153 templates/report-activity.html:326
 msgid "F"
-msgstr "F"
+msgstr "أنثى"
 
 #: templates/report-activity.html:151 templates/report-activity.html:152
 #: templates/report-activity.html:154 templates/report-activity.html:326
 msgid "I"
-msgstr "I"
+msgstr "مجهول"
 
 #: templates/report-activity.html:430 templates/report-statistic.html:257
 msgid "Moins de"
@@ -3338,9 +3338,7 @@ msgstr "معطل"
 msgid ""
 "Veuillez confirmer la suppression du cette analyse\\nAttention les "
 "dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr ""
-"يرجى تأكيد حذف هذا التحليل \\ n الانتباه إلى أي ملفات مرتبطة بهذا التحليل"
-" ستكون في أخطاء"
+msgstr "يرجى تأكيد حذف هذا التحليل \\ n الانتباه إلى أي ملفات مرتبطة بهذا التحليل ستكون في أخطاء"
 
 #: templates/setting-backup.html:5 templates/setting-backup.html:12
 msgid "Paramétrage de la sauvegarde"
@@ -3726,11 +3724,11 @@ msgstr "الفرنسية (FR)"
 
 #: templates/setting-det-user.html:116
 msgid "Anglais (UK)"
-msgstr ""
+msgstr "الإنجليزية (المملكة المتحدة)"
 
 #: templates/setting-det-user.html:117
 msgid "Américain (US)"
-msgstr ""
+msgstr "الإنجليزية (الولايات المتحدة)"
 
 #: templates/setting-det-user.html:118 templates/skeleton.html:34
 msgid "Arabe (AR)"
@@ -3745,7 +3743,7 @@ msgid "Laotien (LO)"
 msgstr ""
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
-msgid "Malgache (MG)"
+msgid "Malagasy (MG)"
 msgstr ""
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
@@ -3886,43 +3884,43 @@ msgstr "تم تنشيط وحدة الفوترة"
 
 #: templates/setting-pref.html:85
 msgid "Langue des rapports"
-msgstr ""
+msgstr "لغة التقارير"
 
 #: templates/setting-pref.html:88 templates/setting-pref.html:103
 msgid "Français"
-msgstr ""
+msgstr "فرنسي"
 
 #: templates/setting-pref.html:89 templates/setting-pref.html:104
 msgid "Anglais"
-msgstr ""
+msgstr "إنجليزي"
 
 #: templates/setting-pref.html:90
 msgid "Américain"
-msgstr ""
+msgstr "أمريكي"
 
 #: templates/setting-pref.html:91
 msgid "Arabe"
-msgstr ""
+msgstr "عرب"
 
 #: templates/setting-pref.html:92
 msgid "Khmer"
-msgstr ""
+msgstr "الخمير"
 
 #: templates/setting-pref.html:93
 msgid "Laotien"
-msgstr ""
+msgstr "اللاوسي"
 
 #: templates/setting-pref.html:94
-msgid "Malgache"
-msgstr ""
+msgid "Malagasy"
+msgstr "مدغشقر"
 
 #: templates/setting-pref.html:95
 msgid "Portugais"
-msgstr ""
+msgstr "البرتغالية"
 
 #: templates/setting-pref.html:100
 msgid "Langue du référentiel"
-msgstr ""
+msgstr "لغة المستودع"
 
 #: templates/setting-pwd-user.html:5 templates/setting-pwd-user.html:12
 msgid "Mise à jour du mot de passe"

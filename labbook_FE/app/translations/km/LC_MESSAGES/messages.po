@@ -3722,11 +3722,11 @@ msgstr "បារាំង (FR)"
 
 #: templates/setting-det-user.html:116
 msgid "Anglais (UK)"
-msgstr ""
+msgstr "អង់គ្លេស (ចក្រភពអង់គ្លេស)"
 
 #: templates/setting-det-user.html:117
 msgid "Américain (US)"
-msgstr ""
+msgstr "អង់គ្លេស (អាមេរិក)"
 
 #: templates/setting-det-user.html:118 templates/skeleton.html:34
 msgid "Arabe (AR)"
@@ -3734,14 +3734,14 @@ msgstr ""
 
 #: templates/setting-det-user.html:119 templates/skeleton.html:35
 msgid "Khmer (KM)"
-msgstr ""
+msgstr "ខ្មែរ (គ។ ម។ )"
 
 #: templates/setting-det-user.html:120 templates/skeleton.html:36
 msgid "Laotien (LO)"
 msgstr ""
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
-msgid "Malgache (MG)"
+msgid "Malagasy (MG)"
 msgstr ""
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
@@ -3882,43 +3882,43 @@ msgstr "បានធ្វើឱ្យសកម្មម៉ូឌុលវិក
 
 #: templates/setting-pref.html:85
 msgid "Langue des rapports"
-msgstr ""
+msgstr "ភាសានៃរបាយការណ៍"
 
 #: templates/setting-pref.html:88 templates/setting-pref.html:103
 msgid "Français"
-msgstr ""
+msgstr "ភាសាបារាំង"
 
 #: templates/setting-pref.html:89 templates/setting-pref.html:104
 msgid "Anglais"
-msgstr ""
+msgstr "ភាសាអង់គ្លេស"
 
 #: templates/setting-pref.html:90
 msgid "Américain"
-msgstr ""
+msgstr "ជនជាតិអាមេរិក"
 
 #: templates/setting-pref.html:91
 msgid "Arabe"
-msgstr ""
+msgstr "អារ៉ាប់"
 
 #: templates/setting-pref.html:92
 msgid "Khmer"
-msgstr ""
+msgstr "ខ្មែរ"
 
 #: templates/setting-pref.html:93
 msgid "Laotien"
-msgstr ""
+msgstr "ឡាវ"
 
 #: templates/setting-pref.html:94
-msgid "Malgache"
-msgstr ""
+msgid "Malagasy"
+msgstr "ម៉ាឡាហ្កាស៊ី"
 
 #: templates/setting-pref.html:95
 msgid "Portugais"
-msgstr ""
+msgstr "ព័រទុយហ្កាល់"
 
 #: templates/setting-pref.html:100
 msgid "Langue du référentiel"
-msgstr ""
+msgstr "ភាសានៃឃ្លាំង"
 
 #: templates/setting-pwd-user.html:5 templates/setting-pwd-user.html:12
 msgid "Mise à jour du mot de passe"

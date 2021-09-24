@@ -952,7 +952,7 @@ msgstr "Fitarihana"
 #: templates/det-equipment.html:106 templates/det-procedure.html:5
 #: templates/det-procedure.html:15
 msgid "Procédure"
-msgstr "Toro-lalana"
+msgstr "Procédure"
 
 #: templates/det-equipment.html:113
 msgid "Liste des pannes et réparations"
@@ -1047,7 +1047,7 @@ msgstr "ny"
 #: templates/report-today.html:30 templates/user-conn-export.html:26
 #: templates/whonet-export.html:26
 msgid "au"
-msgstr "ao"
+msgstr "au"
 
 #: templates/det-hist-analysis.html:17 templates/det-hist-patient.html:52
 #: templates/det-list-stock.html:15 templates/hist-analyzes.html:70
@@ -2226,7 +2226,7 @@ msgstr "Tsy misy"
 #: templates/list-procedure.html:5 templates/list-procedure.html:12
 #: templates/menu.html:133
 msgid "Procédures"
-msgstr "Toro-lalana"
+msgstr "Procédures"
 
 #: templates/list-procedure.html:38
 msgid "Date modification"
@@ -2655,7 +2655,7 @@ msgstr "Mpamatsy"
 
 #: templates/menu.html:132
 msgid "Manuels"
-msgstr "Toro-lalana"
+msgstr "Manuels"
 
 #: templates/menu.html:135
 msgid "Gestion des stocks"
@@ -3178,7 +3178,7 @@ msgstr "Mihoatra ny"
 
 #: templates/report-activity.html:446 templates/report-statistic.html:261
 msgid "à"
-msgstr "any"
+msgstr "à"
 
 #: templates/report-billing.html:5 templates/report-billing.html:15
 msgid "Etat journalier de la facturation"
@@ -3734,11 +3734,11 @@ msgstr "Frantsay (FR)"
 
 #: templates/setting-det-user.html:116
 msgid "Anglais (UK)"
-msgstr ""
+msgstr "Anglisy (UK)"
 
 #: templates/setting-det-user.html:117
 msgid "Américain (US)"
-msgstr ""
+msgstr "Anglisy (Etazonia)"
 
 #: templates/setting-det-user.html:118 templates/skeleton.html:34
 msgid "Arabe (AR)"
@@ -3753,7 +3753,7 @@ msgid "Laotien (LO)"
 msgstr ""
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
-msgid "Malgache (MG)"
+msgid "Malagasy (MG)"
 msgstr ""
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
@@ -3894,43 +3894,43 @@ msgstr "Modely faktiora mandeha"
 
 #: templates/setting-pref.html:85
 msgid "Langue des rapports"
-msgstr ""
+msgstr "Fiteny amin'ny tatitra"
 
 #: templates/setting-pref.html:88 templates/setting-pref.html:103
 msgid "Français"
-msgstr ""
+msgstr "FRANTSAY"
 
 #: templates/setting-pref.html:89 templates/setting-pref.html:104
 msgid "Anglais"
-msgstr ""
+msgstr "Anglisy"
 
 #: templates/setting-pref.html:90
 msgid "Américain"
-msgstr ""
+msgstr "Américain"
 
 #: templates/setting-pref.html:91
 msgid "Arabe"
-msgstr ""
+msgstr "Arabo"
 
 #: templates/setting-pref.html:92
 msgid "Khmer"
-msgstr ""
+msgstr "Khmer"
 
 #: templates/setting-pref.html:93
 msgid "Laotien"
-msgstr ""
+msgstr "Laosianina"
 
 #: templates/setting-pref.html:94
-msgid "Malgache"
-msgstr ""
+msgid "Malagasy"
+msgstr "Malagasy"
 
 #: templates/setting-pref.html:95
 msgid "Portugais"
-msgstr ""
+msgstr "Portogey"
 
 #: templates/setting-pref.html:100
 msgid "Langue du référentiel"
-msgstr ""
+msgstr "Fiteny amin'ny fitehirizana"
 
 #: templates/setting-pwd-user.html:5 templates/setting-pwd-user.html:12
 msgid "Mise à jour du mot de passe"

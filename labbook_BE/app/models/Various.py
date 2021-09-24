@@ -133,3 +133,138 @@ class Various:
         cursor.execute(req)
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getLastInitVersion():
+        cursor = DB.cursor()
+
+        req = ('select * '
+               'from init_version '
+               'order by ini_ser desc limit 1')
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def updateInitVersion(ini_ser, stat):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update init_version '
+                   'set ini_stat = %s '
+                   'where ini_ser = %s')
+
+            cursor.execute(req, (stat, ini_ser,))
+
+        except mysql.connector.Error as e:
+            Various.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def updateTranslationsTable(lang):
+        try:
+            # init lang
+            Various.initSessionLang()
+
+            # use lang en_GB for DB
+            langDB = gettext.translation('messages', Constants.cst_path_lang, lang.split())
+            langDB.install()
+
+            cursor = DB.cursor()
+
+            params = {'lang': '', 'ref': 0, 'type': '', 'text': ''}
+
+            # --- Fill translations table with analysis name
+            req = ('select nom as name, id_data as ref from sigl_05_data order by code asc')
+
+            cursor.execute(req)
+
+            l_ana = cursor.fetchall()
+
+            for ana in l_ana:
+                text = ana['name'].strip()
+
+                # check if this ana name doesnt exist in translations table
+                req = ('select count(*) as nb from translations '
+                       'where tra_text=%s and tra_lang=%s and tra_type="ana_name"')
+
+                cursor.execute(req, (_(text), lang,))
+                res = cursor.fetchone()
+
+                if res['nb'] == 0:
+                    params['lang'] = lang
+                    params['ref']  = ana['ref']
+                    params['type'] = 'ana_name'
+                    params['text'] = _(text)
+
+                    # insert into translations
+                    req = ('insert into translations (tra_date, tra_lang, tra_ref, tra_type, tra_text) '
+                           'values (NOW(), %(lang)s, %(ref)s, %(type)s, %(text)s)')
+
+                    cursor.execute(req, params)
+
+            # --- Fill translations table with var name
+            req = ('select libelle as name, id_data as ref from sigl_07_data')
+
+            cursor.execute(req)
+
+            l_var = cursor.fetchall()
+
+            for var in l_var:
+                text = var['name'].strip()
+
+                # check if this var name doesnt exist in translations table
+                req = ('select count(*) as nb from translations '
+                       'where tra_text=%s and tra_lang=%s and tra_type="var_name"')
+
+                cursor.execute(req, (_(text), lang,))
+                res = cursor.fetchone()
+
+                if res['nb'] == 0:
+                    params['lang'] = lang
+                    params['ref']  = var['ref']
+                    params['type'] = 'var_name'
+                    params['text'] = _(text)
+
+                    # insert into translations
+                    req = ('insert into translations (tra_date, tra_lang, tra_ref, tra_type, tra_text) '
+                           'values (NOW(), %(lang)s, %(ref)s, %(type)s, %(text)s)')
+
+                    cursor.execute(req, params)
+
+            # --- Fill translations table with dictionnary label
+            req = ('select label, id_data as ref from sigl_dico_data')
+
+            cursor.execute(req)
+
+            l_dict = cursor.fetchall()
+
+            for dict in l_dict:
+                text = dict['label'].strip()
+
+                # check if this var name doesnt exist in translations table
+                req = ('select count(*) as nb from translations '
+                       'where tra_text=%s and tra_lang=%s and tra_type="dict_label"')
+
+                cursor.execute(req, (_(text), lang,))
+                res = cursor.fetchone()
+
+                if res['nb'] == 0:
+                    params['lang'] = lang
+                    params['ref']  = dict['ref']
+                    params['type'] = 'dict_label'
+                    params['text'] = _(text)
+
+                    # insert into translations
+                    req = ('insert into translations (tra_date, tra_lang, tra_ref, tra_type, tra_text) '
+                           'values (NOW(), %(lang)s, %(ref)s, %(type)s, %(text)s)')
+
+                    cursor.execute(req, params)
+
+            Various.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Various.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

@@ -20,6 +20,7 @@ import random
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
+from jinja2 import evalcontextfilter, Markup
 
 from flask import Flask, render_template, request, session, redirect, send_file
 from flask_babel import Babel
@@ -66,6 +67,8 @@ if config_envvar in os.environ:
     app.config.from_envvar(config_envvar)
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
+
+# app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
 
 babel = Babel(app)
 
@@ -132,6 +135,17 @@ def get_locale():
     return lang
 
 
+def check_init_version():
+    log.info(Logs.fileline() + ' : LABBOOK_FE check_init_version begins')
+    try:
+        url = session['server_int'] + '/services/init/version'
+        requests.get(url)
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests check init version failed, err=%s , url=%s', err, url)
+        session['labbook_BE_OK'] = False
+        session.modified = True
+
+
 def get_init_var():
     log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var begins')
     # init external server
@@ -189,8 +203,6 @@ def get_init_var():
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests auto_logout failed, err=%s , url=%s', err, url)
-        session['labbook_BE_OK'] = False
-        session.modified = True
 
     # Load default language
     try:
@@ -301,6 +313,16 @@ def get_software_settings():
     return True
 
 
+# Mind the hack! Babel does not work well within js code
+@app.template_filter()
+@evalcontextfilter
+def generate_string(eval_ctx, localized_value):
+    if localized_value is None:
+        return ""
+    else:
+        return Markup("\"" + localized_value + "\"").unescape()
+
+
 @app.template_filter('date_format')
 def date_format(date_iso):
     if date_iso:
@@ -324,6 +346,7 @@ def index():
     if not session or 'current_page' not in session:
         log.info(Logs.fileline() + ' : TRACE Labbook_FE get_init_var()')
         get_init_var()
+        check_init_version()
         if session and 'labbook_BE_OK' in session and session['labbook_BE_OK']:
             session['lang_chosen'] = False
             session.modified = True
@@ -1765,6 +1788,8 @@ def det_req_ext(entry='Y', ref=0):
         json_data['data_products'] = []
         json_data['record']        = []
 
+    # 22/09/2021 USELESS because no more validation step page
+    """
     else:
         # ref = id_rec
         # Load save record
@@ -1856,6 +1881,7 @@ def det_req_ext(entry='Y', ref=0):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
+    """
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -1964,6 +1990,8 @@ def det_req_int(entry='Y', ref=0):
         json_data['data_products'] = []
         json_data['record']        = []
 
+    # 22/09/2021 USELESS because no more validation step page
+    """
     else:
         # here : ref = id_rec
         # Load save record
@@ -2055,6 +2083,7 @@ def det_req_int(entry='Y', ref=0):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
+    """
 
     return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -2311,6 +2340,10 @@ def biological_validation(mode='', id_rec=0):
 
     session['current_page'] = 'biological-validation/' + str(id_rec)
     session.modified = True
+
+    if mode:
+        session['current_page'] = 'biological-validation/' + mode + '/' + str(id_rec)
+        session.modified = True
 
     json_ihm  = {}
     json_data = {}

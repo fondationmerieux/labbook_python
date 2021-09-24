@@ -291,7 +291,7 @@ let disp_valid = "d-none" ;
         res += '</tbody></table>' +
                '<div class="form-group form-inline">' +
                    '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec +'_'+ ref_ana_p  + '">' +
-                       '<label class="col-form-label text-right mr-1">{{ _("Date de validation") }} : </label>' +
+                       '<label class="col-form-label text-right mr-1">{{ _("Date de validation")|generate_string }} : </label>' +
                        '<div class="form-inline">' +
                            '<input id="date_tech_' + id_rec +'_'+ ref_ana_p  + '" class="form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
                        '</div>' +

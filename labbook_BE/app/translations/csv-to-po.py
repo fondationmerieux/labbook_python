@@ -9,6 +9,7 @@ from logging.handlers import WatchedFileHandler
 
 locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
 
+
 def prep_log(logger_nom, log_fich, niveau=logging.INFO):
     l = logging.getLogger(logger_nom)
     formatter = logging.Formatter('%(asctime)s : %(message)s')
@@ -21,6 +22,7 @@ def prep_log(logger_nom, log_fich, niveau=logging.INFO):
 prep_log('log_script', r'/home/apps/labbook_BE/logs/log_script.log')
 
 log = logging.getLogger('log_script')
+
 
 def conv_csv_to_po(test=False, verbose=False):
     ret_sc = True

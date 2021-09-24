@@ -228,7 +228,7 @@ class ResultCreate(Resource):
             self.log.error(Logs.fileline() + ' : ResultCreate ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        type_validation = 250
+        type_validation = 250  # Administrative validation
 
         # In case of add new analysis
         if 'list_ref' in args:

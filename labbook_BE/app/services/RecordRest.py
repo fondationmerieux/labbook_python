@@ -88,14 +88,16 @@ class RecordDet(Resource):
     def post(self, id_rec=0):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'type' not in args or 'date_record' not in args or 'id_med' not in args or 'date_prescr' not in args or 'service_int' not in args or \
-           'bed_num' not in args or 'parcel_id' not in args or 'date_parcel' not in args or 'comm' not in args or 'parcel' not in args or 'date_hosp' not in args or \
-           'price' not in args or 'discount' not in args or 'percent_discount' not in args or 'percent_insurance' not in args or \
-           'bill_remain' not in args or 'receipt_num' not in args or 'bill_num' not in args or 'stat' not in args or 'id_patient' not in args:
+        if 'id_owner' not in args or 'type' not in args or 'date_record' not in args or 'id_med' not in args or \
+           'date_prescr' not in args or 'service_int' not in args or 'bed_num' not in args or 'parcel_id' not in args or \
+           'date_parcel' not in args or 'comm' not in args or 'parcel' not in args or 'date_hosp' not in args or \
+           'price' not in args or 'discount' not in args or 'percent_discount' not in args or \
+           'percent_insurance' not in args or 'bill_remain' not in args or 'receipt_num' not in args or \
+           'bill_num' not in args or 'stat' not in args or 'id_patient' not in args:
             self.log.error(Logs.fileline() + ' : RecordDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        # Update Record
+        # Insert Record
         if id_rec == 0:
             args['date_record'] = datetime.strptime(args['date_record'], Constants.cst_isodate)
             args['date_prescr'] = datetime.strptime(args['date_prescr'], Constants.cst_isodate)

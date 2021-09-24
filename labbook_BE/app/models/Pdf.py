@@ -717,7 +717,7 @@ class Pdf:
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
                         # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
 
@@ -746,7 +746,7 @@ class Pdf:
                     # AFTER a new line CUT PAGE OR NOT
                     if h_now > (h_max - h_res):
                         # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
+                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
 
                         num_page = num_page + 1
 
@@ -861,7 +861,7 @@ class Pdf:
                 # AFTER a new line CUT PAGE OR NOT
                 if h_now > (h_max - h_res):
                     # Pdf.log.error(Logs.fileline() + ' : DEBUG RES h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
+                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
 
                     num_page = num_page + 1
 
@@ -897,9 +897,9 @@ class Pdf:
 
                 result_div = (result_div + comm_div + '<div><span class="ft_res_valid" style="width:970px;'
                               'display:inline-block;text-align:left;">' + _("validé par") + ' : ' + str(user) +
-                              '</span></div')
+                              '</span></div>')
 
-                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y)
+                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
 
             form_cont = form_cont.replace("tot_page", str(num_page))
 
@@ -911,14 +911,14 @@ class Pdf:
                    'margin-left': '0.00mm',
                    'no-outline': None}
 
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG form_cont=' + str(form_cont))
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG form_cont=\n' + str(form_cont))
 
         pdfkit.from_string(form_cont, path + filename, options=options)
 
         return True
 
     @staticmethod
-    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, rec_comm, result_div, full_header, num_rec_y):
+    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y):
         """End html of current page for report
 
         This function is call by getPdfReport
@@ -929,7 +929,6 @@ class Pdf:
             h_page            (int): height of page in pixels.
             report_status  (string): status of report.
             div_first_page (string): html string to start a first page.
-            rec_comm       (string): record comment.
             result_div     (string): html string of last result.
             full_header    (string): html string of header page.
             num_rec_y         (int): record number.

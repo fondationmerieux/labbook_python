@@ -50,9 +50,6 @@
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-samples" class="list-group-item {% if session['user_role'] == 'B' %}prel-bio{% else %}prel-tec{% endif %}">{{ _("Etat des prélèvements en cours") }}</a>
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-results" class="list-group-item {% if session['user_role'] == 'B' %}res-bio{% else %}res-tec{% endif %}">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'B' %}
-                    <a href="#" class="list-group-item home-qualite">{{ _("Management de la Qualité") }}</a>
-                    {% endif %}
                     {% if session['user_role'] == 'S' or session['user_role'] == 'SA' %}
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-ext" class="list-group-item new-dos-ext-sec">{{ _("Nouvelle demande externe") }}</a>
                     <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/new-req-int" class="list-group-item new-dos-int-sec">{{ _("Nouvelle demande hospitalisé") }}</a>

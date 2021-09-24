@@ -153,9 +153,10 @@ class ProductReq(Resource):
 
         # Loop on list_prod
         for prod in args['list_prod']:
-            if 'id_owner' not in prod or 'date_samp' not in prod or 'type_samp' not in prod or 'qty' not in prod or 'stat' not in prod or \
-               'id_rec' not in prod or 'sampler' not in prod or 'date_receipt' not in prod or 'time_receipt' not in prod or \
-               'comm' not in prod or 'locat_samp' not in prod or 'locat_samp_more' not in prod or 'location' not in prod:
+            if 'id_owner' not in prod or 'date_samp' not in prod or 'type_samp' not in prod or 'qty' not in prod or \
+               'stat' not in prod or 'id_rec' not in prod or 'sampler' not in prod or 'date_receipt' not in prod or \
+               'time_receipt' not in prod or 'comm' not in prod or 'locat_samp' not in prod or \
+               'locat_samp_more' not in prod or 'location' not in prod:
                 self.log.error(Logs.fileline() + ' : ProductReq ERROR prod missing')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 

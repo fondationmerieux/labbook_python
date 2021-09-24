@@ -3735,7 +3735,7 @@ msgid "Laotien (LO)"
 msgstr ""
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
-msgid "Malgache (MG)"
+msgid "Malagasy (MG)"
 msgstr ""
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
@@ -3903,7 +3903,7 @@ msgid "Laotien"
 msgstr ""
 
 #: templates/setting-pref.html:94
-msgid "Malgache"
+msgid "Malagasy"
 msgstr ""
 
 #: templates/setting-pref.html:95

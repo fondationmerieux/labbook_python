@@ -76,10 +76,10 @@
                         <div class="form-group row">
                             <label class="col-form-label text-right mr-3">{{ _("Date de naissance approximative") }}</label>
                             <label class="col-form-label text-right mr-3">
-                                <input type="radio" name="ddn_approx" value="4" {% if not args['ddn_approx'] or args['ddn_approx'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                                <input type="radio" name="ddn_approx" value="4" {% if args['ddn_approx'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>
                             <label class="col-form-label text-right mr-3">
-                                <input type="radio" name="ddn_approx" value="5" {% if args['ddn_approx'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                                <input type="radio" name="ddn_approx" value="5" {% if not args['ddn_approx'] or args['ddn_approx'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
                             </label>
                         </div>
                     </div>
@@ -328,30 +328,28 @@ var end   = $("#date_current").val() ;
 // end - start returns difference in milliseconds 
 var diff = new Date(Date.parse(end) - Date.parse(start));
 
-// get days
-var days = diff/1000/60/60/24;
+var age = Math.abs(diff.getUTCFullYear() - 1970);
 
-    if (days > 730)
+    if ( age >= 1 )
     {
-    $("#age").val( (days / 365).toFixed(0) ) ;
-    $("#unite").val("1037") ;
-    }
-    else if (days > 28)
-    {
-    $("#age").val( (days / 30).toFixed(0) ) ;
-    $("#unite").val("1036") ;
-    }
-    else if (days > 6)
-    {
-    $("#age").val( (days / 7).toFixed(0) ) ;
-    $("#unite").val("1035") ;
+        $("#age").val( age ) ;
+        $("#unite").val("1037") ;
     }
     else
     {
-    $("#age").val( (days).toFixed(0) ) ;
-    $("#unite").val("1034") ;
-    }
+    var days = diff/1000/60/60/24;
 
+        if (days >= 28)
+        {
+        $("#age").val( (days / 30).toFixed(0) ) ;
+        $("#unite").val("1036") ;
+        }
+        else
+        {
+        $("#age").val( (days).toFixed(0) ) ;
+        $("#unite").val("1034") ;
+        }
+    }
 } ) ;
 
 function return_back()

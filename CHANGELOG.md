@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.1.1] - 2021-09-23
+### Changed
+- No more validation step page for record request internal and external
+- warning on record request if no sample
+
+### Fixed
+- english words works in search fields if english language is choose for repository
+- few translations in dictionnary
+- barcode generation (add Pillow library with pip)
+
 ## [3.1.0] - 2021-09-15
 ### Added
 - New languages avaible : Arabic, Khmer, Laotian, Malagasy, Portuguese

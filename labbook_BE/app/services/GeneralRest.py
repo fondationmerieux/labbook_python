@@ -77,3 +77,18 @@ class DefaultValue(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE DefaultValue : ' + name)
         return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class InitVersion(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        # check if need to init version
+        ini = Various.getLastInitVersion()
+
+        if ini['ini_stat'] == 'Y':
+            if Various.updateTranslationsTable('en_GB'):
+                Various.updateInitVersion(ini['ini_ser'], 'N')
+
+        self.log.info(Logs.fileline() + ' : TRACE InitVersion ini_ser=' + str(ini['ini_ser']))
+        return compose_ret('', Constants.cst_content_type_json)

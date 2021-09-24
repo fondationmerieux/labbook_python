@@ -3732,11 +3732,11 @@ msgstr "Français (FR)"
 
 #: templates/setting-det-user.html:116
 msgid "Anglais (UK)"
-msgstr ""
+msgstr "Inglês (Reino Unido)"
 
 #: templates/setting-det-user.html:117
 msgid "Américain (US)"
-msgstr ""
+msgstr "Inglês (US)"
 
 #: templates/setting-det-user.html:118 templates/skeleton.html:34
 msgid "Arabe (AR)"
@@ -3751,12 +3751,12 @@ msgid "Laotien (LO)"
 msgstr ""
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
-msgid "Malgache (MG)"
+msgid "Malagasy (MG)"
 msgstr ""
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
 msgid "Portugais (PT)"
-msgstr ""
+msgstr "Português (PT)"
 
 #: templates/setting-det-user.html:307
 msgid "Veuillez saisir un identifiant."
@@ -3892,43 +3892,43 @@ msgstr "Módulo de faturação ativado"
 
 #: templates/setting-pref.html:85
 msgid "Langue des rapports"
-msgstr ""
+msgstr "Linguagem dos relatórios"
 
 #: templates/setting-pref.html:88 templates/setting-pref.html:103
 msgid "Français"
-msgstr ""
+msgstr "Francês"
 
 #: templates/setting-pref.html:89 templates/setting-pref.html:104
 msgid "Anglais"
-msgstr ""
+msgstr "Inglês"
 
 #: templates/setting-pref.html:90
 msgid "Américain"
-msgstr ""
+msgstr "Americano"
 
 #: templates/setting-pref.html:91
 msgid "Arabe"
-msgstr ""
+msgstr "Arabe"
 
 #: templates/setting-pref.html:92
 msgid "Khmer"
-msgstr ""
+msgstr "Khmer"
 
 #: templates/setting-pref.html:93
 msgid "Laotien"
-msgstr ""
+msgstr "Laosiano"
 
 #: templates/setting-pref.html:94
-msgid "Malgache"
-msgstr ""
+msgid "Malagasy"
+msgstr "Malgaxe"
 
 #: templates/setting-pref.html:95
 msgid "Portugais"
-msgstr ""
+msgstr "Português"
 
 #: templates/setting-pref.html:100
 msgid "Langue du référentiel"
-msgstr ""
+msgstr "Língua do repositório"
 
 #: templates/setting-pwd-user.html:5 templates/setting-pwd-user.html:12
 msgid "Mise à jour du mot de passe"

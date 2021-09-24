@@ -2,6 +2,8 @@
 import logging
 import mysql.connector
 
+from flask import session
+
 # from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
@@ -12,27 +14,53 @@ class Analysis:
 
     @staticmethod
     def getAnalysisSearch(text, type="A"):
+        """Search in analysis table
+
+        This function is call by search field on analyze or search form on setting analyze page
+
+        Args:
+            text (string): words of research.
+            type (string): 'A' for search only analysis or 'P' for search only pathological product.
+
+        Returns:
+            dict: dictionnary of data.
+
+        """
+
         cursor = DB.cursor()
 
         l_words = text.split(' ')
 
-        cond = 'ref.actif = 4'
+        cond  = 'ana.actif = 4'
+        trans = ''
 
+        # only in analysis without sample analysis
         if type == "A":
-            cond += ' and (ref.cote_unite != "PB" or ref.cote_unite is NULL)'
+            cond += ' and (ana.cote_unite != "PB" or ana.cote_unite is NULL)'
+        # only in sample analysis
         elif type == "P":
-            cond += ' and ref.cote_unite = "PB"'
+            cond += ' and ana.cote_unite = "PB"'
 
-        for word in l_words:
-            cond = (cond +
-                    ' and (ref.code like "' + word + '%" or '
-                    'ref.nom like "%' + word + '%" or '
-                    'ref.abbr like "%' + word + '%") ')
+        if session['lang_db'] == 'fr_FR':
+            for word in l_words:
+                cond = (cond +
+                        ' and (ana.code like "' + word + '%" or '
+                        'ana.nom like "%' + word + '%" or '
+                        'ana.abbr like "%' + word + '%") ')
+        else:
+            trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
+                     'tr.tra_type="ana_name" and tr.tra_ref=ana.id_data ')
 
-        req = ('select ref.id_data as id, CONCAT(ref.code, " ", COALESCE(ref.abbr, "")) as code, '
-               'ref.nom as name,  COALESCE(dict.label, "") as label '
-               'from sigl_05_data as ref '
-               'left join sigl_dico_data as dict on dict.id_data=ref.famille '
+            for word in l_words:
+                cond = (cond +
+                        ' and (ana.code like "' + word + '%" or '
+                        'tr.tra_text like "%' + word + '%" or '
+                        'ana.abbr like "%' + word + '%") ')
+
+        req = ('select ana.id_data as id, CONCAT(ana.code, " ", COALESCE(ana.abbr, "")) as code, '
+               'ana.nom as name,  COALESCE(dict.label, "") as label '
+               'from sigl_05_data as ana '
+               'left join sigl_dico_data as dict on dict.id_data=ana.famille ' + trans +
                'where ' + cond + ' order by nom asc limit 1000')
 
         cursor.execute(req)
@@ -41,17 +69,37 @@ class Analysis:
 
     @staticmethod
     def getAnalysisVarSearch(text):
+        """Search in variables table
+
+        This function is call by search field on variables
+
+        Args:
+            text (string): words of research.
+
+        Returns:
+            dict: dictionnary of data.
+
+        """
+
         cursor = DB.cursor()
 
         l_words = text.split(' ')
 
-        cond = 'libelle is not NULL '
+        cond  = 'var.libelle is not NULL '
+        trans = ''
 
-        for word in l_words:
-            cond = (cond + ' and (libelle like "%' + word + '%") ')
+        if session['lang_db'] == 'fr_FR':
+            for word in l_words:
+                cond = (cond + ' and (var.libelle like "%' + word + '%") ')
+        else:
+            trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
+                     'tr.tra_type="var_name" and tr.tra_ref=var.id_data ')
 
-        req = ('select libelle as field_value, id_data '
-               'from sigl_07_data '
+            for word in l_words:
+                cond = (cond + ' and (tr.tra_text like "%' + word + '%") ')
+
+        req = ('select var.libelle as field_value, var.id_data '
+               'from sigl_07_data as var ' + trans +
                'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
@@ -410,6 +458,7 @@ class Analysis:
         cursor = DB.cursor()
 
         filter_cond = ''
+        trans       = ''
 
         if not args:
             limit = 'LIMIT 2000'
@@ -425,8 +474,17 @@ class Analysis:
             else:
                 filter_cond += ' ana.actif=4 '  # keep only activated analyzes by default
 
-            if args['name']:
-                filter_cond += ' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") '
+            if session['lang_db'] == 'fr_FR':
+                if args['name']:
+                    filter_cond += (' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
+                                    args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
+            else:
+                if args['name']:
+                    trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
+                             'tr.tra_type="ana_name" and tr.tra_ref=ana.id_data ')
+
+                    filter_cond += (' and (tr.tra_text LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
+                                    args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
 
             if args['type_ana'] and args['type_ana'] > 0:
                 filter_cond += ' and ana.famille=' + str(args['type_ana']) + ' '
@@ -438,7 +496,7 @@ class Analysis:
                'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '
                'from sigl_05_data as ana '
                'left join sigl_dico_data as dico on dico.id_data=ana.famille '
-               'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
+               'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique ' + trans +
                'where ' + filter_cond +
                'group by ana.code order by ana.code asc ' + limit)
 

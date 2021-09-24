@@ -155,6 +155,7 @@ api.add_resource(FileDoc,             '/services/file/document/<string:type_ref>
 api.add_resource(FileNbManual,        '/services/file/count/manual')
 api.add_resource(FileReport,          '/services/file/report/record/<int:id_rec>')
 api.add_resource(FileStorage,         '/services/file/storage/<int:id_group>')
+api.add_resource(InitVersion,         '/services/init/version')
 api.add_resource(ManualList,          '/services/quality/manual/list')
 api.add_resource(ManualDet,           '/services/quality/manual/det/<int:id_item>')
 api.add_resource(ManualExport,        '/services/quality/manual/export')

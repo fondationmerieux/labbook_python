@@ -51,8 +51,8 @@ class AnalysisVarSearch(Resource):
         # TRANSLATION
         if Various.needTranslationDB():
             for var in l_vars:
-                var_libel = var['libelle']
-                var['libelle'] = _(var_libel.strip())
+                var_libel = var['field_value']
+                var['field_value'] = _(var_libel.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisVarSearch')
         return compose_ret(l_vars, Constants.cst_content_type_json)

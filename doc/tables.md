@@ -61,9 +61,11 @@
 | alembic_version	                         | -       	 | numéro de version migration alembic      |
 | backup_setting	                         | SETTINGS	 | paramètre sauvegarde                     |
 | database_status	                         | LOG	         | statut du dernier import référentiel     |
+| init_version                                   | LOG           | use to start process after alembic once  |
 | product_details	                         | STOCK	 | fiche produit                            |
 | product_supply	                         | STOCK	 | approvisionnement produit                |
 | product_use	                                 | STOCK	 | usage produit                            |
 | sticker_setting	                         | SETTINGS	 | paramètre code barre                     |
+| translations  	                         | LANGUAGE	 | translations for search fields           |
 
-65 tables used 
+67 tables used 

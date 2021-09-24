@@ -3743,7 +3743,7 @@ msgid "Laotien (LO)"
 msgstr ""
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
-msgid "Malgache (MG)"
+msgid "Malagasy (MG)"
 msgstr ""
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
@@ -3884,43 +3884,43 @@ msgstr "ເປີດໃຊ້ພາກໃບບິນເກັບເງິນ"
 
 #: templates/setting-pref.html:85
 msgid "Langue des rapports"
-msgstr ""
+msgstr "ພາສາຂອງບົດລາຍງານ"
 
 #: templates/setting-pref.html:88 templates/setting-pref.html:103
 msgid "Français"
-msgstr ""
+msgstr "Frenchຣັ່ງ"
 
 #: templates/setting-pref.html:89 templates/setting-pref.html:104
 msgid "Anglais"
-msgstr ""
+msgstr "ພາສາອັງກິດ"
 
 #: templates/setting-pref.html:90
 msgid "Américain"
-msgstr ""
+msgstr "ອາເມຣິກາ"
 
 #: templates/setting-pref.html:91
 msgid "Arabe"
-msgstr ""
+msgstr "ອາຣັບ"
 
 #: templates/setting-pref.html:92
 msgid "Khmer"
-msgstr ""
+msgstr "ຂະແມ"
 
 #: templates/setting-pref.html:93
 msgid "Laotien"
-msgstr ""
+msgstr "ຄົນລາວ"
 
 #: templates/setting-pref.html:94
-msgid "Malgache"
-msgstr ""
+msgid "Malagasy"
+msgstr "ມາລາກາຊີ"
 
 #: templates/setting-pref.html:95
 msgid "Portugais"
-msgstr ""
+msgstr "ປອກຕຸຍການ"
 
 #: templates/setting-pref.html:100
 msgid "Langue du référentiel"
-msgstr ""
+msgstr "ພາສາຂອງຫໍໄຕ"
 
 #: templates/setting-pwd-user.html:5 templates/setting-pwd-user.html:12
 msgid "Mise à jour du mot de passe"
