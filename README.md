@@ -12,19 +12,94 @@ It contains two separate python applications that constitute the LabBook applica
 
 - linux
 - podman
-- MySQL
+- MySQL or MariaDB
+- make
 
-# Installation
+# Installation and usage
 
-For the time being, LabBook is developped with several virtual machines.
+The development setup mirrors the production setup with the application running in a container that connects to the database on the host.
 
-We are working on a more lightweight setup.
+## Clone the repository
 
-# Usage
+~~~
+git clone https://github.com/fondationmerieux/labbook_python.git
+~~~
 
-To see the available commands :
+## Database setup
 
-    make help
+### Root user
+
+LabBook connects as `root` to the database.
+We must grant access to root from the container.
+
+~~~
+$ mysql -u root -p -h 127.0.0.1
+Enter password:
+[...]
+MariaDB [(none)]> CREATE USER root@'10.88.%.%' IDENTIFIED BY 'root';
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON *.* TO root@'10.88.%.%';
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.008 sec)
+~~~
+
+### sql_mode
+
+Clear the sql_mode parameter in your `.cnf` configuration file.
+
+For example for MariaDB version 10.3.17
+
+~~~
+# in /etc/my.cnf.d/mariadb-server.cnf 
+...
+[mariadb]
+sql_mode=''
+...
+~~~
+
+## Commands available
+
+~~~
+$ make help
+Usage:
+
+When shipping an image:
+  make build [VERSION=version]       build image localhost/labbook-python:version from v3.1.1 tag
+  make save [VERSION=version]        save image localhost/labbook-python:version to /tmp/labbook-python-version.tar,
+                                     compress tar to tar.xz and compute md5sums for them
+  make clean [VERSION=version]       remove image localhost/labbook-python:version
+Default version value in VERSION file=3.1.1 TAG_NAME=v3.1.1
+
+For developers:
+  make dbtest        test connection to MySQL with username=root password=root
+  make dbinit        initialize SIGL database from etc/sql/demo_dump.sql
+  make devbuild      build image localhost/labbook-python:latest from working directory
+  make devclean      remove image localhost/labbook-python:latest
+  make devrun        run the application access from http://localhost:5000/sigl
+  make devstop       stop the application
+~~~
+
+The commands in the first group are used to build an image in order to release a LabBook version.
+
+The second group of commands provides a few shortcuts when working on LabBook development.
+The more useful are:
+
+- `make dbinit` creates and loads the database used at [the LabBook demo](http://demo.lab-book.org/).
+- `make devbuild` builds an image from the files in the working directory with the same `Dockerfile` used for building production images.
+- `make devrun` runs a container from the image built by `make devbuild` but it substitutes some directories in the container
+ with the current ones. This way if you reload the page you're currently on, you get the current version of it.
+ Please note that you should take a look at the actual list of directories mapped into the container from the `Makefile`
+ or the `make devrun` output. To reflect changes from any other file into the application you need to rebuild the image.
+
+Note1: LabBook containers run in privileged mode, you must use `sudo` with all `make dev*` commands.
+
+Note2: LabBook uses a storage volume to hold various files.
+The initial content of the volume is stored in the `./storage` directory of the source tree.
+In order to prevent modification of this directory it is replicated to a `DEVRUN_STORAGE` directory before mounting it into the container.
+`DEVRUN_STORAGE=./devrun_storage` by default, you can modify it by setting the `DEVRUN_STORAGE` environment variable.
 
 # Documentation
 

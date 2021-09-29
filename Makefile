@@ -16,10 +16,17 @@ POD_NAME=labbook
 CONTAINER_NAME=labbook_python
 DEVRUN_HTTP=5000
 DEVRUN_STORAGE?=./devrun_storage
+DEVRUN_FE_BASE_PATH=/home/apps/labbook_FE
+DEVRUN_BE_BASE_PATH=/home/apps/labbook_BE
+DEVRUN_FE_DIRS=alembic app script
 DEVRUN_GENERAL_OPTIONS=--rm --detach --pod=$(POD_NAME) --name=$(CONTAINER_NAME)
 DEVRUN_ENV_OPTIONS=--tz=local --env TZ --env TERM --env LANG --env SERVER_EXT=$(shell hostname)
-# TODO add volume option(s) to mount local application code into the container
-DEVRUN_VOLUME_OPTIONS=--volume=/var/lib/mysql:/var/lib/mysql:Z --volume=$(DEVRUN_STORAGE):/storage:Z
+DEVRUN_VOLUME_OPTIONS=\
+--volume=$(DEVRUN_STORAGE):/storage:Z \
+--volume=./labbook_FE/app:$(DEVRUN_FE_BASE_PATH)/labbook_FE/app \
+--volume=./labbook_BE/alembic:$(DEVRUN_BE_BASE_PATH)/labbook_BE/alembic \
+--volume=./labbook_BE/app:$(DEVRUN_BE_BASE_PATH)/labbook_BE/app \
+--volume=./labbook_BE/script:$(DEVRUN_BE_BASE_PATH)/labbook_BE/script
 
 ifdef VERSION
 BUILD_VERSION=$(VERSION)
@@ -36,8 +43,11 @@ endif
 .PHONY: help
 help:
 	@echo 'Usage:'
+	@echo ''
+	@echo 'When shipping an image:'
 	@echo '  make build [VERSION=version]       build image $(FULL_IMAGE_NAME):version from $(TAG_NAME) tag'
-	@echo '  make save [VERSION=version]        save image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)-version.tar'
+	@echo '  make save [VERSION=version]        save image $(FULL_IMAGE_NAME):version to $(SAVE_DIR)/$(IMAGE_NAME)-version.tar,'
+	@echo '                                     compress tar to tar.xz and compute md5sums for them'                           
 	@echo '  make clean [VERSION=version]       remove image $(FULL_IMAGE_NAME):version'
 	@echo 'Default version value in VERSION file=$(DEFAULT_VERSION) TAG_NAME=$(TAG_NAME)'
 	@echo ''
@@ -46,7 +56,8 @@ help:
 	@echo '  make dbinit        initialize $(DB_NAME) database from $(SQLDUMP_FILENAME)'
 	@echo '  make devbuild      build image $(FULL_IMAGE_NAME):latest from working directory'
 	@echo '  make devclean      remove image $(FULL_IMAGE_NAME):latest'
-	@echo '  make devrun        run container connected to local MySQL database $(DB_NAME)'
+	@echo '  make devrun        run the application access from http://localhost:$(DEVRUN_HTTP)/sigl'
+	@echo '  make devstop       stop the application'
 
 .PHONY: build
 build:
@@ -101,5 +112,11 @@ devclean:
 devrun:
 	mkdir -p $(DEVRUN_STORAGE)
 	rsync -a ./storage/ $(DEVRUN_STORAGE)
-	$(DOCKER_COMMAND) pod exists $(POD_NAME) || $(DOCKER_COMMAND) pod create $(POD_NAME) --publish=$(DEVRUN_HTTP):80
+	$(DOCKER_COMMAND) pod exists $(POD_NAME) || $(DOCKER_COMMAND) pod create --name=$(POD_NAME) --publish=$(DEVRUN_HTTP):80
 	$(DOCKER_COMMAND) run $(DEVRUN_GENERAL_OPTIONS) $(DEVRUN_ENV_OPTIONS) $(DEVRUN_VOLUME_OPTIONS) $(FULL_IMAGE_NAME):latest
+
+.PHONY: devstop
+devstop:
+	$(DOCKER_COMMAND) stop $(CONTAINER_NAME)
+	$(DOCKER_COMMAND) pod stop $(POD_NAME)
+	$(DOCKER_COMMAND) pod rm $(POD_NAME)
