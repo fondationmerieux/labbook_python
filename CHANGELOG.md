@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.1.2] - 2021-10-06
+### Fixed
+- bunch of translations
+- search result in list-results page
+- quote visible on few buttons
+- text too long (with KM and LO) on homepage with Firefox
+
 ## [3.1.1] - 2021-09-23
 ### Changed
 - No more validation step page for record request internal and external

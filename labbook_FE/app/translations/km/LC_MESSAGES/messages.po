@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-17 09:39+0200\n"
+"POT-Creation-Date: 2021-10-05 14:36+0200\n"
 "PO-Revision-Date: 2021-09-03 15:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
@@ -50,7 +50,7 @@ msgstr "អ្នកជំងឺអនាមិក"
 #: templates/administrative-record.html:39
 #: templates/administrative-record.html:578
 #: templates/biological-validation.html:40
-#: templates/biological-validation.html:725 templates/det-req-ext.html:51
+#: templates/biological-validation.html:726 templates/det-req-ext.html:51
 #: templates/det-req-int.html:54 templates/det-sample.html:37
 #: templates/enter-result.html:40 templates/enter-result.html:813
 #: templates/technical-validation.html:40
@@ -61,7 +61,7 @@ msgstr "ថ្ងៃ ខែ ឆ្នាំកំណើត"
 #: templates/administrative-record.html:43
 #: templates/administrative-record.html:580
 #: templates/biological-validation.html:44
-#: templates/biological-validation.html:727 templates/det-sample.html:41
+#: templates/biological-validation.html:728 templates/det-sample.html:41
 #: templates/enter-result.html:44 templates/enter-result.html:815
 #: templates/technical-validation.html:44
 #: templates/technical-validation.html:550
@@ -71,7 +71,7 @@ msgstr "ឆ្នាំ"
 #: templates/administrative-record.html:44
 #: templates/administrative-record.html:581
 #: templates/biological-validation.html:45
-#: templates/biological-validation.html:728 templates/det-sample.html:42
+#: templates/biological-validation.html:729 templates/det-sample.html:42
 #: templates/enter-result.html:45 templates/enter-result.html:816
 #: templates/technical-validation.html:45
 #: templates/technical-validation.html:551
@@ -81,7 +81,7 @@ msgstr "ខែ"
 #: templates/administrative-record.html:45
 #: templates/administrative-record.html:582
 #: templates/biological-validation.html:46
-#: templates/biological-validation.html:729 templates/det-sample.html:43
+#: templates/biological-validation.html:730 templates/det-sample.html:43
 #: templates/enter-result.html:46 templates/enter-result.html:817
 #: templates/technical-validation.html:46
 #: templates/technical-validation.html:552
@@ -91,7 +91,7 @@ msgstr "សប្តាហ៍"
 #: templates/administrative-record.html:46
 #: templates/administrative-record.html:583
 #: templates/biological-validation.html:47
-#: templates/biological-validation.html:730 templates/det-sample.html:44
+#: templates/biological-validation.html:731 templates/det-sample.html:44
 #: templates/enter-result.html:47 templates/enter-result.html:818
 #: templates/technical-validation.html:47
 #: templates/technical-validation.html:553
@@ -142,7 +142,7 @@ msgid "Date de réception du dossier"
 msgstr "កាលបរិច្ឆេទនៃរបាយការណ៏"
 
 #: templates/administrative-record.html:65 templates/det-req-ext.html:82
-#: templates/det-req-int.html:85
+#: templates/det-req-int.html:85 templates/display_histo.js:10
 msgid "Date de prescription"
 msgstr "កាលបរិច្ឆេទនៃវេជ្ជបញ្ជា"
 
@@ -574,6 +574,7 @@ msgstr "សុពលភាពនៃលទ្ធផលដែលបានពិន
 #: templates/biological-validation.html:72 templates/enter-result.html:294
 #: templates/enter-result.html:525 templates/list-results.html:246
 #: templates/list-results.html:480 templates/technical-validation.html:294
+#: templates/technical-validation.html:403
 msgid "Date de validation"
 msgstr "សុពលភាពនៃ កាលបរិច្ឆេទ"
 
@@ -585,16 +586,20 @@ msgstr "ជីវវិទូ"
 #: templates/biological-validation.html:80
 #: templates/biological-validation.html:120 templates/det-req-ext.html:282
 #: templates/det-req-int.html:293 templates/det-sample.html:131
-#: templates/det-supplier.html:73 templates/non-conformity.html:750
+#: templates/det-supplier.html:73 templates/display_histo.js:39
+#: templates/non-conformity.html:750
 msgid "Commentaire"
 msgstr "យោបល់"
 
 #: templates/biological-validation.html:89 templates/det-list-stock.html:80
-#: templates/det-req-ext.html:312 templates/det-req-int.html:323
+#: templates/det-req-ext.html:310 templates/det-req-ext.html:312
+#: templates/det-req-int.html:321 templates/det-req-int.html:323
 #: templates/enter-result.html:320 templates/enter-result.html:551
 #: templates/list-results.html:272 templates/list-results.html:506
 #: templates/setting-backup.html:67 templates/setting-backup.html:97
 #: templates/setting-backup.html:122 templates/setting-backup.html:147
+#: templates/technical-validation.html:320
+#: templates/technical-validation.html:429
 msgid "Valider"
 msgstr "ធ្វើ​ឱ្យ​មាន​សុពលភាព"
 
@@ -650,8 +655,8 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលក
 msgid "Une erreur est survenue lors de création des résultats"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលបង្កើតលទ្ធផល"
 
-#: templates/biological-validation.html:306 templates/det-req-ext.html:1263
-#: templates/det-req-int.html:1112 templates/enter-result.html:646
+#: templates/biological-validation.html:306 templates/det-req-ext.html:1329
+#: templates/det-req-int.html:1178 templates/enter-result.html:646
 #: templates/technical-validation.html:193
 msgid "Une erreur est survenue lors de l'enregistrement des analyses"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលរក្សាទុកការវិភាគ"
@@ -678,11 +683,11 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលដ
 msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
 msgstr "កំហុសមួយបានកើតឡើងកំឡុងពេលធ្វើសុពលភាពនៃតម្លៃជីវសាស្ត្រដែលបានបញ្ចូល"
 
-#: templates/biological-validation.html:523
+#: templates/biological-validation.html:524
 msgid "Réinitialiser la valeur"
 msgstr "កំណត់តម្លៃឡើងវិញ"
 
-#: templates/biological-validation.html:618 templates/det-equipment.html:271
+#: templates/biological-validation.html:619 templates/det-equipment.html:271
 #: templates/det-equipment.html:308 templates/det-equipment.html:345
 #: templates/det-equipment.html:382 templates/det-manual.html:113
 #: templates/det-manual.html:150 templates/det-manual.html:187
@@ -704,17 +709,17 @@ msgstr "កំណត់តម្លៃឡើងវិញ"
 msgid "Cliquer pour commencer une recherche"
 msgstr "ចុចដើម្បីចាប់ផ្តើមការស្វែងរក"
 
-#: templates/biological-validation.html:685 templates/enter-result.html:720
+#: templates/biological-validation.html:686 templates/enter-result.html:720
 #: templates/technical-validation.html:508
 msgid "Analyse déjà présente !"
 msgstr "ការវិភាគមានវត្តមានរួចហើយ!"
 
-#: templates/biological-validation.html:710 templates/enter-result.html:745
+#: templates/biological-validation.html:711 templates/enter-result.html:745
 #: templates/technical-validation.html:533
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "កំហុសក្នុងការទាញយកការវិភាគ"
 
-#: templates/biological-validation.html:739
+#: templates/biological-validation.html:740
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr "ការប្រុងប្រយ័ត្ន អ្នកនឹងចាកចេញពីឯកសារនេះដោយមិនបានធ្វើឱ្យមានសុពលភាព។"
 
@@ -847,8 +852,7 @@ msgstr "អាស័យដ្ឋានអ៊ីម៉ែល"
 #: templates/det-doctor.html:120 templates/det-equipment.html:252
 #: templates/det-manual.html:99 templates/det-meeting.html:69
 #: templates/det-new-product.html:86 templates/det-patient.html:197
-#: templates/det-procedure.html:100 templates/det-req-ext.html:310
-#: templates/det-req-int.html:321 templates/det-sample.html:145
+#: templates/det-procedure.html:100 templates/det-sample.html:145
 #: templates/det-staff.html:207 templates/det-stock-product.html:78
 #: templates/det-supplier.html:85 templates/enter-result.html:292
 #: templates/enter-result.html:523 templates/list-results.html:244
@@ -871,7 +875,7 @@ msgstr "សូមបញ្ចូលឈ្មោះ។"
 #: templates/det-meeting.html:168 templates/det-new-product.html:189
 #: templates/det-procedure.html:289 templates/det-sample.html:215
 #: templates/det-staff.html:280 templates/det-stock-product.html:186
-#: templates/det-supplier.html:147 templates/homepage.html:124
+#: templates/det-supplier.html:147 templates/homepage.html:121
 #: templates/list-laboratory.html:309 templates/manage-pat-records.html:605
 #: templates/non-conformity.html:1371 templates/setting-age-interval.html:222
 #: templates/setting-backup.html:329 templates/setting-backup.html:336
@@ -1434,7 +1438,7 @@ msgid "Demande d'analyses patient - Fiche patient"
 msgstr "ការស្នើរសុំវិភាគរបស់អ្នកជំងឺ - ទំរង់របស់អ្នកជំងឺ "
 
 #: templates/det-patient.html:23 templates/manage-pat-records.html:50
-#: templates/manage-pat-records.html:242
+#: templates/manage-pat-records.html:242 templates/pat_ident.js:15
 msgid "Anonyme"
 msgstr "អនាមិក"
 
@@ -1619,51 +1623,61 @@ msgstr "កំហុសក្នុងកំឡុងពេលនៃការស
 msgid "Merci de confirmer la suppression"
 msgstr "សូមបញ្ជាក់ការលុបចោល"
 
-#: templates/det-req-ext.html:1069 templates/det-req-int.html:936
+#: templates/det-req-ext.html:1070 templates/det-req-int.html:937
 msgid "Veuillez sélectionner au moins une analyse"
 msgstr "សូមជ្រើសរើសយ៉ាងហោចណាស់ការវិភាគចំនួនមួយ"
 
-#: templates/det-req-ext.html:1082 templates/det-req-int.html:952
+#: templates/det-req-ext.html:1083 templates/det-req-int.html:953
 msgid "Veuillez sélectionner une date de réception du dossier"
 msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃទទួលឯកសារចំនួនមួយ"
 
-#: templates/det-req-ext.html:1089 templates/det-req-int.html:959
+#: templates/det-req-ext.html:1090 templates/det-req-int.html:960
 msgid "Veuillez sélectionner une date de prescription"
 msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃវេជ្ជបញ្ជាចំនួនមួយ"
 
-#: templates/det-req-ext.html:1098 templates/det-req-int.html:968
+#: templates/det-req-ext.html:1099 templates/det-req-int.html:969
 msgid "Veuillez renseigner le type du produit"
 msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃវេជ្ជបញ្ជាចំនួនមួយ"
 
-#: templates/det-req-ext.html:1104 templates/det-req-int.html:974
+#: templates/det-req-ext.html:1105 templates/det-req-int.html:975
 msgid "Veuillez renseigner le statut du produit"
 msgstr "សូមបញ្ចូលស្ថានភាពនៃផលិតផល"
 
-#: templates/det-req-ext.html:1111 templates/det-req-int.html:981
+#: templates/det-req-ext.html:1112 templates/det-req-int.html:982
 msgid "Veuillez renseigner toutes les dates de réception"
 msgstr "សូមបំពេញកាលបរិច្ឆេទទាំងអស់នៃការទទួល"
 
-#: templates/det-req-ext.html:1117 templates/det-req-int.html:987
+#: templates/det-req-ext.html:1118 templates/det-req-int.html:988
 msgid "Veuillez renseigner toutes les identités des préleveurs"
 msgstr "សូមបំពេញនូវអត្តសញ្ញាណទាំងអស់របស់គំរូវិភាគ"
 
-#: templates/det-req-ext.html:1256 templates/det-req-int.html:1105
-msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
-msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងកត់ត្រាវិត្ថុវិភាគ"
+#: templates/det-req-ext.html:1125 templates/det-req-int.html:995
+msgid "Avertissement : Ce dossier n'est associé à aucun prélèvement"
+msgstr "ព្រមាន៖ ឯកសារនេះមិនត្រូវបានភ្ជាប់ជាមួយគំរូណាមួយឡើយ"
 
-#: templates/det-req-ext.html:1270 templates/det-req-int.html:1119
-msgid "Une erreur est survenue lors de l'enregistrement du dossier"
-msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងរក្សាទុកឯកសារ"
+#: templates/det-req-ext.html:1128 templates/det-req-int.html:998
+msgid "Merci de confirmer la création et validation de ce dossier"
+msgstr "សូមបញ្ជាក់ពីការបង្កើតនិងសុពលភាពនៃឯកសារនេះ"
 
-#: templates/det-req-ext.html:1321 templates/det-req-int.html:1170
+#: templates/det-req-ext.html:1302 templates/det-req-ext.html:1393
+#: templates/det-req-int.html:1151 templates/det-req-int.html:1242
 #: templates/enter-result.html:632 templates/technical-validation.html:175
 msgid "Une erreur est survenue lors du changement de statut du dossier"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងធ្វើការផ្លាស់ប្តូរស្ថានភាពនៃឯកសារ"
 
-#: templates/det-req-ext.html:1330 templates/det-req-int.html:1179
+#: templates/det-req-ext.html:1311 templates/det-req-ext.html:1402
+#: templates/det-req-int.html:1160 templates/det-req-int.html:1251
 #: templates/enter-result.html:639 templates/technical-validation.html:184
 msgid "Une erreur est survenue lors de la création des résultats"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងបង្កើតលទ្ធផល"
+
+#: templates/det-req-ext.html:1320 templates/det-req-int.html:1169
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងកត់ត្រាវិត្ថុវិភាគ"
+
+#: templates/det-req-ext.html:1338 templates/det-req-int.html:1187
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងរក្សាទុកឯកសារ"
 
 #: templates/det-req-int.html:16 templates/new-req-int.html:14
 msgid "Demande d'analyses patient hospitalisé"
@@ -1784,6 +1798,35 @@ msgstr "ទំនាក់ទំនង"
 msgid "Veuillez saisir un fournisseur."
 msgstr "សូមបញ្ចូលអ្នកផ្គត់ផ្គង់។"
 
+#: templates/display_histo.js:7
+msgid "Création du dossier"
+msgstr "ការបង្កើតថតឯកសារ"
+
+#: templates/display_histo.js:9
+msgid "Analyse demandée"
+msgstr "បានស្នើសុំការវិភាគ"
+
+#: templates/display_histo.js:36 templates/enter-result.html:388
+#: templates/list-results.html:343 templates/technical-validation.html:384
+msgid "ANNULE"
+msgstr "បានរំសាយ"
+
+#: templates/display_histo.js:44 templates/report-today.html:81
+msgid "Validation"
+msgstr "សុពលភាព"
+
+#: templates/display_histo.js:57 templates/hist-analyzes.html:170
+#: templates/hist-patients.html:154 templates/hist-stock-product.html:135
+#: templates/list-doctors.html:173 templates/list-nonconformities.html:140
+#: templates/list-stock.html:166 templates/manage-pat-records.html:680
+#: templates/manage-pat-records.html:703 templates/report-activity.html:123
+#: templates/report-billing.html:205 templates/report-statistic.html:120
+#: templates/report-today.html:155 templates/setting-analyzes.html:168
+#: templates/setting-dicts.html:142 templates/setting-users.html:178
+#: templates/stat_rec_with_det.js:51
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងស្ដារទិន្នន័យឡើងវិញ"
+
 #: templates/enter-result.html:5 templates/enter-result.html:16
 #: templates/list-records.html:269 templates/list-results.html:5
 #: templates/list-results.html:14 templates/list-works.html:231
@@ -1810,13 +1853,10 @@ msgstr "កំហុសមួយបានកើតឡើងក្នុងអំ
 #: templates/enter-result.html:298 templates/enter-result.html:529
 #: templates/list-results.html:250 templates/list-results.html:484
 #: templates/setting-det-user.html:27 templates/setting-users.html:48
+#: templates/technical-validation.html:298
+#: templates/technical-validation.html:407
 msgid "Technicien"
 msgstr "អ្នកបច្ចេកទេស"
-
-#: templates/enter-result.html:388 templates/list-results.html:343
-#: templates/technical-validation.html:384
-msgid "ANNULE"
-msgstr "បានរំសាយ"
 
 #: templates/hist-analyzes.html:5 templates/hist-analyzes.html:12
 msgid "Liste analyses"
@@ -1863,17 +1903,6 @@ msgstr "ចំនួនក្នុងអំឡុងពេល"
 #: templates/list-suppliers.html:60 templates/report-today.html:104
 msgid "Export des données"
 msgstr "បញ្ចេញទិន្នន័យ"
-
-#: templates/hist-analyzes.html:170 templates/hist-patients.html:154
-#: templates/hist-stock-product.html:135 templates/list-doctors.html:173
-#: templates/list-nonconformities.html:140 templates/list-stock.html:166
-#: templates/manage-pat-records.html:682 templates/manage-pat-records.html:705
-#: templates/report-activity.html:123 templates/report-billing.html:205
-#: templates/report-statistic.html:120 templates/report-today.html:155
-#: templates/setting-analyzes.html:168 templates/setting-dicts.html:142
-#: templates/setting-users.html:178
-msgid "Une erreur est survenue lors de la récupération des données"
-msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងស្ដារទិន្នន័យឡើងវិញ"
 
 #: templates/hist-analyzes.html:214 templates/hist-patients.html:196
 #: templates/popup_history.html:6
@@ -1946,7 +1975,7 @@ msgstr "ការគ្រប់គ្រងបម្រុងទុក"
 msgid "Gestion de la Facturation"
 msgstr "ការគ្រប់គ្រងវិក័យប័ត្រ"
 
-#: templates/homepage.html:26 templates/homepage.html:54
+#: templates/homepage.html:26
 msgid "Management de la Qualité"
 msgstr "ការគ្រប់គ្រងគុណភាព"
 
@@ -1981,40 +2010,40 @@ msgstr "ស្ថានភាពនៃវត្ថុវិភាគក្នុ
 msgid "Saisie des résultats"
 msgstr "ការបញ្ចូលលទ្ធផល"
 
-#: templates/homepage.html:57 templates/menu.html:24
+#: templates/homepage.html:54 templates/menu.html:24
 msgid "Nouvelle demande externe"
 msgstr "ការស្នើសុំថ្មីពី ខាងក្រៅ"
 
-#: templates/homepage.html:58 templates/menu.html:25
+#: templates/homepage.html:55 templates/menu.html:25
 #: templates/new-req-int.html:5
 msgid "Nouvelle demande hospitalisé"
 msgstr "ការស្នើសុំថ្មីពី ខាងក្នុង"
 
-#: templates/homepage.html:65
+#: templates/homepage.html:62
 msgid "Validations à effectuer"
 msgstr "សុពលភាពដែលត្រូវអនុវត្ត"
 
-#: templates/homepage.html:69
+#: templates/homepage.html:66
 msgid "Activité du laboratoire"
 msgstr "សកម្មភាពមន្ទីរពិសោធន៍"
 
-#: templates/homepage.html:71
+#: templates/homepage.html:68
 msgid "Dernier numéro utilisé"
 msgstr "លេខចុងក្រោយត្រូវបានប្រើ"
 
-#: templates/homepage.html:72
+#: templates/homepage.html:69
 msgid "Nombre de dossiers validés aujourd'hui"
 msgstr "ចំនួនឯកសារមានសុពលភាពក្នុងបច្ចុប្បន្ន"
 
-#: templates/homepage.html:73
+#: templates/homepage.html:70
 msgid "Nombre de dossiers enregistrés"
 msgstr "ចំនួនឯកសារដែលបានកត់ទុក"
 
-#: templates/homepage.html:87
+#: templates/homepage.html:84
 msgid "Biologique"
 msgstr "ជិវៈវិទូ"
 
-#: templates/homepage.html:87
+#: templates/homepage.html:84
 msgid "Technique"
 msgstr "បច្ចេកទេស"
 
@@ -2517,21 +2546,21 @@ msgstr "បញ្ចូលគ្នា"
 msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "សូមជ្រើសរើសថ្ងៃខែឆ្នាំកំណើតឬបញ្ចូលអាយុ"
 
-#: templates/manage-pat-records.html:754
+#: templates/manage-pat-records.html:752
 msgid ""
 "Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
 "fusion."
 msgstr "អ្នកត្រូវជ្រើសរើសកំណត់ត្រាអ្នកជំងឺពីរផ្សេងគ្នាដើម្បីអនុវត្តការបញ្ចូលចូលគ្នា។"
 
-#: templates/manage-pat-records.html:760
+#: templates/manage-pat-records.html:758
 msgid "Les fiches patients sont les mêmes dans la base de données."
 msgstr "ឯកសារអ្នកជំងឺគឺដូចគ្នានៅក្នុងឃ្លាំងទិន្នន័យ។"
 
-#: templates/manage-pat-records.html:766
+#: templates/manage-pat-records.html:764
 msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "ឯកសារអ្នកជំងឺដែលបាត់ត្រូវអនុវត្តការរួមបញ្ចូលឯកសារ។"
 
-#: templates/manage-pat-records.html:770
+#: templates/manage-pat-records.html:768
 msgid ""
 "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
@@ -2540,7 +2569,7 @@ msgstr ""
 "កំណត់ត្រារបស់អ្នកជម្ងឺដែលត្រូវលុបចោលនឹងត្រូវបានភ្ជាប់ទៅនឹងអ្នកជម្ងឺ៊/អ្នកជំងឺដាក់ត្រូវរក្សាទុក"
 " សូមបញ្ជាក់ការបញ្ចូលគ្នានេះ(សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ)"
 
-#: templates/manage-pat-records.html:794
+#: templates/manage-pat-records.html:792
 msgid "Une erreur est survenue lors de la fusion"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលបញ្ចូលគ្នា"
 
@@ -3263,10 +3292,6 @@ msgstr "មិនបានបញ្ជាក់"
 msgid "Famille"
 msgstr "គ្រួសារ"
 
-#: templates/report-today.html:81
-msgid "Validation"
-msgstr "សុពលភាព"
-
 #: templates/setting-age-interval.html:16
 msgid "Ajouter un intervalle"
 msgstr "បន្ថែមចន្លោះ "
@@ -3417,7 +3442,9 @@ msgid ""
 "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
 " seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
 "clé ?"
-msgstr "មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
+msgstr ""
+"មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ "
+"សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
 
 #: templates/setting-backup.html:226 templates/setting-backup.html:273
 msgid "Veuillez saisir un mot de passe"
@@ -3635,7 +3662,7 @@ msgstr "អថេរត្រូវបានប្រើរួចហើយនៅ
 msgid "Erreur lors la récupération des données"
 msgstr "មានកំហុសក្នុងអំឡុងពេលទាញយកទិន្នន័យមកវិញ"
 
-#: templates/setting-det-analysis.html:608
+#: templates/setting-det-analysis.html:608 templates/stat_sample.js:8
 msgid "Modifier"
 msgstr "កែសម្រួល"
 
@@ -3730,7 +3757,7 @@ msgstr "អង់គ្លេស (អាមេរិក)"
 
 #: templates/setting-det-user.html:118 templates/skeleton.html:34
 msgid "Arabe (AR)"
-msgstr ""
+msgstr "អារ៉ាប់ (AR)"
 
 #: templates/setting-det-user.html:119 templates/skeleton.html:35
 msgid "Khmer (KM)"
@@ -3738,15 +3765,15 @@ msgstr "ខ្មែរ (គ។ ម។ )"
 
 #: templates/setting-det-user.html:120 templates/skeleton.html:36
 msgid "Laotien (LO)"
-msgstr ""
+msgstr "ឡាវ (LO)"
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
 msgid "Malagasy (MG)"
-msgstr ""
+msgstr "ម៉ាឡាហ្កាស៊ី (MG)"
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
 msgid "Portugais (PT)"
-msgstr ""
+msgstr "ព័រទុយហ្កាល់ (PT)"
 
 #: templates/setting-det-user.html:307
 msgid "Veuillez saisir un identifiant."
@@ -4068,6 +4095,10 @@ msgstr "អង់គ្លេស (អាមេរិក)"
 msgid "Déconnexion"
 msgstr "ចាកចេញ"
 
+#: templates/stat_sample.js:6
+msgid "A saisir"
+msgstr "ដើម្បីរឹបអូស"
+
 #: templates/technical-validation.html:387
 msgid "Non rempli"
 msgstr "មិនពេញលេញ"
@@ -4095,3 +4126,4 @@ msgstr "កាលបរិច្ឆេទកំណត់សុពលភាពន
 #: templates/whonet-export.html:82
 msgid "Aucun résultat à exporter !"
 msgstr "គ្មានលទ្ធផលត្រូវនាំចេញទេ!"
+

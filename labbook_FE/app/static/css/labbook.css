@@ -927,6 +927,7 @@ background : transparent url(/static/img/urgence.png) center top no-repeat;
 {
 max-width : 800px;
 margin    : 0 auto;
+word-wrap : break-word; /* need with Firefox */
 }
 
 .links a

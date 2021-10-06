@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-17 09:39+0200\n"
+"POT-Creation-Date: 2021-10-05 14:36+0200\n"
 "PO-Revision-Date: 2021-09-03 15:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ar\n"
@@ -51,7 +51,7 @@ msgstr "مريض مجهول"
 #: templates/administrative-record.html:39
 #: templates/administrative-record.html:578
 #: templates/biological-validation.html:40
-#: templates/biological-validation.html:725 templates/det-req-ext.html:51
+#: templates/biological-validation.html:726 templates/det-req-ext.html:51
 #: templates/det-req-int.html:54 templates/det-sample.html:37
 #: templates/enter-result.html:40 templates/enter-result.html:813
 #: templates/technical-validation.html:40
@@ -62,7 +62,7 @@ msgstr " تاريخ الولادة"
 #: templates/administrative-record.html:43
 #: templates/administrative-record.html:580
 #: templates/biological-validation.html:44
-#: templates/biological-validation.html:727 templates/det-sample.html:41
+#: templates/biological-validation.html:728 templates/det-sample.html:41
 #: templates/enter-result.html:44 templates/enter-result.html:815
 #: templates/technical-validation.html:44
 #: templates/technical-validation.html:550
@@ -72,7 +72,7 @@ msgstr "سنوات"
 #: templates/administrative-record.html:44
 #: templates/administrative-record.html:581
 #: templates/biological-validation.html:45
-#: templates/biological-validation.html:728 templates/det-sample.html:42
+#: templates/biological-validation.html:729 templates/det-sample.html:42
 #: templates/enter-result.html:45 templates/enter-result.html:816
 #: templates/technical-validation.html:45
 #: templates/technical-validation.html:551
@@ -82,7 +82,7 @@ msgstr "شهر"
 #: templates/administrative-record.html:45
 #: templates/administrative-record.html:582
 #: templates/biological-validation.html:46
-#: templates/biological-validation.html:729 templates/det-sample.html:43
+#: templates/biological-validation.html:730 templates/det-sample.html:43
 #: templates/enter-result.html:46 templates/enter-result.html:817
 #: templates/technical-validation.html:46
 #: templates/technical-validation.html:552
@@ -92,7 +92,7 @@ msgstr "أسابيع"
 #: templates/administrative-record.html:46
 #: templates/administrative-record.html:583
 #: templates/biological-validation.html:47
-#: templates/biological-validation.html:730 templates/det-sample.html:44
+#: templates/biological-validation.html:731 templates/det-sample.html:44
 #: templates/enter-result.html:47 templates/enter-result.html:818
 #: templates/technical-validation.html:47
 #: templates/technical-validation.html:553
@@ -143,7 +143,7 @@ msgid "Date de réception du dossier"
 msgstr "تاريخ استلام الملف"
 
 #: templates/administrative-record.html:65 templates/det-req-ext.html:82
-#: templates/det-req-int.html:85
+#: templates/det-req-int.html:85 templates/display_histo.js:10
 msgid "Date de prescription"
 msgstr "تاريخ الوصفة"
 
@@ -575,6 +575,7 @@ msgstr "التحقق من صحة النتائج التي تم فحصها"
 #: templates/biological-validation.html:72 templates/enter-result.html:294
 #: templates/enter-result.html:525 templates/list-results.html:246
 #: templates/list-results.html:480 templates/technical-validation.html:294
+#: templates/technical-validation.html:403
 msgid "Date de validation"
 msgstr "تاريخ الصلاحية"
 
@@ -586,16 +587,20 @@ msgstr "عالم احياء"
 #: templates/biological-validation.html:80
 #: templates/biological-validation.html:120 templates/det-req-ext.html:282
 #: templates/det-req-int.html:293 templates/det-sample.html:131
-#: templates/det-supplier.html:73 templates/non-conformity.html:750
+#: templates/det-supplier.html:73 templates/display_histo.js:39
+#: templates/non-conformity.html:750
 msgid "Commentaire"
 msgstr "ملاحظة"
 
 #: templates/biological-validation.html:89 templates/det-list-stock.html:80
-#: templates/det-req-ext.html:312 templates/det-req-int.html:323
+#: templates/det-req-ext.html:310 templates/det-req-ext.html:312
+#: templates/det-req-int.html:321 templates/det-req-int.html:323
 #: templates/enter-result.html:320 templates/enter-result.html:551
 #: templates/list-results.html:272 templates/list-results.html:506
 #: templates/setting-backup.html:67 templates/setting-backup.html:97
 #: templates/setting-backup.html:122 templates/setting-backup.html:147
+#: templates/technical-validation.html:320
+#: templates/technical-validation.html:429
 msgid "Valider"
 msgstr " تصديق"
 
@@ -651,8 +656,8 @@ msgstr "حدث خطأ أثناء تغيير حالة القضية"
 msgid "Une erreur est survenue lors de création des résultats"
 msgstr "حدث خطأ أثناء إنشاء النتائج"
 
-#: templates/biological-validation.html:306 templates/det-req-ext.html:1263
-#: templates/det-req-int.html:1112 templates/enter-result.html:646
+#: templates/biological-validation.html:306 templates/det-req-ext.html:1329
+#: templates/det-req-int.html:1178 templates/enter-result.html:646
 #: templates/technical-validation.html:193
 msgid "Une erreur est survenue lors de l'enregistrement des analyses"
 msgstr "حدث خطأ أثناء حفظ التحليلات"
@@ -679,11 +684,11 @@ msgstr "حدث خطأ أثناء إلغاء قيمة تم إدخالها"
 msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
 msgstr "حدث خطأ أثناء التحقق البيولوجي من القيم التي تم إدخالها"
 
-#: templates/biological-validation.html:523
+#: templates/biological-validation.html:524
 msgid "Réinitialiser la valeur"
 msgstr "قيمة إعادة التعيين"
 
-#: templates/biological-validation.html:618 templates/det-equipment.html:271
+#: templates/biological-validation.html:619 templates/det-equipment.html:271
 #: templates/det-equipment.html:308 templates/det-equipment.html:345
 #: templates/det-equipment.html:382 templates/det-manual.html:113
 #: templates/det-manual.html:150 templates/det-manual.html:187
@@ -705,17 +710,17 @@ msgstr "قيمة إعادة التعيين"
 msgid "Cliquer pour commencer une recherche"
 msgstr "انقر لبدء البحث"
 
-#: templates/biological-validation.html:685 templates/enter-result.html:720
+#: templates/biological-validation.html:686 templates/enter-result.html:720
 #: templates/technical-validation.html:508
 msgid "Analyse déjà présente !"
 msgstr "التحليل موجود بالفعل!"
 
-#: templates/biological-validation.html:710 templates/enter-result.html:745
+#: templates/biological-validation.html:711 templates/enter-result.html:745
 #: templates/technical-validation.html:533
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "خطأ في استرداد التحليل"
 
-#: templates/biological-validation.html:739
+#: templates/biological-validation.html:740
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr "يرجى ملاحظة أنك ستترك هذا الملف دون التحقق من صحته."
 
@@ -848,8 +853,7 @@ msgstr "البريد الإلكتروني"
 #: templates/det-doctor.html:120 templates/det-equipment.html:252
 #: templates/det-manual.html:99 templates/det-meeting.html:69
 #: templates/det-new-product.html:86 templates/det-patient.html:197
-#: templates/det-procedure.html:100 templates/det-req-ext.html:310
-#: templates/det-req-int.html:321 templates/det-sample.html:145
+#: templates/det-procedure.html:100 templates/det-sample.html:145
 #: templates/det-staff.html:207 templates/det-stock-product.html:78
 #: templates/det-supplier.html:85 templates/enter-result.html:292
 #: templates/enter-result.html:523 templates/list-results.html:244
@@ -872,7 +876,7 @@ msgstr "الرجاء إدخال اسم"
 #: templates/det-meeting.html:168 templates/det-new-product.html:189
 #: templates/det-procedure.html:289 templates/det-sample.html:215
 #: templates/det-staff.html:280 templates/det-stock-product.html:186
-#: templates/det-supplier.html:147 templates/homepage.html:124
+#: templates/det-supplier.html:147 templates/homepage.html:121
 #: templates/list-laboratory.html:309 templates/manage-pat-records.html:605
 #: templates/non-conformity.html:1371 templates/setting-age-interval.html:222
 #: templates/setting-backup.html:329 templates/setting-backup.html:336
@@ -1435,7 +1439,7 @@ msgid "Demande d'analyses patient - Fiche patient"
 msgstr "طلب تحاليل المريض - ملف المريض"
 
 #: templates/det-patient.html:23 templates/manage-pat-records.html:50
-#: templates/manage-pat-records.html:242
+#: templates/manage-pat-records.html:242 templates/pat_ident.js:15
 msgid "Anonyme"
 msgstr "مجهول"
 
@@ -1620,51 +1624,61 @@ msgstr "خطأ في استرداد عمليات الفحص"
 msgid "Merci de confirmer la suppression"
 msgstr "يرجى تأكيد الحذف"
 
-#: templates/det-req-ext.html:1069 templates/det-req-int.html:936
+#: templates/det-req-ext.html:1070 templates/det-req-int.html:937
 msgid "Veuillez sélectionner au moins une analyse"
 msgstr "يرجى تحديد تحليل واحد على الأقل"
 
-#: templates/det-req-ext.html:1082 templates/det-req-int.html:952
+#: templates/det-req-ext.html:1083 templates/det-req-int.html:953
 msgid "Veuillez sélectionner une date de réception du dossier"
 msgstr "الرجاء تحديد تاريخ استلام الملف"
 
-#: templates/det-req-ext.html:1089 templates/det-req-int.html:959
+#: templates/det-req-ext.html:1090 templates/det-req-int.html:960
 msgid "Veuillez sélectionner une date de prescription"
 msgstr "الرجاء تحديد تاريخ وصفة طبية"
 
-#: templates/det-req-ext.html:1098 templates/det-req-int.html:968
+#: templates/det-req-ext.html:1099 templates/det-req-int.html:969
 msgid "Veuillez renseigner le type du produit"
 msgstr "الرجاء إدخال نوع المنتج"
 
-#: templates/det-req-ext.html:1104 templates/det-req-int.html:974
+#: templates/det-req-ext.html:1105 templates/det-req-int.html:975
 msgid "Veuillez renseigner le statut du produit"
 msgstr "الرجاء ملء حالة المنتج"
 
-#: templates/det-req-ext.html:1111 templates/det-req-int.html:981
+#: templates/det-req-ext.html:1112 templates/det-req-int.html:982
 msgid "Veuillez renseigner toutes les dates de réception"
 msgstr "يرجى ملء جميع تواريخ الاستقبال"
 
-#: templates/det-req-ext.html:1117 templates/det-req-int.html:987
+#: templates/det-req-ext.html:1118 templates/det-req-int.html:988
 msgid "Veuillez renseigner toutes les identités des préleveurs"
 msgstr "يرجى ملء جميع هويات العينات"
 
-#: templates/det-req-ext.html:1256 templates/det-req-int.html:1105
-msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
-msgstr "حدث خطأ أثناء تسجيل الخصم المباشر"
+#: templates/det-req-ext.html:1125 templates/det-req-int.html:995
+msgid "Avertissement : Ce dossier n'est associé à aucun prélèvement"
+msgstr "تحذير: هذا الملف غير مرتبط بأي نموذج"
 
-#: templates/det-req-ext.html:1270 templates/det-req-int.html:1119
-msgid "Une erreur est survenue lors de l'enregistrement du dossier"
-msgstr "حدث خطأ أثناء حفظ الحالة"
+#: templates/det-req-ext.html:1128 templates/det-req-int.html:998
+msgid "Merci de confirmer la création et validation de ce dossier"
+msgstr "يرجى تأكيد إنشاء هذا الملف والتحقق من صحته"
 
-#: templates/det-req-ext.html:1321 templates/det-req-int.html:1170
+#: templates/det-req-ext.html:1302 templates/det-req-ext.html:1393
+#: templates/det-req-int.html:1151 templates/det-req-int.html:1242
 #: templates/enter-result.html:632 templates/technical-validation.html:175
 msgid "Une erreur est survenue lors du changement de statut du dossier"
 msgstr "حدث خطأ أثناء تغيير حالة القضية"
 
-#: templates/det-req-ext.html:1330 templates/det-req-int.html:1179
+#: templates/det-req-ext.html:1311 templates/det-req-ext.html:1402
+#: templates/det-req-int.html:1160 templates/det-req-int.html:1251
 #: templates/enter-result.html:639 templates/technical-validation.html:184
 msgid "Une erreur est survenue lors de la création des résultats"
 msgstr "حدث خطأ أثناء إنشاء النتائج"
+
+#: templates/det-req-ext.html:1320 templates/det-req-int.html:1169
+msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
+msgstr "حدث خطأ أثناء تسجيل الخصم المباشر"
+
+#: templates/det-req-ext.html:1338 templates/det-req-int.html:1187
+msgid "Une erreur est survenue lors de l'enregistrement du dossier"
+msgstr "حدث خطأ أثناء حفظ الحالة"
 
 #: templates/det-req-int.html:16 templates/new-req-int.html:14
 msgid "Demande d'analyses patient hospitalisé"
@@ -1785,6 +1799,35 @@ msgstr "اتصال"
 msgid "Veuillez saisir un fournisseur."
 msgstr "الرجاء إدخال مورد"
 
+#: templates/display_histo.js:7
+msgid "Création du dossier"
+msgstr "إنشاء مجلد"
+
+#: templates/display_histo.js:9
+msgid "Analyse demandée"
+msgstr "مطلوب التحليل"
+
+#: templates/display_histo.js:36 templates/enter-result.html:388
+#: templates/list-results.html:343 templates/technical-validation.html:384
+msgid "ANNULE"
+msgstr "ألغيت"
+
+#: templates/display_histo.js:44 templates/report-today.html:81
+msgid "Validation"
+msgstr "تصديق"
+
+#: templates/display_histo.js:57 templates/hist-analyzes.html:170
+#: templates/hist-patients.html:154 templates/hist-stock-product.html:135
+#: templates/list-doctors.html:173 templates/list-nonconformities.html:140
+#: templates/list-stock.html:166 templates/manage-pat-records.html:680
+#: templates/manage-pat-records.html:703 templates/report-activity.html:123
+#: templates/report-billing.html:205 templates/report-statistic.html:120
+#: templates/report-today.html:155 templates/setting-analyzes.html:168
+#: templates/setting-dicts.html:142 templates/setting-users.html:178
+#: templates/stat_rec_with_det.js:51
+msgid "Une erreur est survenue lors de la récupération des données"
+msgstr "حدث خطأ أثناء استرداد البيانات"
+
 #: templates/enter-result.html:5 templates/enter-result.html:16
 #: templates/list-records.html:269 templates/list-results.html:5
 #: templates/list-results.html:14 templates/list-works.html:231
@@ -1811,13 +1854,10 @@ msgstr "حدث خطأ أثناء التحقق الفني من القيم الت�
 #: templates/enter-result.html:298 templates/enter-result.html:529
 #: templates/list-results.html:250 templates/list-results.html:484
 #: templates/setting-det-user.html:27 templates/setting-users.html:48
+#: templates/technical-validation.html:298
+#: templates/technical-validation.html:407
 msgid "Technicien"
 msgstr "تقني"
-
-#: templates/enter-result.html:388 templates/list-results.html:343
-#: templates/technical-validation.html:384
-msgid "ANNULE"
-msgstr "ألغيت"
 
 #: templates/hist-analyzes.html:5 templates/hist-analyzes.html:12
 msgid "Liste analyses"
@@ -1864,17 +1904,6 @@ msgstr "عدد على مدى الفترة       "
 #: templates/list-suppliers.html:60 templates/report-today.html:104
 msgid "Export des données"
 msgstr "تصدير البيانات"
-
-#: templates/hist-analyzes.html:170 templates/hist-patients.html:154
-#: templates/hist-stock-product.html:135 templates/list-doctors.html:173
-#: templates/list-nonconformities.html:140 templates/list-stock.html:166
-#: templates/manage-pat-records.html:682 templates/manage-pat-records.html:705
-#: templates/report-activity.html:123 templates/report-billing.html:205
-#: templates/report-statistic.html:120 templates/report-today.html:155
-#: templates/setting-analyzes.html:168 templates/setting-dicts.html:142
-#: templates/setting-users.html:178
-msgid "Une erreur est survenue lors de la récupération des données"
-msgstr "حدث خطأ أثناء استرداد البيانات"
 
 #: templates/hist-analyzes.html:214 templates/hist-patients.html:196
 #: templates/popup_history.html:6
@@ -1947,7 +1976,7 @@ msgstr "إدارة النسخ الاحتياطي"
 msgid "Gestion de la Facturation"
 msgstr "إدارة الفواتير"
 
-#: templates/homepage.html:26 templates/homepage.html:54
+#: templates/homepage.html:26
 msgid "Management de la Qualité"
 msgstr "إدارة الجودة"
 
@@ -1982,40 +2011,40 @@ msgstr "حالة عمليات السحب الحالية"
 msgid "Saisie des résultats"
 msgstr "دخول النتائج"
 
-#: templates/homepage.html:57 templates/menu.html:24
+#: templates/homepage.html:54 templates/menu.html:24
 msgid "Nouvelle demande externe"
 msgstr "طلب خارجي جديد"
 
-#: templates/homepage.html:58 templates/menu.html:25
+#: templates/homepage.html:55 templates/menu.html:25
 #: templates/new-req-int.html:5
 msgid "Nouvelle demande hospitalisé"
 msgstr "طلب جديد في المستشفى"
 
-#: templates/homepage.html:65
+#: templates/homepage.html:62
 msgid "Validations à effectuer"
 msgstr "يجب إجراء عمليات التحقق"
 
-#: templates/homepage.html:69
+#: templates/homepage.html:66
 msgid "Activité du laboratoire"
 msgstr "نشاط المختبر"
 
-#: templates/homepage.html:71
+#: templates/homepage.html:68
 msgid "Dernier numéro utilisé"
 msgstr "آخر رقم مستخدم"
 
-#: templates/homepage.html:72
+#: templates/homepage.html:69
 msgid "Nombre de dossiers validés aujourd'hui"
 msgstr "عدد الملفات التي تم التحقق من صحتها اليوم"
 
-#: templates/homepage.html:73
+#: templates/homepage.html:70
 msgid "Nombre de dossiers enregistrés"
 msgstr "عدد الملفات المسجلة"
 
-#: templates/homepage.html:87
+#: templates/homepage.html:84
 msgid "Biologique"
 msgstr "عضوي"
 
-#: templates/homepage.html:87
+#: templates/homepage.html:84
 msgid "Technique"
 msgstr "اصطلاحي"
 
@@ -2518,21 +2547,21 @@ msgstr "دمج"
 msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "الرجاء تحديد تاريخ الميلاد أو إدخال العمر"
 
-#: templates/manage-pat-records.html:754
+#: templates/manage-pat-records.html:752
 msgid ""
 "Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
 "fusion."
 msgstr "يجب عليك تحديد سجلين مختلفين للمرضى لإجراء عملية دمج"
 
-#: templates/manage-pat-records.html:760
+#: templates/manage-pat-records.html:758
 msgid "Les fiches patients sont les mêmes dans la base de données."
 msgstr "ملفات المريض هي نفسها في قاعدة البيانات."
 
-#: templates/manage-pat-records.html:766
+#: templates/manage-pat-records.html:764
 msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "ملف المريض مفقود لإجراء عملية دمج الملفات"
 
-#: templates/manage-pat-records.html:770
+#: templates/manage-pat-records.html:768
 msgid ""
 "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
@@ -2541,7 +2570,7 @@ msgstr ""
 "سيتم إرفاق سجلات المريض المراد حذفه \\ n بالمريض ليبقى. \\ n هل تؤكد هذا "
 "الدمج؟ \\ n (هذا الإجراء لا رجوع فيه)"
 
-#: templates/manage-pat-records.html:794
+#: templates/manage-pat-records.html:792
 msgid "Une erreur est survenue lors de la fusion"
 msgstr "حدث خطأ أثناء الدمج"
 
@@ -3264,10 +3293,6 @@ msgstr "ليس مدون"
 msgid "Famille"
 msgstr "أسرة"
 
-#: templates/report-today.html:81
-msgid "Validation"
-msgstr "تصديق"
-
 #: templates/setting-age-interval.html:16
 msgid "Ajouter un intervalle"
 msgstr "أضف فترة"
@@ -3338,7 +3363,9 @@ msgstr "معطل"
 msgid ""
 "Veuillez confirmer la suppression du cette analyse\\nAttention les "
 "dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr "يرجى تأكيد حذف هذا التحليل \\ n الانتباه إلى أي ملفات مرتبطة بهذا التحليل ستكون في أخطاء"
+msgstr ""
+"يرجى تأكيد حذف هذا التحليل \\ n الانتباه إلى أي ملفات مرتبطة بهذا التحليل"
+" ستكون في أخطاء"
 
 #: templates/setting-backup.html:5 templates/setting-backup.html:12
 msgid "Paramétrage de la sauvegarde"
@@ -3418,8 +3445,9 @@ msgid ""
 "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
 " seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
 "clé ?"
-msgstr "يوجد مفتاح بالفعل ، من خلال إعادة إنشاء مفتاح ، لن تكون النسخ الاحتياطية القديمة قابلة للاسترداد \\nهل تؤكد إنشاء مفتاح جديد؟"
-
+msgstr ""
+"يوجد مفتاح بالفعل ، من خلال إعادة إنشاء مفتاح ، لن تكون النسخ الاحتياطية "
+"القديمة قابلة للاسترداد \\nهل تؤكد إنشاء مفتاح جديد؟"
 
 #: templates/setting-backup.html:226 templates/setting-backup.html:273
 msgid "Veuillez saisir un mot de passe"
@@ -3637,7 +3665,7 @@ msgstr "المتغير المستخدم بالفعل في هذا التحليل"
 msgid "Erreur lors la récupération des données"
 msgstr "خطأ في استعادة البيانات"
 
-#: templates/setting-det-analysis.html:608
+#: templates/setting-det-analysis.html:608 templates/stat_sample.js:8
 msgid "Modifier"
 msgstr "تعدل "
 
@@ -3732,23 +3760,23 @@ msgstr "الإنجليزية (الولايات المتحدة)"
 
 #: templates/setting-det-user.html:118 templates/skeleton.html:34
 msgid "Arabe (AR)"
-msgstr ""
+msgstr "العربية (AR)"
 
 #: templates/setting-det-user.html:119 templates/skeleton.html:35
 msgid "Khmer (KM)"
-msgstr ""
+msgstr "الخميرية (KM)"
 
 #: templates/setting-det-user.html:120 templates/skeleton.html:36
 msgid "Laotien (LO)"
-msgstr ""
+msgstr "اللاوسي (LO)"
 
 #: templates/setting-det-user.html:121 templates/skeleton.html:37
 msgid "Malagasy (MG)"
-msgstr ""
+msgstr "مدغشقر"
 
 #: templates/setting-det-user.html:122 templates/skeleton.html:38
 msgid "Portugais (PT)"
-msgstr ""
+msgstr "البرتغالية (PT)"
 
 #: templates/setting-det-user.html:307
 msgid "Veuillez saisir un identifiant."
@@ -4070,6 +4098,10 @@ msgstr "الإنجليزية (الولايات المتحدة)"
 msgid "Déconnexion"
 msgstr "تسجيل خروج"
 
+#: templates/stat_sample.js:6
+msgid "A saisir"
+msgstr "للاستيلاء"
+
 #: templates/technical-validation.html:387
 msgid "Non rempli"
 msgstr "شاغرة"
@@ -4097,3 +4129,4 @@ msgstr "تاريخ التحقق من"
 #: templates/whonet-export.html:82
 msgid "Aucun résultat à exporter !"
 msgstr "لا توجد نتائج للتصدير!"
+

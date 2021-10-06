@@ -157,14 +157,14 @@ class Result:
     def getResultValidation(id_res):
         cursor = DB.cursor()
 
-        req = 'select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '\
-              'v.date_validation as date_validation, v.utilisateur as utilisateur, v.valeur as valeur, '\
-              'v.type_validation as type_validation, v.commentaire as commentaire, '\
-              'v.motif_annulation as motif_annulation, dico.label as label_motif '\
-              'from sigl_10_data as v '\
-              'left join sigl_dico_data as dico on dico.id_data=motif_annulation '\
-              'where id_resultat=%s '\
-              'order by id_data desc limit 1'
+        req = ('select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '
+               'v.date_validation as date_validation, v.utilisateur as utilisateur, v.valeur as valeur, '
+               'v.type_validation as type_validation, v.commentaire as commentaire, '
+               'v.motif_annulation as motif_annulation, dico.label as label_motif '
+               'from sigl_10_data as v '
+               'left join sigl_dico_data as dico on dico.id_data=motif_annulation '
+               'where id_resultat=%s '
+               'order by id_data desc limit 1')
 
         cursor.execute(req, (id_res,))
 
@@ -174,12 +174,12 @@ class Result:
     def getResultListValidation(id_res):
         cursor = DB.cursor()
 
-        req = 'select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '\
-              'v.date_validation as date_validation, v.utilisateur as utilisateur, v.valeur as valeur, '\
-              'v.type_validation as type_validation, v.commentaire as commentaire, v.motif_annulation as motif_annulation '\
-              'from sigl_10_data as v '\
-              'where id_resultat=%s '\
-              'order by id_data'
+        req = ('select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '
+               'v.date_validation as date_validation, v.utilisateur as utilisateur, v.valeur as valeur, '
+               'v.type_validation as type_validation, v.commentaire as commentaire, v.motif_annulation as motif_annulation '
+               'from sigl_10_data as v '
+               'where id_resultat=%s '
+               'order by id_data')
 
         cursor.execute(req, (id_res,))
 
@@ -189,10 +189,10 @@ class Result:
     def getLastTypeValidation(id_ana):
         cursor = DB.cursor()
 
-        req = 'select valid.type_validation as type_validation '\
-              'from sigl_10_data as valid, sigl_09_data as res '\
-              'where valid.id_resultat=res.id_data and res.id_analyse=%s '\
-              'order by valid.id_data desc limit 1'
+        req = ('select valid.type_validation as type_validation '
+               'from sigl_10_data as valid, sigl_09_data as res '
+               'where valid.id_resultat=res.id_data and res.id_analyse=%s '
+               'order by valid.id_data desc limit 1')
 
         cursor.execute(req, (id_ana,))
 

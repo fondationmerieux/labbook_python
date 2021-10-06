@@ -239,17 +239,17 @@ let disp_valid = "d-none" ;
         if ( ( ref_ana_p != 0 && ref_ana != ref_ana_p ) || ( id_rec_p != 0 && id_rec != id_rec_p ) )
         {
         // close the form and table
-        res += '</tbody></table>' +
-               '<div class="form-group form-inline" style="vld-block;">' +
-                   '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec_p +'_'+ ref_ana_p + ' mr-2" id="anchor_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p + ', '  + ref_ana_p + ');">{{ _("Enregistrer")|generate_string }}</button>' +
-                   '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec_p +'_'+ ref_ana_p  + '">' +
-                       '<label class="col-form-label text-right mr-1">{{ _("Date de validation")|generate_string }} </label>' +
-                       '<div class="form-inline">' +
-                           '<input id="date_tech_' + id_rec_p +'_'+ ref_ana_p  + '" class="form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">' +
-                       '</div>' +
-                       '<label class="col-form-label text-right ml-3 mr-1" for="validator_' + id_rec_p +'_'+ ref_ana_p  + '">{{ _("Technicien")|generate_string }}</label>' +
-                       '<select name="validator_' + id_rec_p +'_'+ ref_ana_p  + '" id="validator_' + id_rec_p +'_'+ ref_ana_p  + '" class="form-control ml-1">' +
-                           '<option value="0"> </option>' ;
+        res += "</tbody></table>" +
+               "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
+               "<button type=\"button\" class=\"btn btn-{{ session['user_role']|safe }} btn_save_" + id_rec_p +"_"+ ref_ana_p + " mr-2\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p + ", "  + ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" +
+               "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
+               "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>" +
+               "<div class=\"form-inline\">" +
+               "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
+               "</div>" +
+               "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
+               "<select name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control ml-1\">" +
+               "<option value=\"0\"> </option>" ;
 
         // fill technical choice
         for ( k in tech_list )
@@ -265,14 +265,14 @@ let disp_valid = "d-none" ;
             selected = "selected" ;
             }
             
-        res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
+        res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
         }
 
-        res +=         '</select>' +
-                       '<button name="validate_' + id_rec_p +'_'+ ref_ana_p  + '" id="validate_' + id_rec_p +'_'+ ref_ana_p  + '" type="button" value="{{ _("Valider")|generate_string }}" class="btn btn-{{ session['user_role']|safe }} ml-3" onclick="save_valid(' + id_rec_p +','+ ref_ana_p + ');">{{ _("Valider")|generate_string }}</button>' +
-                   '</span>' +
-               '</fieldset>' +
-               '</form>' ;
+        res += "</select>" +
+               "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" value=\"{{ _("Valider") }}\" class=\"btn btn-{{ session['user_role']|safe }} ml-3\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+               "</span>" +
+               "</fieldset>" +
+               "</form>" ;
 
         disp_valid = "d-none" ;
         }
@@ -292,12 +292,12 @@ let disp_valid = "d-none" ;
 
             if (res_fam.length < 4) res_fam = "" ;
 
-        res += '<form autocomplete="off">' +
-               '<fieldset class="row border p-2 mt-2">' +
-               '<legend class="legend-lbk">' + res_name + res_fam + '</legend>' +
-               '<span class="rec-num mr-2 mb-2">' + num_rec + '</span>' + per_rec +
-               '<table class="table table-striped table-hover table-lbk">' +
-               '<tbody class="row mx-1">' ;
+        res += "<form autocomplete=\"off\">" +
+               "<fieldset class=\"row border p-2 mt-2\">" +
+               "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
+               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span>" + per_rec +
+               "<table class=\"table table-striped table-hover table-lbk\">" +
+               "<tbody class=\"row mx-1\">" ;
         }
 
         // new analysis so new result line
@@ -308,7 +308,7 @@ let disp_valid = "d-none" ;
         let res_emer   = emer(data[i].urgent) ;
         let res_label  = data[i].libelle ;
         let res_unit   = data[i].unit ;
-        let res_limit  = '' ;
+        let res_limit  = "" ;
         let res_answer = data[i].res_answer ;
         let value      = data[i].valeur ;
 
@@ -323,24 +323,24 @@ let disp_valid = "d-none" ;
                 if ( (value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max)) && value != "" )
                 ico_limit = "show" ;
 
-            res_limit = '<span id="limit_' + id_res + '" class="warning ' + ico_limit + '" title="[&nbsp;' + data[i].normal_min + '&nbsp;-&nbsp;' + data[i].normal_max + '&nbsp;]"></span>' ;
+            res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
             }
 
-        res += '<tr class="col-12 p-0">' +
-                   '<td class="d-inline-block col-1 align-middle border-0 p-1">' + res_limit + '</td>' +
-                   '<td class="d-inline-block col-1 align-middle text-center border-0 p-1">' + res_emer + '</td>' +
-                   '<td class="d-inline-block align-middle text-center border-0 p-1">' + res_stat + '</td>' +
-                   '<td class="d-inline-block align-middle text-center border-0 p-1">' +
-                       '<div class="history" onclick="display_histo(' + i + ');"></div>' +
-                   '</td>' +
-                   '<td class="d-inline-block col-5 align-middle text-center border-0 p-1">' + res_label + '</td>' ;
+        res += "<tr class=\"col-12 p-0\">" +
+               "<td class=\"d-inline-block col-1 align-middle border-0 p-1\">" + res_limit + "</td>" +
+               "<td class=\"d-inline-block col-1 align-middle text-center border-0 p-1\">" + res_emer + "</td>" +
+               "<td class=\"d-inline-block align-middle text-center border-0 p-1\">" + res_stat + "</td>" +
+               "<td class=\"d-inline-block align-middle text-center border-0 p-1\">" +
+               "<div class=\"history\" onclick=\"display_histo(" + i + ");\"></div>" +
+               "</td>" +
+               "<td class=\"d-inline-block col-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
 
-        res += '<td class="d-inline-block form-inline align-middle text-center border-0 p-1"><span class="value">' ;
+        res += "<td class=\"d-inline-block form-inline align-middle text-center border-0 p-1\"><span class=\"value\">" ;
 
             // CANCEL RESULT
             if ( res_valid == 252 && value == "" )
             {
-            res += '{{ _("ANNULE")|generate_string }}</span>&nbsp;' ;
+            res += "{{ _("ANNULE") }}</span>&nbsp;" ;
             }
             // SELECT CHOICE RESULT
             else if ( Object.keys(res_answer).length > 1)
@@ -349,14 +349,14 @@ let disp_valid = "d-none" ;
                 if (data[i].oblig == 4)
                 res += '*&nbsp;' ;
 
-            let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ')"' ;
+            let change = "onchange=\"check_change(" + id_rec + "," + ref_ana + "," + id_res + ")\"" ;
 
                 // Validated
                 if (res_valid != 250)
                 change = 'disabled' ;
 
-            res += '<select id="res_' + id_res + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')"' + change + ' >' +
-                   '<option value="0"> </option>' ;
+            res += "<select id=\"res_" + id_res + "\" class=\"form-control saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
+                   "<option value=\"0\"> </option>" ;
 
             value = "0" ;
 
@@ -379,13 +379,13 @@ let disp_valid = "d-none" ;
                     value    = res_answer[j].id_data ;
                     }
 
-                res += '<option value="' + res_answer[j].id_data + '" ' + selected + '>' + res_answer[j].label + '</option>' ;
+                res += "<option value=\"" + res_answer[j].id_data + "\" " + selected + ">" + res_answer[j].label + "</option>" ;
                 }
 
-            res += '</select>' ;
-            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
-            res += '<input type="hidden" id="type_res_' + id_res + '" value="W">' ;
-            res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
+            res += "</select>" ;
+            res += "<input type=\"hidden\" id=\"old_res_" + id_res + "\" value=\"" + value + "\">" ;
+            res += "<input type=\"hidden\" id=\"type_res_" + id_res + "\" value=\"W\">" ;
+            res += "<input type=\"hidden\" id=\"oblig_res_" + id_res + "\" value=\"" + data[i].oblig + "\"></span>&nbsp;" ;
             }
             // WRITE RESULT
             else if ( data[i].type_resultat != 229 && data[i].type_resultat != 265 ) // not calc and not label
@@ -473,17 +473,17 @@ let disp_valid = "d-none" ;
     if ( res != "" )
     {
     // close the form and table
-    res += '</tbody></table>' +
-           '<div class="form-group form-inline" style="vld-block;">' +
-               '<button type="button" class="btn btn-{{ session['user_role']|safe }} btn_save_' + id_rec_p +'_'+ ref_ana_p + '" id="anchor_' + id_rec_p +'_'+ ref_ana_p + '" disabled onclick="save_res(' + id_rec_p +','+ ref_ana_p + ');">{{ _("Enregistrer")|generate_string }}</button>&nbsp;&nbsp;' +
-               '<span class="form-inline ' + disp_valid + '" id="span_valid_' + id_rec_p +'_'+ ref_ana_p  + '">' +
-                   '<label class="col-form-label text-right mr-1">{{ _("Date de validation")|generate_string }} </label>&nbsp;' +
-                   '<div class="form-inline">' +
-                       '<input id="date_tech_' + id_rec_p +'_'+ ref_ana_p  + '" class="voo_date voo_date_field_1 form-control" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="">' +
-                   '</div>' +
-                   '<label class="col-form-label text-right ml-3 mr-1" for="validator_' + id_rec_p +'_'+ ref_ana_p + '">{{ _("Technicien")|generate_string }}</label>&nbsp;' +
-                   '<select name="validator_' + id_rec_p +'_'+ ref_ana_p  + '" id="validator_' + id_rec_p +'_'+ ref_ana_p + '" class="form-control">' +
-                       '<option value="0"> </option>' ;
+    res += "</tbody></table>" +
+           "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
+           "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec_p +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" +
+           "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
+           "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>&nbsp;" +
+           "<div class=\"form-inline\">" +
+           "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"voo_date voo_date_field_1 form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\">" +
+           "</div>" +
+           "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
+           "<select name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\" class=\"form-control\">" +
+           "<option value=\"0\"> </option>" ;
 
     // fill technical choice
     for ( k in tech_list )
@@ -499,15 +499,15 @@ let disp_valid = "d-none" ;
         selected = "selected" ;
         }
         
-    res += '<option value="' + tech_list[k].id_group + '" ' + selected + '>' + tech_ident + '</option>' ;
+    res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
     }
 
-    res +=         '</select>' +
-                   '<button name="validate_' + id_rec_p +'_'+ ref_ana_p  + '" id="validate_' + id_rec_p +'_'+ ref_ana_p  + '" type="button" class="btn btn-{{ session['user_role']|safe }}" onclick="save_valid(' + id_rec_p +','+ ref_ana_p + ');">{{ _("Valider")|generate_string }}</button>' +
-               '</span>' +
-           '</div>' +
-           '</fieldset>' +
-           '</form>' ;
+    res += "</select>" +
+           "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }}\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+           "</span>" +
+           "</div>" +
+           "</fieldset>" +
+           "</form>" ;
     }
 
     $("#list_result").html( res ) ;

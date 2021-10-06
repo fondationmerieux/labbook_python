@@ -60,7 +60,7 @@ class ResultList(Resource):
         if not l_results:
             self.log.error(Logs.fileline() + ' : TRACE ResultList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for result in l_results:
             # TRANSLATION
@@ -97,7 +97,7 @@ class ResultList(Resource):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
                 elif key == 'label_motif':
-                    result[key] = _(result[key].strip())
+                    result['validation'][key] = _(result['validation'][key].strip())
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])

@@ -1,24 +1,24 @@
 # pip
 pip==21.2.4
-charset-normalizer==2.0.3
-urllib3==1.25.7
-setuptools==57.4.0
+charset-normalizer==2.0.6
+urllib3==1.26.7
+setuptools==58.2.0
 # Flask
 click==8.0.1
 dataclasses==0.8
-Flask==2.0.1
-importlib-metadata==4.6.1
+Flask==2.0.2
+importlib-metadata==4.8.1
 itsdangerous==2.0.1
-Jinja2==3.0.1
+Jinja2==3.0.2
 MarkupSafe==2.0.1
-typing-extensions==3.10.0.0
-Werkzeug==2.0.1
-zipp==3.5.0
+typing-extensions==3.10.0.2
+Werkzeug==2.0.2
+zipp==3.6.0
 # gunicorn
 gunicorn==20.1.0
 # Babel
 Babel==2.9.1
-pytz==2021.1
+pytz==2021.3
 # Flask-Babel
 Flask-Babel==2.0.0
 # Flask-RESTful
@@ -27,16 +27,16 @@ Flask-RESTful==0.3.9
 six==1.16.0
 # mysql-connector-python
 mysql-connector-python==8.0.26
-protobuf==3.17.3
+protobuf==3.18.1
 # pdfkit
 pdfkit==0.6.1
 # python-barcode
 Pillow==8.3.2
 python-barcode==0.13.1
 # alembic
-alembic==1.6.5
-greenlet==1.1.0
-Mako==1.1.4
+alembic==1.7.3
+greenlet==1.1.2
+Mako==1.1.5
 python-dateutil==2.8.2
 python-editor==1.0.4
-SQLAlchemy==1.4.22
+SQLAlchemy==1.4.25

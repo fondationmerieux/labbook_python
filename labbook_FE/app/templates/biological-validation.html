@@ -520,7 +520,8 @@ let disp_valid = "d-none" ;
             if ( value != "" && res_valid != 252 )
             {
             res_check = '<td class="d-inline-block text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="O" checked="checked" class="show result-checkbox cbx-' + id_rec + '"></span></td>' ;
-            res_reset = '<a title="{{ _("Réinitialiser la valeur")|generate_string }}" class="color-B" onclick="reset_res(' + id_rec +','+ id_res + ');"><i class="fa fa-step-backward" /></i></a>' ;
+
+            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"fa fa-step-backward\" /></i></a>" ;
 
             disp_valid = "show" ;
             }

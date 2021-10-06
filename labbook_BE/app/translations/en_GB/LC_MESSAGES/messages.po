@@ -6417,12 +6417,8 @@ msgid "TB GX"
 msgstr "TB GX"
 
 #: translations/messages_pybabel.py:2090
-msgid "TCA ou TCK"
-msgstr "TCA or TCK"
-
-#: translations/messages_pybabel.py:2091
-msgid "TCA ou TCK témoin : 28s"
-msgstr "TCA or TCK sample: 28s"
+msgid "TCA ou TCK (témoin : 28s)"
+msgstr "TCA or TCK (sample: 28s)"
 
 #: translations/messages_pybabel.py:2092 translations/messages_pybabel.py:2093
 msgid "TCMH"

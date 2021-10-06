@@ -20,7 +20,6 @@ import random
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
-from jinja2 import evalcontextfilter, Markup
 
 from flask import Flask, render_template, request, session, redirect, send_file
 from flask_babel import Babel
@@ -311,16 +310,6 @@ def get_software_settings():
         return False
 
     return True
-
-
-# Mind the hack! Babel does not work well within js code
-@app.template_filter()
-@evalcontextfilter
-def generate_string(eval_ctx, localized_value):
-    if localized_value is None:
-        return ""
-    else:
-        return Markup("\"" + localized_value + "\"").unescape()
 
 
 @app.template_filter('date_format')
@@ -1229,6 +1218,9 @@ def list_results():
 @app.route('/enter-result/<int:id_rec>/<string:anchor>')
 def enter_result(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+
+    session['current_page'] = 'enter-result/' + str(id_rec)
+    session.modified = True
 
     json_ihm  = {}
     json_data = {}
