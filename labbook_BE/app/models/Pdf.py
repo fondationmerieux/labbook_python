@@ -770,7 +770,7 @@ class Pdf:
                 if type_res and type_res['short_label'].startswith("dico_"):
                     Various.useLangDB()
                     trans = type_res['short_label'][5:]
-                    type_res = _(trans)
+                    type_res = _(trans.strip())
                     Various.useLangPDF()
                 else:
                     type_res = ''
@@ -780,11 +780,11 @@ class Pdf:
                     Various.useLangDB()
                     val = Various.getDicoById(res['value'])
                     trans = val['label']
-                    val = _(trans)
+                    val = _(trans.strip())
 
                     if res_prev and res_prev['valeur']:
                         label_prev = Various.getDicoById(res_prev['valeur'])
-                        trans = label_prev['label']
+                        trans = label_prev['label'].strip()
                         prev += _(trans)
                     else:
                         prev = ''
@@ -829,7 +829,7 @@ class Pdf:
 
                 # ==== ANALYSIS RESULT ====
                 Various.useLangDB()
-                trans = str(res['libelle'])
+                trans = str(res['libelle'].strip())
                 result_div += ('<div style="margin-bottom:10px;">'
                                '<span class="ft_res_label" style="width:365px;display:inline-block;text-align:left;'
                                'padding-left:12px;">' + _(trans) + '</span>'
@@ -842,7 +842,7 @@ class Pdf:
                 h_now += h_res
 
                 # IF libelle on 2 lines
-                trans = res['libelle']
+                trans = res['libelle'].strip()
                 if len(_(trans)) > 46 or len(val) > 16 or len(prev) > 32:
                     nb_lib  = math.ceil(len(_(trans)) / 46)
                     nb_val  = math.ceil(len(val) / 16)

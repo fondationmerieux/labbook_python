@@ -137,11 +137,16 @@ class DictList(Resource):
         if not l_dicts:
             self.log.error(Logs.fileline() + ' : TRACE DictList not found')
 
+        Various.needTranslationDB()
+
         for dict in l_dicts:
             # Replace None by empty string
             for key, value in list(dict.items()):
                 if dict[key] is None:
                     dict[key] = ''
+                elif key == 'name':
+                    dict['key'] = dict[key].strip()  # keep key untranslated to get details of this dict
+                    dict[key]   = _(dict['key'])     # dict name translated
 
         self.log.info(Logs.fileline() + ' : TRACE DictList')
         return compose_ret(l_dicts, Constants.cst_content_type_json)

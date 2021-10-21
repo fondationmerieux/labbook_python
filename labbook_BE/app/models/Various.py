@@ -233,6 +233,35 @@ class Various:
 
                     cursor.execute(req, params)
 
+            # --- Fill translations table with dictionnary name
+            req = ('select distinct dico_name as name, id_data as ref from sigl_dico_data group by name')
+
+            cursor.execute(req)
+
+            l_dict = cursor.fetchall()
+
+            for dict in l_dict:
+                text = dict['name'].strip()
+
+                # check if this var name doesnt exist in translations table
+                req = ('select count(*) as nb from translations '
+                       'where tra_text=%s and tra_lang=%s and tra_type="dict_name"')
+
+                cursor.execute(req, (_(text), lang,))
+                res = cursor.fetchone()
+
+                if res['nb'] == 0:
+                    params['lang'] = lang
+                    params['ref']  = dict['ref']  # first id_data where dico_name is found
+                    params['type'] = 'dict_name'
+                    params['text'] = _(text)
+
+                    # insert into translations
+                    req = ('insert into translations (tra_date, tra_lang, tra_ref, tra_type, tra_text) '
+                           'values (NOW(), %(lang)s, %(ref)s, %(type)s, %(text)s)')
+
+                    cursor.execute(req, params)
+
             # --- Fill translations table with dictionnary label
             req = ('select label, id_data as ref from sigl_dico_data')
 

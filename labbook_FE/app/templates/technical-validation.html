@@ -97,14 +97,20 @@ let user_role      = "{{ session['user_role']|safe }}"  ;
 let id_rec         = data_res[0].id_dos ;
 let param_list_ana = '{ "list_ana":[ ';
 let param_list_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '", "list_ref":[ ';
+let value_ana      = '' ;
+let value_res      = '' ;
 
     // Add analysis
     for( i in list_id_ana )
     {
-        if (i > 0)
+        if (value_ana != '')
         {
-        param_list_ana += ', ' ;
-        param_list_res += ', ' ;
+        value_ana += ', ' ;
+        }
+
+        if (value_res != '')
+        {
+        value_res += ', ' ;
         }
 
     let param_ana = '{ "id_owner":' + id_group + ', ' +
@@ -117,12 +123,12 @@ let param_list_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role 
 
     let param_res = '{ "ref_analyse":' + list_id_ana[i] + '}' ;
 
-    param_list_ana += param_ana ;
-    param_list_res += param_res ;
+    value_ana += param_ana ;
+    value_res += param_res ;
     }
 
-param_list_ana += ' ] }';
-param_list_res += ' ] }';
+param_list_ana += value_ana + ' ] }';
+param_list_res += value_res + ' ] }';
 
     // popup wait
     $("#dial-wait").modal("show") ;
@@ -349,7 +355,7 @@ let disp_valid = "d-none" ;
         let res_emer   = emer(data[i].urgent)
         let res_label  = data[i].libelle ;
         let res_unit   = data[i].unit ;
-        let res_limit  = '' ;
+        let res_limit  = "" ;
         let value      = data[i].res_label ;
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )

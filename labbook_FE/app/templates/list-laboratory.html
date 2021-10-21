@@ -120,17 +120,17 @@ load_value( tmp_struct_val ) ;
 
 function load_value( data )
 {
-let tr_value = '' ;
+let tr_value = "" ;
     
 let obj = data ;
 
     if ( obj.id_ihm >= 0 )
     {
-    let tmp_tr = '<tr style="">' ;
+    let tmp_tr = "<tr style=\"\">" ;
 
-    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-    let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+    {% if session["user_role"] == "A" or session["user_role"] == "B" or
+          session["user_role"] == "Q" or session["user_role"] == "TQ" %}
+    let btn = "<input type=\"button\" onclick=\"del_value(" + obj.id_ihm + ");load_data();\" value=\"" + "{{ _("Supprimer") }}" + "\">" ;
     {% else %}
     let btn = "" ;
     {% endif %}
@@ -141,7 +141,7 @@ let obj = data ;
     tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "d-inline-block col-2", "") ;
     tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "d-inline-block col-3", "") ;
     tmp_tr += create_td("", create_input("pos_"+obj.id_ihm, "number", obj.position, 0, 10, ""), "d-inline-block col-2", "") ;
-    tmp_tr += '</tr>' ;
+    tmp_tr += "</tr>" ;
 
     tr_value += tmp_tr ;
     }
@@ -275,11 +275,12 @@ var dict_name = $("#name").val() ;
     }
 
 var param = '{ "list_val":[ ';
+var value = '' ;
 
     for( i in data_values )
     {
-        if (i > 0)
-        param += ', ' ;
+        if (value != '')
+        value += ', ' ;
 
     var param_val = '{ "id_owner":' + id_owner + ', ' +
                       '"id_data":' + data_values[i].id_data + ', ' +
@@ -288,10 +289,10 @@ var param = '{ "list_val":[ ';
                       '"position":' + data_values[i].position + ', ' +
                       '"code":"' + data_values[i].code + '"}' ;
 
-    param += param_val ;
+    value += param_val ;
     }
 
-param += ' ] }';
+param += value + ' ] }';
 
     $.ajax( {
        type: "POST",

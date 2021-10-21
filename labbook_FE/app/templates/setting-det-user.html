@@ -20,6 +20,11 @@
                 <div class="form-group row mt-3">
                     <label for="role" class="col-form-label col-3 text-right mt-2">{{ _("Rôle") }} *</label>
                     <div>					
+                        {% if args['user_id'] > 0 and args['id_role'] == 1 and args['username'] == 'root' %}
+                        <select id="role" name="role" class="form-control" onchange="role_choice(this);">
+                            <option value="1" selected>{{ _("Administrateur") }}</option>
+                        </select>
+                        {% else %}
                         <select id="role" name="role" class="form-control" onchange="role_choice(this);">
                             <option value="0" {% if args['id_role'] == 0 %} selected {% endif %}></option>  
                             <option value="1" {% if args['id_role'] == 1 %} selected {% endif %}>{{ _("Administrateur") }}</option>
@@ -32,6 +37,7 @@
                             <option value="8" {% if args['id_role'] == 8 %} selected {% endif %}>{{ _("Qualiticien") }}</option>
                             <option value="9" {% if args['id_role'] == 9 %} selected {% endif %}>{{ _("Prescripteur") }}</option>
                         </select>
+                        {% endif %}
                     </div>
                 </div>
                 <div id="search_account" class="form-group row {% if args['id_role'] != 9 %}d-none{% endif %}">

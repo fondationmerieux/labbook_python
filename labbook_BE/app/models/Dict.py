@@ -2,6 +2,8 @@
 import logging
 import mysql.connector
 
+from flask import session
+
 from app.models.DB import DB
 from app.models.Logs import Logs
 
@@ -103,6 +105,7 @@ class Dict:
         cursor = DB.cursor()
 
         filter_cond = ''
+        trans       = ''
 
         if not args:
             limit = 'LIMIT 2000'
@@ -112,20 +115,37 @@ class Dict:
             limit = 'LIMIT 2000'
 
             filter_cond += ' (archived=0 or archived is NULL) '  # remove deleted dicts by default
-            # filter conditions
-            if args['name']:
-                filter_cond += ' and dico_name LIKE "%' + str(args['name']) + '%" '
 
-            if args['label']:
-                filter_cond += ' and label LIKE "%' + str(args['label']) + '%" '
+            if session['lang_db'] == 'fr_FR':
+                if args['name']:
+                    filter_cond += ' and dico_name LIKE "%' + str(args['name']) + '%" '
+
+                if args['label']:
+                    filter_cond += ' and label LIKE "%' + str(args['label']) + '%" '
+            else:
+                if args['name']:
+                    trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
+                             'tr.tra_type="dict_name" and tr.tra_ref=id_data ')
+
+                    filter_cond += (' and (tr.tra_text LIKE "%' + str(args['name']) + '%" or '
+                                    ' dico_name LIKE "%' + str(args['name']) + '%") ')
+
+                if args['label']:
+                    trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
+                             'tr.tra_type="dict_label" and tr.tra_ref=id_data ')
+
+                    filter_cond += (' and tr.tra_text LIKE "%' + str(args['label']) + '%" or '
+                                    ' label LIKE "%' + str(args['name']) + '%") ')
 
             if args['code']:
-                filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
+                    filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
 
-        req = 'select id_data, dico_name as name '\
-              'from sigl_dico_data '\
-              'where ' + filter_cond +\
-              'group by dico_name order by dico_name asc ' + limit
+        req = ('select id_data, dico_name as name '
+               'from sigl_dico_data ' + trans +
+               'where ' + filter_cond +
+               'group by dico_name order by dico_name asc ' + limit)
+
+        Dict.log.error(Logs.fileline() + ' : DEBUG req= ' + str(req))
 
         cursor.execute(req)
 

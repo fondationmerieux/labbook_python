@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.1.3] - 2021-10-22
+### Fixed
+- delete first value in a dictionnary
+- add strip for result value in Pdf report (bug with B258 by example)
+- forbidden change on role of root
+- stock management page in MG
+- add translations for name of dictionnary too
+
 ## [3.1.2] - 2021-10-06
 ### Fixed
 - bunch of translations

@@ -180,11 +180,12 @@ function save_dict()
 {
 var id_owner  = {{ session['user_id_group']|safe }} ;
 var param = '{ "list_val":[ ';
+var value = '' ;
 
     for( i in data_values )
     {
-        if (i > 0)
-        param += ', ' ;
+        if (value != '')
+        value += ', ' ;
 
     let lower = data_values[i].ais_lower_bound ;
     let upper = data_values[i].ais_upper_bound ;
@@ -201,10 +202,10 @@ var param = '{ "list_val":[ ';
                       '"ais_upper_bound":' + upper + ', ' +
                       '"ais_rank":' + data_values[i].ais_rank + '}' ;
 
-    param += param_val ;
+    value += param_val ;
     }
 
-param += ' ] }';
+param += value + ' ] }';
 
     $.ajax( {
        type: "POST",

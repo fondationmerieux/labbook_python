@@ -171,7 +171,7 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
 
 function display_item( num_page )
 {
-let res = ''
+let res = "" ;
 
     // Previous page
     if ( num_page == -1000 && p_cur > 1 )
@@ -188,54 +188,54 @@ let res = ''
     $("#tbody_items").empty() ;
 
 {% if not args %}
-res = '<tr>' +
-      '<td colspan="9">' +
-      '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
+res = "<tr>" +
+      "<td colspan=\"9\">" +
+      "<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>" ;
 {% else %}
 let data_len = data_items.length ;
 let i_start  = (p_cur -1) * p_step ;
 let i_stop   = Math.min( data_len, p_cur * p_step ) ;
-let tr_class = '' ;
+let tr_class = "" ;
 
 $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    let menu_act = '<nav class="">' +
-                   '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
-                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-list-stock/' + data_items[i].prs_prd + '">{{ _("Détails du stock") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-stock-product/' + data_items[i].prs_prd + '">{{ _("Historique de ce produit") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-new-product/' + data_items[i].prs_prd + '">{{ _("Editer la fiche produit") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prs_prd + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
+    let menu_act = "<nav class=\"\">" +
+                   "<ul class=\"navbar-nav\">" +
+                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
+                   "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/det-list-stock/" + data_items[i].prs_prd + "\">{{ _("Détails du stock") }}</a>" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/hist-stock-product/" + data_items[i].prs_prd + "\">{{ _("Historique de ce produit") }}</a>" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/det-new-product/" + data_items[i].prs_prd + "\">{{ _("Editer la fiche produit") }}</a>" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].prs_prd + ")\">{{ _("Supprimer la fiche produit") }}</a>" ;   
         
-    menu_act += '</div></ul></nav>' ;
+    menu_act += "</div></ul></nav>" ;
 
     if ( data_items[i].day_to_expir <= 0 )
-    tr_style = 'style="background-color:#FFD5D6;"' ;
+    tr_style = "style=\"background-color:#FFD5D6;\"" ;
     else if ( data_items[i].day_to_expir <= 14 )
-    tr_style = 'style="background-color:#FFCC66;"' ;
+    tr_style = "style=\"background-color:#FFCC66;\"" ;
     else
-    tr_style = '' ;
+    tr_style = "" ;
 
-    let prod_limit = '' ;
+    let prod_limit = "" ;
 
     if ( data_items[i].nb_total == 0 )
-    prod_limit = '<span class="emer" title="{{ _("Seuil de") }} ' + data_items[i].prd_safe_limit + '">&nbsp;</span>' ;
+    prod_limit = "<span class=\"emer\" title=\"{{ _("Seuil de") }} " + data_items[i].prd_safe_limit + "\">&nbsp;</span>" ;
     else if ( data_items[i].nb_total <= data_items[i].prd_safe_limit )
-    prod_limit = '<span class="warning" title="{{ _("Seuil de") }} ' + data_items[i].prd_safe_limit + '">&nbsp;</span>' ;
+    prod_limit = "<span class=\"warning\" title=\"{{ _("Seuil de") }} " + data_items[i].prd_safe_limit + "\">&nbsp;</span>" ;
 
-    res += '<tr ' + tr_style + '><td hidden><div>' + data_items[i].prs_prd + '</div></td>' +
-           '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].prd_name + '</div></td>' +
-           '<td><div class="text-right">' + data_items[i].prs_nb_pack + '</div></td>' +
-           '<td><div class="text-right">' + data_items[i].prd_nb_by_pack + '</div></td>' +
-           '<td><div class="text-right">' + data_items[i].nb_total + '</div></td>' +
-           '<td><div class="text-center">' + prod_limit + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].type + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].conserv + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].supplier + '</div></td></tr>' ;
+    res += "<tr " + tr_style + "><td hidden><div>" + data_items[i].prs_prd + "</div></td>" +
+           "<td><div>" + menu_act + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].prd_name + "</div></td>" +
+           "<td><div class=\"text-right\">" + data_items[i].prs_nb_pack + "</div></td>" +
+           "<td><div class=\"text-right\">" + data_items[i].prd_nb_by_pack + "</div></td>" +
+           "<td><div class=\"text-right\">" + data_items[i].nb_total + "</div></td>" +
+           "<td><div class=\"text-center\">" + prod_limit + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].type + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].conserv + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].supplier + "</div></td></tr>" ;
     }
 {% endif %}
 
