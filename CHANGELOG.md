@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - forbidden change on role of root
 - stock management page in MG
 - add translations for name of dictionnary too
+- add redirection of error for alembic upgrade head in gunicorn.sh
+- alembic upgrade 3.1.1, alter table convert wrong with multiple table in same request
 
 ## [3.1.2] - 2021-10-06
 ### Fixed

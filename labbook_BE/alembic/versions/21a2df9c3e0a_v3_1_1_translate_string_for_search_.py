@@ -27,11 +27,39 @@ def upgrade():
 
     # convert table to character set utf8
     try:
-        conn.execute("alter table age_interval_setting, backup_setting, database_status, "
-                     "product_details, product_supply, product_use, sticker_setting "
-                     "convert to character set utf8")
+        conn.execute("alter table age_interval_setting convert to character set utf8")
     except Exception as err:
-        print("ERROR alter table character set utf8,\n\terr=" + str(err))
+        print("ERROR alter table character age_interval_setting set utf8,\n\terr=" + str(err))
+
+    try:
+        conn.execute("alter table backup_setting convert to character set utf8")
+    except Exception as err:
+        print("ERROR alter table character backup_setting set utf8,\n\terr=" + str(err))
+
+    try:
+        conn.execute("alter table database_status convert to character set utf8")
+    except Exception as err:
+        print("ERROR alter table character database_status set utf8,\n\terr=" + str(err))
+
+    try:
+        conn.execute("alter table product_details convert to character set utf8")
+    except Exception as err:
+        print("ERROR alter table character product_details set utf8,\n\terr=" + str(err))
+
+    try:
+        conn.execute("alter table product_supply convert to character set utf8")
+    except Exception as err:
+        print("ERROR alter table character product_supply set utf8,\n\terr=" + str(err))
+
+    try:
+        conn.execute("alter table product_use convert to character set utf8")
+    except Exception as err:
+        print("ERROR alter table character product_use set utf8,\n\terr=" + str(err))
+
+    try:
+        conn.execute("alter table sticker_setting convert to character set utf8")
+    except Exception as err:
+        print("ERROR alter table character sticker_setting set utf8,\n\terr=" + str(err))
 
     # TRANSLATION TABLE
     try:
