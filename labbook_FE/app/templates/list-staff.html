@@ -130,6 +130,8 @@ $("#list_items_total").html( data_len ) ;
     let menu_act = "" ;
     {% endif %}
 
+    link_email = "<a href=\"mailto:" + data_items[i].email + "\">" + data_items[i].email + "</a>" ;
+
     res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-left\">" + data_items[i].lastname + "</div></td>" +
@@ -138,7 +140,7 @@ $("#list_items_total").html( data_len ) ;
            "<td><div class=\"text-left\">" + data_items[i].birth + "</div></td>" +
            "<td><div class=\"text-left\">" + data_items[i].address + "</div></td>" +
            "<td><div class=\"text-left\">" + data_items[i].phone + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_items[i].email + "</div></td>" +
+           "<td><div class=\"text-left\">" + link_email + "</div></td>" +
            "<td><div class=\"text-left\">" + data_items[i].arrived + "</div></td>" +
            "<td><div class=\"text-left\">" + data_items[i].position + "</div></td>" +
            "<td><div class=\"text-left\">" + data_items[i].section + "</div></td>" +

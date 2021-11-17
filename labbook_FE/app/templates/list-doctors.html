@@ -217,6 +217,8 @@ $("#list_doctors_total").html( data_len ) ;
         
     menu_act += "</div></ul></nav>" ;
 
+    link_email = "<a href=\"mailto:" + data_doctors[i].email + "\">" + data_doctors[i].email + "</a>" ;
+
     res += "<tr><td hidden><div>" + data_doctors[i].id_data + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-left\">" + data_doctors[i].code + "</div></td>" +
@@ -230,7 +232,7 @@ $("#list_doctors_total").html( data_len ) ;
            "<td><div class=\"text-left\">" + data_doctors[i].phone + "</div></td>" +
            "<td><div class=\"text-left\">" + data_doctors[i].mobile + "</div></td>" +
            "<td><div class=\"text-left\">" + data_doctors[i].fax + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].email + "</div></td></tr>" ;
+           "<td><div class=\"text-left\">" + link_email + "</div></td></tr>" ;
     }
 {% endif %}
 

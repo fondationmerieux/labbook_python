@@ -2415,9 +2415,11 @@ def biological_validation(mode='', id_rec=0):
 
                             res['res_label'] = ''
 
-                            if req.status_code == 200:
-                                dico_tmp = req.json()
+                            dico_tmp = req.json()
+                            if req.status_code == 200 and 'label' in dico_tmp:
                                 res['res_label'] = dico_tmp['label']
+                            else:
+                                res['res_label'] = ''
 
                         except requests.exceptions.RequestException as err:
                             log.error(Logs.fileline() + ' : requests result label failed, err=%s , url=%s', err, url)

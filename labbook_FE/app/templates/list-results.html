@@ -356,9 +356,9 @@ let disp_valid = "d-none" ;
                 change = 'disabled' ;
 
             res += "<select id=\"res_" + id_res + "\" class=\"form-control saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
-                   "<option value=\"0\"> </option>" ;
+                   "<option value=\"\"> </option>" ;
 
-            value = "0" ;
+            value = "" ;
 
                 for ( j in res_answer )
                 {
@@ -373,7 +373,7 @@ let disp_valid = "d-none" ;
                         disp_valid = "show" ;
                     }
                     // NOTE : works because 1013 is always the last choice
-                    else if ( selected == "" && value == "0" && res_answer[j].id_data == 1013 )
+                    else if ( selected == "" && (value == "" || value == "0") && res_answer[j].id_data == 1013 )
                     {
                     selected = "selected" ;
                     value    = res_answer[j].id_data ;
