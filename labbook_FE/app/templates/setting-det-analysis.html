@@ -861,14 +861,14 @@ var msg = "" ;
             else
             {
             var list_var = '"list_var":[ ';
-            var value    = '' ;
+            var tmp_value= '' ;
 
                 for( i in data_vars )
                 {
                     if (data_vars[i] != null)
                     {
-                        if (value != '')
-                        value += ', ' ;
+                        if (tmp_value != '')
+                        tmp_value += ', ' ;
 
                     id_var       = data_vars[i].id_data  ;
                     var_label    = data_vars[i].label    ;
@@ -919,11 +919,11 @@ var msg = "" ;
                                       '"id_link":' + id_link + ', ' +
                                       '"id_item":' + id_item + '}' ;
 
-                    value += param_var ;
+                    tmp_value += param_var ;
                     }
                 }
 
-            list_var += value + ' ]';
+            list_var = list_var + tmp_value + ' ]';
 
             var param = '{ "id_owner":' + id_owner + ', ' +
                           '"id_ana":' + id_ana + ', ' +

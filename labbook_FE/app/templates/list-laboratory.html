@@ -275,12 +275,12 @@ var dict_name = $("#name").val() ;
     }
 
 var param = '{ "list_val":[ ';
-var value = '' ;
+var tmp_value = '' ;
 
     for( i in data_values )
     {
-        if (value != '')
-        value += ', ' ;
+        if (tmp_value != '')
+        tmp_value += ', ' ;
 
     var param_val = '{ "id_owner":' + id_owner + ', ' +
                       '"id_data":' + data_values[i].id_data + ', ' +
@@ -289,10 +289,10 @@ var value = '' ;
                       '"position":' + data_values[i].position + ', ' +
                       '"code":"' + data_values[i].code + '"}' ;
 
-    value += param_val ;
+    tmp_value += param_val ;
     }
 
-param += value + ' ] }';
+param += tmp_value + ' ] }';
 
     $.ajax( {
        type: "POST",
