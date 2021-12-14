@@ -64,8 +64,9 @@
                     <thead>
                         <tr>
                             <th class="col-1" hidden>{{ _("serial") }}</th>
-                            <th class="d-inline-block col-2 text-left">{{ _("Action") }}</th>
-                            <th class="d-inline-block col-9 text-left cursor-act">{{ _("Nom") }}</th>
+                            <th class="d-inline-block col-1 text-left">{{ _("Action") }}</th>
+                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Nom") }}</th>
+                            <th class="d-inline-block col-8 text-left cursor-act">{{ _("Description") }}</th>
                     </thead>
                     <tbody id="tbody_dicts">
                     </tbody>
@@ -186,9 +187,12 @@ $("#list_dicts_total").html( data_len ) ;
 
     menu_act += "</div></ul></nav>" ;
 
+    descr = '';
+
     res += "<tr class=\"d-flex\"><td class=\"col-1\" hidden><div>" + data_dicts[i].id_data + "</div></td>" +
-           "<td class=\"col-2\"><div>" + menu_act + "</div></td>" +
-           "<td class=\"col-9\"><div class=\"text-left\">" + data_dicts[i].name + "</div></td></tr>" ;
+           "<td class=\"col-1\"><div>" + menu_act + "</div></td>" +
+           "<td class=\"col-3\"><div class=\"text-left\">" + data_dicts[i].name + "</div></td>" +
+           "<td class=\"col-8\"><div class=\"text-left\">" + data_dicts[i].dico_descr + "</div></td></tr>" ;
     }
 {% endif %}
 

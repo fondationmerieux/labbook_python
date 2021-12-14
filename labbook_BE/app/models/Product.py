@@ -18,7 +18,7 @@ class Product:
                'quantite as qty, statut as stat, id_dos as id_rec, preleveur as sampler, '
                'date_reception as receipt_date, time_format(heure_reception, "%T") as receipt_time, '
                'commentaire as comment, lieu_prel as prod_location, lieu_prel_plus as prod_location_accu, '
-               'localisation as storage '
+               'localisation as storage, code '
                'from sigl_01_data '
                'where id_data=%s')
 
@@ -77,7 +77,7 @@ class Product:
                'prod.quantite as quantite, prod.statut as statut, prod.id_dos as id_dos, prod.preleveur as preleveur, '
                'prod.date_reception as date_reception, prod.heure_reception as heure_reception, prod.commentaire as commentaire, '
                'prod.lieu_prel as lieu_prel, prod.lieu_prel_plus as lieu_prel_plus, prod.localisation as localisation, '
-               'dico_type.label as type_prod, dico_stat.label as stat_prod '
+               'dico_type.label as type_prod, dico_stat.label as stat_prod, prod.code '
                'from sigl_01_data as prod '
                'LEFT JOIN sigl_dico_data AS dico_type ON dico_type.dico_name="type_prel" '
                'LEFT JOIN sigl_dico_data AS dico_stat ON dico_stat.dico_name="prel_statut" '
@@ -94,10 +94,11 @@ class Product:
 
             cursor.execute('insert into sigl_01_data '
                            '(id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, '
-                           'heure_reception, commentaire, lieu_prel, lieu_prel_plus, localisation) '
+                           'heure_reception, commentaire, lieu_prel, lieu_prel_plus, localisation, code) '
                            'values '
                            '(%(id_owner)s, %(date_prel)s, %(type_prel)s, %(quantite)s, %(statut)s, %(id_dos)s, %(preleveur)s, %(date_reception)s, '
-                           '%(heure_reception)s, %(commentaire)s, %(lieu_prel)s, %(lieu_prel_plus)s, %(localisation)s)', params)
+                           '%(heure_reception)s, %(commentaire)s, %(lieu_prel)s, %(lieu_prel_plus)s, %(localisation)s, '
+                           '%(code)s)', params)
 
             Product.log.info(Logs.fileline())
 
@@ -116,7 +117,7 @@ class Product:
                            'statut=%(statut)s, id_dos=%(id_dos)s, preleveur=%(preleveur)s, '
                            'date_reception=%(date_reception)s, heure_reception=%(heure_reception)s, '
                            'commentaire=%(commentaire)s, lieu_prel=%(lieu_prel)s, '
-                           'lieu_prel_plus=%(lieu_prel_plus)s, localisation=%(localisation)s '
+                           'lieu_prel_plus=%(lieu_prel_plus)s, localisation=%(localisation)s, code=%(code)s '
                            'where id_data=%(id_data)s', params)
 
             Product.log.info(Logs.fileline())
@@ -140,9 +141,9 @@ class Product:
             for product in l_product:
                 cursor.execute('insert into sigl_01_deleted '
                                '(id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
-                               'commentaire, lieu_prel, lieu_prel_plus, localisation) '
+                               'commentaire, lieu_prel, lieu_prel_plus, localisation, code) '
                                'select id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
-                               'commentaire, lieu_prel, lieu_prel_plus, localisation '
+                               'commentaire, lieu_prel, lieu_prel_plus, localisation, code '
                                'from sigl_01_data '
                                'where id_data=%s', (product['id_data'],))
 

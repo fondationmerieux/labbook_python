@@ -34,7 +34,6 @@
                     <tbody id="tbody_value">
                     </tbody>
                 </table>
-                <div id="tempAnchor"></div>
             </form>
             
             <div class="clearfix my-2">
@@ -215,7 +214,7 @@ param += tmp_value + ' ] }';
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
            },
        error: function(data)
            {

@@ -2,19 +2,20 @@
 var disconnect_page = "/sigl/disconnect" ;
 var page_timeout    = 0 ;
 
-function tempAlert(msg,duration, id_parent)
+function tempAlert(msg, id_elem)
 {
-var el = document.createElement("div") ;
+let w_page  = $("#page").width() / 2 - 80 ; // -80 for better center
 
-el.setAttribute("id","tempAlert") ;
-el.innerHTML = '<div style="display:table-cell;vertical-align:middle;">' + msg + '</div>' ;
+let pos_elem = $("#" +id_elem).position();
+let x = pos_elem.left;
+let y = pos_elem.top - 80; // -80 for raise up a bit
 
-    setTimeout( function()
-    {
-    el.parentNode.removeChild(el) ;
-    }, duration) ;
+$(".toast").css({ top: y }) ;
+$(".toast").css({ left: w_page + 'px' }) ;
 
-$("#" + id_parent).append(el) ;
+$("#toast-msg").html(msg) ;
+
+$(".toast").toast('show') ;
 }
 
 // Return formatted record number

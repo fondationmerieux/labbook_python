@@ -901,32 +901,54 @@ def manage_pat_records():
     session['current_page'] = 'manage-pat-records'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
-    return render_template('manage-pat-records.html', args=json_data, rand=random.randint(0, 999))
-
-
-# Page : setting stickers
-@app.route('/setting-stickers')
-def setting_stickers():
-    log.info(Logs.fileline() + ' : TRACE setting stickers')
-
-    session['current_page'] = 'setting-stickers'
-    session.modified = True
-
-    json_data = {}
-
+    # Load nationality
     try:
-        url = session['server_int'] + '/services/setting/sticker'
+        url = session['server_int'] + '/services/nationality/list'
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_data = req.json()
+            json_ihm['nationality'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests setting stickers failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-stickers.html', args=json_data, rand=random.randint(0, 999))
+    # Load unit age
+    try:
+        url = session['server_int'] + '/services/dict/det/periode_unite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['unit_age'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
+
+    # Load blood group
+    try:
+        url = session['server_int'] + '/services/dict/det/groupesang'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['blood_group'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
+
+    # Load blood rhesus
+    try:
+        url = session['server_int'] + '/services/dict/det/posneg'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['blood_rhesus'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
+
+    return render_template('manage-pat-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : preferences list
@@ -1007,6 +1029,58 @@ def setting_backup():
         log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
 
     return render_template('setting-backup.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : list template
+@app.route('/list-template')
+def list_template():
+    log.info(Logs.fileline() + ' : TRACE list template')
+
+    session['current_page'] = 'list-template'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/setting/template/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests template list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-template.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : template details
+@app.route('/det-template/<int:id_tpl>')
+def det_template(id_tpl=0):
+    log.info(Logs.fileline() + ' : TRACE setting template' + str(id_tpl))
+
+    session['current_page'] = 'det-template' + str(id_tpl)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['template'] = []
+
+    if id_tpl > 0:
+        # Load template details
+        try:
+            url = session['server_int'] + '/services/setting/template/det/' + str(id_tpl)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['template'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests template det failed, err=%s , url=%s', err, url)
+
+    json_data['id_tpl'] = id_tpl
+
+    return render_template('det-template.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : setting report
@@ -1195,6 +1269,7 @@ def list_results():
         log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
 
     # Load list of technician
+    """
     try:
         url = session['server_int'] + '/services/user/role/3'
         req = requests.get(url)
@@ -1203,7 +1278,7 @@ def list_results():
             json_ihm['tech_list'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -1330,6 +1405,7 @@ def enter_result(id_rec=0, anchor=''):
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
 
     # Load list of technician
+    """
     try:
         url = session['server_int'] + '/services/user/role/3'
         req = requests.get(url)
@@ -1338,7 +1414,7 @@ def enter_result(id_rec=0, anchor=''):
             json_ihm['tech_list'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -1644,9 +1720,54 @@ def det_patient(type_req='E', id_pat=0):
     session['current_page'] = 'det-patient/' + type_req + '/' + str(id_pat)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
     dt_start_req = datetime.now()
+    # Load unit age
+    try:
+        url = session['server_int'] + '/services/dict/det/periode_unite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['unit_age'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
+
+    # Load blood group
+    try:
+        url = session['server_int'] + '/services/dict/det/groupesang'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['blood_group'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
+
+    # Load blood rhesus
+    try:
+        url = session['server_int'] + '/services/dict/det/posneg'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['blood_rhesus'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
+
+    # Load nationality
+    try:
+        url = session['server_int'] + '/services/nationality/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['nationality'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
+
     # Load data patient
     if id_pat > 0:
         try:
@@ -1677,7 +1798,7 @@ def det_patient(type_req='E', id_pat=0):
 
     log.info(Logs.fileline() + ' : DEBUG det-patient processing time = ' + str(dt_time_req))
 
-    return render_template('det-patient.html', type_req=type_req, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : external request details
@@ -2088,6 +2209,8 @@ def administrative_record(type_req='E', id_rec=0):
     session['current_page'] = 'administrative-record/' + str(type_req) + '/' + str(id_rec)
     session.modified = True
 
+    json_ihm  = {}
+
     json_data = {}
     json_data['data_analysis'] = []
     json_data['data_samples']  = []
@@ -2175,12 +2298,34 @@ def administrative_record(type_req='E', id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests record list files failed, err=%s , url=%s', err, url)
 
+    # Load list template RES
+    try:
+        url = session['server_int'] + '/services/setting/template/list/RES'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tpl_result'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list template RES failed, err=%s , url=%s', err, url)
+
+    # Load list template STI
+    try:
+        url = session['server_int'] + '/services/setting/template/list/STI'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tpl_sticker'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list template STI failed, err=%s , url=%s', err, url)
+
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : DEBUG administrative-record processing time = ' + str(dt_time_req))
 
-    return render_template('administrative-record.html', type_req=type_req, args=json_data, rand=random.randint(0, 999))
+    return render_template('administrative-record.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : technical validation
@@ -2307,6 +2452,7 @@ def technical_validation(id_rec=0, anchor=''):
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
 
     # Load list of technician
+    """
     try:
         url = session['server_int'] + '/services/user/role/3'
         req = requests.get(url)
@@ -2315,7 +2461,7 @@ def technical_validation(id_rec=0, anchor=''):
             json_ihm['tech_list'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -2365,6 +2511,18 @@ def biological_validation(mode='', id_rec=0):
         json_ihm['mode'] = 'S'
 
     dt_start_req = datetime.now()
+
+    # Load list template
+    try:
+        url = session['server_int'] + '/services/setting/template/list/RES'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tpl_result'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list template failed, err=%s , url=%s', err, url)
+
     # Load record
     try:
         url = session['server_int'] + '/services/record/det/' + str(id_rec)
@@ -2479,6 +2637,7 @@ def biological_validation(mode='', id_rec=0):
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
 
     # Load list of biologist
+    """
     try:
         url = session['server_int'] + '/services/user/role/2'
         req = requests.get(url)
@@ -2487,7 +2646,7 @@ def biological_validation(mode='', id_rec=0):
             json_ihm['bio_list'] = req.json()
 
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     # Load report attached to this record
     try:
@@ -2625,46 +2784,27 @@ def report_epidemio(date_beg='', date_end=''):
     return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
-"""
-# Page : report epidemiological
-@app.route('/report-epidemio')
-@app.route('/report-epidemio/<string:date_beg>/<string:date_end>')
-def report_epidemio(date_beg='', date_end=''):
-    log.info(Logs.fileline() + ' : TRACE report epidemio')
+# Page : pivot table
+@app.route('/pivot-table')
+def pivot_table():
+    log.info(Logs.fileline() + ' : TRACE pivot table')
 
-    session['current_page'] = 'report-epidemio'
+    session['current_page'] = 'pivot-table'
     session.modified = True
 
     json_ihm  = {}
     json_data = {}
 
-    # load data for epiodemio
-    try:
-        if not date_beg:
-            date_beg = date.today()
-            date_beg = date_beg - timedelta(days=31)
-            date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
+    date_beg = date.today()
+    date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
 
-        if not date_end:
-            date_end = date.today()
-            date_end = datetime.strftime(date_end, Constants.cst_isodate)
+    date_end = date.today()
+    date_end = datetime.strftime(date_end, Constants.cst_isodate)
 
-        json_data['date_beg'] = date_beg
-        json_data['date_end'] = date_end
+    json_data['date_beg'] = date_beg
+    json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg,
-                   'date_end': date_end}
-
-        url = session['server_int'] + '/services/report/epidemio'
-        req = requests.post(url, json=payload)
-
-        if req.status_code == 200:
-            json_data['epidemio'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report epidemio failed, err=%s , url=%s', err, url)
-
-    return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))"""
+    return render_template('pivot-table.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : report statistic
@@ -3534,6 +3674,7 @@ def list_stock():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)
 
+    # Load list of stock
     try:
         url = session['server_int'] + '/services/quality/stock/list'
         req = requests.post(url)
@@ -3873,6 +4014,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # RP => Report
     # DH => DHIS2 spreadsheet
     # EP => EPIDEMIO spreadsheet
+    # TP => template odt
 
     if type == 'PY':
         filepath = Constants.cst_path_tmp
@@ -3904,6 +4046,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
         generated_name = filename
     elif type == 'EP':
         filepath = Constants.cst_epidemio
+        generated_name = filename
+    elif type == 'TP':
+        filepath = Constants.cst_template
         generated_name = filename
     else:
         return False
@@ -4100,6 +4245,38 @@ def upload_epidemio():
     return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
 
+# Route : upload a template for document
+@app.route('/upload-tpl', methods=['POST'])
+def upload_tpl():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-tpl failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_template
+
+        log.info(Logs.fileline())
+
+        # check if this file is a odt
+        if not filename.endswith('.odt'):
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-tpl failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
 # Route : upload temp file for import
 @app.route('/upload-import', methods=['POST'])
 def upload_import():
@@ -4137,7 +4314,13 @@ def upload_import():
 def delete_file(type='', filename=''):
     log.info(Logs.fileline())
 
-    filepath = Constants.cst_dhis2
+    # DH => DHIS2 spreadsheet
+    # TP => template odt
+
+    if type == 'DH':
+        filepath = Constants.cst_dhis2
+    elif type == 'TP':
+        filepath = Constants.cst_template
 
     try:
         if os.path.exists(os.path.join(filepath, filename)):

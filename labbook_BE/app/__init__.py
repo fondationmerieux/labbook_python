@@ -88,9 +88,14 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_LOG_DIR=' + str(os.environ['LABBOOK_LOG_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
 
+    # check if LABBOOK_DB_PWD already exist in os.environ if not use one from default_settings
+    if 'LABBOOK_DB_PWD' in os.environ and os.environ['LABBOOK_DB_PWD']:
+        app.config['DB_PWD'] = os.environ['LABBOOK_DB_PWD']
+    else:
+        os.environ['LABBOOK_DB_PWD'] = app.config['DB_PWD']
+
     # Put in os.environ DB variables
     os.environ['LABBOOK_DB_USER'] = app.config['DB_USER']
-    os.environ['LABBOOK_DB_PWD']  = app.config['DB_PWD']
     os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
     os.environ['LABBOOK_DB_NAME'] = app.config['DB_NAME']
 
@@ -134,9 +139,11 @@ api.add_resource(AnalysisVarDet,      '/services/analysis/variable/det/<int:id_v
 api.add_resource(ConformityList,      '/services/quality/nonconformity/list')
 api.add_resource(ConformityDet,       '/services/quality/nonconformity/det/<int:id_item>')
 api.add_resource(ConformityExport,    '/services/quality/nonconformity/export')
+api.add_resource(DatasetByName,       '/services/dataset/name/<string:name>')
 api.add_resource(DbLastStat,          '/services/db/stat/last')
 api.add_resource(DefaultValue,        '/services/default/val/<string:name>', '/services/default/name/<string:name>/val/<string:value>')
 api.add_resource(DicoById,            '/services/dico/id/<int:id_data>')
+api.add_resource(DictDescr,           '/services/dict/descr/<string:dict_name>')
 api.add_resource(DictDet,             '/services/dict/det/<string:dict_name>')
 api.add_resource(DictList,            '/services/dict/list')
 api.add_resource(DoctorList,          '/services/doctor/list')
@@ -163,6 +170,7 @@ api.add_resource(ManualSearch,        '/services/quality/manual/search')
 api.add_resource(MeetingList,         '/services/quality/meeting/list')
 api.add_resource(MeetingDet,          '/services/quality/meeting/det/<int:id_item>')
 api.add_resource(MeetingExport,       '/services/quality/meeting/export')
+api.add_resource(NationalityList,     '/services/nationality/list')
 api.add_resource(PatientCode,         '/services/patient/generate/code')
 api.add_resource(PatientCombine,      '/services/patient/combine/<int:id_pat1>/<int:id_pat2>')
 api.add_resource(PatientList,         '/services/patient/list')
@@ -173,8 +181,10 @@ api.add_resource(PatientSearch,       '/services/patient/search')
 api.add_resource(PdfBarcode,          '/services/pdf/barcode/num/<string:num>')
 api.add_resource(PdfBill,             '/services/pdf/bill/<int:id_rec>')
 api.add_resource(PdfBillList,         '/services/pdf/bill/list')
-api.add_resource(PdfReport,           '/services/pdf/report/<int:id_rec>/<string:filename>/<string:reedit>')
+api.add_resource(PdfReport,           '/services/pdf/report/<int:id_rec>/<string:filename>/<string:template>/<string:reedit>')
 api.add_resource(PdfReportGeneric,    '/services/pdf/report/generic')
+api.add_resource(PdfSticker,          '/services/pdf/sticker/<string:template>')
+api.add_resource(PdfTemplate,         '/services/pdf/template/test/<int:id_item>')
 api.add_resource(ProcedureList,       '/services/quality/procedure/list')
 api.add_resource(ProcedureDet,        '/services/quality/procedure/det/<int:id_item>')
 api.add_resource(ProcedureExport,     '/services/quality/procedure/export')
@@ -226,6 +236,7 @@ api.add_resource(ScriptRestart,       '/services/setting/script/restart')
 api.add_resource(ScriptRestore,       '/services/setting/script/restore')
 api.add_resource(ScriptStatus,        '/services/setting/script/status/<string:mode>')
 api.add_resource(StaffExport,         '/services/quality/staff/export')
+api.add_resource(StockCancelIO,       '/services/quality/stock/cancel/io')
 api.add_resource(StockProductDet,     '/services/quality/stock/product/det/<int:id_item>')
 api.add_resource(StockProductHist,    '/services/quality/stock/product/history/<int:id_item>')
 api.add_resource(StockProductList,    '/services/quality/stock/product/list')
@@ -234,11 +245,13 @@ api.add_resource(StockSupplyDet,      '/services/quality/stock/supply/det/<int:i
 api.add_resource(StockExport,         '/services/quality/stock/export')
 api.add_resource(StockList,           '/services/quality/stock/list')
 api.add_resource(StockListDet,        '/services/quality/stock/list/det/<int:id_item>')
-api.add_resource(StockUse,            '/services/quality/stock/use')
+api.add_resource(StockUse,            '/services/quality/stock/use/<int:prs_ser>', '/services/quality/stock/use')
 api.add_resource(SupplierDet,         '/services/quality/supplier/det/<int:id_item>')
 api.add_resource(SupplierExport,      '/services/quality/supplier/export')
 api.add_resource(SupplierList,        '/services/quality/supplier/list')
 api.add_resource(SupplierSearch,      '/services/quality/supplier/search')
+api.add_resource(TemplateDet,         '/services/setting/template/det/<int:id_item>')
+api.add_resource(TemplateList,        '/services/setting/template/list', '/services/setting/template/list/<string:type>')
 api.add_resource(UserAccess,          '/services/user/access')
 api.add_resource(UserByLogin,         '/services/user/login/<string:login>')
 api.add_resource(UserByRole,          '/services/user/role/<int:id_role>')

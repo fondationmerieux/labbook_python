@@ -43,7 +43,7 @@
 | sigl_non_conformite_data	                 | CONFORMITY	 | non conformité                           |
 | sigl_param_cr_data	                         | SETTINGS	 | paramètre compte-rendu                   |
 | sigl_param_num_dos_data	                 | SETTINGS	 | paramètre numéro de dossier              |
-| sigl_pj_group	                                 | USER	         | login et id_group                        |
+| sigl_pj_group	                                 | USER	         | login and id_group                       |
 | sigl_pj_group_link	                         | USER	         | id_group, id_group_parent et id_role     |
 | sigl_pj_role	                                 | USER    	 | role utilisateur                         |
 | sigl_pj_sequence	                         | -	         | dernier numéro (dossier, facture)        |
@@ -64,8 +64,9 @@
 | init_version                                   | LOG           | use to start process after alembic once  |
 | product_details	                         | STOCK	 | fiche produit                            |
 | product_supply	                         | STOCK	 | approvisionnement produit                |
-| product_use	                                 | STOCK	 | usage produit                            |
-| sticker_setting	                         | SETTINGS	 | paramètre code barre                     |
+| product_use	                                 | STOCK	 | product used                             |
 | translations  	                         | LANGUAGE	 | translations for search fields           |
+| template_setting	                         | SETTINGS	 | setting for PDF template                 |
+| nationality   	                         | DICTIONNARY	 | list of nationality                      |
 
-67 tables used 
+68 tables used

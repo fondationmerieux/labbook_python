@@ -29,7 +29,6 @@
                         <input type="radio" name="comment" value="1051" {% if args['commentaire'] == 1051 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
                     </label>
                 </div>
-                <div id="tempAnchor"></div>
             </form>
 
             <div class="clearfix mb-5">
@@ -51,7 +50,7 @@
 function save()
 {
 var id_owner = {{ session['user_id_group']|safe}} ;
-var header   = $("input:radio[name=header]:checked").val() ;
+var header   = $("input:radio[name=header]:checked").val()  ;
 var comment  = $("input:radio[name=comment]:checked").val() ;
 
 var param = '{ "id_owner":' + id_owner + ', ' +
@@ -66,7 +65,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
            },
        error: function(data)
            {

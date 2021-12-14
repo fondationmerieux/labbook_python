@@ -12,15 +12,22 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Dictionnaire") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-name row mt-3">
-                    <div class="col-9 form-inline">
-                        <div class="col-7 form-group form-inline">
-                            <label for="name" class="col-form-label col-4 text-right mt-2">{{ _("Nom du dictionnaire") }}</label>
+                    <div class="col-10 form-inline">
+                        <div class="col-6 form-group form-inline">
+                            <label for="name" class="col-form-label col-5 text-right mt-2">{{ _("Nom du dictionnaire") }}</label>
                             <div>					
                                 <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control" maxlength="20">			
                             </div>
                         </div>
+                        <div class="col-6 form-group form-inline">
+                            <label for="dico_descr" class="col-form-label col-2 text-right mt-2 ">{{ _("Description") }}</label>
+                            <div>					
+                                <textarea id="dico_descr" name="dico_descr" rows="2" cols="40" class="form-control">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
+                                <textarea id="dico_descr_old" name="dico_descr_old" rows="2" cols="40" class="form-control d-none">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2 float-right">
                     </div>
                 </div>
@@ -44,7 +51,6 @@
                     <tbody id="tbody_value">
                     </tbody>
                 </table>
-                <div id="tempAnchor"></div>
             </form>
             
             <div class="my-2 clearfix">
@@ -191,8 +197,10 @@ let id_ihm  = split_id[split_id.length -1] ;
 
 function save_dict()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
-var dict_name = $("#name").val() ;
+var id_owner    = {{ session['user_id_group']|safe }} ;
+var dict_name   = $("#name").val() ;
+var dict_descr  = JSON.stringify( $("#dico_descr").val() ) ;
+var dict_descr2 = JSON.stringify( $("#dico_descr_old").val() ) ;
 
     if (dict_name == "")
     {
@@ -237,14 +245,37 @@ var tmp_value = '' ;
 param += tmp_value + ' ] }';
 
     $.ajax( {
-       type: "POST",
-       url: "/services/dict/det/" + dict_name,
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+        type: "POST",
+        url: "/services/dict/det/" + dict_name,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+                // Test if we need to update dict description
+                if ( dict_descr != dict_descr2)
+                {
+                param = '{ "dico_descr":' + dict_descr + '}' ;
+                    $.ajax( 
+                    {
+                        type: "POST",
+                        url: "/services/dict/descr/" + dict_name,
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        data: param,
+                        success: function(data)
+                            {
+                            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
+                            },
+                        error: function(data)
+                            {
+                            console.log("ERROR POST dict descr") ;
+                            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                            }
+                     } ) ;
+                }
+                else
+                tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
            },
        error: function(data)
            {

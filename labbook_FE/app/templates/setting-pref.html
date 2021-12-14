@@ -107,7 +107,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <div id="tempAnchor"></div>
             </form>
 
             <div class="clearfix mb-5 mt-3">
@@ -179,7 +178,7 @@ var param = '{ "prix_acte":"' + deed_price + '", ' +
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
            },
        error: function(data)
            {

@@ -17,7 +17,7 @@ class Patient:
         filter_cond = ' code is not NULL '
 
         if not args:
-            limit = 'LIMIT 5000'
+            limit = 'LIMIT 100000'
         else:
             if 'limit' in args and args['limit'] > 0:
                 limit = 'LIMIT ' + str(args['limit'])
@@ -121,11 +121,12 @@ class Patient:
     def getPatient(id_pat):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, '\
-              'adresse, cp, ville, tel, profession, '\
-              'nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite '\
-              'from sigl_03_data '\
-              'where id_data=%s'
+        req = ('select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, '
+               'adresse, cp, ville, tel, profession, '
+               'nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite, '
+               'pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus '
+               'from sigl_03_data '
+               'where id_data=%s')
 
         cursor.execute(req, (id_pat,))
 
@@ -141,7 +142,9 @@ class Patient:
                            'nom=%(nom)s, prenom=%(prenom)s, ddn=%(ddn)s, sexe=%(sexe)s, ethnie=%(ethnie)s, adresse=%(adresse)s, '
                            'cp=%(cp)s, ville=%(ville)s, tel=%(tel)s, profession=%(profession)s, nom_jf=%(nom_jf)s, '
                            'quartier=%(quartier)s, bp=%(bp)s, ddn_approx=%(ddn_approx)s, age=%(age)s, '
-                           'annee_naiss=%(annee_naiss)s, semaine_naiss=%(semaine_naiss)s, mois_naiss=%(mois_naiss)s, unite=%(unite)s '
+                           'annee_naiss=%(annee_naiss)s, semaine_naiss=%(semaine_naiss)s, mois_naiss=%(mois_naiss)s, '
+                           'unite=%(unite)s, pat_midname=%(midname)s, pat_nation=%(nationality)s, '
+                           'pat_resident=%(resident)s, pat_blood_group=%(blood_group)s, pat_blood_rhesus=%(blood_rhesus)s '
                            'where id_data=%(id)s', params)
 
             Patient.log.info(Logs.fileline())
@@ -158,11 +161,14 @@ class Patient:
 
             cursor.execute('insert into sigl_03_data '
                            '(id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, ethnie, adresse, cp, ville, '
-                           'tel, profession, nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, mois_naiss, unite) '
+                           'tel, profession, nom_jf, quartier, bp, ddn_approx, age, annee_naiss, semaine_naiss, '
+                           'mois_naiss, unite, pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus) '
                            'values '
-                           '(%(id_owner)s, %(anonyme)s, %(code)s, %(code_patient)s, %(nom)s, %(prenom)s, %(ddn)s, %(sexe)s, %(ethnie)s, %(adresse)s, %(cp)s, %(ville)s, '
-                           '%(tel)s, %(profession)s, %(nom_jf)s, %(quartier)s, %(bp)s, %(ddn_approx)s, %(age)s, %(annee_naiss)s, '
-                           '%(semaine_naiss)s, %(mois_naiss)s, %(unite)s )', params)
+                           '(%(id_owner)s, %(anonyme)s, %(code)s, %(code_patient)s, %(nom)s, %(prenom)s, %(ddn)s, '
+                           '%(sexe)s, %(ethnie)s, %(adresse)s, %(cp)s, %(ville)s, '
+                           '%(tel)s, %(profession)s, %(nom_jf)s, %(quartier)s, %(bp)s, %(ddn_approx)s, %(age)s, '
+                           '%(annee_naiss)s, %(semaine_naiss)s, %(mois_naiss)s, %(unite)s, '
+                           '%(midname)s, %(nationality)s, %(resident)s, %(blood_group)s, %(blood_rhesus)s )', params)
 
             Patient.log.info(Logs.fileline())
 
@@ -228,5 +234,21 @@ class Patient:
                'order by rec.num_dos_an desc, ref.id_data asc limit 7000')
 
         cursor.execute(req, (id_pat,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getDataset():
+        cursor = DB.cursor()
+
+        req = ('select id_data as id_patient, code, code_patient as code_lab, nom as lastname, prenom as firstname, '
+               'date_format(ddn, %s) as birth, date_format(ddn, "%Y") as birth_year, date_format(ddn, "%m") as birth_month, '
+               'date_format(ddn, "%d") as birth_day, ddn_approx as birth_approx, sexe as sex, pat_midname as middle_name, '
+               'nom_jf as maiden_name, pat_nation as nation, pat_resident as resident, cp as zipcode, ville as city, '
+               'profession, pat_blood_group as blood_group, pat_blood_rhesus as blood_rhesus '
+               'from sigl_03_data '
+               'order by id_data desc')
+
+        cursor.execute(req, (Constants.cst_isodate,))
 
         return cursor.fetchall()

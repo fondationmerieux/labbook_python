@@ -33,7 +33,7 @@
                         <div class="form-group row">
                             <label for="code_patient" class="col-form-label col-5 text-right" style="">{{ _("Code patient interne au laboratoire") }}</label>
                             <div>
-                                <input id="code_patient" type="text" value="{{ args['code_patient'] }}" maxlength="8" class="form-control" style="width:100px;">
+                                <input id="code_patient" type="text" value="{{ args['code_patient'] }}" maxlength="20" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -66,9 +66,9 @@
                     </div>
                     <div class="col-5">
                         <div class="form-group row identity-group">
-                            <label for="nom_jf" class="col-form-label col-4 text-right" style="">{{ _("Nom de jeune fille") }}</label>
+                            <label for="midname" class="col-form-label col-4 text-right" style="">{{ _("Deuxième nom") }}</label>
                             <div>
-                                <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control" style="">
+                                <input id="midname" type="text" value="{{ args['pat_midname'] }}" maxlength="40" class="form-control" style="">
                             </div>
                         </div>
                     </div>
@@ -85,15 +85,62 @@
                     </div>
                     <div class="col-5">
                         <div class="form-group row identity-group">
+                            <label for="nom_jf" class="col-form-label col-4 text-right" style="">{{ _("Nom de jeune fille") }}</label>
+                            <div>
+                                <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control" style="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <label for="age" class="col-form-label text-right mr-1">{{ _("ou") }}&nbsp;&nbsp;&nbsp;{{ _("Age") }}</label>
+                            <div>
+                                <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="unite" class="col-form-label text-right mr-1">{{ _("unité") }}</label>
+                            <div>					
+                                <select name="unite" id="unite" class="form-control">
+                                    {% for unit_age in ihm['unit_age'] %}
+                                    <option value="{{ unit_age['id_data'] }}" {% if args['unite'] == unit_age['id_data'] %} selected {% endif %}>{{ unit_age['label'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group row identity-group">
                             <label for="prenom" class="col-form-label col-4 text-right" style="">{{ _("Prénom(s)") }}</label>
                             <div>
                                 <input id="prenom" type="text" value="{{ args['prenom'] }}" maxlength="80" class="form-control" style="">
                             </div>
                         </div>
                     </div>
-                    <div class="col-5">
+                    <div class="col-3">
                         <div class="form-group row">
-                            <span class="col-form-label text-center" style="">{{ _("ou") }}</span>
+                            <label for="nationality" class="col-form-label text-right mr-1">{{ _("Nationalité") }}</label>
+                            <div>					
+                                <select name="nationality" id="nationality" class="form-control">
+                                    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+                                    {% for nationality in ihm['nationality'] %}
+                                    <option value="{{ nationality['nat_ser'] }}" {% if args['pat_nation'] == nationality['nat_ser'] %} selected {% endif %}>{{ nationality['nat_name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <label class="col-form-label text-right mx-3">{{ _("Résident") }}</label>
+                            <label class="col-form-label text-right mr-3">
+                                <input type="radio" name="resident" value="Y" {% if not args['pat_resident'] or args['pat_resident'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                            </label>
+                            <label class="col-form-label text-right mr-3">
+                                <input type="radio" name="resident" value="N" {% if args['pat_resident'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -101,7 +148,7 @@
                 <div class="row">
                     <div class="col-5">
                         <div class="form-group row identity-group">
-                            <label class="col-form-label text-right mx-3">{{ _("Sexe") }}</label>
+                            <label class="col-form-label col-4  text-right">{{ _("Sexe") }}</label>
                             <label class="col-form-label text-right mr-3">
                                 <input type="radio" name="sexe" value="1" {% if args['sexe'] == 1 %} checked="checked" {% endif %}>&nbsp;{{ _("Masculin") }}</input>
                             </label>
@@ -113,23 +160,28 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="form-group row">
-                            <label for="age" class="col-form-label text-right mr-1">{{ _("Age") }}</label>
-                            <div>
-                                <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                            <label for="blood_group" class="col-form-label text-right mr-1">{{ _("Groupe sanguin") }}</label>
+                            <div>					
+                                <select name="blood_group" id="blood_group" class="form-control">
+                                    <option value="0" {% if not args or args['blood_group'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+                                    {% for blood_group in ihm['blood_group'] %}
+                                    <option value="{{ blood_group['id_data'] }}" {% if args['pat_blood_group'] == blood_group['id_data'] %} selected {% endif %}>{{ blood_group['label'] }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group row">
-                            <label for="unite" class="col-form-label text-right mr-1">{{ _("unité") }}</label>
+                            <label for="blood_rhesus" class="col-form-label text-right mr-1">{{ _("Rhésus") }}</label>
                             <div>					
-                                <select name="unite" id="unite" class="form-control">
-                                    <option value="1034" {% if args['unite'] == 1034 %} selected {% endif %}>{{ _("Jours") }}</option>
-                                    <option value="1035" {% if args['unite'] == 1035 %} selected {% endif %}>{{ _("Semaines") }}</option>
-                                    <option value="1036" {% if args['unite'] == 1036 %} selected {% endif %}>{{ _("Mois") }}</option>
-                                    <option value="1037" {% if not args or args['unite'] == 1037 %} selected {% endif %}>{{ _("Années") }}</option>
+                                <select name="blood_rhesus" id="blood_rhesus" class="form-control">
+                                    <option value="0" {% if not args or args['blood_rhesus'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+                                    {% for blood_rhesus in ihm['blood_rhesus'] %}
+                                    <option value="{{ blood_rhesus['id_data'] }}" {% if args['pat_blood_rhesus'] == blood_rhesus['id_data'] %} selected {% endif %}>{{ blood_rhesus['label'] }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -231,6 +283,11 @@ var annee_naiss   = 0 ; // useless
 var semaine_naiss = 0 ; // useless
 var mois_naiss    = 0 ; // useless
 var unite         = $("#unite").val() ;
+var midname       = $("#midname").val() ;
+var nationality   = $("#nationality").val() ;
+var resident      = $("input:radio[name=resident]:checked").val() ;
+var blood_group   = $("#blood_group").val() ;
+var blood_rhesus  = $("#blood_rhesus").val() ;
 
     // date de naissance obligatoire
     if (ddn == "" && age == "")
@@ -261,7 +318,12 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"annee_naiss":' + annee_naiss + ', ' +
               '"semaine_naiss":' + semaine_naiss + ', ' +
               '"mois_naiss":' + mois_naiss + ', ' +
-              '"unite":' + unite + '}' ;
+              '"unite":' + unite + ', ' +
+              '"midname":"' + midname + '", ' +
+              '"nationality":' + nationality + ', ' +
+              '"resident":"' + resident + '", ' +
+              '"blood_group":' + blood_group + ', ' +
+              '"blood_rhesus":' + blood_rhesus + ' }' ;
 
     // popup wait
     $("#dial-wait").modal("show") ;
@@ -305,9 +367,10 @@ $("input[type=radio][name=anonyme]").change(function()
     if (this.value == '4') 
     {
     // Clean and hide input nom, prenom, nom_jf, sexe
-    $("#nom").val("")    ;
-    $("#nom_jf").val("") ;
-    $("#prenom").val("") ;
+    $("#nom").val("")     ;
+    $("#midname").val("") ;
+    $("#nom_jf").val("")  ;
+    $("#prenom").val("")  ;
     $("#unknown_sex").prop('checked', true) ;
     $(".identity-group").hide() ;
     }

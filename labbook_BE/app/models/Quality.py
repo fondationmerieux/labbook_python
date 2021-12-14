@@ -419,10 +419,42 @@ class Quality:
             return False
 
     @staticmethod
+    def cancelStockIO(**params):
+        try:
+            cursor = DB.cursor()
+
+            if params['type_move'] == 'I':
+                table_name = 'product_supply '
+                set_var    = 'prs_cancel="Y", prs_user_cancel=%(id_user)s '
+                stock_ser  = 'prs_ser=%(id_stock)s'
+            elif params['type_move'] == 'O':
+                table_name = 'product_use '
+                set_var    = 'pru_cancel="Y", pru_user_cancel=%(id_user)s '
+                stock_ser  = 'pru_ser=%(id_stock)s'
+
+                # update prs_empty to N (even if its already to N)
+                cursor.execute('update product_supply set prs_empty="N" where prs_ser= '
+                               '(select pru_prs from product_use where pru_ser=%(id_stock)s)', params)
+            else:
+                Quality.log.error(Logs.fileline() + ' : ERROR wrong type_move = ' + str(params['type_move']))
+                return False
+
+            cursor.execute('update ' + table_name +
+                           'set ' + set_var +
+                           'where ' + stock_ser, params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getStockList(args):
         cursor = DB.cursor()
 
-        filter_cond = ' prs_ser > 0 '
+        filter_cond = ' prs_ser > 0 and prs_cancel="N" '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -448,7 +480,7 @@ class Quality:
                'sup.fournisseur_nom as supplier, Min(prs_expir_date) as expir_date '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
-               'left join product_use on pru_prs=prs_ser '
+               'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
                'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
@@ -466,7 +498,7 @@ class Quality:
 
         req = ('select sum(prs_nb_pack) as total '
                'from product_supply '
-               'where prs_prd=%s group by prs_prd')
+               'where prs_prd=%s and prs_cancel="N" group by prs_prd')
 
         cursor.execute(req, (id_item,))
 
@@ -481,7 +513,7 @@ class Quality:
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser '
-               'where prs_empty="N" and prd_ser=%s '
+               'where (prs_empty="N" or prs_cancel="N") and prd_ser=%s '
                'group by prs_ser '
                'order by prs_expir_date asc ')
 
@@ -550,7 +582,7 @@ class Quality:
                'prs_batch_num, prs_buy_price, prs_date as date_create, username '
                'from product_supply '
                'left join sigl_user_data on id_data=prs_user '
-               'where prs_prd=%s and (prs_date between %s and %s)')
+               'where prs_prd=%s and (prs_date between %s and %s) and prs_cancel="N"')
 
         cursor.execute(req, (id_item, date_beg, date_end,))
 
@@ -561,7 +593,7 @@ class Quality:
                'from product_use '
                'inner join product_supply on prs_ser=pru_prs '
                'left join sigl_user_data on id_data=pru_user '
-               'where prs_prd=%s and (pru_date between %s and %s)')
+               'where prs_prd=%s and (pru_date between %s and %s) and pru_cancel="N"')
 
         cursor.execute(req, (id_item, date_beg, date_end,))
 
@@ -627,7 +659,7 @@ class Quality:
 
         req = ('select prs_nb_pack as nb_pack '
                'from product_supply '
-               'where prs_ser=%s')
+               'where prs_ser=%s and prs_cancel="N"')
 
         cursor.execute(req, (id_item,))
 

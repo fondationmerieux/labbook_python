@@ -1,12 +1,17 @@
 import logging
 # import hashlib
 
-# from datetime import datetime
+from gettext import gettext as _
+from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
 from app.models.General import *
 from app.models.Logs import Logs
+from app.models.Analysis import Analysis
+from app.models.Patient import Patient
+from app.models.Record import Record
+from app.models.Result import Result
 from app.models.Various import Various
 
 
@@ -92,3 +97,60 @@ class InitVersion(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE InitVersion ini_ser=' + str(ini['ini_ser']))
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class NationalityList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Various.getNationalityList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : ERROR NationalityList not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        self.log.info(Logs.fileline() + ' : TRACE NationalityList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class DatasetByName(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, name):
+        args = request.get_json()
+
+        if name == 'patient':
+            l_items = Patient.getDataset()
+        else:
+            args = request.get_json()
+
+            if not args or ('date_beg' not in args and 'date_end' not in args):
+                self.log.error(Logs.fileline() + ' : DatasetByName args missing')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # convert isodate format to ymd format
+            date_beg = datetime.strptime(args['date_beg'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
+            date_end = datetime.strptime(args['date_end'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
+
+        if name == 'record':
+            l_items = Record.getDataset(date_beg, date_end)
+        elif name == 'analysis':
+            l_items = Analysis.getDataset(date_beg, date_end)
+        elif name == 'result':
+            l_items = Result.getDataset(date_beg, date_end)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : ERROR dataset not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        import decimal
+
+        for item in l_items:
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+                if isinstance(item[key], decimal.Decimal):
+                    item[key] = float(item[key])
+
+        self.log.info(Logs.fileline() + ' : TRACE DatasetByName')
+        return compose_ret(l_items, Constants.cst_content_type_json)

@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -102,6 +103,9 @@ class ResultList(Resource):
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
 
+            if not result['user']:
+                result['user'] = User.getUserDetails(result['validation']['utilisateur'])
+
             if result['user']:
                 # Replace None by empty string
                 for key, value in list(result['user'].items()):
@@ -194,10 +198,13 @@ class ResultRecord(Resource):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
                 elif key == 'label_motif':
-                    result[key] = _(result[key].strip())
+                    result['validation'][key] = _(result['validation'][key].strip())
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
+
+            if not result['user']:
+                result['user'] = User.getUserDetails(result['validation']['utilisateur'])
 
             if result['user']:
                 # Replace None by empty string
@@ -290,7 +297,7 @@ class ResultValid(Resource):
     def post(self, type_valid, id_rec):
         args = request.get_json()
 
-        if 'list_valid' not in args:
+        if 'list_valid' not in args and 'template' not in args:
             self.log.error(Logs.fileline() + ' : TRACE ResultValid ERROR list_valid missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -367,7 +374,7 @@ class ResultValid(Resource):
             fileReport = File.getFileReport(id_rec)
 
             if fileReport:
-                Pdf.getPdfReport(id_rec, fileReport['file'])
+                Pdf.getPdfReport(id_rec, args['template'], fileReport['file'])
 
         self.log.info(Logs.fileline() + ' : TRACE ResultValid')
         return compose_ret('', Constants.cst_content_type_json)
@@ -493,6 +500,9 @@ class ResultHisto(Resource):
             valid['dico_cancel'] = Various.getDicoById(str(valid['motif_annulation']))
 
             valid['user'] = User.getUserByIdGroup(valid['utilisateur'])
+
+            if not valid['user']:
+                valid['user'] = User.getUserDetails(valid['utilisateur'])
 
             if valid['date_validation']:
                 valid['date_validation'] = datetime.strftime(valid['date_validation'], '%Y-%m-%d')

@@ -81,8 +81,6 @@
                 </table>
             </form>
 
-            <div id="tempAnchor"></div>
-            
             <div class="clearfix my-2">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
@@ -302,7 +300,7 @@ param += tmp_value + ' ] }';
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
            },
        error: function(data)
            {

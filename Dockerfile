@@ -3,6 +3,9 @@ FROM centos
 # permanent files (manuals, reports, logo ...)
 COPY storage /storage
 
+# copy some resource
+COPY labbook_BE/alembic/resource /storage/resource
+
 COPY vendor/*.rpm /tmp
 
 # may have to add openssl libssl.so.10 before compat-openssl10
@@ -15,7 +18,8 @@ RUN yum update -y && yum install -y \
     which \
     openssh-clients \
     httpd \
-    /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm
+    /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm \
+    unoconv
 
 # EPEL repository is needed for sshpass
 RUN yum install -y epel-release

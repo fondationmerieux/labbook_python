@@ -74,6 +74,7 @@ class User:
 
         return cursor.fetchone()
 
+    # TODO 10/12/2021 : remove all these function with id_group, need update of DB
     @staticmethod
     def getUserByIdGroup(id_group):
         cursor = DB.cursor()

@@ -17,7 +17,7 @@
                         <div>
                             <div>
                                 <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
-                                    <input name="file" type="file" style="margin-bottom:4px"/>
+                                    <input id="btn-upload" name="file" type="file" style="margin-bottom:4px"/>
                                 </div>
                             </div>
                         </div>
@@ -34,8 +34,6 @@
                 </div>
             </div>
 
-            <div id="tempAnchor"></div>
-            
             <div class="clearfix mb-5">
                 <div class="float-left" style="margin-left:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
@@ -66,7 +64,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
         data: param_form,
         success : function(response)
         {
-        tempAlert("{{ _("Dépôt réussi") }}", 2000, "tempAnchor") ;
+        tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
         console.log("success upload dhis2") ;
         location.reload() ;
         },

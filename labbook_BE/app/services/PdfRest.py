@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from flask import request
 from flask_restful import Resource
 
@@ -106,8 +107,8 @@ class PdfBillList(Resource):
 class PdfReport(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_rec, filename, reedit='N'):
-        ret = Pdf.getPdfReport(id_rec, filename, reedit)
+    def get(self, id_rec, template, filename, reedit='N'):
+        ret = Pdf.getPdfReport(id_rec, template, filename, reedit)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : PdfReport failed id_rec=%s', str(id_rec))
@@ -135,3 +136,49 @@ class PdfReportGeneric(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGeneric')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class PdfSticker(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, template):
+        args = request.get_json()
+
+        if 'id' not in args or 'type_id' not in args:
+            self.log.error(Logs.fileline() + ' : PdfSticker ERROR args missing')
+            return compose_ret(-1, Constants.cst_content_type_json, 400)
+
+        ret = Pdf.getPdfSticker(args['id'], args['type_id'], template)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfSticker failed id=%s, type_id=%s, template=%s', str(args['id']), args['type_id'], template)
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfSticker')
+        return compose_ret(0, Constants.cst_content_type_json)
+
+
+class PdfTemplate(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        tpl = Setting.getTemplate(id_item)
+
+        if not tpl:
+            self.log.error(Logs.fileline() + ' : PdfTemplate failed get id_item=%s', str(id_item))
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        if tpl['tpl_type'] == 'RES':
+            ret = Pdf.getPdfReport(0, tpl['tpl_file'], 'test_template', 'Y')
+        elif tpl['tpl_type'] == 'STI':
+            ret = Pdf.getPdfSticker(0, 'REC', tpl['tpl_file'])
+        else:
+            self.log.error(Logs.fileline() + ' : PdfTemplate failed unknow type=%s', str(tpl['tpl_type']))
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfTemplate print failed id=%s, type_id=%s, template=%s', str(tpl['tpl_ser']), tpl['tpl_type'], tpl['tpl_file'])
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfTemplate')
+        return compose_ret(0, Constants.cst_content_type_json)

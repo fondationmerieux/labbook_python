@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='{{ locale }}'>
+<html lang='{{ locale }}' {% if locale == 'ar' %}dir="rtl"{% else %}dir="ltr"{% endif %}>
 
 <head>
     {% block head %}
@@ -22,7 +22,7 @@
     <div id="page" class="container">
         {% block header %}
         <header id="page-header" class="text-center">
-            <div id="country-sel" class="btn-group">
+            <div id="country-sel" class="btn-group" {% if locale == 'ar' %}style="left:0;right:auto;"{% endif %}>
                 <button type="button" class="btn btn-{{ session['user_role']|safe }} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <strong>{{ session['lang_select'] }}</strong>
                     <span class="caret"></span>
@@ -45,8 +45,8 @@
                     </h1>
                 </div>
                 <div id="user-info">
-                    <div id="header_name" class="name"></div>
-                    <div class="role role-{{ session['user_role']|safe }}">
+                    <div id="header_name" class="name" {% if locale == 'ar' %}style="left:160px;right:auto;"{% endif %}></div>
+                    <div class="role role-{{ session['user_role']|safe }}" {% if locale == 'ar' %}style="left:40px;right:auto;"{% endif %}>
                         <ul>
                             <li>
                                 <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/disconnect" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
@@ -69,6 +69,7 @@
         {% endblock %}
     </div><!-- close page -->
     {% include 'popup_wait.html' %}
+    {% include 'popup_toast.html' %}
 </body>
 {% endblock %}
 

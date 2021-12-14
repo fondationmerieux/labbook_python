@@ -23,7 +23,7 @@
                                     <div>
                                         <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
                                             {% if session['user_role'] != 'P' %}
-                                            <input name="file" type="file" style="margin-bottom:4px"/>
+                                            <input id="btn-upload" name="file" type="file" style="margin-bottom:4px"/>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -46,8 +46,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="tempAnchor"></div>
 
                 <div class="col-12 clearfix mt-3">
                     <div class="float-left" style="margin-left:0px;">
@@ -88,7 +86,7 @@ filename = $('input[type=file]')[0].files[0].name ;
             data: param_form,
             success : function(response)
             {
-            tempAlert("{{ _("Dépôt réussi") }}", 2000, "tempAnchor") ;
+            tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
             console.log( "success upload ") ;
             $("#import-analysis").prop('disabled', false);
             },
@@ -126,7 +124,7 @@ var type = $("input:radio[name=type_import]:checked").val() ;
                 {
                     $("#dial-wait").modal("hide") ;
 
-                tempAlert("{{ _("Traitement réussi") }}", 2000, "tempAnchor") ;
+                tempAlert("{{ _("Traitement réussi") }}", "import-analysis") ;
                 window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes" ;
                 },
                 error: function(ret)

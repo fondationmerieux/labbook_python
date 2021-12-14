@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -23,6 +24,8 @@ class PatientList(Resource):
             args = {}
 
         l_patients = Patient.getPatientList(args)
+
+        self.log.info(Logs.fileline() + ' : TRACE l_patients=' + str(l_patients))
 
         if not l_patients:
             self.log.error(Logs.fileline() + ' : TRACE PatientList not found')
@@ -170,7 +173,8 @@ class PatientDet(Resource):
            'ethnie' not in args or 'adresse' not in args or 'cp' not in args or 'ville' not in args or \
            'tel' not in args or 'profession' not in args or 'nom_jf' not in args or 'quartier' not in args or \
            'bp' not in args or 'ddn_approx' not in args or 'age' not in args or 'annee_naiss' not in args or \
-           'semaine_naiss' not in args or 'mois_naiss' not in args or 'unite' not in args:
+           'midname' not in args or 'nationality' not in args or 'resident' not in args or 'blood_group' not in args or \
+           'blood_rhesus' not in args or 'semaine_naiss' not in args or 'mois_naiss' not in args or 'unite' not in args:
             self.log.error(Logs.fileline() + ' : PatientDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -210,7 +214,12 @@ class PatientDet(Resource):
                                         annee_naiss=args['annee_naiss'],
                                         semaine_naiss=args['semaine_naiss'],
                                         mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
+                                        unite=args['unite'],
+                                        midname=args['midname'],
+                                        nationality=args['nationality'],
+                                        resident=args['resident'],
+                                        blood_group=args['blood_group'],
+                                        blood_rhesus=args['blood_rhesus'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : PatientDet ERROR update')
@@ -248,7 +257,12 @@ class PatientDet(Resource):
                                         annee_naiss=args['annee_naiss'],
                                         semaine_naiss=args['semaine_naiss'],
                                         mois_naiss=args['mois_naiss'],
-                                        unite=args['unite'])
+                                        unite=args['unite'],
+                                        midname=args['midname'],
+                                        nationality=args['nationality'],
+                                        resident=args['resident'],
+                                        blood_group=args['blood_group'],
+                                        blood_rhesus=args['blood_rhesus'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : PatientDet ERROR  insert')

@@ -2,9 +2,8 @@
 import logging
 import mysql.connector
 
-# from app.models.Constants import *
-from app.models.DB import DB
 from app.models.Constants import Constants
+from app.models.DB import DB
 from app.models.Logs import Logs
 
 
@@ -348,3 +347,21 @@ class Record:
         except mysql.connector.Error as e:
             Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def getDataset(date_beg, date_end):
+        cursor = DB.cursor()
+
+        req = ('select id_data as id_record, id_patient, type, date_format(date_dos, %s) as record_date, '
+               'num_dos_an as rec_num_year, num_dos_jour as rec_num_day, num_dos_mois as rec_num_month, '
+               'med_prescripteur as id_doctor, date_format(date_prescription, %s) as prescription_date, '
+               'service_interne as internal_service, num_lit as bed_num, prix as price, remise as discount, '
+               'remise_pourcent as discount_percent, assu_pourcent as insurance_percent, a_payer as to_pay, '
+               'statut as status, date_format(date_hosp, %s) as hosp_date '
+               'from sigl_02_data '
+               'where date_dos between %s and %s '
+               'order by id_data desc')
+
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+
+        return cursor.fetchall()

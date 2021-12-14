@@ -1,0 +1,6 @@
+{% macro select_discount_bill(l_discount_bill) -%}
+    <option selected value="0"></option>
+    {% for discount_bill in l_discount_bill %}
+        <option value="{{ discount_bill['id_data'] }}">{{ discount_bill['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}

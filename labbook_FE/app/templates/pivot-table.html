@@ -1,0 +1,160 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Tableau croisé dynamique") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/jquery-ui.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/pivot.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/pivot.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Tableau croisé dynamique") }}</span></h2>
+
+            <form autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Choix des données") }}</h3>
+                </div>
+                <div class="panel-filter row mt-3">
+                    <div class="col-3">
+                        <div class="form-group form-inline">
+                            <label for="prod_type" class="col-form-label col-3 text-right mt-2">{{ _("Dataset") }}</label>
+                            <div>
+                                <select name="dataset" id="dataset" class="form-control" onchange="dataset_choice(this);">
+                                    <option value="1">{{ _("Patient") }}</option>
+                                    <option value="2">{{ _("Dossier") }}</option>
+                                    <option value="3">{{ _("Analyse") }}</option>
+                                    <option value="4">{{ _("Résultat") }}</option>
+                                </select>       
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div-date" class="col-9 d-none">
+                        <div class="form-group form-inline">
+                            <label for="f_date_beg" class="col-form-label col-2 text-right">{{ _("Date du") }}</label>
+                            <div>
+                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                            </div>
+                            <label for="f_date_end" class="col-form-label col-1 text-right">{{ _("au") }}</label>
+                            <div>					
+                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="float-right">
+                            <button type="button" onclick="load_items();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-database pr-1" /></i><span>{{ _("Chargement") }}</span></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-3" id="pivot-obj">
+            </div>
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+
+function dataset_choice( elem )
+{
+let id_dataset = $(elem).val() ;
+
+    if ( id_dataset > 1 )
+    $("#div-date").removeClass('d-none') ;
+    else
+    $("#div-date").addClass('d-none') ;
+}
+
+function load_items()
+{
+let id_dataset = $("#dataset").val() ;
+let dataset_name = "" ;
+
+let date_beg = "" ;
+let date_end = "" ;
+
+    if (id_dataset > 1)
+    {
+    date_beg = $("#f_date_beg").val() ;
+    date_end = $("#f_date_end").val() ;
+
+        if (date_beg == '' || date_end == '' || date_beg == undefined || date_end == undefined )
+        {
+        alert("{{ _("Veuillez saisir des dates") }}") ; 
+        return false;
+        }
+    }
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+              '"date_end":"' + date_end  + '"}' ;
+
+    if ( id_dataset == 1 )
+    {
+    dataset_name = "patient" ;
+    }
+    else if ( id_dataset == 2 )
+    {
+    dataset_name = "record" ;
+    }
+    else if ( id_dataset == 3 )
+    {
+    dataset_name = "analysis" ;
+    }
+    else if ( id_dataset == 4 )
+    {
+    dataset_name = "result" ;
+    }
+
+    // popup wait
+    $( "#dial-wait" ).modal( "show" ) ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax(
+        {
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/services/dataset/name/" + dataset_name,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success : function(data)
+            {
+            console.log( "success dataset " + dataset_name) ;
+
+                $("#dial-wait").modal("hide") ;
+            
+                $("#pivot-obj").pivotUI( data );
+            },
+            error: function(response)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR dataset " + dataset_name) ;
+            alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
+            }
+        } ) ;
+    } ) ;
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+</script>
+{% endblock %}

@@ -15,7 +15,7 @@ class Dict:
     def getDictValue(id_value):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived, dico_descr '
                'from sigl_dico_data '
                'where id_data = %s')
 
@@ -42,7 +42,7 @@ class Dict:
     def getDictDetails(dict_name):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived, dico_descr '
                'from sigl_dico_data '
                'where dico_name = %s '
                'order by position')
@@ -101,6 +101,22 @@ class Dict:
             return False
 
     @staticmethod
+    def updateDescr(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_dico_data '
+                           'set dico_descr=%(dico_descr)s '
+                           'where dico_name=%(dict_name)s', params)
+
+            Dict.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Dict.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getDictList(args):
         cursor = DB.cursor()
 
@@ -140,12 +156,10 @@ class Dict:
             if args['code']:
                     filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
 
-        req = ('select id_data, dico_name as name '
+        req = ('select id_data, dico_name as name, dico_descr '
                'from sigl_dico_data ' + trans +
                'where ' + filter_cond +
                'group by dico_name order by dico_name asc ' + limit)
-
-        Dict.log.error(Logs.fileline() + ' : DEBUG req= ' + str(req))
 
         cursor.execute(req)
 

@@ -72,6 +72,7 @@
                         {% if args['doctor'] %}
                             {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}
                             {% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
+                            {% if args['doctor']['facility'] %} - {{ args['doctor']['facility'] }}{% endif %}
                         {% endif %}
                         </span>
                     </div>
@@ -214,7 +215,7 @@
 
                 <!-- Files -->
                 <div class="panel-heading row mt-2">
-                    <h3 class="panel-title">{{ _("Valise de documents") }}</h3>
+                    <h3 class="panel-title">{{ _("Pièces jointes au dossier") }}</h3>
                 </div>
                 <div class="row ml-3">
                     <div class="col-12 mt-3">
@@ -249,9 +250,14 @@
                             <input type="button" onclick="return_home();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
                         {% if session['user_role'] != 'P' %}
-                        <div class="float-right">
-                            <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Imprimer la facture') }}">
-                            <input type="button" onclick="print_barcode();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Code barre') }}">
+                        <div class="float-right form-inline">
+                            <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }} mr-3" value="{{ _('Imprimer la facture') }}">
+                            <select id="tpl_sticker" class="form-control mx-3" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
+                                {% for tpl in ihm['tpl_sticker'] %}
+                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="button" onclick="print_sticker();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Code barre') }}">
                         </div>
                         {% endif %}
                     </div>
@@ -348,10 +354,20 @@ let obj = data ;
         let menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj.file + '\', \'REC\', ' + num_rec_y + ');">{{ _("Télécharger") }}</a>'
         {% if session['user_role'] != 'P' and session['user_role'] != 'S' %} + '<br /><a class="menu-act-item mt-1" onclick="reedit_report({{ args['record']['id_data'] }},\'' + obj.file + '\')">{{ _("Ré-éditer") }}</a>' ;{% else %};{% endif %}
 
+        let disp_tpl = '' ;
+
+        {% if ihm["tpl_result"] and ihm["tpl_result"]|length < 2 %}disp_tpl = 'hidden' ;{% endif %}
+
+        let tpl = '<select id="tpl_result" class="form-control" ' + disp_tpl + ' >' +
+              {% for tpl in ihm['tpl_result'] %}
+              '<option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>' +
+              {% endfor %}
+              '</select>' ;
+
     let tmp_tr = '<tr style="">' ;
 
     tmp_tr += '<td hidden>' + obj.id_data + '</td>' ;
-    tmp_tr += '<td class="text-center">' + menu_act + '</td>' ;
+    tmp_tr += '<td class="text-center">' + menu_act + tpl + '</td>' ;
     tmp_tr += '<td class="text-center">' + obj.date + '</td>' ;
     tmp_tr += '</tr>' ;
 
@@ -459,22 +475,33 @@ return rate + '(' + price + ')' ;
 
 function reedit_report( id_rec, filename )
 {
+let template = $("#tpl_result").val() ; 
+
     if ( window.confirm("{{ _("Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)") }}") )
     {
-        $.ajax(
+        $("#dial-wait").modal("show") ;
+
+        $("#dial-wait").off() ;
+
+        $("#dial-wait").on('shown.bs.modal', function () 
         {
-            type : 'GET',
-            url : "{{ session['server_ext'] }}/services/pdf/report/" + id_rec + "/" + filename + "/Y",
-            success : function(response)
+            $.ajax(
             {
-            console.log( "success reeedit report") ;
-            location.reload();
-            },
-            error: function(response)
-            {
-            console.log("ERROR reeedit report") ;
-            alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
-            }
+                type : 'GET',
+                url : "{{ session['server_ext'] }}/services/pdf/report/" + id_rec + "/" + filename + "/" + template + "/Y",
+                success : function(response)
+                {
+                    $("#dial-wait").modal("hide") ;
+                console.log( "success reeedit report") ;
+                location.reload();
+                },
+                error: function(response)
+                {
+                    $("#dial-wait").modal("hide") ;
+                console.log("ERROR reeedit report") ;
+                alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
+                }
+            } ) ;
         } ) ;
     }
 }
@@ -485,24 +512,33 @@ let param_form = new FormData() ;
 
 param_form.append('file', $('input[type=file]')[0].files[0]) ;
 
-    $.ajax(
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/REC/" + id_rec,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        data: param_form,
-        success : function(response)
+        $.ajax(
         {
-        console.log( "success upload ") ;
-        location.reload() ;
-        },
-        error: function(response)
-        {
-        console.log("ERROR upload file") ;
-        alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
-        }
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/REC/" + id_rec,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: param_form,
+            success : function(response)
+            {
+                $("#dial-wait").modal("hide") ;
+            console.log( "success upload ") ;
+            location.reload() ;
+            },
+            error: function(response)
+            {
+                $("#dial-wait").modal("hide") ;
+            console.log("ERROR upload file") ;
+            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 
@@ -531,37 +567,70 @@ function delete_file( id_file )
 
 function print_bill( id_rec )
 {
-    $.ajax( 
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "GET",
-        url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
-        success: function(ret)
+        $.ajax( 
         {
-        download_file( "PY", "facture_" + num_rec_y + ".pdf", "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-        console.log("ERROR GET pdf bill");
-        alert("{{ _("Erreur lors de la génération du PDF facture") }}") ;
-        }
+            type: "GET",
+            url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            download_file( "PY", "facture_" + num_rec_y + ".pdf", "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR GET pdf bill");
+            alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 
-function print_barcode()
+function print_sticker()
 {
-    $.ajax( 
+let template = $("#tpl_sticker").val() ;
+
+var id_rec = {% if args['record'] and args['record']['id_data'] > 0 %}{{ args['record']['id_data'] }}{% else %}0{% endif %} ;
+var param = '{ "id":' + id_rec + ', "type_id": "REC"}' ;
+
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "GET",
-        url: "{{ session['server_ext'] }}/services/pdf/barcode/num/" + num_rec_y,
-        success: function(ret)
+        $.ajax( 
         {
-        download_file( "PY", "barcode_" + num_rec_y + ".pdf", "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-        console.log("ERROR GET pdf barcode");
-        alert("{{ _("Erreur lors de la génération du PDF code barre") }}") ;
-        }
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/pdf/sticker/" + template,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+                if (ret == 0)
+                download_file( "PY", "sticker_REC" + id_rec + ".pdf", "GEN", 0 ) ;
+                else
+                alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR GET pdf sticker");
+            alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 

@@ -28,12 +28,10 @@
                             </div>
                         </div>
                         {% if session['user_role'] != 'P' %}
-                        <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
+                        <input type="button" id="btn-upload" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
                         {% endif %}
                     </div>                    
                 </div>
-
-                <div id="tempAnchor"></div>
 
                 <div class="col-12 clearfix mt-3">
                     <div class="float-left" style="margin-left:0px;">
@@ -74,7 +72,7 @@ filename = $('input[type=file]')[0].files[0].name ;
             data: param_form,
             success : function(response)
             {
-            tempAlert("{{ _("Dépôt réussi") }}", 2000, "tempAnchor") ;
+            tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
             console.log( "success upload ") ;
             $("#import-users").prop('disabled', false);
             },
@@ -99,7 +97,7 @@ function import_users()
             url: "{{ session['server_ext'] }}/services/user/import/" + filename + "/{{ session['user_id'] }}",
             success: function(ret)
             {
-            tempAlert("{{ _("Traitement réussi") }}", 2000, "tempAnchor") ;
+            tempAlert("{{ _("Traitement réussi") }}", "import-users") ;
             window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users" ;
             },
             error: function(ret)

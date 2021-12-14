@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -84,7 +85,7 @@ class DoctorDet(Resource):
         args = request.get_json()
 
         if 'id_owner' not in args or 'id_doctor' not in args or 'code' not in args or 'title' not in args or \
-           'lastname' not in args or 'firstname' not in args or 'initial' not in args or 'work_place' not in args or \
+           'lastname' not in args or 'firstname' not in args or 'initial' not in args or 'facility' not in args or \
            'service' not in args or 'address' not in args or 'city' not in args or 'spe' not in args or \
            'phone' not in args or 'mobile' not in args or 'fax' not in args or 'email' not in args:
             self.log.error(Logs.fileline() + ' : DoctorDet ERROR args missing')
@@ -98,7 +99,7 @@ class DoctorDet(Resource):
                                       nom=args['lastname'],
                                       prenom=args['firstname'],
                                       ville=args['city'],
-                                      etablissement=args['work_place'],
+                                      facility=args['facility'],
                                       specialite=args['spe'],
                                       tel=args['phone'],
                                       email=args['email'],
@@ -120,7 +121,7 @@ class DoctorDet(Resource):
                                       nom=args['lastname'],
                                       prenom=args['firstname'],
                                       ville=args['city'],
-                                      etablissement=args['work_place'],
+                                      facility=args['facility'],
                                       specialite=args['spe'],
                                       tel=args['phone'],
                                       email=args['email'],
@@ -163,7 +164,7 @@ class DoctorExport(Resource):
         args['limit'] = 50000  # for overpassed default limit
 
         l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'city',
-                   'work_place', 'spe', 'spe_id', 'phone', 'mobile', 'fax', 'email', 'title',
+                   'facility', 'spe', 'spe_id', 'phone', 'mobile', 'fax', 'email', 'title',
                    'initial', 'service', 'address', ]]
         dict_data = Doctor.getDoctorList(args)
 
@@ -179,7 +180,7 @@ class DoctorExport(Resource):
                 data.append(d['lastname'])
                 data.append(d['firstname'])
                 data.append(d['city'])
-                data.append(d['work_place'])
+                data.append(d['facility'])
                 spe = d['spe']
                 data.append(_(spe.strip()))
                 data.append(d['spe_id'])

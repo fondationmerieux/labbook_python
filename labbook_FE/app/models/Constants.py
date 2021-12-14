@@ -7,6 +7,7 @@ class Constants:
 
     cst_dhis2    = '/storage/resource/dhis2/'
     cst_epidemio = '/storage/resource/epidemio/'
+    cst_template = '/storage/resource/template/'
     cst_io       = '/storage/io/'
     cst_report   = '/storage/report/'
     cst_resource = '/storage/resource/'

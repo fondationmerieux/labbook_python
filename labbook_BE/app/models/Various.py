@@ -297,3 +297,15 @@ class Various:
         except mysql.connector.Error as e:
             Various.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getNationalityList():
+        cursor = DB.cursor()
+
+        req = ('select nat_ser, nat_name, nat_code '
+               'from nationality '
+               'order by nat_name')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()

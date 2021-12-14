@@ -74,7 +74,8 @@
                             <input id="date_bio" class="form-control ml-1" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">
                         </div>
                         <label class="ml-3" for="validator">{{ _("Biologiste") }} :</label>
-                        <select name="validator" id="validator" class="form-control ml-1"></select>
+                        <input type="text" name="validator" id="validator" class="form-control ml-1" value="" readonly />
+                        <input type="hidden" id="id_validator" class="form-control ml-1" value="0" />
                     </div>
                     <div class="form-group form-inline col-12">
                         <label for="comm_valid" class="col-1 align-top">{{ _("Commentaire") }}</label>
@@ -85,7 +86,12 @@
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
                         <input type="hidden" name="validation-type" value="B" id="validation-type">
-                        <div class="float-right" style="margin-left:0px;">
+                        <div class="float-right form-inline" style="margin-left:0px;">
+                            <select id="tpl_result" class="form-control mr-3" {% if ihm['tpl_result'] and ihm['tpl_result']|length < 2 %}hidden{% endif %}>
+                                {% for tpl in ihm['tpl_result'] %}
+                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                {% endfor %}
+                            </select>
                             <button name="validate" id="validate" type="button" value="Valider" class="btn btn-{{ session['user_role']|safe }}" onclick="save_valid({{ args['record']['id_data'] }});">{{ _("Valider") }}</button> 
                         </div>
                     </div>
@@ -180,6 +186,21 @@ var id_res_tmp   = 0  ;
 
 function fill_bio_list()
 {
+var name      = '' ;
+var id_user   = "{{ session['user_id']|safe}}"        ;
+var firstname = "{{ session['user_firstname']|safe}}" ;
+var lastname  = "{{ session['user_lastname']|safe}}"  ;
+
+    if ( firstname )
+    name = firstname + ' ' + lastname ;
+    
+    if ( !name )
+    name = username ;  
+
+$("#id_validator").val(id_user ) ;
+$("#validator").val( name )      ;
+
+{#
 {% if ihm['bio_list'] %}
 let bio_list = {{ ihm['bio_list']|safe }} ;
 let res      = '<option value="0"> </option>' ;
@@ -202,6 +223,7 @@ let res      = '<option value="0"> </option>' ;
 
 $("#validator").html(res) ;
 {% endif %}
+#}
 }
 
 function add_analysis()
@@ -404,10 +426,11 @@ let param_res = '{ "id_owner": {{ session['user_id_group'] }}, ' +
 function save_valid( id_rec )
 {
 let date_valid = $("#date_bio").val() ;
-let user_valid = $("#validator").val() ;
+let user_valid = $("#id_validator").val() ;
 let comm_valid = JSON.stringify( $("#comm_valid").val() ) ;
+let template   = $("#tpl_result").val() ;
 
-let param_list_valid = '{ "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
+let param_list_valid = '{ "template": "' + template + '", "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
 
     // GET id_res and value
     $(".cbx-" + id_rec + ":checked" ).each( function(i, elem)

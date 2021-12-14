@@ -2,6 +2,7 @@
 import logging
 import os
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request, session
 from flask_restful import Resource
@@ -533,3 +534,87 @@ class ScriptStatus(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptStatus ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class TemplateList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type=''):
+        l_items = Setting.getTemplateList(type)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE TemplateList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE TemplateList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class TemplateDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Setting.getTemplate(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'TemplateDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TemplateDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_item' not in args or 'tpl_name' not in args or 'tpl_type' not in args or \
+           'tpl_default' not in args or 'tpl_file' not in args:
+            self.log.error(Logs.fileline() + ' : TemplateDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            ret = Setting.updateTemplate(tpl_ser=id_item,
+                                         tpl_name=args['tpl_name'],
+                                         tpl_type=args['tpl_type'],
+                                         tpl_default=args['tpl_default'],
+                                         tpl_file=args['tpl_file'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : TemplateDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            ret = Setting.insertTemplate(tpl_name=args['tpl_name'],
+                                         tpl_type=args['tpl_type'],
+                                         tpl_default=args['tpl_default'],
+                                         tpl_file=args['tpl_file'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : TemplateDet ERROR  insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE TemplateDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Setting.deleteTemplate(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE TemplateDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE TemplateDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)

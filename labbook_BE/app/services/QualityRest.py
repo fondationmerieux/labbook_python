@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -1300,6 +1301,26 @@ class StaffExport(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class StockCancelIO(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args or 'id_stock' not in args or 'type_move' not in args or 'id_user' not in args:
+            self.log.error(Logs.fileline() + ' : StockCancelIO ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.cancelStockIO(id_stock=args['id_stock'], type_move=args['type_move'], id_user=args['id_user'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : StockCancelIO ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StockCancelIO')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class StockList(Resource):
     log = logging.getLogger('log_services')
 
@@ -1619,6 +1640,18 @@ class StockSupplyDet(Resource):
 
 class StockUse(Resource):
     log = logging.getLogger('log_services')
+
+    def get(self, prs_ser):
+        stock_use = Quality.getNbStockUse(prs_ser)
+
+        if not stock_use:
+            self.log.error(Logs.fileline() + ' : ' + 'nb StockUse not found')
+            return compose_ret(0, Constants.cst_content_type_json, 404)
+
+        nb_stock_use = float(stock_use['nb_pack'])
+
+        self.log.info(Logs.fileline() + ' : nb StockUse prs_ser=' + str(prs_ser))
+        return compose_ret(nb_stock_use, Constants.cst_content_type_json, 200)
 
     def post(self):
         args = request.get_json()

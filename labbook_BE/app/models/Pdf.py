@@ -2,10 +2,11 @@
 import logging
 import barcode
 import pdfkit
-import math
+import qrcode
 
 from barcode.writer import ImageWriter
 from datetime import datetime
+from relatorio.templates.opendocument import Template
 
 from app.models.Analysis import Analysis
 from app.models.DB import DB
@@ -26,7 +27,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBarcode(num, args=''):
-        """Built a PDF Barcode page
+        """Build a PDF Barcode page
 
         This function is call by administrative record or settings stickers templates.
 
@@ -144,7 +145,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBill(id_rec):
-        """Built a PDF bill
+        """Build a PDF bill
 
         This function is call by administrative record template
 
@@ -168,6 +169,9 @@ class Pdf:
 
         # Get record details
         record = Record.getRecord(id_rec)
+
+        if not record:
+            return False
 
         num_rec_y   = record['num_dos_an']
         bill_num    = record['num_fact']
@@ -320,7 +324,7 @@ class Pdf:
 
     @staticmethod
     def getPdfBillList(l_datas, date_beg, date_end):
-        """Built a PDF bill list
+        """Build a PDF bill list
 
         This function is call by report billing template
 
@@ -414,585 +418,8 @@ class Pdf:
         return True
 
     @staticmethod
-    def getPdfReport(id_rec, filename, reedit='N'):
-        """Built a PDF Report
-
-        This function is call by adminstrative record and biological validation template
-
-        Args:
-            id_rec      (int): record serial.
-            filename (string): filename.
-            reedit     (flag): rebuilt (Y) or not (N) this document.
-
-        Returns:
-            bool: True for success, False otherwise.
-
-        """
-
-        path = Constants.cst_report
-
-        Various.useLangPDF()
-
-        form_cont = ''
-
-        h_max  = 1410  # maximum page height in pixels
-        h_now  = 0     # page height under construction
-        h_fam  = 36
-        h_name = 24
-        h_res  = 36
-        h_res2 = 24
-
-        h_header = 30
-        h_footer = 30
-
-        num_page = 1
-
-        report_status = ''
-
-        # Partial or Full
-        if reedit == 'N':
-            l_req = Analysis.getAnalysisReq(id_rec, 'Y')
-
-            report_status = _("COMPLET")
-
-            for req in l_req:
-                nb_res_vld = Result.countResValidate(req['id_data'])
-
-                if not nb_res_vld or nb_res_vld['nb_vld'] == 0:
-                    report_status = _("PARTIEL")
-
-        # regenerated a report
-        if reedit == 'Y':
-            # update date of file
-            ret = File.updateReportDate(filename)
-
-            report_status = _("ANNULE ET REMPLACE")
-
-            if not ret:
-                Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfReport cant update date report')
-                return False
-
-        # Get format header
-        pdfpref = Pdf.getPdfPref()
-
-        full_header = True
-        full_comm   = False
-
-        if pdfpref and pdfpref['entete'] == 1069:
-            full_header = False
-
-        if pdfpref and pdfpref['commentaire'] == 1049:
-            full_comm = True
-
-        # FOR header page
-        h_now += 150 + 80
-
-        # Get record details
-        record = Record.getRecord(id_rec)
-
-        num_rec_y = record['num_dos_an']
-
-        # Get Patient details
-        pat = Patient.getPatient(record['id_patient'])
-
-        # Patient birth
-        birth = _("Né le") + ' '
-
-        if pat['ddn']:
-            birth += datetime.strftime(pat['ddn'], '%d/%m/%Y') + ' - '
-        else:
-            birth = ''
-
-        # Patient Age
-        age = str(pat['age'])
-
-        if pat['unite'] == 1037:
-            age += ' ' + _('ans')
-        elif pat['unite'] == 1036:
-            age += ' ' + _('mois')
-        elif pat['unite'] == 1035:
-            age += ' ' + _('semaines')
-        elif pat['unite'] == 1034:
-            age += ' ' + _('jours')
-
-        # Patient Sex
-        sex = ''
-
-        if pat['sexe'] == 1:
-            sex += _('Masculin')
-        elif pat['sexe'] == 2:
-            sex += _('Feminin')
-        elif pat['sexe'] == 3:
-            sex += _('Inconnu')
-
-        # BLOCK DET RECORD
-        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y")
-
-        rec_div  = ('<div style="width:465px;height:100px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
-                    'background-color:#FFF;float:left;">'
-                    '<div><span class="ft_rec_det">' + _("Dossier") + ' ' + str(num_rec_y) + ' ' + _("de") + ' ' +
-                    str(pat['prenom']) + '&nbsp;' + str(pat['nom']) + '</span></div>'
-                    '<div><span class="ft_rec_det">' + str(birth) + str(age) + ' - ' + str(sex) + ' - Code ')
-
-        if pat['code_patient']:
-            rec_div += str(pat['code_patient']) + ' / ' + str(pat['code']) + '</span></div>'
-        else:
-            rec_div += str(pat['code']) + '</span></div>'
-
-        if 'type' in record and record['type'] == 184:
-            rec_div += '<div><span class="ft_rec_det">'
-
-            if record['date_hosp']:
-                rec_div += _("Admis le") + ' ' + datetime.strftime(record['date_hosp'], '%d/%m/%Y') + ' '
-
-            if record['service_interne']:
-                rec_div += _("en") + ' ' + str(record['service_interne']) + ' - '
-
-            if record['num_lit']:
-                rec_div += _("Lit") + ' ' + str(record['num_lit'])
-
-            rec_div += '</span></div>'
-
-        if full_comm is True and record['prescriber']:
-            prescriber = ' ' + _("par") + ' ' + str(record['prescriber'])
-        else:
-            prescriber = ''
-
-        rec_div += ('<div><span class="ft_rec_det">' + _("Examen prescrit le") + ' ' +
-                    datetime.strftime(record['date_prescription'], '%d/%m/%Y') + prescriber + '</span></div>')
-        rec_div += ('<div><span class="ft_rec_det">' + _("Enregistré le") + ' ' +
-                    datetime.strftime(record['date_dos'], '%d/%m/%Y') + ', ' + _("édité le") + ' ' + str(date_now) +
-                    '</span></div>')
-
-        rec_div += '</div>'
-
-        # BLOCK PATIENT address
-        addr_div = ''
-
-        if pat:
-            addr_div += ('<div style="width:465px;height:100px;border:2px solid dimgrey;'
-                         'border-radius:10px;padding:10px;background-color:#FFF;float:right;">')
-
-            if pat['nom'] or pat['prenom']:
-                pat_lname = ''
-                pat_fname = ''
-
-                if pat['nom']:
-                    pat_lname = pat['nom']
-
-                if pat['nom_jf']:
-                    pat_lname += '&nbsp;' + pat['nom_jf']
-
-                if pat['prenom']:
-                    pat_fname = pat['prenom']
-
-                addr_div += '<div><span class="ft_pat_ident">' + str(pat_lname) + '&nbsp;' + str(pat_fname) + '</span></div>'
-
-            if pat['adresse']:
-                addr_div += '<div><span class="ft_pat_addr">' + str(pat['adresse']) + '</span></div>'
-
-            if pat['cp'] or pat['ville']:
-                pat_zip = ''
-                pat_city = ''
-
-                if pat['cp']:
-                    pat_zip = pat['cp']
-
-                if pat['ville']:
-                    pat_city = pat['ville']
-
-                addr_div += '<div><span class="ft_pat_addr">' + pat_zip + '&nbsp;' + pat_city + '</span></div>'
-
-            addr_div += '</div>'
-
-        # FOR details record and patient block
-        h_now += 100 + 30
-
-        # CLINICAL INFORMATION (= commentary in record)
-        rec_comm = ''
-
-        if full_comm and record['rc']:
-            rec_comm  = ('<div style="width:980px;border:2px solid dimgrey;'
-                         'border-radius:10px;padding:10px;margin-top:5px;background-color:#FFF;">'
-                         '<span class="ft_res_name">' + _("Renseignements cliniques") + '</span><br />'
-                         '<span class="ft_rec_det">' + str(record['rc']) + '</span></div>')
-
-            nb_rc = math.ceil(len(record['rc']) / 134)
-
-            # FOR comment block
-            h_now += 55 + (25 * nb_rc)
-
-        div_first_page = ('<div style="width:1000px;background-color:#FFF;overflow:auto;">' + rec_div + addr_div + '</div>'
-                          '<div class="ft_report_tit" style="clear:both;text-align:center;padding-top:10px;'
-                          'background-color:#FFF;">' + _("Compte rendu") + '</div>' + rec_comm)
-
-        # ANALYZES PART
-        l_res = Result.getResultRecordForReport(id_rec)
-
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG l_res=' + str(l_res))
-
-        id_req_ana_p = 0
-        id_res_p = 0
-        id_user_valid_p = 0
-
-        h_page = h_max - h_now - h_header - h_footer
-
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG h_page=' + str(h_page))
-
-        result_div = ''
-
-        if l_res:
-            res_fam   = ''
-            res_fam_p = 'empty'
-            with_fam  = False
-
-            # ----- LOOP RESULT -----
-            for res in l_res:
-                # NEW ANALYSIS DIV
-                if res['id_req_ana'] != id_req_ana_p and res['id_res'] != id_res_p:
-
-                    # --- close PREVIOUS analysis ---
-                    if id_req_ana_p > 0:
-                        # comment and who make validation
-                        res_valid = Result.getResultValidation(id_res_p)
-
-                        # If valid user change we display who valid previous analisys
-                        if id_user_valid_p > 0 and res_valid['utilisateur'] != id_user_valid_p:
-                            id_user_valid_p = res_valid['utilisateur']
-
-                            user = User.getUserByIdGroup(res_valid['utilisateur'])
-
-                            if user['lastname'] and user['firstname']:
-                                user = user['lastname'] + ' ' + user['firstname']
-                            else:
-                                user = user['username']
-
-                            if res_valid['commentaire']:
-                                res_comm = res_valid['commentaire']
-                            else:
-                                res_comm = ''
-
-                            if full_comm:
-                                comm_div = ('<div><span class="ft_res_comm" style="width:970px;display:inline-block;'
-                                            'text-align:left;"">' + str(res_comm) + '</span></div>')
-
-                                h_now += h_res2
-                            else:
-                                comm_div = ''
-
-                            result_div = (result_div + comm_div + '<div><span class="ft_res_valid" '
-                                          'style="width:970px;display:inline-block;text-align:left;">' +
-                                          _("validé par") + ' : ' + str(user) + '</span></div>')
-
-                            h_now += h_res2
-                    # --- end of close previous analysis ---
-
-                    id_req_ana_p = res['id_req_ana']
-                    id_res_p = res['id_res']
-
-                    # Pdf.log.error(Logs.fileline() + ' : DEBUG id_req_ana=' + str(id_req_ana_p) + ' | id_res=' + str(id_res_p) + ' | id_ref_ana=' + str(res['id_ref_ana']))
-
-                    if res['ana_fam'] and res['ana_fam'] != res_fam_p:
-                        res_fam   = res['ana_fam']
-                        res_fam_p = res_fam
-                        with_fam  = True
-                    else:
-                        with_fam = False
-
-                    # ==== ANALYSIS FAMILY ====
-                    if with_fam:
-                        Various.useLangDB()
-                        result_div = (result_div + '<div><span class="ft_res_fam" style="width:960px;'
-                                      'display:inline-block;text-align:center;">' + _(res_fam.strip()) + '</span></div>')
-                        h_now += h_fam
-                        Various.useLangPDF()
-
-                        # IF family title on 2 lines
-                        if len(res_fam.strip()) > 70:
-                            h_now += h_fam
-                            # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM on 2 lines h_now=' + str(h_now))
-
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG FAMILY=' + res_fam + '\n==========')
-
-                    # AFTER a new line CUT PAGE OR NOT
-                    if h_now > (h_max - h_res):
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG FAM h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
-
-                        num_page = num_page + 1
-
-                        # REINIT for next page
-                        h_now  = 0
-                        h_page = h_max - h_footer - h_header
-
-                        result_div = ''
-
-                    # ==== ANALYSIS NAME ====
-                    if res['ana_name']:
-                        Various.useLangDB()
-                        trans = res['ana_name'].strip()
-                        result_div = (result_div + '<div><span class="ft_res_name" style="width:960px;'
-                                      'display:inline-block;text-align:left;">' + _(trans) + '</span></div>')
-                        h_now += h_name
-                        Various.useLangPDF()
-
-                        # IF name title on 2 lines
-                        if len(_(trans)) > 90:
-                            h_now += h_name
-                            # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA on 2 lines h_now=' + str(h_now))
-
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG NAME=' + res['ana_name'] + '\n---------')
-
-                    # AFTER a new line CUT PAGE OR NOT
-                    if h_now > (h_max - h_res):
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG ANA h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                        form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
-
-                        num_page = num_page + 1
-
-                        # REINIT for next page
-                        h_now  = 0
-                        h_page = h_max - h_footer - h_header
-
-                        result_div = ''
-
-                # Start to get previous result if exist
-                prev = ''
-
-                res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'])
-
-                if res_prev:
-                    prev = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y') + ' : '
-
-                # Get label of value
-                type_res = Various.getDicoById(res['type_resultat'])
-
-                if type_res and type_res['short_label'].startswith("dico_"):
-                    Various.useLangDB()
-                    trans = type_res['short_label'][5:]
-                    type_res = _(trans.strip())
-                    Various.useLangPDF()
-                else:
-                    type_res = ''
-
-                # Value to be interpreted
-                if type_res and res['value']:
-                    Various.useLangDB()
-                    val = Various.getDicoById(res['value'])
-                    trans = val['label']
-                    val = _(trans.strip())
-
-                    if res_prev and res_prev['valeur']:
-                        label_prev = Various.getDicoById(res_prev['valeur'])
-                        trans = label_prev['label'].strip()
-                        prev += _(trans)
-                    else:
-                        prev = ''
-
-                    Various.useLangPDF()
-                # Numerical value or canceled
-                else:
-                    is_bold = False
-
-                    val = res['value']
-                    # Cancel result
-                    if not val:
-                        val  = _("Annulée")
-                        prev = ''
-                    elif res_prev and res_prev['valeur']:
-                        prev += res_prev['valeur']
-
-                    if res['normal_min'] and res['normal_max']:
-                        if val != _("Annulée"):
-                            # bold style if out of range min/max
-                            if float(val) < float(res['normal_min']) or float(val) > float(res['normal_max']):
-                                val = '<b>' + val + '</b>'
-                                is_bold = True
-
-                    if res['unite'] and val != _("Annulée"):
-                        unit = Various.getDicoById(res['unite'])
-
-                        if unit:
-                            if is_bold:
-                                val  += '&nbsp;<b>' + unit['label'] + '</b>'
-                            else:
-                                val  += '&nbsp;' + unit['label']
-
-                            if prev:
-                                prev += '&nbsp;' + unit['label']
-
-                # Get normal of value
-                ref = ''
-
-                if res['normal_min'] and res['normal_max']:
-                    ref = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
-
-                # ==== ANALYSIS RESULT ====
-                Various.useLangDB()
-                trans = str(res['libelle'].strip())
-                result_div += ('<div style="margin-bottom:10px;">'
-                               '<span class="ft_res_label" style="width:365px;display:inline-block;text-align:left;'
-                               'padding-left:12px;">' + _(trans) + '</span>'
-                               '<span class="ft_res_value" style="width:150px;display:inline-block;text-align:right;">' +
-                               str(val) + '</span>'
-                               '<span class="ft_res_ref" style="width:210px;display:inline-block;text-align:center;">' +
-                               str(ref) + '</span>'
-                               '<span class="ft_res_prev" style="width:220px;display:inline-block;text-align:right;">' +
-                               str(prev) + '</span></div>')
-                h_now += h_res
-
-                # IF libelle on 2 lines
-                trans = res['libelle'].strip()
-                if len(_(trans)) > 46 or len(val) > 16 or len(prev) > 32:
-                    nb_lib  = math.ceil(len(_(trans)) / 46)
-                    nb_val  = math.ceil(len(val) / 16)
-                    nb_prev = math.ceil(len(prev) / 32)
-
-                    nb_line = max(nb_lib, nb_val, nb_prev)
-
-                    h_now = h_now + nb_line * h_res2
-
-                    # Pdf.log.error(Logs.fileline() + ' : DEBUG RES ' + res['libelle'] + ' on ' + str(nb_line) + ' lines h_now=' + str(h_now))
-                Various.useLangPDF()
-
-                # Pdf.log.error(Logs.fileline() + ' : DEBUG res[libelle]=' + str(res['libelle']))
-                # Pdf.log.error(Logs.fileline() + ' : DEBUG h_now=' + str(h_now) + ' | h_max - h_res=' + str(h_max - h_res) + '\n')
-
-                # AFTER a new line CUT PAGE OR NOT
-                if h_now > (h_max - h_res):
-                    # Pdf.log.error(Logs.fileline() + ' : DEBUG RES h_now=' + str(h_now) + ' > h_max - h_res =' + str(h_max - h_res))
-                    form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
-
-                    num_page = num_page + 1
-
-                    # REINIT for next page
-                    h_now  = 0
-                    h_page = h_max - h_footer - h_header
-
-                    result_div = ''
-
-            # --- END OF LOOP RESULT ---
-
-            if result_div:
-                # comment and who make validation
-                res_valid = Result.getResultValidation(id_res_p)
-
-                user = User.getUserByIdGroup(res_valid['utilisateur'])
-
-                if user['lastname'] and user['firstname']:
-                    user = user['lastname'] + ' ' + user['firstname']
-                else:
-                    user = user['username']
-
-                if res_valid['commentaire']:
-                    res_comm = res_valid['commentaire']
-                else:
-                    res_comm = ''
-
-                if full_comm:
-                    comm_div = ('<div><span class="ft_res_comm" style="width:970px;display:inline-block;'
-                                'text-align:left;"">' + str(res_comm) + '</span></div>')
-                else:
-                    comm_div = ''
-
-                result_div = (result_div + comm_div + '<div><span class="ft_res_valid" style="width:970px;'
-                              'display:inline-block;text-align:left;">' + _("validé par") + ' : ' + str(user) +
-                              '</span></div>')
-
-                form_cont = Pdf.PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y)
-
-            form_cont = form_cont.replace("tot_page", str(num_page))
-
-        options = {'encoding': 'utf-8',
-                   'page-size': 'A4',
-                   'margin-top': '12.00mm',
-                   'margin-right': '0.00mm',
-                   'margin-bottom': '0.00mm',
-                   'margin-left': '0.00mm',
-                   'no-outline': None}
-
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG form_cont=\n' + str(form_cont))
-
-        pdfkit.from_string(form_cont, path + filename, options=options)
-
-        return True
-
-    @staticmethod
-    def PdfReportCutPageOrNot(form_cont, num_page, h_page, report_status, div_first_page, result_div, full_header, num_rec_y):
-        """End html of current page for report
-
-        This function is call by getPdfReport
-
-        Args:
-            form_cont      (string): html string of all pages.
-            num_page          (int): current page number.
-            h_page            (int): height of page in pixels.
-            report_status  (string): status of report.
-            div_first_page (string): html string to start a first page.
-            result_div     (string): html string of last result.
-            full_header    (string): html string of header page.
-            num_rec_y         (int): record number.
-
-        Returns:
-            string: html string.
-
-        """
-
-        Various.useLangPDF()
-
-        report_div = ('<div style="width:980px;min-height:' + str(h_page) + 'px;' +
-                      'border:2px solid dimgrey;border-radius:10px;padding:10px;margin-top:20px;' +
-                      'background-color:#FFF;">')
-
-        report_div = report_div + result_div + '</div>'  # closing report_div
-
-        if num_page == 1:
-            report_status = ('<span style="max-height:60px;padding:2px;border:2px double #000;">' +
-                             _(report_status) + '</span>')
-
-            page_header = Pdf.getPdfHeader(full_header, report_status)
-
-            page_body = (div_first_page + '<div style="width:1000px;margin-top:10px;margin-bottom:0px;'
-                         'background-color:#FFF;">'
-                         '<span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;'
-                         'padding-left:20px;">' + _("ANALYSE") + '</span>'
-                         '<span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">' +
-                         _("RESULTAT") + '</span>'
-                         '<span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">' +
-                         _("Intervalle de référence") + '</span>'
-                         '<span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;'
-                         'padding-right:20px;">' + _("Antériorités") + '</span></div>'
-                         '<div style="width:1000px;margin-top:-18px;background-color:#FFF;">' + report_div + '</div>')
-        else:
-            page_header = ''
-            page_body   = ''
-            page_body += ('<div style="width:1000px;margin-top:58px;">&nbsp;</div>'
-                          '<div style="width:1000px;margin-top:10px;margin-bottom:0px;background-color:#FFF;">'
-                          '<span class="ft_cat_tit" style="width:400px;display:inline-block;text-align:left;'
-                          'padding-left:20px;">' + _("ANALYSE") + '</span>'
-                          '<span class="ft_cat_tit" style="width:150px;display:inline-block;text-align:center;">' +
-                          _("RESULTAT") + '</span>'
-                          '<span class="ft_cat_tit" style="width:200px;display:inline-block;text-align:center;">' +
-                          _("Intervalle de référence") + '</span>'
-                          '<span class="ft_cat_tit" style="width:180px;display:inline-block;text-align:right;'
-                          'padding-right:20px;">' + _("Antériorités") + '</span></div>'
-                          '<div style="width:1000px;margin-top:-18px;background-color:#FFF;">' + report_div + '</div>')
-
-        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
-
-        page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
-                       '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
-                       _("Dossier") + str(num_rec_y) + ', ' + _("édité le") + ' ' + str(date_now) + '</span>'
-                       '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
-                       _("Page") + ' ' + str(num_page) + '/tot_page</span></div></div>')
-
-        form_cont += page_header + page_body + page_footer
-
-        return form_cont
-
-    @staticmethod
     def getPdfReportGeneric(html_part, filename=''):
-        """Built a Generic PDF Report
+        """Build a Generic PDF Report
 
         This function is call by report statistic, report epidemio, report activity, enter result and list result templates
 
@@ -1271,3 +698,826 @@ class Pdf:
         cursor.execute(req)
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getPdfReport(id_rec, template, filename, reedit='N'):
+        """Build a PDF Report
+
+        This function is call by adminstrative record and biological validation template
+
+        Args:
+            id_rec      (int): record serial.
+            filename (string): filename.
+            template (string): template filename.
+            reedit     (flag): rebuild (Y) or not (N) this document.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        # 1 - get data
+        datas = Pdf.getDataReport(id_rec, filename, reedit)
+
+        # 2 - run data with template
+        # 3 - convert odt to PDF
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG data : ' + str(datas))
+
+        ret = Pdf.buildPDF(template, filename, datas, id_rec)
+
+        if not ret:
+            Pdf.log.error(Logs.fileline() + ' : getPdfReport ERROR')
+            return False
+
+        Pdf.log.error(Logs.fileline() + ' : getPdfReport')
+        return True
+
+    @staticmethod
+    def getDataReport(id_rec, filename, reedit):
+        """Build dict of data for Report
+
+        This function is call by getPdfReport
+
+        Args:
+            id_rec      (int): record serial.
+            reedit     (flag): rebuild (Y) or not (N) this document.
+
+        Returns:
+            dict: dictionnary of data
+
+        """
+
+        Various.useLangPDF()
+
+        data = {}  # dictionnary of data for build report
+
+        # --- Logo details
+        from os.path import join
+
+        data['logo'] = (open(join(Constants.cst_resource, 'logo.png'), 'rb'), 'image/png')
+
+        # --- Label details
+        data['label'] = {}
+
+        data['label']['phone']      = str(_("Tél"))
+        data['label']['fax']        = str(_("Fax"))
+        data['label']['email']      = str(_("Email"))
+        data['label']['record']     = str(_("Dossier"))
+        data['label']['code']       = str(_("Code"))
+        data['label']['born']       = str(_("Né le"))
+        data['label']['admit']      = str(_("Admis le"))
+        data['label']['at']         = str(_("en"))
+        data['label']['bed']        = str(_("Lit"))
+        data['label']['by']         = str(_("par"))
+        data['label']['exam_presc'] = str(_("Examen prescrit le"))
+        data['label']['save']       = str(_("Enregistré le"))
+        data['label']['edit']       = str(_("édité le"))
+        data['label']['analyzes']   = str(_("ANALYSE"))
+        data['label']['results']    = str(_("RESULTAT"))
+        data['label']['references'] = str(_("Références"))
+        data['label']['previous']   = str(_("Antériorités"))
+        data['label']['comm']       = str(_("Commentaire"))
+        data['label']['validate']   = str(_("validé par"))
+
+        # --- Laboratory details
+        data['lab'] = {}
+
+        name  = Various.getDefaultValue('entete_1')
+        line2 = Various.getDefaultValue('entete_2')
+        line3 = Various.getDefaultValue('entete_3')
+        addr  = Various.getDefaultValue('entete_adr')
+        phone = Various.getDefaultValue('entete_tel')
+        fax   = Various.getDefaultValue('entete_fax')
+        email = Various.getDefaultValue('entete_email')
+
+        data['lab']['name']  = str(name['value'])
+        data['lab']['head2'] = str(line2['value'])
+        data['lab']['head3'] = str(line3['value'])
+        data['lab']['addr']  = str(addr['value'])
+        data['lab']['phone'] = ''
+        data['lab']['fax']   = ''
+        data['lab']['email'] = ''
+
+        if phone['value']:
+            data['lab']['phone'] = str(phone['value'])
+
+        if fax['value']:
+            data['lab']['fax'] = str(fax['value'])
+
+        if email['value']:
+            data['lab']['email'] = str(email['value'])
+
+        # --- Report details
+        data['report'] = {}
+
+        data['report']['title']  = _("Compte rendu")
+        data['report']['status'] = ''
+        data['report']['full_comm'] = 'N'
+        data['report']['full_head'] = 'N'
+
+        # Get format header
+        pdfpref = Pdf.getPdfPref()
+
+        if pdfpref and pdfpref['commentaire'] == 1049:
+            data['report']['full_comm'] = 'Y'
+
+        if pdfpref and pdfpref['entete'] == 1069:
+            data['report']['full_head'] = 'Y'
+
+        # Partial or Full
+        if reedit == 'N':
+            data['report']['status'] = _("COMPLET")
+
+            if id_rec > 0:
+                l_req = Analysis.getAnalysisReq(id_rec, 'Y')
+
+                for req in l_req:
+                    nb_res_vld = Result.countResValidate(req['id_data'])
+
+                    if not nb_res_vld or nb_res_vld['nb_vld'] == 0:
+                        data['report']['status'] = _("PARTIEL")
+
+        # regenerated a report
+        if reedit == 'Y':
+            data['report']['status'] = _("ANNULE ET REMPLACE")
+
+            if id_rec > 0:
+                # update date of file
+                ret = File.updateReportDate(filename)
+
+                if not ret:
+                    Pdf.log.error(Logs.fileline() + ' : ERRROR getDataReport cant update date report')
+                    return False
+
+        data['report']['date_now'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
+        data['report']['time_now'] = datetime.strftime(datetime.now(), "%H:%M")
+
+        # --- Record details
+        data['rec'] = {}
+
+        if id_rec > 0:
+            record = Record.getRecord(id_rec)
+        # For print test
+        else:
+            Various.useLangDB()
+            record = {}
+            record['date_dos']          = datetime.now()
+            record['num_dos_an']        = '2022000001'
+            record['num_dos_mois']      = '2022010001'
+            record['num_dos_jour']      = '202201010001'
+            record['type']              = 184
+            record['date_hosp']         = datetime.now()
+            record['service_interne']   = _("Microbiologie")
+            record['num_lit']           = 'ABC123'
+            record['date_prescription'] = datetime.now()
+            record['prescriber']        = 'Damien DOC'
+            record['rc']                = _("Test de grossesse")
+            record['id_patient']        = 0
+            Various.useLangPDF()
+
+        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+
+        data['rec']['num_y'] = str(record['num_dos_an'])
+        data['rec']['num_m'] = str(record['num_dos_mois'])
+        data['rec']['num_d'] = str(record['num_dos_jour'])
+
+        data['rec']['hosp']         = 'N'
+        data['rec']['hosp_date']    = ''
+        data['rec']['hosp_service'] = ''
+        data['rec']['hosp_bed']     = ''
+
+        data['rec']['presc_date'] = ''
+        data['rec']['presc_name'] = ''
+
+        if 'type' in record and record['type'] == 184:
+            data['rec']['hosp'] = 'Y'
+
+            if record['date_hosp']:
+                data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], '%d/%m/%Y')
+
+            if record['service_interne']:
+                data['rec']['hosp_service'] = str(record['service_interne'])
+
+            if record['num_lit']:
+                data['rec']['hosp_bed'] = str(record['num_lit'])
+
+        if record['date_prescription']:
+            data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
+
+        if record['prescriber']:
+            data['rec']['presc_name'] = str(record['prescriber'])
+
+        data['rec']['comm_title'] = _("Renseignements cliniques")
+        data['rec']['comm'] = str(record['rc'])
+
+        # --- Patient details
+        data['pat'] = {}
+
+        if record['id_patient'] > 0:
+            pat = Patient.getPatient(record['id_patient'])
+        # For print test
+        else:
+            pat = {}
+            pat['code']         = 'Z1X2Y3'
+            pat['code_patient'] = 'PAT123'
+            pat['nom']          = 'PATIENT'
+            pat['prenom']       = 'Pauline'
+            pat['nom_jf']       = 'PERRIERS'
+            pat['pat_midname']  = 'Monica'
+            pat['ddn']          = datetime.strptime('1979-04-01', '%Y-%m-%d').date()
+            pat['age']          = '42'
+            pat['unite']        = '1037'
+            pat['sexe']         = '2'
+            pat['adresse']      = '3 rue du Paradis'
+            pat['cp']           = '12345'
+            pat['ville']        = 'Testville'
+            pat['quartier']     = ''
+            pat['bp']           = 'BP 123'
+            pat['tel']          = '0607080910'
+            pat['profession']   = 'Architecte'
+
+        data['pat']['code']       = str(pat['code'])
+        data['pat']['code_lab']   = ''
+        data['pat']['lastname']   = ''
+        data['pat']['firstname']  = ''
+        data['pat']['maidenname'] = ''
+        data['pat']['middlename'] = ''
+        data['pat']['birth']      = ''
+        data['pat']['age']        = ''
+        data['pat']['age_unit']   = ''
+        data['pat']['age_days']   = ''
+        data['pat']['sex']        = _('Inconnu')
+        data['pat']['addr']       = ''
+        data['pat']['zipcode']    = ''
+        data['pat']['city']       = ''
+        data['pat']['district']   = ''
+        data['pat']['pbox']       = ''
+        data['pat']['phone']      = ''
+        data['pat']['profession'] = ''
+
+        if pat['code_patient']:
+            data['pat']['code_lab'] = str(pat['code_patient'])
+
+        if pat['nom']:
+            data['pat']['lastname'] = str(pat['nom'])
+
+        if pat['prenom']:
+            data['pat']['firstname'] = str(pat['prenom'])
+
+        if pat['nom_jf']:
+            data['pat']['maidenname'] = str(pat['nom_jf'])
+
+        if pat['pat_midname']:
+            data['pat']['middlename'] = str(pat['pat_midname'])
+
+        if pat['ddn']:
+            data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+
+            # calc age
+            today = datetime.now()
+            born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
+
+            age = (today - born).days
+
+            data['pat']['age_days'] = str(age)
+
+            if age >= 365:
+                data['pat']['age']  = str(today.year - born.year)
+                data['pat']['age_unit'] = _('ans')
+            elif age > 0 and age <= 31:
+                data['pat']['age']  = (today - born).days
+                data['pat']['age_unit'] = _('jours')
+            elif today.month - born.month > 0:
+                data['pat']['age']  = today.month - born.month + ' ' + _('mois')
+                data['pat']['age_unit'] = _('mois')
+        elif pat['age']:
+            data['pat']['age'] = str(pat['age'])
+
+            if pat['unite'] == 1037:
+                data['pat']['age_unit'] = _('ans')
+                data['pat']['age_days'] = str(pat['age'] * 365)
+            elif pat['unite'] == 1036:
+                data['pat']['age_unit'] = _('mois')
+                data['pat']['age_days'] = str(pat['age'] * 30)
+            elif pat['unite'] == 1035:
+                data['pat']['age_unit'] = _('semaines')
+                data['pat']['age_days'] = str(pat['age'] * 7)
+            elif pat['unite'] == 1034:
+                data['pat']['age_unit'] = _('jours')
+                data['pat']['age_days'] = str(pat['age'])
+
+        if pat['sexe'] == 1:
+            data['pat']['sex'] = _('Masculin')
+        elif pat['sexe'] == 2:
+            data['pat']['sex'] = _('Feminin')
+
+        if pat['adresse']:
+            data['pat']['addr'] = str(pat['adresse'])
+
+        if pat['cp']:
+            data['pat']['zipcode'] = str(pat['cp'])
+
+        if pat['ville']:
+            data['pat']['city'] = str(pat['ville'])
+
+        if pat['quartier']:
+            data['pat']['district'] = str(pat['quartier'])
+
+        if pat['bp']:
+            data['pat']['pbox'] = str(pat['bp'])
+
+        if pat['tel']:
+            data['pat']['phone'] = str(pat['tel'])
+
+        if pat['profession']:
+            data['pat']['profession'] = str(pat['profession'])
+
+        # --- ANALYZES details
+        data['l_data'] = []
+        analysis       = {"fam_name": "", "ana_name": "", "l_res": [], "validate": ""}
+        result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
+                          "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N"}
+
+        """
+        [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME,
+                       'l_res': [{'label': VAR_NAME,
+                                  'value': RESULT_VALUE,
+                                  'unit': UNIT_RESULT_VALUE,
+                                  'references': RANGE_VALUE,
+                                  'prev_date': PREVIOUS_DATE,
+                                  'prev_val': PREVIOUS_VALUE,
+                                  'prev_unit': PREVIOUS_UNIT,
+                                  'bold_value': BOLD_VALUE}] }
+        }]
+        """
+
+        # temp var for build l_data
+        tmp_ana = analysis.copy()
+
+        # init var for previous value
+        id_req_ana_p    = 0  # previous id request analysis
+        id_res_p        = 0  # previous id result
+        id_user_valid_p = 0  # previous id user who makes validation
+
+        if id_rec > 0:
+            # GET all results for a record
+            list_result = Result.getResultRecordForReport(id_rec)
+
+            if list_result:
+                res_fam   = ''       # family result
+                res_fam_p = 'empty'  # previous result family
+                with_fam  = False    # with or without family
+
+                # ----- LOOP RESULT -----
+                for res in list_result:
+                    # NEW ANALYSIS
+                    # if id request of this analysis is different of previous one
+                    # and id result is different of previous one.
+                    if res['id_req_ana'] != id_req_ana_p and res['id_res'] != id_res_p:
+                        # --- close PREVIOUS analysis ---
+                        if id_req_ana_p > 0:
+                            # comment and who make validation
+                            res_valid = Result.getResultValidation(id_res_p)
+
+                            # If valid user change we display who valid previous analisys
+                            if id_user_valid_p > 0 and res_valid['utilisateur'] != id_user_valid_p:
+                                id_user_valid_p = res_valid['utilisateur']
+
+                                user = User.getUserByIdGroup(res_valid['utilisateur'])
+
+                                if not user:
+                                    user = User.getUserDetails(res_valid['utilisateur'])
+
+                                if user['lastname'] and user['firstname']:
+                                    user = user['lastname'] + ' ' + user['firstname']
+                                else:
+                                    user = user['username']
+
+                                if res_valid['commentaire']:
+                                    res_comm = res_valid['commentaire']
+                                else:
+                                    res_comm = ''
+
+                                tmp_ana['l_res'][-1]["comm"] = str(res_comm)
+
+                                tmp_ana['validate'] = str(user)
+
+                            # Add previous analysis to list of data
+                            data['l_data'].append(tmp_ana)
+
+                        # --- end of close previous analysis ---
+
+                        # init new analysis
+                        tmp_ana = {"fam_name": "", "ana_name": "", "l_res": [], "validate": ""}
+
+                        id_req_ana_p = res['id_req_ana']
+                        id_res_p     = res['id_res']
+
+                        # if family analysis exist and is different of previous one
+                        if res['ana_fam'] and res['ana_fam'] != res_fam_p:
+                            res_fam   = res['ana_fam']
+                            res_fam_p = res_fam
+                            with_fam  = True
+                        else:
+                            with_fam = False
+
+                        # ==== ANALYSIS FAMILY ====
+                        if with_fam:
+                            Various.useLangDB()
+                            tmp_ana['fam_name'] = _(res_fam.strip())
+                            Various.useLangPDF()
+
+                        # ==== ANALYSIS NAME ====
+                        if res['ana_name']:
+                            Various.useLangDB()
+                            trans = res['ana_name'].strip()
+                            tmp_ana['ana_name'] = _(trans)
+                            Various.useLangPDF()
+
+                    # init new result
+                    tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N"}
+
+                    # Start to get previous result if exist
+                    prev_date = ''
+                    prev_res  = ''
+                    prev_unit = ''
+
+                    res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'])
+
+                    if res_prev:
+                        prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
+
+                    # Get label of value
+                    type_res = Various.getDicoById(res['type_resultat'])
+
+                    if type_res and type_res['short_label'].startswith("dico_"):
+                        Various.useLangDB()
+                        trans = type_res['short_label'][5:]
+                        type_res = _(trans.strip())
+                        Various.useLangPDF()
+                    else:
+                        type_res = ''
+
+                    # Value to be interpreted
+                    if type_res and res['value']:
+                        Various.useLangDB()
+                        if res['value'] != '0':
+                            val = Various.getDicoById(res['value'])
+                            trans = val['label']
+                            val = _(trans.strip())
+                        else:
+                            val = ''
+
+                        # specific response for bold format
+                        if trans == 'Positif':
+                            tmp_res['bold_value'] = 'Y'
+
+                        # specific response for patial report
+                        if trans == 'en cours':
+                            data['report']['status'] = _("PARTIEL")
+
+                        # interpreted previous value
+                        if res_prev and res_prev['valeur']:
+                            label_prev = Various.getDicoById(res_prev['valeur'])
+                            trans = label_prev['label'].strip()
+                            prev_res = _(trans)
+                        else:
+                            prev_res = ''
+
+                        Various.useLangPDF()
+                    # Numerical value or canceled
+                    else:
+                        val = res['value']
+                        # Cancel result
+                        if not val:
+                            val  = _("Annulée")
+                            prev_res = ''
+                        elif res_prev and res_prev['valeur']:
+                            prev_res = res_prev['valeur']
+
+                        if res['normal_min'] and res['normal_max']:
+                            if val != _("Annulée"):
+                                # bold style if out of range min/max
+                                if float(val) < float(res['normal_min']) or float(val) > float(res['normal_max']):
+                                    tmp_res['bold_value'] = 'Y'
+
+                        if res['unite'] and val != _("Annulée"):
+                            unit = Various.getDicoById(res['unite'])
+
+                            if unit:
+                                tmp_res['unit'] = unit['label']
+
+                                if prev_res:
+                                    prev_unit = unit['label']
+
+                    tmp_res['prev_date'] = prev_date
+                    tmp_res['prev_val']  = prev_res
+                    tmp_res['prev_unit'] = prev_unit
+
+                    # Get normal of value
+                    if res['normal_min'] and res['normal_max']:
+                        tmp_res['references'] = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
+
+                    # ==== ANALYSIS RESULT ====
+                    Various.useLangDB()
+                    trans = str(res['libelle'].strip())
+                    tmp_res['label'] = _(trans)
+                    tmp_res['value'] = str(val)
+                    Various.useLangPDF()
+
+                    tmp_res['var_comm'] = res['commentaire']
+
+                    # Add this result to list of result of this analysis
+                    tmp_ana['l_res'].append(tmp_res)
+                # --- END OF LOOP RESULT ---
+
+                # add last comment and who make validation
+                res_valid = Result.getResultValidation(id_res_p)
+
+                user = User.getUserByIdGroup(res_valid['utilisateur'])
+
+                if not user:
+                    user = User.getUserDetails(res_valid['utilisateur'])
+
+                Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_group=' + str(res_valid['utilisateur']))
+
+                if user['lastname'] and user['firstname']:
+                    user = user['lastname'] + ' ' + user['firstname']
+                else:
+                    user = user['username']
+
+                if res_valid['commentaire']:
+                    res_comm = res_valid['commentaire']
+                else:
+                    res_comm = ''
+
+                tmp_ana['l_res'][-1]["comm"] = str(res_comm)
+
+                tmp_ana['validate'] = str(user)
+
+                # Add last analysis to list of data
+                data['l_data'].append(tmp_ana)
+
+                # Pdf.log.error(Logs.fileline() + ' : DEBUG l_data=' + str(data['l_data']))
+        # For print test
+        else:
+            Various.useLangDB()
+
+            result['label']      = _("Albumine")
+            result['value']      = _("Absent")
+            result['unit']       = ''
+            result['references'] = ''
+            result['prev_date']  = '01/12/2021'
+            result['prev_val']   = _("Présent")
+            result['prev_unit']  = ''
+            result['comm']       = ''
+            result['bold_value'] = 'N'
+
+            analysis['fam_name'] = _("Biochimie urinaire")
+            analysis['ana_name'] = _("Bandelettes urinaires")
+            analysis['l_res'].append(result)
+            analysis['validate'] = 'BIO Bernard'
+
+            data['l_data'].append(analysis)
+            Various.useLangPDF()
+
+        return data
+
+    @staticmethod
+    def buildPDF(template, filename, data, id_rec):
+        """Build a PDF from a template
+
+        This function is call by getPdfReport()
+
+        Args:
+            tpl_nam  (string): name of template.
+            filename (string): filename.
+            data       (flag): data to fill the template.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        from os.path import join
+        tmp_odt = join(Constants.cst_path_tmp, filename)
+
+        if id_rec > 0:
+            tmp_pdf = join(Constants.cst_report, filename)
+        else:
+            tmp_pdf = join(Constants.cst_path_tmp, filename + '.pdf')
+
+        # write odt with data and template
+        try:
+            tpl_path = join(Constants.cst_template, template)
+
+            tpl = Template(source="", filepath=tpl_path)
+
+            f = open(tmp_odt, "wb")
+            f.write(tpl.generate(o=data).render().getvalue())
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : buildPDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
+            return False
+
+        # convert odt to pdf via openoffice
+        try:
+            import os
+
+            cmd = ('unoconv -f pdf -o ' + tmp_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+
+            Pdf.log.error(Logs.fileline() + ' : buildPDF cmd=' + cmd)
+            os.system(cmd)
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : buildPDF convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
+            return False
+
+        return True
+
+    @staticmethod
+    def getPdfSticker(id, type_id, template):
+        """Build a PDF Barcode page
+
+        This function is call by administrative record or settings stickers templates.
+
+        Args:
+            id         (int): serial.
+            type_id (string): specify which type of serial.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        from os.path import join
+
+        Various.useLangPDF()
+
+        # --------------------------------------------------
+        data = {}  # dictionnary of data for build report
+
+        filename = ''
+
+        # Get data
+        if type_id == 'REC':
+            if id > 0:
+                record = Record.getRecord(id)
+
+                if not record:
+                    Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load record details')
+                    return False
+
+                num = record['num_dos_an']
+
+                filename = 'sticker_REC' + str(id)
+
+                imgcode39_name  = 'sticker_code39_' + str(num) + '.png'
+                imgqrcode_name  = 'sticker_qrcode_' + str(num) + '.png'
+
+                # Generate barcode code39 type
+                try:
+                    checksum = False
+
+                    CODE39 = barcode.get_barcode_class('code39')
+
+                    options = {'font_size': 0,
+                               'text_distance': 0.0,
+                               'module_height': 24.0,
+                               'quiet_zone': 0.0}
+                    options['center_text'] = False
+
+                    ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
+                    ean.save('tmp/sticker_code39_' + num, options=options)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                # Generate qrcode type
+                try:
+                    img = qrcode.make(str(num))
+
+                    type(img)
+
+                    img.save('tmp/' + imgqrcode_name)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                data['img'] = {}
+                data['img']['code39'] = open(join(Constants.cst_path_tmp, imgcode39_name), 'rb')
+                data['img']['qrcode'] = open(join(Constants.cst_path_tmp, imgqrcode_name), 'rb')
+
+                data['rec'] = {}
+                data['rec']['num_y'] = str(record['num_dos_an'])
+                data['rec']['num_d'] = str(record['num_dos_mois'])
+                data['rec']['num_m'] = str(record['num_dos_jour'])
+                data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+
+                # --- Patient details
+                data['pat'] = {}
+
+                pat = Patient.getPatient(record['id_patient'])
+
+                if not pat:
+                    Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load patient details')
+                    return False
+
+                data['pat']['lastname']  = pat['nom']
+                data['pat']['firstname'] = pat['prenom']
+                data['pat']['birth']     = ''
+                data['pat']['sex']       = _('Inconnu')
+
+                if pat['ddn']:
+                    data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+
+                if pat['sexe'] == 1:
+                    data['pat']['sex'] = _('Masculin')
+                elif pat['sexe'] == 2:
+                    data['pat']['sex'] = _('Feminin')
+
+            # PDF test
+            else:
+                num = '2021000001'
+
+                filename = 'test_template'
+
+                imgcode39_name  = 'sticker_code39_' + str(num) + '.png'
+                imgqrcode_name  = 'sticker_qrcode_' + str(num) + '.png'
+
+                # Generate barcode code39 type
+                try:
+                    checksum = False
+
+                    CODE39 = barcode.get_barcode_class('code39')
+
+                    options = {'font_size': 0,
+                               'text_distance': 0.0,
+                               'module_height': 24.0,
+                               'quiet_zone': 0.0}
+                    options['center_text'] = False
+
+                    ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
+                    ean.save('tmp/sticker_code39_' + num, options=options)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                # Generate qrcode type
+                try:
+                    img = qrcode.make(str(num))
+
+                    type(img)
+
+                    img.save('tmp/' + imgqrcode_name)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                data['img'] = {}
+                data['img']['code39'] = open(join(Constants.cst_path_tmp, imgcode39_name), 'rb')
+                data['img']['qrcode'] = open(join(Constants.cst_path_tmp, imgqrcode_name), 'rb')
+
+                data['rec'] = {}
+                data['rec']['num_y'] = '2021000001'
+                data['rec']['num_d'] = '2022010001'
+                data['rec']['num_m'] = '202201010001'
+                data['rec']['rec_date'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
+
+                # --- Patient details
+                data['pat'] = {}
+
+                data['pat']['lastname']  = 'TEST'
+                data['pat']['firstname'] = 'Alexandre'
+                data['pat']['birth']     = '30/01/1940'
+                data['pat']['sex']       = _('Masculin')
+
+        Pdf.log.error(Logs.fileline() + ' : buildPDF DEBUG data : ' + str(data))
+
+        tmp_odt  = join(Constants.cst_path_tmp, filename)
+        tmp_pdf  = join(Constants.cst_path_tmp, filename + '.pdf')
+
+        # write odt with data and template
+        try:
+            tpl_path = join(Constants.cst_template, template)
+
+            tpl = Template(source="", filepath=tpl_path)
+
+            f = open(tmp_odt, "wb")
+            f.write(tpl.generate(o=data).render().getvalue())
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : buildPDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
+            return False
+
+        # convert odt to pdf via openoffice
+        try:
+            import os
+
+            cmd = ('unoconv -f pdf -o ' + tmp_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+
+            Pdf.log.error(Logs.fileline() + ' : getPdfSticker cmd=' + cmd)
+            os.system(cmd)
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : getPdfSticker convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
+            return False
+
+        Pdf.log.error(Logs.fileline() + ' : getPdfSticker')
+        return True

@@ -55,6 +55,7 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
+                            <th class="text-center">{{ _("Action") }}</th>
                             <th class="text-center">{{ _("E/S") }}</th>
                             <th class="text-left cursor-act">{{ _("Nb de paq.") }}</th>
                             <th class="text-left cursor-act">{{ _("Date recept.") }}</th>
@@ -168,22 +169,36 @@ let tr_class = '' ;
 
 $("#list_items_total").html( data_len ) ;
 
-console.log("DEBUG data_items=" + JSON.stringify(data_items));
-
     for( i = i_start; i < i_stop; i++ )
     {
     let serial      = data_items[i].prs_ser ;
     let stock_move  = '<span class="text-success"><i class="fa fa-sign-in" aria-hidden="true"></i></span>' ;
     let nb_pack     = data_items[i].prs_nb_pack ;
+    let type_move   = 'I' ;
 
         if ( data_items[i].pru_ser > 0 )
         {
         serial      = data_items[i].pru_ser ;
         stock_move  = '<span class="text-danger"><i class="fa fa-sign-out" aria-hidden="true"></i></span>' ;
         nb_pack     = data_items[i].pru_nb_pack ;
+        type_move   = 'O' ;
         }
 
+    let menu_act = '<nav>' +
+                   '<ul class="navbar-nav">' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                   {% if session['user_role'] == 'B' or session['user_role'] == 'A' or 
+                         session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                   '<a class="dropdown-item menu-act-item" onclick="cancel_stock(' + serial + ',\'' + type_move + '\');">{{ _("Annuler") }}</a>' ;
+                   {% else %}
+                   '' ;
+                   {% endif %}
+                   
+    menu_act += '</div></li></ul></nav>' ;
+
     res += '<tr><td hidden><div>' + serial + '</div></td>' +
+           '<td><div class="text-center">' + menu_act + '</div></td>' +
            '<td><div class="text-center">' + stock_move + '</div></td>' +
            '<td><div class="text-left">' + nb_pack + '</div></td>' +
            '<td><div class="text-left">' + data_items[i].prs_receipt_date + '</div></td>' +
@@ -201,6 +216,92 @@ console.log("DEBUG data_items=" + JSON.stringify(data_items));
     $("#num_page_b").text( p_cur ) ;
         
     $("#table_items").tablesorter() ;  // sort only data on screen
+}
+
+function cancel_stock( id_stock, type_move )
+{
+var id_user = {{ session['user_id']|safe}} ;
+
+    if (type_move == "I")
+    {
+        // check if a add of stock it is not partially or totally used
+        $.ajax( 
+            {
+            type: "GET",
+            url: "{{ session['server_ext'] }}/services/quality/stock/use/" + id_stock,
+            success: function(ret)
+                {
+                    if (ret > 0)
+                    {
+                    alert("{{ _("Vous ne pouvez pas annuler un stock déjà partiellement consommé") }}") ;
+                    return false;
+                    }
+                    else
+                    {
+                        if ( window.confirm("{{ _("Veuillez confirmer l'annulation") }}") )
+                        {
+                        var param = '{ "id_stock":' + id_stock + ', ' +
+                                      '"type_move":"' + type_move + '", ' +
+                                      '"id_user":' + id_user + '}' ;
+
+                            $.ajax( 
+                                {
+                                type: "POST",
+                                url: "{{ session['server_ext'] }}/services/quality/stock/cancel/io" ,
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: param,
+                                success: function(ret)
+                                    {
+                                    location.reload() ;
+                                    },
+                                error: function(ret)
+                                    {
+                                    console.log("ERROR CANCEL stock move") ;
+                                    alert("{{ _("Erreur lors de l'annulation de stock") }}") ;
+                                    }
+                                } ) ;
+                        }
+                        else
+                        return false ;
+                    }
+                },
+            error: function(ret)
+                {
+                console.log("ERROR check stock use") ;
+                alert("{{ _("Erreur lors de la vérification de l'usage de ce stock") }}") ;
+                }
+            } ) ;
+    }
+    else
+    {
+        if ( window.confirm("{{ _("Veuillez confirmer l'annulation") }}") )
+        {
+        var param = '{ "id_stock":' + id_stock + ', ' +
+                      '"type_move":"' + type_move + '", ' +
+                      '"id_user":' + id_user + '}' ;
+
+            $.ajax( 
+                {
+                type: "POST",
+                url: "{{ session['server_ext'] }}/services/quality/stock/cancel/io" ,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param,
+                success: function(ret)
+                    {
+                    location.reload() ;
+                    },
+                error: function(ret)
+                    {
+                    console.log("ERROR CANCEL stock move") ;
+                    alert("{{ _("Erreur lors de l'annulation de stock") }}") ;
+                    }
+                } ) ;
+        }
+        else
+        return false ;
+    }
 }
 
 /*

@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime, timedelta
 from flask import request
 from flask_restful import Resource
@@ -72,6 +73,18 @@ class ExportDHIS2(Resource):
         # Determine the period
         period = l_rows[1][1]
 
+        # Determine orgunit
+        orgunit = ''
+
+        if version != 'v1' and l_rows[1][7]:
+            orgunit = l_rows[1][7]
+
+        # Determine storedby
+        storedby = ''
+
+        if version != 'v1' and l_rows[1][8]:
+            storedby = l_rows[1][8]
+
         date_beg = datetime.strptime(args['date_beg'], '%Y-%m-%d')
 
         if period == 'M':
@@ -132,7 +145,12 @@ class ExportDHIS2(Resource):
 
                     data.append(l[0])
                     data.append(period)
-                    data.append(lab_name)
+
+                    if orgunit:
+                        data.append(orgunit)
+                    else:
+                        data.append(lab_name)
+
                     data.append(l[5])
                     data.append(l[6])
 
@@ -154,7 +172,11 @@ class ExportDHIS2(Resource):
                     else:
                         data.append('')
 
-                    data.append(user_ident)
+                    if storedby:
+                        data.append(storedby)
+                    else:
+                        data.append(user_ident)
+
                     data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
                     data.append('')
                     data.append('FALSE')
@@ -351,7 +373,9 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 # SPECIMEN PART
-                if d['num_dos_an'] and d['code_patient']:
+                if d['spec_code']:
+                    data.append(d['spec_code'])
+                elif d['num_dos_an'] and d['code_patient']:
                     num_samp = str(d['num_dos_an']) + str(d['code_patient'])
                     data.append(num_samp)
                 else:

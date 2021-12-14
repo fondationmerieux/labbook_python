@@ -29,7 +29,6 @@
                         <input type="radio" name="format" value="1073" {% if args['format'] == 1073 %} checked="true" {% endif %}>&nbsp;{{ _("Long") }}</input>
                     </label>
                 </div>
-                <div id="tempAnchor"></div>
             </form>
 
             <div class="clearfix mb-5">
@@ -66,7 +65,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
            },
        error: function(data)
            {

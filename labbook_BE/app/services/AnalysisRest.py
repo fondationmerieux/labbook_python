@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -263,6 +264,9 @@ class AnalysisDet(Resource):
             elif key == 'nom':
                 analysis[key] = _(analysis[key].strip())
 
+        if analysis['cote_valeur'] != '':
+            analysis['cote_valeur'] = float(analysis['cote_valeur'])
+
         self.log.info(Logs.fileline() + ' : AnalysisDet id_data=' + str(id_ana))
         return compose_ret(analysis, Constants.cst_content_type_json, 200)
 
@@ -294,7 +298,7 @@ class AnalysisDet(Resource):
                                           type_ana=args['type_ana'],
                                           type_prod=args['type_prod'],
                                           unit=args['unit'],
-                                          value=args['value'],
+                                          value=float(args['value']),
                                           stat=args['stat'],
                                           comment=args['comment'],
                                           product=args['product'],
@@ -613,6 +617,9 @@ class AnalysisReq(Resource):
             if analysis['prix'] != '':
                 analysis['prix'] = float(analysis['prix'])
 
+            if analysis['cote_valeur'] != '':
+                analysis['cote_valeur'] = float(analysis['cote_valeur'])
+
         self.log.info(Logs.fileline() + ' : AnalysisReq id_rec=' + str(id_rec))
         return compose_ret(l_ana, Constants.cst_content_type_json, 200)
 
@@ -717,7 +724,7 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['cote_valeur']:
-                    data.append(d['cote_valeur'])
+                    data.append(float(d['cote_valeur']))
                 else:
                     data.append('')
 
@@ -957,7 +964,7 @@ class AnalysisImport(Resource):
                     famille            = l[5]
                     # paillasse          = l[6]   # useless
                     cote_unite         = l[7]
-                    cote_valeur        = l[8]
+                    cote_valeur        = float(l[8])
                     commentaire        = l[9]
                     produit_biologique = l[10]
                     type_prel          = l[11]
@@ -1082,7 +1089,7 @@ class AnalysisImport(Resource):
                     famille            = l[5]
                     # paillasse          = l[6]   # useless
                     cote_unite         = l[7]
-                    cote_valeur        = l[8]
+                    cote_valeur        = float(l[8])
                     commentaire        = l[9]
                     produit_biologique = l[10]
                     type_prel          = l[11]

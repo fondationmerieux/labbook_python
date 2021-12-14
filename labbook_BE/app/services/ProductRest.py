@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -41,7 +42,7 @@ class ProductDet(Resource):
         if 'stat' not in args or 'type' not in args or 'storage' not in args or 'qty' not in args or \
            'prod_date' not in args or 'sampler' not in args or 'location' not in args or \
            'location_accu' not in args or 'receipt_date' not in args or 'receipt_time' not in args or \
-           'comment' not in args:
+           'comment' not in args or 'code' not in args:
             self.log.error(Logs.fileline() + ' : ProductDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -59,7 +60,8 @@ class ProductDet(Resource):
                                         commentaire=args['comment'],
                                         lieu_prel=args['location'],
                                         lieu_prel_plus=args['location_accu'],
-                                        localisation=args['storage'])
+                                        localisation=args['storage'],
+                                        code=args['code'])
 
             if ret is False:
                 self.log.info(Logs.fileline() + ' : TRACE ProductDet ERROR update product')
@@ -82,7 +84,8 @@ class ProductDet(Resource):
                                            commentaire=args['comment'],
                                            lieu_prel=args['location'],
                                            lieu_prel_plus=args['location_accu'],
-                                           localisation=args['storage'])
+                                           localisation=args['storage'],
+                                           code=args['code'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : ProductDet ERROR insert product')
@@ -156,7 +159,7 @@ class ProductReq(Resource):
             if 'id_owner' not in prod or 'date_samp' not in prod or 'type_samp' not in prod or 'qty' not in prod or \
                'stat' not in prod or 'id_rec' not in prod or 'sampler' not in prod or 'date_receipt' not in prod or \
                'time_receipt' not in prod or 'comm' not in prod or 'locat_samp' not in prod or \
-               'locat_samp_more' not in prod or 'location' not in prod:
+               'locat_samp_more' not in prod or 'location' not in prod or 'code' not in prod:
                 self.log.error(Logs.fileline() + ' : ProductReq ERROR prod missing')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -178,7 +181,8 @@ class ProductReq(Resource):
                                            commentaire=prod['comm'],
                                            lieu_prel=prod['locat_samp'],
                                            lieu_prel_plus=prod['locat_samp_more'],
-                                           localisation=prod['location'])
+                                           localisation=prod['location'],
+                                           code=prod['code'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : ProductReq ERROR  insert')

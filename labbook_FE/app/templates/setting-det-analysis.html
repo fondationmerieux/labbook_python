@@ -299,8 +299,6 @@
                 </div>
             </form>
 
-            <div id="tempAnchor"></div>
-
             <div class="clearfix row mt-3">
                 <div class="col-12">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
@@ -949,7 +947,7 @@ var msg = "" ;
                    success: function(data)
                        {
                        console.log("success save_ana") ;
-                       tempAlert("{{ _("Enregistrement réussi") }}", 2000, "tempAnchor") ;
+                       tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
 
                        window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-analyzes" ;
                        },

@@ -41,7 +41,7 @@ class Doctor:
                 filter_cond += ' and pres.ville LIKE "%' + args['city'] + '%" '
 
         req = ('select pres.id_data, pres.id_owner, pres.code, pres.nom as lastname, pres.prenom as firstname, '
-               'pres.ville as city, pres.etablissement as work_place, pres.specialite as spe_id, pres.tel as phone, '
+               'pres.ville as city, pres.etablissement as facility, pres.specialite as spe_id, pres.tel as phone, '
                'pres.email, pres.titre as title, pres.initiale as initial, pres.service, pres.adresse as address, '
                'pres.mobile, pres.fax, d1.label as spe '
                'from sigl_08_data as pres '
@@ -67,13 +67,13 @@ class Doctor:
                     'doctor.prenom like "' + word + '%" or '
                     'doctor.code like "' + word + '%") ')
 
-        req = 'SELECT TRIM(CONCAT(TRIM(COALESCE(doctor.code, ""))," - ",'\
-              'TRIM(COALESCE(doctor.nom, ""))," ",TRIM(COALESCE(doctor.prenom, ""))," - ",'\
-              'TRIM(COALESCE(dict.label, "")))) AS field_value,'\
-              'doctor.id_data AS id_doctor '\
-              'from sigl_08_data AS doctor '\
-              'left join sigl_dico_data as dict on dict.id_data=doctor.specialite '\
-              'where ' + cond + ' order by doctor.nom asc limit 1000'
+        req = ('SELECT TRIM(CONCAT(TRIM(COALESCE(doctor.code, ""))," - ",'
+               'TRIM(COALESCE(doctor.nom, ""))," ",TRIM(COALESCE(doctor.prenom, ""))," - ",'
+               'TRIM(COALESCE(dict.label, "")), " - ", TRIM(COALESCE(doctor.etablissement, "")) )) AS field_value,'
+               'doctor.id_data AS id_doctor '
+               'from sigl_08_data AS doctor '
+               'left join sigl_dico_data as dict on dict.id_data=doctor.specialite '
+               'where ' + cond + ' order by doctor.nom asc limit 1000')
 
         cursor.execute(req)
 
@@ -83,14 +83,14 @@ class Doctor:
     def getDoctor(id_doctor):
         cursor = DB.cursor()
 
-        req = 'select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '\
-              'doctor.prenom as prenom, doctor.ville as ville, doctor.etablissement as etablissement, '\
-              'doctor.specialite as specialite, doctor.tel as tel, doctor.email as email, doctor.titre as titre,'\
-              'doctor.initiale as initiale, doctor.service as service, doctor.adresse as adresse, '\
-              'doctor.mobile as mobile, doctor.fax as fax, dico.label as spe_doctor '\
-              'from sigl_08_data as doctor '\
-              'left join sigl_dico_data as dico on dico.id_data = doctor.specialite '\
-              'where doctor.id_data=%s'
+        req = ('select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '
+               'doctor.prenom as prenom, doctor.ville as ville, doctor.etablissement as facility, '
+               'doctor.specialite as specialite, doctor.tel as tel, doctor.email as email, doctor.titre as titre,'
+               'doctor.initiale as initiale, doctor.service as service, doctor.adresse as adresse, '
+               'doctor.mobile as mobile, doctor.fax as fax, dico.label as spe_doctor '
+               'from sigl_08_data as doctor '
+               'left join sigl_dico_data as dico on dico.id_data = doctor.specialite '
+               'where doctor.id_data=%s')
 
         cursor.execute(req, (id_doctor,))
 
@@ -105,7 +105,7 @@ class Doctor:
                            '(id_owner, code, nom, prenom, ville, etablissement, specialite, tel, email, '
                            'titre, initiale, service, adresse, mobile, fax) '
                            'values '
-                           '(%(id_owner)s, %(code)s, %(nom)s, %(prenom)s, %(ville)s, %(etablissement)s, %(specialite)s, '
+                           '(%(id_owner)s, %(code)s, %(nom)s, %(prenom)s, %(ville)s, %(facility)s, %(specialite)s, '
                            '%(tel)s, %(email)s, %(titre)s, %(initiale)s, %(service)s, %(adresse)s, %(mobile)s, %(fax)s)', params)
 
             Doctor.log.info(Logs.fileline())
@@ -122,7 +122,7 @@ class Doctor:
 
             cursor.execute('update sigl_08_data '
                            'set code=%(code)s, nom=%(nom)s, prenom=%(prenom)s, ville=%(ville)s, '
-                           'etablissement=%(etablissement)s, specialite=%(specialite)s, tel=%(tel)s, email=%(email)s, '
+                           'etablissement=%(facility)s, specialite=%(specialite)s, tel=%(tel)s, email=%(email)s, '
                            'titre=%(titre)s, initiale=%(initiale)s, service=%(service)s, adresse=%(adresse)s, '
                            'mobile=%(mobile)s, fax=%(fax)s '
                            'where id_data=%(id_data)s', params)

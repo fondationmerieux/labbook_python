@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from flask import request
 from flask_restful import Resource
 
@@ -9,6 +10,26 @@ from app.models.Constants import *
 from app.models.Dict import *
 from app.models.Logs import Logs
 from app.models.Various import Various
+
+
+class DictDescr(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, dict_name):
+        args = request.get_json()
+
+        if 'dico_descr' not in args:
+            self.log.error(Logs.fileline() + ' : DictDescr ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Dict.updateDescr(dict_name=dict_name, dico_descr=args['dico_descr'])
+
+        if ret is False:
+            self.log.info(Logs.fileline() + ' : TRACE DictDescr ERROR update dico_descr')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE DictDescr dict_name=' + str(dict_name))
+        return compose_ret('', Constants.cst_content_type_json)
 
 
 class DictDet(Resource):
@@ -31,6 +52,8 @@ class DictDet(Resource):
                 elif key == 'label':
                     dict[key] = _(dict[key].strip())
                 elif key == 'short_label':
+                    dict[key] = _(dict[key].strip())
+                elif key == 'dico_descr':
                     dict[key] = _(dict[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DictDet')

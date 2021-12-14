@@ -83,7 +83,7 @@
 {% block add_script %}
 <script>
 var data_res     = [] ;
-var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
+{#var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;#}
 var list_id_ana  = [] ;
 var num_dos      = 0  ;
 var num_rec      = "" ;
@@ -221,7 +221,7 @@ function enabled_save( id_rec, ref_ana )
 function save_valid( id_rec, ref_ana )
 {
 let date_valid = $("#date_tech_"+ id_rec +"_"+ ref_ana).val() ;
-let user_valid = $("#validator_"+ id_rec +"_"+ ref_ana).val() ;
+let user_valid = $("#id_validator_"+ id_rec +"_"+ ref_ana).val() ;
 
 let param_list_valid = '{ "list_valid":[ ' ;
 
@@ -283,6 +283,17 @@ let id_res_p  = 0  ;
 
 let disp_valid = "d-none" ;
 
+let name      = '' ;
+let id_user   = "{{ session['user_id']|safe}}"        ;
+let firstname = "{{ session['user_firstname']|safe}}" ;
+let lastname  = "{{ session['user_lastname']|safe}}"  ;
+
+    if ( firstname )
+    name = firstname + ' ' + lastname ;
+    
+    if ( !name )
+    name = username ;
+
     {% if args['list_res'] %}
     for( i in data )
     {
@@ -302,9 +313,10 @@ let disp_valid = "d-none" ;
                "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
                "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>&nbsp;" +
-               "<select name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\">" +
-               "<option value=\"0\"> </option>" ;
+               "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
+               "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
+        {#
         // fill technical choice
         for ( k in tech_list )
         {
@@ -321,6 +333,7 @@ let disp_valid = "d-none" ;
             
         res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
         }
+        #}
 
         res += "</select>" +
                "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" value=\"Valider\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
@@ -411,9 +424,10 @@ let disp_valid = "d-none" ;
            "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
            "</div>" +
            "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
-           "<select name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control\">" +
-           "<option value=\"0\"> </option>" ;
+           "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
+           "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
+    {#
     // fill technical choice
     for ( k in tech_list )
     {
@@ -430,9 +444,10 @@ let disp_valid = "d-none" ;
         
     res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
     }
+    #}
 
     res += "</select>" +
-           "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" value=\"Valider\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+           "<button name=\"validate_" + id_rec +"_"+ ref_ana_p + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" value=\"Valider\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
            "</span>" +
            "</fieldset>" +
            "</form>" ;

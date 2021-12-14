@@ -90,13 +90,14 @@
                                 <label for="search_doctor" class="col-form-label col-3 text-right">{{ _("Prescripteur") }}</label>
                                 {% if entry == 'Y' %}
                                 <div>
-                                    <select id="search_doctor" style="width:330px"></select>
+                                    <select id="search_doctor" style="width:320px"></select>
                                     <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
                                 </div>
                                 {% else %}
                                     {% if args['doctor'] %}
                                     <span class="font-info">{{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}
                                         {% if args['doctor']['spe_doctor'] %} - {{ args['doctor']['spe_doctor'] }}{% endif %}
+                                        {% if args['doctor']['facility'] %} - {{ args['doctor']['facility'] }}{% endif %}
                                     </span>
                                     {% endif %}
                                 {% endif %}
@@ -212,10 +213,8 @@
                         <label class="col-form-label text-right mr-1">{{ _("Remise sur la facturation") }}</label>
                         {% if entry == 'Y' %}
                         <select id="discount" class="form-control col-6">
-                            <option selected="" value="0"></option>
-                            {% for discount_type in ihm['discount_bill'] %}
-                            <option value="{{ discount_type['id_data'] }}">{{ _(discount_type['label']) }}</option>
-                            {% endfor %}
+                            {% from 'macros.html' import select_discount_bill %}
+                            {{ select_discount_bill(ihm['discount_bill']) }}
                         </select>
                         {% else %}
                         <span class="font-info">{{ args['record']['remise'] }}</span>
@@ -273,6 +272,7 @@
                             {% if entry == 'Y' %}
                             <th class="text-left">{{ _("Action") }}</th>
                             {% endif %}
+                            <th class="text-center cursor-act">{{ _("Code") }} *</th>
                             <th class="text-center cursor-act">{{ _("Prod. pathol.") }} *</th>
                             <th class="text-center cursor-act">{{ _("Statut") }} *</th>
                             <th class="text-center cursor-act">{{ _("Date prél.") }}</th>
@@ -325,7 +325,7 @@
 <script>
 var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0} ;
 var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0} ;
-var struct_prod   = {"id_data":0 ,"type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
+var struct_prod   = {"id_data":0 ,"code":"","type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
 var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
 var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|safe }}{% else %}[]{% endif %}   ;
 var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
@@ -749,6 +749,7 @@ let tr_product = '' ;
 
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
         tmp_tr += create_td("", btn, "text-center", "") ; // actions
+        tmp_tr += create_td("", create_input("prod_code_"+obj.code, "text", obj.code, 0, 0, ""), "text-center", "") ; // input code product
         tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "text-center", "") ; // select product
         tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "text-center", "") ; // select statut
         tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0, ""), "text-center", "") ; // input date prel
@@ -758,6 +759,7 @@ let tr_product = '' ;
         tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0, ""), "text-center", "") ; // input text comm
         {% else %}
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+        tmp_tr += create_td("", obj.code, "text-center", "") ;
         tmp_tr += create_td("", obj.type_prod, "text-center", "") ;
         tmp_tr += create_td("", obj.stat_prod, "text-center", "") ;
         tmp_tr += create_td("", obj.date_prel, "text-center", "") ;
@@ -945,7 +947,9 @@ let id_data  = split_id[split_id.length -1] ;
         {
             if (data_products[i].id_data == id_data )
             {
-                if ( split_id[1] == "type" )
+                if ( split_id[1] == "code" )
+                data_products[i].code = val ;
+                else if ( split_id[1] == "type" )
                 data_products[i].type = val ;
                 else if ( split_id[1] == "stat" )
                 data_products[i].stat = val ;
@@ -1094,6 +1098,12 @@ var stat          = 181 ;
     // type and status required
     for( i in data_products )
     {
+        if (data_products[i].code == "")
+        {
+        alert( "{{ _("Veuillez renseigner le code de prélèvement") }}" ) ;
+        return false ;
+        }
+
         if (data_products[i].type == 0)
         {
         alert( "{{ _("Veuillez renseigner le type du produit") }}" ) ;
@@ -1171,8 +1181,6 @@ var stat          = 181 ;
 
                 var param_list_ana = '{ "list_ana":[';
 
-                console.log("DEBUG data_analysis=" + JSON.stringify(data_analysis));
-
                     // Add analysis
                     for( i in data_analysis )
                     {
@@ -1235,6 +1243,7 @@ var stat          = 181 ;
                                     param_list_prod += ', ' ;
 
                                 var param_prod = '{ "id_owner":' + id_group + ', ' +
+                                                   '"code":"' + data_products[i].code + '", ' +
                                                    '"date_samp":"' + data_products[i].dateSamp + '", ' +
                                                    '"type_samp":"' + data_products[i].type + '", ' +
                                                    '"qty":' + data_products[i].qty + ', ' +

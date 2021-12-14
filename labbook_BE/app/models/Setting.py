@@ -225,3 +225,105 @@ class Setting:
         except mysql.connector.Error as e:
             Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getTemplateList(type=''):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if type:
+            cond = 'where tpl_type="' + type + '" '
+
+        req = ('select tpl_ser as id_item, tpl_name, tpl_type, tpl_default, tpl_file '
+               'from template_setting ' + cond +
+               'order by tpl_name, tpl_type asc ')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getTemplate(id_item):
+        cursor = DB.cursor()
+
+        req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
+               'from template_setting '
+               'where tpl_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertTemplate(**params):
+        try:
+            cursor = DB.cursor()
+
+            if params['tpl_default'] == 'Y':
+                # removes the default character on others of the same type
+                Setting.UndefaultTemplate(tpl_type=params['tpl_type'])
+
+            cursor.execute('insert into template_setting '
+                           '(tpl_date, tpl_name, tpl_type, tpl_default, tpl_file) '
+                           'values '
+                           '(NOW(), %(tpl_name)s, %(tpl_type)s, %(tpl_default)s, %(tpl_file)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateTemplate(**params):
+        try:
+            cursor = DB.cursor()
+
+            if params['tpl_default'] == 'Y':
+                # removes the default character on others of the same type
+                Setting.UndefaultTemplate(tpl_type=params['tpl_type'])
+
+            cursor.execute('update template_setting '
+                           'set tpl_name=%(tpl_name)s , tpl_type=%(tpl_type)s, '
+                           'tpl_default=%(tpl_default)s, tpl_file=%(tpl_file)s '
+                           'where tpl_ser=%(tpl_ser)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteTemplate(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from template_setting '
+                           'where tpl_ser=%s', (id_item,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def UndefaultTemplate(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update template_setting '
+                           'set tpl_default="N" '
+                           'where tpl_default="Y" and tpl_type=%(tpl_type)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

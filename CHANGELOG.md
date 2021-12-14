@@ -7,6 +7,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.0] - 2021-12-14
+### Added
+- add pivot table
+- new fields in patient details (middle name, nationality, resident, blood)
+- possible to cancel stock move in history of a product
+- new field description for dictionnary
+- dependencies.md on github/doc
+- new directory in /storage/resource/template
+- template odt for report and stickers (code39 and qrcode format are avaible)
+- code for pathological product (if not empty its used in WHONET export)
+
+### Changed
+- change size of code_patient column 8 => 20
+- no choice anymore for validator with biological and technical validation
+- remove quality menu for prescriber
+- DB password can be customized via system
+- orgunit and storedby are defined in v2 dhis2 spreadsheet
+- popup notification changed
+- INT to decimal(10,2) for cote_valeur in sigl_05_data
+- drop more than 350 useless tables from DB
+
+## [3.1.5] - 2021-12-10
+### Fixed
+- In some template rename var value with tmp_value to avoid conflict
+
 ## [3.1.4] - 2021-11-17
 ### Changed
 - email are clickable in pages : list doctors , list staff and list suppliers

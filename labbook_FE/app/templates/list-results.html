@@ -178,7 +178,7 @@ let old_value = $("#old_res_"+id_res).val() ;
 function save_valid( id_rec, ref_ana )
 {
 let date_valid = $("#date_tech_"+ id_rec +"_"+ ref_ana).val() ;
-let user_valid = $("#validator_"+ id_rec +"_"+ ref_ana).val() ;
+let user_valid = $("#id_validator_"+ id_rec +"_"+ ref_ana).val() ;
 
 let param_list_valid = '{ "list_valid":[ ' ;
 
@@ -229,6 +229,17 @@ let id_rec    = 0  ;
 
 let disp_valid = "d-none" ;
 
+let name      = '' ;
+let id_user   = "{{ session['user_id']|safe}}"        ;
+let firstname = "{{ session['user_firstname']|safe}}" ;
+let lastname  = "{{ session['user_lastname']|safe}}"  ;
+
+    if ( firstname )
+    name = firstname + ' ' + lastname ;
+    
+    if ( !name )
+    name = username ;
+
     for( i in data )
     {
     id_rec      = data[i].id_dos  ;
@@ -248,9 +259,10 @@ let disp_valid = "d-none" ;
                "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
                "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
-               "<select name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control ml-1\">" +
-               "<option value=\"0\"> </option>" ;
+               "<input type=\"text\" name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control ml-1\" value=\"" + name + "\" readonly />" +
+               "<input type=\"hidden\" id=\"id_validator_" + id_rec_p +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
+        {#
         // fill technical choice
         for ( k in tech_list )
         {
@@ -267,6 +279,7 @@ let disp_valid = "d-none" ;
             
         res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
         }
+        #}
 
         res += "</select>" +
                "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" value=\"{{ _("Valider") }}\" class=\"btn btn-{{ session['user_role']|safe }} ml-3\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
@@ -482,9 +495,10 @@ let disp_valid = "d-none" ;
            "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"voo_date voo_date_field_1 form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\">" +
            "</div>" +
            "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
-           "<select name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\" class=\"form-control\">" +
-           "<option value=\"0\"> </option>" ;
+           "<input type=\"text\" name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
+           "<input type=\"hidden\" id=\"id_validator_" + id_rec_p +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
+    {#
     // fill technical choice
     for ( k in tech_list )
     {
@@ -501,6 +515,7 @@ let disp_valid = "d-none" ;
         
     res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
     }
+    #}
 
     res += "</select>" +
            "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }}\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +

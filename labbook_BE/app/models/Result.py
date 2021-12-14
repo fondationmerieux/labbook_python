@@ -3,7 +3,7 @@ import logging
 import mysql.connector
 
 from datetime import datetime, date
-from app.models.Constants import *
+from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Logs import Logs
 
@@ -299,3 +299,31 @@ class Result:
         cursor.execute(req, (id_req_ana,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getDataset(date_beg, date_end):
+        cursor = DB.cursor()
+
+        req = ('select rec.id_data as id_analysis, rec.id_patient, rec.type, date_format(rec.date_dos, %s) as record_date, '
+               'rec.num_dos_an as rec_num_year, rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+               'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
+               'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
+               'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
+               'rec.statut as status, date_format(rec.date_hosp, %s) as hosp_date, '
+               'req.ref_analyse as id_analysis, req.prix as ana_price, req.paye as req_paid, req.urgent as ana_emergency, '
+               'ref.code as analysis_code, ref.nom as analysis_name, dict.label as analysis_familly, '
+               'res.valeur as result_value, var.libelle as variable_name '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as req on req.id_dos=rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
+               'left join sigl_dico_data as dict on dict.id_data=ref.id_data '
+               'inner join sigl_09_data as res on req.id_data = res.id_analyse '
+               'inner join sigl_07_data as var on var.id_data = res.ref_variable '
+               'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
+               'and ref.id_data = link.id_refanalyse '
+               'where rec.date_dos between %s and %s '
+               'order by rec.id_data desc')
+
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+
+        return cursor.fetchall()
