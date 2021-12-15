@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.0] - 2021-12-14
+## [3.2.0] - 2021-12-15
 ### Added
 - add pivot table
 - new fields in patient details (middle name, nationality, resident, blood)
@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - new directory in /storage/resource/template
 - template odt for report and stickers (code39 and qrcode format are avaible)
 - code for pathological product (if not empty its used in WHONET export)
+- test unoconv at first session run to preload
 
 ### Changed
 - change size of code_patient column 8 => 20

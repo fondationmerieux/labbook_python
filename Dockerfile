@@ -18,8 +18,9 @@ RUN yum update -y && yum install -y \
     which \
     openssh-clients \
     httpd \
-    /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm \
-    unoconv
+    /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm
+
+RUN yum clean all
 
 # EPEL repository is needed for sshpass
 RUN yum install -y epel-release
@@ -27,6 +28,8 @@ RUN yum install -y epel-release
 RUN yum install -y sshpass
 
 RUN yum install -y mod_ssl
+
+RUN yum install -y unoconv
 
 RUN yum clean all
 

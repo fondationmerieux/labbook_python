@@ -134,8 +134,40 @@ def get_locale():
     return lang
 
 
+def test_unoconv():
+    log.info(Logs.fileline() + ' : LABBOOK_FE test_unoconv begins')
+    # test unoconv with first template
+    try:
+        url = session['server_int'] + '/services/setting/template/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            template = req.json()
+
+            if not template:
+                log.error(Logs.fileline() + ' : requests get list template failed')
+                session['labbook_BE_OK'] = False
+                session.modified = True
+                return False
+
+            url = session['server_int'] + '/services/pdf/template/test/' + str(template[0]['id_item'])
+            ret = requests.get(url)
+
+            if req.json() == 200:
+                log.error(Logs.fileline() + ' : requests test unoconv failed id_template=' + str(template[0]['id_item']))
+                session['labbook_BE_OK'] = False
+                session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : ERROR test unoconv failed')
+        session['labbook_BE_OK'] = False
+        session.modified = True
+        return False
+
+
 def check_init_version():
     log.info(Logs.fileline() + ' : LABBOOK_FE check_init_version begins')
+
     try:
         url = session['server_int'] + '/services/init/version'
         requests.get(url)
@@ -143,6 +175,7 @@ def check_init_version():
         log.error(Logs.fileline() + ' : requests check init version failed, err=%s , url=%s', err, url)
         session['labbook_BE_OK'] = False
         session.modified = True
+        return False
 
 
 def get_init_var():
@@ -336,6 +369,7 @@ def index():
         log.info(Logs.fileline() + ' : TRACE Labbook_FE get_init_var()')
         get_init_var()
         check_init_version()
+        test_unoconv()
         if session and 'labbook_BE_OK' in session and session['labbook_BE_OK']:
             session['lang_chosen'] = False
             session.modified = True

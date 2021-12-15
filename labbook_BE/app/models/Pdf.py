@@ -443,7 +443,6 @@ class Pdf:
         pdfpref = Pdf.getPdfPref()
 
         full_header = True
-        full_comm   = False
 
         if pdfpref and pdfpref['entete'] == 1069:
             full_header = False
@@ -1303,9 +1302,9 @@ class Pdf:
         tmp_odt = join(Constants.cst_path_tmp, filename)
 
         if id_rec > 0:
-            tmp_pdf = join(Constants.cst_report, filename)
+            out_pdf = join(Constants.cst_report, filename)
         else:
-            tmp_pdf = join(Constants.cst_path_tmp, filename + '.pdf')
+            out_pdf = join(Constants.cst_path_tmp, filename + '.pdf')
 
         # write odt with data and template
         try:
@@ -1323,10 +1322,23 @@ class Pdf:
         try:
             import os
 
-            cmd = ('unoconv -f pdf -o ' + tmp_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+            # TODO replace python 3.6 by 3.9 and install unoserver instead
+            cmd = ('unoconv -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
 
             Pdf.log.error(Logs.fileline() + ' : buildPDF cmd=' + cmd)
             os.system(cmd)
+
+            if id_rec > 0:
+                from os.path import exists
+
+                file_exists = exists(out_pdf + '.pdf')
+
+                # if file ends by .pdf remove it
+                if file_exists:
+                    Pdf.log.error(Logs.fileline() + ' : buildPDF remove .pdf from ' + out_pdf + '.pdf')
+                    import shutil
+
+                    shutil.move(out_pdf + '.pdf', out_pdf)
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildPDF convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
             return False
@@ -1493,7 +1505,7 @@ class Pdf:
         Pdf.log.error(Logs.fileline() + ' : buildPDF DEBUG data : ' + str(data))
 
         tmp_odt  = join(Constants.cst_path_tmp, filename)
-        tmp_pdf  = join(Constants.cst_path_tmp, filename + '.pdf')
+        out_pdf  = join(Constants.cst_path_tmp, filename + '.pdf')
 
         # write odt with data and template
         try:
@@ -1511,7 +1523,7 @@ class Pdf:
         try:
             import os
 
-            cmd = ('unoconv -f pdf -o ' + tmp_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+            cmd = ('unoconv -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
 
             Pdf.log.error(Logs.fileline() + ' : getPdfSticker cmd=' + cmd)
             os.system(cmd)

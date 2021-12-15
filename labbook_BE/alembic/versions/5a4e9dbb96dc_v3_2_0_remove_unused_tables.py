@@ -456,7 +456,7 @@ def upgrade():
                      "sigl_non_conf_dico_pre_anal_respect_proc_deleted, sigl_non_conf_dico_pre_anal_rsgnmt_clin_data, "
                      "sigl_non_conf_dico_pre_anal_rsgnmt_clin_deleted, sigl_non_conf_dico_pre_anal_tracab_data, "
                      "sigl_non_conf_dico_pre_anal_tracab_deleted, sigl_non_conf_dico_pre_anal_urg_data, "
-                     "sigl_non_conf_dico_pre_anal_transp_echant_datasigl_non_conf_dico_pre_anal_transp_echant_deleted, "
+                     "sigl_non_conf_dico_pre_anal_transp_echant_data, sigl_non_conf_dico_pre_anal_transp_echant_deleted, "
                      "sigl_non_conf_dico_pre_anal_urg_deleted, sigl_non_conf_dico_pre_anal_vol_prel_data, "
                      "sigl_non_conf_dico_pre_anal_vol_prel_deleted, sigl_non_conf_dico_pre_analytique_prescription_data, "
                      "sigl_non_conf_dico_pre_analytique_prescription_deleted, sigl_non_conf_dico_reac_conso_autre_data, "
