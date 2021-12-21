@@ -1,5 +1,8 @@
 # Project
 
+<!---
+Keep the sentence synchronised with the sentence in the linked page
+-->
 [LabBook](https://www.lab-book.org/en/) Software helps you computerize your biology laboratory data ensuring better patient care.
 
 This repository contains the material needed to build the LabBook python container image.
@@ -14,6 +17,7 @@ It contains two separate python applications that constitute the LabBook applica
 - podman
 - MySQL or MariaDB
 - make
+- git
 
 # Installation and usage
 
@@ -25,21 +29,49 @@ The development setup mirrors the production setup with the application running 
 git clone https://github.com/fondationmerieux/labbook_python.git
 ~~~
 
-## Database setup
+## Configuration file
 
-### Root user
+Labbook reads its configuration from a file named `labbook.conf` which can be located at:
 
-LabBook connects as `root` to the database.
-We must grant access to root from the container.
+- `$HOME/.config/labbook.conf`
+- `$HOME/labbook.conf`
+
+Contents:
+
+- `LABBOOK_DB_USER` : database user name
+- `LABBOOK_DB_PWD` : database user password
+- `LABBOOK_DB_NAME` : database name
+- `LABBOOK_DB_HOST` : database host as seen from the container
+
+Example:
 
 ~~~
-$ mysql -u root -p -h 127.0.0.1
+$ cat ~/.config/labbook.conf 
+LABBOOK_DB_USER=labbook
+LABBOOK_DB_PWD=iTpRPQfIxZWQGg
+LABBOOK_DB_NAME=SIGL
+LABBOOK_DB_HOST=10.88.0.1
+~~~
+
+## Database setup
+
+### Database user
+
+LabBook, running from the container, connects as `LABBOOK_DB_USER` value to the database on the host.
+We must grant access to this user from the container.
+
+~~~
+# for this example
+LABBOOK_DB_USER=myuser
+LABBOOK_DB_PWD=mypass
+
+$ mysql -u root -p -h localhost
 Enter password:
 [...]
-MariaDB [(none)]> CREATE USER root@'10.88.%.%' IDENTIFIED BY 'root';
+MariaDB [(none)]> CREATE USER myuser@'10.88.%.%' IDENTIFIED BY 'mypass';
 Query OK, 0 rows affected (0.008 sec)
 
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON *.* TO root@'10.88.%.%';
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON *.* TO myuser@'10.88.%.%';
 Query OK, 0 rows affected (0.008 sec)
 
 MariaDB [(none)]> FLUSH PRIVILEGES;
@@ -74,7 +106,7 @@ When shipping an image:
 Default version value in VERSION file=3.1.1 TAG_NAME=v3.1.1
 
 For developers:
-  make dbtest        test connection to MySQL with username=root password=root
+  make dbtest        test connection to MySQL with username=myuser password=mypass
   make dbinit        initialize SIGL database from etc/sql/demo_dump.sql
   make devbuild      build image localhost/labbook-python:latest from working directory
   make devclean      remove image localhost/labbook-python:latest
@@ -94,12 +126,17 @@ The more useful are:
  Please note that you should take a look at the actual list of directories mapped into the container from the `Makefile`
  or the `make devrun` output. To reflect changes from any other file into the application you need to rebuild the image.
 
-Note1: LabBook containers run in privileged mode, you must use `sudo` with all `make dev*` commands.
-
-Note2: LabBook uses a storage volume to hold various files.
+Note1: LabBook uses a storage volume to hold various files.
 The initial content of the volume is stored in the `./storage` directory of the source tree.
 In order to prevent modification of this directory it is replicated to a `DEVRUN_STORAGE` directory before mounting it into the container.
 `DEVRUN_STORAGE=./devrun_storage` by default, you can modify it by setting the `DEVRUN_STORAGE` environment variable.
+
+Note2: if the configuration file cannot be found an error is displayed when you invoke make:
+~~~
+$ make help
+Makefile:23: *** LABBOOK_DB_USER undefined.  Stop.
+~~~
+
 
 # Documentation
 

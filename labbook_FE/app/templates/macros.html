@@ -4,3 +4,31 @@
         <option value="{{ discount_bill['id_data'] }}">{{ discount_bill['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
+
+{% macro select_prd_type(l_prd_type, id_selected) -%}
+    <option selected value="0"></option>
+    {% for prd_type in l_prd_type %}
+        <option value="{{ prd_type['id_data'] }}" {% if id_selected and id_selected == prd_type['id_data'] %}selected{% endif %}>{{ prd_type['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_prd_conserv(l_prd_conserv, id_selected) -%}
+    <option selected value="0"></option>
+    {% for prd_conserv in l_prd_conserv %}
+        <option value="{{ prd_conserv['id_data'] }}" {% if id_selected and id_selected == prd_conserv['id_data'] %}selected{% endif %}>{{ prd_conserv['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_type_ana(l_type_ana, id_selected) -%}
+    <option selected value="0"></option>
+    {% for type_ana in l_type_ana %}
+        <option value="{{ type_ana['id_data'] }}" {% if id_selected and id_selected == type_ana['id_data'] %}selected{% endif %}>{{ type_ana['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_section(l_section, id_selected) -%}
+    <option selected value="0"></option>
+    {% for section in l_section %}
+        <option value="{{ section['id_data'] }}" {% if id_selected and id_selected == section['id_data'] %}selected{% endif %}>{{ section['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}

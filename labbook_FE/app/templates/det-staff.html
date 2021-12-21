@@ -158,10 +158,8 @@
                     <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section de travail") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-control">
-                            <option value="0" selected="selected"></option>  
-                            {% for section in ihm['sections'] %}
-                            <option value="{{ section['id_data'] }}" {% if args['user_det']['section'] == section['id_data'] %} selected {% endif %}>{{ section['label'] }}</option>
-                            {% endfor %}
+                            {% from 'macros.html' import select_section %}
+                            {{ select_section(ihm['sections'], args['user_det']['section']) }}
                         </select>			
                     </div>
                 </div>

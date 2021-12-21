@@ -36,11 +36,9 @@
                     <label class="col-form-label col-3 text-right mr-1">{{ _("Type produit") }}</label>
                     <div>
                         <select name="prd_type" id="prd_type" class="form-control">
-                            <option value="0" selected="selected"></option>
-                            {% for prd_type in ihm['product_type'] %}
-                            <option value="{{ prd_type['id_data'] }}" {% if args['stock_product']['prd_type'] == prd_type['id_data'] %} selected {% endif %}>{{ prd_type['label'] }}</option>
-                            {% endfor %}
-                        </select>       
+                            {% from 'macros.html' import select_prd_type %}
+                            {{ select_prd_type(ihm['product_type'], args['stock_product']['prd_type']) }}
+                        </select>
                     </div>
                 </div> 
 
@@ -69,10 +67,8 @@
                     <label class="col-form-label col-3 text-right mr-1">{{ _("Conservation") }}</label>
                     <div>
                         <select name="prd_conserv" id="prd_conserv" class="form-control">
-                            <option value="0" selected="selected"></option>
-                            {% for prd_conserv in ihm['product_conserv'] %}
-                            <option value="{{ prd_conserv['id_data'] }}" {% if args['stock_product']['prd_conserv'] == prd_conserv['id_data'] %} selected {% endif %}>{{ prd_conserv['label'] }}</option>
-                            {% endfor %}
+                            {% from 'macros.html' import select_prd_conserv %}
+                            {{ select_prd_conserv(ihm['product_conserv'], args['stock_product']['prd_conserv']) }}
                         </select>       
                     </div>
                 </div>

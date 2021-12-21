@@ -88,16 +88,33 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_LOG_DIR=' + str(os.environ['LABBOOK_LOG_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
 
+    # check if LABBOOK_DB_USER already exist in os.environ if not use one from default_settings
+    if 'LABBOOK_DB_USER' in os.environ and os.environ['LABBOOK_DB_USER']:
+        app.config['DB_USER'] = os.environ['LABBOOK_DB_USER']
+        log.info(Logs.fileline() + ' : LABBOOK_DB_USER from environ')
+    else:
+        os.environ['LABBOOK_DB_USER'] = app.config['DB_USER']
+
     # check if LABBOOK_DB_PWD already exist in os.environ if not use one from default_settings
     if 'LABBOOK_DB_PWD' in os.environ and os.environ['LABBOOK_DB_PWD']:
         app.config['DB_PWD'] = os.environ['LABBOOK_DB_PWD']
+        log.info(Logs.fileline() + ' : LABBOOK_DB_PWD from environ')
     else:
         os.environ['LABBOOK_DB_PWD'] = app.config['DB_PWD']
 
-    # Put in os.environ DB variables
-    os.environ['LABBOOK_DB_USER'] = app.config['DB_USER']
-    os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
-    os.environ['LABBOOK_DB_NAME'] = app.config['DB_NAME']
+    # check if LABBOOK_DB_NAME already exist in os.environ if not use one from default_settings
+    if 'LABBOOK_DB_NAME' in os.environ and os.environ['LABBOOK_DB_NAME']:
+        app.config['DB_NAME'] = os.environ['LABBOOK_DB_NAME']
+        log.info(Logs.fileline() + ' : LABBOOK_DB_NAME from environ')
+    else:
+        os.environ['LABBOOK_DB_NAME'] = app.config['DB_NAME']
+
+    # check if LABBOOK_DB_HOST already exist in os.environ if not use one from default_settings
+    if 'LABBOOK_DB_HOST' in os.environ and os.environ['LABBOOK_DB_HOST']:
+        app.config['DB_HOST'] = os.environ['LABBOOK_DB_HOST']
+        log.info(Logs.fileline() + ' : LABBOOK_DB_HOST from environ')
+    else:
+        os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
 
     log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))

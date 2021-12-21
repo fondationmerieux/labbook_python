@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.1] - 2021-12-21
+### Fixed
+- spelling error for minimal value in B008 analysis
+- section in detail procedure not well displayed
+- section in detail manual not well displayed
+
 ## [3.2.0] - 2021-12-15
 ### Added
 - add pivot table

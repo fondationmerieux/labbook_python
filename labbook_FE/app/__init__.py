@@ -153,12 +153,12 @@ def test_unoconv():
             url = session['server_int'] + '/services/pdf/template/test/' + str(template[0]['id_item'])
             ret = requests.get(url)
 
-            if req.json() == 200:
+            if ret.status_code != 200:
                 log.error(Logs.fileline() + ' : requests test unoconv failed id_template=' + str(template[0]['id_item']))
                 session['labbook_BE_OK'] = False
                 session.modified = True
 
-    except requests.exceptions.RequestException as err:
+    except requests.exceptions.RequestException:
         log.error(Logs.fileline() + ' : ERROR test unoconv failed')
         session['labbook_BE_OK'] = False
         session.modified = True
@@ -3648,7 +3648,7 @@ def det_procedure(id_procedure=0):
         log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     if id_procedure > 0:
-        # Load procdeure files
+        # Load procedure files
         try:
             url = session['server_int'] + '/services/file/document/list/PROC/' + str(id_procedure)
             req = requests.get(url)

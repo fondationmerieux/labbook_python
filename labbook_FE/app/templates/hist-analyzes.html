@@ -42,10 +42,8 @@
                                 <label for="type_ana" class="col-form-label col-2 text-right mt-2 ">{{ _("Type") }}</label>
                                 <div>
                                     <select name="type_ana" id="type_ana" class="form-control ml-1">
-                                        <option value="0" selected="selected"></option>
-                                        {% for type_ana in ihm['type_ana'] %}
-                                        <option value="{{ type_ana['id_data'] }}">{{ type_ana['label'] }}</option>
-                                        {% endfor %}
+                                        {% from 'macros.html' import select_type_ana %}
+                                        {{ select_type_ana(ihm['type_ana']) }}
                                     </select>       
                                 </div>
                             </div>

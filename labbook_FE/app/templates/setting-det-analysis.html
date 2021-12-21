@@ -45,10 +45,8 @@
                             <label for="type_ana" class="col-form-label col-3 text-right mt-1 ">{{ _("Famille d'analyse") }}</label>
                             <div>
                                 <select name="type_ana" id="type_ana" class="form-control">
-                                    <option value="0" selected="selected"></option>
-                                    {% for type_ana in ihm['type_ana'] %}
-                                    <option value="{{ type_ana['id_data'] }}" {% if args['details']['famille'] == type_ana['id_data'] %} selected {% endif %}>{{ type_ana['label'] }}</option>
-                                    {% endfor %}
+                                    {% from 'macros.html' import select_type_ana %}
+                                    {{ select_type_ana(ihm['type_ana'], args['details']['famille']) }}
                                 </select>
                             </div>
                         </div>
