@@ -7,6 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.1.6] - 2022-01-12
+### Changed
+- New version number for generate new ISO
+
+## [3.1.5] - 2021-12-10
+### Changed
+- New version number for generate new ISO
+
+### Fixed
+- In some template rename var value with tmp_value to avoid conflict
+
 ## [3.1.4] - 2021-11-17
 ### Changed
 - email are clickable in pages : list doctors , list staff and list suppliers

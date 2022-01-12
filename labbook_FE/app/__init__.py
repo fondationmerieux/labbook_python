@@ -3474,7 +3474,7 @@ def det_procedure(id_procedure=0):
         log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
 
     if id_procedure > 0:
-        # Load procdeure files
+        # Load procedure files
         try:
             url = session['server_int'] + '/services/file/document/list/PROC/' + str(id_procedure)
             req = requests.get(url)
