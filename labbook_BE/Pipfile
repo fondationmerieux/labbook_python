@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+Flask = "*"
+gunicorn = "*"
+alembic = "*"
+Babel = "*"
+Flask-Babel = "*"
+Flask-RESTful = "*"
+mysql-connector-python = "*"
+pdfkit = "*"
+python-barcode = "*"
+Pillow = "*"
+relatorio = "*"
+qrcode = "*"
+unoserver = "*"
+pikepdf = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

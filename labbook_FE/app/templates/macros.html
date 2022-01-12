@@ -32,3 +32,33 @@
         <option value="{{ section['id_data'] }}" {% if id_selected and id_selected == section['id_data'] %}selected{% endif %}>{{ section['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
+
+{% macro select_unit_age(l_unit_age, id_selected) -%}
+    <option selected value="0"></option>
+    {% for unit_age in l_unit_age %}
+        <option value="{{ unit_age['id_data'] }}" {% if id_selected and id_selected == unit_age['id_data'] %}selected{% endif %}>{{ unit_age['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_nationality(l_nationality, id_selected) -%}
+    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    {% for nationality in l_nationality %}
+        <option value="{{ nationality['nat_ser'] }}" {% if id_selected and id_selected == nationality['nat_ser'] %}selected{% endif %}>{{ nationality['nat_name'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_blood_group(l_blood_group, id_selected) -%}
+    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    {% for blood_group in l_blood_group %}
+        <option value="{{ blood_group['id_data'] }}" {% if id_selected and id_selected == blood_group['id_data'] %}selected{% endif %}>{{ blood_group['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_blood_rhesus(l_blood_rhesus, id_selected) -%}
+    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    {% for blood_rhesus in l_blood_rhesus %}
+        <option value="{{ blood_rhesus['id_data'] }}" {% if id_selected and id_selected == blood_rhesus['id_data'] %}selected{% endif %}>{{ blood_rhesus['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+

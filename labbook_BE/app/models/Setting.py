@@ -202,9 +202,9 @@ class Setting:
     def getBackupSetting():
         cursor = DB.cursor()
 
-        req = 'select bks_ser, bks_start_time '\
-              'from backup_setting '\
-              'order by bks_ser desc limit 1'
+        req = ('select bks_ser, bks_start_time '
+               'from backup_setting '
+               'order by bks_ser desc limit 1')
 
         cursor.execute(req)
 
@@ -327,3 +327,90 @@ class Setting:
         except mysql.connector.Error as e:
             Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def insertZipCity(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into zip_city (zic_date, zic_zip, zic_city) '
+                           'values (NOW(), %(zic_zip)s, %(zic_city)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteAllZipCity():
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('truncate table zip_city')
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getZipCity(id_item):
+        cursor = DB.cursor()
+
+        req = ('select zic_ser, zic_zip, zic_city '
+               'from zip_city '
+               'where zic_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getZipCityList(args):
+        cursor = DB.cursor()
+
+        filter_cond = ' zic_ser > 0 '
+
+        if not args:
+            limit = 'LIMIT 50000'
+        else:
+            if 'limit' in args and args['limit'] > 0:
+                limit = 'LIMIT ' + str(args['limit'])
+            else:
+                limit = 'LIMIT 500'
+
+        req = ('select zic_ser as id_item, zic_zip, zic_city '
+               'from zip_city '
+               'where ' + filter_cond + ' ' +
+               'order by zic_zip asc, zic_city asc ' + limit)
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getZipCitySearch(text):
+        cursor = DB.cursor()
+
+        l_words = text.split(' ')
+
+        cond = 'zic_ser > 0'
+
+        for word in l_words:
+            cond = (cond +
+                    ' and (zic_zip like "' + word + '%" or '
+                    'zic_city like "%' + word + '%") ')
+
+        req = ('SELECT TRIM(CONCAT(TRIM(COALESCE(zic_zip, ""))," - ",'
+               'TRIM(COALESCE(zic_city, "")) )) AS field_value,'
+               'zic_ser AS id_item '
+               'from zip_city '
+               'where ' + cond + ' order by zic_zip asc limit 1000')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()

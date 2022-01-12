@@ -42,6 +42,7 @@ Contents:
 - `LABBOOK_DB_PWD` : database user password
 - `LABBOOK_DB_NAME` : database name
 - `LABBOOK_DB_HOST` : database host as seen from the container
+- `LABBOOK_DEBUG` : if 1 runs gunicorn with reload option
 
 Example:
 
@@ -51,6 +52,7 @@ LABBOOK_DB_USER=labbook
 LABBOOK_DB_PWD=iTpRPQfIxZWQGg
 LABBOOK_DB_NAME=SIGL
 LABBOOK_DB_HOST=10.88.0.1
+LABBOOK_DEBUG=1
 ~~~
 
 ## Database setup
@@ -131,12 +133,15 @@ The initial content of the volume is stored in the `./storage` directory of the 
 In order to prevent modification of this directory it is replicated to a `DEVRUN_STORAGE` directory before mounting it into the container.
 `DEVRUN_STORAGE=./devrun_storage` by default, you can modify it by setting the `DEVRUN_STORAGE` environment variable.
 
-Note2: if the configuration file cannot be found an error is displayed when you invoke make:
+Note2: if the configuration file cannot be found or if a parameter is missing an error is displayed when you invoke make:
 ~~~
 $ make help
 Makefile:23: *** LABBOOK_DB_USER undefined.  Stop.
 ~~~
 
+Note3: `make devrun` creates the log directories ./labbook_FE/logs and ./labbook_BE/logs if necessary
+and mounts them into the container to facilitate access and to preserve logs across restarts.
+These 2 directories are ignored bu git.
 
 # Documentation
 

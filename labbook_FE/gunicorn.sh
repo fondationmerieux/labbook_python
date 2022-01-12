@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 #
 # Start gunicorn to serve the application in production mode
 #
@@ -59,6 +59,8 @@ do
     esac
 done
 
+test "$LABBOOK_DEBUG" -eq 1 && opt_reload="--reload"
+
 # Application name
 APP_NAME=labbook_FE
 
@@ -69,6 +71,7 @@ LOGS_DIR=${HOME_APP}/logs
 GUNICORN_DIR=${HOME_APP}/gunicorn
 GUNICORN_TIMEOUT=60
 
+# shellcheck disable=SC1091
 source ${VENV_DIR}/bin/activate
 
 # create Gunicorn directory if necessary

@@ -15,6 +15,7 @@ class Result:
     def getResultList(args):
         cursor = DB.cursor()
 
+        table_cond  = ''
         filter_cond = ''
 
         limit = 'LIMIT 500'
@@ -29,6 +30,11 @@ class Result:
         # Analysis family
         if args['type_ana'] and args['type_ana'] > 0:
             filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
+
+        # Code patient
+        if args['code_pat']:
+            filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
+            table_cond += ' inner join sigl_03_data as pat on pat.id_data=dos.id_patient '
 
         # Without valid result
         if args['valid_res'] and args['valid_res'] > 0:
@@ -47,7 +53,7 @@ class Result:
                'inner join sigl_09_data as res on ana.id_data = res.id_analyse '
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
-               'and ref.id_data = var_pos.id_refanalyse '
+               'and ref.id_data = var_pos.id_refanalyse ' + table_cond +
                'where substring(num_dos_jour, 1, 8) >= %s and '
                'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +
                'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)

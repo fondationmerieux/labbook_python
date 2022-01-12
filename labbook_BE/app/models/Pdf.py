@@ -468,6 +468,55 @@ class Pdf:
         return True
 
     @staticmethod
+    def getPdfReportGrouped(filename, l_id_rec):
+        """Build a Grouped PDF Report
+
+        This function is call by biological-validationin group mode
+
+        Args:
+            l_id_rec   (array): list of id of record.
+            filename  (string): filename.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        path = Constants.cst_path_tmp
+
+        l_file_rec = []
+
+        for id_rec in l_id_rec:
+            report = File.getFileReport(id_rec)
+
+            if not report:
+                Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGrouped report not found, id_rec=' + str(id_rec))
+
+            l_file_rec.append(report['file'])
+
+        if l_file_rec:
+            try:
+                # merge list of file in one PDF
+                import pikepdf
+
+                from os.path import join
+
+                pdf = pikepdf.Pdf.new()
+
+                for file_rec in l_file_rec:
+                    src = pikepdf.Pdf.open(join(Constants.cst_report, file_rec))
+                    pdf.pages.extend(src.pages)
+
+                pdf.save(join(path, filename))
+            except Exception as err:
+                Pdf.log.error(Logs.fileline() + ' : getPdfReportGrouped failed, err=%s', err)
+                return False
+        else:
+            return False
+
+        return True
+
+    @staticmethod
     def getPdfHeader(full_header, report_status='&nbsp;'):
         """Start HTML page for PDF document
 
@@ -1322,7 +1371,6 @@ class Pdf:
         try:
             import os
 
-            # TODO replace python 3.6 by 3.9 and install unoserver instead
             cmd = ('unoconv -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
 
             Pdf.log.error(Logs.fileline() + ' : buildPDF cmd=' + cmd)
@@ -1468,7 +1516,7 @@ class Pdf:
                     options['center_text'] = False
 
                     ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-                    ean.save('tmp/sticker_code39_' + num, options=options)
+                    ean.save(join(Constants.cst_path_tmp, 'sticker_code39_' + num), options=options)
                 except Exception as err:
                     Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
                     return False
@@ -1479,7 +1527,7 @@ class Pdf:
 
                     type(img)
 
-                    img.save('tmp/' + imgqrcode_name)
+                    img.save(join(Constants.cst_path_tmp, imgqrcode_name))
                 except Exception as err:
                     Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
                     return False
@@ -1502,7 +1550,7 @@ class Pdf:
                 data['pat']['birth']     = '30/01/1940'
                 data['pat']['sex']       = _('Masculin')
 
-        Pdf.log.error(Logs.fileline() + ' : buildPDF DEBUG data : ' + str(data))
+        Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))
 
         tmp_odt  = join(Constants.cst_path_tmp, filename)
         out_pdf  = join(Constants.cst_path_tmp, filename + '.pdf')
@@ -1516,10 +1564,10 @@ class Pdf:
             f = open(tmp_odt, "wb")
             f.write(tpl.generate(o=data).render().getvalue())
         except Exception as err:
-            Pdf.log.error(Logs.fileline() + ' : buildPDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
+            Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
             return False
 
-        # convert odt to pdf via openoffice
+        # convert odt to pdf via libreoffice
         try:
             import os
 

@@ -35,26 +35,34 @@ ifndef LABBOOK_DB_HOST
 $(error LABBOOK_DB_HOST undefined)
 endif
 
+ifndef LABBOOK_DEBUG
+$(error LABBOOK_DEBUG undefined)
+endif
+
 MYSQL_CMD=mysql -u $(LABBOOK_DB_USER) -p$(LABBOOK_DB_PWD) --default-character-set="UTF8"
 POD_NAME=labbook
 CONTAINER_NAME=labbook_python
 DEVRUN_HTTP=5000
 DEVRUN_STORAGE?=./devrun_storage
+DEVRUN_FE_LOG_DIR=./labbook_FE/logs
+DEVRUN_BE_LOG_DIR=./labbook_BE/logs
 DEVRUN_FE_BASE_PATH=/home/apps/labbook_FE
 DEVRUN_BE_BASE_PATH=/home/apps/labbook_BE
-DEVRUN_FE_DIRS=alembic app script
 DEVRUN_GENERAL_OPTIONS=--rm --detach --pod=$(POD_NAME) --name=$(CONTAINER_NAME)
 DEVRUN_ENV_OPTIONS=--tz=local --env TZ --env TERM --env LANG \
 --env LABBOOK_DB_USER=$(LABBOOK_DB_USER) \
 --env LABBOOK_DB_PWD=$(LABBOOK_DB_PWD) \
 --env LABBOOK_DB_NAME=$(LABBOOK_DB_NAME) \
---env LABBOOK_DB_HOST=$(LABBOOK_DB_HOST)
+--env LABBOOK_DB_HOST=$(LABBOOK_DB_HOST) \
+--env LABBOOK_DEBUG=$(LABBOOK_DEBUG)
 DEVRUN_VOLUME_OPTIONS=\
 --volume=$(DEVRUN_STORAGE):/storage:Z \
 --volume=./labbook_FE/app:$(DEVRUN_FE_BASE_PATH)/labbook_FE/app \
+--volume=$(DEVRUN_FE_LOG_DIR):$(DEVRUN_FE_BASE_PATH)/logs \
 --volume=./labbook_BE/alembic:$(DEVRUN_BE_BASE_PATH)/labbook_BE/alembic \
 --volume=./labbook_BE/app:$(DEVRUN_BE_BASE_PATH)/labbook_BE/app \
---volume=./labbook_BE/script:$(DEVRUN_BE_BASE_PATH)/labbook_BE/script
+--volume=./labbook_BE/script:$(DEVRUN_BE_BASE_PATH)/labbook_BE/script \
+--volume=$(DEVRUN_BE_LOG_DIR):$(DEVRUN_BE_BASE_PATH)/logs
 
 ifdef VERSION
 BUILD_VERSION=$(VERSION)
@@ -138,6 +146,7 @@ devclean:
 
 .PHONY: devrun
 devrun:
+	mkdir -p $(DEVRUN_FE_LOG_DIR) $(DEVRUN_BE_LOG_DIR)
 	mkdir -p $(DEVRUN_STORAGE)
 	rsync -a ./storage/ $(DEVRUN_STORAGE)
 	$(DOCKER_COMMAND) pod exists $(POD_NAME) || $(DOCKER_COMMAND) pod create --name=$(POD_NAME) --publish=$(DEVRUN_HTTP):80

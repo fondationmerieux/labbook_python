@@ -11,6 +11,7 @@ from app.models.General import compose_ret
 from app.models.Constants import Constants
 from app.models.Logs import Logs
 from app.models.Setting import Setting
+from app.models.Various import Various
 
 
 class SettingAgeInterval(Resource):
@@ -618,3 +619,135 @@ class TemplateDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE TemplateDet delete id_item=' + str(id_item))
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class ZipCityAdd(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, filename):
+        args = request.get_json()
+
+        if not args and 'id_user' not in args:
+            self.log.error(Logs.fileline() + ' : ZipCityAdd ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Read CSV zipcity
+        import os
+
+        from csv import reader
+
+        path = Constants.cst_path_tmp
+
+        with open(os.path.join(path, filename), 'r', encoding='utf-8') as csv_file:
+            csv_reader = reader(csv_file, delimiter=';')
+            l_rows = list(csv_reader)
+
+        if not l_rows or len(l_rows) < 2:
+            self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR file empty')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # remove headers line
+        l_rows.pop(0)
+
+        for l in l_rows:
+            if l:
+                city_name = l[0]
+                zip_code  = l[1]
+
+                # insert into sigl_pj_group
+                ret = Setting.insertZipCity(zic_zip=str(zip_code), zic_city=city_name)
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : ZipCityAdd ERROR insert')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        Various.insertEvent(id_user=args['id_user'],
+                            type='14',
+                            name='EVT_INSERT',
+                            message='insert into zip_city')
+
+        self.log.info(Logs.fileline() + ' : TRACE ZipCityAdd')
+        return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class ZipCityDelAll(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args and 'id_user' not in args:
+            self.log.error(Logs.fileline() + ' : ZipCityDelAll ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Setting.deleteAllZipCity()
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE ZipCityDelAll truncate ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        Various.insertEvent(id_user=args['id_user'],
+                            type='16',
+                            name='EVT_DELETE',
+                            message='truncate table zip_city')
+
+        self.log.info(Logs.fileline() + ' : TRACE ZipCityDelAll')
+        return compose_ret(ret, Constants.cst_content_type_json)
+
+
+class ZipCityDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Setting.getZipCity(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'ZipCityDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : ZipCityDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+
+class ZipCityList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_items = Setting.getZipCityList(args)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE ZipCityList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE ZipCityList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class ZipCitySearch(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_zipcity = Setting.getZipCitySearch(args['term'])
+
+        if not l_zipcity:
+            self.log.error(Logs.fileline() + ' : TRACE ZipCitySearch not found')
+
+        self.log.info(Logs.fileline() + ' : TRACE ZipCitySearch')
+        return compose_ret(l_zipcity, Constants.cst_content_type_json)

@@ -141,6 +141,25 @@ rec_num = fmt_num_rec( rec_num, {{ session['record_format'] }}, {{ session['reco
 
 new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
 {% endif %}
+
+    // Stock alert
+    {% if session['user_role'] != 'P' and session['user_role'] != 'Q' %}
+    if ( sessionStorage.getItem( "stock-alert" ) != "DONE" )
+    {
+    var data_stock  = {{ args["stock"]|safe }} ;
+
+    sessionStorage.setItem("stock-alert", "DONE") ;
+
+        for( i = 0; i < data_stock.length; i++ )
+        {
+            if ( data_stock[i].day_to_expir <= 14 || data_stock[i].nb_total <= data_stock[i].prd_safe_limit )
+            {
+            alert("{{ _("Une alerte est présente dans la gestion de stock") }}") ;
+            return true ;
+            }
+        }
+    }
+    {% endif %}
 } ) ;
 </script>
 {% endblock %}

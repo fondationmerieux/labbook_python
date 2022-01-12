@@ -134,37 +134,6 @@ def get_locale():
     return lang
 
 
-def test_unoconv():
-    log.info(Logs.fileline() + ' : LABBOOK_FE test_unoconv begins')
-    # test unoconv with first template
-    try:
-        url = session['server_int'] + '/services/setting/template/list'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            template = req.json()
-
-            if not template:
-                log.error(Logs.fileline() + ' : requests get list template failed')
-                session['labbook_BE_OK'] = False
-                session.modified = True
-                return False
-
-            url = session['server_int'] + '/services/pdf/template/test/' + str(template[0]['id_item'])
-            ret = requests.get(url)
-
-            if ret.status_code != 200:
-                log.error(Logs.fileline() + ' : requests test unoconv failed id_template=' + str(template[0]['id_item']))
-                session['labbook_BE_OK'] = False
-                session.modified = True
-
-    except requests.exceptions.RequestException:
-        log.error(Logs.fileline() + ' : ERROR test unoconv failed')
-        session['labbook_BE_OK'] = False
-        session.modified = True
-        return False
-
-
 def check_init_version():
     log.info(Logs.fileline() + ' : LABBOOK_FE check_init_version begins')
 
@@ -271,6 +240,9 @@ def get_user_data(login):
         return False
 
     try:
+        if 'server_int' not in session or not session['server_int']:
+            index()
+
         url = session['server_int'] + '/services/user/login/' + login
         req = requests.get(url)
 
@@ -369,7 +341,6 @@ def index():
         log.info(Logs.fileline() + ' : TRACE Labbook_FE get_init_var()')
         get_init_var()
         check_init_version()
-        test_unoconv()
         if session and 'labbook_BE_OK' in session and session['labbook_BE_OK']:
             session['lang_chosen'] = False
             session.modified = True
@@ -380,6 +351,11 @@ def index():
             return render_template('initialization.html', rand=random.randint(0, 999))
     else:
         log.info(Logs.fileline() + ' : TRACE Labbook FRONT END current_page=' + str(session['current_page']))
+        if 'redirect_name' not in session or not session['redirect_name']:
+            session['lang_chosen'] = False
+            session.modified = True
+            get_init_var()
+
         return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
 
 
@@ -389,6 +365,14 @@ def initialization():
     log.info(Logs.fileline() + ' : TRACE initialization')
 
     return render_template('initialization.html', rand=random.randint(0, 999))
+
+
+# Page :
+@app.route('/api')
+def api():
+    log.info(Logs.fileline() + ' : TRACE api')
+
+    return render_template('api.html', rand=random.randint(0, 999))
 
 
 # Change la langue
@@ -606,6 +590,17 @@ def homepage(login=''):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests last records failed, err=%s , url=%s', err, url)
+
+        # Load list of stock for display alert
+        try:
+            url = session['server_int'] + '/services/quality/stock/list'
+            req = requests.post(url)
+
+            if req.status_code == 200:
+                json_data['stock'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
 
         dt_stop_req = datetime.now()
         dt_time_req = dt_stop_req - dt_start_req
@@ -1065,6 +1060,31 @@ def setting_backup():
     return render_template('setting-backup.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : zip code and city list
+@app.route('/setting-zipcity')
+def setting_zipcity():
+    log.info(Logs.fileline() + ' : TRACE setting zipcity')
+
+    session['current_page'] = 'setting-zipcity'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        payload = {}
+
+        url = session['server_int'] + '/services/setting/zipcity/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests zipcity list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-zipcity.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : list template
 @app.route('/list-template')
 def list_template():
@@ -1291,7 +1311,7 @@ def list_results():
         date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
         date_end = date_beg
 
-        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'valid_res': 0}
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'code_pat': '', 'valid_res': 0}
 
         url = session['server_int'] + '/services/result/list'
         req = requests.post(url, json=payload)
@@ -1475,6 +1495,17 @@ def list_records():
     json_data = {}
 
     dt_start_req = datetime.now()
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
     # Load list records
     try:
         url = session['server_int'] + '/services/record/list/' + str(id_pres)
@@ -1510,6 +1541,17 @@ def list_works(user_role='', emer=''):
         emer = 4
 
     dt_start_req = datetime.now()
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
     # Load list records with status filter
     try:
         payload = {'num_rec': '',
@@ -1517,6 +1559,7 @@ def list_works(user_role='', emer=''):
                    'patient': '',
                    'date_beg': '',
                    'date_end': '',
+                   'code_pat': '',
                    'emer': emer}
 
         if user_role == 'B':
@@ -3675,6 +3718,29 @@ def det_procedure(id_procedure=0):
     return render_template('det-procedure.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
+# Page : internal control list
+@app.route('/list-ctrl-int')
+def list_ctrl_int():
+    log.info(Logs.fileline() + ' : TRACE internal control list')
+
+    session['current_page'] = 'list-ctrl-int'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/control/int/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests internal control list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-ctrl-int.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : list stock
 @app.route('/list-stock')
 def list_stock():
@@ -4336,6 +4402,38 @@ def upload_import():
             f.save(os.path.join(filepath, filename))
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-import failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload temp file for zipcity
+@app.route('/upload-zipcity', methods=['POST'])
+def upload_zipcity():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-zipcity failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_path_tmp
+
+        log.info(Logs.fileline())
+
+        # check if this file is a csv
+        if not filename.endswith('.csv'):
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-zipcity failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

@@ -21,7 +21,9 @@ RUN yum update -y && yum install -y \
     which \
     openssh-clients \
     httpd \
-    /tmp/wkhtmltox-0.12.5-1.centos8.x86_64.rpm
+    /tmp/*.rpm
+
+RUN rm -f /tmp/*.rpm
 
 RUN yum clean all
 
@@ -59,22 +61,22 @@ RUN mkdir -p /home/apps/apache
 COPY apache/apache.sh /home/apps/apache/
 
 # venv labbook_FE
-COPY labbook_FE/Pipfile.lock /home/apps/labbook_FE/labbook_FE
+COPY labbook_FE/Pipfile /home/apps/labbook_FE/labbook_FE
 
 WORKDIR /home/apps/labbook_FE/labbook_FE
 
 RUN python3 -m venv venv
 
-RUN source venv/bin/activate && pip install pipenv && pipenv install --ignore-pipfile
+RUN source venv/bin/activate && pip install pipenv && pip install --upgrade pip && pipenv install
 
 # venv labbook_BE
-COPY labbook_BE/Pipfile.lock /home/apps/labbook_BE/labbook_BE
+COPY labbook_BE/Pipfile /home/apps/labbook_BE/labbook_BE
 
 WORKDIR /home/apps/labbook_BE/labbook_BE
 
 RUN python3 -m venv venv
 
-RUN source venv/bin/activate && pip install pipenv && pipenv install --ignore-pipfile
+RUN source venv/bin/activate && pip install pipenv && pip install --upgrade pip && pipenv install
 
 # install labbook_FE
 COPY labbook_FE /home/apps/labbook_FE/labbook_FE

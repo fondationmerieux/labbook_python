@@ -31,6 +31,18 @@ def upgrade():
     except Exception as err:
         print("ERROR update normal_min for B008,\n\terr=" + str(err))
 
+    # NEW TABLE for load list of zip code city and region
+    try:
+        conn.execute("create table zip_city ("
+                     "zic_ser int not NULL AUTO_INCREMENT, "
+                     "zic_date datetime, "
+                     "zic_zip varchar(10), "
+                     "zic_city varchar(40), "
+                     "PRIMARY KEY (zic_ser), "
+                     "INDEX (zic_zip), INDEX (zic_city)) character set=utf8")
+    except Exception as err:
+        print("ERROR create table zip_city,\n\terr=" + str(err))
+
     print(str(datetime.today()) + " : END of migration v3_2_1_fix_analysis_repo revision=59d46fab5f54")
 
 def downgrade():

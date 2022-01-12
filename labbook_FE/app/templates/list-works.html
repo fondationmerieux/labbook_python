@@ -11,7 +11,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste de travail") }}</span></h2>
-            <form autocomplete="off">
+            <form autocomplete="off" id="form-search">
                 <!-- Search -->
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
@@ -35,9 +35,28 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="f_emer" class="col-form-label col-5 text-right">{{ _("Urgent uniquement") }}</label>
+                            <label for="f_emer" class="col-form-label col-6 text-right">{{ _("Urgent uniquement") }}</label>
                             <div>
                                 <input type="checkbox" id="f_emer" name="f_mer" class="mt-2" value="4" {% if ihm and ihm['emer'] == 'E' %} checked="checked"{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="col-form-label col-2 text-right">{{ _("Type") }}</label>
+                            <div>
+                                <select name="type_ana" id="f_type_ana" class="form-control ml-1">
+                                    {% from 'macros.html' import select_type_ana %}
+                                    {{ select_type_ana(ihm['type_ana']) }}
+                                </select>       
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="code_pat" class="col-form-label col-4 text-right">{{ _("Code patient") }}</label>
+                            <div>					
+                                <input type="text" name="code_pat" id="code_pat" value="" class="form-control cnx_trigger">
                             </div>
                         </div>
                     </div>
@@ -47,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+            </form>
 
                 <!-- List records -->
                 <div class="panel panel-1 panel-primary" style="">
@@ -114,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
+                <!-- TODO decaler --> 
 
             <div class="panel-heading row mt-3">
                 <h3 class="panel-title">{{ _("Validation groupée") }}</h3>
@@ -143,6 +163,8 @@ function filter_record()
 {
 let date_beg = $("#f_date_beg").val() ;
 let date_end = $("#f_date_end").val() ;
+let type_ana = $("#f_type_ana").val() ;
+let code_pat = $("#code_pat").val() ;
 let emer     = 5 ;
 
     if ( $("#f_emer").is(":checked") )
@@ -154,6 +176,8 @@ let param = '{ "num_rec": "", ' +
             '"patient": "", ' +
             '"date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '", ' +
+            '"type_ana":' + type_ana  + ', ' +
+            '"code_pat":"' + code_pat  + '", ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
@@ -284,10 +308,17 @@ function del_record( id_rec )
 
 function group_validation()
 {
-window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/G/" + data_records[0].id_data ;
+    if (typeof data_records !== 'undefined' && data_records.length > 0)
+    window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/G/" + data_records[0].id_data ;
 }
 
 {% include 'stat_rec_with_det.js' %}
+
+// without this enter key with focus in input text reload page
+$("#form-search").submit(function()
+{
+    return false ;
+} ) ;
 
 $(".cnx_trigger").keyup( function(event) 
 {
@@ -300,6 +331,9 @@ $(".cnx_trigger").keyup( function(event)
 
 $( document ).ready( function()
 {
+// clean session storage for previous list of id record validated
+sessionStorage.setItem("l_id_rec_vld", null) ;
+
 display_record( 1 ) ;
 } ) ;
 </script>

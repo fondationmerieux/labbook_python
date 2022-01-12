@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 #
 # Start gunicorn to serve the application in production mode
 #
@@ -59,6 +59,8 @@ do
     esac
 done
 
+test "$LABBOOK_DEBUG" -eq 1 && opt_reload="--reload"
+
 # Application name
 APP_NAME=labbook_BE
 
@@ -70,6 +72,7 @@ LOGS_PERM=/storage/log
 GUNICORN_DIR=${HOME_APP}/gunicorn
 GUNICORN_TIMEOUT=0  # Because restore and backup scripts that run synchronously
 
+# shellcheck disable=SC1091
 source ${VENV_DIR}/bin/activate
 
 # create Gunicorn directory if necessary
@@ -91,6 +94,9 @@ cd ${APP_DIR} || exit 1
 
 # run alembic upgrade
 alembic upgrade head >> ${LOGS_PERM}/alembic.out 2>&1
+
+# preload libreoffice
+unoconv --listener >> ${LOGS_PERM}/unoconv.out 2>&1 &
 
 # Gunicorn is installed in the virtual environment
 # When started by supervisord, exec is necessary for the signals to reach gunicorn.

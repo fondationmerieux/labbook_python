@@ -14,6 +14,7 @@ class Record:
     def getRecordList(args, id_pres):
         cursor = DB.cursor()
 
+        table_cond  = ''
         filter_cond = 'length(dos.num_dos_an) = 10 '
 
         if not args:
@@ -45,6 +46,16 @@ class Record:
             if args['date_end']:
                 filter_cond += ' and dos.date_dos <= "' + args['date_end'] + '" '
 
+            # Analysis family
+            if 'type_ana' in args and args['type_ana'] and args['type_ana'] > 0:
+                table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ' +
+                               'left join sigl_dico_data as fam on fam.id_data = ref.famille ')
+                filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
+
+            # Code patient
+            if 'code_pat' in args and args['code_pat']:
+                filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
+
             # 4 in base for yes
             if args['emer'] and args['emer'] == 4:
                 filter_cond += ' and ana.urgent=4 '
@@ -63,7 +74,7 @@ class Record:
                'from sigl_02_data as dos '
                'inner join sigl_03_data as pat on dos.id_patient=pat.id_data '
                'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '
-               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '
+               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 ' + table_cond +
                'where ' + filter_cond +
                'group by dos.id_data order by dos.num_dos_an desc ' + limit)
 

@@ -1347,14 +1347,6 @@ class StockList(Resource):
                 elif key == 'conserv':
                     stock[key] = _(stock[key].strip())
 
-            if stock['expir_date']:
-                delta = stock['expir_date'] - datetime.now()
-                stock['day_to_expir'] = delta.days
-                stock['expir_date']   = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
-            else:
-                stock['day_to_expir'] = 0
-                stock['expir_date'] = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
-
             if stock['pru_nb_pack']:
                 stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
             else:
@@ -1368,6 +1360,14 @@ class StockList(Resource):
                 stock['prs_nb_pack'] = 0
 
             stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'])
+
+            if stock['expir_date']:
+                delta = stock['expir_date'] - datetime.now()
+                stock['day_to_expir'] = delta.days
+                stock['expir_date']   = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
+            else:
+                stock['day_to_expir'] = 0
+                stock['expir_date'] = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
 
         self.log.info(Logs.fileline() + ' : TRACE StockList')
         return compose_ret(l_stocks, Constants.cst_content_type_json)

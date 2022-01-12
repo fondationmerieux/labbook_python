@@ -137,9 +137,9 @@ $("#list_items_total").html( data_len ) ;
         
     menu_act += "</div></ul></nav>" ;
 
-    if ( data_items[i].day_to_expir <= 0 )
+    if ( data_items[i].day_to_expir <= 0 && data_items[i].nb_total > 0 )
     tr_style = "style=\"background-color:#FFD5D6;\"" ;
-    else if ( data_items[i].day_to_expir <= 14 )
+    else if ( data_items[i].day_to_expir <= 14 && data_items[i].nb_total > 0 )
     tr_style = "style=\"background-color:#FFCC66;\"" ;
     else
     tr_style = "" ;

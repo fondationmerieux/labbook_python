@@ -4,6 +4,8 @@
 {{ super() }}
     <title>{{ _("Détails patient") }}</title>
     <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -101,12 +103,11 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group row">
-                            <label for="unite" class="col-form-label text-right mr-1">{{ _("unité") }}</label>
+                            <label for="unit_age" class="col-form-label text-right mr-1">{{ _("unité") }}</label>
                             <div>					
-                                <select name="unite" id="unite" class="form-control">
-                                    {% for unit_age in ihm['unit_age'] %}
-                                    <option value="{{ unit_age['id_data'] }}" {% if args['unite'] == unit_age['id_data'] %} selected {% endif %}>{{ unit_age['label'] }}</option>
-                                    {% endfor %}
+                                <select name="unit_age" id="unit_age" class="form-control">
+                                    {% from 'macros.html' import select_unit_age %}
+                                    {{ select_unit_age(ihm['unit_age'], args['unite']) }}
                                 </select>
                             </div>
                         </div>
@@ -124,10 +125,8 @@
                             <label for="nationality" class="col-form-label text-right mr-1">{{ _("Nationalité") }}</label>
                             <div>					
                                 <select name="nationality" id="nationality" class="form-control">
-                                    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
-                                    {% for nationality in ihm['nationality'] %}
-                                    <option value="{{ nationality['nat_ser'] }}" {% if args['pat_nation'] == nationality['nat_ser'] %} selected {% endif %}>{{ nationality['nat_name'] }}</option>
-                                    {% endfor %}
+                                    {% from 'macros.html' import select_nationality %}
+                                    {{ select_nationality(ihm['nationality'], args['pat_nation']) }}
                                 </select>
                             </div>
                         </div>
@@ -165,10 +164,8 @@
                             <label for="blood_group" class="col-form-label text-right mr-1">{{ _("Groupe sanguin") }}</label>
                             <div>					
                                 <select name="blood_group" id="blood_group" class="form-control">
-                                    <option value="0" {% if not args or args['blood_group'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
-                                    {% for blood_group in ihm['blood_group'] %}
-                                    <option value="{{ blood_group['id_data'] }}" {% if args['pat_blood_group'] == blood_group['id_data'] %} selected {% endif %}>{{ blood_group['label'] }}</option>
-                                    {% endfor %}
+                                    {% from 'macros.html' import select_blood_group %}
+                                    {{ select_blood_group(ihm['blood_group'], args['pat_blood_group']) }}
                                 </select>
                             </div>
                         </div>
@@ -178,10 +175,8 @@
                             <label for="blood_rhesus" class="col-form-label text-right mr-1">{{ _("Rhésus") }}</label>
                             <div>					
                                 <select name="blood_rhesus" id="blood_rhesus" class="form-control">
-                                    <option value="0" {% if not args or args['blood_rhesus'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
-                                    {% for blood_rhesus in ihm['blood_rhesus'] %}
-                                    <option value="{{ blood_rhesus['id_data'] }}" {% if args['pat_blood_rhesus'] == blood_rhesus['id_data'] %} selected {% endif %}>{{ blood_rhesus['label'] }}</option>
-                                    {% endfor %}
+                                    {% from 'macros.html' import select_blood_rhesus %}
+                                    {{ select_blood_rhesus(ihm['blood_rhesus'], args['pat_blood_rhesus']) }}
                                 </select>
                             </div>
                         </div>
@@ -213,6 +208,10 @@
                         </div>
                     </div>
                     <div class="col">
+                        <div class="form-group row">
+                            <div class="col-3"></div>
+                            <select id="search_zipcity" style="width:300px"></select>
+                        </div>
                         <div class="form-group row">
                             <label for="bp" class="col-form-label col-3 text-right mr-1">{{ _("Boite postale") }}</label>
                             <div>
@@ -282,7 +281,7 @@ var age           = $("#age").val() ;
 var annee_naiss   = 0 ; // useless
 var semaine_naiss = 0 ; // useless
 var mois_naiss    = 0 ; // useless
-var unite         = $("#unite").val() ;
+var unit_age      = $("#unit_age").val() ;
 var midname       = $("#midname").val() ;
 var nationality   = $("#nationality").val() ;
 var resident      = $("input:radio[name=resident]:checked").val() ;
@@ -318,7 +317,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"annee_naiss":' + annee_naiss + ', ' +
               '"semaine_naiss":' + semaine_naiss + ', ' +
               '"mois_naiss":' + mois_naiss + ', ' +
-              '"unite":' + unite + ', ' +
+              '"unite":' + unit_age + ', ' +
               '"midname":"' + midname + '", ' +
               '"nationality":' + nationality + ', ' +
               '"resident":"' + resident + '", ' +
@@ -396,7 +395,7 @@ var age = Math.abs(diff.getUTCFullYear() - 1970);
     if ( age >= 1 )
     {
         $("#age").val( age ) ;
-        $("#unite").val("1037") ;
+        $("#unit_age").val("1037") ;
     }
     else
     {
@@ -405,14 +404,68 @@ var age = Math.abs(diff.getUTCFullYear() - 1970);
         if (days >= 28)
         {
         $("#age").val( (days / 30).toFixed(0) ) ;
-        $("#unite").val("1036") ;
+        $("#unit_age").val("1036") ;
         }
         else
         {
         $("#age").val( (days).toFixed(0) ) ;
-        $("#unite").val("1034") ;
+        $("#unit_age").val("1034") ;
         }
     }
+} ) ;
+
+$("#search_zipcity").select2(
+{
+    placeholder: "{{ _("Recherche de code postal ou ville") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_zipcity").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_item
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_zipcity").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+
+    // GET det zipcity
+    $.ajax( 
+        {
+        type: "GET",
+        url: "/services/setting/zipcity/det/" + id_item,
+        success: function(data_zipcity)
+            {
+            $("#cp").val(data_zipcity.zic_zip) ;
+            $("#ville").val(data_zipcity.zic_city) ;
+            },
+        error: function(data_zipcity)
+            {
+            console.log("ERROR GET det zipcity");
+            alert("{{ _("Erreur lors de la récupération des données") }}") ;
+            }
+        } ) ;
 } ) ;
 
 function return_back()

@@ -477,7 +477,7 @@ class Quality:
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, '
                'dict1.label as type,  dict2.label as conserv, '
-               'sup.fournisseur_nom as supplier, Min(prs_expir_date) as expir_date '
+               'sup.fournisseur_nom as supplier, Min(if(prs_empty="Y", NULL, prs_expir_date)) as expir_date '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser and pru_cancel="N" '

@@ -155,6 +155,10 @@
             {% endif %}
 
             {% if ihm['mode'] == 'G' %}
+            <div class="float-left clearfix mt-3 mb-5">
+                <button type="button" onclick="print_grp_rec();" id="print-grp-rec" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Compte-rendu groupé") }}</span></button>
+            </div>
+
                 {% if ihm['id_rec_next'] %}
             <div class="float-right clearfix mt-3 mb-5">
                 <button type="button" onclick="next_record();" id="btn_next_valid" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Dossier suivant") }}</span></button>
@@ -470,6 +474,26 @@ param_list_valid += ' ] }' ;
             {
                 $("#dial-wait").modal("hide") ;
 
+                {% if ihm['mode'] == 'G' %}
+                // save id record in session storage
+                if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
+                {
+                let l_id_rec_vld = JSON.parse( sessionStorage.getItem("l_id_rec_vld") ) ;
+
+                l_id_rec_vld.push(id_rec) ;
+
+                sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
+                }
+                else
+                {
+                let l_id_rec_vld = [] ;
+
+                l_id_rec_vld.push(id_rec) ;
+
+                sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
+                }
+                {% endif %}
+
             window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
             },
             error: function(data)
@@ -764,6 +788,66 @@ info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_pati
 {% endif %}
 }
 
+function print_grp_rec()
+{
+let l_id_rec_vld = [] ;
+
+    if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
+    {
+    l_id_rec_vld = JSON.parse( sessionStorage.getItem("l_id_rec_vld") ) ;
+
+    var interv_id = l_id_rec_vld[0] + "-to-" + l_id_rec_vld[l_id_rec_vld.length - 1] ;
+
+    var filename = "grouped-reports_" + interv_id + ".pdf" ;
+
+    var param = '{ "filename": "' + filename + '", "l_id_rec_vld": ['
+    var i;
+
+        for (i = 0; i < l_id_rec_vld.length; i++) 
+        {
+            if ( i > 0 )
+            param += ', ' ;
+
+        param += l_id_rec_vld[i];
+        }
+    
+    param += ' ] }'
+
+        $("#dial-wait").modal("show") ;
+
+        $("#dial-wait").off() ;
+
+        $("#dial-wait").on('shown.bs.modal', function () 
+        {
+            // Send information
+            $.ajax( 
+            {
+                type: "POST",
+                url: "{{ session['server_ext'] }}/services/pdf/report/grouped",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param,
+                success: function(ret)
+                {
+                    $("#dial-wait").modal("hide") ;
+
+                    if (ret == 0)
+                    download_file( "PY", filename, "REC", 0 ) ;
+                    else
+                    alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+                },
+                error: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
+                    
+                console.log("ERROR pdf group report") ;
+                alert("{{ _("Une erreur est survenue") }}") ;
+                }
+            } ) ;
+        } ) ;
+    }
+}
+
 function return_home()
 {
     if ( window.confirm("{{ _("Attention vous allez quitter ce dossier sans l'avoir validé.") }}") )
@@ -806,6 +890,11 @@ fill_bio_list() ;
 load_data() ;
 
 info_pat_title() ;
+
+    if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
+    $("#print-grp-rec").prop("disabled", false) ;
+    else
+    $("#print-grp-rec").prop("disabled", true) ;
 } ) ;
 </script>
 {% endblock %}

@@ -138,6 +138,26 @@ class PdfReportGeneric(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class PdfReportGrouped(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'l_id_rec_vld' not in args or 'filename' not in args:
+            self.log.error(Logs.fileline() + ' : PdfReportGrouped ERROR args missing')
+            return compose_ret(-1, Constants.cst_content_type_json, 400)
+
+        ret = Pdf.getPdfReportGrouped(args['filename'], args['l_id_rec_vld'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfReportGrouped failed')
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfReportGrouped')
+        return compose_ret(0, Constants.cst_content_type_json)
+
+
 class PdfSticker(Resource):
     log = logging.getLogger('log_services')
 

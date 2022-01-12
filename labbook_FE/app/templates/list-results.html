@@ -13,7 +13,7 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
                 <span>{{ _("Saisie de résultats") }}</span>
             </h2>
-            <form autocomplete="off">
+            <form autocomplete="off" id="form-search">
                 <fieldset class="row border p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
                     <div id="filter" class="col-12">
@@ -35,6 +35,10 @@
                                     {% from 'macros.html' import select_type_ana %}
                                     {{ select_type_ana(ihm['type_ana']) }}
                                 </select>       
+                            </div>
+                            <div class="control-label ml-3 mr-1">{{ _("Code patient") }}</div>
+                            <div>					
+                                <input type="text" name="code_pat" id="code_pat" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
 
@@ -532,6 +536,7 @@ function filter_result()
 let date_beg  = $("#f_date_beg").val() ;
 let date_end  = $("#f_date_end").val() ;
 let type_ana  = $("#f_type_ana").val() ;
+let code_pat  = $("#code_pat").val() ;
 let emer_ana  = 0 ;
 let valid_res = 0 ;
 
@@ -545,6 +550,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"emer_ana":' + emer_ana  + ', ' +
+            '"code_pat":"' + code_pat  + '", ' +
             '"valid_res":' + valid_res + '}' ;
 
     // popup wait
@@ -635,8 +641,16 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
 
 {% include 'display_histo.js' %}
 
+// without this enter key with focus in input text reload page
+$("#form-search").submit(function()
+{
+    return false ;
+} ) ;
+
 $(".cnx_trigger").keyup( function(event) 
 {
+console.log("DEBUG cnx_trigger");
+
     if (event.which == 13)
     {
     event.preventDefault() ;

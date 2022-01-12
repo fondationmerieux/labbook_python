@@ -63,10 +63,10 @@ class File:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
 
-        req = 'select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage '\
-              'from ' + tablename + ' as valise, sigl_file_data as file, sigl_storage_data as storage '\
-              'where file.id_data=valise.id_file and storage.id_data=file.id_storage and valise.id_ext=%s '\
-              'order by id_data desc '
+        req = ('select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage '
+               'from ' + tablename + ' as valise, sigl_file_data as file, sigl_storage_data as storage '
+               'where file.id_data=valise.id_file and storage.id_data=file.id_storage and valise.id_ext=%s '
+               'order by id_data desc ')
 
         cursor.execute(req, (id_ref,))
 
@@ -76,9 +76,9 @@ class File:
     def getFileData(id_file):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, status, original_name, generated_name, id_storage, path '\
-              'from sigl_file_data '\
-              'where id_data=%s'
+        req = ('select id_data, id_owner, status, original_name, generated_name, id_storage, path '
+               'from sigl_file_data '
+               'where id_data=%s')
 
         cursor.execute(req, (id_file,))
 
@@ -264,9 +264,9 @@ class File:
     def getFileStorage(id_storage):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, path '\
-              'from sigl_storage_data '\
-              'where id_data=%s'
+        req = ('select id_data, id_owner, path '
+               'from sigl_storage_data '
+               'where id_data=%s')
 
         cursor.execute(req, (id_storage,))
 
@@ -276,9 +276,9 @@ class File:
     def getLastFileStorage():
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, path '\
-              'from sigl_storage_data '\
-              'order by id_data desc limit 1'
+        req = ('select id_data, id_owner, path '
+               'from sigl_storage_data '
+               'order by id_data desc limit 1')
 
         cursor.execute(req)
 
@@ -305,10 +305,10 @@ class File:
     def getFileReport(id_rec):
         cursor = DB.cursor()
 
-        req = 'select id_data, id_owner, id_dos, file, file_type, doc_type, date '\
-              'from sigl_11_data '\
-              'where id_dos=%s and doc_type=257 '\
-              'order by id_data desc limit 1'
+        req = ('select id_data, id_owner, id_dos, file, file_type, doc_type, date '
+               'from sigl_11_data '
+               'where id_dos=%s and doc_type=257 '
+               'order by id_data desc limit 1')
 
         cursor.execute(req, (id_rec,))
 

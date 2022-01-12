@@ -7,7 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.1] - 2021-12-21
+## [3.2.1] - 2022-01-12
+### Added
+- add code patient search field in list of result and list of work pages
+- add familly analysis search field in list of records and list of work pages
+- new button for print one merge report of all reports validated in group mode
+- display alert after login if an alert is present in the stock management
+- zip code and city list setting
+- api page with swagger-ui (Note: description of web services not finished) 
+
+### Changed
+- unoconv in listener mode instead of trying to generate a template after login
+
 ### Fixed
 - spelling error for minimal value in B008 analysis
 - section in detail procedure not well displayed

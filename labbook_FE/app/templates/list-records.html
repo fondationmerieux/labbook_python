@@ -79,6 +79,18 @@
                         </div>
                     </div>
 
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="col-form-label col-2 text-right">{{ _("Type") }}</label>
+                            <div>
+                                <select name="type_ana" id="f_type_ana" class="form-control ml-1">
+                                    {% from 'macros.html' import select_type_ana %}
+                                    {{ select_type_ana(ihm['type_ana']) }}
+                                </select>       
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-12">
                         <div class="float-right">
                             <button type="button" onclick="filter_record();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
@@ -179,6 +191,7 @@ let firstname = $("#firstname").val()  ;
 let code      = $("#code").val()       ;
 let date_beg  = $("#f_date_beg").val() ;
 let date_end  = $("#f_date_end").val() ;
+let type_ana  = $("#f_type_ana").val() ;
 let emer      = 5 ;
 
     if ( $("#f_emer").is(":checked") )
@@ -191,6 +204,7 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
             '"code":"' + code  + '", ' +
             '"date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '", ' +
+            '"type_ana":' + type_ana  + ', ' +
             '"emer":' + emer + '}' ;
 
     // popup wait
