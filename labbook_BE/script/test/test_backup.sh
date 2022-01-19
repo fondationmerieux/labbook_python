@@ -1240,6 +1240,59 @@ test_initmedia() {
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
 
     ${_ASSERT_TRUE_} '$status'
+
+    # media name with space
+    media="SPA CE"
+    expected_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
+
+    # simulate a media
+    mkdir -p "$media_dir/$user/$media"
+
+    # initialize media
+    cmd_stderr=$($run_cmd -u "$user" -m "$media" -P "$media_dir" initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # media name in file
+    media="MEDIA_IN_FILE"
+    expected_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
+
+    # simulate a media
+    mkdir -p "$media_dir/$user/$media"
+
+    media_param_file="$WORK_DIRECTORY/media_param_file"
+
+    echo "$media" > "$media_param_file"
+
+    # initialize media
+    cmd_stderr=$($run_cmd -u "$user" -m "@$media_param_file" -P "$media_dir" initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # media name in file with spaces
+    media="SPACE IN FILE"
+    expected_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
+
+    # simulate a media
+    mkdir -p "$media_dir/$user/$media"
+
+    media_param_file="$WORK_DIRECTORY/media_param_file"
+
+    echo "$media" > "$media_param_file"
+
+    # initialize media
+    cmd_stderr=$($run_cmd -u "$user" -m "@$media_param_file" -P "$media_dir" initmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
 }
 
 test_listmedia() {

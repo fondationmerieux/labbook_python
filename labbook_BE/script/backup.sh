@@ -97,6 +97,7 @@ usage()
     echo "  islb30            Is INPUT_FILE a LabBook 3 archive ?"
     echo "  islb25            Is INPUT_FILE a LabBook 2.5 archive ?"
     echo "  copydir           Copy files from INPUT_DIR to OUTPUT_DIR"
+    echo "  testvalinfile     Display media parameter. Used for testing"
     echo
     echo "Options:"
     echo "  -h                Display this help and exit"
@@ -981,15 +982,16 @@ fn_get_mountpoint() {
 #
 # Param:
 # - user
-# - media
+# - media (if of the form @filename, filename contains media)
 # - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
 #
 fn_initmedia() {
     local user="$1"
-    local media="$2"
+    local param_media="$2"
     local media_dir="$3"
     local media_path=""
     local backup_path=""
+    local media=""
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -997,6 +999,8 @@ fn_initmedia() {
         log_message "cannot find directory $media_dir"
         return 1
     }
+
+    media="$(fn_val_in_file "$param_media")"
 
     media_path="$media_dir/$user/$media"
 
@@ -1066,7 +1070,7 @@ fn_listmedia() {
 # Param:
 # - user
 # - status file
-# - media
+# - media (if of the form @filename, filename contains media)
 # - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
 #
 # Output in status_file: archive names, one per line
@@ -1075,8 +1079,10 @@ fn_listarchive() {
     local user="$1"
     local status_file="$2"
     local media="$3"
+    local param_media="$3"
     local media_dir="$4"
     local media_path=""
+    local media=""
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1086,6 +1092,8 @@ fn_listarchive() {
     }
 
     status_message ""
+
+    media="$(fn_val_in_file "$param_media")"
 
     media_path="$media_dir/$user/$media"
 
@@ -1334,12 +1342,12 @@ fn_loaddb() {
 # Backup
 #
 # Param:
-# - media
+# - media (if of the form @filename, filename contains media)
 # - user
 # - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
 #
 fn_backup() {
-    local media="$1"
+    local param_media="$1"
     local user="$2"
     local media_dir="$3"
     local media_path=""
@@ -1354,6 +1362,7 @@ fn_backup() {
     local privkey_file=""
     local pubkey_file=""
     local fmx_pubkey_file=""
+    local media=""
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1361,6 +1370,8 @@ fn_backup() {
         backup_message "cannot find directory $media_dir"
         return 1
     }
+
+    media="$(fn_val_in_file "$param_media")"
 
     media_path="$media_dir/$user/$media"
 
@@ -1438,18 +1449,19 @@ fn_backup() {
 # Restore backup
 #
 # Param:
-# - media
+# - media (if of the form @filename, filename contains media)
 # - archive
 # - user
 # - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
 #
 fn_restore() {
-    local media="$1"
+    local param_media="$1"
     local archive="$2"
     local user="$3"
     local media_dir="$4"
     local media_path=""
     local archive_path=""
+    local media=""
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1457,6 +1469,8 @@ fn_restore() {
         backup_message "cannot find directory $media_dir"
         return 1
     }
+
+    media="$(fn_val_in_file "$param_media")"
 
     media_path="$media_dir/$user/$media"
 
@@ -1891,6 +1905,11 @@ run_in_container() {
 
     [[ $verbose -eq 1 ]] && set -x
 
+    #
+    # Even though "$@" handles correctly quoting, the stacked commands (sshpass + ssh + sudo + podman run) do not.
+    # For this reason we add a way of passing parameters in files with a @filename syntax.
+    # See fn_val_in_file.
+    #
     SSHPASS=$(printenv $ENV_USER_PASS) \
         sshpass -e \
         ssh -o "StrictHostKeyChecking no" "$user@$host" \
@@ -1978,6 +1997,28 @@ export $ENV_KEY_PASS=$key_pass
     }
 
     return $status
+}
+
+#
+# Echo its parameter or content of file if of the form @file
+#
+# Param:
+# - parameter
+#
+fn_val_in_file() {
+    local param="$1"
+    local file=""
+
+    # file is parameter with first character @ removed
+    [[ $param = @* ]] && file="${param:1}"
+
+    if [[ -n "$file" ]]; then
+        cat "$file"
+    else
+        echo "$param"
+    fi
+
+    return 0
 }
 
 #
@@ -2155,6 +2196,7 @@ when=""
 host=""
 last_backup_ok_file=""
 test_mode=0
+media_param_file=""
 
 while getopts "hvi:o:e:d:V:R:a:p:s:u:Um:w:P:T" option; do
     case "$option" in
@@ -2249,8 +2291,6 @@ def_log_dir=$(printenv $ENV_LOG_DIR)
 
 init_fake_mode "$cmd"
 
-[[ $verbose -eq 1 ]] && log_message "cmd=$cmd fake_mode=$fake_mode fake_status=$fake_status"
-
 # Initialize default status file if -s argument was not used.
 # It can stay empty if ENV_STATUS_DIR is not defined, will be verified by each command that needs it.
 # Special case for backupauto command, status is expected with backup filename
@@ -2264,6 +2304,16 @@ status_filename="$cmd"
         status_file=$(realpath "$def_status_dir/$status_filename")
     }
 fi
+
+# When the media parameter is passed to another container, we need to write it into a file,
+# otherwise it must not contain spaces
+def_status_dir=$(printenv $ENV_STATUS_DIR)
+
+[[ -n "$def_status_dir" ]] && {
+    media_param_file=$(realpath "$def_status_dir/media")
+}
+
+[[ $verbose -eq 1 ]] && log_message "cmd=$cmd fake_mode=$fake_mode fake_status=$fake_status status_file=$status_file media_param_file=$media_param_file"
 
 case "$cmd" in
     genkey)
@@ -2315,7 +2365,8 @@ case "$cmd" in
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
+                echo "$media" > "$media_param_file" || error_exit "$cmd: cannot write media=$media to $media_param_file"
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "@$media_param_file" "$cmd" || exit_status=1
             else
                 fn_initmedia "$user" "$media" "$test_path" || exit_status=1
             fi
@@ -2372,7 +2423,8 @@ case "$cmd" in
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
+                echo "$media" > "$media_param_file" || error_exit "$cmd: cannot write media=$media to $media_param_file"
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "@$media_param_file" "$cmd" || exit_status=1
             else
                 fn_listarchive "$user" "$status_file" "$media" "$test_path" || exit_status=1
             fi
@@ -2434,7 +2486,8 @@ case "$cmd" in
 
         if [[ $fake_mode -eq 0 ]]; then
             if in_app_container; then
-                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" "$cmd" || exit_status=1
+                echo "$media" > "$media_param_file" || error_exit "$cmd: cannot write media=$media to $media_param_file"
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "@$media_param_file" "$cmd" || exit_status=1
             else
                 fn_backup "$media" "$user" "$test_path" || exit_status=1
 
@@ -2552,12 +2605,14 @@ case "$cmd" in
             if in_app_container; then
                 [[ -n $(printenv $ENV_USER_PASS) ]] || error_exit "$cmd: cannot find user password in $ENV_USER_PASS"
 
+                echo "$media" > "$media_param_file" || error_exit "$cmd: cannot write media=$media to $media_param_file"
+
                 # Because we use ssh+podman to start the container, it is difficult to pass the environment.
                 # The private key password is written to a temporary file when we run the container.
                 # We could avoid this by copying the encrypted archive and the keys to disk,
                 # and then restoring from these in the current container.
                 # Note that there is a risk to run out of disk space with this extra copy.
-                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "$media" -a "$archive" "$cmd" || exit_status=1
+                run_in_container "$user" "$host" -u "$user" -s "$status_file" -m "@$media_param_file" -a "$archive" "$cmd" || exit_status=1
             else
                 fn_restore "$media" "$archive" "$user" "$test_path" || exit_status=1
             fi
@@ -2769,6 +2824,10 @@ case "$cmd" in
 
     testfake)
         log_message "fake_mode=$fake_mode fake_status=$fake_status"
+        ;;
+
+    testvalinfile)
+        log_message "media=$media val_in_file=$(fn_val_in_file "$media")"
         ;;
 
     *)
