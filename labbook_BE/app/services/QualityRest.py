@@ -474,6 +474,507 @@ class ConformityExport(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class ControlList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type_ctrl):
+        if type_ctrl != 'INT' and type_ctrl != 'EXT':
+            self.log.error(Logs.fileline() + ' : ControlList ERROR wrong type')
+            return compose_ret('', Constants.cst_content_type_json, 409)
+
+        l_items = Quality.getControlList(type_ctrl)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE ControlList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlList type : ' + str(type_ctrl))
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class ControlDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getControlDet(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'ControlDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : ControlDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'type_ctrl' not in args or 'type_val' not in args or 'name' not in args or 'id_eqp' not in args:
+            self.log.error(Logs.fileline() + ' : ControlDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            self.log.info(Logs.fileline() + ' : TRACE update controlDet')
+
+            ret = Quality.updateControlDet(ctq_ser=id_item,
+                                           ctq_type_ctrl=args['type_ctrl'],
+                                           ctq_type_val=args['type_val'],
+                                           ctq_name=args['name'],
+                                           ctq_eqp=args['id_eqp'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : ControlDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            self.log.info(Logs.fileline() + ' : TRACE insert ControlDet')
+            ret = Quality.insertControlDet(ctq_type_ctrl=args['type_ctrl'],
+                                           ctq_type_val=args['type_val'],
+                                           ctq_name=args['name'],
+                                           ctq_eqp=args['id_eqp'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : ControlDet ERROR  insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+
+class ControlIntExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
+        dict_data = Quality.getControlList('INT')
+
+        Various.needTranslationDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['id_item'])
+                data.append(d['ctq_name'])
+                data.append(d['ctq_type_ctrl'])
+                data.append(d['ctq_type_val'])
+                data.append(d['eqp_name'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'control_int_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post ControlIntExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlIntExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ControlIntResList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_ctrl):
+        l_items = Quality.getControlIntResList(id_ctrl)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE ControlIntResList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['cti_date']:
+                item['cti_date'] = datetime.strftime(item['cti_date'], '%Y-%m-%d %H:%M')
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlIntResList id_ctrl : ' + str(id_ctrl))
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class ControlIntRes(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getControlIntRes(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'ControlIntRes ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        if item['cti_date']:
+            item['cti_date'] = datetime.strftime(item['cti_date'], '%Y-%m-%dT%H:%M')
+
+        # if quantitative control we convert to float
+        if item['cti_type'] == 'QN':
+            if item['cti_target']:
+                item['cti_target'] = float(item['cti_target'])
+            else:
+                item['cti_target'] = ''
+
+            if item['cti_result']:
+                item['cti_result'] = float(item['cti_result'])
+            else:
+                item['cti_result'] = ''
+
+        self.log.info(Logs.fileline() + ' : ControlIntRes id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'cti_ctq' not in args or 'cti_date' not in args or 'cti_type' not in args or 'cti_target' not in args or \
+           'cti_result' not in args or 'cti_comment' not in args:
+            self.log.error(Logs.fileline() + ' : ControlIntRes ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            self.log.info(Logs.fileline() + ' : TRACE update ControlIntRes')
+
+            ret = Quality.updateControlIntRes(cti_ser=id_item,
+                                              cti_ctq=args['cti_ctq'],
+                                              cti_date=args['cti_date'],
+                                              cti_type=args['cti_type'],
+                                              cti_target=str(args['cti_target']),
+                                              cti_result=str(args['cti_result']),
+                                              cti_comment=args['cti_comment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : ControlIntRes ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            self.log.info(Logs.fileline() + ' : TRACE insert ControlIntRes')
+            ret = Quality.insertControlIntRes(cti_ctq=args['cti_ctq'],
+                                              cti_date=args['cti_date'],
+                                              cti_type=args['cti_type'],
+                                              cti_target=str(args['cti_target']),
+                                              cti_result=str(args['cti_result']),
+                                              cti_comment=args['cti_comment'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : ControlIntRes ERROR  insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlIntRes id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+
+class ControlIntResExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_ctrl):
+        l_data = [['ctq_ser', 'ctq_name', 'ctq_type_val', 'eqp_name', 'cti_date', 'cti_target', 'cti_result', 'cti_comment', ]]
+        controlDet = Quality.getControlDet(id_ctrl)
+
+        if not controlDet:
+            self.log.error(Logs.fileline() + ' : post ControlIntResExport failed no controlDet with id_ctrl=' + str(id_ctrl))
+            return False
+
+        ctq_type = controlDet['ctq_type_val']
+        ctq_name = controlDet['ctq_name']
+        eqp_name = controlDet['eqp_name']
+
+        dict_data = Quality.getControlIntResList(id_ctrl)
+
+        Various.needTranslationDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(id_ctrl)
+                data.append(ctq_name)
+                data.append(ctq_type)
+                data.append(eqp_name)
+
+                if d['cti_date']:
+                    data.append(datetime.strftime(d['cti_date'], '%Y-%m-%d %H:%M'))
+                else:
+                    data.append('')
+
+                data.append(d['cti_target'])
+                data.append(d['cti_result'])
+                data.append(d['cti_comment'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'control_int_' + str(id_ctrl) + '_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post ControlIntResExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlIntResExport id_ctrl=' + str(id_ctrl))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ControlExtExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
+        dict_data = Quality.getControlList('EXT')
+
+        Various.needTranslationDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['id_item'])
+                data.append(d['ctq_name'])
+                data.append(d['ctq_type_ctrl'])
+                data.append(d['ctq_type_val'])
+                data.append(d['eqp_name'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'control_ext_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post ControlExtExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlExtExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ControlExtResList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_ctrl):
+        l_items = Quality.getControlExtResList(id_ctrl)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE ControlExtResList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['cte_date']:
+                item['cte_date'] = datetime.strftime(item['cte_date'], '%Y-%m-%d %H:%M')
+
+            # search last id_file for each manual
+            l_files = File.getFileDocList("CTRL", item['id_item'])
+
+            if l_files and l_files[0]['id_data']:
+                item['id_file'] = l_files[0]['id_data']
+            else:
+                item['id_file'] = 0
+
+            if l_files and l_files[0]['name']:
+                item['filename'] = l_files[0]['name']
+            else:
+                item['filename'] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlExtResList id_ctrl : ' + str(id_ctrl))
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class ControlExtRes(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getControlExtRes(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'ControlExtRes ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        if item['cte_date']:
+            item['cte_date'] = datetime.strftime(item['cte_date'], '%Y-%m-%dT%H:%M')
+
+        self.log.info(Logs.fileline() + ' : ControlExtRes id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'cte_ctq' not in args or 'cte_date' not in args or 'cte_type' not in args or 'cte_organizer' not in args or \
+           'cte_contact' not in args or 'cte_result' not in args or 'cte_comment' not in args:
+            self.log.error(Logs.fileline() + ' : ControlExtRes ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            self.log.info(Logs.fileline() + ' : TRACE update ControlExtRes')
+            ret = Quality.updateControlExtRes(cte_ser=id_item,
+                                              cte_ctq=args['cte_ctq'],
+                                              cte_date=args['cte_date'],
+                                              cte_type=args['cte_type'],
+                                              cte_organizer=args['cte_organizer'],
+                                              cte_contact=args['cte_contact'],
+                                              cte_result=str(args['cte_result']),
+                                              cte_comment=args['cte_comment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : ControlExtRes ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            self.log.info(Logs.fileline() + ' : TRACE insert ControlExtRes')
+            ret = Quality.insertControlExtRes(cte_ctq=args['cte_ctq'],
+                                              cte_date=args['cte_date'],
+                                              cte_type=args['cte_type'],
+                                              cte_organizer=args['cte_organizer'],
+                                              cte_contact=args['cte_contact'],
+                                              cte_result=str(args['cte_result']),
+                                              cte_comment=args['cte_comment'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : ControlExtRes ERROR insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlExtRes id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+
+class ControlExtResExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_ctrl):
+        l_data = [['ctq_ser', 'ctq_name', 'ctq_type_val', 'eqp_name', 'cte_date', 'cte_organizer', 'cte_contact', 'cte_conform', 'cte_comment', ]]
+        controlDet = Quality.getControlDet(id_ctrl)
+
+        if not controlDet:
+            self.log.error(Logs.fileline() + ' : post ControlExtResExport failed no controlDet with id_ctrl=' + str(id_ctrl))
+            return False
+
+        ctq_type = controlDet['ctq_type_val']
+        ctq_name = controlDet['ctq_name']
+        eqp_name = controlDet['eqp_name']
+
+        dict_data = Quality.getControlExtResList(id_ctrl)
+
+        Various.needTranslationDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(id_ctrl)
+                data.append(ctq_name)
+                data.append(ctq_type)
+                data.append(eqp_name)
+
+                if d['cte_date']:
+                    data.append(datetime.strftime(d['cte_date'], '%Y-%m-%d %H:%M'))
+                else:
+                    data.append('')
+
+                data.append(d['cte_organizer'])
+                data.append(d['cte_contact'])
+                data.append(d['cte_conform'])
+                data.append(d['cte_comment'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'control_ext_' + str(id_ctrl) + '_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post ControlExtResExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE ControlExtResExport id_ctrl=' + str(id_ctrl))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class EquipmentList(Resource):
     log = logging.getLogger('log_services')
 
@@ -1367,7 +1868,7 @@ class StockList(Resource):
                 stock['expir_date']   = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
             else:
                 stock['day_to_expir'] = 0
-                stock['expir_date'] = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
+                stock['expir_date'] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE StockList')
         return compose_ret(l_stocks, Constants.cst_content_type_json)

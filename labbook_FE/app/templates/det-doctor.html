@@ -129,7 +129,7 @@
 <script>
 function save_doctor()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner  = {{ session['user_id']|safe}} ;
 var id_doctor = {{ args['id_doctor']|safe }} ;
 var code      = $("#code").val()      ;
 var title     = $("#title").val()     ;

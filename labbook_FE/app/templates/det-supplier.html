@@ -94,7 +94,7 @@
 <script>
 function save_item()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner  = {{ session['user_id']|safe}} ;
 var id_item   = {{ args['id_supplier']|safe }} ;
 var supplier  = $("#supplier").val()  ;
 var lastname  = $("#lastname").val()  ;

@@ -49,7 +49,7 @@
 <script>
 function save()
 {
-var id_owner = {{ session['user_id_group']|safe}} ;
+var id_owner = {{ session['user_id']|safe}} ;
 var header   = $("input:radio[name=header]:checked").val()  ;
 var comment  = $("input:radio[name=comment]:checked").val() ;
 

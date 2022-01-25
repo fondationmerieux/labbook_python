@@ -152,7 +152,8 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
 
         for( i = 0; i < data_stock.length; i++ )
         {
-            if ( data_stock[i].day_to_expir <= 14 || data_stock[i].nb_total <= data_stock[i].prd_safe_limit )
+            if ( (data_stock[i].nb_total > 0 && data_stock[i].day_to_expir <= 14) ||
+                 (data_stock[i].nb_total <= data_stock[i].prd_safe_limit) )
             {
             alert("{{ _("Une alerte est présente dans la gestion de stock") }}") ;
             return true ;

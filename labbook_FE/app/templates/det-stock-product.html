@@ -125,7 +125,7 @@ let id_item = $(e.currentTarget).val();
 
 function save_item()
 {
-var id_owner     = {{ session['user_id_group']|safe }} ;
+var id_owner     = {{ session['user_id']|safe}} ;
 var id_user      = {{ session['user_id']|safe}} ;
 var prs_ser      = {{ args['prs_ser']|safe }} ;
 var prs_prd      = {% if args['prs_ser'] == 0 %}$("#search_product").val(){% else %}{{ args['stock_product']['prs_prd']|safe }}{% endif %} ;

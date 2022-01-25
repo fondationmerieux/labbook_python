@@ -474,7 +474,7 @@ class Analysis:
             else:
                 filter_cond += ' ana.actif=4 '  # keep only activated analyzes by default
 
-            if session['lang_db'] == 'fr_FR':
+            if session and session['lang_db'] == 'fr_FR':
                 if args['name']:
                     filter_cond += (' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
                                     args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
@@ -626,7 +626,7 @@ class Analysis:
     def getAnalysisExport():
         cursor = DB.cursor()
 
-        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.paillasse, '
+        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, '
                'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
                'ana.type_analyse, ana.actif, ana.ana_whonet, link.id_data as id_link, link.id_refanalyse, '
                'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, '

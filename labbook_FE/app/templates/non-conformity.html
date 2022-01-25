@@ -1072,7 +1072,7 @@ let val_elem = $(elem).val() ;
 
 function save_item()
 {
-var id_owner   = {{ session['user_id_group']|safe }} ;
+var id_owner   = {{ session['user_id']|safe}} ;
 var id_details = {{ args['id_det']|safe }}   ;
 var name       = $("#name").val()            ;
 var reporter   = {% if args['id_det'] > 0 %}$("#reporter_id").val(){% else %}$("#search_reporter").val(){% endif %} ;

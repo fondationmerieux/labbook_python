@@ -1282,12 +1282,9 @@ class Pdf:
                 # add last comment and who make validation
                 res_valid = Result.getResultValidation(id_res_p)
 
-                user = User.getUserByIdGroup(res_valid['utilisateur'])
+                user = User.getUserDetails(res_valid['utilisateur'])
 
-                if not user:
-                    user = User.getUserDetails(res_valid['utilisateur'])
-
-                Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_group=' + str(res_valid['utilisateur']))
+                Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
 
                 if user['lastname'] and user['firstname']:
                     user = user['lastname'] + ' ' + user['firstname']
@@ -1468,8 +1465,8 @@ class Pdf:
 
                 data['rec'] = {}
                 data['rec']['num_y'] = str(record['num_dos_an'])
-                data['rec']['num_d'] = str(record['num_dos_mois'])
-                data['rec']['num_m'] = str(record['num_dos_jour'])
+                data['rec']['num_m'] = str(record['num_dos_mois'])
+                data['rec']['num_d'] = str(record['num_dos_jour'])
                 data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
 
                 # --- Patient details
@@ -1481,18 +1478,101 @@ class Pdf:
                     Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load patient details')
                     return False
 
-                data['pat']['lastname']  = pat['nom']
-                data['pat']['firstname'] = pat['prenom']
-                data['pat']['birth']     = ''
-                data['pat']['sex']       = _('Inconnu')
+                data['pat']['code']       = str(pat['code'])
+                data['pat']['code_lab']   = ''
+                data['pat']['lastname']   = ''
+                data['pat']['firstname']  = ''
+                data['pat']['maidenname'] = ''
+                data['pat']['middlename'] = ''
+                data['pat']['birth']      = ''
+                data['pat']['age']        = ''
+                data['pat']['age_unit']   = ''
+                data['pat']['age_days']   = ''
+                data['pat']['sex']        = _('Inconnu')
+                data['pat']['addr']       = ''
+                data['pat']['zipcode']    = ''
+                data['pat']['city']       = ''
+                data['pat']['district']   = ''
+                data['pat']['pbox']       = ''
+                data['pat']['phone']      = ''
+                data['pat']['profession'] = ''
+
+                if pat['code_patient']:
+                    data['pat']['code_lab'] = str(pat['code_patient'])
+
+                if pat['nom']:
+                    data['pat']['lastname'] = str(pat['nom'])
+
+                if pat['prenom']:
+                    data['pat']['firstname'] = str(pat['prenom'])
+
+                if pat['nom_jf']:
+                    data['pat']['maidenname'] = str(pat['nom_jf'])
+
+                if pat['pat_midname']:
+                    data['pat']['middlename'] = str(pat['pat_midname'])
 
                 if pat['ddn']:
                     data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+
+                    # calc age
+                    today = datetime.now()
+                    born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
+
+                    age = (today - born).days
+
+                    data['pat']['age_days'] = str(age)
+
+                    if age >= 365:
+                        data['pat']['age']  = str(today.year - born.year)
+                        data['pat']['age_unit'] = _('ans')
+                    elif age > 0 and age <= 31:
+                        data['pat']['age']  = (today - born).days
+                        data['pat']['age_unit'] = _('jours')
+                    elif today.month - born.month > 0:
+                        data['pat']['age']  = today.month - born.month + ' ' + _('mois')
+                        data['pat']['age_unit'] = _('mois')
+                elif pat['age']:
+                    data['pat']['age'] = str(pat['age'])
+
+                    if pat['unite'] == 1037:
+                        data['pat']['age_unit'] = _('ans')
+                        data['pat']['age_days'] = str(pat['age'] * 365)
+                    elif pat['unite'] == 1036:
+                        data['pat']['age_unit'] = _('mois')
+                        data['pat']['age_days'] = str(pat['age'] * 30)
+                    elif pat['unite'] == 1035:
+                        data['pat']['age_unit'] = _('semaines')
+                        data['pat']['age_days'] = str(pat['age'] * 7)
+                    elif pat['unite'] == 1034:
+                        data['pat']['age_unit'] = _('jours')
+                        data['pat']['age_days'] = str(pat['age'])
 
                 if pat['sexe'] == 1:
                     data['pat']['sex'] = _('Masculin')
                 elif pat['sexe'] == 2:
                     data['pat']['sex'] = _('Feminin')
+
+                if pat['adresse']:
+                    data['pat']['addr'] = str(pat['adresse'])
+
+                if pat['cp']:
+                    data['pat']['zipcode'] = str(pat['cp'])
+
+                if pat['ville']:
+                    data['pat']['city'] = str(pat['ville'])
+
+                if pat['quartier']:
+                    data['pat']['district'] = str(pat['quartier'])
+
+                if pat['bp']:
+                    data['pat']['pbox'] = str(pat['bp'])
+
+                if pat['tel']:
+                    data['pat']['phone'] = str(pat['tel'])
+
+                if pat['profession']:
+                    data['pat']['profession'] = str(pat['profession'])
 
             # PDF test
             else:
@@ -1545,10 +1625,24 @@ class Pdf:
                 # --- Patient details
                 data['pat'] = {}
 
-                data['pat']['lastname']  = 'TEST'
-                data['pat']['firstname'] = 'Alexandre'
-                data['pat']['birth']     = '30/01/1940'
-                data['pat']['sex']       = _('Masculin')
+                data['pat']['code']       = 'Z1X2Y3'
+                data['pat']['code_lab']   = 'PAT123'
+                data['pat']['lastname']   = 'TEST'
+                data['pat']['firstname']  = 'Alexandre'
+                data['pat']['maidenname'] = 'PERRIERS'
+                data['pat']['middlename'] = 'Monica'
+                data['pat']['birth']      = '30/01/1940'
+                data['pat']['age']        = '42'
+                data['pat']['age_unit']   = _('ans')
+                data['pat']['age_days']   = str(pat['age'] * 365)
+                data['pat']['sex']        = _('Masculin')
+                data['pat']['addr']       = '3 rue du Paradis'
+                data['pat']['zipcode']    = '12345'
+                data['pat']['city']       = 'Testville'
+                data['pat']['district']   = ''
+                data['pat']['pbox']       = 'BP 123'
+                data['pat']['phone']      = '0607080910'
+                data['pat']['profession'] = 'Architecte'
 
         Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))
 

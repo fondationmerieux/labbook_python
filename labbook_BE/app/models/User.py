@@ -62,31 +62,14 @@ class User:
     def getUserByLogin(login):
         cursor = DB.cursor()
 
-        req = ('select g.id_group, g.name, g.id_axis, l.id_role, u.side_account, '
-               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
-               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
-               'from sigl_pj_group as g '
-               'inner join sigl_user_data AS u ON g.id_group = u.id_group '
-               'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '
-               'where u.status=29 and g.name=%s')  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
+        req = ('select user.id_data, user.username, user.side_account, user.password, user.role_type, '
+               'user.firstname, user.lastname, user.expire_date, user.cps_id, user.status, '
+               'user.email, user.oauth_provider_id_user, user.locale, user.rpps, user.otp_phone_number '
+               'from sigl_user_data as user '
+               'inner join sigl_pj_role AS role ON role.type = user.role_type '
+               'where user.status=29 and user.username=%s')  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
 
         cursor.execute(req, (login,))
-
-        return cursor.fetchone()
-
-    # TODO 10/12/2021 : remove all these function with id_group, need update of DB
-    @staticmethod
-    def getUserByIdGroup(id_group):
-        cursor = DB.cursor()
-
-        req = ('select g.id_group, g.name, g.id_axis, u.side_account, '
-               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
-               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
-               'from sigl_pj_group as g '
-               'inner join sigl_user_data AS u ON g.id_group = u.id_group '
-               'where u.status != 31 and g.id_group=%s')  # 31 correspond à l'utilisateur "supprimé"
-
-        cursor.execute(req, (id_group,))
 
         return cursor.fetchone()
 
@@ -98,11 +81,9 @@ class User:
                'u.locale as lang, u.email, u.titre as title, u.initiale as initial, u.adresse as address, '
                'u.ddn as birth, u.tel as phone, u.darrive as arrived, u.position, u.cv, u.diplome as diploma, '
                'u.formation as training, u.section, u.deval as last_eval, u.commentaire as comment, '
-               'l.id_role as id_role, u.side_account, '
+               'u.side_account, u.role_type, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_user_data as u '
-               'inner join sigl_pj_group as g on g.name = u.username '
-               'inner join sigl_pj_group_link as l on l.id_group = g.id_group '
                'left join sigl_08_data as pres on pres.id_data=u.side_account '
                'where u.id_data=%s')
 
@@ -116,10 +97,10 @@ class User:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_user_data '
-                           '(creation_date, id_owner, id_group, username, password, cps_id, rpps, status, firstname, '
+                           '(creation_date, id_owner, role_type, username, password, cps_id, rpps, status, firstname, '
                            'lastname, locale, email, titre, initiale, ddn, adresse, tel, darrive, position, cv, diplome, '
                            'formation, section, deval, side_account, commentaire) '
-                           'values (NOW(), %(id_owner)s, %(id_group)s, %(username)s, %(password)s, %(cps_id)s, %(rpps)s, '
+                           'values (NOW(), %(id_owner)s, %(role_type)s, %(username)s, %(password)s, %(cps_id)s, %(rpps)s, '
                            '%(status)s, %(firstname)s, %(lastname)s, %(locale)s, %(email)s, %(titre)s, %(initiale)s, '
                            '%(ddn)s, %(adresse)s, %(tel)s, %(darrive)s, %(position)s, %(cv)s, %(diplome)s, %(formation)s, '
                            '%(section)s, %(deval)s, %(side_account)s, %(commentaire)s)', params)
@@ -172,122 +153,23 @@ class User:
             return False
 
     @staticmethod
-    def insertUserName(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_pj_group '
-                           '(name) '
-                           'values (%(name)s)', params)
-
-            User.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
-    def updateUserName(old_name, new_name):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('update sigl_pj_group '
-                           'set name=%s '
-                           'where name=%s', (new_name, old_name))
-
-            User.log.info(Logs.fileline())
-
-            return True
-        except mysql.connector.Error as e:
-            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return False
-
-    @staticmethod
-    def insertUserRole(**params):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('insert into sigl_pj_group_link '
-                           '(id_group, id_group_parent, id_role) '
-                           'values (%(id_group)s, %(id_group_parent)s, %(id_role)s)', params)
-
-            User.log.info(Logs.fileline())
-
-            return cursor.lastrowid
-        except mysql.connector.Error as e:
-            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return 0
-
-    @staticmethod
-    def updateUserRole(id_group, id_role):
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('update sigl_pj_group_link '
-                           'set id_role=%s '
-                           'where id_group=%s', (id_role, id_group))
-
-            User.log.info(Logs.fileline())
-
-            return True
-        except mysql.connector.Error as e:
-            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return False
-
-    @staticmethod
-    def getUserGroupParent(id_group):
+    def getUsersByRole(role_type):
         cursor = DB.cursor()
 
-        req = ('select id_group_parent '
-               'from sigl_pj_group_link '
-               'where id_group = %s')
-
-        cursor.execute(req, (id_group,))
-
-        return cursor.fetchone()  # TODO AlC : a confirmer que c'est unique
-
-    @staticmethod
-    def getUserIdGroup(username):
-        cursor = DB.cursor()
-
-        req = ('select id_group '
-               'from sigl_pj_group '
-               'where name = %s')
-
-        cursor.execute(req, (username,))
-
-        return cursor.fetchone()
-
-    @staticmethod
-    def getUsersByRole(id_role):
-        # From sigl_pj_role
-        # Admin      = 1
-        # Biologist  = 2
-        # Technician = 3
-        # Secretary  = 4
-        # Advanced technician = 5
-        # quality technician  = 6
-        # Advanced secretary  = 7
-        # Qualitician         = 8
-        # Prescriber          = 9
-
-        l_id_role = ''
-
-        if id_role == 3:
-            l_id_role = '(l.id_role=3 or l.id_role=5 or l.id_role=6 or l.id_role=2)'
-        else:
-            l_id_role = 'l.id_role=' + str(id_role)
-
-        cursor = DB.cursor()
-
-        req = ('select g.id_group, g.name, g.id_axis, u.side_account, '
-               'u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
+        req = ('select u.side_account, u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
                'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
-               'from sigl_pj_group as g '
-               'inner join sigl_user_data AS u ON g.id_group = u.id_group '
-               'inner join sigl_pj_group_link AS l ON g.id_group = l.id_group '
-               'where u.status != "31" and ' + l_id_role)  # 31 correspond à l'utilisateur "supprimé"
+               'from sigl_user_data as u '
+               'where u.status != "31" and u.role_type=%s')  # 31 correspond à l'utilisateur "supprimé"
+
+        cursor.execute(req, (role_type,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getUserRoleList():
+        cursor = DB.cursor()
+
+        req = ('select id_role, name, label, type from sigl_pj_role')
 
         cursor.execute(req)
 
@@ -300,21 +182,20 @@ class User:
         req = ('select u.firstname, u.lastname, u.username, u.password, u.titre, u.email, u.status, u.cps_id, u.locale, '
                'u.rpps, u.otp_phone_number, u.initiale, date_format(u.ddn, %s) as ddn, u.position, u.adresse, u.tel, '
                'date_format(u.darrive, %s) as darrive, u.cv, u.diplome, u.formation, date_format(u.deval, %s) as deval, '
-               'u.section, u.commentaire, u.side_account, gl.id_role '
-               'from sigl_pj_group_link as gl '
-               'inner join sigl_user_data as u on u.id_group=gl.id_group '
-               'where gl.id_group_parent=1000 and u.username != "root" '
-               'group by u.id_data order by gl.id_role asc')
+               'u.section, u.commentaire, u.side_account, u.role_type '
+               'from sigl_user_data as u '
+               'where u.username != "root" '
+               'group by u.id_data order by u.role_type asc')
 
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate))
 
         return cursor.fetchall()
 
     @staticmethod
-    def getUserList(args, id_lab):
+    def getUserList(args):
         cursor = DB.cursor()
 
-        filter_cond = ''
+        filter_cond = 'u.role_type != "X" '
 
         if not args:
             limit = 'LIMIT 500'
@@ -325,9 +206,6 @@ class User:
             # filter conditions
             if args['login']:
                 filter_cond += ' and u.username LIKE "%' + args['login'] + '%" '
-
-            if 'group' in args and args['group'] > 0:
-                filter_cond += ' and group=' + str(args['group']) + ' '
 
             if args['firstname']:
                 filter_cond += ' and u.firstname LIKE "%' + args['firstname'] + '%" '
@@ -346,24 +224,23 @@ class User:
             else:
                 filter_cond += ' and u.status=29 '  # keep only activated users by default
 
-            if 'role' in args and args['role'] > 0:
-                filter_cond += ' and r.id_role=' + str(args['role']) + ' '
+            if 'role' in args and args['role']:
+                filter_cond += ' and u.role_type="' + str(args['role']) + '" '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = ('select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '
                'u.initiale as initial, u.ddn as birth, u.adresse as address, u.tel as phone, u.email, '
                'u.darrive as arrived, u.position as position, dict.label as section, u.deval as last_eval, '
                'date_format(u.creation_date, %s) as date_create, r.label as role, u.oauth_provider_id_user as id_origin, '
-               'COALESCE(u2.username, "") as origin '
-               'from sigl_pj_group_link as gl '
-               'inner join sigl_user_data as u on u.id_group=gl.id_group '
-               'inner join sigl_pj_role as r on gl.id_role=r.id_role '
+               'COALESCE(u2.username, "") as origin, u.role_type '
+               'from sigl_user_data as u '
+               'inner join sigl_pj_role as r on r.type=u.role_type '
                'left join sigl_user_data as u2 on u2.id_data=u.oauth_provider_id_user '
                'left join sigl_dico_data as dict on dict.id_data=u.section '
-               'where gl.id_group_parent=%s ' + filter_cond +
+               'where ' + filter_cond +
                'group by u.id_data order by u.creation_date asc ' + limit)
 
-        cursor.execute(req, (Constants.cst_isodate, id_lab,))
+        cursor.execute(req, (Constants.cst_isodate,))
 
         return cursor.fetchall()
 
@@ -391,14 +268,6 @@ class User:
         cursor.execute(req)
 
         return cursor.fetchall()
-
-    @staticmethod
-    def getRightsByRole(role):
-        # TODO database structure for that
-
-        ret = {}
-
-        return ret
 
     @staticmethod
     def getUserConnections(date_beg, date_end):

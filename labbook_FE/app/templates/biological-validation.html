@@ -217,12 +217,12 @@ let res      = '<option value="0"> </option>' ;
         if ( bio_list[k].firstname != "" && bio_list[k].lastname != "" )
         bio_ident =  bio_list[k].firstname + " " + bio_list[k].lastname ;
 
-        if ( bio_list[k].id_group == {{ session['user_id_group'] }} )
+        if ( bio_list[k].id_user == {{ session['user_id']}} )
         {
         selected = "selected" ;
         }
         
-    res += '<option value="' + bio_list[k].id_group + '" ' + selected + '>' + bio_ident + '</option>' ;
+    res += '<option value="' + bio_list[k].id_user + '" ' + selected + '>' + bio_ident + '</option>' ;
     }
 
 $("#validator").html(res) ;
@@ -232,11 +232,11 @@ $("#validator").html(res) ;
 
 function add_analysis()
 {
-let id_group       = {{ session['user_id_group']|safe}} ;
+let id_user        = {{ session['user_id']|safe}} ;
 let user_role      = "{{ session['user_role']|safe }}"  ;
 let id_rec         = data_res[0].id_dos ;
 let param_list_ana = '{ "list_ana":[ ';
-let param_list_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '", "list_ref":[ ';
+let param_list_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '", "list_ref":[ ';
 let value_ana      = '' ;
 let value_res      = '' ;
 
@@ -253,7 +253,7 @@ let value_res      = '' ;
         value_res += ', ' ;
         }
 
-    let param_ana = '{ "id_owner":' + id_group + ', ' +
+    let param_ana = '{ "id_owner":' + id_user + ', ' +
                       '"id_rec":' + id_rec  + ', ' +
                       '"id_ana":' + list_id_ana[i] + ', ' +
                       '"price":0, ' +
@@ -356,7 +356,7 @@ function reset_res( id_rec, id_res )
 {
     if ( window.confirm("{{ _("Etes-vous sur de vouloir effacer ce résultat ?") }}") )
     {
-    let param_res = '{ "id_owner": {{ session['user_id_group'] }}, "id_res":' + id_res + '}' ;
+    let param_res = '{ "id_owner": {{ session["user_id"]}}, "id_res":' + id_res + '}' ;
 
         // result to reset
         $.ajax( 
@@ -400,7 +400,7 @@ function send_cancel()
 {
 let reason    = $("#cancel_reason").val() ;
 let comment   = JSON.stringify( $("#cancel_comm").val() ) ;
-let param_res = '{ "id_owner": {{ session['user_id_group'] }}, ' +
+let param_res = '{ "id_owner": {{ session['user_id']}}, ' +
                   '"id_res":' + id_res_tmp + ', ' +
                   '"reason":' + reason + ',' +
                   '"comment":' + comment  + '}' ; // NO QUOTE DUE TO STRINGIFY PROCESS
@@ -445,7 +445,7 @@ let param_list_valid = '{ "template": "' + template + '", "comm_valid": ' + comm
         if (i > 0)
         param_list_valid += ', ' ;
 
-    let param_valid = '{ "id_owner": {{ session['user_id_group'] }}, ' +
+    let param_valid = '{ "id_owner": {{ session['user_id']}}, ' +
                         '"id_res":' + id_res + ', ' +
                         '"date_valid":"' + date_valid + '", ' +
                         '"user_valid":' + user_valid + ', ' +

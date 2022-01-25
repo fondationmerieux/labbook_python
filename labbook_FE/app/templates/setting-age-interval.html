@@ -177,7 +177,7 @@ let id_ihm  = split_id[split_id.length -1] ;
 
 function save_dict()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner = {{ session['user_id']|safe}} ;
 var param = '{ "list_val":[ ';
 var tmp_value = '' ;
 

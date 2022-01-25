@@ -1,0 +1,226 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Résultats du contrôle externe") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Résultats du contrôle externe") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row">
+                    <label for="cte_date" class="col-form-label col-3 text-right mt-2">{{ _("Date du contrôle") }} *</label>
+                    <div>					
+                        <input id="cte_date" class="form-control" type="datetime-local" value="{{ args['result']['cte_date'] }}" name="cte_date" style="color: #888;">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="cte_organizer" class="col-form-label col-3 text-right mt-2">{{ _("Organisateur") }}</label>
+                    <div>					
+                        <input id="cte_organizer" name="cte_organizer" type="text" maxlength="255" class="form-control" value="{{ args['result']['cte_organizer'] }}" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="cte_contact" class="col-form-label col-3 text-right mt-2">{{ _("Contact de l'organisateur") }}</label>
+                    <div>					
+                        <textarea id="cte_contact" name="cte_contact" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cte_contact'] }}</textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label for="cte_conform" class="col-form-label col-3 text-right mt-2">{{ _("Résultats du contrôle") }}</label>
+                    <div>					
+                        <select id="cte_conform" class="form-control">
+                            <option value="" {% if not args['result']['cte_conform'] or args['result']['cte_conform'] == "" %} selected {% endif %}></option>
+                            <option value="Y" {% if args['result']['cte_conform'] == "Y" %} selected {% endif %}>{{ _("Conforme") }}</option>
+                            <option value="N" {% if args['result']['cte_conform'] == "N" %} selected {% endif %}>{{ _("Non conforme") }}</option>
+                            <option value="U" {% if args['result']['cte_conform'] == "U" %} selected {% endif %}>{{ _("Autres") }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="cte_comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaire") }}</label>
+                    <div>					
+                        <textarea id="cte_comment" name="cte_comment" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cte_comment'] }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="CTRL" class="col-form-label col-3 text-right mt-2">{{ _("Compte rendu") }}</label>
+                    <div class="text-left upload-container">
+                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                            <input id="CTRL" name="file" type="file" style="margin-bottom:4px"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file">
+                                {% if args['cte_ser'] > 0 %}
+                                <tr>
+                                    <td class="filename"><div>{{ args['result']['tpl_file'] }}</div></td>
+                                    <td class="action">
+                                        <div>
+                                            <a href="#" onclick="download_file('CT', '{{ args["result"]["tpl_file"] }}', 'CTRL', {{ args['cte_ser']|safe }});">{{ _("Télécharger") }}</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var data_CTRL = {% if args['data_CTRL'] %}{{ args['data_CTRL']|safe }}{% else %}[]{% endif %} ;
+
+function save_item()
+{
+var ctq_ser   = {{ args['ctq_ser']|safe }}    ;
+var id_item   = {{ args['cte_ser']|safe }}    ;
+var cte_type  = "{{ args['type_val']|safe }}" ;
+var cte_date  = $("#cte_date").val()          ;
+var organizer = $("#cte_organizer").val() ;
+var contact   = JSON.stringify( $("#cte_contact").val() ) ;
+var conform   = JSON.stringify( $("#cte_conform").val() )  ;
+var comment   = JSON.stringify( $("#cte_comment").val() ) ;
+var cr_file   = $("#CTRL")[0].files[0] ;
+
+var msg = "" ;
+
+    if (cte_date == "")
+    msg += "{{ _("Veuillez saisir une date de contrôle.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_item":' + id_item + ', ' +
+              '"cte_ctq":' + ctq_ser + ', ' +
+              '"cte_date":"' + cte_date + '", ' +
+              '"cte_type":"' + cte_type + '", ' +
+              '"cte_organizer":"' + organizer + '", ' +
+              '"cte_contact":' + contact + ', ' +
+              '"cte_conform":' + conforme + ', ' +
+              '"cte_comment":' + comment + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/control/ext/res/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           let ref = JSON.stringify(data) ;
+
+           upload_file("CTRL", ref);  // Report for external control
+
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ; 
+
+           window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-control-ext/" + ctq_ser ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function upload_file(type_ref, ref)
+{
+let param_form = new FormData() ;
+let input_file = $('#' + type_ref)[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    param_form.append('file', input_file.files[0]) ;
+
+        $.ajax(
+        {
+            type : 'POST',
+            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + type_ref + "/" + ref,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: param_form,
+            success : function(response)
+            {
+            console.log( "success upload ") ;
+            },
+            error: function(response)
+            {
+            console.log("ERROR upload file") ;
+            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+            }
+        } ) ;
+    }    
+}
+
+function load_data()
+{
+$("#tbody_file").empty() ;
+
+    for( i in data_CTRL )
+    {
+    load_file( data_CTRL[i] ) ;
+    }
+}
+
+function load_file( data )
+{
+let tr_file = '' ;
+let obj = data ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'CTRL\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

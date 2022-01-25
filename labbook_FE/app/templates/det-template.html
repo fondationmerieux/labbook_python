@@ -80,7 +80,7 @@
 <script>
 function save_item()
 {
-var id_owner    = {{ session['user_id_group']|safe }} ;
+var id_owner    = {{ session['user_id']|safe}} ;
 var id_tpl      = {{ args['id_tpl']|safe }} ;
 var tpl_name    = $("#tpl_name").val()      ;
 var tpl_type    = $("#tpl_type").val()      ;

@@ -20,22 +20,14 @@
                 <div class="form-group row mt-3">
                     <label for="role" class="col-form-label col-3 text-right mt-2">{{ _("Rôle") }} *</label>
                     <div>					
-                        {% if args['user_id'] > 0 and args['id_role'] == 1 and args['username'] == 'root' %}
+                        {% if args['user_id'] > 0 and args['role_type'] == 'A' and args['username'] == 'root' %}
                         <select id="role" name="role" class="form-control" onchange="role_choice(this);">
-                            <option value="1" selected>{{ _("Administrateur") }}</option>
+                            <option value="A" selected>{{ _("Administrateur") }}</option>
                         </select>
                         {% else %}
                         <select id="role" name="role" class="form-control" onchange="role_choice(this);">
-                            <option value="0" {% if args['id_role'] == 0 %} selected {% endif %}></option>  
-                            <option value="1" {% if args['id_role'] == 1 %} selected {% endif %}>{{ _("Administrateur") }}</option>
-                            <option value="2" {% if args['id_role'] == 2 %} selected {% endif %}>{{ _("Biologiste") }}</option>
-                            <option value="3" {% if args['id_role'] == 3 %} selected {% endif %}>{{ _("Technicien") }}</option>
-                            <option value="5" {% if args['id_role'] == 5 %} selected {% endif %}>{{ _("Technicien avancé") }}</option>
-                            <option value="6" {% if args['id_role'] == 6 %} selected {% endif %}>{{ _("Technicien qualiticien") }}</option>
-                            <option value="4" {% if args['id_role'] == 4 %} selected {% endif %}>{{ _("Secrétaire") }}</option>
-                            <option value="7" {% if args['id_role'] == 7 %} selected {% endif %}>{{ _("Secrétaire avancée") }}</option>
-                            <option value="8" {% if args['id_role'] == 8 %} selected {% endif %}>{{ _("Qualiticien") }}</option>
-                            <option value="9" {% if args['id_role'] == 9 %} selected {% endif %}>{{ _("Prescripteur") }}</option>
+                            {% from 'macros.html' import select_user_role %}
+                            {{ select_user_role(ihm['user_role'], args['role_type']) }}
                         </select>
                         {% endif %}
                     </div>
@@ -248,7 +240,7 @@ $("#search_doctor").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/doctor/search/" + {{ session['user_id_group'] }},
+        url: "{{ session['server_ext'] }}/services/doctor/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -274,7 +266,7 @@ $("#search_doctor").select2(
 
 function save_user()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner  = {{ session['user_id']|safe}} ;
 var id_user   = {{ args['user_id']|safe }} ;
 var login     = $("#login").val()     ;
 var cps       = $("#cps").val()       ;
@@ -299,7 +291,7 @@ var cv        = JSON.stringify( $("#cv").val() )       ;
 var diploma   = JSON.stringify( $("#diploma").val() )  ;
 var training  = JSON.stringify( $("#training").val() ) ;
 var comment   = JSON.stringify( $("#comment").val() )  ;
-var id_role   = $("#role").val()   ;
+var role_type = $("#role").val()   ;
 var id_pres   = $("#search_doctor").val() ;
 
 var msg = "" ;
@@ -327,7 +319,7 @@ var pwd2 = $("#pwd2").val() ;
     if (lang == "" || lang == undefined)
     msg += "{{ _("Veuillez choisir une langue.") }}\n" ;
 
-    if (id_role == 0)
+    if (role_type == '')
     msg += "{{ _("Veuillez choisir un rôle.") }}\n" ;
 
     if (msg != "")
@@ -364,7 +356,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"diploma":' + diploma + ', ' +   // No quotes with stringify
               '"training":' + training + ', ' + // No quotes with stringify
               '"comment":' + comment + ', ' +   // No quotes with stringify
-              '"id_role":' + id_role + ', ' + 
+              '"role_type":"' + role_type + '", ' + 
               '"id_pres":' + id_pres + '}' ;
 
     $.ajax( {

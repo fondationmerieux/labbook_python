@@ -170,11 +170,11 @@ class PatientDet(Resource):
 
         if 'id_owner' not in args or 'anonyme' not in args or 'code' not in args or 'code_patient' not in args or \
            'nom' not in args or 'prenom' not in args or 'ddn' not in args or 'sexe' not in args or \
-           'ethnie' not in args or 'adresse' not in args or 'cp' not in args or 'ville' not in args or \
+           'adresse' not in args or 'cp' not in args or 'ville' not in args or \
            'tel' not in args or 'profession' not in args or 'nom_jf' not in args or 'quartier' not in args or \
-           'bp' not in args or 'ddn_approx' not in args or 'age' not in args or 'annee_naiss' not in args or \
+           'bp' not in args or 'ddn_approx' not in args or 'age' not in args or \
            'midname' not in args or 'nationality' not in args or 'resident' not in args or 'blood_group' not in args or \
-           'blood_rhesus' not in args or 'semaine_naiss' not in args or 'mois_naiss' not in args or 'unite' not in args:
+           'blood_rhesus' not in args or 'unite' not in args:
             self.log.error(Logs.fileline() + ' : PatientDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -200,7 +200,6 @@ class PatientDet(Resource):
                                         prenom=args['prenom'],
                                         ddn=args['ddn'],
                                         sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
                                         adresse=args['adresse'],
                                         cp=args['cp'],
                                         ville=args['ville'],
@@ -211,9 +210,6 @@ class PatientDet(Resource):
                                         bp=args['bp'],
                                         ddn_approx=args['ddn_approx'],
                                         age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
                                         unite=args['unite'],
                                         midname=args['midname'],
                                         nationality=args['nationality'],
@@ -243,7 +239,6 @@ class PatientDet(Resource):
                                         prenom=args['prenom'],
                                         ddn=args['ddn'],
                                         sexe=args['sexe'],
-                                        ethnie=args['ethnie'],
                                         adresse=args['adresse'],
                                         cp=args['cp'],
                                         ville=args['ville'],
@@ -254,9 +249,6 @@ class PatientDet(Resource):
                                         bp=args['bp'],
                                         ddn_approx=args['ddn_approx'],
                                         age=args['age'],
-                                        annee_naiss=args['annee_naiss'],
-                                        semaine_naiss=args['semaine_naiss'],
-                                        mois_naiss=args['mois_naiss'],
                                         unite=args['unite'],
                                         midname=args['midname'],
                                         nationality=args['nationality'],

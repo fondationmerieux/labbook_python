@@ -64,6 +64,13 @@ config_envvar = 'LOCAL_SETTINGS'
 if config_envvar in os.environ:
     print(("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar])))
     app.config.from_envvar(config_envvar)
+
+    # check if LABBOOK_URL_PREFIX already exist in os.environ if not use one from default_settings
+    if 'LABBOOK_URL_PREFIX' in os.environ and os.environ['LABBOOK_URL_PREFIX']:
+        app.config['REDIRECT_NAME'] = os.environ['LABBOOK_URL_PREFIX']
+        log.info(Logs.fileline() + ' : LABBOOK_URL_PREFIX from environ : ' + str(os.environ['LABBOOK_URL_PREFIX']))
+    else:
+        os.environ['LABBOOK_URL_PREFIX'] = app.config.get('REDIRECT_NAME')
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
@@ -250,8 +257,7 @@ def get_user_data(login):
             json = req.json()
 
             session['user_id']        = json['id_data']
-            session['user_id_role']   = json['id_role']
-            session['user_id_group']  = json['id_group']
+            session['user_role']      = json['role_type']
             session['user_name']      = json['username']
             session['user_firstname'] = json['firstname']
             session['user_lastname']  = json['lastname']
@@ -259,6 +265,7 @@ def get_user_data(login):
             session['user_side_account'] = json['side_account']
             session.modified = True
 
+            """
             if session['user_id_role'] == 1:
                 session['user_role'] = 'A'  # Administrator
                 session.modified = True
@@ -289,7 +296,7 @@ def get_user_data(login):
             else:
                 log.error(Logs.fileline() + ' : TRACE unknow role')
                 session['user_role'] = 'X'  # Unknown
-                session.modified = True
+                session.modified = True"""
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
@@ -371,6 +378,7 @@ def initialization():
 @app.route('/api')
 def api():
     log.info(Logs.fileline() + ' : TRACE api')
+    get_init_var()
 
     return render_template('api.html', rand=random.randint(0, 999))
 
@@ -622,11 +630,23 @@ def setting_users():
     session['current_page'] = 'setting-users'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load list of user role
+    try:
+        url = session['server_int'] + '/services/user/role/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['user_role'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
 
     # Load list users
     try:
-        url = session['server_int'] + '/services/user/list/' + str(session['user_id_group'])
+        url = session['server_int'] + '/services/user/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -635,7 +655,7 @@ def setting_users():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-users.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-users.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : details user
@@ -648,6 +668,17 @@ def setting_det_user(user_id=0):
 
     json_ihm  = {}
     json_data = {}
+
+    # Load list of user role
+    try:
+        url = session['server_int'] + '/services/user/role/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['user_role'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
 
     # Load sections
     try:
@@ -673,6 +704,8 @@ def setting_det_user(user_id=0):
             log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
 
     json_data['user_id'] = user_id
+
+    log.error(Logs.fileline() + ' : DEBUG args=' + str(json_data))
 
     return render_template('setting-det-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -1111,9 +1144,9 @@ def list_template():
 # Page : template details
 @app.route('/det-template/<int:id_tpl>')
 def det_template(id_tpl=0):
-    log.info(Logs.fileline() + ' : TRACE setting template' + str(id_tpl))
+    log.info(Logs.fileline() + ' : TRACE setting template det=' + str(id_tpl))
 
-    session['current_page'] = 'det-template' + str(id_tpl)
+    session['current_page'] = 'det-template/' + str(id_tpl)
     session.modified = True
 
     json_data = {}
@@ -3290,7 +3323,7 @@ def list_staff():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/user/list/' + str(session['user_id_group'])
+        url = session['server_int'] + '/services/user/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -3729,7 +3762,7 @@ def list_ctrl_int():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/control/int/list'
+        url = session['server_int'] + '/services/quality/control/list/INT'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3739,6 +3772,184 @@ def list_ctrl_int():
         log.error(Logs.fileline() + ' : requests internal control list failed, err=%s , url=%s', err, url)
 
     return render_template('list-ctrl-int.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : internal control details
+@app.route('/det-control-int/<int:id_ctrl>')
+def det_control_int(id_ctrl=0):
+    log.info(Logs.fileline() + ' : TRACE internal control det=' + str(id_ctrl))
+
+    session['current_page'] = 'det-control-int/' + str(id_ctrl)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['control'] = []
+    json_data['result']  = []
+
+    if id_ctrl > 0:
+        # Load internal control details
+        try:
+            url = session['server_int'] + '/services/quality/control/det/' + str(id_ctrl)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['control'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests internal control det failed, err=%s , url=%s', err, url)
+
+        # Load list of result
+        try:
+            url = session['server_int'] + '/services/quality/control/int/res/list/' + str(id_ctrl)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['result'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests internal control res list failed, err=%s , url=%s', err, url)
+
+    json_data['id_ctrl'] = id_ctrl
+
+    return render_template('det-control-int.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : internal control results
+@app.route('/res-control-int/<int:ctq_ser>/<string:type_val>/<int:cti_ser>')
+def res_control_int(ctq_ser, type_val='', cti_ser=0):
+    log.info(Logs.fileline() + ' : TRACE internal control res=' + str(cti_ser))
+
+    session['current_page'] = 'res-control-int/' + str(ctq_ser) + '/' + type_val + '/' + str(cti_ser)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['result'] = []
+
+    if cti_ser > 0:
+        # Load internal control details
+        try:
+            url = session['server_int'] + '/services/quality/control/int/res/' + str(cti_ser)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['result'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests internal control res failed, err=%s , url=%s', err, url)
+
+    json_data['ctq_ser']  = ctq_ser
+    json_data['type_val'] = type_val
+    json_data['cti_ser']  = cti_ser
+
+    return render_template('res-control-int.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : external control list
+@app.route('/list-ctrl-ext')
+def list_ctrl_ext():
+    log.info(Logs.fileline() + ' : TRACE external control list')
+
+    session['current_page'] = 'list-ctrl-ext'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/services/quality/control/list/EXT'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests external control list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-ctrl-ext.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : external control details
+@app.route('/det-control-ext/<int:id_ctrl>')
+def det_control_ext(id_ctrl=0):
+    log.info(Logs.fileline() + ' : TRACE external control det=' + str(id_ctrl))
+
+    session['current_page'] = 'det-control-ext/' + str(id_ctrl)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['control'] = []
+    json_data['result']  = []
+
+    if id_ctrl > 0:
+        # Load external control details
+        try:
+            url = session['server_int'] + '/services/quality/control/det/' + str(id_ctrl)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['control'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests external control det failed, err=%s , url=%s', err, url)
+
+        # Load list of result
+        try:
+            url = session['server_int'] + '/services/quality/control/ext/res/list/' + str(id_ctrl)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['result'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests external control res list failed, err=%s , url=%s', err, url)
+
+    json_data['id_ctrl'] = id_ctrl
+
+    return render_template('det-control-ext.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : external control results
+@app.route('/res-control-ext/<int:ctq_ser>/<string:type_val>/<int:cte_ser>')
+def res_control_ext(ctq_ser, type_val='', cte_ser=0):
+    log.info(Logs.fileline() + ' : TRACE external control res=' + str(cte_ser))
+
+    session['current_page'] = 'res-control-ext/' + str(ctq_ser) + '/' + type_val + '/' + str(cte_ser)
+    session.modified = True
+
+    json_data = {}
+
+    json_data['result'] = []
+
+    if cte_ser > 0:
+        # Load Report control external files
+        try:
+            url = session['server_int'] + '/services/file/document/list/CTRL/' + str(cte_ser)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_CTRL'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Control files failed, err=%s , url=%s', err, url)
+
+        # Load external control details
+        try:
+            url = session['server_int'] + '/services/quality/control/ext/res/' + str(cte_ser)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['result'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests external control res failed, err=%s , url=%s', err, url)
+
+    json_data['ctq_ser']  = ctq_ser
+    json_data['type_val'] = type_val
+    json_data['cte_ser']  = cte_ser
+
+    return render_template('res-control-ext.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list stock
@@ -4189,7 +4400,7 @@ def upload_file(type_ref='', id_ref=0):
 
         try:
             # Get last storage path
-            url = session['server_int'] + '/services/file/storage/' + str(session['user_id_group'])
+            url = session['server_int'] + '/services/file/storage'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4228,7 +4439,7 @@ def upload_file(type_ref='', id_ref=0):
                 file_ext = file_ext[1:]
 
             # insert upload information in DB
-            payload = {'id_owner': session['user_id_group'],
+            payload = {'id_owner': session['user_id'],
                        'original_name': original_name,
                        'generated_name': generated_name,
                        'size': file_size,

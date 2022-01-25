@@ -150,6 +150,8 @@ Documentation provided here is exclusively technical, and in a very partial and 
 Extensive [Manuals](https://www.lab-book.org/en/resources/?type=user_manual) and [Tutorials](https://www.lab-book.org/en/resources/?type=tutorial)
 for the LabBook application can be found at the [LabBook website](https://www.lab-book.org/en/).
 
+Interactive API documentation available on the following url: YOUR_LABBOOK_URL/sigl/api
+
 ## Changes
 
 You can have a look at [CHANGELOG.md](CHANGELOG.md) for changes to the program.

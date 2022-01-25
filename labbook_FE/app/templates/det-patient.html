@@ -259,7 +259,7 @@
 <script>
 function save_pat( id_pat ) 
 {
-var id_owner      = {{ session['user_id_group']|safe}} ;
+var id_owner      = {{ session['user_id']|safe}} ;
 var anonyme       = $("input:radio[name=anonyme]:checked").val() ;
 var code          = $("#code").text() ;
 var code_patient  = $("#code_patient").val() ;
@@ -267,7 +267,6 @@ var nom           = $("#nom").val() ;
 var prenom        = $("#prenom").val() ;
 var ddn           = $("#ddn").val() ;
 var sexe          = $("input:radio[name=sexe]:checked").val() ;
-var ethnie        = '' ; // useless
 var adresse       = JSON.stringify( $("#adresse").val() ) ;
 var cp            = $("#cp").val() ;
 var ville         = $("#ville").val() ;
@@ -278,9 +277,6 @@ var quartier      = $("#quartier").val() ;
 var bp            = $("#bp").val() ;
 var ddn_approx    = $("input:radio[name=ddn_approx]:checked").val() ;
 var age           = $("#age").val() ;
-var annee_naiss   = 0 ; // useless
-var semaine_naiss = 0 ; // useless
-var mois_naiss    = 0 ; // useless
 var unit_age      = $("#unit_age").val() ;
 var midname       = $("#midname").val() ;
 var nationality   = $("#nationality").val() ;
@@ -303,7 +299,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prenom":"' + prenom + '", ' +
               '"ddn":"' + ddn + '", ' +
               '"sexe":' + sexe + ', ' +
-              '"ethnie":"' + ethnie + '", ' +
               '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
               '"cp":"' + cp + '", ' +
               '"ville":"' + ville + '", ' +
@@ -314,9 +309,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"bp":"' + bp + '", ' +
               '"ddn_approx":' + ddn_approx + ', ' +
               '"age":' + age + ', ' +
-              '"annee_naiss":' + annee_naiss + ', ' +
-              '"semaine_naiss":' + semaine_naiss + ', ' +
-              '"mois_naiss":' + mois_naiss + ', ' +
               '"unite":' + unit_age + ', ' +
               '"midname":"' + midname + '", ' +
               '"nationality":' + nationality + ', ' +

@@ -414,7 +414,7 @@ let id_item = $(e.currentTarget).val();
 
 function save_item()
 {
-var id_owner    = {{ session['user_id_group']|safe }} ;
+var id_owner    = {{ session['user_id']|safe}} ;
 var id_item     = {{ args['id_eqp']|safe }}    ;
 var name        = $("#name").val()             ;
 var maker       = $("#maker").val()            ;

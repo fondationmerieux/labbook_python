@@ -298,6 +298,186 @@ class Quality:
             return False
 
     @staticmethod
+    def getControlList(type_ctrl):
+        cursor = DB.cursor()
+
+        req = ('select ctq_ser as id_item, ctq_name, ctq_type_ctrl, ctq_type_val, ctq_eqp, eqp.nom as eqp_name '
+               'from control_quality '
+               'inner join sigl_equipement_data as eqp on eqp.id_data=ctq_eqp '
+               'where ctq_type_ctrl=%s order by ctq_name')
+
+        cursor.execute(req, (type_ctrl,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getControlDet(id_ctrl):
+        cursor = DB.cursor()
+
+        req = ('select ctq_ser as id_item, ctq_name, ctq_type_val, ctq_eqp, eqp.nom as eqp_name '
+               'from control_quality '
+               'inner join sigl_equipement_data as eqp on eqp.id_data=ctq_eqp '
+               'where ctq_ser=%s')
+
+        cursor.execute(req, (id_ctrl,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertControlDet(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into control_quality '
+                           '(ctq_date, ctq_type_ctrl, ctq_type_val, ctq_name, ctq_eqp) '
+                            'values (NOW(), %(ctq_type_ctrl)s, %(ctq_type_val)s, %(ctq_name)s, %(ctq_eqp)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateControlDet(**params):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update control_quality set ctq_type_ctrl=%(ctq_type_ctrl)s,'
+                   'ctq_type_val=%(ctq_type_val)s, ctq_name=%(ctq_name)s, ctq_eqp=%(ctq_eqp)s '
+                   'where ctq_ser=%(ctq_ser)s')
+
+            cursor.execute(req, params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getControlIntResList(id_ctrl):
+        cursor = DB.cursor()
+
+        req = ('select cti_ser as id_item, cti_ctq, cti_date, cti_type, cti_target, cti_result, cti_comment '
+               'from control_internal '
+               'where cti_ctq=%s order by cti_date desc')
+
+        cursor.execute(req, (id_ctrl,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getControlIntRes(cti_ser):
+        cursor = DB.cursor()
+
+        req = ('select cti_ser as id_item, cti_ctq, cti_date, cti_type, cti_target, cti_result, cti_comment '
+               'from control_internal '
+               'where cti_ser=%s')
+
+        cursor.execute(req, (cti_ser,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertControlIntRes(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into control_internal '
+                           '(cti_date, cti_ctq, cti_type, cti_target, cti_result, cti_comment) '
+                            'values (%(cti_date)s, %(cti_ctq)s, %(cti_type)s, %(cti_target)s, %(cti_result)s, %(cti_comment)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateControlIntRes(**params):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update control_internal set cti_date=%(cti_date)s, cti_ctq=%(cti_ctq)s, cti_type=%(cti_type)s, '
+                   'cti_target=%(cti_target)s, cti_result=%(cti_result)s, cti_comment=%(cti_comment)s '
+                   'where cti_ser=%(cti_ser)s')
+
+            cursor.execute(req, params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getControlExtResList(id_ctrl):
+        cursor = DB.cursor()
+
+        req = ('select cte_ser as id_item, cte_ctq, cte_date, cte_type, cte_organizer, cte_contact, '
+               'cte_conform, cte_comment '
+               'from control_external '
+               'where cte_ctq=%s order by cte_date desc')
+
+        cursor.execute(req, (id_ctrl,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getControlExtRes(cte_ser):
+        cursor = DB.cursor()
+
+        req = ('select cte_ser as id_item, cte_ctq, cte_date, cte_type, cte_organizer, cte_contact, '
+               'cte_conform, cte_comment '
+               'from control_external '
+               'where cte_ser=%s')
+
+        cursor.execute(req, (cte_ser,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertControlExtRes(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into control_external '
+                           '(cte_date, cte_ctq, cte_type, cte_organizer, cte_contact, cte_conform, cte_comment) '
+                            'values (%(cte_date)s, %(cte_ctq)s, %(cte_type)s, %(cte_organizer)s, '
+                            '%(cte_contact)s, %(cte_conform)s, %(cte_comment)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateControlExtRes(**params):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update control_external set cte_date=%(cte_date)s, cte_ctq=%(cte_ctq)s, cte_type=%(cte_type)s, '
+                   'cte_organizer=%(cte_organizer)s, cte_contact=%(cte_contact)s, cte_conform=%(cte_conform)s, '
+                   'cte_comment=%(cte_comment)s '
+                   'where cte_ser=%(cte_ser)s')
+
+            cursor.execute(req, params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getEquipmentList():
         cursor = DB.cursor()
 
@@ -322,9 +502,9 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (nom like "%' + word + '%") ')
 
-        req = 'select nom as field_value, id_data '\
-              'from sigl_equipement_data '\
-              'where ' + cond + ' order by field_value asc limit 1000'
+        req = ('select nom as field_value, id_data '
+               'from sigl_equipement_data '
+               'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
 

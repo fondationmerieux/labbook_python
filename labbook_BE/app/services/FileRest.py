@@ -133,13 +133,13 @@ class FileReport(Resource):
 class FileStorage(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_group):
+    def get(self):
         storage = File.getLastFileStorage()
 
         if not storage:
             self.log.error(Logs.fileline() + ' : TRACE FileStorage not found')
             # We create a first storage
-            ret = File.insertStorage(id_owner=id_group, path=Constants.cst_storage)
+            ret = File.insertStorage(path=Constants.cst_storage)
 
             if ret <= 0:
                 self.log.info(Logs.fileline() + ' : TRACE FileStorage ERROR insert storage')

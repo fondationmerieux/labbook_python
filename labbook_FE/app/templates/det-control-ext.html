@@ -1,0 +1,334 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Contrôle externe") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Contrôle externe") }}</span></h2>
+            <div class="form-group row">
+                <label class="col-form-label col-3 text-right mx-3">{{ _("Type") }}</label>
+                <label class="col-form-label text-right mr-3">
+                    <input type="radio" name="ctrl-type" value="QL" {% if not args['control']['ctq_type_val'] or args['control']['ctq_type_val'] == "QL" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Qualitatif") }}</input>
+                </label>
+                <label class="col-form-label text-right mr-3">
+                    <input type="radio" name="ctrl-type" value="QN" {% if args['control']['ctq_type_val'] == "QN" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Quantitatif") }}</input>
+                </label>
+            </div>
+            <div class="form-group row">
+                <label for="ctrl-name" class="col-form-label col-3 text-right mr-1">{{ _("Nom du paramètre") }}</label>
+                <div>
+                    <input id="ctrl-name" class="form-control" type="text" maxlength="255" value="{{ args['control']['ctq_name'] }}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="search_eqp" class="col-form-label col-3 text-right mr-2">{{ _("Equipement") }}</label>
+                <div>
+                    <select id="search_eqp" style="width:400px"></select><br />
+                    <span class="ml-2">{{ args['control']['eqp_name'] }}</span>
+                    <input type="hidden" id="id_eqp" value="{{ args['control']['ctq_eqp'] }}">
+                </div>
+                <div class="col-2 text-right">
+                    <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+            <div>
+                <span>{{ _("Nombre total de lignes") }} :</span>
+                <span id="list_items_total">{% if not args %}0{% endif %}</span>
+            </div>
+            <div>
+                <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <form class="row justify-content-center mt-3" id="res-list">
+                <table id="table_items" class="table table-striped table-hover table-responsive col-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>{{ _("serial") }}</th>
+                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date") }}</th>
+                            <th class="text-left cursor-act">{{ _("Organisateur") }}</th>
+                            <th class="text-left cursor-act">{{ _("Résultat") }}</th>
+                            <th class="text-left cursor-act">{{ _("Commentaire") }}</th>
+                            <th class="text-left">{{ _("Compte rendu") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_items">
+                    </tbody>
+                </table>
+            </form>
+
+            <div>
+                <span><a class="link" id="first_item" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <div class="clearfix mb-5 mt-3">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
+                          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+var id_item    = {{ args['id_ctrl']|safe }} ;
+var data_items = {% if args['result'] %}{{ args['result']|safe }}{% else %}[]{% endif %} ;
+var p_step     = 20 ;
+var p_cur      = 1 ;
+var p_max      = Math.ceil( data_items.length / p_step ) ;
+
+function display_item( num_page )
+{
+let res = "" ;
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+    $("#tbody_items").empty() ;
+
+{% if not args['result'] %}
+res = "<tr>" +
+      "<td colspan=\"7\">" +
+      "<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>" ;
+{% else %}
+let data_len = data_items.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = "" ;
+
+$("#list_items_total").html( data_len ) ;
+
+    for( i = i_start; i < i_stop; i++ )
+    {
+    {% if session["user_role"] == "A" or session["user_role"] == "B" or
+          session["user_role"] == "Q" or session["user_role"] == "TQ" %}
+    let menu_act = "<nav>" +
+                   "<ul class=\"navbar-nav\">" +
+                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
+                   "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/res-control-ext/" + data_items[i].cte_ctq + "/" + data_items[i].cte_type + "/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>";   
+        
+    menu_act += "</div></ul></nav>" ;
+    {% else %}
+    let menu_act = "" ;
+    {% endif %}
+
+    conform = ""
+
+    if (data_items[i].cte_conform == "Y") conform = "{{ _("Conforme") }}" ;
+    else if (data_items[i].cte_conform == "N") conform = "{{ _("Non conforme") }}" ;
+    else if (data_items[i].cte_conform == "U") conform = "{{ _("Autre") }}" ;
+
+    if ( data_items[i].id_file > 0)
+    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + data_items[i].filename + "', 'CTRL', " + data_items[i].id_file + ");\"><span class=\"fa fa-download\"></span></a>" ;
+    else
+    link_manual = "" ;
+
+    res += "<tr><td hidden><div>" + data_items[i].id_item + "</div></td>" +
+           "<td><div>" + menu_act + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].cte_date + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].cte_organizer + "</div></td>" +
+           "<td><div class=\"text-left\">" + conform + "</div></td>" +
+           "<td><div class=\"text-left\">" + data_items[i].cte_comment + "</div></td>" +
+           "<td><div class=\"text-left\">" + link_manual + "</div></td></tr>" ;
+    }
+{% endif %}
+
+    $("#tbody_items").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
+
+    $("#table_items").tablesorter() ;  // sort only data on screen 
+}
+
+function save_ctrl()
+{
+var type_val  = $("input:radio[name=ctrl-type]:checked").val() ;
+var name      = $("#ctrl-name").val() ;
+var id_eqp    = $("#id_eqp").val() ;
+
+var msg = "" ;
+
+    if (name == "")
+    msg += "{{ _("Veuillez saisir un nom de paramètre.") }}\n" ;
+
+    if (id_eqp == 0)
+    msg += "{{ _("Veuillez sélectionner un équipement.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_item":' + id_item + ', ' +
+              '"name":"' + name + '", ' +
+              '"type_ctrl":"EXT", ' +
+              '"type_val":"' + type_val + '", ' +
+              '"id_eqp":' + id_eqp + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/control/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ; 
+
+           id_item = JSON.stringify(data) ;
+
+           window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-control-ext/" + id_item ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function add_item()
+{
+var type_val  = $("input:radio[name=ctrl-type]:checked").val() ;
+
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/res-control-ext/" +id_item + "/" + type_val + "/0";
+}
+
+function export_data()
+{
+var param = '{}' ;
+
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
+    {
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/quality/control/ext/res/export/" + id_item,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+            
+            let today = new Date();
+
+            let month = today.getMonth() + 1 ;
+
+            if (month < 10) month = '0' + month ;
+
+            let day = today.getDate() ;
+
+            if (day < 10) day = '0' + day ;
+
+            today = today.getFullYear() + '' + month + '' + day ;
+
+            let filename = "control_ext_" + id_item + "_" + today + ".csv" ;
+
+            download_file( "PY", filename, "GEN", 0 ) ;
+            },
+            error: function(ret)
+            {
+                $("#dial-wait").modal("hide") ;
+
+                if (ret.status == 404)
+                alert("{{ _("Aucun résultats à exporter !") }}") ;
+                else
+                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            }
+        } ) ;
+    } ) ;
+}
+
+$("#search_eqp").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/equipment/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_eqp").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_eqp").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+
+    $("#id_eqp").val(id_item) ;
+} ) ;
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-ctrl-ext" ;
+}
+
+$( document ).ready( function()
+{
+display_item( 1 ) ;
+} ) ;
+</script>
+{% endblock %}
+

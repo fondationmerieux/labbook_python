@@ -428,7 +428,7 @@ $("#search_ana").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id_group'] }},
+        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id']}},
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -810,7 +810,7 @@ load_data() ;
 
 function save_ana()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner  = {{ session['user_id']|safe}} ;
 var id_ana    = {{ args['analysis_id']|safe }} ;
 var code      = $("#code").val()      ;
 var code_ori  = $("#code_ori").val()  ;

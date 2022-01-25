@@ -646,7 +646,7 @@ return display ;
 
 function save_pat() 
 {
-var id_owner      = {{ session['user_id_group']|safe}} ;
+var id_owner      = {{ session['user_id']|safe}} ;
 var anonyme       = $("input:radio[name=anonyme_1]:checked").val() ;
 var code          = $("#code_1").text() ;
 var code_patient  = $("#code_patient_1").val() ;
@@ -654,7 +654,6 @@ var nom           = $("#nom_1").val() ;
 var prenom        = $("#prenom_1").val() ;
 var ddn           = $("#ddn_1").val() ;
 var sexe          = $("input:radio[name=sexe_1]:checked").val() ;
-var ethnie        = '' ; // useless
 var adresse       = JSON.stringify( $("#adresse_1").val() ) ;
 var cp            = $("#cp_1").val() ;
 var ville         = $("#ville_1").val() ;
@@ -665,9 +664,6 @@ var quartier      = $("#quartier_1").val() ;
 var bp            = $("#bp_1").val() ;
 var ddn_approx    = $("input:radio[name=ddn_approx_1]:checked").val() ;
 var age           = $("#age_1").val() ;
-var annee_naiss   = 0 ; // useless
-var semaine_naiss = 0 ; // useless
-var mois_naiss    = 0 ; // useless
 var unite         = $("#unite_1").val() ;
 var midname       = $("#midname_1").val() ;
 var nationality   = $("#nationality_1").val() ;
@@ -690,7 +686,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prenom":"' + prenom + '", ' +
               '"ddn":"' + ddn + '", ' +
               '"sexe":' + sexe + ', ' +
-              '"ethnie":"' + ethnie + '", ' +
               '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
               '"cp":"' + cp + '", ' +
               '"ville":"' + ville + '", ' +
@@ -701,9 +696,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"bp":"' + bp + '", ' +
               '"ddn_approx":' + ddn_approx + ', ' +
               '"age":' + age + ', ' +
-              '"annee_naiss":' + annee_naiss + ', ' +
-              '"semaine_naiss":' + semaine_naiss + ', ' +
-              '"mois_naiss":' + mois_naiss + ', ' +
               '"unite":' + unite + ', ' +
               '"midname":"' + midname + '", ' +
               '"nationality":' + nationality + ', ' +

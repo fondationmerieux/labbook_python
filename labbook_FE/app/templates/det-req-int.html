@@ -361,7 +361,7 @@ $("#search_doctor").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/doctor/search/" + {{ session['user_id_group'] }},
+        url: "{{ session['server_ext'] }}/services/doctor/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -907,7 +907,7 @@ $("input[type=radio][name=parcel]").change(function()
 {% if entry == 'Y' %}
 function save_requests()
 {
-var id_group      = {{ session['user_id_group']|safe}} ;
+var id_user       = {{ session['user_id']|safe}} ;
 var user_role     = "{{ session['user_role']|safe }}"  ;
 var id_patient    = {{ args['patient']['id_data']|safe }} ;
 var type          = 184 ; // INTERNAL
@@ -1007,7 +1007,7 @@ var stat          = 181 ;
     // confirm if user wants validate this record
     if ( window.confirm("{{ _("Merci de confirmer la création et validation de ce dossier") }}") )
     {
-    var param = '{ "id_owner":' + id_group + ', ' +
+    var param = '{ "id_owner":' + id_user + ', ' +
                   '"id_patient":' + id_patient  + ', ' +
                   '"type":' + type + ', ' +
                   '"date_record":"' + date_record + '", ' +
@@ -1059,7 +1059,7 @@ var stat          = 181 ;
                             if (i > 0 && param_list_ana.slice(-1) != "[" )
                             param_list_ana += ', ' ;
 
-                        var param_ana = '{ "id_owner":' + id_group + ', ' +
+                        var param_ana = '{ "id_owner":' + id_user + ', ' +
                                           '"id_rec":' + id_rec  + ', ' +
                                           '"id_ana":' + data_analysis[i].id_data + ', ' +
                                           '"price":' + data_analysis[i].price + ', ' +
@@ -1093,7 +1093,7 @@ var stat          = 181 ;
                                     if (i > 0)
                                     param_list_prod += ', ' ;
 
-                                var param_prod = '{ "id_owner":' + id_group + ', ' +
+                                var param_prod = '{ "id_owner":' + id_user + ', ' +
                                                    '"code":"' + data_products[i].code + '", ' +
                                                    '"date_samp":"' + data_products[i].dateSamp + '", ' +
                                                    '"type_samp":"' + data_products[i].type + '", ' +
@@ -1125,7 +1125,7 @@ var stat          = 181 ;
                                 data: param_list_prod,
                                 success: function(ret_prod)
                                 {
-                                let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}' ;
+                                let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
 
                                     // create in DB list of results to enter and corresponding validation
                                     $.ajax(
@@ -1208,9 +1208,9 @@ var stat          = 181 ;
 {% if entry == 'N' %}
 function valid_requests()
 {
-let id_group  = {{ session['user_id_group']|safe}} ;
+let id_user  = {{ session['user_id']|safe}} ;
 let user_role = "{{ session['user_role']|safe }}"  ;
-let param_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '"}' ;
+let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
 
     // popup wait
     $("#dial-wait").modal("show") ;

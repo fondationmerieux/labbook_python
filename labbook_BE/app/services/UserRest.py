@@ -39,8 +39,8 @@ class UserAccess(Resource):
         ret = User.checkUserAccess(login, pwd_db)
 
         if ret is True:
-            self.log.info(Logs.fileline() + ' : TRACE UserAccess authorized role=' + str(user['id_role']) + ' | login=' + str(login))
-            return compose_ret(user['id_role'], Constants.cst_content_type_json)
+            self.log.info(Logs.fileline() + ' : TRACE UserAccess authorized role=' + str(user['role_type']) + ' | login=' + str(login))
+            return compose_ret(user['role_type'], Constants.cst_content_type_json)
         elif ret is False:
             self.log.info(Logs.fileline() + ' : TRACE UserAccess not authorized ' + str(login))
             return compose_ret('', Constants.cst_content_type_json, 401)
@@ -123,7 +123,7 @@ class UserDet(Resource):
            'title' not in args or 'initial' not in args or 'birth' not in args or 'phone' not in args or \
            'arrived' not in args or 'position' not in args or 'section' not in args or 'last_eval' not in args or \
            'address' not in args or 'cv' not in args or 'diploma' not in args or 'training' not in args or \
-           'comment' not in args or 'id_role' not in args or 'id_pres' not in args:
+           'comment' not in args or 'id_pres' not in args or 'role_type' not in args:
             self.log.error(Logs.fileline() + ' : UserDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -139,15 +139,6 @@ class UserDet(Resource):
             if not user:
                 self.log.error(Logs.fileline() + ' : TRACE UserDet no user')
                 return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # get id_group in sigl_pj_group with login
-            res = User.getUserIdGroup(user['username'])
-
-            if not res:
-                self.log.error(Logs.fileline() + ' : TRACE UserDet no id_group')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            id_group = res['id_group']
 
             # update sigl_user_data
             ret = User.updateUser(id_data=id_user,
@@ -184,14 +175,7 @@ class UserDet(Resource):
 
                 if ret is False:
                     self.log.info(Logs.fileline() + ' : TRACE UserDet ERROR update user Name')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # update sigl_pj_group_link
-            ret = User.updateUserRole(id_group, args['id_role'])
-
-            if ret is False:
-                self.log.info(Logs.fileline() + ' : TRACE UserDet ERROR update user Role')
-                return compose_ret('', Constants.cst_content_type_json, 500)
+                    return compose_ret(id_user, Constants.cst_content_type_json, 500)
 
         # insert new user
         else:
@@ -201,30 +185,9 @@ class UserDet(Resource):
 
             pwd_db = User.getPasswordDB(args['password'])
 
-            # insert into sigl_pj_group
-            ret = User.insertUserName(name=args['login'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : UserDet ERROR insert user Name')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            res = {}
-            res['id_group'] = ret
-
-            # insert into sigl_pj_group_link
-            ret = User.insertUserRole(id_group=res['id_group'],
-                                      id_group_parent=1000,  # I cant explain 1000
-                                      id_role=args['id_role'])
-
-            if ret <= 0:
-                self.log.error(Logs.alert() + ' : UserDet ERROR insert user Role')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            res['id_group_link'] = ret
-
             # insert in sigl_user_data
             ret = User.insertUser(id_owner=args['id_owner'],
-                                  id_group=res['id_group'],
+                                  role_type=args['role_type'],
                                   username=args['login'],
                                   password=pwd_db,
                                   cps_id=args['cps'],
@@ -253,10 +216,8 @@ class UserDet(Resource):
                 self.log.error(Logs.alert() + ' : UserDet ERROR insert user')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-            res['id_user'] = ret
-
         self.log.info(Logs.fileline() + ' : TRACE UserDet id_user=' + str(id_user))
-        return compose_ret('', Constants.cst_content_type_json)
+        return compose_ret(ret, Constants.cst_content_type_json)
 
 
 class UserStaffDet(Resource):
@@ -318,17 +279,13 @@ class UserStaffDet(Resource):
 class UserList(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self, id_group):
+    def post(self):
         args = request.get_json()
-
-        id_lab = User.getUserGroupParent(id_group)
-
-        self.log.error(Logs.fileline() + ' : TRACE UserList id_lab=' + str(id_lab))
 
         if not args:
             args = {}
 
-        l_users = User.getUserList(args, id_lab['id_group_parent'])
+        l_users = User.getUserList(args)
 
         if not l_users:
             self.log.error(Logs.fileline() + ' : TRACE UserList not found')
@@ -354,6 +311,29 @@ class UserList(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE UserList')
         return compose_ret(l_users, Constants.cst_content_type_json)
+
+
+class UserRoleList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_roles = User.getUserRoleList()
+
+        if not l_roles:
+            self.log.error(Logs.fileline() + ' : TRACE UserRoleList not found')
+
+        Various.needTranslationDB()
+
+        for role in l_roles:
+            # Replace None by empty string
+            for key, value in list(role.items()):
+                if role[key] is None:
+                    role[key] = ''
+                elif key == 'label':
+                    role[key] = _(role[key].strip())
+
+        self.log.info(Logs.fileline() + ' : TRACE UserRoleList')
+        return compose_ret(l_roles, Constants.cst_content_type_json)
 
 
 class UserSearch(Resource):
@@ -644,12 +624,12 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                if d['id_role']:
-                    data.append(d['id_role'])
+                if d['role_type']:
+                    data.append(d['role_type'])
                 else:
                     data.append('')
 
-                data.append('v1')
+                data.append('v2')
 
                 l_data.append(data)
 
@@ -706,7 +686,7 @@ class UserImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][25] != 'v1':
+        if l_rows[0][25] != 'v1' and l_rows[0][25] != 'v2':
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
@@ -741,7 +721,29 @@ class UserImport(Resource):
                 section      = l[21]
                 commentaire  = l[22]
                 side_account = l[23]
-                id_role      = l[24]
+                role_type    = l[24]
+
+                if l_rows[0][25] == 'v1':
+                    if role_type == 1:
+                        role_type = 'A'
+                    elif role_type == 2:
+                        role_type = 'B'
+                    elif role_type == 3:
+                        role_type = 'T'
+                    elif role_type == 4:
+                        role_type = 'S'
+                    elif role_type == 5:
+                        role_type = 'TA'
+                    elif role_type == 6:
+                        role_type = 'TQ'
+                    elif role_type == 7:
+                        role_type = 'SA'
+                    elif role_type == 8:
+                        role_type = 'Q'
+                    elif role_type == 9:
+                        role_type = 'P'
+                    else:
+                        role_type = 'X'
 
                 # Check if user exist (same username, lastname and firstname)
                 # if EXIST => UPDATE (all except password)
@@ -775,30 +777,9 @@ class UserImport(Resource):
 
                 # if not EXIST => INSERT
                 else:
-                    # insert into sigl_pj_group
-                    ret = User.insertUserName(name=username)
-
-                    if ret <= 0:
-                        self.log.error(Logs.alert() + ' : UserImport ERROR insert user Name')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    res = {}
-                    res['id_group'] = ret
-
-                    # insert into sigl_pj_group_link
-                    ret = User.insertUserRole(id_group=res['id_group'],
-                                              id_group_parent=1000,  # I cant explain 1000
-                                              id_role=id_role)
-
-                    if ret <= 0:
-                        self.log.error(Logs.alert() + ' : UserImport ERROR insert user Role')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    res['id_group_link'] = ret
-
                     # insert in sigl_user_data
                     ret = User.insertUser(id_owner=id_user,
-                                          id_group=res['id_group'],
+                                          role_type=role_type,
                                           username=username,
                                           password=password,
                                           cps_id=cps_id,
@@ -824,7 +805,7 @@ class UserImport(Resource):
                                           commentaire=commentaire)
 
                     if ret <= 0:
-                        self.log.error(Logs.alert() + ' : UserDet ERROR insert user')
+                        self.log.error(Logs.alert() + ' : UserImport ERROR insert user')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE UserImport')

@@ -45,12 +45,10 @@ class DoctorList(Resource):
 class DoctorSearch(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self, id_group):
+    def post(self):
         args = request.get_json()
 
-        id_lab = User.getUserGroupParent(id_group)
-
-        l_doctors = Doctor.getDoctorSearch(args['term'], id_lab['id_group_parent'], id_group)
+        l_doctors = Doctor.getDoctorSearch(args['term'])
 
         if not l_doctors:
             self.log.error(Logs.fileline() + ' : TRACE DoctorSearch not found')

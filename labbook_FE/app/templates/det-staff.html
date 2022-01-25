@@ -219,7 +219,7 @@ var data_USEV = {% if args['data_USEV'] %}{{ args['data_USEV']|safe }}{% else %}
 
 function save_user()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner  = {{ session['user_id']|safe}} ;
 var id_user   = {{ args['user_id']|safe }} ;
 var lastname  = $("#lastname").val()  ;
 var firstname = $("#firstname").val() ;

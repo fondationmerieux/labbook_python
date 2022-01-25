@@ -117,7 +117,7 @@ let id_item = $(e.currentTarget).val();
 
 function save_item()
 {
-var id_owner     = {{ session['user_id_group']|safe }} ;
+var id_owner     = {{ session['user_id']|safe}} ;
 var id_meeting   = {{ args['id_meeting']|safe }} ;
 var date_meeting = $("#date_meeting").val()      ;
 var type         = $("#type").val()              ;

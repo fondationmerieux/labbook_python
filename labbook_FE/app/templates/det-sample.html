@@ -162,7 +162,7 @@
 <script>
 function save_prod()
 {
-var id_owner      = {{ session['user_id_group']|safe }}  ;
+var id_owner      = {{ session['user_id']|safe}} ;
 var id_rec        = {{ args['record']['id_data']|safe }} ;
 var id_prod       = {{ args['id_prod']|safe }}     ;
 var code          = $("#prod_code").val()          ;

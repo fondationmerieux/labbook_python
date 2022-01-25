@@ -41,23 +41,30 @@
 {%- endmacro %}
 
 {% macro select_nationality(l_nationality, id_selected) -%}
-    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
     {% for nationality in l_nationality %}
         <option value="{{ nationality['nat_ser'] }}" {% if id_selected and id_selected == nationality['nat_ser'] %}selected{% endif %}>{{ nationality['nat_name'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_blood_group(l_blood_group, id_selected) -%}
-    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
     {% for blood_group in l_blood_group %}
         <option value="{{ blood_group['id_data'] }}" {% if id_selected and id_selected == blood_group['id_data'] %}selected{% endif %}>{{ blood_group['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_blood_rhesus(l_blood_rhesus, id_selected) -%}
-    <option value="0" {% if not args or args['pat_nation'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
     {% for blood_rhesus in l_blood_rhesus %}
         <option value="{{ blood_rhesus['id_data'] }}" {% if id_selected and id_selected == blood_rhesus['id_data'] %}selected{% endif %}>{{ blood_rhesus['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_user_role(l_user_role, type_selected) -%}
+    <option value="" {% if not type_selected or type_selected == '' %} selected {% endif %}></option>
+    {% for user_role in l_user_role %}
+        <option value="{{ user_role['type'] }}" {% if type_selected and type_selected == user_role['type'] %}selected{% endif %}>{{ user_role['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 

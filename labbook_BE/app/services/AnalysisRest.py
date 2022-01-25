@@ -663,7 +663,7 @@ class AnalysisExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'paillasse', 'cote_unite', 'cote_valeur',
+        l_data = [['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'cote_unite', 'cote_valeur',
                    'commentaire', 'produit_biologique', 'type_prel', 'type_analyse', 'actif', 'ana_whonet', 'id_link',
                    'id_refanalyse', 'id_refvariable', 'position', 'num_var', 'obligatoire', 'id_var', 'libelle',
                    'description', 'unite', 'normal_min', 'normal_max', 'var_comm', 'type_resultat', 'unite2',
@@ -710,11 +710,6 @@ class AnalysisExport(Resource):
 
                 if d['famille']:
                     data.append(d['famille'])
-                else:
-                    data.append('')
-
-                if d['paillasse']:
-                    data.append(d['paillasse'])
                 else:
                     data.append('')
 
@@ -934,7 +929,7 @@ class AnalysisImport(Resource):
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check name of column
-        head_list = ['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'paillasse', 'cote_unite', 'cote_valeur',
+        head_list = ['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'cote_unite', 'cote_valeur',
                      'commentaire', 'produit_biologique', 'type_prel', 'type_analyse', 'actif', 'ana_whonet', 'id_link',
                      'id_refanalyse', 'id_refvariable', 'position', 'num_var', 'obligatoire', 'id_var', 'libelle',
                      'description', 'unite', 'normal_min', 'normal_max', 'var_comm', 'type_resultat', 'unite2',
@@ -962,7 +957,6 @@ class AnalysisImport(Resource):
                     nom                = l[3]
                     abbr               = l[4]
                     famille            = l[5]
-                    # paillasse          = l[6]   # useless
                     cote_unite         = l[7]
                     cote_valeur        = float(l[8])
                     commentaire        = l[9]
@@ -1087,7 +1081,6 @@ class AnalysisImport(Resource):
                     nom                = l[3]
                     abbr               = l[4]
                     famille            = l[5]
-                    # paillasse          = l[6]   # useless
                     cote_unite         = l[7]
                     cote_valeur        = float(l[8])
                     commentaire        = l[9]

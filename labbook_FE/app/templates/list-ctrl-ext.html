@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Liste des contrôles internes") }}</title>
+    <title>{{ _("Liste des contrôles externes") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des contrôles internes") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des contrôles externes") }}</span></h2>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>
@@ -109,7 +109,7 @@ $("#list_items_total").html( data_len ) ;
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/det-control-int/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>" ;
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/det-control-ext/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>" ;
         
     menu_act += "</div></ul></nav>" ;
     {% else %}
@@ -133,7 +133,7 @@ $("#list_items_total").html( data_len ) ;
 
 function add_item()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-control-int/0";
+window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-control-ext/0";
 }
 
 function export_data()
@@ -150,7 +150,7 @@ var param = '{}' ;
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/quality/control/int/export",
+            url: "{{ session['server_ext'] }}/services/quality/control/ext/export",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -170,7 +170,7 @@ var param = '{}' ;
 
             today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "control_int_" + today + ".csv" ;
+            let filename = "control_ext_" + today + ".csv" ;
 
             download_file( "PY", filename, "GEN", 0 ) ;
             },

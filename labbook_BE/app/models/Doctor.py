@@ -54,7 +54,7 @@ class Doctor:
         return cursor.fetchall()
 
     @staticmethod
-    def getDoctorSearch(text, id_lab, id_group):
+    def getDoctorSearch(text):
         cursor = DB.cursor()
 
         l_words = text.split(' ')

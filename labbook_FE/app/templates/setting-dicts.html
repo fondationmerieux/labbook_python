@@ -205,7 +205,7 @@ $("#list_dicts_total").html( data_len ) ;
 
 function delete_dict(dict_name)
 {
-var id_owner = {{ session['user_id_group']|safe}} ;
+var id_owner = {{ session['user_id']|safe}} ;
 
     if ( window.confirm("{{ _("Merci de confirmer la suppression") }}") )
     {

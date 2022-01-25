@@ -47,7 +47,7 @@
 <script>
 function save()
 {
-var id_owner = {{ session['user_id_group']|safe}} ;
+var id_owner = {{ session['user_id']|safe}} ;
 var id_user  = {{ args['user_id'] }} ;
 var pwd1     = $("#new-pwd").val() ;
 var pwd2     = $("#renew-pwd").val() ;

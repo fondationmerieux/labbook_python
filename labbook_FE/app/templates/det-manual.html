@@ -219,7 +219,7 @@ let id_item = $(e.currentTarget).val();
 
 function save_item()
 {
-var id_owner    = {{ session['user_id_group']|safe }} ;
+var id_owner    = {{ session['user_id']|safe}} ;
 var id_manual   = {{ args['id_manual']|safe }} ;
 var reference   = $("#reference").val()   ;
 var title       = $("#title").val()       ;

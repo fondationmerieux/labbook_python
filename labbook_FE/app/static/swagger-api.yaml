@@ -1,0 +1,461 @@
+openapi: 3.0.1
+info:
+  title: LabBook API
+  description: 'This is a description of LabBook web services.'
+  contact:
+    email: TODOwhichadress@yopmail.com
+  license:
+    name: GPL-2.0
+    url: https://github.com/fondationmerieux/labbook_python/blob/master/LICENSE.md
+  version: 3.2.1
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: /services
+tags:
+- name: analysis
+  description: web services about analysis
+- name: patient
+  description: web services about patients
+- name: record
+  description: web services about records
+- name: user
+  description: web services about users
+paths:
+  /analysis/code/check/{code}:
+    get:
+      tags:
+      - analysis
+      summary: Checks if the analysis code doesn't already exist in DB
+      description: 
+      operationId: AnalysisCode
+      parameters:
+      - name: code
+        in: path
+        description: unique analysis code
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+  /analysis/det/{id_ana}:
+    get:
+      tags:
+      - analysis
+      summary: Analysis details
+      description: Return the details of a specific analysis.
+      operationId: AnalysisDet
+      parameters:
+      - name: id_ana
+        in: path
+        description: Serial of an analysis
+        required: true
+        type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Analysis'
+        404:
+          description: Not found
+  /analysis/list:
+    post:
+      tags:
+      - analysis
+      summary: List of analysis
+      operationId: AnalysisList
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: 
+                  type: integer
+                name: 
+                  type: string
+                type_ana:
+                  type: integer
+                type_prod:
+                  type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Analysis'
+  /patient/list:
+    post:
+      tags:
+      - patient
+      summary: List of patient
+      operationId: PatientList
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code: 
+                  type: string
+                code_lab: 
+                  type: string
+                lastname:
+                  type: string
+                firstname:
+                  type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+  /record/list/{id_pres}:
+    post:
+      tags:
+      - record
+      summary: List of record
+      operationId: RecordList
+      parameters:
+      - name: id_pres
+        in: path
+        description: serial of prescriber
+        required: false
+        type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                num_rec: 
+                  type: string
+                stat_work: 
+                  type: array
+                  items:
+                    type: integer
+                stat_rec: 
+                  type: integer
+                lastname:
+                  type: string
+                firstname:
+                  type: string
+                code:
+                  type: string
+                date_beg:
+                  type: string
+                  format: date
+                date_end:
+                  type: string
+                  format: date
+                type_ana:
+                  type: integer
+                code_pat:
+                  type: string
+                emer:
+                  type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+  /user/list:
+    post:
+      tags:
+      - user
+      summary: List of user
+      operationId: UserList
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: 
+                  type: integer
+                login: 
+                  type: string
+                lastname:
+                  type: string
+                firstname:
+                  type: string
+                role:
+                  type: string
+                  enum:
+                  - A
+                  - B
+                  - T
+                  - TA
+                  - TQ
+                  - S
+                  - SA
+                  - Q
+                  - P
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+components:
+  schemas:
+    Analysis:
+      type: object
+      properties:
+        id_data:
+          type: integer
+        id_owner:
+          type: integer
+        code:
+          type: string
+        nom:
+          type: string
+        abbr:
+          type: string
+        famille:
+          type: string
+        cote_unite:
+          type: string
+        cote_valeur:
+          type: integer
+        commentaire:
+          type: string
+        produit_biologique:
+          type: integer
+        type_prel:
+          type: integer
+        type_analyse:
+          type: integer
+        actif:
+          type: integer
+        ana_whonet:
+          type: integer
+    Patient:
+      type: object
+      properties:
+        id_data:
+          type: integer
+        id_owner:
+          type: integer
+        code:
+          type: string
+        code_patient:
+          type: string
+        nom:
+          type: string
+        prenom:
+          type: string
+        ddn:
+          type: string
+          format: date
+        sexe:
+          type: integer
+        adresse:
+          type: string
+        cp:
+          type: string
+        ville:
+          type: string
+        tel:
+          type: string
+        profession:
+          type: string
+        nom_jf:
+          type: string
+        quartier:
+          type: string
+        bp:
+          type: string
+        ddn_approx:
+          type: integer
+        age:
+          type: integer
+        unite:
+          type: integer
+        pat_midname:
+          type: string
+        pat_nation:
+          type: integer
+        pat_blood_group:
+          type: integer
+        pat_blood_rhesus:
+          type: integer
+        role_type:
+          type: string
+          enum:
+          - A
+          - B
+          - T
+          - TA
+          - TQ
+          - S
+          - SA
+          - Q
+          - P
+    Record:
+      type: object
+      properties:
+        id_data:
+          type: integer
+        id_owner:
+          type: integer
+        id_patient:
+          type: integer
+        type:
+          type: integer
+        date_dos:
+          type: string
+          format: date
+        num_dos_jour:
+          type: string
+        num_dos_mois:
+          type: string
+        num_dos_an:
+          type: string
+        med_prescripteur:
+          type: integer
+        date_prescription:
+          type: string
+          format: date
+        service_interne:
+          type: string
+        num_lit:
+          type: integer
+        id_colis:
+          type: string
+        date_reception_colis:
+          type: string
+          format: date
+        rc:
+          type: string
+        colis:
+          type: integer
+        prix:
+          type: float
+        remise:
+          type: integer
+        remise_pourcent:
+          type: float
+        assu_pourcent:
+          type: float
+        a_payer:
+          type: float
+        num_quittance:
+          type: string
+        num_fact:
+          type: string
+        statut:
+          type: integer
+        date_hosp:
+          type: string
+          format: date
+    Result:
+      type: object
+      properties:
+        id_data:
+          type: integer
+        id_owner:
+          type: integer
+        id_analyse:
+          type: integer
+        ref_variable:
+          type: integer
+        valeur:
+          type: string
+        obligatoire:
+          type: integer
+    User:
+      type: object
+      properties:
+        id_data:
+          type: integer
+        id_owner:
+          type: integer
+        firstname:
+          type: string
+        lastname:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        titre:
+          type: integer
+        email:
+          type: string
+        status:
+          type: integer
+        creation_date:
+          type: string
+          format: date
+        expire_date:
+          type: string
+          format: date
+        cps_id:
+          type: string
+        oauth_provider_id_user:
+          type: integer
+        locale:
+          type: integer
+        rpps:
+          type: string
+        otp_phone_number:
+          type: string
+        intiale:
+          type: string
+        ddn:
+          type: string
+          format: date
+        position:
+          type: string
+        adresse:
+          type: string
+        tel:
+          type: string
+        darrive:
+          type: string
+          format: date
+        cv:
+          type: string
+        diplome:
+          type: string
+        formation:
+          type: string
+        deval:
+          type: string
+          format: date
+        section:
+          type: integer
+        commentaire:
+          type: string
+        side_account:
+          type: integer
+        role_type:
+          type: string
+

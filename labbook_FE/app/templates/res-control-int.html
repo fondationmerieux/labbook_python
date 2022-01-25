@@ -1,0 +1,133 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Résultats du contrôle interne") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Résultats du contrôle interne") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group row">
+                    <label for="cti_date" class="col-form-label col-3 text-right mt-2">{{ _("Date du contrôle") }} *</label>
+                    <div>					
+                        <input id="cti_date" class="form-control" type="datetime-local" value="{{ args['result']['cti_date'] }}" name="cti_date" style="color: #888;">
+                    </div>
+                </div>
+
+                {% if args['type_val'] == 'QL' %}
+                <div class="form-group row">
+                    <label for="cti_target" class="col-form-label col-3 text-right mt-2">{{ _("Cible du contrôle") }}</label>
+                    <div>					
+                        <textarea id="cti_target" name="cti_target" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cti_target'] }}</textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label for="cti_result" class="col-form-label col-3 text-right mt-2">{{ _("Résultats du contrôle") }}</label>
+                    <div>					
+                        <textarea id="cti_result" name="cti_result" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cti_result'] }}</textarea>
+                    </div>
+                </div>
+                {% else %}
+                <div class="form-group row">
+                    <label for="cti_target" class="col-form-label col-3 text-right mt-2">{{ _("Cible du contrôle") }}</label>
+                    <div>					
+                        <input id="cti_target" name="cti_target" type="number" class="form-control" value="{{ args['result']['cti_target'] }}" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cti_result" class="col-form-label col-3 text-right mt-2">{{ _("Résultats du contrôle") }}</label>
+                    <div>					
+                        <input id="cti_result" name="cti_result" type="number" class="form-control" value="{{ args['result']['cti_result'] }}" />
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="form-group row">
+                    <label for="cti_comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaire") }}</label>
+                    <div>					
+                        <textarea id="cti_comment" name="cti_result" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cti_comment'] }}</textarea>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-left" style="margin-left:0px;">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-right">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                </div>
+            </div>
+        </div><!-- close main -->
+    </div><!-- close inner -->
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script>
+function save_item()
+{
+var ctq_ser  = {{ args['ctq_ser']|safe }}    ;
+var id_item  = {{ args['cti_ser']|safe }}    ;
+var cti_type = "{{ args['type_val']|safe }}" ;
+var cti_date = $("#cti_date").val()          ;
+{% if args['type_val'] == 'QL' %}
+var target   = JSON.stringify( $("#cti_target").val() ) ;
+var result   = JSON.stringify( $("#cti_result").val() ) ;
+{% else %}
+var target   = $("#cti_target").val() ;
+var result   = $("#cti_result").val() ;
+{% endif %}
+var comment  = JSON.stringify( $("#cti_comment").val() ) ;
+
+var msg = "" ;
+
+    if (cti_date == "")
+    msg += "{{ _("Veuillez saisir une date de contrôle.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_item":' + id_item + ', ' +
+              '"cti_ctq":' + ctq_ser + ', ' +
+              '"cti_date":"' + cti_date + '", ' +
+              '"cti_type":"' + cti_type + '", ' +
+              '"cti_target":' + target + ', ' +
+              '"cti_result":' + result + ', ' +
+              '"cti_comment":' + comment + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "/services/quality/control/int/res/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ; 
+
+           window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-control-int/" + ctq_ser ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

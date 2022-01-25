@@ -42,11 +42,8 @@
                             <label for="role" class="col-form-label col-3 text-right mt-2 ">{{ _("Rôle") }}</label>
                             <div>					
                                 <select id="role" name="role" class="form-control">
-                                    <option value="0"></option>  
-                                    <option value="1">{{ _("Administrateur") }}</option>
-                                    <option value="2">{{ _("Biologiste") }}</option>
-                                    <option value="3">{{ _("Technicien") }}</option>
-                                    <option value="4">{{ _("Secrétaire") }}</option>
+                                    {% from 'macros.html' import select_user_role %}
+                                    {{ select_user_role(ihm['user_role']) }}
                                 </select>
                             </div>
                         </div>
@@ -144,7 +141,7 @@ let stat      = $("#status").val() ;
 let param = '{ "login":"' + login + '", ' +
             '"firstname":"' + firstname  + '", ' +
             '"lastname":"' + lastname  + '", ' +
-            '"role":' + role  + ', ' +
+            '"role":"' + role  + '", ' +
             '"status":' + stat + '}' ;
 
     // popup wait
@@ -156,7 +153,7 @@ let param = '{ "login":"' + login + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/user/list/" + {{ session['user_id_group']|safe}},
+            url: "/services/user/list",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -258,7 +255,7 @@ $("#list_users_total").html( data_len ) ;
 
 function change_status(id_user, stat)
 {
-var id_owner = {{ session['user_id_group']|safe}} ;
+var id_owner = {{ session['user_id']|safe}} ;
 
     if ( window.confirm("{{ _("Veuillez confirmer la modification de statut") }}") )
     {

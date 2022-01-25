@@ -92,11 +92,11 @@ var rec_stat     = 0  ;
 
 function add_analysis()
 {
-let id_group       = {{ session['user_id_group']|safe}} ;
+let id_user        = {{ session['user_id']|safe}} ;
 let user_role      = "{{ session['user_role']|safe }}"  ;
 let id_rec         = data_res[0].id_dos ;
 let param_list_ana = '{ "list_ana":[ ';
-let param_list_res = '{ "id_owner":' + id_group + ', "user_role":"' + user_role + '", "list_ref":[ ';
+let param_list_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '", "list_ref":[ ';
 let value_ana      = '' ;
 let value_res      = '' ;
 
@@ -113,7 +113,7 @@ let value_res      = '' ;
         value_res += ', ' ;
         }
 
-    let param_ana = '{ "id_owner":' + id_group + ', ' +
+    let param_ana = '{ "id_owner":' + id_user + ', ' +
                       '"id_rec":' + id_rec  + ', ' +
                       '"id_ana":' + list_id_ana[i] + ', ' +
                       '"price":0, ' +
@@ -231,7 +231,7 @@ let param_list_valid = '{ "list_valid":[ ' ;
         if (i > 0)
         param_list_valid += ', ' ;
 
-    let param_valid = '{ "id_owner":' + {{ session['user_id_group'] }} + ', ' +
+    let param_valid = '{ "id_owner":' + {{ session['user_id']}} + ', ' +
                         '"id_res":' + ($(this).attr("id")).substr(4) + ', ' +
                         '"date_valid":"' + date_valid + '", ' +
                         '"user_valid":' + user_valid + ', ' +
@@ -326,12 +326,12 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             if ( tech_list[k].firstname != "" && tech_list[k].lastname != "" )
             tech_ident =  tech_list[k].firstname + " " + tech_list[k].lastname ;
 
-            if ( tech_list[k].id_group == {{ session['user_id_group'] }} )
+            if ( tech_list[k].id_user == {{ session['user_id']}} )
             {
             selected = "selected" ;
             }
             
-        res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
+        res += "<option value=\"" + tech_list[k].id_user + "\" " + selected + ">" + tech_ident + "</option>" ;
         }
         #}
 
@@ -437,12 +437,12 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         if ( tech_list[k].firstname != "" && tech_list[k].lastname != "" )
         tech_ident =  tech_list[k].firstname + " " + tech_list[k].lastname ;
 
-        if ( tech_list[k].id_group == {{ session["user_id_group"] }} )
+        if ( tech_list[k].id_user == {{ session['user_id']}} )
         {
         selected = "selected" ;
         }
         
-    res += "<option value=\"" + tech_list[k].id_group + "\" " + selected + ">" + tech_ident + "</option>" ;
+    res += "<option value=\"" + tech_list[k].id_user + "\" " + selected + ">" + tech_ident + "</option>" ;
     }
     #}
 

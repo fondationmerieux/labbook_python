@@ -247,7 +247,7 @@ let id_ihm  = split_id[split_id.length -1] ;
 
 function save_dict()
 {
-var id_owner  = {{ session['user_id_group']|safe }} ;
+var id_owner  = {{ session['user_id']|safe}} ;
 var dict_name = $("#name").val() ;
 
     if (dict_name == "")

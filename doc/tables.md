@@ -25,6 +25,7 @@
 | sigl_14_data	                                 | DHIS2	 | surveillance epidemio et dhis2           |
 | sigl_15_data	                                 | DHIS2	 | details sruveillance epidemio            |
 | sigl_dico_data	                         | DICTIONNARY	 | dictionnary                              |
+| sigl_controle_externe_ctrl_resultat_cr__file_d | FILE          | attached file                            |
 | sigl_dos_valisedoc__file_data	                 | FILE	         | attached file                            |
 | sigl_dos_valisedoc__file_deleted	         | FILE	         | deleted attachment                       |
 | sigl_equipement_certif_etalonnage__file_data	 | FILE	         | attached file                            |
@@ -43,8 +44,6 @@
 | sigl_non_conformite_data	                 | CONFORMITY	 | non conformité                           |
 | sigl_param_cr_data	                         | SETTINGS	 | paramètre compte-rendu                   |
 | sigl_param_num_dos_data	                 | SETTINGS	 | paramètre numéro de dossier              |
-| sigl_pj_group	                                 | USER	         | login and id_group                       |
-| sigl_pj_group_link	                         | USER	         | id_group, id_group_parent et id_role     |
 | sigl_pj_role	                                 | USER    	 | role utilisateur                         |
 | sigl_pj_sequence	                         | -	         | dernier numéro (dossier, facture)        |
 | sigl_procedures_data	                         | PROCEDURE	 | procédure                                |
@@ -69,5 +68,8 @@
 | template_setting	                         | SETTINGS	 | setting for PDF template                 |
 | nationality   	                         | DICTIONNARY	 | list of nationality                      |
 | zip_city      	                         | DICTIONNARY	 | list of zip code and city                |
+| control_quality      	                         | QUALITY	 | list of control internal and external    |
+| control_internal   	                         | QUALITY	 | list of internal control value           |
+| control_external     	                         | QUALITY	 | list of external control value           |
 
-69 tables used
+71 tables used

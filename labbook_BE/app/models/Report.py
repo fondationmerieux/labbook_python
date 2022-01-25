@@ -181,12 +181,11 @@ class Report:
         cond = ''
 
         if id_user > 0:
-            cond = ' and user.id_data=' + str(id_user) + ' '
+            cond = ' and rec.id_owner=' + str(id_user) + ' '
 
         req = ('select rec.id_data, rec.num_dos_jour as rec_num, rec.num_fact as bill_num, '
                'rec.prix as bill_price, rec.a_payer as bill_remain, rec.num_quittance as receipt_num '
                'from sigl_02_data as rec '
-               'left join sigl_user_data as user on rec.id_owner=user.id_group '
                'where (rec.date_dos between %s and %s) ' + cond +
                'order by rec.id_data asc limit 7000')
 

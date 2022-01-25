@@ -59,6 +59,9 @@ class File:
         # TRAININGS
         elif type_ref == 'USTR':
             tablename = 'sigl_user_formations__file_data'
+        # EXTERNAL CONTROL
+        elif type_ref == 'CTRL':
+            tablename = 'sigl_controle_externe_ctrl_resultat_cr__file_data'
         else:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
@@ -153,6 +156,9 @@ class File:
             # TRAININGS
             elif params['type_ref'] == 'USTR':
                 tablename = 'sigl_user_formations__file_data'
+            # EXTERNAL CONTROL
+            elif params['type_ref'] == 'CTRL':
+                tablename = 'sigl_controle_externe_ctrl_resultat_cr__file_data'
             else:
                 return 0
 
@@ -218,6 +224,9 @@ class File:
             # TRAININGS
             elif type_ref == 'USTR':
                 tablename = 'sigl_user_formations__file_data'
+            # EXTERNAL CONTROL
+            elif type_ref == 'CTRL':
+                tablename = 'sigl_controle_externe_ctrl_resultat_cr__file_data'
             else:
                 File.log.error(Logs.fileline() + ' : ERROR deleteFileDoc type_ref=' + str(type_ref))
                 return False
@@ -292,7 +301,7 @@ class File:
             cursor.execute('insert into sigl_storage_data '
                            '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) '
                            'values '
-                           '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(path)s)', params)
+                           '(0, NOW(), NOW(), 0, %(path)s)', params)
 
             File.log.info(Logs.fileline())
 
