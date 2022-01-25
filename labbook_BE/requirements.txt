@@ -1,5 +1,5 @@
 # pip
-pip==21.2.4
+pip==21.3.1
 charset-normalizer==2.0.6
 urllib3==1.26.7
 setuptools==58.2.0
@@ -31,7 +31,7 @@ protobuf==3.18.1
 # pdfkit
 pdfkit==0.6.1
 # python-barcode
-Pillow==8.3.2
+Pillow==9.0.0
 python-barcode==0.13.1
 # alembic
 alembic==1.7.3

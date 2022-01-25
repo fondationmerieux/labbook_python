@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.1.7] - 2022-01-25
+### Fixed
+- Empty biological validation page after a canceled result
+
 ## [3.1.6] - 2022-01-12
 ### Changed
 - New version number for generate new ISO

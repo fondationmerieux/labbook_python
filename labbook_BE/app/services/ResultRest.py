@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 
+from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -102,6 +103,9 @@ class ResultList(Resource):
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
 
+            if not result['user']:
+                result['user'] = User.getUserDetails(result['validation']['utilisateur'])
+
             if result['user']:
                 # Replace None by empty string
                 for key, value in list(result['user'].items()):
@@ -194,10 +198,13 @@ class ResultRecord(Resource):
                 if result['validation'][key] is None:
                     result['validation'][key] = ''
                 elif key == 'label_motif':
-                    result[key] = _(result[key].strip())
+                    result['validation'][key] = _(result['validation'][key].strip())
 
             # Get identity from user who validated this result
             result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
+
+            if not result['user']:
+                result['user'] = User.getUserDetails(result['validation']['utilisateur'])
 
             if result['user']:
                 # Replace None by empty string
@@ -493,6 +500,9 @@ class ResultHisto(Resource):
             valid['dico_cancel'] = Various.getDicoById(str(valid['motif_annulation']))
 
             valid['user'] = User.getUserByIdGroup(valid['utilisateur'])
+
+            if not valid['user']:
+                valid['user'] = User.getUserDetails(valid['utilisateur'])
 
             if valid['date_validation']:
                 valid['date_validation'] = datetime.strftime(valid['date_validation'], '%Y-%m-%d')
