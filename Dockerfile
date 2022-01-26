@@ -11,7 +11,7 @@ RUN yum update -y && yum install -y \
     binutils \
     glibc-devel \
     mysql \
-    python36 \
+    python39 \
     which \
     openssh-clients \
     httpd \
@@ -58,7 +58,7 @@ WORKDIR /home/apps/labbook_FE/labbook_FE
 
 RUN python3 -m venv venv
 
-RUN source venv/bin/activate && pip install -r requirements.txt
+RUN source venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
 # install venv labbook_BE
 COPY labbook_BE/requirements.txt /home/apps/labbook_BE/labbook_BE
@@ -67,7 +67,7 @@ WORKDIR /home/apps/labbook_BE/labbook_BE
 
 RUN python3 -m venv venv
 
-RUN source venv/bin/activate && pip install -r requirements.txt
+RUN source venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
 # install labbook_FE
 COPY labbook_FE /home/apps/labbook_FE/labbook_FE

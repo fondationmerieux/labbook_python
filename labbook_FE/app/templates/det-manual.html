@@ -71,7 +71,7 @@
                         <select id="section" name="section" class="form-control">
                             <option value="0" {% if args['manual_det']['section'] == 0 %} selected {% endif %}></option>  
                             {% for section in ihm['sections'] %}
-                            <option value="{{ section['id_data'] }}" {% if args['section'] == section['id_data'] %} selected {% endif %}>{{ section['label'] }}</option>
+                            <option value="{{ section['id_data'] }}" {% if args['manual_det']['section'] == section['id_data'] %} selected {% endif %}>{{ section['label'] }}</option>
                             {% endfor %}
                         </select>			
                     </div>

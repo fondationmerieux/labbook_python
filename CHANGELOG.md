@@ -7,9 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.1.7] - 2022-01-25
+## [3.1.7] - 2022-01-26
 ### Fixed
 - Empty biological validation page after a canceled result
+- Security upgrade for Python to 3.9 and Pillow to 9.0.0
 
 ## [3.1.6] - 2022-01-12
 ### Changed
