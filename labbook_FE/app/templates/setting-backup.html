@@ -357,7 +357,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         console.log("listmedia ret="+JSON.stringify(data)) ;
 
         // POLL WS status restore
-        poll_stat = setInterval( ScriptStatus, 10000, "M" ) ;
+        poll_stat = setInterval( ScriptStatus, 2000, "M" ) ;
 
         /*
             // Dialog list media
@@ -626,7 +626,7 @@ function ScriptStatus(mode)
             // check if data is a an array or a string
             if (mode == "M" || mode == "A")
             {
-                if (Object.prototype.toString.call(data) === '[object Array]')
+                if (data.media != undefined || data.archive != undefined)
                 {
                 // TODO traiter liste media ou archive
                 console.log("DEBUG return of scriptStatus data=" + JSON.stringify(data)) ;

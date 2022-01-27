@@ -116,6 +116,8 @@ if config_envvar in os.environ:
     else:
         os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
 
+    os.environ['LABBOOK_TEST_OK'] = 'listmedia,listarchive'
+
     log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))

@@ -1030,7 +1030,9 @@ fn_initmedia() {
 # - list only initialized medias (0) or all medias (1)
 # - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
 #
-# Output in status_file: media names, one per line
+# Output in status_file:
+# - media names, one per line
+# - last line with keyword: OK;YYYY-MM-DD HH:MM:SS or ERR;YYYY-MM-DD HH:MM:SS;message
 #
 # WARNING : character set of media names is not checked but labbook_BE expects UTF8 encoding.
 #
@@ -1043,7 +1045,7 @@ fn_listmedia() {
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
     [[ -d "$media_dir" ]] || {
-        log_message "cannot find directory $media_dir"
+        async_status_message "cannot find directory $media_dir"
         return 1
     }
 
@@ -1061,6 +1063,8 @@ fn_listmedia() {
         status_message "$(basename "$media")"
     done
 
+    write_kw_message "OK"
+
     return 0
 }
 
@@ -1073,7 +1077,9 @@ fn_listmedia() {
 # - media (if of the form @filename, filename contains media)
 # - path to search for medias (for test only, if empty use MEDIA_DIRECTORY)
 #
-# Output in status_file: archive names, one per line
+# Output in status_file:
+# - archive names, one per line
+# - last line with keyword: OK;YYYY-MM-DD HH:MM:SS or ERR;YYYY-MM-DD HH:MM:SS;message
 #
 fn_listarchive() {
     local user="$1"
@@ -1087,7 +1093,7 @@ fn_listarchive() {
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
     [[ -d "$media_dir" ]] || {
-        log_message "cannot find directory $media_dir"
+        async_status_message "cannot find directory $media_dir"
         return 1
     }
 
@@ -1098,12 +1104,12 @@ fn_listarchive() {
     media_path="$media_dir/$user/$media"
 
     [[ -d "$media_path" ]] || {
-        log_message "cannot find media $media in $media_path"
+        async_status_message "cannot find media $media in $media_path"
         return 1
     }
 
     is_initialized "$media_path" || {
-        log_message "media $media not initialized in $media_path"
+        async_status_message "media $media not initialized in $media_path"
         return 1
     }
 
@@ -1114,6 +1120,8 @@ fn_listarchive() {
 
         status_message "$(basename "$backup")"
     done
+
+    write_kw_message "OK"
 
     return 0
 }
@@ -1367,7 +1375,7 @@ fn_backup() {
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
     [[ -d "$media_dir" ]] || {
-        backup_message "cannot find directory $media_dir"
+        async_status_message "cannot find directory $media_dir"
         return 1
     }
 
@@ -1376,12 +1384,12 @@ fn_backup() {
     media_path="$media_dir/$user/$media"
 
     [[ -d "$media_path" ]] || {
-        backup_message "cannot find media $media in $media_path"
+        async_status_message "cannot find media $media in $media_path"
         return 1
     }
 
     is_initialized "$media_path" || {
-        backup_message "media $media not initialized in $media_path"
+        async_status_message "media $media not initialized in $media_path"
         return 1
     }
 
@@ -1391,15 +1399,15 @@ fn_backup() {
     mkdir -p "$dump_dir"
 
     # dump database
-    write_br_message "DUMPDB"
+    write_kw_message "DUMPDB"
 
     fn_dumpdb "$dump_file" || {
-        backup_message "error dumping database"
+        async_status_message "error dumping database"
         return 1
     }
 
     # archive dump and files
-    write_br_message "MAKEARCHIVE"
+    write_kw_message "MAKEARCHIVE"
 
     backups_dir="$media_path/$BACKUPS_DIRECTORY"
     db_name=$(printenv $ENV_DB_NAME)
@@ -1409,7 +1417,7 @@ fn_backup() {
     keys_dir="$(printenv $ENV_KEY_DIR)"
 
     fn_savefiles "$archive_path" "" "$keys_dir" "$MOUNTDIR_STORAGE" "${files[@]}" || {
-        backup_message "error saving files"
+        async_status_message "error saving files"
         return 1
     }
 
@@ -1419,7 +1427,7 @@ fn_backup() {
     # notes:
     # - cp -p fails with cp: failed to preserve ownership for '...': Operation not permitted
     # - type cp gives: cp is aliased to `cp -i'
-    write_br_message "COPYKEYS"
+    write_kw_message "COPYKEYS"
 
     # shellcheck disable=SC2012
     privkey_file=$(ls "$keys_dir"/kpri.*.asc | head -1)
@@ -1427,21 +1435,21 @@ fn_backup() {
     fmx_pubkey_file="$keys_dir/$FMX_KPUB_FILENAME"
 
     cp "$privkey_file" "$backups_dir" || {
-        backup_message "error copying $privkey_file to $backups_dir"
+        async_status_message "error copying $privkey_file to $backups_dir"
         return 1
     }
 
     cp "$pubkey_file" "$backups_dir" || {
-        backup_message "error copying $pubkey_file to $backups_dir"
+        async_status_message "error copying $pubkey_file to $backups_dir"
         return 1
     }
 
     cp "$fmx_pubkey_file" "$backups_dir" || {
-        backup_message "error copying $fmx_pubkey_file to $backups_dir"
+        async_status_message "error copying $fmx_pubkey_file to $backups_dir"
         return 1
     }
 
-    write_br_message "OK"
+    write_kw_message "OK"
     return 0
 }
 
@@ -1466,7 +1474,7 @@ fn_restore() {
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
     [[ -d "$media_dir" ]] || {
-        backup_message "cannot find directory $media_dir"
+        async_status_message "cannot find directory $media_dir"
         return 1
     }
 
@@ -1475,19 +1483,19 @@ fn_restore() {
     media_path="$media_dir/$user/$media"
 
     [[ -d "$media_path" ]] || {
-        backup_message "cannot find media $media in $media_path"
+        async_status_message "cannot find media $media in $media_path"
         return 1
     }
 
     is_initialized "$media_path" || {
-        backup_message "media $media not initialized in $media_path"
+        async_status_message "media $media not initialized in $media_path"
         return 1
     }
 
     archive_path="$media_path/$BACKUPS_DIRECTORY/$archive"
 
     [[ -f "$archive_path" && -r "$archive_path" ]] || {
-        backup_message "cannot read archive file $archive_path"
+        async_status_message "cannot read archive file $archive_path"
         return 1
     }
 
@@ -1496,11 +1504,11 @@ fn_restore() {
         [[ $verbose -eq 1 ]] && log_message "Restoring LabBook 3 archive $archive_path"
 
         fn_restore_lb30 "$archive_path" || {
-            backup_message "error restoring LabBook 3 archive $archive_path"
+            async_status_message "error restoring LabBook 3 archive $archive_path"
             return 1
         }
 
-        write_br_message "OK"
+        write_kw_message "OK"
         return 0
     }
 
@@ -1508,11 +1516,11 @@ fn_restore() {
         [[ $verbose -eq 1 ]] && log_message "Restoring LabBook 2.5 archive $archive_path"
 
         fn_restore_lb25 "$archive_path" || {
-            backup_message "error restoring LabBook 2.5 archive $archive_path"
+            async_status_message "error restoring LabBook 2.5 archive $archive_path"
             return 1
         }
 
-        write_br_message "OK"
+        write_kw_message "OK"
         return 0
     }
 
@@ -1520,15 +1528,15 @@ fn_restore() {
         [[ $verbose -eq 1 ]] && log_message "Restoring LabBook 2.9 archive $archive_path"
 
         fn_restore_lb29 "$archive_path" || {
-            backup_message "error restoring LabBook 2.9 archive $archive_path"
+            async_status_message "error restoring LabBook 2.9 archive $archive_path"
             return 1
         }
 
-        write_br_message "OK"
+        write_kw_message "OK"
         return 0
     }
 
-    backup_message "cannot identify archive type of $archive_path"
+    async_status_message "cannot identify archive type of $archive_path"
     return 1
 }
 
@@ -1549,7 +1557,7 @@ fn_restore_lb25() {
     archive_dir="$(dirname "$encrypted_archive")"
     clear_archive="$WORK_DIRECTORY/$archive_name"
 
-    write_br_message "DECRYPT"
+    write_kw_message "DECRYPT"
 
     fn_decrypt25 "$encrypted_archive" "$clear_archive" "$archive_dir" || {
         log_message "error decrypting LabBook 2.5 archive $encrypted_archive"
@@ -1558,14 +1566,14 @@ fn_restore_lb25() {
 
     # archive structure: tar tf ARCHIVE --no-anchored SIGL.sql would give:
     # backup_SIGL_2019-10-07_23h16m55s/db/SIGL.sql
-    write_br_message "EXTRACTDB"
+    write_kw_message "EXTRACTDB"
 
     tar xf "$clear_archive" --directory="$WORK_DIRECTORY" --strip-components=2 --no-anchored "$LB25_DUMP_FILENAME" || {
         log_message "error extracting SQL dump file $LB25_DUMP_FILENAME from LabBook 2.5 archive $encrypted_archive"
         return 1
     }
 
-    write_br_message "LOADDB"
+    write_kw_message "LOADDB"
 
     dump_file="$WORK_DIRECTORY/$LB25_DUMP_FILENAME"
 
@@ -1608,7 +1616,7 @@ fn_restore_lb29() {
     archive_dir="$(dirname "$encrypted_archive")"
     clear_archive="$WORK_DIRECTORY/$archive_name"
 
-    write_br_message "DECRYPT"
+    write_kw_message "DECRYPT"
 
     # restore database
     fn_decrypt29 "$encrypted_archive" "$clear_archive" "$archive_dir" || {
@@ -1618,14 +1626,14 @@ fn_restore_lb29() {
 
     # archive structure: tar tf ARCHIVE --no-anchored SIGL.sql would give:
     # backup_SIGL_2019-10-07_23h16m55s/db/SIGL.sql
-    write_br_message "EXTRACTDB"
+    write_kw_message "EXTRACTDB"
 
     tar xf "$clear_archive" --directory="$WORK_DIRECTORY" --strip-components=2 --no-anchored "$LB25_DUMP_FILENAME" || {
         log_message "error extracting SQL dump file $LB25_DUMP_FILENAME from LabBook 2.5 archive $encrypted_archive"
         return 1
     }
 
-    write_br_message "LOADDB"
+    write_kw_message "LOADDB"
 
     dump_file="$WORK_DIRECTORY/$LB25_DUMP_FILENAME"
 
@@ -1641,7 +1649,7 @@ fn_restore_lb29() {
         return 1
     }
 
-    write_br_message "RESTOREFILES"
+    write_kw_message "RESTOREFILES"
 
     # restore files to temporary location
     files_encrypted_archive="$archive_dir/$LB29_FILES_ARCHIVE"
@@ -1717,7 +1725,7 @@ fn_restore_lb30() {
     clear_archive="$WORK_DIRECTORY/$archive_name"
 
     # decrypt archive with key in archive directory
-    write_br_message "DECRYPT"
+    write_kw_message "DECRYPT"
 
     fn_decryptgpg "$encrypted_archive" "$clear_archive" "$archive_dir" || {
         log_message "error decrypting LabBook 3 archive $encrypted_archive"
@@ -1725,14 +1733,14 @@ fn_restore_lb30() {
     }
 
     # extract and reload sql dump
-    write_br_message "EXTRACTDB"
+    write_kw_message "EXTRACTDB"
 
     tar xf "$clear_archive" --directory="$MOUNTDIR_STORAGE" "$LB30_DUMP_DIR/$LB30_DUMP_FILENAME" || {
         log_message "error extracting SQL dump file $LB30_DUMP_FILENAME from LabBook 3 archive $encrypted_archive"
         return 1
     }
 
-    write_br_message "LOADDB"
+    write_kw_message "LOADDB"
 
     dump_file="$MOUNTDIR_STORAGE/$LB30_DUMP_DIR/$LB30_DUMP_FILENAME"
 
@@ -1752,7 +1760,7 @@ fn_restore_lb30() {
     rm -f "$dump_file"
 
     # restore files
-    write_br_message "RESTOREFILES"
+    write_kw_message "RESTOREFILES"
 
     tar xf "$clear_archive" --directory="$MOUNTDIR_STORAGE" --exclude="$LB30_DUMP_DIR/$LB30_DUMP_FILENAME" || {
         log_message "error extracting files from LabBook 3 archive $encrypted_archive"
@@ -2029,26 +2037,21 @@ error_exit() {
 
     log_message "$message"
 
-    case "$status_format" in
-        backup)
-            if [[ -n "$message" ]]; then
-                backup_message "$message"
-            else
-                backup_message "UNKNOWN ERROR"
-            fi
-            ;;
-
-        *)
-            if [[ -n "$message" ]]; then
-                status_message ""
-                status_message "$message"
-            else
-                status_message ""
-                status_message "UNKNOWN ERROR"
-            fi
-            ;;
-    esac
-
+    if [[ $status_async -eq 1 ]]; then
+        if [[ -n "$message" ]]; then
+            async_status_message "$message"
+        else
+            async_status_message "UNKNOWN ERROR"
+        fi
+    else
+        if [[ -n "$message" ]]; then
+            status_message ""
+            status_message "$message"
+        else
+            status_message ""
+            status_message "UNKNOWN ERROR"
+        fi
+    fi
 
     cleanup
     exit 1
@@ -2102,34 +2105,34 @@ status_message() {
 }
 
 #
-# Write backup final message to status file
+# Write asynchronous command final message to status file
 #
 # Empty message => OK
 # Non-empty message => ERR
 #
-backup_message() {
+async_status_message() {
     if [[ -n "$status_file" ]]; then
         if [[ -z "$*" ]]; then
-            log_message "Backup/restore OK"
-            write_br_message "OK"
+            log_message "Command $cmd OK"
+            write_kw_message "OK"
         else
-            log_message "Backup/restore ERR: $*"
-            write_br_message "ERR" "$*"
+            log_message "Command $cmd ERR: $*"
+            write_kw_message "ERR" "$*"
         fi
     fi
 }
 
 #
-# Write backup/restore message to status file
+# Write keyword message to status file
 #
-# Messages written:
+# Message written:
 # keyword;YYYY-MM-DD HH:MM:SS[;message]
 #
 # Param:
 # - keyword
 # - message
 #
-write_br_message() {
+write_kw_message() {
     local keyword="$1"
 
     shift
@@ -2179,7 +2182,7 @@ input_file=""
 output_file=""
 status_file=""
 status_filename=""
-status_format=""
+status_async=0
 log_file=""
 settings_file=""
 arg_dir=""
@@ -2378,11 +2381,15 @@ case "$cmd" in
         ;;
 
     listmedia)
+        status_async=1  # format status for asynchronous operations
+
         [[ -n "$user" ]] || user=$(printenv $ENV_USER)
 
         [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
 
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
+
+        status_message ""
 
         host=$(printenv $ENV_HOST)
 
@@ -2400,8 +2407,8 @@ case "$cmd" in
             fi
         else
             if [[ $fake_status -eq 0 ]]; then
-                status_message ""
                 status_message "USB"
+                write_kw_message "OK"
             else
                 error_exit "$cmd: faking failure"
             fi
@@ -2409,11 +2416,15 @@ case "$cmd" in
         ;;
 
     listarchive)
+        status_async=1  # format status for asynchronous operations
+
         [[ -n "$user" ]] || user=$(printenv $ENV_USER)
 
         [[ -n "$user" ]] || error_exit "$cmd: missing user, use -u argument or $ENV_USER env variable"
 
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
+
+        status_message ""
 
         [[ -n "$media" ]] || error_exit "$cmd: missing media, use -m argument"
 
@@ -2430,7 +2441,6 @@ case "$cmd" in
             fi
         else
             if [[ $fake_status -eq 0 ]]; then
-                status_message ""
                 status_message "backup_SIGL_2018-04-13_15h58m51s.tar.gz"
                 status_message "backup_SIGL_2018-04-13_15h58m52s.tar.gz"
                 status_message "backup_SIGL_2018-04-13_15h58m53s.tar.gz"
@@ -2446,6 +2456,7 @@ case "$cmd" in
                 status_message "backup_SIGL_2018-04-25_09h11m57s.tar.gz"
                 status_message "backup_SIGL_2018-04-26_13h46m54s.tar.gz"
                 status_message "backup_SIGL_2018-05-03_13h51m04s.tar.gz"
+                write_kw_message "OK"
             else
                 error_exit "$cmd: faking failure"
             fi
@@ -2453,7 +2464,7 @@ case "$cmd" in
         ;;
 
     backup)
-        status_format="$cmd"  # backup/restore style error format
+        status_async=1  # format status for asynchronous operations
 
         [[ -n "$user" ]] || user=$(printenv $ENV_USER)
 
@@ -2462,7 +2473,7 @@ case "$cmd" in
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
         status_message ""
-        write_br_message "START" "$$"
+        write_kw_message "START" "$$"
 
         [[ -n $(printenv $ENV_KEY_DIR) ]] || error_exit "$cmd: cannot find key directory in $ENV_KEY_DIR"
 
@@ -2500,17 +2511,17 @@ case "$cmd" in
         else
             if [[ $fake_status -eq 0 ]]; then
                 sleep 1
-                write_br_message "DUMPDB"
+                write_kw_message "DUMPDB"
                 sleep 40
-                write_br_message "MAKEARCHIVE"
+                write_kw_message "MAKEARCHIVE"
                 sleep 40
-                write_br_message "COPYKEYS"
+                write_kw_message "COPYKEYS"
                 sleep 5
-                write_br_message "OK"
+                write_kw_message "OK"
                 touch "$last_backup_ok_file"
             else
                 sleep 1
-                write_br_message "DUMPDB"
+                write_kw_message "DUMPDB"
                 sleep 40
                 error_exit "$cmd $media: faking failure"
             fi
@@ -2518,12 +2529,12 @@ case "$cmd" in
         ;;
 
     backupauto)
-        status_format="backup"  # backup/restore style error format
+        status_async=1  # format status for asynchronous operations
 
         [[ -n $(printenv $ENV_STATUS_DIR) ]] || error_exit "$cmd: cannot find status directory in $ENV_STATUS_DIR"
 
         status_message ""
-        write_br_message "START" "$$"
+        write_kw_message "START" "$$"
 
         [[ -n $(printenv $ENV_KEY_DIR) ]] || error_exit "$cmd: cannot find key directory in $ENV_KEY_DIR"
 
@@ -2544,9 +2555,11 @@ case "$cmd" in
         fn_listmedia "$user" "$tmp_status_file" 0 "" || error_exit "$cmd: error in listmedia"
 
         # we want exactly one initialized media
-        nb_media=$(wc -l "$tmp_status_file" | awk '{ print $1 }')
+        # but dont forget there is a OK/ERR keyword last line, we must exclude it before counting
+        nb_media=$(head --lines=-1 "$tmp_status_file" | wc -l | awk '{ print $1 }')
 
-        [[ $nb_media -eq 1 ]] && media=$(cat "$tmp_status_file")
+        # media is on the first line
+        [[ $nb_media -eq 1 ]] && media=$(head -1 "$tmp_status_file")
 
         rm -f "$tmp_status_file"
 
@@ -2570,7 +2583,7 @@ case "$cmd" in
         ;;
 
     restore)
-        status_format="backup"  # backup/restore style error format
+        status_async=1  # format status for asynchronous operations
 
         [[ -n "$user" ]] || user=$(printenv $ENV_USER)
 
@@ -2583,7 +2596,7 @@ case "$cmd" in
         [[ -n "$status_file" ]] || error_exit "$cmd: missing status file, use -s argument or $ENV_STATUS_DIR env variable"
 
         status_message ""
-        write_br_message "START" "$$"
+        write_kw_message "START" "$$"
 
         host=$(printenv $ENV_HOST)
 
@@ -2619,22 +2632,22 @@ case "$cmd" in
         else
             if [[ $fake_status -eq 0 ]]; then
                 sleep 1
-                write_br_message "DECRYPT"
+                write_kw_message "DECRYPT"
                 sleep 10
-                write_br_message "EXTRACTDB"
+                write_kw_message "EXTRACTDB"
                 sleep 10
-                write_br_message "LOADDB"
+                write_kw_message "LOADDB"
                 sleep 40
-                write_br_message "RESTOREFILES"
+                write_kw_message "RESTOREFILES"
                 sleep 40
-                write_br_message "OK"
+                write_kw_message "OK"
             else
                 sleep 1
-                write_br_message "DECRYPT"
+                write_kw_message "DECRYPT"
                 sleep 10
-                write_br_message "EXTRACTDB"
+                write_kw_message "EXTRACTDB"
                 sleep 10
-                write_br_message "LOADDB"
+                write_kw_message "LOADDB"
                 sleep 40
                 error_exit "$cmd $media $archive: faking failure"
             fi

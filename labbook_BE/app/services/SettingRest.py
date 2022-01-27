@@ -385,7 +385,7 @@ class ScriptListarchive(Resource):
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListarchive impossible to open listarchive file')
                 return compose_ret(l_archive, Constants.cst_content_type_json, 500)"""
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptListarchive l_archive=' + str(l_archive))
+        self.log.info(Logs.fileline() + ' : TRACE ScriptListarchive ret=' + str(ret))  # l_archive=' + str(l_archive))
         return compose_ret(ret, Constants.cst_content_type_json)
 
 
@@ -429,7 +429,7 @@ class ScriptListmedia(Resource):
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
                 return compose_ret(l_media, Constants.cst_content_type_json, 500)"""
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptListmedia l_media=' + str(l_media))
+        self.log.info(Logs.fileline() + ' : TRACE ScriptListmedia ret=' + str(ret))  # l_media=' + str(l_media))
         return compose_ret(ret, Constants.cst_content_type_json)
 
 
@@ -529,6 +529,7 @@ class ScriptStatus(Resource):
                 ret = "ERR;" + str(date_now) + ";Wrong mode"
                 return compose_ret(ret, Constants.cst_content_type_json, 500)
 
+            self.log.info(Logs.fileline() + ' : DEBUG path=' + str(path))
             # No encoding forced because script return list from system so its depend of encoding of operating system
             f = open(path, 'r')
             for line in f:
@@ -536,9 +537,14 @@ class ScriptStatus(Resource):
 
             ret = line[:-1]
 
-            if not ret or (not ret.startsWith('OK') and not ret.startsWith('ERR')):
+            self.log.info(Logs.fileline() + ' : ret = ' + str(ret))
+            self.log.info(Logs.fileline() + ' : DEBUG after for read line in file')
+
+            if not ret or (not ret.startswith('OK') and not ret.startswith('ERR')):
+                self.log.info(Logs.fileline() + ' : DEBUG not ret or ERR')
                 ret = "WAIT;" + str(date_now) + ";Not finished"
-            elif mode == 'M' and ret.startsWith('OK'):
+            elif mode == 'M' and ret.startswith('OK'):
+                self.log.info(Logs.fileline() + ' : DEBUG traitement mode M')
                 l_media = {}
 
                 l_media['ret']   = ret
@@ -551,10 +557,18 @@ class ScriptStatus(Resource):
                         l_media['media'].append(media[:-1])  
                         
                     l_media['media'] = l_media['media'][:-1]  # Remove last line
+
+                    self.log.info(Logs.fileline() + ' : l_media=' + str(l_media))
                 except:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listmedia file')
-                    return compose_ret(l_media, Constants.cst_content_type_json, 500)
-            elif mode == 'A' and ret.startsWith('OK'):
+                    ret = "ERR;" + str(date_now) + ";Impossible to read listmedia file"
+                    return compose_ret(ret, Constants.cst_content_type_json, 500)
+                
+                self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_media=' + str(l_media))
+                return compose_ret(l_media, Constants.cst_content_type_json)
+            
+            elif mode == 'A' and ret.startswith('OK'):
+                self.log.info(Logs.fileline() + ' : DEBUG mode A')
                 l_archive = {}
 
                 l_archive['ret']   = ret
@@ -568,14 +582,22 @@ class ScriptStatus(Resource):
                         l_archive['archive'].append(archive[:-1])
 
                     l_archive['archive'] = l_archive['archive'][:-1]  # Remove last line
+
+                    self.log.info(Logs.fileline() + ' : l_archive=' + str(l_archive))
                 except:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listarchive file')
+                    ret = "ERR;" + str(date_now) + ";Impossible to read listarchive file"
                     return compose_ret(l_archive, Constants.cst_content_type_json, 500)
-        except:
+                
+                self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_archive=' + str(l_archive))
+                return compose_ret(l_archive, Constants.cst_content_type_json)
+
+        except Exception as e:
+            self.log.info(Logs.fileline() + ' : ERROR Exception : ' + str(e))
             date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')
             ret = "ERR;" + str(date_now) + ";Impossible to read status file"
-            return compose_ret(ret, Constants.cst_content_type_json, 500)
+            return compose_ret(ret, Constants.cst_content_type_json, 200)  # 200 : dont want to stop poll in ihm
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptStatus ret=' + str(ret))
         return compose_ret(ret, Constants.cst_content_type_json)
