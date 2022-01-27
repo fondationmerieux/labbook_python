@@ -362,11 +362,13 @@ class ScriptListarchive(Resource):
 
         os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media + '" ' + Constants.cst_io_listarchive
+        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
+               '" ' + Constants.cst_io_listarchive + ' > ' + Constants.cst_io + 'listarchive.out 2>&1 &')
 
         self.log.error(Logs.fileline() + ' : ScriptListarchive cmd=' + cmd)
         ret = os.system(cmd)
 
+        """
         l_archive = {}
 
         l_archive['ret']   = ret
@@ -381,10 +383,10 @@ class ScriptListarchive(Resource):
                     l_archive['archive'].append(archive[:-1])
             except:
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListarchive impossible to open listarchive file')
-                return compose_ret(l_archive, Constants.cst_content_type_json, 500)
+                return compose_ret(l_archive, Constants.cst_content_type_json, 500)"""
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptListarchive l_archive=' + str(l_archive))
-        return compose_ret(l_archive, Constants.cst_content_type_json)
+        return compose_ret(ret, Constants.cst_content_type_json)
 
 
 class ScriptListmedia(Resource):
@@ -404,11 +406,13 @@ class ScriptListmedia(Resource):
 
         os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + type + Constants.cst_io_listmedia
+        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + type +
+               Constants.cst_io_listmedia + ' > ' + Constants.cst_io + 'listmedia.out 2>&1 &')
 
         self.log.error(Logs.fileline() + ' : ScriptListmedia cmd=' + cmd)
         ret = os.system(cmd)
 
+        """
         l_media = {}
 
         l_media['ret']   = ret
@@ -423,10 +427,10 @@ class ScriptListmedia(Resource):
                     l_media['media'].append(media[:-1])
             except:
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
-                return compose_ret(l_media, Constants.cst_content_type_json, 500)
+                return compose_ret(l_media, Constants.cst_content_type_json, 500)"""
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptListmedia l_media=' + str(l_media))
-        return compose_ret(l_media, Constants.cst_content_type_json)
+        return compose_ret(ret, Constants.cst_content_type_json)
 
 
 class ScriptProgbackup(Resource):
@@ -515,6 +519,10 @@ class ScriptStatus(Resource):
                 path = os.path.join(Constants.cst_io, Constants.cst_io_restore)
             elif mode == 'B':
                 path = os.path.join(Constants.cst_io, Constants.cst_io_backup)
+            elif mode == 'M':
+                path = os.path.join(Constants.cst_io, Constants.cst_io_listmedia)
+            elif mode == 'A':
+                path = os.path.join(Constants.cst_io, Constants.cst_io_listarchive)
             else:
                 date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 self.log.info(Logs.fileline() + ' : ERROR ScriptStatus wrong mode : ' + str(mode))
@@ -527,6 +535,42 @@ class ScriptStatus(Resource):
                 pass
 
             ret = line[:-1]
+
+            if not ret or (not ret.startsWith('OK') and not ret.startsWith('ERR')):
+                ret = "WAIT;" + str(date_now) + ";Not finished"
+            elif mode == 'M' and ret.startsWith('OK'):
+                l_media = {}
+
+                l_media['ret']   = ret
+                l_media['media'] = []
+
+                try:
+                    # No encoding forced because script return list from system so its depend of encoding of operating system
+                    f = open(os.path.join(Constants.cst_io, 'listmedia'), 'r')
+                    for media in f:
+                        l_media['media'].append(media[:-1])  
+                        
+                    l_media['media'] = l_media['media'][:-1]  # Remove last line
+                except:
+                    self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listmedia file')
+                    return compose_ret(l_media, Constants.cst_content_type_json, 500)
+            elif mode == 'A' and ret.startsWith('OK'):
+                l_archive = {}
+
+                l_archive['ret']   = ret
+                l_archive['archive'] = []
+
+                # read listarchive file
+                try:
+                    # No encoding forced because script return list from system so its depend of encoding of operating system
+                    f = open(os.path.join(Constants.cst_io, 'listarchive'), 'r')
+                    for archive in f:
+                        l_archive['archive'].append(archive[:-1])
+
+                    l_archive['archive'] = l_archive['archive'][:-1]  # Remove last line
+                except:
+                    self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listarchive file')
+                    return compose_ret(l_archive, Constants.cst_content_type_json, 500)
         except:
             date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')

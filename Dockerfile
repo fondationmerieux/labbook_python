@@ -67,7 +67,7 @@ WORKDIR /home/apps/labbook_FE/labbook_FE
 
 RUN python3 -m venv venv
 
-RUN source venv/bin/activate && pip install pipenv && pip install --upgrade pip && pipenv install
+RUN source venv/bin/activate && pip install --upgrade pip && pip install pipenv && pipenv install
 
 # venv labbook_BE
 COPY labbook_BE/Pipfile /home/apps/labbook_BE/labbook_BE
@@ -76,7 +76,7 @@ WORKDIR /home/apps/labbook_BE/labbook_BE
 
 RUN python3 -m venv venv
 
-RUN source venv/bin/activate && pip install pipenv && pip install --upgrade pip && pipenv install
+RUN source venv/bin/activate && pip install --upgrade pip && pip install pipenv && pipenv install
 
 # install labbook_FE
 COPY labbook_FE /home/apps/labbook_FE/labbook_FE

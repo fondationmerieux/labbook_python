@@ -356,6 +356,10 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         {
         console.log("listmedia ret="+JSON.stringify(data)) ;
 
+        // POLL WS status restore
+        poll_stat = setInterval( ScriptStatus, 10000, "M" ) ;
+
+        /*
             // Dialog list media
             if (data.ret == 0)
             {
@@ -372,6 +376,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
             }
             else
             alert("{{ _("Une erreur est survenue lors de la récupération de la liste de média") }}") ;
+        */
 
         return false ;
         },
@@ -524,6 +529,10 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         {
         console.log("list_archive ret="+JSON.stringify(data)) ;
 
+        // POLL WS status restore
+        poll_stat = setInterval( ScriptStatus, 10000, "A" ) ;
+
+        /*
             // Dialog list archive
             if (data.ret == 0)
             {
@@ -540,6 +549,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
             }
             else
             alert("{{ _("Une erreur est survenue lors de la récupération de la liste d'archives") }}") ;
+        */
 
         return false ;
         },
@@ -613,116 +623,197 @@ function ScriptStatus(mode)
         {
         console.log("status data="+JSON.stringify(data)) ;
 
-        data = data.split(";") ;
-
-            if ( data[0] == "START" )
+            // check if data is a an array or a string
+            if (mode == "M" || mode == "A")
             {
-            console.log("START") ;
-                if (mode == "R")
-                $("#wait-status").text("Démarrage du processus de restauration " + data[1] ) ;
-                else if  (mode == "B")
-                $("#wait-status").text("Démarrage du processus de sauvegarde " + data[1]) ;
-            }
-            else if ( data[0] == "DECRYPT" )
-            {
-            console.log("DECRYPT") ;
-            $("#wait-status").text("Déchiffrement de la sauvegarde " + data[1]) ;
-            }
-            else if ( data[0] == "DUMPDB" )
-            {
-            console.log("DUMPDB") ;
-            $("#wait-status").text("Copie de la base de données " + data[1]) ;
-            }
-            else if ( data[0] == "EXTRACTDB" )
-            {
-            console.log("EXTRACTDB") ;
-            $("#wait-status").text("Extraction de la base de données " + data[1]) ;
-            }
-            else if ( data[0] == "LOADDB" )
-            {
-            console.log("LOADDB") ;
-            $("#wait-status").text("Chargement de la base de données " + data[1]) ;
-            }
-            else if ( data[0] == "MAKEARCHIVE" )
-            {
-            console.log("MAKEARCHIVE") ;
-            $("#wait-status").text("Compression de la sauvegarde " + data[1]) ;
-            }
-            else if ( data[0] == "COPYKEYS" )
-            {
-            console.log("COPYKEYS") ;
-            $("#wait-status").text("Copie des clés de chiffrement " + data[1]) ;
-            }
-            else if ( data[0] == "RESTOREFILES" )
-            {
-            console.log("RESTOREFILES") ;
-            $("#wait-status").text("Restauration des fichiers " + data[1]) ;
-            }
-            else if ( data[0] == "OK" )
-            {
-            console.log("OK") ;
-            $("#wait-status").text("") ;
-            $("#dial-wait").modal("hide") ;
-
-            clearInterval(poll_stat) ;
-
-                if ( mode == "R" )
+                if (Object.prototype.toString.call(data) === '[object Array]')
                 {
-                    if ( window.confirm("{{ _("La restauration est terminée, LabBook va redémarrer les services de l'application") }}") )
-                    {
-                    var param = '{ "pwd_user":"' + pwd_user + '"}' ;
+                // TODO traiter liste media ou archive
+                console.log("DEBUG return of scriptStatus data=" + JSON.stringify(data)) ;
 
-                        $.ajax( 
+                stat = data.ret ;
+                stat = stat.split(";") ;
+
+                    if ( stat[0] == "OK" )
+                    {
+                    console.log("DEBUG OK") ;
+
+                        $("#wait-status").text("") ;
+                        $("#dial-wait").modal("hide") ;
+
+                    clearInterval(poll_stat) ;
+                    
+                        if (mode == "M")
                         {
-                            type: "POST",
-                            url: "/services/setting/script/restart",
-                            dataType: 'json',
-                            contentType: "application/json; charset=utf-8",
-                            data: param,
-                            success: function(data)
+                            // Dialog list media
+                            $("#list-media").empty() ;
+                            for( i in data.media)
                             {
-                            // Never go through this
-                            tempAlert("{{ _("Redémarrage activé") }}", "btn-run_backup") ;
-                            },
-                            error: function(data)
-                            {
-                            console.log("POST setting restart") ;
-                            alert("{{ _("Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page") }}") ;
+                                $("#list-media").append('<option value="' + data.media[i] + '">' + data.media[i] + '</option>');
                             }
-                        } ) ;
+
+                            $( "#dial-list-media" ).modal( "show" ) ;
+                        }
+                        else if (mode == "A")
+                        {
+                            // Dialog list media
+                            $("#list-archive").empty() ;
+                            for( i in data.archive)
+                            {
+                                $("#list-archive").append('<option value="' + data.archive[i] + '">' + data.archive[i] + '</option>');
+                            }
+
+                            $( "#dial-list-archive" ).modal( "show" ) ; 
+                        }
+                        else
+                        {
+                            $("#wait-status").text("") ;
+                            $("#dial-wait").modal("hide") ;
+
+                        clearInterval(poll_stat) ;
+                        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+
+                        return false ;
+                        }
+                    return true ;
+                    }
+                    else
+                    {
+                        $("#wait-status").text("") ;
+                        $("#dial-wait").modal("hide") ;
+
+                    clearInterval(poll_stat) ;
+                    alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+
+                    return false ;
                     }
                 }
-                else if ( mode == "B" )
+                else
                 {
-                    $("#wait-status").text("") ;
-                    $("#dial-wait").modal("hide") ;
-
-                alert("{{ _("Sauvegarde réussie") }}") ;
-
-                location.reload() ;
+                data = data.split(";") ;
+                
+                    if ( data[0] == "WAIT" )
+                    {
+                    console.log("WAIT") ;
+                    $("#wait-status").text("Traitement en cours " + data[1]) ;
+                    }
+                    else
+                    console.log("ERROR data=" + JSON.stringify(data)) ;
                 }
-            }
-            else if ( data[0] == "ERR" )
-            {
-            console.log("ERR") ;
-            $("#wait-status").text("") ;
-            $("#dial-wait").modal("hide") ;
-
-            clearInterval(poll_stat) ;
-
-            alert("{{ _("Une erreur est survenue") }} : " + data[1] + " ERROR = " + data[2]) ;
             }
             else
             {
-            console.log("Unknow status : " + data[0] ) ;
-            $("#wait-status").text("") ;
-            $("#dial-wait").modal("hide") ;
+            data = data.split(";") ;
 
-            clearInterval(poll_stat) ;
+                if ( data[0] == "START" )
+                {
+                console.log("START") ;
+                    if (mode == "R")
+                    $("#wait-status").text("Démarrage du processus de restauration " + data[1] ) ;
+                    else if  (mode == "B")
+                    $("#wait-status").text("Démarrage du processus de sauvegarde " + data[1]) ;
+                }
+                else if ( data[0] == "DECRYPT" )
+                {
+                console.log("DECRYPT") ;
+                $("#wait-status").text("Déchiffrement de la sauvegarde " + data[1]) ;
+                }
+                else if ( data[0] == "DUMPDB" )
+                {
+                console.log("DUMPDB") ;
+                $("#wait-status").text("Copie de la base de données " + data[1]) ;
+                }
+                else if ( data[0] == "EXTRACTDB" )
+                {
+                console.log("EXTRACTDB") ;
+                $("#wait-status").text("Extraction de la base de données " + data[1]) ;
+                }
+                else if ( data[0] == "LOADDB" )
+                {
+                console.log("LOADDB") ;
+                $("#wait-status").text("Chargement de la base de données " + data[1]) ;
+                }
+                else if ( data[0] == "MAKEARCHIVE" )
+                {
+                console.log("MAKEARCHIVE") ;
+                $("#wait-status").text("Compression de la sauvegarde " + data[1]) ;
+                }
+                else if ( data[0] == "COPYKEYS" )
+                {
+                console.log("COPYKEYS") ;
+                $("#wait-status").text("Copie des clés de chiffrement " + data[1]) ;
+                }
+                else if ( data[0] == "RESTOREFILES" )
+                {
+                console.log("RESTOREFILES") ;
+                $("#wait-status").text("Restauration des fichiers " + data[1]) ;
+                }
+                else if ( data[0] == "OK" )
+                {
+                console.log("OK") ;
+                $("#wait-status").text("") ;
+                $("#dial-wait").modal("hide") ;
 
-            alert("{{ _("Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu") }}") ;
+                clearInterval(poll_stat) ;
+
+                    if ( mode == "R" )
+                    {
+                        if ( window.confirm("{{ _("La restauration est terminée, LabBook va redémarrer les services de l'application") }}") )
+                        {
+                        var param = '{ "pwd_user":"' + pwd_user + '"}' ;
+
+                            $.ajax( 
+                            {
+                                type: "POST",
+                                url: "/services/setting/script/restart",
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: param,
+                                success: function(data)
+                                {
+                                // Never go through this
+                                tempAlert("{{ _("Redémarrage activé") }}", "btn-run_backup") ;
+                                },
+                                error: function(data)
+                                {
+                                console.log("POST setting restart") ;
+                                alert("{{ _("Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page") }}") ;
+                                }
+                            } ) ;
+                        }
+                    }
+                    else if ( mode == "B" )
+                    {
+                        $("#wait-status").text("") ;
+                        $("#dial-wait").modal("hide") ;
+
+                    alert("{{ _("Sauvegarde réussie") }}") ;
+
+                    location.reload() ;
+                    }
+                }
+                else if ( data[0] == "ERR" )
+                {
+                console.log("ERR") ;
+                $("#wait-status").text("") ;
+                $("#dial-wait").modal("hide") ;
+
+                clearInterval(poll_stat) ;
+
+                alert("{{ _("Une erreur est survenue") }} : " + data[1] + " ERROR = " + data[2]) ;
+                }
+                else
+                {
+                console.log("Unknow status : " + data[0] ) ;
+                $("#wait-status").text("") ;
+                $("#dial-wait").modal("hide") ;
+
+                clearInterval(poll_stat) ;
+
+                alert("{{ _("Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu") }}") ;
+                }
             }
-            
+                
         },
         error: function(ret)
         {

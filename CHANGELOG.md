@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.1] - 2022-01-26
+## [3.2.1] - 2022-01-27
 ### Added
 - add code patient search field in list of result and list of work pages
 - add familly analysis search field in list of records and list of work pages
@@ -48,6 +48,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - popup notification changed
 - INT to decimal(10,2) for cote_valeur in sigl_05_data
 - drop more than 350 useless tables from DB
+
+## [3.1.7] - 2022-01-26
+### Fixed
+- Empty biological validation page after a canceled result
+- Security upgrade for Python to 3.9 and Pillow to 9.0.0
 
 ## [3.1.6] - 2022-01-12
 ### Changed
