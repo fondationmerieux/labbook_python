@@ -43,6 +43,8 @@ Contents:
 - `LABBOOK_DB_NAME` : database name
 - `LABBOOK_DB_HOST` : database host as seen from the container
 - `LABBOOK_DEBUG` : if 1 runs gunicorn with reload option
+- `LABBOOK_TEST_OK` : backup.sh commands (com1,com2,...) to fake with OK status
+- `LABBOOK_TEST_KO` : backup.sh commands (com1,com2,...) to fake with ERROR status
 
 Example:
 
@@ -53,7 +55,11 @@ LABBOOK_DB_PWD=iTpRPQfIxZWQGg
 LABBOOK_DB_NAME=SIGL
 LABBOOK_DB_HOST=10.88.0.1
 LABBOOK_DEBUG=1
+LABBOOK_TEST_OK=
+LABBOOK_TEST_KO=
 ~~~
+
+A sample file is provided in `doc/labbook.conf.sample`.
 
 ## Database setup
 

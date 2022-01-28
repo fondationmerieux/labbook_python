@@ -18,6 +18,7 @@ include $(CONFIG_PATH2)
 endif
 
 # $(info DEFAULT_VERSION=$(DEFAULT_VERSION) LABBOOK_DB_USER=$(LABBOOK_DB_USER) LABBOOK_DB_PWD=$(LABBOOK_DB_PWD) LABBOOK_DB_NAME=$(LABBOOK_DB_NAME))
+# $(info LABBOOK_DEBUG=$(LABBOOK_DEBUG) LABBOOK_TEST_OK=$(LABBOOK_TEST_OK) LABBOOK_TEST_KO=$(LABBOOK_TEST_KO))
 
 ifndef LABBOOK_DB_USER
 $(error LABBOOK_DB_USER undefined)
@@ -41,6 +42,7 @@ endif
 
 MYSQL_CMD=mysql -u $(LABBOOK_DB_USER) -p$(LABBOOK_DB_PWD) --default-character-set="UTF8"
 POD_NAME=labbook
+POD_NETWORK=slirp4netns:allow_host_loopback=true
 CONTAINER_NAME=labbook_python
 DEVRUN_HTTP=5000
 DEVRUN_STORAGE?=./devrun_storage
@@ -54,7 +56,9 @@ DEVRUN_ENV_OPTIONS=--tz=local --env TZ --env TERM --env LANG \
 --env LABBOOK_DB_PWD=$(LABBOOK_DB_PWD) \
 --env LABBOOK_DB_NAME=$(LABBOOK_DB_NAME) \
 --env LABBOOK_DB_HOST=$(LABBOOK_DB_HOST) \
---env LABBOOK_DEBUG=$(LABBOOK_DEBUG)
+--env LABBOOK_DEBUG=$(LABBOOK_DEBUG) \
+--env LABBOOK_TEST_OK=$(LABBOOK_TEST_OK) \
+--env LABBOOK_TEST_KO=$(LABBOOK_TEST_KO)
 DEVRUN_VOLUME_OPTIONS=\
 --volume=$(DEVRUN_STORAGE):/storage:Z \
 --volume=./labbook_FE/app:$(DEVRUN_FE_BASE_PATH)/labbook_FE/app \
@@ -149,7 +153,7 @@ devrun:
 	mkdir -p $(DEVRUN_FE_LOG_DIR) $(DEVRUN_BE_LOG_DIR)
 	mkdir -p $(DEVRUN_STORAGE)
 	rsync -a ./storage/ $(DEVRUN_STORAGE)
-	$(DOCKER_COMMAND) pod exists $(POD_NAME) || $(DOCKER_COMMAND) pod create --name=$(POD_NAME) --publish=$(DEVRUN_HTTP):80
+	$(DOCKER_COMMAND) pod exists $(POD_NAME) || $(DOCKER_COMMAND) pod create --name=$(POD_NAME) --network=$(POD_NETWORK) --publish=$(DEVRUN_HTTP):80
 	$(DOCKER_COMMAND) run $(DEVRUN_GENERAL_OPTIONS) $(DEVRUN_ENV_OPTIONS) $(DEVRUN_VOLUME_OPTIONS) $(FULL_IMAGE_NAME):latest
 
 .PHONY: devstop

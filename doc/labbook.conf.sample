@@ -1,0 +1,15 @@
+# database access from the container
+LABBOOK_DB_USER=myUser
+LABBOOK_DB_PWD=myPass
+LABBOOK_DB_NAME=SIGL
+# for rootfull containers
+# LABBOOK_DB_HOST=10.88.0.1
+# for rootless containers
+LABBOOK_DB_HOST=host.containers.internal
+
+# if 1 runs gunicorn with reload option
+LABBOOK_DEBUG=1
+
+# backup.sh commands (cmd1,cmd2,...) to fake with success or failure
+LABBOOK_TEST_OK=
+LABBOOK_TEST_KO=

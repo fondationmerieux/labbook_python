@@ -1300,7 +1300,9 @@ test_listmedia() {
     local first_line=""
     local status=0
 
-    # missing user
+    #
+    # Test: missing user
+    #
     cmd_stderr=$($run_cmd_noenv listmedia 2>&1)
     status=$?
 
@@ -1313,7 +1315,9 @@ test_listmedia() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing user"'
 
-    # missing status file
+    #
+    # Test: missing status file
+    #
     cmd_stderr=$($run_cmd_noenv -u user listmedia 2>&1)
     status=$?
 
@@ -1340,10 +1344,44 @@ test_listmedia() {
     # start clean
     rm -rf "$media_dir"
 
+    #
+    # Test: missing media dir
+    #
+    cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -P "$media_dir" listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_FALSE_} '$status'
+
+    first_line=$(echo "$cmd_stderr" | grep "cannot" | head -1)
+
+    ${_ASSERT_NOT_NULL_} '"$first_line"'
+    ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"cannot find directory"'
+
+    # check status file content
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    # check last line starts with ERR;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^ERR;" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check last line contains error message
+    last_line=$(tail -1 "$status_file")
+
+    ${_ASSERT_NOT_NULL_} '"$last_line"'
+    ${_ASSERT_CONTAINS_} '"[last_line=$last_line]"' '"$last_line"' '"cannot find directory"'
+
+    #
+    # Test: empty list
+    #
     # simulate no media
     mkdir -p "$media_dir/$user"
 
-    # empty list
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -P "$media_dir" listmedia 2>&1)
     status=$?
 
@@ -1351,24 +1389,44 @@ test_listmedia() {
 
     ${_ASSERT_TRUE_} '$status'
 
-    # check result
+    # check status file content
     [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
 
-    true > "$expected_file"
-
-    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    # check last line starts with OK;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^OK;" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
 
     ${_ASSERT_TRUE_} '$status'
 
+    # check result
+    true > "$expected_file"
+
+    # we must remove the last line from the status file before diffing
+    cmd_stderr=$(head --lines=-1 "$status_file" | diff - "$expected_file" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    #
+    # Test: list all media even unitialized
+    #
     # simulate some media
     mkdir -p "$media_dir/$user/$media1"
     mkdir -p "$media_dir/$user/$media2/$BACKUPS_DIRECTORY"  # media2 is initialized
 
-    # list all media even unitialized
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -U -P "$media_dir" listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check last line starts with OK;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^OK;" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -1383,15 +1441,26 @@ $media1
 $media2
 %
 
-    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    # we must remove the last line from the status file before diffing
+    cmd_stderr=$(head --lines=-1 "$status_file" | diff - "$expected_file" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
 
     ${_ASSERT_TRUE_} '$status'
 
-    # list all initialized media
+    #
+    # Test: list all initialized media
+    #
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -P "$media_dir" listmedia 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check last line starts with OK;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^OK;" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -1405,7 +1474,8 @@ $media2
 $media2
 %
 
-    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    # we must remove the last line from the status file before diffing
+    cmd_stderr=$(head --lines=-1 "$status_file" | diff - "$expected_file" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -1418,7 +1488,9 @@ test_listarchive() {
     local first_line=""
     local status=0
 
-    # missing user
+    #
+    # Test: missing user
+    #
     cmd_stderr=$($run_cmd_noenv listarchive 2>&1)
     status=$?
 
@@ -1431,7 +1503,9 @@ test_listarchive() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing user"'
 
-    # missing status file
+    #
+    # Test: missing status file
+    #
     cmd_stderr=$($run_cmd_noenv -u user listarchive 2>&1)
     status=$?
 
@@ -1457,7 +1531,9 @@ test_listarchive() {
     # start clean
     rm -rf "$media_dir"
 
-    # missing media
+    #
+    # Test: missing media
+    #
     cmd_stderr=$($run_cmd_noenv -u "$user" -s "$status_file" listarchive 2>&1)
     status=$?
 
@@ -1470,7 +1546,26 @@ test_listarchive() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"missing media"'
 
-    # media absent
+    # check status file content
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    # check last line starts with ERR;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^ERR;" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check last line contains error message
+    last_line=$(tail -1 "$status_file")
+
+    ${_ASSERT_NOT_NULL_} '"$last_line"'
+    ${_ASSERT_CONTAINS_} '"[last_line=$last_line]"' '"$last_line"' '"missing media"'
+
+    #
+    # Test: media absent
+    #
     mkdir -p "$media_dir/$user"
 
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
@@ -1485,7 +1580,26 @@ test_listarchive() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"cannot find media"'
 
-    # media not initialized
+    # check status file content
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    # check last line starts with ERR;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^ERR;" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check last line contains error message
+    last_line=$(tail -1 "$status_file")
+
+    ${_ASSERT_NOT_NULL_} '"$last_line"'
+    ${_ASSERT_CONTAINS_} '"[last_line=$last_line]"' '"$last_line"' '"cannot find media"'
+
+    #
+    # Test: media not initialized
+    #
     mkdir -p "$media_dir/$user/$media"
 
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
@@ -1500,11 +1614,30 @@ test_listarchive() {
     ${_ASSERT_NOT_NULL_} '"$first_line"'
     ${_ASSERT_CONTAINS_} '"[first_line=$first_line]"' '"$first_line"' '"not initialized"'
 
+    # check status file content
+    [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
+
+    # check last line starts with ERR;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^ERR;" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check last line contains error message
+    last_line=$(tail -1 "$status_file")
+
+    ${_ASSERT_NOT_NULL_} '"$last_line"'
+    ${_ASSERT_CONTAINS_} '"[last_line=$last_line]"' '"$last_line"' '"not initialized"'
+
     # initialize media
     backup_dir="$media_dir/$user/$media/$BACKUPS_DIRECTORY"
     mkdir -p "$backup_dir"
 
-    # empty list
+    #
+    # Test: empty list
+    #
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
     status=$?
 
@@ -1515,9 +1648,19 @@ test_listarchive() {
     # check result
     [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
 
+    # check last line starts with OK;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^OK;" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
     true > "$expected_file"
 
-    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    # we must remove the last line from the status file before diffing
+    cmd_stderr=$(head --lines=-1 "$status_file" | diff - "$expected_file" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
@@ -1535,7 +1678,9 @@ test_listarchive() {
     touch "$backup_dir/$backup3"
     touch "$backup_dir/$backup4"
 
-    # list archives
+    #
+    # Test: list archives
+    #
     cmd_stderr=$($run_cmd -u "$user" -s "$status_file" -m "$media" -P "$media_dir" listarchive 2>&1)
     status=$?
 
@@ -1543,9 +1688,18 @@ test_listarchive() {
 
     ${_ASSERT_TRUE_} '$status'
 
-    # check result
+    # check status file content
     [[ $verbose -eq 1 ]] && { echo "status_file:" ; cat "$status_file" ; }
 
+    # check last line starts with OK;
+    cmd_stderr=$(tail -1 "$status_file" | grep "^OK;" 2>&1)
+    status=$?
+
+    [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"
+
+    ${_ASSERT_TRUE_} '$status'
+
+    # check result
     cat > "$expected_file" <<%
 $backup1
 $backup2
@@ -1553,7 +1707,8 @@ $backup3
 $backup4
 %
 
-    cmd_stderr=$(diff "$status_file" "$expected_file" 2>&1)
+    # we must remove the last line from the status file before diffing
+    cmd_stderr=$(head --lines=-1 "$status_file" | diff - "$expected_file" 2>&1)
     status=$?
 
     [[ $verbose -eq 1 ]] && echo "cmd_stderr=$cmd_stderr"

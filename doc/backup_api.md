@@ -45,6 +45,9 @@ Backup and restore are lengthy operations that are started asynchronously.
 They write messages in their status file indicating the operation they are running.
 These messages are displayed by the application.
 
+Commands that produce information for the application are also started asynchronously.
+They typically add to their output a line with a OK/ERR status.
+
 The absolute path to the script is `/home/apps/labbook_BE/labbook_BE/script/backup.sh`.
 
 WARNING : character set of media names is not checked by backup.sh but labbook_BE expects UTF8 encoding.
@@ -88,10 +91,13 @@ $ LABBOOK_USER_PWD=password \
     -o FILE     : output file [DEFAULT=stdout]
     -U          : list uninitialized media
 
-Output: media names
+Output: media names followed by status line.
 
 Ex:
 USB
+OK;YYYY-MM-DD HH:MM:SS
+or
+ERR;YYYY-MM-DD HH:MM:SS;message
 ~~~
 
 WARNING : character set of media names is not checked by backup.sh but labbook_BE expects UTF8 encoding
@@ -104,7 +110,7 @@ $ LABBOOK_USER_PWD=password \
     -o FILE     : output file [DEFAULT=stdout]
     -m MEDIA    : media to search for backups
 
-Output: archive names
+Output: archive names followed by status line.
 
 Ex:
 backup_SIGL_2018-04-13_15h58m51s.tar.gz
@@ -122,6 +128,9 @@ backup_SIGL_2018-04-24_15h55m54s.tar.gz
 backup_SIGL_2018-04-25_09h11m57s.tar.gz
 backup_SIGL_2018-04-26_13h46m54s.tar.gz
 backup_SIGL_2018-05-03_13h51m04s.tar.gz
+OK;YYYY-MM-DD HH:MM:SS
+or
+ERR;YYYY-MM-DD HH:MM:SS;message
 ~~~
 
 ## Backup
