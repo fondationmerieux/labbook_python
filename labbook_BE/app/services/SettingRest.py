@@ -223,49 +223,6 @@ class SettingReport(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
-class SettingSticker(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self):
-        setting = Setting.getStickerSetting()
-
-        if not setting:
-            self.log.error(Logs.fileline() + ' : ERROR SettingSticker not found')
-            return compose_ret('', Constants.cst_content_type_json, 404)
-
-        # Replace None by empty string
-        for key, value in list(setting.items()):
-            if setting[key] is None:
-                setting[key] = ''
-
-        self.log.info(Logs.fileline() + ' : TRACE SettingSticker')
-        return compose_ret(setting, Constants.cst_content_type_json)
-
-    def post(self, sts_ser):
-        args = request.get_json()
-
-        if 'sts_width' not in args or 'sts_height' not in args or \
-           'sts_margin_top' not in args or 'sts_margin_bottom' not in args or \
-           'sts_margin_left' not in args or 'sts_margin_right' not in args:
-            self.log.error(Logs.fileline() + ' : SettingSticker ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
-
-        ret = Setting.updateStickerSetting(sts_ser=sts_ser,
-                                           sts_width=args['sts_width'],
-                                           sts_height=args['sts_height'],
-                                           sts_margin_top=args['sts_margin_top'],
-                                           sts_margin_bottom=args['sts_margin_bottom'],
-                                           sts_margin_left=args['sts_margin_left'],
-                                           sts_margin_right=args['sts_margin_right'])
-
-        if ret is False:
-            self.log.error(Logs.alert() + ' : SettingSticker ERROR update')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        self.log.info(Logs.fileline() + ' : TRACE SettingSticker')
-        return compose_ret('', Constants.cst_content_type_json)
-
-
 class SettingBackup(Resource):
     log = logging.getLogger('log_services')
 
@@ -554,8 +511,8 @@ class ScriptStatus(Resource):
                     # No encoding forced because script return list from system so its depend of encoding of operating system
                     f = open(os.path.join(Constants.cst_io, 'listmedia'), 'r')
                     for media in f:
-                        l_media['media'].append(media[:-1])  
-                        
+                        l_media['media'].append(media[:-1])
+
                     l_media['media'] = l_media['media'][:-1]  # Remove last line
 
                     self.log.info(Logs.fileline() + ' : l_media=' + str(l_media))
@@ -563,10 +520,10 @@ class ScriptStatus(Resource):
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listmedia file')
                     ret = "ERR;" + str(date_now) + ";Impossible to read listmedia file"
                     return compose_ret(ret, Constants.cst_content_type_json, 500)
-                
+
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_media=' + str(l_media))
                 return compose_ret(l_media, Constants.cst_content_type_json)
-            
+
             elif mode == 'A' and ret.startswith('OK'):
                 self.log.info(Logs.fileline() + ' : DEBUG mode A')
                 l_archive = {}
@@ -588,7 +545,7 @@ class ScriptStatus(Resource):
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listarchive file')
                     ret = "ERR;" + str(date_now) + ";Impossible to read listarchive file"
                     return compose_ret(l_archive, Constants.cst_content_type_json, 500)
-                
+
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_archive=' + str(l_archive))
                 return compose_ret(l_archive, Constants.cst_content_type_json)
 

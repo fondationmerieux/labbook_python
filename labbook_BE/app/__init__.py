@@ -116,8 +116,6 @@ if config_envvar in os.environ:
     else:
         os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
 
-    os.environ['LABBOOK_TEST_OK'] = 'listmedia,listarchive'
-
     log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))
@@ -254,7 +252,6 @@ api.add_resource(SettingBackup,       '/services/setting/backup')
 api.add_resource(SettingPref,         '/services/setting/pref/list', '/services/setting/pref/list/<int:id_owner>')
 api.add_resource(SettingRecNum,       '/services/setting/record/number')
 api.add_resource(SettingReport,       '/services/setting/report')
-api.add_resource(SettingSticker,      '/services/setting/sticker', '/services/setting/sticker/<int:sts_ser>')
 api.add_resource(ScriptBackup,        '/services/setting/script/backup/<string:media>')
 api.add_resource(ScriptGenkey,        '/services/setting/script/genkey')
 api.add_resource(ScriptInitmedia,     '/services/setting/script/initmedia/<string:media>')

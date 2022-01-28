@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - unoconv in listener mode instead of trying to generate a template after login
-- redesign of user tables (1 table user, 1 table type of profil, no more id_group)
+- redesign of user tables (1 table user, 1 table type of profil, no more id_group and id_role)
 
 ### Fixed
 - spelling error for minimal value in B008 analysis
