@@ -45,7 +45,8 @@ POD_NAME=labbook
 POD_NETWORK=slirp4netns:allow_host_loopback=true
 CONTAINER_NAME=labbook_python
 DEVRUN_HTTP=5000
-DEVRUN_STORAGE?=./devrun_storage
+DEVRUN_STORAGE?=$(shell pwd)/devrun_storage
+DEVRUN_MAP_STORAGE=$(DEVRUN_STORAGE):/storage:Z
 DEVRUN_FE_LOG_DIR=./labbook_FE/logs
 DEVRUN_BE_LOG_DIR=./labbook_BE/logs
 DEVRUN_FE_BASE_PATH=/home/apps/labbook_FE
@@ -58,9 +59,15 @@ DEVRUN_ENV_OPTIONS=--tz=local --env TZ --env TERM --env LANG \
 --env LABBOOK_DB_HOST=$(LABBOOK_DB_HOST) \
 --env LABBOOK_DEBUG=$(LABBOOK_DEBUG) \
 --env LABBOOK_TEST_OK=$(LABBOOK_TEST_OK) \
---env LABBOOK_TEST_KO=$(LABBOOK_TEST_KO)
+--env LABBOOK_TEST_KO=$(LABBOOK_TEST_KO) \
+--env LABBOOK_USER=$(LABBOOK_USER) \
+--env LABBOOK_ROOTLESS=$(LABBOOK_ROOTLESS) \
+--env LABBOOK_POD_NAME=$(POD_NAME) \
+--env LABBOOK_MEDIA_DIR=$(LABBOOK_MEDIA_DIR) \
+--env LABBOOK_DUMP_COL_STATS=$(LABBOOK_DUMP_COL_STATS) \
+--env LABBOOK_MAP_STORAGE=$(DEVRUN_MAP_STORAGE)
 DEVRUN_VOLUME_OPTIONS=\
---volume=$(DEVRUN_STORAGE):/storage:Z \
+--volume=$(DEVRUN_MAP_STORAGE) \
 --volume=./labbook_FE/app:$(DEVRUN_FE_BASE_PATH)/labbook_FE/app \
 --volume=$(DEVRUN_FE_LOG_DIR):$(DEVRUN_FE_BASE_PATH)/logs \
 --volume=./labbook_BE/alembic:$(DEVRUN_BE_BASE_PATH)/labbook_BE/alembic \

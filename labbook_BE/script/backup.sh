@@ -8,6 +8,7 @@ ENV_KEY_PASS="LABBOOK_KEY_PWD"
 ENV_KEY_DIR="LABBOOK_KEY_DIR"
 ENV_STATUS_DIR="LABBOOK_STATUS_DIR"
 ENV_LOG_DIR="LABBOOK_LOG_DIR"
+ENV_MEDIA_DIR="LABBOOK_MEDIA_DIR"
 ENV_TEST_OK="LABBOOK_TEST_OK"
 ENV_TEST_KO="LABBOOK_TEST_KO"
 ENV_HOST="LABBOOK_DB_HOST"  # DB is on the host for now, no need to have a LABBOOK_HOST env variable
@@ -17,6 +18,10 @@ ENV_DB_NAME="LABBOOK_DB_NAME"
 ENV_DB_HOST="LABBOOK_DB_HOST"
 ENV_DB_USER="LABBOOK_DB_USER"
 ENV_DB_PASS="LABBOOK_DB_PWD"
+ENV_ROOTLESS="LABBOOK_ROOTLESS"
+ENV_MAP_STORAGE="LABBOOK_MAP_STORAGE"
+ENV_DUMP_COL_STATS="LABBOOK_DUMP_COL_STATS"
+ENV_POD_NAME="LABBOOK_POD_NAME"
 KEY_REAL_NAME="LabBook Backup Key"
 WORK_DIRECTORY="/tmp"
 MEDIA_DIRECTORY="/media"
@@ -98,6 +103,7 @@ usage()
     echo "  islb25            Is INPUT_FILE a LabBook 2.5 archive ?"
     echo "  copydir           Copy files from INPUT_DIR to OUTPUT_DIR"
     echo "  testvalinfile     Display media parameter. Used for testing"
+    echo "  testmksettings    Create settings file. Used for testing"
     echo
     echo "Options:"
     echo "  -h                Display this help and exit"
@@ -928,7 +934,6 @@ fn_get_mountpoint() {
     local local_host=""
 
     if in_app_container; then
-        docker_cmd="podman"
         local_user="$user"
 
         [[ -n "$local_user" ]] || local_user=$(printenv $ENV_USER)
@@ -949,10 +954,11 @@ fn_get_mountpoint() {
 
         [[ $verbose -eq 1 ]] && echo_message "user=$local_user host=$local_host"
 
+        # shellcheck disable=SC2086
         mountpoint=$(SSHPASS=$(printenv $ENV_USER_PASS) \
                      sshpass -e \
                      ssh -o "StrictHostKeyChecking no" "$local_user@$local_host" \
-                     sudo $docker_cmd volume inspect --format '{{.Mountpoint}}' "$volume_name" 2> /dev/null)
+                     $podman_cmd volume inspect --format '{{.Mountpoint}}' "$volume_name" 2> /dev/null)
         cmd_status=$?
     else
         if type podman > /dev/null 2>&1; then
@@ -992,6 +998,8 @@ fn_initmedia() {
     local media_path=""
     local backup_path=""
     local media=""
+
+    [[ -z "$media_dir" ]] && media_dir=$(printenv $ENV_MEDIA_DIR)
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1042,6 +1050,10 @@ fn_listmedia() {
     local with_uninitialized="$3"
     local media_dir="$4"
 
+    [[ $verbose -eq 1 ]] && log_message "media_dir=$media_dir $ENV_MEDIA_DIR=$(printenv $ENV_MEDIA_DIR)"
+
+    [[ -z "$media_dir" ]] && media_dir=$(printenv $ENV_MEDIA_DIR)
+
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
     [[ -d "$media_dir" ]] || {
@@ -1089,6 +1101,8 @@ fn_listarchive() {
     local media_dir="$4"
     local media_path=""
     local media=""
+
+    [[ -z "$media_dir" ]] && media_dir=$(printenv $ENV_MEDIA_DIR)
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1184,6 +1198,10 @@ fn_progbackup() {
     local image=""
     local my_absolute_path=""
     local env_file=""
+    local env_media_dir=""
+    local map_media=""
+    local env_map_storage=""
+    local map_storage=""
 
     [[ $verbose -eq 1 ]] && echo_message "Programming daily backup at $when as $user on $host"
 
@@ -1221,8 +1239,26 @@ fn_progbackup() {
 
     env_file="$(printenv $ENV_STATUS_DIR)/$BACKUP_SETTINGS"
 
+    # If media dir is redefined, we must modify the way we map media
+    env_media_dir=$(printenv $ENV_MEDIA_DIR)
+
+    if [[ -n "$env_media_dir" ]]; then
+        map_media="$env_media_dir:$env_media_dir"
+    else
+        map_media="$MAP_MEDIA"
+    fi
+
+    # storage map may be redefined in the environment
+    env_map_storage=$(printenv $ENV_MAP_STORAGE)
+
+    if [[ -n "$env_map_storage" ]]; then
+        map_storage="$env_map_storage"
+    else
+        map_storage="$MAP_STORAGE"
+    fi
+
     cat > "$cron_file" <<%
-$minute_i $hour_i * * * sudo podman run --rm --tz=local -v $MAP_MEDIA -v $MAP_STORAGE $image $my_absolute_path -e $env_file backupauto
+$minute_i $hour_i * * * $podman_cmd run --rm --tz=local -v $map_media -v $map_storage $image $my_absolute_path -e $env_file backupauto
 %
 
     [[ $test_mode -eq 0 ]] && {
@@ -1263,6 +1299,8 @@ fn_dumpdb() {
     local db_name=""
     local db_host=""
     local db_user=""
+    local dump_options=()
+    local env_dump_col_stats=""
 
     db_name=$(printenv $ENV_DB_NAME)
     db_host=$(printenv $ENV_DB_HOST)
@@ -1273,15 +1311,24 @@ fn_dumpdb() {
     MYSQL_PWD=$(printenv $ENV_DB_PASS)
     export MYSQL_PWD
 
-    mysqldump \
-        --force \
-        --add-drop-table \
-        --complete-insert \
-        --default-character-set=UTF8 \
-        --host="$db_host" \
-        --user="$db_user" \
-        --result-file="$output" \
-        "$db_name" || {
+    dump_options=(--force \
+                  --add-drop-table \
+                  --complete-insert \
+                  --default-character-set=UTF8 \
+                  --host="$db_host" \
+                  --user="$db_user" \
+                  --result-file="$output")
+
+    # we may have to disable a new flag enabled by default in mysqldump 8
+    env_dump_col_stats=$(printenv $ENV_DUMP_COL_STATS)
+
+    [[ -n "$env_dump_col_stats" && "$env_dump_col_stats" = "0" ]] && {
+        dump_options=("${dump_options[@]}" --column-statistics=0)
+    }
+
+    [[ $verbose -eq 1 ]] && echo_message "Dump options" "${dump_options[@]}"
+
+    mysqldump "${dump_options[@]}" "$db_name" || {
         log_message "mysqldump to $output failed"
         return 1
     }
@@ -1371,6 +1418,8 @@ fn_backup() {
     local pubkey_file=""
     local fmx_pubkey_file=""
     local media=""
+
+    [[ -z "$media_dir" ]] && media_dir=$(printenv $ENV_MEDIA_DIR)
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1470,6 +1519,8 @@ fn_restore() {
     local media_path=""
     local archive_path=""
     local media=""
+
+    [[ -z "$media_dir" ]] && media_dir=$(printenv $ENV_MEDIA_DIR)
 
     [[ -z "$media_dir" ]] && media_dir="$MEDIA_DIRECTORY"
 
@@ -1887,6 +1938,12 @@ run_in_container() {
     local my_absolute_path=""
     local env_file=""
     local status=0
+    local env_media_dir=""
+    local map_media=""
+    local env_map_storage=""
+    local map_storage=""
+    local run_options=()
+    local env_pod_name=""
 
     shift 2
 
@@ -1907,9 +1964,41 @@ run_in_container() {
         return 1
     }
 
+    [[ $verbose -eq 1 ]] && {
+        log_message "settings file in $env_file"
+        cat "$env_file"
+    }
+
     my_absolute_path="$test_path"
 
     [[ -n "$my_absolute_path" ]] || my_absolute_path="$SCRIPT_ABSOLUTE_DIR/backup.sh"
+
+    # If media dir is redefined, we must modify the way we map media
+    env_media_dir=$(printenv $ENV_MEDIA_DIR)
+
+    if [[ -n "$env_media_dir" ]]; then
+        map_media="$env_media_dir:$env_media_dir"
+    else
+        map_media="$MAP_MEDIA"
+    fi
+
+    # storage map may be redefined in the environment
+    env_map_storage=$(printenv $ENV_MAP_STORAGE)
+
+    if [[ -n "$env_map_storage" ]]; then
+        map_storage="$env_map_storage"
+    else
+        map_storage="$MAP_STORAGE"
+    fi
+
+    run_options=(--rm --tz=local)
+
+    # do we run the container in a pod ?
+    env_pod_name=$(printenv $ENV_POD_NAME)
+
+    [[ -n "$env_pod_name" ]] && {
+        run_options=("${run_options[@]}" --pod="$env_pod_name")
+    }
 
     [[ $verbose -eq 1 ]] && set -x
 
@@ -1918,17 +2007,15 @@ run_in_container() {
     # For this reason we add a way of passing parameters in files with a @filename syntax.
     # See fn_val_in_file.
     #
+    # shellcheck disable=SC2086
     SSHPASS=$(printenv $ENV_USER_PASS) \
         sshpass -e \
         ssh -o "StrictHostKeyChecking no" "$user@$host" \
-        sudo podman run --rm --tz=local -v "$MAP_MEDIA" -v "$MAP_STORAGE" "$image" \
+        $podman_cmd run "${run_options[@]}" -v "$map_media" -v "$map_storage" "$image" \
              "$my_absolute_path" -e "$env_file" "$@"
     status=$?
 
     [[ $verbose -eq 1 ]] && set +x
-
-    # remove the environment file as soon as we can
-    rm -f "$env_file"
 
     return $status
 }
@@ -1944,10 +2031,11 @@ fn_get_my_image() {
     local user="$1"
     local host="$2"
 
+    # shellcheck disable=SC2086
     SSHPASS=$(printenv $ENV_USER_PASS) \
         sshpass -e \
         ssh -o "StrictHostKeyChecking no" "$user@$host" \
-        sudo podman ps --format '{{.Image}}' | grep "$CONTAINER" | head -1 || return 1
+        $podman_cmd ps --format '{{.Image}}' | grep "$CONTAINER" | head -1 || return 1
 
     return 0
 }
@@ -1986,10 +2074,12 @@ export $ENV_USER=$(printenv $ENV_USER)
 export $ENV_STATUS_DIR=$(printenv $ENV_STATUS_DIR)
 export $ENV_KEY_DIR=$(printenv $ENV_KEY_DIR)
 export $ENV_LOG_DIR=$(printenv $ENV_LOG_DIR)
+export $ENV_MEDIA_DIR=$(printenv $ENV_MEDIA_DIR)
 export $ENV_DB_HOST=$(printenv $ENV_DB_HOST)
 export $ENV_DB_USER=$(printenv $ENV_DB_USER)
 export $ENV_DB_PASS=$(printenv $ENV_DB_PASS)
 export $ENV_DB_NAME=$(printenv $ENV_DB_NAME)
+export $ENV_DUMP_COL_STATS=$(printenv $ENV_DUMP_COL_STATS)
 %
     status=$?
 
@@ -2200,6 +2290,7 @@ host=""
 last_backup_ok_file=""
 test_mode=0
 media_param_file=""
+podman_cmd="sudo podman"
 
 while getopts "hvi:o:e:d:V:R:a:p:s:u:Um:w:P:T" option; do
     case "$option" in
@@ -2283,14 +2374,27 @@ cmd="$1"
 
 # when commands are run within a newly started container we must initialize environment
 [[ -n "$settings_file" ]] && {
+    [[ $verbose -eq 1 ]] && log_message "Reading settings from file=$settings_file"
+
     # shellcheck disable=SC1090
     source "$settings_file"
+
+    if [[ $verbose -eq 1 ]]; then
+        log_message "Keeping settings file=$settings_file in verbose mode"
+    else
+        rm -f "$settings_file"
+    fi
 }
 
 # Initialize log file
 def_log_dir=$(printenv $ENV_LOG_DIR)
 
 [[ -n "$def_log_dir" ]] && log_file=$(realpath "$def_log_dir/$cmd")
+
+# Check for rootless podman mode
+rootless_mode=$(printenv $ENV_ROOTLESS)
+
+[[ $rootless_mode -eq 1 ]] && podman_cmd="podman"
 
 init_fake_mode "$cmd"
 
@@ -2316,7 +2420,7 @@ def_status_dir=$(printenv $ENV_STATUS_DIR)
     media_param_file=$(realpath "$def_status_dir/media")
 }
 
-[[ $verbose -eq 1 ]] && log_message "cmd=$cmd fake_mode=$fake_mode fake_status=$fake_status status_file=$status_file media_param_file=$media_param_file"
+[[ $verbose -eq 1 ]] && log_message "cmd=$cmd fake_mode=$fake_mode fake_status=$fake_status status_file=$status_file media_param_file=$media_param_file $ENV_HOST=$(printenv $ENV_HOST)"
 
 case "$cmd" in
     genkey)
@@ -2841,6 +2945,12 @@ case "$cmd" in
 
     testvalinfile)
         log_message "media=$media val_in_file=$(fn_val_in_file "$media")"
+        ;;
+
+    testmksettings)
+        fn_make_settings "$test_path" 1
+        exit_status=$?
+        log_message "fn_make_settings $test_path 1 status=$exit_status"
         ;;
 
     *)

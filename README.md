@@ -38,13 +38,13 @@ Labbook reads its configuration from a file named `labbook.conf` which can be lo
 
 Contents:
 
-- `LABBOOK_DB_USER` : database user name
-- `LABBOOK_DB_PWD` : database user password
-- `LABBOOK_DB_NAME` : database name
-- `LABBOOK_DB_HOST` : database host as seen from the container
-- `LABBOOK_DEBUG` : if 1 runs gunicorn with reload option
-- `LABBOOK_TEST_OK` : backup.sh commands (com1,com2,...) to fake with OK status
-- `LABBOOK_TEST_KO` : backup.sh commands (com1,com2,...) to fake with ERROR status
+- `LABBOOK_DB_USER`: database user name
+- `LABBOOK_DB_PWD`: database user password
+- `LABBOOK_DB_NAME`: database name
+- `LABBOOK_DB_HOST`: database host as seen from the container
+- `LABBOOK_DEBUG`: if 1 runs gunicorn with reload option
+- `LABBOOK_TEST_OK`: backup.sh commands (com1,com2,...) to fake with OK status
+- `LABBOOK_TEST_KO`: backup.sh commands (com1,com2,...) to fake with ERROR status
 
 Example:
 
@@ -60,6 +60,24 @@ LABBOOK_TEST_KO=
 ~~~
 
 A sample file is provided in `doc/labbook.conf.sample`.
+
+### Testing backup and restore functions in your current environment
+
+In order to test backup/restore functions directly in your current environment you may have to modify some defaults.
+A few additional configuration variables are available in `labbook.conf`:
+
+- `LABBOOK_USER`: to replace `user_labbook`
+- `LABBOOK_MEDIA_DIR`: to replace `/media` for mounted removable media
+- `LABBOOK_ROOTLESS`: set it to 1 if you run podman in rootless mode
+- `LABBOOK_DUMP_COL_STATS`: set it to 0 to add `--column-statistics=0` to mysqldump arguments. This may be necessary for mysqldump >= 8.
+
+Notes:
+
+- LabBook will replace the `LABBOOK_USER` crontab when you use the "MODIFY SAVE TIME" button
+- LabBook will keep asking you for the "user_labbook" password even if you provide a different user in the `LABBOOK_USER` configuration variable.
+Just enter the password for the user specified in the `LABBOOK_USER` configuration variable.
+- Because backup.sh spawns commands in new containers for which there is no mapping of the working tree, you must rebuild the image with `make devbuild` every time you modify backup.sh.
+- After a restore, the automatic restart will not work in the development environment, you have to manually restart the application with `make devstop` and `make devrun`.
 
 ## Database setup
 

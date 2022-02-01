@@ -10,6 +10,18 @@ LABBOOK_DB_HOST=host.containers.internal
 # if 1 runs gunicorn with reload option
 LABBOOK_DEBUG=1
 
-# backup.sh commands (cmd1,cmd2,...) to fake with success or failure
+# backup.sh commands (cmd1,cmd2,...) to fake with success or failure [default=empty]
 LABBOOK_TEST_OK=
 LABBOOK_TEST_KO=
+
+# user to replace for backup/restore [default=user_labbook]
+LABBOOK_USER=
+
+# directory where removable media is mounted [default=/media]
+LABBOOK_MEDIA_DIR=
+
+# if 1 podman is run without sudo [default=0]
+LABBOOK_ROOTLESS=
+
+# if 0 add --column-statistics=0 to mysqldump arguments [default=empty]
+LABBOOK_DUMP_COL_STATS=
