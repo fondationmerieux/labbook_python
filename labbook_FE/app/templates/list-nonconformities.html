@@ -95,7 +95,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_items = {% if args['item_list'] %}{{ args['item_list']|safe }}{% else %}[]{% endif %} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;

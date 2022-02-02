@@ -69,7 +69,7 @@
 {% endblock %}        
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
 var tech_list = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
 
@@ -649,8 +649,6 @@ $("#form-search").submit(function()
 
 $(".cnx_trigger").keyup( function(event) 
 {
-console.log("DEBUG cnx_trigger");
-
     if (event.which == 13)
     {
     event.preventDefault() ;

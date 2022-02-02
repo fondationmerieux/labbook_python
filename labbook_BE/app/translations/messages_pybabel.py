@@ -2296,3 +2296,16 @@ _("Technique : Spectrophotométrie d'absorption atomique")
 _("Test de solubilité")
 _("Transudat : < 30g/l   Exsudat: > 30g/l")
 _("Zone thérapeutique : 0.5 à 1.5")
+
+# ----------------------------------------------------------------------------
+# ROLE NAME SECTION
+# ----------------------------------------------------------------------------
+_("Administrateur")
+_("Biologiste")
+_("Technicien")
+_("Secrétaire")
+_("Technicien avancé")
+_("Technicien qualiticien")
+_("Secrétaire avancée")
+_("Qualiticien")
+_("Prescripteur")

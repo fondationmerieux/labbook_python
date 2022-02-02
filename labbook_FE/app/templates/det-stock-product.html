@@ -5,7 +5,7 @@
     <title>{{ _("Approvisionner un produit") }}</title>
     <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
 
 
@@ -84,7 +84,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 
 $("#search_product").select2(
 {

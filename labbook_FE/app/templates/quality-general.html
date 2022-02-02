@@ -55,7 +55,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage" ;

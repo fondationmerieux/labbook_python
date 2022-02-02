@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.1] - 2022-01-27
+## [3.2.1] - 2022-01-28
 ### Added
 - add code patient search field in list of result and list of work pages
 - add familly analysis search field in list of records and list of work pages
@@ -17,10 +17,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - api page with swagger-ui on your_labbook_url/sigl/api(Note: description of web services not finished) 
 - add Internal and External control quality pages
 - add manual about modify an odt template
+- add to html template nonce attribute to inline script 
 
 ### Changed
 - unoconv in listener mode instead of trying to generate a template after login
 - redesign of user tables (1 table user, 1 table type of profil, no more id_group and id_role)
+- modify alembic.ini and env.py to make the parameters variable
 
 ### Fixed
 - spelling error for minimal value in B008 analysis

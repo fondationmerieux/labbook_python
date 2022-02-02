@@ -63,7 +63,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var filename = '' ;
 
 function upload_file()

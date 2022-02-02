@@ -10,10 +10,6 @@
 HOST="localhost"
 PORT="8081"
 
-export INFORMIXDIR=/home/informix
-export INFORMIXSERVER=sigl_tcp
-export ONCONFIG=onconfig
-
 #############
 # Functions #
 #############

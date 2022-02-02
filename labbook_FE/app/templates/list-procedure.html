@@ -72,7 +72,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_items = {{ args|safe }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;

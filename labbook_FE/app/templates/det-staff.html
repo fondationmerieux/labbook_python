@@ -211,7 +211,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_USCV = {% if args['data_USCV'] %}{{ args['data_USCV']|safe }}{% else %}[]{% endif %} ;
 var data_USDI = {% if args['data_USDI'] %}{{ args['data_USDI']|safe }}{% else %}[]{% endif %} ;
 var data_USTR = {% if args['data_USTR'] %}{{ args['data_USTR']|safe }}{% else %}[]{% endif %} ;

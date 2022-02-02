@@ -6,8 +6,8 @@
     <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/labbook.css') }}?0" media="screen" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.5.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.5.1.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}" nonce="{{ session['nonce'] }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
 </head>
 

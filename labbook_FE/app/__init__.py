@@ -17,6 +17,7 @@ import logging
 import requests
 import json
 import random
+import uuid
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
@@ -77,6 +78,14 @@ else:
 # app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
 
 babel = Babel(app)
+
+
+@app.before_request
+def new_nonce_session():
+    nonce = uuid.uuid1()
+
+    session['nonce'] = str(nonce)
+    session.modified = True
 
 
 @app.context_processor

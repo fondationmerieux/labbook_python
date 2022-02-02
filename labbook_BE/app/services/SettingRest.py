@@ -486,7 +486,7 @@ class ScriptStatus(Resource):
                 ret = "ERR;" + str(date_now) + ";Wrong mode"
                 return compose_ret(ret, Constants.cst_content_type_json, 500)
 
-            self.log.info(Logs.fileline() + ' : DEBUG path=' + str(path))
+            self.log.info(Logs.fileline() + ' : DEBUG mode=' + str(mode) + ' | path=' + str(path))
             # No encoding forced because script return list from system so its depend of encoding of operating system
             f = open(path, 'r')
             for line in f:
@@ -497,7 +497,7 @@ class ScriptStatus(Resource):
             self.log.info(Logs.fileline() + ' : ret = ' + str(ret))
             self.log.info(Logs.fileline() + ' : DEBUG after for read line in file')
 
-            if not ret or (not ret.startswith('OK') and not ret.startswith('ERR')):
+            if not ret or ((mode == 'M' or mode == 'A') and not ret.startswith('OK') and not ret.startswith('ERR')):
                 self.log.info(Logs.fileline() + ' : DEBUG not ret or ERR')
                 ret = "WAIT;" + str(date_now) + ";Not finished"
             elif mode == 'M' and ret.startswith('OK'):
@@ -550,7 +550,6 @@ class ScriptStatus(Resource):
                 return compose_ret(l_archive, Constants.cst_content_type_json)
 
         except Exception as e:
-            self.log.info(Logs.fileline() + ' : ERROR Exception : ' + str(e))
             date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')
             ret = "ERR;" + str(date_now) + ";Impossible to read status file"

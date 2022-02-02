@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_epidemio = {% if args['data_epidemio'] %}{{ args['data_epidemio']|safe }}{% else %}[]{% endif %} ;
 
 function upload_epidemio()

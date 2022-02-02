@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 function export_dhis2()
 {
 var id_user  = {{ session['user_id']|safe}} ;

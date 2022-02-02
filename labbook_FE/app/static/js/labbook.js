@@ -10,6 +10,8 @@ let pos_elem = $("#" +id_elem).position();
 let x = pos_elem.left;
 let y = pos_elem.top - 80; // -80 for raise up a bit
 
+if ( y < 120 ) y = 120 ; // less than 100 it's non visible beacuse hide by menu
+
 $(".toast").css({ top: y }) ;
 $(".toast").css({ left: w_page + 'px' }) ;
 

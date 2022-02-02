@@ -5,7 +5,7 @@
     <title>{{ _("Equipement") }}</title>
     <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -256,7 +256,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_EQPH = {% if args['data_EQPH'] %}{{ args['data_EQPH']|safe }}{% else %}[]{% endif %} ;
 var data_EQBD = {% if args['data_EQBD'] %}{{ args['data_EQBD']|safe }}{% else %}[]{% endif %} ;
 var data_EQPM = {% if args['data_EQPM'] %}{{ args['data_EQPM']|safe }}{% else %}[]{% endif %} ;

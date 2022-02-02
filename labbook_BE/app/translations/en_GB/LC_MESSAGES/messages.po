@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-15 14:35+0100\n"
+"POT-Creation-Date: 2022-01-31 10:43+0100\n"
 "PO-Revision-Date: 2021-08-24 15:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_GB\n"
@@ -50,7 +50,7 @@ msgstr "Record number"
 msgid "Facture n°"
 msgstr "Invoice no."
 
-#: models/Pdf.py:305 models/Pdf.py:773
+#: models/Pdf.py:305 models/Pdf.py:822
 msgid "édité le"
 msgstr "edited on"
 
@@ -82,159 +82,161 @@ msgstr "To pay"
 msgid "Etat de la facturation, édité le"
 msgstr "Billing status, edited on"
 
-#: models/Pdf.py:656 models/Pdf.py:761
+#: models/Pdf.py:705 models/Pdf.py:810
 msgid "Tél"
 msgstr "Phone"
 
-#: models/Pdf.py:661 models/Pdf.py:762
+#: models/Pdf.py:710 models/Pdf.py:811
 msgid "Fax"
 msgstr "Fax"
 
-#: models/Pdf.py:666 models/Pdf.py:763
+#: models/Pdf.py:715 models/Pdf.py:812
 msgid "Email"
 msgstr "Email"
 
-#: models/Pdf.py:764
+#: models/Pdf.py:813
 msgid "Dossier"
 msgstr "Record"
 
-#: models/Pdf.py:765
+#: models/Pdf.py:814
 msgid "Code"
 msgstr "Code"
 
-#: models/Pdf.py:766
+#: models/Pdf.py:815
 msgid "Né le"
 msgstr "Born on"
 
-#: models/Pdf.py:767
+#: models/Pdf.py:816
 msgid "Admis le"
 msgstr "Admitted on"
 
-#: models/Pdf.py:768
+#: models/Pdf.py:817
 msgid "en"
 msgstr "in"
 
-#: models/Pdf.py:769
+#: models/Pdf.py:818
 msgid "Lit"
 msgstr "Bed"
 
-#: models/Pdf.py:770
+#: models/Pdf.py:819
 msgid "par"
 msgstr "by"
 
-#: models/Pdf.py:771
+#: models/Pdf.py:820
 msgid "Examen prescrit le"
 msgstr "Examination prescribed on"
 
-#: models/Pdf.py:772
+#: models/Pdf.py:821
 msgid "Enregistré le"
 msgstr "Registered on"
 
-#: models/Pdf.py:774
+#: models/Pdf.py:823
 msgid "ANALYSE"
 msgstr "ANALYSIS"
 
-#: models/Pdf.py:775
+#: models/Pdf.py:824
 msgid "RESULTAT"
 msgstr "RESULT"
 
-#: models/Pdf.py:776
+#: models/Pdf.py:825
 msgid "Références"
 msgstr "References"
 
-#: models/Pdf.py:777
+#: models/Pdf.py:826
 msgid "Antériorités"
 msgstr "Priorities"
 
-#: models/Pdf.py:778
+#: models/Pdf.py:827
 msgid "Commentaire"
 msgstr "Comment"
 
-#: models/Pdf.py:779
+#: models/Pdf.py:828
 msgid "validé par"
 msgstr "validated by"
 
-#: models/Pdf.py:812 translations/messages_pybabel.py:291
+#: models/Pdf.py:861 translations/messages_pybabel.py:291
 msgid "Compte rendu"
 msgstr "Report"
 
-#: models/Pdf.py:828
+#: models/Pdf.py:877
 msgid "COMPLET"
 msgstr "FULL"
 
-#: models/Pdf.py:837 models/Pdf.py:1176
+#: models/Pdf.py:886 models/Pdf.py:1225
 msgid "PARTIEL"
 msgstr "PARTIAL"
 
-#: models/Pdf.py:841
+#: models/Pdf.py:890
 msgid "ANNULE ET REMPLACE"
 msgstr "CANCEL AND REPLACE"
 
-#: models/Pdf.py:869 translations/messages_pybabel.py:592
+#: models/Pdf.py:918 translations/messages_pybabel.py:592
 msgid "Microbiologie"
 msgstr "Microbiology"
 
-#: models/Pdf.py:873 translations/messages_pybabel.py:1026
+#: models/Pdf.py:922 translations/messages_pybabel.py:1026
 #: translations/messages_pybabel.py:2193 translations/messages_pybabel.py:2194
 msgid "Test de grossesse"
 msgstr "Pregnancy test"
 
-#: models/Pdf.py:909
+#: models/Pdf.py:958
 msgid "Renseignements cliniques"
 msgstr "Clinical information"
 
-#: models/Pdf.py:948 models/Pdf.py:1439 translations/messages_pybabel.py:596
+#: models/Pdf.py:997 models/Pdf.py:1491 translations/messages_pybabel.py:596
 msgid "Inconnu"
 msgstr "Unknown"
 
-#: models/Pdf.py:985 models/Pdf.py:996
+#: models/Pdf.py:1034 models/Pdf.py:1045 models/Pdf.py:1528 models/Pdf.py:1539
+#: models/Pdf.py:1636
 msgid "ans"
 msgstr "years"
 
-#: models/Pdf.py:988 models/Pdf.py:1005
+#: models/Pdf.py:1037 models/Pdf.py:1054 models/Pdf.py:1531 models/Pdf.py:1548
 msgid "jours"
 msgstr "days"
 
-#: models/Pdf.py:990 models/Pdf.py:991 models/Pdf.py:999
+#: models/Pdf.py:1039 models/Pdf.py:1040 models/Pdf.py:1048 models/Pdf.py:1533
+#: models/Pdf.py:1534 models/Pdf.py:1542
 msgid "mois"
 msgstr "months"
 
-#: models/Pdf.py:1002
+#: models/Pdf.py:1051 models/Pdf.py:1545
 msgid "semaines"
 msgstr "weeks"
 
-#: models/Pdf.py:1009 models/Pdf.py:1445 models/Pdf.py:1503
+#: models/Pdf.py:1058 models/Pdf.py:1552 models/Pdf.py:1638
 #: translations/messages_pybabel.py:597
 msgid "Masculin"
 msgstr "Male"
 
-#: models/Pdf.py:1011 models/Pdf.py:1447
+#: models/Pdf.py:1060 models/Pdf.py:1554
 msgid "Feminin"
 msgstr "Female"
 
-#: models/Pdf.py:1192 models/Pdf.py:1198 models/Pdf.py:1203
+#: models/Pdf.py:1241 models/Pdf.py:1247 models/Pdf.py:1252
 msgid "Annulée"
 msgstr "Cancelled"
 
-#: models/Pdf.py:1265 translations/messages_pybabel.py:1477
+#: models/Pdf.py:1311 translations/messages_pybabel.py:1477
 #: translations/messages_pybabel.py:1478 translations/messages_pybabel.py:1479
 #: translations/messages_pybabel.py:1480
 msgid "Albumine"
 msgstr "Albumin"
 
-#: models/Pdf.py:1266 translations/messages_pybabel.py:90
+#: models/Pdf.py:1312 translations/messages_pybabel.py:90
 msgid "Absent"
 msgstr "Absent"
 
-#: models/Pdf.py:1270 translations/messages_pybabel.py:91
+#: models/Pdf.py:1316 translations/messages_pybabel.py:91
 msgid "Présent"
 msgstr "Present"
 
-#: models/Pdf.py:1275 translations/messages_pybabel.py:313
+#: models/Pdf.py:1321 translations/messages_pybabel.py:313
 msgid "Biochimie urinaire"
 msgstr "Urinary biochemistry"
 
-#: models/Pdf.py:1276 translations/messages_pybabel.py:1348
+#: models/Pdf.py:1322 translations/messages_pybabel.py:1348
 msgid "Bandelettes urinaires"
 msgstr "Urine Dipstick Test"
 
@@ -2134,23 +2136,23 @@ msgstr "General reagents"
 msgid "Sérologie"
 msgstr "Serology"
 
-#: translations/messages_pybabel.py:562
+#: translations/messages_pybabel.py:562 translations/messages_pybabel.py:2303
 msgid "Administrateur"
 msgstr "Administrator"
 
-#: translations/messages_pybabel.py:563
+#: translations/messages_pybabel.py:563 translations/messages_pybabel.py:2304
 msgid "Biologiste"
 msgstr "Biologist"
 
-#: translations/messages_pybabel.py:564
+#: translations/messages_pybabel.py:564 translations/messages_pybabel.py:2311
 msgid "Prescripteur"
 msgstr "Prescriber"
 
-#: translations/messages_pybabel.py:565
+#: translations/messages_pybabel.py:565 translations/messages_pybabel.py:2310
 msgid "Qualiticien"
 msgstr "Qualitician Officer"
 
-#: translations/messages_pybabel.py:566
+#: translations/messages_pybabel.py:566 translations/messages_pybabel.py:2306
 msgid "Secrétaire"
 msgstr "Secretary"
 
@@ -2158,15 +2160,15 @@ msgstr "Secretary"
 msgid "Secretaire avancée"
 msgstr "Higher secretary"
 
-#: translations/messages_pybabel.py:568
+#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305
 msgid "Technicien"
 msgstr "Technician"
 
-#: translations/messages_pybabel.py:569
+#: translations/messages_pybabel.py:569 translations/messages_pybabel.py:2307
 msgid "Technicien avancé"
 msgstr "Higher technician"
 
-#: translations/messages_pybabel.py:570
+#: translations/messages_pybabel.py:570 translations/messages_pybabel.py:2308
 msgid "Technicien qualiticien"
 msgstr "Quality technician"
 
@@ -5372,8 +5374,7 @@ msgstr ""
 msgid ""
 "La culture comprend : examen microscopique direct, isolement avec "
 "éventuellement identification complète de (s) germe(s) et antibiogramme."
-msgstr ""
-"The culture includes: direct microscopic examination, isolation with "
+msgstr "The culture includes: direct microscopic examination, isolation with "
 "possibly complete identification of germ(s), and antibiogram."
 
 #: translations/messages_pybabel.py:1442
@@ -5381,8 +5382,7 @@ msgid ""
 "Le compte rendu comportera le jour du cycle, le temps écoulé après "
 "rapport sexuel, la qualité de la glaire (abondance, filance et "
 "transparence) le nombre et la mobilité des spermatozoïdes par champ."
-msgstr ""
-"The report will include the day of the cycle, the time elapsed after "
+msgstr "The report will include the day of the cycle, the time elapsed after "
 "sexual intercourse, the quality of the mucus (abundance, filance and "
 "transparency), the number, and mobility of sperm per field."
 
@@ -5398,8 +5398,7 @@ msgid ""
 "techniques utilisées avec leur seuil de sensibilité. Une technique de "
 "confirmation s'impose quand les tests de dépistage sont positifs ou "
 "discordants. Une seule technique de confirmation peut être cotée."
-msgstr ""
-"The report should specify the reagent used, the threshold value of the "
+msgstr "The report should specify the reagent used, the threshold value of the "
 "technique and the number of copies or equivalent copies per ml of plasma,"
 " - Research and possible titration of antibodies, specify the "
 "technique(s) used along with their sensitivity threshold. A confirmatory "
@@ -5415,8 +5414,7 @@ msgid ""
 "Recherche d'un antigène du SARS-CoV-2, recherche par tests non "
 "automatisable de type immunochromatographique ciblant l'antigène ... du "
 "SARS-CoV-2 (dépend du kit utilisé)"
-msgstr ""
-"SARS-CoV-2 antigen research, research by non-automatable "
+msgstr "SARS-CoV-2 antigen research, research by non-automatable "
 "immunochromatographic type tests targeting... of SARS-CoV-2 antigen "
 "(depends on the kit used)"
 
@@ -5430,24 +5428,21 @@ msgstr "Research of antibodies to SARS-CoV-2, immunochromatographic testing"
 msgid ""
 "Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour "
 "ce test ciblent les gènes ... et ... du génome du SARS COV2"
-msgstr ""
-"Research of the SARS-CoV-2 genome by RT-PCR, the primers used for this "
+msgstr "Research of the SARS-CoV-2 genome by RT-PCR, the primers used for this "
 "test target genes... and... of the SARS COV2 genome"
 
 #: translations/messages_pybabel.py:1449
 msgid ""
 "Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour "
 "ce test ciblent les gènes ... et ... du génome du SARS COV2"
-msgstr ""
-"Research of the SARS-CoV-2 genome by RT-LAMP, the primers used for this "
+msgstr "Research of the SARS-CoV-2 genome by RT-LAMP, the primers used for this "
 "test target genes... and... of the SARS COV2 genome"
 
 #: translations/messages_pybabel.py:1450
 msgid ""
 "Recherche et titrage éventuel des anticorps, préciser la ou les "
 "techniques utilisées avec leur seuil de sensibilité."
-msgstr ""
-"Research and possible titration of antibodies, specify the technique(s) "
+msgstr "Research and possible titration of antibodies, specify the technique(s) "
 "used along with their sensitivity threshold. "
 
 #: translations/messages_pybabel.py:1451
@@ -5456,8 +5451,7 @@ msgid ""
 "techniques utilisées avec leur seuil de sensibilité. Une technique de "
 "confirmation s'impose quand les tests de dépistage sont positifs ou "
 "discordants. Une seule technique de confirmation peut être cotée."
-msgstr ""
-"Research and possible titration of antibodies, specify the technique(s) "
+msgstr "Research and possible titration of antibodies, specify the technique(s) "
 "used along with their sensitivity threshold. A confirmatory method is "
 "required when screening tests are positive or discordant. Only one "
 "confirmatory method can be listed."
@@ -5466,8 +5460,7 @@ msgstr ""
 msgid ""
 "Recherche et titrage éventuels des anticorps dirigés contre le SARS-"
 "CoV-2, recherche par tests automatisables de type ELISA/ELFA"
-msgstr ""
-"Possible search and titration of antibodies to SARS-CoV-2, search through"
+msgstr "Possible search and titration of antibodies to SARS-CoV-2, search through"
 " automated ELISA/ELFA tests"
 
 #: translations/messages_pybabel.py:1459
@@ -6895,8 +6888,7 @@ msgstr "Normal: Child: 0.5 - 3.5/Adults: 1.5 - 5.5"
 msgid ""
 "0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - "
 "60 ans: 34 - 48"
-msgstr ""
-"0 - 4 days: 28 -44 4d - 14 years: 38 - 54 14 - 18 years: 32 - 45 18 - 60 "
+msgstr "0 - 4 days: 28 -44 4d - 14 years: 38 - 54 14 - 18 years: 32 - 45 18 - 60 "
 "years: 34 - 48"
 
 #: translations/messages_pybabel.py:2265
@@ -6911,16 +6903,14 @@ msgstr "0 CFU/100 ml"
 msgid ""
 "1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   "
 "femme : 45 - 103   homme : 55 - 120"
-msgstr ""
-"1 - 4 years: 18 - 35 4 - 13 years: 31 - 68 13 - 17 years: 37 - 88 female:"
+msgstr "1 - 4 years: 18 - 35 4 - 13 years: 31 - 68 13 - 17 years: 37 - 88 female:"
 " 45 - 103 male: 55 - 120"
 
 #: translations/messages_pybabel.py:2269
 msgid ""
 "DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: "
 "Indeterminé"
-msgstr ""
-"DO > VOC: Positive DO < VOC: VOC negative -0.010 < DO < VOC + 0.010: "
+msgstr "DO > VOC: Positive DO < VOC: VOC negative -0.010 < DO < VOC + 0.010: "
 "Undetermined"
 
 #: translations/messages_pybabel.py:2270
@@ -7005,8 +6995,7 @@ msgstr "premature: 1.10 - 8.90 < 1 year: 1.40 - 6.80 child: 1.80 - 6.40"
 msgid ""
 "prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - "
 "2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
-msgstr ""
-"premature: 1.55 - 2.75 days - 10 days: 1.90 - 2.60 10 d - 24 months: 2.25"
+msgstr "premature: 1.55 - 2.75 days - 10 days: 1.90 - 2.60 10 d - 24 months: 2.25"
 " - 2.75 24 months - 12 years: 2.20 - 2.70 12 years - 18 years: 2.10 - "
 "2.55"
 
@@ -7018,8 +7007,7 @@ msgstr "DNA research for bacillus anthracis by PCR"
 msgid ""
 "Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: "
 "Flore de vaginose bacterienne"
-msgstr ""
-"Score 0-3: Normal flora Score 4-6: Intermediate flora Score >= 7: "
+msgstr "Score 0-3: Normal flora Score 4-6: Intermediate flora Score >= 7: "
 "Bacterial vaginosis flora"
 
 #: translations/messages_pybabel.py:2292

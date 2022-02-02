@@ -156,7 +156,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var action   = "" ; // "T"ime, "M"edia, "K"ey, "B"ackup, "R"estore
 var pwd_user = "" ;
 var pwd_key  = "" ;
@@ -614,6 +614,7 @@ console.log("restore param=" + param) ;
 
 function ScriptStatus(mode)
 {
+console.log("DEBUG mode : " + mode);
 
     $.ajax( 
     {
@@ -628,7 +629,6 @@ function ScriptStatus(mode)
             {
                 if (data.media != undefined || data.archive != undefined)
                 {
-                // TODO traiter liste media ou archive
                 console.log("DEBUG return of scriptStatus data=" + JSON.stringify(data)) ;
 
                 stat = data.ret ;
@@ -636,8 +636,6 @@ function ScriptStatus(mode)
 
                     if ( stat[0] == "OK" )
                     {
-                    console.log("DEBUG OK") ;
-
                         $("#wait-status").text("") ;
                         $("#dial-wait").modal("hide") ;
 

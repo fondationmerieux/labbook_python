@@ -270,7 +270,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_analysis = {{ args['data_analysis']|safe }} ;
 var data_reports  = {% if args['data_reports'] %}{{ args['data_reports']|safe }}{% else %}[]{% endif %} ;
 var data_files    = {{ args['data_files']|safe }} ;

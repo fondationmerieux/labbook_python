@@ -10,10 +10,6 @@
 HOST="localhost"
 PORT="8082"
 
-export INFORMIXDIR=/home/informix
-export INFORMIXSERVER=informix
-export ONCONFIG=onconfig
-
 #############
 # Functions #
 #############

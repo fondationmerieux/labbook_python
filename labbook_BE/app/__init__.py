@@ -88,6 +88,12 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_LOG_DIR=' + str(os.environ['LABBOOK_LOG_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
 
+    # check if LABBOOK_USER already exist in os.environ if not use one from Constants
+    if 'LABBOOK_USER' in os.environ and os.environ['LABBOOK_USER']:
+        log.info(Logs.fileline() + ' : LABBOOK_USER from environ')
+    else:
+        os.environ['LABBOOK_USER'] = Constants.cst_script_user
+
     # check if LABBOOK_DB_USER already exist in os.environ if not use one from default_settings
     if 'LABBOOK_DB_USER' in os.environ and os.environ['LABBOOK_DB_USER']:
         app.config['DB_USER'] = os.environ['LABBOOK_DB_USER']
@@ -116,9 +122,15 @@ if config_envvar in os.environ:
     else:
         os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
 
+    log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))
+
+    if 'LABBOOK_TEST_OK' in os.environ and os.environ['LABBOOK_TEST_OK']:
+        log.info(Logs.fileline() + ' : LABBOOK_TEST_OK=' + str(os.environ['LABBOOK_TEST_OK']))
+    if 'LABBOOK_TEST_KO' in os.environ and os.environ['LABBOOK_TEST_KO']:
+        log.info(Logs.fileline() + ' : LABBOOK_TEST_KO=' + str(os.environ['LABBOOK_TEST_KO']))
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 

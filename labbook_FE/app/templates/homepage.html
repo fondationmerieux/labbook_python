@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Accueil") }}</title>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/Chart.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/Chart.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -79,7 +79,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 {% if session['user_role'] != 'A' and session['user_role'] != 'P' %}
 var pieData = [{value: "{{ args['nb_rec_bio'] }}", label: "{{ _("Biologique") }}", color: "#8330E2"}, {value: "{{ args['nb_rec_tech'] }}", label: "{{ _("Technique") }}", color: "#00ADEE"}] ;
 {% endif %}

@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_dhis2 = {% if args['data_dhis2'] %}{{ args['data_dhis2']|safe }}{% else %}[]{% endif %} ;
 
 function upload_dhis2()

@@ -79,7 +79,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 function filter_data()
 {
 let date_beg = $("#f_date_beg").val() ;

@@ -123,7 +123,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 function save_request()
 {
 var id_owner   = {{ session['user_id']|safe}} ;

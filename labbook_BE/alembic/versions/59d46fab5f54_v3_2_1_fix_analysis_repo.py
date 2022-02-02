@@ -575,6 +575,12 @@ def upgrade():
     except Exception as err:
         print("ERROR drop table sigl_pj_group_link, sigl_pj_group,\n\terr=" + str(err))
 
+    # update syntax of one role label
+    try:
+        conn.execute("update sigl_pj_role set label='Secrétaire avancée' where type='SA'")
+    except Exception as err:
+        print("ERROR update sigl_pj_role set label='Secrétaire avancée' where type='SA',\n\terr=" + str(err))
+
     print(str(datetime.today()) + " : END of migration v3_2_1_fix_analysis_repo revision=59d46fab5f54")
 
 

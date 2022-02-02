@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-15 14:35+0100\n"
+"POT-Creation-Date: 2022-01-31 10:43+0100\n"
 "PO-Revision-Date: 2021-09-03 15:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
@@ -50,7 +50,7 @@ msgstr "លេខឯកសារ"
 msgid "Facture n°"
 msgstr "លេខវិក្កយបត្រ"
 
-#: models/Pdf.py:305 models/Pdf.py:773
+#: models/Pdf.py:305 models/Pdf.py:822
 msgid "édité le"
 msgstr "កែសម្រួលវា"
 
@@ -82,159 +82,161 @@ msgstr "បង់ថ្លៃ"
 msgid "Etat de la facturation, édité le"
 msgstr "ស្ថានភាពចេញវិក្កយបត្រ, បានកែសម្រួលទៅលើ"
 
-#: models/Pdf.py:656 models/Pdf.py:761
+#: models/Pdf.py:705 models/Pdf.py:810
 msgid "Tél"
 msgstr "ទូរស័ព្ទ"
 
-#: models/Pdf.py:661 models/Pdf.py:762
+#: models/Pdf.py:710 models/Pdf.py:811
 msgid "Fax"
 msgstr "ទូរសារ"
 
-#: models/Pdf.py:666 models/Pdf.py:763
+#: models/Pdf.py:715 models/Pdf.py:812
 msgid "Email"
 msgstr "អ៊ីមែល"
 
-#: models/Pdf.py:764
+#: models/Pdf.py:813
 msgid "Dossier"
 msgstr "ករណី"
 
-#: models/Pdf.py:765
+#: models/Pdf.py:814
 msgid "Code"
 msgstr ""
 
-#: models/Pdf.py:766
+#: models/Pdf.py:815
 msgid "Né le"
 msgstr "កើត"
 
-#: models/Pdf.py:767
+#: models/Pdf.py:816
 msgid "Admis le"
 msgstr "បានបញ្ជូនចូលនៅ"
 
-#: models/Pdf.py:768
+#: models/Pdf.py:817
 msgid "en"
 msgstr "នៅក្នុង"
 
-#: models/Pdf.py:769
+#: models/Pdf.py:818
 msgid "Lit"
 msgstr "គ្រែ"
 
-#: models/Pdf.py:770
+#: models/Pdf.py:819
 msgid "par"
 msgstr "តាមរយៈ"
 
-#: models/Pdf.py:771
+#: models/Pdf.py:820
 msgid "Examen prescrit le"
 msgstr "ការពិនិត្យត្រូវបានកំណត់នៅ"
 
-#: models/Pdf.py:772
+#: models/Pdf.py:821
 msgid "Enregistré le"
 msgstr "បានចុះឈ្មោះនៅ"
 
-#: models/Pdf.py:774
+#: models/Pdf.py:823
 msgid "ANALYSE"
 msgstr "ធ្វើការវិភាគ"
 
-#: models/Pdf.py:775
+#: models/Pdf.py:824
 msgid "RESULTAT"
 msgstr "លទ្ធផល"
 
-#: models/Pdf.py:776
+#: models/Pdf.py:825
 msgid "Références"
 msgstr ""
 
-#: models/Pdf.py:777
+#: models/Pdf.py:826
 msgid "Antériorités"
 msgstr "អាទិភាព"
 
-#: models/Pdf.py:778
+#: models/Pdf.py:827
 msgid "Commentaire"
 msgstr ""
 
-#: models/Pdf.py:779
+#: models/Pdf.py:828
 msgid "validé par"
 msgstr "កំណត់សុពលភាពដោយ"
 
-#: models/Pdf.py:812 translations/messages_pybabel.py:291
+#: models/Pdf.py:861 translations/messages_pybabel.py:291
 msgid "Compte rendu"
 msgstr "របាយការណ៍"
 
-#: models/Pdf.py:828
+#: models/Pdf.py:877
 msgid "COMPLET"
 msgstr "ពេញ"
 
-#: models/Pdf.py:837 models/Pdf.py:1176
+#: models/Pdf.py:886 models/Pdf.py:1225
 msgid "PARTIEL"
 msgstr "PARTIEL"
 
-#: models/Pdf.py:841
+#: models/Pdf.py:890
 msgid "ANNULE ET REMPLACE"
 msgstr "លុបចោល និងជំនួស"
 
-#: models/Pdf.py:869 translations/messages_pybabel.py:592
+#: models/Pdf.py:918 translations/messages_pybabel.py:592
 msgid "Microbiologie"
 msgstr ""
 
-#: models/Pdf.py:873 translations/messages_pybabel.py:1026
+#: models/Pdf.py:922 translations/messages_pybabel.py:1026
 #: translations/messages_pybabel.py:2193 translations/messages_pybabel.py:2194
 msgid "Test de grossesse"
 msgstr ""
 
-#: models/Pdf.py:909
+#: models/Pdf.py:958
 msgid "Renseignements cliniques"
 msgstr "ព័ត៌មានគ្លីនិក"
 
-#: models/Pdf.py:948 models/Pdf.py:1439 translations/messages_pybabel.py:596
+#: models/Pdf.py:997 models/Pdf.py:1491 translations/messages_pybabel.py:596
 msgid "Inconnu"
 msgstr "មិនស្គាល់"
 
-#: models/Pdf.py:985 models/Pdf.py:996
+#: models/Pdf.py:1034 models/Pdf.py:1045 models/Pdf.py:1528 models/Pdf.py:1539
+#: models/Pdf.py:1636
 msgid "ans"
 msgstr "ឆ្នាំ"
 
-#: models/Pdf.py:988 models/Pdf.py:1005
+#: models/Pdf.py:1037 models/Pdf.py:1054 models/Pdf.py:1531 models/Pdf.py:1548
 msgid "jours"
 msgstr "ថ្ងៃ"
 
-#: models/Pdf.py:990 models/Pdf.py:991 models/Pdf.py:999
+#: models/Pdf.py:1039 models/Pdf.py:1040 models/Pdf.py:1048 models/Pdf.py:1533
+#: models/Pdf.py:1534 models/Pdf.py:1542
 msgid "mois"
 msgstr "ខែ"
 
-#: models/Pdf.py:1002
+#: models/Pdf.py:1051 models/Pdf.py:1545
 msgid "semaines"
 msgstr "សប្តាហ៍"
 
-#: models/Pdf.py:1009 models/Pdf.py:1445 models/Pdf.py:1503
+#: models/Pdf.py:1058 models/Pdf.py:1552 models/Pdf.py:1638
 #: translations/messages_pybabel.py:597
 msgid "Masculin"
 msgstr "ប្រុស"
 
-#: models/Pdf.py:1011 models/Pdf.py:1447
+#: models/Pdf.py:1060 models/Pdf.py:1554
 msgid "Feminin"
 msgstr "ស្រី"
 
-#: models/Pdf.py:1192 models/Pdf.py:1198 models/Pdf.py:1203
+#: models/Pdf.py:1241 models/Pdf.py:1247 models/Pdf.py:1252
 msgid "Annulée"
 msgstr "បានលុបចោល"
 
-#: models/Pdf.py:1265 translations/messages_pybabel.py:1477
+#: models/Pdf.py:1311 translations/messages_pybabel.py:1477
 #: translations/messages_pybabel.py:1478 translations/messages_pybabel.py:1479
 #: translations/messages_pybabel.py:1480
 msgid "Albumine"
 msgstr ""
 
-#: models/Pdf.py:1266 translations/messages_pybabel.py:90
+#: models/Pdf.py:1312 translations/messages_pybabel.py:90
 msgid "Absent"
 msgstr ""
 
-#: models/Pdf.py:1270 translations/messages_pybabel.py:91
+#: models/Pdf.py:1316 translations/messages_pybabel.py:91
 msgid "Présent"
 msgstr ""
 
-#: models/Pdf.py:1275 translations/messages_pybabel.py:313
+#: models/Pdf.py:1321 translations/messages_pybabel.py:313
 msgid "Biochimie urinaire"
 msgstr ""
 
-#: models/Pdf.py:1276 translations/messages_pybabel.py:1348
+#: models/Pdf.py:1322 translations/messages_pybabel.py:1348
 msgid "Bandelettes urinaires"
 msgstr ""
 
@@ -2134,41 +2136,41 @@ msgstr ""
 msgid "Sérologie"
 msgstr ""
 
-#: translations/messages_pybabel.py:562
+#: translations/messages_pybabel.py:562 translations/messages_pybabel.py:2303
 msgid "Administrateur"
-msgstr ""
+msgstr "អ្នកគ្រប់គ្រង"
 
-#: translations/messages_pybabel.py:563
+#: translations/messages_pybabel.py:563 translations/messages_pybabel.py:2304
 msgid "Biologiste"
-msgstr ""
+msgstr "ជីវវិទូ"
 
-#: translations/messages_pybabel.py:564
+#: translations/messages_pybabel.py:564 translations/messages_pybabel.py:2311
 msgid "Prescripteur"
-msgstr ""
+msgstr "អ្នកចេញវេជ្ជបញ្ជា"
 
-#: translations/messages_pybabel.py:565
+#: translations/messages_pybabel.py:565 translations/messages_pybabel.py:2310
 msgid "Qualiticien"
-msgstr ""
+msgstr "អ្នកជំនាញផ្នែកគុណភាព"
 
-#: translations/messages_pybabel.py:566
+#: translations/messages_pybabel.py:566 translations/messages_pybabel.py:2306
 msgid "Secrétaire"
-msgstr ""
+msgstr "លេខាធិការ"
 
 #: translations/messages_pybabel.py:567
 msgid "Secretaire avancée"
-msgstr ""
+msgstr "លេខាធិការជាន់ខ្ពស់"
 
-#: translations/messages_pybabel.py:568
+#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305
 msgid "Technicien"
-msgstr ""
+msgstr "អ្នកបច្ចេកទេស"
 
-#: translations/messages_pybabel.py:569
+#: translations/messages_pybabel.py:569 translations/messages_pybabel.py:2307
 msgid "Technicien avancé"
-msgstr ""
+msgstr "អ្នកបច្ចេកទេសជាន់ខ្ពស់ "
 
-#: translations/messages_pybabel.py:570
+#: translations/messages_pybabel.py:570 translations/messages_pybabel.py:2308
 msgid "Technicien qualiticien"
-msgstr ""
+msgstr "អ្នកបច្ចេកទេសគុណភាព"
 
 #: translations/messages_pybabel.py:571
 msgid "Bactério"
@@ -6969,3 +6971,8 @@ msgstr ""
 #: translations/messages_pybabel.py:2298
 msgid "Zone thérapeutique : 0.5 à 1.5"
 msgstr ""
+
+#: translations/messages_pybabel.py:2309
+msgid "secrétaire avancée"
+msgstr ""
+

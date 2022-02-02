@@ -1,3 +1,5 @@
+import os
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -8,6 +10,35 @@ from alembic import context
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# here we allow ourselves to pass interpolation vars to alembic.ini
+# fron the host env
+section = config.config_ini_section
+
+if os.environ.get("LABBOOK_DB_USER"):
+    DB_USER = os.environ.get("LABBOOK_DB_USER")
+else:
+    DB_USER = "root"  # TODO load from default_setting.py
+
+if os.environ.get("LABBOOK_DB_PWD"):
+    DB_PWD = os.environ.get("LABBOOK_DB_PWD")
+else:
+    DB_PWD = "root"  # TODO load from default_setting.py
+
+if os.environ.get("LABBOOK_DB_NAME"):
+    DB_NAME = os.environ.get("LABBOOK_DB_NAME")
+else:
+    DB_NAME = "SIGL"  # TODO load from default_setting.py
+
+if os.environ.get("LABBOOK_DB_HOST"):
+    DB_HOST = os.environ.get("LABBOOK_DB_HOST")
+else:
+    DB_HOST = "10.88.0.1"  # TODO load from default_setting.py
+
+config.set_section_option(section, "DB_USER", DB_USER)
+config.set_section_option(section, "DB_PWD", DB_PWD)
+config.set_section_option(section, "DB_NAME", DB_NAME)
+config.set_section_option(section, "DB_HOST", DB_HOST)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

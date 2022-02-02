@@ -4,7 +4,7 @@
 {{ super() }}
     <title>{{ _("Analyse") }}</title>
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -310,7 +310,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
 var data_vars   = {% if args['var'] %}{{ args['var']|safe }}{% else %}[]{% endif %} ;
 var ind_var     = 0 ;
