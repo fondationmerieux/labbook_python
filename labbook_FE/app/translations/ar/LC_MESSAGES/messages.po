@@ -202,7 +202,7 @@ msgstr "تاريخ استلام الطرد"
 #: templates/setting-det-analysis.html:225
 #: templates/setting-det-analysis.html:232 templates/setting-report.html:29
 msgid "Non"
-msgstr "لا"
+msgstr "كلا"
 
 #: templates/administrative-record.html:98 templates/det-req-int.html:35
 msgid "Hospitalisation"
@@ -453,7 +453,7 @@ msgstr " تعديل "
 #: templates/setting-dicts.html:170 templates/setting-users.html:202
 #: templates/setting-zipcity.html:93
 msgid "Aucune donnée à afficher"
-msgstr "لا توجد بيانات لعرض"
+msgstr "لا توجد بيانات للعرض"
 
 #: templates/administrative-record.html:454 templates/setting-dhis2.html:89
 #: templates/setting-epidemio.html:89
@@ -549,7 +549,7 @@ msgstr "تحميل التحاليل "
 #: templates/setting-dhis2.html:67 templates/setting-epidemio.html:67
 #: templates/setting-zipcity.html:189 templates/user-import.html:75
 msgid "Dépôt réussi"
-msgstr "إيداع ناجح"
+msgstr "تم إيداع الملف بنجاح"
 
 #: templates/analysis-import.html:101 templates/setting-zipcity.html:225
 #: templates/user-import.html:87
@@ -568,7 +568,7 @@ msgstr "تمت معالجة البيانات بنجاح"
 msgid ""
 "Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
 "connaître le statut"
-msgstr "خطأ في معالجة البيانات ، قم بتحديث الصفحة حتى تعرف الحالة"
+msgstr "طرأ خلل في معالجة البيانات ، قم بتحديث الصفحة لمعرفة الوضع العام  "
 
 #: templates/analysis-import.html:168
 msgid "Aucun statut"
@@ -1349,7 +1349,7 @@ msgstr "اجتماع الإدارة"
 
 #: templates/det-meeting.html:44 templates/list-meeting.html:34
 msgid "Compte-rendu"
-msgstr "مُنظِّم"
+msgstr "تقرير"
 
 #: templates/det-meeting.html:130
 msgid "Veuillez saisir une date de réunion."
@@ -1422,7 +1422,7 @@ msgstr "تاريخ الولادة التقريبي"
 #: templates/det-patient.html:90 templates/manage-pat-records.html:101
 #: templates/manage-pat-records.html:350
 msgid "Nom de jeune fille"
-msgstr "الاسم قبل الزواج"
+msgstr "الشهرة قبل الزواج"
 
 #: templates/det-patient.html:98 templates/manage-pat-records.html:141
 #: templates/manage-pat-records.html:389
@@ -1442,7 +1442,7 @@ msgstr "وحدة"
 #: templates/det-patient.html:117 templates/manage-pat-records.html:111
 #: templates/manage-pat-records.html:360
 msgid "Prénom(s)"
-msgstr "  الاسم الشخصي"
+msgstr "الإسم"
 
 #: templates/det-patient.html:125 templates/manage-pat-records.html:169
 #: templates/manage-pat-records.html:417
@@ -1916,7 +1916,7 @@ msgstr "سجل تخزين واستخدام هذا المنتج في السابق
 
 #: templates/hist-stock-product.html:59
 msgid "E/S"
-msgstr "I/O"
+msgstr "د/خ"
 
 #: templates/hist-stock-product.html:66 templates/setting-det-user.html:5
 #: templates/setting-det-user.html:15
@@ -2938,10 +2938,8 @@ msgid "Réactifs et consommables"
 msgstr "الكواشف واللوازم"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
-msgstr "استلام الكواشف و / أو المواد الاستهلاكية التي لا تتوافق مع الطلب"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "عدم مطابقة المواد المستلمة مع الطلبية"
 
 #: templates/non-conformity.html:444
 msgid "Délai livraison"
@@ -3389,9 +3387,7 @@ msgstr "غير مُفعَّل"
 msgid ""
 "Veuillez confirmer la suppression du cette analyse\\nAttention les "
 "dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr ""
-"يرجى تأكيد حذف هذا التحليل \\ n الانتباه إلى أي ملفات مرتبطة بهذا التحليل"
-" ستكون في أخطاء"
+msgstr "يرجى تأكيد حذف هذا التحليل \ n تنبيه: الخلل سوف يلحق أي ملفات مرتبطة بهذا التحليل "
 
 #: templates/setting-backup.html:5 templates/setting-backup.html:12
 msgid "Paramétrage de la sauvegarde"
@@ -3471,9 +3467,7 @@ msgid ""
 "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
 " seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
 "clé ?"
-msgstr ""
-"يوجد مفتاح بالفعل ، من خلال إعادة إنشاء مفتاح ، لن تكون النسخ الاحتياطية "
-"القديمة قابلة للاسترداد \\nهل تؤكد إنشاء مفتاح جديد؟"
+msgstr "نسخ إحتياطية موجودة سابقًا - بعد إعادة إنشاء حافظة جديدة لن تتمكن من استعادة النسخ القديمة /n تأكيد إنشاء حافظة جديدة؟ "
 
 #: templates/setting-backup.html:225 templates/setting-backup.html:272
 msgid "Veuillez saisir un mot de passe"
@@ -3529,15 +3523,13 @@ msgid ""
 "Une erreur est survenue lors de la restauration, veuillez contacter votre"
 " administrateur pour qu'il vérifie manuellement que cette dernière est "
 "terminée."
-msgstr ""
-"حدث خطأ أثناء الاستعادة ، يرجى الاتصال بالمسؤول للتحقق يدويًا من اكتمال "
-"الاستعادة"
+msgstr "طرأ خلل أثناء إستعادة البيانات، يرجى الاتصال بالمسؤول للتحقق يدويًا من اكتمال العملية"
 
 #: templates/setting-backup.html:758
 msgid ""
 "La restauration est terminée, LabBook va redémarrer les services de "
 "l'application"
-msgstr "اكتملت عملية الاستعادة ، وسيقوم LabBook بإعادة تشغيل خدمات التطبيق"
+msgstr "اكتملت عملية إستعادة البيانات، وسيقوم LabBook بإعادة تشغيل خدمات التطبيق"
 
 #: templates/setting-backup.html:772
 msgid "Redémarrage activé"
@@ -3547,9 +3539,7 @@ msgstr "إعادة التشغيل"
 msgid ""
 "Les services ont redémarré ou une erreur est survenue lors de la demande "
 "de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"تمت إعادة تشغيل الخدمات أو حدث خطأ أثناء طلب إعادة التشغيل \\ n يرجى "
-"إعادة تحميل الصفحة"
+msgstr "تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \ n يرجى إعادة تحميل الصفحة"
 
 #: templates/setting-backup.html:787
 msgid "Sauvegarde réussie"
@@ -4098,7 +4088,7 @@ msgstr "تنزيل جدول زوار البرنامج "
 
 #: templates/user-import.html:5 templates/user-import.html:13
 msgid "Import utilisateurs"
-msgstr "استيراد المستخدمين"
+msgstr "تحميل لائحة المستخدمين"
 
 #: templates/user-import.html:92
 msgid "Mettre à jour la liste des utilisateurs et ajouter ceux n'existant pas ?"

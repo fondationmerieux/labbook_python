@@ -81,7 +81,6 @@ if config_envvar in os.environ:
     os.environ['LABBOOK_KEY_DIR']    = Constants.cst_key
     os.environ['LABBOOK_STATUS_DIR'] = Constants.cst_io
     os.environ['LABBOOK_LOG_DIR']    = Constants.cst_log
-    os.environ['LABBOOK_USER']       = Constants.cst_script_user
 
     log.info(Logs.fileline() + ' : LABBOOK_KEY_DIR=' + str(os.environ['LABBOOK_KEY_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_STATUS_DIR=' + str(os.environ['LABBOOK_STATUS_DIR']))

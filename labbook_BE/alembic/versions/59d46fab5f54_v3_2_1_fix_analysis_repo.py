@@ -566,11 +566,6 @@ def upgrade():
 
     # Drop column and table useless
     try:
-        conn.execute("alter table sigl_03_data drop column id_group")
-    except Exception as err:
-        print("ERROR alter table sigl_03_data drop column id_group,\n\terr=" + str(err))
-
-    try:
         conn.execute("drop table sigl_pj_group_link, sigl_pj_group")
     except Exception as err:
         print("ERROR drop table sigl_pj_group_link, sigl_pj_group,\n\terr=" + str(err))
