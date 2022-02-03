@@ -614,8 +614,6 @@ console.log("restore param=" + param) ;
 
 function ScriptStatus(mode)
 {
-console.log("DEBUG mode : " + mode);
-
     $.ajax( 
     {
         type: "GET",
@@ -629,8 +627,6 @@ console.log("DEBUG mode : " + mode);
             {
                 if (data.media != undefined || data.archive != undefined)
                 {
-                console.log("DEBUG return of scriptStatus data=" + JSON.stringify(data)) ;
-
                 stat = data.ret ;
                 stat = stat.split(";") ;
 

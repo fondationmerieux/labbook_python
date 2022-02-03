@@ -280,7 +280,7 @@ class ScriptGenkey(Resource):
         return compose_ret(ret, Constants.cst_content_type_json)
 
 
-class ScriptInitmedia(Resource):
+class ScriptInitMedia(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, media):
@@ -486,7 +486,6 @@ class ScriptStatus(Resource):
                 ret = "ERR;" + str(date_now) + ";Wrong mode"
                 return compose_ret(ret, Constants.cst_content_type_json, 500)
 
-            self.log.info(Logs.fileline() + ' : DEBUG mode=' + str(mode) + ' | path=' + str(path))
             # No encoding forced because script return list from system so its depend of encoding of operating system
             f = open(path, 'r')
             for line in f:
@@ -494,14 +493,9 @@ class ScriptStatus(Resource):
 
             ret = line[:-1]
 
-            self.log.info(Logs.fileline() + ' : ret = ' + str(ret))
-            self.log.info(Logs.fileline() + ' : DEBUG after for read line in file')
-
             if not ret or ((mode == 'M' or mode == 'A') and not ret.startswith('OK') and not ret.startswith('ERR')):
-                self.log.info(Logs.fileline() + ' : DEBUG not ret or ERR')
                 ret = "WAIT;" + str(date_now) + ";Not finished"
             elif mode == 'M' and ret.startswith('OK'):
-                self.log.info(Logs.fileline() + ' : DEBUG traitement mode M')
                 l_media = {}
 
                 l_media['ret']   = ret
@@ -525,7 +519,6 @@ class ScriptStatus(Resource):
                 return compose_ret(l_media, Constants.cst_content_type_json)
 
             elif mode == 'A' and ret.startswith('OK'):
-                self.log.info(Logs.fileline() + ' : DEBUG mode A')
                 l_archive = {}
 
                 l_archive['ret']   = ret
