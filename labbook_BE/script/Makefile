@@ -12,4 +12,4 @@ install_shunit2:
 .PHONY: test
 test:
 	cd test && \
-	test_backup.sh
+	./test_backup.sh

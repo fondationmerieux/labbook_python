@@ -1743,11 +1743,12 @@ test_database() {
     local status=0
 
     # skip if mysql is not available or if we dont have access
-    type mysql > /dev/null 2>&1 || startSkipping
-    type mysqldump > /dev/null 2>&1 || startSkipping
+    type mysql > /dev/null 2>&1 || startSkipping "cannot find mysql"
+    type mysqldump > /dev/null 2>&1 || startSkipping "cannot find mysqldump"
 
     echo "drop database if exists $TEST_DB_NAME;" | \
-        mysql --user "$TEST_DB_USER" --password="$TEST_DB_PASS" > /dev/null 2>&1 || startSkipping
+        mysql --user "$TEST_DB_USER" --password="$TEST_DB_PASS" > /dev/null 2>&1 || \
+            startSkipping "cannot connect to database with user=$TEST_DB_USER pass=$TEST_DB_PASS"
 
     # we do not use containers for this test
     export $ENV_DB_HOST=""

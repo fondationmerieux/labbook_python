@@ -2031,11 +2031,15 @@ fn_get_my_image() {
     local user="$1"
     local host="$2"
 
+    [[ $verbose -eq 1 ]] && set -x
+
     # shellcheck disable=SC2086
     SSHPASS=$(printenv $ENV_USER_PASS) \
         sshpass -e \
         ssh -o "StrictHostKeyChecking no" "$user@$host" \
         $podman_cmd ps --format '{{.Image}}' | grep "$CONTAINER" | head -1 || return 1
+
+    [[ $verbose -eq 1 ]] && set +x
 
     return 0
 }

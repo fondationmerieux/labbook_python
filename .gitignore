@@ -31,7 +31,7 @@ __pycache__/
 kpri.*.asc
 
 # except gpg private keys in test
-! script/test/kpri.*.asc
+!labbook_BE/script/test/kpri.*.asc
 
 # Dockerfile in test is built dynamically
 script/test/Dockerfile
