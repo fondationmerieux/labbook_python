@@ -171,7 +171,7 @@ param_list_res += value_res + ' ] }';
                             {
                                 $("#dial-wait").modal("hide") ;
 
-                            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/" + id_rec ;
+                            window.location.href = "{{ session['server_ext'] }}/technical-validation/" + id_rec ;
                             },
                             error: function(response)
                             {
@@ -261,7 +261,7 @@ param_list_valid += ' ] }' ;
             {
                 $("#dial-wait").modal("hide") ;
 
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/" + id_rec + "/validate_" + id_rec +"_"+ ref_ana ;
+            window.location.href = "{{ session['server_ext'] }}/technical-validation/" + id_rec + "/validate_" + id_rec +"_"+ ref_ana ;
             },
             error: function(data)
             {

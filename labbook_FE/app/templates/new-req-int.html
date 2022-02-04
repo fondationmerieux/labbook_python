@@ -112,12 +112,12 @@ return display ;
 $("#search_patient").on("select2:select", function (e) 
 {
   var id_pat = $(e.currentTarget).val();
-  window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-req-int/Y/" + id_pat ;
+  window.location.href = "{{ session['server_ext'] }}/det-req-int/Y/" + id_pat ;
 } ) ;
 
 function new_pat() 
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/I/0";
+window.location.href = "{{ session['server_ext'] }}/det-patient/I/0";
 }
 
 function return_home()

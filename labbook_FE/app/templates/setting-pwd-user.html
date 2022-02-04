@@ -73,7 +73,7 @@ var pwd2     = $("#renew-pwd").val() ;
            data: param,
            success: function(data)
                {
-               window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users" ;
+               window.location = "{{ session['server_ext'] }}/setting-users" ;
                },
            error: function(data)
                {
@@ -96,7 +96,7 @@ var x = document.getElementById("new-pwd") ;
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 </script>
 {% endblock %}

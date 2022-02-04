@@ -65,7 +65,7 @@ filename = $('input[type=file]')[0].files[0].name ;
         $.ajax(
         {
             type : 'POST',
-            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-import",
+            url : "{{ session['server_ext'] }}/upload-import",
             dataType: 'json',
             contentType: false,
             processData: false,
@@ -98,7 +98,7 @@ function import_users()
             success: function(ret)
             {
             tempAlert("{{ _("Traitement réussi") }}", "import-users") ;
-            window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-users" ;
+            window.location = "{{ session['server_ext'] }}/setting-users" ;
             },
             error: function(ret)
             {

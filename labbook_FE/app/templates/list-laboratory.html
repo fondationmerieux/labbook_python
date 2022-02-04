@@ -342,7 +342,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/LABO/1",
+        url : "{{ session['server_ext'] }}/upload-file/LABO/1",
         dataType: 'json',
         contentType: false,
         processData: false,

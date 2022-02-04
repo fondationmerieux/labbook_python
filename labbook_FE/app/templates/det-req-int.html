@@ -350,7 +350,7 @@ var opt_yorn      = {{ ihm['yorn']|safe }} ;
 {% if entry == 'Y' %}
 function change_pat( id_pat ) 
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-patient/I/" + id_pat ;
+window.location.href = "{{ session['server_ext'] }}/det-patient/I/" + id_pat ;
 }
 
 $("#search_doctor").select2(
@@ -1152,7 +1152,7 @@ var stat          = 181 ;
                                                     $("#dial-wait").modal("hide") ;
 
                                                 // Redirection to adminsitrative page
-                                                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/I/" + id_rec ;
+                                                window.location.href = "{{ session['server_ext'] }}/administrative-record/I/" + id_rec ;
                                                 },
                                                 error: function(response)
                                                 {
@@ -1243,7 +1243,7 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
                     {
                         $("#dial-wait").modal("hide") ;
 
-                    window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/I/" + {{ args['record']['id_data'] }} ;
+                    window.location.href = "{{ session['server_ext'] }}/administrative-record/I/" + {{ args['record']['id_data'] }} ;
                     },
                     error: function(response)
                     {
@@ -1268,7 +1268,7 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
 
 function new_doctor()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-doctor/0";
+window.location.href = "{{ session['server_ext'] }}/det-doctor/0";
 }
 
 function return_home()

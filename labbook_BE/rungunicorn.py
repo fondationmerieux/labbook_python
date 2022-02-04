@@ -1,9 +1,21 @@
-# import sys
+import logging
+import os
+
+from logging.handlers import WatchedFileHandler
 from app import app
 
-# Non compatible python 3
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
+def prep_log(logger_nom, log_fich, niveau=logging.INFO):
+    l = logging.getLogger(logger_nom)
+    formatter = logging.Formatter('%(asctime)s : %(message)s')
+    fileHandler = WatchedFileHandler(log_fich)
+    fileHandler.setFormatter(formatter)
+
+    l.setLevel(niveau)
+    l.addHandler(fileHandler)
+
+prep_log('log_wsgi', r'../logs/log_wsgi.log')
+
+log = logging.getLogger('log_wsgi')
 
 
 # src = http://flask.pocoo.org/snippets/35/

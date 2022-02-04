@@ -277,19 +277,19 @@ $("#listing_dos_total").html( data_len ) ;
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/' + data_records[i].type_rec + '/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_records[i].type_rec + '/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' +
                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'P' or 
                          session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' +
                    {% endif %}
                    {% if session['user_role'] == 'P' or session['user_role'] == 'S' %}'' ;{% endif %}
                    {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
                          session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' +
                    {% endif %}
                    {% if session['user_role'] == 'T' %}'' ;{% endif %}
                    {% if session['user_role'] == 'B' or session['user_role'] == 'TA' %}
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' +
                    {% endif %}
                    {% if session['user_role'] == 'B' or session['user_role'] == 'TA' or
                          session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}

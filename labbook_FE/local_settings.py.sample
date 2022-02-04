@@ -18,4 +18,4 @@ BABEL_DEFAULT_LOCALE       = 'fr_FR'
 TEMPLATES_AUTO_RELOAD      = True
 
 SERVER_INT                 = 'localhost'  # For URL in python code
-REDIRECT_NAME              = 'sigl'
+REDIRECT_NAME              = '/sigl'

@@ -61,7 +61,7 @@ margin : 0 30px;
 {
 background-color    : transparent;
 background-repeat   : no-repeat;
-background-image    : url("/static/img/logo.png");
+background-image    : url({{ url_for('static', filename='img/logo.png') }}) ;
 background-position : center left;
 position            : absolute;
 height              : 75px;
@@ -253,55 +253,55 @@ height   : 26px;
 
 .role-A
 {
-background-image  : url("/static/img/admin-profile.png");
+background-image  : url({{ url_for('static', filename='img/admin-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-B
 {
-background-image  : url("/static/img/bio-profile.png");
+background-image  : url({{ url_for('static', filename='img/bio-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-T
 {
-background-image  : url("/static/img/tech-profile.png");
+background-image  : url({{ url_for('static', filename='img/tech-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-TA
 {
-background-image  : url("/static/img/tech-profile.png");
+background-image  : url({{ url_for('static', filename='img/tech-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-TQ
 {
-background-image  : url("/static/img/tech-profile.png");
+background-image  : url({{ url_for('static', filename='img/tech-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-S
 {
-background-image  : url("/static/img/sec-profile.png");
+background-image  : url({{ url_for('static', filename='img/sec-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-SA
 {
-background-image  : url("/static/img/sec-profile.png");
+background-image  : url({{ url_for('static', filename='img/sec-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-Q
 {
-background-image  : url("/static/img/qua-profile.png");
+background-image  : url({{ url_for('static', filename='img/qua-profile.png') }});
 background-repeat : no-repeat;
 }
 
 .role-P
 {
-background-image  : url("/static/img/pre-profile.png");
+background-image  : url({{ url_for('static', filename='img/pre-profile.png') }});
 background-repeat : no-repeat;
 }
 
@@ -569,7 +569,7 @@ word-wrap       : normal;
 
 nav .admin
 {
-background      : url("/static/img/admin.png") center center no-repeat;
+background      : url({{ url_for('static', filename='img/admin.png') }}) center center no-repeat;
 background-size : 100% 100%;
 display         : inline-block;
 width           : 3.0em;
@@ -581,7 +581,7 @@ padding         : 0;
 
 nav .admin:hover
 {
-background : url("/static/img/admin-active.png") center center no-repeat;
+background : url({{ url_for('static', filename='img/admin-active.png') }}) center center no-repeat;
 }
 
 nav .btn-admin:hover .admin-content
@@ -592,7 +592,7 @@ margin  : 0;
 
 nav .report
 {
-background      : url("/static/img/report.png") center center no-repeat;
+background      : url({{ url_for('static', filename='img/report.png') }}) center center no-repeat;
 background-size : 100% 100%;
 display         : inline-block;
 width           : 3.0em;
@@ -604,7 +604,7 @@ padding         : 0;
 
 nav .report:hover
 {
-background : url("/static/img/report-active.png") center center no-repeat;
+background : url({{ url_for('static', filename='img/report-active.png') }}) center center no-repeat;
 }
 
 nav .btn-report:hover .report-content
@@ -615,7 +615,7 @@ margin  : 0;
 
 nav .setting
 {
-background      : url("/static/img/param.png") center center no-repeat;
+background      : url({{ url_for('static', filename='img/param.png') }}) center center no-repeat;
 background-size : 100% 100%;
 display         : inline-block;
 width           : 3.0em;
@@ -627,7 +627,7 @@ padding         : 0;
 
 nav .setting:hover
 {
-background : url("/static/img/param-active.png") center center no-repeat;
+background : url({{ url_for('static', filename='img/param-active.png') }}) center center no-repeat;
 }
 
 nav .btn-setting:hover .setting-content
@@ -638,7 +638,7 @@ margin  : 0;
 
 nav .qualite
 {
-background       : url("/static/img/qualite.png") center center no-repeat;
+background      : url({{ url_for('static', filename='img/qualite.png') }}) center center no-repeat;
 background-size : 100% 100%;
 display         : inline-block;
 width           : 3.0em;
@@ -649,7 +649,7 @@ content         : "";
 
 nav .qualite:hover
 {
-background : url("/static/img/qualite-active.png") center center no-repeat;
+background : url({{ url_for('static', filename='img/qualite-active.png') }}) center center no-repeat;
 }
 
 nav .btn-qualite:hover .qualite-content
@@ -660,7 +660,7 @@ margin  : 0;
 
 nav .non-conformite
 {
-background      : url("/static/img/non-conformite.png") center center no-repeat;
+background      : url({{ url_for('static', filename='img/non-conformite.png') }}) center center no-repeat;
 background-size : 100% 100%;
 display         : inline-block;
 width           : 3.0em;
@@ -671,7 +671,7 @@ content         : "";
 
 nav .non-conformite:hover
 {
-background : url("/static/img/non-conformite-over.png") center center no-repeat;
+background : url({{ url_for('static', filename='img/non-conformite-over.png') }}) center center no-repeat;
 }
 
 .nav-A a
@@ -812,117 +812,112 @@ text-align     : center;
 
 .module .admin-crea-profil 
 { 
-background : transparent url(/static/img/admin-crea-profil.png) center top no-repeat;
-}
-
-.module .admin-gest-oole 
-{ 
-background : transparent url(/static/img/admin-gestion-role.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-crea-profil.png') }}) center top no-repeat;
 }
 
 .module .admin-preferences 
 { 
-background : transparent url(/static/img/admin-preferences.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-preferences.png') }}) center top no-repeat;
 }
 
 .module .admin-referentiel
 { 
-background : transparent url(/static/img/admin-referentiel.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-referentiel.png') }}) center top no-repeat;
 }
 
 .module .admin-conf-cr
 { 
-background : transparent url(/static/img/admin-conf-cr.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-conf-cr.png') }}) center top no-repeat;
 }
 
 .module .admin-num-doss 
 { 
-background : transparent url(/static/img/admin-conf-num-doss.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-conf-num-doss.png') }}) center top no-repeat;
 }
 
 .module .admin-gest-fact-0 
 { 
-background : transparent url(/static/img/admin-gest-facture-0.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-gest-facture-0.png') }}) center top no-repeat;
 }
 
 .module .admin-gest-fact-1 
 { 
-background : transparent url(/static/img/admin-gest-facture-1.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-gest-facture-1.png') }}) center top no-repeat;
 }
 
 .module .admin-qualite-0
 { 
-background : transparent url(/static/img/admin-module-qualite-0.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-module-qualite-0.png') }}) center top no-repeat;
 }
 
 .module .admin-qualite-1
 { 
-background : transparent url(/static/img/admin-module-qualite-1.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/admin-module-qualite-1.png') }}) center top no-repeat;
 }
 
 .module .f-list-bio 
 { 
-background : transparent url(/static/img/f-list-bio.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/f-list-bio.png') }}) center top no-repeat;
 }
 
 .module .b-list-bio 
 { 
-background : transparent url(/static/img/b-list-bio.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/b-list-bio.png') }}) center top no-repeat;
 }
 
 .module .prel-bio 
 { 
-background : transparent url(/static/img/prel-bio.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/prel-bio.png') }}) center top no-repeat;
 }
 
 .module .res-bio 
 { 
-background : transparent url(/static/img/res-bio.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/res-bio.png') }}) center top no-repeat;
 }
 
 .module .home-qualite 
 { 
-background : transparent url(/static/img/home-qualite.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/home-qualite.png') }}) center top no-repeat;
 }
 
 .module .f-list-tec 
 { 
-background : transparent url(/static/img/f-list-tec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/f-list-tec.png') }}) center top no-repeat;
 }
 
 .module .t-list-tec 
 { 
-background : transparent url(/static/img/t-list-tec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/t-list-tec.png') }}) center top no-repeat;
 }
 
 .module .prel-tec 
 { 
-background : transparent url(/static/img/prel-tec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/prel-tec.png') }}) center top no-repeat;
 }
 
 .module .res-tec 
 { 
-background : transparent url(/static/img/res-tec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/res-tec.png') }}) center top no-repeat;
 }
 
 .module .f-list-sec 
 { 
-background : transparent url(/static/img/f-list-sec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/f-list-sec.png') }}) center top no-repeat;
 }
 
 .module .new-dos-ext-sec
 { 
-background : transparent url(/static/img/new-dos-ext-sec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/new-dos-ext-sec.png') }}) center top no-repeat;
 }
 
 .module .new-dos-int-sec
 { 
-background : transparent url(/static/img/new-dos-int-sec.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/new-dos-int-sec.png') }}) center top no-repeat;
 }
 
 .module .emergency 
 { 
-background : transparent url(/static/img/urgence.png) center top no-repeat;
+background : transparent url({{ url_for('static', filename='img/urgence.png') }}) center top no-repeat;
 }
 
 .links
@@ -991,7 +986,7 @@ padding-left  : 30px !important;
 padding-right : 30px !important;
 background-color    : transparent;
 background-repeat   : no-repeat;
-background-image    : url("/static/img/info.png");
+background-image    : url({{ url_for('static', filename='img/info.png') }});
 background-position : left center;
 }
 
@@ -1108,7 +1103,7 @@ border           : 1px solid #B42C16;
 display             : inline-block;
 background-color    : transparent;
 background-repeat   : no-repeat;
-background-image    : url("/static/img/urgent.png");
+background-image    : url({{ url_for('static', filename='img/urgent.png') }});
 background-position : center center;
 height              : 12px;
 width               : 14px;
@@ -1120,7 +1115,7 @@ vertical-align      : middle;
 display             : inline-block;
 background-color    : transparent;
 background-repeat   : no-repeat;
-background-image    : url("/static/img/warning.png");
+background-image    : url({{ url_for('static', filename='img/warning.png') }});
 background-position : center center;
 height              : 18px;
 width               : 21px;
@@ -1132,7 +1127,7 @@ vertical-align      : middle;
 display             : inline-block;
 background-color    : transparent;
 background-repeat   : no-repeat;
-background-image    : url("/static/img/info.png");
+background-image    : url({{ url_for('static', filename='img/info.png') }});
 background-position : center center;
 height              : 21px;
 width               : 21px;

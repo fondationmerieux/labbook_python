@@ -160,7 +160,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
            upload_file(ref);
 
-           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-meeting" ;
+           window.location = "{{ session['server_ext'] }}/list-meeting" ;
            },
        error: function(data)
            {
@@ -213,7 +213,7 @@ let input_file = $("#MEET")[0] ;
         $.ajax(
         {
             type : 'POST',
-            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/MEET/" + ref,
+            url : "{{ session['server_ext'] }}/upload-file/MEET/" + ref,
             dataType: 'json',
             contentType: false,
             processData: false,

@@ -270,7 +270,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            upload_file("USTR", id_user) ;
            upload_file("USEV", id_user) ;
 
-           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-staff" ;
+           window.location = "{{ session['server_ext'] }}/list-staff" ;
            },
        error: function(data)
            {
@@ -341,7 +341,7 @@ let input_file = $('#' + type_ref)[0] ;
         $.ajax(
         {
             type : 'POST',
-            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + type_ref + "/" + id_ref,
+            url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + id_ref,
             dataType: 'json',
             contentType: false,
             processData: false,

@@ -179,7 +179,7 @@ filename = $('input[type=file]')[0].files[0].name ;
             $.ajax(
             {
                 type : 'POST',
-                url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-zipcity",
+                url : "{{ session['server_ext'] }}/upload-zipcity",
                 dataType: 'json',
                 contentType: false,
                 processData: false,
@@ -227,7 +227,7 @@ filename = $('input[type=file]')[0].files[0].name ;
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
 $( document ).ready( function()

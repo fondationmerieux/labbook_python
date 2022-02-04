@@ -22,7 +22,7 @@ import uuid
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
 
-from flask import Flask, render_template, request, session, redirect, send_file
+from flask import Flask, render_template, request, session, redirect, send_file, url_for, Response
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -76,6 +76,9 @@ else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
 # app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
+
+# DEBUG TEST 03/02/2022
+#app.config["APPLICATION_ROOT"] = '/' + app.config.get('REDIRECT_NAME')
 
 babel = Babel(app)
 
@@ -154,7 +157,7 @@ def check_init_version():
     log.info(Logs.fileline() + ' : LABBOOK_FE check_init_version begins')
 
     try:
-        url = session['server_int'] + '/services/init/version'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/init/version'
         requests.get(url)
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests check init version failed, err=%s , url=%s', err, url)
@@ -187,7 +190,7 @@ def get_init_var():
 
     session['server_ext'] = root
     session.modified = True
-
+    
     # init internal server
     if not session or 'server_int' not in session or session['server_int'] != ('http://' + app.config.get('SERVER_INT')):
         session['server_int'] = 'http://' + app.config.get('SERVER_INT')
@@ -205,8 +208,8 @@ def get_init_var():
 
     # Load auto_logout
     try:
-        log.info(Logs.fileline() + 'LABBOOK_FE first request to LABBOOK_BE')
-        url = session['server_int'] + '/services/default/val/auto_logout'
+        log.info(Logs.fileline() + ' : LABBOOK_FE first request to LABBOOK_BE')
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/auto_logout'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -223,7 +226,7 @@ def get_init_var():
 
     # Load default language
     try:
-        url = session['server_int'] + '/services/default/val/default_language'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/default_language'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -236,7 +239,7 @@ def get_init_var():
 
     # Load db language
     try:
-        url = session['server_int'] + '/services/default/val/db_language'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/db_language'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -259,7 +262,7 @@ def get_user_data(login):
         if 'server_int' not in session or not session['server_int']:
             index()
 
-        url = session['server_int'] + '/services/user/login/' + login
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/login/' + login
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -274,39 +277,6 @@ def get_user_data(login):
             session['user_side_account'] = json['side_account']
             session.modified = True
 
-            """
-            if session['user_id_role'] == 1:
-                session['user_role'] = 'A'  # Administrator
-                session.modified = True
-            elif session['user_id_role'] == 2:
-                session['user_role'] = 'B'  # Biologist
-                session.modified = True
-            elif session['user_id_role'] == 3:
-                session['user_role'] = 'T'  # Technician
-                session.modified = True
-            elif session['user_id_role'] == 5:
-                session['user_role'] = 'TA'  # Advanced Technician
-                session.modified = True
-            elif session['user_id_role'] == 6:
-                session['user_role'] = 'TQ'  # Qualitician Technician
-                session.modified = True
-            elif session['user_id_role'] == 4:
-                session['user_role'] = 'S'  # Secretary
-                session.modified = True
-            elif session['user_id_role'] == 7:
-                session['user_role'] = 'SA'  # Advacnced Secretary
-                session.modified = True
-            elif session['user_id_role'] == 8:
-                session['user_role'] = 'Q'  # Qualitician
-                session.modified = True
-            elif session['user_id_role'] == 9:
-                session['user_role'] = 'P'  # Prescriber
-                session.modified = True
-            else:
-                log.error(Logs.fileline() + ' : TRACE unknow role')
-                session['user_role'] = 'X'  # Unknown
-                session.modified = True"""
-
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
         return False
@@ -316,7 +286,7 @@ def get_user_data(login):
 
 def get_software_settings():
     try:
-        url = session['server_int'] + '/services/setting/record/number'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/record/number'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -372,7 +342,7 @@ def index():
             session.modified = True
             get_init_var()
 
-        return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+        return redirect('/' + session['current_page'])
 
 
 # Page : labbook_BE not ready
@@ -388,7 +358,6 @@ def initialization():
 def api():
     log.info(Logs.fileline() + ' : TRACE api')
     get_init_var()
-
     return render_template('api.html', rand=random.randint(0, 999))
 
 
@@ -436,15 +405,14 @@ def lang(lang='fr_FR'):
     session['lang_chosen'] = True
     session.modified = True
 
-    return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+    return redirect('/' + session['current_page'])
 
 
 @app.route("/disconnect")
 def disconnect():
     log.info(Logs.fileline() + ' : TRACE Labbook FRONT END disconnect')
-    url = session['server_ext'] + '/' + session['redirect_name']
     session.clear()
-    return redirect(url)
+    return redirect(url_for('index'))
 
 
 # Page : homepage
@@ -501,7 +469,7 @@ def homepage(login=''):
 
     # Load pref_quality
     try:
-        url = session['server_int'] + '/services/default/val/qualite'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/qualite'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -516,7 +484,7 @@ def homepage(login=''):
 
     # Load pref_bill
     try:
-        url = session['server_int'] + '/services/default/val/facturation'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/facturation'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -544,7 +512,7 @@ def homepage(login=''):
     else:
         # Load nb_emer
         try:
-            url = session['server_int'] + '/services/record/count/emergency'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/emergency'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -555,7 +523,7 @@ def homepage(login=''):
 
         # Load nb_rec_tech
         try:
-            url = session['server_int'] + '/services/record/count/technician'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/technician'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -566,7 +534,7 @@ def homepage(login=''):
 
         # Load nb_rec_bio
         try:
-            url = session['server_int'] + '/services/record/count/biologist'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/biologist'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -577,7 +545,7 @@ def homepage(login=''):
 
         # Load nb_rec
         try:
-            url = session['server_int'] + '/services/record/count'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -588,7 +556,7 @@ def homepage(login=''):
 
         # Load nb_rec_today
         try:
-            url = session['server_int'] + '/services/record/count/today'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/today'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -599,7 +567,7 @@ def homepage(login=''):
 
         # Load last_record
         try:
-            url = session['server_int'] + '/services/record/last'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/last'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -610,7 +578,7 @@ def homepage(login=''):
 
         # Load list of stock for display alert
         try:
-            url = session['server_int'] + '/services/quality/stock/list'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list'
             req = requests.post(url)
 
             if req.status_code == 200:
@@ -644,7 +612,7 @@ def setting_users():
 
     # Load list of user role
     try:
-        url = session['server_int'] + '/services/user/role/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -655,7 +623,7 @@ def setting_users():
 
     # Load list users
     try:
-        url = session['server_int'] + '/services/user/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -680,7 +648,7 @@ def setting_det_user(user_id=0):
 
     # Load list of user role
     try:
-        url = session['server_int'] + '/services/user/role/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -691,7 +659,7 @@ def setting_det_user(user_id=0):
 
     # Load sections
     try:
-        url = session['server_int'] + '/services/dict/det/sections'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -703,7 +671,7 @@ def setting_det_user(user_id=0):
     if user_id > 0:
         # Load user details
         try:
-            url = session['server_int'] + '/services/user/det/' + str(user_id)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/det/' + str(user_id)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -768,7 +736,7 @@ def setting_dicts():
 
     # Load list dict
     try:
-        url = session['server_int'] + '/services/dict/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -794,7 +762,7 @@ def setting_det_dict(dict_name=''):
     if dict_name:
         # Load dict details
         try:
-            url = session['server_int'] + '/services/dict/det/' + str(dict_name)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/' + str(dict_name)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -830,7 +798,7 @@ def setting_analyzes():
 
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -841,7 +809,7 @@ def setting_analyzes():
 
     # Load products
     try:
-        url = session['server_int'] + '/services/dict/det/type_prel'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -852,7 +820,7 @@ def setting_analyzes():
 
     # Load list analyzes
     try:
-        url = session['server_int'] + '/services/analysis/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -894,7 +862,7 @@ def setting_det_analysis(analysis_id=0):
 
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -905,7 +873,7 @@ def setting_det_analysis(analysis_id=0):
 
     # Load products
     try:
-        url = session['server_int'] + '/services/dict/det/type_prel'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -916,7 +884,7 @@ def setting_det_analysis(analysis_id=0):
 
     # Load type result
     try:
-        url = session['server_int'] + '/services/dict/det/type_resultat'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_resultat'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -927,7 +895,7 @@ def setting_det_analysis(analysis_id=0):
 
     # Load unit
     try:
-        url = session['server_int'] + '/services/dict/det/unite_valeur'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/unite_valeur'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -939,7 +907,7 @@ def setting_det_analysis(analysis_id=0):
     if analysis_id > 0:
         # Load analysis details
         try:
-            url = session['server_int'] + '/services/analysis/det/' + str(analysis_id)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/det/' + str(analysis_id)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -950,7 +918,7 @@ def setting_det_analysis(analysis_id=0):
 
         # Load analysis variables list
         try:
-            url = session['server_int'] + '/services/analysis/variable/list/' + str(analysis_id)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/variable/list/' + str(analysis_id)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -977,7 +945,7 @@ def manage_pat_records():
 
     # Load nationality
     try:
-        url = session['server_int'] + '/services/nationality/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/nationality/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -988,7 +956,7 @@ def manage_pat_records():
 
     # Load unit age
     try:
-        url = session['server_int'] + '/services/dict/det/periode_unite'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/periode_unite'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -999,7 +967,7 @@ def manage_pat_records():
 
     # Load blood group
     try:
-        url = session['server_int'] + '/services/dict/det/groupesang'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/groupesang'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1010,7 +978,7 @@ def manage_pat_records():
 
     # Load blood rhesus
     try:
-        url = session['server_int'] + '/services/dict/det/posneg'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/posneg'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1033,7 +1001,7 @@ def setting_preferences():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/setting/pref/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/pref/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1090,7 +1058,7 @@ def setting_backup():
 
     # load start_time
     try:
-        url = session['server_int'] + '/services/setting/backup'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/backup'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1115,7 +1083,7 @@ def setting_zipcity():
     try:
         payload = {}
 
-        url = session['server_int'] + '/services/setting/zipcity/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/zipcity/list'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -1138,7 +1106,7 @@ def list_template():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/setting/template/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1165,7 +1133,7 @@ def det_template(id_tpl=0):
     if id_tpl > 0:
         # Load template details
         try:
-            url = session['server_int'] + '/services/setting/template/det/' + str(id_tpl)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/det/' + str(id_tpl)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1191,7 +1159,7 @@ def setting_report():
 
     # Load setting report
     try:
-        url = session['server_int'] + '/services/setting/report'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/report'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1215,7 +1183,7 @@ def setting_rec_num():
 
     # Load record number setting
     try:
-        url = session['server_int'] + '/services/setting/record/number'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/record/number'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1250,7 +1218,7 @@ def setting_age_interval():
 
     # Load interval details
     try:
-        url = session['server_int'] + '/services/setting/age/interval'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/age/interval'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1339,7 +1307,7 @@ def list_results():
     dt_start_req = datetime.now()
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1355,7 +1323,7 @@ def list_results():
 
         payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'code_pat': '', 'valid_res': 0}
 
-        url = session['server_int'] + '/services/result/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/list'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -1363,18 +1331,6 @@ def list_results():
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
-
-    # Load list of technician
-    """
-    try:
-        url = session['server_int'] + '/services/user/role/3'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_ihm['tech_list'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -1406,7 +1362,7 @@ def enter_result(id_rec=0, anchor=''):
     dt_start_req = datetime.now()
     # Load list results
     try:
-        url = session['server_int'] + '/services/result/record/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/record/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1420,7 +1376,7 @@ def enter_result(id_rec=0, anchor=''):
 
                     if res['type_resultat']:
                         try:
-                            url = session['server_int'] + '/services/dico/id/' + str(res['type_resultat'])
+                            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['type_resultat'])
                             req = requests.get(url)
 
                             if req.status_code == 200:
@@ -1437,7 +1393,7 @@ def enter_result(id_rec=0, anchor=''):
 
                     # get unit label
                     try:
-                        url = session['server_int'] + '/services/dico/id/' + str(res['unite'])
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['unite'])
                         req = requests.get(url)
 
                         res['unit'] = ''
@@ -1456,7 +1412,7 @@ def enter_result(id_rec=0, anchor=''):
                     # get anwser
                     try:
                         if type_res:
-                            url = session['server_int'] + '/services/dict/det/' + str(type_res)
+                            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/' + str(type_res)
                             req = requests.get(url)
 
                             if req.status_code == 200:
@@ -1472,7 +1428,7 @@ def enter_result(id_rec=0, anchor=''):
         # If no ResultRecord found we're looking for record information
         else:
             try:
-                url = session['server_int'] + '/services/record/det/' + str(id_rec)
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
                 req = requests.get(url)
 
                 if req.status_code == 200:
@@ -1491,7 +1447,7 @@ def enter_result(id_rec=0, anchor=''):
     json_data['patient'] = {}
     if id_pat > 0:
         try:
-            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1499,18 +1455,6 @@ def enter_result(id_rec=0, anchor=''):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
-
-    # Load list of technician
-    """
-    try:
-        url = session['server_int'] + '/services/user/role/3'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_ihm['tech_list'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -1539,7 +1483,7 @@ def list_records():
     dt_start_req = datetime.now()
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1550,7 +1494,7 @@ def list_records():
 
     # Load list records
     try:
-        url = session['server_int'] + '/services/record/list/' + str(id_pres)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/list/' + str(id_pres)
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -1585,7 +1529,7 @@ def list_works(user_role='', emer=''):
     dt_start_req = datetime.now()
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1615,7 +1559,7 @@ def list_works(user_role='', emer=''):
 
         json_ihm['stat_work'] = payload['stat_work']
 
-        url = session['server_int'] + '/services/record/list/0'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/list/0'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -1646,7 +1590,7 @@ def list_samples():
     dt_start_req = datetime.now()
     # Load list records
     try:
-        url = session['server_int'] + '/services/product/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/product/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -1675,7 +1619,7 @@ def det_sample(id_prod=0):
 
     # Load samples statut
     try:
-        url = session['server_int'] + '/services/dict/det/prel_statut'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/prel_statut'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1686,7 +1630,7 @@ def det_sample(id_prod=0):
 
     # Load samples type
     try:
-        url = session['server_int'] + '/services/dict/det/type_prel'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1697,7 +1641,7 @@ def det_sample(id_prod=0):
 
     # Load samples location choice
     try:
-        url = session['server_int'] + '/services/dict/det/lieu_prel'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/lieu_prel'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1709,7 +1653,7 @@ def det_sample(id_prod=0):
     if id_prod > 0:
         # Load sample details
         try:
-            url = session['server_int'] + '/services/product/det/' + str(id_prod)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/product/det/' + str(id_prod)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1720,7 +1664,7 @@ def det_sample(id_prod=0):
 
         # Load record details
         try:
-            url = session['server_int'] + '/services/record/det/' + str(json_data['product']['id_rec'])
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(json_data['product']['id_rec'])
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1729,7 +1673,7 @@ def det_sample(id_prod=0):
                 # Load data patient with id_patient
                 if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
                     try:
-                        url = session['server_int'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
                         req = requests.get(url)
 
                         if req.status_code == 200:
@@ -1758,7 +1702,7 @@ def list_doctors():
 
     # Load list doctors
     try:
-        url = session['server_int'] + '/services/doctor/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -1783,7 +1727,7 @@ def det_doctor(id_doctor=0):
 
     # Load speciality
     try:
-        url = session['server_int'] + '/services/dict/det/specialite'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/specialite'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1795,7 +1739,7 @@ def det_doctor(id_doctor=0):
     if id_doctor > 0:
         # Load doctor details
         try:
-            url = session['server_int'] + '/services/doctor/det/' + str(id_doctor)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(id_doctor)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1845,7 +1789,7 @@ def det_patient(type_req='E', id_pat=0):
     dt_start_req = datetime.now()
     # Load unit age
     try:
-        url = session['server_int'] + '/services/dict/det/periode_unite'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/periode_unite'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1856,7 +1800,7 @@ def det_patient(type_req='E', id_pat=0):
 
     # Load blood group
     try:
-        url = session['server_int'] + '/services/dict/det/groupesang'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/groupesang'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1867,7 +1811,7 @@ def det_patient(type_req='E', id_pat=0):
 
     # Load blood rhesus
     try:
-        url = session['server_int'] + '/services/dict/det/posneg'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/posneg'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1878,7 +1822,7 @@ def det_patient(type_req='E', id_pat=0):
 
     # Load nationality
     try:
-        url = session['server_int'] + '/services/nationality/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/nationality/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -1890,7 +1834,7 @@ def det_patient(type_req='E', id_pat=0):
     # Load data patient
     if id_pat > 0:
         try:
-            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1902,7 +1846,7 @@ def det_patient(type_req='E', id_pat=0):
     else:
         # generate a code
         try:
-            url = session['server_int'] + '/services/patient/generate/code'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/generate/code'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1939,7 +1883,7 @@ def det_req_ext(entry='Y', ref=0):
         # Load data patient
         if ref > 0:
             try:
-                url = session['server_int'] + '/services/patient/det/' + str(ref)
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(ref)
                 req = requests.get(url)
 
                 if req.status_code == 200:
@@ -1950,7 +1894,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load yes or no
         try:
-            url = session['server_int'] + '/services/dict/det/yorn'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/yorn'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1961,7 +1905,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load discount billing
         try:
-            url = session['server_int'] + '/services/dict/det/remise_facturation'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/remise_facturation'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1972,7 +1916,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load samples statut
         try:
-            url = session['server_int'] + '/services/dict/det/prel_statut'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/prel_statut'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1983,7 +1927,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load samples
         try:
-            url = session['server_int'] + '/services/dict/det/type_prel'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -1994,7 +1938,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load prix_acte
         try:
-            url = session['server_int'] + '/services/default/val/prix_acte'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/prix_acte'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2005,7 +1949,7 @@ def det_req_ext(entry='Y', ref=0):
 
         # Load facturation_pat_hosp
         try:
-            url = session['server_int'] + '/services/default/val/facturation_pat_hosp'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/facturation_pat_hosp'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2141,7 +2085,7 @@ def det_req_int(entry='Y', ref=0):
         # Load data patient
         if ref > 0:
             try:
-                url = session['server_int'] + '/services/patient/det/' + str(ref)
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(ref)
                 req = requests.get(url)
 
                 if req.status_code == 200:
@@ -2152,7 +2096,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load yes or no
         try:
-            url = session['server_int'] + '/services/dict/det/yorn'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/yorn'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2163,7 +2107,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load discount billing
         try:
-            url = session['server_int'] + '/services/dict/det/remise_facturation'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/remise_facturation'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2174,7 +2118,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load products statut
         try:
-            url = session['server_int'] + '/services/dict/det/prel_statut'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/prel_statut'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2185,7 +2129,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load products
         try:
-            url = session['server_int'] + '/services/dict/det/type_prel'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2196,7 +2140,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load prix_acte
         try:
-            url = session['server_int'] + '/services/default/val/prix_acte'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/prix_acte'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2207,7 +2151,7 @@ def det_req_int(entry='Y', ref=0):
 
         # Load facturation_pat_hosp
         try:
-            url = session['server_int'] + '/services/default/val/facturation_pat_hosp'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/facturation_pat_hosp'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2340,7 +2284,7 @@ def administrative_record(type_req='E', id_rec=0):
     dt_start_req = datetime.now()
     # Load save record
     try:
-        url = session['server_int'] + '/services/record/det/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2349,7 +2293,7 @@ def administrative_record(type_req='E', id_rec=0):
             # Load data patient with id_patient
             if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
                 try:
-                    url = session['server_int'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
+                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
                     req = requests.get(url)
 
                     if req.status_code == 200:
@@ -2361,7 +2305,7 @@ def administrative_record(type_req='E', id_rec=0):
             # Load data doctor with id_doctor
             if json_data['record']['med_prescripteur'] and json_data['record']['med_prescripteur'] > 0:
                 try:
-                    url = session['server_int'] + '/services/doctor/det/' + str(json_data['record']['med_prescripteur'])
+                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(json_data['record']['med_prescripteur'])
                     req = requests.get(url)
 
                     if req.status_code == 200:
@@ -2375,7 +2319,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load list analysis requested
     try:
-        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/type/Y'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/list/req/' + str(id_rec) + '/type/Y'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2386,7 +2330,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load list samples requested
     try:
-        url = session['server_int'] + '/services/analysis/list/req/' + str(id_rec) + '/type/N'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/list/req/' + str(id_rec) + '/type/N'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2397,7 +2341,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load report attached to this record
     try:
-        url = session['server_int'] + '/services/file/report/record/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/record/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2408,7 +2352,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load files attached to this record
     try:
-        url = session['server_int'] + '/services/file/document/list/REC/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/REC/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2419,7 +2363,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load list template RES
     try:
-        url = session['server_int'] + '/services/setting/template/list/RES'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/RES'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2430,7 +2374,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     # Load list template STI
     try:
-        url = session['server_int'] + '/services/setting/template/list/STI'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/STI'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2469,7 +2413,7 @@ def technical_validation(id_rec=0, anchor=''):
     dt_start_req = datetime.now()
     # Load list results
     try:
-        url = session['server_int'] + '/services/result/record/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/record/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2483,7 +2427,7 @@ def technical_validation(id_rec=0, anchor=''):
 
                     if res['type_resultat']:
                         try:
-                            url = session['server_int'] + '/services/dico/id/' + str(res['type_resultat'])
+                            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['type_resultat'])
                             req = requests.get(url)
 
                             if req.status_code == 200:
@@ -2501,7 +2445,7 @@ def technical_validation(id_rec=0, anchor=''):
                     # get result label if a value has been entered
                     if type_res and res['valeur']:
                         try:
-                            url = session['server_int'] + '/services/dico/id/' + str(res['valeur'])
+                            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['valeur'])
                             req = requests.get(url)
 
                             res['res_label'] = ''
@@ -2520,7 +2464,7 @@ def technical_validation(id_rec=0, anchor=''):
 
                     # get unit label
                     try:
-                        url = session['server_int'] + '/services/dico/id/' + str(res['unite'])
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['unite'])
                         req = requests.get(url)
 
                         res['unit'] = ''
@@ -2542,7 +2486,7 @@ def technical_validation(id_rec=0, anchor=''):
         # If no ResultRecord found we're looking for record information
         else:
             try:
-                url = session['server_int'] + '/services/record/det/' + str(id_rec)
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
                 req = requests.get(url)
 
                 if req.status_code == 200:
@@ -2561,7 +2505,7 @@ def technical_validation(id_rec=0, anchor=''):
     json_data['patient'] = {}
     if id_pat > 0:
         try:
-            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2569,18 +2513,6 @@ def technical_validation(id_rec=0, anchor=''):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
-
-    # Load list of technician
-    """
-    try:
-        url = session['server_int'] + '/services/user/role/3'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_ihm['tech_list'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -2614,7 +2546,7 @@ def biological_validation(mode='', id_rec=0):
         json_ihm['mode'] = mode
         # find next record to validate
         try:
-            url = session['server_int'] + '/services/record/next/' + str(id_rec)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/next/' + str(id_rec)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2633,7 +2565,7 @@ def biological_validation(mode='', id_rec=0):
 
     # Load list template
     try:
-        url = session['server_int'] + '/services/setting/template/list/RES'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/RES'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2644,7 +2576,7 @@ def biological_validation(mode='', id_rec=0):
 
     # Load record
     try:
-        url = session['server_int'] + '/services/record/det/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2655,7 +2587,7 @@ def biological_validation(mode='', id_rec=0):
 
     # Load list results
     try:
-        url = session['server_int'] + '/services/result/record/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/record/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2669,7 +2601,7 @@ def biological_validation(mode='', id_rec=0):
 
                     if res['type_resultat']:
                         try:
-                            url = session['server_int'] + '/services/dico/id/' + str(res['type_resultat'])
+                            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['type_resultat'])
                             req = requests.get(url)
 
                             if req.status_code == 200:
@@ -2687,7 +2619,7 @@ def biological_validation(mode='', id_rec=0):
                     # get result label if a value has been entered
                     if type_res and res['valeur']:
                         try:
-                            url = session['server_int'] + '/services/dico/id/' + str(res['valeur'])
+                            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['valeur'])
                             req = requests.get(url)
 
                             res['res_label'] = ''
@@ -2705,7 +2637,7 @@ def biological_validation(mode='', id_rec=0):
 
                     # get unit label
                     try:
-                        url = session['server_int'] + '/services/dico/id/' + str(res['unite'])
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['unite'])
                         req = requests.get(url)
 
                         res['unit'] = ''
@@ -2727,7 +2659,7 @@ def biological_validation(mode='', id_rec=0):
         # If no ResultRecord found we're looking for record information
         else:
             try:
-                url = session['server_int'] + '/services/record/det/' + str(id_rec)
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
                 req = requests.get(url)
 
                 if req.status_code == 200:
@@ -2746,7 +2678,7 @@ def biological_validation(mode='', id_rec=0):
     json_data['patient'] = {}
     if id_pat > 0:
         try:
-            url = session['server_int'] + '/services/patient/det/' + str(id_pat)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -2755,21 +2687,9 @@ def biological_validation(mode='', id_rec=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
 
-    # Load list of biologist
-    """
-    try:
-        url = session['server_int'] + '/services/user/role/2'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_ihm['bio_list'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role failed, err=%s , url=%s', err, url)"""
-
     # Load report attached to this record
     try:
-        url = session['server_int'] + '/services/file/report/record/' + str(id_rec)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/record/' + str(id_rec)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2780,7 +2700,7 @@ def biological_validation(mode='', id_rec=0):
 
     # Load reasons to cancel a result
     try:
-        url = session['server_int'] + '/services/dict/det/motif_annulation'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/motif_annulation'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2814,7 +2734,7 @@ def report_activity():
 
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2825,7 +2745,7 @@ def report_activity():
 
     # load age interval setting
     try:
-        url = session['server_int'] + '/services/setting/age/interval'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/age/interval'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2850,7 +2770,7 @@ def report_activity():
                    'date_end': date_end,
                    'type_ana': 0}
 
-        url = session['server_int'] + '/services/report/activity'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/activity'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -2891,7 +2811,7 @@ def report_epidemio(date_beg='', date_end=''):
         payload = {'date_beg': date_beg,
                    'date_end': date_end}
 
-        url = session['server_int'] + '/services/report/epidemio'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/epidemio'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -2939,7 +2859,7 @@ def report_statistic():
 
     # load age interval setting
     try:
-        url = session['server_int'] + '/services/setting/age/interval'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/age/interval'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -2963,7 +2883,7 @@ def report_statistic():
         payload = {'date_beg': date_beg,
                    'date_end': date_end}
 
-        url = session['server_int'] + '/services/report/stat'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/stat'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -3024,7 +2944,7 @@ def hist_patients():
 
     # Load list patients
     try:
-        url = session['server_int'] + '/services/patient/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -3048,7 +2968,7 @@ def det_hist_patient(id_pat=0):
 
     # Load details hitoric patient
     try:
-        url = session['server_int'] + '/services/patient/historic/' + str(id_pat)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/historic/' + str(id_pat)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3073,7 +2993,7 @@ def hist_analyzes():
 
     # Load analysis type
     try:
-        url = session['server_int'] + '/services/dict/det/famille_analyse'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3095,7 +3015,7 @@ def hist_analyzes():
 
         payload = {'date_beg': date_beg, 'date_end': date_end}
 
-        url = session['server_int'] + '/services/analysis/historic/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/historic/list'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -3124,7 +3044,7 @@ def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
 
         payload = {'date_beg': date_beg, 'date_end': date_end, 'id_ana': id_ana}
 
-        url = session['server_int'] + '/services/analysis/historic/details'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/historic/details'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -3158,7 +3078,7 @@ def report_today():
 
         payload = {'date_beg': date_beg, 'date_end': date_end}
 
-        url = session['server_int'] + '/services/report/today'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/today'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -3193,7 +3113,7 @@ def report_billing():
 
         payload = {'date_beg': date_beg, 'date_end': date_end, 'id_user': 0}
 
-        url = session['server_int'] + '/services/report/billing'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/billing'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -3221,7 +3141,7 @@ def quality_general():
 
     # Load nb_users
     try:
-        url = session['server_int'] + '/services/user/count'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/count'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3232,7 +3152,7 @@ def quality_general():
 
     # Load nb_manuals
     try:
-        url = session['server_int'] + '/services/file/count/manual'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/count/manual'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3243,7 +3163,7 @@ def quality_general():
 
     # Load last_meeting
     try:
-        url = session['server_int'] + '/services/quality/last/meeting'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/last/meeting'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3254,7 +3174,7 @@ def quality_general():
 
     # Load nb_noncompliances_open
     try:
-        url = session['server_int'] + '/services/quality/count/noncompliance/open'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/count/noncompliance/open'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3265,7 +3185,7 @@ def quality_general():
 
     # Load nb_noncompliances_month
     try:
-        url = session['server_int'] + '/services/quality/count/noncompliance/month'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/count/noncompliance/month'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3289,7 +3209,7 @@ def list_laboratory():
 
     # Load laboratory files
     try:
-        url = session['server_int'] + '/services/file/document/list/LABO/1'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/LABO/1'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3300,7 +3220,7 @@ def list_laboratory():
 
     # Load dict details
     try:
-        url = session['server_int'] + '/services/dict/det/sections'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3332,7 +3252,7 @@ def list_staff():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/user/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -3357,7 +3277,7 @@ def det_staff(user_id=0):
 
     # Load sections
     try:
-        url = session['server_int'] + '/services/dict/det/sections'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3368,7 +3288,7 @@ def det_staff(user_id=0):
 
     # Load User CV files
     try:
-        url = session['server_int'] + '/services/file/document/list/USCV/' + str(user_id)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USCV/' + str(user_id)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3379,7 +3299,7 @@ def det_staff(user_id=0):
 
     # Load User Diploma files
     try:
-        url = session['server_int'] + '/services/file/document/list/USDI/' + str(user_id)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USDI/' + str(user_id)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3390,7 +3310,7 @@ def det_staff(user_id=0):
 
     # Load User Training files
     try:
-        url = session['server_int'] + '/services/file/document/list/USTR/' + str(user_id)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USTR/' + str(user_id)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3401,7 +3321,7 @@ def det_staff(user_id=0):
 
     # Load User Evaluation files
     try:
-        url = session['server_int'] + '/services/file/document/list/USEV/' + str(user_id)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USEV/' + str(user_id)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3413,7 +3333,7 @@ def det_staff(user_id=0):
     if user_id > 0:
         # Load user details
         try:
-            url = session['server_int'] + '/services/user/det/' + str(user_id)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/det/' + str(user_id)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3440,7 +3360,7 @@ def list_equipment():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/equipment/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3467,7 +3387,7 @@ def det_equipment(id_eqp=0):
 
     # Load sections
     try:
-        url = session['server_int'] + '/services/dict/det/sections'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3479,7 +3399,7 @@ def det_equipment(id_eqp=0):
     if id_eqp > 0:
         # Load Equipment Photo files
         try:
-            url = session['server_int'] + '/services/file/document/list/EQPH/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQPH/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3490,7 +3410,7 @@ def det_equipment(id_eqp=0):
 
         # Load Equipment Breakdown files
         try:
-            url = session['server_int'] + '/services/file/document/list/EQBD/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBD/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3501,7 +3421,7 @@ def det_equipment(id_eqp=0):
 
         # Load Equipment Preventive Maintenance files
         try:
-            url = session['server_int'] + '/services/file/document/list/EQPM/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQPM/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3512,7 +3432,7 @@ def det_equipment(id_eqp=0):
 
         # Load Equipment Calibration Certificat files
         try:
-            url = session['server_int'] + '/services/file/document/list/EQCC/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQCC/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3523,7 +3443,7 @@ def det_equipment(id_eqp=0):
 
         # Load Equipment Maintenance Contract files
         try:
-            url = session['server_int'] + '/services/file/document/list/EQMC/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQMC/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3534,7 +3454,7 @@ def det_equipment(id_eqp=0):
 
         # Load Equipment Bill files
         try:
-            url = session['server_int'] + '/services/file/document/list/EQBI/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBI/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3545,7 +3465,7 @@ def det_equipment(id_eqp=0):
 
         # Load equipment details
         try:
-            url = session['server_int'] + '/services/quality/equipment/det/' + str(id_eqp)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3571,7 +3491,7 @@ def list_suppliers():
 
     # Load list suppliers
     try:
-        url = session['server_int'] + '/services/quality/supplier/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/supplier/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3596,7 +3516,7 @@ def det_supplier(id_supplier=0):
     if id_supplier > 0:
         # Load supplier details
         try:
-            url = session['server_int'] + '/services/quality/supplier/det/' + str(id_supplier)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/supplier/det/' + str(id_supplier)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3621,7 +3541,7 @@ def list_manuals():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/manual/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/manual/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3648,7 +3568,7 @@ def det_manual(id_manual=0):
 
     # Load sections
     try:
-        url = session['server_int'] + '/services/dict/det/sections'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3660,7 +3580,7 @@ def det_manual(id_manual=0):
     if id_manual > 0:
         # Load Manual files
         try:
-            url = session['server_int'] + '/services/file/document/list/MANU/' + str(id_manual)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/MANU/' + str(id_manual)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3671,7 +3591,7 @@ def det_manual(id_manual=0):
 
         # Load manual details
         try:
-            url = session['server_int'] + '/services/quality/manual/det/' + str(id_manual)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/manual/det/' + str(id_manual)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3696,7 +3616,7 @@ def list_procedure():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/procedure/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/procedure/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3723,7 +3643,7 @@ def det_procedure(id_procedure=0):
 
     # Load sections
     try:
-        url = session['server_int'] + '/services/dict/det/sections'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3735,7 +3655,7 @@ def det_procedure(id_procedure=0):
     if id_procedure > 0:
         # Load procedure files
         try:
-            url = session['server_int'] + '/services/file/document/list/PROC/' + str(id_procedure)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/PROC/' + str(id_procedure)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3746,7 +3666,7 @@ def det_procedure(id_procedure=0):
 
         # Load procedure details
         try:
-            url = session['server_int'] + '/services/quality/procedure/det/' + str(id_procedure)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/procedure/det/' + str(id_procedure)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3771,7 +3691,7 @@ def list_ctrl_int():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/control/list/INT'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/list/INT'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3799,7 +3719,7 @@ def det_control_int(id_ctrl=0):
     if id_ctrl > 0:
         # Load internal control details
         try:
-            url = session['server_int'] + '/services/quality/control/det/' + str(id_ctrl)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/det/' + str(id_ctrl)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3810,7 +3730,7 @@ def det_control_int(id_ctrl=0):
 
         # Load list of result
         try:
-            url = session['server_int'] + '/services/quality/control/int/res/list/' + str(id_ctrl)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/int/res/list/' + str(id_ctrl)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3839,7 +3759,7 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
     if cti_ser > 0:
         # Load internal control details
         try:
-            url = session['server_int'] + '/services/quality/control/int/res/' + str(cti_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/int/res/' + str(cti_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3866,7 +3786,7 @@ def list_ctrl_ext():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/control/list/EXT'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/list/EXT'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3894,7 +3814,7 @@ def det_control_ext(id_ctrl=0):
     if id_ctrl > 0:
         # Load external control details
         try:
-            url = session['server_int'] + '/services/quality/control/det/' + str(id_ctrl)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/det/' + str(id_ctrl)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3905,7 +3825,7 @@ def det_control_ext(id_ctrl=0):
 
         # Load list of result
         try:
-            url = session['server_int'] + '/services/quality/control/ext/res/list/' + str(id_ctrl)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/ext/res/list/' + str(id_ctrl)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3934,7 +3854,7 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
     if cte_ser > 0:
         # Load Report control external files
         try:
-            url = session['server_int'] + '/services/file/document/list/CTRL/' + str(cte_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/CTRL/' + str(cte_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3945,7 +3865,7 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
 
         # Load external control details
         try:
-            url = session['server_int'] + '/services/quality/control/ext/res/' + str(cte_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/ext/res/' + str(cte_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -3974,7 +3894,7 @@ def list_stock():
 
     # Load product_type
     try:
-        url = session['server_int'] + '/services/dict/det/product_type'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_type'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3985,7 +3905,7 @@ def list_stock():
 
     # Load product_conserv
     try:
-        url = session['server_int'] + '/services/dict/det/product_conserv'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_conserv'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -3996,7 +3916,7 @@ def list_stock():
 
     # Load list of stock
     try:
-        url = session['server_int'] + '/services/quality/stock/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list'
         req = requests.post(url)
 
         if req.status_code == 200:
@@ -4020,7 +3940,7 @@ def list_products():
 
     # Load list products
     try:
-        url = session['server_int'] + '/services/quality/stock/product/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -4048,7 +3968,7 @@ def det_list_stock(prd_ser=0):
     if prd_ser > 0:
         # Load stock product details
         try:
-            url = session['server_int'] + '/services/quality/stock/list/det/' + str(prd_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list/det/' + str(prd_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4090,7 +4010,7 @@ def hist_stock_product(prd_ser=0):
 
             payload = {'date_beg': date_beg, 'date_end': date_end}
 
-            url = session['server_int'] + '/services/quality/stock/product/history/' + str(prd_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/history/' + str(prd_ser)
             req = requests.post(url, json=payload)
 
             if req.status_code == 200:
@@ -4119,7 +4039,7 @@ def det_new_product(prd_ser=0):
 
     # Load product_type
     try:
-        url = session['server_int'] + '/services/dict/det/product_type'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_type'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -4130,7 +4050,7 @@ def det_new_product(prd_ser=0):
 
     # Load product_conserv
     try:
-        url = session['server_int'] + '/services/dict/det/product_conserv'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_conserv'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -4142,7 +4062,7 @@ def det_new_product(prd_ser=0):
     if prd_ser > 0:
         # Load stock product details
         try:
-            url = session['server_int'] + '/services/quality/stock/product/det/' + str(prd_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/det/' + str(prd_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4172,7 +4092,7 @@ def det_stock_product(prs_ser=0):
     if prs_ser > 0:
         # Load stock product details
         try:
-            url = session['server_int'] + '/services/quality/stock/product/det/' + str(prs_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/det/' + str(prs_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4208,7 +4128,7 @@ def list_nonconformities():
 
         payload = {'date_beg': date_beg, 'date_end': date_end}
 
-        url = session['server_int'] + '/services/quality/nonconformity/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/nonconformity/list'
         req = requests.post(url, json=payload)
 
         if req.status_code == 200:
@@ -4233,7 +4153,7 @@ def non_conformity(id_det=0):
     json_data['details'] = []
 
     try:
-        url = session['server_int'] + '/services/quality/nonconformity/det/' + str(id_det)
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/nonconformity/det/' + str(id_det)
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -4259,7 +4179,7 @@ def list_meeting():
     json_data = {}
 
     try:
-        url = session['server_int'] + '/services/quality/meeting/list'
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/meeting/list'
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -4286,7 +4206,7 @@ def det_meeting(id_meeting=0):
     if id_meeting > 0:
         # Load meeting files
         try:
-            url = session['server_int'] + '/services/file/document/list/MEET/' + str(id_meeting)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/MEET/' + str(id_meeting)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4297,7 +4217,7 @@ def det_meeting(id_meeting=0):
 
         # Load meeting details
         try:
-            url = session['server_int'] + '/services/quality/meeting/det/' + str(id_meeting)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/meeting/det/' + str(id_meeting)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4342,7 +4262,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     elif type == 'JF':
         # ref = id_file
         try:
-            url = session['server_int'] + '/services/file/document/' + str(type_ref) + '/' + str(ref)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/' + str(type_ref) + '/' + str(ref)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4409,7 +4329,7 @@ def upload_file(type_ref='', id_ref=0):
 
         try:
             # Get last storage path
-            url = session['server_int'] + '/services/file/storage'
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/storage'
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4458,7 +4378,7 @@ def upload_file(type_ref='', id_ref=0):
                        'id_storage': storage['id_data'],
                        'end_path': end_path}
 
-            url = session['server_int'] + '/services/file/document/' + str(type_ref) + '/' + str(id_ref)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/' + str(type_ref) + '/' + str(id_ref)
             req = requests.post(url, json=payload)
 
             if req.status_code != 200:
@@ -4682,6 +4602,11 @@ def delete_file(type='', filename=''):
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/labbook.css')
+def labbook_css():
+    return Response(render_template('labbook.css'), mimetype='text/css')
 
 
 # if __name__ == "__main__":

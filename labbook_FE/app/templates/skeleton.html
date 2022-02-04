@@ -7,7 +7,7 @@
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/labbook.css') }}?{{ rand }}" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('labbook_css') }}?{{ rand }}" media="screen" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.6.0.min.js') }}" nonce="{{ session['nonce'] }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery.tablesorter.min.js') }}" nonce="{{ session['nonce'] }}"></script>
@@ -28,20 +28,20 @@
                     <span class="caret"></span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/fr_FR">{{ _("Français (FR)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_GB">{{ _("English (UK)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/en_US">{{ _("English (US)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/ar">{{ _("Arabe (AR)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/km">{{ _("Khmer (KM)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/lo">{{ _("Laotien (LO)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/mg">{{ _("Malagasy (MG)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/lang/pt">{{ _("Portugais (PT)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/fr_FR">{{ _("Français (FR)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/en_GB">{{ _("English (UK)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/en_US">{{ _("English (US)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/ar">{{ _("Arabe (AR)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/km">{{ _("Khmer (KM)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/lo">{{ _("Laotien (LO)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/mg">{{ _("Malagasy (MG)") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/pt">{{ _("Portugais (PT)") }}</a>
                 </div>
             </div>
             <div class="inner">
                 <div id="logo">
                     <h1>
-                        <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage">{{ _("LabBook") }}</a>
+                        <a href="{{ session['server_ext'] }}/homepage">{{ _("LabBook") }}</a>
                     </h1>
                 </div>
                 <div id="user-info">
@@ -49,7 +49,7 @@
                     <div class="role role-{{ session['user_role']|safe }}" {% if locale == 'ar' %}style="left:40px;right:auto;"{% endif %}>
                         <ul>
                             <li>
-                                <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/disconnect" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
+                                <a href="{{ session['server_ext'] }}/disconnect" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +64,7 @@
         {% include 'popup_history.html' %}
         {% block footer %}
         <footer>
-            <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors">{{ _("Contributeurs") }}</a></div>
+            <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/contributors">{{ _("Contributeurs") }}</a></div>
         </footer>
         {% endblock %}
     </div><!-- close page -->
@@ -74,6 +74,8 @@
 {% endblock %}
 
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+console.log("DEBUG session server_ext = {{ session['server_ext'] }}");
+
 var username = "{{ session['user_name']|safe}}" ;
 
 function load_username()
@@ -93,7 +95,7 @@ $("#header_name").text( name ) ;
 
 function download_file( type, filename, type_ref, ref )
 {
-window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref ;
+window.location = "{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref ;
 }
 
 $( document ).ready( function()

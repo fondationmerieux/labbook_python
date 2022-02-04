@@ -508,7 +508,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            upload_file("EQBD", ref);  // Breakdown
            upload_file("EQPH", ref);  // Photo
 
-           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-equipment" ;
+           window.location = "{{ session['server_ext'] }}/list-equipment" ;
            },
        error: function(data)
            {
@@ -591,7 +591,7 @@ let input_file = $('#' + type_ref)[0] ;
         $.ajax(
         {
             type : 'POST',
-            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/" + type_ref + "/" + ref,
+            url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + ref,
             dataType: 'json',
             contentType: false,
             processData: false,

@@ -57,7 +57,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-epidemio",
+        url : "{{ session['server_ext'] }}/upload-epidemio",
         dataType: 'json',
         contentType: false,
         processData: false,
@@ -112,7 +112,7 @@ $("#tbody_file").append(tr_file) ;
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
 $( document ).ready( function()

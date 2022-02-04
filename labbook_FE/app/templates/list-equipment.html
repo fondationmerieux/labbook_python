@@ -112,7 +112,7 @@ $("#list_items_total").html( data_len ) ;
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/{{ session["redirect_name"] }}/det-equipment/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-equipment/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>";   
         
     menu_act += "</div></ul></nav>" ;
@@ -170,7 +170,7 @@ var id_user = {{ session['user_id']|safe}} ;
 
 function add_item()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-equipment/0";
+window.location.href = "{{ session['server_ext'] }}/det-equipment/0";
 }
 
 function export_data()
@@ -226,7 +226,7 @@ var param = '{}' ;
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
 $( document ).ready( function()

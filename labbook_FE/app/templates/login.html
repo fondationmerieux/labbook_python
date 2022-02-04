@@ -5,7 +5,7 @@
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/labbook.css') }}?0" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('labbook_css') }}?0" media="screen" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.6.0.min.js') }}" nonce="{{ session['nonce'] }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}" nonce="{{ session['nonce'] }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
@@ -17,7 +17,7 @@
             <div class="inner">
                 <div id="logo">
                     <h1>
-                        <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/">{{ _("LabBook") }}</a>
+                        <a href="{{ session['server_ext'] }}/">{{ _("LabBook") }}</a>
                     </h1>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             </div>
         </div>
         <footer>
-            <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors">{{ _("Contributeurs") }}</a></div>
+            <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/contributors">{{ _("Contributeurs") }}</a></div>
         </footer>
     </div>
   
@@ -80,7 +80,7 @@ var param = '{ "login":"' + login + '", "pwd":"' + pwd + '"}' ;
         {
         $("#auth_msg").css("display", "none");
         console.log("SUCCESS post login") ;
-        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage/" + login ;
+        window.location.href = "{{ session['server_ext'] }}/homepage/" + login ;
         },
         error: function(ret_ws)
         {

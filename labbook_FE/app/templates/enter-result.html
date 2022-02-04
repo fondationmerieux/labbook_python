@@ -170,7 +170,7 @@ param_list_answer += ' ] }' ;
             {
                 $("#dial-wait").modal("hide") ;
 
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
+            window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
             },
             error: function(data)
             {
@@ -254,7 +254,7 @@ param_list_valid += ' ] }' ;
             {
                 $("#dial-wait").modal("hide") ;
 
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
+            window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
             },
             error: function(data)
             {
@@ -645,7 +645,7 @@ param_list_res += value_res + ' ] }';
                         data: param_stat,
                         success : function(response)
                         {
-                        window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/enter-result/" + id_rec ;
+                        window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec ;
                         },
                         error: function(response)
                         {

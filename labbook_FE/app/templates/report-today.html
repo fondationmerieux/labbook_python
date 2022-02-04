@@ -197,7 +197,7 @@ let total_remain = 0 ;
                        '<ul class="navbar-nav">' +
                        '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                        '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                       '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/administrative-record/' + data_today[i].type_rec + '/' + data_today[i].id_rec + '">{{ _("Dossier administratif") }}</a>' ;
+                       '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_today[i].type_rec + '/' + data_today[i].id_rec + '">{{ _("Dossier administratif") }}</a>' ;
             
         menu_act += '</div></ul></nav>' ;
 
@@ -273,7 +273,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
 $(".cnx_trigger").keyup( function(event) 

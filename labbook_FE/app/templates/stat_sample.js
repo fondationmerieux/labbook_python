@@ -12,6 +12,6 @@ return res ;
 
 function det_sample(samp_id)
 {
-window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/det-sample/" + samp_id ;
+window.location = "{{ session['server_ext'] }}/det-sample/" + samp_id ;
 }
 

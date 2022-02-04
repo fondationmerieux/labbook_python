@@ -57,7 +57,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-dhis2",
+        url : "{{ session['server_ext'] }}/upload-dhis2",
         dataType: 'json',
         contentType: false,
         processData: false,
@@ -118,7 +118,7 @@ function delete_file( filename )
         $.ajax( 
         {
             type: "GET",
-            url: "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/delete-file/DH/" + filename,
+            url: "{{ session['server_ext'] }}/delete-file/DH/" + filename,
             success: function(ret)
             {
             location.reload() ;
@@ -136,7 +136,7 @@ function delete_file( filename )
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
 $( document ).ready( function()

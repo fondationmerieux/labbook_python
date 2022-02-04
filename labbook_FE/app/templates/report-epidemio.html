@@ -85,7 +85,7 @@ function filter_data()
 let date_beg = $("#f_date_beg").val() ;
 let date_end = $("#f_date_end").val() ;
 
-window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/report-epidemio/" + date_beg +"/"+ date_end; 
+window.location = "{{ session['server_ext'] }}/report-epidemio/" + date_beg +"/"+ date_end; 
 }
 
 $(".cnx_trigger").keyup( function(event) 

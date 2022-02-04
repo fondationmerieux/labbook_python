@@ -1,9 +1,21 @@
-# import sys
+import logging
+import os
+
+from logging.handlers import WatchedFileHandler
 from app import app
 
-# plus compatible avec le python 3
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
+def prep_log(logger_nom, log_fich, niveau=logging.INFO):
+    l = logging.getLogger(logger_nom)
+    formatter = logging.Formatter('%(asctime)s : %(message)s')
+    fileHandler = WatchedFileHandler(log_fich)
+    fileHandler.setFormatter(formatter)
+
+    l.setLevel(niveau)
+    l.addHandler(fileHandler)
+
+prep_log('log_wsgi', r'../logs/log_wsgi.log')
+
+log = logging.getLogger('log_wsgi')
 
 
 # src = http://flask.pocoo.org/snippets/35/
@@ -28,7 +40,8 @@ class ReverseProxied(object):
         self.app = app
 
     def __call__(self, environ, start_response):
-        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+        #script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+        script_name = os.environ.get('LABBOOK_URL_PREFIX', '/sigl')
         if script_name:
             environ['SCRIPT_NAME'] = script_name
             path_info = environ['PATH_INFO']
@@ -38,6 +51,7 @@ class ReverseProxied(object):
         scheme = environ.get('HTTP_X_SCHEME', '')
         if scheme:
             environ['wsgi.url_scheme'] = scheme
+
         return self.app(environ, start_response)
 
 

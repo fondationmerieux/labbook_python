@@ -126,7 +126,7 @@ var param = '{ "id_item":' + id_tpl + ', ' +
            upload_tpl(ref);
            {% endif %}
 
-           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-template" ;
+           window.location = "{{ session['server_ext'] }}/list-template" ;
            },
        error: function(data)
            {
@@ -145,7 +145,7 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-tpl",
+        url : "{{ session['server_ext'] }}/upload-tpl",
         dataType: 'json',
         contentType: false,
         processData: false,

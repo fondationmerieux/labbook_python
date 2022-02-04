@@ -214,8 +214,8 @@ $("#list_users_total").html( data_len ) ;
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
 
         if ( data_users[i].stat != 29 )
         {          
@@ -287,12 +287,12 @@ var id_owner = {{ session['user_id']|safe}} ;
 
 function import_users()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/user-import";
+window.location.href = "{{ session['server_ext'] }}/user-import";
 }
 
 function export_conn()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/user-conn-export";
+window.location.href = "{{ session['server_ext'] }}/user-conn-export";
 }
 
 function export_users()
@@ -346,12 +346,12 @@ var param    = '{"id_user":' + id_user + '}' ;
 
 function add_user()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/setting-det-user/0";
+window.location.href = "{{ session['server_ext'] }}/setting-det-user/0";
 }
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
 $(".cnx_trigger").keyup( function(event) 

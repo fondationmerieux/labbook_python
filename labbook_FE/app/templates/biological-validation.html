@@ -310,7 +310,7 @@ param_list_res += value_res +' ] }';
                             {
                                 $("#dial-wait").modal("hide") ;
 
-                            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+                            window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
                             },
                             error: function(response)
                             {
@@ -368,7 +368,7 @@ function reset_res( id_rec, id_res )
             data: param_res,
             success: function(data)
                 {
-                window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+                window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
                 },
             error: function(data)
                 {
@@ -417,7 +417,7 @@ let param_res = '{ "id_owner": {{ session['user_id']}}, ' +
         data: param_res,
         success: function(data)
             {
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec_tmp ;
+            window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec_tmp ;
             },
         error: function(data)
             {
@@ -494,7 +494,7 @@ param_list_valid += ' ] }' ;
                 }
                 {% endif %}
 
-            window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+            window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
             },
             error: function(data)
             {
@@ -859,7 +859,7 @@ function return_home()
 {% if ihm['mode'] == 'G' %}
 function next_record()
 {
-    window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/biological-validation/G/{{ ihm['id_rec_next'] }}" ;
+    window.location = "{{ session['server_ext'] }}/biological-validation/G/{{ ihm['id_rec_next'] }}" ;
 }
 {% endif %}
 

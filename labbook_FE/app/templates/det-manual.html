@@ -278,7 +278,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
            upload_file(ref);
 
-           window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-manuals" ;
+           window.location = "{{ session['server_ext'] }}/list-manuals" ;
            },
        error: function(data)
            {
@@ -331,7 +331,7 @@ let input_file = $("#MANU")[0] ;
         $.ajax(
         {
             type : 'POST',
-            url : "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/upload-file/MANU/" + ref,
+            url : "{{ session['server_ext'] }}/upload-file/MANU/" + ref,
             dataType: 'json',
             contentType: false,
             processData: false,

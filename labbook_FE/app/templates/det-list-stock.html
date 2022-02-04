@@ -217,7 +217,7 @@ let param       = '{ "pru_user": ' + id_user + ', ' +
 
 function hist_use_item()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/hist-stock-product/{{args['prd_ser']|safe }}";
+window.location.href = "{{ session['server_ext'] }}/hist-stock-product/{{args['prd_ser']|safe }}";
 }
 
 /*
@@ -281,7 +281,7 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
 
 function return_back()
 {
-window.location.href = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/list-stock";
+window.location.href = "{{ session['server_ext'] }}/list-stock";
 }
 
 $(".cnx_trigger").keyup( function(event) 

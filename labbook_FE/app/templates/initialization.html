@@ -17,7 +17,7 @@
             <div class="inner">
                 <div id="logo">
                     <h1>
-                        <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/">{{ _("LabBook") }}</a>
+                        <a href="{{ session['server_ext'] }}/">{{ _("LabBook") }}</a>
                     </h1>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <footer>
-            <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/{{ session['redirect_name'] }}/contributors">{{ _("Contributeurs") }}</a></div>
+            <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/contributors">{{ _("Contributeurs") }}</a></div>
         </footer>
     </div>
   
@@ -39,7 +39,7 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 $( document ).ready( function()
 {
-setTimeout(function(){ window.location = "{{ session['server_ext'] }}/{{ session['redirect_name'] }}/"; }, 10000);
+setTimeout(function(){ window.location = "{{ session['server_ext'] }}/"; }, 10000);
 } ) ;
 </script>
 </html>
