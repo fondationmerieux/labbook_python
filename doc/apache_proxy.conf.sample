@@ -1,0 +1,16 @@
+#
+# This can be copied to /etc/httpd/conf.d/labbook.conf
+# if you want to run LabBook behind an Apache reverse proxy
+#
+# Adapt host and port depending on how you run the application container
+Define LABBOOK_PROXY_HOST localhost
+Define LABBOOK_PROXY_PORT 5000
+
+ProxyPreserveHost On
+RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+
+<Location /sigl>
+    SSLRequireSSL
+    ProxyPass http://${LABBOOK_PROXY_HOST}:${LABBOOK_PROXY_PORT}/sigl
+    ProxyPassReverse http://${LABBOOK_PROXY_HOST}:${LABBOOK_PROXY_PORT}/sigl
+</Location>

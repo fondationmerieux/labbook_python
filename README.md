@@ -45,6 +45,7 @@ Contents:
 - `LABBOOK_DEBUG`: if 1 runs gunicorn with reload option
 - `LABBOOK_TEST_OK`: backup.sh commands (com1,com2,...) to fake with OK status
 - `LABBOOK_TEST_KO`: backup.sh commands (com1,com2,...) to fake with ERROR status
+- `LABBOOK_URL_PREFIX`: set it to replace `sigl` in LabBook URLs
 
 Example:
 
@@ -174,7 +175,7 @@ Documentation provided here is exclusively technical, and in a very partial and 
 Extensive [Manuals](https://www.lab-book.org/en/resources/?type=user_manual) and [Tutorials](https://www.lab-book.org/en/resources/?type=tutorial)
 for the LabBook application can be found at the [LabBook website](https://www.lab-book.org/en/).
 
-Interactive API documentation available on the following url: YOUR_LABBOOK_URL/sigl/api
+Interactive API documentation for the LabBook backend is available at the following url: YOUR_LABBOOK_URL/sigl/api
 
 ## Changes
 
@@ -199,7 +200,23 @@ Elements for configuring:
 
 ## Database
 
-Significant tables [tables.md](doc/tables.md) (partly in French)
+Significant tables are documented in [tables.md](doc/tables.md) (partly in French)
+
+## Running LabBook behind your own web server
+
+In the production environment, when LabBook is installed on a dedicated Ubuntu system from the provided ISO,
+the application container is started with a mapping of the 80 port,
+so that all requests on http://<labbook_host> are handled by the apache server that runs inside the container.
+
+You can run LabBook behind your own web server by proxying requests from `<your_web_server>/sigl` to `http://<labbook_host>/sigl`.
+A sample configuration for Apache is available, see [this file](doc/apache_proxy.conf.sample).
+
+Notes:
+
+- even though by proxying it behind an https enabled web server, you may provide access to your LabBook server over the internet,
+THIS IS NOT SUPPORTED for security reasons.
+You should also consider your local legal constraints for hosting personal health care data and providing access to it over the internet.
+- at this time, you cannot change the default `sigl` prefix for LabBook URLs.
 
 # Contributing
 
