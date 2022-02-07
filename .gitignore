@@ -38,3 +38,6 @@ script/test/Dockerfile
 
 # used when running in development 
 devrun*/
+
+# build directory for httpd config files
+etc/httpd/build/

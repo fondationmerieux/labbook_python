@@ -53,8 +53,8 @@ RUN echo  "alias l='ls -CF'" >> /root/.bashrc
 RUN echo  "alias la='ls -A'" >> /root/.bashrc
 RUN echo  "alias ll='ls -alF'" >> /root/.bashrc
 
-COPY etc/httpd/conf/httpd.conf /etc/httpd/conf/
-COPY etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/
+COPY etc/httpd/build/conf/httpd.conf /etc/httpd/conf/
+COPY etc/httpd/build/conf.d/ssl.conf /etc/httpd/conf.d/
 
 RUN mkdir -p /home/apps/apache
 

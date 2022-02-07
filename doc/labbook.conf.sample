@@ -7,6 +7,9 @@ LABBOOK_DB_NAME=SIGL
 # for rootless containers
 LABBOOK_DB_HOST=host.containers.internal
 
+# set to replace '/sigl' prefix in URLs of development version
+LABBOOK_URL_PREFIX=
+
 # if 1 runs gunicorn with reload option
 LABBOOK_DEBUG=1
 

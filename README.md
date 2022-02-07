@@ -45,7 +45,7 @@ Contents:
 - `LABBOOK_DEBUG`: if 1 runs gunicorn with reload option
 - `LABBOOK_TEST_OK`: backup.sh commands (com1,com2,...) to fake with OK status
 - `LABBOOK_TEST_KO`: backup.sh commands (com1,com2,...) to fake with ERROR status
-- `LABBOOK_URL_PREFIX`: set it to replace `sigl` in LabBook URLs
+- `LABBOOK_URL_PREFIX`: set it to replace `sigl` in LabBook URLs in development mode
 
 Example:
 
@@ -166,7 +166,7 @@ Makefile:23: *** LABBOOK_DB_USER undefined.  Stop.
 
 Note3: `make devrun` creates the log directories ./labbook_FE/logs and ./labbook_BE/logs if necessary
 and mounts them into the container to facilitate access and to preserve logs across restarts.
-These 2 directories are ignored bu git.
+These 2 directories are ignored by git.
 
 # Documentation
 
@@ -216,7 +216,8 @@ Notes:
 - even though by proxying it behind an https enabled web server, you may provide access to your LabBook server over the internet,
 THIS IS NOT SUPPORTED for security reasons.
 You should also consider your local legal constraints for hosting personal health care data and providing access to it over the internet.
-- at this time, you cannot change the default `sigl` prefix for LabBook URLs.
+- you can change the default `/sigl` prefix for LabBook URLs with the `LABBOOK_URL_PREFIX` configuration variable.
+This works only for images built with `make devbuild`.
 
 # Contributing
 

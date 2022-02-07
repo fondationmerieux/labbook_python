@@ -3,6 +3,7 @@ IMAGE_NAME=labbook-python
 FULL_IMAGE_NAME=$(REGISTRY_NAME)/$(IMAGE_NAME)
 DOCKER_COMMAND=podman
 SAVE_DIR=/tmp
+DEFAULT_URL_PREFIX=/sigl
 SQLDUMP_FILENAME=etc/sql/demo_dump.sql
 CONFIG_DIR=$(HOME)/.config
 CONFIG_FILENAME=labbook.conf
@@ -84,6 +85,24 @@ endif
 
 TAG_NAME=v$(BUILD_VERSION)
 
+URL_PREFIX=$(DEFAULT_URL_PREFIX)
+
+ifdef LABBOOK_URL_PREFIX
+DEVBUILD_URL_PREFIX=$(LABBOOK_URL_PREFIX)
+else
+DEVBUILD_URL_PREFIX=$(DEFAULT_URL_PREFIX)
+endif
+
+$(info URL_PREFIX=$(URL_PREFIX) DEVBUILD_URL_PREFIX=$(DEVBUILD_URL_PREFIX))
+
+ifndef URL_PREFIX
+$(error URL_PREFIX undefined)
+endif
+
+ifndef DEVBUILD_URL_PREFIX
+$(error DEVBUILD_URL_PREFIX undefined)
+endif
+
 ifeq (, $(shell type podman 2> /dev/null))
 DOCKER_COMMAND=docker
 endif
@@ -107,8 +126,14 @@ help:
 	@echo '  make devrun        run the application access from http://localhost:$(DEVRUN_HTTP)/sigl'
 	@echo '  make devstop       stop the application'
 
+.PHONY: httpdconf
+httpdconf:
+	mkdir -p etc/httpd/build etc/httpd/build/conf etc/httpd/build/conf.d
+	sed -e "s:{{ url_prefix }}:$(URL_PREFIX):" etc/httpd/templates/conf/httpd.conf > etc/httpd/build/conf/httpd.conf
+	sed -e "s:{{ url_prefix }}:$(URL_PREFIX):" etc/httpd/templates/conf.d/ssl.conf > etc/httpd/build/conf.d/ssl.conf
+
 .PHONY: build
-build:
+build: httpdconf
 ifdef BUILD_VERSION
 	git checkout $(TAG_NAME)
 	$(DOCKER_COMMAND) build . -t $(FULL_IMAGE_NAME):$(BUILD_VERSION)
@@ -149,7 +174,8 @@ dbinit:
 	echo "source $(SQLDUMP_FILENAME)" | $(MYSQL_CMD) -D $(LABBOOK_DB_NAME)
 
 .PHONY: devbuild
-devbuild:
+devbuild: URL_PREFIX=$(DEVBUILD_URL_PREFIX)
+devbuild: httpdconf
 	$(DOCKER_COMMAND) build . -t $(FULL_IMAGE_NAME):latest
 
 .PHONY: devclean
