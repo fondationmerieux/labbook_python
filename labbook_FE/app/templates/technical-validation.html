@@ -253,7 +253,7 @@ param_list_valid += ' ] }' ;
         $.ajax( 
         {
             type: "POST",
-            url: "/services/result/valid/T/" + id_rec,
+            url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_list_valid,
@@ -539,7 +539,7 @@ $("#div_add_analysis").show() ;
     $.ajax( 
         {
         type: "GET",
-        url: "/services/analysis/det/" + id_ana,
+        url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
         success: function(data_ana)
             {
             let new_ana  = "<div id=\"new-analysis-" + id_ana + "\" class=\"new-analysis\">" + data_ana.nom + "<input type=\"hidden\" name=\"new-analysis[]\" value=\"" + id_ana + "\"></div>" ;

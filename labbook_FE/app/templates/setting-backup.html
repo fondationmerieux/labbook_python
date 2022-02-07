@@ -311,7 +311,7 @@ var param = '{ "start_time":"' + start_time + '", ' +
     $.ajax( 
     {
        type: "POST",
-       url: "/services/setting/script/progbackup",
+       url: "{{ session['server_ext'] }}/services/setting/script/progbackup",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
@@ -351,7 +351,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        url: "/services/setting/script/listmedia/" + type,
+        url: "{{ session['server_ext'] }}/services/setting/script/listmedia/" + type,
         success: function(data)
         {
         console.log("listmedia ret="+JSON.stringify(data)) ;
@@ -393,7 +393,7 @@ function run_keyexist()
     $.ajax( 
     {
        type: "GET",
-       url: "/services/setting/script/keyexist",
+       url: "{{ session['server_ext'] }}/services/setting/script/keyexist",
        success: function(data)
        {
        console.log("keyexist ret="+JSON.stringify(data)) ;
@@ -432,7 +432,7 @@ function initmedia(media)
     $.ajax( 
     {
         type: "POST",
-        url: "/services/setting/script/initmedia/" + media,
+        url: "{{ session['server_ext'] }}/services/setting/script/initmedia/" + media,
         success: function(data)
         {
         console.log("initmedia ret="+JSON.stringify(data)) ;
@@ -464,7 +464,7 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "/services/setting/script/genkey",
+        url: "{{ session['server_ext'] }}/services/setting/script/genkey",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -493,7 +493,7 @@ function backup(media)
         $.ajax( 
         {
             type: "POST",
-            url: "/services/setting/script/backup/" + media,
+            url: "{{ session['server_ext'] }}/services/setting/script/backup/" + media,
             success: function(data)
             {
             // POLL WS status restore
@@ -521,7 +521,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "/services/setting/script/listarchive/" + media,
+        url: "{{ session['server_ext'] }}/services/setting/script/listarchive/" + media,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -590,7 +590,7 @@ console.log("restore param=" + param) ;
             $.ajax( 
             {
                 type: "POST",
-                url: "/services/setting/script/restore",
+                url: "{{ session['server_ext'] }}/services/setting/script/restore",
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
@@ -617,7 +617,7 @@ function ScriptStatus(mode)
     $.ajax( 
     {
         type: "GET",
-        url: "/services/setting/script/status/" + mode,
+        url: "{{ session['server_ext'] }}/services/setting/script/status/" + mode,
         success: function(data)
         {
         console.log("status data="+JSON.stringify(data)) ;
@@ -759,7 +759,7 @@ function ScriptStatus(mode)
                             $.ajax( 
                             {
                                 type: "POST",
-                                url: "/services/setting/script/restart",
+                                url: "{{ session['server_ext'] }}/services/setting/script/restart",
                                 dataType: 'json',
                                 contentType: "application/json; charset=utf-8",
                                 data: param,

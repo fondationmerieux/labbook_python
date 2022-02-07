@@ -108,7 +108,7 @@ let ico      = "admin-gest-fact-" ;
 
     $.ajax( {
        type: "POST",
-       url: "/services/default/name/" + pref_name + "/val/" + val,
+       url: "{{ session['server_ext'] }}/services/default/name/" + pref_name + "/val/" + val,
        success: function(data)
            {
            console.log("SUCCESS POST change pref") ;

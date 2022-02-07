@@ -153,7 +153,7 @@ let param = '{ "login":"' + login + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/user/list",
+            url: "{{ session['server_ext'] }}/services/user/list",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

@@ -116,7 +116,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/quality/stock/product/history/{{ args['prd_ser']|safe }}" ,
+            url: "{{ session['server_ext'] }}/services/quality/stock/product/history/{{ args['prd_ser']|safe }}" ,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

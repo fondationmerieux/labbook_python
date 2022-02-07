@@ -45,7 +45,7 @@ RUN mkdir -p /home/supervisor/log \
 
 COPY supervisor/etc /home/supervisor/etc
 
-RUN ln -s /storage /var/www/html/
+RUN ln -s /storage/resource /var/www/html/
 
 RUN echo  "alias ls='ls --color=auto'" >> /root/.bashrc
 RUN echo  "alias l.='ls -d .* --color=auto'" >> /root/.bashrc

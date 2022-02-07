@@ -361,7 +361,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/user/det/" + id_user,
+       url: "{{ session['server_ext'] }}/services/user/det/" + id_user,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

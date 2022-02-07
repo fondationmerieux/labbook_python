@@ -59,7 +59,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/setting/record/number",
+       url: "{{ session['server_ext'] }}/services/setting/record/number",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

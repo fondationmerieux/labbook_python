@@ -40,6 +40,8 @@ class ReverseProxied(object):
         self.app = app
 
     def __call__(self, environ, start_response):
+        if os.environ.get('LABBOOK_DEBUG'):
+            log.info("LABBOOK_DEBUG __call__ environ=" + str(environ))
         #script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
         script_name = os.environ.get('LABBOOK_URL_PREFIX', '/sigl')
         if script_name:

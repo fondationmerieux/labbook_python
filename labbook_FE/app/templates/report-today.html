@@ -133,7 +133,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/report/today",
+            url: "{{ session['server_ext'] }}/services/report/today",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

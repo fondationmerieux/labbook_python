@@ -146,7 +146,7 @@ function check_stat_db()
     $.ajax( 
     {
         type: "GET",
-        url: "/services/db/stat/last",
+        url: "{{ session['server_ext'] }}/services/db/stat/last",
         success: function(ret)
         {
         data = ret.split(";") ;

@@ -246,7 +246,7 @@ param += tmp_value + ' ] }';
 
     $.ajax( {
         type: "POST",
-        url: "/services/dict/det/" + dict_name,
+        url: "{{ session['server_ext'] }}/services/dict/det/" + dict_name,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -259,7 +259,7 @@ param += tmp_value + ' ] }';
                     $.ajax( 
                     {
                         type: "POST",
-                        url: "/services/dict/descr/" + dict_name,
+                        url: "{{ session['server_ext'] }}/services/dict/descr/" + dict_name,
                         dataType: 'json',
                         contentType: "application/json; charset=utf-8",
                         data: param,

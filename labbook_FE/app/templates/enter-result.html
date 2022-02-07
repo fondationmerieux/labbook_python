@@ -162,7 +162,7 @@ param_list_answer += ' ] }' ;
         $.ajax( 
         {
             type: "POST",
-            url: "/services/result/list/value" ,
+            url: "{{ session['server_ext'] }}/services/result/list/value" ,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_list_answer,
@@ -246,7 +246,7 @@ param_list_valid += ' ] }' ;
         $.ajax( 
         {
             type: "POST",
-            url: "/services/result/valid/T/" + id_rec,
+            url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_list_valid,
@@ -751,7 +751,7 @@ $("#div_add_analysis").show() ;
     $.ajax( 
         {
         type: "GET",
-        url: "/services/analysis/det/" + id_ana,
+        url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
         success: function(data_ana)
             {
             let new_ana  = '<div id="new-analysis-' + id_ana + '" class="new-analysis">' + data_ana.nom + '<input type="hidden" name="new-analysis[]" value="' + id_ana + '"></div>' ;
@@ -787,7 +787,7 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         $.ajax( 
         {
             type: "POST",
-            url: "/services/pdf/report/generic",
+            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

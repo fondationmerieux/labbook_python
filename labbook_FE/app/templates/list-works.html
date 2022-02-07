@@ -188,7 +188,7 @@ let param = '{ "num_rec": "", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/record/list/0",
+            url: "{{ session['server_ext'] }}/services/record/list/0",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

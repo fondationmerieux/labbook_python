@@ -183,7 +183,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/report/billing",
+            url: "{{ session['server_ext'] }}/services/report/billing",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -278,7 +278,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
         $.ajax( 
         {
             type: "POST",
-            url: "/services/pdf/bill/list",
+            url: "{{ session['server_ext'] }}/services/pdf/bill/list",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

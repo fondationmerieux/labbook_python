@@ -133,7 +133,7 @@ param_list_answer += ' ] }' ;
     $.ajax( 
     {
         type: "POST",
-        url: "/services/result/list/value" ,
+        url: "{{ session['server_ext'] }}/services/result/list/value" ,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_answer,
@@ -205,7 +205,7 @@ param_list_valid += ' ] }' ;
     $.ajax( 
     {
         type: "POST",
-        url: "/services/result/valid/T/" + id_rec,
+        url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_valid,
@@ -605,7 +605,7 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         $.ajax( 
         {
             type: "POST",
-            url: "/services/pdf/report/generic",
+            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

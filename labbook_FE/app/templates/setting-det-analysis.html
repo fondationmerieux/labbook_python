@@ -355,7 +355,7 @@ let id_var = $(e.currentTarget).val();
     // GET details of var
     $.ajax( {
         type: "GET",
-        url: "/services/analysis/variable/det/" +  id_var,
+        url: "{{ session['server_ext'] }}/services/analysis/variable/det/" +  id_var,
         success: function(data_var)
             {
             let data_exist     = false ;
@@ -846,7 +846,7 @@ var msg = "" ;
     // Check if code is not already existing
     $.ajax( {
         type: "GET",
-        url: "/services/analysis/code/check/" + code,
+        url: "{{ session['server_ext'] }}/services/analysis/code/check/" + code,
         success: function(ret)
         {
             if ( ret > 0 && (id_ana == 0 || (id_ana > 0 && code_ori != code)) )
@@ -938,7 +938,7 @@ var msg = "" ;
 
                 $.ajax( {
                    type: "POST",
-                   url: "/services/analysis/det/" + id_ana,
+                   url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
                    dataType: 'json',
                    contentType: "application/json; charset=utf-8",
                    data: param,

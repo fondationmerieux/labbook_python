@@ -203,7 +203,7 @@ var param = '{ "id_item":' + id_item + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/quality/control/det/" + id_item,
+       url: "{{ session['server_ext'] }}/services/quality/control/det/" + id_item,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

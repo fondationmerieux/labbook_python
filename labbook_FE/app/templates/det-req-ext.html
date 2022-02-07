@@ -453,7 +453,7 @@ let data_exist = false ;
         // GET det analysis
         $.ajax( {
             type: "GET",
-            url: "/services/analysis/det/" + id_item,
+            url: "{{ session['server_ext'] }}/services/analysis/det/" + id_item,
             success: function(data_ana)
                 {
                 let tmp_struct_ana = JSON.parse(JSON.stringify(struct_ana)) ; // copy structure
@@ -482,7 +482,7 @@ let data_exist = false ;
                             // GET det sample
                             $.ajax( {
                                 type: "GET",
-                                url: "/services/analysis/det/" +  data_ana.produit_biologique,
+                                url: "{{ session['server_ext'] }}/services/analysis/det/" +  data_ana.produit_biologique,
                                 success: function(data_samp)
                                     {
                                     let tmp_struct_samp = JSON.parse(JSON.stringify(struct_samp)) ;
@@ -524,7 +524,7 @@ let data_exist = false ;
                             // GET type product
                             $.ajax( {
                                 type: "GET",
-                                url: "/services/analysis/type/product/" +  id_type_prod,
+                                url: "{{ session['server_ext'] }}/services/analysis/type/product/" +  id_type_prod,
                                 success: function(data_prod)
                                     {
                                     let tmp_struct_prod = JSON.parse(JSON.stringify(struct_prod)) ;

@@ -121,7 +121,7 @@ let param = '{ "name":"' + name + '", ' +
     {
         $.ajax( {
            type: "POST",
-           url: "/services/dict/list" ,
+           url: "{{ session['server_ext'] }}/services/dict/list" ,
            dataType: 'json',
            contentType: "application/json; charset=utf-8",
            data: param,

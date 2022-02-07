@@ -199,7 +199,7 @@ let param       = '{ "pru_user": ' + id_user + ', ' +
     $.ajax( 
     {
         type: "POST",
-        url: "/services/quality/stock/use",
+        url: "{{ session['server_ext'] }}/services/quality/stock/use",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,

@@ -209,7 +209,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/product/det/" + id_prod,
+       url: "{{ session['server_ext'] }}/services/product/det/" + id_prod,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

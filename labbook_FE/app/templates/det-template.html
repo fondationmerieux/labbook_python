@@ -114,7 +114,7 @@ var param = '{ "id_item":' + id_tpl + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/setting/template/det/" + id_tpl,
+       url: "{{ session['server_ext'] }}/services/setting/template/det/" + id_tpl,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

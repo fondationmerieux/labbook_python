@@ -208,7 +208,7 @@ param += tmp_value + ' ] }';
 
     $.ajax( {
        type: "POST",
-       url: "/services/setting/age/interval",
+       url: "{{ session['server_ext'] }}/services/setting/age/interval",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

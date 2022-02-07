@@ -67,7 +67,7 @@ var pwd2     = $("#renew-pwd").val() ;
 
         $.ajax( {
            type: "POST",
-           url: "/services/user/password",
+           url: "{{ session['server_ext'] }}/services/user/password",
            dataType: 'json',
            contentType: "application/json; charset=utf-8",
            data: param,

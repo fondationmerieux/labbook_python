@@ -144,7 +144,7 @@ let param = '{ "name":"' + name + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/analysis/list",
+            url: "{{ session['server_ext'] }}/services/analysis/list",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

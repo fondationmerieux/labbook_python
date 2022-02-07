@@ -326,7 +326,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
         $.ajax( 
         {
             type: "POST",
-            url: "/services/patient/det/" + id_pat,
+            url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -446,7 +446,7 @@ let id_item = $(e.currentTarget).val();
     $.ajax( 
         {
         type: "GET",
-        url: "/services/setting/zipcity/det/" + id_item,
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/det/" + id_item,
         success: function(data_zipcity)
             {
             $("#cp").val(data_zipcity.zic_zip) ;

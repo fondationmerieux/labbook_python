@@ -176,7 +176,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/doctor/det/" + id_doctor,
+       url: "{{ session['server_ext'] }}/services/doctor/det/" + id_doctor,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,

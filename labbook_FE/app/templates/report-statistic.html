@@ -100,7 +100,7 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/report/stat",
+            url: "{{ session['server_ext'] }}/services/report/stat",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -392,7 +392,7 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
         $.ajax( 
         {
             type: "POST",
-            url: "/services/pdf/report/generic",
+            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

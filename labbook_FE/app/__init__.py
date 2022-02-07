@@ -75,10 +75,6 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
-# app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
-
-# DEBUG TEST 03/02/2022
-#app.config["APPLICATION_ROOT"] = '/' + app.config.get('REDIRECT_NAME')
 
 babel = Babel(app)
 
@@ -190,7 +186,7 @@ def get_init_var():
 
     session['server_ext'] = root
     session.modified = True
-    
+
     # init internal server
     if not session or 'server_int' not in session or session['server_int'] != ('http://' + app.config.get('SERVER_INT')):
         session['server_int'] = 'http://' + app.config.get('SERVER_INT')
@@ -405,7 +401,7 @@ def lang(lang='fr_FR'):
     session['lang_chosen'] = True
     session.modified = True
 
-    return redirect('/' + session['current_page'])
+    return redirect(session['redirect_name'] + '/' + session['current_page'])
 
 
 @app.route("/disconnect")
@@ -681,8 +677,6 @@ def setting_det_user(user_id=0):
             log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
 
     json_data['user_id'] = user_id
-
-    log.error(Logs.fileline() + ' : DEBUG args=' + str(json_data))
 
     return render_template('setting-det-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -1964,101 +1958,6 @@ def det_req_ext(entry='Y', ref=0):
         json_data['data_products'] = []
         json_data['record']        = []
 
-    # 22/09/2021 USELESS because no more validation step page
-    """
-    else:
-        # ref = id_rec
-        # Load save record
-        try:
-            url = session['server_int'] + '/services/record/det/' + str(ref)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['record'] = req.json()
-
-                # Load data patient with id_patient
-                if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
-                    try:
-                        url = session['server_int'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
-                        req = requests.get(url)
-
-                        if req.status_code == 200:
-                            json_data['patient'] = req.json()
-
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
-
-                # Load data patient with id_patient
-                if json_data['record']['med_prescripteur'] and json_data['record']['med_prescripteur'] > 0:
-                    try:
-                        url = session['server_int'] + '/services/doctor/det/' + str(json_data['record']['med_prescripteur'])
-                        req = requests.get(url)
-
-                        if req.status_code == 200:
-                            json_data['doctor'] = req.json()
-
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)
-
-        # Load list analysis requested
-        try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/Y'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_analysis'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
-
-        # Load list samples requested
-        try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/N'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_samples'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
-
-        # Load list products requested
-        try:
-            url = session['server_int'] + '/services/product/list/req/' + str(ref)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_products'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests list prod failed, err=%s , url=%s', err, url)
-
-        # Load prix_acte
-        try:
-            url = session['server_int'] + '/services/default/val/prix_acte'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_ihm['act_price'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests prix_acte failed, err=%s , url=%s', err, url)
-
-        # Load yes or no
-        try:
-            url = session['server_int'] + '/services/dict/det/yorn'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_ihm['yorn'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
-    """
-
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
@@ -2165,101 +2064,6 @@ def det_req_int(entry='Y', ref=0):
         json_data['data_samples']  = []
         json_data['data_products'] = []
         json_data['record']        = []
-
-    # 22/09/2021 USELESS because no more validation step page
-    """
-    else:
-        # here : ref = id_rec
-        # Load save record
-        try:
-            url = session['server_int'] + '/services/record/det/' + str(ref)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['record'] = req.json()
-
-                # Load data patient with id_patient
-                if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
-                    try:
-                        url = session['server_int'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
-                        req = requests.get(url)
-
-                        if req.status_code == 200:
-                            json_data['patient'] = req.json()
-
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
-
-                # Load data patient with id_patient
-                if json_data['record']['med_prescripteur'] and json_data['record']['med_prescripteur'] > 0:
-                    try:
-                        url = session['server_int'] + '/services/doctor/det/' + str(json_data['record']['med_prescripteur'])
-                        req = requests.get(url)
-
-                        if req.status_code == 200:
-                            json_data['doctor'] = req.json()
-
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)
-
-        # Load list analysis requested
-        try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/Y'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_analysis'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
-
-        # Load list samples requested
-        try:
-            url = session['server_int'] + '/services/analysis/list/req/' + str(ref) + '/type/N'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_samples'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
-
-        # Load list products requested
-        try:
-            url = session['server_int'] + '/services/product/list/req/' + str(ref)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_products'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests list prod failed, err=%s , url=%s', err, url)
-
-        # Load prix_acte
-        try:
-            url = session['server_int'] + '/services/default/val/prix_acte'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_ihm['act_price'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests prix_acte failed, err=%s , url=%s', err, url)
-
-        # Load yes or no
-        try:
-            url = session['server_int'] + '/services/dict/det/yorn'
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_ihm['yorn'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
-    """
 
     return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 

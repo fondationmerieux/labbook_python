@@ -705,7 +705,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "/services/patient/det/" + id_pat1,
+       url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat1,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
@@ -784,7 +784,7 @@ id_pat1 = $(e.currentTarget).val();
     $.ajax( 
     {
         type: "GET",
-        url: "/services/patient/det/" + id_pat1,
+        url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat1,
         success: function(data_pat1)
             {
             load_data_pat(data_pat1, 1) ;
@@ -807,7 +807,7 @@ id_pat2 = $(e.currentTarget).val();
     $.ajax( 
     {
         type: "GET",
-        url: "/services/patient/det/" + id_pat2,
+        url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat2,
         success: function(data_pat2)
             {
             load_data_pat(data_pat2, 2) ;
@@ -900,7 +900,7 @@ function save_request()
             $.ajax( 
             {
             type: "POST",
-            url: "/services/patient/combine/" + id_pat1 + "/" + id_pat2,
+            url: "{{ session['server_ext'] }}/services/patient/combine/" + id_pat1 + "/" + id_pat2,
             success: function(data_pat2)
                 {
                     $("#dial-wait").modal("hide") ;
@@ -961,7 +961,7 @@ let id_item = $(e.currentTarget).val();
     $.ajax( 
         {
         type: "GET",
-        url: "/services/setting/zipcity/det/" + id_item,
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/det/" + id_item,
         success: function(data_zipcity)
             {
             $("#cp_1").val(data_zipcity.zic_zip) ;

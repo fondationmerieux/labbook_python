@@ -216,7 +216,7 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
     {
         $.ajax( {
             type: "POST",
-            url: "/services/record/list/" + {{ ihm['id_pres']|safe}},
+            url: "{{ session['server_ext'] }}/services/record/list/" + {{ ihm['id_pres']|safe}},
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,

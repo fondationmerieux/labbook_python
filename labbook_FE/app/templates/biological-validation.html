@@ -362,7 +362,7 @@ function reset_res( id_rec, id_res )
         $.ajax( 
         {
             type: "POST",
-            url: "/services/result/reset/" + id_rec,
+            url: "{{ session['server_ext'] }}/services/result/reset/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_res,
@@ -411,7 +411,7 @@ let param_res = '{ "id_owner": {{ session['user_id']}}, ' +
     $.ajax( 
     {
         type: "POST",
-        url: "/services/result/cancel/" + id_rec_tmp,
+        url: "{{ session['server_ext'] }}/services/result/cancel/" + id_rec_tmp,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_res,
@@ -466,7 +466,7 @@ param_list_valid += ' ] }' ;
         $.ajax( 
         {
             type: "POST",
-            url: "/services/result/valid/B/" + id_rec,
+            url: "{{ session['server_ext'] }}/services/result/valid/B/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_list_valid,
@@ -749,7 +749,7 @@ $("#div_add_analysis").show() ;
     $.ajax( 
         {
         type: "GET",
-        url: "/services/analysis/det/" + id_ana,
+        url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
         success: function(data_ana)
             {
             let new_ana  = '<div id="new-analysis-' + id_ana + '" class="new-analysis">' + data_ana.nom + '<input type="hidden" name="new-analysis[]" value="' + id_ana + '"></div>' ;
