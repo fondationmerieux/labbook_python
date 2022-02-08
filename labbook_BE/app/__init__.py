@@ -89,7 +89,7 @@ if config_envvar in os.environ:
 
     # check if LABBOOK_USER already exist in os.environ if not use one from Constants
     if 'LABBOOK_USER' in os.environ and os.environ['LABBOOK_USER']:
-        log.info(Logs.fileline() + ' : LABBOOK_USER from environ')
+        log.info(Logs.fileline() + ' : LABBOOK_USER from environ : ' + str(os.environ['LABBOOK_USER']))
     else:
         os.environ['LABBOOK_USER'] = Constants.cst_script_user
 
@@ -121,7 +121,6 @@ if config_envvar in os.environ:
     else:
         os.environ['LABBOOK_DB_HOST'] = app.config['DB_HOST']
 
-    log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_USER=' + str(os.environ['LABBOOK_DB_USER']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_HOST=' + str(os.environ['LABBOOK_DB_HOST']))
     log.info(Logs.fileline() + ' : LABBOOK_DB_NAME=' + str(os.environ['LABBOOK_DB_NAME']))

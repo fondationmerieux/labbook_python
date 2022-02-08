@@ -202,6 +202,10 @@ Elements for configuring:
 
 Significant tables are documented in [tables.md](doc/tables.md) (partly in French)
 
+## Imports
+
+List of detailed import schemes are documented in [import.md](doc/import.md)
+
 ## Running LabBook behind your own web server
 
 In the production environment, when LabBook is installed on a dedicated Ubuntu system from the provided ISO,
