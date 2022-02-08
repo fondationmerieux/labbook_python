@@ -658,7 +658,7 @@ class ZipCityAdd(Resource):
             l_rows = list(csv_reader)
 
         if not l_rows or len(l_rows) < 2:
-            self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR file empty')
+            self.log.error(Logs.fileline() + ' : TRACE ZipCityAdd ERROR file empty')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # remove headers line
@@ -666,11 +666,11 @@ class ZipCityAdd(Resource):
 
         for l in l_rows:
             if l:
-                city_name = l[0]
-                zip_code  = l[1]
+                zip_code  = str(l[0])
+                city_name = str(l[1])
 
                 # insert into sigl_pj_group
-                ret = Setting.insertZipCity(zic_zip=str(zip_code), zic_city=city_name)
+                ret = Setting.insertZipCity(zic_zip=zip_code, zic_city=city_name)
 
                 if ret <= 0:
                     self.log.error(Logs.alert() + ' : ZipCityAdd ERROR insert')

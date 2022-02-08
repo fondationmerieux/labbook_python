@@ -425,8 +425,6 @@ components:
           type: integer
         rpps:
           type: string
-        otp_phone_number:
-          type: string
         intiale:
           type: string
         ddn:

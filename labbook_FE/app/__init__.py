@@ -4408,9 +4408,9 @@ def delete_file(type='', filename=''):
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
-@app.route('/labbook.css')
+@app.route('/app-labbook.css')
 def labbook_css():
-    return Response(render_template('labbook.css'), mimetype='text/css')
+    return Response(render_template('app-labbook.css'), mimetype='text/css')
 
 
 # if __name__ == "__main__":

@@ -490,9 +490,9 @@ class UserExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['firstname', 'lastname', 'username', 'password', 'titre', 'email', 'status', 'cps_id', 'locale',
-                   'rpps', 'otp_phone_number', 'initiale', 'ddn', 'position', 'adresse', 'tel', 'darrive', 'cv',
-                   'diplome', 'formation', 'deval', 'section', 'commentaire', 'side_account', 'id_role', 'version']]
+        l_data = [['firstname', 'lastname', 'username', 'password', 'title', 'email', 'status', 'locale',
+                   'cps_id', 'rpps', 'phone', 'initial', 'birth', 'address', 'position', 'cv', 'diploma',
+                   'formation', 'darrived', 'deval', 'section', 'comment', 'side_account', 'role', 'version']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : UserExport ERROR args missing')
@@ -539,13 +539,13 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                if d['cps_id']:
-                    data.append(d['cps_id'])
+                if d['locale']:
+                    data.append(d['locale'])
                 else:
                     data.append('')
 
-                if d['locale']:
-                    data.append(d['locale'])
+                if d['cps_id']:
+                    data.append(d['cps_id'])
                 else:
                     data.append('')
 
@@ -554,8 +554,8 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                if d['otp_phone_number']:
-                    data.append(d['otp_phone_number'])
+                if d['tel']:
+                    data.append(d['tel'])
                 else:
                     data.append('')
 
@@ -569,23 +569,13 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                if d['position']:
-                    data.append(d['position'])
-                else:
-                    data.append('')
-
                 if d['adresse']:
                     data.append(d['adresse'])
                 else:
                     data.append('')
 
-                if d['tel']:
-                    data.append(d['tel'])
-                else:
-                    data.append('')
-
-                if d['darrive']:
-                    data.append(d['darrive'])
+                if d['position']:
+                    data.append(d['position'])
                 else:
                     data.append('')
 
@@ -601,6 +591,11 @@ class UserExport(Resource):
 
                 if d['formation']:
                     data.append(d['formation'])
+                else:
+                    data.append('')
+
+                if d['darrive']:
+                    data.append(d['darrive'])
                 else:
                     data.append('')
 
@@ -686,12 +681,12 @@ class UserImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][25] != 'v1' and l_rows[0][25] != 'v2':
+        if l_rows[0][24] != 'v2':
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check number of column (dont forget version columns)
-        if len(l_rows[0]) != 26:
+        if len(l_rows[0]) != 25:
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong number of column')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
@@ -701,49 +696,53 @@ class UserImport(Resource):
                 lastname     = l[1]
                 username     = l[2]
                 password     = l[3]
-                titre        = l[4]
+                title        = l[4]
                 email        = l[5]
                 status       = l[6]
-                cps_id       = l[7]
-                locale       = l[8]
+                locale       = l[7]
+                cps_id       = l[8]
                 rpps         = l[9]
                 phone        = l[10]
-                initiale     = l[11]
-                ddn          = l[12]
-                position     = l[13]
-                adresse      = l[14]
-                tel          = l[15]
-                darrive      = l[16]
-                cv           = l[17]
-                diplome      = l[18]
-                formation    = l[19]
-                deval        = l[20]
-                section      = l[21]
-                commentaire  = l[22]
-                side_account = l[23]
-                role_type    = l[24]
+                initial      = l[11]
+                birth        = l[12]
+                address      = l[13]
+                position     = l[14]
+                cv           = l[15]
+                diploma      = l[16]
+                formation    = l[17]
+                darrived     = l[18]
+                deval        = l[19]
+                section      = l[20]
+                comment      = l[21]
+                side_account = l[22]
+                role_type    = l[23]
 
-                if l_rows[0][25] == 'v1':
-                    if role_type == 1:
-                        role_type = 'A'
-                    elif role_type == 2:
-                        role_type = 'B'
-                    elif role_type == 3:
-                        role_type = 'T'
-                    elif role_type == 4:
-                        role_type = 'S'
-                    elif role_type == 5:
-                        role_type = 'TA'
-                    elif role_type == 6:
-                        role_type = 'TQ'
-                    elif role_type == 7:
-                        role_type = 'SA'
-                    elif role_type == 8:
-                        role_type = 'Q'
-                    elif role_type == 9:
-                        role_type = 'P'
-                    else:
-                        role_type = 'X'
+                # status convert
+                if status and status == 'A':
+                    status = 29
+                else:
+                    status = 30
+
+                # locale convert
+                if locale:
+                    if locale == 'FR':
+                        locale = 35
+                    elif locale == 'UK':
+                        locale = 34
+                    elif locale == 'US':
+                        locale = 75
+                    elif locale == 'AR':
+                        locale = 118
+                    elif locale == 'KM':
+                        locale = 1113
+                    elif locale == 'LO':
+                        locale = 1215
+                    elif locale == 'MG':
+                        locale = 137
+                    elif locale == 'PT':
+                        locale = 1620
+                else:
+                    locale = 35
 
                 # Check if user exist (same username, lastname and firstname)
                 # if EXIST => UPDATE (all except password)
@@ -751,25 +750,24 @@ class UserImport(Resource):
                     ret = User.UpdateUserByImport(firstname=firstname,
                                                   lastname=lastname,
                                                   username=username,
-                                                  titre=titre,
+                                                  titre=title,
                                                   email=email,
                                                   status=status,
-                                                  cps_id=cps_id,
                                                   locale=locale,
+                                                  cps_id=cps_id,
                                                   rpps=rpps,
                                                   phone=phone,
-                                                  initiale=initiale,
-                                                  ddn=ddn,
+                                                  initiale=initial,
+                                                  ddn=birth,
+                                                  adresse=address,
                                                   position=position,
-                                                  adresse=adresse,
-                                                  tel=tel,
-                                                  darrive=darrive,
                                                   cv=cv,
-                                                  diplome=diplome,
+                                                  diplome=diploma,
                                                   formation=formation,
+                                                  darrive=darrived,
                                                   deval=deval,
                                                   section=section,
-                                                  commentaire=commentaire)
+                                                  commentaire=comment)
 
                     if not ret:
                         self.log.error(Logs.alert() + ' : UserImport ERROR update user username=' + str(username))
@@ -780,29 +778,29 @@ class UserImport(Resource):
                     # insert in sigl_user_data
                     ret = User.insertUser(id_owner=id_user,
                                           role_type=role_type,
-                                          username=username,
-                                          password=password,
-                                          cps_id=cps_id,
-                                          rpps=rpps,
-                                          status=status,
                                           firstname=firstname,
                                           lastname=lastname,
-                                          locale=locale,
+                                          username=username,
+                                          password=password,
+                                          titre=title,
                                           email=email,
-                                          titre=titre,
-                                          initiale=initiale,
-                                          ddn=ddn,
-                                          adresse=adresse,
-                                          tel=phone,
-                                          darrive=darrive,
+                                          status=status,
+                                          locale=locale,
+                                          cps_id=cps_id,
+                                          rpps=rpps,
+                                          phone=phone,
+                                          initiale=initial,
+                                          ddn=birth,
+                                          adresse=address,
                                           position=position,
                                           cv=cv,
-                                          diplome=diplome,
+                                          diplome=diploma,
                                           formation=formation,
-                                          section=section,
+                                          darrive=darrived,
                                           deval=deval,
+                                          section=section,
                                           side_account=side_account,
-                                          commentaire=commentaire)
+                                          commentaire=comment)
 
                     if ret <= 0:
                         self.log.error(Logs.alert() + ' : UserImport ERROR insert user')

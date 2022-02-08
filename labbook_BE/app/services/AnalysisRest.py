@@ -663,11 +663,12 @@ class AnalysisExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'cote_unite', 'cote_valeur',
-                   'commentaire', 'produit_biologique', 'type_prel', 'type_analyse', 'actif', 'ana_whonet', 'id_link',
-                   'id_refanalyse', 'id_refvariable', 'position', 'num_var', 'obligatoire', 'id_var', 'libelle',
-                   'description', 'unite', 'normal_min', 'normal_max', 'var_comm', 'type_resultat', 'unite2',
-                   'formule_unite2', 'formule', 'accuracy', 'precision2', 'version', 'code_var', 'var_whonet']]
+        l_data = [['id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
+                     'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
+                     'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
+                     'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
+                     'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
+                     'version']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -745,12 +746,18 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['actif']:
-                    data.append(d['actif'])
+                    if d['actif'] == 4:
+                        data.append('Y')
+                    else:
+                        data.append('N')
                 else:
                     data.append('')
 
                 if d['ana_whonet']:
-                    data.append(d['ana_whonet'])
+                    if d['ana_whonet'] == 4:
+                        data.append('Y')
+                    else:
+                        data.append('N')
                 else:
                     data.append('')
 
@@ -781,7 +788,10 @@ class AnalysisExport(Resource):
                     data.append('')
 
                 if d['obligatoire']:
-                    data.append(d['obligatoire'])
+                    if d['obligatoire'] == 4:
+                        data.append('Y')
+                    else:
+                        data.append('N')
                 else:
                     data.append('')
 
@@ -853,17 +863,20 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
-                data.append('v1')
-
                 if d['code_var']:
                     data.append(d['code_var'])
                 else:
                     data.append('')
 
                 if d['var_whonet']:
-                    data.append(d['var_whonet'])
+                    if d['var_whonet'] == 4:
+                        data.append('Y')
+                    else:
+                        data.append('N')
                 else:
                     data.append('')
+
+                data.append('v2')
 
                 l_data.append(data)
 
@@ -923,17 +936,18 @@ class AnalysisImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][34] != 'v1':
+        if l_rows[0][35] != 'v2':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check name of column
-        head_list = ['id_data', 'id_owner', 'code', 'nom', 'abbr', 'famille', 'cote_unite', 'cote_valeur',
-                     'commentaire', 'produit_biologique', 'type_prel', 'type_analyse', 'actif', 'ana_whonet', 'id_link',
-                     'id_refanalyse', 'id_refvariable', 'position', 'num_var', 'obligatoire', 'id_var', 'libelle',
-                     'description', 'unite', 'normal_min', 'normal_max', 'var_comm', 'type_resultat', 'unite2',
-                     'formule_unite2', 'formule', 'accuracy', 'precision2', 'version', 'code_var', 'var_whonet']
+        head_list = ['id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
+                     'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
+                     'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
+                     'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
+                     'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
+                     'version']
 
         i = 0
         for head in head_line:
@@ -957,38 +971,37 @@ class AnalysisImport(Resource):
                     nom                = l[3]
                     abbr               = l[4]
                     famille            = l[5]
-                    cote_unite         = l[7]
-                    cote_valeur        = float(l[8])
-                    commentaire        = l[9]
-                    produit_biologique = l[10]
-                    type_prel          = l[11]
-                    # type_analyse       = l[12]  # useless
-                    actif              = l[13]
-                    ana_whonet         = l[14]
+                    cote_unite         = l[6]
+                    cote_valeur        = float(l[7])
+                    commentaire        = l[8]
+                    produit_biologique = l[9]
+                    type_prel          = l[10]
+                    # type_analyse       = l[11]  # useless
+                    actif              = l[12]
+                    ana_whonet         = l[13]
 
-                    id_link            = l[15]
-                    # id_refanalyse      = l[16]
-                    id_refvariable     = l[17]
-                    position           = l[18]
-                    num_var            = l[19]
-                    obligatoire        = l[20]
+                    id_link            = l[14]
+                    # id_refanalyse      = l[15]
+                    id_refvariable     = l[16]
+                    position           = l[17]
+                    num_var            = l[18]
+                    obligatoire        = l[19]
 
-                    id_var             = l[21]
-                    libelle            = l[22]
-                    description        = l[23]
-                    unite              = l[24]
-                    normal_min         = l[25]
-                    normal_max         = l[26]
-                    var_comm           = l[27]
-                    type_resultat      = l[28]
-                    unite2             = l[29]
-                    formule_unite2     = l[30]
-                    formule            = l[31]
-                    accuracy           = l[32]
-                    precision2         = l[33]
-
-                    code_var           = l[35]
-                    var_whonet         = l[36]
+                    id_var             = l[20]
+                    libelle            = l[21]
+                    description        = l[22]
+                    unite              = l[23]
+                    normal_min         = l[24]
+                    normal_max         = l[25]
+                    var_comm           = l[26]
+                    type_resultat      = l[27]
+                    unite2             = l[28]
+                    formule_unite2     = l[29]
+                    formule            = l[30]
+                    accuracy           = l[31]
+                    precision2         = l[32]
+                    code_var           = l[33]
+                    var_whonet         = l[34]
 
                     ret = Analysis.exist(code)
 
@@ -1081,38 +1094,37 @@ class AnalysisImport(Resource):
                     nom                = l[3]
                     abbr               = l[4]
                     famille            = l[5]
-                    cote_unite         = l[7]
-                    cote_valeur        = float(l[8])
-                    commentaire        = l[9]
-                    produit_biologique = l[10]
-                    type_prel          = l[11]
-                    # type_analyse       = l[12]  # useless
-                    actif              = l[13]
-                    ana_whonet         = l[14]
+                    cote_unite         = l[6]
+                    cote_valeur        = float(l[7])
+                    commentaire        = l[8]
+                    produit_biologique = l[9]
+                    type_prel          = l[10]
+                    # type_analyse       = l[11]  # useless
+                    actif              = l[12]
+                    ana_whonet         = l[13]
 
-                    id_link            = l[15]
-                    # id_refanalyse      = l[16]
-                    id_refvariable     = l[17]
-                    position           = l[18]
-                    num_var            = l[19]
-                    obligatoire        = l[20]
+                    id_link            = l[14]
+                    # id_refanalyse      = l[15]
+                    id_refvariable     = l[16]
+                    position           = l[17]
+                    num_var            = l[18]
+                    obligatoire        = l[19]
 
-                    id_var             = l[21]
-                    libelle            = l[22]
-                    description        = l[23]
-                    unite              = l[24]
-                    normal_min         = l[25]
-                    normal_max         = l[26]
-                    var_comm           = l[27]
-                    type_resultat      = l[28]
-                    unite2             = l[29]
-                    formule_unite2     = l[30]
-                    formule            = l[31]
-                    accuracy           = l[32]
-                    precision2         = l[33]
-
-                    code_var           = l[35]
-                    var_whonet         = l[36]
+                    id_var             = l[20]
+                    libelle            = l[21]
+                    description        = l[22]
+                    unite              = l[23]
+                    normal_min         = l[24]
+                    normal_max         = l[25]
+                    var_comm           = l[26]
+                    type_resultat      = l[27]
+                    unite2             = l[28]
+                    formule_unite2     = l[29]
+                    formule            = l[30]
+                    accuracy           = l[31]
+                    precision2         = l[32]
+                    code_var           = l[33]
+                    var_whonet         = l[34]
 
                     ret = Analysis.exist(code)
 

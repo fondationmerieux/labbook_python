@@ -64,7 +64,7 @@ class User:
 
         req = ('select user.id_data, user.username, user.side_account, user.password, user.role_type, '
                'user.firstname, user.lastname, user.expire_date, user.cps_id, user.status, '
-               'user.email, user.oauth_provider_id_user, user.locale, user.rpps, user.otp_phone_number '
+               'user.email, user.oauth_provider_id_user, user.locale, user.rpps, user.tel as phone '
                'from sigl_user_data as user '
                'inner join sigl_pj_role AS role ON role.type = user.role_type '
                'where user.status=29 and user.username=%s')  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
@@ -140,8 +140,8 @@ class User:
 
             cursor.execute('update sigl_user_data '
                            'set cps_id=%(cps_id)s, rpps=%(rpps)s, status=%(status)s, locale=%(locale)s, email=%(email)s, '
-                           'titre=%(titre)s, initiale=%(initiale)s, ddn=%(ddn)s, adresse=%(adresse)s, tel=%(tel)s, '
-                           'darrive=%(darrive)s, position=%(position)s, cv=%(cv)s, diplome=%(diplome)s, otp_phone_number=%(phone)s,'
+                           'titre=%(titre)s, initiale=%(initiale)s, ddn=%(ddn)s, adresse=%(adresse)s, tel=%(phone)s, '
+                           'darrive=%(darrive)s, position=%(position)s, cv=%(cv)s, diplome=%(diplome)s, '
                            'formation=%(formation)s, section=%(section)s, deval=%(deval)s, commentaire=%(commentaire)s '
                            'where username=%(username)s and firstname=%(firstname)s and lastname=%(lastname)s', params)
 
@@ -157,7 +157,7 @@ class User:
         cursor = DB.cursor()
 
         req = ('select u.side_account, u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
-               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.otp_phone_number '
+               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.tel as phone '
                'from sigl_user_data as u '
                'where u.status != "31" and u.role_type=%s')  # 31 correspond à l'utilisateur "supprimé"
 
@@ -179,9 +179,9 @@ class User:
     def getUserExport():
         cursor = DB.cursor()
 
-        req = ('select u.firstname, u.lastname, u.username, u.password, u.titre, u.email, u.status, u.cps_id, u.locale, '
-               'u.rpps, u.otp_phone_number, u.initiale, date_format(u.ddn, %s) as ddn, u.position, u.adresse, u.tel, '
-               'date_format(u.darrive, %s) as darrive, u.cv, u.diplome, u.formation, date_format(u.deval, %s) as deval, '
+        req = ('select u.firstname, u.lastname, u.username, u.password, u.titre, u.email, u.status, u.locale, '
+               'u.cps_id, u.rpps, u.tel, u.initiale, date_format(u.ddn, %s) as ddn, u.adresse, u.position, '
+               'u.cv, u.diplome, u.formation, date_format(u.darrive, %s) as darrive, date_format(u.deval, %s) as deval, '
                'u.section, u.commentaire, u.side_account, u.role_type '
                'from sigl_user_data as u '
                'where u.username != "root" '
