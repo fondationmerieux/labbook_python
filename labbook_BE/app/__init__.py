@@ -85,7 +85,6 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_KEY_DIR=' + str(os.environ['LABBOOK_KEY_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_STATUS_DIR=' + str(os.environ['LABBOOK_STATUS_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_LOG_DIR=' + str(os.environ['LABBOOK_LOG_DIR']))
-    log.info(Logs.fileline() + ' : LABBOOK_USER=' + str(os.environ['LABBOOK_USER']))
 
     # check if LABBOOK_USER already exist in os.environ if not use one from Constants
     if 'LABBOOK_USER' in os.environ and os.environ['LABBOOK_USER']:
