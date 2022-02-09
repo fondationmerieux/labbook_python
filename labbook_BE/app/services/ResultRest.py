@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
+import gettext
 
-from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -101,10 +101,7 @@ class ResultList(Resource):
                     result['validation'][key] = _(result['validation'][key].strip())
 
             # Get identity from user who validated this result
-            result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
-
-            if not result['user']:
-                result['user'] = User.getUserDetails(result['validation']['utilisateur'])
+            result['user'] = User.getUserDetails(result['validation']['utilisateur'])
 
             if result['user']:
                 # Replace None by empty string
@@ -201,10 +198,7 @@ class ResultRecord(Resource):
                     result['validation'][key] = _(result['validation'][key].strip())
 
             # Get identity from user who validated this result
-            result['user'] = User.getUserByIdGroup(result['validation']['utilisateur'])
-
-            if not result['user']:
-                result['user'] = User.getUserDetails(result['validation']['utilisateur'])
+            result['user'] = User.getUserDetails(result['validation']['utilisateur'])
 
             if result['user']:
                 # Replace None by empty string

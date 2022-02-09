@@ -1,7 +1,6 @@
 import logging
-# import hashlib
+import gettext
 
-from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -59,6 +58,8 @@ class DefaultValue(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, name):
+        Various.needTranslationDB()
+
         val = Various.getDefaultValue(name)
 
         if not val:
@@ -108,6 +109,13 @@ class NationalityList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : ERROR NationalityList not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for item in l_items:
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+                if key == 'nat_code':
+                    item[key] = item[key].upper()
 
         self.log.info(Logs.fileline() + ' : TRACE NationalityList')
         return compose_ret(l_items, Constants.cst_content_type_json)

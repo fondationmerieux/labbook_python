@@ -170,7 +170,7 @@
                                     <select name="nationality_1" id="nationality_1" class="form-control">
                                         <option value="0" id="nationality-0_1" {% if not args or args['pat_nat'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
                                         {% for nationality in ihm['nationality'] %}
-                                        <option value="{{ nationality['nat_ser'] }}" id="nationality-{{ nationality['nat_ser'] }}_1" {% if args['pat_nat'] == nationality['nat_ser'] %} selected {% endif %}>{{ nationality['nat_name'] }}</option>
+                                        <option value="{{ nationality['nat_ser'] }}" id="nationality-{{ nationality['nat_ser'] }}_1" {% if args['pat_nat'] == nationality['nat_ser'] %} selected {% endif %}>{{ nationality['nat_code'] }}</option>
                                         {% endfor %}
                                     </select>
                                     <label class="col-form-label text-right mx-3">{{ _("Résident") }}</label>
@@ -418,7 +418,7 @@
                                     <select name="nationality_2" id="nationality_2" class="form-control">
                                         <option value="0" id="nationality-0_2" {% if not args or args['pat_nat'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
                                         {% for nationality in ihm['nationality'] %}
-                                        <option value="{{ nationality['nat_ser'] }}" id="nationality-{{ nationality['nat_ser'] }}_2" {% if args['pat_nat'] == nationality['nat_ser'] %} selected {% endif %}>{{ nationality['nat_name'] }}</option>
+                                        <option value="{{ nationality['nat_ser'] }}" id="nationality-{{ nationality['nat_ser'] }}_2" {% if args['pat_nat'] == nationality['nat_ser'] %} selected {% endif %}>{{ nationality['nat_code'] }}</option>
                                         {% endfor %}
                                     </select>
                                     <label class="col-form-label text-right mx-3">{{ _("Résident") }}</label>

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
+import gettext
 
-from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -1160,7 +1160,10 @@ class EquipmentExport(Resource):
                 data.append(d['funct'])
                 data.append(d['location'])
                 section = d['section']
-                data.append(_(section.strip()))
+                if section:
+                    data.append(_(section.strip()))
+                else:
+                    data.append('')
 
                 l_data.append(data)
 
@@ -1345,7 +1348,10 @@ class ManualExport(Resource):
                 data.append(d['date_apply'])
                 data.append(d['date_update'])
                 section = d['section']
-                data.append(_(section.strip()))
+                if section:
+                    data.append(_(section.strip()))
+                else:
+                    data.append('')
 
                 l_data.append(data)
 
@@ -1702,7 +1708,10 @@ class ProcedureExport(Resource):
                 data.append(d['date_apply'])
                 data.append(d['date_update'])
                 section = d['section']
-                data.append(_(section.strip()))
+                if section:
+                    data.append(_(section.strip()))
+                else:
+                    data.append('')
 
                 l_data.append(data)
 
@@ -1771,7 +1780,10 @@ class StaffExport(Resource):
                 data.append(d['arrived'])
                 data.append(d['position'])
                 section = d['section']
-                data.append(_(section.strip()))
+                if section:
+                    data.append(_(section.strip()))
+                else:
+                    data.append('')
                 data.append(d['last_eval'])
                 data.append(d['username'])
 

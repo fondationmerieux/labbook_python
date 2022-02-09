@@ -304,7 +304,7 @@ class Various:
 
         req = ('select nat_ser, nat_name, nat_code '
                'from nationality '
-               'order by nat_name')
+               'order by nat_code')
 
         cursor.execute(req)
 

@@ -65,7 +65,7 @@ def upgrade():
                      "cti_date datetime,"
                      "cti_type varchar(10),"
                      "cti_target varchar(255),"
-                     "cti_conform varchar(10),"
+                     "cti_result varchar(255),"
                      "cti_comment varchar(255),"
                      "PRIMARY KEY (cti_ser),"
                      "INDEX (cti_type), INDEX (cti_ctq)) character set=utf8")
@@ -81,7 +81,7 @@ def upgrade():
                      "cte_type varchar(10),"
                      "cte_organizer varchar(255),"
                      "cte_contact varchar(255),"
-                     "cte_result varchar(255),"
+                     "cte_conform varchar(10),"
                      "cte_comment varchar(255),"
                      "PRIMARY KEY (cte_ser),"
                      "INDEX (cte_type), INDEX (cte_ctq)) character set=utf8")
@@ -575,6 +575,12 @@ def upgrade():
         conn.execute("update sigl_pj_role set label='Secrétaire avancée' where type='SA'")
     except Exception as err:
         print("ERROR update sigl_pj_role set label='Secrétaire avancée' where type='SA',\n\terr=" + str(err))
+
+    # UPDATE firstname for root user
+    try:
+        conn.execute("update sigl_user_data set firstname='' where username='root'")
+    except Exception as err:
+        print("ERROR update firstname for root user,\n\terr=" + str(err))
 
     print(str(datetime.today()) + " : END of migration v3_2_1_fix_analysis_repo revision=59d46fab5f54")
 

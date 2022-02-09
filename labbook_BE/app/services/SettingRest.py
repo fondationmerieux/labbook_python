@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 import logging
 import os
+import gettext
 
-from gettext import gettext as _
 from datetime import datetime
 from flask import request, session
 from flask_restful import Resource

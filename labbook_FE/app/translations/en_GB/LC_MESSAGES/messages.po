@@ -4374,7 +4374,7 @@ msgstr "Disconnection"
 
 #: templates/stat_sample.js:6
 msgid "A saisir"
-msgstr "To seize"
+msgstr "To complete"
 
 #: templates/technical-validation.html:406
 msgid "Non rempli"

@@ -1,7 +1,7 @@
 import logging
 import configparser
+import gettext
 
-from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource

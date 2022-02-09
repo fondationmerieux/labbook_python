@@ -75,6 +75,7 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
+# app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
 
 babel = Babel(app)
 
@@ -338,7 +339,7 @@ def index():
             session.modified = True
             get_init_var()
 
-        return redirect('/' + session['current_page'])
+        return redirect(session['server_ext'] + session['redirect_name'] + '/' + session['current_page'])
 
 
 # Page : labbook_BE not ready

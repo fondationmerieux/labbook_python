@@ -1131,10 +1131,7 @@ class Pdf:
                             if id_user_valid_p > 0 and res_valid['utilisateur'] != id_user_valid_p:
                                 id_user_valid_p = res_valid['utilisateur']
 
-                                user = User.getUserByIdGroup(res_valid['utilisateur'])
-
-                                if not user:
-                                    user = User.getUserDetails(res_valid['utilisateur'])
+                                user = User.getUserDetails(res_valid['utilisateur'])
 
                                 if user['lastname'] and user['firstname']:
                                     user = user['lastname'] + ' ' + user['firstname']

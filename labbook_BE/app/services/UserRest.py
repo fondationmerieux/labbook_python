@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
+import gettext
 
-from gettext import gettext as _
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
@@ -346,6 +346,8 @@ class UserSearch(Resource):
 
         if not l_users:
             self.log.error(Logs.fileline() + ' : TRACE UserSearch not found')
+
+        self.log.error(Logs.fileline() + ' : DEBUG l_users=' + str(l_users))
 
         for user in l_users:
             # Replace None by empty string
@@ -788,7 +790,7 @@ class UserImport(Resource):
                                           locale=locale,
                                           cps_id=cps_id,
                                           rpps=rpps,
-                                          phone=phone,
+                                          tel=phone,
                                           initiale=initial,
                                           ddn=birth,
                                           adresse=address,
