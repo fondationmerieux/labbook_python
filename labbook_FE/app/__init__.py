@@ -435,7 +435,6 @@ def homepage(login=''):
     get_software_settings()
 
     if 'user_locale' in session and not session['lang_chosen']:
-        log.info(Logs.fileline() + ' : DEBUG user_locale=' + str(session['user_locale']))
         if session['user_locale'] == 34:
             session['lang']  = 'en_GB'
             session.modified = True

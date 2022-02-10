@@ -642,12 +642,12 @@ class ControlIntRes(Resource):
 
         # if quantitative control we convert to float
         if item['cti_type'] == 'QN':
-            if item['cti_target']:
+            if item['cti_target'] != '':
                 item['cti_target'] = float(item['cti_target'])
             else:
                 item['cti_target'] = ''
 
-            if item['cti_result']:
+            if item['cti_result'] != '':
                 item['cti_result'] = float(item['cti_result'])
             else:
                 item['cti_result'] = ''
@@ -869,7 +869,7 @@ class ControlExtRes(Resource):
         args = request.get_json()
 
         if 'cte_ctq' not in args or 'cte_date' not in args or 'cte_type' not in args or 'cte_organizer' not in args or \
-           'cte_contact' not in args or 'cte_result' not in args or 'cte_comment' not in args:
+           'cte_contact' not in args or 'cte_conform' not in args or 'cte_comment' not in args:
             self.log.error(Logs.fileline() + ' : ControlExtRes ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -882,7 +882,7 @@ class ControlExtRes(Resource):
                                               cte_type=args['cte_type'],
                                               cte_organizer=args['cte_organizer'],
                                               cte_contact=args['cte_contact'],
-                                              cte_result=str(args['cte_result']),
+                                              cte_conform=str(args['cte_conform']),
                                               cte_comment=args['cte_comment'])
 
             if ret is False:
@@ -897,7 +897,7 @@ class ControlExtRes(Resource):
                                               cte_type=args['cte_type'],
                                               cte_organizer=args['cte_organizer'],
                                               cte_contact=args['cte_contact'],
-                                              cte_result=str(args['cte_result']),
+                                              cte_conform=str(args['cte_conform']),
                                               cte_comment=args['cte_comment'])
 
             if ret <= 0:
@@ -1860,7 +1860,7 @@ class StockList(Resource):
                 elif key == 'conserv':
                     stock[key] = _(stock[key].strip())
 
-            if stock['pru_nb_pack']:
+            if stock['pru_nb_pack'] != '':
                 stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
             else:
                 stock['pru_nb_pack'] = 0
@@ -1912,12 +1912,12 @@ class StockListDet(Resource):
                 stock['day_to_expir'] = 0
                 stock['prs_expir_date'] = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
 
-            if stock['pru_nb_pack']:
+            if stock['pru_nb_pack'] != '':
                 stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
             else:
                 stock['pru_nb_pack'] = 0
 
-            if stock['prs_nb_pack']:
+            if stock['prs_nb_pack'] != '':
                 stock['prs_nb_pack'] = float(stock['prs_nb_pack']) - float(stock['pru_nb_pack'])
             else:
                 stock['prs_nb_pack'] = 0
@@ -1972,12 +1972,12 @@ class StockProductHist(Resource):
             else:
                 stock['prs_expir_date'] = ''
 
-            if 'pru_nb_pack' in stock and stock['pru_nb_pack']:
+            if 'pru_nb_pack' in stock and stock['pru_nb_pack'] != '':
                 stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
             else:
                 stock['pru_nb_pack'] = 0
 
-            if 'prs_nb_pack' in stock and stock['prs_nb_pack']:
+            if 'prs_nb_pack' in stock and stock['prs_nb_pack'] != '':
                 stock['prs_nb_pack'] = float(stock['prs_nb_pack'])
             else:
                 stock['prs_nb_pack'] = 0
@@ -2161,7 +2161,10 @@ class StockUse(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'nb StockUse not found')
             return compose_ret(0, Constants.cst_content_type_json, 404)
 
-        nb_stock_use = float(stock_use['nb_pack'])
+        if stock_use['nb_pack'] != '':
+            nb_stock_use = float(stock_use['nb_pack'])
+        else:
+            nb_stock_use = 0
 
         self.log.info(Logs.fileline() + ' : nb StockUse prs_ser=' + str(prs_ser))
         return compose_ret(nb_stock_use, Constants.cst_content_type_json, 200)
@@ -2216,7 +2219,7 @@ class StockExport(Resource):
             for d in dict_data:
                 data = []
 
-                if d['pru_nb_pack']:
+                if d['pru_nb_pack'] != '':
                     d['pru_nb_pack'] = float(d['pru_nb_pack'])
                 else:
                     d['pru_nb_pack'] = 0

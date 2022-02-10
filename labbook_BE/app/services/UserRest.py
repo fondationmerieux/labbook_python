@@ -347,8 +347,6 @@ class UserSearch(Resource):
         if not l_users:
             self.log.error(Logs.fileline() + ' : TRACE UserSearch not found')
 
-        self.log.error(Logs.fileline() + ' : DEBUG l_users=' + str(l_users))
-
         for user in l_users:
             # Replace None by empty string
             for key, value in list(user.items()):

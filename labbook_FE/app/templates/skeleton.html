@@ -74,8 +74,6 @@
 {% endblock %}
 
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-console.log("DEBUG session server_ext = {{ session['server_ext'] }}");
-
 var username = "{{ session['user_name']|safe}}" ;
 
 function load_username()

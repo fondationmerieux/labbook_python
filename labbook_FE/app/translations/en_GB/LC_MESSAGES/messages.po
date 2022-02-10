@@ -3656,11 +3656,11 @@ msgstr "Bio. product"
 
 #: templates/setting-analyzes.html:105
 msgid "Importer le référentiel"
-msgstr "Import the analysis repository"
+msgstr "Import the repository"
 
 #: templates/setting-analyzes.html:106
 msgid "Exporter le référentiel"
-msgstr "Exporting the repository"
+msgstr "Export the repository"
 
 #: templates/setting-analyzes.html:108
 msgid "Enregistrer la liste"

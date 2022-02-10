@@ -108,6 +108,10 @@ class ResultList(Resource):
                 for key, value in list(result['user'].items()):
                     if result['user'][key] is None:
                         result['user'][key] = ''
+                    if key == 'birth':
+                        result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
+                    if key == 'last_eval':
+                        result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
 
             # Get status labels of record
             tmp = Various.getDicoById(str(result['stat']))
@@ -155,7 +159,7 @@ class ResultRecord(Resource):
         l_results = Result.getResultRecord(id_rec)
 
         if not l_results:
-            self.log.error(Logs.fileline() + ' : ' + 'ResultRecord ERROR not found')
+            self.log.error(Logs.fileline() + ' : ResultRecord ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         Various.needTranslationDB()
@@ -205,6 +209,10 @@ class ResultRecord(Resource):
                 for key, value in list(result['user'].items()):
                     if result['user'][key] is None:
                         result['user'][key] = ''
+                    if key == 'birth':
+                        result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
+                    if key == 'last_eval':
+                        result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
 
             # Get status labels of record
             tmp = Various.getDicoById(str(result['stat']))
@@ -493,10 +501,13 @@ class ResultHisto(Resource):
             valid['dico_valid']  = Various.getDicoById(str(valid['type_validation']))
             valid['dico_cancel'] = Various.getDicoById(str(valid['motif_annulation']))
 
-            valid['user'] = User.getUserByIdGroup(valid['utilisateur'])
+            valid['user'] = User.getUserDetails(valid['utilisateur'])
 
-            if not valid['user']:
-                valid['user'] = User.getUserDetails(valid['utilisateur'])
+            if valid['user'] and valid['user']['birth']:
+                valid['user']['birth'] = datetime.strftime(valid['user']['birth'], '%Y-%m-%d')
+
+            if valid['user'] and valid['user']['last_eval']:
+                valid['user']['last_eval'] = datetime.strftime(valid['user']['last_eval'], '%Y-%m-%d')
 
             if valid['date_validation']:
                 valid['date_validation'] = datetime.strftime(valid['date_validation'], '%Y-%m-%d')

@@ -289,6 +289,9 @@ class AnalysisDet(Resource):
         if analysis and analysis['id_data'] == id_ana:
             self.log.error(Logs.fileline() + ' : AnalysisDet UPDATE analysis')
 
+            if args['value'] == '':
+                args['value'] = 0
+
             # update analysis
             ret = Analysis.updateAnalysis(id_data=id_ana,
                                           id_owner=args['id_owner'],
@@ -722,7 +725,7 @@ class AnalysisExport(Resource):
                 if d['cote_valeur']:
                     data.append(float(d['cote_valeur']))
                 else:
-                    data.append('')
+                    data.append('0')
 
                 if d['commentaire']:
                     comment = d['commentaire']
@@ -972,7 +975,11 @@ class AnalysisImport(Resource):
                     abbr               = l[4]
                     famille            = l[5]
                     cote_unite         = l[6]
-                    cote_valeur        = float(l[7])
+
+                    if l[7]:
+                        cote_valeur = float(l[7])
+                    else:
+                        cote_valeur = 0
                     commentaire        = l[8]
                     produit_biologique = l[9]
                     type_prel          = l[10]
@@ -1111,7 +1118,12 @@ class AnalysisImport(Resource):
                     abbr               = l[4]
                     famille            = l[5]
                     cote_unite         = l[6]
-                    cote_valeur        = float(l[7])
+                    
+                    if l[7]:
+                        cote_valeur = float(l[7])
+                    else:
+                        cote_valeur = 0
+
                     commentaire        = l[8]
                     produit_biologique = l[9]
                     type_prel          = l[10]
