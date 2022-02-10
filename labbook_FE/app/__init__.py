@@ -339,7 +339,7 @@ def index():
             session.modified = True
             get_init_var()
 
-        return redirect(session['server_ext'] + session['redirect_name'] + '/' + session['current_page'])
+        return redirect(session['server_ext'] + '/' + session['current_page'])
 
 
 # Page : labbook_BE not ready

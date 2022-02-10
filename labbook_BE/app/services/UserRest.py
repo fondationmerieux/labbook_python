@@ -536,10 +536,10 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                if d['status']:
-                    data.append(d['status'])
+                if d['status'] and d['status'] == 29:
+                    data.append('A')
                 else:
-                    data.append('')
+                    data.append('D')
 
                 if d['locale']:
                     data.append(d['locale'])
@@ -758,7 +758,7 @@ class UserImport(Resource):
                                                   locale=locale,
                                                   cps_id=cps_id,
                                                   rpps=rpps,
-                                                  phone=phone,
+                                                  tel=phone,
                                                   initiale=initial,
                                                   ddn=birth,
                                                   adresse=address,

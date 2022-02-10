@@ -977,15 +977,27 @@ class AnalysisImport(Resource):
                     produit_biologique = l[9]
                     type_prel          = l[10]
                     # type_analyse       = l[11]  # useless
-                    actif              = l[12]
-                    ana_whonet         = l[13]
+
+                    if l[12] and l[12] == 'Y':
+                        actif = 4
+                    else:
+                        actif = 5
+
+                    if l[13] and l[13] == 'Y':
+                        ana_whonet = 4
+                    else:
+                        ana_whonet = 5
 
                     id_link            = l[14]
                     # id_refanalyse      = l[15]
                     id_refvariable     = l[16]
                     position           = l[17]
                     num_var            = l[18]
-                    obligatoire        = l[19]
+
+                    if l[19] and l[19] == 'Y':
+                        obligatoire = 4
+                    else:
+                        obligatoire = 5
 
                     id_var             = l[20]
                     libelle            = l[21]
@@ -1001,7 +1013,11 @@ class AnalysisImport(Resource):
                     accuracy           = l[31]
                     precision2         = l[32]
                     code_var           = l[33]
-                    var_whonet         = l[34]
+
+                    if l[34] and l[34] == 'Y':
+                        var_whonet = 4
+                    else:
+                        var_whonet = 5
 
                     ret = Analysis.exist(code)
 
@@ -1100,15 +1116,27 @@ class AnalysisImport(Resource):
                     produit_biologique = l[9]
                     type_prel          = l[10]
                     # type_analyse       = l[11]  # useless
-                    actif              = l[12]
-                    ana_whonet         = l[13]
+
+                    if l[12] and l[12] == 'Y':
+                        actif = 4
+                    else:
+                        actif = 5
+
+                    if l[13] and l[13] == 'Y':
+                        ana_whonet = 4
+                    else:
+                        ana_whonet = 5
 
                     id_link            = l[14]
                     # id_refanalyse      = l[15]
                     id_refvariable     = l[16]
                     position           = l[17]
                     num_var            = l[18]
-                    obligatoire        = l[19]
+
+                    if l[19] and l[19] == 'Y':
+                        obligatoire = 4
+                    else:
+                        obligatoire = 5
 
                     id_var             = l[20]
                     libelle            = l[21]
@@ -1124,7 +1152,11 @@ class AnalysisImport(Resource):
                     accuracy           = l[31]
                     precision2         = l[32]
                     code_var           = l[33]
-                    var_whonet         = l[34]
+
+                    if l[34] and l[34] == 'Y':
+                        var_whonet = 4
+                    else:
+                        var_whonet = 5
 
                     ret = Analysis.exist(code)
 

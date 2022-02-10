@@ -104,7 +104,7 @@ var cte_type  = "{{ args['type_val']|safe }}" ;
 var cte_date  = $("#cte_date").val()          ;
 var organizer = $("#cte_organizer").val() ;
 var contact   = JSON.stringify( $("#cte_contact").val() ) ;
-var conform   = JSON.stringify( $("#cte_conform").val() )  ;
+var conform   = $("#cte_conform").val()  ;
 var comment   = JSON.stringify( $("#cte_comment").val() ) ;
 var cr_file   = $("#CTRL")[0].files[0] ;
 
@@ -125,7 +125,7 @@ var param = '{ "id_item":' + id_item + ', ' +
               '"cte_type":"' + cte_type + '", ' +
               '"cte_organizer":"' + organizer + '", ' +
               '"cte_contact":' + contact + ', ' +
-              '"cte_conform":' + conforme + ', ' +
+              '"cte_conform":"' + conform + '", ' +
               '"cte_comment":' + comment + '}' ;
 
     $.ajax( {
