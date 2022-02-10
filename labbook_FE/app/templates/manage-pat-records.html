@@ -820,6 +820,12 @@ id_pat2 = $(e.currentTarget).val();
     } ) ;
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 function load_data_pat( data, num )
 {
     $("#form_pat_" + num ).removeClass('d-none') ;

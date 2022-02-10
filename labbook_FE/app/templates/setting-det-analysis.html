@@ -419,6 +419,12 @@ let id_var = $(e.currentTarget).val();
 
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 /*
 $("#search_ana").select2(
 {

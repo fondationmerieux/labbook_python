@@ -123,6 +123,12 @@ $("#search_product").on("select2:select", function (e)
 let id_item = $(e.currentTarget).val();
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 function save_item()
 {
 var id_owner     = {{ session['user_id']|safe}} ;

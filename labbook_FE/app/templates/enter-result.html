@@ -768,6 +768,12 @@ $("#div_add_analysis").show() ;
         } ) ;
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 function download_report()
 {
 var html_report = JSON.stringify($("#benchsheet")[0].outerHTML) ;

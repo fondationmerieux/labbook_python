@@ -301,6 +301,12 @@ $("#search_supplier").on("select2:select", function (e)
 let id_item = $(e.currentTarget).val();
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 $("#search_incharge").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",

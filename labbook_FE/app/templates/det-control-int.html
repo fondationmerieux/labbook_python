@@ -307,6 +307,12 @@ let id_item = $(e.currentTarget).val();
     $("#id_eqp").val(id_item) ;
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 function return_home()
 {
 window.location.href = "{{ session['server_ext'] }}/list-ctrl-int" ;

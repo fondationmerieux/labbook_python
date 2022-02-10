@@ -556,6 +556,12 @@ $("#div_add_analysis").show() ;
         } ) ;
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 function info_pat_title()
 {
 {% if args['patient'] %}

@@ -115,6 +115,12 @@ $("#search_patient").on("select2:select", function (e)
   window.location.href = "{{ session['server_ext'] }}/det-req-int/Y/" + id_pat ;
 } ) ;
 
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
 function new_pat() 
 {
 window.location.href = "{{ session['server_ext'] }}/det-patient/I/0";
