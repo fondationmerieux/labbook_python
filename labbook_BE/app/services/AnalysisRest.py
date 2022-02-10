@@ -264,8 +264,10 @@ class AnalysisDet(Resource):
             elif key == 'nom':
                 analysis[key] = _(analysis[key].strip())
 
-        if analysis['cote_valeur'] != '':
+        if analysis['cote_valeur']:
             analysis['cote_valeur'] = float(analysis['cote_valeur'])
+        else:
+            analysis['cote_valeur'] = 0
 
         self.log.info(Logs.fileline() + ' : AnalysisDet id_data=' + str(id_ana))
         return compose_ret(analysis, Constants.cst_content_type_json, 200)
@@ -617,11 +619,15 @@ class AnalysisReq(Resource):
                 elif key == 'nom':
                     analysis[key] = _(analysis[key].strip())
 
-            if analysis['prix'] != '':
+            if analysis['prix']:
                 analysis['prix'] = float(analysis['prix'])
+            else:
+                analysis['prix'] = 0
 
-            if analysis['cote_valeur'] != '':
+            if analysis['cote_valeur']:
                 analysis['cote_valeur'] = float(analysis['cote_valeur'])
+            else:
+                analysis['cote_valeur'] = 0
 
         self.log.info(Logs.fileline() + ' : AnalysisReq id_rec=' + str(id_rec))
         return compose_ret(l_ana, Constants.cst_content_type_json, 200)

@@ -227,11 +227,15 @@ class ReportBilling(Resource):
                 if data[key] is None:
                     data[key] = ''
 
-            if data['bill_price'] != '':
+            if data['bill_price']:
                 data['bill_price'] = float(data['bill_price'])
+            else:
+                data['bill_price'] = 0
 
-            if data['bill_remain'] != '':
+            if data['bill_remain']:
                 data['bill_remain'] = float(data['bill_remain'])
+            else:
+                data['bill_remain'] = 0
 
         self.log.info(Logs.fileline() + ' : TRACE ReportBilling')
         return compose_ret(l_datas, Constants.cst_content_type_json)
@@ -263,8 +267,10 @@ class ReportToday(Resource):
                 elif key == 'family':
                     data[key] = _(data[key].strip())
 
-            if data['rec_date'] != '':
+            if data['rec_date']:
                 data['rec_date'] = datetime.strftime(data['rec_date'], '%Y-%m-%d')
+            else:
+                data['rec_date'] = ''
 
             if data['type_rec'] and data['type_rec'] == 183:
                 data['type_rec'] = 'E'

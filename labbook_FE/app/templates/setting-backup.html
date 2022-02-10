@@ -163,6 +163,8 @@ var pwd_key  = "" ;
 var media    = "" ;
 var keyexist = 0  ;
 var poll_stat= null ;
+var poll_count = 0  ;
+var poll_max   = 60 ;
 
 function run_time()
 {
@@ -308,33 +310,43 @@ action = "" ;
 var param = '{ "start_time":"' + start_time + '", ' + 
               '"user_pwd":"' + pwd_user + '"}' ;
 
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-       type: "POST",
-       url: "{{ session['server_ext'] }}/services/setting/script/progbackup",
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-       {
-       console.log("progbackup ret="+JSON.stringify(data)) ;
-
-           if (data == 0)
+        $.ajax( 
+        {
+           type: "POST",
+           url: "{{ session['server_ext'] }}/services/setting/script/progbackup",
+           dataType: 'json',
+           contentType: "application/json; charset=utf-8",
+           data: param,
+           success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", "btn-return") ;
-           return true ;
-           }
+           $("#dial-wait").modal("hide") ;
 
-       alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-       return false ; 
-       },
-       error: function(ret)
-       {
-       console.log("ERROR POST progbackup") ;
-       console.log("ret="+JSON.stringify(ret)) ;
-       alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-       return false ;
-       }
+               if (data == 0)
+               {
+               tempAlert("{{ _("Enregistrement réussi") }}", "btn-return") ;
+               return true ;
+               }
+
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           return false ; 
+           },
+           error: function(ret)
+           {
+               $("#dial-wait").modal("hide") ;
+
+           console.log("ERROR POST progbackup") ;
+           console.log("ret="+JSON.stringify(ret)) ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           return false ;
+           }
+        } ) ;
     } ) ;
 }
 
@@ -344,47 +356,36 @@ pwd_user = $("#pwd-user").val() ;
 
 var param = '{ "user_pwd":"' + pwd_user + '"}' ;
 
-    // list of media Initialized or Unitialized
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        url: "{{ session['server_ext'] }}/services/setting/script/listmedia/" + type,
-        success: function(data)
+        // list of media Initialized or Unitialized
+        $.ajax( 
         {
-        console.log("listmedia ret="+JSON.stringify(data)) ;
-
-        // POLL WS status restore
-        poll_stat = setInterval( ScriptStatus, 2000, "M" ) ;
-
-        /*
-            // Dialog list media
-            if (data.ret == 0)
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            url: "{{ session['server_ext'] }}/services/setting/script/listmedia/" + type,
+            success: function(data)
             {
-            // Dialog list media
-            $("#list-media").empty() ;
-            for( i in data.media)
+            // POLL WS status media
+            poll_count = 0 ;
+            poll_max   = 90 ;
+            poll_stat  = setInterval( ScriptStatus, 2000, "M" ) ;
+            },
+            error: function(data)
             {
-                $("#list-media").append('<option value="' + data.media[i] + '">' + data.media[i] + '</option>');
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR POST setting listmedia") ;
+            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
             }
-
-            $( "#dial-list-media" ).modal( "show" ) ;
-
-            return true ;
-            }
-            else
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste de média") }}") ;
-        */
-
-        return false ;
-        },
-        error: function(data)
-        {
-        console.log("ERROR POST setting listmedia") ;
-        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
-        }
+        } ) ;
     } ) ;
 }
 
@@ -428,30 +429,40 @@ function initmedia(media)
 
     $( "#dial-list-media" ).modal( "hide" ) ;
 
-    // POST list of media
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/script/initmedia/" + media,
-        success: function(data)
+        // POST list of media
+        $.ajax( 
         {
-        console.log("initmedia ret="+JSON.stringify(data)) ;
-
-            if (data == 0)
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/setting/script/initmedia/" + media,
+            success: function(data)
             {
-            tempAlert("{{ _("Initialisation réussie") }}", "btn-run_media") ;
-            return true ;
-            }
-            else
-            alert("{{ _("Une erreur est survenue lors de l'initialisation du média") }}") ;
+                $("#dial-wait").modal("hide") ;
 
-        return false ;
-        },
-        error: function(data)
-        {
-        console.log("ERROR POST setting initmedia") ;
-        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
-        }
+                if (data == 0)
+                {
+                tempAlert("{{ _("Initialisation réussie") }}", "btn-run_media") ;
+                return true ;
+                }
+                else
+                alert("{{ _("Une erreur est survenue lors de l'initialisation du média") }}") ;
+
+            return false ;
+            },
+            error: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR POST setting initmedia") ;
+            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+            }
+        } ) ;
     } ) ;
 }
 
@@ -496,8 +507,10 @@ function backup(media)
             url: "{{ session['server_ext'] }}/services/setting/script/backup/" + media,
             success: function(data)
             {
-            // POLL WS status restore
-            poll_stat = setInterval( ScriptStatus, 10000, "B" ) ;
+            // POLL WS status backup
+            poll_count = 0 ;
+            poll_max   = 60 ;
+            poll_stat  = setInterval( ScriptStatus, 10000, "B" ) ;
             },
             error: function(data)
             {
@@ -517,47 +530,34 @@ pwd_user = $("#pwd-user").val() ;
 
 var param = '{ "user_pwd":"' + pwd_user + '"}' ;
 
-    // list of archive
-    $.ajax( 
+    // popup wait
+    $("#dial-wait").modal("show") ;
+
+    $("#dial-wait").off() ;
+
+    $("#dial-wait").on('shown.bs.modal', function () 
     {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/script/listarchive/" + media,
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        success: function(data)
+        // list of archive
+        $.ajax( 
         {
-        console.log("list_archive ret="+JSON.stringify(data)) ;
-
-        // POLL WS status restore
-        poll_stat = setInterval( ScriptStatus, 10000, "A" ) ;
-
-        /*
-            // Dialog list archive
-            if (data.ret == 0)
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/setting/script/listarchive/" + media,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
             {
-            // Dialog list media
-            $("#list-archive").empty() ;
-            for( i in data.archive)
+            // POLL WS status archive
+            poll_count = 0 ;
+            poll_max   = 90 ;
+            poll_stat  = setInterval( ScriptStatus, 10000, "A" ) ;
+            },
+            error: function(data)
             {
-                $("#list-archive").append('<option value="' + data.archive[i] + '">' + data.archive[i] + '</option>');
+            console.log("ERROR POST setting listarchive") ;
+            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
             }
-
-            $( "#dial-list-archive" ).modal( "show" ) ;
-
-            return true ;
-            }
-            else
-            alert("{{ _("Une erreur est survenue lors de la récupération de la liste d'archives") }}") ;
-        */
-
-        return false ;
-        },
-        error: function(data)
-        {
-        console.log("ERROR POST setting listarchive") ;
-        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
-        }
+        } ) ;
     } ) ;
 }
 
@@ -597,7 +597,9 @@ console.log("restore param=" + param) ;
                 success: function(data)
                 {
                 // POLL WS status restore
-                poll_stat = setInterval( ScriptStatus, 10000, "R" ) ;
+                poll_count = 0  ;
+                poll_max   = 120 ;
+                poll_stat  = setInterval( ScriptStatus, 10000, "R" ) ;
                 },
                 error: function(data)
                 {
@@ -614,6 +616,19 @@ console.log("restore param=" + param) ;
 
 function ScriptStatus(mode)
 {
+poll_count = poll_count + 1 ;
+
+    if (poll_count > poll_max)
+    {
+    clearInterval(poll_stat) ;
+
+    $("#wait-status").text("") ;
+    $("#dial-wait").modal("hide") ;
+
+    alert("{{ _("Délai d'attente dépassé") }}") ;
+    return false ;
+    }
+
     $.ajax( 
     {
         type: "GET",

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-28 15:25+0100\n"
+"POT-Creation-Date: 2022-02-10 16:18+0100\n"
 "PO-Revision-Date: 2021-02-21 15:20+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_GB\n"
@@ -763,7 +763,7 @@ msgstr "Analysis already present!"
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "Error when retrieving an analysis"
 
-#: templates/biological-validation.html:844 templates/setting-backup.html:800
+#: templates/biological-validation.html:844 templates/setting-backup.html:812
 msgid "Une erreur est survenue"
 msgstr "An error has occurred"
 
@@ -1082,7 +1082,7 @@ msgstr "Please select an equipment."
 #: templates/det-control-ext.html:212 templates/det-control-int.html:199
 #: templates/list-laboratory.html:303 templates/manage-pat-records.html:714
 #: templates/res-control-ext.html:143 templates/res-control-int.html:116
-#: templates/setting-age-interval.html:217 templates/setting-backup.html:324
+#: templates/setting-age-interval.html:217 templates/setting-backup.html:333
 #: templates/setting-det-analysis.html:948 templates/setting-det-dict.html:268
 #: templates/setting-det-dict.html:278 templates/setting-pref.html:181
 #: templates/setting-rec-num.html:68 templates/setting-report.html:68
@@ -1099,8 +1099,8 @@ msgstr "Registration successful"
 #: templates/homepage.html:121 templates/list-laboratory.html:308
 #: templates/manage-pat-records.html:719 templates/non-conformity.html:1371
 #: templates/res-control-ext.html:150 templates/res-control-int.html:123
-#: templates/setting-age-interval.html:222 templates/setting-backup.html:328
-#: templates/setting-backup.html:335 templates/setting-det-analysis.html:955
+#: templates/setting-age-interval.html:222 templates/setting-backup.html:337
+#: templates/setting-backup.html:346 templates/setting-det-analysis.html:955
 #: templates/setting-det-dict.html:273 templates/setting-det-dict.html:283
 #: templates/setting-det-user.html:375 templates/setting-pref.html:186
 #: templates/setting-pwd-user.html:81 templates/setting-rec-num.html:73
@@ -1112,9 +1112,10 @@ msgstr "An error occurred while saving"
 #: templates/hist-analyzes.html:297 templates/hist-patients.html:281
 #: templates/list-ctrl-ext.html:182 templates/list-ctrl-int.html:182
 #: templates/list-equipment.html:219 templates/list-manuals.html:230
-#: templates/list-meeting.html:220 templates/list-procedure.html:232
-#: templates/list-staff.html:207 templates/list-suppliers.html:223
-#: templates/report-today.html:266 templates/user-conn-export.html:82
+#: templates/list-meeting.html:220 templates/list-nonconformities.html:290
+#: templates/list-procedure.html:232 templates/list-staff.html:207
+#: templates/list-suppliers.html:223 templates/report-today.html:266
+#: templates/user-conn-export.html:82
 msgid "Aucun résultats à exporter !"
 msgstr "No results to export!"
 
@@ -1503,7 +1504,7 @@ msgid "Indiquer la quantité utilisée"
 msgstr "Indicate the quantity used"
 
 #: templates/det-list-stock.html:273 templates/hist-stock-product.html:357
-#: templates/list-doctors.html:334 templates/list-nonconformities.html:290
+#: templates/list-doctors.html:334
 msgid "Aucun prescripteur à exporter !"
 msgstr "No prescriber to export!"
 
@@ -2070,7 +2071,7 @@ msgstr "Validation"
 #: templates/manage-pat-records.html:818 templates/report-activity.html:121
 #: templates/report-billing.html:205 templates/report-statistic.html:120
 #: templates/report-today.html:155 templates/setting-analyzes.html:166
-#: templates/setting-backup.html:671 templates/setting-backup.html:683
+#: templates/setting-backup.html:683 templates/setting-backup.html:695
 #: templates/setting-dicts.html:143 templates/setting-users.html:175
 #: templates/stat_rec_with_det.js:51
 msgid "Une erreur est survenue lors de la récupération des données"
@@ -3740,7 +3741,7 @@ msgstr "Please enter the password for the backup key"
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: templates/setting-backup.html:108 templates/setting-backup.html:250
+#: templates/setting-backup.html:108 templates/setting-backup.html:252
 #: templates/setting-backup.html:571
 msgid "Veuillez sélectionner un média"
 msgstr "Please select the appropriate media"
@@ -3757,11 +3758,11 @@ msgstr "Please select the backup to restore"
 msgid "Liste des sauvegardes disponibles"
 msgstr "List of available backups"
 
-#: templates/setting-backup.html:169
+#: templates/setting-backup.html:171
 msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "Please confirm the change of the daily backup time."
 
-#: templates/setting-backup.html:190
+#: templates/setting-backup.html:192
 msgid ""
 "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
 " seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
@@ -3770,56 +3771,48 @@ msgstr ""
 "A key already exists,if a key is re-generated, the old backups will not "
 "be recoverable\\nPlease confirm the generation of a new key?"
 
-#: templates/setting-backup.html:225 templates/setting-backup.html:272
+#: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
 msgstr "Please enter a password"
 
-#: templates/setting-backup.html:278 templates/setting-det-user.html:316
+#: templates/setting-backup.html:280 templates/setting-det-user.html:316
 msgid "Les mots de passe ne correspondent pas !"
 msgstr "The passwords do not match!"
 
-#: templates/setting-backup.html:300
+#: templates/setting-backup.html:302
 msgid "Veuillez saisir une heure de sauvegarde."
 msgstr "Please enter a backup time."
 
-#: templates/setting-backup.html:378
-msgid "Une erreur est survenue lors de la récupération de la liste de média"
-msgstr "An error occurred while retrieving the media list"
-
-#: templates/setting-backup.html:386 templates/setting-backup.html:453
-#: templates/setting-backup.html:479 templates/setting-backup.html:559
+#: templates/setting-backup.html:386 templates/setting-backup.html:463
+#: templates/setting-backup.html:490 templates/setting-backup.html:558
 msgid "Une erreur est survenue lors de l'interrogation du service"
 msgstr "An error occurred while querying the service"
 
-#: templates/setting-backup.html:415
+#: templates/setting-backup.html:416
 msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
 msgstr "An error occurred while checking the backup key"
 
-#: templates/setting-backup.html:425
+#: templates/setting-backup.html:426
 msgid "Une erreur est survenue le média choisi est incorrect"
 msgstr "An error has occurred with the chosen media"
 
-#: templates/setting-backup.html:442
+#: templates/setting-backup.html:450
 msgid "Initialisation réussie"
 msgstr "Successful initialization"
 
-#: templates/setting-backup.html:446
+#: templates/setting-backup.html:454
 msgid "Une erreur est survenue lors de l'initialisation du média"
 msgstr "An error occurred during the initialization of the media"
 
-#: templates/setting-backup.html:473
+#: templates/setting-backup.html:484
 msgid "Génération réussie"
 msgstr "Generation successful"
-
-#: templates/setting-backup.html:551
-msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
-msgstr "An error occurred while retrieving the archive list"
 
 #: templates/setting-backup.html:581
 msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "Please confirm the immediate start of the restoration process."
 
-#: templates/setting-backup.html:608
+#: templates/setting-backup.html:610
 msgid ""
 "Une erreur est survenue lors de la restauration, veuillez contacter votre"
 " administrateur pour qu'il vérifie manuellement que cette dernière est "
@@ -3828,17 +3821,21 @@ msgstr ""
 "An error occurred during the restore, please contact your administrator "
 "to manually verify that the restore is complete."
 
-#: templates/setting-backup.html:758
+#: templates/setting-backup.html:628
+msgid "Délai d'attente dépassé"
+msgstr "Waiting period exceeded"
+
+#: templates/setting-backup.html:770
 msgid ""
 "La restauration est terminée, LabBook va redémarrer les services de "
 "l'application"
 msgstr "The restoration is complete, LabBook will restart the application services"
 
-#: templates/setting-backup.html:772
+#: templates/setting-backup.html:784
 msgid "Redémarrage activé"
 msgstr "Restart enabled"
 
-#: templates/setting-backup.html:777
+#: templates/setting-backup.html:789
 msgid ""
 "Les services ont redémarré ou une erreur est survenue lors de la demande "
 "de redémarrage\\nveuillez recharger la page"
@@ -3846,17 +3843,17 @@ msgstr ""
 "The services have restarted or an error occurred during the restart "
 "request\\nPlease reload the page"
 
-#: templates/setting-backup.html:787
+#: templates/setting-backup.html:799
 msgid "Sauvegarde réussie"
 msgstr "Backup successful"
 
-#: templates/setting-backup.html:810
+#: templates/setting-backup.html:822
 msgid ""
 "Une erreur est survenue lors de la vérification de l'état en cours, "
 "statut inconnu"
 msgstr "An error occurred while checking the current status, unknown status"
 
-#: templates/setting-backup.html:822
+#: templates/setting-backup.html:834
 msgid "Une erreur est survenue lors de la vérification de l'état en cours"
 msgstr "An error occurred while checking the current status"
 
@@ -4403,3 +4400,10 @@ msgstr "Date of validation of the"
 #: templates/whonet-export.html:82
 msgid "Aucun résultat à exporter !"
 msgstr "No results to export!"
+
+#~ msgid "Une erreur est survenue lors de la récupération de la liste de média"
+#~ msgstr "An error occurred while retrieving the media list"
+
+#~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+#~ msgstr "An error occurred while retrieving the archive list"
+

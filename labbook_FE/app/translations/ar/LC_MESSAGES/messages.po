@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-28 15:25+0100\n"
+"POT-Creation-Date: 2022-02-10 16:18+0100\n"
 "PO-Revision-Date: 2021-09-03 15:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ar\n"
@@ -246,9 +246,6 @@ msgstr "التحاليل "
 msgid "Code"
 msgstr " رمز "
 
-msgid " Nom"
-msgstr "الاسم"
-
 #: templates/administrative-record.html:129
 #: templates/administrative-record.html:148 templates/det-doctor.html:37
 #: templates/det-hist-patient.html:25 templates/det-list-stock.html:32
@@ -461,7 +458,9 @@ msgid "Aucun fichier déposé"
 msgstr "لم يتم إدخال أي ملف"
 
 #: templates/administrative-record.html:480
-msgid "Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)"
+msgid ""
+"Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace"
+" y figurera)"
 msgstr "هل ترغب في تعديل التقرير؟ (ستظهر العبارة إلغاء واستبدال)"
 
 #: templates/administrative-record.html:502 templates/pivot-table.html:145
@@ -676,6 +675,10 @@ msgstr "إلغاء "
 msgid "Ajouter de nouvelles analyses"
 msgstr "إضافة تحاليل جديدة"
 
+#: templates/biological-validation.html:159
+msgid "Compte-rendu groupé"
+msgstr ""
+
 #: templates/biological-validation.html:164
 msgid "Dossier suivant"
 msgstr "الملف التالي"
@@ -757,6 +760,10 @@ msgstr "التحليل موجود سابقا"
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "طرأ خلل في إعادة تحصيل التحليل"
 
+#: templates/biological-validation.html:844 templates/setting-backup.html:812
+msgid "Une erreur est survenue"
+msgstr "طرأ خلل"
+
 #: templates/biological-validation.html:853
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr " ملاحظة : سوف تخرج من هذا الملف دون التحقق منه"
@@ -790,6 +797,230 @@ msgstr "البرنامج مُرخص بموجب ترخيص GNU"
 #: templates/contributors.html:54
 msgid "Version : "
 msgstr "النسخة"
+
+#: templates/det-control-ext.html:5 templates/det-control-ext.html:14
+msgid "Contrôle externe"
+msgstr ""
+
+#: templates/det-control-ext.html:16 templates/det-control-int.html:16
+#: templates/det-meeting.html:25 templates/hist-analyzes.html:42
+#: templates/hist-analyzes.html:86 templates/list-ctrl-ext.html:33
+#: templates/list-ctrl-int.html:33 templates/list-meeting.html:32
+#: templates/list-products.html:32 templates/list-records.html:84
+#: templates/list-results.html:32 templates/list-stock.html:28
+#: templates/list-stock.html:83 templates/list-template.html:32
+#: templates/list-works.html:46
+msgid "Type"
+msgstr "نوع"
+
+#: templates/det-control-ext.html:18 templates/det-control-int.html:18
+msgid "Qualitatif"
+msgstr ""
+
+#: templates/det-control-ext.html:21 templates/det-control-int.html:21
+msgid "Quantitatif"
+msgstr ""
+
+#: templates/det-control-ext.html:25 templates/det-control-int.html:25
+msgid "Nom du paramètre"
+msgstr ""
+
+#: templates/det-control-ext.html:31 templates/det-control-int.html:31
+#: templates/det-equipment.html:5 templates/det-equipment.html:15
+#: templates/list-ctrl-ext.html:32 templates/list-ctrl-int.html:32
+#: templates/non-conformity.html:421
+msgid "Equipement"
+msgstr "الأجهزة"
+
+#: templates/det-control-ext.html:38 templates/det-control-int.html:38
+#: templates/det-doctor.html:120 templates/det-equipment.html:250
+#: templates/det-manual.html:97 templates/det-meeting.html:69
+#: templates/det-new-product.html:82 templates/det-patient.html:248
+#: templates/det-procedure.html:98 templates/det-sample.html:151
+#: templates/det-staff.html:205 templates/det-stock-product.html:78
+#: templates/det-supplier.html:85 templates/det-template.html:71
+#: templates/enter-result.html:303 templates/enter-result.html:536
+#: templates/list-results.html:257 templates/list-results.html:493
+#: templates/non-conformity.html:776 templates/res-control-ext.html:87
+#: templates/res-control-int.html:64 templates/setting-age-interval.html:44
+#: templates/setting-det-analysis.html:303 templates/setting-det-dict.html:61
+#: templates/setting-det-user.html:225 templates/setting-logo.html:30
+#: templates/setting-pref.html:117 templates/setting-pwd-user.html:36
+#: templates/setting-rec-num.html:39 templates/setting-report.html:39
+msgid "Enregistrer"
+msgstr ""
+
+#: templates/det-control-ext.html:42 templates/det-control-int.html:42
+#: templates/det-hist-analysis.html:17 templates/det-hist-patient.html:52
+#: templates/det-list-stock.html:15 templates/hist-analyzes.html:68
+#: templates/hist-patients.html:55 templates/hist-stock-product.html:42
+#: templates/list-ctrl-ext.html:14 templates/list-ctrl-int.html:14
+#: templates/list-doctors.html:63 templates/list-equipment.html:14
+#: templates/list-manuals.html:14 templates/list-meeting.html:14
+#: templates/list-nonconformities.html:43 templates/list-procedure.html:14
+#: templates/list-products.html:14 templates/list-records.html:109
+#: templates/list-samples.html:19 templates/list-staff.html:14
+#: templates/list-stock.html:61 templates/list-suppliers.html:14
+#: templates/list-template.html:14 templates/list-works.html:79
+#: templates/report-billing.html:61 templates/report-today.html:48
+#: templates/setting-analyzes.html:63 templates/setting-dicts.html:51
+#: templates/setting-users.html:70 templates/setting-zipcity.html:21
+msgid "Nombre total de lignes"
+msgstr ""
+
+#: templates/det-control-ext.html:46 templates/det-control-ext.html:72
+#: templates/det-control-int.html:46 templates/det-control-int.html:71
+#: templates/det-hist-analysis.html:21 templates/det-hist-analysis.html:46
+#: templates/det-hist-patient.html:56 templates/det-hist-patient.html:82
+#: templates/det-list-stock.html:19 templates/det-list-stock.html:47
+#: templates/hist-analyzes.html:72 templates/hist-analyzes.html:97
+#: templates/hist-patients.html:59 templates/hist-patients.html:86
+#: templates/hist-stock-product.html:46 templates/hist-stock-product.html:76
+#: templates/list-ctrl-ext.html:18 templates/list-ctrl-ext.html:42
+#: templates/list-ctrl-int.html:18 templates/list-ctrl-int.html:42
+#: templates/list-doctors.html:67 templates/list-doctors.html:100
+#: templates/list-equipment.html:18 templates/list-equipment.html:45
+#: templates/list-manuals.html:18 templates/list-manuals.html:48
+#: templates/list-meeting.html:18 templates/list-meeting.html:43
+#: templates/list-nonconformities.html:47
+#: templates/list-nonconformities.html:75 templates/list-procedure.html:18
+#: templates/list-procedure.html:49 templates/list-products.html:18
+#: templates/list-products.html:46 templates/list-records.html:114
+#: templates/list-records.html:159 templates/list-samples.html:24
+#: templates/list-samples.html:63 templates/list-staff.html:18
+#: templates/list-staff.html:57 templates/list-stock.html:65
+#: templates/list-stock.html:94 templates/list-suppliers.html:18
+#: templates/list-suppliers.html:46 templates/list-template.html:18
+#: templates/list-template.html:43 templates/list-works.html:84
+#: templates/list-works.html:126 templates/report-billing.html:66
+#: templates/report-billing.html:95 templates/report-today.html:53
+#: templates/report-today.html:88 templates/setting-analyzes.html:67
+#: templates/setting-analyzes.html:93 templates/setting-dicts.html:55
+#: templates/setting-dicts.html:77 templates/setting-users.html:74
+#: templates/setting-users.html:102 templates/setting-zipcity.html:25
+#: templates/setting-zipcity.html:47
+msgid "Premier"
+msgstr ""
+
+#: templates/det-control-ext.html:47 templates/det-control-ext.html:73
+#: templates/det-control-int.html:47 templates/det-control-int.html:72
+#: templates/det-hist-analysis.html:22 templates/det-hist-analysis.html:47
+#: templates/det-hist-patient.html:57 templates/det-hist-patient.html:83
+#: templates/det-list-stock.html:20 templates/det-list-stock.html:48
+#: templates/hist-analyzes.html:73 templates/hist-analyzes.html:98
+#: templates/hist-patients.html:60 templates/hist-patients.html:87
+#: templates/hist-stock-product.html:47 templates/hist-stock-product.html:77
+#: templates/list-ctrl-ext.html:19 templates/list-ctrl-ext.html:43
+#: templates/list-ctrl-int.html:19 templates/list-ctrl-int.html:43
+#: templates/list-doctors.html:68 templates/list-doctors.html:101
+#: templates/list-equipment.html:19 templates/list-equipment.html:46
+#: templates/list-manuals.html:19 templates/list-manuals.html:49
+#: templates/list-meeting.html:19 templates/list-meeting.html:44
+#: templates/list-nonconformities.html:48
+#: templates/list-nonconformities.html:76 templates/list-procedure.html:19
+#: templates/list-procedure.html:50 templates/list-products.html:19
+#: templates/list-products.html:47 templates/list-records.html:115
+#: templates/list-records.html:160 templates/list-samples.html:25
+#: templates/list-samples.html:64 templates/list-staff.html:19
+#: templates/list-staff.html:58 templates/list-stock.html:66
+#: templates/list-stock.html:95 templates/list-suppliers.html:19
+#: templates/list-suppliers.html:47 templates/list-template.html:19
+#: templates/list-template.html:44 templates/list-works.html:85
+#: templates/list-works.html:127 templates/report-billing.html:67
+#: templates/report-billing.html:96 templates/report-today.html:54
+#: templates/report-today.html:89 templates/setting-analyzes.html:68
+#: templates/setting-analyzes.html:94 templates/setting-dicts.html:56
+#: templates/setting-dicts.html:78 templates/setting-users.html:75
+#: templates/setting-users.html:103 templates/setting-zipcity.html:26
+#: templates/setting-zipcity.html:48
+msgid "Précédent"
+msgstr ""
+
+#: templates/det-control-ext.html:49 templates/det-control-ext.html:75
+#: templates/det-control-int.html:49 templates/det-control-int.html:74
+#: templates/det-hist-analysis.html:24 templates/det-hist-analysis.html:49
+#: templates/det-hist-patient.html:59 templates/det-hist-patient.html:85
+#: templates/det-list-stock.html:22 templates/det-list-stock.html:50
+#: templates/hist-analyzes.html:75 templates/hist-analyzes.html:100
+#: templates/hist-patients.html:62 templates/hist-patients.html:89
+#: templates/hist-stock-product.html:49 templates/hist-stock-product.html:79
+#: templates/list-ctrl-ext.html:21 templates/list-ctrl-ext.html:45
+#: templates/list-ctrl-int.html:21 templates/list-ctrl-int.html:45
+#: templates/list-doctors.html:70 templates/list-doctors.html:103
+#: templates/list-equipment.html:21 templates/list-equipment.html:48
+#: templates/list-manuals.html:21 templates/list-manuals.html:51
+#: templates/list-meeting.html:21 templates/list-meeting.html:46
+#: templates/list-nonconformities.html:50
+#: templates/list-nonconformities.html:78 templates/list-procedure.html:21
+#: templates/list-procedure.html:52 templates/list-products.html:21
+#: templates/list-products.html:49 templates/list-records.html:117
+#: templates/list-records.html:162 templates/list-samples.html:27
+#: templates/list-samples.html:66 templates/list-staff.html:21
+#: templates/list-staff.html:60 templates/list-stock.html:68
+#: templates/list-stock.html:97 templates/list-suppliers.html:21
+#: templates/list-suppliers.html:49 templates/list-template.html:21
+#: templates/list-template.html:46 templates/list-works.html:87
+#: templates/list-works.html:129 templates/report-billing.html:69
+#: templates/report-billing.html:98 templates/report-today.html:56
+#: templates/report-today.html:91 templates/setting-analyzes.html:70
+#: templates/setting-analyzes.html:96 templates/setting-dicts.html:58
+#: templates/setting-dicts.html:80 templates/setting-users.html:77
+#: templates/setting-users.html:105 templates/setting-zipcity.html:28
+#: templates/setting-zipcity.html:50
+msgid "Suivant"
+msgstr ""
+
+#: templates/det-control-ext.html:50 templates/det-control-ext.html:76
+#: templates/det-control-int.html:50 templates/det-control-int.html:75
+#: templates/det-hist-analysis.html:25 templates/det-hist-analysis.html:50
+#: templates/det-hist-patient.html:60 templates/det-hist-patient.html:86
+#: templates/det-list-stock.html:23 templates/det-list-stock.html:51
+#: templates/hist-analyzes.html:76 templates/hist-analyzes.html:101
+#: templates/hist-patients.html:63 templates/hist-patients.html:90
+#: templates/hist-stock-product.html:50 templates/hist-stock-product.html:80
+#: templates/list-ctrl-ext.html:22 templates/list-ctrl-ext.html:46
+#: templates/list-ctrl-int.html:22 templates/list-ctrl-int.html:46
+#: templates/list-doctors.html:71 templates/list-doctors.html:104
+#: templates/list-equipment.html:22 templates/list-equipment.html:49
+#: templates/list-manuals.html:22 templates/list-manuals.html:52
+#: templates/list-meeting.html:22 templates/list-meeting.html:47
+#: templates/list-nonconformities.html:51
+#: templates/list-nonconformities.html:79 templates/list-procedure.html:22
+#: templates/list-procedure.html:53 templates/list-products.html:22
+#: templates/list-products.html:50 templates/list-records.html:118
+#: templates/list-records.html:163 templates/list-samples.html:28
+#: templates/list-samples.html:67 templates/list-staff.html:22
+#: templates/list-staff.html:61 templates/list-stock.html:69
+#: templates/list-stock.html:98 templates/list-suppliers.html:22
+#: templates/list-suppliers.html:50 templates/list-template.html:22
+#: templates/list-template.html:47 templates/list-works.html:88
+#: templates/list-works.html:130 templates/report-billing.html:70
+#: templates/report-billing.html:99 templates/report-today.html:57
+#: templates/report-today.html:92 templates/setting-analyzes.html:71
+#: templates/setting-analyzes.html:97 templates/setting-dicts.html:59
+#: templates/setting-dicts.html:81 templates/setting-users.html:78
+#: templates/setting-users.html:106 templates/setting-zipcity.html:29
+#: templates/setting-zipcity.html:51
+msgid "Dernier"
+msgstr ""
+
+#: templates/det-control-ext.html:57 templates/det-control-int.html:57
+#: templates/det-hist-analysis.html:32 templates/det-hist-patient.html:67
+#: templates/det-list-stock.html:30 templates/hist-analyzes.html:83
+#: templates/hist-patients.html:70 templates/hist-stock-product.html:57
+#: templates/list-ctrl-ext.html:29 templates/list-ctrl-int.html:29
+#: templates/list-doctors.html:78 templates/list-equipment.html:29
+#: templates/list-laboratory.html:72 templates/list-manuals.html:29
+#: templates/list-meeting.html:29 templates/list-nonconformities.html:58
+#: templates/list-procedure.html:29 templates/list-products.html:29
+#: templates/list-staff.html:29 templates/list-stock.html:76
+#: templates/list-suppliers.html:29 templates/list-template.html:29
+#: templates/setting-age-interval.html:28 templates/setting-analyzes.html:78
+#: templates/setting-det-analysis.html:243 templates/setting-det-dict.html:44
+#: templates/setting-dicts.html:66 templates/setting-users.html:85
+#: templates/setting-zipcity.html:36
+msgid "serial"
+msgstr ""
 
 #: templates/det-control-ext.html:60 templates/det-meeting.html:37
 #: templates/list-meeting.html:33 templates/res-control-ext.html:23
@@ -848,7 +1079,7 @@ msgstr ""
 #: templates/det-control-ext.html:212 templates/det-control-int.html:199
 #: templates/list-laboratory.html:303 templates/manage-pat-records.html:714
 #: templates/res-control-ext.html:143 templates/res-control-int.html:116
-#: templates/setting-age-interval.html:217 templates/setting-backup.html:324
+#: templates/setting-age-interval.html:217 templates/setting-backup.html:333
 #: templates/setting-det-analysis.html:948 templates/setting-det-dict.html:268
 #: templates/setting-det-dict.html:278 templates/setting-pref.html:181
 #: templates/setting-rec-num.html:68 templates/setting-report.html:68
@@ -865,8 +1096,8 @@ msgstr "اكتمل التسجيل"
 #: templates/homepage.html:121 templates/list-laboratory.html:308
 #: templates/manage-pat-records.html:719 templates/non-conformity.html:1371
 #: templates/res-control-ext.html:150 templates/res-control-int.html:123
-#: templates/setting-age-interval.html:222 templates/setting-backup.html:328
-#: templates/setting-backup.html:335 templates/setting-det-analysis.html:955
+#: templates/setting-age-interval.html:222 templates/setting-backup.html:337
+#: templates/setting-backup.html:346 templates/setting-det-analysis.html:955
 #: templates/setting-det-dict.html:273 templates/setting-det-dict.html:283
 #: templates/setting-det-user.html:375 templates/setting-pref.html:186
 #: templates/setting-pwd-user.html:81 templates/setting-rec-num.html:73
@@ -878,9 +1109,10 @@ msgstr "حدث خطأ أثناء الحفظ"
 #: templates/hist-analyzes.html:297 templates/hist-patients.html:281
 #: templates/list-ctrl-ext.html:182 templates/list-ctrl-int.html:182
 #: templates/list-equipment.html:219 templates/list-manuals.html:230
-#: templates/list-meeting.html:220 templates/list-procedure.html:232
-#: templates/list-staff.html:207 templates/list-suppliers.html:223
-#: templates/report-today.html:266 templates/user-conn-export.html:82
+#: templates/list-meeting.html:220 templates/list-nonconformities.html:290
+#: templates/list-procedure.html:232 templates/list-staff.html:207
+#: templates/list-suppliers.html:223 templates/report-today.html:266
+#: templates/user-conn-export.html:82
 msgid "Aucun résultats à exporter !"
 msgstr "لا توجد نتائج للتصدير!"
 
@@ -1010,12 +1242,6 @@ msgstr "البريد الإلكتروني"
 #: templates/det-doctor.html:152 templates/det-template.html:93
 msgid "Veuillez saisir un nom."
 msgstr "يرجى إدخال الاسم"
-
-msgid "Une erreur est survenue lors de l'enregistrement"
-msgstr "طرأ خلل أثناء الحفظ"
-
-msgid "Equipement"
-msgstr "الأجهزة"
 
 #: templates/det-equipment.html:18
 msgid "Nom de l'équipement"
@@ -1191,9 +1417,6 @@ msgstr "التاريخ الوصفة الطبية"
 msgid "Variable"
 msgstr "المتغير "
 
-msgid "Résultat"
-msgstr "النتيجة "
-
 #: templates/det-hist-analysis.html:55
 msgid "Retour à la liste analyses"
 msgstr "العودة إلى قائمة التحاليل"
@@ -1278,12 +1501,9 @@ msgid "Indiquer la quantité utilisée"
 msgstr "حدد الكمية المستخدمة"
 
 #: templates/det-list-stock.html:273 templates/hist-stock-product.html:357
-#: templates/list-doctors.html:334 templates/list-nonconformities.html:290
+#: templates/list-doctors.html:334
 msgid "Aucun prescripteur à exporter !"
 msgstr "لا يوجد أي طبيب معالج للتنزيل!"
-
-msgid "Erreur lors de la génération du fichier"
-msgstr "طرأ خلل أثناء تحرير الملف"
 
 #: templates/det-manual.html:18 templates/det-procedure.html:18
 #: templates/list-manuals.html:32 templates/list-procedure.html:32
@@ -1331,9 +1551,6 @@ msgstr "يرجى إدخال مرجع أو عنوان"
 #: templates/det-meeting.html:5 templates/det-meeting.html:15
 msgid "Réunion"
 msgstr "اجتماع"
-
-msgid "Type"
-msgstr "نوع"
 
 #: templates/det-meeting.html:29
 msgid "Réunion d'équipe"
@@ -1523,6 +1740,16 @@ msgstr "تفاصيل طلب التحاليل "
 msgid "Demande d'analyses patient externe"
 msgstr "طلب تحاليل من العيادات الخارجية"
 
+#: templates/det-req-ext.html:55 templates/det-req-int.html:58
+#: templates/setting-pref.html:68
+msgid "Années"
+msgstr ""
+
+#: templates/det-req-ext.html:56 templates/det-req-int.html:59
+#: templates/setting-pref.html:67 templates/setting-rec-num.html:17
+msgid "Mois"
+msgstr ""
+
 #: templates/det-req-ext.html:57 templates/det-req-int.html:60
 #: templates/setting-pref.html:66
 msgid "Semaines"
@@ -1617,6 +1844,10 @@ msgstr "يرجى تحديد تاريخ استلام الملف"
 msgid "Veuillez sélectionner une date de prescription"
 msgstr "يرجى تحديد تاريخ الوصفة الطبية"
 
+#: templates/det-req-ext.html:1103 templates/det-req-int.html:973
+msgid "Veuillez renseigner le code de prélèvement"
+msgstr "يرجى إدخال رمز العينة"
+
 #: templates/det-req-ext.html:1109 templates/det-req-int.html:979
 msgid "Veuillez renseigner le type du produit"
 msgstr "يرجى تحديد نوع المنتج"
@@ -1664,6 +1895,10 @@ msgstr "طرأ خلل أثناء حفظ الملف"
 #: templates/det-req-int.html:16 templates/new-req-int.html:14
 msgid "Demande d'analyses patient hospitalisé"
 msgstr "طلب تحاليل لمرضى المستشفى"
+
+#: templates/det-sample.html:67
+msgid "Code prélèvement"
+msgstr "رمز العينة "
 
 #: templates/det-sample.html:73
 msgid "Produit pathologique"
@@ -1780,6 +2015,22 @@ msgstr "جهة الاتصال"
 msgid "Veuillez saisir un fournisseur."
 msgstr "يرجى تحديد مُموِّن"
 
+#: templates/det-template.html:5 templates/det-template.html:12
+msgid "Modèle de document"
+msgstr "نموذج المستند"
+
+#: templates/det-template.html:15
+msgid "Nom du modèle"
+msgstr "تعريف النموذج "
+
+#: templates/det-template.html:21
+msgid "Type de modèle"
+msgstr "نوع النموذج"
+
+#: templates/det-template.html:25
+msgid "Etiquette"
+msgstr "ملصق"
+
 #: templates/det-template.html:31
 msgid "Par défaut pour ce type"
 msgstr "الافتراضي لهذا النوع"
@@ -1817,7 +2068,7 @@ msgstr "تحقّق"
 #: templates/manage-pat-records.html:818 templates/report-activity.html:121
 #: templates/report-billing.html:205 templates/report-statistic.html:120
 #: templates/report-today.html:155 templates/setting-analyzes.html:166
-#: templates/setting-backup.html:671 templates/setting-backup.html:683
+#: templates/setting-backup.html:683 templates/setting-backup.html:695
 #: templates/setting-dicts.html:143 templates/setting-users.html:175
 #: templates/stat_rec_with_det.js:51
 msgid "Une erreur est survenue lors de la récupération des données"
@@ -1891,16 +2142,10 @@ msgstr "تاريخ"
 msgid "Nb. sur la période"
 msgstr "العدد على المدّة       "
 
-msgid "Export des données"
-msgstr "تنزيل البيانات"
-
 #: templates/hist-analyzes.html:212 templates/hist-patients.html:196
 #: templates/popup_history.html:6
 msgid "Historique"
 msgstr "السجلات السابقة"
-
-msgid "Aucun résultats à exporter !"
-msgstr "لا توجد أي نتائج للتنزيل!"
 
 #: templates/hist-patients.html:5 templates/hist-patients.html:12
 msgid "Liste patients"
@@ -2048,6 +2293,10 @@ msgstr "حيوي "
 msgid "Technique"
 msgstr "تقني"
 
+#: templates/homepage.html:158
+msgid "Une alerte est présente dans la gestion de stock"
+msgstr ""
+
 #: templates/initialization.html:3 templates/initialization.html:20
 #: templates/login.html:3 templates/login.html:20 templates/skeleton.html:44
 msgid "LabBook"
@@ -2057,6 +2306,14 @@ msgstr "لاب بوك"
 #: templates/skeleton.html:67
 msgid "Version"
 msgstr "نسخة"
+
+#: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
+msgid "Liste des contrôles externes"
+msgstr ""
+
+#: templates/list-ctrl-ext.html:31 templates/list-ctrl-int.html:31
+msgid "Paramètre"
+msgstr ""
 
 #: templates/list-ctrl-int.html:5 templates/list-ctrl-int.html:12
 msgid "Liste des contrôles internes"
@@ -2090,9 +2347,6 @@ msgstr "البريد إلكتروني"
 #: templates/list-doctors.html:114
 msgid "Ajouter un prescripteur"
 msgstr "اضافة جهة واصفة"
-
-msgid "Editer"
-msgstr "تعديل"
 
 #: templates/list-doctors.html:268 templates/list-equipment.html:163
 #: templates/list-manuals.html:174 templates/list-meeting.html:164
@@ -2172,9 +2426,6 @@ msgstr "يرجى تحديد مصطلح"
 #: templates/list-laboratory.html:270 templates/setting-det-dict.html:222
 msgid "Veuillez renseigner le(s) code(s)."
 msgstr "يرجى تحديد الرمز (الرموز)"
-
-msgid "Enregistrement réussi"
-msgstr "تم التسجيل بنجاح"
 
 #: templates/list-manuals.html:5 templates/list-manuals.html:12
 msgid "Liste des manuels"
@@ -2465,6 +2716,10 @@ msgstr "إضافة ممون جديد"
 msgid "Note : certains equipements pourraient être associés à ce fournisseur"
 msgstr "ملاحظة: يمكن ربط بعض المعدات بهذا الممون"
 
+#: templates/list-template.html:5 templates/list-template.html:12
+msgid "Modèles de documents"
+msgstr "نماذج مستندات"
+
 #: templates/list-template.html:33
 msgid "Défaut"
 msgstr "خطأ"
@@ -2650,6 +2905,11 @@ msgstr "إعدادات التقارير"
 msgid "Configuration des numéros de dossier"
 msgstr "إعدادات أرقام المجلدات"
 
+#: templates/menu.html:99 templates/setting-zipcity.html:5
+#: templates/setting-zipcity.html:12
+msgid "Gestion des codes postaux"
+msgstr ""
+
 #: templates/menu.html:103
 msgid "Gestion des dossiers patients"
 msgstr "إدارة سجلات المرضى/ ضبط "
@@ -2698,6 +2958,10 @@ msgstr "إدارة المخزون"
 #: templates/menu.html:140
 msgid "Module des non-conformités"
 msgstr "وحدة المسائل الغير مطابقة"
+
+#: templates/menu.html:141 templates/non-conformity.html:171
+msgid "Contrôle qualité interne"
+msgstr "الضوابط الداخلية للجودة"
 
 #: templates/menu.html:142 templates/non-conformity.html:177
 msgid "Contrôle qualité externe"
@@ -2938,7 +3202,9 @@ msgid "Réactifs et consommables"
 msgstr "الكواشف واللوازم"
 
 #: templates/non-conformity.html:438
-msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgid ""
+"Réception de réactifs et/ou consommables ne correspondant pas à la "
+"commande"
 msgstr "عدم مطابقة المواد المستلمة مع الطلبية"
 
 #: templates/non-conformity.html:444
@@ -3093,6 +3359,10 @@ msgstr "يرجى إدخال اسم لهذه المسألة الغير مطابق
 msgid "Veuillez sélectionner un rapporteur."
 msgstr "يرجى اختيار مصرح عن المسألة"
 
+#: templates/pivot-table.html:21
+msgid "Choix des données"
+msgstr "إختيار البيانات "
+
 #: templates/pivot-table.html:26
 msgid "Dataset"
 msgstr "مجموعة البيانات"
@@ -3112,6 +3382,10 @@ msgstr "قائمة التحاليل في هذا الملف "
 #: templates/popup_det_rec.html:17 templates/popup_history.html:17
 msgid "OK"
 msgstr "حسنًا"
+
+#: templates/popup_toast.html:4
+msgid "Notification"
+msgstr "إشعار "
 
 #: templates/popup_wait.html:6
 msgid "Processus en cours"
@@ -3309,6 +3583,27 @@ msgstr "عمر غير محدد"
 msgid "Famille"
 msgstr "قسم "
 
+#: templates/res-control-ext.html:5 templates/res-control-ext.html:13
+msgid "Résultats du contrôle externe"
+msgstr ""
+
+#: templates/res-control-ext.html:16 templates/res-control-int.html:16
+msgid "Date du contrôle"
+msgstr ""
+
+#: templates/res-control-ext.html:30
+msgid "Contact de l'organisateur"
+msgstr ""
+
+#: templates/res-control-ext.html:37 templates/res-control-int.html:31
+#: templates/res-control-int.html:44
+msgid "Résultats du contrôle"
+msgstr ""
+
+#: templates/res-control-ext.html:114 templates/res-control-int.html:92
+msgid "Veuillez saisir une date de contrôle."
+msgstr ""
+
 #: templates/res-control-int.html:5 templates/res-control-int.html:13
 msgid "Résultats du contrôle interne"
 msgstr ""
@@ -3387,7 +3682,9 @@ msgstr "غير مُفعَّل"
 msgid ""
 "Veuillez confirmer la suppression du cette analyse\\nAttention les "
 "dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr "يرجى تأكيد حذف هذا التحليل \ n تنبيه: الخلل سوف يلحق أي ملفات مرتبطة بهذا التحليل "
+msgstr ""
+"يرجى تأكيد حذف هذا التحليل \\ n تنبيه: الخلل سوف يلحق أي ملفات مرتبطة "
+"بهذا التحليل "
 
 #: templates/setting-backup.html:5 templates/setting-backup.html:12
 msgid "Paramétrage de la sauvegarde"
@@ -3441,7 +3738,7 @@ msgstr "يرجى إدخال كلمة المرور لملف النسخ الاحت
 msgid "Confirmation"
 msgstr "تأكيد"
 
-#: templates/setting-backup.html:108 templates/setting-backup.html:250
+#: templates/setting-backup.html:108 templates/setting-backup.html:252
 #: templates/setting-backup.html:571
 msgid "Veuillez sélectionner un média"
 msgstr "يرجى اختيار أحد الوسائط"
@@ -3458,100 +3755,102 @@ msgstr "يرجى تحديد النسخة الاحتياطية لاستعادته
 msgid "Liste des sauvegardes disponibles"
 msgstr "قائمة النسخ الاحتياطية المتاحة"
 
-#: templates/setting-backup.html:169
+#: templates/setting-backup.html:171
 msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "يرجى تأكيد تغيير موعد حفظ النسخ الاحتياطية "
 
-#: templates/setting-backup.html:190
+#: templates/setting-backup.html:192
 msgid ""
 "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
 " seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
 "clé ?"
-msgstr "نسخ إحتياطية موجودة سابقًا - بعد إعادة إنشاء حافظة جديدة لن تتمكن من استعادة النسخ القديمة /n تأكيد إنشاء حافظة جديدة؟ "
+msgstr ""
+"نسخ إحتياطية موجودة سابقًا - بعد إعادة إنشاء حافظة جديدة لن تتمكن من "
+"استعادة النسخ القديمة /n تأكيد إنشاء حافظة جديدة؟ "
 
-#: templates/setting-backup.html:225 templates/setting-backup.html:272
+#: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
 msgstr "يرجى إدخال كلمة المرور"
 
-#: templates/setting-backup.html:278 templates/setting-det-user.html:316
+#: templates/setting-backup.html:280 templates/setting-det-user.html:316
 msgid "Les mots de passe ne correspondent pas !"
 msgstr "كلمة المرور غير مطابقة!"
 
-#: templates/setting-backup.html:300
+#: templates/setting-backup.html:302
 msgid "Veuillez saisir une heure de sauvegarde."
 msgstr "يرجى إدخال موعد لإنشاء النسخ الاحتياطي"
 
-#: templates/setting-backup.html:378
-msgid "Une erreur est survenue lors de la récupération de la liste de média"
-msgstr "طرأ خلل أثناء استرداد قائمة الوسائط"
-
-#: templates/setting-backup.html:386 templates/setting-backup.html:453
-#: templates/setting-backup.html:479 templates/setting-backup.html:559
+#: templates/setting-backup.html:386 templates/setting-backup.html:463
+#: templates/setting-backup.html:490 templates/setting-backup.html:558
 msgid "Une erreur est survenue lors de l'interrogation du service"
 msgstr "طرأ خلل أثناء الاستعلام عن الخدمة"
 
-#: templates/setting-backup.html:415
+#: templates/setting-backup.html:416
 msgid "Une erreur est survenue lors de la vérification de clé de sauvegarde"
 msgstr "طرأ خلل أثناء التحقق من حافظة النسخ الاحتياطية"
 
-#: templates/setting-backup.html:425
+#: templates/setting-backup.html:426
 msgid "Une erreur est survenue le média choisi est incorrect"
 msgstr "طرأ خلل - الوسائط غير صحيحة"
 
-#: templates/setting-backup.html:442
+#: templates/setting-backup.html:450
 msgid "Initialisation réussie"
 msgstr "نجح التشغيل"
 
-#: templates/setting-backup.html:446
+#: templates/setting-backup.html:454
 msgid "Une erreur est survenue lors de l'initialisation du média"
 msgstr "طرأ خلل أثناء بدء تشغيل إحدى الوسائط"
 
-#: templates/setting-backup.html:473
+#: templates/setting-backup.html:484
 msgid "Génération réussie"
 msgstr "تم تحرير الملف بنجاح"
-
-#: templates/setting-backup.html:551
-msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
-msgstr "طرأ خلل أثناء استرداد قائمة الأرشيف"
 
 #: templates/setting-backup.html:581
 msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "يرجى تأكيد البدء الفوري لعملية إستعادة البيانات"
 
-#: templates/setting-backup.html:608
+#: templates/setting-backup.html:610
 msgid ""
 "Une erreur est survenue lors de la restauration, veuillez contacter votre"
 " administrateur pour qu'il vérifie manuellement que cette dernière est "
 "terminée."
-msgstr "طرأ خلل أثناء إستعادة البيانات، يرجى الاتصال بالمسؤول للتحقق يدويًا من اكتمال العملية"
+msgstr ""
+"طرأ خلل أثناء إستعادة البيانات، يرجى الاتصال بالمسؤول للتحقق يدويًا من "
+"اكتمال العملية"
 
-#: templates/setting-backup.html:758
+#: templates/setting-backup.html:628
+msgid "Délai d'attente dépassé"
+msgstr "تجاوزت فترة الانتظار"
+
+#: templates/setting-backup.html:770
 msgid ""
 "La restauration est terminée, LabBook va redémarrer les services de "
 "l'application"
 msgstr "اكتملت عملية إستعادة البيانات، وسيقوم LabBook بإعادة تشغيل خدمات التطبيق"
 
-#: templates/setting-backup.html:772
+#: templates/setting-backup.html:784
 msgid "Redémarrage activé"
 msgstr "إعادة التشغيل"
 
-#: templates/setting-backup.html:777
+#: templates/setting-backup.html:789
 msgid ""
 "Les services ont redémarré ou une erreur est survenue lors de la demande "
 "de redémarrage\\nveuillez recharger la page"
-msgstr "تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \ n يرجى إعادة تحميل الصفحة"
+msgstr ""
+"تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \\ n "
+"يرجى إعادة تحميل الصفحة"
 
-#: templates/setting-backup.html:787
+#: templates/setting-backup.html:799
 msgid "Sauvegarde réussie"
 msgstr "تم الحفظ بنجاح"
 
-msgid "Une erreur est survenue"
-msgstr "طرأ خلل"
-
-msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+#: templates/setting-backup.html:822
+msgid ""
+"Une erreur est survenue lors de la vérification de l'état en cours, "
+"statut inconnu"
 msgstr "طرأ خلل أثناء متابعة وضع العمليات الحالية ، الوضع غير معروف"
 
-#: templates/setting-backup.html:822
+#: templates/setting-backup.html:834
 msgid "Une erreur est survenue lors de la vérification de l'état en cours"
 msgstr "طرأ خلل أثناء متابعة وضع العمليات الحالية"
 
@@ -3719,10 +4018,6 @@ msgstr "دور"
 msgid "Administrateur"
 msgstr "مدير"
 
-
-msgid "Qualiticien"
-msgstr "عامل لضمانة الجودة"
-
 #: templates/setting-det-user.html:36
 msgid "Prescripteur associé"
 msgstr "الجهة الواصفة "
@@ -3802,9 +4097,6 @@ msgstr "إعدادات تنزيل نموذج DHIS2"
 #: templates/setting-dhis2.html:33 templates/setting-epidemio.html:33
 msgid "Enregistrer la feuille de calcul"
 msgstr "حفظ المستند"
-
-msgid "Une erreur est survenue lors du dépot du fichier"
-msgstr "طرأ خلل أثناء إدخال المستند"
 
 #: templates/setting-dicts.html:5 templates/setting-dicts.html:12
 msgid "Liste des dictionnaires (choix de réponses)"
@@ -4106,99 +4398,18 @@ msgstr "تاريخ التحقق من"
 msgid "Aucun résultat à exporter !"
 msgstr "لا توجد أي نتائج للتنزيل!"
 
-msgid "Pièces jointes au dossier"
-msgstr "مستندات مرفقة بالملف"
+#~ msgid " Nom"
+#~ msgstr "الاسم"
 
-msgid "Erreur lors de la génération du PDF"
-msgstr "طرأ خلل أثناء تحرير الPDF "
+#~ msgid "Une erreur est survenue lors de la récupération de la liste de média"
+#~ msgstr "طرأ خلل أثناء استرداد قائمة الوسائط"
 
-msgid "Deuxième nom"
-msgstr "الإسم ثاني"
+#~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
+#~ msgstr "طرأ خلل أثناء استرداد قائمة الأرشيف"
 
-msgid "Résident "
-msgstr "مقيم  "
+#~ msgid "Qualiticien"
+#~ msgstr "عامل لضمانة الجودة"
 
-msgid "Groupe sanguin"
-msgstr "فئة الدم "
-
-msgid "Rhésus"
-msgstr "العامل ريسوس "
-
-msgid "Veuillez renseigner le code de prélèvement"
-msgstr "يرجى إدخال رمز العينة"
-
-msgid "Code prélèvement"
-msgstr "رمز العينة "
-
-msgid "Modèle de document"
-msgstr "نموذج المستند"
-
-msgid "Nom du modèle"
-msgstr "تعريف النموذج "
-
-msgid "Type de modèle"
-msgstr "نوع النموذج"
-
-msgid "Etiquette"
-msgstr "ملصق"
-
-msgid "Par défaut pour ce type"
-msgstr "تلقائيًا لهذا النوع من المستندات"
-
-msgid "Veuillez choisir un fichier."
-msgstr "يرجى اختيار ملف"
-
-msgid "Une erreur est survenue lors du dépot du fichier"
-msgstr "طرأ خلل أثناء إدخال ملف "
-
-msgid "Vous ne pouvez pas annuler un stock déjà partiellement consommé"
-msgstr "لا يمكن إلغاء أي منتج قد استخدم من المخزون   "
-
-msgid "Veuillez confirmer l'annulation"
-msgstr "يرجى تأكيد الإلغاء "
-
-msgid "Erreur lors de l'annulation de stock"
-msgstr "طرأ خلل أثناء إلغاء المخزون"
-
-msgid "Erreur lors de la vérification de l'usage de ce stock"
-msgstr "طرأ خلل أثناء الـتأكد من استخدام هذا المخزون "
-
-msgid "Modèles de documents"
-msgstr "نماذج مستندات"
-
-msgid "Défaut"
-msgstr "تلقائيا "
-
-msgid "Ajouter un modèle"
-msgstr "إضافة نموذج"
-
-msgid "Tester"
-msgstr "إختبار"
-
-msgid "Tableau croisé dynamique"
-msgstr "جدول ديناميكي"
-
-msgid "Gestion modèle document"
-msgstr "إدارة نموذج المستند"
-
-msgid "Contrôle qualité interne"
-msgstr "الضوابط الداخلية للجودة"
-
-msgid "Contrôle qualité externe"
-msgstr "الضوابط الخارجية للجودة"
-
-msgid "Choix des données"
-msgstr "إختيار البيانات "
-
-msgid "Dataset"
-msgstr "قاعدة البيانات "
-
-msgid "Chargement"
-msgstr "تحميل"
-
-msgid "Veuillez saisir des dates"
-msgstr "يرجى تحديد تواريخ "
-
-msgid "Notification"
-msgstr "إشعار "
+#~ msgid "Résident "
+#~ msgstr "مقيم  "
 

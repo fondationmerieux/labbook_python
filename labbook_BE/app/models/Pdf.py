@@ -1240,7 +1240,7 @@ class Pdf:
                         elif res_prev and res_prev['valeur']:
                             prev_res = res_prev['valeur']
 
-                        if res['normal_min'] != '' and res['normal_max'] != '':
+                        if res['normal_min'] and res['normal_max']:
                             if val != _("Annulée"):
                                 # bold style if out of range min/max
                                 if float(val) < float(res['normal_min']) or float(val) > float(res['normal_max']):

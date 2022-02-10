@@ -71,17 +71,25 @@ class RecordDet(Resource):
             record['date_hosp'] = datetime.strftime(record['date_hosp'], '%Y-%m-%d')
 
         # decimal number not serializable in JSON, convert except if empty string
-        if record['prix'] != '':
+        if record['prix']:
             record['prix'] = float(record['prix'])
+        else:
+            record['prix'] = 0
 
-        if record['remise_pourcent'] != '':
+        if record['remise_pourcent']:
             record['remise_pourcent'] = float(record['remise_pourcent'])
+        else:
+            record['remise_pourcent'] = 0
 
-        if record['assu_pourcent'] != '':
+        if record['assu_pourcent']:
             record['assu_pourcent'] = float(record['assu_pourcent'])
+        else:
+            record['assu_pourcent'] = 0
 
-        if record['a_payer'] != '':
+        if record['a_payer']:
             record['a_payer'] = float(record['a_payer'])
+        else:
+            record['a_payer'] = 0
 
         self.log.info(Logs.fileline() + ' : RecordDet id_rec=' + str(id_rec))
         return compose_ret(record, Constants.cst_content_type_json, 200)
@@ -307,17 +315,25 @@ class RecordLast(Resource):
             record['date_hosp'] = datetime.strftime(record['date_hosp'], '%Y-%m-%d')
 
         # decimal number not serializable in JSON, convert except if empty string
-        if record['prix'] != '':
+        if record['prix']:
             record['prix'] = float(record['prix'])
+        else:
+            record['prix'] = 0
 
-        if record['remise_pourcent'] != '':
+        if record['remise_pourcent']:
             record['remise_pourcent'] = float(record['remise_pourcent'])
+        else:
+            record['remise_pourcent'] = 0
 
-        if record['assu_pourcent'] != '':
+        if record['assu_pourcent']:
             record['assu_pourcent'] = float(record['assu_pourcent'])
+        else:
+            record['assu_pourcent'] = 0
 
-        if record['a_payer'] != '':
+        if record['a_payer']:
             record['a_payer'] = float(record['a_payer'])
+        else:
+            record['a_payer'] = 0
 
         self.log.info(Logs.fileline() + ' : RecordLast')
         return compose_ret(record, Constants.cst_content_type_json, 200)
