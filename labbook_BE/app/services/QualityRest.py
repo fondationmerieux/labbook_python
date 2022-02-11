@@ -29,8 +29,11 @@ class QualityLastMeeting(Resource):
             if meeting[key] is None:
                 meeting[key] = ''
 
-        meeting['sys_creation_date'] = datetime.strftime(meeting['sys_creation_date'], '%Y-%m-%d')
-        meeting['sys_last_mod_date'] = datetime.strftime(meeting['sys_last_mod_date'], '%Y-%m-%d')
+        if meeting['sys_creation_date']:
+            meeting['sys_creation_date'] = datetime.strftime(meeting['sys_creation_date'], '%Y-%m-%d')
+
+        if meeting['sys_last_mod_date']:
+            meeting['sys_last_mod_date'] = datetime.strftime(meeting['sys_last_mod_date'], '%Y-%m-%d')
 
         if meeting['date']:
             meeting['date'] = datetime.strftime(meeting['date'], '%Y-%m-%d')
@@ -1907,10 +1910,10 @@ class StockListDet(Resource):
             if stock['prs_expir_date']:
                 delta = stock['prs_expir_date'] - datetime.now()
                 stock['day_to_expir'] = delta.days
-                stock['prs_expir_date']   = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
+                stock['prs_expir_date'] = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
             else:
                 stock['day_to_expir'] = 0
-                stock['prs_expir_date'] = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
+                stock['prs_expir_date'] = ''
 
             if stock['pru_nb_pack']:
                 stock['pru_nb_pack'] = float(stock['pru_nb_pack'])
@@ -1968,7 +1971,7 @@ class StockProductHist(Resource):
                 stock['prs_receipt_date'] = ''
 
             if 'prs_expir_date' in stock and stock['prs_expir_date']:
-                stock['prs_expir_date']   = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
+                stock['prs_expir_date'] = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
             else:
                 stock['prs_expir_date'] = ''
 

@@ -61,8 +61,11 @@ class RecordDet(Resource):
             if record[key] is None:
                 record[key] = ''
 
-        record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
-        record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
+        if record['date_dos']:
+            record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
+
+        if record['date_prescription']:
+            record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
 
         if record['date_reception_colis']:
             record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')
@@ -305,8 +308,11 @@ class RecordLast(Resource):
             if record[key] is None:
                 record[key] = ''
 
-        record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
-        record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
+        if record['date_dos']:
+            record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
+
+        if record['date_prescription']:
+            record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
 
         if record['date_reception_colis']:
             record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')

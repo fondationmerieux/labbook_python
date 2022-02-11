@@ -1189,7 +1189,7 @@ class Pdf:
 
                     res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'])
 
-                    if res_prev:
+                    if res_prev and res_prev['date_valid']:
                         prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
 
                     # Get label of value
@@ -1464,7 +1464,11 @@ class Pdf:
                 data['rec']['num_y'] = str(record['num_dos_an'])
                 data['rec']['num_m'] = str(record['num_dos_mois'])
                 data['rec']['num_d'] = str(record['num_dos_jour'])
-                data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+
+                if record['date_dos']:
+                    data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+                else:
+                    data['rec']['rec_date'] = ''
 
                 # --- Patient details
                 data['pat'] = {}

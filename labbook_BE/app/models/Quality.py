@@ -31,16 +31,15 @@ class Quality:
         cond = ''
 
         if period == 'open':
-            cond = ' cloture_date is NULL '
-
+            cond = ' cloture_date is NULL or cloture_date ="0000-00-00" '
         elif period == 'month':
             cond = ' date > adddate(NOW(), INTERVAL -1 MONTH) '
 
         # NOTE count with sigl_non_conformite_data too ?
         # Number of non-compliance
-        req = 'select count(*) as nb_noncompliance '\
-              'from sigl_non_conformite_data '\
-              'where ' + cond
+        req = ('select count(*) as nb_noncompliance '
+               'from sigl_non_conformite_data '
+               'where ' + cond)
 
         cursor.execute(req)
 
@@ -712,9 +711,9 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (fournisseur_nom like "%' + word + '%") ')
 
-        req = 'select fournisseur_nom as field_value, id_data '\
-              'from sigl_fournisseurs_data '\
-              'where ' + cond + ' order by field_value asc limit 1000'
+        req = ('select fournisseur_nom as field_value, id_data '
+               'from sigl_fournisseurs_data '
+               'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
 
@@ -731,9 +730,9 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (prd_name like "%' + word + '%") ')
 
-        req = 'select prd_name as field_value, prd_ser as id_item '\
-              'from product_details '\
-              'where ' + cond + ' order by field_value asc limit 1000'
+        req = ('select prd_name as field_value, prd_ser as id_item '
+               'from product_details '
+               'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
 
@@ -1075,9 +1074,9 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
 
-        req = 'select CONCAT(titre," / ref: ",reference) as field_value, id_data '\
-              'from sigl_manuels_data '\
-              'where ' + cond + ' order by field_value asc limit 1000'
+        req = ('select CONCAT(titre," / ref: ",reference) as field_value, id_data '
+               'from sigl_manuels_data '
+               'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
 
@@ -1265,9 +1264,9 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
 
-        req = 'select CONCAT(titre," / ref: ",reference) as field_value, id_data '\
-              'from sigl_procedures_data '\
-              'where ' + cond + ' order by field_value asc limit 1000'
+        req = ('select CONCAT(titre," / ref: ",reference) as field_value, id_data '
+               'from sigl_procedures_data '
+               'where ' + cond + ' order by field_value asc limit 1000')
 
         cursor.execute(req)
 

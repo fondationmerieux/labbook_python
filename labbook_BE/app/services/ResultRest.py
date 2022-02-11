@@ -108,9 +108,9 @@ class ResultList(Resource):
                 for key, value in list(result['user'].items()):
                     if result['user'][key] is None:
                         result['user'][key] = ''
-                    if key == 'birth':
+                    if key == 'birth' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
-                    if key == 'last_eval':
+                    if key == 'last_eval' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
 
             # Get status labels of record
@@ -209,9 +209,9 @@ class ResultRecord(Resource):
                 for key, value in list(result['user'].items()):
                     if result['user'][key] is None:
                         result['user'][key] = ''
-                    if key == 'birth':
+                    if key == 'birth' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
-                    if key == 'last_eval':
+                    if key == 'last_eval' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
 
             # Get status labels of record
@@ -223,6 +223,7 @@ class ResultRecord(Resource):
                 if result[key] is None:
                     result[key] = ''
 
+        self.log.info(Logs.fileline() + ' : ResultRecord l_results=' + str(l_results))
         self.log.info(Logs.fileline() + ' : ResultRecord id_rec=' + str(id_rec))
         return compose_ret(l_results, Constants.cst_content_type_json, 200)
 
