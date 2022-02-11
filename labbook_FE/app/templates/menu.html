@@ -148,6 +148,12 @@
             </span>
             {% endif %}
 
+            {% if session['user_role'] != 'A' and session['user_role'] != 'B' and session['user_role'] != 'TQ' and
+                  session['user_role'] != 'T' and session['user_role'] != 'TA' and session['user_role'] != 'TQ' and 
+                  session['user_role'] != 'S' and session['user_role'] != 'SA' and session['user_role'] != 'P' %}
+            <span>{{ _("Veuillez vous reconnecter") }}</span>
+            {% endif %}
+
             <!-- Non conformity -->
             <span class="nav-cust-btn">
                 <li class="nav-item">

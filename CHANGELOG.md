@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - spelling error for minimal value in B008 analysis
 - section in detail procedure not well displayed
 - section in detail manual not well displayed
+- multiple sample with code are saved
 
 ## [3.2.0] - 2021-12-15
 ### Added

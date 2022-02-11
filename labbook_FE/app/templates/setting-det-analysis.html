@@ -840,7 +840,7 @@ var msg = "" ;
     if (name == "")
     msg += "{{ _("Veuillez saisir un nom d'analyse.") }}\n" ;
 
-    if (data_vars.length == 0)
+    if ( !code.startsWith("PB") && data_vars.length == 0)
     msg += "{{ _("Veuillez choisir ou définir au moins une variable.") }}\n" ;
 
     if (msg != "")

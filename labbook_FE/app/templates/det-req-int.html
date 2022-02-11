@@ -643,7 +643,7 @@ let tr_product = '' ;
 
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
         tmp_tr += create_td("", btn, "text-center", "") ; // actions
-        tmp_tr += create_td("", create_input("prod_code_"+obj.code, "text", obj.code, 0, 0, ""), "text-center", "") ; // input code product
+        tmp_tr += create_td("", create_input("prod_code_"+obj.id_data, "text", obj.code, 0, 0, ""), "text-center", "") ; // input code product
         tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "text-center", "") ; // select product
         tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "text-center", "") ; // select statut
         tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0, ""), "text-center", "") ; // input date prel

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-10 16:18+0100\n"
+"POT-Creation-Date: 2022-02-11 17:29+0100\n"
 "PO-Revision-Date: 2021-02-21 15:20+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -51,51 +51,51 @@ msgstr "Anonymous patient"
 #: templates/administrative-record.html:39
 #: templates/administrative-record.html:647
 #: templates/biological-validation.html:40
-#: templates/biological-validation.html:779 templates/det-req-ext.html:51
+#: templates/biological-validation.html:785 templates/det-req-ext.html:51
 #: templates/det-req-int.html:54 templates/det-sample.html:37
-#: templates/enter-result.html:40 templates/enter-result.html:834
+#: templates/enter-result.html:40 templates/enter-result.html:840
 #: templates/technical-validation.html:40
-#: templates/technical-validation.html:569
+#: templates/technical-validation.html:575
 msgid "Né(e) le"
 msgstr "Date of birth"
 
 #: templates/administrative-record.html:43
 #: templates/administrative-record.html:649
 #: templates/biological-validation.html:44
-#: templates/biological-validation.html:781 templates/det-sample.html:41
-#: templates/enter-result.html:44 templates/enter-result.html:836
+#: templates/biological-validation.html:787 templates/det-sample.html:41
+#: templates/enter-result.html:44 templates/enter-result.html:842
 #: templates/technical-validation.html:44
-#: templates/technical-validation.html:571
+#: templates/technical-validation.html:577
 msgid "années"
 msgstr "years"
 
 #: templates/administrative-record.html:44
 #: templates/administrative-record.html:650
 #: templates/biological-validation.html:45
-#: templates/biological-validation.html:782 templates/det-sample.html:42
-#: templates/enter-result.html:45 templates/enter-result.html:837
+#: templates/biological-validation.html:788 templates/det-sample.html:42
+#: templates/enter-result.html:45 templates/enter-result.html:843
 #: templates/technical-validation.html:45
-#: templates/technical-validation.html:572
+#: templates/technical-validation.html:578
 msgid "mois"
 msgstr "months"
 
 #: templates/administrative-record.html:45
 #: templates/administrative-record.html:651
 #: templates/biological-validation.html:46
-#: templates/biological-validation.html:783 templates/det-sample.html:43
-#: templates/enter-result.html:46 templates/enter-result.html:838
+#: templates/biological-validation.html:789 templates/det-sample.html:43
+#: templates/enter-result.html:46 templates/enter-result.html:844
 #: templates/technical-validation.html:46
-#: templates/technical-validation.html:573
+#: templates/technical-validation.html:579
 msgid "semaines"
 msgstr "weeks"
 
 #: templates/administrative-record.html:46
 #: templates/administrative-record.html:652
 #: templates/biological-validation.html:47
-#: templates/biological-validation.html:784 templates/det-sample.html:44
-#: templates/enter-result.html:47 templates/enter-result.html:839
+#: templates/biological-validation.html:790 templates/det-sample.html:44
+#: templates/enter-result.html:47 templates/enter-result.html:845
 #: templates/technical-validation.html:47
-#: templates/technical-validation.html:574
+#: templates/technical-validation.html:580
 msgid "jours"
 msgstr "days"
 
@@ -418,9 +418,9 @@ msgid "Code barre"
 msgstr "Barcode"
 
 #: templates/administrative-record.html:354
-#: templates/administrative-record.html:390 templates/det-equipment.html:571
-#: templates/det-manual.html:311 templates/det-meeting.html:193
-#: templates/det-procedure.html:312 templates/det-staff.html:321
+#: templates/administrative-record.html:390 templates/det-equipment.html:577
+#: templates/det-manual.html:317 templates/det-meeting.html:199
+#: templates/det-procedure.html:318 templates/det-staff.html:321
 #: templates/det-template.html:55 templates/list-laboratory.html:323
 #: templates/res-control-ext.html:71 templates/res-control-ext.html:206
 #: templates/setting-dhis2.html:104 templates/setting-epidemio.html:104
@@ -444,7 +444,7 @@ msgstr "Re-edit"
 #: templates/list-procedure.html:102 templates/list-products.html:92
 #: templates/list-samples.html:108 templates/list-staff.html:109
 #: templates/list-stock.html:193 templates/list-suppliers.html:99
-#: templates/list-template.html:95 templates/report-billing.html:234
+#: templates/list-template.html:95 templates/report-billing.html:240
 #: templates/report-today.html:184 templates/setting-analyzes.html:193
 #: templates/setting-dicts.html:170 templates/setting-users.html:202
 #: templates/setting-zipcity.html:93
@@ -469,23 +469,23 @@ msgid "Une erreur est survenue lors du traitement"
 msgstr "An error occurred during processing"
 
 #: templates/administrative-record.html:539 templates/analysis-import.html:96
-#: templates/det-equipment.html:606 templates/det-manual.html:346
-#: templates/det-meeting.html:228 templates/det-procedure.html:347
+#: templates/det-equipment.html:612 templates/det-manual.html:352
+#: templates/det-meeting.html:234 templates/det-procedure.html:353
 #: templates/det-staff.html:356 templates/list-laboratory.html:357
 #: templates/res-control-ext.html:180 templates/setting-zipcity.html:219
 #: templates/user-import.html:82
 msgid "Une erreur est survenue lors du dépot d'un fichier"
 msgstr "An error occurred while uploading a file"
 
-#: templates/administrative-record.html:547 templates/det-equipment.html:614
-#: templates/det-manual.html:355 templates/det-procedure.html:355
+#: templates/administrative-record.html:547 templates/det-equipment.html:620
+#: templates/det-manual.html:361 templates/det-procedure.html:361
 #: templates/det-staff.html:364 templates/list-laboratory.html:364
 #: templates/setting-dhis2.html:116
 msgid "Le fichier sera définitivement supprimé"
 msgstr "The file will be permanently deleted"
 
-#: templates/administrative-record.html:560 templates/det-equipment.html:627
-#: templates/det-manual.html:368 templates/det-procedure.html:368
+#: templates/administrative-record.html:560 templates/det-equipment.html:633
+#: templates/det-manual.html:374 templates/det-procedure.html:374
 #: templates/det-staff.html:377 templates/list-laboratory.html:377
 #: templates/setting-dhis2.html:129
 msgid "Erreur lors de la suppression d'un fichier"
@@ -494,7 +494,7 @@ msgstr "Error while deleting a file"
 #: templates/administrative-record.html:591
 #: templates/administrative-record.html:624
 #: templates/administrative-record.html:631
-#: templates/biological-validation.html:837 templates/list-template.html:197
+#: templates/biological-validation.html:843 templates/list-template.html:197
 #: templates/list-template.html:204
 msgid "Erreur lors de la génération du PDF"
 msgstr "Error while generating PDF"
@@ -583,6 +583,10 @@ msgstr "An error occurred while checking the status of the database"
 #: templates/api.html:3
 msgid "LabBook API"
 msgstr "LabBook API"
+
+#: templates/api.html:65
+msgid "Accés non autorisé"
+msgstr ""
 
 #: templates/biological-validation.html:5
 #: templates/biological-validation.html:16 templates/list-records.html:292
@@ -696,8 +700,8 @@ msgstr "An error occurred when changing the status of the file"
 msgid "Une erreur est survenue lors de création des résultats"
 msgstr "An error occurred while creating the results"
 
-#: templates/biological-validation.html:338 templates/det-req-ext.html:1338
-#: templates/det-req-int.html:1189 templates/enter-result.html:667
+#: templates/biological-validation.html:338 templates/det-req-ext.html:1348
+#: templates/det-req-int.html:1195 templates/enter-result.html:667
 #: templates/technical-validation.html:199
 msgid "Une erreur est survenue lors de l'enregistrement des analyses"
 msgstr "An error occurred during the recording of the analyzes"
@@ -732,23 +736,23 @@ msgstr "Reset value"
 
 #: templates/biological-validation.html:672 templates/det-control-ext.html:286
 #: templates/det-control-int.html:273 templates/det-equipment.html:269
-#: templates/det-equipment.html:306 templates/det-equipment.html:343
-#: templates/det-equipment.html:380 templates/det-manual.html:111
-#: templates/det-manual.html:148 templates/det-manual.html:185
+#: templates/det-equipment.html:312 templates/det-equipment.html:349
+#: templates/det-equipment.html:386 templates/det-manual.html:111
+#: templates/det-manual.html:154 templates/det-manual.html:191
 #: templates/det-meeting.html:83 templates/det-new-product.html:95
-#: templates/det-procedure.html:112 templates/det-procedure.html:149
-#: templates/det-procedure.html:186 templates/det-req-ext.html:349
+#: templates/det-procedure.html:112 templates/det-procedure.html:155
+#: templates/det-procedure.html:192 templates/det-req-ext.html:349
 #: templates/det-req-ext.html:381 templates/det-req-int.html:358
 #: templates/det-req-int.html:390 templates/det-stock-product.html:91
 #: templates/enter-result.html:674 templates/manage-pat-records.html:556
 #: templates/manage-pat-records.html:584 templates/new-req-ext.html:50
 #: templates/new-req-int.html:49 templates/non-conformity.html:790
-#: templates/non-conformity.html:827 templates/non-conformity.html:864
-#: templates/non-conformity.html:901 templates/non-conformity.html:938
-#: templates/non-conformity.html:975 templates/report-billing.html:129
+#: templates/non-conformity.html:833 templates/non-conformity.html:870
+#: templates/non-conformity.html:907 templates/non-conformity.html:944
+#: templates/non-conformity.html:981 templates/report-billing.html:129
 #: templates/setting-det-analysis.html:321
-#: templates/setting-det-analysis.html:425
-#: templates/setting-det-analysis.html:492 templates/setting-det-user.html:237
+#: templates/setting-det-analysis.html:431
+#: templates/setting-det-analysis.html:498 templates/setting-det-user.html:237
 #: templates/technical-validation.html:462
 msgid "Cliquer pour commencer une recherche"
 msgstr "Click to start a search"
@@ -763,11 +767,11 @@ msgstr "Analysis already present!"
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "Error when retrieving an analysis"
 
-#: templates/biological-validation.html:844 templates/setting-backup.html:812
+#: templates/biological-validation.html:850 templates/setting-backup.html:812
 msgid "Une erreur est survenue"
 msgstr "An error has occurred"
 
-#: templates/biological-validation.html:853
+#: templates/biological-validation.html:859
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr "Attention you are going to leave this record without having validated it."
 
@@ -1083,24 +1087,24 @@ msgstr "Please select an equipment."
 #: templates/list-laboratory.html:303 templates/manage-pat-records.html:714
 #: templates/res-control-ext.html:143 templates/res-control-int.html:116
 #: templates/setting-age-interval.html:217 templates/setting-backup.html:333
-#: templates/setting-det-analysis.html:948 templates/setting-det-dict.html:268
+#: templates/setting-det-analysis.html:954 templates/setting-det-dict.html:268
 #: templates/setting-det-dict.html:278 templates/setting-pref.html:181
 #: templates/setting-rec-num.html:68 templates/setting-report.html:68
 msgid "Enregistrement réussi"
 msgstr "Registration successful"
 
 #: templates/det-control-ext.html:221 templates/det-control-int.html:208
-#: templates/det-doctor.html:190 templates/det-equipment.html:516
-#: templates/det-list-stock.html:213 templates/det-manual.html:286
-#: templates/det-meeting.html:168 templates/det-new-product.html:185
-#: templates/det-procedure.html:287 templates/det-sample.html:223
-#: templates/det-staff.html:278 templates/det-stock-product.html:182
+#: templates/det-doctor.html:190 templates/det-equipment.html:522
+#: templates/det-list-stock.html:213 templates/det-manual.html:292
+#: templates/det-meeting.html:174 templates/det-new-product.html:185
+#: templates/det-procedure.html:293 templates/det-sample.html:223
+#: templates/det-staff.html:278 templates/det-stock-product.html:188
 #: templates/det-supplier.html:147 templates/det-template.html:134
 #: templates/homepage.html:121 templates/list-laboratory.html:308
-#: templates/manage-pat-records.html:719 templates/non-conformity.html:1371
+#: templates/manage-pat-records.html:719 templates/non-conformity.html:1377
 #: templates/res-control-ext.html:150 templates/res-control-int.html:123
 #: templates/setting-age-interval.html:222 templates/setting-backup.html:337
-#: templates/setting-backup.html:346 templates/setting-det-analysis.html:955
+#: templates/setting-backup.html:346 templates/setting-det-analysis.html:961
 #: templates/setting-det-dict.html:273 templates/setting-det-dict.html:283
 #: templates/setting-det-user.html:375 templates/setting-pref.html:186
 #: templates/setting-pwd-user.html:81 templates/setting-rec-num.html:73
@@ -1120,7 +1124,7 @@ msgid "Aucun résultats à exporter !"
 msgstr "No results to export!"
 
 #: templates/det-control-ext.html:278 templates/det-control-int.html:265
-#: templates/det-list-stock.html:275 templates/enter-result.html:818
+#: templates/det-list-stock.html:275 templates/enter-result.html:824
 #: templates/hist-analyzes.html:299 templates/hist-patients.html:283
 #: templates/hist-stock-product.html:359 templates/list-ctrl-ext.html:184
 #: templates/list-ctrl-int.html:184 templates/list-doctors.html:336
@@ -1130,7 +1134,7 @@ msgstr "No results to export!"
 #: templates/list-staff.html:209 templates/list-stock.html:345
 #: templates/list-suppliers.html:225 templates/report-activity.html:566
 #: templates/report-activity.html:622 templates/report-activity.html:674
-#: templates/report-billing.html:309 templates/report-dhis2.html:93
+#: templates/report-billing.html:315 templates/report-dhis2.html:93
 #: templates/report-epidemio.html:146 templates/report-statistic.html:423
 #: templates/report-today.html:268 templates/setting-analyzes.html:328
 #: templates/setting-users.html:341 templates/user-conn-export.html:84
@@ -1360,15 +1364,15 @@ msgstr "Withdrawal date from laboratory"
 msgid "Commentaires"
 msgstr "Comments"
 
-#: templates/det-equipment.html:460
+#: templates/det-equipment.html:466
 msgid "Veuillez saisir un nom d'équipement."
 msgstr "Please enter an equipment name"
 
-#: templates/det-equipment.html:572 templates/det-manual.html:312
-#: templates/det-meeting.html:194 templates/det-procedure.html:313
-#: templates/det-req-ext.html:575 templates/det-req-ext.html:665
-#: templates/det-req-ext.html:748 templates/det-req-int.html:546
-#: templates/det-req-int.html:636 templates/det-staff.html:322
+#: templates/det-equipment.html:578 templates/det-manual.html:318
+#: templates/det-meeting.html:200 templates/det-procedure.html:319
+#: templates/det-req-ext.html:581 templates/det-req-ext.html:671
+#: templates/det-req-ext.html:754 templates/det-req-int.html:552
+#: templates/det-req-int.html:642 templates/det-staff.html:322
 #: templates/list-doctors.html:216 templates/list-equipment.html:116
 #: templates/list-laboratory.html:131 templates/list-laboratory.html:326
 #: templates/list-manuals.html:119 templates/list-meeting.html:114
@@ -1378,7 +1382,7 @@ msgstr "Please enter an equipment name"
 #: templates/res-control-ext.html:207 templates/setting-age-interval.html:80
 #: templates/setting-analyzes.html:209 templates/setting-det-analysis.html:286
 #: templates/setting-det-analysis.html:292
-#: templates/setting-det-analysis.html:603 templates/setting-det-dict.html:97
+#: templates/setting-det-analysis.html:609 templates/setting-det-dict.html:97
 #: templates/setting-dhis2.html:105 templates/setting-dicts.html:186
 msgid "Supprimer"
 msgstr "Delete"
@@ -1547,7 +1551,7 @@ msgstr "Update date"
 msgid "Section d'application"
 msgstr "Section"
 
-#: templates/det-manual.html:237 templates/det-procedure.html:238
+#: templates/det-manual.html:243 templates/det-procedure.html:244
 msgid "Veuillez saisir une référence ou un titre."
 msgstr "Please enter a reference or title."
 
@@ -1571,7 +1575,7 @@ msgstr "Executive meeting"
 msgid "Compte-rendu"
 msgstr "Report"
 
-#: templates/det-meeting.html:130
+#: templates/det-meeting.html:136
 msgid "Veuillez saisir une date de réunion."
 msgstr "Please enter a meeting date."
 
@@ -1727,11 +1731,11 @@ msgstr "Please select a date of birth or enter an age"
 msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
 msgstr "An error occurred while modifying/adding a patient"
 
-#: templates/det-patient.html:411 templates/manage-pat-records.html:926
+#: templates/det-patient.html:411 templates/manage-pat-records.html:932
 msgid "Recherche de code postal ou ville"
 msgstr "Search by postal code or city"
 
-#: templates/det-patient.html:458 templates/manage-pat-records.html:973
+#: templates/det-patient.html:458 templates/manage-pat-records.html:979
 msgid "Erreur lors de la récupération des données"
 msgstr "Error during data recovery"
 
@@ -1821,77 +1825,77 @@ msgstr "Error during the recovery of pathological products"
 msgid "Erreur lors de la récupération des analyses"
 msgstr "Error during the recovery of pathological products"
 
-#: templates/det-req-ext.html:627 templates/det-req-ext.html:710
-#: templates/det-req-ext.html:785 templates/det-req-int.html:598
-#: templates/det-req-int.html:673 templates/list-doctors.html:250
+#: templates/det-req-ext.html:633 templates/det-req-ext.html:716
+#: templates/det-req-ext.html:791 templates/det-req-int.html:604
+#: templates/det-req-int.html:679 templates/list-doctors.html:250
 #: templates/list-equipment.html:145 templates/list-laboratory.html:153
 #: templates/list-manuals.html:156 templates/list-meeting.html:146
 #: templates/list-nonconformities.html:302 templates/list-procedure.html:158
 #: templates/list-suppliers.html:149 templates/list-template.html:151
 #: templates/setting-age-interval.html:97
-#: templates/setting-det-analysis.html:565
-#: templates/setting-det-analysis.html:683 templates/setting-det-dict.html:115
+#: templates/setting-det-analysis.html:571
+#: templates/setting-det-analysis.html:689 templates/setting-det-dict.html:115
 #: templates/setting-dicts.html:210 templates/setting-zipcity.html:121
 msgid "Merci de confirmer la suppression"
 msgstr "Please confirm the deletion"
 
-#: templates/det-req-ext.html:1074 templates/det-req-int.html:941
+#: templates/det-req-ext.html:1082 templates/det-req-int.html:947
 msgid "Veuillez sélectionner au moins une analyse"
 msgstr "Please select at least one analysis"
 
-#: templates/det-req-ext.html:1087 templates/det-req-int.html:957
+#: templates/det-req-ext.html:1095 templates/det-req-int.html:963
 msgid "Veuillez sélectionner une date de réception du dossier"
 msgstr "Please select a date for receipt of the file"
 
-#: templates/det-req-ext.html:1094 templates/det-req-int.html:964
+#: templates/det-req-ext.html:1102 templates/det-req-int.html:970
 msgid "Veuillez sélectionner une date de prescription"
 msgstr "Please select a prescription date"
 
-#: templates/det-req-ext.html:1103 templates/det-req-int.html:973
+#: templates/det-req-ext.html:1113 templates/det-req-int.html:979
 msgid "Veuillez renseigner le code de prélèvement"
 msgstr "Please enter the specimen code"
 
-#: templates/det-req-ext.html:1109 templates/det-req-int.html:979
+#: templates/det-req-ext.html:1119 templates/det-req-int.html:985
 msgid "Veuillez renseigner le type du produit"
 msgstr "Please select a prescription date"
 
-#: templates/det-req-ext.html:1115 templates/det-req-int.html:985
+#: templates/det-req-ext.html:1125 templates/det-req-int.html:991
 msgid "Veuillez renseigner le statut du produit"
 msgstr "Please enter the status of the product"
 
-#: templates/det-req-ext.html:1122 templates/det-req-int.html:992
+#: templates/det-req-ext.html:1132 templates/det-req-int.html:998
 msgid "Veuillez renseigner toutes les dates de réception"
 msgstr "Please fill in all dates of reception"
 
-#: templates/det-req-ext.html:1128 templates/det-req-int.html:998
+#: templates/det-req-ext.html:1138 templates/det-req-int.html:1004
 msgid "Veuillez renseigner toutes les identités des préleveurs"
 msgstr "Please fill in all sampler identities"
 
-#: templates/det-req-ext.html:1135 templates/det-req-int.html:1005
+#: templates/det-req-ext.html:1145 templates/det-req-int.html:1011
 msgid "Avertissement : Ce dossier n'est associé à aucun prélèvement"
 msgstr "Warning: This record is not associated with any sample"
 
-#: templates/det-req-ext.html:1138 templates/det-req-int.html:1008
+#: templates/det-req-ext.html:1148 templates/det-req-int.html:1014
 msgid "Merci de confirmer la création et validation de ce dossier"
 msgstr "Please confirm the creation and validation of this record"
 
-#: templates/det-req-ext.html:1311 templates/det-req-ext.html:1402
-#: templates/det-req-int.html:1162 templates/det-req-int.html:1253
+#: templates/det-req-ext.html:1321 templates/det-req-ext.html:1412
+#: templates/det-req-int.html:1168 templates/det-req-int.html:1259
 #: templates/enter-result.html:653 templates/technical-validation.html:181
 msgid "Une erreur est survenue lors du changement de statut du dossier"
 msgstr "An error occurred when changing the status of the record"
 
-#: templates/det-req-ext.html:1320 templates/det-req-ext.html:1411
-#: templates/det-req-int.html:1171 templates/det-req-int.html:1262
+#: templates/det-req-ext.html:1330 templates/det-req-ext.html:1421
+#: templates/det-req-int.html:1177 templates/det-req-int.html:1268
 #: templates/enter-result.html:660 templates/technical-validation.html:190
 msgid "Une erreur est survenue lors de la création des résultats"
 msgstr "An error occurred while creating the results"
 
-#: templates/det-req-ext.html:1329 templates/det-req-int.html:1180
+#: templates/det-req-ext.html:1339 templates/det-req-int.html:1186
 msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
 msgstr "An error has occurred while recording the samples"
 
-#: templates/det-req-ext.html:1347 templates/det-req-int.html:1198
+#: templates/det-req-ext.html:1357 templates/det-req-int.html:1204
 msgid "Une erreur est survenue lors de l'enregistrement du dossier"
 msgstr "An error occurred while saving the record"
 
@@ -1994,15 +1998,15 @@ msgstr "Expiry date"
 msgid "Numéro de lot"
 msgstr "Lot number"
 
-#: templates/det-stock-product.html:142
+#: templates/det-stock-product.html:148
 msgid "Veuillez choisir un produit à approvisionner"
 msgstr "Please choose a product to supply"
 
-#: templates/det-stock-product.html:145
+#: templates/det-stock-product.html:151
 msgid "Veuillez saisir un nombre de paquets supérieur à 0."
 msgstr "Please enter a number of packages greater than 0."
 
-#: templates/det-stock-product.html:148
+#: templates/det-stock-product.html:154
 msgid "Veuillez saisir une date d'expiration."
 msgstr "Please enter an expiry date."
 
@@ -2069,7 +2073,7 @@ msgstr "Validation"
 #: templates/list-doctors.html:173 templates/list-nonconformities.html:140
 #: templates/list-stock.html:166 templates/manage-pat-records.html:795
 #: templates/manage-pat-records.html:818 templates/report-activity.html:121
-#: templates/report-billing.html:205 templates/report-statistic.html:120
+#: templates/report-billing.html:211 templates/report-statistic.html:120
 #: templates/report-today.html:155 templates/setting-analyzes.html:166
 #: templates/setting-backup.html:683 templates/setting-backup.html:695
 #: templates/setting-dicts.html:143 templates/setting-users.html:175
@@ -2809,21 +2813,21 @@ msgstr "Combine"
 msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "Please select a date of birth or enter an age."
 
-#: templates/manage-pat-records.html:875
+#: templates/manage-pat-records.html:881
 msgid ""
 "Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
 "fusion."
 msgstr "Please select 2 different patient records to perform a merge."
 
-#: templates/manage-pat-records.html:881
+#: templates/manage-pat-records.html:887
 msgid "Les fiches patients sont les mêmes dans la base de données."
 msgstr "The patient records are the same in the database."
 
-#: templates/manage-pat-records.html:887
+#: templates/manage-pat-records.html:893
 msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "A patient record is missing to perform the file merge."
 
-#: templates/manage-pat-records.html:891
+#: templates/manage-pat-records.html:897
 msgid ""
 "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
@@ -2832,7 +2836,7 @@ msgstr ""
 "The patient files TO BE DELETED will be attached\\nto the patient TO BE "
 "KEPT.\\nPlease confirm this merger?\\n(This action is irreversible)"
 
-#: templates/manage-pat-records.html:915
+#: templates/manage-pat-records.html:921
 msgid "Une erreur est survenue lors de la fusion"
 msgstr "An error occurred during the merger"
 
@@ -2978,7 +2982,11 @@ msgstr "Laboratory meeting"
 msgid "Qualité"
 msgstr "Quality"
 
-#: templates/menu.html:156
+#: templates/menu.html:154
+msgid "Veuillez vous reconnecter"
+msgstr ""
+
+#: templates/menu.html:162
 msgid "Non conformité"
 msgstr "Non-conformity"
 
@@ -3354,11 +3362,11 @@ msgstr "CLOSURE OF NON-CONFORMITY"
 msgid "Validé par"
 msgstr "Validated by"
 
-#: templates/non-conformity.html:1219
+#: templates/non-conformity.html:1225
 msgid "Veuillez saisir un nom pour cette non-conformité."
 msgstr "Please enter a name for this non-conformity."
 
-#: templates/non-conformity.html:1222
+#: templates/non-conformity.html:1228
 msgid "Veuillez sélectionner un rapporteur."
 msgstr "Please select a reporter."
 
@@ -3695,7 +3703,7 @@ msgstr "Backup settings"
 
 #: templates/setting-backup.html:15
 msgid "MODIFIER HEURE SAUVEGARDE"
-msgstr "MODIFY SAVE TIME"
+msgstr "MODIFY BACKUP TIME"
 
 #: templates/setting-backup.html:16
 msgid "INITIALISER LE MEDIA"
@@ -3980,27 +3988,27 @@ msgstr "Variable already used in this analysis"
 msgid "Erreur lors la récupération des données"
 msgstr "Error during data retrieval"
 
-#: templates/setting-det-analysis.html:604 templates/stat_sample.js:8
+#: templates/setting-det-analysis.html:610 templates/stat_sample.js:8
 msgid "Modifier"
 msgstr "Modify"
 
-#: templates/setting-det-analysis.html:832
+#: templates/setting-det-analysis.html:838
 msgid "Veuillez saisir un code."
 msgstr "Please enter a code."
 
-#: templates/setting-det-analysis.html:835
+#: templates/setting-det-analysis.html:841
 msgid "Veuillez saisir un nom d'analyse."
 msgstr "Please enter an analysis name."
 
-#: templates/setting-det-analysis.html:838
+#: templates/setting-det-analysis.html:844
 msgid "Veuillez choisir ou définir au moins une variable."
 msgstr "Please select or define at least one variable."
 
-#: templates/setting-det-analysis.html:854
+#: templates/setting-det-analysis.html:860
 msgid "Ce code existe déjà"
 msgstr "This code already exists"
 
-#: templates/setting-det-analysis.html:963
+#: templates/setting-det-analysis.html:969
 msgid "Une erreur est survenue lors de la vérification du code"
 msgstr "An error occurred while checking the code"
 
@@ -4030,12 +4038,12 @@ msgid "Confirmation du mot de passe"
 msgstr "Confirm password"
 
 #: templates/setting-det-user.html:71
-msgid "CPS"
-msgstr "CPS"
+msgid "Numéro de matricule interne"
+msgstr ""
 
 #: templates/setting-det-user.html:77
-msgid "Numéro RPPS"
-msgstr "RPPS number"
+msgid "Numéro de la carte professionnelle"
+msgstr ""
 
 #: templates/setting-det-user.html:110
 msgid "Langues *"
@@ -4406,4 +4414,10 @@ msgstr "No results to export!"
 
 #~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
 #~ msgstr "An error occurred while retrieving the archive list"
+
+#~ msgid "CPS"
+#~ msgstr "CPS"
+
+#~ msgid "Numéro RPPS"
+#~ msgstr "RPPS number"
 
