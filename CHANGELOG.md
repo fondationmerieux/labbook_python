@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - redesign of user tables (1 table user, 1 table type of profil, no more id_group and id_role)
 - modify alembic.ini and env.py to make the parameters variable
 - Nationality use code instead of name
+- every value of id_owner in DB are replaced by id_user instead of old id_group
 
 ### Fixed
 - spelling error for minimal value in B008 analysis

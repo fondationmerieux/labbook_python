@@ -355,7 +355,14 @@ def initialization():
 def api():
     log.info(Logs.fileline() + ' : TRACE api')
     get_init_var()
-    return render_template('api.html', rand=random.randint(0, 999))
+
+    if 'LABBOOK_DEBUG' in os.environ and os.environ['LABBOOK_DEBUG'] == '1':
+        debug = 1
+    else:
+        debug = 0
+
+    log.info(Logs.fileline() + ' : TRACE api LABBOOK_DEBUG=' + str(debug))
+    return render_template('api.html', debug=debug, rand=random.randint(0, 999))
 
 
 # Change la langue
@@ -4411,6 +4418,11 @@ def delete_file(type='', filename=''):
 @app.route('/app-labbook.css')
 def labbook_css():
     return Response(render_template('app-labbook.css'), mimetype='text/css')
+
+
+@app.route('/app-swagger-api.yaml')
+def swagger_api():
+    return Response(render_template('app-swagger-api.yaml'), mimetype='text/yaml')
 
 
 # if __name__ == "__main__":

@@ -1124,7 +1124,7 @@ class AnalysisImport(Resource):
                     abbr               = l[4]
                     famille            = l[5]
                     cote_unite         = l[6]
-                    
+
                     if l[7]:
                         cote_valeur = float(l[7])
                     else:

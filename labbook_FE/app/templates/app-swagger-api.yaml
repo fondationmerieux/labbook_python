@@ -12,7 +12,7 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-- url: /services
+- url: {{ session['server_ext'] }}/services
 tags:
 - name: analysis
   description: web services about analysis

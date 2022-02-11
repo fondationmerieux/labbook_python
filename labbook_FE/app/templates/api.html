@@ -29,6 +29,7 @@
     </style>
 </head>
 
+{% if debug == 1 or session['user_role'] == 'A' or session['user_role'] == 'B' %}
 <body>
     <div id="swagger-ui"></div>
     
@@ -40,7 +41,7 @@
         // Begin Swagger UI call region
         const ui = SwaggerUIBundle(
         {
-            url: "{{ session['server_ext'] }}/static/swagger-api.yaml",
+            url: "{{ url_for('swagger_api') }}",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [
@@ -59,4 +60,9 @@
     </script>
   
 </body>
+{% else %}
+<body>
+    <div>{{ _("Accés non autorisé") }}</div>
+<body>
+{% endif %}
 </html>
