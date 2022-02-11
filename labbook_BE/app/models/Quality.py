@@ -518,7 +518,7 @@ class Quality:
                'eqp.no_inventaire as inventory, eqp.responsable_id as incharge_id, eqp.manuel_id as manual_id, '
                'eqp.procedures_id as procedur_id, eqp.pannes as breakdown, eqp.maintenance_preventive as maintenance, '
                'eqp.certif_etalonnage as calibration, eqp.contrat_maintenance as contract, eqp.date_fin_contrat as date_endcontract, '
-               'eqp.date_reception as date_receipt, eqp.date_achat as date_buy, eqp.date_acquisition as date_procur, '
+               'eqp.date_reception as date_receipt, eqp.date_achat as date_buy, '
                'eqp.date_mise_en_service as date_onduty, eqp.date_de_retrait as date_revoc, eqp.commentaires as comment, '
                'u1.fournisseur_nom as supplier, u3.titre as manual, u4.titre as procedur, '
                'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as incharge '
@@ -549,7 +549,7 @@ class Quality:
                            '%(funct)s, %(location)s, %(section)s, %(supplier)s, %(serial)s, %(inventory)s, '
                            '%(incharge)s, %(manual)s, %(procedur)s, %(breakdown)s, %(maintenance)s, '
                            '%(calibration)s, %(contract)s, %(date_endcontract)s, %(date_receipt)s, %(date_buy)s, '
-                           '%(date_procur)s, %(date_onduty)s, %(date_revoc)s, %(comment)s)', params)
+                           '%(date_onduty)s, %(date_revoc)s, %(comment)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -571,8 +571,8 @@ class Quality:
                            'pannes=%(breakdown)s, maintenance_preventive=%(maintenance)s, '
                            'certif_etalonnage=%(calibration)s, contrat_maintenance=%(contract)s, '
                            'date_fin_contrat=%(date_endcontract)s, date_reception=%(date_receipt)s, '
-                           'date_achat=%(date_buy)s, date_acquisition=%(date_procur)s, '
-                           'date_mise_en_service=%(date_onduty)s, date_de_retrait=%(date_revoc)s, commentaires=%(comment)s  '
+                           'date_achat=%(date_buy)s, date_mise_en_service=%(date_onduty)s, '
+                           'date_de_retrait=%(date_revoc)s, commentaires=%(comment)s  '
                            'where id_data=%(id_data)s', params)
 
             Quality.log.info(Logs.fileline())

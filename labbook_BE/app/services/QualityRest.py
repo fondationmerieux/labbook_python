@@ -1040,9 +1040,6 @@ class EquipmentDet(Resource):
         if item['date_buy']:
             item['date_buy'] = datetime.strftime(item['date_buy'], '%Y-%m-%d')
 
-        if item['date_procur']:
-            item['date_procur'] = datetime.strftime(item['date_procur'], '%Y-%m-%d')
-
         if item['date_onduty']:
             item['date_onduty'] = datetime.strftime(item['date_onduty'], '%Y-%m-%d')
 
@@ -1060,7 +1057,7 @@ class EquipmentDet(Resource):
            'serial' not in args or 'inventory' not in args or 'incharge' not in args or 'manual' not in args or  \
            'procedur' not in args or 'breakdown' not in args or 'maintenance' not in args or 'calibration' not in args or \
            'contract' not in args or 'date_endcontract' not in args or 'date_receipt' not in args or 'date_buy' not in args or \
-           'date_procur' not in args or 'date_onduty' not in args or 'date_revoc' not in args or 'comment' not in args:
+           'date_onduty' not in args or 'date_revoc' not in args or 'comment' not in args:
             self.log.error(Logs.fileline() + ' : EquipmentDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -1087,7 +1084,6 @@ class EquipmentDet(Resource):
                                           date_endcontract=args['date_endcontract'],
                                           date_receipt=args['date_receipt'],
                                           date_buy=args['date_buy'],
-                                          date_procur=args['date_procur'],
                                           date_onduty=args['date_onduty'],
                                           date_revoc=args['date_revoc'],
                                           comment=args['comment'])
@@ -1118,7 +1114,6 @@ class EquipmentDet(Resource):
                                           date_endcontract=args['date_endcontract'],
                                           date_receipt=args['date_receipt'],
                                           date_buy=args['date_buy'],
-                                          date_procur=args['date_procur'],
                                           date_onduty=args['date_onduty'],
                                           date_revoc=args['date_revoc'],
                                           comment=args['comment'])

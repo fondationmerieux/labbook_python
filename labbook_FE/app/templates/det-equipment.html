@@ -205,23 +205,25 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="date_receipt" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
-                    <div>					
-                        <input id="date_receipt" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_receipt'] }}" name="date_receipt" style="color: #888;">
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="date_buy" class="col-form-label col-3 text-right mt-2">{{ _("Date d'achat") }}</label>
                     <div>					
                         <input id="date_buy" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_buy'] }}" name="date_buy" style="color: #888;">
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="date_receipt" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
+                    <div>					
+                        <input id="date_receipt" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_receipt'] }}" name="date_receipt" style="color: #888;">
+                    </div>
+                </div>
+                {# USELESS 11/02/2022
+                <div class="form-group row">
                     <label for="date_procur" class="col-form-label col-3 text-right mt-2">{{ _("Date d'acquisition") }}</label>
                     <div>					
                         <input id="date_procur" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_procur'] }}" name="date_procur" style="color: #888;">
                     </div>
                 </div>
+                #}
                 <div class="form-group row">
                     <label for="date_onduty" class="col-form-label col-3 text-right mt-2">{{ _("Date de mise en service") }}</label>
                     <div>					
@@ -442,9 +444,9 @@ var maintenance = JSON.stringify( $("#maintenance").val() ) ;
 var comment     = JSON.stringify( $("#comment").val() )     ;
 
 var date_endcontract = $("#date_endcontract").val() ;
-var date_receipt     = $("#date_receipt").val()     ;
 var date_buy         = $("#date_buy").val()         ;
-var date_procur      = $("#date_procur").val()      ;
+var date_receipt     = $("#date_receipt").val()     ;
+// var date_procur      = $("#date_procur").val()      ; // USELESS 11/02/2022
 var date_onduty      = $("#date_onduty").val()      ;
 var date_revoc       = $("#date_revoc").val()       ;
 
@@ -490,7 +492,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"date_endcontract":"' + date_endcontract + '", ' +
               '"date_receipt":"' + date_receipt + '", ' + 
               '"date_buy":"' + date_buy + '", ' +
-              '"date_procur":"' + date_procur + '", ' +
               '"date_onduty":"' + date_onduty + '", ' + 
               '"date_revoc":"' + date_revoc + '", ' +
               '"breakdown":' + breakdown + ', ' +     // No quotes with stringify
