@@ -86,6 +86,5 @@ COPY labbook_BE /home/apps/labbook_BE/labbook_BE
 
 CMD ["supervisord", \
      "-c", "/home/supervisor/etc/supervisor.conf", \
-     "--logfile", "/home/supervisor/log/supervisor.log", \
      "--pidfile", "/home/supervisor/tmp/supervisor.pid", \
      "--user", "root"]

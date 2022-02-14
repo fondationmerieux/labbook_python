@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.1] - 2022-02-11
+## [3.2.1] - 2022-02-14
 ### Added
 - add code patient search field in list of result and list of work pages
 - add familly analysis search field in list of records and list of work pages

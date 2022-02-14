@@ -2862,19 +2862,19 @@ msgstr "Reports"
 
 #: templates/menu.html:88
 msgid "Configuration des sauvegardes"
-msgstr ""
+msgstr "Backup setup"
 
 #: templates/menu.html:90
 msgid "Configuration du logo"
-msgstr ""
+msgstr "Logo setup"
 
 #: templates/menu.html:93
 msgid "Configuration des intervalles d'âge"
-msgstr ""
+msgstr "Ages ranges setup"
 
 #: templates/menu.html:96
 msgid "Configuration des modèles de documents"
-msgstr ""
+msgstr "Document template setup"
 
 #: templates/menu.html:97
 msgid "Configuration des comptes-rendu"
@@ -2891,7 +2891,7 @@ msgstr "Postal code management"
 
 #: templates/menu.html:103
 msgid "Configuration des dossiers patients"
-msgstr ""
+msgstr "Patient records setup"
 
 #: templates/menu.html:106
 msgid "Configuration DHIS2"
@@ -3576,7 +3576,7 @@ msgstr "Control date"
 
 #: templates/res-control-ext.html:30
 msgid "Contact du fournisseur"
-msgstr ""
+msgstr "Supplier contact"
 
 #: templates/res-control-ext.html:37 templates/res-control-int.html:31
 #: templates/res-control-int.html:44
@@ -3597,7 +3597,7 @@ msgstr "Control target"
 
 #: templates/setting-age-interval.html:5 templates/setting-age-interval.html:12
 msgid "Paramétrage de l'intervalle d'âge"
-msgstr ""
+msgstr "Ages ranges setup"
 
 #: templates/setting-age-interval.html:16
 msgid "Ajouter un intervalle"
@@ -3807,7 +3807,7 @@ msgstr ""
 
 #: templates/setting-backup.html:628
 msgid "Délai d'attente dépassé"
-msgstr "Waiting period exceeded"
+msgstr ""
 
 #: templates/setting-backup.html:770
 msgid ""
@@ -4015,11 +4015,11 @@ msgstr "Confirm password"
 
 #: templates/setting-det-user.html:71
 msgid "Numéro de matricule interne"
-msgstr ""
+msgstr "Internal registration number"
 
 #: templates/setting-det-user.html:77
 msgid "Numéro de la carte professionnelle"
-msgstr ""
+msgstr "Professional card number"
 
 #: templates/setting-det-user.html:110
 msgid "Langues *"
@@ -4099,7 +4099,7 @@ msgstr "Epidemiological report setup"
 
 #: templates/setting-logo.html:5 templates/setting-logo.html:12
 msgid "Paramétrage du logo pour les documents"
-msgstr ""
+msgstr "Settings the logo for documents"
 
 #: templates/setting-logo.html:14
 msgid "Logo original"
@@ -4235,7 +4235,7 @@ msgstr "The passwords are not identical!"
 
 #: templates/setting-rec-num.html:5 templates/setting-rec-num.html:12
 msgid "Paramétrage numéro dossier"
-msgstr "Record number setup"
+msgstr "Record number setting"
 
 #: templates/setting-rec-num.html:15
 msgid "Période de numérotation"
@@ -4259,7 +4259,7 @@ msgstr "Long"
 
 #: templates/setting-report.html:5 templates/setting-report.html:12
 msgid "Paramétrage compte rendu"
-msgstr "Report setup"
+msgstr "Report settings"
 
 #: templates/setting-report.html:15
 msgid "Type d'entête"
@@ -4432,4 +4432,5 @@ msgstr "No results to export!"
 
 #~ msgid "Changement de logo pour les documents"
 #~ msgstr "Logo change for documents"
+
 
