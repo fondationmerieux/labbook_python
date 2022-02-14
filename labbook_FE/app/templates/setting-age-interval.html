@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Intervalles d'âge") }}</title>
+    <title>{{ _("Paramétrage de l'intervalle d'âge") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Intervalles d'âge") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de l'intervalle d'âge") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-name row mt-3">
                     <div class="col-12">

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-11 17:29+0100\n"
+"POT-Creation-Date: 2022-02-14 15:55+0100\n"
 "PO-Revision-Date: 2021-09-03 15:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
@@ -28,7 +28,7 @@ msgstr "របាយការណ៏រដ្ឋបាល"
 #: templates/administrative-record.html:17
 #: templates/biological-validation.html:20 templates/det-req-ext.html:21
 #: templates/det-req-int.html:21 templates/det-sample.html:18
-#: templates/enter-result.html:20 templates/pivot-table.html:30
+#: templates/enter-result.html:20 templates/pivot-table.html:31
 #: templates/technical-validation.html:20
 msgid "Dossier"
 msgstr "កត់ត្រា"
@@ -258,8 +258,8 @@ msgstr "កូដ"
 #: templates/list-products.html:31 templates/list-records.html:51
 #: templates/list-records.html:149 templates/list-staff.html:31
 #: templates/list-stock.html:20 templates/list-stock.html:78
-#: templates/list-template.html:31 templates/list-works.html:116
-#: templates/manage-pat-records.html:81 templates/manage-pat-records.html:330
+#: templates/list-works.html:116 templates/manage-pat-records.html:81
+#: templates/manage-pat-records.html:330
 #: templates/setting-det-analysis.html:245 templates/setting-det-user.html:104
 #: templates/setting-dicts.html:20 templates/setting-dicts.html:68
 #: templates/setting-users.html:34 templates/setting-users.html:89
@@ -321,13 +321,12 @@ msgstr "របាយការណ៍"
 #: templates/list-nonconformities.html:59 templates/list-procedure.html:30
 #: templates/list-products.html:30 templates/list-records.html:128
 #: templates/list-staff.html:30 templates/list-stock.html:77
-#: templates/list-suppliers.html:30 templates/list-template.html:30
-#: templates/list-works.html:98 templates/report-today.html:66
-#: templates/res-control-ext.html:63 templates/setting-age-interval.html:29
-#: templates/setting-analyzes.html:79 templates/setting-det-analysis.html:244
-#: templates/setting-det-dict.html:45 templates/setting-dhis2.html:26
-#: templates/setting-dicts.html:67 templates/setting-epidemio.html:26
-#: templates/setting-users.html:86
+#: templates/list-suppliers.html:30 templates/list-works.html:98
+#: templates/report-today.html:66 templates/res-control-ext.html:63
+#: templates/setting-age-interval.html:29 templates/setting-analyzes.html:79
+#: templates/setting-det-analysis.html:244 templates/setting-det-dict.html:45
+#: templates/setting-dhis2.html:26 templates/setting-dicts.html:67
+#: templates/setting-epidemio.html:26 templates/setting-users.html:86
 msgid "Action"
 msgstr "សកម្មភាព"
 
@@ -390,8 +389,8 @@ msgstr "ឯកសារភ្ជាប់ទៅនឹងឯកសារ"
 #: templates/det-staff.html:101 templates/det-staff.html:126
 #: templates/det-staff.html:151 templates/det-staff.html:185
 #: templates/det-template.html:47 templates/list-laboratory.html:50
-#: templates/list-template.html:34 templates/res-control-ext.html:63
-#: templates/setting-dhis2.html:26 templates/setting-epidemio.html:26
+#: templates/res-control-ext.html:63 templates/setting-dhis2.html:26
+#: templates/setting-epidemio.html:26
 msgid "Fichier"
 msgstr "ឯកសារ"
 
@@ -418,7 +417,7 @@ msgid "Code barre"
 msgstr "លេខបារកូដ"
 
 #: templates/administrative-record.html:354
-#: templates/administrative-record.html:390 templates/det-equipment.html:577
+#: templates/administrative-record.html:390 templates/det-equipment.html:578
 #: templates/det-manual.html:317 templates/det-meeting.html:199
 #: templates/det-procedure.html:318 templates/det-staff.html:321
 #: templates/det-template.html:55 templates/list-laboratory.html:323
@@ -444,10 +443,9 @@ msgstr "កែសម្រួលឡើងវិញ"
 #: templates/list-procedure.html:102 templates/list-products.html:92
 #: templates/list-samples.html:108 templates/list-staff.html:109
 #: templates/list-stock.html:193 templates/list-suppliers.html:99
-#: templates/list-template.html:95 templates/report-billing.html:240
-#: templates/report-today.html:184 templates/setting-analyzes.html:193
-#: templates/setting-dicts.html:170 templates/setting-users.html:202
-#: templates/setting-zipcity.html:93
+#: templates/report-billing.html:240 templates/report-today.html:184
+#: templates/setting-analyzes.html:193 templates/setting-dicts.html:170
+#: templates/setting-users.html:202 templates/setting-zipcity.html:93
 msgid "Aucune donnée à afficher"
 msgstr "គ្មានទិន្នន័យត្រូវបង្ហាញ"
 
@@ -462,12 +460,12 @@ msgid ""
 " y figurera)"
 msgstr "តើអ្នកចង់កែសម្រួលរបាយការណ៍ឡើងវិញទេ? (ពាក្យបោះបង់និងជំនួសនឹងបង្ហាញនៅទីនោះ)"
 
-#: templates/administrative-record.html:502 templates/pivot-table.html:145
+#: templates/administrative-record.html:502 templates/pivot-table.html:154
 msgid "Une erreur est survenue lors du traitement"
 msgstr "កំហុសមួយបានកើតឡើងកំឡុងពេលដំណើរការ"
 
 #: templates/administrative-record.html:539 templates/analysis-import.html:96
-#: templates/det-equipment.html:612 templates/det-manual.html:352
+#: templates/det-equipment.html:613 templates/det-manual.html:352
 #: templates/det-meeting.html:234 templates/det-procedure.html:353
 #: templates/det-staff.html:356 templates/list-laboratory.html:357
 #: templates/res-control-ext.html:180 templates/setting-zipcity.html:219
@@ -475,14 +473,14 @@ msgstr "កំហុសមួយបានកើតឡើងកំឡុងពេ
 msgid "Une erreur est survenue lors du dépot d'un fichier"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលផ្ទុកឯកសារឡើង"
 
-#: templates/administrative-record.html:547 templates/det-equipment.html:620
+#: templates/administrative-record.html:547 templates/det-equipment.html:621
 #: templates/det-manual.html:361 templates/det-procedure.html:361
 #: templates/det-staff.html:364 templates/list-laboratory.html:364
 #: templates/setting-dhis2.html:116
 msgid "Le fichier sera définitivement supprimé"
 msgstr "ឯកសារនឹងត្រូវបានលុបជារៀងរហូត"
 
-#: templates/administrative-record.html:560 templates/det-equipment.html:633
+#: templates/administrative-record.html:560 templates/det-equipment.html:634
 #: templates/det-manual.html:374 templates/det-procedure.html:374
 #: templates/det-staff.html:377 templates/list-laboratory.html:377
 #: templates/setting-dhis2.html:129
@@ -492,8 +490,7 @@ msgstr "កំហុសក្នុងការលុបឯកសារ"
 #: templates/administrative-record.html:591
 #: templates/administrative-record.html:624
 #: templates/administrative-record.html:631
-#: templates/biological-validation.html:843 templates/list-template.html:197
-#: templates/list-template.html:204
+#: templates/biological-validation.html:843
 msgid "Erreur lors de la génération du PDF"
 msgstr "មាន​បញ្ហា​ពេល​បង្កើត PDF"
 
@@ -527,15 +524,15 @@ msgstr "បន្ថែមការវិភាគថ្មី (កូដដែ�
 #: templates/list-nonconformities.html:84 templates/list-procedure.html:58
 #: templates/list-products.html:55 templates/list-staff.html:66
 #: templates/list-stock.html:103 templates/list-suppliers.html:55
-#: templates/list-template.html:52 templates/quality-general.html:47
-#: templates/report-dhis2.html:37 templates/setting-age-interval.html:41
-#: templates/setting-analyzes.html:102 templates/setting-backup.html:45
-#: templates/setting-det-dict.html:58 templates/setting-dhis2.html:39
-#: templates/setting-dicts.html:86 templates/setting-epidemio.html:39
-#: templates/setting-pwd-user.html:33 templates/setting-rec-num.html:36
-#: templates/setting-report.html:36 templates/setting-users.html:111
-#: templates/setting-zipcity.html:56 templates/user-conn-export.html:36
-#: templates/user-import.html:38 templates/whonet-export.html:36
+#: templates/quality-general.html:47 templates/report-dhis2.html:37
+#: templates/setting-age-interval.html:41 templates/setting-analyzes.html:102
+#: templates/setting-backup.html:45 templates/setting-det-dict.html:58
+#: templates/setting-dhis2.html:39 templates/setting-dicts.html:86
+#: templates/setting-epidemio.html:39 templates/setting-pwd-user.html:33
+#: templates/setting-rec-num.html:36 templates/setting-report.html:36
+#: templates/setting-users.html:111 templates/setting-zipcity.html:56
+#: templates/user-conn-export.html:36 templates/user-import.html:38
+#: templates/whonet-export.html:36
 msgid "Retour"
 msgstr "ត្រឡប់"
 
@@ -583,7 +580,7 @@ msgid "LabBook API"
 msgstr ""
 
 #: templates/api.html:65
-msgid "Accés non autorisé"
+msgid "Accès non autorisé"
 msgstr ""
 
 #: templates/biological-validation.html:5
@@ -660,7 +657,7 @@ msgid "Ajouter"
 msgstr "បន្ថែម"
 
 #: templates/biological-validation.html:132 templates/det-doctor.html:117
-#: templates/det-equipment.html:247 templates/det-list-stock.html:81
+#: templates/det-equipment.html:249 templates/det-list-stock.html:81
 #: templates/det-manual.html:94 templates/det-meeting.html:66
 #: templates/det-new-product.html:79 templates/det-procedure.html:95
 #: templates/det-staff.html:202 templates/det-stock-product.html:75
@@ -680,7 +677,7 @@ msgstr "បន្ថែមការវិភាគថ្មី"
 
 #: templates/biological-validation.html:159
 msgid "Compte-rendu groupé"
-msgstr ""
+msgstr "របាយការណ៍ជាក្រុម"
 
 #: templates/biological-validation.html:164
 msgid "Dossier suivant"
@@ -731,9 +728,9 @@ msgid "Réinitialiser la valeur"
 msgstr "កំណត់តម្លៃឡើងវិញ"
 
 #: templates/biological-validation.html:672 templates/det-control-ext.html:286
-#: templates/det-control-int.html:273 templates/det-equipment.html:269
-#: templates/det-equipment.html:312 templates/det-equipment.html:349
-#: templates/det-equipment.html:386 templates/det-manual.html:111
+#: templates/det-control-int.html:273 templates/det-equipment.html:271
+#: templates/det-equipment.html:314 templates/det-equipment.html:351
+#: templates/det-equipment.html:388 templates/det-manual.html:111
 #: templates/det-manual.html:154 templates/det-manual.html:191
 #: templates/det-meeting.html:83 templates/det-new-product.html:95
 #: templates/det-procedure.html:112 templates/det-procedure.html:155
@@ -803,7 +800,7 @@ msgstr "ជំនាន់៖"
 
 #: templates/det-control-ext.html:5 templates/det-control-ext.html:14
 msgid "Contrôle externe"
-msgstr ""
+msgstr "ការត្រួតពិនិត្យខាងក្រៅ"
 
 #: templates/det-control-ext.html:16 templates/det-control-int.html:16
 #: templates/det-meeting.html:25 templates/hist-analyzes.html:42
@@ -811,22 +808,21 @@ msgstr ""
 #: templates/list-ctrl-int.html:33 templates/list-meeting.html:32
 #: templates/list-products.html:32 templates/list-records.html:84
 #: templates/list-results.html:32 templates/list-stock.html:28
-#: templates/list-stock.html:83 templates/list-template.html:32
-#: templates/list-works.html:46
+#: templates/list-stock.html:83 templates/list-works.html:46
 msgid "Type"
 msgstr "ប្រភេទ"
 
 #: templates/det-control-ext.html:18 templates/det-control-int.html:18
 msgid "Qualitatif"
-msgstr ""
+msgstr "បែបគុណភាព"
 
 #: templates/det-control-ext.html:21 templates/det-control-int.html:21
 msgid "Quantitatif"
-msgstr ""
+msgstr "បែបបរិមាណ"
 
 #: templates/det-control-ext.html:25 templates/det-control-int.html:25
 msgid "Nom du paramètre"
-msgstr ""
+msgstr "ឈ្មោះប៉ារ៉ាម៉ែត្រ"
 
 #: templates/det-control-ext.html:31 templates/det-control-int.html:31
 #: templates/det-equipment.html:5 templates/det-equipment.html:15
@@ -836,7 +832,7 @@ msgid "Equipement"
 msgstr "ឧបករណ៍"
 
 #: templates/det-control-ext.html:38 templates/det-control-int.html:38
-#: templates/det-doctor.html:120 templates/det-equipment.html:250
+#: templates/det-doctor.html:120 templates/det-equipment.html:252
 #: templates/det-manual.html:97 templates/det-meeting.html:69
 #: templates/det-new-product.html:82 templates/det-patient.html:248
 #: templates/det-procedure.html:98 templates/det-sample.html:151
@@ -864,10 +860,10 @@ msgstr "កត់ត្រា"
 #: templates/list-products.html:14 templates/list-records.html:109
 #: templates/list-samples.html:19 templates/list-staff.html:14
 #: templates/list-stock.html:61 templates/list-suppliers.html:14
-#: templates/list-template.html:14 templates/list-works.html:79
-#: templates/report-billing.html:61 templates/report-today.html:48
-#: templates/setting-analyzes.html:63 templates/setting-dicts.html:51
-#: templates/setting-users.html:70 templates/setting-zipcity.html:21
+#: templates/list-works.html:79 templates/report-billing.html:61
+#: templates/report-today.html:48 templates/setting-analyzes.html:63
+#: templates/setting-dicts.html:51 templates/setting-users.html:70
+#: templates/setting-zipcity.html:21
 msgid "Nombre total de lignes"
 msgstr "ចំនួនខ្សែសរុប"
 
@@ -893,8 +889,7 @@ msgstr "ចំនួនខ្សែសរុប"
 #: templates/list-samples.html:63 templates/list-staff.html:18
 #: templates/list-staff.html:57 templates/list-stock.html:65
 #: templates/list-stock.html:94 templates/list-suppliers.html:18
-#: templates/list-suppliers.html:46 templates/list-template.html:18
-#: templates/list-template.html:43 templates/list-works.html:84
+#: templates/list-suppliers.html:46 templates/list-works.html:84
 #: templates/list-works.html:126 templates/report-billing.html:66
 #: templates/report-billing.html:95 templates/report-today.html:53
 #: templates/report-today.html:88 templates/setting-analyzes.html:67
@@ -927,8 +922,7 @@ msgstr "ដំបូង"
 #: templates/list-samples.html:64 templates/list-staff.html:19
 #: templates/list-staff.html:58 templates/list-stock.html:66
 #: templates/list-stock.html:95 templates/list-suppliers.html:19
-#: templates/list-suppliers.html:47 templates/list-template.html:19
-#: templates/list-template.html:44 templates/list-works.html:85
+#: templates/list-suppliers.html:47 templates/list-works.html:85
 #: templates/list-works.html:127 templates/report-billing.html:67
 #: templates/report-billing.html:96 templates/report-today.html:54
 #: templates/report-today.html:89 templates/setting-analyzes.html:68
@@ -961,8 +955,7 @@ msgstr "ពីមុន"
 #: templates/list-samples.html:66 templates/list-staff.html:21
 #: templates/list-staff.html:60 templates/list-stock.html:68
 #: templates/list-stock.html:97 templates/list-suppliers.html:21
-#: templates/list-suppliers.html:49 templates/list-template.html:21
-#: templates/list-template.html:46 templates/list-works.html:87
+#: templates/list-suppliers.html:49 templates/list-works.html:87
 #: templates/list-works.html:129 templates/report-billing.html:69
 #: templates/report-billing.html:98 templates/report-today.html:56
 #: templates/report-today.html:91 templates/setting-analyzes.html:70
@@ -995,8 +988,7 @@ msgstr "បន្ទាប់"
 #: templates/list-samples.html:67 templates/list-staff.html:22
 #: templates/list-staff.html:61 templates/list-stock.html:69
 #: templates/list-stock.html:98 templates/list-suppliers.html:22
-#: templates/list-suppliers.html:50 templates/list-template.html:22
-#: templates/list-template.html:47 templates/list-works.html:88
+#: templates/list-suppliers.html:50 templates/list-works.html:88
 #: templates/list-works.html:130 templates/report-billing.html:70
 #: templates/report-billing.html:99 templates/report-today.html:57
 #: templates/report-today.html:92 templates/setting-analyzes.html:71
@@ -1017,22 +1009,24 @@ msgstr "ចុងក្រោយ"
 #: templates/list-meeting.html:29 templates/list-nonconformities.html:58
 #: templates/list-procedure.html:29 templates/list-products.html:29
 #: templates/list-staff.html:29 templates/list-stock.html:76
-#: templates/list-suppliers.html:29 templates/list-template.html:29
-#: templates/setting-age-interval.html:28 templates/setting-analyzes.html:78
-#: templates/setting-det-analysis.html:243 templates/setting-det-dict.html:44
-#: templates/setting-dicts.html:66 templates/setting-users.html:85
-#: templates/setting-zipcity.html:36
+#: templates/list-suppliers.html:29 templates/setting-age-interval.html:28
+#: templates/setting-analyzes.html:78 templates/setting-det-analysis.html:243
+#: templates/setting-det-dict.html:44 templates/setting-dicts.html:66
+#: templates/setting-users.html:85 templates/setting-zipcity.html:36
 msgid "serial"
 msgstr "លំដាប់ថ្នាក់"
 
-#: templates/det-control-ext.html:60 templates/det-meeting.html:37
-#: templates/list-meeting.html:33 templates/res-control-ext.html:23
-msgid "Organisateur"
-msgstr "អ្នករៀបចំ"
+#: templates/det-control-ext.html:60 templates/det-equipment.html:71
+#: templates/det-new-product.html:17 templates/det-supplier.html:5
+#: templates/det-supplier.html:12 templates/list-products.html:35
+#: templates/list-stock.html:85 templates/list-suppliers.html:31
+#: templates/non-conformity.html:474 templates/res-control-ext.html:23
+msgid "Fournisseur"
+msgstr "អ្នកផ្តល់"
 
 #: templates/det-control-ext.html:61 templates/det-control-int.html:61
 #: templates/det-hist-analysis.html:37 templates/det-hist-patient.html:73
-#: templates/det-template.html:24 templates/pivot-table.html:32
+#: templates/det-template.html:24 templates/pivot-table.html:33
 msgid "Résultat"
 msgstr "លទ្ធផល"
 
@@ -1043,7 +1037,8 @@ msgstr "លទ្ធផល"
 #: templates/list-manuals.html:62 templates/list-meeting.html:57
 #: templates/list-nonconformities.html:87 templates/list-procedure.html:63
 #: templates/list-staff.html:71 templates/list-stock.html:107
-#: templates/list-suppliers.html:60 templates/report-today.html:104
+#: templates/list-suppliers.html:60 templates/pivot-table.html:64
+#: templates/report-today.html:104
 msgid "Export des données"
 msgstr "បញ្ចេញទិន្នន័យ"
 
@@ -1053,18 +1048,17 @@ msgstr "បញ្ចេញទិន្នន័យ"
 #: templates/list-manuals.html:118 templates/list-meeting.html:113
 #: templates/list-nonconformities.html:182 templates/list-procedure.html:119
 #: templates/list-staff.html:126 templates/list-suppliers.html:116
-#: templates/list-template.html:112 templates/setting-analyzes.html:208
-#: templates/setting-dicts.html:185
+#: templates/setting-analyzes.html:208 templates/setting-dicts.html:185
 msgid "Editer"
 msgstr "កែសម្រួល"
 
 #: templates/det-control-ext.html:152 templates/res-control-ext.html:41
 msgid "Conforme"
-msgstr ""
+msgstr "អនុលោមតាម"
 
 #: templates/det-control-ext.html:153 templates/res-control-ext.html:42
 msgid "Non conforme"
-msgstr ""
+msgstr "មិនត្រឹមត្រូវ"
 
 #: templates/det-control-ext.html:154 templates/list-samples.html:56
 #: templates/non-conformity.html:623
@@ -1073,11 +1067,11 @@ msgstr "ផ្សេងទៀត"
 
 #: templates/det-control-ext.html:187 templates/det-control-int.html:174
 msgid "Veuillez saisir un nom de paramètre."
-msgstr ""
+msgstr "សូមបញ្ចូលឈ្មោះប៉ារ៉ាម៉ែត្រ"
 
 #: templates/det-control-ext.html:190 templates/det-control-int.html:177
 msgid "Veuillez sélectionner un équipement."
-msgstr ""
+msgstr "សូមជ្រើសរើសឧបករណ៍"
 
 #: templates/det-control-ext.html:212 templates/det-control-int.html:199
 #: templates/list-laboratory.html:303 templates/manage-pat-records.html:714
@@ -1090,7 +1084,7 @@ msgid "Enregistrement réussi"
 msgstr "ការចុះបញី្ចទទួលបានជោគជ័យ"
 
 #: templates/det-control-ext.html:221 templates/det-control-int.html:208
-#: templates/det-doctor.html:190 templates/det-equipment.html:522
+#: templates/det-doctor.html:190 templates/det-equipment.html:523
 #: templates/det-list-stock.html:213 templates/det-manual.html:292
 #: templates/det-meeting.html:174 templates/det-new-product.html:185
 #: templates/det-procedure.html:293 templates/det-sample.html:223
@@ -1140,11 +1134,11 @@ msgstr "មានកំហុសពេលបង្កើតឯកសារ"
 
 #: templates/det-control-int.html:5 templates/det-control-int.html:14
 msgid "Contrôle interne"
-msgstr ""
+msgstr "ការត្រួតពិនិត្យខាងក្នុង"
 
 #: templates/det-control-int.html:60
 msgid "Cible"
-msgstr ""
+msgstr "គោលដៅ"
 
 #: templates/det-doctor.html:15 templates/setting-det-user.html:48
 msgid "Accès"
@@ -1279,13 +1273,6 @@ msgstr "ទីតាំង"
 msgid "Section"
 msgstr "ផ្នែក"
 
-#: templates/det-equipment.html:71 templates/det-new-product.html:17
-#: templates/det-supplier.html:5 templates/det-supplier.html:12
-#: templates/list-products.html:35 templates/list-stock.html:85
-#: templates/list-suppliers.html:31 templates/non-conformity.html:474
-msgid "Fournisseur"
-msgstr "អ្នកផ្តល់"
-
 #: templates/det-equipment.html:78
 msgid "Numéro de série"
 msgstr "លេខលំដាប់ថ្នាក់"
@@ -1333,38 +1320,34 @@ msgstr "កិច្ចសន្យានៃបញ្ចប់កាលបរិ
 msgid "Facture"
 msgstr "វិក័យប័ត្រ"
 
-#: templates/det-equipment.html:208 templates/det-sample.html:125
+#: templates/det-equipment.html:208
+msgid "Date d'achat"
+msgstr "កាលបរិច្ឆេទ​នៃ​ការ​ទិញ"
+
+#: templates/det-equipment.html:214 templates/det-sample.html:125
 #: templates/det-stock-product.html:37
 msgid "Date de réception"
 msgstr "កាលបរិច្ឆេទនៃការទទួល"
 
-#: templates/det-equipment.html:214
-msgid "Date d'achat"
-msgstr "កាលបរិច្ឆេទ​នៃ​ការ​ទិញ"
-
-#: templates/det-equipment.html:220
-msgid "Date d'acquisition"
-msgstr "កាលបរិច្ឆេទទិញយក"
-
-#: templates/det-equipment.html:226
+#: templates/det-equipment.html:228
 msgid "Date de mise en service"
 msgstr "កាលបរិច្ឆេទនៃកំរៃជើងសារ"
 
-#: templates/det-equipment.html:232
+#: templates/det-equipment.html:234
 msgid "Date de retrait du laboratoire"
 msgstr "កាលបរិច្ឆេទនៃការដកចេញពីមន្ទីរពិសោធន៍"
 
-#: templates/det-equipment.html:238 templates/det-staff.html:193
+#: templates/det-equipment.html:240 templates/det-staff.html:193
 #: templates/setting-det-analysis.html:107
 #: templates/setting-det-analysis.html:216 templates/setting-det-user.html:213
 msgid "Commentaires"
 msgstr "យោបល់"
 
-#: templates/det-equipment.html:466
+#: templates/det-equipment.html:468
 msgid "Veuillez saisir un nom d'équipement."
 msgstr "សូមបញ្ចូលឈ្មោះឧបករណ៍។"
 
-#: templates/det-equipment.html:578 templates/det-manual.html:318
+#: templates/det-equipment.html:579 templates/det-manual.html:318
 #: templates/det-meeting.html:200 templates/det-procedure.html:319
 #: templates/det-req-ext.html:581 templates/det-req-ext.html:671
 #: templates/det-req-ext.html:754 templates/det-req-int.html:552
@@ -1374,9 +1357,9 @@ msgstr "សូមបញ្ចូលឈ្មោះឧបករណ៍។"
 #: templates/list-manuals.html:119 templates/list-meeting.html:114
 #: templates/list-nonconformities.html:183 templates/list-procedure.html:120
 #: templates/list-records.html:296 templates/list-suppliers.html:117
-#: templates/list-template.html:114 templates/list-works.html:259
-#: templates/res-control-ext.html:207 templates/setting-age-interval.html:80
-#: templates/setting-analyzes.html:209 templates/setting-det-analysis.html:286
+#: templates/list-works.html:259 templates/res-control-ext.html:207
+#: templates/setting-age-interval.html:80 templates/setting-analyzes.html:209
+#: templates/setting-det-analysis.html:286
 #: templates/setting-det-analysis.html:292
 #: templates/setting-det-analysis.html:609 templates/setting-det-dict.html:97
 #: templates/setting-dhis2.html:105 templates/setting-dicts.html:186
@@ -1398,7 +1381,7 @@ msgstr "ចេញពី"
 #: templates/det-hist-analysis.html:14 templates/hist-analyzes.html:26
 #: templates/hist-stock-product.html:27 templates/list-nonconformities.html:28
 #: templates/list-records.html:34 templates/list-results.html:25
-#: templates/pivot-table.html:43 templates/report-activity.html:22
+#: templates/pivot-table.html:44 templates/report-activity.html:22
 #: templates/report-billing.html:32 templates/report-epidemio.html:23
 #: templates/report-statistic.html:27 templates/report-today.html:30
 #: templates/user-conn-export.html:26 templates/whonet-export.html:26
@@ -1450,7 +1433,7 @@ msgstr "ភេទ"
 msgid "Liste des analyses"
 msgstr "បញ្ជីនៃការវិភាគ"
 
-#: templates/det-hist-patient.html:71 templates/pivot-table.html:31
+#: templates/det-hist-patient.html:71 templates/pivot-table.html:32
 #: templates/report-today.html:78 templates/setting-det-analysis.html:5
 #: templates/setting-det-analysis.html:14
 #: templates/setting-det-analysis.html:17
@@ -1566,6 +1549,10 @@ msgstr "ការប្រជុំគុណភាព"
 #: templates/det-meeting.html:31
 msgid "Réunion de direction"
 msgstr "ការប្រជុំគ្រប់គ្រង"
+
+#: templates/det-meeting.html:37 templates/list-meeting.html:33
+msgid "Organisateur"
+msgstr "អ្នករៀបចំ"
 
 #: templates/det-meeting.html:44 templates/list-meeting.html:34
 msgid "Compte-rendu"
@@ -1729,11 +1716,11 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលក
 
 #: templates/det-patient.html:411 templates/manage-pat-records.html:932
 msgid "Recherche de code postal ou ville"
-msgstr ""
+msgstr "ស្វែងរកលេខកូដប្រៃសណីយ៍ឬទីក្រុង"
 
 #: templates/det-patient.html:458 templates/manage-pat-records.html:979
 msgid "Erreur lors de la récupération des données"
-msgstr ""
+msgstr "កំហុសពេលទាញយកទិន្នន័យ"
 
 #: templates/det-req-ext.html:5 templates/det-req-int.html:5
 msgid "Details demande d'analyses"
@@ -1827,8 +1814,7 @@ msgstr "កំហុសក្នុងកំឡុងពេលនៃការស
 #: templates/list-equipment.html:145 templates/list-laboratory.html:153
 #: templates/list-manuals.html:156 templates/list-meeting.html:146
 #: templates/list-nonconformities.html:302 templates/list-procedure.html:158
-#: templates/list-suppliers.html:149 templates/list-template.html:151
-#: templates/setting-age-interval.html:97
+#: templates/list-suppliers.html:149 templates/setting-age-interval.html:97
 #: templates/setting-det-analysis.html:571
 #: templates/setting-det-analysis.html:689 templates/setting-det-dict.html:115
 #: templates/setting-dicts.html:210 templates/setting-zipcity.html:121
@@ -1847,7 +1833,7 @@ msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃ
 msgid "Veuillez sélectionner une date de prescription"
 msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទនៃវេជ្ជបញ្ជាចំនួនមួយ"
 
-#: templates/det-req-ext.html:1113 templates/det-req-int.html:979
+#: templates/det-req-ext.html:1112 templates/det-req-int.html:979
 msgid "Veuillez renseigner le code de prélèvement"
 msgstr "សូមបញ្ចូលលេខកូដឥណពន្ធ"
 
@@ -2134,7 +2120,7 @@ msgstr "ស្វែងរក"
 
 #: templates/hist-analyzes.html:18 templates/hist-stock-product.html:19
 #: templates/list-nonconformities.html:20 templates/list-records.html:30
-#: templates/pivot-table.html:39 templates/report-activity.html:18
+#: templates/pivot-table.html:40 templates/report-activity.html:18
 #: templates/report-billing.html:24 templates/report-epidemio.html:19
 #: templates/report-statistic.html:19 templates/report-today.html:22
 #: templates/user-conn-export.html:18
@@ -2216,7 +2202,7 @@ msgstr "ឃ្លាំងនៃការវិភាគ"
 msgid "Dictionnaires"
 msgstr "វចនានុក្រម"
 
-#: templates/homepage.html:23 templates/menu.html:88
+#: templates/homepage.html:23
 msgid "Gestion des sauvegardes"
 msgstr "ការគ្រប់គ្រងបម្រុងទុក"
 
@@ -2298,7 +2284,7 @@ msgstr "បច្ចេកទេស"
 
 #: templates/homepage.html:158
 msgid "Une alerte est présente dans la gestion de stock"
-msgstr ""
+msgstr "ការដាស់តឿនមានវត្តមាននៅក្នុងការគ្រប់គ្រងស្តុក"
 
 #: templates/initialization.html:3 templates/initialization.html:20
 #: templates/login.html:3 templates/login.html:20 templates/skeleton.html:44
@@ -2312,15 +2298,15 @@ msgstr "ជំនាន់"
 
 #: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
 msgid "Liste des contrôles externes"
-msgstr ""
+msgstr "បញ្ជីនៃការត្រួតពិនិត្យខាងក្រៅ"
 
 #: templates/list-ctrl-ext.html:31 templates/list-ctrl-int.html:31
 msgid "Paramètre"
-msgstr ""
+msgstr "ប៉ារ៉ាម៉ែត្រ"
 
 #: templates/list-ctrl-int.html:5 templates/list-ctrl-int.html:12
 msgid "Liste des contrôles internes"
-msgstr ""
+msgstr "បញ្ជីនៃការត្រួតពិនិត្យខាងក្នុង"
 
 #: templates/list-doctors.html:5 templates/list-doctors.html:12
 msgid "Liste des prescripteurs"
@@ -2355,9 +2341,8 @@ msgstr "បន្ថែមអ្នកចេញវេជ្ជបញ្ជា"
 #: templates/list-manuals.html:174 templates/list-meeting.html:164
 #: templates/list-nonconformities.html:320 templates/list-procedure.html:176
 #: templates/list-products.html:153 templates/list-stock.html:271
-#: templates/list-suppliers.html:167 templates/list-template.html:169
-#: templates/setting-analyzes.html:263 templates/setting-dicts.html:228
-#: templates/setting-zipcity.html:139
+#: templates/list-suppliers.html:167 templates/setting-analyzes.html:263
+#: templates/setting-dicts.html:228 templates/setting-zipcity.html:139
 msgid "Erreur lors de la suppression des données"
 msgstr "កំហុសពេលលុបទិន្នន័យ"
 
@@ -2613,7 +2598,7 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលក
 msgid "Date dossier"
 msgstr "កាលបរិច្ឆេទឯកសារ"
 
-#: templates/list-samples.html:44 templates/pivot-table.html:29
+#: templates/list-samples.html:44 templates/pivot-table.html:30
 msgid "Patient"
 msgstr "អ្នកជំងឺ"
 
@@ -2718,22 +2703,6 @@ msgstr "បន្ថែមអ្នកផ្គត់ផ្គង់"
 #: templates/list-suppliers.html:149
 msgid "Note : certains equipements pourraient être associés à ce fournisseur"
 msgstr "សម្គាល់ៈឧបករណ៍មួយចំនួនអាចត្រូវបានផ្សារភ្ជាប់ជាមួយនឹងអ្នកផ្គត់ផ្គង់នេះ"
-
-#: templates/list-template.html:5 templates/list-template.html:12
-msgid "Modèles de documents"
-msgstr "គំរូឯកសារ"
-
-#: templates/list-template.html:33
-msgid "Défaut"
-msgstr "កំហុស"
-
-#: templates/list-template.html:57
-msgid "Ajouter un modèle"
-msgstr "បន្ថែមគំរូ"
-
-#: templates/list-template.html:113
-msgid "Tester"
-msgstr "សាកល្បង"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -2856,7 +2825,7 @@ msgid "Rapport statistique"
 msgstr "របាយការណ៍ស្ថិតិ"
 
 #: templates/menu.html:55 templates/pivot-table.html:5
-#: templates/pivot-table.html:17
+#: templates/pivot-table.html:18
 msgid "Tableau croisé dynamique"
 msgstr "តារាង​អ្នក​ជំនួយ​ការ"
 
@@ -2887,18 +2856,21 @@ msgstr "ស្ថានភាពវិក័យប័ត្រប្រចាំ
 msgid "Rapports"
 msgstr "របាយការណ៍"
 
-#: templates/menu.html:90 templates/setting-logo.html:5
-msgid "Changement de logo"
-msgstr "ការផ្លាស់ប្តូររូបយីហោ"
+#: templates/menu.html:88
+msgid "Configuration des sauvegardes"
+msgstr ""
 
-#: templates/menu.html:93 templates/setting-age-interval.html:5
-#: templates/setting-age-interval.html:12
-msgid "Intervalles d'âge"
-msgstr "ចន្លោះពេលអាយុ"
+#: templates/menu.html:90
+msgid "Configuration du logo"
+msgstr ""
+
+#: templates/menu.html:93
+msgid "Configuration des intervalles d'âge"
+msgstr ""
 
 #: templates/menu.html:96
-msgid "Gestion modèle document"
-msgstr "ការគ្រប់គ្រងគំរូឯកសារ"
+msgid "Configuration des modèles de documents"
+msgstr ""
 
 #: templates/menu.html:97
 msgid "Configuration des comptes-rendu"
@@ -2911,11 +2883,11 @@ msgstr "កំណត់រចនាសម្ព័ន្ធលេខកំណត
 #: templates/menu.html:99 templates/setting-zipcity.html:5
 #: templates/setting-zipcity.html:12
 msgid "Gestion des codes postaux"
-msgstr ""
+msgstr "ការគ្រប់គ្រងលេខកូដប្រៃសណីយ៍"
 
 #: templates/menu.html:103
-msgid "Gestion des dossiers patients"
-msgstr "ការគ្រប់គ្រងកំណត់ត្រាអ្នកជម្ងឺ"
+msgid "Configuration des dossiers patients"
+msgstr ""
 
 #: templates/menu.html:106
 msgid "Configuration DHIS2"
@@ -3366,19 +3338,19 @@ msgstr "សូមដាក់ឈ្មោះភាពមិនប្រក្រ
 msgid "Veuillez sélectionner un rapporteur."
 msgstr "សូមជ្រើសរើសអ្នកធ្វើរបាយការណ៍!"
 
-#: templates/pivot-table.html:21
+#: templates/pivot-table.html:22
 msgid "Choix des données"
 msgstr "ការជ្រើសរើសទិន្នន័យ"
 
-#: templates/pivot-table.html:26
+#: templates/pivot-table.html:27
 msgid "Dataset"
 msgstr "សំណុំទិន្នន័យ"
 
-#: templates/pivot-table.html:52
+#: templates/pivot-table.html:53
 msgid "Chargement"
 msgstr "កំពុងផ្ទុក"
 
-#: templates/pivot-table.html:93
+#: templates/pivot-table.html:100
 msgid "Veuillez saisir des dates"
 msgstr "សូមបញ្ចូលកាលបរិច្ឆេទ"
 
@@ -3592,14 +3564,14 @@ msgstr "គ្រួសារ"
 
 #: templates/res-control-ext.html:5 templates/res-control-ext.html:13
 msgid "Résultats du contrôle externe"
-msgstr ""
+msgstr "លទ្ធផលនៃការត្រួតពិនិត្យខាងក្រៅ"
 
 #: templates/res-control-ext.html:16 templates/res-control-int.html:16
 msgid "Date du contrôle"
-msgstr ""
+msgstr "កាលបរិច្ឆេទនៃការត្រួតពិនិត្យ"
 
 #: templates/res-control-ext.html:30
-msgid "Contact de l'organisateur"
+msgid "Contact du fournisseur"
 msgstr ""
 
 #: templates/res-control-ext.html:37 templates/res-control-int.html:31
@@ -3613,10 +3585,14 @@ msgstr ""
 
 #: templates/res-control-int.html:5 templates/res-control-int.html:13
 msgid "Résultats du contrôle interne"
-msgstr ""
+msgstr "លទ្ធផលការត្រួតពិនិត្យខាងក្នុង"
 
 #: templates/res-control-int.html:24 templates/res-control-int.html:38
 msgid "Cible du contrôle"
+msgstr "គោលដៅការត្រួតពិនិត្យ"
+
+#: templates/setting-age-interval.html:5 templates/setting-age-interval.html:12
+msgid "Paramétrage de l'intervalle d'âge"
 msgstr ""
 
 #: templates/setting-age-interval.html:16
@@ -4115,9 +4091,9 @@ msgstr "បន្ថែមវចនានុក្រម"
 msgid "Paramétrage du rapport épidémiologique"
 msgstr "ការកំណត់របាយការណ៍អេពីដេមីសាស្ត្រ"
 
-#: templates/setting-logo.html:12
-msgid "Changement de logo pour les documents"
-msgstr "ការផ្លាស់ប្តូររូបសញ្ញាសម្រាប់ឯកសារ"
+#: templates/setting-logo.html:5 templates/setting-logo.html:12
+msgid "Paramétrage du logo pour les documents"
+msgstr ""
 
 #: templates/setting-logo.html:14
 msgid "Logo original"
@@ -4345,19 +4321,19 @@ msgstr "កំហុសនៅពេលផ្លាស់ប្តូរស្ថ
 
 #: templates/setting-zipcity.html:14
 msgid "Charger la base à partir d'un fichier csv"
-msgstr ""
+msgstr "ផ្ទុកឃ្លាំងទិន្នន័យពីឯកសារ csv"
 
 #: templates/setting-zipcity.html:16
 msgid "Vider la base"
-msgstr ""
+msgstr "ឃ្លាំងទិន្នន័យទទេ"
 
 #: templates/setting-zipcity.html:17
 msgid "Ajouter le fichier en base"
-msgstr ""
+msgstr "បន្ថែមឯកសារទៅឃ្លាំងទិន្នន័យ"
 
 #: templates/setting-zipcity.html:210
 msgid "Erreur lors de l'import des données"
-msgstr ""
+msgstr "កំហុសពេលនាំចូលទិន្នន័យចូល"
 
 #: templates/skeleton.html:32
 msgid "English (UK)"
@@ -4414,4 +4390,40 @@ msgstr "គ្មានលទ្ធផលត្រូវនាំចេញទេ
 
 #~ msgid "Numéro RPPS"
 #~ msgstr "លេខ RPPS"
+
+#~ msgid "Date d'acquisition"
+#~ msgstr "កាលបរិច្ឆេទទិញយក"
+
+#~ msgid "Contact de l'organisateur"
+#~ msgstr ""
+
+#~ msgid "Accés non autorisé"
+#~ msgstr ""
+
+#~ msgid "Modèles de documents"
+#~ msgstr "គំរូឯកសារ"
+
+#~ msgid "Défaut"
+#~ msgstr "កំហុស"
+
+#~ msgid "Ajouter un modèle"
+#~ msgstr "បន្ថែមគំរូ"
+
+#~ msgid "Tester"
+#~ msgstr "សាកល្បង"
+
+#~ msgid "Changement de logo"
+#~ msgstr "ការផ្លាស់ប្តូររូបយីហោ"
+
+#~ msgid "Intervalles d'âge"
+#~ msgstr "ចន្លោះពេលអាយុ"
+
+#~ msgid "Gestion modèle document"
+#~ msgstr "ការគ្រប់គ្រងគំរូឯកសារ"
+
+#~ msgid "Gestion des dossiers patients"
+#~ msgstr "ការគ្រប់គ្រងកំណត់ត្រាអ្នកជម្ងឺ"
+
+#~ msgid "Changement de logo pour les documents"
+#~ msgstr "ការផ្លាស់ប្តូររូបសញ្ញាសម្រាប់ឯកសារ"
 

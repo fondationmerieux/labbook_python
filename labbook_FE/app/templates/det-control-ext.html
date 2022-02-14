@@ -57,7 +57,7 @@
                             <th hidden>{{ _("serial") }}</th>
                             <th class="text-left">{{ _("Action") }}</th>
                             <th class="text-left cursor-act">{{ _("Date") }}</th>
-                            <th class="text-left cursor-act">{{ _("Organisateur") }}</th>
+                            <th class="text-left cursor-act">{{ _("Fournisseur") }}</th>
                             <th class="text-left cursor-act">{{ _("Résultat") }}</th>
                             <th class="text-left cursor-act">{{ _("Commentaire") }}</th>
                             <th class="text-left">{{ _("Compte rendu") }}</th>
@@ -315,9 +315,9 @@ $("#search_eqp").select2(
 
 $("#search_eqp").on("select2:select", function (e) 
 {
-let id_item = $(e.currentTarget).val();
+let id_eqp = $(e.currentTarget).val();
 
-    $("#id_eqp").val(id_item) ;
+    $("#id_eqp").val(id_eqp) ;
 } ) ;
 
 // fix bug between jquery 3.6.0 and select2
@@ -334,6 +334,9 @@ window.location.href = "{{ session['server_ext'] }}/list-ctrl-ext" ;
 $( document ).ready( function()
 {
 display_item( 1 ) ;
+
+    if ( id_item == 0 )
+    $("#btn_add").prop("disabled", true) ;
 } ) ;
 </script>
 {% endblock %}

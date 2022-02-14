@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Changement de logo") }}</title>
+    <title>{{ _("Paramétrage du logo pour les documents") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Changement de logo pour les documents") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage du logo pour les documents") }}</span></h2>
             <div class="row ml-5">
                 <label>{{ _("Logo original") }} :</label>
                 <img src="{{ session['server_ext'] }}/resource/logo.png?{{ rand }}" alt="logo">

@@ -85,22 +85,22 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dicts">{{ _("Dictionnaires") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-backup">{{ _("Gestion des sauvegardes") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-backup">{{ _("Configuration des sauvegardes") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-logo">{{ _("Changement de logo") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-logo">{{ _("Configuration du logo") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-age-interval">{{ _("Intervalles d'âge") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-age-interval">{{ _("Configuration des intervalles d'âge") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/list-template">{{ _("Gestion modèle document") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/list-template">{{ _("Configuration des modèles de documents") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes-rendu") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Gestion des codes postaux") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' or
                           session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/manage-pat-records">{{ _("Gestion des dossiers patients") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/manage-pat-records">{{ _("Configuration des dossiers patients") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dhis2">{{ _("Configuration DHIS2") }}</a>

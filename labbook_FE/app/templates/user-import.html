@@ -113,7 +113,7 @@ function import_users()
 
 function return_back()
 {
-window.history.back() ;
+window.location.href = "{{ session['server_ext'] }}/setting-users" ;
 }
 </script>
 {% endblock %}

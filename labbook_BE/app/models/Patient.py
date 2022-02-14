@@ -60,12 +60,13 @@ class Patient:
                     ' and (nom like "' + word + '%" or '
                     'prenom like "' + word + '%" or '
                     'code like "' + word + '%" or '
-                    'code_patient like "' + word + '%") ')
+                    'code_patient like "' + word + '%" or '
+                    'tel like "' + word + '%") ')
 
-        req = 'select id_data as id, nom, prenom, nom_jf, code, '\
-              'date_format(ddn, %s) as ddn, code_patient '\
-              'from sigl_03_data '\
-              'where ' + cond + ' order by nom asc limit 1000'
+        req = ('select id_data as id, nom, prenom, nom_jf, code, '
+               'date_format(ddn, %s) as ddn, code_patient '
+               'from sigl_03_data '
+               'where ' + cond + ' order by nom asc limit 1000')
 
         cursor.execute(req, (Constants.cst_isodate,))
 

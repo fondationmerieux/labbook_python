@@ -272,7 +272,7 @@
                             {% if entry == 'Y' %}
                             <th class="text-left">{{ _("Action") }}</th>
                             {% endif %}
-                            <th class="text-center cursor-act">{{ _("Code") }} *</th>
+                            <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Prod. pathol.") }} *</th>
                             <th class="text-center cursor-act">{{ _("Statut") }} *</th>
                             <th class="text-center cursor-act">{{ _("Date prél.") }}</th>
@@ -1106,13 +1106,13 @@ console.log("DEBUG data_products=" + JSON.stringify(data_products));
     // type and status required
     for( i in data_products )
     {
-    console.log("DEBUG data_products[i].code=" + data_products[i].code + " | i="+i);
+        /* USELESS 15/02/2022
         if (data_products[i].code == "")
         {
-
         alert( "{{ _("Veuillez renseigner le code de prélèvement") }}" ) ;
         return false ;
         }
+        */
 
         if (data_products[i].type == 0)
         {

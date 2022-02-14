@@ -384,7 +384,7 @@ function delete_file( id_file )
 
 function cancel()
 {
-window.history.back() ;
+window.location.href = "{{ session['server_ext'] }}/homepage" ;
 }
 
 $( document ).ready( function()

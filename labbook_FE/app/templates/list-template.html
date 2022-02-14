@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Modèles de documents") }}</title>
+    <title>{{ _("Paramétrage des modèles de documents") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main" style="opacity: 1;">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Modèles de documents") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _(""Paramétrage des modèles de documents") }}</span></h2>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>

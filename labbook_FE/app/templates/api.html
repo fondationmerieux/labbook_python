@@ -29,7 +29,7 @@
     </style>
 </head>
 
-{% if debug == 1 or session['user_role'] == 'A' or session['user_role'] == 'B' %}
+{% if debug == 1 or session['user_role'] == 'A' %}
 <body>
     <div id="swagger-ui"></div>
     
@@ -62,7 +62,7 @@
 </body>
 {% else %}
 <body>
-    <div>{{ _("Accés non autorisé") }}</div>
+    <div>{{ _("Accès non autorisé") }}</div>
 <body>
 {% endif %}
 </html>
