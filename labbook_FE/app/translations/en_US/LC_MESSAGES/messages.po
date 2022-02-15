@@ -586,7 +586,7 @@ msgstr "LabBook API"
 
 #: templates/api.html:65
 msgid "Accès non autorisé"
-msgstr ""
+msgstr "Unauthorized access"
 
 #: templates/biological-validation.html:5
 #: templates/biological-validation.html:16 templates/list-records.html:292
@@ -3834,7 +3834,7 @@ msgstr ""
 
 #: templates/setting-backup.html:628
 msgid "Délai d'attente dépassé"
-msgstr ""
+msgstr "Waiting period exceeded"
 
 #: templates/setting-backup.html:770
 msgid ""

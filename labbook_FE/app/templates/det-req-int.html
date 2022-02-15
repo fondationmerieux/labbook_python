@@ -283,7 +283,7 @@
                             {% if entry == 'Y' %}
                             <th class="text-left">{{ _("Action") }}</th>
                             {% endif %}
-                            <th class="text-center cursor-act">{{ _("Code") }} *</th>
+                            <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Prod. pathol.") }} *</th>
                             <th class="text-center cursor-act">{{ _("Statut") }} *</th>
                             <th class="text-center cursor-act">{{ _("Date prél.") }}</th>
@@ -974,11 +974,13 @@ var stat          = 181 ;
     // DateReceipt and sampler required
     for( i in data_products )
     {
+        /* USELESS 15/02/2022
         if (data_products[i].code == "")
         {
         alert( "{{ _("Veuillez renseigner le code de prélèvement") }}" ) ;
         return false ;
         }
+        */
 
         if (data_products[i].type == 0)
         {
