@@ -2722,15 +2722,15 @@ msgstr ""
 
 #: templates/list-template.html:33
 msgid "Défaut"
-msgstr ""
+msgstr "កំហុស"
 
 #: templates/list-template.html:57
 msgid "Ajouter un modèle"
-msgstr ""
+msgstr "បន្ថែមគំរូ"
 
 #: templates/list-template.html:113
 msgid "Tester"
-msgstr ""
+msgstr "សាកល្បង"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -4416,32 +4416,11 @@ msgstr "គ្មានលទ្ធផលត្រូវនាំចេញទេ
 #~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
 #~ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកំពុងទាញយកបញ្ជីឯកសារ"
 
-#~ msgid "CPS"
-#~ msgstr "ស៊ីភីអេសCPS"
-
-#~ msgid "Numéro RPPS"
-#~ msgstr "លេខ RPPS"
-
 #~ msgid "Date d'acquisition"
 #~ msgstr "កាលបរិច្ឆេទទិញយក"
 
-#~ msgid "Contact de l'organisateur"
-#~ msgstr ""
-
-#~ msgid "Accés non autorisé"
-#~ msgstr ""
-
 #~ msgid "Modèles de documents"
 #~ msgstr "គំរូឯកសារ"
-
-#~ msgid "Défaut"
-#~ msgstr "កំហុស"
-
-#~ msgid "Ajouter un modèle"
-#~ msgstr "បន្ថែមគំរូ"
-
-#~ msgid "Tester"
-#~ msgstr "សាកល្បង"
 
 #~ msgid "Changement de logo"
 #~ msgstr "ការផ្លាស់ប្តូររូបយីហោ"

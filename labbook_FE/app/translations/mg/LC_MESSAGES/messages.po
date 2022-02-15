@@ -2728,15 +2728,15 @@ msgstr ""
 
 #: templates/list-template.html:33
 msgid "Défaut"
-msgstr ""
+msgstr "Défaut"
 
 #: templates/list-template.html:57
 msgid "Ajouter un modèle"
-msgstr ""
+msgstr "Hampiditra modely"
 
 #: templates/list-template.html:113
 msgid "Tester"
-msgstr ""
+msgstr "Hanandrana"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -4429,32 +4429,11 @@ msgstr "Tsy misy vokatra azo havoaka !"
 #~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
 #~ msgstr "Nisy olana teo am-pangalana ny lisitry ny arsiva"
 
-#~ msgid "CPS"
-#~ msgstr "CPS"
-
-#~ msgid "Numéro RPPS"
-#~ msgstr "Laharana RPPS"
-
 #~ msgid "Date d'acquisition"
 #~ msgstr "Daty nahazoana"
 
-#~ msgid "Contact de l'organisateur"
-#~ msgstr ""
-
-#~ msgid "Accés non autorisé"
-#~ msgstr ""
-
 #~ msgid "Modèles de documents"
 #~ msgstr "Modelina document"
-
-#~ msgid "Défaut"
-#~ msgstr "Défaut"
-
-#~ msgid "Ajouter un modèle"
-#~ msgstr "Hampiditra modely"
-
-#~ msgid "Tester"
-#~ msgstr "Hanandrana"
 
 #~ msgid "Changement de logo"
 #~ msgstr "Fanovana logo"

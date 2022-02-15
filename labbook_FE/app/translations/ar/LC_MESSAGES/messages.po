@@ -681,7 +681,7 @@ msgstr "إضافة تحاليل جديدة"
 
 #: templates/biological-validation.html:159
 msgid "Compte-rendu groupé"
-msgstr ""
+msgstr "التقرير الجماعي"
 
 #: templates/biological-validation.html:164
 msgid "Dossier suivant"
@@ -804,7 +804,7 @@ msgstr "النسخة"
 
 #: templates/det-control-ext.html:5 templates/det-control-ext.html:14
 msgid "Contrôle externe"
-msgstr ""
+msgstr "الضوابط الخارجية "
 
 #: templates/det-control-ext.html:16 templates/det-control-int.html:16
 #: templates/det-meeting.html:25 templates/hist-analyzes.html:42
@@ -819,15 +819,15 @@ msgstr "نوع"
 
 #: templates/det-control-ext.html:18 templates/det-control-int.html:18
 msgid "Qualitatif"
-msgstr ""
+msgstr "نوعي"
 
 #: templates/det-control-ext.html:21 templates/det-control-int.html:21
 msgid "Quantitatif"
-msgstr ""
+msgstr "كمّي "
 
 #: templates/det-control-ext.html:25 templates/det-control-int.html:25
 msgid "Nom du paramètre"
-msgstr ""
+msgstr "اسم عنصر الضبط"
 
 #: templates/det-control-ext.html:31 templates/det-control-int.html:31
 #: templates/det-equipment.html:5 templates/det-equipment.html:15
@@ -1065,11 +1065,11 @@ msgstr "يحرر"
 
 #: templates/det-control-ext.html:152 templates/res-control-ext.html:41
 msgid "Conforme"
-msgstr ""
+msgstr "مطابق"
 
 #: templates/det-control-ext.html:153 templates/res-control-ext.html:42
 msgid "Non conforme"
-msgstr ""
+msgstr "غير مطابق"
 
 #: templates/det-control-ext.html:154 templates/list-samples.html:56
 #: templates/non-conformity.html:623
@@ -1078,11 +1078,11 @@ msgstr "آخر"
 
 #: templates/det-control-ext.html:187 templates/det-control-int.html:174
 msgid "Veuillez saisir un nom de paramètre."
-msgstr ""
+msgstr "الرجاء ادخال اسم عنصر الضبط"
 
 #: templates/det-control-ext.html:190 templates/det-control-int.html:177
 msgid "Veuillez sélectionner un équipement."
-msgstr ""
+msgstr "الرجاء ادخال اسم جهاز "
 
 #: templates/det-control-ext.html:212 templates/det-control-int.html:199
 #: templates/list-laboratory.html:303 templates/manage-pat-records.html:714
@@ -1145,11 +1145,11 @@ msgstr "خطأ أثناء إنشاء الملف"
 
 #: templates/det-control-int.html:5 templates/det-control-int.html:14
 msgid "Contrôle interne"
-msgstr ""
+msgstr "الضوابط الداخلية "
 
 #: templates/det-control-int.html:60
 msgid "Cible"
-msgstr ""
+msgstr "الهدف"
 
 #: templates/det-doctor.html:15 templates/setting-det-user.html:48
 msgid "Accès"
@@ -1333,7 +1333,7 @@ msgstr "فاتورة"
 
 #: templates/det-equipment.html:208
 msgid "Date d'achat"
-msgstr "تاريخ الشراء"
+msgstr "تاريخ تأكيد طلب الشراء "
 
 #: templates/det-equipment.html:214 templates/det-sample.html:125
 #: templates/det-stock-product.html:37
@@ -1727,11 +1727,11 @@ msgstr "طرأ خلل أثناء إضافة / تعديل معلومات مريض
 
 #: templates/det-patient.html:411 templates/manage-pat-records.html:932
 msgid "Recherche de code postal ou ville"
-msgstr ""
+msgstr "البحث عن الرقم البريدي أو اسم المدينة"
 
 #: templates/det-patient.html:458 templates/manage-pat-records.html:979
 msgid "Erreur lors de la récupération des données"
-msgstr ""
+msgstr "طرأ خلل أثناء استرجاع البيانات"
 
 #: templates/det-req-ext.html:5 templates/det-req-int.html:5
 msgid "Details demande d'analyses"
@@ -2296,7 +2296,7 @@ msgstr "تقني"
 
 #: templates/homepage.html:158
 msgid "Une alerte est présente dans la gestion de stock"
-msgstr ""
+msgstr "إنذار في المخزون "
 
 #: templates/initialization.html:3 templates/initialization.html:20
 #: templates/login.html:3 templates/login.html:20 templates/skeleton.html:44
@@ -2310,15 +2310,15 @@ msgstr "نسخة"
 
 #: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
 msgid "Liste des contrôles externes"
-msgstr ""
+msgstr "قائمة الضوابط الخارجية  "
 
 #: templates/list-ctrl-ext.html:31 templates/list-ctrl-int.html:31
 msgid "Paramètre"
-msgstr ""
+msgstr "عنصر الضبط"
 
 #: templates/list-ctrl-int.html:5 templates/list-ctrl-int.html:12
 msgid "Liste des contrôles internes"
-msgstr ""
+msgstr "قائمة الضوابط الداخلية "
 
 #: templates/list-doctors.html:5 templates/list-doctors.html:12
 msgid "Liste des prescripteurs"
@@ -2723,15 +2723,15 @@ msgstr ""
 
 #: templates/list-template.html:33
 msgid "Défaut"
-msgstr ""
+msgstr "خطأ"
 
 #: templates/list-template.html:57
 msgid "Ajouter un modèle"
-msgstr ""
+msgstr "أضف قالبًا"
 
 #: templates/list-template.html:113
 msgid "Tester"
-msgstr ""
+msgstr "اختبار"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -3592,15 +3592,15 @@ msgstr "قسم "
 
 #: templates/res-control-ext.html:5 templates/res-control-ext.html:13
 msgid "Résultats du contrôle externe"
-msgstr ""
+msgstr "نتائج الضبط الخارجي "
 
 #: templates/res-control-ext.html:16 templates/res-control-int.html:16
 msgid "Date du contrôle"
-msgstr ""
+msgstr "تاريخ تنفيذ الضبط "
 
 #: templates/res-control-ext.html:30
 msgid "Contact du fournisseur"
-msgstr ""
+msgstr "الإتصال بالمُمَوِّن"
 
 #: templates/res-control-ext.html:37 templates/res-control-int.html:31
 #: templates/res-control-int.html:44
@@ -3613,11 +3613,11 @@ msgstr ""
 
 #: templates/res-control-int.html:5 templates/res-control-int.html:13
 msgid "Résultats du contrôle interne"
-msgstr ""
+msgstr "نتائج الضبط الداخلي"
 
 #: templates/res-control-int.html:24 templates/res-control-int.html:38
 msgid "Cible du contrôle"
-msgstr ""
+msgstr "الهدف المتوقّع "
 
 #: templates/setting-age-interval.html:5 templates/setting-age-interval.html:12
 msgid "Paramétrage de l'intervalle d'âge"
@@ -4039,11 +4039,11 @@ msgstr "تأكيد كلمة المرور"
 
 #: templates/setting-det-user.html:71
 msgid "Numéro de matricule interne"
-msgstr ""
+msgstr "رقم تسجيل الموظف "
 
 #: templates/setting-det-user.html:77
 msgid "Numéro de la carte professionnelle"
-msgstr ""
+msgstr "رقم البطاقة المهنية"
 
 #: templates/setting-det-user.html:110
 msgid "Langues *"
@@ -4355,19 +4355,19 @@ msgstr ""
 
 #: templates/setting-zipcity.html:14
 msgid "Charger la base à partir d'un fichier csv"
-msgstr ""
+msgstr "تحميل قاعدة البيانات من ملف csv "
 
 #: templates/setting-zipcity.html:16
 msgid "Vider la base"
-msgstr ""
+msgstr "افراغ قاعدة البيانات "
 
 #: templates/setting-zipcity.html:17
 msgid "Ajouter le fichier en base"
-msgstr ""
+msgstr "إضافة الملف إلى قاعدة البيانات "
 
 #: templates/setting-zipcity.html:210
 msgid "Erreur lors de l'import des données"
-msgstr ""
+msgstr "طرأ خلل أثناء تنزيل البيانات "
 
 #: templates/skeleton.html:32
 msgid "English (UK)"
@@ -4428,29 +4428,11 @@ msgstr "لا توجد أي نتائج للتنزيل!"
 #~ msgid "Résident "
 #~ msgstr "مقيم  "
 
-#~ msgid "CPS"
-#~ msgstr "CPS"
-
-#~ msgid "Numéro RPPS"
-#~ msgstr "رقم RPPS"
-
 #~ msgid "Date d'acquisition"
 #~ msgstr "تاريخ الاستحواذ"
 
-#~ msgid "Contact de l'organisateur"
-#~ msgstr ""
-
 #~ msgid "Modèles de documents"
 #~ msgstr "نماذج مستندات"
-
-#~ msgid "Défaut"
-#~ msgstr "خطأ"
-
-#~ msgid "Ajouter un modèle"
-#~ msgstr "أضف قالبًا"
-
-#~ msgid "Tester"
-#~ msgstr "اختبار"
 
 #~ msgid "Changement de logo"
 #~ msgstr "تغيير الشعار / الشارة"
@@ -4466,7 +4448,3 @@ msgstr "لا توجد أي نتائج للتنزيل!"
 
 #~ msgid "Changement de logo pour les documents"
 #~ msgstr "تغيير الشعار (logo) للمستندات"
-
-#~ msgid "Gestion des codes postaux"
-#~ msgstr ""
-

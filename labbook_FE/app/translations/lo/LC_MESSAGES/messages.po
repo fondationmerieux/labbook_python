@@ -2724,15 +2724,15 @@ msgstr ""
 
 #: templates/list-template.html:33
 msgid "Défaut"
-msgstr ""
+msgstr "ອ້າງອີງ"
 
 #: templates/list-template.html:57
 msgid "Ajouter un modèle"
-msgstr ""
+msgstr "ເພີ່ມຮູບແບບ"
 
 #: templates/list-template.html:113
 msgid "Tester"
-msgstr ""
+msgstr "ການທົດລອງ"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -4418,35 +4418,11 @@ msgstr "ບໍ່ມີຜົນສົ່ງອອກ!"
 #~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
 #~ msgstr "ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງຊອກຫາລາຍການເອກະສານທີ່ເກັບມ້ຽນ"
 
-#~ msgid "CPS"
-#~ msgstr "CPS"
-
-#~ msgid "Numéro RPPS"
-#~ msgstr "RPPS number"
-
 #~ msgid "Date d'acquisition"
 #~ msgstr "ວັນທີໄດ້ມາ"
 
-#~ msgid "Contact de l'organisateur"
-#~ msgstr ""
-
-#~ msgid "Accés non autorisé"
-#~ msgstr ""
-
 #~ msgid "Modèles de documents"
 #~ msgstr "ຮູບແບບເອກະສານ"
-
-#~ msgid "Défaut"
-#~ msgstr "ອ້າງອີງ"
-
-#~ msgid "Ajouter un modèle"
-#~ msgstr "ເພີ່ມຮູບແບບ"
-
-#~ msgid "Tester"
-#~ msgstr "ການທົດລອງ"
-
-#~ msgid "Changement de logo"
-#~ msgstr "ປ່ຽນໂລໂກ້"
 
 #~ msgid "Intervalles d'âge"
 #~ msgstr "ເກນອາຍຸ"

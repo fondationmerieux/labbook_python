@@ -2726,15 +2726,15 @@ msgstr ""
 
 #: templates/list-template.html:33
 msgid "Défaut"
-msgstr ""
+msgstr "Defeito"
 
 #: templates/list-template.html:57
 msgid "Ajouter un modèle"
-msgstr ""
+msgstr "Adicionar um modelo"
 
 #: templates/list-template.html:113
 msgid "Tester"
-msgstr ""
+msgstr "Testar"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -4426,32 +4426,11 @@ msgstr "Nenhum resultado para exportar!"
 #~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
 #~ msgstr "Ocorreu um erro durante a recuperação da lista de arquivos"
 
-#~ msgid "CPS"
-#~ msgstr "CPS"
-
-#~ msgid "Numéro RPPS"
-#~ msgstr "Número RPPS"
-
 #~ msgid "Date d'acquisition"
 #~ msgstr "Data de aquisição"
 
-#~ msgid "Contact de l'organisateur"
-#~ msgstr ""
-
-#~ msgid "Accés non autorisé"
-#~ msgstr ""
-
 #~ msgid "Modèles de documents"
 #~ msgstr "Modelos de documentos"
-
-#~ msgid "Défaut"
-#~ msgstr "Defeito"
-
-#~ msgid "Ajouter un modèle"
-#~ msgstr "Adicionar um modelo"
-
-#~ msgid "Tester"
-#~ msgstr "Testar"
 
 #~ msgid "Changement de logo"
 #~ msgstr "Mudança de logotipo"
