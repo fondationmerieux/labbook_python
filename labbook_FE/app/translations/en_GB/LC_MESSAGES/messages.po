@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-14 15:55+0100\n"
+"POT-Creation-Date: 2022-02-15 09:55+0100\n"
 "PO-Revision-Date: 2021-02-21 15:20+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_GB\n"
@@ -258,8 +258,8 @@ msgstr "Code"
 #: templates/list-products.html:31 templates/list-records.html:51
 #: templates/list-records.html:149 templates/list-staff.html:31
 #: templates/list-stock.html:20 templates/list-stock.html:78
-#: templates/list-works.html:116 templates/manage-pat-records.html:81
-#: templates/manage-pat-records.html:330
+#: templates/list-template.html:31 templates/list-works.html:116
+#: templates/manage-pat-records.html:81 templates/manage-pat-records.html:330
 #: templates/setting-det-analysis.html:245 templates/setting-det-user.html:104
 #: templates/setting-dicts.html:20 templates/setting-dicts.html:68
 #: templates/setting-users.html:34 templates/setting-users.html:89
@@ -321,12 +321,13 @@ msgstr "Reports"
 #: templates/list-nonconformities.html:59 templates/list-procedure.html:30
 #: templates/list-products.html:30 templates/list-records.html:128
 #: templates/list-staff.html:30 templates/list-stock.html:77
-#: templates/list-suppliers.html:30 templates/list-works.html:98
-#: templates/report-today.html:66 templates/res-control-ext.html:63
-#: templates/setting-age-interval.html:29 templates/setting-analyzes.html:79
-#: templates/setting-det-analysis.html:244 templates/setting-det-dict.html:45
-#: templates/setting-dhis2.html:26 templates/setting-dicts.html:67
-#: templates/setting-epidemio.html:26 templates/setting-users.html:86
+#: templates/list-suppliers.html:30 templates/list-template.html:30
+#: templates/list-works.html:98 templates/report-today.html:66
+#: templates/res-control-ext.html:63 templates/setting-age-interval.html:29
+#: templates/setting-analyzes.html:79 templates/setting-det-analysis.html:244
+#: templates/setting-det-dict.html:45 templates/setting-dhis2.html:26
+#: templates/setting-dicts.html:67 templates/setting-epidemio.html:26
+#: templates/setting-users.html:86
 msgid "Action"
 msgstr "Action"
 
@@ -389,8 +390,8 @@ msgstr "File attachements"
 #: templates/det-staff.html:101 templates/det-staff.html:126
 #: templates/det-staff.html:151 templates/det-staff.html:185
 #: templates/det-template.html:47 templates/list-laboratory.html:50
-#: templates/res-control-ext.html:63 templates/setting-dhis2.html:26
-#: templates/setting-epidemio.html:26
+#: templates/list-template.html:34 templates/res-control-ext.html:63
+#: templates/setting-dhis2.html:26 templates/setting-epidemio.html:26
 msgid "Fichier"
 msgstr "File"
 
@@ -443,9 +444,10 @@ msgstr "Re-edit"
 #: templates/list-procedure.html:102 templates/list-products.html:92
 #: templates/list-samples.html:108 templates/list-staff.html:109
 #: templates/list-stock.html:193 templates/list-suppliers.html:99
-#: templates/report-billing.html:240 templates/report-today.html:184
-#: templates/setting-analyzes.html:193 templates/setting-dicts.html:170
-#: templates/setting-users.html:202 templates/setting-zipcity.html:93
+#: templates/list-template.html:95 templates/report-billing.html:240
+#: templates/report-today.html:184 templates/setting-analyzes.html:193
+#: templates/setting-dicts.html:170 templates/setting-users.html:202
+#: templates/setting-zipcity.html:93
 msgid "Aucune donnée à afficher"
 msgstr "No data to display"
 
@@ -492,7 +494,8 @@ msgstr "Error while deleting a file"
 #: templates/administrative-record.html:591
 #: templates/administrative-record.html:624
 #: templates/administrative-record.html:631
-#: templates/biological-validation.html:843
+#: templates/biological-validation.html:843 templates/list-template.html:197
+#: templates/list-template.html:204
 msgid "Erreur lors de la génération du PDF"
 msgstr "Error while generating PDF"
 
@@ -526,15 +529,15 @@ msgstr "Adds new analyses (code not existing in database)"
 #: templates/list-nonconformities.html:84 templates/list-procedure.html:58
 #: templates/list-products.html:55 templates/list-staff.html:66
 #: templates/list-stock.html:103 templates/list-suppliers.html:55
-#: templates/quality-general.html:47 templates/report-dhis2.html:37
-#: templates/setting-age-interval.html:41 templates/setting-analyzes.html:102
-#: templates/setting-backup.html:45 templates/setting-det-dict.html:58
-#: templates/setting-dhis2.html:39 templates/setting-dicts.html:86
-#: templates/setting-epidemio.html:39 templates/setting-pwd-user.html:33
-#: templates/setting-rec-num.html:36 templates/setting-report.html:36
-#: templates/setting-users.html:111 templates/setting-zipcity.html:56
-#: templates/user-conn-export.html:36 templates/user-import.html:38
-#: templates/whonet-export.html:36
+#: templates/list-template.html:52 templates/quality-general.html:47
+#: templates/report-dhis2.html:37 templates/setting-age-interval.html:41
+#: templates/setting-analyzes.html:102 templates/setting-backup.html:45
+#: templates/setting-det-dict.html:58 templates/setting-dhis2.html:39
+#: templates/setting-dicts.html:86 templates/setting-epidemio.html:39
+#: templates/setting-pwd-user.html:33 templates/setting-rec-num.html:36
+#: templates/setting-report.html:36 templates/setting-users.html:111
+#: templates/setting-zipcity.html:56 templates/user-conn-export.html:36
+#: templates/user-import.html:38 templates/whonet-export.html:36
 msgid "Retour"
 msgstr "Back"
 
@@ -812,7 +815,8 @@ msgstr "External control"
 #: templates/list-ctrl-int.html:33 templates/list-meeting.html:32
 #: templates/list-products.html:32 templates/list-records.html:84
 #: templates/list-results.html:32 templates/list-stock.html:28
-#: templates/list-stock.html:83 templates/list-works.html:46
+#: templates/list-stock.html:83 templates/list-template.html:32
+#: templates/list-works.html:46
 msgid "Type"
 msgstr "Type"
 
@@ -864,10 +868,10 @@ msgstr "Save"
 #: templates/list-products.html:14 templates/list-records.html:109
 #: templates/list-samples.html:19 templates/list-staff.html:14
 #: templates/list-stock.html:61 templates/list-suppliers.html:14
-#: templates/list-works.html:79 templates/report-billing.html:61
-#: templates/report-today.html:48 templates/setting-analyzes.html:63
-#: templates/setting-dicts.html:51 templates/setting-users.html:70
-#: templates/setting-zipcity.html:21
+#: templates/list-template.html:14 templates/list-works.html:79
+#: templates/report-billing.html:61 templates/report-today.html:48
+#: templates/setting-analyzes.html:63 templates/setting-dicts.html:51
+#: templates/setting-users.html:70 templates/setting-zipcity.html:21
 msgid "Nombre total de lignes"
 msgstr "Total number of lines"
 
@@ -893,7 +897,8 @@ msgstr "Total number of lines"
 #: templates/list-samples.html:63 templates/list-staff.html:18
 #: templates/list-staff.html:57 templates/list-stock.html:65
 #: templates/list-stock.html:94 templates/list-suppliers.html:18
-#: templates/list-suppliers.html:46 templates/list-works.html:84
+#: templates/list-suppliers.html:46 templates/list-template.html:18
+#: templates/list-template.html:43 templates/list-works.html:84
 #: templates/list-works.html:126 templates/report-billing.html:66
 #: templates/report-billing.html:95 templates/report-today.html:53
 #: templates/report-today.html:88 templates/setting-analyzes.html:67
@@ -926,7 +931,8 @@ msgstr "First"
 #: templates/list-samples.html:64 templates/list-staff.html:19
 #: templates/list-staff.html:58 templates/list-stock.html:66
 #: templates/list-stock.html:95 templates/list-suppliers.html:19
-#: templates/list-suppliers.html:47 templates/list-works.html:85
+#: templates/list-suppliers.html:47 templates/list-template.html:19
+#: templates/list-template.html:44 templates/list-works.html:85
 #: templates/list-works.html:127 templates/report-billing.html:67
 #: templates/report-billing.html:96 templates/report-today.html:54
 #: templates/report-today.html:89 templates/setting-analyzes.html:68
@@ -959,7 +965,8 @@ msgstr "Previous"
 #: templates/list-samples.html:66 templates/list-staff.html:21
 #: templates/list-staff.html:60 templates/list-stock.html:68
 #: templates/list-stock.html:97 templates/list-suppliers.html:21
-#: templates/list-suppliers.html:49 templates/list-works.html:87
+#: templates/list-suppliers.html:49 templates/list-template.html:21
+#: templates/list-template.html:46 templates/list-works.html:87
 #: templates/list-works.html:129 templates/report-billing.html:69
 #: templates/report-billing.html:98 templates/report-today.html:56
 #: templates/report-today.html:91 templates/setting-analyzes.html:70
@@ -992,7 +999,8 @@ msgstr "Next"
 #: templates/list-samples.html:67 templates/list-staff.html:22
 #: templates/list-staff.html:61 templates/list-stock.html:69
 #: templates/list-stock.html:98 templates/list-suppliers.html:22
-#: templates/list-suppliers.html:50 templates/list-works.html:88
+#: templates/list-suppliers.html:50 templates/list-template.html:22
+#: templates/list-template.html:47 templates/list-works.html:88
 #: templates/list-works.html:130 templates/report-billing.html:70
 #: templates/report-billing.html:99 templates/report-today.html:57
 #: templates/report-today.html:92 templates/setting-analyzes.html:71
@@ -1013,10 +1021,11 @@ msgstr "Last"
 #: templates/list-meeting.html:29 templates/list-nonconformities.html:58
 #: templates/list-procedure.html:29 templates/list-products.html:29
 #: templates/list-staff.html:29 templates/list-stock.html:76
-#: templates/list-suppliers.html:29 templates/setting-age-interval.html:28
-#: templates/setting-analyzes.html:78 templates/setting-det-analysis.html:243
-#: templates/setting-det-dict.html:44 templates/setting-dicts.html:66
-#: templates/setting-users.html:85 templates/setting-zipcity.html:36
+#: templates/list-suppliers.html:29 templates/list-template.html:29
+#: templates/setting-age-interval.html:28 templates/setting-analyzes.html:78
+#: templates/setting-det-analysis.html:243 templates/setting-det-dict.html:44
+#: templates/setting-dicts.html:66 templates/setting-users.html:85
+#: templates/setting-zipcity.html:36
 msgid "serial"
 msgstr "serial"
 
@@ -1052,7 +1061,8 @@ msgstr "Data export"
 #: templates/list-manuals.html:118 templates/list-meeting.html:113
 #: templates/list-nonconformities.html:182 templates/list-procedure.html:119
 #: templates/list-staff.html:126 templates/list-suppliers.html:116
-#: templates/setting-analyzes.html:208 templates/setting-dicts.html:185
+#: templates/list-template.html:112 templates/setting-analyzes.html:208
+#: templates/setting-dicts.html:185
 msgid "Editer"
 msgstr "Edit"
 
@@ -1361,9 +1371,9 @@ msgstr "Please enter an equipment name"
 #: templates/list-manuals.html:119 templates/list-meeting.html:114
 #: templates/list-nonconformities.html:183 templates/list-procedure.html:120
 #: templates/list-records.html:296 templates/list-suppliers.html:117
-#: templates/list-works.html:259 templates/res-control-ext.html:207
-#: templates/setting-age-interval.html:80 templates/setting-analyzes.html:209
-#: templates/setting-det-analysis.html:286
+#: templates/list-template.html:114 templates/list-works.html:259
+#: templates/res-control-ext.html:207 templates/setting-age-interval.html:80
+#: templates/setting-analyzes.html:209 templates/setting-det-analysis.html:286
 #: templates/setting-det-analysis.html:292
 #: templates/setting-det-analysis.html:609 templates/setting-det-dict.html:97
 #: templates/setting-dhis2.html:105 templates/setting-dicts.html:186
@@ -1818,7 +1828,8 @@ msgstr "Error during the recovery of pathological products"
 #: templates/list-equipment.html:145 templates/list-laboratory.html:153
 #: templates/list-manuals.html:156 templates/list-meeting.html:146
 #: templates/list-nonconformities.html:302 templates/list-procedure.html:158
-#: templates/list-suppliers.html:149 templates/setting-age-interval.html:97
+#: templates/list-suppliers.html:149 templates/list-template.html:151
+#: templates/setting-age-interval.html:97
 #: templates/setting-det-analysis.html:571
 #: templates/setting-det-analysis.html:689 templates/setting-det-dict.html:115
 #: templates/setting-dicts.html:210 templates/setting-zipcity.html:121
@@ -2345,8 +2356,9 @@ msgstr "Add a prescriber"
 #: templates/list-manuals.html:174 templates/list-meeting.html:164
 #: templates/list-nonconformities.html:320 templates/list-procedure.html:176
 #: templates/list-products.html:153 templates/list-stock.html:271
-#: templates/list-suppliers.html:167 templates/setting-analyzes.html:263
-#: templates/setting-dicts.html:228 templates/setting-zipcity.html:139
+#: templates/list-suppliers.html:167 templates/list-template.html:169
+#: templates/setting-analyzes.html:263 templates/setting-dicts.html:228
+#: templates/setting-zipcity.html:139
 msgid "Erreur lors de la suppression des données"
 msgstr "Error when deleting data"
 
@@ -2708,6 +2720,22 @@ msgstr "Add a supplier"
 msgid "Note : certains equipements pourraient être associés à ce fournisseur"
 msgstr "Note: some equipment could be associated with this supplier."
 
+#: templates/list-template.html:5 templates/list-template.html:12
+msgid "Paramétrage des modèles de documents"
+msgstr "Document model setup"
+
+#: templates/list-template.html:33
+msgid "Défaut"
+msgstr "Default"
+
+#: templates/list-template.html:57
+msgid "Ajouter un modèle"
+msgstr "Add a template"
+
+#: templates/list-template.html:113
+msgid "Tester"
+msgstr "Test"
+
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
 msgstr "Work list"
@@ -2884,10 +2912,9 @@ msgstr "Report setup"
 msgid "Configuration des numéros de dossier"
 msgstr "Record number setup"
 
-#: templates/menu.html:99 templates/setting-zipcity.html:5
-#: templates/setting-zipcity.html:12
-msgid "Gestion des codes postaux"
-msgstr "Postal code management"
+#: templates/menu.html:99
+msgid "Configuration des codes postaux"
+msgstr "Postal code setup"
 
 #: templates/menu.html:103
 msgid "Configuration des dossiers patients"
@@ -2956,7 +2983,7 @@ msgstr "Quality"
 
 #: templates/menu.html:154
 msgid "Veuillez vous reconnecter"
-msgstr ""
+msgstr "Please reconnect"
 
 #: templates/menu.html:162
 msgid "Non conformité"
@@ -4015,7 +4042,7 @@ msgstr "Confirm password"
 
 #: templates/setting-det-user.html:71
 msgid "Numéro de matricule interne"
-msgstr "Internal registration number"
+msgstr "Internal identification number"
 
 #: templates/setting-det-user.html:77
 msgid "Numéro de la carte professionnelle"
@@ -4325,6 +4352,10 @@ msgstr "Please confirm status change"
 msgid "Erreur lors du changement de statut"
 msgstr "Error when changing status"
 
+#: templates/setting-zipcity.html:5 templates/setting-zipcity.html:12
+msgid "Paramétrage des codes postaux"
+msgstr "Post code setup"
+
 #: templates/setting-zipcity.html:14
 msgid "Charger la base à partir d'un fichier csv"
 msgstr "Load the database from a csv file"
@@ -4384,52 +4415,3 @@ msgstr "Date of validation of the"
 #: templates/whonet-export.html:82
 msgid "Aucun résultat à exporter !"
 msgstr "No results to export!"
-
-#~ msgid "Une erreur est survenue lors de la récupération de la liste de média"
-#~ msgstr "An error occurred while retrieving the media list"
-
-#~ msgid "Une erreur est survenue lors de la récupération de la liste d'archives"
-#~ msgstr "An error occurred while retrieving the archive list"
-
-#~ msgid "CPS"
-#~ msgstr "CPS"
-
-#~ msgid "Numéro RPPS"
-#~ msgstr "RPPS number"
-
-#~ msgid "Date d'acquisition"
-#~ msgstr "Acquisition date"
-
-#~ msgid "Contact de l'organisateur"
-#~ msgstr "Contact of the organizer"
-
-#~ msgid "Accés non autorisé"
-#~ msgstr ""
-
-#~ msgid "Modèles de documents"
-#~ msgstr "Document templates"
-
-#~ msgid "Défaut"
-#~ msgstr "Default"
-
-#~ msgid "Ajouter un modèle"
-#~ msgstr "Add a template"
-
-#~ msgid "Tester"
-#~ msgstr "Test"
-
-#~ msgid "Changement de logo"
-#~ msgstr "Logo setup"
-
-#~ msgid "Intervalles d'âge"
-#~ msgstr "Age ranges setup"
-
-#~ msgid "Gestion modèle document"
-#~ msgstr "Document model setup"
-
-#~ msgid "Gestion des dossiers patients"
-#~ msgstr "Patient record setup"
-
-#~ msgid "Changement de logo pour les documents"
-#~ msgstr "Logo change for documents"
-
