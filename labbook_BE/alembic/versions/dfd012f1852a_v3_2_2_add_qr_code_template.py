@@ -24,6 +24,14 @@ def upgrade():
     # Get the current
     conn = op.get_bind()
 
+    # ADD template result with QR code
+    try:
+        conn.execute("insert into template_setting "
+                     "(tpl_date, tpl_name, tpl_file, tpl_default, tpl_type) "
+                     "values (NOW(), 'Modèle résultat avec un code QR', 'tpl_result_one_qrcode.odt', 'N', 'RES')")
+    except Exception as err:
+        print("ERROR insert result template with one QR code for template_setting,\n\terr=" + str(err))
+
     # ADD template QR code
     try:
         conn.execute("insert into template_setting "
