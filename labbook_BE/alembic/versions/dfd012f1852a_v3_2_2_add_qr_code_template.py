@@ -24,6 +24,17 @@ def upgrade():
     # Get the current
     conn = op.get_bind()
 
+    # COPY alembic resource
+    try:
+        from distutils.dir_util import copy_tree
+
+        fromDirectory = "alembic/resource"
+        toDirectory = "/storage/resource"
+
+        copy_tree(fromDirectory, toDirectory)
+    except Exception as err:
+        print("ERROR copy alembic resource,\n\terr=" + str(err))
+
     # ADD template result with QR code
     try:
         conn.execute("insert into template_setting "

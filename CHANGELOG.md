@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.2] - 2022-02-25
+## [3.2.2] - 2022-02-24
 ### Added
 - QR code template to render a QR code image to insert into a specific report template
 
