@@ -23,6 +23,7 @@
                         <select id="tpl_type" name="tpl_type" class="form-control">
                             <option value="RES" {% if args['template']['tpl_type'] == 'RES' %}selected{% endif %}>{{ _("Résultat") }}</option>  
                             <option value="STI" {% if args['template']['tpl_type'] == 'STI' %}selected{% endif %}>{{ _("Etiquette") }}</option>
+                            <option value="QRC" {% if args['template']['tpl_type'] == 'QRC' %}selected{% endif %}>{{ _("Code QR") }}</option>
                         </select>			
                     </div>
                 </div>

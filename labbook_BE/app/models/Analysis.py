@@ -249,7 +249,7 @@ class Analysis:
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.var_whonet, '
-               'link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, var.code_var '
+               'link.var_qrcode, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, var.code_var '
                'from sigl_07_data as var '
                'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
                'left join sigl_dico_data as d1 on d1.id_data=var.unite '
@@ -355,7 +355,8 @@ class Analysis:
     def getRefVariable(id_ana):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet '
+        req = ('select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet, '
+               'var_qrcode '
                'from sigl_05_07_data '
                'where id_refanalyse=%s')
 
@@ -369,9 +370,11 @@ class Analysis:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_05_07_data '
-                           '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet) '
+                           '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet, '
+                           'var_qrcode) '
                            'values '
-                           '(%(id_owner)s, %(id_refana)s, %(id_refvar)s, %(var_pos)s, %(var_num)s, %(oblig)s, %(var_whonet)s)', params)
+                           '(%(id_owner)s, %(id_refana)s, %(id_refvar)s, %(var_pos)s, %(var_num)s, %(oblig)s, '
+                           '%(var_whonet)s, %(var_qrcode)s)', params)
 
             Analysis.log.info(Logs.fileline())
 
@@ -387,7 +390,8 @@ class Analysis:
 
             cursor.execute('update sigl_05_07_data '
                            'set id_owner=%(id_owner)s, id_refanalyse=%(id_refana)s, id_refvariable=%(id_refvar)s, '
-                           'position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s, var_whonet=%(var_whonet)s '
+                           'position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s, var_whonet=%(var_whonet)s, '
+                           'var_qrcode=%(var_qrcode)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -629,7 +633,7 @@ class Analysis:
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, '
                'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
                'ana.type_analyse, ana.actif, ana.ana_whonet, link.id_data as id_link, link.id_refanalyse, '
-               'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, '
+               'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, link.var_qrcode, '
                'var.id_data as id_var, var.libelle, var.description, var.unite, var.normal_min, var.normal_max, '
                'var.commentaire as var_comm, var.type_resultat, var.unite2, var.formule_unite2, var.formule, '
                'var.accuracy, var.precision2, var.code_var '
@@ -646,18 +650,21 @@ class Analysis:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_analysis, rec.id_patient, rec.type, date_format(rec.date_dos, %s) as record_date, '
-               'rec.num_dos_an as rec_num_year, rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+        req = ('select rec.id_data as id_analysis, rec.id_patient, d_type.label as type, '
+               'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
                'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
-               'rec.statut as status, date_format(rec.date_hosp, %s) as hosp_date, '
+               'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.paye as req_paid, req.urgent as ana_emergency, '
-               'ana.code as analysis_code, ana.nom as analysis_name, dict.label as analysis_familly '
+               'ana.code as analysis_code, ana.nom as analysis_name, d_fam.label as analysis_familly '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
-               'inner join sigl_dico_data as dict on dict.id_data=ana.id_data '
+               'inner join sigl_dico_data as d_fam on d_fam.id_data=ana.id_data '
+               'inner join sigl_dico_data as d_type on d_type.id_data=rec.type '
+               'inner join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'where rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 

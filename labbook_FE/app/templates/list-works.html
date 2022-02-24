@@ -135,6 +135,7 @@
                 </div>
             </div>
 
+            {% if session['user_role'] == 'B' %}
             <div class="panel-heading row mt-3">
                 <h3 class="panel-title">{{ _("Validation groupée") }}</h3>
             </div>
@@ -143,6 +144,7 @@
                     <button type="button" onclick="group_validation();return false;" id="btn_group_val" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Commencer la validation groupée") }}</span></button>
                 </div>
             </div>
+            {% endif %}
 
             {% include 'popup_det_rec.html' %}
 

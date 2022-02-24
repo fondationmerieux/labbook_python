@@ -123,7 +123,7 @@ class ProductReq(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisReq ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for prod in l_prod:
             # Replace None by empty string

@@ -232,6 +232,15 @@
                             <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
                     </div>
+                    <div class="col-12 form-group form-inline">
+                        <label class="col-form-label col-2 text-right  mt-2">{{ _("Génerer un code QR") }}</label>
+                        <label class="col-form-label text-right mt-2 mr-3">
+                            <input type="radio" id="var_qrcode_Y" name="var_qrcode" value="Y" {% if args['var'] and args['var'][0]['var_qrcode'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
+                        </label>
+                        <label class="col-form-label text-right mt-2 mr-3">
+                            <input type="radio" id="var_qrcode_N" name="var_qrcode" value="N" {% if not args['var'] or args['var'][0]['var_qrcode'] == 'N' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
+                        </label>
+                    </div>
                 </div>
             </form>
 
@@ -311,7 +320,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
+var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "var_qrcode":"N", "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
 var data_vars   = {% if args['var'] %}{{ args['var']|safe }}{% else %}[]{% endif %} ;
 var ind_var     = 0 ;
 var ind_sel_var = {% if args['var'] %}1{% else %}0{% endif %} ;
@@ -394,6 +403,7 @@ let id_var = $(e.currentTarget).val();
                 tmp_struct_var.comment    = replaceUndefined(data_var.comment, "") ;
                 tmp_struct_var.oblig      = 5 ;
                 tmp_struct_var.var_whonet = 5 ;
+                tmp_struct_var.var_qrcode = "N" ;
                 tmp_struct_var.num_var    = 0 ;
                 tmp_struct_var.pos        = 0 ;
                 tmp_struct_var.id_link    = 0 ;
@@ -682,6 +692,15 @@ $("#var_comment").val( det_var.comment ) ;
     {
     $("#var_whonet_5").prop("checked", true)  ;
     }
+
+    if ( det_var.var_qrcode == "Y")
+    {
+    $("#var_qrcode_Y").prop("checked", true)  ;
+    }
+    else if ( det_var.var_qrcode == "N")
+    {
+    $("#var_qrcode_N").prop("checked", true)  ;
+    }
 }
 
 function del_var( id_item )
@@ -737,7 +756,8 @@ let val = $(elem).val() ;
 let id_elem = elem.id ;
 
     if ( id_elem != "var_oblig_4" && id_elem != "var_oblig_5" &&
-         id_elem != "var_whonet_4" && id_elem != "var_whonet_5" )
+         id_elem != "var_whonet_4" && id_elem != "var_whonet_5" &&
+         id_elem != "var_qrcode_Y" && id_elem != "var_qrcode_N")
     {
         for( i in data_vars )
         {
@@ -805,6 +825,19 @@ let id_elem = elem.id ;
             {
             let val_elem = $("input:radio[name=var_whonet]:checked").val() ;
             data_vars[i].var_whonet = val_elem ;
+
+            break ;
+            }
+        }
+    }
+    else if ( id_elem == "var_qrcode_Y" || id_elem == "var_qrcode_N" )
+    {
+        for( i in data_vars )
+        {
+            if (data_vars[i].id_item == ind_sel_var )
+            {
+            let val_elem = $("input:radio[name=var_qrcode]:checked").val() ;
+            data_vars[i].var_qrcode = val_elem ;
 
             break ;
             }
@@ -888,6 +921,7 @@ var msg = "" ;
                     var_comment  = JSON.stringify( data_vars[i].comment ) ;
                     var_oblig    = data_vars[i].oblig    ;
                     var_whonet   = data_vars[i].var_whonet ;
+                    var_qrcode   = data_vars[i].var_qrcode ;
                     var_num      = data_vars[i].num_var  ;
                     var_pos      = data_vars[i].pos      ;
                     id_link      = data_vars[i].id_link  ;
@@ -916,6 +950,7 @@ var msg = "" ;
                                       '"var_comment":' + var_comment + ', ' +
                                       '"var_oblig":' + var_oblig + ', ' +
                                       '"var_whonet":' + var_whonet + ', ' +
+                                      '"var_qrcode":"' + var_qrcode + '", ' +
                                       '"var_num":' + var_num + ', ' +
                                       '"var_pos":' + var_pos + ', ' +
                                       '"id_link":' + id_link + ', ' +

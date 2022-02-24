@@ -411,7 +411,7 @@ class RecordListAna(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'RecordListAna ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for data in l_datas:
             # Replace None by empty string

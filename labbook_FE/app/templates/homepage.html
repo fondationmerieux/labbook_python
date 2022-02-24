@@ -21,9 +21,9 @@
                     <a href="{{ session['server_ext'] }}/setting-analyzes" class="list-group-item admin-referentiel">{{ _("Référentiel des analyses") }}</a>
                     <a href="{{ session['server_ext'] }}/setting-dicts" class="list-group-item admin-conf-cr">{{ _("Dictionnaires") }}</a>
                     <a href="{{ session['server_ext'] }}/setting-backup" class="list-group-item admin-num-doss">{{ _("Gestion des sauvegardes") }}</a>
-                    <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ args['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
+                    <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ session['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
 
-                    <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ args['pref_quality'] }});" class="list-group-item admin-qualite-{{ args['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
+                    <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ session['pref_quality'] }});" class="list-group-item admin-qualite-{{ session['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
                 </div>
             </div>
             {% else %}
@@ -83,8 +83,8 @@
 {% if session['user_role'] != 'A' and session['user_role'] != 'P' %}
 var pieData = [{value: "{{ args['nb_rec_bio'] }}", label: "{{ _("Biologique") }}", color: "#8330E2"}, {value: "{{ args['nb_rec_tech'] }}", label: "{{ _("Technique") }}", color: "#00ADEE"}] ;
 {% endif %}
-var val_bill    = {{ args['pref_bill'] }} ;
-var val_quality = {{ args['pref_quality'] }} ;
+var val_bill    = {{ session['pref_bill'] }} ;
+var val_quality = {{ session['pref_quality'] }} ;
 
 function change_pref(pref_name)
 {
@@ -114,6 +114,8 @@ let ico      = "admin-gest-fact-" ;
            console.log("SUCCESS POST change pref") ;
            $("." + ico + prec_val).addClass(ico + val) ;
            $("." + ico + val).removeClass(ico + prec_val) ;
+
+           window.location = "{{ session['server_ext'] }}/homepage" ;
            },
        error: function(data)
            {

@@ -290,7 +290,7 @@ class UserList(Resource):
         if not l_users:
             self.log.error(Logs.fileline() + ' : TRACE UserList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for user in l_users:
             # Replace None by empty string
@@ -298,6 +298,8 @@ class UserList(Resource):
                 if user[key] is None:
                     user[key] = ''
                 elif key == 'section':
+                    user[key] = _(user[key].strip())
+                elif key == 'role':
                     user[key] = _(user[key].strip())
 
             if user['birth']:
@@ -322,7 +324,7 @@ class UserRoleList(Resource):
         if not l_roles:
             self.log.error(Logs.fileline() + ' : TRACE UserRoleList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for role in l_roles:
             # Replace None by empty string

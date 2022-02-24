@@ -1,0 +1,22 @@
+# -*- coding:utf-8 -*-
+version = 1
+
+[QRcode]
+# Integer from 1 to 40 that controls the size of the QR Code (the smallest, version 1, is a 21x21 matrix)
+# Set to 0 and use the fit parameter when making the code to determine this automatically.
+
+version = 0
+
+
+# Options : L, M, Q ,H (respectively 7%, 15%, 25%, 30% or less errors can be corrected)
+
+error_correction = "H"
+
+
+# Dynamic value options :
+# {{ o.rec.rec_date }}, {{ o.rec.num_y }}, {{ o.rec.num_m }}, {{ o.rec.num_d }}
+# {{ o.pat.lastname }}, {{ o.pat.firstname }}, {{ pat.maidenname }}, {{ o.pat.middlename }}, 
+# {{ o.pat.code_lab }}, {{ o.pat.code }}, {{ o.pat.sex }}, {{ o.pat.age }}, {{ o.pat.unit }}
+# {{ o.res.value }}, {{ o.res.unit }}, {{ o.res.valid_date }}
+
+text = "{{ o.pat.lastname }} {{ o.pat.firstname }} , {{ o.pat.code_lab }} , {{ o.pat.sex }} , {{ o.pat.age }} {{ o.pat.unit }} , {{ o.res.valid_date }} , {{ o.res.value }}"

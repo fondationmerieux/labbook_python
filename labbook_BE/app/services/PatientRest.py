@@ -295,7 +295,7 @@ class PatientHistoric(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'PatientHistoric ERROR not found')
             analyzes = {}
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for ana in analyzes:
             # Replace None by empty string

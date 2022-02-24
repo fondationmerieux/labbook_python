@@ -39,7 +39,7 @@ class DicoById(Resource):
             self.log.error(Logs.fileline() + ' : TRACE DicoById not found : ' + str(id_data))
             dico = {}
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         # Replace None by empty string
         for key, value in list(dico.items()):
@@ -58,7 +58,7 @@ class DefaultValue(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, name):
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         val = Various.getDefaultValue(name)
 
@@ -153,12 +153,17 @@ class DatasetByName(Resource):
 
         import decimal
 
+        Various.useLangDB()
+
         for item in l_items:
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
                 if isinstance(item[key], decimal.Decimal):
                     item[key] = float(item[key])
+                # translate
+                if isinstance(item[key], str):
+                    item[key] = _(item[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DatasetByName')
         return compose_ret(l_items, Constants.cst_content_type_json)

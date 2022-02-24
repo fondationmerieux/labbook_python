@@ -363,15 +363,18 @@ class Record:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select id_data as id_record, id_patient, type, date_format(date_dos, %s) as record_date, '
-               'num_dos_an as rec_num_year, num_dos_jour as rec_num_day, num_dos_mois as rec_num_month, '
-               'med_prescripteur as id_doctor, date_format(date_prescription, %s) as prescription_date, '
-               'service_interne as internal_service, num_lit as bed_num, prix as price, remise as discount, '
-               'remise_pourcent as discount_percent, assu_pourcent as insurance_percent, a_payer as to_pay, '
-               'statut as status, date_format(date_hosp, %s) as hosp_date '
-               'from sigl_02_data '
+        req = ('select rec.id_data as id_record, rec.id_patient,  d_type.label as type, '
+               'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+               'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
+               'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount, '
+               'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
+               'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date '
+               'from sigl_02_data as rec '
+               'inner join sigl_dico_data as d_type on d_type.id_data=rec.type '
+               'inner join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'where date_dos between %s and %s '
-               'order by id_data desc')
+               'order by id_record desc')
 
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 

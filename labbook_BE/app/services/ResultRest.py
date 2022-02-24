@@ -162,7 +162,7 @@ class ResultRecord(Resource):
             self.log.error(Logs.fileline() + ' : ResultRecord ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for result in l_results:
             # TRANSLATION

@@ -256,6 +256,18 @@ class Setting:
         return cursor.fetchone()
 
     @staticmethod
+    def getDefaultTemplate(type):
+        cursor = DB.cursor()
+
+        req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
+               'from template_setting '
+               'where tpl_type=%s')
+
+        cursor.execute(req, (type,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertTemplate(**params):
         try:
             cursor = DB.cursor()

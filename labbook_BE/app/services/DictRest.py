@@ -42,7 +42,7 @@ class DictDet(Resource):
             self.log.error(Logs.fileline() + ' : TRACE DictDet no l_dicts')
             l_dicts = {}
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for dict in l_dicts:
             # Replace None by empty string
@@ -160,7 +160,7 @@ class DictList(Resource):
         if not l_dicts:
             self.log.error(Logs.fileline() + ' : TRACE DictList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for dict in l_dicts:
             # Replace None by empty string

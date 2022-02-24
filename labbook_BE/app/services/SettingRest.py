@@ -542,7 +542,7 @@ class ScriptStatus(Resource):
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_archive=' + str(l_archive))
                 return compose_ret(l_archive, Constants.cst_content_type_json)
 
-        except Exception as e:
+        except Exception:
             date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')
             ret = "ERR;" + str(date_now) + ";Impossible to read status file"

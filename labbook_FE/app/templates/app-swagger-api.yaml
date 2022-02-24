@@ -3,7 +3,7 @@ info:
   title: LabBook API
   description: 'This is a description of LabBook web services.'
   contact:
-    email: TODOwhichadress@yopmail.com
+    email: labbook@fondation-merieux.org
   license:
     name: GPL-2.0
     url: https://github.com/fondationmerieux/labbook_python/blob/master/LICENSE.md

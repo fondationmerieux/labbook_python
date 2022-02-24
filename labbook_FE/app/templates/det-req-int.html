@@ -1276,7 +1276,7 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
 
 function new_doctor()
 {
-window.location.href = "{{ session['server_ext'] }}/det-doctor/0";
+window.open("{{ session['server_ext'] }}/det-doctor/0", "_blank") ;
 }
 
 function return_home()

@@ -7,6 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.2] - 2022-02-25
+### Added
+- QR code template to render a QR code image to insert into a specific report template
+
+### Changed
+- When entering results, values of type x^n are formatted with n between 1 to 9
+- contact email for API page
+- remove quality menu and no-conformity if quality module is disabled in preferences
+- PDF report order of families depends of order of choice
+
+### Fixed
+- some translations
+- remove grouped valdiation in technician profil
+- pivot table some attribut are displayed by their labels instead of id (sex, type, status...)
+- unit age by default are displayed on new patient form
+- add a space between record number and record date on Bench sheet
+
 ## [3.2.1] - 2022-02-14
 ### Added
 - add code patient search field in list of result and list of work pages

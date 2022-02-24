@@ -1053,7 +1053,7 @@ msgstr "Result"
 #: templates/list-suppliers.html:60 templates/pivot-table.html:64
 #: templates/report-today.html:104
 msgid "Export des données"
-msgstr "Data export"
+msgstr "Export data"
 
 #: templates/det-control-ext.html:143 templates/det-control-int.html:142
 #: templates/list-ctrl-ext.html:112 templates/list-ctrl-int.html:112
@@ -1603,7 +1603,7 @@ msgstr "Supplier reference"
 #: templates/det-new-product.html:67 templates/list-products.html:37
 #: templates/list-stock.html:41 templates/list-stock.html:84
 msgid "Conservation"
-msgstr "Conservation"
+msgstr "Storage"
 
 #: templates/det-new-product.html:145
 msgid "Veuillez saisir un nom de produit."
@@ -2376,7 +2376,7 @@ msgstr "model"
 
 #: templates/list-equipment.html:60
 msgid "Ajouter un équipement"
-msgstr "Add a equipment"
+msgstr "Add an equipment"
 
 #: templates/list-laboratory.html:5 templates/list-laboratory.html:12
 #: templates/menu.html:128

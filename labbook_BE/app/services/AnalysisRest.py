@@ -27,12 +27,12 @@ class AnalysisSearch(Resource):
             self.log.error(Logs.fileline() + ' : TRACE AnalysisSearch not found')
 
         # TRANSLATION
-        if Various.needTranslationDB():
-            for analysis in l_analysis:
-                ana_name  = analysis['name']
-                ana_label = analysis['label']
-                analysis['name']  = _(ana_name.strip())
-                analysis['label'] = _(ana_label.strip())
+        Various.useLangDB()
+        for analysis in l_analysis:
+            ana_name  = analysis['name']
+            ana_label = analysis['label']
+            analysis['name']  = _(ana_name.strip())
+            analysis['label'] = _(ana_label.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisSearch')
         return compose_ret(l_analysis, Constants.cst_content_type_json)
@@ -50,10 +50,10 @@ class AnalysisVarSearch(Resource):
             self.log.error(Logs.fileline() + ' : TRACE AnalysisVarSearch not found')
 
         # TRANSLATION
-        if Various.needTranslationDB():
-            for var in l_vars:
-                var_libel = var['field_value']
-                var['field_value'] = _(var_libel.strip())
+        Various.useLangDB()
+        for var in l_vars:
+            var_libel = var['field_value']
+            var['field_value'] = _(var_libel.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisVarSearch')
         return compose_ret(l_vars, Constants.cst_content_type_json)
@@ -73,7 +73,7 @@ class AnalysisList(Resource):
         if not l_analyzes:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for analysis in l_analyzes:
             # Replace None by empty string
@@ -107,7 +107,7 @@ class AnalysisHistoExport(Resource):
 
         dict_data = Analysis.getAnalyzesHistoList(args)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -165,7 +165,7 @@ class AnalysisHistoList(Resource):
         if not l_analyzes:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisHistoList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for analysis in l_analyzes:
             # Replace None by empty string
@@ -203,7 +203,7 @@ class AnalysisHistoDet(Resource):
         if not l_datas:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisHistoDet not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for data in l_datas:
             # Replace None by empty string
@@ -255,7 +255,7 @@ class AnalysisDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         # Replace None by empty string
         for key, value in list(analysis.items()):
@@ -347,7 +347,8 @@ class AnalysisDet(Resource):
                                                          var_pos=var['var_pos'],
                                                          var_num=var['var_num'],
                                                          oblig=var['var_oblig'],
-                                                         var_whonet=var['var_whonet'])
+                                                         var_whonet=var['var_whonet'],
+                                                         var_qrcode=var['var_qrcode'])
 
                         if ret <= 0:
                             self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -360,7 +361,8 @@ class AnalysisDet(Resource):
                                                          var_pos=var['var_pos'],
                                                          var_num=var['var_num'],
                                                          oblig=var['var_oblig'],
-                                                         var_whonet=var['var_whonet'])
+                                                         var_whonet=var['var_whonet'],
+                                                         var_qrcode=var['var_qrcode'])
 
                         if not ret:
                             self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update link var to analysis')
@@ -396,7 +398,8 @@ class AnalysisDet(Resource):
                                                      var_pos=var['var_pos'],
                                                      var_num=var['var_num'],
                                                      oblig=var['var_oblig'],
-                                                     var_whonet=var['var_whonet'])
+                                                     var_whonet=var['var_whonet'],
+                                                     var_qrcode=var['var_qrcode'])
 
                     if ret <= 0:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -469,7 +472,8 @@ class AnalysisDet(Resource):
                                                      var_pos=var['var_pos'],
                                                      var_num=var['var_num'],
                                                      oblig=var['var_oblig'],
-                                                     var_whonet=var['var_whonet'])
+                                                     var_whonet=var['var_whonet'],
+                                                     var_qrcode=var['var_qrcode'])
 
                     if ret <= 0:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -505,7 +509,8 @@ class AnalysisDet(Resource):
                                                      var_pos=var['var_pos'],
                                                      var_num=var['var_num'],
                                                      oblig=var['var_oblig'],
-                                                     var_whonet=var['var_whonet'])
+                                                     var_whonet=var['var_whonet'],
+                                                     var_qrcode=var['var_qrcode'])
 
                     if ret <= 0:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -535,7 +540,7 @@ class AnalysisVarList(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarList ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for var in l_vars:
             # Replace None by empty string
@@ -561,7 +566,7 @@ class AnalysisVarDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         # Replace None by empty string
         for key, value in list(ana_var.items()):
@@ -586,7 +591,7 @@ class AnalysisTypeProd(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisTypeProd ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         # Replace None by empty string
         for key, value in list(type_prod.items()):
@@ -609,7 +614,7 @@ class AnalysisReq(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'AnalysisReq ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for analysis in l_ana:
             # Replace None by empty string
@@ -677,13 +682,13 @@ class AnalysisExport(Resource):
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
-                     'version']]
+                     'var_qrcode', 'version']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         dict_data = Analysis.getAnalysisExport()
 
@@ -885,6 +890,11 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
+                if d['var_qrcode']:
+                    data.append(d['var_qrcode'])
+                else:
+                    data.append('N')
+
                 data.append('v2')
 
                 l_data.append(data)
@@ -945,7 +955,7 @@ class AnalysisImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][35] != 'v2':
+        if l_rows[0][36] != 'v2':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
@@ -956,7 +966,7 @@ class AnalysisImport(Resource):
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
-                     'version']
+                     'var_qrcode', 'version']
 
         i = 0
         for head in head_line:
@@ -1032,6 +1042,8 @@ class AnalysisImport(Resource):
                     else:
                         var_whonet = 5
 
+                    var_qrcode         = l[35]
+
                     ret = Analysis.exist(code)
 
                     if ret == -1:
@@ -1100,7 +1112,8 @@ class AnalysisImport(Resource):
                                                                  var_pos=position,
                                                                  var_num=num_var,
                                                                  oblig=obligatoire,
-                                                                 var_whonet=var_whonet)
+                                                                 var_whonet=var_whonet,
+                                                                 var_qrcode=var_qrcode)
 
                                 if not ret:
                                     self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
@@ -1175,6 +1188,8 @@ class AnalysisImport(Resource):
                         var_whonet = 4
                     else:
                         var_whonet = 5
+
+                    var_qrcode = l[35]
 
                     ret = Analysis.exist(code)
 
@@ -1272,7 +1287,8 @@ class AnalysisImport(Resource):
                                                              var_pos=position,
                                                              var_num=num_var,
                                                              oblig=obligatoire,
-                                                             var_whonet=var_whonet)
+                                                             var_whonet=var_whonet,
+                                                             var_qrcode=var_qrcode)
 
                             if ret <= 0:
                                 self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))

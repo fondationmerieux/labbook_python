@@ -268,27 +268,49 @@ class Result:
 
     @staticmethod
     def getResultRecordForReport(id_rec):
+        # sort and group id_fam by id_req_ana
         cursor = DB.cursor()
 
-        req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
-               'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
-               'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
-               'rec.date_prescription as prescr_date, rec.statut as rec_stat, '
-               'req.id_owner as id_owner, rec.id_patient as id_pat, link.position as var_pos '
+        req = ('select ref.famille as id_fam '
                'from sigl_04_data as req '
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
-               'left join sigl_dico_data as fam on fam.id_data = ref.famille '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as var on var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
                'and ref.id_data = link.id_refanalyse '
                'where req.id_dos=%s and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
-               'order by ana_fam asc, ana_name asc, id_req_ana asc, var_pos asc')
+               'group by ref.famille order by req.id_data asc')
 
         cursor.execute(req, (id_rec,))
 
-        return cursor.fetchall()
+        l_id_fam = cursor.fetchall()
+
+        l_items = []
+
+        for id_fam in l_id_fam:
+            req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
+                   'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
+                   'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
+                   'rec.date_prescription as prescr_date, rec.statut as rec_stat, '
+                   'req.id_owner as id_owner, rec.id_patient as id_pat, link.position as var_pos, link.var_qrcode '
+                   'from sigl_04_data as req '
+                   'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+                   'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
+                   'left join sigl_dico_data as fam on fam.id_data = ref.famille '
+                   'inner join sigl_09_data as res on req.id_data = res.id_analyse '
+                   'inner join sigl_07_data as var on var.id_data = res.ref_variable '
+                   'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
+                   'and ref.id_data = link.id_refanalyse '
+                   'where req.id_dos=%s and ref.famille=%s and '
+                   'res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
+                   'order by id_req_ana asc,  ana_name asc, var_pos asc')
+
+            cursor.execute(req, (id_rec, id_fam['id_fam'],))
+
+            l_items.extend(cursor.fetchall())
+
+        return l_items
 
     @staticmethod
     def countResValidate(id_req_ana):
@@ -310,19 +332,22 @@ class Result:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_analysis, rec.id_patient, rec.type, date_format(rec.date_dos, %s) as record_date, '
-               'rec.num_dos_an as rec_num_year, rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+        req = ('select rec.id_data as id_analysis, rec.id_patient, d_type.label as type, '
+               'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
                'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
-               'rec.statut as status, date_format(rec.date_hosp, %s) as hosp_date, '
+               'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.paye as req_paid, req.urgent as ana_emergency, '
-               'ref.code as analysis_code, ref.nom as analysis_name, dict.label as analysis_familly, '
+               'ref.code as analysis_code, ref.nom as analysis_name, d_fam.label as analysis_familly, '
                'res.valeur as result_value, var.libelle as variable_name '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
-               'left join sigl_dico_data as dict on dict.id_data=ref.id_data '
+               'left join sigl_dico_data as d_fam on d_fam.id_data=ref.id_data '
+               'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
+               'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as var on var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '

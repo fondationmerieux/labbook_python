@@ -13,38 +13,6 @@ from app.models.Record import *
 from app.models.Report import *
 
 
-class PdfBarcode(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self, num):
-        ret = Pdf.getPdfBarcode(num)
-
-        if not ret:
-            self.log.error(Logs.fileline() + ' : PdfBarcode failed num=%s', str(num))
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        self.log.info(Logs.fileline() + ' : TRACE PdfBarcode')
-        return compose_ret('', Constants.cst_content_type_json)
-
-    def post(self, num):
-        args = request.get_json()
-
-        if 'sts_width' not in args or 'sts_height' not in args or \
-           'sts_margin_top' not in args or 'sts_margin_bottom' not in args or \
-           'sts_margin_left' not in args or 'sts_margin_right' not in args:
-            self.log.error(Logs.fileline() + ' : PdfBarcode ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
-
-        ret = Pdf.getPdfBarcode(num, args)
-
-        if not ret:
-            self.log.error(Logs.fileline() + ' : PdfBarcode failed num=%s', str(num))
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        self.log.info(Logs.fileline() + ' : TRACE PdfBarcode')
-        return compose_ret('', Constants.cst_content_type_json)
-
-
 class PdfBill(Resource):
     log = logging.getLogger('log_services')
 

@@ -18,6 +18,7 @@ relatorio = "*"
 qrcode = "*"
 unoserver = "*"
 pikepdf = "*"
+toml = "*"
 
 [dev-packages]
 

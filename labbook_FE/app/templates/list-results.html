@@ -73,11 +73,47 @@
 var data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
 var tech_list = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
 
-function check_range(id_res, min, max)
+function check_min_max(id_res, min, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ((min != '' && val < parseFloat(min)) || (max != '' && val > parseFloat(max)))
+    if ( (min != '' && val < parseFloat(min)) || (max != '' && val > parseFloat(max)) )
+    {
+        $("#limit_"+id_res).addClass('show') ;
+        $("#limit_"+id_res).removeClass('d-none') ;
+        //$("#res_"+id_res).addClass('error') ;
+    }
+    else
+    {
+        $("#limit_"+id_res).addClass('d-none') ;
+        $("#limit_"+id_res).removeClass('show') ;
+        //$("#res_"+id_res).removeClass('error') ;
+    }
+}
+
+function check_min(id_res, min)
+{
+let val = $( "#res_"+id_res ).val() ;
+
+    if ( min != '' && val < parseFloat(min) )
+    {
+        $("#limit_"+id_res).addClass('show') ;
+        $("#limit_"+id_res).removeClass('d-none') ;
+        //$("#res_"+id_res).addClass('error') ;
+    }
+    else
+    {
+        $("#limit_"+id_res).addClass('d-none') ;
+        $("#limit_"+id_res).removeClass('show') ;
+        //$("#res_"+id_res).removeClass('error') ;
+    }
+}
+
+function check_max(id_res, max)
+{
+let val = $( "#res_"+id_res ).val() ;
+
+    if ( max != '' && val > parseFloat(max) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
@@ -168,6 +204,60 @@ function enabled_save( id_rec, ref_ana )
 function check_change( id_rec, ref_ana, id_res )
 {
 let new_value = $("#res_"+id_res).val() ;
+
+new_value = new_value.trim() ;
+
+var regex_exp = /^[-0-9]*\^[1-9]$/ ;
+
+    if ( new_value.match(regex_exp) )
+    {
+    var pos_exp = new_value.indexOf("^") ;
+    var len_val = new_value.length ;
+    var num_val = new_value.substr(0, pos_exp) ;
+    var exp_val = new_value.substr(pos_exp + 1, len_val) ;
+
+        if ( exp_val == 1 )
+        {
+        new_value = num_val + String.fromCharCode(0x00B9) ;
+        }
+        else if ( exp_val == 2 )
+        {
+        new_value = num_val + String.fromCharCode(0x00B2) ;
+        }
+        else if ( exp_val == 3 )
+        {
+        new_value = num_val + String.fromCharCode(0x00B3) ;
+        }
+        else if ( exp_val == 4 )
+        {
+        new_value = num_val + String.fromCharCode(0x2074) ;
+        }
+        else if ( exp_val == 5 )
+        {
+        new_value = num_val + String.fromCharCode(0x2075) ;
+        }
+        else if ( exp_val == 6 )
+        {
+        new_value = num_val + String.fromCharCode(0x2076) ;
+        }
+        else if ( exp_val == 7 )
+        {
+        new_value = num_val + String.fromCharCode(0x2077) ;
+        }
+        else if ( exp_val == 8 )
+        {
+        new_value = num_val + String.fromCharCode(0x2078) ;
+        }
+        else if ( exp_val == 9 )
+        {
+        new_value = num_val + String.fromCharCode(0x2079) ;
+        }
+        else
+        new_value = new_value ;
+
+    $("#res_"+id_res).val( new_value ) ;
+    }
+
 let old_value = $("#old_res_"+id_res).val() ;
 
     if ( new_value != old_value ) 
@@ -310,7 +400,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"row border p-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span>" + per_rec +
+               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span> " + per_rec +
                "<table class=\"table table-striped table-hover table-lbk\">" +
                "<tbody class=\"row mx-1\">" ;
         }
@@ -331,14 +421,21 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             if ( data[i].type_resultat == 265 )
             res_label = "<b>" + res_label + "</b>" ;
 
-            if ( data[i].normal_min != "" && data[i].normal_max != "" )
+            if ( data[i].normal_min != "" || data[i].normal_max != "" )
             {
             let ico_limit = "d-none" ;
 
-                if ( (value < parseFloat(data[i].normal_min) || value > parseFloat(data[i].normal_max)) && value != "" )
+                if ( value < parseFloat(data[i].normal_min) && value != "" )
+                ico_limit = "show" ;
+                else if ( value > parseFloat(data[i].normal_max) && value != "" )
                 ico_limit = "show" ;
 
-            res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
+                if (data[i].normal_max == "")
+                res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>=" + data[i].normal_min + "&nbsp;]\"></span>" ;
+                else if (data[i].normal_min == "")
+                res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<=" + data[i].normal_max + "&nbsp;]\"></span>" ;
+                else
+                res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
             }
 
         res += "<tr class=\"col-12 p-0\">" +
@@ -415,7 +512,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 disp_valid = "show" ;
 
                 if ( data[i].normal_min != "" && data[i].normal_max != "" )
-                change += 'check_range(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
+                change += 'check_min_max(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
+                else if ( data[i].normal_min != "" && data[i].normal_max == "" )
+                change += 'check_min(' + id_res + ', ' + data[i].normal_min + ');' ;
+                else if ( data[i].normal_min == "" && data[i].normal_max != "" )
+                change += 'check_max(' + id_res + ', ' + data[i].normal_max + ');' ;
 
                 // Num var
                 if (data[i].num_var > 0)

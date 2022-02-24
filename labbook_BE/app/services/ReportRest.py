@@ -151,10 +151,10 @@ class ReportActivity(Resource):
             self.log.error(Logs.fileline() + ' : TRACE stat type not found')
             stat['type'] = []
 
-        if Various.needTranslationDB():
-            for stat_type in stat['type']:
-                stat_ana = stat_type['analysis']
-                stat_type['analysis']  = _(stat_ana.strip())
+        Various.useLangDB()
+        for stat_type in stat['type']:
+            stat_ana = stat_type['analysis']
+            stat_type['analysis']  = _(stat_ana.strip())
 
         stat['age'] = Report.getActivityAge(args['date_beg'], args['date_end'], args['type_ana'])
 
@@ -162,10 +162,10 @@ class ReportActivity(Resource):
             self.log.error(Logs.fileline() + ' : TRACE stat age not found')
             stat['age'] = []
 
-        if Various.needTranslationDB():
-            for stat_age in stat['age']:
-                stat_ana = stat_age['analysis']
-                stat_age['analysis']  = _(stat_ana.strip())
+        Various.useLangDB()
+        for stat_age in stat['age']:
+            stat_ana = stat_age['analysis']
+            stat_age['analysis']  = _(stat_ana.strip())
 
         self.log.info(Logs.fileline() + ' : TRACE ReportActivity')
         return compose_ret(stat, Constants.cst_content_type_json)
@@ -256,7 +256,7 @@ class ReportToday(Resource):
         if not l_datas:
             self.log.error(Logs.fileline() + ' : TRACE list today record not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for data in l_datas:
             for key, value in list(data.items()):
@@ -295,7 +295,7 @@ class ReportTodayExport(Resource):
 
         dict_data = Report.getTodayList(args['date_beg'], args['date_end'])
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:

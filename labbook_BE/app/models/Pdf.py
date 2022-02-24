@@ -26,124 +26,6 @@ class Pdf:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getPdfBarcode(num, args=''):
-        """Build a PDF Barcode page
-
-        This function is call by administrative record or settings stickers templates.
-
-        Args:
-            num   (int): record serial.
-            args (dict): optional, dictionnary of value, specify size.
-
-        Returns:
-            bool: True for success, False otherwise.
-
-        """
-
-        sts_width         = 62
-        sts_height        = 28
-        sts_margin_top    = 10
-        sts_margin_bottom = 10
-        sts_margin_left   = 10
-        sts_margin_right  = 10
-
-        # setting unsaved to test
-        if args:
-            if args['sts_width']:
-                sts_width = args['sts_width']
-
-            if args['sts_height']:
-                sts_height = args['sts_height']
-
-            if args['sts_margin_top']:
-                sts_margin_top = args['sts_margin_top']
-
-            if args['sts_margin_bottom']:
-                sts_margin_bottom = args['sts_margin_bottom']
-
-            if args['sts_margin_left']:
-                sts_margin_left = args['sts_margin_left']
-
-            if args['sts_margin_right']:
-                sts_margin_right = args['sts_margin_right']
-        else:
-            setting = Setting.getStickerSetting()
-
-            if not setting:
-                Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfBarcode no sticker setting found')
-                return False
-
-            sts_width         = setting['sts_width'] + 2   # +2 for border 1px
-            sts_height        = setting['sts_height'] + 2  # +2 for border 1px
-            sts_margin_top    = max(setting['sts_margin_top'], 10)     # impossible to reduce margin under 10 !
-            sts_margin_bottom = max(setting['sts_margin_bottom'], 10)  # impossible to reduce margin under 10 !
-            sts_margin_left   = max(setting['sts_margin_left'], 10)    # impossible to reduce margin under 10 !
-            sts_margin_right  = max(setting['sts_margin_right'], 10)   # impossible to reduce margin under 10 !
-
-        # Generate barcode code39 type
-        try:
-            checksum = False
-
-            CODE39 = barcode.get_barcode_class('code39')
-
-            options = {'font_size': 10,
-                       'text_distance': 1.0,
-                       'module_height': sts_height - 4,  # substract distance text + text
-                       'quiet_zone': 4.0}
-            options['center_text'] = True
-
-            ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-            ean.save('tmp/sticker_' + num, options=options)
-        except Exception as err:
-            Pdf.log.error(Logs.fileline() + ' : getPdfBarcode failed, err=%s , num=%s', err, str(num))
-            return False
-
-        # Generate PDF
-        path = Constants.cst_path_tmp
-
-        page_w = int(210 - (sts_margin_left + sts_margin_right))
-        page_h = int(297 - (sts_margin_top + sts_margin_bottom))
-
-        # Need coeff convert to works !
-        sticker = ('<img src="' + path + '/sticker_' + num + '.png" width="' + str(sts_width * 3.7795275591) + 'mm" ' +
-                   'height="' + str(sts_height * 4.6) + 'mm">')
-
-        nb_col  = int(page_w / sts_width)
-        nb_line = int(page_h / sts_height)
-
-        div_stickers  = '<table width="100%" style="border:1px solid #DDD;" cellspacing="1px;" cellpadding="0">'
-        line_stickers = '<tr>'
-
-        for c in range(nb_col):
-            line_stickers += '<td style="border:1px solid #DDD;">' + sticker + '</td>'
-
-        line_stickers += '</tr>'
-
-        for l in range(nb_line):
-            div_stickers += line_stickers
-
-        div_stickers += '</table>'
-
-        page_body = ('<div style="position:absolute;top:0;left:0;width:' + str(210) + 'mm;height:' + str(297) +
-                     'mm;background-color:#FFF;">' + div_stickers + '</div>')
-
-        filename = 'barcode_' + num + '.pdf'
-
-        form_cont = page_body
-
-        options = {'--encoding': 'utf-8',
-                   'page-size': 'A4',
-                   'margin-top': str(sts_margin_bottom) + 'mm',
-                   'margin-right': str(sts_margin_right) + 'mm',
-                   'margin-bottom': str(sts_margin_bottom) + 'mm',
-                   'margin-left': str(sts_margin_left) + 'mm',
-                   'no-outline': None}
-
-        pdfkit.from_string(form_cont, path + filename, options=options)
-
-        return True
-
-    @staticmethod
     def getPdfBill(id_rec):
         """Build a PDF bill
 
@@ -1240,10 +1122,12 @@ class Pdf:
                         elif res_prev and res_prev['valeur']:
                             prev_res = res_prev['valeur']
 
-                        if res['normal_min'] and res['normal_max']:
+                        if res['normal_min'] or res['normal_max']:
                             if val != _("Annulée"):
                                 # bold style if out of range min/max
-                                if float(val) < float(res['normal_min']) or float(val) > float(res['normal_max']):
+                                if res['normal_min'] and float(val) < float(res['normal_min']):
+                                    tmp_res['bold_value'] = 'Y'
+                                elif res['normal_max'] and float(val) > float(res['normal_max']):
                                     tmp_res['bold_value'] = 'Y'
 
                         if res['unite'] and val != _("Annulée"):
@@ -1262,6 +1146,10 @@ class Pdf:
                     # Get normal of value
                     if res['normal_min'] and res['normal_max']:
                         tmp_res['references'] = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
+                    elif res['normal_min']:
+                        tmp_res['references'] = '[ >= ' + str(res['normal_min']) + ' ]'
+                    elif res['normal_max']:
+                        tmp_res['references'] = '[ <= ' + str(res['normal_max']) + ' ]'
 
                     # ==== ANALYSIS RESULT ====
                     Various.useLangDB()
@@ -1270,7 +1158,34 @@ class Pdf:
                     tmp_res['value'] = str(val)
                     Various.useLangPDF()
 
-                    tmp_res['var_comm'] = res['commentaire']
+                    if res['commentaire'] and not res['commentaire'].startswith('Project-Id-Version'):
+                        tmp_res['var_comm'] = res['commentaire']
+                    else:
+                        tmp_res['var_comm'] = ''
+
+                    # check if we need to generate a QR code
+                    if res['var_qrcode'] == 'Y':
+                        qrc_filename = 'tpl_qrcode.png'
+
+                        data['res'] = {}
+                        data['res']['value']      = tmp_res['value']
+                        data['res']['unit']       = tmp_res['unit']
+                        data['res']['qrcode']     = ''
+
+                        # to keep same syntaxe of odt template
+                        qrc_data = {}
+                        qrc_data['o'] = data
+
+                        res_valid = Result.getResultValidation(id_res_p)
+                        data['res']['valid_date'] = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y')
+
+                        # 1 - call function generate QR code
+                        ret_qr = Pdf.qrcodeByTemplate(qrc_filename, qrc_data)
+
+                        # 2 - add qr code image in data structure
+                        if ret_qr:
+                            from os.path import join
+                            data['res']['qrcode'] = (open(join(Constants.cst_path_tmp, qrc_filename), 'rb'), 'image/png')
 
                     # Add this result to list of result of this analysis
                     tmp_ana['l_res'].append(tmp_res)
@@ -1675,4 +1590,83 @@ class Pdf:
             return False
 
         Pdf.log.error(Logs.fileline() + ' : getPdfSticker')
+        return True
+
+    @staticmethod
+    def qrcodeByTemplate(filename, data):
+        """Generate a QR code image by a template
+
+        This function is call by getDataReport if a analysis variable with QR code.
+
+        Args:
+            filename  (string): filename of image.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        from os.path import join
+        from jinja2 import Template
+
+        # 1 - load default QRC template
+        tpl = Setting.getDefaultTemplate('QRC')
+
+        if not tpl:
+            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate no default template')
+            return False
+
+        # 2 - render template with data
+        try:
+            import toml
+
+            qrc_tpl = toml.load(join(Constants.cst_template, tpl['tpl_file']))
+
+            tpl_version = qrc_tpl['version']
+
+            qrc_version = int(qrc_tpl['QRcode']['version'])
+            qrc_error   = qrc_tpl['QRcode']['error_correction']
+            qrc_text    = qrc_tpl['QRcode']['text']
+
+            template = Template(qrc_text)
+            tpl_str  = template.render(data)
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate render template failed, err=%s , filename=%s', err, str(filename))
+            return False
+
+        # 3 - generate QR code image
+        try:
+            if qrc_version > 0:
+                fit = False
+            else:
+                qrc_version = 1
+                fit = True
+
+            if qrc_error == 'L':
+                qrc_error = qrcode.constants.ERROR_CORRECT_L
+            elif qrc_error == 'M':
+                qrc_error = qrcode.constants.ERROR_CORRECT_M
+            elif qrc_error == 'Q':
+                qrc_error = qrcode.constants.ERROR_CORRECT_Q
+            elif qrc_error == 'H':
+                qrc_error = qrcode.constants.ERROR_CORRECT_H
+            else:
+                qrc_error = qrcode.constants.ERROR_CORRECT_L
+
+            qrc = qrcode.QRCode(version=qrc_version, error_correction=qrc_error)
+
+            qrc.add_data(str(tpl_str))
+
+            qrc.make(fit=fit)
+
+            img = qrc.make_image(fill_color="black", back_color="white")
+
+            type(img)
+
+            img.save('tmp/' + filename)
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate generate QR image failed, err=%s , filename=%s', err, str(filename))
+            return False
+
+        Pdf.log.info(Logs.fileline() + ' : qrcodeByTemplate')
         return True

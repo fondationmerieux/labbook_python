@@ -1069,8 +1069,6 @@ var date_hosp     = "" ;
 var bill_num      = "" ;
 var stat          = 181 ;
 
-console.log("DEBUG data_products=" + JSON.stringify(data_products)); 
-
     if (id_med == null || id_med == "")
     id_med = 0 ;
 
@@ -1427,7 +1425,7 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
 
 function new_doctor()
 {
-window.location.href = "{{ session['server_ext'] }}/det-doctor/0";
+window.open("{{ session['server_ext'] }}/det-doctor/0", "_blank") ;
 }
 
 function return_home()

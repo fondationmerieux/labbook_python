@@ -27,6 +27,7 @@
 | python-barcode          | 0.13.1    | MIT          |           |         | x       |
 | qrcode                  | 7.3.1     | BSD          |           |         | x       |
 | relatorio               | 0.10.0    | GPL          |           |         | x       |
+| toml                    | 0.10.2    | MIT          |           |         | x       |
 | unoserver               | 1.1       | MIT          |           |         | x       |
 
 > Note :

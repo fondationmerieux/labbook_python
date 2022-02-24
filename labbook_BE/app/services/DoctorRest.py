@@ -28,7 +28,7 @@ class DoctorList(Resource):
         if not l_doctors:
             self.log.error(Logs.fileline() + ' : TRACE DoctorList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for doctor in l_doctors:
             # Replace None by empty string
@@ -67,7 +67,7 @@ class DoctorDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'DoctorDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         # Replace None by empty string
         for key, value in list(doctor.items()):
@@ -166,7 +166,7 @@ class DoctorExport(Resource):
                    'initial', 'service', 'address', ]]
         dict_data = Doctor.getDoctorList(args)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:

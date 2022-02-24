@@ -113,9 +113,9 @@
             {% endif %}
 
             <!-- Dropdown Quality -->
-            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or 
+            {% if session['pref_quality'] == 1 and (session['user_role'] == 'A' or session['user_role'] == 'B' or 
                   session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or 
-                  session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q' %} 
+                  session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q') %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
                   <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-toggle="dropdown">
@@ -155,12 +155,14 @@
             {% endif %}
 
             <!-- Non conformity -->
+            {% if session['pref_quality'] == 1 %}
             <span class="nav-cust-btn">
                 <li class="nav-item">
                   <a class="nav-link non-conformite" href="{{ session['server_ext'] }}/non-conformity/0"></a>
                 </li>
                 <span class="nav-btn-txt">{{ _("Non conformité") }}</span>
             </span>
+            {% endif %}
         </ul>
     </div><!-- /.container-fluid -->
 </nav>

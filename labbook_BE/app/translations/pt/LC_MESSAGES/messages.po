@@ -2157,7 +2157,7 @@ msgid "Secrétaire"
 msgstr "Secretário"
 
 #: translations/messages_pybabel.py:567
-msgid "Secretaire avancée"
+msgid "Secrétaire avancée"
 msgstr "Secretária avançada"
 
 #: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305

@@ -564,7 +564,7 @@ class ControlIntExport(Resource):
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
         dict_data = Quality.getControlList('INT')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -719,7 +719,7 @@ class ControlIntResExport(Resource):
 
         dict_data = Quality.getControlIntResList(id_ctrl)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -773,7 +773,7 @@ class ControlExtExport(Resource):
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
         dict_data = Quality.getControlList('EXT')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -930,7 +930,7 @@ class ControlExtResExport(Resource):
 
         dict_data = Quality.getControlExtResList(id_ctrl)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -987,7 +987,7 @@ class EquipmentList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE EquipmentList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for item in l_items:
             # Replace None by empty string
@@ -1145,7 +1145,7 @@ class EquipmentExport(Resource):
         l_data = [['id_data', 'name', 'maker', 'model', 'funct', 'location', 'section', ]]
         dict_data = Quality.getEquipmentList()
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -1199,7 +1199,7 @@ class ManualList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE ManualList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for item in l_items:
             # Replace None by empty string
@@ -1330,7 +1330,7 @@ class ManualExport(Resource):
                    'date_apply', 'date_update', 'section', ]]
         dict_data = Quality.getManualList()
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -1402,7 +1402,7 @@ class MeetingList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE MeetingList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for item in l_items:
             # Replace None by empty string
@@ -1509,7 +1509,7 @@ class MeetingExport(Resource):
         l_data = [['id_data', 'date_meeting', 'type', 'type_id', 'promoter', 'report', ]]
         dict_data = Quality.getMeetingList()
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -1559,7 +1559,7 @@ class ProcedureList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE ProcedureList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for item in l_items:
             # Replace None by empty string
@@ -1690,7 +1690,7 @@ class ProcedureExport(Resource):
                    'date_apply', 'date_update', 'section', ]]
         dict_data = Quality.getProcedureList()
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -1761,7 +1761,7 @@ class StaffExport(Resource):
                    'phone', 'email', 'arrived', 'position', 'section', 'last_eval', 'username', ]]
         dict_data = Quality.getStaffList()
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:
@@ -1846,7 +1846,7 @@ class StockList(Resource):
         if not l_stocks:
             self.log.error(Logs.fileline() + ' : TRACE StockList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for stock in l_stocks:
             # Replace None by empty string
@@ -1996,7 +1996,7 @@ class StockProductList(Resource):
         if not l_products:
             self.log.error(Logs.fileline() + ' : TRACE StockProductList not found')
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         for product in l_products:
             # Replace None by empty string
@@ -2211,7 +2211,7 @@ class StockExport(Resource):
         l_data = [['prs_ser', 'name', 'nb_pack', 'nb_total', 'type', 'conserv', 'supplier']]
         dict_data = Quality.getStockList(args)
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:

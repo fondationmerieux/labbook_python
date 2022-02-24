@@ -230,7 +230,7 @@ class ExportWhonet(Resource):
                    "Resultat d'antibiotique"]]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
-        Various.needTranslationDB()
+        Various.useLangDB()
 
         if dict_data:
             for d in dict_data:

@@ -478,12 +478,16 @@ def homepage(login=''):
         if req.status_code == 200:
             ret = req.json()
             if ret and 'value' in ret:
-                json_data['pref_quality'] = ret['value']
+                session['pref_quality'] = int(ret['value'])
+                session.modified = True
             else:
-                json_data['pref_quality'] = 0
+                session['pref_quality'] = 0
+                session.modified = True
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests pref_quality failed, err=%s , url=%s', err, url)
+
+    log.error(Logs.fileline() + ' : DEBUG pref_quality=' + str(session['pref_quality']))
 
     # Load pref_bill
     try:
@@ -493,9 +497,11 @@ def homepage(login=''):
         if req.status_code == 200:
             ret = req.json()
             if ret and 'value' in ret:
-                json_data['pref_bill'] = ret['value']
+                session['pref_bill'] = ret['value']
+                session.modified = True
             else:
-                json_data['pref_bill'] = 0
+                session['pref_bill'] = 0
+                session.modified = True
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests pref_bill failed, err=%s , url=%s', err, url)
@@ -1845,6 +1851,28 @@ def det_patient(type_req='E', id_pat=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
     else:
+        # Load unit age by default
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/unite_age_defaut'
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                unit_age_def = req.json()
+                json_data['unite'] = 0
+
+                val_age_def = unit_age_def['value'].lower()
+
+                # unit_age['code'] without accent so we need to remove it from val_age_def to compare
+                if val_age_def == 'années':
+                    val_age_def = 'annees'
+
+                for unit_age in json_ihm['unit_age']:
+                    if unit_age['code'] == val_age_def:
+                        json_data['unite'] = unit_age['id_data']
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests unite_age_defaut failed, err=%s , url=%s', err, url)
+
         # generate a code
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/generate/code'
@@ -4314,7 +4342,7 @@ def upload_tpl():
         log.info(Logs.fileline())
 
         # check if this file is a odt
-        if not filename.endswith('.odt'):
+        if not filename.endswith('.odt') and not filename.endswith('.toml'):
             return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
 
         try:
