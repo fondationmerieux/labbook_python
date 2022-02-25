@@ -1952,7 +1952,7 @@ run_in_container() {
     image=$(fn_get_my_image "$user" "$host")
 
     [[ -n "$image" ]] || {
-        log_message "cannot get my image name with $user@$host"
+        async_status_message "cannot get my image name with $user@$host"
         return 1
     }
 
@@ -1960,7 +1960,7 @@ run_in_container() {
 
     # we write the environment in a file, including the private key password when we restore.
     fn_make_settings "$env_file" 1 || {
-        log_message "cannot create settings file in $env_file"
+        async_status_message "cannot create settings file in $env_file"
         return 1
     }
 
@@ -2016,6 +2016,8 @@ run_in_container() {
     status=$?
 
     [[ $verbose -eq 1 ]] && set +x
+
+    [[ $status -eq 0 ]] || async_status_message "error while trying to run command in container"
 
     return $status
 }
@@ -2208,10 +2210,10 @@ async_status_message() {
     if [[ -n "$status_file" ]]; then
         if [[ -z "$*" ]]; then
             log_message "Command $cmd OK"
-            write_kw_message "OK"
+            [[ $status_async -eq 1 ]] && write_kw_message "OK"
         else
             log_message "Command $cmd ERR: $*"
-            write_kw_message "ERR" "$*"
+            [[ $status_async -eq 1 ]] && write_kw_message "ERR" "$*"
         fi
     fi
 }
