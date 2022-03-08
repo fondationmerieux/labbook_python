@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Paramétrage compte rendu") }}</title>
+    <title>{{ _("Paramétrage des comptes rendus") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage compte rendu") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des comptes rendus") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group row">
                     <label class="col-form-label col-3 text-right mt-2">{{ _("Type d'entête") }}</label>

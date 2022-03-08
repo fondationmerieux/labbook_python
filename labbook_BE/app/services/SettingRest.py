@@ -512,7 +512,7 @@ class ScriptStatus(Resource):
                     self.log.info(Logs.fileline() + ' : l_media=' + str(l_media))
                 except:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listmedia file')
-                    ret = "ERR;" + str(date_now) + ";Impossible to read listmedia file"
+                    ret = "WAIT;" + str(date_now) + ";Impossible to read listmedia file"
                     return compose_ret(ret, Constants.cst_content_type_json, 500)
 
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_media=' + str(l_media))
@@ -536,7 +536,7 @@ class ScriptStatus(Resource):
                     self.log.info(Logs.fileline() + ' : l_archive=' + str(l_archive))
                 except:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listarchive file')
-                    ret = "ERR;" + str(date_now) + ";Impossible to read listarchive file"
+                    ret = "WAIT;" + str(date_now) + ";Impossible to read listarchive file"
                     return compose_ret(l_archive, Constants.cst_content_type_json, 500)
 
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_archive=' + str(l_archive))

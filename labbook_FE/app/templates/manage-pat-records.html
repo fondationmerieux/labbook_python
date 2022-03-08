@@ -20,7 +20,7 @@
                 <div class="panel-patient row mt-3">
                     <div class="col-10">
                         <div class="form-group row">
-                            <label for="search_patient1" class="col-form-label col-5 text-right">{{ _("Nom, prénom ou code du patient") }} <b class="text-success ml-2">{{ _("A CONSERVER") }}</b></label>
+                            <label for="search_patient1" class="col-form-label col-5 text-right">{{ _("Nom, prénom, code du patient ou téléphone") }} <b class="text-success ml-2">{{ _("A CONSERVER") }}</b></label>
                             <div>
                                 <select id="search_patient1" style="width:450px"></select>
                             </div>
@@ -30,7 +30,7 @@
                 <div class="panel-patient row mt-3">
                     <div class="col-10">
                         <div class="form-group row">
-                            <label for="search_patient2" class="col-form-label col-5 text-right">{{ _("Nom, prénom ou code du patient") }} <b class="text-danger ml-2">{{ _("A SUPPRIMER") }}</b></label>
+                            <label for="search_patient2" class="col-form-label col-5 text-right">{{ _("Nom, prénom, code du patient ou téléphone") }} <b class="text-danger ml-2">{{ _("A SUPPRIMER") }}</b></label>
                             <div>
                                 <select id="search_patient2" style="width:450px"></select>
                             </div>
@@ -270,9 +270,15 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group row">
-                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }}</label>
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }} 1</label>
                                     <div>
-                                        <input id="tel_1" type="text" value="" maxlength="20" class="form-control" style="">
+                                        <input id="phone1_1" type="text" value="" maxlength="20" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }} 2</label>
+                                    <div>
+                                        <input id="phone2_1" type="text" value="" maxlength="20" class="form-control" style="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -514,9 +520,15 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group row">
-                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }}</label>
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }} 1</label>
                                     <div>
-                                        <input id="tel_2" type="text" value="" maxlength="20" class="form-control" style="">
+                                        <input id="phone1_2" type="text" value="" maxlength="20" class="form-control" style="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }} 2</label>
+                                    <div>
+                                        <input id="phone2_2" type="text" value="" maxlength="20" class="form-control" style="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -657,7 +669,8 @@ var sexe          = $("input:radio[name=sexe_1]:checked").val() ;
 var adresse       = JSON.stringify( $("#adresse_1").val() ) ;
 var cp            = $("#cp_1").val() ;
 var ville         = $("#ville_1").val() ;
-var tel           = $("#tel_1").val() ;
+var phone1        = $("#phone1_1").val() ;
+var phone2        = $("#phone2_1").val() ;
 var profession    = $("#profession_1").val() ;
 var nom_jf        = $("#nom_jf_1").val() ;
 var quartier      = $("#quartier_1").val() ;
@@ -678,6 +691,9 @@ var blood_rhesus  = $("#blood_rhesus_1").val() ;
     return false;
     }
  
+phone1 = phone1.replaceAll(" ", "") ;
+phone2 = phone2.replaceAll(" ", "") ;
+
 var param = '{ "id_owner":' + id_owner + ', ' +
               '"anonyme":' + anonyme  + ', ' +
               '"code":"' + code + '", ' +
@@ -689,7 +705,8 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
               '"cp":"' + cp + '", ' +
               '"ville":"' + ville + '", ' +
-              '"tel":"' + tel + '", ' +
+              '"tel":"' + phone1 + '", ' +
+              '"phone2":"' + phone2 + '", ' +
               '"profession":"' + profession + '", ' +
               '"nom_jf":"' + nom_jf + '", ' +
               '"quartier":"' + quartier + '", ' +
@@ -844,7 +861,8 @@ function load_data_pat( data, num )
     $("#adresse_" + num ).val( data.adresse ) ;
     $("#bp_" + num ).val( data.bp ) ;
     $("#quartier_" + num ).val( data.quartier ) ;
-    $("#tel_" + num ).val( data.tel ) ;
+    $("#phone1_" + num ).val( data.tel ) ;
+    $("#phone2_" + num ).val( data.pat_phone2 ) ;
     $("#cp_" + num ).val( data.cp ) ;
     $("#profession_" + num ).val( data.profession ) ;
     $("#midname_" + num ).val( data.pat_midname ) ;

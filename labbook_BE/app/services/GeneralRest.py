@@ -45,9 +45,9 @@ class DicoById(Resource):
         for key, value in list(dico.items()):
             if dico[key] is None:
                 dico[key] = ''
-            elif key == 'label':
+            elif key == 'label' and dico[key] != "":
                 dico[key] = _(dico[key].strip())
-            elif key == 'short_label':
+            elif key == 'short_label' and dico[key] != "":
                 dico[key] = _(dico[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DicoById : ' + str(id_data))
@@ -110,12 +110,16 @@ class NationalityList(Resource):
             self.log.error(Logs.fileline() + ' : ERROR NationalityList not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.useLangDB()
+
         for item in l_items:
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
                 if key == 'nat_code':
                     item[key] = item[key].upper()
+                if key == 'nat_name' and item[key]:
+                    item[key] = _(item[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE NationalityList')
         return compose_ret(l_items, Constants.cst_content_type_json)
@@ -162,7 +166,7 @@ class DatasetByName(Resource):
                 if isinstance(item[key], decimal.Decimal):
                     item[key] = float(item[key])
                 # translate
-                if isinstance(item[key], str):
+                if isinstance(item[key], str) and item[key] != "":
                     item[key] = _(item[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DatasetByName')

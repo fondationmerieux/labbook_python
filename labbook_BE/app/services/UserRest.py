@@ -297,9 +297,9 @@ class UserList(Resource):
             for key, value in list(user.items()):
                 if user[key] is None:
                     user[key] = ''
-                elif key == 'section':
+                elif key == 'section' and user[key]:
                     user[key] = _(user[key].strip())
-                elif key == 'role':
+                elif key == 'role' and user[key]:
                     user[key] = _(user[key].strip())
 
             if user['birth']:
@@ -331,7 +331,7 @@ class UserRoleList(Resource):
             for key, value in list(role.items()):
                 if role[key] is None:
                     role[key] = ''
-                elif key == 'label':
+                elif key == 'label' and role[key]:
                     role[key] = _(role[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE UserRoleList')

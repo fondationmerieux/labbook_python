@@ -543,7 +543,7 @@ class Quality:
                            'modele, fonction, localisation, section, fournisseur_id, no_serie, no_inventaire, '
                            'responsable_id, manuel_id, procedures_id, pannes, maintenance_preventive, '
                            'certif_etalonnage, contrat_maintenance, date_fin_contrat, date_reception, date_achat, '
-                           'date_acquisition, date_mise_en_service, date_de_retrait, commentaires) '
+                           'date_mise_en_service, date_de_retrait, commentaires) '
                            'values '
                            '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(name)s, %(maker)s, %(model)s, '
                            '%(funct)s, %(location)s, %(section)s, %(supplier)s, %(serial)s, %(inventory)s, '

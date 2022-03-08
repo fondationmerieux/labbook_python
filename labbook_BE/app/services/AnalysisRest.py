@@ -31,8 +31,16 @@ class AnalysisSearch(Resource):
         for analysis in l_analysis:
             ana_name  = analysis['name']
             ana_label = analysis['label']
-            analysis['name']  = _(ana_name.strip())
-            analysis['label'] = _(ana_label.strip())
+
+            if ana_name:
+                analysis['name'] = _(ana_name.strip())
+            else:
+                analysis['name'] = ''
+
+            if ana_label:
+                analysis['label'] = _(ana_label.strip())
+            else:
+                analysis['label'] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisSearch')
         return compose_ret(l_analysis, Constants.cst_content_type_json)
@@ -53,7 +61,11 @@ class AnalysisVarSearch(Resource):
         Various.useLangDB()
         for var in l_vars:
             var_libel = var['field_value']
-            var['field_value'] = _(var_libel.strip())
+
+            if var_libel:
+                var['field_value'] = _(var_libel.strip())
+            else:
+                var['field_value'] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisVarSearch')
         return compose_ret(l_vars, Constants.cst_content_type_json)
@@ -80,11 +92,11 @@ class AnalysisList(Resource):
             for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
-                elif key == 'name':
+                elif key == 'name' and analysis[key]:
                     analysis[key] = _(analysis[key].strip())
-                elif key == 'type_ana':
+                elif key == 'type_ana' and analysis[key]:
                     analysis[key] = _(analysis[key].strip())
-                elif key == 'product':
+                elif key == 'product' and analysis[key]:
                     analysis[key] = _(analysis[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisList')
@@ -97,7 +109,7 @@ class AnalysisHistoExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['id_data', 'code', 'fam_name', 'name']]
+        l_data = [['id_data', 'code', 'fam_name', 'name', 'nb_ana']]
 
         if 'date_beg' not in args or 'date_end' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisHistoExport ERROR args missing')
@@ -105,22 +117,37 @@ class AnalysisHistoExport(Resource):
 
         args['limit'] = 50000  # for overpassed default limit
 
-        dict_data = Analysis.getAnalyzesHistoList(args)
+        l_analyzes = Analysis.getAnalyzesHistoList(args)
 
         Various.useLangDB()
 
-        if dict_data:
-            for d in dict_data:
-                data = []
+        for analysis in l_analyzes:
+            # Replace None by empty string
+            for key, value in list(analysis.items()):
+                if analysis[key] is None:
+                    analysis[key] = ''
+                elif key == 'fam_name' and analysis[key]:
+                    analysis[key] = _(analysis[key].strip())
+                elif key == 'name' and analysis[key]:
+                    analysis[key] = _(analysis[key].strip())
 
-                data.append(d['id_data'])
-                data.append(d['code'])
-                fam_name = d['fam_name']
-                data.append(_(fam_name.strip()))
-                name = d['name']
-                data.append(_(name.strip()))
+            nb_ana = Analysis.getNbAnalysis(args['date_beg'], args['date_end'], analysis['id_data'])
 
-                l_data.append(data)
+            if nb_ana:
+                analysis['nb_ana'] = nb_ana['total']
+            else:
+                analysis['nb_ana'] = 0
+
+            data = []
+
+            data.append(analysis['id_data'])
+            data.append(analysis['code'])
+            data.append(analysis['fam_name'])
+            data.append(analysis['name'])
+
+            data.append(analysis['nb_ana'])
+
+            l_data.append(data)
 
         # if no result to export
         if len(l_data) < 2:
@@ -210,9 +237,9 @@ class AnalysisHistoDet(Resource):
             for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
-                elif key == 'variable':
+                elif key == 'variable' and data[key]:
                     data[key] = _(data[key].strip())
-                elif key == 'result':
+                elif key == 'result' and data[key]:
                     data[key] = _(data[key].strip())
 
             if data['date_prescr']:
@@ -261,7 +288,7 @@ class AnalysisDet(Resource):
         for key, value in list(analysis.items()):
             if analysis[key] is None:
                 analysis[key] = ''
-            elif key == 'nom':
+            elif key == 'nom' and analysis[key]:
                 analysis[key] = _(analysis[key].strip())
 
         if analysis['cote_valeur']:
@@ -547,9 +574,9 @@ class AnalysisVarList(Resource):
             for key, value in list(var.items()):
                 if var[key] is None:
                     var[key] = ''
-                elif key == 'label':
+                elif key == 'label' and var[key]:
                     var[key] = _(var[key].strip())
-                elif key == 'comment':
+                elif key == 'comment' and var[key]:
                     var[key] = _(var[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysisVarList id_data=' + str(id_ana))
@@ -572,9 +599,9 @@ class AnalysisVarDet(Resource):
         for key, value in list(ana_var.items()):
             if ana_var[key] is None:
                 ana_var[key] = ''
-            elif key == 'label':
+            elif key == 'label' and ana_var[key]:
                 ana_var[key] = _(ana_var[key].strip())
-            elif key == 'comment':
+            elif key == 'comment' and ana_var[key]:
                 ana_var[key] = _(ana_var[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysisVarDet id_data=' + str(id_var))
@@ -597,7 +624,7 @@ class AnalysisTypeProd(Resource):
         for key, value in list(type_prod.items()):
             if type_prod[key] is None:
                 type_prod[key] = ''
-            elif key == 'label':
+            elif key == 'label' and type_prod[key]:
                 type_prod[key] = _(type_prod[key].strip())
 
         self.log.info(Logs.fileline() + ' : AnalysistypeProd id_type_prod' + str(id_type_prod))
@@ -621,7 +648,7 @@ class AnalysisReq(Resource):
             for key, value in list(analysis.items()):
                 if analysis[key] is None:
                     analysis[key] = ''
-                elif key == 'nom':
+                elif key == 'nom' and analysis[key]:
                     analysis[key] = _(analysis[key].strip())
 
             if analysis['prix']:

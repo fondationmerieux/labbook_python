@@ -170,7 +170,7 @@ class PatientDet(Resource):
 
         if 'id_owner' not in args or 'anonyme' not in args or 'code' not in args or 'code_patient' not in args or \
            'nom' not in args or 'prenom' not in args or 'ddn' not in args or 'sexe' not in args or \
-           'adresse' not in args or 'cp' not in args or 'ville' not in args or \
+           'adresse' not in args or 'cp' not in args or 'ville' not in args or 'phone2' not in args or \
            'tel' not in args or 'profession' not in args or 'nom_jf' not in args or 'quartier' not in args or \
            'bp' not in args or 'ddn_approx' not in args or 'age' not in args or \
            'midname' not in args or 'nationality' not in args or 'resident' not in args or 'blood_group' not in args or \
@@ -204,6 +204,7 @@ class PatientDet(Resource):
                                         cp=args['cp'],
                                         ville=args['ville'],
                                         tel=args['tel'],
+                                        phone2=args['phone2'],
                                         profession=args['profession'],
                                         nom_jf=args['nom_jf'],
                                         quartier=args['quartier'],
@@ -243,6 +244,7 @@ class PatientDet(Resource):
                                         cp=args['cp'],
                                         ville=args['ville'],
                                         tel=args['tel'],
+                                        phone2=args['phone2'],
                                         profession=args['profession'],
                                         nom_jf=args['nom_jf'],
                                         quartier=args['quartier'],
@@ -302,11 +304,11 @@ class PatientHistoric(Resource):
             for key, value in list(ana.items()):
                 if ana[key] is None:
                     ana[key] = ''
-                elif key == 'analysis':
+                elif key == 'analysis' and ana[key]:
                     ana[key] = _(ana[key].strip())
-                elif key == 'variable':
+                elif key == 'variable' and ana[key]:
                     ana[key] = _(ana[key].strip())
-                elif key == 'result':
+                elif key == 'result' and ana[key]:
                     ana[key] = _(ana[key].strip())
 
             if ana['date_prescr']:

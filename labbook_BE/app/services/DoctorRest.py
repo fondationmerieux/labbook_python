@@ -35,7 +35,7 @@ class DoctorList(Resource):
             for key, value in list(doctor.items()):
                 if doctor[key] is None:
                     doctor[key] = ''
-                elif key == 'spe':
+                elif key == 'spe' and doctor[key]:
                     doctor[key] = _(doctor[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DoctorList')
@@ -73,7 +73,7 @@ class DoctorDet(Resource):
         for key, value in list(doctor.items()):
             if doctor[key] is None:
                 doctor[key] = ''
-            elif key == 'spe_doctor':
+            elif key == 'spe_doctor' and doctor[key]:
                 doctor[key] = _(doctor[key].strip())
 
         self.log.info(Logs.fileline() + ' : DoctorDet id_doctor=' + str(id_doctor))
@@ -180,7 +180,10 @@ class DoctorExport(Resource):
                 data.append(d['city'])
                 data.append(d['facility'])
                 spe = d['spe']
-                data.append(_(spe.strip()))
+                if spe:
+                    data.append(_(spe.strip()))
+                else:
+                    data.append('')
                 data.append(d['spe_id'])
                 data.append(d['phone'])
                 data.append(d['mobile'])

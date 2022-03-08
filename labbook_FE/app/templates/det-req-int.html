@@ -64,6 +64,15 @@
                                                     {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
                                                     {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                         </div>
+                        <div class="col-12 mt-1">
+                            {% if args['patient'] and args['patient']['tel'] %}
+                            <span class="font-info">{{ args['patient']['tel'] }}</span>
+                            {% endif %}
+                            {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
+                            {% if args['patient'] and args['patient']['pat_phone2'] %}
+                            <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
+                            {% endif %}
+                        </div>
                         {% if entry == 'Y' %}
                         <div class="ml-3 mt-3">
                             <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Modifier le dossier du patient") }}">
@@ -206,6 +215,7 @@
                 </table>
             </form>
 
+            {% if session['pref_bill'] == '1' %}
             <form autocomplete="off">
                 <!-- Billing -->
                 <div class="panel-heading row ml-1 mt-2">
@@ -265,6 +275,7 @@
                     </div>
                 </div>
             </form>
+            {% endif %}
 
             <!-- Products -->
             <div class="panel-heading row ml-1 mt-2">
@@ -340,10 +351,12 @@ var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe 
 var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
 var ind_products  = 0 ;
 var old_value     = 0 ;
+{% if session['pref_bill'] == '1' %}
 var old_discount  = 0 ;
 var old_insurance = 0 ;
 var bill_price    = 0 ;
 var bill_remain   = {% if entry == 'Y' %}0{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
+{% endif %}
 var act_price     = {{ ihm['act_price']['value'] }} ;
 var opt_yorn      = {{ ihm['yorn']|safe }} ;
 
@@ -585,11 +598,13 @@ let tr_analysis = '' ;
 
     tmp_tr += '</tr>' ;
 
+        {% if session['pref_bill'] == '1' %}
         if (bill_calc)
         {
         bill_price  += obj.price ;
         bill_remain += obj.price ;
         }
+        {% endif %}
 
     tr_analysis += tmp_tr ;
     }
@@ -607,8 +622,10 @@ function del_analysis( id_data )
         {
             if (data_analysis[i].id_data == id_data)
             {
+            {% if session['pref_bill'] == '1' %}
             bill_price  -= data_analysis[i].price ;
             bill_remain -= data_analysis[i].price ;
+            {% endif %}
 
             delete data_analysis[i] ;
 
@@ -746,6 +763,7 @@ return tmp_input ;
 
 function change_price( elem )
 {
+{% if session['pref_bill'] == '1' %}
 // Get new value from input
 let val = $(elem).val() ;
 
@@ -755,10 +773,12 @@ bill_price += ( Number(val) - Number(old_value) )  ;
 old_value = Number(val) ;
 
 refresh_bill();
+{% endif %}
 }
 
 function change_per_discount( elem )
 {
+{% if session['pref_bill'] == '1' %}
 // Get new value from input
 let val = $(elem).val() ;
 
@@ -766,10 +786,12 @@ let val = $(elem).val() ;
 old_discount = Number(val) ;
 
 refresh_bill();
+{% endif %}
 }
 
 function change_per_insurance( elem )
 {
+{% if session['pref_bill'] == '1' %}
 // Get new value from input
 let val = $(elem).val() ;
 
@@ -777,10 +799,12 @@ let val = $(elem).val() ;
 old_insurance = Number(val) ;
 
 refresh_bill();
+{% endif %}
 }
 
 function calc_remain()
 {
+{% if session['pref_bill'] == '1' %}
     if ( old_discount > 0 && old_insurance > 0 )
     bill_remain = (bill_price - (bill_price * Number(old_discount) / 100)) * (100 - Number(old_insurance)) / 100 ;
     else if ( old_discount > 0 )
@@ -789,6 +813,7 @@ function calc_remain()
     bill_remain = bill_price - (bill_price * Number(old_insurance) / 100) ;
     else
     bill_remain = bill_price ;
+{% endif %}
 }
 
 function change_data( elem )
@@ -856,10 +881,12 @@ return rate + '(' + price + ')' ;
 {% if entry == 'Y' %}
 function refresh_bill()
 {
+{% if session['pref_bill'] == '1' %}
 calc_remain() ;
 
 $("#bill_price").val(bill_price)   ;
 $("#bill_remain").val(bill_remain) ;
+{% endif %}
 }
 
 function new_prod()
@@ -924,11 +951,11 @@ var parcel_id     = $("#parcel_id").val() ;
 var date_parcel   = $("#date_parcel").val() ;
 var comm          = JSON.stringify( $("#comm").val() ) ;
 var parcel        = $("input[type='radio'][name='parcel']:checked").val() ;
-var price         = $("#bill_price").val() ;
-var discount      = $("#discount").val() ;
-var per_discount  = $("#per_discount").val() ;
-var per_insurance = $("#per_insurance").val() ;
-var bill_remain   = $("#bill_remain").val() ;
+var price         = {% if session['pref_bill'] == '1' %}$("#bill_price").val(){% else %} 0{%endif%};
+var discount      = {% if session['pref_bill'] == '1' %}$("#discount").val(){% else %} 0{%endif%};
+var per_discount  = {% if session['pref_bill'] == '1' %}$("#per_discount").val(){% else %} 0{%endif%};
+var per_insurance = {% if session['pref_bill'] == '1' %}$("#per_insurance").val(){% else %} 0{%endif%};
+var bill_remain   = {% if session['pref_bill'] == '1' %}$("#bill_remain").val(){% else %} 0{%endif%};
 var receipt_num   = $("#receipt_num").val() ;
 var date_hosp     = $("#date_hosp").val() ;
 var service_int   = $("#service_int").val() ;

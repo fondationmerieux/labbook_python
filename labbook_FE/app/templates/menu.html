@@ -59,7 +59,9 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/hist-patients">{{ _("Historique patient") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/hist-analyzes">{{ _("Historique d'analyse") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-today">{{ _("Rapport de fin de journée") }}</a>
+                    {% if session['pref_bill'] == '1' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-billing">{{ _("Etat de la facturation journalière") }}</a>
+                    {% endif %}
                   </div>
                 </li>
                 <span class="nav-btn-txt">{{ _("Rapports") }}</span>
@@ -94,13 +96,13 @@
                     {% endif %}
                     {% if session['user_role'] == 'A' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-template">{{ _("Configuration des modèles de documents") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes-rendu") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes rendus") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' or
                           session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/manage-pat-records">{{ _("Configuration des dossiers patients") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/manage-pat-records">{{ _("Gestion dossier patient") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dhis2">{{ _("Configuration DHIS2") }}</a>

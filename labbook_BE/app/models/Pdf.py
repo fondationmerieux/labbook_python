@@ -129,7 +129,11 @@ class Pdf:
                     if not ana_div:
                         ana_div += '<div><span class="ft_bill_det_tit">' + label01 + '</span></div>'
 
-                    trans = ana['nom'].strip()
+                    trans = ''
+
+                    if ana['nom']:
+                        trans = ana['nom'].strip()
+
                     ana_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
                                 'text-align:left;">' + str(ana['code']) + '</span>'
                                 '<span class="ft_bill_det" style="width:750px;display:inline-block;">' +
@@ -144,8 +148,15 @@ class Pdf:
 
                     # No display of samples without price
                     if ana['prix'] > 0:
-                        trans  = ana['code'].strip()
-                        trans2 = ana['nom'].strip()
+                        trans  = ''
+                        trans2 = ''
+
+                        if ana['code']:
+                            trans = ana['code'].strip()
+
+                        if ana['nom']:
+                            trans2 = ana['nom'].strip()
+
                         trans3 = ana['prix']
                         samp_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
                                      'text-align:left;">' + str(trans) + '</span>'
@@ -864,6 +875,7 @@ class Pdf:
             pat['quartier']     = ''
             pat['bp']           = 'BP 123'
             pat['tel']          = '0607080910'
+            pat['pat_phone2']   = '0700000002'
             pat['profession']   = 'Architecte'
 
         data['pat']['code']       = str(pat['code'])
@@ -883,6 +895,7 @@ class Pdf:
         data['pat']['district']   = ''
         data['pat']['pbox']       = ''
         data['pat']['phone']      = ''
+        data['pat']['phone2']     = ''
         data['pat']['profession'] = ''
 
         if pat['code_patient']:
@@ -958,6 +971,9 @@ class Pdf:
 
         if pat['tel']:
             data['pat']['phone'] = str(pat['tel'])
+
+        if pat['pat_phone2']:
+            data['pat']['phone2'] = str(pat['pat_phone2'])
 
         if pat['profession']:
             data['pat']['profession'] = str(pat['profession'])
@@ -1058,7 +1074,12 @@ class Pdf:
                         if res['ana_name']:
                             Various.useLangDB()
                             trans = res['ana_name'].strip()
-                            tmp_ana['ana_name'] = _(trans)
+
+                            if trans:
+                                tmp_ana['ana_name'] = _(trans)
+                            else:
+                                tmp_ana['ana_name'] = ''
+
                             Various.useLangPDF()
 
                     # init new result
@@ -1069,7 +1090,10 @@ class Pdf:
                     prev_res  = ''
                     prev_unit = ''
 
-                    res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'])
+                    res_valid = Result.getResultValidation(id_res_p)
+                    res_date_vld  = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y %H:%M:%S')
+
+                    res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'], res_date_vld)
 
                     if res_prev and res_prev['date_valid']:
                         prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
@@ -1091,7 +1115,11 @@ class Pdf:
                         if res['value'] != '0':
                             val = Various.getDicoById(res['value'])
                             trans = val['label']
-                            val = _(trans.strip())
+
+                            if trans:
+                                val = _(trans.strip())
+                            else:
+                                val = ''
                         else:
                             val = ''
 
@@ -1107,7 +1135,11 @@ class Pdf:
                         if res_prev and res_prev['valeur']:
                             label_prev = Various.getDicoById(res_prev['valeur'])
                             trans = label_prev['label'].strip()
-                            prev_res = _(trans)
+
+                            if trans:
+                                prev_res = _(trans)
+                            else:
+                                prev_res = ''
                         else:
                             prev_res = ''
 
@@ -1145,16 +1177,22 @@ class Pdf:
 
                     # Get normal of value
                     if res['normal_min'] and res['normal_max']:
-                        tmp_res['references'] = '[ ' + str(res['normal_min']) + ' - ' + str(res['normal_max']) + ' ]'
+                        tmp_res['references'] = str(res['normal_min']) + ' - ' + str(res['normal_max'])
                     elif res['normal_min']:
-                        tmp_res['references'] = '[ >= ' + str(res['normal_min']) + ' ]'
+                        tmp_res['references'] = '>= ' + str(res['normal_min'])
                     elif res['normal_max']:
-                        tmp_res['references'] = '[ <= ' + str(res['normal_max']) + ' ]'
+                        tmp_res['references'] = '<= ' + str(res['normal_max'])
 
                     # ==== ANALYSIS RESULT ====
                     Various.useLangDB()
-                    trans = str(res['libelle'].strip())
-                    tmp_res['label'] = _(trans)
+                    trans = ''
+
+                    if res['libelle'].strip():
+                        trans = str(res['libelle'].strip())
+                        tmp_res['label'] = _(trans)
+                    else:
+                        tmp_res['label'] = ''
+
                     tmp_res['value'] = str(val)
                     Various.useLangPDF()
 
@@ -1236,6 +1274,30 @@ class Pdf:
             analysis['validate'] = 'BIO Bernard'
 
             data['l_data'].append(analysis)
+
+            # QR code testing part
+            qrc_filename = 'tpl_qrcode.png'
+
+            trans = 'Positif'
+
+            data['res'] = {}
+            data['res']['value']      = _(trans)
+            data['res']['unit']       = ''
+            data['res']['valid_date'] = '08/03/2022'
+            data['res']['qrcode']     = ''
+
+            # to keep same syntaxe of odt template
+            qrc_data = {}
+            qrc_data['o'] = data
+
+            # 1 - call function generate QR code
+            ret_qr = Pdf.qrcodeByTemplate(qrc_filename, qrc_data)
+
+            # 2 - add qr code image in data structure
+            if ret_qr:
+                from os.path import join
+                data['res']['qrcode'] = (open(join(Constants.cst_path_tmp, qrc_filename), 'rb'), 'image/png')
+
             Various.useLangPDF()
 
         return data
@@ -1411,6 +1473,7 @@ class Pdf:
                 data['pat']['district']   = ''
                 data['pat']['pbox']       = ''
                 data['pat']['phone']      = ''
+                data['pat']['phone2']     = ''
                 data['pat']['profession'] = ''
 
                 if pat['code_patient']:
@@ -1487,6 +1550,9 @@ class Pdf:
                 if pat['tel']:
                     data['pat']['phone'] = str(pat['tel'])
 
+                if pat['pat_phone2']:
+                    data['pat']['phone2'] = str(pat['pat_phone2'])
+
                 if pat['profession']:
                     data['pat']['profession'] = str(pat['profession'])
 
@@ -1558,6 +1624,7 @@ class Pdf:
                 data['pat']['district']   = ''
                 data['pat']['pbox']       = 'BP 123'
                 data['pat']['phone']      = '0607080910'
+                data['pat']['phone2']     = '0700000002'
                 data['pat']['profession'] = 'Architecte'
 
         Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))

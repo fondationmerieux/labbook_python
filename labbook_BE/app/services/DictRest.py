@@ -49,11 +49,11 @@ class DictDet(Resource):
             for key, value in list(dict.items()):
                 if dict[key] is None:
                     dict[key] = ''
-                elif key == 'label':
+                elif key == 'label' and dict[key]:
                     dict[key] = _(dict[key].strip())
-                elif key == 'short_label':
+                elif key == 'short_label' and dict[key]:
                     dict[key] = _(dict[key].strip())
-                elif key == 'dico_descr':
+                elif key == 'dico_descr' and dict[key]:
                     dict[key] = _(dict[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DictDet')
@@ -167,9 +167,9 @@ class DictList(Resource):
             for key, value in list(dict.items()):
                 if dict[key] is None:
                     dict[key] = ''
-                elif key == 'name':
-                    dict['key'] = dict[key].strip()  # keep key untranslated to get details of this dict
-                    dict[key]   = _(dict['key'])     # dict name translated
+                elif key == 'name' and dict[key]:
+                    trans = dict[key].strip()  # keep key untranslated to get details of this dict
+                    dict[key]   = _(trans)     # dict name translated
 
         self.log.info(Logs.fileline() + ' : TRACE DictList')
         return compose_ret(l_dicts, Constants.cst_content_type_json)

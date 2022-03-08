@@ -40,7 +40,7 @@ class Result:
         if args['valid_res'] and args['valid_res'] > 0:
             filter_cond += ' and res.id_data not in (select id_resultat from sigl_10_data where type_validation > 250 and res.id_data=id_resultat) '
 
-        req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '
+        req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, dos.id_patient, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
                'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
                'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
@@ -94,10 +94,13 @@ class Result:
         return cursor.fetchall()
 
     @staticmethod
-    def getPreviousResult(id_pat, ref_ana, ref_var, id_res):
+    def getPreviousResult(id_pat, ref_ana, ref_var, id_res, date_vld=''):
         cursor = DB.cursor()
 
-        date_today = datetime.strftime(date.today(), Constants.cst_isodate) + ' 00:00'
+        if not date_vld:
+            date_today = datetime.strftime(date.today(), Constants.cst_isodatetime)
+        else:
+            date_today = datetime.strptime(date_vld, '%d/%m/%Y %H:%M:%S')
 
         req = ('select res.valeur as valeur, vld.date_validation as date_valid '
                'from sigl_09_data as res '
@@ -345,7 +348,7 @@ class Result:
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
-               'left join sigl_dico_data as d_fam on d_fam.id_data=ref.id_data '
+               'left join sigl_dico_data as d_fam on d_fam.id_data=ref.famille and ref.famille > 0 '
                'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '

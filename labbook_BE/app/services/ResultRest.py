@@ -12,6 +12,7 @@ from app.models.Analysis import Analysis
 from app.models.Constants import Constants
 from app.models.Dict import Dict
 from app.models.File import File
+from app.models.Patient import Patient
 from app.models.Pdf import Pdf
 from app.models.Record import Record
 from app.models.Result import Result
@@ -142,6 +143,14 @@ class ResultList(Resource):
             # init list of answer
             if type_res:
                 result['res_answer'] = Dict.getDictDetails(str(type_res))
+
+            # add info patient
+            pat = Patient.getPatient(result['id_patient'])
+
+            if pat:
+                result['patient'] = pat['code']
+            else:
+                result['patient'] = ''
 
             # Replace None by empty string
             for key, value in list(result.items()):

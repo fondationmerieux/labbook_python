@@ -284,6 +284,8 @@ components:
           type: string
         tel:
           type: string
+        pat_phone2:
+          type: string
         profession:
           type: string
         nom_jf:

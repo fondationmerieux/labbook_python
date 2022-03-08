@@ -154,7 +154,10 @@ class ReportActivity(Resource):
         Various.useLangDB()
         for stat_type in stat['type']:
             stat_ana = stat_type['analysis']
-            stat_type['analysis']  = _(stat_ana.strip())
+            if stat_ana:
+                stat_type['analysis'] = _(stat_ana.strip())
+            else:
+                stat_type['analysis'] = ''
 
         stat['age'] = Report.getActivityAge(args['date_beg'], args['date_end'], args['type_ana'])
 
@@ -165,7 +168,10 @@ class ReportActivity(Resource):
         Various.useLangDB()
         for stat_age in stat['age']:
             stat_ana = stat_age['analysis']
-            stat_age['analysis']  = _(stat_ana.strip())
+            if stat_ana:
+                stat_age['analysis'] = _(stat_ana.strip())
+            else:
+                stat_age['analysis'] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE ReportActivity')
         return compose_ret(stat, Constants.cst_content_type_json)
@@ -262,9 +268,9 @@ class ReportToday(Resource):
             for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
-                elif key == 'analysis':
+                elif key == 'analysis' and data[key]:
                     data[key] = _(data[key].strip())
-                elif key == 'family':
+                elif key == 'family' and data[key]:
                     data[key] = _(data[key].strip())
 
             if data['rec_date']:

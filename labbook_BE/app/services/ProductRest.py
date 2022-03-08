@@ -130,9 +130,9 @@ class ProductReq(Resource):
             for key, value in list(prod.items()):
                 if prod[key] is None:
                     prod[key] = ''
-                elif key == 'type_prod':
+                elif key == 'type_prod' and prod[key]:
                     prod[key] = _(prod[key].strip())
-                elif key == 'stat_prod':
+                elif key == 'stat_prod' and prod[key]:
                     prod[key] = _(prod[key].strip())
 
             if prod['date_prel']:

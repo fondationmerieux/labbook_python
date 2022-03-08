@@ -994,7 +994,7 @@ class EquipmentList(Resource):
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
-                elif key == 'section':
+                elif key == 'section' and item[key]:
                     item[key] = _(item[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentList')
@@ -1206,7 +1206,7 @@ class ManualList(Resource):
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
-                elif key == 'section':
+                elif key == 'section' and item[key]:
                     item[key] = _(item[key].strip())
 
             if item['date_insert']:
@@ -1409,7 +1409,7 @@ class MeetingList(Resource):
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
-                elif key == 'type':
+                elif key == 'type' and item[key]:
                     item[key] = _(item[key].strip())
 
             if item['date_meeting']:
@@ -1566,7 +1566,7 @@ class ProcedureList(Resource):
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
-                elif key == 'section':
+                elif key == 'section' and item[key]:
                     item[key] = _(item[key].strip())
 
             if item['date_insert']:
@@ -1853,9 +1853,9 @@ class StockList(Resource):
             for key, value in list(stock.items()):
                 if stock[key] is None:
                     stock[key] = ''
-                elif key == 'type':
+                elif key == 'type' and stock[key]:
                     stock[key] = _(stock[key].strip())
-                elif key == 'conserv':
+                elif key == 'conserv' and stock[key]:
                     stock[key] = _(stock[key].strip())
 
             if stock['pru_nb_pack']:
@@ -2003,9 +2003,9 @@ class StockProductList(Resource):
             for key, value in list(product.items()):
                 if product[key] is None:
                     product[key] = ''
-                elif key == 'type':
+                elif key == 'type' and product[key]:
                     product[key] = _(product[key].strip())
-                elif key == 'conserv':
+                elif key == 'conserv' and product[key]:
                     product[key] = _(product[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE StockProductList')

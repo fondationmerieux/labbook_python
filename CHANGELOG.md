@@ -7,6 +7,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.3] - 2022-03-08
+### Added
+- add second phone number
+- display code patient in list-result page
+
+### Changed
+- remove spaces before to save phones
+- when entering results, values of type x^n are formatted with n between 0 to 99
+- nationality name are translated (FR/EN only)
+- report : previous result are compared with date and time
+- templates : add phone and phone2
+- remove bill parts and bill button if bill module is disabled in preferences
+
+### Fixed
+- add number of analyzes in export of history of analyzes
+- return status with listmedia and list achives
+- insert equipment in DB
+- some translations
+
 ## [3.2.2] - 2022-02-24
 ### Added
 - QR code template to render a QR code image to insert into a specific report template

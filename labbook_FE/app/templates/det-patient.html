@@ -195,9 +195,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="tel" class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }}</label>
+                            <label for="phone1" class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }} 1</label>
                             <div>
-                                <input id="tel" type="text" value="{{ args['tel'] }}" maxlength="20" class="form-control" style="">
+                                <input id="phone1" type="text" value="{{ args['tel'] }}" maxlength="20" class="form-control" style="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone2" class="col-form-label col-3 text-right mr-1">{{ _("Téléphone") }} 2</label>
+                            <div>
+                                <input id="phone2" type="text" value="{{ args['pat_phone2'] }}" maxlength="20" class="form-control" style="">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -270,7 +276,8 @@ var sexe          = $("input:radio[name=sexe]:checked").val() ;
 var adresse       = JSON.stringify( $("#adresse").val() ) ;
 var cp            = $("#cp").val() ;
 var ville         = $("#ville").val() ;
-var tel           = $("#tel").val() ;
+var phone1        = $("#phone1").val() ;
+var phone2        = $("#phone2").val() ;
 var profession    = $("#profession").val() ;
 var nom_jf        = $("#nom_jf").val() ;
 var quartier      = $("#quartier").val() ;
@@ -290,6 +297,9 @@ var blood_rhesus  = $("#blood_rhesus").val() ;
     alert("{{ _("Veuillez sélectionner une date de naissance ou saisir un age") }}") ;
     return false;
     }
+
+phone1 = phone1.replaceAll(" ", "") ;
+phone2 = phone2.replaceAll(" ", "") ;
  
 var param = '{ "id_owner":' + id_owner + ', ' +
               '"anonyme":' + anonyme  + ', ' +
@@ -302,7 +312,8 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
               '"cp":"' + cp + '", ' +
               '"ville":"' + ville + '", ' +
-              '"tel":"' + tel + '", ' +
+              '"tel":"' + phone1 + '", ' +
+              '"phone2":"' + phone2 + '", ' +
               '"profession":"' + profession + '", ' +
               '"nom_jf":"' + nom_jf + '", ' +
               '"quartier":"' + quartier + '", ' +
@@ -474,6 +485,10 @@ window.history.back() ;
 $( document ).ready( function()
 {
     $("#date_current").val( "{{ now|date_now }}" ) ;
+
+    {% if args['anonyme'] == 4 %}
+    $(".identity-group").hide() ;
+    {% endif %}
 } ) ;
 </script>
 {% endblock %}

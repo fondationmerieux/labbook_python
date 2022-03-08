@@ -157,7 +157,7 @@
             
             <!-- Reports -->
             <div class="panel-heading row mt-2">
-                <h3 class="panel-title">{{ _("Compte-rendus") }}</h3>
+                <h3 class="panel-title">{{ _("Compte rendu") }}</h3>
             </div>
             <form class="row mt-3">
                 <table class="table table-striped table-hover col-4 table-lbk">
@@ -172,6 +172,7 @@
             </form>
 
             <form>
+                {% if session['pref_bill'] == '1' %}
                 <!-- Billing -->
                 <div class="panel-heading row mt-2">
                     <h3 class="panel-title">{{ _("Facturation") }}</h3>
@@ -202,6 +203,7 @@
                         <span class="font-info">{{ args['record']['num_quittance'] }}</span>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- Comments --> 
                 <div class="panel-heading row mt-2">
@@ -251,7 +253,9 @@
                         </div>
                         {% if session['user_role'] != 'P' %}
                         <div class="float-right form-inline">
+                            {% if session['pref_bill'] == '1' %}
                             <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }} mr-3" value="{{ _('Imprimer la facture') }}">
+                            {% endif %}
                             <select id="tpl_sticker" class="form-control mx-3" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_sticker'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
@@ -477,7 +481,7 @@ function reedit_report( id_rec, filename )
 {
 let template = $("#tpl_result").val() ; 
 
-    if ( window.confirm("{{ _("Souhaitez-vous ré-éditer le compte-rendu ? (la mention Annule et remplace y figurera)") }}") )
+    if ( window.confirm("{{ _("Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)") }}") )
     {
         $("#dial-wait").modal("show") ;
 

@@ -18,6 +18,7 @@
 | pip                     | 22.0.3    | MIT          |           | x       | x       |
 | pipenv                  | 2022.1.8  | MIT          |           | x       | x       |
 | requests                | 2.26.0    | Apache 2.0   |           | x       |         |
+| swagger-ui              | 4.6.1     | Apache 2.0   |           | x       |         |
 | alembic                 | 1.7.5     | MIT          |           |         | x       |
 | Flask-RESTful           | 0.3.9     | BSD          |           |         | x       |
 | mysql-connector-python  | 8.0.28    | GPL 2        |           |         | x       |

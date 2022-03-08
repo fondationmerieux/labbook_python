@@ -53,7 +53,7 @@ class Patient:
 
         l_words = text.split(' ')
 
-        cond = '(anonyme=5 or anonyme is NULL)'
+        cond = 'id_data is not NULL'
 
         for word in l_words:
             cond = (cond +
@@ -61,7 +61,8 @@ class Patient:
                     'prenom like "' + word + '%" or '
                     'code like "' + word + '%" or '
                     'code_patient like "' + word + '%" or '
-                    'tel like "' + word + '%") ')
+                    'tel like "' + word + '%" or '
+                    'pat_phone2 like "' + word + '%") ')
 
         req = ('select id_data as id, nom, prenom, nom_jf, code, '
                'date_format(ddn, %s) as ddn, code_patient '
@@ -123,7 +124,7 @@ class Patient:
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, '
-               'adresse, cp, ville, tel, profession, '
+               'adresse, cp, ville, tel, pat_phone2, profession, '
                'nom_jf, quartier, bp, ddn_approx, age, unite, '
                'pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus '
                'from sigl_03_data '
@@ -141,8 +142,8 @@ class Patient:
             cursor.execute('update sigl_03_data '
                            'set id_owner=%(id_owner)s, anonyme=%(anonyme)s, code=%(code)s, code_patient=%(code_patient)s, '
                            'nom=%(nom)s, prenom=%(prenom)s, ddn=%(ddn)s, sexe=%(sexe)s, adresse=%(adresse)s, '
-                           'cp=%(cp)s, ville=%(ville)s, tel=%(tel)s, profession=%(profession)s, nom_jf=%(nom_jf)s, '
-                           'quartier=%(quartier)s, bp=%(bp)s, ddn_approx=%(ddn_approx)s, age=%(age)s, '
+                           'cp=%(cp)s, ville=%(ville)s, tel=%(tel)s, pat_phone2=%(phone2)s, profession=%(profession)s, '
+                           'nom_jf=%(nom_jf)s, quartier=%(quartier)s, bp=%(bp)s, ddn_approx=%(ddn_approx)s, age=%(age)s, '
                            'unite=%(unite)s, pat_midname=%(midname)s, pat_nation=%(nationality)s, '
                            'pat_resident=%(resident)s, pat_blood_group=%(blood_group)s, pat_blood_rhesus=%(blood_rhesus)s '
                            'where id_data=%(id)s', params)
@@ -161,12 +162,12 @@ class Patient:
 
             cursor.execute('insert into sigl_03_data '
                            '(id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, adresse, cp, ville, '
-                           'tel, profession, nom_jf, quartier, bp, ddn_approx, age, '
+                           'tel, pat_phone2, profession, nom_jf, quartier, bp, ddn_approx, age, '
                            'unite, pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus) '
                            'values '
                            '(%(id_owner)s, %(anonyme)s, %(code)s, %(code_patient)s, %(nom)s, %(prenom)s, %(ddn)s, '
-                           '%(sexe)s, %(adresse)s, %(cp)s, %(ville)s, '
-                           '%(tel)s, %(profession)s, %(nom_jf)s, %(quartier)s, %(bp)s, %(ddn_approx)s, %(age)s, '
+                           '%(sexe)s, %(adresse)s, %(cp)s, %(ville)s, %(tel)s, %(phone2)s, '
+                           '%(profession)s, %(nom_jf)s, %(quartier)s, %(bp)s, %(ddn_approx)s, %(age)s, '
                            '%(unite)s, '
                            '%(midname)s, %(nationality)s, %(resident)s, %(blood_group)s, %(blood_rhesus)s )', params)
 

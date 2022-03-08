@@ -207,7 +207,7 @@ let new_value = $("#res_"+id_res).val() ;
 
 new_value = new_value.trim() ;
 
-var regex_exp = /^[-0-9]*\^[1-9]$/ ;
+var regex_exp = /^[-0-9]*\^([0-9]+)$/ ;
 
     if ( new_value.match(regex_exp) )
     {
@@ -215,45 +215,57 @@ var regex_exp = /^[-0-9]*\^[1-9]$/ ;
     var len_val = new_value.length ;
     var num_val = new_value.substr(0, pos_exp) ;
     var exp_val = new_value.substr(pos_exp + 1, len_val) ;
+    var exp_str = "" ;
 
-        if ( exp_val == 1 )
+    for (let i = 0; i < exp_val.length; i++)
+    {
+    tmp_exp = exp_val.substr(i, i+1) ;
+
+        if ( tmp_exp == 0 )
         {
-        new_value = num_val + String.fromCharCode(0x00B9) ;
+        exp_str += String.fromCharCode(0x2070) ;
         }
-        else if ( exp_val == 2 )
+        else if ( tmp_exp == 1 )
         {
-        new_value = num_val + String.fromCharCode(0x00B2) ;
+        exp_str += String.fromCharCode(0x00B9) ;
         }
-        else if ( exp_val == 3 )
+        else if ( tmp_exp == 2 )
         {
-        new_value = num_val + String.fromCharCode(0x00B3) ;
+        exp_str += String.fromCharCode(0x00B2) ;
         }
-        else if ( exp_val == 4 )
+        else if ( tmp_exp == 3 )
         {
-        new_value = num_val + String.fromCharCode(0x2074) ;
+        exp_str += String.fromCharCode(0x00B3) ;
         }
-        else if ( exp_val == 5 )
+        else if ( tmp_exp == 4 )
         {
-        new_value = num_val + String.fromCharCode(0x2075) ;
+        exp_str += String.fromCharCode(0x2074) ;
         }
-        else if ( exp_val == 6 )
+        else if ( tmp_exp == 5 )
         {
-        new_value = num_val + String.fromCharCode(0x2076) ;
+        exp_str += String.fromCharCode(0x2075) ;
         }
-        else if ( exp_val == 7 )
+        else if ( tmp_exp == 6 )
         {
-        new_value = num_val + String.fromCharCode(0x2077) ;
+        exp_str += String.fromCharCode(0x2076) ;
         }
-        else if ( exp_val == 8 )
+        else if ( tmp_exp == 7 )
         {
-        new_value = num_val + String.fromCharCode(0x2078) ;
+        exp_str += String.fromCharCode(0x2077) ;
         }
-        else if ( exp_val == 9 )
+        else if ( tmp_exp == 8 )
         {
-        new_value = num_val + String.fromCharCode(0x2079) ;
+        exp_str += String.fromCharCode(0x2078) ;
+        }
+        else if ( tmp_exp == 9 )
+        {
+        exp_str += String.fromCharCode(0x2079) ;
         }
         else
         new_value = new_value ;
+    }
+
+    new_value = num_val + exp_str ;
 
     $("#res_"+id_res).val( new_value ) ;
     }
@@ -400,7 +412,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"row border p-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span> " + per_rec +
+               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span> " + per_rec + "&nbsp;<b>Patient:</b>&nbsp;" + data[i].patient +
                "<table class=\"table table-striped table-hover table-lbk\">" +
                "<tbody class=\"row mx-1\">" ;
         }

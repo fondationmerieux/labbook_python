@@ -418,7 +418,7 @@ class RecordListAna(Resource):
             for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
-                elif key == 'name':
+                elif key == 'name' and data[key]:
                     data[key] = _(data[key].strip())
 
         self.log.info(Logs.fileline() + ' : RecordListAna id_rec=' + str(id_rec))

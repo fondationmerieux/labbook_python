@@ -43,7 +43,7 @@
 {% macro select_nationality(l_nationality, id_selected) -%}
     <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
     {% for nationality in l_nationality %}
-        <option value="{{ nationality['nat_ser'] }}" {% if id_selected and id_selected == nationality['nat_ser'] %}selected{% endif %}>{{ nationality['nat_code'] }}</option>
+    <option value="{{ nationality['nat_ser'] }}" {% if id_selected and id_selected == nationality['nat_ser'] %}selected{% endif %}>{{ nationality['nat_name'] }} ({{ nationality['nat_code'] }})</option>
     {% endfor %}
 {%- endmacro %}
 

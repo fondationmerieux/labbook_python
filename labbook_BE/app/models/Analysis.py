@@ -662,7 +662,7 @@ class Analysis:
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
-               'inner join sigl_dico_data as d_fam on d_fam.id_data=ana.id_data '
+               'left join sigl_dico_data as d_fam on d_fam.id_data=ana.famille and ana.famille > 0 '
                'inner join sigl_dico_data as d_type on d_type.id_data=rec.type '
                'inner join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'where rec.date_dos between %s and %s '

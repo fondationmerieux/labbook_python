@@ -707,7 +707,14 @@ poll_count = poll_count + 1 ;
                     $("#wait-status").text("Traitement en cours " + data[1]) ;
                     }
                     else
+                    {
                     console.log("ERROR data=" + JSON.stringify(data)) ;
+                    $("#dial-wait").modal("hide") ;
+
+                    clearInterval(poll_stat) ;
+
+                    alert("{{ _("Une erreur est survenue") }} : " + data[1] + " ERROR = " + data[2]) ;
+                    }
                 }
             }
             else
@@ -828,6 +835,8 @@ poll_count = poll_count + 1 ;
         {
         $("#wait-status").text("") ;
         $("#dial-wait").modal("hide") ;
+        $("#dial-list-archive").modal( "hide" ) ;
+        $("#dial-list-media").modal( "hide" )   ;
 
         console.log("ERROR POST setting script status") ;
         console.log("ret="+JSON.stringify(ret)) ;
