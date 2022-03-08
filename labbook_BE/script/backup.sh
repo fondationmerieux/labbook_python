@@ -1380,7 +1380,7 @@ fn_loaddb() {
         return 1
     }
 
-    echo "create database $db_name;" | $mysql_cmd || {
+    echo "create database $db_name character set utf8 collate utf8_unicode_ci;" | $mysql_cmd || {
         echo_message "cannot create database $db_name"
         return 1
     }

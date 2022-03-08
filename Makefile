@@ -170,7 +170,7 @@ dbtest:
 .PHONY: dbinit
 dbinit:
 	echo "drop database if exists $(LABBOOK_DB_NAME)" | $(MYSQL_CMD)
-	echo "create database $(LABBOOK_DB_NAME)" | $(MYSQL_CMD)
+	echo "create database $(LABBOOK_DB_NAME) character set utf8 collate utf8_unicode_ci" | $(MYSQL_CMD)
 	echo "source $(SQLDUMP_FILENAME)" | $(MYSQL_CMD) -D $(LABBOOK_DB_NAME)
 
 .PHONY: devbuild
