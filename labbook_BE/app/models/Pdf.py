@@ -1616,7 +1616,7 @@ class Pdf:
                 data['pat']['birth']      = '30/01/1940'
                 data['pat']['age']        = '42'
                 data['pat']['age_unit']   = _('ans')
-                data['pat']['age_days']   = str(pat['age'] * 365)
+                data['pat']['age_days']   = str(data['pat']['age'] * 365)
                 data['pat']['sex']        = _('Masculin')
                 data['pat']['addr']       = '3 rue du Paradis'
                 data['pat']['zipcode']    = '12345'
