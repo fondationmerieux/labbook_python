@@ -109,9 +109,12 @@ $("#list_items_total").html( data_len ) ;
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-template/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"print_test(" + data_items[i].id_item + ")\">{{ _("Tester") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_item + ")\">{{ _("Supprimer") }}</a>";   
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-template/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>" ;
+
+    if (data_items[i].tpl_type == "STI" || data_items[i].tpl_type == "RES")
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"print_test(" + data_items[i].id_item + ")\">{{ _("Tester") }}</a>" ;
+
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_item + ")\">{{ _("Supprimer") }}</a>";   
         
     menu_act += "</div></ul></nav>" ;
     {% else %}

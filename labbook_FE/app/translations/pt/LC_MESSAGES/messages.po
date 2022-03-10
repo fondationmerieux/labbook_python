@@ -940,7 +940,7 @@ msgstr "Primeiro"
 #: templates/setting-users.html:103 templates/setting-zipcity.html:26
 #: templates/setting-zipcity.html:48
 msgid "Précédent"
-msgstr "Anterior"
+msgstr "Precedente"
 
 #: templates/det-control-ext.html:49 templates/det-control-ext.html:75
 #: templates/det-control-int.html:49 templates/det-control-int.html:74
@@ -1026,7 +1026,7 @@ msgstr "Último"
 #: templates/setting-dicts.html:66 templates/setting-users.html:85
 #: templates/setting-zipcity.html:36
 msgid "serial"
-msgstr "em série"
+msgstr "serial"
 
 #: templates/det-control-ext.html:60 templates/det-equipment.html:71
 #: templates/det-new-product.html:17 templates/det-supplier.html:5
@@ -1663,7 +1663,7 @@ msgstr "Nome(s) próprio(s)"
 #: templates/det-patient.html:125 templates/manage-pat-records.html:169
 #: templates/manage-pat-records.html:417
 msgid "Nationalité"
-msgstr ""
+msgstr "Nacionalidade"
 
 #: templates/det-patient.html:136 templates/manage-pat-records.html:176
 #: templates/manage-pat-records.html:424
@@ -1747,7 +1747,7 @@ msgstr "Anos"
 #: templates/det-req-ext.html:56 templates/det-req-int.html:59
 #: templates/setting-pref.html:67 templates/setting-rec-num.html:17
 msgid "Mois"
-msgstr "Meses"
+msgstr "Mès"
 
 #: templates/det-req-ext.html:57 templates/det-req-int.html:60
 #: templates/setting-pref.html:66

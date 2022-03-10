@@ -68,26 +68,6 @@ class UserByLogin(Resource):
         return compose_ret(user, Constants.cst_content_type_json)
 
 
-class UserByRole(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self, id_role):
-        l_users = User.getUsersByRole(id_role)
-
-        if not l_users:
-            self.log.error(Logs.fileline() + ' : TRACE UserByRole')
-            return compose_ret('', Constants.cst_content_type_json, 404)
-
-        for user in l_users:
-            # Replace None by empty string
-            for key, value in list(user.items()):
-                if user[key] is None:
-                    user[key] = ''
-
-        self.log.info(Logs.fileline() + ' : TRACE UserByRole')
-        return compose_ret(l_users, Constants.cst_content_type_json)
-
-
 class UserDet(Resource):
     log = logging.getLogger('log_services')
 
@@ -192,7 +172,7 @@ class UserDet(Resource):
                                   password=pwd_db,
                                   cps_id=args['cps'],
                                   rpps=args['rpps'],
-                                  status=29,
+                                  status=Constants.cst_user_active,
                                   firstname=args['firstname'],
                                   lastname=args['lastname'],
                                   locale=args['lang'],
@@ -536,7 +516,7 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                if d['status'] and d['status'] == 29:
+                if d['status'] and d['status'] == Constants.cst_user_active:
                     data.append('A')
                 else:
                     data.append('D')
@@ -721,9 +701,9 @@ class UserImport(Resource):
 
                 # status convert
                 if status and status == 'A':
-                    status = 29
+                    status = Constants.cst_user_active
                 else:
-                    status = 30
+                    status = Constants.cst_user_inactive
 
                 # locale convert
                 if locale:

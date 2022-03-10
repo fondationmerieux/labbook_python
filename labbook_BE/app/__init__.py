@@ -289,7 +289,6 @@ api.add_resource(TemplateDet,         '/services/setting/template/det/<int:id_it
 api.add_resource(TemplateList,        '/services/setting/template/list', '/services/setting/template/list/<string:type>')
 api.add_resource(UserAccess,          '/services/user/access')
 api.add_resource(UserByLogin,         '/services/user/login/<string:login>')
-api.add_resource(UserByRole,          '/services/user/role/<int:id_role>')
 api.add_resource(UserConnExport,      '/services/user/connection/export')
 api.add_resource(UserCount,           '/services/user/count')
 api.add_resource(UserDet,             '/services/user/det/<int:id_user>')

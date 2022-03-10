@@ -409,7 +409,7 @@ def lang(lang='fr_FR'):
     session['lang_chosen'] = True
     session.modified = True
 
-    return redirect(session['redirect_name'] + '/' + session['current_page'])
+    return redirect(session['server_ext'] + '/' + session['current_page'])
 
 
 @app.route("/disconnect")
@@ -437,6 +437,9 @@ def homepage(login=''):
         session.modified = True
     elif 'login' in session and session['login']:
         login = session['login']
+
+    if 'server_ext' not in session or not session['server_ext']:
+        get_init_var()
 
     get_user_data(login)
     get_software_settings()
@@ -487,8 +490,6 @@ def homepage(login=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests pref_quality failed, err=%s , url=%s', err, url)
 
-    log.error(Logs.fileline() + ' : DEBUG pref_quality=' + str(session['pref_quality']))
-
     # Load pref_bill
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/facturation'
@@ -511,13 +512,13 @@ def homepage(login=''):
         session['current_page'] = 'list-records'
         session.modified = True
 
-        return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+        return redirect(session['server_ext'] + '/' + session['current_page'])
     # Qualitican homepage
     elif session['user_role'] == 'Q':
         session['current_page'] = 'quality-general'
         session.modified = True
 
-        return redirect('/' + session['redirect_name'] + '/' + session['current_page'])
+        return redirect(session['server_ext'] + '/' + session['current_page'])
     else:
         # Load nb_emer
         try:
@@ -1858,7 +1859,7 @@ def det_patient(type_req='E', id_pat=0):
 
             if req.status_code == 200:
                 unit_age_def = req.json()
-                json_data['unite'] = 0
+                json_ihm['unit_age_def'] = 0
 
                 val_age_def = unit_age_def['value'].lower()
 

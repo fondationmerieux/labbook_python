@@ -1354,7 +1354,7 @@ class Quality:
                'date_format(usr.deval, %s) as last_eval, usr.username '
                'from sigl_user_data as usr '
                'left join sigl_dico_data as dict on dict.id_data=usr.section '
-               'where usr.status=29 '
+               'where usr.status="' + Constants.cst_user_active + '" '
                'order by usr.lastname asc, usr.firstname asc')
 
         cursor.execute(req, (Constants.cst_isodatetime, Constants.cst_isodatetime, Constants.cst_isodatetime,))

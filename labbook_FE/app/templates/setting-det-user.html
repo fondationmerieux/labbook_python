@@ -32,7 +32,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div id="search_account" class="form-group row {% if args['id_role'] != 9 %}d-none{% endif %}">
+                <div id="search_account" class="form-group row {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'P') %}d-none{% endif %}">
                     <label for="search_doctor" class="col-form-label col-3 text-right">{{ _("Prescripteur associé") }}</label>
                     <div>
                         <select id="search_doctor" style="width:450px"></select>
@@ -83,10 +83,10 @@
                 <div class="form-group row">
                     <label class="col-form-label col-3 text-right mt-2">{{ _("Statut") }}</label>
                     <label class="col-form-label text-right mt-2 mr-3">
-                        <input type="radio" name="stat" value="29" {% if args['stat'] == 29 %} checked="checked" {% endif %}>&nbsp;{{ _("Activé") }}</input>
+                        <input type="radio" name="stat" value="A" {% if args['stat'] == 'A' %} checked="checked" {% endif %}>&nbsp;{{ _("Activé") }}</input>
                     </label>
                     <label class="col-form-label text-right mt-2 mr-3">
-                        <input type="radio" name="stat" value="30" {% if args['stat'] == 30 or args['stat'] == 31 %} checked="checked" {% endif %}>&nbsp;{{ _("Désactivé") }}</input>
+                        <input type="radio" name="stat" value="D" {% if args['stat'] == 'D' or args['stat'] == 'X' %} checked="checked" {% endif %}>&nbsp;{{ _("Désactivé") }}</input>
                     </label>
                 </div>
                 {% endif %}
@@ -381,7 +381,7 @@ function role_choice( elem )
 {
 let val = $(elem).val() ;
 
-    if ( val == 9 )
+    if ( val == 'P' )
     $("#search_account").removeClass('d-none') ;
     else
     $("#search_account").addClass('d-none') ;
@@ -389,7 +389,7 @@ let val = $(elem).val() ;
 
 function new_doctor()
 {
-window.location.href = "{{ session['server_ext'] }}/det-doctor/0";
+window.open("{{ session['server_ext'] }}/det-doctor/0", "_blank") ;
 }
 
 function cancel()

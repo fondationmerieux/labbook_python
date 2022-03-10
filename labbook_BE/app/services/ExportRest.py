@@ -45,7 +45,7 @@ class ExportDHIS2(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'date_beg' not in args or 'filename' not in args or 'id_user' not in args:
+        if 'date_beg' not in args or 'date_end' not in args or 'filename' not in args or 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -85,28 +85,9 @@ class ExportDHIS2(Resource):
         if version != 'v1' and l_rows[1][8]:
             storedby = l_rows[1][8]
 
-        date_beg = datetime.strptime(args['date_beg'], '%Y-%m-%d')
-
-        if period == 'M':
-            month = date_beg.month
-
-            if month < 10:
-                month = '0' + str(month)
-
-            period = str(date_beg.year) + month
-
-            date_beg_db = date_beg.replace(day=1)
-
-            # get close to the end of the month for any day, and add 4 days 'over'
-            next_month = date_beg.replace(day=28) + timedelta(days=4)
-            # subtract the number of remaining 'overage' days to get last day of current month,
-            # or said programattically said, the previous day of the first of next month
-            date_end_db = next_month - timedelta(days=next_month.day)
-        elif period == 'W':
-            period = str(date_beg.year) + 'W' + str(date_beg.isocalendar()[1])
-
-            date_beg_db = date_beg - timedelta(days=date_beg.weekday())
-            date_end_db = date_beg_db + timedelta(days=6)
+        if period == 'M' or period == 'W':
+            date_beg_db = datetime.strptime(args['date_beg'], '%Y-%m-%d')
+            date_end_db = datetime.strptime(args['date_end'], '%Y-%m-%d')
         else:
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR period=' + str(period))
             return compose_ret('', Constants.cst_content_type_json, 500)
@@ -194,7 +175,7 @@ class ExportDHIS2(Resource):
         try:
             import csv
 
-            filename = 'dhis2_' + args['filename'][:-4] + '_' + args['date_beg'] + '.csv'
+            filename = 'dhis2_' + args['filename'][:-4] + '_' + args['date_beg'] + '-' + args['date_end'] + '.csv'
 
             with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=',')

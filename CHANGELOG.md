@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.3] - 2022-03-08
+## [3.2.3] - 2022-03-10
 ### Added
 - add second phone number
 - display code patient in list-result page
@@ -19,11 +19,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - report : previous result are compared with date and time
 - templates : add phone and phone2
 - remove bill parts and bill button if bill module is disabled in preferences
+- DHIS2 export with date ranges
+- change user status int (29,30,31) by varchar (A,D,X)
 
 ### Fixed
 - add number of analyzes in export of history of analyzes
 - return status with listmedia and list achives
 - insert equipment in DB
+- syntax of age_unit in template QR code 
+- user management, select prescriber when role si prescriber 
 - some translations
 
 ## [3.2.2] - 2022-02-24

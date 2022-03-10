@@ -52,8 +52,8 @@
                             <div>					
                                 <select id="status" name="status" class="form-control">
                                     <!--<option value="0"></option>-->
-                                    <option value="29" selected>{{ _("Activé") }}</option>
-                                    <option value="30">{{ _("Désactivé") }}</option>
+                                    <option value="A" selected>{{ _("Activé") }}</option>
+                                    <option value="D">{{ _("Désactivé") }}</option>
                                 </select>
                             </div>
                         </div>
@@ -142,7 +142,7 @@ let param = '{ "login":"' + login + '", ' +
             '"firstname":"' + firstname  + '", ' +
             '"lastname":"' + lastname  + '", ' +
             '"role":"' + role  + '", ' +
-            '"status":' + stat + '}' ;
+            '"status":"' + stat + '"}' ;
 
     // popup wait
     $("#dial-wait").modal("show") ;
@@ -217,20 +217,22 @@ $("#list_users_total").html( data_len ) ;
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
 
-        if ( data_users[i].stat != 29 )
+    console.log("DEBUG data_users[i].stat="+data_users[i].stat);
+
+        if ( data_users[i].stat != 'A' )
         {          
-        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',29);">{{ _("Activer utilisateur") }}</a>';
+        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'A\');">{{ _("Activer utilisateur") }}</a>';
         }
         else
         {
-        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',30);">{{ _("Désactiver utilisateur") }}</a>';
+        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'D\');">{{ _("Désactiver utilisateur") }}</a>';
         }
         
     menu_act += '</div></ul></nav>' ;
 
     user_stat = "{{ _("Activé") }}" ;
 
-        if ( data_users[i].stat != 29 )
+        if ( data_users[i].stat != 'A' )
         user_stat = "{{ _("Désactivé") }}" ;
 
     res += '<tr><td hidden><div>' + data_users[i].id_data + '</div></td>' +
@@ -261,7 +263,7 @@ var id_owner = {{ session['user_id']|safe}} ;
     {
     var param = '{ "id_owner":' + id_owner + ', ' +
                   '"id_user":' + id_user + ', ' +
-                  '"status":' + stat + '}' ;
+                  '"status":"' + stat + '"}' ;
 
         $.ajax( 
         {

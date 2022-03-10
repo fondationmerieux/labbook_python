@@ -17,7 +17,7 @@ class User:
 
         req = ('select count(*) as nb_user '
                'from sigl_user_data '
-               'where status != 31 and username=%s and password=%s')  # 31 = deleted user
+               'where status = "' + Constants.cst_user_active + '" and username=%s and password=%s')
 
         cursor.execute(req, (login, pwd,))
 
@@ -29,7 +29,7 @@ class User:
         # save in sigl_evtlog_data this connection
         req = ('select id_data '
                'from sigl_user_data '
-               'where status != 31 and username=%s and password=%s')  # 31 = deleted user
+               'where status = "' + Constants.cst_user_active + '" and username=%s and password=%s')
 
         cursor.execute(req, (login, pwd,))
 
@@ -67,7 +67,7 @@ class User:
                'user.email, user.oauth_provider_id_user, user.locale, user.rpps, user.tel as phone '
                'from sigl_user_data as user '
                'inner join sigl_pj_role AS role ON role.type = user.role_type '
-               'where user.status=29 and user.username=%s')  # 31 correspond à l'utilisateur "supprimé", 30 désactivé
+               'where user.status="' + Constants.cst_user_active + '" and user.username=%s')  
 
         cursor.execute(req, (login,))
 
@@ -153,19 +153,6 @@ class User:
             return False
 
     @staticmethod
-    def getUsersByRole(role_type):
-        cursor = DB.cursor()
-
-        req = ('select u.side_account, u.id_data, u.username, u.firstname, u.lastname, u.password, u.expire_date, '
-               'u.cps_id, u.status, u.email, u.oauth_provider_id_user, u.locale, u.rpps, u.tel as phone '
-               'from sigl_user_data as u '
-               'where u.status != "31" and u.role_type=%s')  # 31 correspond à l'utilisateur "supprimé"
-
-        cursor.execute(req, (role_type,))
-
-        return cursor.fetchall()
-
-    @staticmethod
     def getUserRoleList():
         cursor = DB.cursor()
 
@@ -200,7 +187,7 @@ class User:
         if not args:
             limit = 'LIMIT 500'
 
-            filter_cond += ' and u.status=29 '  # remove deleted users by default
+            filter_cond += ' and u.status="' + Constants.cst_user_active + '" '  # keep active users by default
         else:
             limit = 'LIMIT 500'
             # filter conditions
@@ -213,16 +200,16 @@ class User:
             if args['lastname']:
                 filter_cond += ' and u.lastname LIKE "%' + args['lastname'] + '%" '
 
-            if 'status' in args and args['status'] > 0:
+            if 'status' in args and args['status']:
                 stat = 'u.status=' + str(args['status'])
 
-                # Keep compatibility with old delete user where status = 31
-                if args['status'] == 30:
-                    stat = "(u.status=30 or u.status=31)"
+                # Keep compatibility with old delete user
+                if args['status'] == Constants.cst_user_inactive:
+                    stat = '(u.status="' + Constants.cst_user_inactive + '" or u.status="' + Constants.cst_user_deleted + '")'
 
                 filter_cond += ' and ' + stat + ' '
             else:
-                filter_cond += ' and u.status=29 '  # keep only activated users by default
+                filter_cond += ' and u.status="' + Constants.cst_user_active + '" '  # keep active users by default
 
             if 'role' in args and args['role']:
                 filter_cond += ' and u.role_type="' + str(args['role']) + '" '
@@ -250,7 +237,7 @@ class User:
 
         l_words = text.split(' ')
 
-        cond = 'status=29 '
+        cond = 'status="' + Constants.cst_user_active + '" '
 
         for word in l_words:
             cond = (cond +
@@ -349,7 +336,7 @@ class User:
         # Number of records
         req = ('select count(*) as nb_users '
                'from sigl_user_data '
-               'where status=29')
+               'where status="' + Constants.cst_user_active + '"')
 
         cursor.execute(req)
 

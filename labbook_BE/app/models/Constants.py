@@ -37,3 +37,7 @@ class Constants:
     cst_io_progbackup  = 'progbackup'
     cst_io_restart     = 'restart'
     cst_io_restore     = 'restore'
+
+    cst_user_active   = 'A'
+    cst_user_inactive = 'D'
+    cst_user_deleted  = 'X'
