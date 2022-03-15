@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - return status with listmedia and list achives
 - insert equipment in DB
 - syntax of age_unit in template QR code 
-- user management, select prescriber when role si prescriber 
+- user management, select prescriber when role is prescriber 
 - some translations
 
 ## [3.2.2] - 2022-02-24
