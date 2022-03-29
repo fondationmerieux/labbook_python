@@ -14,7 +14,7 @@ error_correction = "H"
 
 
 # Dynamic value options :
-# {{ o.rec.rec_date }}, {{ o.rec.num_y }}, {{ o.rec.num_m }}, {{ o.rec.num_d }}
+# {{ o.rec.rec_date }}, {{ o.rec.num }}, {{ o.rec.num_y }}, {{ o.rec.num_m }}, {{ o.rec.num_d }}
 # {{ o.pat.lastname }}, {{ o.pat.firstname }}, {{ pat.maidenname }}, {{ o.pat.middlename }}, 
 # {{ o.pat.code_lab }}, {{ o.pat.code }}, {{ o.pat.sex }}, {{ o.pat.age }}, {{ o.pat.age_unit }}
 # {{ o.res.value }}, {{ o.res.unit }}, {{ o.res.valid_date }}

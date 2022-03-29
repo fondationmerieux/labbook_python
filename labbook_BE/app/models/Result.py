@@ -342,9 +342,10 @@ class Result:
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
-               'req.ref_analyse as id_analysis, req.prix as ana_price, req.paye as req_paid, req.urgent as ana_emergency, '
+               'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
                'ref.code as analysis_code, ref.nom as analysis_name, d_fam.label as analysis_familly, '
-               'res.valeur as result_value, var.libelle as variable_name '
+               'res.valeur as result_value, var.libelle as variable_name, var.type_resultat as type_result, '
+               'd_unit.label as result_unit '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
@@ -353,9 +354,10 @@ class Result:
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as var on var.id_data = res.ref_variable '
+               'left join sigl_dico_data as d_unit on d_unit.id_data=var.unite '
                'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
                'and ref.id_data = link.id_refanalyse '
-               'where rec.date_dos between %s and %s '
+               'where rec.statut in (255, 256) and rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))

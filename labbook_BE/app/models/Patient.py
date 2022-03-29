@@ -250,10 +250,10 @@ class Patient:
                'pat.pat_resident as resident, pat.cp as zipcode, pat.ville as city, pat.profession, '
                'd_blood.label as blood_group, d_rhesus.label as blood_rhesus '
                'from sigl_03_data as pat '
-               'inner join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
-               'inner join sigl_dico_data as d_blood on d_blood.id_data=pat.pat_blood_group '
-               'inner join sigl_dico_data as d_rhesus on d_rhesus.id_data=pat.pat_blood_rhesus '
-               'inner join nationality as nat on nat.nat_ser=pat.pat_nation '
+               'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
+               'left join sigl_dico_data as d_blood on d_blood.id_data=pat.pat_blood_group '
+               'left join sigl_dico_data as d_rhesus on d_rhesus.id_data=pat.pat_blood_rhesus '
+               'left join nationality as nat on nat.nat_ser=pat.pat_nation '
                'order by id_patient desc')
 
         cursor.execute(req, (Constants.cst_isodate,))

@@ -310,7 +310,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
                "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} : </label>" +
                "<div class=\"form-inline\">" +
-               "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
+               "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
                "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>&nbsp;" +
                "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
@@ -421,7 +421,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
            "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
            "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>" +
            "<div class=\"form-inline\">" +
-           "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
+           "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
            "</div>" +
            "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
            "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +

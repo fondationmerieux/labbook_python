@@ -237,7 +237,7 @@ let new_value = $("#res_"+id_res).val() ;
 
 new_value = new_value.trim() ;
 
-var regex_exp = /^[-0-9]*\^[1-9]$/ ;
+var regex_exp = /^[-0-9]*\^([0-9]+)$/ ;
 
     if ( new_value.match(regex_exp) )
     {
@@ -398,8 +398,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         // close the form and table
         res += "</tbody></table>" +
                "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
-               "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " mr-2\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" +
-               "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+               "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " mr-2\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
+
+        {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
+              session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+        res += "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
                "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>" +
                "<div class=\"form-inline\">" +
                "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
@@ -429,8 +432,10 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
         res += "</select>" +
                "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
-               "</span>" +
-               "</fieldset>" +
+               "</span>" ;
+        {% endif %}
+
+        res += "</fieldset>" +
                "</form>" ;
 
         disp_valid = "d-none" ;
@@ -642,8 +647,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     // close the form and table
     res += "</tbody></table>" +
            "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
-           "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" +
-           "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+           "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
+
+    {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
+          session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+    res += "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
            "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>&nbsp;" +
            "<div class=\"form-inline\">" +
            "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\">" +
@@ -673,8 +681,10 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
     res += "</select>&nbsp;" +
            "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
-           "</span>" +
-           "</fieldset>" +
+           "</span>" ;
+    {% endif %}
+
+    res += "</fieldset>" +
            "</form>" ;
     }
 

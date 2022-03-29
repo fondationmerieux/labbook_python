@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="cte_date" class="col-form-label col-3 text-right mt-2">{{ _("Date du contrôle") }} *</label>
                     <div>					
-                        <input id="cte_date" class="form-control" type="datetime-local" value="{{ args['result']['cte_date'] }}" name="cte_date" style="color: #888;">
+                        <input id="cte_date" class="form-control" type="datetime-local" step="60" value="{{ args['result']['cte_date'] }}" name="cte_date" style="color: #888;">
                     </div>
                 </div>
 
@@ -103,9 +103,9 @@ var id_item   = {{ args['cte_ser']|safe }}    ;
 var cte_type  = "{{ args['type_val']|safe }}" ;
 var cte_date  = $("#cte_date").val()          ;
 var organizer = $("#cte_organizer").val() ;
-var contact   = JSON.stringify( $("#cte_contact").val() ) ;
+var contact   = JSON.stringify( $.trim( $("#cte_contact").val() ) ) ;
 var conform   = $("#cte_conform").val()  ;
-var comment   = JSON.stringify( $("#cte_comment").val() ) ;
+var comment   = JSON.stringify( $.trim( $("#cte_comment").val() ) ) ;
 var cr_file   = $("#CTRL")[0].files[0] ;
 
 var msg = "" ;

@@ -314,6 +314,11 @@ def date_now(date_now):
     return datetime.strftime(date.today(), "%Y-%m-%d")
 
 
+@app.template_filter('datetime_now')
+def datetime_now(datetime_now):
+    return datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M")
+
+
 # ######################################
 # Routes Flask pages
 # ######################################
@@ -4121,6 +4126,18 @@ def download_file(type='', filename='', type_ref='', ref=''):
         generated_name = filename
 
         filename = 'cr_' + ref + '.pdf'
+
+        # increase number of download
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/nb_download/' + generated_name
+            req = requests.post(url)
+
+            if req.status_code != 200:
+                return False
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s', err, url)
+
     elif type == 'DH':
         filepath = Constants.cst_dhis2
         generated_name = filename
@@ -4158,8 +4175,6 @@ def upload_file(type_ref='', id_ref=0):
             import hashlib
             generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
             hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
-
-            log.info(Logs.fileline() + ' : DEBUG generated_name=' + str(generated_name))
 
             # Create end of storage path
             end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"

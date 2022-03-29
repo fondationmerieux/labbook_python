@@ -73,3 +73,19 @@
 | control_external     	                         | QUALITY	 | list of external control value           |
 
 71 tables used
+
+
+| Name    	                                 |
+| sigl_03_deleted                                |                                
+| sigl_05_05_data                                |
+| sigl_05_deleted                                |
+| sigl_07_deleted                                |
+| sigl_08_deleted                                |
+| sigl_13_data                                   |
+| sigl_16_data                                   |
+| sigl_dico_deleted                              |
+| sigl_equipement_deleted                        |
+| sigl_fournisseurs_deleted                      |
+| sigl_laboratoire_data                          |
+
+11 tables unused but not deleted yet

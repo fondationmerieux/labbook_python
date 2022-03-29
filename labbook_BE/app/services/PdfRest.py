@@ -75,8 +75,34 @@ class PdfBillList(Resource):
 class PdfReport(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_rec, template, filename, reedit='N'):
-        ret = Pdf.getPdfReport(id_rec, template, filename, reedit)
+    def get(self, id_rec, template, filename, reedit='N', id_user=0):
+        if reedit == 'Y':
+            tpl = Setting.getTemplateByFile(template)
+
+            id_tpl = 0
+
+            if tpl:
+                id_tpl = tpl['tpl_ser']
+
+            ret = File.insertFileReport(id_owner=id_user,
+                                        id_dos=id_rec,
+                                        doc_type=257,
+                                        id_tpl=id_tpl)
+
+            if ret <= 0:
+                self.log.error(Logs.fileline() + ' : PdfReport insertFileReport failed id_rec=%s', str(id_rec))
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # Get uuid filename and create pdf
+            fileReport = File.getFileReport(id_rec)
+
+            if fileReport:
+                ret = Pdf.getPdfReport(id_rec, template, fileReport['file'], reedit)
+            else:
+                self.log.error(Logs.fileline() + ' : PdfReport failed id_rec=%s', str(id_rec))
+                return compose_ret('', Constants.cst_content_type_json, 500)
+        else:
+            ret = Pdf.getPdfReport(id_rec, template, filename, reedit)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : PdfReport failed id_rec=%s', str(id_rec))

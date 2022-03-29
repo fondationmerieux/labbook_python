@@ -71,7 +71,7 @@
                     <div class="form-group form-inline col-12">
                         <label>{{ _("Date de validation") }} :</label>
                         <div>
-                            <input id="date_bio" class="form-control ml-1" type="date" maxlength="10" size="10" value="{{ now|date_now }}" placeholder="" style="">
+                            <input id="date_bio" class="form-control ml-1" type="datetime-local" step="60" value="{{ now|datetime_now }}" placeholder="" style="">
                         </div>
                         <label class="ml-3" for="validator">{{ _("Biologiste") }} :</label>
                         <input type="text" name="validator" id="validator" class="form-control ml-1" value="" readonly />
@@ -399,7 +399,7 @@ function cancel_res( id_rec, id_res )
 function send_cancel()
 {
 let reason    = $("#cancel_reason").val() ;
-let comment   = JSON.stringify( $("#cancel_comm").val() ) ;
+let comment   = JSON.stringify( $.trim( $("#cancel_comm").val() ) ) ;
 let param_res = '{ "id_owner": {{ session['user_id']}}, ' +
                   '"id_res":' + id_res_tmp + ', ' +
                   '"reason":' + reason + ',' +
@@ -431,7 +431,7 @@ function save_valid( id_rec )
 {
 let date_valid = $("#date_bio").val() ;
 let user_valid = $("#id_validator").val() ;
-let comm_valid = JSON.stringify( $("#comm_valid").val() ) ;
+let comm_valid = JSON.stringify( $.trim( $("#comm_valid").val() ) ) ;
 let template   = $("#tpl_result").val() ;
 
 let param_list_valid = '{ "template": "' + template + '", "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
@@ -637,14 +637,18 @@ function load_report( data )
 let div_report = '' ;
 let obj = data ;
 
-    if ( obj.id_data > 0 )
+    for( i in obj )
     {
-    let tmp_div = '<span style="padding-left:40px;">' ;
+        if ( obj[i].id_data > 0 )
+        {
+        let tmp_div = '<span style="padding-left:40px;">' ;
 
-    tmp_div += '<a class="report" style="color:#FFF;" onclick="download_file(\'RP\', \'' + obj.file + '\', \'GEN\', ' + num_rec_y + ');"><img src="{{ url_for('static', filename='img/ico_pdf.png') }}" class="mr-2">' + obj.date + '</a>' ;
-    tmp_div += '</span><br />' ;
+        tmp_div += '<a class="report" style="color:#FFF;" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'GEN\', ' + num_dos + ');"><img src="{{ url_for('static', filename='img/ico_pdf.png') }}" class="mr-2">' + obj[i].date ;
+        tmp_div += ' - {{ _("Dossier") }} ' + num_dos + ' - {{ _("Modèle") }} : ' + obj[i].tpl_name ;
+        tmp_div += ' (' + obj[i].nb_download + ')</a></span><br />' ;
 
-    div_report += tmp_div ;
+        div_report += tmp_div ;
+        }
     }
 
 $("#report").append(div_report) ;

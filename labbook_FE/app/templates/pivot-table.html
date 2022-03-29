@@ -150,8 +150,13 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             {
                 $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR dataset " + dataset_name) ;
-            alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
+                if (response.status == 404)
+                alert("{{ _("Aucune donnée à afficher") }}") ;
+                else
+                {
+                console.log("ERROR dataset " + dataset_name + "ret=" + JSON.stringify(response)) ;
+                alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
+                }
             }
         } ) ;
     } ) ;

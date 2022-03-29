@@ -66,8 +66,8 @@ class User:
                'user.firstname, user.lastname, user.expire_date, user.cps_id, user.status, '
                'user.email, user.oauth_provider_id_user, user.locale, user.rpps, user.tel as phone '
                'from sigl_user_data as user '
-               'inner join sigl_pj_role AS role ON role.type = user.role_type '
-               'where user.status="' + Constants.cst_user_active + '" and user.username=%s')  
+               'inner join sigl_pj_role as role on role.type = user.role_type '
+               'where user.status="' + Constants.cst_user_active + '" and user.username=%s')
 
         cursor.execute(req, (login,))
 

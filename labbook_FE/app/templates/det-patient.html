@@ -273,7 +273,7 @@ var nom           = $("#nom").val() ;
 var prenom        = $("#prenom").val() ;
 var ddn           = $("#ddn").val() ;
 var sexe          = $("input:radio[name=sexe]:checked").val() ;
-var adresse       = JSON.stringify( $("#adresse").val() ) ;
+var adresse       = JSON.stringify( $.trim( $("#adresse").val() ) ) ;
 var cp            = $("#cp").val() ;
 var ville         = $("#ville").val() ;
 var phone1        = $("#phone1").val() ;

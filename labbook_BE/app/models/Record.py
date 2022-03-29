@@ -107,9 +107,11 @@ class Record:
                'rec.id_colis, rec.date_reception_colis, rec.rc, rec.colis, rec.prix, rec.remise, '
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
                'rec.num_dos_mois, rec.date_hosp, '
+               'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_02_data as rec '
                'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
                'where rec.id_data=%s')
 
         cursor.execute(req, (id_rec,))
@@ -371,8 +373,8 @@ class Record:
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date '
                'from sigl_02_data as rec '
-               'inner join sigl_dico_data as d_type on d_type.id_data=rec.type '
-               'inner join sigl_dico_data as d_status on d_status.id_data=rec.statut '
+               'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
+               'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'where date_dos between %s and %s '
                'order by id_record desc')
 

@@ -73,6 +73,87 @@ class ExportDHIS2(Resource):
         # Determine the period
         period = l_rows[1][1]
 
+        l_period = []
+
+        # build list of period
+        if period == 'W':
+            firstday = datetime.strptime(args['date_beg'], '%Y-%m-%d')
+            lastday  = datetime.strptime(args['date_end'], '%Y-%m-%d')
+
+            # firstday has to be a monday and lastday a sunday
+            firstday = firstday + timedelta(days=-firstday.weekday())
+            lastday  = lastday + timedelta(days=6 - lastday.weekday())
+
+            next_monday = firstday + timedelta(days=7)  # firstday + timedelta(days=-firstday.weekday(), weeks=1)
+            next_sunday = next_monday - timedelta(days=1)  # next_monday - timedelta(days=1)
+
+            while next_monday < lastday:
+                period_interv = []
+
+                tmp_period = datetime.strftime(firstday, "%YW") + str(firstday.isocalendar().week)
+
+                period_interv.append(tmp_period)
+                period_interv.append(firstday)
+                period_interv.append(next_sunday)
+
+                l_period.append(period_interv)
+
+                firstday = next_monday
+                next_monday = firstday + timedelta(days=7)
+                next_sunday = next_monday - timedelta(days=1)
+
+            period_interv = []
+
+            tmp_period = datetime.strftime(firstday, "%YW") + str(firstday.isocalendar().week)
+
+            period_interv.append(tmp_period)
+            period_interv.append(firstday)
+            period_interv.append(lastday)
+
+            l_period.append(period_interv)
+
+        elif period == 'M':
+            firstday = datetime.strptime(args['date_beg'], '%Y-%m-%d')
+            firstday = firstday.replace(day=1)
+            lastday  = datetime.strptime(args['date_end'], '%Y-%m-%d')
+
+            firstday_of_nextmonth = firstday + timedelta(days=31)
+            firstday_of_nextmonth = firstday_of_nextmonth.replace(day=1)
+            lastday_of_month  = firstday_of_nextmonth - timedelta(days=1)
+
+            while firstday_of_nextmonth < lastday:
+                period_interv = []
+
+                tmp_period = datetime.strftime(firstday, "%Y%m")
+
+                period_interv.append(tmp_period)
+                period_interv.append(firstday)
+                period_interv.append(lastday_of_month)
+
+                l_period.append(period_interv)
+
+                firstday = firstday_of_nextmonth
+                firstday_of_nextmonth = firstday + timedelta(days=31)
+                firstday_of_nextmonth = firstday_of_nextmonth.replace(day=1)
+                lastday_of_month  = firstday_of_nextmonth - timedelta(days=1)
+
+            period_interv = []
+
+            tmp_period = datetime.strftime(firstday, "%Y%m")
+
+            firstday_of_nextmonth = firstday + timedelta(days=31)
+            firstday_of_nextmonth = firstday_of_nextmonth.replace(day=1)
+            lastday_of_month  = firstday_of_nextmonth - timedelta(days=1)
+
+            period_interv.append(tmp_period)
+            period_interv.append(firstday)
+            period_interv.append(lastday_of_month)
+
+            l_period.append(period_interv)
+        else:
+            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR wrong period : ' + str(period))
+            return compose_ret('', Constants.cst_content_type_json, 409)
+
         # Determine orgunit
         orgunit = ''
 
@@ -84,13 +165,6 @@ class ExportDHIS2(Resource):
 
         if version != 'v1' and l_rows[1][8]:
             storedby = l_rows[1][8]
-
-        if period == 'M' or period == 'W':
-            date_beg_db = datetime.strptime(args['date_beg'], '%Y-%m-%d')
-            date_end_db = datetime.strptime(args['date_end'], '%Y-%m-%d')
-        else:
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR period=' + str(period))
-            return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Data
         l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value", "storedby",
@@ -119,53 +193,55 @@ class ExportDHIS2(Resource):
             # remove headers line
             l_rows.pop(0)
 
-            for l in l_rows:
+            for period in l_period:
+                for l in l_rows:
 
-                if l:
-                    data = []
+                    if l:
+                        data = []
 
-                    data.append(l[0])
-                    data.append(period)
+                        data.append(l[0])
+                        data.append(period[0])
 
-                    if orgunit:
-                        data.append(orgunit)
-                    else:
-                        data.append(lab_name)
+                        period_beg_db = period[1]
+                        period_end_db = period[2]
 
-                    data.append(l[5])
-                    data.append(l[6])
+                        if orgunit:
+                            data.append(orgunit)
+                        else:
+                            data.append(lab_name)
 
-                    # Parse formula for result request
-                    formula   = l[3]
-                    type_samp = l[4]
+                        data.append(l[5])
+                        data.append(l[6])
 
-                    req_part = ''
+                        # Parse formula for result request
+                        formula   = l[3]
+                        type_samp = l[4]
 
-                    req_part = Report.ParseFormula(formula, type_samp)
+                        req_part = ''
 
-                    result = Report.getResultEpidemio(inner_req=req_part['inner'],
-                                                      end_req=req_part['end'],
-                                                      date_beg=date_beg_db,
-                                                      date_end=date_end_db)
+                        req_part = Report.ParseFormula(formula, type_samp)
 
-                    if result:
-                        data.append(str(result['value']))
-                    else:
+                        result = Report.getResultEpidemio(inner_req=req_part['inner'],
+                                                          end_req=req_part['end'],
+                                                          date_beg=period_beg_db,
+                                                          date_end=period_end_db)
+
+                        if result:
+                            data.append(str(result['value']))
+                        else:
+                            data.append('')
+
+                        if storedby:
+                            data.append(storedby)
+                        else:
+                            data.append(user_ident)
+
+                        data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
+                        data.append('')
+                        data.append('FALSE')
                         data.append('')
 
-                    if storedby:
-                        data.append(storedby)
-                    else:
-                        data.append(user_ident)
-
-                    data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
-                    data.append('')
-                    data.append('FALSE')
-                    data.append('')
-
-                    l_data.append(data)
-
-        self.log.error(Logs.fileline() + ' : l_data=' + str(l_data))
+                        l_data.append(data)
 
         # if no result to export
         if len(l_data) < 2:

@@ -152,7 +152,8 @@
 
             {% if session['user_role'] != 'A' and session['user_role'] != 'B' and session['user_role'] != 'TQ' and
                   session['user_role'] != 'T' and session['user_role'] != 'TA' and session['user_role'] != 'TQ' and 
-                  session['user_role'] != 'S' and session['user_role'] != 'SA' and session['user_role'] != 'P' %}
+                  session['user_role'] != 'S' and session['user_role'] != 'SA' and session['user_role'] != 'P' and
+                  session['user_role'] != 'Q' %}
             <span>{{ _("Veuillez vous reconnecter") }}</span>
             {% endif %}
 

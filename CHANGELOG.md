@@ -7,6 +7,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.4] - 2022-03-30
+### Added
+- in pivot table add result_unit and label of result_value and an_emergency
+- add trim to every textarea values
+- display count of download report file
+- add step="60" for input datetime-local, thats forced time in HH:MM
+- report data object for template : o.report.replace, o.rec.num (num_rec_y or num_rec_m depends of setting)
+
+### Changed
+- reedit of report generate a new report not overwriting on the existing
+- 29 unused tables deleted still 11 tables on 82 unused but not yet deleted
+
+### Fixed
+- patient dataset, problem with jointure on pat_nation, pat_blood_group and pat_blood_rhesus
+- regex x^n fixed for n > 9 in enter-result page
+- technical and biological validations were without time, added time in date selectors
+- DHIS2 export with date ranges and refactoring period
+- save details of an user
+- WS ScriptStatus if file doesnt exist or empty
+- multi line comment in report pdf for record, variable analysis and biological validation comment
+
 ## [3.2.3] - 2022-03-10
 ### Added
 - add second phone number

@@ -439,9 +439,9 @@ var procedur    = $("#search_procedure").val() ;
 var calibration = $("#calibration").val()      ;
 var contract    = $("#contract").val()         ;
 
-var breakdown   = JSON.stringify( $("#breakdown").val() )   ;
-var maintenance = JSON.stringify( $("#maintenance").val() ) ;
-var comment     = JSON.stringify( $("#comment").val() )     ;
+var breakdown   = JSON.stringify( $.trim( $("#breakdown").val() ) )   ;
+var maintenance = JSON.stringify( $.trim( $("#maintenance").val() ) ) ;
+var comment     = JSON.stringify( $.trim( $("#comment").val() ) )     ;
 
 var date_endcontract = $("#date_endcontract").val() ;
 var date_buy         = $("#date_buy").val()         ;

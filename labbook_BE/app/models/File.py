@@ -311,11 +311,26 @@ class File:
             return 0
 
     @staticmethod
+    def getAllFileReport(id_rec):
+        cursor = DB.cursor()
+
+        req = ('select id_data, id_owner, id_dos, file, file_type, doc_type, date, tpl_name, nb_download '
+               'from sigl_11_data '
+               'left join template_setting on tpl_ser=id_tpl '
+               'where id_dos=%s and doc_type=257 '
+               'order by id_data asc')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getFileReport(id_rec):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, id_dos, file, file_type, doc_type, date '
+        req = ('select id_data, id_owner, id_dos, file, file_type, doc_type, date, tpl_name, nb_download '
                'from sigl_11_data '
+               'left join template_setting on tpl_ser=id_tpl '
                'where id_dos=%s and doc_type=257 '
                'order by id_data desc limit 1')
 
@@ -329,9 +344,9 @@ class File:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_11_data '
-                           '(id_owner, id_dos, file, file_type, doc_type, date) '
+                           '(id_owner, id_dos, file, file_type, doc_type, date, id_tpl, nb_download) '
                            'values '
-                           '(%(id_owner)s, %(id_dos)s, UUID(), 259, %(doc_type)s, NOW())', params)
+                           '(%(id_owner)s, %(id_dos)s, UUID(), 259, %(doc_type)s, NOW(), %(id_tpl)s, 0)', params)
 
             File.log.info(Logs.fileline())
 
@@ -373,8 +388,8 @@ class File:
         cursor = DB.cursor()
 
         # Number of records
-        req = 'select count(*) as nb_manuals '\
-              'from sigl_manuels_data'
+        req = ('select count(*) as nb_manuals '
+               'from sigl_manuels_data')
 
         cursor.execute(req)
 
@@ -387,6 +402,22 @@ class File:
 
             cursor.execute('update sigl_11_data '
                            'set date=now() '
+                           'where file=%s', (filename,))
+
+            File.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def raiseReportNbDL(filename):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_11_data '
+                           'set nb_download=nb_download + 1 '
                            'where file=%s', (filename,))
 
             File.log.info(Logs.fileline())

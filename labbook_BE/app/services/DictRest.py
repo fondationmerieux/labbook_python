@@ -168,7 +168,8 @@ class DictList(Resource):
                 if dict[key] is None:
                     dict[key] = ''
                 elif key == 'name' and dict[key]:
-                    trans = dict[key].strip()  # keep key untranslated to get details of this dict
+                    trans = dict[key].strip()
+                    dict['key'] = trans        # keep key untranslated to get details of this dict
                     dict[key]   = _(trans)     # dict name translated
 
         self.log.info(Logs.fileline() + ' : TRACE DictList')

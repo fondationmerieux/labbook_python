@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="cti_date" class="col-form-label col-3 text-right mt-2">{{ _("Date du contrôle") }} *</label>
                     <div>					
-                        <input id="cti_date" class="form-control" type="datetime-local" value="{{ args['result']['cti_date'] }}" name="cti_date" style="color: #888;">
+                        <input id="cti_date" class="form-control" type="datetime-local" step="60" value="{{ args['result']['cti_date'] }}" name="cti_date" style="color: #888;">
                     </div>
                 </div>
 
@@ -78,13 +78,13 @@ var id_item  = {{ args['cti_ser']|safe }}    ;
 var cti_type = "{{ args['type_val']|safe }}" ;
 var cti_date = $("#cti_date").val()          ;
 {% if args['type_val'] == 'QL' %}
-var target   = JSON.stringify( $("#cti_target").val() ) ;
-var result   = JSON.stringify( $("#cti_result").val() ) ;
+var target   = JSON.stringify( $.trim( $("#cti_target").val() ) ) ;
+var result   = JSON.stringify( $.trim( $("#cti_result").val() ) ) ;
 {% else %}
 var target   = $("#cti_target").val() ;
 var result   = $("#cti_result").val() ;
 {% endif %}
-var comment  = JSON.stringify( $("#cti_comment").val() ) ;
+var comment  = JSON.stringify( $.trim( $("#cti_comment").val() ) ) ;
 
 var msg = "" ;
 

@@ -199,8 +199,8 @@ function save_dict()
 {
 var id_owner    = {{ session['user_id']|safe}} ;
 var dict_name   = $("#name").val() ;
-var dict_descr  = JSON.stringify( $("#dico_descr").val() ) ;
-var dict_descr2 = JSON.stringify( $("#dico_descr_old").val() ) ;
+var dict_descr  = JSON.stringify( $.trim( $("#dico_descr").val() ) ) ;
+var dict_descr2 = JSON.stringify( $.trim( $("#dico_descr_old").val() ) ) ;
 
     if (dict_name == "")
     {

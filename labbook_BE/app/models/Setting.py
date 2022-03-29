@@ -256,6 +256,18 @@ class Setting:
         return cursor.fetchone()
 
     @staticmethod
+    def getTemplateByFile(tpl_file):
+        cursor = DB.cursor()
+
+        req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
+               'from template_setting '
+               'where tpl_file=%s limit 1')
+
+        cursor.execute(req, (tpl_file,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getDefaultTemplate(type):
         cursor = DB.cursor()
 

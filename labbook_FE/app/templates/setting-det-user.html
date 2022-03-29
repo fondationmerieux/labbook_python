@@ -286,11 +286,11 @@ var last_eval = $("#last_eval").val() ;
 var stat      = $("input:radio[name=stat]:checked").val() ;
 {% endif %}
 var lang      = $("#lang").val() ;
-var address   = JSON.stringify( $("#address").val() )  ;
-var cv        = JSON.stringify( $("#cv").val() )       ;
-var diploma   = JSON.stringify( $("#diploma").val() )  ;
-var training  = JSON.stringify( $("#training").val() ) ;
-var comment   = JSON.stringify( $("#comment").val() )  ;
+var address   = JSON.stringify( $.trim( $("#address").val() ) )  ;
+var cv        = JSON.stringify( $.trim( $("#cv").val() ) )       ;
+var diploma   = JSON.stringify( $.trim( $("#diploma").val() ) )  ;
+var training  = JSON.stringify( $.trim( $("#training").val() ) ) ;
+var comment   = JSON.stringify( $.trim( $("#comment").val() ) )  ;
 var role_type = $("#role").val()   ;
 var id_pres   = $("#search_doctor").val() ;
 
@@ -337,7 +337,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"cps":"' + cps + '", ' +
               '"rpps":"' + rpps + '", ' +
               {% if args['user_id'] > 0 %}
-              '"stat":' + stat + ', ' +
+              '"stat":"' + stat + '", ' +
               {% endif %}
               '"firstname":"' + firstname + '", ' +
               '"lastname":"' + lastname + '", ' +

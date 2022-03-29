@@ -16,6 +16,7 @@ from app.models.Patient import Patient
 from app.models.Pdf import Pdf
 from app.models.Record import Record
 from app.models.Result import Result
+from app.models.Setting import Setting
 from app.models.User import User
 from app.models.Various import Various
 
@@ -149,6 +150,9 @@ class ResultList(Resource):
 
             if pat:
                 result['patient'] = pat['code']
+
+                if pat['code_patient']:
+                    result['patient'] += ' / ' + pat['code_patient']
             else:
                 result['patient'] = ''
 
@@ -285,7 +289,7 @@ class ResultCreate(Resource):
                     # insert corresponding validation
                     ret = Result.insertValidation(id_owner=args['id_owner'],
                                                   id_resultat=res['id_res'],
-                                                  date_validation=datetime.strftime(datetime.now(), "%Y/%m/%d %H:%M:%S"),
+                                                  date_validation=datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S"),
                                                   utilisateur=args['id_owner'],
                                                   valeur=None,
                                                   type_validation=type_validation,
@@ -371,9 +375,17 @@ class ResultValid(Resource):
 
         # REPORT PART
         if type_valid == 'B':
+            tpl = Setting.getTemplateByFile(args['template'])
+
+            id_tpl = 0
+
+            if tpl:
+                id_tpl = tpl['tpl_ser']
+
             ret = File.insertFileReport(id_owner=id_owner,
                                         id_dos=id_rec,
-                                        doc_type=257)
+                                        doc_type=257,
+                                        id_tpl=id_tpl)
 
             if ret <= 0:
                 self.log.error(Logs.fileline() + ' : TRACE ResultValid insertFileReport ERROR')
@@ -414,7 +426,7 @@ class ResultReset(Resource):
         # Insert new validation
         ret = Result.insertValidation(id_owner=args['id_owner'],
                                       id_resultat=args['id_res'],
-                                      date_validation=datetime.strftime(datetime.now(), "%Y/%m/%d %H:%M:%S"),
+                                      date_validation=datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S"),
                                       utilisateur=args['id_owner'],
                                       valeur=None,
                                       type_validation=250,
@@ -464,7 +476,7 @@ class ResultCancel(Resource):
         # Insert new validation
         ret = Result.insertValidation(id_owner=args['id_owner'],
                                       id_resultat=args['id_res'],
-                                      date_validation=datetime.strftime(datetime.now(), "%Y/%m/%d %H:%M:%S"),
+                                      date_validation=datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S"),
                                       utilisateur=args['id_owner'],
                                       valeur=None,
                                       type_validation=252,

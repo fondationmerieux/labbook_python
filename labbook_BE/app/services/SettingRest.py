@@ -471,6 +471,8 @@ class ScriptStatus(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, mode):
+        date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         try:
             if mode == 'R':
                 path = os.path.join(Constants.cst_io, Constants.cst_io_restore)
@@ -481,17 +483,29 @@ class ScriptStatus(Resource):
             elif mode == 'A':
                 path = os.path.join(Constants.cst_io, Constants.cst_io_listarchive)
             else:
-                date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 self.log.info(Logs.fileline() + ' : ERROR ScriptStatus wrong mode : ' + str(mode))
                 ret = "ERR;" + str(date_now) + ";Wrong mode"
                 return compose_ret(ret, Constants.cst_content_type_json, 500)
 
-            # No encoding forced because script return list from system so its depend of encoding of operating system
-            f = open(path, 'r')
-            for line in f:
-                pass
+            if not os.path.exists(path) or os.stat(path).st_size == 0:
+                self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open or empty : ' + str(path))
+                ret = "WAIT;" + str(date_now) + ";Impossible to open : " + str(path)
+                return compose_ret(ret, Constants.cst_content_type_json, 200)
 
-            ret = line[:-1]
+            # No encoding forced because script return list from system so its depend of encoding of operating system
+            last_line = ''
+
+            with open(path, 'r') as f:
+                for line in f:
+                    pass
+                last_line = line
+
+            if not last_line:
+                self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open or read file, last line is empty')
+                ret = "WAIT;" + str(date_now) + ";Impossible to open or read file, last line is empty"
+                return compose_ret(ret, Constants.cst_content_type_json, 200)
+
+            ret = last_line[:-1]
 
             if not ret or ((mode == 'M' or mode == 'A') and not ret.startswith('OK') and not ret.startswith('ERR')):
                 ret = "WAIT;" + str(date_now) + ";Not finished"
@@ -513,7 +527,7 @@ class ScriptStatus(Resource):
                 except:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listmedia file')
                     ret = "WAIT;" + str(date_now) + ";Impossible to read listmedia file"
-                    return compose_ret(ret, Constants.cst_content_type_json, 500)
+                    return compose_ret(ret, Constants.cst_content_type_json, 200)
 
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_media=' + str(l_media))
                 return compose_ret(l_media, Constants.cst_content_type_json)
@@ -537,14 +551,14 @@ class ScriptStatus(Resource):
                 except:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listarchive file')
                     ret = "WAIT;" + str(date_now) + ";Impossible to read listarchive file"
-                    return compose_ret(l_archive, Constants.cst_content_type_json, 500)
+                    return compose_ret(l_archive, Constants.cst_content_type_json, 200)
 
                 self.log.info(Logs.fileline() + ' : TRACE ScriptStatus l_archive=' + str(l_archive))
                 return compose_ret(l_archive, Constants.cst_content_type_json)
 
-        except Exception:
+        except Exception as e:
             date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file')
+            self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open status file exception : ' + str(e))
             ret = "ERR;" + str(date_now) + ";Impossible to read status file"
             return compose_ret(ret, Constants.cst_content_type_json, 200)  # 200 : dont want to stop poll in ihm
 

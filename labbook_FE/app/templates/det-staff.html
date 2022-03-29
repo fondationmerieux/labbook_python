@@ -232,11 +232,11 @@ var arrived   = $("#arrived").val()   ;
 var position  = $("#position").val()  ;
 var section   = $("#section").val()   ;
 var last_eval = $("#last_eval").val() ;
-var address   = JSON.stringify( $("#address").val() )  ;
-var cv        = JSON.stringify( $("#cv").val() )       ;
-var diploma   = JSON.stringify( $("#diploma").val() )  ;
-var training  = JSON.stringify( $("#training").val() ) ;
-var comment   = JSON.stringify( $("#comment").val() )  ;
+var address   = JSON.stringify( $.trim( $("#address").val() ) )  ;
+var cv        = JSON.stringify( $.trim( $("#cv").val() ) )       ;
+var diploma   = JSON.stringify( $.trim( $("#diploma").val() ) )  ;
+var training  = JSON.stringify( $.trim( $("#training").val() ) ) ;
+var comment   = JSON.stringify( $.trim( $("#comment").val() ) )  ;
 
 var param = '{ "id_owner":' + id_owner + ', ' +
               '"id_user":' + id_user + ', ' +

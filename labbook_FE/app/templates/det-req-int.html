@@ -949,7 +949,7 @@ var id_med        = $("#search_doctor").val() ;
 var date_prescr   = $("#date_prescr").val() ;
 var parcel_id     = $("#parcel_id").val() ;
 var date_parcel   = $("#date_parcel").val() ;
-var comm          = JSON.stringify( $("#comm").val() ) ;
+var comm          = JSON.stringify( $.trim( $("#comm").val() ) ) ;
 var parcel        = $("input[type='radio'][name='parcel']:checked").val() ;
 var price         = {% if session['pref_bill'] == '1' %}$("#bill_price").val(){% else %} 0{%endif%};
 var discount      = {% if session['pref_bill'] == '1' %}$("#discount").val(){% else %} 0{%endif%};

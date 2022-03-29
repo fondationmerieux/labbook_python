@@ -766,21 +766,21 @@ class Pdf:
             data['report']['full_head'] = 'Y'
 
         # Partial or Full
-        if reedit == 'N':
-            data['report']['status'] = _("COMPLET")
+        data['report']['status'] = _("COMPLET")
 
-            if id_rec > 0:
-                l_req = Analysis.getAnalysisReq(id_rec, 'Y')
+        if id_rec > 0:
+            l_req = Analysis.getAnalysisReq(id_rec, 'Y')
 
-                for req in l_req:
-                    nb_res_vld = Result.countResValidate(req['id_data'])
+            for req in l_req:
+                nb_res_vld = Result.countResValidate(req['id_data'])
 
-                    if not nb_res_vld or nb_res_vld['nb_vld'] == 0:
-                        data['report']['status'] = _("PARTIEL")
+                if not nb_res_vld or nb_res_vld['nb_vld'] == 0:
+                    data['report']['status'] = _("PARTIEL")
 
+        data['report']['replace'] = ''
         # regenerated a report
         if reedit == 'Y':
-            data['report']['status'] = _("ANNULE ET REMPLACE")
+            data['report']['replace'] = _("ANNULE ET REMPLACE")
 
             if id_rec > 0:
                 # update date of file
@@ -803,6 +803,7 @@ class Pdf:
             Various.useLangDB()
             record = {}
             record['date_dos']          = datetime.now()
+            record['num_rec']           = '2022000001'
             record['num_dos_an']        = '2022000001'
             record['num_dos_mois']      = '2022010001'
             record['num_dos_jour']      = '202201010001'
@@ -812,12 +813,13 @@ class Pdf:
             record['num_lit']           = 'ABC123'
             record['date_prescription'] = datetime.now()
             record['prescriber']        = 'Damien DOC'
-            record['rc']                = _("Test de grossesse")
+            record['rc']                = 'commentaire dossier\n2eme ligne'
             record['id_patient']        = 0
             Various.useLangPDF()
 
         data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
 
+        data['rec']['num']   = str(record['num_rec'])
         data['rec']['num_y'] = str(record['num_dos_an'])
         data['rec']['num_m'] = str(record['num_dos_mois'])
         data['rec']['num_d'] = str(record['num_dos_jour'])
@@ -849,7 +851,7 @@ class Pdf:
             data['rec']['presc_name'] = str(record['prescriber'])
 
         data['rec']['comm_title'] = _("Renseignements cliniques")
-        data['rec']['comm'] = str(record['rc'])
+        data['rec']['comm'] = record['rc'].split("\n")
 
         # --- Patient details
         data['pat'] = {}
@@ -1037,11 +1039,11 @@ class Pdf:
                                     user = user['username']
 
                                 if res_valid['commentaire']:
-                                    res_comm = res_valid['commentaire']
+                                    res_comm = res_valid['commentaire'].split("\n")
                                 else:
                                     res_comm = ''
 
-                                tmp_ana['l_res'][-1]["comm"] = str(res_comm)
+                                tmp_ana['l_res'][-1]["comm"] = res_comm
 
                                 tmp_ana['validate'] = str(user)
 
@@ -1197,7 +1199,7 @@ class Pdf:
                     Various.useLangPDF()
 
                     if res['commentaire'] and not res['commentaire'].startswith('Project-Id-Version'):
-                        tmp_res['var_comm'] = res['commentaire']
+                        tmp_res['var_comm'] = res['commentaire'].split("\n")
                     else:
                         tmp_res['var_comm'] = ''
 
@@ -1242,11 +1244,11 @@ class Pdf:
                     user = user['username']
 
                 if res_valid['commentaire']:
-                    res_comm = res_valid['commentaire']
+                    res_comm = res_valid['commentaire'].split("\n")
                 else:
                     res_comm = ''
 
-                tmp_ana['l_res'][-1]["comm"] = str(res_comm)
+                tmp_ana['l_res'][-1]["comm"] = res_comm
 
                 tmp_ana['validate'] = str(user)
 
@@ -1265,7 +1267,7 @@ class Pdf:
             result['prev_date']  = '01/12/2021'
             result['prev_val']   = _("Présent")
             result['prev_unit']  = ''
-            result['comm']       = ''
+            result['comm']       = 'commentaire validation\n2eme ligne'.split('\n')
             result['bold_value'] = 'N'
 
             analysis['fam_name'] = _("Biochimie urinaire")
@@ -1397,7 +1399,7 @@ class Pdf:
                     Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load record details')
                     return False
 
-                num = record['num_dos_an']
+                num = record['num_rec']
 
                 filename = 'sticker_REC' + str(id)
 
@@ -1438,6 +1440,7 @@ class Pdf:
                 data['img']['qrcode'] = open(join(Constants.cst_path_tmp, imgqrcode_name), 'rb')
 
                 data['rec'] = {}
+                data['rec']['num']   = str(record['num_rec'])
                 data['rec']['num_y'] = str(record['num_dos_an'])
                 data['rec']['num_m'] = str(record['num_dos_mois'])
                 data['rec']['num_d'] = str(record['num_dos_jour'])
@@ -1599,6 +1602,7 @@ class Pdf:
                 data['img']['qrcode'] = open(join(Constants.cst_path_tmp, imgqrcode_name), 'rb')
 
                 data['rec'] = {}
+                data['rec']['num']   = '2021000001'
                 data['rec']['num_y'] = '2021000001'
                 data['rec']['num_d'] = '2022010001'
                 data['rec']['num_m'] = '202201010001'

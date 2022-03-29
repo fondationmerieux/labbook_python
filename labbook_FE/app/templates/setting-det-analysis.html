@@ -861,7 +861,7 @@ var unit      = $("#unit").val()      ;
 var value     = $("#value").val()     ;
 var stat      = $("input:radio[name=stat]:checked").val()   ;
 var whonet    = $("input:radio[name=whonet]:checked").val() ;
-var comment   = JSON.stringify( $("#comment").val() ) ;
+var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
 
 var product = $("#product").val() ;
 
@@ -906,19 +906,19 @@ var msg = "" ;
                         tmp_value += ', ' ;
 
                     id_var       = data_vars[i].id_data  ;
-                    var_label    = data_vars[i].label    ;
-                    var_code     = data_vars[i].code_var ;
-                    var_descr    = data_vars[i].descr    ;
+                    var_label    = $.trim( data_vars[i].label ) ;
+                    var_code     = $.trim( data_vars[i].code_var ) ;
+                    var_descr    = $.trim( data_vars[i].descr ) ;
                     var_type_res = data_vars[i].type_res ;
-                    var_min      = data_vars[i].min      ;
-                    var_max      = data_vars[i].max      ;
-                    var_formula  = data_vars[i].formula  ;
+                    var_min      = $.trim( data_vars[i].min ) ;
+                    var_max      = $.trim( data_vars[i].max ) ;
+                    var_formula  = $.trim( data_vars[i].formula ) ;
                     var_unit     = data_vars[i].unit     ;
                     var_accu     = data_vars[i].accu     ;
                     var_formula2 = data_vars[i].formula2 ;
                     var_unit2    = data_vars[i].unit2    ;
                     var_accu2    = data_vars[i].accu2    ;
-                    var_comment  = JSON.stringify( data_vars[i].comment ) ;
+                    var_comment  = JSON.stringify( $.trim( data_vars[i].comment ) ) ;
                     var_oblig    = data_vars[i].oblig    ;
                     var_whonet   = data_vars[i].var_whonet ;
                     var_qrcode   = data_vars[i].var_qrcode ;

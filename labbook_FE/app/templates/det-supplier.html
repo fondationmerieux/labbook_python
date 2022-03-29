@@ -100,12 +100,12 @@ var supplier  = $("#supplier").val()  ;
 var lastname  = $("#lastname").val()  ;
 var firstname = $("#firstname").val() ;
 var funct     = $("#funct").val()     ;
-var address   = JSON.stringify( $("#address").val() ) ;
+var address   = JSON.stringify( $.trim( $("#address").val() ) ) ;
 var phone     = $("#phone").val()  ;
 var mobile    = $("#mobile").val() ;
 var fax       = $("#fax").val()    ; 
 var email     = $("#email").val()  ;
-var comment   = JSON.stringify( $("#comment").val() ) ;
+var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
 
 var msg = "" ;
 

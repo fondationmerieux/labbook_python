@@ -128,7 +128,7 @@ var id_meeting   = {{ args['id_meeting']|safe }} ;
 var date_meeting = $("#date_meeting").val()      ;
 var type         = $("#type").val()              ;
 var promoter     = $("#search_promoter").val()   ;
-var report       = JSON.stringify( $("#report").val() ) ;
+var report       = JSON.stringify( $.trim( $("#report").val() ) ) ;
 
 var msg = "" ;
 

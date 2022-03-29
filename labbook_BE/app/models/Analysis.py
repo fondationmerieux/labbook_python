@@ -657,14 +657,14 @@ class Analysis:
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
-               'req.ref_analyse as id_analysis, req.prix as ana_price, req.paye as req_paid, req.urgent as ana_emergency, '
+               'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
                'ana.code as analysis_code, ana.nom as analysis_name, d_fam.label as analysis_familly '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
-               'left join sigl_dico_data as d_fam on d_fam.id_data=ana.famille and ana.famille > 0 '
-               'inner join sigl_dico_data as d_type on d_type.id_data=rec.type '
-               'inner join sigl_dico_data as d_status on d_status.id_data=rec.statut '
+               'inner join sigl_dico_data as d_fam on d_fam.id_data=ana.famille and ana.famille > 0 '
+               'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
+               'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'where rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 

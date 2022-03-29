@@ -159,6 +159,8 @@ class DatasetByName(Resource):
 
         Various.useLangDB()
 
+        self.log.error(Logs.fileline() + ' : DEBUG l_items=' + str(l_items))
+
         for item in l_items:
             for key, value in list(item.items()):
                 if item[key] is None:
@@ -168,6 +170,34 @@ class DatasetByName(Resource):
                 # translate
                 if isinstance(item[key], str) and item[key] != "":
                     item[key] = _(item[key].strip())
+
+            # get label of result value and unit
+            if 'type_result' in item and item['type_result'] and item['type_result'] > 0:
+                type_res = Various.getDicoById(item['type_result'])
+
+                if type_res and type_res['short_label'].startswith("dico_"):
+                    trans = type_res['short_label'][5:]
+                    item['type_result'] = _(trans.strip())
+                else:
+                    item['type_result'] = ''
+
+                # Value to be interpreted
+                if item['type_result'] and item['result_value']:
+                    if item['result_value'] != '0':
+                        val = Various.getDicoById(item['result_value'])
+                        trans = val['label']
+
+                        if trans:
+                            item['result_value'] = _(trans.strip())
+                        else:
+                            item['result_value'] = ''
+                    else:
+                        item['result_value'] = ''
+
+            if 'ana_emergency' in item and item['ana_emergency'] and item['ana_emergency'] == 4:
+                item['ana_emergency'] = 'Y'
+            else:
+                item['ana_emergency'] = 'N'
 
         self.log.info(Logs.fileline() + ' : TRACE DatasetByName')
         return compose_ret(l_items, Constants.cst_content_type_json)

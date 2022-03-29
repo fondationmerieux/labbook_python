@@ -113,21 +113,36 @@ class FileReport(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, id_rec):
-        report = File.getFileReport(id_rec)
+        l_report = File.getAllFileReport(id_rec)
 
-        if not report:
+        if not l_report:
             self.log.error(Logs.fileline() + ' : TRACE FileReport not found')
         else:
-            # Replace None by empty string
-            for key, value in list(report.items()):
-                if report[key] is None:
-                    report[key] = ''
+            for report in l_report:
+                # Replace None by empty string
+                for key, value in list(report.items()):
+                    if report[key] is None:
+                        report[key] = ''
 
-            if report['date']:
-                report['date'] = datetime.strftime(report['date'], '%Y-%m-%d %H:%M:%S')
+                if report['date']:
+                    report['date'] = datetime.strftime(report['date'], '%Y-%m-%d %H:%M:%S')
 
         self.log.info(Logs.fileline() + ' : TRACE FileReport')
-        return compose_ret(report, Constants.cst_content_type_json)
+        return compose_ret(l_report, Constants.cst_content_type_json)
+
+
+class FileReportNbDL(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, filename):
+        ret = File.raiseReportNbDL(filename)
+
+        if ret is False:
+            self.log.info(Logs.fileline() + ' : TRACE FileReportNbDL ERROR update raiseReportNbDL')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE FileReportNbDL')
+        return compose_ret('', Constants.cst_content_type_json)
 
 
 class FileStorage(Resource):
