@@ -55,7 +55,7 @@ class Pdf:
         if not record:
             return False
 
-        num_rec_y   = record['num_dos_an']
+        num_rec     = record['num']
         bill_num    = record['num_fact']
         receipt_num = record['num_quittance']
 
@@ -188,7 +188,7 @@ class Pdf:
         page_body = ('<div style="width:1000px;">'
                      '<div style="width:475px;padding:10px;background-color:#FFF;float:left;">'
                      '<div><span class="ft_bill_num">' + _("FACTURE") + ' : ' + str(bill_num) + '</span></div>'
-                     '<div><span class="ft_bill_rec">' + _("N° dossier") + ' : ' + str(num_rec_y) + '</span>'
+                     '<div><span class="ft_bill_rec">' + _("N° dossier") + ' : ' + str(num_rec) + '</span>'
                      '</div>' + receipt_num + '</div>' + addr_div + '<div style="clear:both;"></div>' + bill_div + '</div>')
 
         date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
@@ -199,7 +199,7 @@ class Pdf:
                        '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
                        _("Page") + ' 1/1</span></div></div></div>')
 
-        filename = 'facture_' + num_rec_y + '.pdf'
+        filename = 'facture_' + num_rec + '.pdf'
 
         form_cont = page_header + page_body + page_footer
 

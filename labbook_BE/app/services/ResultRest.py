@@ -114,6 +114,8 @@ class ResultList(Resource):
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
                     if key == 'last_eval' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
+                    if key == 'arrived' and result['user'][key]:
+                        result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
 
             # Get status labels of record
             tmp = Various.getDicoById(str(result['stat']))
@@ -225,6 +227,8 @@ class ResultRecord(Resource):
                     if key == 'birth' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
                     if key == 'last_eval' and result['user'][key]:
+                        result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
+                    if key == 'arrived' and result['user'][key]:
                         result['user'][key] = datetime.strftime(result['user'][key], '%Y-%m-%d')
 
             # Get status labels of record
@@ -530,6 +534,9 @@ class ResultHisto(Resource):
 
             if valid['user'] and valid['user']['last_eval']:
                 valid['user']['last_eval'] = datetime.strftime(valid['user']['last_eval'], '%Y-%m-%d')
+
+            if valid['user'] and valid['user']['arrived']:
+                valid['user']['arrived'] = datetime.strftime(valid['user']['arrived'], '%Y-%m-%d')
 
             if valid['date_validation']:
                 valid['date_validation'] = datetime.strftime(valid['date_validation'], '%Y-%m-%d')
