@@ -55,7 +55,7 @@ class Pdf:
         if not record:
             return False
 
-        num_rec     = record['num']
+        num_rec     = record['num_rec']
         bill_num    = record['num_fact']
         receipt_num = record['num_quittance']
 
