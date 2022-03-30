@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-Flask = "*"
+Flask = ">=2.0.3,<2.1.0"
 gunicorn = "*"
 Babel = "*"
 Flask-Babel = "*"
-requests = "*"
+requests = ">=2.26.0,<2.27.0"
 
 [dev-packages]
 

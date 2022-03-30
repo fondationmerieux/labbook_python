@@ -12,24 +12,24 @@
 | Popper                  | 2.11.0    | MIT          | x         |         |         |
 | select2                 | 4.0.13    | MIT          | x         |         |         |
 | Babel                   | 2.9.1     | BSD          |           | x       | x       |
-| Flask                   | 2.0.2     | BSD          |           | x       | x       |
+| Flask                   | 2.0.3     | BSD          |           | x       | x       |
 | Flask-Babel             | 2.0.0     | BSD          |           | x       | x       |
 | gunicorn                | 20.1.0    | MIT          |           | x       | x       |
-| pip                     | 22.0.3    | MIT          |           | x       | x       |
-| pipenv                  | 2022.1.8  | MIT          |           | x       | x       |
+| pip                     | 22.0.4    | MIT          |           | x       | x       |
+| pipenv                  | 2022.3.28 | MIT          |           | x       | x       |
 | requests                | 2.26.0    | Apache 2.0   |           | x       |         |
 | swagger-ui              | 4.6.1     | Apache 2.0   |           | x       |         |
-| alembic                 | 1.7.5     | MIT          |           |         | x       |
+| alembic                 | 1.7.7     | MIT          |           |         | x       |
 | Flask-RESTful           | 0.3.9     | BSD          |           |         | x       |
 | mysql-connector-python  | 8.0.28    | GPL 2        |           |         | x       |
 | pdfkit                  | 1.0.0     | MIT          |           |         | x       |
-| pikepdf                 | 4.4.1     | MPL 2.0      |           |         | x       |
-| Pillow                  | 9.0.0     | HPND         |           |         | x       |
+| pikepdf                 | 5.1.0     | MPL 2.0      |           |         | x       |
+| Pillow                  | 9.0.1     | HPND         |           |         | x       |
 | python-barcode          | 0.13.1    | MIT          |           |         | x       |
 | qrcode                  | 7.3.1     | BSD          |           |         | x       |
 | relatorio               | 0.10.0    | GPL          |           |         | x       |
 | toml                    | 0.10.2    | MIT          |           |         | x       |
-| unoserver               | 1.1       | MIT          |           |         | x       |
+| unoserver               | 1.2       | MIT          |           |         | x       |
 
 > Note :
 >

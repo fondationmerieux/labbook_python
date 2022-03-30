@@ -148,7 +148,7 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
     {% if session['user_role'] != 'P' and session['user_role'] != 'Q' %}
     if ( sessionStorage.getItem( "stock-alert" ) != "DONE" )
     {
-    var data_stock  = {{ args["stock"]|safe }} ;
+    var data_stock = {% if args["stock"] %}{{ args["stock"]|safe }}{% else %}[]{% endif %} ;
 
     sessionStorage.setItem("stock-alert", "DONE") ;
 
