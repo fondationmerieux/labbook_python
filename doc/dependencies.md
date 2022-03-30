@@ -23,7 +23,7 @@
 | Flask-RESTful           | 0.3.9     | BSD          |           |         | x       |
 | mysql-connector-python  | 8.0.28    | GPL 2        |           |         | x       |
 | pdfkit                  | 1.0.0     | MIT          |           |         | x       |
-| pikepdf                 | 5.1.0     | MPL 2.0      |           |         | x       |
+| pikepdf                 | 5.1.1     | MPL 2.0      |           |         | x       |
 | Pillow                  | 9.0.1     | HPND         |           |         | x       |
 | python-barcode          | 0.13.1    | MIT          |           |         | x       |
 | qrcode                  | 7.3.1     | BSD          |           |         | x       |

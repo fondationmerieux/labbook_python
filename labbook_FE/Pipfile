@@ -5,10 +5,13 @@ name = "pypi"
 
 [packages]
 Flask = ">=2.0.3,<2.1.0"
-gunicorn = "*"
-Babel = "*"
-Flask-Babel = "*"
-requests = ">=2.26.0,<2.27.0"
+Werkzeug = ">=2.0.3,<2.1.0"
+Jinja2 = "~=3.1.1"
+gunicorn = "~=20.1.0"
+Babel = "~=2.9.1"
+Flask-Babel = "~=2.0.0"
+requests = "~=2.27.1"
+urllib3 = "~=1.26.9"
 
 [dev-packages]
 
