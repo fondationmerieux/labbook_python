@@ -189,7 +189,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
 function new_supplier()
 {
-window.location.href = "{{ session['server_ext'] }}/det-supplier/0";
+window.open("{{ session['server_ext'] }}/det-supplier/0", "_blank") ;
 }
 
 function cancel()

@@ -7,6 +7,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.5] - 2022-04-07
+### Added
+- display id of user in a column for list of users
+
+### Changed
+- Report and Sticker PDF are in PDF/A-1 (ISO 19005-1:2005) instead of PDF 1.5
+- name of column Manual to Procedure for list of procedure
+- secretary (advanced too) are forbidden to edit or delete a non conformity
+- new supplier open in a other tab for product details page
+- no more default date in DHIS2 export page
+
+### Fixed
+- problem to compare value to min or max if value is like 10^n
+- when download a file we check if file exist and size > 0 if not redirect on current page
+- if we add an new analysis post biological validation the new validation reedit report with Cancel and Replace text
+- during a second biological validation, display the previous comment
+- display phone 1 and phone 2 on administrative record page
+- export stock if one fields is null
+- convert value of impact_patient and impacts_perso_visit from sigl_non_conformite_data (4,5,6,7) to (1053,1055,1057,0)
+
 ## [3.2.4] - 2022-03-30
 ### Added
 - in pivot table add result_unit and label of result_value and an_emergency

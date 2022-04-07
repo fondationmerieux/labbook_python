@@ -84,6 +84,7 @@
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
                             <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-left cursor-act">{{ _("Id") }}</th>
                             <th class="text-left cursor-act">{{ _("Identifiant") }}</th>
                             <th class="text-left cursor-act">{{ _("Prénom") }}</th>
                             <th class="text-left cursor-act">{{ _("Nom") }}</th>
@@ -237,6 +238,7 @@ $("#list_users_total").html( data_len ) ;
 
     res += '<tr><td hidden><div>' + data_users[i].id_data + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
+           '<td><div class="text-left">' + data_users[i].id_data + '</div></td>' +
            '<td><div class="text-left">' + data_users[i].username + '</div></td>' +
            '<td><div class="text-left">' + data_users[i].firstname + '</div></td>' +
            '<td><div class="text-left">' + data_users[i].lastname + '</div></td>' +

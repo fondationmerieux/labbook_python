@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import os
 import logging
 import barcode
 import pdfkit
@@ -392,15 +393,16 @@ class Pdf:
                 # merge list of file in one PDF
                 import pikepdf
 
-                from os.path import join
-
                 pdf = pikepdf.Pdf.new()
 
                 for file_rec in l_file_rec:
-                    src = pikepdf.Pdf.open(join(Constants.cst_report, file_rec))
+                    filepath = os.path.join(Constants.cst_report, file_rec)
+                    src = pikepdf.Pdf.open(filepath)
                     pdf.pages.extend(src.pages)
 
-                pdf.save(join(path, filename))
+                filepath = os.path.join(path, filename)
+
+                pdf.save(filepath)
             except Exception as err:
                 Pdf.log.error(Logs.fileline() + ' : getPdfReportGrouped failed, err=%s', err)
                 return False
@@ -693,9 +695,9 @@ class Pdf:
         data = {}  # dictionnary of data for build report
 
         # --- Logo details
-        from os.path import join
+        filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
-        data['logo'] = (open(join(Constants.cst_resource, 'logo.png'), 'rb'), 'image/png')
+        data['logo'] = (open(filepath, 'rb'), 'image/png')
 
         # --- Label details
         data['label'] = {}
@@ -868,7 +870,7 @@ class Pdf:
             pat['nom_jf']       = 'PERRIERS'
             pat['pat_midname']  = 'Monica'
             pat['ddn']          = datetime.strptime('1979-04-01', '%Y-%m-%d').date()
-            pat['age']          = '42'
+            pat['age']          = 42
             pat['unite']        = '1037'
             pat['sexe']         = '2'
             pat['adresse']      = '3 rue du Paradis'
@@ -940,13 +942,16 @@ class Pdf:
 
             if pat['unite'] == 1037:
                 data['pat']['age_unit'] = _('ans')
-                data['pat']['age_days'] = str(pat['age'] * 365)
+                age = int(pat['age']) * 365
+                data['pat']['age_days'] = str(age)
             elif pat['unite'] == 1036:
                 data['pat']['age_unit'] = _('mois')
-                data['pat']['age_days'] = str(pat['age'] * 30)
+                age = int(pat['age']) * 30
+                data['pat']['age_days'] = str(age)
             elif pat['unite'] == 1035:
                 data['pat']['age_unit'] = _('semaines')
-                data['pat']['age_days'] = str(pat['age'] * 7)
+                age = int(pat['age']) * 7
+                data['pat']['age_days'] = str(age)
             elif pat['unite'] == 1034:
                 data['pat']['age_unit'] = _('jours')
                 data['pat']['age_days'] = str(pat['age'])
@@ -1159,10 +1164,13 @@ class Pdf:
                         if res['normal_min'] or res['normal_max']:
                             if val != _("Annulée"):
                                 # bold style if out of range min/max
-                                if res['normal_min'] and float(val) < float(res['normal_min']):
-                                    tmp_res['bold_value'] = 'Y'
-                                elif res['normal_max'] and float(val) > float(res['normal_max']):
-                                    tmp_res['bold_value'] = 'Y'
+                                try:
+                                    if res['normal_min'] and float(val) < float(res['normal_min']):
+                                        tmp_res['bold_value'] = 'Y'
+                                    elif res['normal_max'] and float(val) > float(res['normal_max']):
+                                        tmp_res['bold_value'] = 'Y'
+                                except:
+                                    Pdf.log.error(Logs.fileline() + ' : ERROR convert to float, val=' + str(val))
 
                         if res['unite'] and val != _("Annulée"):
                             unit = Various.getDicoById(res['unite'])
@@ -1181,9 +1189,9 @@ class Pdf:
                     if res['normal_min'] and res['normal_max']:
                         tmp_res['references'] = str(res['normal_min']) + ' - ' + str(res['normal_max'])
                     elif res['normal_min']:
-                        tmp_res['references'] = '>= ' + str(res['normal_min'])
+                        tmp_res['references'] = '> ' + str(res['normal_min'])
                     elif res['normal_max']:
-                        tmp_res['references'] = '<= ' + str(res['normal_max'])
+                        tmp_res['references'] = '< ' + str(res['normal_max'])
 
                     # ==== ANALYSIS RESULT ====
                     Various.useLangDB()
@@ -1224,8 +1232,13 @@ class Pdf:
 
                         # 2 - add qr code image in data structure
                         if ret_qr:
-                            from os.path import join
-                            data['res']['qrcode'] = (open(join(Constants.cst_path_tmp, qrc_filename), 'rb'), 'image/png')
+                            filepath = os.path.join(Constants.cst_path_tmp, qrc_filename)
+
+                            if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
+                                data['res']['qrcode'] = (open(filepath, 'rb'), 'image/png')
+                            else:
+                                Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
+                                data['res']['qrcode'] = ''
 
                     # Add this result to list of result of this analysis
                     tmp_ana['l_res'].append(tmp_res)
@@ -1297,8 +1310,13 @@ class Pdf:
 
             # 2 - add qr code image in data structure
             if ret_qr:
-                from os.path import join
-                data['res']['qrcode'] = (open(join(Constants.cst_path_tmp, qrc_filename), 'rb'), 'image/png')
+                filepath = os.path.join(Constants.cst_path_tmp, qrc_filename)
+
+                if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
+                    data['res']['qrcode'] = (open(filepath, 'rb'), 'image/png')
+                else:
+                    Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
+                    data['res']['qrcode'] = ''
 
             Various.useLangPDF()
 
@@ -1320,17 +1338,16 @@ class Pdf:
 
         """
 
-        from os.path import join
-        tmp_odt = join(Constants.cst_path_tmp, filename)
+        tmp_odt = os.path.join(Constants.cst_path_tmp, filename)
 
         if id_rec > 0:
-            out_pdf = join(Constants.cst_report, filename)
+            out_pdf = os.path.join(Constants.cst_report, filename)
         else:
-            out_pdf = join(Constants.cst_path_tmp, filename + '.pdf')
+            out_pdf = os.path.join(Constants.cst_path_tmp, filename + '.pdf')
 
         # write odt with data and template
         try:
-            tpl_path = join(Constants.cst_template, template)
+            tpl_path = os.path.join(Constants.cst_template, template)
 
             tpl = Template(source="", filepath=tpl_path)
 
@@ -1342,17 +1359,13 @@ class Pdf:
 
         # convert odt to pdf via openoffice
         try:
-            import os
-
-            cmd = ('unoconv -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+            cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
 
             Pdf.log.error(Logs.fileline() + ' : buildPDF cmd=' + cmd)
             os.system(cmd)
 
             if id_rec > 0:
-                from os.path import exists
-
-                file_exists = exists(out_pdf + '.pdf')
+                file_exists = os.path.exists(out_pdf + '.pdf')
 
                 # if file ends by .pdf remove it
                 if file_exists:
@@ -1380,8 +1393,6 @@ class Pdf:
             bool: True for success, False otherwise.
 
         """
-
-        from os.path import join
 
         Various.useLangPDF()
 
@@ -1435,9 +1446,12 @@ class Pdf:
                     Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
                     return False
 
+                filepath_code39 = os.path.join(Constants.cst_path_tmp, imgcode39_name)
+                filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
+
                 data['img'] = {}
-                data['img']['code39'] = open(join(Constants.cst_path_tmp, imgcode39_name), 'rb')
-                data['img']['qrcode'] = open(join(Constants.cst_path_tmp, imgqrcode_name), 'rb')
+                data['img']['code39'] = open(filepath_code39, 'rb')
+                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
 
                 data['rec'] = {}
                 data['rec']['num']   = str(record['num_rec'])
@@ -1519,13 +1533,16 @@ class Pdf:
 
                     if pat['unite'] == 1037:
                         data['pat']['age_unit'] = _('ans')
-                        data['pat']['age_days'] = str(pat['age'] * 365)
+                        age = int(pat['age']) * 365
+                        data['pat']['age_days'] = str(age)
                     elif pat['unite'] == 1036:
                         data['pat']['age_unit'] = _('mois')
-                        data['pat']['age_days'] = str(pat['age'] * 30)
+                        age = int(pat['age']) * 30
+                        data['pat']['age_days'] = str(age)
                     elif pat['unite'] == 1035:
                         data['pat']['age_unit'] = _('semaines')
-                        data['pat']['age_days'] = str(pat['age'] * 7)
+                        age = int(pat['age']) * 7
+                        data['pat']['age_days'] = str(age)
                     elif pat['unite'] == 1034:
                         data['pat']['age_unit'] = _('jours')
                         data['pat']['age_days'] = str(pat['age'])
@@ -1570,6 +1587,10 @@ class Pdf:
 
                 # Generate barcode code39 type
                 try:
+                    import os
+
+                    filepath = os.path.join(Constants.cst_path_tmp, 'sticker_code39_' + num)
+
                     checksum = False
 
                     CODE39 = barcode.get_barcode_class('code39')
@@ -1581,25 +1602,30 @@ class Pdf:
                     options['center_text'] = False
 
                     ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-                    ean.save(join(Constants.cst_path_tmp, 'sticker_code39_' + num), options=options)
+                    ean.save(filepath, options=options)
                 except Exception as err:
                     Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
                     return False
 
                 # Generate qrcode type
                 try:
+                    filepath = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
+
                     img = qrcode.make(str(num))
 
                     type(img)
 
-                    img.save(join(Constants.cst_path_tmp, imgqrcode_name))
+                    img.save(filepath)
                 except Exception as err:
                     Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
                     return False
 
+                filepath_code39 = os.path.join(Constants.cst_path_tmp, imgcode39_name)
+                filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
+
                 data['img'] = {}
-                data['img']['code39'] = open(join(Constants.cst_path_tmp, imgcode39_name), 'rb')
-                data['img']['qrcode'] = open(join(Constants.cst_path_tmp, imgqrcode_name), 'rb')
+                data['img']['code39'] = open(filepath_code39, 'rb')
+                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
 
                 data['rec'] = {}
                 data['rec']['num']   = '2021000001'
@@ -1620,7 +1646,8 @@ class Pdf:
                 data['pat']['birth']      = '30/01/1940'
                 data['pat']['age']        = '42'
                 data['pat']['age_unit']   = _('ans')
-                data['pat']['age_days']   = str(data['pat']['age'] * 365)
+                age = int(data['pat']['age']) * 365
+                data['pat']['age_days']   = str(age)
                 data['pat']['sex']        = _('Masculin')
                 data['pat']['addr']       = '3 rue du Paradis'
                 data['pat']['zipcode']    = '12345'
@@ -1633,12 +1660,12 @@ class Pdf:
 
         Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))
 
-        tmp_odt  = join(Constants.cst_path_tmp, filename)
-        out_pdf  = join(Constants.cst_path_tmp, filename + '.pdf')
+        tmp_odt  = os.path.join(Constants.cst_path_tmp, filename)
+        out_pdf  = os.path.join(Constants.cst_path_tmp, filename + '.pdf')
 
         # write odt with data and template
         try:
-            tpl_path = join(Constants.cst_template, template)
+            tpl_path = os.path.join(Constants.cst_template, template)
 
             tpl = Template(source="", filepath=tpl_path)
 
@@ -1652,7 +1679,7 @@ class Pdf:
         try:
             import os
 
-            cmd = ('unoconv -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+            cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
 
             Pdf.log.error(Logs.fileline() + ' : getPdfSticker cmd=' + cmd)
             os.system(cmd)
@@ -1677,7 +1704,6 @@ class Pdf:
 
         """
 
-        from os.path import join
         from jinja2 import Template
 
         # 1 - load default QRC template
@@ -1691,7 +1717,9 @@ class Pdf:
         try:
             import toml
 
-            qrc_tpl = toml.load(join(Constants.cst_template, tpl['tpl_file']))
+            filepath = os.path.join(Constants.cst_template, tpl['tpl_file'])
+
+            qrc_tpl = toml.load(filepath)
 
             tpl_version = qrc_tpl['version']
 

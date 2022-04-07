@@ -2236,9 +2236,15 @@ class StockExport(Resource):
                 data.append(d['prs_nb_pack'])
                 data.append(d['nb_total'])
                 type = d['type']
-                data.append(_(type.strip()))
+                if type:
+                    data.append(_(type.strip()))
+                else:
+                    data.append('')
                 conserv = d['conserv']
-                data.append(_(conserv.strip()))
+                if conserv:
+                    data.append(_(conserv.strip()))
+                else:
+                    data.append('')
                 data.append(d['supplier'])
 
                 l_data.append(data)

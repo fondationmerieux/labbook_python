@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
+    {# <link href="{{ url_for('static', filename='vendor/css/jquery.dataTables.min.css') }}" media="screen, print" rel="stylesheet" type="text/css"> #}
     <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('labbook_css') }}?{{ rand }}" media="screen" rel="stylesheet" type="text/css">
 
@@ -13,6 +14,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery.tablesorter.min.js') }}" nonce="{{ session['nonce'] }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/popper.min.js') }}" nonce="{{ session['nonce'] }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+    {# TODO 01/04/2022 TEST with big database before to used it #}
+    {# <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery.dataTables.min.js') }}" nonce="{{ session['nonce'] }}"></script> #}
     <script type="text/javascript" src="{{ url_for('static', filename='js/app-labbook.js') }}?1" nonce="{{ session['nonce'] }}"></script>
     {% endblock %}
 </head>
@@ -93,7 +96,14 @@ $("#header_name").text( name ) ;
 
 function download_file( type, filename, type_ref, ref )
 {
-window.location = "{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref ;
+    try
+    {
+        window.location = "{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref ;
+    }
+    catch(err)
+    {
+    alert("{{ _("Une erreur est survenue") }}") ; 
+    }
 }
 
 $( document ).ready( function()

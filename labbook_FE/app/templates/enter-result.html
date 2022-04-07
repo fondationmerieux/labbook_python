@@ -100,7 +100,7 @@ function check_min_max(id_res, min, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( (min != '' && val < parseFloat(min)) || (max != '' && val > parseFloat(max)) )
+    if ( (min != '' && val < parseFloat(min+0.00000001)) || (max != '' && val > parseFloat(max-0.00000001)) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
@@ -116,7 +116,7 @@ function check_min(id_res, min)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( min != '' && val < parseFloat(min) )
+    if ( min != '' && val < parseFloat(min+0.00000001) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
@@ -132,7 +132,7 @@ function check_max(id_res, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( max != '' && val > parseFloat(max) )
+    if ( max != '' && val > parseFloat(max-0.00000001) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
@@ -487,9 +487,9 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     ico_limit = "show" ;
 
                     if (data[i].normal_max == "")
-                    res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>=" + data[i].normal_min + "&nbsp;]\"></span>" ;
+                    res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>" + data[i].normal_min + "&nbsp;]\"></span>" ;
                     else if (data[i].normal_min == "")
-                    res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<=" + data[i].normal_max + "&nbsp;]\"></span>" ;
+                    res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<" + data[i].normal_max + "&nbsp;]\"></span>" ;
                     else
                     res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
                 }

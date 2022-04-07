@@ -178,11 +178,17 @@ $("#list_items_total").html( data_len ) ;
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
-                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/non-conformity/' + data_items[i].id_data + '">{{ _("Editer") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')">{{ _("Supprimer") }}</a>';   
-        
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' ;
+
+    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or
+          session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}
+    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/non-conformity/' + data_items[i].id_data + '" style="pointer-events:none">{{ _("Editer") }}</a>' +
+                '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')" style="pointer-events:none">{{ _("Supprimer") }}</a>';
+
     menu_act += '</div></ul></nav>' ;
+    {% else %}
+    menu_act = '' ;
+    {% endif %}
 
     let impact_patient = data_items[i].impact_patient ;
     let impact_user    = data_items[i].impact_user    ;
@@ -223,11 +229,11 @@ function convert_impact( val )
 {
 let val_str = "" ;
 
-    if ( val == 4 )
+    if ( val == 1053 )
     val_str = "{{ _("Faible") }}" ;
-    else if  ( val == 5 )
+    else if  ( val == 1055 )
     val_str = "{{ _("Important") }}" ;
-    else if  ( val == 6 )
+    else if  ( val == 1057 )
     val_str = "{{ _("Grave") }}" ;
     else
     val_str = "{{ _("Aucun") }}" ;

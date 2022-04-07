@@ -215,6 +215,8 @@ class ResultRecord(Resource):
                     result['validation'][key] = ''
                 elif key == 'label_motif':
                     result['validation'][key] = _(result['validation'][key].strip())
+                elif key == 'commentaire':
+                    result['validation'][key] = result['validation'][key].strip()
 
             # Get identity from user who validated this result
             result['user'] = User.getUserDetails(result['validation']['utilisateur'])
@@ -240,7 +242,6 @@ class ResultRecord(Resource):
                 if result[key] is None:
                     result[key] = ''
 
-        self.log.info(Logs.fileline() + ' : ResultRecord l_results=' + str(l_results))
         self.log.info(Logs.fileline() + ' : ResultRecord id_rec=' + str(id_rec))
         return compose_ret(l_results, Constants.cst_content_type_json, 200)
 
@@ -317,7 +318,7 @@ class ResultValid(Resource):
     def post(self, type_valid, id_rec):
         args = request.get_json()
 
-        if 'list_valid' not in args and 'template' not in args:
+        if 'reedit' not in args and 'list_valid' not in args and 'template' not in args:
             self.log.error(Logs.fileline() + ' : TRACE ResultValid ERROR list_valid missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -402,7 +403,7 @@ class ResultValid(Resource):
             fileReport = File.getFileReport(id_rec)
 
             if fileReport:
-                Pdf.getPdfReport(id_rec, args['template'], fileReport['file'])
+                Pdf.getPdfReport(id_rec, args['template'], fileReport['file'], args['reedit'])
 
         self.log.info(Logs.fileline() + ' : TRACE ResultValid')
         return compose_ret('', Constants.cst_content_type_json)

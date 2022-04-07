@@ -77,7 +77,7 @@ function check_min_max(id_res, min, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( (min != '' && val < parseFloat(min)) || (max != '' && val > parseFloat(max)) )
+    if ( (min != '' && val < parseFloat(min+0.00000001)) || (max != '' && val > parseFloat(max-0.00000001)) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
@@ -95,7 +95,7 @@ function check_min(id_res, min)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( min != '' && val < parseFloat(min) )
+    if ( min != '' && val < parseFloat(min+0.00000001) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
@@ -113,7 +113,7 @@ function check_max(id_res, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( max != '' && val > parseFloat(max) )
+    if ( max != '' && val > parseFloat(max-0.00000001) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;

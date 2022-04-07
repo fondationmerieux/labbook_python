@@ -449,7 +449,7 @@ def homepage(login=''):
     get_user_data(login)
     get_software_settings()
 
-    if 'user_locale' in session and not session['lang_chosen']:
+    if 'user_locale' in session and ('lang_chosen' not in session or not session['lang_chosen']):
         if session['user_locale'] == 34:
             session['lang']  = 'en_GB'
             session.modified = True
@@ -1044,18 +1044,21 @@ def setting_backup():
     try:
         ret = ''
 
-        f = open(os.path.join(Constants.cst_io, 'backup'), 'r')
-        for line in f:
-            pass
+        path = os.path.join(Constants.cst_io, 'backup')
 
-        ret = line[:-1]
+        if os.path.exists(path) and os.stat(path).st_size > 0:
+            f = open(path, 'r')
+            for line in f:
+                pass
 
-        if ret:
-            ret = ret.split(';')
-            json_data['stat_backup'] = ret[0]
-            json_data['date_backup'] = ret[1]
+            ret = line[:-1]
+
+            if ret:
+                ret = ret.split(';')
+                json_data['stat_backup'] = ret[0]
+                json_data['date_backup'] = ret[1]
     except:
-        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'backup')
+        log.error(Logs.fileline() + ' : cant read ' + path)
 
     # get modification time from last_backup_ok
     try:
@@ -4127,16 +4130,19 @@ def download_file(type='', filename='', type_ref='', ref=''):
 
         filename = 'cr_' + ref + '.pdf'
 
-        # increase number of download
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/nb_download/' + generated_name
-            req = requests.post(url)
+        path = os.path.join(filepath, generated_name)
 
-            if req.status_code != 200:
-                return False
+        if os.path.exists(path) and os.stat(path).st_size > 0:
+            # increase number of download
+            try:
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/nb_download/' + generated_name
+                req = requests.post(url)
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s', err, url)
+                if req.status_code != 200:
+                    return False
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s', err, url)
 
     elif type == 'DH':
         filepath = Constants.cst_dhis2
@@ -4150,7 +4156,14 @@ def download_file(type='', filename='', type_ref='', ref=''):
     else:
         return False
 
-    ret_file = send_file(os.path.join(filepath, generated_name), as_attachment=True, attachment_filename=filename)
+    path = os.path.join(filepath, generated_name)
+
+    # check if file exist and size > 0
+    if not os.path.exists(path) or os.stat(path).st_size == 0:
+        log.error(Logs.fileline() + ' : ERROR download-file, %s doesnt exist or size < 0', path)
+        return redirect(session['server_ext'] + '/' + session['current_page'])
+
+    ret_file = send_file(path, as_attachment=True, attachment_filename=filename)
     ret_file.headers["x-suggested-filename"] = filename
     ret_file.headers["Cache-Control"] = 'no-store, must-revalidate'
     ret_file.headers["Expires"] = '0'

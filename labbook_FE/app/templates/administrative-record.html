@@ -49,6 +49,15 @@
                                                 {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
                                                 {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                     </div>
+                    <div class="col-12 mt-1">
+                            {% if args['patient'] and args['patient']['tel'] %}
+                            <span class="font-info">{{ args['patient']['tel'] }}</span>
+                            {% endif %}
+                            {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
+                            {% if args['patient'] and args['patient']['pat_phone2'] %}
+                            <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
+                            {% endif %}
+                        </div>
                 </div>
 
                 <!-- Prescription -->

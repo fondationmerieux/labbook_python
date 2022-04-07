@@ -79,7 +79,9 @@
                     </div>
                     <div class="form-group form-inline col-12">
                         <label for="comm_valid" class="col-1 align-top">{{ _("Commentaire") }}</label>
-                        <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control col-5 ml-1"></textarea>
+                        {# We break the loop after the first comment found #}
+                        {# Note: If I don't paste the jinja2 code it adds the spaces #}
+                        <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control col-5 ml-1">{% set var_for = {'break': False} %}{% for res in args['list_res'] %}{% if not var_for.break %}{% if res['validation']['commentaire'] %}{{ res['validation']['commentaire'] }}{% if var_for.update({'break': True}) %}{% endif %}{% endif %}{% endif %}{% endfor %}</textarea>
                     </div>
                     <div class="col-12">
                         <div class="float-left" style="margin-left:0px;">
@@ -433,8 +435,14 @@ let date_valid = $("#date_bio").val() ;
 let user_valid = $("#id_validator").val() ;
 let comm_valid = JSON.stringify( $.trim( $("#comm_valid").val() ) ) ;
 let template   = $("#tpl_result").val() ;
+let reedit     = "N" ;
 
-let param_list_valid = '{ "template": "' + template + '", "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
+    // New analysis added after biological validation
+    // we need to reedit for add Cancel and replace text
+    if ( data_reports.length > 0 )
+    reedit = "Y" ;
+
+let param_list_valid = '{ "reedit": "' + reedit + '", "template": "' + template + '", "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;
 
     // GET id_res and value
     $(".cbx-" + id_rec + ":checked" ).each( function(i, elem)
