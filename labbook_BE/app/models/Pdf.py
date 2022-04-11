@@ -376,6 +376,8 @@ class Pdf:
 
         """
 
+        import os
+
         path = Constants.cst_path_tmp
 
         l_file_rec = []
@@ -689,6 +691,8 @@ class Pdf:
             dict: dictionnary of data
 
         """
+
+        import os
 
         Various.useLangPDF()
 
@@ -1353,6 +1357,8 @@ class Pdf:
 
         """
 
+        import os
+
         tmp_odt = os.path.join(Constants.cst_path_tmp, filename)
 
         if id_rec > 0:
@@ -1408,6 +1414,8 @@ class Pdf:
             bool: True for success, False otherwise.
 
         """
+
+        import os
 
         Various.useLangPDF()
 
@@ -1602,8 +1610,6 @@ class Pdf:
 
                 # Generate barcode code39 type
                 try:
-                    import os
-
                     filepath = os.path.join(Constants.cst_path_tmp, 'sticker_code39_' + num)
 
                     checksum = False
@@ -1692,8 +1698,6 @@ class Pdf:
 
         # convert odt to pdf via libreoffice
         try:
-            import os
-
             cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
 
             Pdf.log.error(Logs.fileline() + ' : getPdfSticker cmd=' + cmd)
@@ -1718,6 +1722,8 @@ class Pdf:
             bool: True for success, False otherwise.
 
         """
+
+        import os
 
         from jinja2 import Template
 
