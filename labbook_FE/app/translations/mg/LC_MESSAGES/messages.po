@@ -3537,13 +3537,13 @@ msgstr "Daty fanombohan'ny vanim-potoana"
 msgid ""
 "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
 "respectivement les dates de début et fin de période."
-msgstr ""
+msgstr "Ho an'ny takelaka isan-kerinandro, ny Alatsinainy sy Alahady dia tokony ho ny vanim-potoana manomboka sy mifarana."
 
 #: templates/report-dhis2.html:28
 msgid ""
 "Pour une feuille de calcul mensuelle, la date de début doit correspondre "
 "au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
+msgstr "Ho an'ny takelaka isam-bolana, ny datin'ny fanombohana dia tokony ho ny voalohany amin'ny volana ary ny daty farany dia ny andro farany amin'ny volana"
 
 #: templates/report-dhis2.html:31
 msgid "Feuille de calcul"

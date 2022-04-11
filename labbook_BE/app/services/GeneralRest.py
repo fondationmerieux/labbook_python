@@ -159,7 +159,7 @@ class DatasetByName(Resource):
 
         Various.useLangDB()
 
-        self.log.error(Logs.fileline() + ' : DEBUG l_items=' + str(l_items))
+        # self.log.error(Logs.fileline() + ' : DEBUG l_items=' + str(l_items))
 
         for item in l_items:
             for key, value in list(item.items()):

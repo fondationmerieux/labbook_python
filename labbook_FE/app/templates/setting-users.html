@@ -218,8 +218,6 @@ $("#list_users_total").html( data_len ) ;
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
 
-    console.log("DEBUG data_users[i].stat="+data_users[i].stat);
-
         if ( data_users[i].stat != 'A' )
         {          
         menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'A\');">{{ _("Activer utilisateur") }}</a>';

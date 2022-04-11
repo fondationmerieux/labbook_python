@@ -190,7 +190,8 @@ class UserDet(Resource):
                                   section=args['section'],
                                   deval=args['last_eval'],
                                   side_account=args['id_pres'],
-                                  commentaire=args['comment'])
+                                  commentaire=args['comment'],
+                                  origin=args['id_owner'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : UserDet ERROR insert user')
@@ -782,7 +783,8 @@ class UserImport(Resource):
                                           deval=deval,
                                           section=section,
                                           side_account=side_account,
-                                          commentaire=comment)
+                                          commentaire=comment,
+                                          origin=id_user)
 
                     if ret <= 0:
                         self.log.error(Logs.alert() + ' : UserImport ERROR insert user')

@@ -99,11 +99,11 @@ class User:
             cursor.execute('insert into sigl_user_data '
                            '(creation_date, id_owner, role_type, username, password, cps_id, rpps, status, firstname, '
                            'lastname, locale, email, titre, initiale, ddn, adresse, tel, darrive, position, cv, diplome, '
-                           'formation, section, deval, side_account, commentaire) '
+                           'formation, section, deval, side_account, commentaire, oauth_provider_id_user) '
                            'values (NOW(), %(id_owner)s, %(role_type)s, %(username)s, %(password)s, %(cps_id)s, %(rpps)s, '
                            '%(status)s, %(firstname)s, %(lastname)s, %(locale)s, %(email)s, %(titre)s, %(initiale)s, '
                            '%(ddn)s, %(adresse)s, %(tel)s, %(darrive)s, %(position)s, %(cv)s, %(diplome)s, %(formation)s, '
-                           '%(section)s, %(deval)s, %(side_account)s, %(commentaire)s)', params)
+                           '%(section)s, %(deval)s, %(side_account)s, %(commentaire)s, %(origin)s)', params)
 
             User.log.info(Logs.fileline())
 

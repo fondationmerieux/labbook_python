@@ -3529,13 +3529,13 @@ msgstr "تاريخ بدء الفترة"
 msgid ""
 "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
 "respectivement les dates de début et fin de période."
-msgstr ""
+msgstr "لجدول البيانات الاسبوعي، تاريخ بداية الفترة يجب ان يكون يوم الاثنين وتاريخ نهايتها يوم الأحد"
 
 #: templates/report-dhis2.html:28
 msgid ""
 "Pour une feuille de calcul mensuelle, la date de début doit correspondre "
 "au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
+msgstr "أما بالنسبة لجدول البيانات الشهري، تاريخ بداية الفترة يجب أن يكون أول يوم من الشهر وتاريخ نهايتها آخر يوم من الشهر نفسه"
 
 #: templates/report-dhis2.html:31
 msgid "Feuille de calcul"

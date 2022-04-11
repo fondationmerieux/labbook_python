@@ -1052,8 +1052,10 @@ class Pdf:
 
                                 tmp_ana['validate'] = str(user)
 
-                            # Add previous analysis to list of data
-                            data['l_data'].append(tmp_ana)
+                            # we add only result with biological validation
+                            if res_valid['type_validation'] == 252:
+                                # Add previous analysis to list of data
+                                data['l_data'].append(tmp_ana)
 
                         # --- end of close previous analysis ---
 
@@ -1068,13 +1070,24 @@ class Pdf:
                             res_fam   = res['ana_fam']
                             res_fam_p = res_fam
                             with_fam  = True
+                        # analysis without family
                         else:
-                            with_fam = False
+                            res_fam = ' '
+
+                            if res_fam != res_fam_p:
+                                with_fam = True
+                            else:
+                                with_fam = False
+
+                            res_fam_p = res_fam
 
                         # ==== ANALYSIS FAMILY ====
                         if with_fam:
                             Various.useLangDB()
-                            tmp_ana['fam_name'] = _(res_fam.strip())
+                            if res_fam and res_fam != ' ':
+                                res_fam = _(res_fam.strip())
+
+                            tmp_ana['fam_name'] = res_fam
                             Various.useLangPDF()
 
                         # ==== ANALYSIS NAME ====
@@ -1249,7 +1262,7 @@ class Pdf:
 
                 user = User.getUserDetails(res_valid['utilisateur'])
 
-                Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
+                # Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
 
                 if user['lastname'] and user['firstname']:
                     user = user['lastname'] + ' ' + user['firstname']
@@ -1265,8 +1278,10 @@ class Pdf:
 
                 tmp_ana['validate'] = str(user)
 
-                # Add last analysis to list of data
-                data['l_data'].append(tmp_ana)
+                # we add only result with biological validation
+                if res_valid['type_validation'] == 252:
+                    # Add last analysis to list of data
+                    data['l_data'].append(tmp_ana)
 
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG l_data=' + str(data['l_data']))
         # For print test
@@ -1658,7 +1673,7 @@ class Pdf:
                 data['pat']['phone2']     = '0700000002'
                 data['pat']['profession'] = 'Architecte'
 
-        Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))
+        # Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))
 
         tmp_odt  = os.path.join(Constants.cst_path_tmp, filename)
         out_pdf  = os.path.join(Constants.cst_path_tmp, filename + '.pdf')
@@ -1721,7 +1736,7 @@ class Pdf:
 
             qrc_tpl = toml.load(filepath)
 
-            tpl_version = qrc_tpl['version']
+            # tpl_version = qrc_tpl['version']
 
             qrc_version = int(qrc_tpl['QRcode']['version'])
             qrc_error   = qrc_tpl['QRcode']['error_correction']

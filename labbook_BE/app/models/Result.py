@@ -292,6 +292,12 @@ class Result:
         l_items = []
 
         for id_fam in l_id_fam:
+            fam_cond = ' ref.famille=' + str(id_fam['id_fam'])
+
+            # some analyzes doesnt have a family
+            if not id_fam['id_fam']:
+                fam_cond = ' ref.famille is null '
+
             req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
                    'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
                    'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
@@ -305,11 +311,11 @@ class Result:
                    'inner join sigl_07_data as var on var.id_data = res.ref_variable '
                    'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
                    'and ref.id_data = link.id_refanalyse '
-                   'where req.id_dos=%s and ref.famille=%s and '
+                   'where req.id_dos=%s and ' + fam_cond + ' and '
                    'res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
                    'order by id_req_ana asc,  ana_name asc, var_pos asc')
 
-            cursor.execute(req, (id_rec, id_fam['id_fam'],))
+            cursor.execute(req, (id_rec,))
 
             l_items.extend(cursor.fetchall())
 

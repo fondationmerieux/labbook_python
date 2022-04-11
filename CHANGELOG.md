@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.6] - 2022-04-11
+### Fixed
+- report with analyzes that dont have a familly (expl : B506)
+- origin column in setting users page
+- During a biological validation if you uncheck an analysis then it wontt be in the report.
+
 ## [3.2.5] - 2022-04-07
 ### Added
 - display id of user in a column for list of users
