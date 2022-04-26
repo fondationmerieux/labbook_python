@@ -371,10 +371,12 @@ class Record:
                'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount, '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
-               'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date '
+               'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, d_sex.label as sex '
                'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
+               'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
                'where date_dos between %s and %s '
                'order by id_record desc')
 

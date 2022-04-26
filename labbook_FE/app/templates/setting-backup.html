@@ -375,7 +375,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
             {
             // POLL WS status media
             poll_count = 0 ;
-            poll_max   = 90 ;
+            poll_max   = 180 ;
             poll_stat  = setInterval( ScriptStatus, 2000, "M" ) ;
             },
             error: function(data)
@@ -509,7 +509,7 @@ function backup(media)
             {
             // POLL WS status backup
             poll_count = 0 ;
-            poll_max   = 60 ;
+            poll_max   = 1800 ;
             poll_stat  = setInterval( ScriptStatus, 10000, "B" ) ;
             },
             error: function(data)
@@ -549,7 +549,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
             {
             // POLL WS status archive
             poll_count = 0 ;
-            poll_max   = 90 ;
+            poll_max   = 180 ;
             poll_stat  = setInterval( ScriptStatus, 2000, "A" ) ;
             },
             error: function(data)
@@ -598,7 +598,7 @@ console.log("restore param=" + param) ;
                 {
                 // POLL WS status restore
                 poll_count = 0  ;
-                poll_max   = 120 ;
+                poll_max   = 9000 ;
                 poll_stat  = setInterval( ScriptStatus, 10000, "R" ) ;
                 },
                 error: function(data)

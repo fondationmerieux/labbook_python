@@ -98,7 +98,7 @@ function download_file( type, filename, type_ref, ref )
 {
     try
     {
-        window.location = "{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref ;
+        window.open("{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref, "_blank") ;
     }
     catch(err)
     {

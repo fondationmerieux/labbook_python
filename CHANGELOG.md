@@ -7,11 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.7] - 2022-04-27
+### Changed
+- changes the values for timeout : listmedia and listarchive 3min => 6min, backup 15min => 5h, restore 20min => 25h 
+- download file in a new tab
+
+### Fixed
+- problem with canceled a product supply 
+- search with code or code lab in historic patient page
+
 ## [3.2.6] - 2022-04-11
 ### Fixed
 - report with analyzes that dont have a familly (expl : B506)
 - origin column in setting users page
-- During a biological validation if you uncheck an analysis then it wontt be in the report.
+- During a biological validation if you uncheck an analysis then it wont be in the report.
 
 ## [3.2.5] - 2022-04-07
 ### Added

@@ -2157,7 +2157,8 @@ class StockUse(Resource):
 
         if not stock_use:
             self.log.error(Logs.fileline() + ' : ' + 'nb StockUse not found')
-            return compose_ret(0, Constants.cst_content_type_json, 404)
+            nb_stock_use = 0
+            return compose_ret(nb_stock_use, Constants.cst_content_type_json, 200)
 
         if stock_use['nb_pack']:
             nb_stock_use = float(stock_use['nb_pack'])

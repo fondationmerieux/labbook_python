@@ -376,7 +376,6 @@ class Pdf:
 
         """
 
-        import os
 
         path = Constants.cst_path_tmp
 
@@ -692,7 +691,6 @@ class Pdf:
 
         """
 
-        import os
 
         Various.useLangPDF()
 
@@ -1357,7 +1355,6 @@ class Pdf:
 
         """
 
-        import os
 
         tmp_odt = os.path.join(Constants.cst_path_tmp, filename)
 
@@ -1415,7 +1412,6 @@ class Pdf:
 
         """
 
-        import os
 
         Various.useLangPDF()
 
@@ -1723,7 +1719,6 @@ class Pdf:
 
         """
 
-        import os
 
         from jinja2 import Template
 
