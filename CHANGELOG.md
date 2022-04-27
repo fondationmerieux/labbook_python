@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.2.7] - 2022-04-26
+## [3.2.7] - 2022-04-27
 ### Changed
 - changes the values for timeout : listmedia and listarchive 3min => 6min, backup 15min => 5h, restore 20min => 25h 
 - download file in a new tab
@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - problem with canceled a product supply 
 - search with code or code lab in historic patient page
+- Laotian correction
+- Sex of patient added in record dataset for pivot table
 
 ## [3.2.6] - 2022-04-11
 ### Fixed

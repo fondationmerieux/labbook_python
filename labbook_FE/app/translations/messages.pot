@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-04-07 16:54+0200\n"
+"POT-Creation-Date: 2022-04-27 11:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 0.9.6\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:107
@@ -1143,7 +1143,7 @@ msgstr ""
 #: templates/report-billing.html:315 templates/report-dhis2.html:109
 #: templates/report-epidemio.html:146 templates/report-statistic.html:423
 #: templates/report-today.html:268 templates/setting-analyzes.html:328
-#: templates/setting-users.html:345 templates/user-conn-export.html:84
+#: templates/setting-users.html:343 templates/user-conn-export.html:84
 #: templates/whonet-export.html:84
 msgid "Erreur lors de la génération du fichier"
 msgstr ""
@@ -3689,12 +3689,12 @@ msgid "Ajouter une analyse"
 msgstr ""
 
 #: templates/setting-analyzes.html:213 templates/setting-det-user.html:86
-#: templates/setting-users.html:55 templates/setting-users.html:234
+#: templates/setting-users.html:55 templates/setting-users.html:232
 msgid "Activé"
 msgstr ""
 
 #: templates/setting-analyzes.html:216 templates/setting-det-user.html:89
-#: templates/setting-users.html:56 templates/setting-users.html:237
+#: templates/setting-users.html:56 templates/setting-users.html:235
 msgid "Désactivé"
 msgstr ""
 
@@ -4338,19 +4338,19 @@ msgstr ""
 msgid "Editer mot de passe"
 msgstr ""
 
-#: templates/setting-users.html:225
+#: templates/setting-users.html:223
 msgid "Activer utilisateur"
 msgstr ""
 
-#: templates/setting-users.html:229
+#: templates/setting-users.html:227
 msgid "Désactiver utilisateur"
 msgstr ""
 
-#: templates/setting-users.html:264
+#: templates/setting-users.html:262
 msgid "Veuillez confirmer la modification de statut"
 msgstr ""
 
-#: templates/setting-users.html:284
+#: templates/setting-users.html:282
 msgid "Erreur lors du changement de statut"
 msgstr ""
 
