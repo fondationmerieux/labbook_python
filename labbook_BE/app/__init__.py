@@ -56,13 +56,14 @@ LANGUAGES = {
 
 
 def prep_log(logger_nom, log_fich, niveau=logging.INFO):
-    l = logging.getLogger(logger_nom)
+    logger = logging.getLogger(logger_nom)
     formatter = logging.Formatter('%(asctime)s : %(message)s')
     fileHandler = WatchedFileHandler(log_fich)
     fileHandler.setFormatter(formatter)
 
-    l.setLevel(niveau)
-    l.addHandler(fileHandler)
+    logger.setLevel(niveau)
+    logger.addHandler(fileHandler)
+
 
 prep_log('log_services', r'../logs/log_services.log')
 prep_log('log_db', r'../logs/log_db.log')
@@ -142,6 +143,7 @@ api = Api(app)
 def index():
     log.info(Logs.fileline() + ' : TRACE Labbook BACK END')
     return "Hello World! Labbook BACK END"
+
 
 # ######################################
 # REST pages

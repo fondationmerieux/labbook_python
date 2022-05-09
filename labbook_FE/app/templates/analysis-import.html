@@ -125,7 +125,7 @@ var type = $("input:radio[name=type_import]:checked").val() ;
                     $("#dial-wait").modal("hide") ;
 
                 tempAlert("{{ _("Traitement réussi") }}", "import-analysis") ;
-                window.location = "{{ session['server_ext'] }}/setting-analyzes" ;
+                setTimeout(function(){location.href="{{ session['server_ext'] }}/setting-analyzes"}, 2400) ;
                 },
                 error: function(ret)
                 {

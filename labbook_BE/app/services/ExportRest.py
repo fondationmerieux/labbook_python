@@ -194,12 +194,12 @@ class ExportDHIS2(Resource):
             l_rows.pop(0)
 
             for period in l_period:
-                for l in l_rows:
+                for row in l_rows:
 
-                    if l:
+                    if row:
                         data = []
 
-                        data.append(l[0])
+                        data.append(row[0])
                         data.append(period[0])
 
                         period_beg_db = period[1]
@@ -210,12 +210,12 @@ class ExportDHIS2(Resource):
                         else:
                             data.append(lab_name)
 
-                        data.append(l[5])
-                        data.append(l[6])
+                        data.append(row[5])
+                        data.append(row[6])
 
                         # Parse formula for result request
-                        formula   = l[3]
-                        type_samp = l[4]
+                        formula   = row[3]
+                        type_samp = row[4]
 
                         req_part = ''
 

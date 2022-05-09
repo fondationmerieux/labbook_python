@@ -1008,68 +1008,68 @@ class AnalysisImport(Resource):
             code_prev = ''
 
             i = 1
-            for l in l_rows:
+            for row in l_rows:
                 i = i + 1
-                if l:
-                    id_ana             = l[0]
-                    id_owner           = l[1]
-                    code               = l[2]
-                    nom                = l[3]
-                    abbr               = l[4]
-                    famille            = l[5]
-                    cote_unite         = l[6]
+                if row:
+                    id_ana             = row[0]
+                    id_owner           = row[1]
+                    code               = row[2]
+                    nom                = row[3]
+                    abbr               = row[4]
+                    famille            = row[5]
+                    cote_unite         = row[6]
 
-                    if l[7]:
-                        cote_valeur = float(l[7])
+                    if row[7]:
+                        cote_valeur = float(row[7])
                     else:
                         cote_valeur = 0
-                    commentaire        = l[8]
-                    produit_biologique = l[9]
-                    type_prel          = l[10]
-                    # type_analyse       = l[11]  # useless
+                    commentaire        = row[8]
+                    produit_biologique = row[9]
+                    type_prel          = row[10]
+                    # type_analyse       = row[11]  # useless
 
-                    if l[12] and l[12] == 'Y':
+                    if row[12] and row[12] == 'Y':
                         actif = 4
                     else:
                         actif = 5
 
-                    if l[13] and l[13] == 'Y':
+                    if row[13] and row[13] == 'Y':
                         ana_whonet = 4
                     else:
                         ana_whonet = 5
 
-                    id_link            = l[14]
-                    # id_refanalyse      = l[15]
-                    id_refvariable     = l[16]
-                    position           = l[17]
-                    num_var            = l[18]
+                    id_link            = row[14]
+                    # id_refanalyse      = row[15]
+                    id_refvariable     = row[16]
+                    position           = row[17]
+                    num_var            = row[18]
 
-                    if l[19] and l[19] == 'Y':
+                    if row[19] and row[19] == 'Y':
                         obligatoire = 4
                     else:
                         obligatoire = 5
 
-                    id_var             = l[20]
-                    libelle            = l[21]
-                    description        = l[22]
-                    unite              = l[23]
-                    normal_min         = l[24]
-                    normal_max         = l[25]
-                    var_comm           = l[26]
-                    type_resultat      = l[27]
-                    unite2             = l[28]
-                    formule_unite2     = l[29]
-                    formule            = l[30]
-                    accuracy           = l[31]
-                    precision2         = l[32]
-                    code_var           = l[33]
+                    id_var             = row[20]
+                    libelle            = row[21]
+                    description        = row[22]
+                    unite              = row[23]
+                    normal_min         = row[24]
+                    normal_max         = row[25]
+                    var_comm           = row[26]
+                    type_resultat      = row[27]
+                    unite2             = row[28]
+                    formule_unite2     = row[29]
+                    formule            = row[30]
+                    accuracy           = row[31]
+                    precision2         = row[32]
+                    code_var           = row[33]
 
-                    if l[34] and l[34] == 'Y':
+                    if row[34] and row[34] == 'Y':
                         var_whonet = 4
                     else:
                         var_whonet = 5
 
-                    var_qrcode         = l[35]
+                    var_qrcode         = row[35]
 
                     ret = Analysis.exist(code)
 
@@ -1152,71 +1152,71 @@ class AnalysisImport(Resource):
             code_prev = ''
 
             i = 1
-            for l in l_rows:
+            for row in l_rows:
                 i = i + 1
                 self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
                 self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(l))
-                if l:
-                    id_ana             = l[0]
-                    id_owner           = l[1]
-                    code               = l[2]
-                    nom                = l[3]
-                    abbr               = l[4]
-                    famille            = l[5]
-                    cote_unite         = l[6]
+                if row:
+                    id_ana             = row[0]
+                    id_owner           = row[1]
+                    code               = row[2]
+                    nom                = row[3]
+                    abbr               = row[4]
+                    famille            = row[5]
+                    cote_unite         = row[6]
 
-                    if l[7]:
-                        cote_valeur = float(l[7])
+                    if row[7]:
+                        cote_valeur = float(row[7])
                     else:
                         cote_valeur = 0
 
-                    commentaire        = l[8]
-                    produit_biologique = l[9]
-                    type_prel          = l[10]
-                    # type_analyse       = l[11]  # useless
+                    commentaire        = row[8]
+                    produit_biologique = row[9]
+                    type_prel          = row[10]
+                    # type_analyse       = row[11]  # useless
 
-                    if l[12] and l[12] == 'Y':
+                    if row[12] and row[12] == 'Y':
                         actif = 4
                     else:
                         actif = 5
 
-                    if l[13] and l[13] == 'Y':
+                    if row[13] and row[13] == 'Y':
                         ana_whonet = 4
                     else:
                         ana_whonet = 5
 
-                    id_link            = l[14]
-                    # id_refanalyse      = l[15]
-                    id_refvariable     = l[16]
-                    position           = l[17]
-                    num_var            = l[18]
+                    id_link            = row[14]
+                    # id_refanalyse      = row[15]
+                    id_refvariable     = row[16]
+                    position           = row[17]
+                    num_var            = row[18]
 
-                    if l[19] and l[19] == 'Y':
+                    if row[19] and row[19] == 'Y':
                         obligatoire = 4
                     else:
                         obligatoire = 5
 
-                    id_var             = l[20]
-                    libelle            = l[21]
-                    description        = l[22]
-                    unite              = l[23]
-                    normal_min         = l[24]
-                    normal_max         = l[25]
-                    var_comm           = l[26]
-                    type_resultat      = l[27]
-                    unite2             = l[28]
-                    formule_unite2     = l[29]
-                    formule            = l[30]
-                    accuracy           = l[31]
-                    precision2         = l[32]
-                    code_var           = l[33]
+                    id_var             = row[20]
+                    libelle            = row[21]
+                    description        = row[22]
+                    unite              = row[23]
+                    normal_min         = row[24]
+                    normal_max         = row[25]
+                    var_comm           = row[26]
+                    type_resultat      = row[27]
+                    unite2             = row[28]
+                    formule_unite2     = row[29]
+                    formule            = row[30]
+                    accuracy           = row[31]
+                    precision2         = row[32]
+                    code_var           = row[33]
 
-                    if l[34] and l[34] == 'Y':
+                    if row[34] and row[34] == 'Y':
                         var_whonet = 4
                     else:
                         var_whonet = 5
 
-                    var_qrcode = l[35]
+                    var_qrcode = row[35]
 
                     ret = Analysis.exist(code)
 

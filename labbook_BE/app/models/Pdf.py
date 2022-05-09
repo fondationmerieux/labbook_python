@@ -376,7 +376,6 @@ class Pdf:
 
         """
 
-
         path = Constants.cst_path_tmp
 
         l_file_rec = []
@@ -690,7 +689,6 @@ class Pdf:
             dict: dictionnary of data
 
         """
-
 
         Various.useLangPDF()
 
@@ -1184,7 +1182,7 @@ class Pdf:
                                         tmp_res['bold_value'] = 'Y'
                                     elif res['normal_max'] and float(val) > float(res['normal_max']):
                                         tmp_res['bold_value'] = 'Y'
-                                except:
+                                except Exception:
                                     Pdf.log.error(Logs.fileline() + ' : ERROR convert to float, val=' + str(val))
 
                         if res['unite'] and val != _("Annulée"):
@@ -1355,7 +1353,6 @@ class Pdf:
 
         """
 
-
         tmp_odt = os.path.join(Constants.cst_path_tmp, filename)
 
         if id_rec > 0:
@@ -1411,7 +1408,6 @@ class Pdf:
             bool: True for success, False otherwise.
 
         """
-
 
         Various.useLangPDF()
 
@@ -1718,7 +1714,6 @@ class Pdf:
             bool: True for success, False otherwise.
 
         """
-
 
         from jinja2 import Template
 

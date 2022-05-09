@@ -115,7 +115,7 @@ var param = '{ "id_item":' + id_item + ', ' +
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ; 
 
-           window.location.href = "{{ session['server_ext'] }}/det-control-int/" + ctq_ser ;
+           setTimeout(function(){location.href="{{ session['server_ext'] }}/det-control-int/"+ctq_ser}, 2400) ;
            },
        error: function(data)
            {

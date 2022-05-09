@@ -338,7 +338,7 @@ class ScriptListarchive(Resource):
                 f = open(os.path.join(Constants.cst_io, 'listarchive'), 'r')
                 for archive in f:
                     l_archive['archive'].append(archive[:-1])
-            except:
+            except Exception:
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListarchive impossible to open listarchive file')
                 return compose_ret(l_archive, Constants.cst_content_type_json, 500)"""
 
@@ -382,7 +382,7 @@ class ScriptListmedia(Resource):
                 f = open(os.path.join(Constants.cst_io, 'listmedia'), 'r')
                 for media in f:
                     l_media['media'].append(media[:-1])
-            except:
+            except Exception:
                 self.log.info(Logs.fileline() + ' : ERROR ScriptListmedia impossible to open listmedia file')
                 return compose_ret(l_media, Constants.cst_content_type_json, 500)"""
 
@@ -524,7 +524,7 @@ class ScriptStatus(Resource):
                     l_media['media'] = l_media['media'][:-1]  # Remove last line
 
                     self.log.info(Logs.fileline() + ' : l_media=' + str(l_media))
-                except:
+                except Exception:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listmedia file')
                     ret = "WAIT;" + str(date_now) + ";Impossible to read listmedia file"
                     return compose_ret(ret, Constants.cst_content_type_json, 200)
@@ -548,7 +548,7 @@ class ScriptStatus(Resource):
                     l_archive['archive'] = l_archive['archive'][:-1]  # Remove last line
 
                     self.log.info(Logs.fileline() + ' : l_archive=' + str(l_archive))
-                except:
+                except Exception:
                     self.log.info(Logs.fileline() + ' : ERROR ScriptStatus impossible to open listarchive file')
                     ret = "WAIT;" + str(date_now) + ";Impossible to read listarchive file"
                     return compose_ret(l_archive, Constants.cst_content_type_json, 200)
@@ -678,10 +678,10 @@ class ZipCityAdd(Resource):
         # remove headers line
         l_rows.pop(0)
 
-        for l in l_rows:
-            if l:
-                zip_code  = str(l[0])
-                city_name = str(l[1])
+        for row in l_rows:
+            if row:
+                zip_code  = str(row[0])
+                city_name = str(row[1])
 
                 # insert into sigl_pj_group
                 ret = Setting.insertZipCity(zic_zip=zip_code, zic_city=city_name)

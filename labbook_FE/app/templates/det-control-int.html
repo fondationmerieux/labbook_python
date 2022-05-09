@@ -200,7 +200,7 @@ var param = '{ "id_item":' + id_item + ', ' +
 
            id_item = JSON.stringify(data) ;
 
-           window.location.href = "{{ session['server_ext'] }}/det-control-int/" + id_item ;
+           setTimeout(function(){location.href="{{ session['server_ext'] }}/det-control-int/"+id_item}, 2400) ;
            },
        error: function(data)
            {

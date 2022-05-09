@@ -45,13 +45,14 @@ LANGUAGES = {
 
 
 def prep_log(logger_nom, log_fich, niveau=logging.INFO):
-    l = logging.getLogger(logger_nom)
+    logger = logging.getLogger(logger_nom)
     formatter = logging.Formatter('%(asctime)s : %(message)s')
     fileHandler = WatchedFileHandler(log_fich)
     fileHandler.setFormatter(formatter)
 
-    l.setLevel(niveau)
-    l.addHandler(fileHandler)
+    logger.setLevel(niveau)
+    logger.addHandler(fileHandler)
+
 
 prep_log('log_front', r'../logs/log_front.log')
 
@@ -1057,7 +1058,7 @@ def setting_backup():
                 ret = ret.split(';')
                 json_data['stat_backup'] = ret[0]
                 json_data['date_backup'] = ret[1]
-    except:
+    except Exception:
         log.error(Logs.fileline() + ' : cant read ' + path)
 
     # get modification time from last_backup_ok
@@ -4368,17 +4369,19 @@ def upload_tpl():
 
         filepath = Constants.cst_template
 
-        log.info(Logs.fileline())
-
         # check if this file is a odt
         if not filename.endswith('.odt') and not filename.endswith('.toml'):
             return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        log.info(Logs.fileline() + ' upload-tpl Before save file')
 
         try:
             f.save(os.path.join(filepath, filename))
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-tpl failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        log.info(Logs.fileline() + ' upload-tpl After save file')
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 

@@ -121,13 +121,37 @@ var param = '{ "id_item":' + id_tpl + ', ' +
        data: param,
        success: function(data)
            {
-           let ref = JSON.stringify(data) ;
-
            {% if not args['template']['tpl_file'] %}
-           upload_tpl(ref);
+           let param_form = new FormData() ;
+
+           param_form.append('file', $('input[type=file]')[0].files[0]) ;
+
+           console.log("BEFORE upload-tpl") ;
+               
+               $.ajax(
+               {
+                   type : 'POST',
+                   url : "{{ session['server_ext'] }}/upload-tpl",
+                   dataType: 'json',
+                   contentType: false,
+                   processData: false,
+                   data: param_form,
+                   success : function(response)
+                   {
+                   tempAlert("{{ _("Dépôt réussi") }}", "btn_save") ;
+                   console.log("success upload template") ;
+                   },
+                   error: function(response)
+                   {
+                   console.log("ERROR upload tpl") ;
+                   alert("{{ _("Une erreur est survenue lors du dépot du fichier") }}") ;
+                   }
+               } ) ;
+
+           console.log("AFTER upload-tpl") ;
            {% endif %}
 
-           window.location = "{{ session['server_ext'] }}/list-template" ;
+           setTimeout(function(){location.href="{{ session['server_ext'] }}/list-template"} , 2400) ;
            },
        error: function(data)
            {
@@ -154,12 +178,13 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
         success : function(response)
         {
         tempAlert("{{ _("Dépôt réussi") }}", "btn_save") ;
-        console.log("success upload epidemio") ;
-        location.reload() ;
+        console.log("success upload template") ;
+
+        setTimeout(function(){location.reload()}, 2500) ;
         },
         error: function(response)
         {
-        console.log("ERROR upload logo") ;
+        console.log("ERROR upload tpl") ;
         alert("{{ _("Une erreur est survenue lors du dépot du fichier") }}") ;
         }
     } ) ;

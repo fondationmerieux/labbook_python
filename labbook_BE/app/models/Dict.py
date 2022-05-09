@@ -154,7 +154,7 @@ class Dict:
                                     ' label LIKE "%' + str(args['name']) + '%") ')
 
             if args['code']:
-                    filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
+                filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
 
         req = ('select id_data, dico_name as name, dico_descr '
                'from sigl_dico_data ' + trans +

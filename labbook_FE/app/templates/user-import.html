@@ -98,7 +98,7 @@ function import_users()
             success: function(ret)
             {
             tempAlert("{{ _("Traitement réussi") }}", "import-users") ;
-            window.location = "{{ session['server_ext'] }}/setting-users" ;
+            setTimeout(function(){location.href="{{ session['server_ext'] }}/setting-users"}, 2400) ;
             },
             error: function(ret)
             {

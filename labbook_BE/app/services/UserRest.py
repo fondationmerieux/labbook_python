@@ -673,32 +673,32 @@ class UserImport(Resource):
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong number of column')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
-        for l in l_rows:
-            if l:
-                firstname    = l[0]
-                lastname     = l[1]
-                username     = l[2]
-                password     = l[3]
-                title        = l[4]
-                email        = l[5]
-                status       = l[6]
-                locale       = l[7]
-                cps_id       = l[8]
-                rpps         = l[9]
-                phone        = l[10]
-                initial      = l[11]
-                birth        = l[12]
-                address      = l[13]
-                position     = l[14]
-                cv           = l[15]
-                diploma      = l[16]
-                formation    = l[17]
-                darrived     = l[18]
-                deval        = l[19]
-                section      = l[20]
-                comment      = l[21]
-                side_account = l[22]
-                role_type    = l[23]
+        for row in l_rows:
+            if row:
+                firstname    = row[0]
+                lastname     = row[1]
+                username     = row[2]
+                password     = row[3]
+                title        = row[4]
+                email        = row[5]
+                status       = row[6]
+                locale       = row[7]
+                cps_id       = row[8]
+                rpps         = row[9]
+                phone        = row[10]
+                initial      = row[11]
+                birth        = row[12]
+                address      = row[13]
+                position     = row[14]
+                cv           = row[15]
+                diploma      = row[16]
+                formation    = row[17]
+                darrived     = row[18]
+                deval        = row[19]
+                section      = row[20]
+                comment      = row[21]
+                side_account = row[22]
+                role_type    = row[23]
 
                 # status convert
                 if status and status == 'A':

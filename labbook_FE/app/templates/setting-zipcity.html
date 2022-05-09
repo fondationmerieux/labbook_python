@@ -200,7 +200,7 @@ filename = $('input[type=file]')[0].files[0].name ;
                         {
                         $("#dial-wait").modal("hide") ;
 
-                        location.reload() ;
+                        setTimeout(function(){location.reload()}, 2400) ;
                         },
                         error: function(ret)
                         {

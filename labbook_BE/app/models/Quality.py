@@ -692,7 +692,7 @@ class Quality:
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser '
-               'where (prs_empty="N" or prs_cancel="N") and prd_ser=%s '
+               'where (prs_empty="N" and prs_cancel="N") and prd_ser=%s '
                'group by prs_ser '
                'order by prs_expir_date asc ')
 

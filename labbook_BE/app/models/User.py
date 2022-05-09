@@ -201,7 +201,7 @@ class User:
                 filter_cond += ' and u.lastname LIKE "%' + args['lastname'] + '%" '
 
             if 'status' in args and args['status']:
-                stat = 'u.status=' + str(args['status'])
+                stat = 'u.status="' + str(args['status']) + '" '
 
                 # Keep compatibility with old delete user
                 if args['status'] == Constants.cst_user_inactive:
@@ -218,8 +218,8 @@ class User:
         req = ('select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '
                'u.initiale as initial, u.ddn as birth, u.adresse as address, u.tel as phone, u.email, '
                'u.darrive as arrived, u.position as position, dict.label as section, u.deval as last_eval, '
-               'date_format(u.creation_date, %s) as date_create, r.label as role, u.oauth_provider_id_user as id_origin, '
-               'COALESCE(u2.username, "") as origin, u.role_type '
+               'date_format(u.creation_date, "' + Constants.cst_isodate + '") as date_create, r.label as role, '
+               'u.oauth_provider_id_user as id_origin, COALESCE(u2.username, "") as origin, u.role_type '
                'from sigl_user_data as u '
                'inner join sigl_pj_role as r on r.type=u.role_type '
                'left join sigl_user_data as u2 on u2.id_data=u.oauth_provider_id_user '
@@ -227,7 +227,7 @@ class User:
                'where ' + filter_cond +
                'group by u.id_data order by u.creation_date asc ' + limit)
 
-        cursor.execute(req, (Constants.cst_isodate,))
+        cursor.execute(req)
 
         return cursor.fetchall()
 

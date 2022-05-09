@@ -988,7 +988,7 @@ var msg = "" ;
                        console.log("success save_ana") ;
                        tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
 
-                       window.location = "{{ session['server_ext'] }}/setting-analyzes" ;
+                       setTimeout(function(){location.href="{{ session['server_ext'] }}/setting-analyzes"}, 2400) ;
                        },
                    error: function(data)
                        {
