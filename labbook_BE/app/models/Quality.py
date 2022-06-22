@@ -691,7 +691,7 @@ class Quality:
                'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
-               'left join product_use on pru_prs=prs_ser '
+               'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
                'where (prs_empty="N" and prs_cancel="N") and prd_ser=%s '
                'group by prs_ser '
                'order by prs_expir_date asc ')
