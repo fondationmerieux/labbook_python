@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.11] - 2022-07-12
+### Fixed
+- when 3 or more analysis with same familly follow then the familly name is repeated on report
+
 ## [3.2.10] - 2022-06-22
 ### Fixed
 - page stock details displayed wrong sum of pack after a cancellation

@@ -1072,14 +1072,13 @@ class Pdf:
                             with_fam  = True
                         # analysis without family
                         else:
+                            res_fam_p = res_fam
                             res_fam = ' '
 
                             if res_fam != res_fam_p:
                                 with_fam = True
                             else:
                                 with_fam = False
-
-                            res_fam_p = res_fam
 
                         # ==== ANALYSIS FAMILY ====
                         if with_fam:
