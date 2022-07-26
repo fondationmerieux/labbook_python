@@ -540,7 +540,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 {
                 change += 'calc(' + id_rec + ', ' + ref_ana + ', ' + id_res + ', ' + data[i].num_var + ');"' ;
 
-                res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
 
                     // Convert formula
                     if (data[i].formule_unite2 != "")
@@ -573,7 +573,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 {
                     // Num var
                     if (data[i].num_var > 0)
-                    res += '<input type="hidden" class="num_var-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                    res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
 
                     // Formula
                     if (data[i].formule != "")

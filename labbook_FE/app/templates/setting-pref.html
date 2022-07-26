@@ -20,7 +20,7 @@
                     <tbody>
                         <tr class="d-flex">
                             <th class="col-6">{{ _("Prix unitaire des actes de prélévements et d'analyses") }}</th>
-                            <td class="col-6"><input type="number" id="pref_deed_price" name="pref_deed_price" min="1" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][0]['value'] }}{% endif %}"></td>
+                            <td class="col-6"><input type="number" id="pref_deed_price" name="pref_deed_price" min="0" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][0]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-flex">
                             <th class="col-6">{{ _("Entête de document 1") }}</th>
@@ -143,6 +143,12 @@ var quality    = 0 ;
 var bill       = 0 ;
 var lang_pdf   = $("#pref_lang_pdf").val() ;
 var lang_db    = $("#pref_lang_db").val() ;
+
+    if ( deed_price === '' )
+    {
+    deed_price = 0 ;
+    $("#pref_deed_price").val(0);
+    }
 
     if ( $("#pref_fact_hosp").is(":checked") )
     fact_hosp = $("#pref_fact_hosp").val() ;

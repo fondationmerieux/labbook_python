@@ -348,7 +348,7 @@ var old_insurance = 0 ;
 var bill_price    = 0 ;
 var bill_remain   = {% if entry == 'Y' %}0{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
 {% endif %}
-var act_price     = {{ ihm['act_price']['value'] }} ;
+var act_price     = {% if ihm['act_price']['value'] %}{{ ihm['act_price']['value'] }}{% else %}0{% endif %} ;
 var opt_yorn      = {{ ihm['yorn']|safe }} ;
 
 {% if entry == 'Y' %}

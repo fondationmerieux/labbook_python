@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.12] - 2022-07-26
+### Fixed
+- Do not allow the price of the act to empty put minimum 0
+- corrects a calculation problem for analyzes with formulas presented several times in the result entry list
+
 ## [3.2.11] - 2022-07-12
 ### Fixed
 - when 3 or more analysis with same familly follow then the familly name is repeated on report

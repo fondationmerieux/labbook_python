@@ -123,11 +123,14 @@ eval_value( id_rec, ref_ana, id_res ) ;
     let f1      = $(this).val() ;
     let f2      = "" ;
 
+    //console.log("==> DEBUG calc id_tot=" + id_tot );
     //console.log("==> DEBUG calc f1=" + f1 );
 
         // Test if exist
         if ( $("#formula2_" + id_rec + "-" + id_tot).length )
         f2 = $("#formula2_" + id_rec + "-" + id_tot).val() ;
+
+    //console.log("==> DEBUG calc f2=" + f2 );
 
         // EVAL f1
         if ( f1.search("_"+num_var) >= 0 )
@@ -167,7 +170,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
             {
             let val_tmp = "" ;
 
-                $(".num_var-" + ref_ana + "-" + l_var[k]).each( function(j, elem)
+                $(".num_var-" + id_rec + "-" + ref_ana + "-" + l_var[k]).each( function(j, elem)
                 {
                 let id_res_var = $(this).attr("id") ;
 
@@ -203,6 +206,8 @@ eval_value( id_rec, ref_ana, id_res ) ;
 
                 if ( accu == null || accu == "" )
                 accu = 2 ;
+
+            //console.log("DEBUG #res_" + id_tot + " = " + Number(total).toFixed( accu ) ) ;
 
             $("#res_"+id_tot).val( Number(total).toFixed( accu ) ) ;
             }
@@ -246,7 +251,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
             {
             let val_tmp = "" ;
 
-                $(".num_var-" + ref_ana + "-" + l_var[k]).each( function(j, elem)
+                $(".num_var-" + id_rec + "-" + ref_ana + "-" + l_var[k]).each( function(j, elem)
                 {
                 let id_res_var = $(this).attr("id") ;
 
