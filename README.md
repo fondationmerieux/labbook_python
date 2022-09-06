@@ -23,6 +23,8 @@ It contains two separate python applications that constitute the LabBook applica
 
 The development setup mirrors the production setup with the application running in a container that connects to the database on the host.
 
+If you are interested in the production setup you may find some useful information in [this document](doc/architecture.md).
+
 ## Clone the repository
 
 ~~~
@@ -182,6 +184,10 @@ Interactive API documentation for the LabBook backend is available at the follow
 You can have a look at [CHANGELOG.md](CHANGELOG.md) for changes to the program.
 
 Changes to the analyses repository are documented in [analyzes.md](doc/analyzes.md)
+
+## Production architecture
+
+The architecture of the standard LabBook installation is described in [architecture.md](doc/architecture.md).
 
 ## Backups
 
