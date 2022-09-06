@@ -13,7 +13,7 @@ LabBook is a web application, clients use it through a browser inside the LAN.
 For safety and legal reasons, LabBook is NOT designed to be used over the internet.
 
 This document describes the software architecture of the standard LabBook installation.
-You may find complementary information about running LabBook in a development environment or in non standard setups in the [README](README.md) of this project.
+You may find complementary information about running LabBook in a development environment or in non standard setups in the [README](../README.md) of this project.
 
 As detailed below, LabBook runs inside a container, to remain independant from the base Ubuntu system as much as possible.
 
@@ -47,7 +47,7 @@ Additionnal packages installed in the container include:
 - [Supervisor](http://supervisord.org) to control the various daemons, mainly Apache and the 2 [Gunicorn](https://gunicorn.org/) instances that run the python applications labbook_FE (front end) and labbook_BE (back end)
 - [Unoconv](http://dag.wiee.rs/home-made/unoconv/) to convert OpenDocument files to PDF
 
-To see the full details of the creation of the LabBook container you can refer to the [Dockerfile](Dockerfile) at the root of this project.
+To see the full details of the creation of the LabBook container you can refer to the [Dockerfile](../Dockerfile) at the root of this project.
 
 ## Python applications
 
