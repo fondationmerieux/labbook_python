@@ -73,6 +73,8 @@ class Report:
                'from sigl_02_data as rec ' + params['inner_req'] + ' '
                'where (rec.date_dos between %(date_beg)s and %(date_end)s) ' + params['end_req'])
 
+        Report.log.error('getResultEpidemio req=' + str(req))
+
         cursor.execute(req, params)
 
         return cursor.fetchone()
@@ -439,5 +441,8 @@ class Report:
 
             if id_val:
                 res = id_val['id_data']
+            else:
+                Report.log.error('ERROR dict value missing id_val=' + str(id_val) + 
+                                 ' for getIdValueForFormula(' + str(dict_name) + ', ' + str(code) + ')')
 
         return res

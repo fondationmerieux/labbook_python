@@ -932,10 +932,10 @@ class Pdf:
                 data['pat']['age']  = str(today.year - born.year)
                 data['pat']['age_unit'] = _('ans')
             elif age > 0 and age <= 31:
-                data['pat']['age']  = (today - born).days
+                data['pat']['age']  = str((today - born).days)
                 data['pat']['age_unit'] = _('jours')
             elif today.month - born.month > 0:
-                data['pat']['age']  = today.month - born.month + ' ' + _('mois')
+                data['pat']['age']  = str(today.month - born.month) + ' ' + _('mois')
                 data['pat']['age_unit'] = _('mois')
         elif pat['age']:
             data['pat']['age'] = str(pat['age'])

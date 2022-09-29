@@ -217,6 +217,10 @@ class ExportDHIS2(Resource):
                         formula   = row[3]
                         type_samp = row[4]
 
+                        self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 --- before ParseFormula ---')
+                        self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 formula=%s', formula)
+                        self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 type_samp=%s', type_samp)
+
                         req_part = ''
 
                         req_part = Report.ParseFormula(formula, type_samp)
