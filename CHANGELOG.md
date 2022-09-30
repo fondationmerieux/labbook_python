@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [3.2.13] - 2022-09-29
 ### Fixed
 - conversion to missing string when age is in months or days
+- corrects the age in months sometimes different with the report
 
 ## [3.2.12] - 2022-07-26
 ### Fixed
