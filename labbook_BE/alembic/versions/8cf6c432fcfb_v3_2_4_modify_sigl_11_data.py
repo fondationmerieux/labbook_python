@@ -68,7 +68,7 @@ def upgrade():
                      "sigl_reunion_pj__file_deleted, sigl_user_deleted")
     except Exception as err:
         print("ERROR drop table unused\n\terr=" + str(err))
-    
+
     print(str(datetime.today()) + " : END of migration v3_2_4_modify_sigl_11_data revision=8cf6c432fcfb")
 
 

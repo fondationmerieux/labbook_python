@@ -442,7 +442,7 @@ class Report:
             if id_val:
                 res = id_val['id_data']
             else:
-                Report.log.error('ERROR dict value missing id_val=' + str(id_val) + 
+                Report.log.error('ERROR dict value missing id_val=' + str(id_val) +
                                  ' for getIdValueForFormula(' + str(dict_name) + ', ' + str(code) + ')')
 
         return res

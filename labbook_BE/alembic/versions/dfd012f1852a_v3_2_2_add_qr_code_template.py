@@ -64,7 +64,7 @@ def upgrade():
                          "('B4274','B4719','B4721','B5271a','B5271b'))")
         except Exception as err:
             print("ERROR update var_qrcode,\n\terr=" + str(err))
-    
+
     print(str(datetime.today()) + " : END of migration v3_2_2_add_qr_code_template revision=dfd012f1852a")
 
 

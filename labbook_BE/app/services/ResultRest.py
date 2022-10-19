@@ -139,7 +139,7 @@ class ResultList(Resource):
 
                 # get short_label (without prefix "dico_") in type_res
                 if type_res and type_res['short_label'].startswith("dico_"):
-                        type_res = type_res['short_label'][5:]
+                    type_res = type_res['short_label'][5:]
                 else:
                     type_res = ''
 

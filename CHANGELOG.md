@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.2.14] - 2022-10-18
+### Fixed
+- changed role of an user
+
 ## [3.2.13] - 2022-09-29
 ### Fixed
 - conversion to missing string when age is in months or days

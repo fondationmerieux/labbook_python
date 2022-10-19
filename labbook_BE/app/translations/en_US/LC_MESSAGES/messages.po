@@ -124,7 +124,7 @@ msgstr "by"
 
 #: models/Pdf.py:713
 msgid "Examen prescrit le"
-msgstr "Examination prescribed on"
+msgstr "Analysis prescribed on"
 
 #: models/Pdf.py:714
 msgid "Enregistré le"
@@ -160,7 +160,7 @@ msgstr "Report"
 
 #: models/Pdf.py:770
 msgid "COMPLET"
-msgstr "FULL"
+msgstr "COMPLETE"
 
 #: models/Pdf.py:779 models/Pdf.py:1129
 msgid "PARTIEL"

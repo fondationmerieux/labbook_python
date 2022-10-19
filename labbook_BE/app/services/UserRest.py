@@ -122,6 +122,7 @@ class UserDet(Resource):
 
             # update sigl_user_data
             ret = User.updateUser(id_data=id_user,
+                                  role_type=args['role_type'],
                                   username=args['login'],
                                   cps_id=args['cps'],
                                   rpps=args['rpps'],
@@ -226,6 +227,7 @@ class UserStaffDet(Resource):
 
             # update sigl_user_data
             ret = User.updateUser(id_data=id_user,
+                                  role_type=user['role_type'],
                                   username=user['username'],
                                   cps_id=user['cps'],
                                   rpps=user['rpps'],

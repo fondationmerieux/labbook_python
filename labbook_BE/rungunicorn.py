@@ -4,14 +4,16 @@ import os
 from logging.handlers import WatchedFileHandler
 from app import app
 
+
 def prep_log(logger_nom, log_fich, niveau=logging.INFO):
-    l = logging.getLogger(logger_nom)
+    logger = logging.getLogger(logger_nom)
     formatter = logging.Formatter('%(asctime)s : %(message)s')
     fileHandler = WatchedFileHandler(log_fich)
     fileHandler.setFormatter(formatter)
 
-    l.setLevel(niveau)
-    l.addHandler(fileHandler)
+    logger.setLevel(niveau)
+    logger.addHandler(fileHandler)
+
 
 prep_log('log_wsgi', r'../logs/log_wsgi.log')
 
