@@ -73,7 +73,7 @@ class Report:
                'from sigl_02_data as rec ' + params['inner_req'] + ' '
                'where (rec.date_dos between %(date_beg)s and %(date_end)s) ' + params['end_req'])
 
-        Report.log.error('getResultEpidemio req=' + str(req))
+        Report.log.info('getResultEpidemio req=' + str(req))
 
         cursor.execute(req, params)
 
@@ -369,20 +369,20 @@ class Report:
                                         age_max = 150
 
                                 i = i + 1
-
-                        # Build SQL part for category
-                        req['inner'] = (req['inner'] +
-                                        'inner join sigl_03_data as pat' + str(idx) +
-                                        ' on pat' + str(idx) + '.id_data=rec.id_patient ')
-
-                        if sex > 0:
-                            req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
-
-                        if age_min != 0 or age_max != 0:
-                            req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
-                                          ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                         else:
                             Report.log.error('ERROR CAT unknown cat=' + str(cat))
+
+                    # Build SQL part for category
+                    req['inner'] = (req['inner'] +
+                                    'inner join sigl_03_data as pat' + str(idx) +
+                                    ' on pat' + str(idx) + '.id_data=rec.id_patient ')
+
+                    if sex > 0:
+                        req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
+
+                    if age_min != 0 or age_max != 0:
+                        req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
+                                      ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                 else:
                     # TODO rule for OR
                     if word == 'OR':
