@@ -354,6 +354,7 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
@@ -404,6 +405,7 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
@@ -515,6 +517,7 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
@@ -709,7 +712,7 @@ class AnalysisExport(Resource):
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
-                     'var_qrcode', 'version']]
+                     'var_qrcode', 'var_highlight', 'version']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -922,7 +925,12 @@ class AnalysisExport(Resource):
                 else:
                     data.append('N')
 
-                data.append('v2')
+                if d['var_highlight']:
+                    data.append(d['var_highlight'])
+                else:
+                    data.append('N')
+
+                data.append('v3')
 
                 l_data.append(data)
 
@@ -982,7 +990,7 @@ class AnalysisImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][36] != 'v2':
+        if l_rows[0][37] != 'v3':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
@@ -993,7 +1001,7 @@ class AnalysisImport(Resource):
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
-                     'var_qrcode', 'version']
+                     'var_qrcode', 'var_highlight', 'version']
 
         i = 0
         for head in head_line:
@@ -1070,6 +1078,7 @@ class AnalysisImport(Resource):
                         var_whonet = 5
 
                     var_qrcode         = row[35]
+                    var_highlight      = row[36]
 
                     ret = Analysis.exist(code)
 
@@ -1118,6 +1127,7 @@ class AnalysisImport(Resource):
                                                                  type_res=type_resultat,
                                                                  var_min=normal_min,
                                                                  var_max=normal_max,
+                                                                 var_highlight=var_highlight,
                                                                  comment=var_comm,
                                                                  formula=formule,
                                                                  unit=unite,
@@ -1216,7 +1226,8 @@ class AnalysisImport(Resource):
                     else:
                         var_whonet = 5
 
-                    var_qrcode = row[35]
+                    var_qrcode     = row[35]
+                    var_highlight  = row[36]
 
                     ret = Analysis.exist(code)
 
@@ -1289,6 +1300,7 @@ class AnalysisImport(Resource):
                                                                  type_res=type_resultat,
                                                                  var_min=normal_min,
                                                                  var_max=normal_max,
+                                                                 var_highlight=var_highlight,
                                                                  comment=var_comm,
                                                                  formula=formule,
                                                                  unit=unite,

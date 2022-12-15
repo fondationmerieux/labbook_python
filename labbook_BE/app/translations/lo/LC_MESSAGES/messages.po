@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-07 16:48+0100\n"
+"POT-Creation-Date: 2022-12-15 11:34+0100\n"
 "PO-Revision-Date: 2021-09-03 15:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: lo\n"
@@ -16,248 +16,246 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.9.1\n"
 
-#: models/Pdf.py:65 models/Pdf.py:257
+#: models/File.py:469
+msgid "DUPLICATA"
+msgstr ""
+
+#: models/Pdf.py:66 models/Pdf.py:258
 msgid "N° quittance"
 msgstr "ໃບຮັບເງິນເລກທີ"
 
-#: models/Pdf.py:120
+#: models/Pdf.py:121
 msgid "Analyses demandées"
 msgstr "ລາຍການສັ່ງກວດ"
 
-#: models/Pdf.py:121
+#: models/Pdf.py:122
 msgid "Actes de prélèvements"
 msgstr "ການຖອນເງິນ"
 
-#: models/Pdf.py:178 models/Pdf.py:275
+#: models/Pdf.py:179 models/Pdf.py:276
 msgid "Total"
 msgstr "ລວມ"
 
-#: models/Pdf.py:182
+#: models/Pdf.py:183
 msgid "Total à payer"
 msgstr "ທັງົດທີ່ຕ້ອງຈ່າຍ"
 
-#: models/Pdf.py:190
+#: models/Pdf.py:191
 msgid "FACTURE"
 msgstr "ໃບແຈ້ງໜີ້"
 
-#: models/Pdf.py:191 models/Pdf.py:256
+#: models/Pdf.py:192 models/Pdf.py:257
 msgid "N° dossier"
 msgstr "ເອກະສານໝາຍເລກ"
 
-#: models/Pdf.py:198
+#: models/Pdf.py:199
 msgid "Facture n°"
 msgstr "ໃບແຈ້ງໜີ້ໝາຍເລກ"
 
-#: models/Pdf.py:198 models/Pdf.py:715
+#: models/Pdf.py:199 models/Pdf.py:771
 msgid "édité le"
 msgstr "ການແກ້ໄຂ"
 
-#: models/Pdf.py:200 models/Pdf.py:291
+#: models/Pdf.py:201 models/Pdf.py:292
 msgid "Page"
 msgstr "ຫນ້າ"
 
-#: models/Pdf.py:251
+#: models/Pdf.py:252
 msgid "ETAT DE LA FACTURATION DU"
 msgstr "ສະຖານະຂອງການແຈ້ງໜີ້ຂອງ"
 
-#: models/Pdf.py:251
+#: models/Pdf.py:252
 msgid "AU"
 msgstr "ເຖິງ"
 
-#: models/Pdf.py:258
+#: models/Pdf.py:259
 msgid "N° facture"
 msgstr "ໃບແຈ້ງໜີ້ໝາຍເລກ"
 
-#: models/Pdf.py:259
+#: models/Pdf.py:260
 msgid "Prix"
 msgstr "ລາຄາ"
 
-#: models/Pdf.py:260
+#: models/Pdf.py:261
 msgid "A payer"
 msgstr "ຕ້ອງຈ່າຍ"
 
-#: models/Pdf.py:289
+#: models/Pdf.py:290
 msgid "Etat de la facturation, édité le"
 msgstr "ສະຖານະຂອງການແຈ້ງໜີ້, ແກ້ໄຂວັນທີ"
 
-#: models/Pdf.py:598 models/Pdf.py:703
+#: models/Pdf.py:654 models/Pdf.py:759
 msgid "Tél"
 msgstr "ໂທລະສັບ"
 
-#: models/Pdf.py:603 models/Pdf.py:704
+#: models/Pdf.py:659 models/Pdf.py:760
 msgid "Fax"
 msgstr "ແຟັກ"
 
-#: models/Pdf.py:608 models/Pdf.py:705
+#: models/Pdf.py:664 models/Pdf.py:761
 msgid "Email"
 msgstr "ອີເມລ"
 
-#: models/Pdf.py:706
+#: models/Pdf.py:762
 msgid "Dossier"
 msgstr "ກໍລະນີ"
 
-#: models/Pdf.py:707
+#: models/Pdf.py:763
 msgid "Code"
 msgstr ""
 
-#: models/Pdf.py:708
-msgid "Né le"
+#: models/Pdf.py:764
+msgid "Né(e) le"
 msgstr "ເກີດວັນທີ"
 
-#: models/Pdf.py:709
+#: models/Pdf.py:765
 msgid "Admis le"
 msgstr "ຮັບວັນທີ"
 
-#: models/Pdf.py:710
+#: models/Pdf.py:766
 msgid "en"
 msgstr "ໃນ"
 
-#: models/Pdf.py:711
+#: models/Pdf.py:767
 msgid "Lit"
 msgstr "ຕຽງ"
 
-#: models/Pdf.py:712
+#: models/Pdf.py:768
 msgid "par"
 msgstr "ຜ່ານ"
 
-#: models/Pdf.py:713
+#: models/Pdf.py:769
 msgid "Examen prescrit le"
 msgstr "ກຳນົດການກວດວັນທີ"
 
-#: models/Pdf.py:714
+#: models/Pdf.py:770
 msgid "Enregistré le"
 msgstr "ລົງທະບຽນວັນທີ"
 
-#: models/Pdf.py:716
+#: models/Pdf.py:772
 msgid "ANALYSE"
 msgstr "ວິເຄາະ"
 
-#: models/Pdf.py:717
+#: models/Pdf.py:773
 msgid "RESULTAT"
 msgstr "ຜົນການວິເຄາະ"
 
-#: models/Pdf.py:718
+#: models/Pdf.py:774
 msgid "Références"
 msgstr ""
 
-#: models/Pdf.py:719
+#: models/Pdf.py:775
 msgid "Antériorités"
 msgstr "ບູລິມະສິດ"
 
-#: models/Pdf.py:720
+#: models/Pdf.py:776
 msgid "Commentaire"
 msgstr ""
 
-#: models/Pdf.py:721
+#: models/Pdf.py:777
 msgid "validé par"
 msgstr "ຢືນຢັນໂດຍ"
 
-#: models/Pdf.py:754 translations/messages_pybabel.py:291
+#: models/Pdf.py:810 translations/messages_pybabel.py:291
 msgid "Compte rendu"
 msgstr "ລາຍງານ"
 
-#: models/Pdf.py:770
+#: models/Pdf.py:825
 msgid "COMPLET"
 msgstr "ເຕັມ"
 
-#: models/Pdf.py:779 models/Pdf.py:1129
+#: models/Pdf.py:834 models/Pdf.py:1216
 msgid "PARTIEL"
 msgstr "ພາກສ່ວນ"
 
-#: models/Pdf.py:783
+#: models/Pdf.py:840
 msgid "ANNULE ET REMPLACE"
 msgstr "ຍົກເລີກແລະປ່ຽນແທນ"
 
-#: models/Pdf.py:811 translations/messages_pybabel.py:592
+#: models/Pdf.py:870 translations/messages_pybabel.py:592
 msgid "Microbiologie"
 msgstr ""
 
-#: models/Pdf.py:815 translations/messages_pybabel.py:1026
-#: translations/messages_pybabel.py:2193 translations/messages_pybabel.py:2194
-msgid "Test de grossesse"
-msgstr ""
-
-#: models/Pdf.py:851
+#: models/Pdf.py:918
 msgid "Renseignements cliniques"
 msgstr "ຂໍ້ມູນທາງການແພດ"
 
-#: models/Pdf.py:891 models/Pdf.py:1442 translations/messages_pybabel.py:596
+#: models/Pdf.py:963 models/Pdf.py:1569 translations/messages_pybabel.py:596
 msgid "Inconnu"
 msgstr "ບໍ່ຮູ້ຈັກ"
 
-#: models/Pdf.py:929 models/Pdf.py:940 models/Pdf.py:1479 models/Pdf.py:1490
-#: models/Pdf.py:1587
+#: models/Pdf.py:1001 models/Pdf.py:1013 models/Pdf.py:1607 models/Pdf.py:1619
+#: models/Pdf.py:1730
 msgid "ans"
 msgstr "ປີ"
 
-#: models/Pdf.py:932 models/Pdf.py:949 models/Pdf.py:1482 models/Pdf.py:1499
+#: models/Pdf.py:1004 models/Pdf.py:1025 models/Pdf.py:1610 models/Pdf.py:1631
 msgid "jours"
 msgstr "ມື້"
 
-#: models/Pdf.py:934 models/Pdf.py:935 models/Pdf.py:943 models/Pdf.py:1484
-#: models/Pdf.py:1485 models/Pdf.py:1493
+#: models/Pdf.py:1008 models/Pdf.py:1017 models/Pdf.py:1614 models/Pdf.py:1623
 msgid "mois"
 msgstr "ເດືອນ"
 
-#: models/Pdf.py:946 models/Pdf.py:1496
+#: models/Pdf.py:1021 models/Pdf.py:1627
 msgid "semaines"
 msgstr "ອາທິດ"
 
-#: models/Pdf.py:953 models/Pdf.py:1503 models/Pdf.py:1589
+#: models/Pdf.py:1029 models/Pdf.py:1635 models/Pdf.py:1733
 #: translations/messages_pybabel.py:597
 msgid "Masculin"
 msgstr "ຜູ້​ຊາຍ"
 
-#: models/Pdf.py:955 models/Pdf.py:1505
+#: models/Pdf.py:1031 models/Pdf.py:1637
 msgid "Feminin"
 msgstr "ເພດຍິງ"
 
-#: models/Pdf.py:1149 models/Pdf.py:1155 models/Pdf.py:1162
+#: models/Pdf.py:1236 models/Pdf.py:1242 models/Pdf.py:1252
 msgid "Annulée"
 msgstr "ຍົກເລີກແລ້ວ"
 
-#: models/Pdf.py:1258 translations/messages_pybabel.py:1477
+#: models/Pdf.py:1358 translations/messages_pybabel.py:1477
 #: translations/messages_pybabel.py:1478 translations/messages_pybabel.py:1479
 #: translations/messages_pybabel.py:1480
 msgid "Albumine"
 msgstr ""
 
-#: models/Pdf.py:1259 translations/messages_pybabel.py:90
+#: models/Pdf.py:1359 translations/messages_pybabel.py:90
 msgid "Absent"
 msgstr ""
 
-#: models/Pdf.py:1263 translations/messages_pybabel.py:91
+#: models/Pdf.py:1363 translations/messages_pybabel.py:91
 msgid "Présent"
 msgstr ""
 
-#: models/Pdf.py:1268 translations/messages_pybabel.py:313
+#: models/Pdf.py:1369 translations/messages_pybabel.py:313
 msgid "Biochimie urinaire"
 msgstr ""
 
-#: models/Pdf.py:1269 translations/messages_pybabel.py:1348
+#: models/Pdf.py:1370 translations/messages_pybabel.py:1348
 msgid "Bandelettes urinaires"
 msgstr ""
 
-#: services/ExportRest.py:310 translations/messages_pybabel.py:527
+#: services/ExportRest.py:371 translations/messages_pybabel.py:527
 msgid "Années"
 msgstr "ປີ"
 
-#: services/ExportRest.py:312 translations/messages_pybabel.py:521
+#: services/ExportRest.py:373 translations/messages_pybabel.py:521
 #: translations/messages_pybabel.py:529
 msgid "Mois"
 msgstr "ເດືອນ"
 
-#: services/ExportRest.py:314 translations/messages_pybabel.py:530
+#: services/ExportRest.py:375 translations/messages_pybabel.py:530
 msgid "Semaines"
 msgstr "ອາທິດ"
 
-#: services/ExportRest.py:316 translations/messages_pybabel.py:528
+#: services/ExportRest.py:377 translations/messages_pybabel.py:528
 msgid "Jours"
 msgstr "ວັນ"
 
-#: services/ResultRest.py:101 services/ResultRest.py:202
+#: services/ResultRest.py:103 services/ResultRest.py:217
 msgid "validation"
 msgstr ""
 
@@ -3590,6 +3588,11 @@ msgstr ""
 
 #: translations/messages_pybabel.py:1025
 msgid "Porphyrines (recherche, dosage et identification)"
+msgstr ""
+
+#: translations/messages_pybabel.py:1026 translations/messages_pybabel.py:2193
+#: translations/messages_pybabel.py:2194
+msgid "Test de grossesse"
 msgstr ""
 
 #: translations/messages_pybabel.py:1027 translations/messages_pybabel.py:1483

@@ -19,20 +19,20 @@
                     <input type="button" onclick="run_restore();" id="btn-run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="col-6">
-                    <div class="form-group form-inline">
-                        <label for="start-time" class="col-form-label col-5 text-right mt-2">{{ _("Heure de sauvegarde") }}</label>
+                    <div class="d-flex align-items mb-3">
+                        <label for="start-time" class="form-label text-end mt-2 me-2">{{ _("Heure de sauvegarde") }}</label>
                         <div>
                             <input type="time" name="start-time" id="start-time" class="form-control" maxlength="10" size="10" value="{{  args['bks_data']['bks_start_time'] }}" style="color: #888;">     
                         </div>
                     </div>
-                    <div class="form-group form-inline">
-                        <label class="col-form-label col-5 text-right">{{ _("Dernière sauvegarde") }} :</label>
+                    <div class="d-flex align-items mb-3">
+                        <label class="form-label text-end me-2">{{ _("Dernière sauvegarde") }} :</label>
                         <div>
                             <span class="font-info" id="date_backup">{{ args['stat_backup'] }} {{ args['date_backup'] }}</span>     
                         </div>
                     </div>
-                    <div class="form-group form-inline">
-                        <label class="col-form-label col-5 text-right">{{ _("Dernière sauvegarde OK") }} :</label>
+                    <div class="d-flex align-items mb-3">
+                        <label class="form-label text-end me-2">{{ _("Dernière sauvegarde OK") }} :</label>
                         <div>
                             <span class="font-info" id="last_backup_ok">{{ args['last_backup_ok'] }}</span>
                         </div>
@@ -41,22 +41,22 @@
             </form>
 
             <div class="mb-5 clearfix">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn-return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
             </div>
 
             <!-- Popup ask password user -->
-            <div class="modal fade" id="dial-pwd-user" role="dialog" tabindex="-1" aria-hidden="true">
+            <div class="modal" id="dial-pwd-user" tabindex="-1">
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez saisir le mot de passe de l'utilisateur user_labbook") }}</h5>
-                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
-                                <label class="col-form-label mr-1">{{ _("Mot de passe système") }}</label>
+                                <label class="form-label me-1">{{ _("Mot de passe système") }}</label>
                                 <div>
                                     <input id="pwd-user" type="password" class="form-control">
                                 </div>
@@ -64,29 +64,29 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_pwd_user" id="btn_pwd_user" value="{{ _("Valider") }}"  onclick="after_pwd_user();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Popup ask password key -->
-            <div class="modal fade" id="dial-pwd-key" role="dialog" tabindex="-1" aria-hidden="true">
+            <div class="modal" id="dial-pwd-key" tabindex="-1">
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez saisir le mot de passe pour la clé de sauvegarde") }}</h5>
-                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
-                                <label class="col-form-label col-3 mr-1">{{ _("Mot de passe") }}</label>
+                                <label class="form-label col-3 me-1">{{ _("Mot de passe") }}</label>
                                 <div>
                                     <input id="pwd-key" type="password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group form-inline conf-key-div">
-                                <label class="col-form-label col-3 mr-1">{{ _("Confirmation") }}</label>
+                                <label class="form-label col-3 me-1">{{ _("Confirmation") }}</label>
                                 <div>
                                     <input id="pwd-key2" type="password" class="form-control">
                                 </div>
@@ -94,57 +94,57 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn-pwd-key" id="btn-pwd-key" value="{{ _("Valider") }}"  onclick="after_pwd_key();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Popup list media -->
-            <div class="modal fade" id="dial-list-media" role="dialog" tabindex="-1" aria-hidden="true">
+            <div class="modal" id="dial-list-media" tabindex="-1">
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez sélectionner un média") }}</h5>
-                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
-                                <label class="col-form-label mr-1">{{ _("Liste des médias disponibles") }}</label>
+                                <label class="form-label me-1">{{ _("Liste des médias disponibles") }}</label>
                                 <div>
-                                    <select name="list-media" id="list-media" class="form-control ml-1">
+                                    <select name="list-media" id="list-media" class="form-select ms-1">
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn-vld-media" id="btn-vld-media" value="{{ _("Valider") }}"  onclick="after_listmedia();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Popup list archive  -->
-            <div class="modal fade" id="dial-list-archive" role="dialog" tabindex="-1" aria-hidden="true">
+            <div class="modal" id="dial-list-archive" tabindex="-1">
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez sélectionner la sauvegarde à restaurer") }}</h5>
-                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
-                                <label class="col-form-label mr-1">{{ _("Liste des sauvegardes disponibles") }}</label>
+                                <label class="form-label me-1">{{ _("Liste des sauvegardes disponibles") }}</label>
                                 <div>
-                                    <select name="list-archive" id="list-archive" class="form-control ml-1">
+                                    <select name="list-archive" id="list-archive" class="form-select ms-1">
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_restore_list" id="btn_restore_list" value="{{ _("Valider") }}"  onclick="restore();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -311,42 +311,38 @@ var param = '{ "start_time":"' + start_time + '", ' +
               '"user_pwd":"' + pwd_user + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
-        {
-           type: "POST",
-           url: "{{ session['server_ext'] }}/services/setting/script/progbackup",
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/setting/script/progbackup",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+       {
+       $("#dial-wait").modal("hide") ;
+
+           if (data == 0)
            {
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn-return") ;
+           return true ;
+           }
+
+       alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+       return false ; 
+       },
+       error: function(ret)
+       {
            $("#dial-wait").modal("hide") ;
 
-               if (data == 0)
-               {
-               tempAlert("{{ _("Enregistrement réussi") }}", "btn-return") ;
-               return true ;
-               }
-
-           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-           return false ; 
-           },
-           error: function(ret)
-           {
-               $("#dial-wait").modal("hide") ;
-
-           console.log("ERROR POST progbackup") ;
-           console.log("ret="+JSON.stringify(ret)) ;
-           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-           return false ;
-           }
-        } ) ;
+       console.log("ERROR POST progbackup") ;
+       console.log("ret="+JSON.stringify(ret)) ;
+       alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+       return false ;
+       }
     } ) ;
 }
 
@@ -357,35 +353,31 @@ pwd_user = $("#pwd-user").val() ;
 var param = '{ "user_pwd":"' + pwd_user + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // list of media Initialized or Unitialized
+    $.ajax( 
     {
-        // list of media Initialized or Unitialized
-        $.ajax( 
+        type: "POST",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        url: "{{ session['server_ext'] }}/services/setting/script/listmedia/" + type,
+        success: function(data)
         {
-            type: "POST",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            url: "{{ session['server_ext'] }}/services/setting/script/listmedia/" + type,
-            success: function(data)
-            {
-            // POLL WS status media
-            poll_count = 0 ;
-            poll_max   = 180 ;
-            poll_stat  = setInterval( ScriptStatus, 2000, "M" ) ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+        // POLL WS status media
+        poll_count = 0 ;
+        poll_max   = 180 ;
+        poll_stat  = setInterval( ScriptStatus, 2000, "M" ) ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR POST setting listmedia") ;
-            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
-            }
-        } ) ;
+        console.log("ERROR POST setting listmedia") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+        }
     } ) ;
 }
 
@@ -430,39 +422,35 @@ function initmedia(media)
     $( "#dial-list-media" ).modal( "hide" ) ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // POST list of media
+    $.ajax( 
     {
-        // POST list of media
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/setting/script/initmedia/" + media,
+        success: function(data)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/setting/script/initmedia/" + media,
-            success: function(data)
+            $("#dial-wait").modal("hide") ;
+
+            if (data == 0)
             {
-                $("#dial-wait").modal("hide") ;
-
-                if (data == 0)
-                {
-                tempAlert("{{ _("Initialisation réussie") }}", "btn-run_media") ;
-                return true ;
-                }
-                else
-                alert("{{ _("Une erreur est survenue lors de l'initialisation du média") }}") ;
-
-            return false ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
-
-            console.log("ERROR POST setting initmedia") ;
-            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+            tempAlert("{{ _("Initialisation réussie") }}", "btn-run_media") ;
+            return true ;
             }
-        } ) ;
+            else
+            alert("{{ _("Une erreur est survenue lors de l'initialisation du média") }}") ;
+
+        return false ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        console.log("ERROR POST setting initmedia") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+        }
     } ) ;
 }
 
@@ -495,32 +483,28 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
 function backup(media)
 {
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/setting/script/backup/" + media,
+        success: function(data)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/setting/script/backup/" + media,
-            success: function(data)
-            {
-            // POLL WS status backup
-            poll_count = 0 ;
-            poll_max   = 1800 ;
-            poll_stat  = setInterval( ScriptStatus, 10000, "B" ) ;
-            },
-            error: function(data)
-            {
-                $("#wait-status").text("") ;
-                $("#dial-wait").modal("hide") ;
+        // POLL WS status backup
+        poll_count = 0 ;
+        poll_max   = 1800 ;
+        poll_stat  = setInterval( ScriptStatus, 10000, "B" ) ;
+        },
+        error: function(data)
+        {
+            $("#wait-status").text("") ;
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR POST setting backup") ;
-            location.reload() ;
-            }
-        } ) ;
+        console.log("ERROR POST setting backup") ;
+        location.reload() ;
+        }
     } ) ;
 }
 
@@ -531,33 +515,29 @@ pwd_user = $("#pwd-user").val() ;
 var param = '{ "user_pwd":"' + pwd_user + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // list of archive
+    $.ajax( 
     {
-        // list of archive
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/setting/script/listarchive/" + media,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/setting/script/listarchive/" + media,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-            {
-            // POLL WS status archive
-            poll_count = 0 ;
-            poll_max   = 180 ;
-            poll_stat  = setInterval( ScriptStatus, 2000, "A" ) ;
-            },
-            error: function(data)
-            {
-            console.log("ERROR POST setting listarchive") ;
-            alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
-            }
-        } ) ;
+        // POLL WS status archive
+        poll_count = 0 ;
+        poll_max   = 180 ;
+        poll_stat  = setInterval( ScriptStatus, 2000, "A" ) ;
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST setting listarchive") ;
+        alert("{{ _("Une erreur est survenue lors de l'interrogation du service") }}") ;
+        }
     } ) ;
 }
 
@@ -581,35 +561,31 @@ console.log("restore param=" + param) ;
     if ( window.confirm("{{ _("Merci de confirmer le lancement immédiat de la restauration.") }}") )
     {
         // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
         $("#dial-wait").modal("show") ;
 
-        $("#dial-wait").off() ;
-
-        $("#dial-wait").on('shown.bs.modal', function () 
+        $.ajax( 
         {
-            $.ajax( 
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/setting/script/restore",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(data)
             {
-                type: "POST",
-                url: "{{ session['server_ext'] }}/services/setting/script/restore",
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                data: param,
-                success: function(data)
-                {
-                // POLL WS status restore
-                poll_count = 0  ;
-                poll_max   = 9000 ;
-                poll_stat  = setInterval( ScriptStatus, 10000, "R" ) ;
-                },
-                error: function(data)
-                {
-                    $("#wait-status").text("") ;
-                    $("#dial-wait").modal("hide") ;
+            // POLL WS status restore
+            poll_count = 0  ;
+            poll_max   = 9000 ;
+            poll_stat  = setInterval( ScriptStatus, 10000, "R" ) ;
+            },
+            error: function(data)
+            {
+                $("#wait-status").text("") ;
+                $("#dial-wait").modal("hide") ;
 
-                console.log("ERROR POST setting restore") ;
-                alert("{{ _("Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée.") }}") ;
-                }
-            } ) ;
+            console.log("ERROR POST setting restore") ;
+            alert("{{ _("Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée.") }}") ;
+            }
         } ) ;
     }
 }

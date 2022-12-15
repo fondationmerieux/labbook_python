@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Validation biologique") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -16,12 +16,18 @@
                 <span>{{ _("Validation biologique") }}</span><span id="info_pat_title"></span>
             </h2>
             <form autocomplete="off">
-                <div class="row ml-3 mt-1">
-                    <span>{{ _("Dossier") }} :&nbsp;</span> 
-                    <span class="rec-num" id="num_rec"></span>
-                    <div class="ml-2" id="rec_stat"></div>
+                <div class="d-flex align-items-start ms-3 mt-1">
+                    <span>{{ _("Dossier") }} :</span> 
+                    <span class="rec-num ms-1" id="num_rec"></span>
+                    <div class="ms-2" id="rec_stat"></div>
+                    {% if args['record'] and args['record']['rec_num_int'] %}
+                    <div class="ms-3 mt-1">
+                        <span>{{ _("Numéro de dossier interne au laboratoire") }} :&nbsp;</span> 
+                        <span class="font-info" id="num_rec_int">{{ args['record']['rec_num_int'] }}</span>
+                    </div>
+                    {% endif %}
                 </div>
-                <fieldset class="row border p-2">
+                <fieldset class="d-flex flex-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
                     <div class="col-12">
                         {% if args['patient'] and args['patient']['code_patient'] %}
@@ -55,7 +61,7 @@
 
             {% if args['record'] and args['record']['rc'] %}
             <form>
-                <fieldset class="row border p-2 mt-1">
+                <fieldset class="d-flex flex-wrap border px-3 py-2 mt-1">
                     <legend class="legend-lbk">{{ _("Renseignements cliniques") }}</legend>
                     <div>{{ args['record']['rc'] }}</div>
                 </fieldset>
@@ -66,30 +72,30 @@
             <div id="list_result" class="mt-3"></div>
 
             <div id="valid_div">
-                <fieldset class="row border p-2 mt-1">
+                <fieldset class="d-flex flex-wrap border px-3 py-2 mt-1">
                     <legend class="legend-lbk">{{ _("Validation des résultats cochés") }}</legend>
-                    <div class="form-group form-inline col-12">
+                    <div class="form-group d-flex align-items-start col-12">
                         <label>{{ _("Date de validation") }} :</label>
                         <div>
-                            <input id="date_bio" class="form-control ml-1" type="datetime-local" step="60" value="{{ now|datetime_now }}" placeholder="" style="">
+                            <input id="date_bio" class="form-control ms-1" type="datetime-local" step="60" value="{{ now|datetime_now }}" placeholder="" style="">
                         </div>
-                        <label class="ml-3" for="validator">{{ _("Biologiste") }} :</label>
-                        <input type="text" name="validator" id="validator" class="form-control ml-1" value="" readonly />
-                        <input type="hidden" id="id_validator" class="form-control ml-1" value="0" />
+                        <label class="ms-3" for="validator">{{ _("Biologiste") }} :</label>
+                        <input type="text" name="validator" id="validator" class="form-control ms-1" value="" readonly />
+                        <input type="hidden" id="id_validator" class="form-control ms-1" value="0" />
                     </div>
-                    <div class="form-group form-inline col-12">
+                    <div class="form-group d-flex align-items-start col-12">
                         <label for="comm_valid" class="col-1 align-top">{{ _("Commentaire") }}</label>
                         {# We break the loop after the first comment found #}
                         {# Note: If I don't paste the jinja2 code it adds the spaces #}
-                        <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control col-5 ml-1">{% set var_for = {'break': False} %}{% for res in args['list_res'] %}{% if not var_for.break %}{% if res['validation']['commentaire'] %}{{ res['validation']['commentaire'] }}{% if var_for.update({'break': True}) %}{% endif %}{% endif %}{% endif %}{% endfor %}</textarea>
+                        <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control col-5 ms-1">{% set var_for = {'break': False} %}{% for res in args['list_res'] %}{% if not var_for.break %}{% if res['validation']['commentaire'] %}{{ res['validation']['commentaire'] }}{% if var_for.update({'break': True}) %}{% endif %}{% endif %}{% endif %}{% endfor %}</textarea>
                     </div>
                     <div class="col-12">
-                        <div class="float-left" style="margin-left:0px;">
+                        <div class="float-start" style="margin-start:0px;">
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
                         <input type="hidden" name="validation-type" value="B" id="validation-type">
-                        <div class="float-right form-inline" style="margin-left:0px;">
-                            <select id="tpl_result" class="form-control mr-3" {% if ihm['tpl_result'] and ihm['tpl_result']|length < 2 %}hidden{% endif %}>
+                        <div class="float-end" style="margin-start:0px;">
+                            <select id="tpl_result" class="form-select me-3" {% if ihm['tpl_result'] and ihm['tpl_result']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_result'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
@@ -101,24 +107,24 @@
             </div>
 
             <div>
-                <fieldset class="row border p-2 mt-3">
+                <fieldset class="d-flex flex-wrap border px-3 py-2 mt-3">
                     <legend class="legend-lbk">{{ _("Compte rendu") }}</legend>
                     <div id="report" class="col-12 bgcolor-B p-2"></div>
                 </fieldset>
             </div>
 
             <!-- Popup cancel -->
-            <div class="modal fade" id="dial-cancel" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal" id="dial-cancel" tabindex="-1">
                 <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Commentaire et motif annulation") }}</h5>
-                            <button type="button" class="close text-right" data-dismiss="modal" aria-hidden="true">x</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="control-label col-2" style=""><span data-field="reason">{{ _("Motif") }} </span></label>
-                                <select id="cancel_reason">
+                                <select id="cancel_reason" class="form-select">
                                     {% for reason in ihm['cancel_reason'] %}
                                     <option value="{{ reason['id_data'] }}">{{ _(reason['label']) }}</option>
                                     {% endfor %}
@@ -126,12 +132,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-3" style=""><span data-field="comment">{{ _("Commentaire") }}</span></label>
-                                <textarea id="cancel_comm" rows="3" cols="80" class="form-control"></textarea>
+                                <textarea id="cancel_comm" rows="3" cols="80" class="form-select"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_cancel_res" id="btn_cancel_res" value="{{ _("Ajouter") }}"  onclick="send_cancel();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -140,8 +146,8 @@
             {% if args['list_res'] %}
             <form id="form-new-analyses">
                 <div class="mt-3">
-                    <fieldset class="row border p-2">
-                        <legend>{{ _("Ajouter de nouvelles analyses") }}</legend>
+                    <fieldset class="d-flex flex-wrap border px-3 py-2">
+                        <legend class="legend-lbk">{{ _("Ajouter de nouvelles analyses") }}</legend>
                         <div class="form-group">
                             <select id="search_analysis" style="width:450px"></select>
                         </div><br />
@@ -157,16 +163,16 @@
             {% endif %}
 
             {% if ihm['mode'] == 'G' %}
-            <div class="float-left clearfix mt-3 mb-5">
+            <div class="float-start clearfix mt-3 mb-5">
                 <button type="button" onclick="print_grp_rec();" id="print-grp-rec" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Compte rendu groupé") }}</span></button>
             </div>
 
                 {% if ihm['id_rec_next'] %}
-            <div class="float-right clearfix mt-3 mb-5">
+            <div class="float-end clearfix mt-3 mb-5">
                 <button type="button" onclick="next_record();" id="btn_next_valid" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Dossier suivant") }}</span></button>
             </div>
                 {% else %}
-            <div class="float-right clearfix mt-3 mb-5">
+            <div class="float-end clearfix mt-3 mb-5">
                 <span>{{ _("Fin de la liste des dossiers") }}</span>
             </div>
                 {% endif %}
@@ -272,74 +278,70 @@ let value_res      = '' ;
 param_list_ana += value_ana + ' ] }';
 param_list_res += value_res +' ] }';
 
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // Send analysis information
+    $.ajax( 
     {
-        // Send analysis information
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/analysis/list/req",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_list_ana,
+        success: function(ret_ana)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/analysis/list/req",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param_list_ana,
-            success: function(ret_ana)
+            // create in DB list of results to enter and corresponding validation
+            $.ajax(
             {
-                // create in DB list of results to enter and corresponding validation
-                $.ajax(
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_list_res,
+                success : function(response)
                 {
-                    type : 'POST',
-                    url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
-                    data: param_list_res,
-                    success : function(response)
-                    {
-                    let param_stat = '{ "stat":182 }' ; 
+                let param_stat = '{ "stat":182 }' ; 
 
-                        // update record stat to 182 = Validé administrativement
-                        $.ajax(
+                    // update record stat to 182 = Validé administrativement
+                    $.ajax(
+                    {
+                        type : 'POST',
+                        url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        data: param_stat,
+                        success : function(response)
                         {
-                            type : 'POST',
-                            url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
-                            dataType: 'json',
-                            contentType: "application/json; charset=utf-8",
-                            data: param_stat,
-                            success : function(response)
-                            {
-                                $("#dial-wait").modal("hide") ;
+                            $("#dial-wait").modal("hide") ;
 
-                            window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
-                            },
-                            error: function(response)
-                            {
-                                $("#dial-wait").modal("hide") ;
+                        window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+                        },
+                        error: function(response)
+                        {
+                            $("#dial-wait").modal("hide") ;
 
-                            console.log("ERROR record stat") ;
-                            alert("{{ _("Une erreur est survenue du changement de statut du dossier") }}") ;
-                            }
-                        } ) ;
-                    },
-                    error: function(response)
-                    {
-                        $("#dial-wait").modal("hide") ;
+                        console.log("ERROR record stat") ;
+                        alert("{{ _("Une erreur est survenue du changement de statut du dossier") }}") ;
+                        }
+                    } ) ;
+                },
+                error: function(response)
+                {
+                    $("#dial-wait").modal("hide") ;
 
-                    console.log("ERROR result create") ;
-                    alert("{{ _("Une erreur est survenue lors de création des résultats") }}") ;
-                    }
-                } ) ;
-            },
-            error: function(ret_ana)
-            {
-                $("#dial-wait").modal("hide") ;
+                console.log("ERROR result create") ;
+                alert("{{ _("Une erreur est survenue lors de création des résultats") }}") ;
+                }
+            } ) ;
+        },
+        error: function(ret_ana)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR analysis list req") ;
-            alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
-            } 
-        } ) ;
+        console.log("ERROR analysis list req") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
+        } 
     } ) ;
 }
 
@@ -464,54 +466,50 @@ let param_list_valid = '{ "reedit": "' + reedit + '", "template": "' + template 
 
 param_list_valid += ' ] }' ;
 
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // result to validate
+    $.ajax( 
     {
-        // result to validate
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/result/valid/B/" + id_rec,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_list_valid,
+        success: function(data)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/result/valid/B/" + id_rec,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param_list_valid,
-            success: function(data)
+            $("#dial-wait").modal("hide") ;
+
+            {% if ihm['mode'] == 'G' %}
+            // save id record in session storage
+            if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
             {
-                $("#dial-wait").modal("hide") ;
+            let l_id_rec_vld = JSON.parse( sessionStorage.getItem("l_id_rec_vld") ) ;
 
-                {% if ihm['mode'] == 'G' %}
-                // save id record in session storage
-                if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
-                {
-                let l_id_rec_vld = JSON.parse( sessionStorage.getItem("l_id_rec_vld") ) ;
+            l_id_rec_vld.push(id_rec) ;
 
-                l_id_rec_vld.push(id_rec) ;
-
-                sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
-                }
-                else
-                {
-                let l_id_rec_vld = [] ;
-
-                l_id_rec_vld.push(id_rec) ;
-
-                sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
-                }
-                {% endif %}
-
-            window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
-                
-            console.log("ERROR result valid bio") ;
-            alert("{{ _("Une erreur est survenue lors de validation biologique des valeurs saisies") }}") ;
+            sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
             }
-        } ) ;
+            else
+            {
+            let l_id_rec_vld = [] ;
+
+            l_id_rec_vld.push(id_rec) ;
+
+            sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
+            }
+            {% endif %}
+
+        window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
+            
+        console.log("ERROR result valid bio") ;
+        alert("{{ _("Une erreur est survenue lors de validation biologique des valeurs saisies") }}") ;
+        }
     } ) ;
 }
 
@@ -547,11 +545,11 @@ let disp_valid = "d-none" ;
             if (res_fam.length < 4) res_fam = "" ;
 
         res += '<form enctype="application/x-www-form-urlencoded" method="post" action="">' +
-               '<fieldset class="row border p-2">' +
+               '<fieldset class="d-flex flex-wrap border px-3 py-2">' +
                '<legend class="legend-lbk">' + res_name + res_fam + '</legend>' +
-               '<span class="rec-num mr-2 mb-2">' + num_rec + '</span>' + per_rec +
+               '<span class="rec-num me-2 mb-2">' + num_rec + '</span>' + per_rec +
                '<table class="table table-striped table-hover table-lbk">' +
-               '<tbody class="row mx-1">' ;
+               '<tbody class="mx-1">' ;
         }
 
         // new analysis so new result line
@@ -564,7 +562,7 @@ let disp_valid = "d-none" ;
         let res_unit   = data[i].unit ;
         let value      = data[i].res_label ;
         let res_limit  = '' ;
-        let res_check  = '<td class="d-inline-block text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="N" class="invisible result-checkbox cbx-' + id_rec + '"></span></td>' ;
+        let res_check  = '<td class="text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="N" class="invisible result-checkbox cbx-' + id_rec + '"></span></td>' ;
         let res_reset  = '' ;
         let res_cancel = '' ;
 
@@ -580,32 +578,32 @@ let disp_valid = "d-none" ;
 
             if ( value != "" && res_valid != 252 )
             {
-            res_check = '<td class="d-inline-block text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="O" checked="checked" class="show result-checkbox cbx-' + id_rec + '"></span></td>' ;
+            res_check = '<td class="text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="O" checked="checked" class="show result-checkbox cbx-' + id_rec + '"></span></td>' ;
 
-            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"fa fa-step-backward\" /></i></a>" ;
+            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
 
             disp_valid = "show" ;
             }
 
-        res += '<tr class="col-12">' +
+        res += '<tr>' +
                    res_check +
-                   '<td class="d-inline-block col-1">' + res_limit + '</td>' +
-                   '<td class="d-inline-block col-1 text-center">' + res_emer + '</td>' +
-                   '<td class="d-inline-block text-left">' + res_stat + '</td>' +
-                   '<td class="d-inline-block text-center">' +
+                   '<td class="col-1">' + res_limit + '</td>' +
+                   '<td class="col-1 text-center">' + res_emer + '</td>' +
+                   '<td class="text-start">' + res_stat + '</td>' +
+                   '<td class="text-center">' +
                        '<div class="history" onclick="display_histo(' + i + ');"></div>' +
                    '</td>' +
-                   '<td class="d-inline-block col-5 text-center">' + res_label + '</td>' ;
+                   '<td class="col-5 text-center">' + res_label + '</td>' ;
 
-        res += '<td class="d-inline-block form-inline text-center"><span class="value">' ;
+        res += '<td class="text-center"><span class="value">' ;
 
         if ( res_valid == 251 || (res_valid == 252 && value != "") )
-        res_cancel = '<a title="Annuler" class="color-B" onclick="cancel_res(' + id_rec +','+ id_res + ');"><i class="fa fa-times" /></i></a>' ;
+        res_cancel = '<a title="Annuler" class="color-B" onclick="cancel_res(' + id_rec +','+ id_res + ');"><i class="bi bi-x-circle" /></i></a>' ;
 
         if ( value != "" )
         {
         res += '<span>' + value + '</span><input id="res_' + id_res + '" type="hidden" value="' + data[i].valeur + '">' +
-               '<span class="unit show ml-1">' + res_unit + '</span>' ;
+               '<span class="unit show ms-1">' + res_unit + '</span>' ;
         }
         else if ( res_valid == 252 )
         {
@@ -616,8 +614,8 @@ let disp_valid = "d-none" ;
         res += '<span>Non rempli</span>' ;
 
         res += '<input type="hidden" value="' + data[i].type_resultat + '"></span></td>' +
-               '<td class="d-inline-block text-center">' + res_reset + '</td>' +
-               '<td class="d-inline-block text-center">' + res_cancel + '</td></tr>' ;
+               '<td class="text-center">' + res_reset + '</td>' +
+               '<td class="text-center">' + res_cancel + '</td></tr>' ;
         }
 
     ref_ana_p = ref_ana ;
@@ -649,9 +647,9 @@ let obj = data ;
     {
         if ( obj[i].id_data > 0 )
         {
-        let tmp_div = '<span style="padding-left:40px;">' ;
+        let tmp_div = '<span class="px-5">' ;
 
-        tmp_div += '<a class="report" style="color:#FFF;" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'GEN\', ' + num_dos + ');"><img src="{{ url_for('static', filename='img/ico_pdf.png') }}" class="mr-2">' + obj[i].date ;
+        tmp_div += '<a class="report" style="color:#FFF;" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'GEN\', ' + num_dos + ');"><img src="{{ url_for('static', filename='img/ico_pdf.png') }}" class="me-2">' + obj[i].date ;
         tmp_div += ' - {{ _("Dossier") }} ' + num_dos + ' - {{ _("Modèle") }} : ' + obj[i].tpl_name ;
         tmp_div += ' (' + obj[i].nb_download + ')</a></span><br />' ;
 
@@ -669,7 +667,7 @@ $("#report").empty() ;
 
     if (data_reports.length < 1)
     {
-    let div_report = '<span style="padding-left:40px;color:#CCC;">Aucun compte rendu</span>' ;
+    let div_report = '<span class="px-5" style="color:#CCC;">Aucun compte rendu</span>' ;
 
     $("#report").append(div_report) ;
     }
@@ -831,37 +829,33 @@ let l_id_rec_vld = [] ;
     
     param += ' ] }'
 
+        $("#dial-wait").off('shown.bs.modal') ;
         $("#dial-wait").modal("show") ;
 
-        $("#dial-wait").off() ;
-
-        $("#dial-wait").on('shown.bs.modal', function () 
+        // Send information
+        $.ajax( 
         {
-            // Send information
-            $.ajax( 
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/pdf/report/grouped",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
             {
-                type: "POST",
-                url: "{{ session['server_ext'] }}/services/pdf/report/grouped",
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                data: param,
-                success: function(ret)
-                {
-                    $("#dial-wait").modal("hide") ;
+                $("#dial-wait").modal("hide") ;
 
-                    if (ret == 0)
-                    download_file( "PY", filename, "REC", 0 ) ;
-                    else
-                    alert("{{ _("Erreur lors de la génération du PDF") }}") ;
-                },
-                error: function(data)
-                {
-                    $("#dial-wait").modal("hide") ;
-                    
-                console.log("ERROR pdf group report") ;
-                alert("{{ _("Une erreur est survenue") }}") ;
-                }
-            } ) ;
+                if (ret == 0)
+                download_file( "PY", filename, "REC", 0 ) ;
+                else
+                alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+            },
+            error: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
+                
+            console.log("ERROR pdf group report") ;
+            alert("{{ _("Une erreur est survenue") }}") ;
+            }
         } ) ;
     }
 }
@@ -881,7 +875,7 @@ function next_record()
 }
 {% endif %}
 
-{% include 'display_histo.js' %}
+{% include 'js/display_histo.js' %}
 
 $( document ).ready( function()
 {

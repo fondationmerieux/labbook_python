@@ -150,14 +150,6 @@ class UserDet(Resource):
                 self.log.info(Logs.fileline() + ' : TRACE UserDet ERROR update user')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-            if user['username'] != args['login']:
-                # update sigl_pj_group
-                ret = User.updateUserName(user['username'], args['login'])
-
-                if ret is False:
-                    self.log.info(Logs.fileline() + ' : TRACE UserDet ERROR update user Name')
-                    return compose_ret(id_user, Constants.cst_content_type_json, 500)
-
         # insert new user
         else:
             if 'id_owner' not in args or 'password' not in args:

@@ -12,31 +12,31 @@
     <div class="inner">
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Contrôle interne") }}</span></h2>
-            <div class="form-group row">
-                <label class="col-form-label col-3 text-right mx-3">{{ _("Type") }}</label>
-                <label class="col-form-label text-right mr-3">
+            <div class="form-group d-flex align-items-start mt-3">
+                <label class="form-label col-3 text-end mx-3">{{ _("Type") }}</label>
+                <label class="form-label text-end me-3">
                     <input type="radio" name="ctrl-type" value="QL" {% if not args['control']['ctq_type_val'] or args['control']['ctq_type_val'] == "QL" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Qualitatif") }}</input>
                 </label>
-                <label class="col-form-label text-right mr-3">
+                <label class="form-label text-end me-3">
                     <input type="radio" name="ctrl-type" value="QN" {% if args['control']['ctq_type_val'] == "QN" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Quantitatif") }}</input>
                 </label>
             </div>
-            <div class="form-group row">
-                <label for="ctrl-name" class="col-form-label col-3 text-right mr-1">{{ _("Nom du paramètre") }}</label>
+            <div class="form-group d-flex align-items-start mt-3">
+                <label for="ctrl-name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du paramètre") }}</label>
                 <div>
                     <input id="ctrl-name" class="form-control" type="text" maxlength="255" value="{{ args['control']['ctq_name'] }}">
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="search_eqp" class="col-form-label col-3 text-right mr-2">{{ _("Equipement") }}</label>
+            <div class="form-group d-flex align-items-start mt-3">
+                <label for="search_eqp" class="form-label col-3 text-end mt-2 me-1">{{ _("Equipement") }}</label>
                 <div>
-                    <select id="search_eqp" style="width:400px"></select><br />
-                    <span class="ml-2">{{ args['control']['eqp_name'] }}</span>
+                    <select id="search_eqp" class="form-select" style="width:400px"></select><br />
+                    <span class="ms-2">{{ args['control']['eqp_name'] }}</span>
                     <input type="hidden" id="id_eqp" value="{{ args['control']['ctq_eqp'] }}">
                 </div>
-                <div class="col-2 text-right">
-                    <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
-                </div>
+            </div>
+            <div class="col-12 text-end my-2">
+                <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
             </div>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
@@ -55,11 +55,11 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-left">{{ _("Action") }}</th>
-                            <th class="text-left cursor-act">{{ _("Date") }}</th>
-                            <th class="text-left cursor-act">{{ _("Cible") }}</th>
-                            <th class="text-left cursor-act">{{ _("Résultat") }}</th>
-                            <th class="text-left cursor-act">{{ _("Commentaire") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start cursor-act">{{ _("Date") }}</th>
+                            <th class="text-start cursor-act">{{ _("Cible") }}</th>
+                            <th class="text-start cursor-act">{{ _("Résultat") }}</th>
+                            <th class="text-start cursor-act">{{ _("Commentaire") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -76,14 +76,14 @@
             </div>
 
             <div class="clearfix mb-5 mt-3">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
+                <div class="float-end">
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
                           session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
@@ -137,7 +137,7 @@ $("#list_items_total").html( data_len ) ;
           session["user_role"] == "Q" or session["user_role"] == "TQ" %}
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav\">" +
-                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
+                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/res-control-int/" + data_items[i].cti_ctq + "/" + data_items[i].cti_type + "/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>";   
         
@@ -148,10 +148,10 @@ $("#list_items_total").html( data_len ) ;
 
     res += "<tr><td hidden><div>" + data_items[i].id_item + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_items[i].cti_date + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_items[i].cti_target + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_items[i].cti_result + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_items[i].cti_comment + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + data_items[i].cti_date + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].cti_target + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].cti_result + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].cti_comment + "</div></td></tr>" ;
     }
 {% endif %}
 
@@ -222,49 +222,45 @@ function export_data()
 var param = '{}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/quality/control/int/res/export/" + id_item,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/quality/control/int/res/export/" + id_item,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
 
-            let month = today.getMonth() + 1 ;
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "control_int_" + id_item + "_" + today + ".csv" ;
+        let filename = "control_int_" + id_item + "_" + today + ".csv" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                if (ret.status == 404)
-                alert("{{ _("Aucun résultats à exporter !") }}") ;
-                else
-                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

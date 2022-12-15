@@ -11,32 +11,32 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des numéros de dossier") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mt-2">{{ _("Période de numérotation") }}</label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Période de numérotation") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="period" value="1070" {% if args['periode'] == 1070 %} checked="true" {% endif %}>&nbsp;{{ _("Mois") }}</input>
                     </label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="period" value="1071" {% if args['periode'] == 1071 %} checked="true" {% endif %}>&nbsp;{{ _("Année") }}</input>
                     </label>
                 </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mt-2">{{ _("Format de numérotation") }}</label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Format de numérotation") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="format" value="1072" {% if args['format'] == 1072 %} checked="true" {% endif %}>&nbsp;{{ _("Court") }}</input>
                     </label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="format" value="1073" {% if args['format'] == 1073 %} checked="true" {% endif %}>&nbsp;{{ _("Long") }}</input>
                     </label>
                 </div>
             </form>
 
             <div class="clearfix mb-5">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 

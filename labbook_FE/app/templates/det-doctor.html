@@ -14,16 +14,16 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
                 </div>
-                <div class="form-group row mt-3">
-                    <label for="code" class="col-form-label col-3 text-right mt-2">{{ _("Code") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="code" class="form-label col-3 text-end mt-2 me-1">{{ _("Code") }}</label>
                     <div>					
                         <input type="text" name="code" id="code" value="{{ args['code'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Titre") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Titre") }}</label>
                     <div>					
-                        <select id="title" name="title" class="form-control">
+                        <select id="title" name="title" class="form-select">
                             <option value="0" {% if args['titre'] == 0  %} selected {% endif %}></option>  
                             <option value="260" {% if args['titre'] == 260 %} selected {% endif %}>{{ _("Monsieur") }}</option>
                             <option value="261" {% if args['titre'] == 261 %} selected {% endif %}>{{ _("Madame") }}</option>
@@ -33,52 +33,52 @@
                         </select>			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="lastname" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
                         <input type="text" name="lastname" id="lastname" value="{{ args['nom'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row mt-3">
-                    <label for="firstname" class="col-form-label col-3 text-right mt-2">{{ _("Prénom") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="firstname" class="form-label col-3 text-end mt-2 me-1">{{ _("Prénom") }}</label>
                     <div class="">					
                         <input type="text" name="firstname" id="firstname" value="{{ args['prenom'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="initial" class="col-form-label col-3 text-right mt-2">{{ _("Initiales") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="initial" class="form-label col-3 text-end mt-2 me-1">{{ _("Initiales") }}</label>
                     <div>					
                         <input type="text" name="initial" id="initial" value="{{ args['initiale'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="facility" class="col-form-label col-3 text-right mt-2">{{ _("Lieu de travail") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="facility" class="form-label col-3 text-end mt-2 me-1">{{ _("Lieu de travail") }}</label>
                     <div>					
                         <input type="text" name="facility" id="facility" value="{{ args['facility'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="service" class="col-form-label col-3 text-right mt-2">{{ _("Service") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="service" class="form-label col-3 text-end mt-2 me-1">{{ _("Service") }}</label>
                     <div>					
                         <input type="text" name="service" id="service" value="{{ args['service'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="address" class="col-form-label col-3 text-right mt-2">{{ _("Adresse") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="address" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                     <div>					
                         <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['adresse'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="city" class="col-form-label col-3 text-right mt-2">{{ _("Ville") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="city" class="form-label col-3 text-end mt-2 me-1">{{ _("Ville") }}</label>
                     <div>					
                         <input type="text" name="city" id="city" value="{{ args['ville'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="spe" class="col-form-label col-3 text-right mt-2">{{ _("Spécialité") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="spe" class="form-label col-3 text-end mt-2 me-1">{{ _("Spécialité") }}</label>
                     <div>					
-                        <select id="spe" name="title" class="form-control">
+                        <select id="spe" name="title" class="form-select">
                             <option value="0" selected></option>  
                             {% for spe in ihm['spe_list'] %}
                             <option value="{{ spe['id_data'] }}" {% if args['specialite'] == spe['id_data'] %} selected {% endif %}>{{ spe['label'] }}</option>
@@ -86,26 +86,26 @@
                         </select>			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="phone" class="col-form-label col-3 text-right mt-2">{{ _("Téléphone fixe") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="phone" class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone fixe") }}</label>
                     <div>					
                         <input type="tel" name="phone" id="phone" value="{{ args['tel'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="mobile" class="col-form-label col-3 text-right mt-2">{{ _("Téléphone mobile") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="mobile" class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone mobile") }}</label>
                     <div>					
                         <input type="tel" name="mobile" id="mobile" value="{{ args['mobile'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="fax" class="col-form-label col-3 text-right mt-2">{{ _("Fax") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="fax" class="form-label col-3 text-end mt-2 me-1">{{ _("Fax") }}</label>
                     <div>					
                         <input type="tel" name="fax" id="fax" value="{{ args['fax'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="email" class="col-form-label col-3 text-right mt-2">{{ _("Adresse email") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="email" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse email") }}</label>
                     <div>					
                         <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
                     </div>
@@ -113,11 +113,11 @@
             </form>
             
             <div class="clearfix my-2">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_doctor();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_doctor();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

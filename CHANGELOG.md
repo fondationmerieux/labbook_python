@@ -7,9 +7,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+
+## [3.3.0] - 2022-12-15
+### Added
+- user can changed his own profil and password
+- for pivot table in all dataset add birth, age, age_unit, doctor_lname and doctor_fname
+- last backup information on homepage
+- custody application choice in impatient test request
+- after dowloading a record report for the first time, duplicates will be available for download afterwards
+- download a global PDF of merge reports between 2 dates
+- highlight setting for result of analysis variable (show only in report if template use it)
+- record validation date avaible for report templates
+- datetime of cancel and replace report avaible for report templates
+- internal laboratory record number
+- in list of record add type of record filter
+
+### Changed
+- no more Please reconnect message but force redirect to login page
+- more details displayed in search patient field
+
+### Fixed
+- Almost all IHM (85 files) because of change to Bootstrap 5
+- add popup wait when deleting something
+
 ## [3.2.15] - 2022-11-02
 ### Fixed
 - problem with filter CAT(SEX_,AGE_) in DHIS2 export
+- update Pillow library
 
 ## [3.2.14] - 2022-10-18
 ### Fixed

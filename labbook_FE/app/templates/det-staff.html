@@ -3,37 +3,37 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Personnel") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Personnel") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row">
-                    <label for="lastname" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
                         <input type="text" name="lastname" id="lastname" value="{{ args['user_det']['lastname'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row mt-3">
-                    <label for="firstname" class="col-form-label col-3 text-right mt-2">{{ _("Prénom") }}</label>
+                <div class="form-group d-flex align-items-start mt-3 mt-3">
+                    <label for="firstname" class="form-label col-3 text-end mt-2 me-1">{{ _("Prénom") }}</label>
                     <div class="">					
                         <input type="text" name="firstname" id="firstname" value="{{ args['user_det']['firstname'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="email" class="col-form-label col-3 text-right mt-2">{{ _("Adresse email") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="email" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse email") }}</label>
                     <div>					
                         <input type="email" name="email" id="email" value="{{ args['user_det']['email'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Titre") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Titre") }}</label>
                     <div>					
-                        <select id="title" name="title" class="form-control">
+                        <select id="title" name="title" class="form-select">
                             <option value="0" {% if args['user_det']['title'] == 0  %} selected {% endif %}></option>  
                             <option value="260" {% if args['user_det']['title'] == 260 %} selected {% endif %}>{{ _("Monsieur") }}</option>
                             <option value="261" {% if args['user_det']['title'] == 261 %} selected {% endif %}>{{ _("Madame") }}</option>
@@ -43,53 +43,53 @@
                         </select>			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="initial" class="col-form-label col-3 text-right mt-2">{{ _("Initiales") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="initial" class="form-label col-3 text-end mt-2 me-1">{{ _("Initiales") }}</label>
                     <div>					
                         <input type="text" name="initial" id="initial" value="{{ args['user_det']['initial'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="birth" class="col-form-label col-3 text-right mt-2">{{ _("Date de naissance") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="birth" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
                     <div>					
                         <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['birth'] }}" name="birth" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="address" class="col-form-label col-3 text-right mt-2">{{ _("Adresse") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="address" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                     <div>					
                         <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['user_det']['address'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="phone" class="col-form-label col-3 text-right mt-2">{{ _("Numéro de téléphone") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="phone" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de téléphone") }}</label>
                     <div>					
                         <input type="text" name="phone" id="phone" value="{{ args['user_det']['phone'] }}" class="form-control">			
                     </div>
                 </div>
-                 <div class="form-group row">
-                    <label for="arrived" class="col-form-label col-3 text-right mt-2">{{ _("Date d'arrivée au laboratoire") }}</label>
+                 <div class="form-group d-flex align-items-start mt-3">
+                    <label for="arrived" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'arrivée au laboratoire") }}</label>
                     <div>					
                         <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['arrived'] }}" name="arrived" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="position" class="col-form-label col-3 text-right mt-2">{{ _("Position actuelle dans le laboratoire") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="position" class="form-label col-3 text-end mt-2 me-1">{{ _("Position actuelle dans le laboratoire") }}</label>
                     <div>					
                         <input type="text" name="position" id="position" value="{{ args['user_det']['position'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="cv" class="col-form-label col-3 text-right mt-2">{{ _("CV") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="cv" class="form-label col-3 text-end mt-2 me-1">{{ _("CV") }}</label>
                     <div>					
                         <textarea id="cv" name="cv" rows="4" cols="50" class="form-control">{{ args['user_det']['cv'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="offset-3 text-left upload-container">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <div class="offset-3 text-start upload-container">
                         <div>
                             <div>
-                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                     <input id="USCV" name="file" type="file" style="margin-bottom:4px"/>
                                 </div>
                             </div>
@@ -104,17 +104,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="diploma" class="col-form-label col-3 text-right mt-2">{{ _("Diplômes") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="diploma" class="form-label col-3 text-end mt-2 me-1">{{ _("Diplômes") }}</label>
                     <div>					
                         <textarea id="diploma" name="diploma" rows="4" cols="50" class="form-control">{{ args['user_det']['diploma'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="offset-3 text-left upload-container">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <div class="offset-3 text-start upload-container">
                         <div>
                             <div>
-                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                     <input id="USDI" name="file" type="file" style="margin-bottom:4px"/>
                                 </div>
                             </div>
@@ -129,17 +129,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="training" class="col-form-label col-3 text-right mt-2">{{ _("Formations continues") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="training" class="form-label col-3 text-end mt-2 me-1">{{ _("Formations continues") }}</label>
                     <div>					
                         <textarea id="training" name="training" rows="4" cols="50" class="form-control">{{ args['user_det']['training'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="offset-3 text-left upload-container">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <div class="offset-3 text-start upload-container">
                         <div>
                             <div>
-                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                     <input id="USTR" name="file" type="file" style="margin-bottom:4px"/>
                                 </div>
                             </div>
@@ -154,26 +154,26 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section de travail") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="section" class="form-label col-3 text-end mt-2 me-1">{{ _("Section de travail") }}</label>
                     <div>					
-                        <select id="section" name="section" class="form-control">
+                        <select id="section" name="section" class="form-select">
                             {% from 'macros.html' import select_section %}
                             {{ select_section(ihm['sections'], args['user_det']['section']) }}
                         </select>			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="last_eval" class="col-form-label col-3 text-right mt-2">{{ _("Dernière évaluation des compétences") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="last_eval" class="form-label col-3 text-end mt-2 me-1">{{ _("Dernière évaluation des compétences") }}</label>
                     <div>					
                         <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="{{ args['user_det']['last_eval'] }}" name="last_eval" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="offset-3 text-left upload-container">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <div class="offset-3 text-start upload-container">
                         <div>
                             <div>
-                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                     <input id="USEV" name="file" type="file" style="margin-bottom:4px"/>
                                 </div>
                             </div>
@@ -189,8 +189,8 @@
                     </div>
                 </div>
                     
-                <div class="form-group row">
-                    <label for="comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaires") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
                     <div>					
                         <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['user_det']['comment'] }}</textarea>
                     </div>
@@ -198,11 +198,11 @@
             </form>
             
             <div class="clearfix my-2">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>
@@ -363,17 +363,23 @@ function delete_file( type_ref, id_file )
 {
     if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
         $.ajax( 
         {
             type: "DELETE",
             url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,
             success: function(ret)
             {
+            $("#dial-wait").modal("hide") ;
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE document file") ;
+            $("#dial-wait").modal("hide") ;
             alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
             }
         } ) ;

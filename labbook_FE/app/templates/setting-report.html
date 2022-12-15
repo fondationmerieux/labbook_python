@@ -11,32 +11,32 @@
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des comptes rendus") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mt-2">{{ _("Type d'entête") }}</label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Type d'entête") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="header" value="1068" {% if args['entete'] == 1068 %} checked="checked" {% endif %}>&nbsp;{{ _("Complet") }}</input>
                     </label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="header" value="1069" {% if args['entete'] == 1069 %} checked="checked" {% endif %}>&nbsp;{{ _("Simple") }}</input>
                     </label>
                 </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mt-2">{{ _("Afficher les commentaires") }}</label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Afficher les commentaires") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="comment" value="1049" {% if args['commentaire'] == 1049 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                     </label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="comment" value="1051" {% if args['commentaire'] == 1051 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
                     </label>
                 </div>
             </form>
 
             <div class="clearfix mb-5">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 

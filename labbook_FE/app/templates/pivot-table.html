@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Tableau croisé dynamique") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/jquery-ui.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/pivot.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-ui.min.js') }}"></script>
@@ -23,10 +23,10 @@
                 </div>
                 <div class="panel-filter row mt-3">
                     <div class="col-3">
-                        <div class="form-group form-inline">
-                            <label for="prod_type" class="col-form-label col-3 text-right mt-2">{{ _("Dataset") }}</label>
+                        <div class="form-group d-flex align-items-start">
+                            <label for="prod_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Dataset") }}</label>
                             <div>
-                                <select name="dataset" id="dataset" class="form-control" onchange="dataset_choice(this);">
+                                <select name="dataset" id="dataset" class="form-select" onchange="dataset_choice(this);">
                                     <option value="1">{{ _("Patient") }}</option>
                                     <option value="2">{{ _("Dossier") }}</option>
                                     <option value="3">{{ _("Analyse") }}</option>
@@ -36,12 +36,12 @@
                         </div>
                     </div>
                     <div id="div-date" class="col-9 d-none">
-                        <div class="form-group form-inline">
-                            <label for="f_date_beg" class="col-form-label col-2 text-right">{{ _("Date du") }}</label>
+                        <div class="form-group d-flex align-items-start">
+                            <label for="f_date_beg" class="form-label col-2 text-end mt-2 me-1">{{ _("Date du") }}</label>
                             <div>
                                 <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
-                            <label for="f_date_end" class="col-form-label col-1 text-right">{{ _("au") }}</label>
+                            <label for="f_date_end" class="form-label text-end mt-2 mx-1">{{ _("au") }}</label>
                             <div>					
                                 <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
@@ -49,8 +49,8 @@
                     </div>
                     
                     <div class="col-12">
-                        <div class="float-right">
-                            <button type="button" onclick="load_items();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-database pr-1" /></i><span>{{ _("Chargement") }}</span></button>
+                        <div class="float-end">
+                            <button type="button" onclick="load_items();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-database pe-1" /></i><span>{{ _("Chargement") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -60,8 +60,8 @@
             </div>
 
             <div class="clearfix mb-5 mt-3">
-                <div class="float-right">
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3" disabled>
+                <div class="float-end">
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-3" disabled>
                 </div>
             </div>
         </div>
@@ -123,42 +123,38 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     }
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal( "show" ) ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax(
     {
-        $.ajax(
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/services/dataset/name/" + dataset_name,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success : function(data)
         {
-            type : 'POST',
-            url : "{{ session['server_ext'] }}/services/dataset/name/" + dataset_name,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success : function(data)
+        console.log( "success dataset " + dataset_name) ;
+
+            $("#dial-wait").modal("hide") ;
+        
+            $("#pivot-obj").pivotUI( data );
+
+            $("#btn_export").prop("disabled", false) ;
+        },
+        error: function(response)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (response.status == 404)
+            alert("{{ _("Aucune donnée à afficher") }}") ;
+            else
             {
-            console.log( "success dataset " + dataset_name) ;
-
-                $("#dial-wait").modal("hide") ;
-            
-                $("#pivot-obj").pivotUI( data );
-
-                $("#btn_export").prop("disabled", false) ;
-            },
-            error: function(response)
-            {
-                $("#dial-wait").modal("hide") ;
-
-                if (response.status == 404)
-                alert("{{ _("Aucune donnée à afficher") }}") ;
-                else
-                {
-                console.log("ERROR dataset " + dataset_name + "ret=" + JSON.stringify(response)) ;
-                alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
-                }
+            console.log("ERROR dataset " + dataset_name + "ret=" + JSON.stringify(response)) ;
+            alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
             }
-        } ) ;
+        }
     } ) ;
 }
 

@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Details demande d'analyses") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -24,16 +24,22 @@
                     <span class="rec-num" id="rec_num"></span>
                 </div>
                 {% endif %}
-                <div class="row">
-                    <div class="col-3 panel-heading ml-3">
+                <div class="form-group d-flex align-items-start ms-1 my-3">
+                    <label for="rec_num_int" class="form-label text-end mt-2 me-1" style="">{{ _("Numéro de dossier interne au laboratoire") }}</label>
+                    <div>
+                        <input id="rec_num_int" type="text" value="" maxlength="30" class="form-control">
+                    </div>
+                </div>
+                <div class="d-flex align-items-start">
+                    <div class="col-3 panel-heading ms-3">
                         <h3 class="panel-title">{{ _("Identité") }}</h3>
                     </div>
-                    <div class="col-5 panel-heading ml-3">
+                    <div class="col-5 panel-heading ms-3">
                         <h3 class="panel-title">{{ _("Prescription") }}</h3>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3">
+                <div class="d-flex align-items-start gy-3">
+                    <div class="col-3 ms-3">
                         <div class="col-12 mt-3">
                             {% if args['patient'] and args['patient']['code_patient'] %}
                             <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
@@ -71,36 +77,36 @@
                             {% endif %}
                         </div>
                         {% if entry == 'Y' %}
-                        <div class="ml-3 mt-3">
+                        <div class="ms-3 mt-3">
                             <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Modifier le dossier du patient") }}">
                         </div>
                         {% endif %}
                     </div>
 
                     <div class="col-5">
-                        <div class="col-12 mt-1">
-                            <div class="form-group row">
-                                <label for="date_record" class="col-form-label col-6 text-right">{{ _("Date de réception du dossier") }} * </label>
+                        <div class="col-12 ms-3 mt-1">
+                            <div class="form-group d-flex">
+                                <label for="date_record" class="form-label col-6 text-end me-1 mt-2">{{ _("Date de réception du dossier") }} * </label>
                                 {% if entry == 'Y' %}
                                 <input id="date_record" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_dos']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group row">
-                                <label for="date_prescr" class="col-form-label col-6 text-right">{{ _("Date de prescription") }} * </label>
+                            <div class="form-group d-flex mt-1">
+                                <label for="date_prescr" class="form-label col-6 text-end me-1 mt-2">{{ _("Date de prescription") }} * </label>
                                 {% if entry == 'Y' %}
                                 <input id="date_prescr" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group row">
-                                <label for="search_doctor" class="col-form-label col-3 text-right">{{ _("Prescripteur") }}</label>
+                            <div class="form-group d-flex align-items-start mt-1">
+                                <label for="search_doctor" class="form-label text-end ms-3 me-1 mt-2">{{ _("Prescripteur") }}</label>
                                 {% if entry == 'Y' %}
                                 <div>
-                                    <select id="search_doctor" style="width:320px"></select>
-                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                                    <select id="search_doctor" class="form-select" style="width:320px"></select>
+                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
                                 </div>
                                 {% else %}
                                     {% if args['doctor'] %}
@@ -111,13 +117,13 @@
                                     {% endif %}
                                 {% endif %}
                             </div>
-                            <div class="form-group row">
-                                <label class="col-form-label col-3 text-right mr-3">{{ _("Colis") }}</label>
+                            <div class="form-group d-flex align-items-start mt-2">
+                                <label class="form-label col-3 text-end me-3">{{ _("Colis") }}</label>
                                 {% if entry == 'Y' %}
-                                <label class="col-form-label text-right mr-3">
+                                <label class="form-label text-end me-3">
                                     <input type="radio" name="parcel" value="4" >&nbsp;{{ _("Oui") }}</input>
                                 </label>
-                                <label class="col-form-label text-right mr-3">
+                                <label class="form-label text-end me-3">
                                     <input type="radio" name="parcel" value="5" checked="checked">&nbsp;{{ _("Non") }}</input>
                                 </label>
                                 {% else %}
@@ -131,11 +137,11 @@
                                 {% endif %}
                             </div>
                             <div id="colis-group" class="form-group row" style="display:none;">
-                                <label class="col-form-label col-6 text-right" style="">{{ _("Identification du colis") }}</label>
+                                <label class="form-label col-6 text-end" style="">{{ _("Identification du colis") }}</label>
                                 <div>
                                     <input id="parcel_id" type="text" value="" maxlength="30" class="form-control" style="width: 240px;">
                                 </div>
-                                <label class="col-form-label col-6 text-right mt-2">{{ _("Date de réception du colis") }}</label>
+                                <label class="form-label col-6 text-end mt-2">{{ _("Date de réception du colis") }}</label>
                                 <div>
                                     <input  id="date_parcel" class="form-control mt-2" type="date" maxlength="10" size="10" value="" placeholder="" style="color:#888;width:160px;">
                                 </div>
@@ -146,22 +152,22 @@
             </form>
 
             <!-- Analyzes -->
-            <div class="panel-heading row ml-1">
+            <div class="panel-heading row ms-1">
                 <h3 class="panel-title">{{ _("Analyses et actes de prélèvement") }}</h3>
             </div>
             {% if entry == 'Y' %}
-            <div class="row ml-3 mt-3">
+            <div class="row ms-3 mt-3">
                 <div class="col-12">
-                    <div class="form-group row">
-                        <label class="col-form-label col-3 text-right">{{ _("Rechercher une analyse") }}</label>
+                    <div class="form-group d-flex align-items-start">
+                        <label class="form-label col-3 text-end me-1 mt-1">{{ _("Rechercher une analyse") }}</label>
                         <div>
-                            <select id="search_analysis" style="width:450px"></select>
+                            <select id="search_analysis" class="form-select" style="width:450px"></select>
                         </div>
                     </div>
                 </div>
             </div>
             {% endif %}
-            <div class="row ml-3 mt-3">
+            <div class="row ms-3 mt-3">
                 <span class="font-info">{{ _("Analyses") }}</span>
             </div>
             <form class="row justify-content-center mt-3" autocomplete="off">
@@ -170,7 +176,7 @@
                         <tr>
                             <th hidden>serial</th>
                             {% if entry == 'Y' %}
-                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
                             {% endif %}
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Nom") }}</th>
@@ -183,7 +189,7 @@
                 </table>
             </form> 
 
-            <div class="row ml-3 mt-3">
+            <div class="row ms-3 mt-3">
                 <span class="font-info">{{ _("Actes de prélèvement") }}</span>
             </div>
             <form class="row justify-content-center mt-3" autocomplete="off">
@@ -192,7 +198,7 @@
                         <tr>
                             <th hidden>serial</th>
                             {% if entry == 'Y' %}
-                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
                             {% endif %}
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Nom") }}</th>
@@ -207,55 +213,53 @@
             {% if session['pref_bill'] == '1' %}
             <form autocomplete="off">
                 <!-- Billing -->
-                <div class="panel-heading row ml-1 mt-2">
+                <div class="panel-heading row ms-1 mt-2">
                     <h3 class="panel-title">{{ _("Facturation") }}</h3>
                 </div>
-                <div class="row ml-3">
-                    <div class="form-group form-inline col-12 mt-3">
-                        <label class="col-form-label text-right mr-1">{{ _("Prix total") }}</label>
+                <div class="row ms-3">
+                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                        <label class="form-label text-end me-1 mt-1">{{ _("Prix total") }}</label>
                         {% if entry == 'Y' %}
                         <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control col-3" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                         {% else %}
                         <span class="font-info">{{ args['record']['prix'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group form-inline col-5 mt-3">
-                        <label class="col-form-label text-right mr-1">{{ _("Remise sur la facturation") }}</label>
+                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                        <label class="form-labeltext-end me-1 mt-1">{{ _("Remise sur la facturation") }}</label>
                         {% if entry == 'Y' %}
-                        <select id="discount" class="form-control col-6">
+                        <select id="discount" class="form-select w-auto">
                             {% from 'macros.html' import select_discount_bill %}
                             {{ select_discount_bill(ihm['discount_bill']) }}
                         </select>
                         {% else %}
                         <span class="font-info">{{ args['record']['remise'] }}</span>
                         {% endif %}
-                    </div>
-                    <div class="form-group form-inline col-4 mt-3">
-                        <label class="col-form-label text-right mr-1">{{ _("Pourcentage de la remise") }}</label>
+                        <label class="form-label text-end ms-3 me-1 mt-1">{{ _("Pourcentage de la remise") }}</label>
                         {% if entry == 'Y' %}
                         <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_discount=this.value;" onchange="change_per_discount(this);">
                         {% else %}
                         <span class="font-info">{{ args['record']['remise_pourcent'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group form-inline col-12 mt-3">
-                        <label class="col-form-label text-right mr-1">{{ _("Pourcentage assurance maladie / mutuelle") }}</label>
+                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                        <label class="form-label text-end me-1 mt-1">{{ _("Pourcentage assurance maladie / mutuelle") }}</label>
                         {% if entry == 'Y' %}
                         <input id="per_insurance" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_insurance=this.value;" onchange="change_per_insurance(this);">
                         {% else %}
                         <span class="font-info">{{ args['record']['assu_pourcent'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group form-inline col-12 mt-3">
-                        <label class="col-form-label text-right mr-1">{{ _("Reste à payer") }}</label>
+                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                        <label class="form-label text-end me-1 mt-1">{{ _("Reste à payer") }}</label>
                         {% if entry == 'Y' %}
                         <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                         {% else %}
                         <span class="font-info">{{ args['record']['a_payer'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group form-inline col-12 mt-3">
-                        <label class="col-form-label text-right mr-1">{{ _("Numéro de quittance") }}</label>
+                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                        <label class="form-label text-end me-1 mt-1">{{ _("Numéro de quittance") }}</label>
                         {% if entry == 'Y' %}
                         <input type="text" id="receipt_num" name="receipt_num" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
                         {% else %}
@@ -267,11 +271,11 @@
             {% endif %}
 
             <!-- Products -->
-            <div class="panel-heading row ml-1 mt-2">
+            <div class="panel-heading row ms-1 mt-2">
                 <h3 class="panel-title">{{ _("Produits pathologiques") }}</h3>
             </div>
             {% if entry == 'Y' %}
-            <div class="row ml-3 mt-3">
+            <div class="ms-3 mt-3">
                 <input type="button" onclick="new_prod();return false;" id="prod_new" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Ajouter un prélèvement") }}">
             </div>
             {% endif %}
@@ -281,7 +285,7 @@
                         <tr>
                             <th hidden>serial</th>
                             {% if entry == 'Y' %}
-                            <th class="text-left">{{ _("Action") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
                             {% endif %}
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Prod. pathol.") }} *</th>
@@ -298,10 +302,10 @@
 
             <!-- comments -->
             <form autocomplete="off">
-                <div class="panel-heading row ml-1 mt-2">
+                <div class="panel-heading row ms-1 mt-2">
                     <h3 class="panel-title">{{ _("Renseignements / Informations complémentaires") }}</h3>
                 </div>
-                <div class="row ml-3">
+                <div class="row ms-3">
                     <div class="col-7 mt-3">
                         {% if entry == 'Y' %}
                         <textarea id="comm" rows="5" cols="80" class="form-control"></textarea>
@@ -311,12 +315,12 @@
                     </div>
                 </div>
 
-                <div class="row mb-4 mt-3">
+                <div class="mb-4 mt-3">
                     <div class="col-12 clearfix">
-                        <div class="float-left" style="margin-left:0px;">
+                        <div class="float-start" style="margin-start:0px;">
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
-                        <div class="float-right mr-2">
+                        <div class="float-end me-2">
                             {% if entry == 'Y' %}
                             <input type="button" onclick="save_requests();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Valider") }}">
                             {% else %}
@@ -826,7 +830,7 @@ function del_product( id_data )
 
 function create_td(id, val, cls, style)
 {
-style = "font-size:14px;vertical-align:middle;padding-left:.3rem;padding-right:.3rem;" + style ; 
+style = "font-size:14px;vertical-align:middle;padding-start:.3rem;padding-end:.3rem;" + style ; 
 
 let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
              '<div>' + val + '</div></td>' ;
@@ -837,7 +841,7 @@ return tmp_td ;
 {% if entry == 'Y' %}
 function create_select(id, l_options, val_select, opt_empty)
 {
-let tmp_select = '<select class="form-control" style="font-size:14px;" id="' + id + '" onChange="change_data(this)">' ;
+let tmp_select = '<select class="form-select" style="font-size:14px;" id="' + id + '" onChange="change_data(this)">' ;
 
     if (opt_empty)
     tmp_select += '<option value="0"></option>' ;
@@ -1075,7 +1079,7 @@ $("input[type=radio][name=parcel]").change(function()
 {% endif %}
 
 {% if entry == 'Y' %}
-function save_requests() 
+function save_requests()
 {
 var id_user       = {{ session['user_id']|safe}} ;
 var user_role     = "{{ session['user_role']|safe }}"  ;
@@ -1097,6 +1101,8 @@ var receipt_num   = $("#receipt_num").val() ;
 var date_hosp     = "" ;
 var bill_num      = "" ;
 var stat          = 181 ;
+var rec_custody   = "N" ;
+var rec_num_int   = $("#rec_num_int").val() ;
 
     if (id_med == null || id_med == "")
     id_med = 0 ;
@@ -1194,196 +1200,194 @@ var stat          = 181 ;
                   '"date_hosp":"' + date_hosp + '", ' +
                   '"service_int":"", ' +
                   '"bed_num":0, ' +
-                  '"stat":' + stat + '}' ;
+                  '"stat":' + stat + ', ' +
+                  '"rec_custody":"' + rec_custody + '", ' +
+                  '"rec_num_int":"' + rec_num_int + '"}' ;
 
         // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
         $("#dial-wait").modal("show") ;
 
-        $("#dial-wait").off() ;
-
-        $("#dial-wait").on('shown.bs.modal', function () 
+        // Send record information
+        $.ajax( 
         {
-            // Send record information
-            $.ajax( 
+            // CREATE Record
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/record/det/0",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret_rec)
             {
-                // CREATE Record
-                type: "POST",
-                url: "{{ session['server_ext'] }}/services/record/det/0",
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                data: param,
-                success: function(ret_rec)
+            var id_rec = ret_rec.id_rec ;
+
+            var param_list_ana = '{ "list_ana":[';
+
+                // Add analysis
+                for( i in data_analysis )
                 {
-                var id_rec = ret_rec.id_rec ;
-
-                var param_list_ana = '{ "list_ana":[';
-
-                    // Add analysis
-                    for( i in data_analysis )
+                    if (data_analysis[i] != null)
                     {
-                        if (data_analysis[i] != null)
-                        {
-                            if (i > 0 && param_list_ana.slice(-1) != "[" )
-                            param_list_ana += ', ' ;
-
-                        var param_ana = '{ "id_owner":' + id_user + ', ' +
-                                          '"id_rec":' + id_rec  + ', ' +
-                                          '"id_ana":' + data_analysis[i].id_data + ', ' +
-                                          '"price":' + data_analysis[i].price + ', ' +
-                                          '"paid": 5, ' +
-                                          '"emer":' + data_analysis[i].emer + ', ' +
-                                          '"req":' + data_analysis[i].req + '}' ;
-
-                        param_list_ana += param_ana ;
-                        }
-                    }
-
-                    // Add samples
-                    for( i in data_samples )
-                    {
-                        if (data_samples[i] != null)
-                        {
+                        if (i > 0 && param_list_ana.slice(-1) != "[" )
                         param_list_ana += ', ' ;
 
-                        var param_samp = '{ "id_owner":' + id_user + ', ' +
-                                           '"id_rec":' + id_rec  + ', ' +
-                                           '"id_ana":' + data_samples[i].id_data + ', ' +
-                                           '"price":' + data_samples[i].price + ', ' +
-                                           '"paid": 5, ' +
-                                           '"emer": 5, ' +
-                                           '"req":' + data_samples[i].req + '}' ;
+                    var param_ana = '{ "id_owner":' + id_user + ', ' +
+                                      '"id_rec":' + id_rec  + ', ' +
+                                      '"id_ana":' + data_analysis[i].id_data + ', ' +
+                                      '"price":' + data_analysis[i].price + ', ' +
+                                      '"paid": 5, ' +
+                                      '"emer":' + data_analysis[i].emer + ', ' +
+                                      '"req":' + data_analysis[i].req + '}' ;
 
-                        param_list_ana += param_samp ;
-                        }
+                    param_list_ana += param_ana ;
                     }
-
-                param_list_ana += ' ] }';
-
-                    // Send analysis information
-                    $.ajax( 
-                    {
-                        // INSERT ANALYSIS REQUESTED
-                        type: "POST",
-                        url: "{{ session['server_ext'] }}/services/analysis/list/req",
-                        dataType: 'json',
-                        contentType: "application/json; charset=utf-8",
-                        data: param_list_ana,
-                        success: function(ret_ana)
-                        {
-                        var param_list_prod = '{ "list_prod":[ ';
-
-                            for( i in data_products )
-                            {
-                                if (data_products[i] != null)
-                                {
-                                    if (i > 0)
-                                    param_list_prod += ', ' ;
-
-                                var param_prod = '{ "id_owner":' + id_user + ', ' +
-                                                   '"code":"' + data_products[i].code + '", ' +
-                                                   '"date_samp":"' + data_products[i].dateSamp + '", ' +
-                                                   '"type_samp":"' + data_products[i].type + '", ' +
-                                                   '"qty":' + data_products[i].qty + ', ' +
-                                                   '"stat":' + data_products[i].stat + ', ' +
-                                                   '"id_rec":' + id_rec + ', ' +
-                                                   '"sampler":"' + data_products[i].sampler + '", ' +
-                                                   '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
-                                                   '"time_receipt":"", ' +
-                                                   '"comm":"' + data_products[i].comm + '", ' +
-                                                   '"locat_samp":"", ' +
-                                                   '"locat_samp_more":"", ' +
-                                                   '"location":""}' ;
-
-                                param_list_prod += param_prod ;
-                                }
-                            }
-
-                        param_list_prod += ' ] }';
-
-                            // Send product information
-                            $.ajax( 
-                            {
-                                // INSERT SAMPLES REQUESTED
-                                type: "POST",
-                                url: "{{ session['server_ext'] }}/services/product/list/req",
-                                dataType: 'json',
-                                contentType: "application/json; charset=utf-8",
-                                data: param_list_prod,
-                                success: function(ret_prod)
-                                {
-                                let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
-
-                                    // create in DB list of results to enter and corresponding validation
-                                    $.ajax(
-                                    {
-                                        type : "POST",
-                                        url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
-                                        dataType: 'json',
-                                        contentType: "application/json; charset=utf-8",
-                                        data: param_res,
-                                        success : function(response)
-                                        {
-                                        let param_stat = '{ "stat":182 }' ; 
-
-                                            // update record stat 181 to 182
-                                            $.ajax(
-                                            {
-                                                type : 'POST',
-                                                url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
-                                                dataType: 'json',
-                                                contentType: "application/json; charset=utf-8",
-                                                data: param_stat,
-                                                success : function(response)
-                                                {
-                                                    $("#dial-wait").modal("hide") ;
-
-                                                // Redirection to adminsitrative page
-                                                window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + id_rec ;
-                                                },
-                                                error: function(response)
-                                                {
-                                                    $("#dial-wait").modal("hide") ;
-
-                                                console.log("ERROR record stat") ;
-                                                alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
-                                                }
-                                            } ) ;
-                                        },
-                                        error: function(response)
-                                        {
-                                            $("#dial-wait").modal("hide") ;
-
-                                        console.log("ERROR result create") ;
-                                        alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
-                                        }
-                                    } ) ;
-                                },
-                                error: function(ret_prod)
-                                {
-                                    $("#dial-wait").modal("hide") ;
-
-                                console.log("ERROR product list req") ;
-                                alert("{{ _("Une erreur est survenue lors de l'enregistrement des prélèvements") }}") ;
-                                } 
-                            } ) ;
-                        },
-                        error: function(ret_ana)
-                        {
-                            $("#dial-wait").modal("hide") ;
-
-                        console.log("ERROR analysis list req") ;
-                        alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
-                        } 
-                    } ) ;
-                },
-                error: function(ret_rec)
-                {
-                    $("#dial-wait").modal("hide") ;
-
-                console.log("ERROR record det") ;
-                alert("{{ _("Une erreur est survenue lors de l'enregistrement du dossier") }}") ;
                 }
-            } ) ;
+
+                // Add samples
+                for( i in data_samples )
+                {
+                    if (data_samples[i] != null)
+                    {
+                    param_list_ana += ', ' ;
+
+                    var param_samp = '{ "id_owner":' + id_user + ', ' +
+                                       '"id_rec":' + id_rec  + ', ' +
+                                       '"id_ana":' + data_samples[i].id_data + ', ' +
+                                       '"price":' + data_samples[i].price + ', ' +
+                                       '"paid": 5, ' +
+                                       '"emer": 5, ' +
+                                       '"req":' + data_samples[i].req + '}' ;
+
+                    param_list_ana += param_samp ;
+                    }
+                }
+
+            param_list_ana += ' ] }';
+
+                // Send analysis information
+                $.ajax( 
+                {
+                    // INSERT ANALYSIS REQUESTED
+                    type: "POST",
+                    url: "{{ session['server_ext'] }}/services/analysis/list/req",
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    data: param_list_ana,
+                    success: function(ret_ana)
+                    {
+                    var param_list_prod = '{ "list_prod":[ ';
+
+                        for( i in data_products )
+                        {
+                            if (data_products[i] != null)
+                            {
+                                if (i > 0)
+                                param_list_prod += ', ' ;
+
+                            var param_prod = '{ "id_owner":' + id_user + ', ' +
+                                               '"code":"' + data_products[i].code + '", ' +
+                                               '"date_samp":"' + data_products[i].dateSamp + '", ' +
+                                               '"type_samp":"' + data_products[i].type + '", ' +
+                                               '"qty":' + data_products[i].qty + ', ' +
+                                               '"stat":' + data_products[i].stat + ', ' +
+                                               '"id_rec":' + id_rec + ', ' +
+                                               '"sampler":"' + data_products[i].sampler + '", ' +
+                                               '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
+                                               '"time_receipt":"", ' +
+                                               '"comm":"' + data_products[i].comm + '", ' +
+                                               '"locat_samp":"", ' +
+                                               '"locat_samp_more":"", ' +
+                                               '"location":""}' ;
+
+                            param_list_prod += param_prod ;
+                            }
+                        }
+
+                    param_list_prod += ' ] }';
+
+                        // Send product information
+                        $.ajax( 
+                        {
+                            // INSERT SAMPLES REQUESTED
+                            type: "POST",
+                            url: "{{ session['server_ext'] }}/services/product/list/req",
+                            dataType: 'json',
+                            contentType: "application/json; charset=utf-8",
+                            data: param_list_prod,
+                            success: function(ret_prod)
+                            {
+                            let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
+
+                                // create in DB list of results to enter and corresponding validation
+                                $.ajax(
+                                {
+                                    type : "POST",
+                                    url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
+                                    dataType: 'json',
+                                    contentType: "application/json; charset=utf-8",
+                                    data: param_res,
+                                    success : function(response)
+                                    {
+                                    let param_stat = '{ "stat":182 }' ; 
+
+                                        // update record stat 181 to 182
+                                        $.ajax(
+                                        {
+                                            type : 'POST',
+                                            url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
+                                            dataType: 'json',
+                                            contentType: "application/json; charset=utf-8",
+                                            data: param_stat,
+                                            success : function(response)
+                                            {
+                                                $("#dial-wait").modal("hide") ;
+
+                                            // Redirection to adminsitrative page
+                                            window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + id_rec ;
+                                            },
+                                            error: function(response)
+                                            {
+                                                $("#dial-wait").modal("hide") ;
+
+                                            console.log("ERROR record stat") ;
+                                            alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
+                                            }
+                                        } ) ;
+                                    },
+                                    error: function(response)
+                                    {
+                                        $("#dial-wait").modal("hide") ;
+
+                                    console.log("ERROR result create") ;
+                                    alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
+                                    }
+                                } ) ;
+                            },
+                            error: function(ret_prod)
+                            {
+                                $("#dial-wait").modal("hide") ;
+
+                            console.log("ERROR product list req") ;
+                            alert("{{ _("Une erreur est survenue lors de l'enregistrement des prélèvements") }}") ;
+                            } 
+                        } ) ;
+                    },
+                    error: function(ret_ana)
+                    {
+                        $("#dial-wait").modal("hide") ;
+
+                    console.log("ERROR analysis list req") ;
+                    alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
+                    } 
+                } ) ;
+            },
+            error: function(ret_rec)
+            {
+                $("#dial-wait").modal("hide") ;
+
+            console.log("ERROR record det") ;
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement du dossier") }}") ;
+            }
         } ) ;
     }
     else
@@ -1399,55 +1403,51 @@ let user_role = "{{ session['user_role']|safe }}"  ;
 let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // create in DB list of results to enter and corresponding validation
+    $.ajax(
     {
-        // create in DB list of results to enter and corresponding validation
-        $.ajax(
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_res,
+        success : function(response)
         {
-            type : 'POST',
-            url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param_res,
-            success : function(response)
-            {
-            let param_stat = '{ "stat":182 }' ; 
+        let param_stat = '{ "stat":182 }' ; 
 
-                // update record stat 181 to 182
-                $.ajax(
+            // update record stat 181 to 182
+            $.ajax(
+            {
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_stat,
+                success : function(response)
                 {
-                    type : 'POST',
-                    url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
-                    data: param_stat,
-                    success : function(response)
-                    {
-                        $("#dial-wait").modal("hide") ;
+                    $("#dial-wait").modal("hide") ;
 
-                    window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + {{ args['record']['id_data'] }} ;
-                    },
-                    error: function(response)
-                    {
-                        $("#dial-wait").modal("hide") ;
+                window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + {{ args['record']['id_data'] }} ;
+                },
+                error: function(response)
+                {
+                    $("#dial-wait").modal("hide") ;
 
-                    console.log("ERROR record stat") ;
-                    alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
-                    }
-                } ) ;
-            },
-            error: function(response)
-            {
-                $("#dial-wait").modal("hide") ;
+                console.log("ERROR record stat") ;
+                alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
+                }
+            } ) ;
+        },
+        error: function(response)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR result create") ;
-            alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
-            }
-        } ) ;
+        console.log("ERROR result create") ;
+        alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
+        }
     } ) ;
 }
 {% endif %}

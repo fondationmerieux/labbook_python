@@ -68,4 +68,9 @@
     {% endfor %}
 {%- endmacro %}
 
-
+{% macro select_type_record() -%}
+    <option value="0" selected=""></option>
+    <option value="E">{{ _("Externe") }}</option>
+    <option value="I">{{ _("Interne") }}</option>
+    <option value="G">{{ _("Garde") }}</option>
+{%- endmacro %}

@@ -53,21 +53,22 @@ class Patient:
 
         l_words = text.split(' ')
 
-        cond = 'id_data is not NULL'
+        cond = '(pat.id_data is not NULL'
 
         for word in l_words:
             cond = (cond +
-                    ' and (nom like "' + word + '%" or '
-                    'prenom like "' + word + '%" or '
-                    'code like "' + word + '%" or '
-                    'code_patient like "' + word + '%" or '
-                    'tel like "' + word + '%" or '
-                    'pat_phone2 like "' + word + '%") ')
+                    ' and pat.nom like "' + word + '%" or '
+                    'pat.prenom like "' + word + '%" or '
+                    'pat.code like "' + word + '%" or '
+                    'pat.code_patient like "' + word + '%" or '
+                    'pat.tel like "' + word + '%" or '
+                    'pat.pat_phone2 like "' + word + '%") ')
 
-        req = ('select id_data as id, nom, prenom, nom_jf, code, '
-               'date_format(ddn, %s) as ddn, code_patient '
-               'from sigl_03_data '
-               'where ' + cond + ' order by nom asc limit 1000')
+        req = ('select pat.id_data as id, pat.nom, pat.prenom, pat.nom_jf, pat.code, pat.tel as pat_phone1, '
+               'date_format(pat.ddn, %s) as ddn, pat.code_patient, pat.age, d_age_unit.label as age_unit, pat.pat_phone2 '
+               'from sigl_03_data as pat '
+               'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
+               'where ' + cond + ' order by pat.nom asc limit 1000')
 
         cursor.execute(req, (Constants.cst_isodate,))
 
@@ -245,14 +246,15 @@ class Patient:
         req = ('select pat.id_data as id_patient, pat.code, pat.code_patient as code_lab, pat.nom as lastname, '
                'pat.prenom as firstname, date_format(pat.ddn, %s) as birth, date_format(pat.ddn, "%Y") as birth_year, '
                'date_format(pat.ddn, "%m") as birth_month, date_format(pat.ddn, "%d") as birth_day, '
-               'pat.ddn_approx as birth_approx, d_sex.label as sex, pat.pat_midname as middle_name, '
-               'pat.nom_jf as maiden_name, nat.nat_name as nation, nat.nat_code as nat_code, '
-               'pat.pat_resident as resident, pat.cp as zipcode, pat.ville as city, pat.profession, '
-               'd_blood.label as blood_group, d_rhesus.label as blood_rhesus '
+               'pat.ddn_approx as birth_approx, pat.age, d_age_unit.label as age_unit, d_sex.label as sex, '
+               'pat.pat_midname as middle_name, pat.nom_jf as maiden_name, nat.nat_name as nation, '
+               'nat.nat_code as nat_code, pat.pat_resident as resident, pat.cp as zipcode, pat.ville as city, '
+               'pat.profession, d_blood.label as blood_group, d_rhesus.label as blood_rhesus '
                'from sigl_03_data as pat '
                'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
                'left join sigl_dico_data as d_blood on d_blood.id_data=pat.pat_blood_group '
                'left join sigl_dico_data as d_rhesus on d_rhesus.id_data=pat.pat_blood_rhesus '
+               'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
                'left join nationality as nat on nat.nat_ser=pat.pat_nation '
                'order by id_patient desc')
 

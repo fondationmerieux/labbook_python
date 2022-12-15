@@ -108,6 +108,16 @@ class PatientSearch(Resource):
             self.log.error(Logs.fileline() + ' : WARNING PatientSearch NOT FOUND')
             return compose_ret('', Constants.cst_content_type_json, 200)  # 200 if not select2 trigger an exception
 
+        Various.useLangPDF()
+
+        for pat in l_pats:
+            # Replace None by empty string
+            for key, value in list(pat.items()):
+                if pat[key] is None:
+                    pat[key] = ''
+                elif key == 'age_unit' and pat[key]:
+                    pat[key] = _(pat[key].strip())
+
         self.log.info(Logs.fileline() + ' : TRACE PatientSearch')
         return compose_ret(l_pats, Constants.cst_content_type_json)
 

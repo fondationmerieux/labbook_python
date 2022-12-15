@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Procédure") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -14,70 +14,70 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Procédure") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row mt-3">
-                    <label for="reference" class="col-form-label col-3 text-right mt-2">{{ _("Référence") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Référence") }}</label>
                     <div>					
                         <input type="text" name="reference" id="reference" value="{{ args['procedure']['reference'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row mt-3">
-                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Titre") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Titre") }}</label>
                     <div>					
                         <input type="text" name="title" id="title" value="{{ args['procedure']['title'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="search_writer" class="col-form-label col-3 text-right mr-1">{{ _("Rédacteur") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="search_writer" class="form-label col-3 text-end mt-2 me-1">{{ _("Rédacteur") }}</label>
                     <div>
-                        <select id="search_writer" style="width:400px"></select>
-                        <span class="ml-2">{{ args['procedure']['writer'] }}</span>
+                        <select id="search_writer" class="form-select" style="width:400px"></select>
+                        <span class="ms-2">{{ args['procedure']['writer'] }}</span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="search_auditor" class="col-form-label col-3 text-right mr-1">{{ _("Vérificateur") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="search_auditor" class="form-label col-3 text-end mt-2 me-1">{{ _("Vérificateur") }}</label>
                     <div>
-                        <select id="search_auditor" style="width:400px"></select>
-                        <span class="ml-2">{{ args['procedure']['auditor'] }}</span>
+                        <select id="search_auditor" class="form-select" style="width:400px"></select>
+                        <span class="ms-2">{{ args['procedure']['auditor'] }}</span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="search_approver" class="col-form-label col-3 text-right mr-1">{{ _("Approbateur") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="search_approver" class="form-label col-3 text-end mt-2 me-1">{{ _("Approbateur") }}</label>
                     <div>
-                        <select id="search_approver" style="width:400px"></select>
-                        <span class="ml-2">{{ args['procedure']['approver'] }}</span>
+                        <select id="search_approver" class="form-select" style="width:400px"></select>
+                        <span class="ms-2">{{ args['procedure']['approver'] }}</span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="date_insert" class="col-form-label col-3 text-right mt-2">{{ _("Date de création") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="date_insert" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de création") }}</label>
                     <div>					
                         <input id="date_insert" class="form-control" type="date" maxlength="10" size="10" value="{{ args['procedure']['date_insert'] }}" name="date_insert" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="date_apply" class="col-form-label col-3 text-right mt-2">{{ _("Date d'application") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="date_apply" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'application") }}</label>
                     <div>					
                         <input id="date_apply" class="form-control" type="date" maxlength="10" size="10" value="{{ args['procedure']['date_apply'] }}" name="date_apply" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="date_update" class="col-form-label col-3 text-right mt-2">{{ _("Date de modification") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="date_update" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de modification") }}</label>
                     <div>					
                         <input id="date_update" class="form-control" type="date" maxlength="10" size="10" value="{{ args['procedure']['date_update'] }}" name="date_update" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="section" class="col-form-label col-3 text-right mt-2">{{ _("Section d'application") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="section" class="form-label col-3 text-end mt-2 me-1">{{ _("Section d'application") }}</label>
                     <div>					
-                        <select id="section" name="section" class="form-control">
+                        <select id="section" name="section" class="form-select">
                             {% from 'macros.html' import select_section %}
                             {{ select_section(ihm['sections'], args['procedure']['section']) }}
                         </select>			
                     </div>
                 </div>
                 
-                <div class="form-group row">
-                    <div class="offset-3  text-left upload-container">
-                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <div class="offset-3  text-start upload-container">
+                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                             <input id="PROC" name="file" type="file" style="margin-bottom:4px"/>
                         </div>
                         <table class=table-responsive">
@@ -91,11 +91,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>
@@ -360,17 +360,23 @@ function delete_file( id_file )
 {
     if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
         $.ajax( 
         {
             type: "DELETE",
             url: "{{ session['server_ext'] }}/services/file/document/PROC/" + id_file,
             success: function(ret)
             {
+            $("#dial-wait").modal("hide") ;
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE document file") ;
+            $("#dial-wait").modal("hide") ;
             alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
             }
         } ) ;

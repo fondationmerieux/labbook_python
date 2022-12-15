@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Accueil") }}</title>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/Chart.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+    <script src="{{ url_for('static', filename='vendor/js/Chart.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -25,6 +25,11 @@
 
                     <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ session['pref_quality'] }});" class="list-group-item admin-qualite-{{ session['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
                 </div>
+                {% if args['stat_backup'] == 'OK' %}
+                <div class="text-end"><i class="fs-4 bi bi-database-check text-success me-1" title="{{ _("Dernière sauvegarde OK") }}"></i> <small>{{ args['date_backup'] }}</small></div>
+                {% else %}
+                <div class="text-end"><i class="fs-4 bi bi-database-x text-danger me-1" title="{{ _("Dernière sauvegarde") }}"></i> <small>{{ args['date_backup'] }}</small></div>
+                {% endif %}
             </div>
             {% else %}
             <div class="module">
@@ -55,14 +60,19 @@
                     <a href="{{ session['server_ext'] }}/new-req-int" class="list-group-item new-dos-int-sec">{{ _("Nouvelle demande hospitalisé") }}</a>
                     {% endif %}
                 </div>
+                {% if args['stat_backup'] == 'OK' %}
+                <div class="text-end"><i class="fs-4 bi bi-database-check text-success me-1" title="{{ _("Dernière sauvegarde OK") }}"></i> <small>{{ args['date_backup'] }}</small></div>
+                {% else %}
+                <div class="text-end"><i class="fs-4 bi bi-database-x text-danger me-1" title="{{ _("Dernière sauvegarde") }}"></i> <small{{ args['date_backup'] }}</small></div>
+                {% endif %}
             </div>
 
             <div class="home-stat row">
                 <div class="home-graph col-6">
-                    <h5 class="mr-5 pr-4">{{ _("Validations à effectuer") }}</h5>
+                    <h5 class="me-5 pe-4">{{ _("Validations à effectuer") }}</h5>
                     <canvas id="chart" width="350px" height="250px"></canvas>
                 </div>
-                <div class="home-activity col-6 text-left">
+                <div class="home-activity col-6 text-start">
                     <h5>{{ _("Activité du laboratoire") }}</h5>
                     <ul>
                         <li>{{ _("Dernier numéro utilisé") }} : <strong><span class="rec-num" id="num_rec"></span></strong></li>

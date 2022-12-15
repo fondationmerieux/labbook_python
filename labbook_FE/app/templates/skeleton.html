@@ -5,18 +5,17 @@
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
-    <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     {# <link href="{{ url_for('static', filename='vendor/css/jquery.dataTables.min.css') }}" media="screen, print" rel="stylesheet" type="text/css"> #}
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('labbook_css') }}?{{ rand }}" media="screen" rel="stylesheet" type="text/css">
 
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.6.0.min.js') }}" nonce="{{ session['nonce'] }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery.tablesorter.min.js') }}" nonce="{{ session['nonce'] }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/popper.min.js') }}" nonce="{{ session['nonce'] }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+    <script src="{{ url_for('static', filename='vendor/js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/js/jquery.tablesorter.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     {# TODO 01/04/2022 TEST with big database before to used it #}
-    {# <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery.dataTables.min.js') }}" nonce="{{ session['nonce'] }}"></script> #}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/app-labbook.js') }}?1" nonce="{{ session['nonce'] }}"></script>
+    {# <script src="{{ url_for('static', filename='vendor/js/jquery.dataTables.min.js') }}"></script> #}
+    <script src="{{ url_for('static', filename='js/app-labbook.js') }}?1" nonce="{{ session['nonce'] }}"></script>
     {% endblock %}
 </head>
 
@@ -26,7 +25,7 @@
         {% block header %}
         <header id="page-header" class="text-center">
             <div id="country-sel" class="btn-group" {% if locale == 'ar' %}style="left:0;right:auto;"{% endif %}>
-                <button type="button" class="btn btn-{{ session['user_role']|safe }} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-{{ session['user_role']|safe }} dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <strong>{{ session['lang_select'] }}</strong>
                     <span class="caret"></span>
                 </button>
@@ -52,7 +51,13 @@
                     <div class="role role-{{ session['user_role']|safe }}" {% if locale == 'ar' %}style="left:40px;right:auto;"{% endif %}>
                         <ul>
                             <li>
-                                <a href="{{ session['server_ext'] }}/disconnect" title="Changer d'utilisateur">{{ _('Déconnexion') }}</a>
+                                <a href="{{ session['server_ext'] }}/disconnect">{{ _('Déconnexion') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ session['server_ext'] }}/setting-det-user/{{ session['user_id'] }}">{{ _('Editer utilisateur') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ session['server_ext'] }}/setting-pwd-user/{{ session['user_id'] }}">{{ _('Editer mot de passe') }}</a>
                             </li>
                         </ul>
                     </div>
@@ -64,15 +69,15 @@
         {% block content %}
         <div id="content"></div>
         {% endblock %}
-        {% include 'popup_history.html' %}
+        {% include 'popup/popup_history.html' %}
         {% block footer %}
         <footer>
             <div class="version">{{ _("Version") }} : {{ session['version'] }} | <a href="{{ session['server_ext'] }}/contributors">{{ _("Contributeurs") }}</a></div>
         </footer>
         {% endblock %}
     </div><!-- close page -->
-    {% include 'popup_wait.html' %}
-    {% include 'popup_toast.html' %}
+    {% include 'popup/popup_wait.html' %}
+    {% include 'popup/popup_toast.html' %}
 </body>
 {% endblock %}
 

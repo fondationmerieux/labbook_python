@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Produits pathologiques") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}        
@@ -16,9 +16,9 @@
             <form autocomplete="off">
                 <div class="form-group form-inline">
                     <span>{{ _("Dossier") }} :</span>
-                    <span class="rec-num ml-1" id="rec_num"></span>
+                    <span class="rec-num ms-1" id="rec_num"></span>
                 </div>
-                <fieldset class="row border p-2 mt-3 mx-1">
+                <fieldset class="d-flex flex-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
                     <div class="col-12">
                         {% if args['patient'] and args['patient']['code_patient'] %}
@@ -51,11 +51,11 @@
             </form>
 
             <form autocomplete="off">
-                <fieldset class="row border p-2 mt-3 mx-1">
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Statut") }} *</div>
+                <fieldset class="border px-3 py-2 mt-3">
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Statut") }} *</div>
                         <div>
-                            <select name="prod_stat" id="prod_stat" class="form-control ml-1">
+                            <select name="prod_stat" id="prod_stat" class="form-select ms-1">
                                 <option value="0" selected="selected"></option>
                                 {% for prod_stat in ihm['products_statut'] %}
                                 <option value="{{ prod_stat['id_data'] }}" {% if args['product']['stat'] == prod_stat['id_data'] %} selected {% endif %}>{{ prod_stat['label'] }}</option>
@@ -63,16 +63,16 @@
                             </select>       
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Code prélèvement") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Code prélèvement") }}</div>
                         <div>
                             <input type="text" name="prod_code" id="prod_code" value="{{ args['product']['code'] }}" class="form-control">     
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Produit pathologique") }} *</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Produit pathologique") }} *</div>
                         <div>
-                            <select name="prod_type" id="prod_type" class="form-control ml-1">
+                            <select name="prod_type" id="prod_type" class="form-select ms-1">
                                 <option value="0" selected="selected"></option>
                                 {% for prod_type in ihm['products'] %}
                                 <option value="{{ prod_type['id_data'] }}" {% if args['product']['prod_type'] == prod_type['id_data'] %} selected {% endif %}>{{ prod_type['label'] }}</option>
@@ -80,34 +80,34 @@
                             </select>       
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Localisation prélèvement") }}</div>
+                    <div class="form-group form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Localisation prélèvement") }}</div>
                         <div>
                             <input type="text" name="prod_storage" id="prod_storage" value="{{ args['product']['storage'] }}" class="form-control">     
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Quantité") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Quantité") }}</div>
                         <div>
                             <input type="number" name="prod_qty" id="prod_qty" value="{{ args['product']['qty'] }}" class="form-control">       
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Date du prélèvement") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Date du prélèvement") }}</div>
                         <div>
                             <input id="prod_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['product']['prod_date'] }}" name="prod_date" style="color: #888;">      
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Préleveur") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Préleveur") }}</div>
                         <div>
                             <input type="text" name="prod_sampler" id="prod_sampler" value="{{ args['product']['sampler'] }}" class="form-control">     
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Lieu de prélèvement") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Lieu de prélèvement") }}</div>
                         <div>
-                            <select name="prod_location" id="prod_location" class="form-control ml-1">
+                            <select name="prod_location" id="prod_location" class="form-select ms-1">
                                 <option value="0" selected="selected"></option>
                                 {% for prod_location in ihm['products_location'] %}
                                 <option value="{{ prod_location['id_data'] }}" {% if args['product']['prod_location'] == prod_location['id_data'] %} selected {% endif %}>{{ prod_location['label'] }}</option>
@@ -115,26 +115,26 @@
                             </select>                                   
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Précision lieu") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Précision lieu") }}</div>
                         <div>
                             <input type="text" name="prod_location_accu" id="prod_location_accu" value="{{ args['product']['prod_location_accu'] }}" class="form-control">       
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Date de réception") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Date de réception") }}</div>
                         <div>
                             <input id="prod_receipt_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['product']['receipt_date'] }}" name="prod_receipt_date" style="color: #888;">       
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Heure de réception") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Heure de réception") }}</div>
                         <div>
                             <input id="prod_receipt_time" class="form-control" type="time" maxlength="10" size="10" value="{{ args['product']['receipt_time'] }}" step=1 name="prod_receipt_time" style="color: #888;">     
                         </div>
                     </div>
-                    <div class="form-group form-inline col-12">
-                        <div class="control-label col-2 text-right">{{ _("Commentaire") }}</div>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Commentaire") }}</div>
                         <div>
                             <input type="text" name="prod_comm" id="prod_comm" value="{{ args['product']['comment'] }}" class="form-control">       
                         </div>
@@ -144,10 +144,10 @@
 
             <div class="row mb-4 mt-3">
                 <div class="col-12 clearfix">
-                    <div class="float-left" style="margin-left:0px;">
+                    <div class="float-start" style="margin-start:0px;">
                         <input type="button" onclick="go_back();" id="btn_return" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Retour") }}">
                     </div>
-                    <div class="float-right mr-2">
+                    <div class="float-end me-2">
                         <input type="button" onclick="save_prod();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}">
                     </div>
                 </div>

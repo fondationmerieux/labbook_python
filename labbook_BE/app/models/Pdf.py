@@ -412,6 +412,60 @@ class Pdf:
         return True
 
     @staticmethod
+    def getPdfReportGlobal(filename, exclu, date_beg, date_end):
+        """Build a Grouped PDF Report
+
+        This function is call by biological-validationin group mode
+
+        Args:
+            exclu     (string): O/N exclude report already donwloaded
+            date_beg  (string): yyyy-mm-dd for the begin of the interval
+            date_end  (string): yyyy-mm-dd for the end of the interval
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        path = Constants.cst_path_tmp
+
+        l_file_rec = []
+
+        l_id_rec = Record.getRecordListGlobal(date_beg, date_end)
+
+        for id_rec in l_id_rec:
+            report = File.getFileReport(id_rec['id_rec'])
+
+            if not report:
+                Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGlobal report not found, id_rec=' + str(id_rec['id_rec']))
+
+            if exclu == 'N' or (exclu == 'O' and report['nb_download'] == 0):
+                l_file_rec.append(report['file'])
+
+        if l_file_rec:
+            try:
+                # merge list of file in one PDF
+                import pikepdf
+
+                pdf = pikepdf.Pdf.new()
+
+                for file_rec in l_file_rec:
+                    filepath = os.path.join(Constants.cst_report, file_rec)
+                    src = pikepdf.Pdf.open(filepath)
+                    pdf.pages.extend(src.pages)
+
+                filepath = os.path.join(path, filename)
+
+                pdf.save(filepath)
+            except Exception as err:
+                Pdf.log.error(Logs.fileline() + ' : getPdfReportGlobal failed, err=%s', err)
+                return False
+        else:
+            return False
+
+        return True
+
+    @staticmethod
     def getPdfHeader(full_header, report_status='&nbsp;'):
         """Start HTML page for PDF document
 
@@ -707,7 +761,7 @@ class Pdf:
         data['label']['email']      = str(_("Email"))
         data['label']['record']     = str(_("Dossier"))
         data['label']['code']       = str(_("Code"))
-        data['label']['born']       = str(_("Né le"))
+        data['label']['born']       = str(_("Né(e) le"))
         data['label']['admit']      = str(_("Admis le"))
         data['label']['at']         = str(_("en"))
         data['label']['bed']        = str(_("Lit"))
@@ -780,16 +834,18 @@ class Pdf:
                     data['report']['status'] = _("PARTIEL")
 
         data['report']['replace'] = ''
+        data['report']['replace_date'] = ''
         # regenerated a report
         if reedit == 'Y':
             data['report']['replace'] = _("ANNULE ET REMPLACE")
+            data['report']['replace_date'] = datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M")
 
             if id_rec > 0:
                 # update date of file
                 ret = File.updateReportDate(filename)
 
                 if not ret:
-                    Pdf.log.error(Logs.fileline() + ' : ERRROR getDataReport cant update date report')
+                    Pdf.log.error(Logs.fileline() + ' : ERROR getDataReport cant update date report')
                     return False
 
         data['report']['date_now'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
@@ -817,6 +873,9 @@ class Pdf:
             record['prescriber']        = 'Damien DOC'
             record['rc']                = 'commentaire dossier\n2eme ligne'
             record['id_patient']        = 0
+            record['rec_custody']       = 'Y'
+            record['rec_num_int']       = 'rec-num-int-123'
+            record['rec_date_vld']      = datetime.now()
             Various.useLangPDF()
 
         data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
@@ -825,6 +884,7 @@ class Pdf:
         data['rec']['num_y'] = str(record['num_dos_an'])
         data['rec']['num_m'] = str(record['num_dos_mois'])
         data['rec']['num_d'] = str(record['num_dos_jour'])
+        data['rec']['num_int'] = str(record['rec_num_int'])
 
         data['rec']['hosp']         = 'N'
         data['rec']['hosp_date']    = ''
@@ -834,8 +894,11 @@ class Pdf:
         data['rec']['presc_date'] = ''
         data['rec']['presc_name'] = ''
 
+        data['rec']['custody'] = 'N'
+
         if 'type' in record and record['type'] == 184:
             data['rec']['hosp'] = 'Y'
+            data['rec']['custody'] = str(record['rec_custody'])
 
             if record['date_hosp']:
                 data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], '%d/%m/%Y')
@@ -854,6 +917,11 @@ class Pdf:
 
         data['rec']['comm_title'] = _("Renseignements cliniques")
         data['rec']['comm'] = record['rc'].split("\n")
+
+        if record['rec_date_vld']:
+            data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], '%d/%m/%Y %H:%M')
+        else:
+            data['rec']['date_vld'] = ''
 
         # --- Patient details
         data['pat'] = {}
@@ -990,7 +1058,7 @@ class Pdf:
         data['l_data'] = []
         analysis       = {"fam_name": "", "ana_name": "", "l_res": [], "validate": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
-                          "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N"}
+                          "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N"}
 
         """
         [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME,
@@ -1001,7 +1069,8 @@ class Pdf:
                                   'prev_date': PREVIOUS_DATE,
                                   'prev_val': PREVIOUS_VALUE,
                                   'prev_unit': PREVIOUS_UNIT,
-                                  'bold_value': BOLD_VALUE}] }
+                                  'bold_value': BOLD_VALUE,
+                                  'highlight': highlight}] }
         }]
         """
 
@@ -1098,7 +1167,7 @@ class Pdf:
                             Various.useLangPDF()
 
                     # init new result
-                    tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N"}
+                    tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N", "highlight": "N"}
 
                     # Start to get previous result if exist
                     prev_date = ''
@@ -1142,7 +1211,7 @@ class Pdf:
                         if trans == 'Positif':
                             tmp_res['bold_value'] = 'Y'
 
-                        # specific response for patial report
+                        # specific response for partial report
                         if trans == 'en cours':
                             data['report']['status'] = _("PARTIEL")
 
@@ -1188,6 +1257,9 @@ class Pdf:
 
                                 if prev_res:
                                     prev_unit = unit['label']
+
+                    if res['var_highlight']:
+                        tmp_res['highlight'] = res['var_highlight']
 
                     tmp_res['prev_date'] = prev_date
                     tmp_res['prev_val']  = prev_res
@@ -1292,6 +1364,7 @@ class Pdf:
             result['prev_unit']  = ''
             result['comm']       = 'commentaire validation\n2eme ligne'.split('\n')
             result['bold_value'] = 'N'
+            result['highlight']  = 'Y'
 
             analysis['fam_name'] = _("Biochimie urinaire")
             analysis['ana_name'] = _("Bandelettes urinaires")

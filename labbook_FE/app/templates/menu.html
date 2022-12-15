@@ -7,7 +7,7 @@
                   session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-admin">
-                  <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] != 'Q' %}
@@ -18,6 +18,9 @@
                     {% endif %}
                     {% if session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'B' %}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/global-report">{{ _("Rapport global") }}</a>
                     {% endif %}
                     {% if session['user_role'] != 'P' %}
                     <div class="dropdown-divider nav-cust-divider"></div>
@@ -45,7 +48,7 @@
                   session['user_role'] == 'S' or session['user_role'] == 'SA' %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-report">
-                  <a class="nav-link dropdown-toggle report" href="#" id="navbardrop" data-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle report" href="#" id="navbardrop" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] != 'S' %}
@@ -73,7 +76,7 @@
                   session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
-                  <a class="nav-link dropdown-toggle setting" href="#" id="navbardrop" data-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle setting" href="#" id="navbardrop" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu setting-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
@@ -120,7 +123,7 @@
                   session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q') %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
-                  <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu qualite-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
@@ -148,13 +151,6 @@
                 </li>
                 <span class="nav-btn-txt">{{ _("Qualité") }}</span>
             </span>
-            {% endif %}
-
-            {% if session['user_role'] != 'A' and session['user_role'] != 'B' and session['user_role'] != 'TQ' and
-                  session['user_role'] != 'T' and session['user_role'] != 'TA' and session['user_role'] != 'TQ' and 
-                  session['user_role'] != 'S' and session['user_role'] != 'SA' and session['user_role'] != 'P' and
-                  session['user_role'] != 'Q' %}
-            <span>{{ _("Veuillez vous reconnecter") }}</span>
             {% endif %}
 
             <!-- Non conformity -->

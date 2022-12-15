@@ -11,12 +11,12 @@
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage du rapport épidémiologique") }}</span></h2>
 
-            <div class="row m-3">
+            <div class="d-flex m-3">
                 <div class="form-group">
-                    <div class="text-left upload-container">
+                    <div class="text-start upload-container">
                         <div>
                             <div>
-                                <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                     <input id="btn-upload" name="file" type="file" style="margin-bottom:4px"/>
                                 </div>
                             </div>
@@ -29,13 +29,13 @@
                         </table>
                     </div>
                 </div>
-                <div>
+                <div class="me-3 mt-1">
                     <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer la feuille de calcul") }}" onclick="upload_epidemio();">
                 </div>
             </div>
 
-            <div class="clearfix mb-5">
-                <div class="float-left" style="margin-left:0px;">
+            <div class="clearfix mt-3 mb-5">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
             </div>

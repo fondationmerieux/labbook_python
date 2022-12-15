@@ -11,29 +11,29 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Mise à jour du mot de passe") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row mt-3">
-                    <label for="new-pwd" class="col-form-label col-3 text-right mt-2">{{ _("Mot de passe") }} *</label>
+                <div class="form-group col-5 d-flex justify-content-end ms-1 mt-3">
+                    <label for="new-pwd" class="form-label text-end mt-2 me-1">{{ _("Mot de passe") }} *</label>
                     <div>					
                         <input type="password" name="new-pwd" id="new-pwd" value="" class="form-control">
                     </div>
                     <div>
-                        <span class="fa fa-eye mt-2 ml-2" onclick="see_pwd();"></span>
+                        <span class="bi bi-eye mt-2 ms-2" onclick="see_pwd();"></span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="renew-pwd" class="col-form-label col-3 text-right mt-2">{{ _("Confirmation du mot de passe") }} *</label>
-                    <div>					
+                <div class="form-group col-5 d-flex justify-content-end mt-3">
+                    <label for="renew-pwd" class="form-label text-end mt-2 me-1">{{ _("Confirmation du mot de passe") }} *</label>
+                    <div class="me-3">					
                         <input type="password" name="renew-pwd" id="renew-pwd" value="" class="form-control">
                     </div>
                 </div>                
             </form>
 
             <div class="mb-5">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
             <div class="clearfix"></div>

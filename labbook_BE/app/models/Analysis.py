@@ -249,7 +249,8 @@ class Analysis:
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.var_whonet, '
-               'link.var_qrcode, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, var.code_var '
+               'link.var_qrcode, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, '
+               ' var.code_var, var.var_highlight '
                'from sigl_07_data as var '
                'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
                'left join sigl_dico_data as d1 on d1.id_data=var.unite '
@@ -266,7 +267,8 @@ class Analysis:
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
-               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var, '
+               'var_highlight '
                'from sigl_07_data '
                'where id_data=%s')
 
@@ -280,7 +282,8 @@ class Analysis:
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
-               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var, '
+               'var_highlight '
                'from sigl_07_data '
                'where libelle=%s and type_resultat=%s and unite=%s and normal_min=%s and normal_max=%s and code_var=%s '
                'order by id_data asc limit 1')
@@ -296,11 +299,11 @@ class Analysis:
 
             cursor.execute('insert into sigl_07_data '
                            '(id_owner, libelle, description, unite, normal_min, normal_max, commentaire, type_resultat, '
-                           'unite2, formule_unite2, formule, accuracy, precision2, code_var) '
+                           'unite2, formule_unite2, formule, accuracy, precision2, code_var, var_highlight) '
                            'values '
                            '(%(id_owner)s, %(label)s, %(descr)s, %(unit)s, %(var_min)s, %(var_max)s, '
                            '%(comment)s, %(type_res)s, %(unit2)s, %(formula2)s, %(formula)s, '
-                           '%(accu)s, %(accu2)s, %(code_var)s)', params)
+                           '%(accu)s, %(accu2)s, %(code_var)s, %(var_highlight)s)', params)
 
             Analysis.log.info(Logs.fileline())
 
@@ -316,6 +319,7 @@ class Analysis:
                                            type_res=params['type_res'],
                                            var_min=params['var_min'],
                                            var_max=params['var_max'],
+                                           var_highlight=params['var_highlight'],
                                            comment=params['comment'],
                                            formula=params['formula'],
                                            unit=params['unit'],
@@ -341,7 +345,7 @@ class Analysis:
                            'unite=%(unit)s, normal_min=%(var_min)s, normal_max=%(var_max)s, '
                            'commentaire=%(comment)s, type_resultat=%(type_res)s, unite2=%(unit2)s, '
                            'formule_unite2=%(formula2)s, formule=%(formula)s, accuracy=%(accu)s, '
-                           'precision2=%(accu2)s, code_var=%(code_var)s '
+                           'precision2=%(accu2)s, code_var=%(code_var)s, var_highlight=%(var_highlight)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -636,7 +640,7 @@ class Analysis:
                'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, link.var_qrcode, '
                'var.id_data as id_var, var.libelle, var.description, var.unite, var.normal_min, var.normal_max, '
                'var.commentaire as var_comm, var.type_resultat, var.unite2, var.formule_unite2, var.formule, '
-               'var.accuracy, var.precision2, var.code_var '
+               'var.accuracy, var.precision2, var.code_var, var.var_highlight '
                'from sigl_05_data as ana '
                'left join sigl_05_07_data as link on link.id_refanalyse=ana.id_data '
                'left join sigl_07_data as var on var.id_data=link.id_refvariable '
@@ -650,24 +654,29 @@ class Analysis:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_analysis, rec.id_patient, d_type.label as type, '
+        req = ('select rec.id_data as id_analysis, , rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
-               'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
-               'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
+               'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
+               'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
+               'rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
-               'ana.code as analysis_code, ana.nom as analysis_name, d_fam.label as analysis_familly '
+               'ana.code as analysis_code, ana.nom as analysis_name, d_fam.label as analysis_familly, '
+               'date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
                'inner join sigl_dico_data as d_fam on d_fam.id_data=ana.famille and ana.famille > 0 '
+               'left join sigl_08_data as doctor on doctor.id_data=rec.med_prescripteur '
                'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
+               'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
+               'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
                'where rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 
-        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()

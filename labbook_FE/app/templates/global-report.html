@@ -1,0 +1,106 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Rapport global") }}</title>
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport global") }}</span></h2>
+            <div class="ms-1 mt-3">{{ _("Téléchargement de rapports d'analyse en un seul fichier") }}</div>
+            <form>
+                <div class="form-group d-flex align-items-start ms-1 my-3">
+                    <label for="date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }} </label>
+                    <div>					
+                        <input id="date_beg" class="form-control" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
+                    </div>
+                    <label for="date_end" class="form-label text-end ms-3 mt-2 me-1"> {{ _("au") }} </label>
+                    <div class="me-3">					
+                        <input id="date_end" class="form-control" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
+                    </div>
+                    <label for="exclu" class="form-label text-end ms-3 me-1 mt-1">{{ _("Exclure ceux déjà téléchargés") }}</label>
+                    <div>
+                        <input type="checkbox" id="exclu" name="exclu" class="mt-2" value="4" {% if args and args['urgent'] == 4 %} checked="checked"{% endif %}>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="float-start" style="margin-start:0px;">
+                        <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    </div>
+                    <div class="float-end me-2" style="margin-start:0px;">
+                        <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Récupérer les données") }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function download_report()
+{
+var date_beg = $("#date_beg").val() ;
+var date_end = $("#date_end").val() ;
+var exclu = "N" ;
+
+    if ( $("#exclu").is(":checked") )
+    exclu = "O" ;
+
+var filename = "global-reports_" + date_beg + "_" + date_end + ".pdf" ;
+
+var param = '{"filename": "' + filename + '", "exclu":"' + exclu + '", "date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/global",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultat à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage" ;
+}
+
+$( document ).ready( function()
+{
+let year  = new Date().getFullYear() ;
+let month = new Date().getMonth() + 1 ;
+
+let date_beg = year + '-' + month + "-01" ;
+
+    $("#date_beg").val( date_beg ) ;
+    $("#date_end").val( "{{ now|date_now }}" ) ;
+} ) ;
+</script>
+{% endblock %}

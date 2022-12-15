@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Rapport statistique") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -15,24 +15,24 @@
                 <fieldset class="row border mx-1 p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
                         <div class="col-3">
-                            <div class="form-group row">
-                                <label for="f_date_beg" class="col-form-label col-4 text-right">{{ _("Date du") }}</label>
+                            <div class="form-group d-flex align-items-start mt-3">
+                                <label for="f_date_beg" class="form-label col-4 text-end mt-2 me-1">{{ _("Date du") }}</label>
                                 <div>
                                     <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                                 </div>
                             </div>
                         </div>
                         <div class="col-3">
-                            <div class="form-group row">
-                                <label for="f_date_end" class="col-form-label col-2 text-right">{{ _("au") }}</label>
+                            <div class="form-group d-flex align-items-start mt-3">
+                                <label for="f_date_end" class="form-label text-end mt-2 mx-1">{{ _("au") }}</label>
                                 <div>					
                                     <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="float-right">
-                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            <div class="float-end">
+                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                             </div>
                         </div>
                 </fieldset>
@@ -69,7 +69,7 @@
                 </fieldset>
             </form>
 
-            <div class="float-right mt-3 mb-5">
+            <div class="float-end mt-3 mb-5">
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div>
 
@@ -92,34 +92,30 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/report/stat",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        data_stats = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/report/stat",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-            {
-            data_stats = data ;
- 
-            display_data() ;
+        display_data() ;
 
-                $("#dial-wait").modal("hide") ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR report stat") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
-        } ) ;
+        console.log("ERROR report stat") ;
+        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+        }
     } ) ;
 }
 
@@ -241,12 +237,12 @@ let val_6 = [] ;
     }
 
 // init line of table
-let tr_1 = '<tr><td class="text-left font-info">{{ _("Masculin") }}</td>' ;
-let tr_2 = '<tr><td class="text-left font-info">{{ _("Féminin") }}</td>' ;
-let tr_3 = '<tr><td class="text-left font-info">{{ _("Inconnu") }}</td>' ;
-let tr_4 = '<tr><td class="text-left font-info">{{ _("Interne") }}</td>' ;
-let tr_5 = '<tr><td class="text-left font-info">{{ _("Externe") }}</td>' ;
-let tr_6 = '<tr><td class="text-left font-info">{{ _("Total") }}</td>' ;
+let tr_1 = '<tr><td class="text-start font-info">{{ _("Masculin") }}</td>' ;
+let tr_2 = '<tr><td class="text-start font-info">{{ _("Féminin") }}</td>' ;
+let tr_3 = '<tr><td class="text-start font-info">{{ _("Inconnu") }}</td>' ;
+let tr_4 = '<tr><td class="text-start font-info">{{ _("Interne") }}</td>' ;
+let tr_5 = '<tr><td class="text-start font-info">{{ _("Externe") }}</td>' ;
+let tr_6 = '<tr><td class="text-start font-info">{{ _("Total") }}</td>' ;
 
     // prepare columns age interval
     for( i = 0; i < len_data; i++ )
@@ -308,12 +304,12 @@ let tot_rec = 0 ;
         if ( ident == "" )
         ident = "{{ _("Non renseigné") }}" ;
 
-    res += '<tr><td class="text-left font-info">' + ident + '</td>' +
-           '<td class="text-right">' + nb_rec + '</td></tr>' ;
+    res += '<tr><td class="text-start font-info">' + ident + '</td>' +
+           '<td class="text-end">' + nb_rec + '</td></tr>' ;
     }
 
-    res += '<tr><td class="text-left font-info">{{ _("Total") }}</td>' +
-           '<td class="text-right">' + tot_rec + '</td></tr>' ;
+    res += '<tr><td class="text-start font-info">{{ _("Total") }}</td>' +
+           '<td class="text-end">' + tot_rec + '</td></tr>' ;
 
     $("#tbody_stat_prescr").append(res) ;
 }
@@ -336,12 +332,12 @@ let tot_prod = 0 ;
         if ( ident == "" )
         ident = "{{ _("Non renseigné") }}" ;
 
-    res += '<tr><td class="text-left font-info">' + ident + '</td>' +
-           '<td class="text-right">' + nb_prod + '</td></tr>' ;
+    res += '<tr><td class="text-start font-info">' + ident + '</td>' +
+           '<td class="text-end">' + nb_prod + '</td></tr>' ;
     }
 
-res += '<tr><td class="text-left font-info">{{ _("Total") }}</td>' +
-       '<td class="text-right">' + tot_prod + '</td></tr>' ;
+res += '<tr><td class="text-start font-info">{{ _("Total") }}</td>' +
+       '<td class="text-end">' + tot_prod + '</td></tr>' ;
 
     $("#tbody_stat_sampler").append(res) ;
 }
@@ -364,12 +360,12 @@ let tot_prod = 0 ;
         if ( product == "" )
         ident = "{{ _("Non renseigné") }}" ;
 
-    res += '<tr><td class="text-left font-info">' + product + '</td>' +
-           '<td class="text-right">' + nb_prod + '</td></tr>' ;
+    res += '<tr><td class="text-start font-info">' + product + '</td>' +
+           '<td class="text-end">' + nb_prod + '</td></tr>' ;
     }
 
-res += '<tr><td class="text-left font-info">{{ _("Total") }}</td>' +
-       '<td class="text-right">' + tot_prod + '</td></tr>' ;
+res += '<tr><td class="text-start font-info">{{ _("Total") }}</td>' +
+       '<td class="text-end">' + tot_prod + '</td></tr>' ;
 
     $("#tbody_stat_product").append(res) ;
 }
@@ -383,46 +379,42 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "statistic"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
-            
-            let month = today.getMonth() + 1 ;
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "statistic_" + today + ".pdf" ;
+        let filename = "statistic_" + today + ".pdf" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

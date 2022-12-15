@@ -16,32 +16,32 @@
                 </div>
                 <div class="panel-filter row mt-3">
                     <div class="col-4">
-                        <div class="form-group row">
-                            <label for="name" class="col-form-label col-3 text-right mt-2">{{ _("Nom") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>					
                                 <input type="text" name="name" id="name" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="form-group row">
-                            <label for="label" class="col-form-label col-3 text-right mt-2">{{ _("Libellé") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="label" class="form-label col-3 text-end mt-2 me-1">{{ _("Libellé") }}</label>
                             <div>					
                                 <input type="text" name="label" id="label" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
                     <div class="col-4">
-                       <div class="form-group row">
-                            <label for="code" class="col-form-label col-3 text-right mt-2">{{ _("Code") }}</label>
+                       <div class="form-group d-flex align-items-start mt-3">
+                            <label for="code" class="form-label col-3 text-end mt-2 me-1">{{ _("Code") }}</label>
                             <div>					
                                 <input type="text" name="code" id="code" value="" class="form-control cnx_trigger">			
                             </div>
                         </div> 
                     </div>
-                    <div class="col-12">
-                        <div class="float-right">
-                            <button type="button" onclick="filter_dicts();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                    <div class="col-12 mt-3">
+                        <div class="float-end">
+                            <button type="button" onclick="filter_dicts();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -64,9 +64,9 @@
                     <thead>
                         <tr>
                             <th class="col-1" hidden>{{ _("serial") }}</th>
-                            <th class="d-inline-block col-1 text-left">{{ _("Action") }}</th>
-                            <th class="d-inline-block col-3 text-left cursor-act">{{ _("Nom") }}</th>
-                            <th class="d-inline-block col-8 text-left cursor-act">{{ _("Description") }}</th>
+                            <th class="d-inline-block col-1 text-start">{{ _("Action") }}</th>
+                            <th class="d-inline-block col-3 text-start cursor-act">{{ _("Nom") }}</th>
+                            <th class="d-inline-block col-8 text-start cursor-act">{{ _("Description") }}</th>
                     </thead>
                     <tbody id="tbody_dicts">
                     </tbody>
@@ -82,11 +82,11 @@
             </div>
 
             <div class="clearfix mb-5">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="add_dict();" id="btn_add" value="{{ _("Ajouter un dictionnaire") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="add_dict();" id="btn_add" value="{{ _("Ajouter un dictionnaire") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -113,36 +113,32 @@ let param = '{ "name":"' + name + '", ' +
               '"code":"' + code + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/dict/list" ,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+       {
+       data_dicts = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-           type: "POST",
-           url: "{{ session['server_ext'] }}/services/dict/list" ,
-           dataType: 'json',
-           contentType: "application/json; charset=utf-8",
-           data: param,
-           success: function(data)
-           {
-           data_dicts = data ;
+       p_max = Math.ceil( data.length / p_step ) ;
 
-           p_max = Math.ceil( data.length / p_step ) ;
+       display_dict( 1 ) ;
 
-           display_dict( 1 ) ;
+            $("#dial-wait").modal("hide") ;
+       },
+       error: function(data)
+       {
+            $("#dial-wait").modal("hide") ;
 
-                $("#dial-wait").modal("hide") ;
-           },
-           error: function(data)
-           {
-                $("#dial-wait").modal("hide") ;
-
-           console.log("ERROR dict list") ;
-           alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-           }
-        } ) ;
+       console.log("ERROR dict list") ;
+       alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+       }
     } ) ;
 }
 
@@ -180,7 +176,7 @@ $("#list_dicts_total").html( data_len ) ;
     {
     let menu_act = "<nav class=\"\">" +
                    "<ul class=\"navbar-nav\">" +
-                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
+                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-det-dict/" + data_dicts[i].key + "\">{{ _("Editer") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_dict('" + data_dicts[i].key + "');\">{{ _("Supprimer") }}</a>";
@@ -191,8 +187,8 @@ $("#list_dicts_total").html( data_len ) ;
 
     res += "<tr class=\"d-flex\"><td class=\"col-1\" hidden><div>" + data_dicts[i].id_data + "</div></td>" +
            "<td class=\"col-1\"><div>" + menu_act + "</div></td>" +
-           "<td class=\"col-3\"><div class=\"text-left\">" + data_dicts[i].name + "</div></td>" +
-           "<td class=\"col-8\"><div class=\"text-left\">" + data_dicts[i].dico_descr + "</div></td></tr>" ;
+           "<td class=\"col-3\"><div class=\"text-start\">" + data_dicts[i].name + "</div></td>" +
+           "<td class=\"col-8\"><div class=\"text-start\">" + data_dicts[i].dico_descr + "</div></td></tr>" ;
     }
 {% endif %}
 

@@ -3,11 +3,10 @@
     <title>{{ _("LabBook") }}</title>
     <meta charset="utf-8">
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
-    <link href="{{ url_for('static', filename='vendor/css/font-awesome.min.css') }}" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('labbook_css') }}?0" media="screen" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/jquery-3.6.0.min.js') }}" nonce="{{ session['nonce'] }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/bootstrap.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+    <script src="{{ url_for('static', filename='vendor/js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
 </head>
 

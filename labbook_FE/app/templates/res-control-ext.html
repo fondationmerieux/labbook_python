@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Résultats du contrôle externe") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -12,31 +12,31 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Résultats du contrôle externe") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row">
-                    <label for="cte_date" class="col-form-label col-3 text-right mt-2">{{ _("Date du contrôle") }} *</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="cte_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date du contrôle") }} *</label>
                     <div>					
                         <input id="cte_date" class="form-control" type="datetime-local" step="60" value="{{ args['result']['cte_date'] }}" name="cte_date" style="color: #888;">
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="cte_organizer" class="col-form-label col-3 text-right mt-2">{{ _("Fournisseur") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="cte_organizer" class="form-label col-3 text-end mt-2 me-1">{{ _("Fournisseur") }}</label>
                     <div>					
                         <input id="cte_organizer" name="cte_organizer" type="text" maxlength="255" class="form-control" value="{{ args['result']['cte_organizer'] }}" />
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="cte_contact" class="col-form-label col-3 text-right mt-2">{{ _("Contact du fournisseur") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="cte_contact" class="form-label col-3 text-end mt-2 me-1">{{ _("Contact du fournisseur") }}</label>
                     <div>					
                         <textarea id="cte_contact" name="cte_contact" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cte_contact'] }}</textarea>
                     </div>
                 </div>
                 
-                <div class="form-group row">
-                    <label for="cte_conform" class="col-form-label col-3 text-right mt-2">{{ _("Résultats du contrôle") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="cte_conform" class="form-label col-3 text-end mt-2 me-1">{{ _("Résultats du contrôle") }}</label>
                     <div>					
-                        <select id="cte_conform" class="form-control">
+                        <select id="cte_conform" class="form-select">
                             <option value="" {% if not args['result']['cte_conform'] or args['result']['cte_conform'] == "" %} selected {% endif %}></option>
                             <option value="Y" {% if args['result']['cte_conform'] == "Y" %} selected {% endif %}>{{ _("Conforme") }}</option>
                             <option value="N" {% if args['result']['cte_conform'] == "N" %} selected {% endif %}>{{ _("Non conforme") }}</option>
@@ -45,17 +45,17 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="cte_comment" class="col-form-label col-3 text-right mt-2">{{ _("Commentaire") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="cte_comment" class="form-label col-3 text-end mt-2">{{ _("Commentaire") }}</label>
                     <div>					
                         <textarea id="cte_comment" name="cte_comment" rows="5" cols="50" maxlength="255" class="form-control">{{ args['result']['cte_comment'] }}</textarea>
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="CTRL" class="col-form-label col-3 text-right mt-2">{{ _("Compte rendu") }}</label>
-                    <div class="text-left upload-container">
-                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="CTRL" class="form-label col-3 text-end mt-2 me-1">{{ _("Compte rendu") }}</label>
+                    <div class="text-start upload-container">
+                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                             <input id="CTRL" name="file" type="file" style="margin-bottom:4px"/>
                         </div>
                         <table class=table-responsive">
@@ -80,11 +80,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div><!-- close main -->

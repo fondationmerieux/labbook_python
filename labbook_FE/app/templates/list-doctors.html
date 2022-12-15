@@ -16,44 +16,44 @@
                 </div>
                 <div class="panel-filter row mt-3">
                     <div class="col-4">
-                        <div class="form-group row">
-                            <label for="code" class="col-form-label col-3 text-right mt-2">{{ _("Code") }}</label>
+                        <div class="form-group d-flex align-items-start">
+                            <label for="code" class="form-label col-3 text-end mt-2 me-1">{{ _("Code") }}</label>
                             <div>					
                                 <input type="text" name="code" id="code" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="form-group row">
-                            <label for="lastname" class="col-form-label col-4 text-right mt-2">{{ _("Nom") }}</label>
+                        <div class="form-group d-flex align-items-start">
+                            <label for="lastname" class="form-label col-4 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>					
                                 <input type="text" name="lastname" id="lastname" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="firstname" class="col-form-label col-4 text-right mt-2">{{ _("Prénom") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="firstname" class="form-label col-4 text-end mt-2 me-1">{{ _("Prénom") }}</label>
                             <div class="">					
                                 <input type="text" name="firstname" id="firstname" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="form-group row">
-                            <label for="service" class="col-form-label col-3 text-right mt-2">{{ _("Service") }}</label>
+                        <div class="form-group d-flex align-items-start">
+                            <label for="service" class="form-label col-3 text-end mt-2 me-1">{{ _("Service") }}</label>
                             <div>					
                                 <input type="text" name="service" id="service" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="city" class="col-form-label col-3 text-right mt-2">{{ _("Ville") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="city" class="form-label col-3 text-end mt-2 me-1">{{ _("Ville") }}</label>
                             <div class="">					
                                 <input type="text" name="city" id="city" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="float-right">
-                            <button type="button" onclick="filter_doctors();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                    <div class="col-12 mt-3">
+                        <div class="float-end">
+                            <button type="button" onclick="filter_doctors();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -76,19 +76,19 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-left">{{ _("Action") }}</th>
-                            <th class="text-left cursor-act">{{ _("Code") }}</th>
-                            <th class="text-left cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-left cursor-act">{{ _("Prénom") }}</th>
-                            <th class="text-left cursor-act">{{ _("Initiale") }}</th>
-                            <th class="text-left cursor-act">{{ _("Lieu trav.") }}</th>
-                            <th class="text-left cursor-act">{{ _("Service") }}</th>
-                            <th class="text-left cursor-act">{{ _("Adresse") }}</th>
-                            <th class="text-left cursor-act">{{ _("Ville") }}</th>
-                            <th class="text-left cursor-act">{{ _("Tél. fixe") }}</th>
-                            <th class="text-left cursor-act">{{ _("Mobile") }}</th>
-                            <th class="text-left cursor-act">{{ _("Fax") }}</th>
-                            <th class="text-left cursor-act">{{ _("Email") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start cursor-act">{{ _("Code") }}</th>
+                            <th class="text-start cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-start cursor-act">{{ _("Prénom") }}</th>
+                            <th class="text-start cursor-act">{{ _("Initiale") }}</th>
+                            <th class="text-start cursor-act">{{ _("Lieu trav.") }}</th>
+                            <th class="text-start cursor-act">{{ _("Service") }}</th>
+                            <th class="text-start cursor-act">{{ _("Adresse") }}</th>
+                            <th class="text-start cursor-act">{{ _("Ville") }}</th>
+                            <th class="text-start cursor-act">{{ _("Tél. fixe") }}</th>
+                            <th class="text-start cursor-act">{{ _("Mobile") }}</th>
+                            <th class="text-start cursor-act">{{ _("Fax") }}</th>
+                            <th class="text-start cursor-act">{{ _("Email") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_doctors">
@@ -105,13 +105,13 @@
             </div>
 
             <div class="clearfix mb-5">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-3">
+                <div class="float-end">
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
                     {% if session['user_role'] != 'P' %}
-                    <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                    <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
@@ -143,36 +143,32 @@ let param = '{ "code":"' + code + '", ' +
             '"city":"' + city  + '"}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal( "show" ) ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/doctor/list",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            data_doctors = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/doctor/list",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-                {
-                data_doctors = data ;
+            p_max = Math.ceil( data.length / p_step ) ;
 
-                p_max = Math.ceil( data.length / p_step ) ;
+            display_doctor( 1 ) ;
 
-                display_doctor( 1 ) ;
+                $("#dial-wait").modal("hide") ;
+            },
+        error: function(data)
+            {
+                 $("#dial-wait").modal("hide") ;
 
-                    $("#dial-wait").modal("hide") ;
-                },
-            error: function(data)
-                {
-                     $("#dial-wait").modal("hide") ;
-
-                console.log("ERROR doctor list") ;
-                alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-                }
-        } ) ;
+            console.log("ERROR doctor list") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+            }
     } ) ;
 }
 
@@ -210,7 +206,7 @@ $("#list_doctors_total").html( data_len ) ;
     {
     let menu_act = "<nav class=\"\">" +
                    "<ul class=\"navbar-nav\">" +
-                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-toggle=\"dropdown\"></a>" +
+                   "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + data_doctors[i].id_data + "\">{{ _("Editer") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_doctors[i].id_data + ")\">{{ _("Supprimer") }}</a>";   
@@ -221,18 +217,18 @@ $("#list_doctors_total").html( data_len ) ;
 
     res += "<tr><td hidden><div>" + data_doctors[i].id_data + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].code + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].lastname + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].firstname + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].initial + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].facility + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].service + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].address + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].city + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].phone + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].mobile + "</div></td>" +
-           "<td><div class=\"text-left\">" + data_doctors[i].fax + "</div></td>" +
-           "<td><div class=\"text-left\">" + link_email + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + data_doctors[i].code + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].lastname + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].firstname + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].initial + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].facility + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].service + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].address + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].city + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].phone + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].mobile + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_doctors[i].fax + "</div></td>" +
+           "<td><div class=\"text-start\">" + link_email + "</div></td></tr>" ;
     }
 {% endif %}
 
@@ -251,6 +247,10 @@ var id_user = {{ session['user_id']|safe}} ;
     {
     var param = '{ "id_user":' + id_user + '}' ;
 
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
         $.ajax( 
         {
             type: "DELETE",
@@ -260,11 +260,13 @@ var id_user = {{ session['user_id']|safe}} ;
             data: param,
             success: function(ret)
             {
+            $("#dial-wait").modal("hide") ;
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE item") ;
+            $("#dial-wait").modal("hide") ;
             alert("{{ _("Erreur lors de la suppression des données") }}") ;
             }
         } ) ;
@@ -293,49 +295,45 @@ let param = '{ "code":"' + code + '", ' +
             '"city":"' + city  + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/doctor/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/doctor/export",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
 
-            let month = today.getMonth() + 1 ;
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "doctor_" + today + ".csv" ;
+        let filename = "doctor_" + today + ".csv" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                if (ret.status == 404)
-                alert("{{ _("Aucun prescripteur à exporter !") }}") ;
-                else
-                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+            if (ret.status == 404)
+            alert("{{ _("Aucun prescripteur à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

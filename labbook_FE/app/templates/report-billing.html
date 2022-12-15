@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Etat journalier de la facturation") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -20,32 +20,32 @@
                 </div>
                 <div class="panel-filter row mt-3">
                     <div class="col-3">
-                        <div class="form-group form-inline">
-                            <label for="f_date_beg" class="col-form-label text-right mr-1">{{ _("Date du") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
                             <div>
                                 <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="form-group form-inline">
-                            <label for="f_date_end" class="col-form-label text-right ml-1 mr-1">{{ _("au") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
                             <div>					
                                 <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-group form-inline">
-                            <label for="search_user" class="col-form-label text-right mr-1">{{ _("Créateur du dossier") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="search_user" class="form-label text-end mt-1 me-1">{{ _("Créateur du dossier") }}</label>
                             <div>
-                                <select id="search_user" style="width:400px"></select>
+                                <select id="search_user" class="form-select" style="width:400px"></select>
                             </div>
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="float-right">
-                            <button type="button" onclick="filter_bill();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        <div class="float-end">
+                            <button type="button" onclick="filter_bill();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -103,12 +103,12 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <label class="col-form-label text-right mr-1">{{ _("Reste à payer") }}</label>
+                    <label class="form-label text-end me-1">{{ _("Reste à payer") }}</label>
                     <span id="total_remain" class="font-info mt-1"></span>
                 </div>
             </form>
 
-            <div class="float-right mt-3 mb-5">
+            <div class="float-end mt-3 mb-5">
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div> 
 
@@ -181,36 +181,32 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"id_user":' + id_user + '}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/report/billing",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        data_bills = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/report/billing",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-            {
-            data_bills = data ;
+        p_max = Math.ceil( data.length / p_step ) ;
 
-            p_max = Math.ceil( data.length / p_step ) ;
+        display_bill( 1 ) ;
 
-            display_bill( 1 ) ;
+            $("#dial-wait").modal("hide") ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                $("#dial-wait").modal("hide") ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
-
-            console.log("ERROR billing list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
-        } ) ;
+        console.log("ERROR billing list") ;
+        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+        }
     } ) ;
 }
 
@@ -275,46 +271,42 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
               '"id_user":0}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/bill/list",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/bill/list",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
-            
-            let month = today.getMonth() + 1 ;
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "list_bill_" + today + ".pdf" ;
+        let filename = "list_bill_" + today + ".pdf" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

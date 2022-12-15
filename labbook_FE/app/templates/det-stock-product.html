@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Approvisionner un produit") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -15,54 +15,54 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Approvisionner un produit") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row">
-                    <label for="search_product" class="col-form-label col-3 text-right mr-1">{{ _("Produit") }} *</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="search_product" class="form-label col-3 text-end mt-2 me-1">{{ _("Produit") }} *</label>
                     <div>
                         {% if args['prs_ser'] == 0 %}
-                        <select id="search_product" style="width:400px"></select>
-                        <button type="button" onclick="new_product();" id="btn_product" class="btn btn-{{ session['user_role']|safe }}"><i class="fa fa-plus" /></i></button>
+                        <select id="search_product" class="form-select" style="width:400px"></select>
+                        <button type="button" onclick="new_product();" id="btn_product" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
                         {% endif %}
-                        <span class="ml-2">{{ args['stock_product']['prd_name'] }}</span>
+                        <span class="ms-2">{{ args['stock_product']['prd_name'] }}</span>
                     </div>
                 </div>
 
-                <div class="form-group row mt-3">
-                    <label for="prs_nb_pack" class="col-form-label col-3 text-right mr-1">{{ _("Nombre de paquets") }} *</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="prs_nb_pack" class="form-label col-3 text-end mt-2 me-1">{{ _("Nombre de paquets") }} *</label>
                     <div>
                         <input id="prs_nb_pack" type="number" value="{{ args['stock_product']['prs_nb_pack'] }}" min="1" step="1" class="form-control">
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="prs_receipt_date" class="col-form-label col-3 text-right mt-2">{{ _("Date de réception") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="prs_receipt_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de réception") }}</label>
                     <div>					
                         <input id="prs_receipt_date" name="prs_receipt_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_receipt_date'] }}" style="color: #888;">
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="prs_expir_date" class="col-form-label col-3 text-right mt-2">{{ _("Date d'expiration") }} *</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="prs_expir_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration") }} *</label>
                     <div>					
                         <input id="prs_expir_date" name="prs_expir_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_expir_date'] }}" style="color: #888;">
                     </div>
                 </div>
 
-                <div class="form-group row mt-3">
-                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Localisation") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
                     <div>					
                         <input type="text" name="prs_rack" id="prs_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control">			
                     </div>
                 </div>
 
-                <div class="form-group row mt-3">
-                    <label for="title" class="col-form-label col-3 text-right mt-2">{{ _("Numéro de lot") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de lot") }}</label>
                     <div>					
                         <input type="text" name="prs_batch_num" id="prs_batch_num" value="{{ args['stock_product']['prs_batch_num'] }}" class="form-control">			
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="prs_buy_price" class="col-form-label col-3 text-right mt-2">{{ _("Prix d'achat") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="prs_buy_price" class="form-label col-3 text-end mt-2 me-1">{{ _("Prix d'achat") }}</label>
                     <div class="">					
                         <input type="number" name="prs_buy_price" id="prs_buy_price" value="{{ args['stock_product']['prs_buy_price'] }}" min="0" step="0.01" class="form-control">			
                     </div>
@@ -71,11 +71,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

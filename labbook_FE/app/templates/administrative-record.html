@@ -13,15 +13,25 @@
                 <span>{{ _("Dossier administratif") }}</span><span id="info_pat_title"></span>
             </h2>
             <form autocomplete="off">
-                <div class="row ml-3">
-                    <span>{{ _("Dossier") }} :&nbsp;</span> 
-                    <span class="rec-num" id="num_rec"></span>
+                
+                <div class="d-flex align-items-start ms-3">
+                    <div>
+                        <span>{{ _("Dossier") }} :&nbsp;</span> 
+                        <span class="rec-num col" id="num_rec"></span>
+                    </div>
+                    {% if args['record']['rec_num_int'] %}
+                    <div class="ms-3 mt-1">
+                        <span>{{ _("Numéro de dossier interne au laboratoire") }} :&nbsp;</span> 
+                        <span class="font-info" id="num_rec_int">{{ args['record']['rec_num_int'] }}</span>
+                    </div>
+                    {% endif %}
                 </div>
+                
                 <!-- Patient -->
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Identité") }}</h3>
                 </div>
-                <div class="row ml-3">
+                <div class="row ms-3">
                     <div class="col-12 mt-3">
                         {% if args['patient'] and args['patient']['code_patient'] %}
                         <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
@@ -64,7 +74,7 @@
                 <div class="panel-heading row mt-2">
                     <h3 class="panel-title">{{ _("Prescription") }}</h3>
                 </div>
-                <div class="row ml-3">
+                <div class="row ms-3">
                     <div class="col-12 mt-3">
                         <span>{{ _("Date de réception du dossier") }}&nbsp;</span>
                         <span class="font-info">{{ args['record']['date_dos']|date_format }}</span>
@@ -74,6 +84,17 @@
                         <span>{{ _("Date de prescription") }} *</span>
                         <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                     </div>
+
+                    {% if type_req == 'I' %}
+                    <div class="d-flex align-items-start mt-2">
+                        <span class="text-start me-1">{{ _("Demande de garde") }}</span>
+                        {% if args['record']['rec_custody'] == 'Y' %}
+                        <span class="font-info">{{ _("Oui") }}</span>
+                        {% else %}
+                        <span class="font-info">{{ _("Non") }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
 
                     <div class="col-12 mt-2">
                         <span>{{ _("Prescripteur") }}</span>
@@ -106,17 +127,17 @@
             <div class="panel-heading row mt-2">
                 <h3 class="panel-title">{{ _("Hospitalisation") }}</h3>
             </div>
-            <div class="row ml-3">
+            <div class="row ms-3">
                 <div class="col-12 mt-3">
-                    <span class="mr-1">{{ _("Date d'admission") }}</span>
+                    <span class="me-1">{{ _("Date d'admission") }}</span>
                     <span class="font-info">{% if args['record']['date_hosp'] %}{{ args['record']['date_hosp']|date_format }}{% endif %}</span>
                 </div>
                 <div class="col-12 mt-3">
-                    <span class="mr-1">{{ _("Service demandeur") }}</span>
+                    <span class="me-1">{{ _("Service demandeur") }}</span>
                     <span class="font-info">{{ args['record']['service_interne'] }}</span>
                 </div>
                 <div class="col-12 mt-3">
-                    <span class="mr-1">{{ _("Numéro de lit") }}</span>
+                    <span class="me-1">{{ _("Numéro de lit") }}</span>
                     <span class="font-info">{{ args['record']['num_lit'] }}</span>
                 </div>
             </div>
@@ -126,7 +147,7 @@
             <div class="panel-heading row mt-2">
                 <h3 class="panel-title">{{ _("Analyses et actes de prélèvement") }}</h3>
             </div>
-            <div class="row ml-3 mt-3">
+            <div class="row ms-3 mt-3">
                 <span class="font-info">{{ _("Analyses") }}</span>
             </div>
             <form class="row justify-content-center mt-3">
@@ -145,7 +166,7 @@
                 </table>
             </form>
             {% if type_req == 'E' %}
-            <div class="row ml-3 mt-3">
+            <div class="row ms-3 mt-3">
                 <span class="font-info">{{ _("Actes de prélèvement") }}</span>
             </div>
             <form class="row justify-content-center mt-3">
@@ -187,7 +208,7 @@
                 <div class="panel-heading row mt-2">
                     <h3 class="panel-title">{{ _("Facturation") }}</h3>
                 </div>
-                <div class="row ml-3">
+                <div class="row ms-3">
                     <div class="col-12 mt-3">
                         <span>{{ _("Prix total") }}&nbsp;</span>
                         <span class="font-info">{{ args['record']['prix'] }}</span>
@@ -219,7 +240,7 @@
                 <div class="panel-heading row mt-2">
                     <h3 class="panel-title">{{ _("Renseignements / Informations complémentaires") }}</h3>
                 </div>
-                <div class="row ml-3">
+                <div class="row ms-3">
                     <div class="col-12 mt-3">
                         <span class="font-info">{{ args['record']['rc'] }}</span>
                     </div>
@@ -229,13 +250,13 @@
                 <div class="panel-heading row mt-2">
                     <h3 class="panel-title">{{ _("Pièces jointes au dossier") }}</h3>
                 </div>
-                <div class="row ml-3">
+                <div class="row ms-3">
                     <div class="col-12 mt-3">
                         <div class="form-group">
-                            <div class="text-left upload-container">
+                            <div class="text-start upload-container">
                                 <div>
                                     <div>
-                                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                             {% if session['user_role'] != 'P' %}
                                             <input name="file" type="file" style="margin-bottom:4px"/>
                                             {% endif %}
@@ -256,17 +277,17 @@
                     </div>
                 </div>
 
-                <div class="row ml-3 mt-4">
+                <div class="row ms-3 mt-4">
                     <div class="col-12">
-                        <div class="float-left">
+                        <div class="float-start">
                             <input type="button" onclick="return_home();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
                         {% if session['user_role'] != 'P' %}
-                        <div class="float-right form-inline">
+                        <div class="float-end form-inline">
                             {% if session['pref_bill'] == '1' %}
-                            <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }} mr-3" value="{{ _('Imprimer la facture') }}">
+                            <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-{{ session['user_role']|safe }} me-3" value="{{ _('Imprimer la facture') }}">
                             {% endif %}
-                            <select id="tpl_sticker" class="form-control mx-3" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
+                            <select id="tpl_sticker" class="form-select mx-3" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_sticker'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
@@ -370,7 +391,12 @@ let i_max = obj.length - 1 ;
     {
         if ( obj[i].id_data > 0 )
         {
-            let menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+        let menu_act = '' ;
+
+            if ( obj[i].nb_download == 0 )
+            menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+            else
+            menu_act = '<a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
 
             let tpl = '' ;
 
@@ -384,7 +410,7 @@ let i_max = obj.length - 1 ;
 
             {% if ihm["tpl_result"] and ihm["tpl_result"]|length < 2 %}disp_tpl = 'hidden' ;{% endif %}
 
-            tpl = '<select id="tpl_result" class="ml-2" ' + disp_tpl + ' >' +
+            tpl = '<select id="tpl_result" class="form-select-sm ms-2" ' + disp_tpl + ' >' +
                   {% for tpl in ihm['tpl_result'] %}
                   '<option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>' +
                   {% endfor %}
@@ -395,7 +421,7 @@ let i_max = obj.length - 1 ;
         let tmp_tr = '<tr style="">' ;
 
         tmp_tr += '<td hidden>' + obj[i].id_data + '</td>' ;
-        tmp_tr += '<td class="col-5 text-center align-items-end">' + menu_act + tpl + '</td>' ;
+        tmp_tr += '<td class="col-5 text-center align-items-stretch">' + menu_act + tpl + '</td>' ;
         tmp_tr += '<td class="col-2 text-center">' + obj[i].date + '</td>' ;
         tmp_tr += '<td class="col-5 text-center">' + obj[i].tpl_name + '</td>' ;
         tmp_tr += '</tr>' ;
@@ -509,29 +535,25 @@ let template = $("#tpl_result").val() ;
 
     if ( window.confirm("{{ _("Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)") }}") )
     {
+        $("#dial-wait").off('shown.bs.modal') ;
         $("#dial-wait").modal("show") ;
 
-        $("#dial-wait").off() ;
-
-        $("#dial-wait").on('shown.bs.modal', function () 
+        $.ajax(
         {
-            $.ajax(
+            type : 'GET',
+            url : "{{ session['server_ext'] }}/services/pdf/report/" + id_rec + "/" + filename + "/" + template + "/Y/{{ session['user_id'] }}",
+            success : function(response)
             {
-                type : 'GET',
-                url : "{{ session['server_ext'] }}/services/pdf/report/" + id_rec + "/" + filename + "/" + template + "/Y/{{ session['user_id'] }}",
-                success : function(response)
-                {
-                    $("#dial-wait").modal("hide") ;
-                console.log( "success reeedit report") ;
-                location.reload();
-                },
-                error: function(response)
-                {
-                    $("#dial-wait").modal("hide") ;
-                console.log("ERROR reeedit report") ;
-                alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
-                }
-            } ) ;
+                $("#dial-wait").modal("hide") ;
+            console.log( "success reeedit report") ;
+            location.reload();
+            },
+            error: function(response)
+            {
+                $("#dial-wait").modal("hide") ;
+            console.log("ERROR reeedit report") ;
+            alert("{{ _("Une erreur est survenue lors du traitement") }}") ;
+            }
         } ) ;
     }
 }
@@ -542,33 +564,29 @@ let param_form = new FormData() ;
 
 param_form.append('file', $('input[type=file]')[0].files[0]) ;
 
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax(
     {
-        $.ajax(
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/upload-file/REC/" + id_rec,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
         {
-            type : 'POST',
-            url : "{{ session['server_ext'] }}/upload-file/REC/" + id_rec,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            data: param_form,
-            success : function(response)
-            {
-                $("#dial-wait").modal("hide") ;
-            console.log( "success upload ") ;
-            location.reload() ;
-            },
-            error: function(response)
-            {
-                $("#dial-wait").modal("hide") ;
-            console.log("ERROR upload file") ;
-            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
-            }
-        } ) ;
+            $("#dial-wait").modal("hide") ;
+        console.log( "success upload ") ;
+        location.reload() ;
+        },
+        error: function(response)
+        {
+            $("#dial-wait").modal("hide") ;
+        console.log("ERROR upload file") ;
+        alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+        }
     } ) ;
 }
 
@@ -576,17 +594,23 @@ function delete_file( id_file )
 {
     if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
     {
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
         $.ajax( 
         {
             type: "DELETE",
             url: "{{ session['server_ext'] }}/services/file/document/REC/" + id_file,
             success: function(ret)
             {
+            $("#dial-wait").modal("hide") ;
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE document file") ;
+            $("#dial-wait").modal("hide") ;
             alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
             }
         } ) ;
@@ -597,30 +621,26 @@ function delete_file( id_file )
 
 function print_bill( id_rec )
 {
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
+        success: function(ret)
         {
-            type: "GET",
-            url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
 
-            download_file( "PY", "facture_" + num_rec + ".pdf", "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", "facture_" + num_rec + ".pdf", "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR GET pdf bill");
-            alert("{{ _("Erreur lors de la génération du PDF") }}") ;
-            }
-        } ) ;
+        console.log("ERROR GET pdf bill");
+        alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+        }
     } ) ;
 }
 
@@ -631,36 +651,32 @@ let template = $("#tpl_sticker").val() ;
 var id_rec = {% if args['record'] and args['record']['id_data'] > 0 %}{{ args['record']['id_data'] }}{% else %}0{% endif %} ;
 var param = '{ "id":' + id_rec + ', "type_id": "REC"}' ;
 
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/sticker/" + template,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/sticker/" + template,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
 
-                if (ret == 0)
-                download_file( "PY", "sticker_REC" + id_rec + ".pdf", "GEN", 0 ) ;
-                else
-                alert("{{ _("Erreur lors de la génération du PDF") }}") ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-
-            console.log("ERROR GET pdf sticker");
+            if (ret == 0)
+            download_file( "PY", "sticker_REC" + id_rec + ".pdf", "GEN", 0 ) ;
+            else
             alert("{{ _("Erreur lors de la génération du PDF") }}") ;
-            }
-        } ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        console.log("ERROR GET pdf sticker");
+        alert("{{ _("Erreur lors de la génération du PDF") }}") ;
+        }
     } ) ;
 }
 

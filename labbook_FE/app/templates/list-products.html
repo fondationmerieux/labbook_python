@@ -27,14 +27,14 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-left">{{ _("Action") }}</th>
-                            <th class="text-left cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-left cursor-act">{{ _("Type") }}</th>
-                            <th class="text-left cursor-act">{{ _("Nbr par paquet") }}</th>
-                            <th class="text-left cursor-act">{{ _("Seuil") }}</th>
-                            <th class="text-left cursor-act">{{ _("Fournisseur") }}</th>
-                            <th class="text-left cursor-act">{{ _("Réf. fournisseur") }}</th>
-                            <th class="text-left cursor-act">{{ _("Conservation") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-start cursor-act">{{ _("Type") }}</th>
+                            <th class="text-start cursor-act">{{ _("Nbr par paquet") }}</th>
+                            <th class="text-start cursor-act">{{ _("Seuil") }}</th>
+                            <th class="text-start cursor-act">{{ _("Fournisseur") }}</th>
+                            <th class="text-start cursor-act">{{ _("Réf. fournisseur") }}</th>
+                            <th class="text-start cursor-act">{{ _("Conservation") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -51,7 +51,7 @@
             </div>
 
             <div class="clearfix mb-5 mt-3">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
             </div>
@@ -102,7 +102,7 @@ $("#list_items_total").html( data_len ) ;
     {
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-new-product/' + data_items[i].prd_ser + '">{{ _("Editer la fiche produit") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prd_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
@@ -111,13 +111,13 @@ $("#list_items_total").html( data_len ) ;
 
     res += '<tr><td hidden><div>' + data_items[i].prd_ser + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].prd_name + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].type + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].prd_nb_by_pack + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].prd_safe_limit + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].supplier_name + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].prd_ref_supplier + '</div></td>' +
-           '<td><div class="text-left">' + data_items[i].conserv + '</div></td></tr>' ;
+           '<td><div class="text-start">' + data_items[i].prd_name + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].type + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].prd_nb_by_pack + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].prd_safe_limit + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].supplier_name + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].prd_ref_supplier + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].conserv + '</div></td></tr>' ;
     }
 {% endif %}
 
@@ -136,6 +136,10 @@ var id_user = {{ session['user_id']|safe}} ;
     {
     var param = '{ "id_user":' + id_user + '}' ;
 
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
         $.ajax( 
         {
             type: "DELETE",
@@ -145,11 +149,13 @@ var id_user = {{ session['user_id']|safe}} ;
             data: param,
             success: function(ret)
             {
+            $("#dial-wait").modal("hide") ;
             location.reload() ;
             },
             error: function(ret)
             {
             console.log("ERROR DELETE item") ;
+            $("#dial-wait").modal("hide") ;
             alert("{{ _("Erreur lors de la suppression des données") }}") ;
             }
         } ) ;

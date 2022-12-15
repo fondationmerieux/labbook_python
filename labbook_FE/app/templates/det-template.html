@@ -11,16 +11,16 @@
         <div id="main" style="opacity: 1;">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Modèle de document") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group row mt-3">
-                    <label for="tpl_name" class="col-form-label col-3 text-right mt-2">{{ _("Nom du modèle") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="tpl_name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du modèle") }}</label>
                     <div>					
                         <input type="text" name="tpl_name" id="tpl_name" value="{{ args['template']['tpl_name'] }}" class="form-control">			
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="tpl_type" class="col-form-label col-3 text-right mt-2">{{ _("Type de modèle") }}</label>
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="tpl_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Type de modèle") }}</label>
                     <div>					
-                        <select id="tpl_type" name="tpl_type" class="form-control">
+                        <select id="tpl_type" name="tpl_type" class="form-select">
                             <option value="RES" {% if args['template']['tpl_type'] == 'RES' %}selected{% endif %}>{{ _("Résultat") }}</option>  
                             <option value="STI" {% if args['template']['tpl_type'] == 'STI' %}selected{% endif %}>{{ _("Etiquette") }}</option>
                             <option value="QRC" {% if args['template']['tpl_type'] == 'QRC' %}selected{% endif %}>{{ _("Code QR") }}</option>
@@ -28,19 +28,19 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label class="col-form-label col-3 text-right mt-2">{{ _("Par défaut pour ce type") }}</label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Par défaut pour ce type") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="tpl_default" value="Y" {% if args['template']['tpl_default'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                     </label>
-                    <label class="col-form-label text-right mt-2 mr-3">
+                    <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="tpl_default" value="N" {% if not args['template']['tpl_default'] or args['template']['tpl_default'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
                     </label>
                 </div>
                 
-                <div class="form-group row">
-                    <div class="offset-3  text-left upload-container">
-                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <div class="offset-3  text-start upload-container">
+                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                             <input id="TPL" name="file" type="file" style="margin-bottom:4px"/>
                         </div>
                         <table class=table-responsive">
@@ -65,11 +65,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

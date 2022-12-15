@@ -132,6 +132,8 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
+# app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
+
 
 # ######################################
 # REST initialization
@@ -199,6 +201,7 @@ api.add_resource(FileDocList,         '/services/file/document/list/<string:type
 api.add_resource(FileDoc,             '/services/file/document/<string:type_ref>/<int:ref>')
 api.add_resource(FileNbManual,        '/services/file/count/manual')
 api.add_resource(FileReport,          '/services/file/report/record/<int:id_rec>')
+api.add_resource(FileReportCopy,      '/services/file/report/<string:filename>/copy/<string:copy_name>')
 api.add_resource(FileReportNbDL,      '/services/file/report/nb_download/<string:filename>')
 api.add_resource(FileStorage,         '/services/file/storage')
 api.add_resource(InitVersion,         '/services/init/version')
@@ -222,6 +225,7 @@ api.add_resource(PdfBillList,         '/services/pdf/bill/list')
 api.add_resource(PdfReport,           '/services/pdf/report/<int:id_rec>/<string:filename>/<string:template>/<string:reedit>/<int:id_user>')
 api.add_resource(PdfReportGeneric,    '/services/pdf/report/generic')
 api.add_resource(PdfReportGrouped,    '/services/pdf/report/grouped')
+api.add_resource(PdfReportGlobal,     '/services/pdf/report/global')
 api.add_resource(PdfSticker,          '/services/pdf/sticker/<string:template>')
 api.add_resource(PdfTemplate,         '/services/pdf/template/test/<int:id_item>')
 api.add_resource(ProcedureList,       '/services/quality/procedure/list')

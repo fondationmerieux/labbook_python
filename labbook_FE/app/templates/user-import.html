@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Import utilisateurs") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -15,10 +15,10 @@
                 <div class="row">
                     <div class="col-12 my-3">
                         <div class="form-group">
-                            <div class="text-left upload-container">
+                            <div class="text-start upload-container">
                                 <div>
                                     <div>
-                                        <div style="display: inline-block; padding-right: 20px;" class="uploadHTML5">
+                                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
                                             {% if session['user_role'] != 'P' %}
                                             <input name="file" type="file" style="margin-bottom:4px"/>
                                             {% endif %}
@@ -28,16 +28,16 @@
                             </div>
                         </div>
                         {% if session['user_role'] != 'P' %}
-                        <input type="button" id="btn-upload" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
+                        <input type="button" id="btn-upload" class="btn btn-{{ session['user_role']|safe }} mt-2" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
                         {% endif %}
                     </div>                    
                 </div>
 
                 <div class="col-12 clearfix mt-3">
-                    <div class="float-left" style="margin-left:0px;">
+                    <div class="float-start" style="margin-start:0px;">
                         <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                     </div>
-                    <div class="float-right mr-2" style="margin-left:0px;">
+                    <div class="float-end me-2" style="margin-start:0px;">
                         <input type="button" id="import-users" onclick="import_users();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Importer des utilisateurs") }}" disabled>
                     </div>
                 </div>

@@ -131,6 +131,20 @@ class FileReport(Resource):
         return compose_ret(l_report, Constants.cst_content_type_json)
 
 
+class FileReportCopy(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, filename, copy_name):
+        ret = File.copyReport(filename, copy_name)
+
+        if ret is False:
+            self.log.error(Logs.fileline() + ' : TRACE FileReportCopy ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE FileReportCopy')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class FileReportNbDL(Resource):
     log = logging.getLogger('log_services')
 
@@ -138,7 +152,7 @@ class FileReportNbDL(Resource):
         ret = File.raiseReportNbDL(filename)
 
         if ret is False:
-            self.log.info(Logs.fileline() + ' : TRACE FileReportNbDL ERROR update raiseReportNbDL')
+            self.log.error(Logs.fileline() + ' : TRACE FileReportNbDL ERROR update raiseReportNbDL')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE FileReportNbDL')
@@ -157,7 +171,7 @@ class FileStorage(Resource):
             ret = File.insertStorage(path=Constants.cst_storage)
 
             if ret <= 0:
-                self.log.info(Logs.fileline() + ' : TRACE FileStorage ERROR insert storage')
+                self.log.error(Logs.fileline() + ' : TRACE FileStorage ERROR insert storage')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             storage = File.getLastFileStorage()

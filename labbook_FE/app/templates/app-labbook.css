@@ -28,11 +28,12 @@ cursor      : pointer;
 margin-top  : -1rem ; 
 }
 
-a, a:visited, a:link, a:active, a:focus, a:hover, a:focus
+a, a:visited, a:link, a:active, a:focus, a:focus, a:hover
 {
-color   : #5F9629;
-outline : none;
-cursor  : pointer;
+color           : #5F9629;
+outline         : none;
+cursor          : pointer;
+text-decoration : none;
 }
 
 #page
@@ -245,9 +246,9 @@ color    : #777;
 .role
 {
 position : absolute;
-right    : 40px;
+right    : 0px;
 top      : 21px;
-width    : 110px;
+width    : 150px;
 height   : 26px;
 }
 
@@ -1077,6 +1078,8 @@ font-weight      : bold;
 .legend-lbk
 {
 font-size        : 1.25rem;
+float            : none;
+padding          : inherit;
 }
 
 .color-B

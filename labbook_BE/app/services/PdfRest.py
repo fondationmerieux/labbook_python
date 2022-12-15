@@ -93,11 +93,18 @@ class PdfReport(Resource):
                 self.log.error(Logs.fileline() + ' : PdfReport insertFileReport failed id_rec=%s', str(id_rec))
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-            # Get uuid filename and create pdf
+            # Get uuid filename
             fileReport = File.getFileReport(id_rec)
 
             if fileReport:
                 ret = Pdf.getPdfReport(id_rec, template, fileReport['file'], reedit)
+
+                if not ret:
+                    ret_del = File.deleteFileReportById(fileReport['id_data'])
+
+                    if not ret_del:
+                        self.log.error(Logs.fileline() + ' : PdfReport failed delete id_file=%s', str(fileReport['id_data']))
+                    return compose_ret('', Constants.cst_content_type_json, 500)
             else:
                 self.log.error(Logs.fileline() + ' : PdfReport failed id_rec=%s', str(id_rec))
                 return compose_ret('', Constants.cst_content_type_json, 500)
@@ -149,6 +156,26 @@ class PdfReportGrouped(Resource):
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGrouped')
+        return compose_ret(0, Constants.cst_content_type_json)
+
+
+class PdfReportGlobal(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'exclu' not in args or 'date_beg' not in args or 'date_end' not in args or 'filename' not in args:
+            self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR args missing')
+            return compose_ret(-1, Constants.cst_content_type_json, 400)
+
+        ret = Pdf.getPdfReportGlobal(args['filename'], args['exclu'], args['date_beg'], args['date_end'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfReportGlobal failed')
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfReportGlobal')
         return compose_ret(0, Constants.cst_content_type_json)
 
 

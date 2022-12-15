@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Rapport activité") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -14,28 +14,28 @@
             <form autocomplete="off">
                 <fieldset class="row border mx-1 p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
-                        <div class="form-group col-12 form-inline">
-                            <label for="f_date_beg" class="col-form-label col-2 text-right">{{ _("Date du") }}</label>
+                        <div class="form-group d-flex align-items-start mt-1">
+                            <label for="f_date_beg" class="form-label col-2 text-end mt-2 me-1">{{ _("Date du") }}</label>
                             <div>
                                 <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
-                            <label for="f_date_end" class="col-form-label col-1 text-right">{{ _("au") }}</label>
+                            <label for="f_date_end" class="form-label text-end mx-1 mt-2">{{ _("au") }}</label>
                             <div>					
                                 <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
                         </div>
-                        <div class="form-group col-12 form-inline">
-                            <label for="type_ana" class="col-form-label col-2 text-right mt-1">{{ _("Famille d'analyse") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="type_ana" class="form-label col-2 text-end mt-2 me-1">{{ _("Famille d'analyse") }}</label>
                             <div>
-                                <select name="type_ana" id="type_ana" class="form-control">
+                                <select name="type_ana" id="type_ana" class="form-select">
                                     {% from 'macros.html' import select_type_ana %}
                                     {{ select_type_ana(ihm['type_ana']) }}
                                 </select>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="float-right">
-                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            <div class="float-end">
+                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                             </div>
                         </div>
                 </fieldset>
@@ -62,7 +62,7 @@
             <br />
             <p>* {{ _("H = Homme, F = Femme, I = Inconnu") }}</p>
 
-            <div class="float-right mt-3 mb-5">
+            <div class="float-end mt-3 mb-5">
                 <input type="button" onclick="export_by_type();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Export par type") }}">
                 <input type="button" onclick="export_by_age();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Export par âge") }}">
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Télécharger le rapport") }}">
@@ -93,34 +93,30 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
               '"type_ana":' + type_ana + '}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/report/activity",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        data_stats = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/report/activity",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-            {
-            data_stats = data ;
- 
-            display_data() ;
+        display_data() ;
 
-                $("#dial-wait").modal("hide") ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR report stat") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
-        } ) ;
+        console.log("ERROR report stat") ;
+        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+        }
     } ) ;
 }
 
@@ -540,32 +536,28 @@ var param = '{ "filename":"' + filename + '", ' +
               '"csv_str":' + csv_type + '}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/export/csv",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/export/csv",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
+        
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 
@@ -596,32 +588,28 @@ var param = '{ "filename":"' + filename + '", ' +
               '"csv_str":' + csv_age + '}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/export/csv",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/export/csv",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
+        
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 
@@ -634,46 +622,42 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "activity"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
-            
-            let month = today.getMonth() + 1 ;
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "activity_" + today + ".pdf" ;
+        let filename = "activity_" + today + ".pdf" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

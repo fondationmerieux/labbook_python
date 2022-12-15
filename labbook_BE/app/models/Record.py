@@ -28,6 +28,14 @@ class Record:
             if 'stat_work' in args and args['stat_work']:
                 filter_cond += ' and dos.statut IN ' + str(args['stat_work']) + ' '
 
+            if 'type_rec' in args and args['type_rec']:
+                if args['type_rec'] == 'G':
+                    filter_cond += ' and dos.rec_custody="O" '
+                elif args['type_rec'] == 'E':
+                    filter_cond += ' and dos.type=183 '
+                elif args['type_rec'] == 'I':
+                    filter_cond += ' and dos.type=184 '
+
             if args['stat_rec'] and args['stat_rec'] > 0:
                 filter_cond += ' and dos.statut=' + str(args['stat_rec']) + ' '
 
@@ -65,7 +73,7 @@ class Record:
             filter_cond += ' and dos.med_prescripteur=' + str(id_pres) + ' '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
-        req = ('select dos.statut as stat, dos.type as type_rec, '
+        req = ('select dos.statut as stat, dos.type as type_rec, dos.rec_num_int, '
                'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), '
                'dos.num_dos_mois), if(param_num_dos.format=1072, substring(dos.num_dos_an from 7), dos.num_dos_an)) '
                'as num_dos, if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '
@@ -99,14 +107,43 @@ class Record:
         return l_rec
 
     @staticmethod
+    def getRecordListGlobal(date_beg, date_end):
+        cursor = DB.cursor()
+
+        filter_cond = ' '
+
+        limit = 'LIMIT 1000'
+        # filter conditions
+        if date_beg:
+            filter_cond += ' and rec.date_dos >= "' + date_beg + '" '
+
+        if date_end:
+            filter_cond += ' and rec.date_dos <= "' + date_end + '" '
+
+        """
+        # Prescriber list
+        if id_pres > 0:
+            filter_cond += ' and rec.med_prescripteur=' + str(id_pres) + ' '"""
+
+        # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
+        req = ('select rec.id_data as id_rec '
+               'from sigl_02_data as rec '
+               'where rec.statut = 256 ' + filter_cond +
+               'group by rec.id_data order by rec.date_dos asc ' + limit)
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getRecord(id_rec):
         cursor = DB.cursor()
 
         req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.date_dos, rec.num_dos_jour, '
                'rec.num_dos_an, rec.med_prescripteur, rec.date_prescription, rec.service_interne, rec.num_lit, '
-               'rec.id_colis, rec.date_reception_colis, rec.rc, rec.colis, rec.prix, rec.remise, '
+               'rec.id_colis, rec.date_reception_colis, rec.rc, rec.colis, rec.prix, rec.remise, rec.rec_date_vld, '
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
-               'rec.num_dos_mois, rec.date_hosp, '
+               'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, '
                'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_02_data as rec '
@@ -124,7 +161,8 @@ class Record:
 
         req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
-               'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp '
+               'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
+               'rec_custody, rec_num_int '
                'from sigl_02_data '
                'order by id_data desc limit 1')
 
@@ -179,13 +217,16 @@ class Record:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_02_data '
-                           '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, date_prescription, service_interne, num_lit, '
-                           'id_colis, date_reception_colis, rc, colis, prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
-                           'num_dos_mois, date_hosp) '
+                           '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+                           'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, '
+                           'prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
+                           'num_dos_mois, date_hosp, rec_custody, rec_num_int) '
                            'values '
-                           '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, %(med_prescripteur)s, %(date_prescription)s, '
-                           '%(service_interne)s, %(num_lit)s, %(id_colis)s, %(date_reception_colis)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
-                           '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, %(num_dos_mois)s, %(date_hosp)s)', params)
+                           '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, '
+                           '%(med_prescripteur)s, %(date_prescription)s, %(service_interne)s, %(num_lit)s, %(id_colis)s, '
+                           '%(date_reception_colis)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
+                           '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, '
+                           '%(num_dos_mois)s, %(date_hosp)s, %(rec_custody)s, %(rec_num_int)s)', params)
 
             Record.log.info(Logs.fileline())
 
@@ -200,7 +241,7 @@ class Record:
             cursor = DB.cursor()
 
             req = ('update sigl_02_data '
-                   'set statut=%s '
+                   'set statut=%s, rec_date_vld=NOW() '
                    'where id_data=%s')
 
             cursor.execute(req, (stat, id_rec,))
@@ -365,21 +406,25 @@ class Record:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_record, rec.id_patient,  d_type.label as type, '
+        req = ('select rec.id_data as id_record, rec.rec_custody, rec.id_patient,  d_type.label as type, rec.rec_num_int, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
-               'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
-               'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount, '
-               'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
-               'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, d_sex.label as sex '
+               'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
+               'date_format(rec.date_prescription, %s) as prescription_date, '
+               'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, '
+               'rec.remise as discount, rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, '
+               'rec.a_payer as to_pay, d_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
+               'd_sex.label as sex, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
+               'left join sigl_08_data as doctor on doctor.id_data=rec.med_prescripteur '
                'left join sigl_dico_data as d_type on d_type.id_data=rec.type '
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
+               'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
                'where date_dos between %s and %s '
                'order by id_record desc')
 
-        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()

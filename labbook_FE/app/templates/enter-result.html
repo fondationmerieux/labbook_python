@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Saisie de résultats") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -16,12 +16,12 @@
                 <span>{{ _("Saisie de résultats") }}</span><span id="info_pat_title"></span>
             </h2>
             <form id="benchsheet" autocomplete="off">
-                <div class="row ml-3 mt-1">
+                <div class="d-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :&nbsp;</span> 
                     <span class="rec-num" id="num_rec"></span>
-                    <div class="ml-2" id="rec_stat"></div>
+                    <div class="ms-2" id="rec_stat"></div>
                 </div>
-                <fieldset class="row border p-2">
+                <fieldset class="d-flex flex-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
                     <div class="col-12">
                         {% if args['patient'] and args['patient']['code_patient'] %}
@@ -56,7 +56,7 @@
                 <div id="list_result" class="mt-3"></div>
             </form>
             {% if session['user_role'] == 'A' %}
-            <div class="float-right mt-3 mb-3">
+            <div class="float-end mt-3 mb-3">
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Feuille de paillasse') }}">
             </div>
             {% endif %}
@@ -64,10 +64,10 @@
             {% if args['list_res'] and session['user_role'] != 'P' %}
             <form autocomplete="off">
                 <div class="mt-3">
-                    <fieldset class="row border p-2">
+                    <fieldset class="d-flex flex-wrap border px-3 py-2">
                         <legend class="legend-lbk">{{ _("Ajouter de nouvelles analyses") }}</legend>
                         <div class="form-group">
-                            <select id="search_analysis" style="width:450px"></select>
+                            <select id="search_analysis" class="form-select" style="width:450px"></select>
                         </div>
                         <div class="col-12">
                             <div id="new_analysis"></div>
@@ -184,34 +184,30 @@ param_list_answer += ' ] }' ;
     }
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // UPDATE value
+    $.ajax( 
     {
-        // UPDATE value
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/result/list/value" ,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_list_answer,
+        success: function(data)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/result/list/value" ,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param_list_answer,
-            success: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
 
-            window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+        window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR result list") ;
-            alert("{{ _("Une erreur est survenue lors de l'enregistrement des valeurs saisies") }}") ;
-            }
-        } ) ;
+        console.log("ERROR result list") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement des valeurs saisies") }}") ;
+        }
     } ) ;
 }
 
@@ -334,34 +330,30 @@ let param_list_valid = '{ "list_valid":[ ' ;
 param_list_valid += ' ] }' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    // result to validate
+    $.ajax( 
     {
-        // result to validate
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_list_valid,
+        success: function(data)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param_list_valid,
-            success: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+            $("#dial-wait").modal("hide") ;
 
-            window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
+        window.location.href = "{{ session['server_ext'] }}/enter-result/" + id_rec + "/anchor_" + id_rec +"_"+ ref_ana;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            console.log("ERROR result valid") ;
-            alert("{{ _("Une erreur est survenue lors de validation technique des valeurs saisies") }}") ;
-            }
-        } ) ;
+        console.log("ERROR result valid") ;
+        alert("{{ _("Une erreur est survenue lors de validation technique des valeurs saisies") }}") ;
+        }
     } ) ;
 }
 
@@ -397,18 +389,18 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         {
         // close the form and table
         res += "</tbody></table>" +
-               "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
-               "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " mr-2\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
+               "<div class=\"form-group d-flex align-items-start mt-1\" style=\"vld-block;\">" +
+               "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " me-2\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
 
         {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
               session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-        res += "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
-               "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>" +
-               "<div class=\"form-inline\">" +
+        res += "<span class=\"d-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+               "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
+               "<div class=\"d-flex align-items-start\">" +
                "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
-               "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
-               "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control ml-1\" value=\"" + name + "\" readonly />" +
+               "<label class=\"form-label text-end ms-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
+               "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control ms-1\" value=\"" + name + "\" readonly />" +
                "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
         {#
@@ -431,7 +423,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         #}
 
         res += "</select>" +
-               "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+               "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} ms-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
                "</span>" ;
         {% endif %}
 
@@ -450,11 +442,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             if (res_fam.length < 4) res_fam = "" ;
 
         res += "<form autocomplete=\"off\">" +
-               "<fieldset class=\"row border p-2 mt-2\">" +
+               "<fieldset class=\"d-flex flex-wrap border px-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span> " + per_rec +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> " + per_rec +
                "<table class=\"table table-striped table-hover table-lbk\">" +
-               "<tbody class=\"row mx-1\">" ;
+               "<tbody class=\"mx-1\">" ;
         }
 
         // new analysis so new result line
@@ -494,16 +486,16 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
                 }
 
-            res += "<tr class=\"col-12 p-0\">" +
-                   "<td class=\"d-inline-block col-1 align-middle border-0 p-1\">" + res_limit + "</td>" +
-                   "<td class=\"d-inline-block col-1 align-middle text-center border-0 p-1\">" + res_emer + "</td>" +
-                   "<td class=\"d-inline-block align-middle text-center border-0 p-1\">" + res_stat + "</td>" +
-                   "<td class=\"d-inline-block align-middle text-center border-0 p-1\">" +
+            res += "<tr class=\"p-0 align-middle\">" +
+                   "<td class=\"col-1 align-middle border-0 p-1\">" + res_limit + "</td>" +
+                   "<td class=\"col-1 align-middle text-center border-0 p-1\">" + res_emer + "</td>" +
+                   "<td class=\"align-middle text-center border-0 p-1\">" + res_stat + "</td>" +
+                   "<td class=\"align-middle text-center border-0 p-1\">" +
                    "<div class=\"history\" onclick=\"display_histo(" + i + ");\"></div>" +
                    "</td>" +
-                   "<td class=\"d-inline-block col-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
+                   "<td class=\"col-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
 
-            res += "<td class=\"d-inline-block form-inline align-middle text-center border-0 p-1\"><span class=\"value\">" ;
+            res += "<td class=\"d-flex align-items-start align-middle text-center border-0 p-1\"><span class=\"value d-flex align-items-start align-middle\">" ;
 
                 // CANCEL RESULT
                 if ( res_valid == 252 && value == "" )
@@ -523,7 +515,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     if (res_valid != 250)
                     change = "disabled" ;
 
-                res += "<select id=\"res_" + id_res + "\" class=\"form-control saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
+                res += "<select id=\"res_" + id_res + "\" class=\"form-select saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
                        "<option value=\"\"> </option>" ;
 
                 value = "" ;
@@ -633,7 +625,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     }
                 }
 
-            res += '<span class="unit show">' + res_unit + '</span></td></tr>' ;
+            res += '<span class="unit mt-2 show">' + res_unit + '</span></td></tr>' ;
             }
         }
 
@@ -646,17 +638,17 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     {
     // close the form and table
     res += "</tbody></table>" +
-           "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
+           "<div class=\"form-group d-flex align-items-start mt-1\" style=\"vld-block;\">" +
            "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
 
     {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
           session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-    res += "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
-           "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>&nbsp;" +
-           "<div class=\"form-inline\">" +
+    res += "<span class=\"d-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+           "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>&nbsp;" +
+           "<div class=\"d-flex align-items-start\">" +
            "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\">" +
            "</div>" +
-           "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
+           "<label class=\"form-label text-end ms-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
            "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
            "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
@@ -680,7 +672,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     #}
 
     res += "</select>&nbsp;" +
-           "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} ml-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+           "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} ms-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
            "</span>" ;
     {% endif %}
 
@@ -903,46 +895,42 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "benchsheet"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
-            
-            let month = today.getMonth() + 1 ;
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "benchsheet_" + today + ".pdf" ;
+        let filename = "benchsheet_" + today + ".pdf" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 
@@ -968,7 +956,7 @@ info = " - {% if args['patient']['code_patient'] %}{{ args['patient']['code_pati
 {% endif %}
 }
 
-{% include 'display_histo.js' %}
+{% include 'js/display_histo.js' %}
 
 $( document ).ready( function()
 {

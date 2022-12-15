@@ -61,7 +61,7 @@
                         <tr class="d-flex">
                             <th class="col-6">{{ _("Unité de l'age par défaut (Jours, Semaines, Mois, Années)") }}</th>
                             <td class="col-6">
-                                <select id="pref_age_unit" name="pref_age_unit">
+                                <select id="pref_age_unit" class="form-select" name="pref_age_unit">
                                     <option value="Jours" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Jours" %} selected {% endif %}>{{ _("Jours") }}</option>
                                     <option value="Semaines" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Semaines" %} selected {% endif %}>{{ _("Semaines") }}</option>
                                     <option value="Mois" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Mois" %} selected {% endif %}>{{ _("Mois") }}</option>
@@ -84,7 +84,7 @@
                         <tr class="d-flex">
                             <th class="col-6">{{ _("Langue des rapports") }}</th>
                             <td class="col-6">
-                                <select id="pref_lang_pdf" name="pref_lang_pdf">
+                                <select id="pref_lang_pdf" class="form-select" name="pref_lang_pdf">
                                     <option value="fr_FR" {% if args['pref_list'] and args['pref_list'][14]['value'] == "fr_FR" %} selected {% endif %}>{{ _("Français") }}</option>
                                     <option value="en_GB" {% if args['pref_list'] and args['pref_list'][14]['value'] == "en_GB" %} selected {% endif %}>{{ _("Anglais") }}</option>
                                     <option value="en_US" {% if args['pref_list'] and args['pref_list'][14]['value'] == "en_US" %} selected {% endif %}>{{ _("Américain") }}</option>
@@ -99,7 +99,7 @@
                         <tr class="d-flex">
                             <th class="col-6">{{ _("Langue du référentiel") }}</th>
                             <td class="col-6">
-                                <select id="pref_lang_db" name="pref_lang_db">
+                                <select id="pref_lang_db" class="form-select" name="pref_lang_db">
                                     <option value="fr_FR" {% if args['pref_list'] and args['pref_list'][15]['value'] == "fr_FR" %} selected {% endif %}>{{ _("Français") }}</option>
                                     <option value="en_GB" {% if args['pref_list'] and args['pref_list'][15]['value'] == "en_GB" %} selected {% endif %}>{{ _("Anglais") }}</option>
                                 </select>
@@ -110,11 +110,11 @@
             </form>
 
             <div class="clearfix mb-5 mt-3">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Quitter") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="save_request();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

@@ -1,10 +1,17 @@
 # -*- coding:utf-8 -*-
 import logging
 import mysql.connector
+import pikepdf
+import os
 
-# from app.models.Constants import *
+from pikepdf import Page, Pdf
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+
+from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
+from app.models.Various import Various
 
 
 class File:
@@ -356,6 +363,21 @@ class File:
             return 0
 
     @staticmethod
+    def deleteFileReportById(id_file):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from sigl_11_data '
+                           'where id_data=%s', (id_file,))
+
+            File.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def deleteFileReportByRecord(id_rec):
         try:
             cursor = DB.cursor()
@@ -425,4 +447,46 @@ class File:
             return True
         except mysql.connector.Error as e:
             File.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def copyReport(filename, copy_name):
+        try:
+            Various.useLangPDF()
+
+            filepath = os.path.join(Constants.cst_report, filename)
+            copypath = os.path.join(Constants.cst_path_tmp, copy_name)
+
+            # Build an overlay in a new PDF in temp directory
+            watermark_name = "watermark_" + copy_name
+
+            watermark_path = os.path.join(Constants.cst_path_tmp, watermark_name)
+
+            c = canvas.Canvas(watermark_path, pagesize=A4, bottomup=0)
+            c.setFontSize(80)
+            c.setFillColorCMYK(2, 2, 2, 0, alpha=0.2)
+            c.rotate(-45)
+            c.drawCentredString(-140, A4[0], _("DUPLICATA"), None, 24)
+            c.save()
+
+            watermark_pdf = pikepdf.open(watermark_path)
+
+            # Transform first page of overlay in a xobject
+            dictpage = watermark_pdf.pages[0]
+            page = pikepdf.Page(dictpage)
+            formx = page.as_form_xobject()
+
+            src = pikepdf.Pdf.open(filepath)
+
+            # Put overlay on every pages
+            for page in src.pages:
+                destination_page = Page(page)
+                destination_page.add_overlay(formx)
+
+            # Save copy of PDF
+            src.save(copypath)
+
+            return True
+        except Exception as err:
+            File.log.error(Logs.fileline() + ' : copyReport failed, err=%s', err)
             return False

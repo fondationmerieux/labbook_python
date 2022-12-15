@@ -17,22 +17,20 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Chercher un patient") }}</h3>
                 </div>
-                <div class="panel-patient row mt-3">
-                    <div class="col-10">
-                        <div class="form-group row">
-                            <label for="search_patient" class="col-form-label col-4 text-right">{{ _("Nom, prénom, code du patient ou téléphone") }}</label>
-                            <div>
-                                <select id="search_patient" style="width:450px"></select>
-                            </div>
+                <div class="panel-patient row my-3">
+                    <div class="form-group d-flex align-items-start">
+                        <label for="search_patient" class="form-label align-self-center text-end ms-3 me-1 mt-1">{{ _("Nom, prénom, code du patient ou téléphone") }}</label>
+                        <div>
+                            <select id="search_patient" class="form-select" style="width:450px"></select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="float-left" style="margin-left:0px;">
+                        <div class="float-start" style="margin-start:0px;">
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
-                        <div class="float-right mr-2">
+                        <div class="float-end me-2">
                             <input type="button" onclick="new_pat();" id="new_patient" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Nouveau patient") }}">
                         </div>
                     </div>
@@ -92,12 +90,36 @@ var code = "" ;
     code += "[" + repo.code + "]" ;
 
     if (repo.code_patient)
-    code += " - code patient : " + repo.code_patient ;
+    code += " / " + repo.code_patient ;
 
 var info = "" ;
 
     if (repo.ddn)
     info += repo.ddn + " " ; // TODO change format date ?
+
+    if (repo.age && repo.age_unit)
+    {
+        if (repo.ddn)
+        info += " / " ;
+
+    info += repo.age + " " + repo.age_unit + " " ;
+    }
+
+    if (repo.pat_phone1)
+    {
+        if (repo.age || repo.ddn)
+        info += " / " ;
+
+    info += repo.pat_phone1 ;
+    }
+
+    if (repo.pat_phone2)
+    {
+        if (repo.pat_phone1)
+        info += " / " ;
+
+    info += repo.pat_phone2 ;
+    }
 
 var display = $(
     "<div class='select2-result-repository clearfix'>" +

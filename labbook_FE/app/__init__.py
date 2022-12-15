@@ -89,6 +89,14 @@ def new_nonce_session():
     session.modified = True
 
 
+@app.before_request
+def verif_user_agent():
+    user_agent = request.headers.get('User-Agent')
+
+    session['user_agent'] = user_agent
+    session.modified = True
+
+
 @app.context_processor
 def locale():
     lang = app.config.get('BABEL_DEFAULT_LOCALE')
@@ -301,6 +309,14 @@ def get_software_settings():
     return True
 
 
+def test_session():
+    if session['user_role'] != 'A' and session['user_role'] != 'B' and session['user_role'] != 'TQ' and \
+       session['user_role'] != 'T' and session['user_role'] != 'TA' and session['user_role'] != 'TQ' and \
+       session['user_role'] != 'S' and session['user_role'] != 'SA' and session['user_role'] != 'P' and \
+       session['user_role'] != 'Q':
+        return redirect(session['server_ext'] + '/disconnect')
+
+
 @app.template_filter('date_format')
 def date_format(date_iso):
     if date_iso:
@@ -372,7 +388,7 @@ def api():
 
 
 # Change la langue
-@app.route("/lang/<string:lang>")
+@app.route('/lang/<string:lang>')
 def lang(lang='fr_FR'):
     if lang == 'fr_FR':
         session['lang_select'] = 'FR'
@@ -418,7 +434,7 @@ def lang(lang='fr_FR'):
     return redirect(session['server_ext'] + '/' + session['current_page'])
 
 
-@app.route("/disconnect")
+@app.route('/disconnect')
 def disconnect():
     log.info(Logs.fileline() + ' : TRACE Labbook FRONT END disconnect')
     session.clear()
@@ -450,6 +466,8 @@ def homepage(login=''):
     get_user_data(login)
     get_software_settings()
 
+    test_session()
+
     if 'user_locale' in session and ('lang_chosen' not in session or not session['lang_chosen']):
         if session['user_locale'] == 34:
             session['lang']  = 'en_GB'
@@ -478,6 +496,26 @@ def homepage(login=''):
         else:
             session['lang']  = 'fr_FR'
             session.modified = True
+
+    # read backup
+    try:
+        ret = ''
+
+        path = os.path.join(Constants.cst_io, 'backup')
+
+        if os.path.exists(path) and os.stat(path).st_size > 0:
+            f = open(path, 'r')
+            for line in f:
+                pass
+
+            ret = line[:-1]
+
+            if ret:
+                ret = ret.split(';')
+                json_data['stat_backup'] = ret[0]
+                json_data['date_backup'] = ret[1]
+    except Exception:
+        log.error(Logs.fileline() + ' : cant read ' + path)
 
     # Load pref_quality
     try:
@@ -595,7 +633,7 @@ def homepage(login=''):
         # Load list of stock for display alert
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list'
-            req = requests.post(url)
+            req = requests.post(url, json={})
 
             if req.status_code == 200:
                 json_data['stock'] = req.json()
@@ -606,7 +644,7 @@ def homepage(login=''):
         dt_stop_req = datetime.now()
         dt_time_req = dt_stop_req - dt_start_req
 
-        log.info(Logs.fileline() + ' : DEBUG homepage processing time = ' + str(dt_time_req))
+        log.info(Logs.fileline() + ' : TRACE homepage processing time = ' + str(dt_time_req))
 
         return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))
 
@@ -619,6 +657,8 @@ def homepage(login=''):
 @app.route('/setting-users')
 def setting_users():
     log.info(Logs.fileline() + ' : TRACE setting users')
+
+    test_session()
 
     session['current_page'] = 'setting-users'
     session.modified = True
@@ -640,7 +680,7 @@ def setting_users():
     # Load list users
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -655,6 +695,8 @@ def setting_users():
 @app.route('/setting-det-user/<int:user_id>')
 def setting_det_user(user_id=0):
     log.info(Logs.fileline() + ' : TRACE setting det user=' + str(user_id))
+
+    test_session()
 
     session['current_page'] = 'setting-det-user/' + str(user_id)
     session.modified = True
@@ -706,6 +748,8 @@ def setting_det_user(user_id=0):
 def user_conn_export():
     log.info(Logs.fileline() + ' : TRACE user-conn-export')
 
+    test_session()
+
     session['current_page'] = 'user-conn-export'
     session.modified = True
 
@@ -717,6 +761,8 @@ def user_conn_export():
 def user_import():
     log.info(Logs.fileline() + ' : TRACE user-import')
 
+    test_session()
+
     session['current_page'] = 'user-import'
     session.modified = True
 
@@ -727,6 +773,8 @@ def user_import():
 @app.route('/setting-pwd-user/<int:user_id>')
 def setting_pwd_user(user_id=0):
     log.info(Logs.fileline() + ' : TRACE setting pwd user')
+
+    test_session()
 
     session['current_page'] = 'setting-pwd-user/' + str(user_id)
     session.modified = True
@@ -743,6 +791,8 @@ def setting_pwd_user(user_id=0):
 def setting_dicts():
     log.info(Logs.fileline() + ' : TRACE setting dict')
 
+    test_session()
+
     session['current_page'] = 'setting-dicts'
     session.modified = True
 
@@ -751,7 +801,7 @@ def setting_dicts():
     # Load list dict
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -767,6 +817,8 @@ def setting_dicts():
 @app.route('/setting-det-dict/<string:dict_name>')
 def setting_det_dict(dict_name=''):
     log.info(Logs.fileline() + ' : TRACE setting det dict=' + str(dict_name))
+
+    test_session()
 
     session['current_page'] = 'setting-det-dict/' + str(dict_name)
     session.modified = True
@@ -804,6 +856,8 @@ def setting_det_dict(dict_name=''):
 def setting_analyzes():
     log.info(Logs.fileline() + ' : TRACE setting analyzes')
 
+    test_session()
+
     session['current_page'] = 'setting-analyzes'
     session.modified = True
 
@@ -835,7 +889,7 @@ def setting_analyzes():
     # Load list analyzes
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -851,6 +905,8 @@ def setting_analyzes():
 def analysis_import():
     log.info(Logs.fileline() + ' : TRACE import analysis')
 
+    test_session()
+
     session['current_page'] = 'analysis-import'
     session.modified = True
 
@@ -864,6 +920,8 @@ def analysis_import():
 @app.route('/setting-det-analysis/<int:analysis_id>')
 def setting_det_analysis(analysis_id=0):
     log.info(Logs.fileline() + ' : TRACE setting det analysis=' + str(analysis_id))
+
+    test_session()
 
     session['current_page'] = 'setting-det-analysis/' + str(analysis_id)
     session.modified = True
@@ -951,6 +1009,8 @@ def setting_det_analysis(analysis_id=0):
 def manage_pat_records():
     log.info(Logs.fileline() + ' : TRACE manage patient records')
 
+    test_session()
+
     session['current_page'] = 'manage-pat-records'
     session.modified = True
 
@@ -1009,6 +1069,8 @@ def manage_pat_records():
 def setting_preferences():
     log.info(Logs.fileline() + ' : TRACE setting preferences')
 
+    test_session()
+
     session['current_page'] = 'setting-pref'
     session.modified = True
 
@@ -1031,6 +1093,8 @@ def setting_preferences():
 @app.route('/setting-backup')
 def setting_backup():
     log.info(Logs.fileline() + ' : TRACE setting backup')
+
+    test_session()
 
     session['current_page'] = 'setting-backup'
     session.modified = True
@@ -1092,6 +1156,8 @@ def setting_backup():
 def setting_zipcity():
     log.info(Logs.fileline() + ' : TRACE setting zipcity')
 
+    test_session()
+
     session['current_page'] = 'setting-zipcity'
     session.modified = True
 
@@ -1117,6 +1183,8 @@ def setting_zipcity():
 def list_template():
     log.info(Logs.fileline() + ' : TRACE list template')
 
+    test_session()
+
     session['current_page'] = 'list-template'
     session.modified = True
 
@@ -1139,6 +1207,8 @@ def list_template():
 @app.route('/det-template/<int:id_tpl>')
 def det_template(id_tpl=0):
     log.info(Logs.fileline() + ' : TRACE setting template det=' + str(id_tpl))
+
+    test_session()
 
     session['current_page'] = 'det-template/' + str(id_tpl)
     session.modified = True
@@ -1169,6 +1239,8 @@ def det_template(id_tpl=0):
 def setting_report():
     log.info(Logs.fileline() + ' : TRACE setting report')
 
+    test_session()
+
     session['current_page'] = 'setting-report'
     session.modified = True
 
@@ -1192,6 +1264,8 @@ def setting_report():
 @app.route('/setting-rec-num')
 def setting_rec_num():
     log.info(Logs.fileline() + ' : TRACE setting record number')
+
+    test_session()
 
     session['current_page'] = 'setting-rec-num'
     session.modified = True
@@ -1217,6 +1291,8 @@ def setting_rec_num():
 def setting_logo():
     log.info(Logs.fileline() + ' : TRACE setting logo')
 
+    test_session()
+
     session['current_page'] = 'setting-logo'
     session.modified = True
 
@@ -1227,6 +1303,8 @@ def setting_logo():
 @app.route('/setting-age-interval')
 def setting_age_interval():
     log.info(Logs.fileline() + ' : TRACE setting age interval')
+
+    test_session()
 
     session['current_page'] = 'setting-age-interval'
     session.modified = True
@@ -1259,6 +1337,8 @@ def setting_age_interval():
 def setting_dhis2():
     log.info(Logs.fileline() + ' : TRACE setting dhis2')
 
+    test_session()
+
     session['current_page'] = 'setting-dhis2'
     session.modified = True
 
@@ -1284,6 +1364,8 @@ def setting_dhis2():
 @app.route('/setting-epidemio')
 def setting_epidemio():
     log.info(Logs.fileline() + ' : TRACE setting epidemio')
+
+    test_session()
 
     session['current_page'] = 'setting-epidemio'
     session.modified = True
@@ -1314,6 +1396,8 @@ def setting_epidemio():
 @app.route('/list-results')
 def list_results():
     log.info(Logs.fileline() + ' : TRACE list-results')
+
+    test_session()
 
     session['current_page'] = 'list-results'
     session.modified = True
@@ -1352,7 +1436,7 @@ def list_results():
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG list-results processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE list-results processing time = ' + str(dt_time_req))
 
     return render_template('list-results.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -1362,6 +1446,8 @@ def list_results():
 @app.route('/enter-result/<int:id_rec>/<string:anchor>')
 def enter_result(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
+
+    test_session()
 
     session['current_page'] = 'enter-result/' + str(id_rec)
     session.modified = True
@@ -1476,7 +1562,7 @@ def enter_result(id_rec=0, anchor=''):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG enter-result processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE enter-result processing time = ' + str(dt_time_req))
 
     return render_template('enter-result.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -1485,6 +1571,8 @@ def enter_result(id_rec=0, anchor=''):
 @app.route('/list-records')
 def list_records():
     log.info(Logs.fileline() + ' : TRACE list-records')
+
+    test_session()
 
     session['current_page'] = 'list-records'
     session.modified = True
@@ -1512,7 +1600,7 @@ def list_records():
     # Load list records
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/list/' + str(id_pres)
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = json.dumps(req.json())
@@ -1525,7 +1613,7 @@ def list_records():
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG list-records processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE list-records processing time = ' + str(dt_time_req))
     return render_template('list-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
@@ -1533,6 +1621,8 @@ def list_records():
 @app.route('/list-works/<string:user_role>/<string:emer>')
 def list_works(user_role='', emer=''):
     log.info(Logs.fileline() + ' : TRACE list-works user_role=' + str(user_role))
+
+    test_session()
 
     session['current_page'] = 'list-works/' + str(user_role)
     session.modified = True
@@ -1590,14 +1680,31 @@ def list_works(user_role='', emer=''):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG list-works processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE list-works processing time = ' + str(dt_time_req))
     return render_template('list-works.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : global report
+@app.route('/global-report')
+def global_report():
+    log.info(Logs.fileline() + ' : TRACE global-report')
+
+    test_session()
+
+    session['current_page'] = 'global-report'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('global-report.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : List of samples to do or modify
 @app.route('/list-samples')
 def list_samples():
     log.info(Logs.fileline() + ' : TRACE list-samples')
+
+    test_session()
 
     session['current_page'] = 'list-samples'
     session.modified = True
@@ -1608,7 +1715,7 @@ def list_samples():
     # Load list records
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/product/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = json.dumps(req.json())
@@ -1619,7 +1726,7 @@ def list_samples():
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG list-samples processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE list-samples processing time = ' + str(dt_time_req))
     return render_template('list-samples.html', args=json_data, rand=random.randint(0, 999))
 
 
@@ -1627,6 +1734,8 @@ def list_samples():
 @app.route('/det-sample/<int:id_prod>')
 def det_sample(id_prod=0):
     log.info(Logs.fileline() + ' : TRACE det sample=' + str(id_prod))
+
+    test_session()
 
     session['current_page'] = 'det-sample/' + str(id_prod)
     session.modified = True
@@ -1712,6 +1821,8 @@ def det_sample(id_prod=0):
 def list_doctors():
     log.info(Logs.fileline() + ' : TRACE list doctors')
 
+    test_session()
+
     session['current_page'] = 'list-doctors'
     session.modified = True
 
@@ -1720,7 +1831,7 @@ def list_doctors():
     # Load list doctors
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -1735,6 +1846,8 @@ def list_doctors():
 @app.route('/det-doctor/<int:id_doctor>')
 def det_doctor(id_doctor=0):
     log.info(Logs.fileline() + ' : TRACE setting det doctor=' + str(id_doctor))
+
+    test_session()
 
     session['current_page'] = 'det-doctor/' + str(id_doctor)
     session.modified = True
@@ -1775,6 +1888,8 @@ def det_doctor(id_doctor=0):
 def new_req_ext():
     log.info(Logs.fileline() + ' : TRACE new-req-ext')
 
+    test_session()
+
     session['current_page'] = 'new-req-ext'
     session.modified = True
 
@@ -1786,6 +1901,8 @@ def new_req_ext():
 def new_req_int():
     log.info(Logs.fileline() + ' : TRACE new-req-int')
 
+    test_session()
+
     session['current_page'] = 'new-req-int'
     session.modified = True
 
@@ -1796,6 +1913,8 @@ def new_req_int():
 @app.route('/det-patient/<string:type_req>/<int:id_pat>')
 def det_patient(type_req='E', id_pat=0):
     log.info(Logs.fileline() + ' : TRACE det-patient id_pat = ' + str(id_pat))
+
+    test_session()
 
     session['current_page'] = 'det-patient/' + type_req + '/' + str(id_pat)
     session.modified = True
@@ -1898,7 +2017,7 @@ def det_patient(type_req='E', id_pat=0):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG det-patient processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE det-patient processing time = ' + str(dt_time_req))
 
     return render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -1907,6 +2026,8 @@ def det_patient(type_req='E', id_pat=0):
 @app.route('/det-req-ext/<string:entry>/<int:ref>')
 def det_req_ext(entry='Y', ref=0):
     log.info(Logs.fileline() + ' : TRACE det-req-ext ref = ' + str(ref))
+
+    test_session()
 
     session['current_page'] = 'det-req-ext/' + str(entry) + '/' + str(ref)
     session.modified = True
@@ -2006,7 +2127,7 @@ def det_req_ext(entry='Y', ref=0):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG det-req-ext processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE det-req-ext processing time = ' + str(dt_time_req))
 
     return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -2015,6 +2136,8 @@ def det_req_ext(entry='Y', ref=0):
 @app.route('/det-req-int/<string:entry>/<int:ref>')
 def det_req_int(entry='Y', ref=0):
     log.info(Logs.fileline() + ' : TRACE det-req-int ref = ' + str(ref))
+
+    test_session()
 
     session['current_page'] = 'det-req-int/' + str(entry) + '/' + str(ref)
     session.modified = True
@@ -2117,6 +2240,8 @@ def det_req_int(entry='Y', ref=0):
 @app.route('/administrative-record/<string:type_req>/<int:id_rec>')
 def administrative_record(type_req='E', id_rec=0):
     log.info(Logs.fileline() + ' : TRACE administrative-record id_rec = ' + str(id_rec))
+
+    test_session()
 
     session['current_page'] = 'administrative-record/' + str(type_req) + '/' + str(id_rec)
     session.modified = True
@@ -2235,7 +2360,7 @@ def administrative_record(type_req='E', id_rec=0):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG administrative-record processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE administrative-record processing time = ' + str(dt_time_req))
 
     return render_template('administrative-record.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -2245,6 +2370,8 @@ def administrative_record(type_req='E', id_rec=0):
 @app.route('/technical-validation/<int:id_rec>/<string:anchor>')
 def technical_validation(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : TRACE technical-validation id_rec = ' + str(id_rec))
+
+    test_session()
 
     session['current_page'] = 'technical-validation/' + str(id_rec)
     session.modified = True
@@ -2332,6 +2459,17 @@ def technical_validation(id_rec=0, anchor=''):
             if res and res['id_pat']:
                 id_pat = res['id_pat']
 
+            # Load record
+            try:
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
+                req = requests.get(url)
+
+                if req.status_code == 200:
+                    json_data['record'] = req.json()
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests record failed, err=%s , url=%s', err, url)
+
         # If no ResultRecord found we're looking for record information
         else:
             try:
@@ -2366,7 +2504,7 @@ def technical_validation(id_rec=0, anchor=''):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG technical-validation processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE technical-validation processing time = ' + str(dt_time_req))
 
     return render_template('technical-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -2375,6 +2513,8 @@ def technical_validation(id_rec=0, anchor=''):
 @app.route('/biological-validation/<string:mode>/<int:id_rec>')
 def biological_validation(mode='', id_rec=0):
     log.info(Logs.fileline() + ' : TRACE biological-validation id_rec = ' + str(id_rec))
+
+    test_session()
 
     session['current_page'] = 'biological-validation/' + str(id_rec)
     session.modified = True
@@ -2561,7 +2701,7 @@ def biological_validation(mode='', id_rec=0):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : DEBUG biological-validation processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE biological-validation processing time = ' + str(dt_time_req))
 
     return render_template('biological-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
@@ -2574,6 +2714,8 @@ def biological_validation(mode='', id_rec=0):
 @app.route('/report-activity')
 def report_activity():
     log.info(Logs.fileline() + ' : TRACE report activity')
+
+    test_session()
 
     session['current_page'] = 'report-activity'
     session.modified = True
@@ -2637,6 +2779,8 @@ def report_activity():
 def report_epidemio(date_beg='', date_end=''):
     log.info(Logs.fileline() + ' : TRACE report epidemio')
 
+    test_session()
+
     session['current_page'] = 'report-epidemio'
     session.modified = True
 
@@ -2677,6 +2821,8 @@ def report_epidemio(date_beg='', date_end=''):
 def pivot_table():
     log.info(Logs.fileline() + ' : TRACE pivot table')
 
+    test_session()
+
     session['current_page'] = 'pivot-table'
     session.modified = True
 
@@ -2699,6 +2845,8 @@ def pivot_table():
 @app.route('/report-statistic')
 def report_statistic():
     log.info(Logs.fileline() + ' : TRACE report statistic')
+
+    test_session()
 
     session['current_page'] = 'report-statistic'
     session.modified = True
@@ -2749,6 +2897,8 @@ def report_statistic():
 def report_dhis2():
     log.info(Logs.fileline() + ' : TRACE report dhis2')
 
+    test_session()
+
     session['current_page'] = 'report-dhis2'
     session.modified = True
 
@@ -2775,6 +2925,8 @@ def report_dhis2():
 def whonet_export():
     log.info(Logs.fileline() + ' : TRACE whonet-export')
 
+    test_session()
+
     session['current_page'] = 'whonet-export'
     session.modified = True
 
@@ -2786,6 +2938,8 @@ def whonet_export():
 def hist_patients():
     log.info(Logs.fileline() + ' : TRACE hist patients')
 
+    test_session()
+
     session['current_page'] = 'hist-patients'
     session.modified = True
 
@@ -2794,7 +2948,7 @@ def hist_patients():
     # Load list patients
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -2809,6 +2963,8 @@ def hist_patients():
 @app.route('/det-hist-patient/<int:id_pat>')
 def det_hist_patient(id_pat=0):
     log.info(Logs.fileline() + ' : TRACE det hist patient')
+
+    test_session()
 
     session['current_page'] = 'det-hist-patient/' + str(id_pat)
     session.modified = True
@@ -2833,6 +2989,8 @@ def det_hist_patient(id_pat=0):
 @app.route('/hist-analyzes')
 def hist_analyzes():
     log.info(Logs.fileline() + ' : TRACE hist analyzes')
+
+    test_session()
 
     session['current_page'] = 'hist-analyzes'
     session.modified = True
@@ -2881,6 +3039,8 @@ def hist_analyzes():
 def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
     log.info(Logs.fileline() + ' : TRACE det hist analysis')
 
+    test_session()
+
     session['current_page'] = 'det-hist-analysis/' + str(id_ana) + '/' + date_beg + '/' + date_end
     session.modified = True
 
@@ -2909,6 +3069,8 @@ def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
 @app.route('/report-today')
 def report_today():
     log.info(Logs.fileline() + ' : TRACE report today')
+
+    test_session()
 
     session['current_page'] = 'report-today'
     session.modified = True
@@ -2943,6 +3105,8 @@ def report_today():
 @app.route('/report-billing')
 def report_billing():
     log.info(Logs.fileline() + ' : TRACE report billing')
+
+    test_session()
 
     session['current_page'] = 'report-billing'
     session.modified = True
@@ -2982,6 +3146,8 @@ def report_billing():
 @app.route('/quality-general')
 def quality_general():
     log.info(Logs.fileline() + ' : TRACE quality-general')
+
+    test_session()
 
     session['current_page'] = 'quality-general'
     session.modified = True
@@ -3051,6 +3217,8 @@ def quality_general():
 def list_laboratory():
     log.info(Logs.fileline() + ' : TRACE list laboratory')
 
+    test_session()
+
     session['current_page'] = 'list-laboratory'
     session.modified = True
 
@@ -3095,6 +3263,8 @@ def list_laboratory():
 def list_staff():
     log.info(Logs.fileline() + ' : TRACE list staff')
 
+    test_session()
+
     session['current_page'] = 'list-staff'
     session.modified = True
 
@@ -3102,7 +3272,7 @@ def list_staff():
 
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -3117,6 +3287,8 @@ def list_staff():
 @app.route('/det-staff/<int:user_id>')
 def det_staff(user_id=0):
     log.info(Logs.fileline() + ' : TRACE det staff=' + str(user_id))
+
+    test_session()
 
     session['current_page'] = 'det-staff/' + str(user_id)
     session.modified = True
@@ -3203,6 +3375,8 @@ def det_staff(user_id=0):
 def list_equipment():
     log.info(Logs.fileline() + ' : TRACE list equipment')
 
+    test_session()
+
     session['current_page'] = 'list-equipment'
     session.modified = True
 
@@ -3225,6 +3399,8 @@ def list_equipment():
 @app.route('/det-equipment/<int:id_eqp>')
 def det_equipment(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE det equipment=' + str(id_eqp))
+
+    test_session()
 
     session['current_page'] = 'det-equipment/' + str(id_eqp)
     session.modified = True
@@ -3333,6 +3509,8 @@ def det_equipment(id_eqp=0):
 def list_suppliers():
     log.info(Logs.fileline() + ' : TRACE list suppliers')
 
+    test_session()
+
     session['current_page'] = 'list-suppliers'
     session.modified = True
 
@@ -3356,6 +3534,8 @@ def list_suppliers():
 @app.route('/det-supplier/<int:id_supplier>')
 def det_supplier(id_supplier=0):
     log.info(Logs.fileline() + ' : TRACE setting det supplier=' + str(id_supplier))
+
+    test_session()
 
     session['current_page'] = 'det-supplier/' + str(id_supplier)
     session.modified = True
@@ -3384,6 +3564,8 @@ def det_supplier(id_supplier=0):
 def list_manuals():
     log.info(Logs.fileline() + ' : TRACE list manuals')
 
+    test_session()
+
     session['current_page'] = 'list-manuals'
     session.modified = True
 
@@ -3406,6 +3588,8 @@ def list_manuals():
 @app.route('/det-manual/<int:id_manual>')
 def det_manual(id_manual=0):
     log.info(Logs.fileline() + ' : TRACE setting det manual=' + str(id_manual))
+
+    test_session()
 
     session['current_page'] = 'det-manual/' + str(id_manual)
     session.modified = True
@@ -3459,6 +3643,8 @@ def det_manual(id_manual=0):
 def list_procedure():
     log.info(Logs.fileline() + ' : TRACE list procedure')
 
+    test_session()
+
     session['current_page'] = 'list-procedure'
     session.modified = True
 
@@ -3481,6 +3667,8 @@ def list_procedure():
 @app.route('/det-procedure/<int:id_procedure>')
 def det_procedure(id_procedure=0):
     log.info(Logs.fileline() + ' : TRACE setting det procedure=' + str(id_procedure))
+
+    test_session()
 
     session['current_page'] = 'det-procedure/' + str(id_procedure)
     session.modified = True
@@ -3534,6 +3722,8 @@ def det_procedure(id_procedure=0):
 def list_ctrl_int():
     log.info(Logs.fileline() + ' : TRACE internal control list')
 
+    test_session()
+
     session['current_page'] = 'list-ctrl-int'
     session.modified = True
 
@@ -3556,6 +3746,8 @@ def list_ctrl_int():
 @app.route('/det-control-int/<int:id_ctrl>')
 def det_control_int(id_ctrl=0):
     log.info(Logs.fileline() + ' : TRACE internal control det=' + str(id_ctrl))
+
+    test_session()
 
     session['current_page'] = 'det-control-int/' + str(id_ctrl)
     session.modified = True
@@ -3598,6 +3790,8 @@ def det_control_int(id_ctrl=0):
 def res_control_int(ctq_ser, type_val='', cti_ser=0):
     log.info(Logs.fileline() + ' : TRACE internal control res=' + str(cti_ser))
 
+    test_session()
+
     session['current_page'] = 'res-control-int/' + str(ctq_ser) + '/' + type_val + '/' + str(cti_ser)
     session.modified = True
 
@@ -3629,6 +3823,8 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
 def list_ctrl_ext():
     log.info(Logs.fileline() + ' : TRACE external control list')
 
+    test_session()
+
     session['current_page'] = 'list-ctrl-ext'
     session.modified = True
 
@@ -3651,6 +3847,8 @@ def list_ctrl_ext():
 @app.route('/det-control-ext/<int:id_ctrl>')
 def det_control_ext(id_ctrl=0):
     log.info(Logs.fileline() + ' : TRACE external control det=' + str(id_ctrl))
+
+    test_session()
 
     session['current_page'] = 'det-control-ext/' + str(id_ctrl)
     session.modified = True
@@ -3692,6 +3890,8 @@ def det_control_ext(id_ctrl=0):
 @app.route('/res-control-ext/<int:ctq_ser>/<string:type_val>/<int:cte_ser>')
 def res_control_ext(ctq_ser, type_val='', cte_ser=0):
     log.info(Logs.fileline() + ' : TRACE external control res=' + str(cte_ser))
+
+    test_session()
 
     session['current_page'] = 'res-control-ext/' + str(ctq_ser) + '/' + type_val + '/' + str(cte_ser)
     session.modified = True
@@ -3735,6 +3935,8 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
 def list_stock():
     log.info(Logs.fileline() + ' : TRACE list stock')
 
+    test_session()
+
     session['current_page'] = 'list-stock'
     session.modified = True
 
@@ -3766,7 +3968,7 @@ def list_stock():
     # Load list of stock
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list'
-        req = requests.post(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -3781,6 +3983,8 @@ def list_stock():
 @app.route('/list-products')
 def list_products():
     log.info(Logs.fileline() + ' : TRACE list products')
+
+    test_session()
 
     session['current_page'] = 'list-products'
     session.modified = True
@@ -3805,6 +4009,8 @@ def list_products():
 @app.route('/det-list-stock/<int:prd_ser>')
 def det_list_stock(prd_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting det list stock=' + str(prd_ser))
+
+    test_session()
 
     session['current_page'] = 'det-list-stock/' + str(prd_ser)
     session.modified = True
@@ -3835,6 +4041,8 @@ def det_list_stock(prd_ser=0):
 @app.route('/hist-stock-product/<int:prd_ser>')
 def hist_stock_product(prd_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting hist stock product=' + str(prd_ser))
+
+    test_session()
 
     session['current_page'] = 'hist-stock-product/' + str(prd_ser)
     session.modified = True
@@ -3877,6 +4085,8 @@ def hist_stock_product(prd_ser=0):
 @app.route('/det-new-product/<int:prd_ser>')
 def det_new_product(prd_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting det new product=' + str(prd_ser))
+
+    test_session()
 
     session['current_page'] = 'det-new-product/' + str(prd_ser)
     session.modified = True
@@ -3930,6 +4140,8 @@ def det_new_product(prd_ser=0):
 def det_stock_product(prs_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting det stock product=' + str(prs_ser))
 
+    test_session()
+
     session['current_page'] = 'det-stock-product/' + str(prs_ser)
     session.modified = True
 
@@ -3959,6 +4171,8 @@ def det_stock_product(prs_ser=0):
 @app.route('/list-nonconformities')
 def list_nonconformities():
     log.info(Logs.fileline() + ' : TRACE list nonconformities')
+
+    test_session()
 
     session['current_page'] = 'list-nonconformities'
     session.modified = True
@@ -3994,6 +4208,8 @@ def list_nonconformities():
 def non_conformity(id_det=0):
     log.info(Logs.fileline() + ' : TRACE non-conformity')
 
+    test_session()
+
     session['current_page'] = 'non-conformity/' + str(id_det)
     session.modified = True
 
@@ -4022,6 +4238,8 @@ def non_conformity(id_det=0):
 def list_meeting():
     log.info(Logs.fileline() + ' : TRACE list meeting')
 
+    test_session()
+
     session['current_page'] = 'list-meeting'
     session.modified = True
 
@@ -4044,6 +4262,8 @@ def list_meeting():
 @app.route('/det-meeting/<int:id_meeting>')
 def det_meeting(id_meeting=0):
     log.info(Logs.fileline() + ' : TRACE setting det meeting=' + str(id_meeting))
+
+    test_session()
 
     session['current_page'] = 'det-meeting/' + str(id_meeting)
     session.modified = True
@@ -4137,13 +4357,47 @@ def download_file(type='', filename='', type_ref='', ref=''):
             # increase number of download
             try:
                 url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/nb_download/' + generated_name
-                req = requests.post(url)
+                req = requests.post(url, json={})
 
                 if req.status_code != 200:
                     return False
 
             except requests.exceptions.RequestException as err:
                 log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s', err, url)
+    elif type == 'RPC':
+        filepath = Constants.cst_report
+        generated_name = filename
+
+        copy_name = 'copy_cr_' + ref + '.pdf'
+
+        path = os.path.join(filepath, generated_name)
+
+        if os.path.exists(path) and os.stat(path).st_size > 0:
+            # increase number of download
+            try:
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/nb_download/' + generated_name
+                req = requests.post(url, json={})
+
+                if req.status_code != 200:
+                    return False
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s', err, url)
+
+            # Generate copy with watermark
+            try:
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/' + generated_name + '/copy/' + copy_name
+                req = requests.post(url, json={})
+
+                if req.status_code != 200:
+                    return False
+                else:
+                    filepath = Constants.cst_path_tmp
+                    generated_name = copy_name
+                    filename = copy_name
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + ' : requests copy file failed, err=%s , url=%s', err, url)
 
     elif type == 'DH':
         filepath = Constants.cst_dhis2
@@ -4164,7 +4418,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
         log.error(Logs.fileline() + ' : ERROR download-file, %s doesnt exist or size < 0', path)
         return redirect(session['server_ext'] + '/' + session['current_page'])
 
-    ret_file = send_file(path, as_attachment=True, attachment_filename=filename)
+    ret_file = send_file(path, as_attachment=True, download_name=filename)
     ret_file.headers["x-suggested-filename"] = filename
     ret_file.headers["Cache-Control"] = 'no-store, must-revalidate'
     ret_file.headers["Expires"] = '0'

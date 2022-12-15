@@ -1,0 +1,22 @@
+<!-- Popup history -->
+<div class="modal" id="dial-det-rec" tabindex="-1">
+    <div class="modal-dialog w-75 mw-75" style="background:#EEE;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ _("Liste des analyses du dossier") }} <span id="det_rec_num"><span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">  
+                <div>
+                    <table class="table table-striped table-lbk">
+                        <tbody id="tbody_det_rec"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("OK") }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+

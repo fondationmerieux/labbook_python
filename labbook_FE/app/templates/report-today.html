@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Rapport de fin de journée") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -16,26 +16,26 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
-                <div class="panel-filter row mt-3">
+                <div class="panel-filter d-flex align-items-start mt-3">
                     <div class="col-3">
-                        <div class="form-group form-inline">
-                            <label for="f_date_beg" class="col-form-label text-right mr-1">{{ _("Date du") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
                             <div>
                                 <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group form-inline">
-                            <label for="f_date_end" class="col-form-label text-right ml-1 mr-1">{{ _("au") }}</label>
+                    <div>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
                             <div>					
                                 <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="float-right">
-                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        <div class="float-end">
+                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -59,25 +59,25 @@
                                 <table class="table table-striped table-hover col-12 table-lbk">
                                     <thead>
                                         <tr>
-                                            <th class="text-left" hidden>
+                                            <th class="text-start" hidden>
                                                 <span>id_rec</span>
                                             </th>
-                                            <th class="text-left">
+                                            <th class="text-start">
                                                 <span>{{ _("Action") }}</span>
                                             </th>
-                                            <th class="text-left">
+                                            <th class="text-start">
                                                 <span>{{ _("Date") }}</span>
                                             </th>
-                                            <th class="text-left">
+                                            <th class="text-start">
                                                 <span>{{ _("N° dossier") }}</span>
                                             </th>
-                                            <th class="text-left">
+                                            <th class="text-start">
                                                 <span>{{ _("Famille") }}</span>
                                             </th>
-                                            <th class="text-left">
+                                            <th class="text-start">
                                                 <span>{{ _("Analyse") }}</span>
                                             </th>
-                                            <th class="text-left">
+                                            <th class="text-start">
                                                 <span>{{ _("Validation") }}</span>
                                             </th>
                                         </tr>
@@ -97,10 +97,10 @@
                 </div>
             </form>
 
-            <div class="float-left mt-3 mb-5">
+            <div class="float-start mt-3 mb-5">
                 <input type="button" onclick="return_home();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
             </div>
-            <div class="float-right mt-3 mb-5">
+            <div class="float-end mt-3 mb-5">
                 <input type="button" onclick="export_data();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Export des données') }}">
             </div> 
 
@@ -125,36 +125,32 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '"}' ;
 
     // popup wait
-    $( "#dial-wait" ).modal( "show" ) ;
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal( "show" ) ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/report/today",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        data_today = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/report/today",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-            {
-            data_today = data ;
+        p_max = Math.ceil( data.length / p_step ) ;
 
-            p_max = Math.ceil( data.length / p_step ) ;
+        display_data( 1 ) ;
 
-            display_data( 1 ) ;
+            $("#dial-wait").modal("hide") ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                $("#dial-wait").modal("hide") ;
-            },
-            error: function(data)
-            {
-                $("#dial-wait").modal("hide") ;
-
-            console.log("ERROR today list") ;
-            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-            }
-        } ) ;
+        console.log("ERROR today list") ;
+        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+        }
     } ) ;
 }
 
@@ -195,7 +191,7 @@ let total_remain = 0 ;
         {
         let menu_act = '<nav>' +
                        '<ul class="navbar-nav">' +
-                       '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
+                       '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                        '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                        '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_today[i].type_rec + '/' + data_today[i].id_rec + '">{{ _("Dossier administratif") }}</a>' ;
             
@@ -203,11 +199,11 @@ let total_remain = 0 ;
 
         res += '<tr><td hidden><div>' + data_today[i].id_rec + '</div></td>' +
                '<td><div>' + menu_act + '</div></td>' +
-               '<td><div class="text-left">' + data_today[i].rec_date + '</div></td>' +
-               '<td><div class="text-left"><span class="rec-num">' + data_today[i].rec_num + '</span></div></td>' +
-               '<td><div class="text-left">' + data_today[i].family + '</div></td>' +
-               '<td><div class="text-left">' + data_today[i].analysis + '</div></td>' +
-               '<td><div class="text-left">' + data_today[i].vld_type + '</div></td></tr>' ;
+               '<td><div class="text-start">' + data_today[i].rec_date + '</div></td>' +
+               '<td><div class="text-start"><span class="rec-num">' + data_today[i].rec_num + '</span></div></td>' +
+               '<td><div class="text-start">' + data_today[i].family + '</div></td>' +
+               '<td><div class="text-start">' + data_today[i].analysis + '</div></td>' +
+               '<td><div class="text-start">' + data_today[i].vld_type + '</div></td></tr>' ;
         }
     }
 
@@ -225,49 +221,45 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
               '"date_end":"' + date_end  + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/report/today/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/report/today/export",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
 
-            let month = today.getMonth() + 1 ;
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "report_today_" + today + ".csv" ;
+        let filename = "report_today_" + today + ".csv" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                if (ret.status == 404)
-                alert("{{ _("Aucun résultats à exporter !") }}") ;
-                else
-                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

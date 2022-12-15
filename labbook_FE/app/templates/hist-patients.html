@@ -16,36 +16,36 @@
                 </div>
                 <div class="panel-filter row mt-3">
                     <div class="col-5">
-                        <div class="form-group row">
-                            <label for="code" class="col-form-label col-3 text-right mt-2 ">{{ _("Code") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="code" class="form-label col-3 text-end mt-2 me-1">{{ _("Code") }}</label>
                             <div>					
                                 <input type="text" name="code" id="code" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="code_lab" class="col-form-label col-3 text-right mt-2 ">{{ _("Code labo.") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="code_lab" class="form-label col-3 text-end mt-2 me-1">{{ _("Code labo.") }}</label>
                             <div>					
                                 <input type="text" name="code_lab" id="code_lab" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-group row">
-                            <label for="lastname" class="col-form-label col-3 text-right mt-2 ">{{ _("Nom") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>					
                                 <input type="text" name="lastname" id="lastname" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="firstname" class="col-form-label col-3 text-right mt-2 ">{{ _("Prénom") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="firstname" class="form-label col-3 text-end mt-2 me-1">{{ _("Prénom") }}</label>
                             <div class="">					
                                 <input type="text" name="firstname" id="firstname" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="float-right">
-                            <button type="button" onclick="filter_patients();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                    <div class="col-12 my-2">
+                        <div class="float-end">
+                            <button type="button" onclick="filter_patients();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -68,13 +68,13 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-left">{{ _("Action") }}</th>
-                            <th class="text-left cursor-act">{{ _("Code") }}</th>
-                            <th class="text-left cursor-act">{{ _("Code labo.") }}</th>
-                            <th class="text-left cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-left cursor-act">{{ _("Prénom") }}</th>
-                            <th class="text-left cursor-act">{{ _("DDN") }}</th>
-                            <th class="text-left cursor-act">{{ _("Sexe") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start cursor-act">{{ _("Code") }}</th>
+                            <th class="text-start cursor-act">{{ _("Code labo.") }}</th>
+                            <th class="text-start cursor-act">{{ _("Nom") }}</th>
+                            <th class="text-start cursor-act">{{ _("Prénom") }}</th>
+                            <th class="text-start cursor-act">{{ _("DDN") }}</th>
+                            <th class="text-start cursor-act">{{ _("Sexe") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_patients">
@@ -91,11 +91,11 @@
             </div>
 
             <div class="mb-5 clearfix">
-                <div class="float-left" style="margin-left:0px;">
+                <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Quitter") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-right">
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ml-2">
+                <div class="float-end">
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -124,36 +124,32 @@ let param = '{ "code":"' + code + '", ' +
             '"firstname":"' + firstname  + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/patient/list",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            data_patients = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/patient/list",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-                {
-                data_patients = data ;
+            p_max = Math.ceil( data.length / p_step ) ;
 
-                p_max = Math.ceil( data.length / p_step ) ;
+            display_patient( 1 ) ;
 
-                display_patient( 1 ) ;
+                $("#dial-wait").modal("hide") ;
+            },
+        error: function(data)
+            {
+                 $("#dial-wait").modal("hide") ;
 
-                    $("#dial-wait").modal("hide") ;
-                },
-            error: function(data)
-                {
-                     $("#dial-wait").modal("hide") ;
-
-                console.log("ERROR patient list") ;
-                alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
-                }
-        } ) ;
+            console.log("ERROR patient list") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+            }
     } ) ;
 }
 
@@ -191,7 +187,7 @@ $("#list_patients_total").html( data_len ) ;
     {
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-toggle="dropdown"></a>' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-hist-patient/' + data_patients[i].id_data + '">{{ _("Historique") }}</a>' ;   
         
@@ -199,12 +195,12 @@ $("#list_patients_total").html( data_len ) ;
 
     res += '<tr><td hidden><div>' + data_patients[i].id_data + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-left">' + data_patients[i].code + '</div></td>' +
-           '<td><div class="text-left">' + data_patients[i].code_lab + '</div></td>' +
-           '<td><div class="text-left">' + data_patients[i].lastname + '</div></td>' +
-           '<td><div class="text-left">' + data_patients[i].firstname + '</div></td>' +
-           '<td><div class="text-left">' + data_patients[i].birth + '</div></td>' +
-           '<td><div class="text-left">' + sex_pat(data_patients[i].sex) + '</div></td></tr>' ;
+           '<td><div class="text-start">' + data_patients[i].code + '</div></td>' +
+           '<td><div class="text-start">' + data_patients[i].code_lab + '</div></td>' +
+           '<td><div class="text-start">' + data_patients[i].lastname + '</div></td>' +
+           '<td><div class="text-start">' + data_patients[i].firstname + '</div></td>' +
+           '<td><div class="text-start">' + data_patients[i].birth + '</div></td>' +
+           '<td><div class="text-start">' + sex_pat(data_patients[i].sex) + '</div></td></tr>' ;
     }
 {% endif %}
 
@@ -240,49 +236,45 @@ let param = '{ "code":"' + code + '", ' +
             '"firstname":"' + firstname  + '"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal( "show" ) ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/patient/list/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/patient/list/export",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
 
-            let month = today.getMonth() + 1 ;
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "patients_" + today + ".csv" ;
+        let filename = "patients_" + today + ".csv" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-                if (ret.status == 404)
-                alert("{{ _("Aucun résultats à exporter !") }}") ;
-                else
-                alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 

@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Saisie de résultats") }}</title>
-    <link href="{{ url_for('static', filename='vendor/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}        
@@ -14,42 +14,42 @@
                 <span>{{ _("Saisie de résultats") }}</span>
             </h2>
             <form autocomplete="off" id="form-search">
-                <fieldset class="row border p-2">
+                <fieldset class="d-flex flex-wrap border px-3 py-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
                     <div id="filter" class="col-12">
-                        <div class="form-group form-inline">
-                            <div class="control-label"><span>{{ _("Date de la demande du") }}</span></div>
-                            <div>
-                                <input id="f_date_beg" class="form-control cnx_trigger ml-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <div class="control-label mt-2 me-1"><span>{{ _("Date de la demande du") }}</span></div>
+                            <div class="me-1">
+                                <input id="f_date_beg" class="form-control cnx_trigger ms-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                             </div>
-                            <div class="control-label ml-1"><span>{{ _("au") }}</span></div>
+                            <div class="control-label ms-1 mt-2 me-1"><span>{{ _("au") }}</span></div>
                             <div>
-                                <input id="f_date_end" class="form-control cnx_trigger ml-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                <input id="f_date_end" class="form-control cnx_trigger ms-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                             </div>
                         </div>
 
-                        <div class="form-group form-inline">
-                            <div class="control-label">{{ _("Type") }}</div>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <div class="control-label mt-2">{{ _("Type") }}</div>
                             <div>
-                                <select name="type_ana" id="f_type_ana" class="form-control ml-1">
+                                <select name="type_ana" id="f_type_ana" class="form-select ms-1">
                                     {% from 'macros.html' import select_type_ana %}
                                     {{ select_type_ana(ihm['type_ana']) }}
                                 </select>       
                             </div>
-                            <div class="control-label ml-3 mr-1">{{ _("Code patient") }}</div>
+                            <div class="control-label ms-3 mt-2 me-1">{{ _("Code patient") }}</div>
                             <div>					
                                 <input type="text" name="code_pat" id="code_pat" value="" class="form-control cnx_trigger">			
                             </div>
                         </div>
 
-                        <div class="form-group form-inline">
-                            <input id="f_emer_ana" type="checkbox" name="urgent" value="4">
-                            <label for="f_emer_ana" class="col-form-label ml-1 mr-3">{{ _("Afficher uniquement les analyses prioritaires") }}</label>
-                            <input id="f_valid_res" type="checkbox" name="valid" value="1">
-                            <label for="f_valid_res" class="col-form-label ml-1">{{ _("Masquer les résultats déjà validés") }}</label>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <input id="f_emer_ana" type="checkbox" name="urgent" class="mt-1" value="4">
+                            <label for="f_emer_ana" class="form-label ms-1 me-3">{{ _("Afficher uniquement les analyses prioritaires") }}</label>
+                            <input id="f_valid_res" type="checkbox" name="valid" class="mt-1" value="1">
+                            <label for="f_valid_res" class="form-label ms-1">{{ _("Masquer les résultats déjà validés") }}</label>
                         </div>
-                        <div class="form-group float-right mr-3">
-                            <button type="button" onclick="filter_result();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="fa fa-search pr-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        <div class="form-group float-end mt-3 me-3">
+                            <button type="button" onclick="filter_result();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </fieldset>
@@ -59,7 +59,7 @@
                 <div id="no_result" class="error mt-3 text-center p-2">{{ _("Aucune analyse") }}</div>
                 <div id="list_result" class="mt-3"></div>
             </form>
-            <div class="float-right mt-3 mb-5">
+            <div class="float-end mt-3 mb-5">
                 <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Feuille de paillasse') }}">
             </div>
 
@@ -355,18 +355,18 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         {
         // close the form and table
         res += "</tbody></table>" +
-               "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
-               "<button type=\"button\" class=\"btn btn-{{ session['user_role']|safe }} btn_save_" + id_rec_p +"_"+ ref_ana_p + " mr-2\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p + ", "  + ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
+               "<div class=\"form-group d-flex align-items-start\" style=\"vld-block;\">" +
+               "<button type=\"button\" class=\"btn btn-{{ session['user_role']|safe }} btn_save_" + id_rec_p +"_"+ ref_ana_p + " me-2\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p + ", "  + ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
 
         {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
               session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
-        res += "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
-               "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>" +
-               "<div class=\"form-inline\">" +
+        res += "<span class=\"d-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
+               "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
+               "<div>" +
                "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
-               "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
-               "<input type=\"text\" name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control ml-1\" value=\"" + name + "\" readonly />" +
+               "<label class=\"form-label text-end ms-3 mt-2 me-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
+               "<input type=\"text\" name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control ms-1\" value=\"" + name + "\" readonly />" +
                "<input type=\"hidden\" id=\"id_validator_" + id_rec_p +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
         {#
@@ -389,7 +389,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         #}
 
         res += "</select>" +
-               "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" value=\"{{ _("Valider") }}\" class=\"btn btn-{{ session['user_role']|safe }} ml-3\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+               "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" value=\"{{ _("Valider") }}\" class=\"btn btn-{{ session['user_role']|safe }} ms-3\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
                "</span>" ;
         {% endif %}
 
@@ -415,11 +415,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             if (res_fam.length < 4) res_fam = "" ;
 
         res += "<form autocomplete=\"off\">" +
-               "<fieldset class=\"row border p-2 mt-2\">" +
+               "<fieldset class=\"d-flex flex-wrap border px-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num mr-2 mb-2\">" + num_rec + "</span> " + per_rec + "&nbsp;<b>Patient:</b>&nbsp;" + data[i].patient +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> " + per_rec + "&nbsp;<b>Patient:</b>&nbsp;" + data[i].patient +
                "<table class=\"table table-striped table-hover table-lbk\">" +
-               "<tbody class=\"row mx-1\">" ;
+               "<tbody class=\"mx-1\">" ;
         }
 
         // new analysis so new result line
@@ -455,16 +455,16 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
             }
 
-        res += "<tr class=\"col-12 p-0\">" +
-               "<td class=\"d-inline-block col-1 align-middle border-0 p-1\">" + res_limit + "</td>" +
-               "<td class=\"d-inline-block col-1 align-middle text-center border-0 p-1\">" + res_emer + "</td>" +
-               "<td class=\"d-inline-block align-middle text-center border-0 p-1\">" + res_stat + "</td>" +
-               "<td class=\"d-inline-block align-middle text-center border-0 p-1\">" +
+        res += "<tr class=\"align-middle p-0\">" +
+               "<td class=\"col-1 align-middle border-0 p-1\">" + res_limit + "</td>" +
+               "<td class=\"col-1 align-middle text-center border-0 p-1\">" + res_emer + "</td>" +
+               "<td class=\"align-middle text-center border-0 p-1\">" + res_stat + "</td>" +
+               "<td class=\"align-middle text-center border-0 p-1\">" +
                "<div class=\"history\" onclick=\"display_histo(" + i + ");\"></div>" +
                "</td>" +
-               "<td class=\"d-inline-block col-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
+               "<td class=\"col-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
 
-        res += "<td class=\"d-inline-block form-inline align-middle text-center border-0 p-1\"><span class=\"value\">" ;
+        res += "<td class=\"d-flex align-items-start align-middle text-center border-0 p-1\"><span class=\"value d-flex align-items-start align-middle\">" ;
 
             // CANCEL RESULT
             if ( res_valid == 252 && value == "" )
@@ -484,7 +484,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 if (res_valid != 250)
                 change = 'disabled' ;
 
-            res += "<select id=\"res_" + id_res + "\" class=\"form-control saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
+            res += "<select id=\"res_" + id_res + "\" class=\"form-select saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
                    "<option value=\"\"> </option>" ;
 
             value = "" ;
@@ -594,7 +594,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 }
             }
 
-        res += '<span class="unit show">' + res_unit + '</span></td></tr>' ;
+        res += '<span class="unit mt-2 show">' + res_unit + '</span></td></tr>' ;
         }
 
     id_rec_p  = id_rec  ;
@@ -607,17 +607,17 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     {
     // close the form and table
     res += "</tbody></table>" +
-           "<div class=\"form-group form-inline\" style=\"vld-block;\">" +
+           "<div class=\"form-group d-flex align-items-start\" style=\"vld-block;\">" +
            "<button type=\"button\" class=\"btn btn-{{ session["user_role"]|safe }} btn_save_" + id_rec_p +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
 
     {% if session['user_role'] == 'B' or session['user_role'] == 'T' or 
           session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
     res += "<span class=\"form-inline " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
-           "<label class=\"col-form-label text-right mr-1\">{{ _("Date de validation") }} </label>&nbsp;" +
+           "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>&nbsp;" +
            "<div class=\"form-inline\">" +
            "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"voo_date voo_date_field_1 form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\">" +
            "</div>" +
-           "<label class=\"col-form-label text-right ml-3 mr-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
+           "<label class=\"form-label text-end ms-3 me-1\" for=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
            "<input type=\"text\" name=\"validator_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec_p +"_"+ ref_ana_p + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
            "<input type=\"hidden\" id=\"id_validator_" + id_rec_p +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
@@ -677,36 +677,31 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"valid_res":' + valid_res + '}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $("#dial-wait").off() ;
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/result/list",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+            {
+            data_res = data ;
 
-    $("#dial-wait").on('shown.bs.modal', function () 
-    {
-        $.ajax( {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/result/list",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(data)
-                {
-                data_res = data ;
+            display_result( 1 ) ;
 
-                display_result( 1 ) ;
+                $("#dial-wait").modal("hide") ;
+            },
+        error: function(data)
+            {
+                $("#dial-wait").modal("hide") ;
 
-                    $("#dial-wait").modal("hide") ;
-                },
-            error: function(data)
-                {
-                    $("#dial-wait").modal("hide") ;
-
-                console.log("ERROR result list") ;
-                alert("{{ _("Une erreur est survenue lors de la récupération des résultats") }}") ;
-                }
-        } ) ;
+            console.log("ERROR result list") ;
+            alert("{{ _("Une erreur est survenue lors de la récupération des résultats") }}") ;
+            }
     } ) ;
-
 }
 
 function download_report()
@@ -719,50 +714,46 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
               '"filename": "benchsheet"}' ;
 
     // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal( "show" ) ;
 
-    $("#dial-wait").off() ;
-
-    $("#dial-wait").on('shown.bs.modal', function () 
+    $.ajax( 
     {
-        $.ajax( 
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
         {
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
-            
-            let today = new Date();
-            
-            let month = today.getMonth() + 1 ;
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
 
-            if (month < 10) month = '0' + month ;
+        if (month < 10) month = '0' + month ;
 
-            let day = today.getDate() ;
+        let day = today.getDate() ;
 
-            if (day < 10) day = '0' + day ;
+        if (day < 10) day = '0' + day ;
 
-            today = today.getFullYear() + '' + month + '' + day ;
+        today = today.getFullYear() + '' + month + '' + day ;
 
-            let filename = "benchsheet_" + today + ".pdf" ;
+        let filename = "benchsheet_" + today + ".pdf" ;
 
-            download_file( "PY", filename, "GEN", 0 ) ;
-            },
-            error: function(ret)
-            {
-                $("#dial-wait").modal("hide") ;
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
 
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-            }
-        } ) ;
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
     } ) ;
 }
 
-{% include 'display_histo.js' %}
+{% include 'js/display_histo.js' %}
 
 // without this enter key with focus in input text reload page
 $("#form-search").submit(function()

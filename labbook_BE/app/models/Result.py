@@ -341,17 +341,18 @@ class Result:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_analysis, rec.id_patient, d_type.label as type, '
+        req = ('select rec.id_data as id_analysis, , rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
-               'rec.med_prescripteur as id_doctor, date_format(rec.date_prescription, %s) as prescription_date, '
-               'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
+               'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
+               'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
+               'rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
                'ref.code as analysis_code, ref.nom as analysis_name, d_fam.label as analysis_familly, '
                'res.valeur as result_value, var.libelle as variable_name, var.type_resultat as type_result, '
-               'd_unit.label as result_unit '
+               'd_unit.label as result_unit, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
@@ -360,12 +361,15 @@ class Result:
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as var on var.id_data = res.ref_variable '
+               'left join sigl_08_data as doctor on doctor.id_data=rec.med_prescripteur '
                'left join sigl_dico_data as d_unit on d_unit.id_data=var.unite '
                'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
                'and ref.id_data = link.id_refanalyse '
+               'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
+               'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
                'where rec.statut in (255, 256) and rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 
-        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()
