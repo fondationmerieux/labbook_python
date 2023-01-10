@@ -187,8 +187,8 @@ def upgrade():
 
     # DELETE duplicates type_resultat TO sigl_dico_data TABLE
     try:
-        conn.execute("delete from sigl_dico_data where id_data in (1126,1141,1132,602,1125,1136,1139,1140) and '
-                     'dico_name='type_resultat'")
+        conn.execute("delete from sigl_dico_data where id_data in (1126,1141,1132,602,1125,1136,1139,1140) and "
+                     "dico_name='type_resultat'")
     except Exception as err:
         print("ERROR delete id_data in (1126,1141,1132,602,1125,1136,1139,1140) to sigl_dico_data,\n\terr=" + str(err))
 
