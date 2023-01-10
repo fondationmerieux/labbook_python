@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-15 11:34+0100\n"
+"POT-Creation-Date: 2022-12-17 18:41+0100\n"
 "PO-Revision-Date: 2021-09-03 15:11+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ar\n"
 "Language-Team: ar <LL@li.org>\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
-"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: models/File.py:469
 msgid "DUPLICATA"
@@ -7495,16 +7495,4 @@ msgstr ""
 #: translations/messages_pybabel.py:2445
 msgid "Zimbabwéenne"
 msgstr ""
-
-#~ msgid "de"
-#~ msgstr "من"
-
-#~ msgid "Intervalle de référence"
-#~ msgstr "الفترة المرجعية"
-
-#~ msgid "key"
-#~ msgstr ""
-
-#~ msgid "secrétaire avancée"
-#~ msgstr ""
 

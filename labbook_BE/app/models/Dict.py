@@ -15,7 +15,7 @@ class Dict:
     def getDictValue(id_value):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived, dico_descr '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr '
                'from sigl_dico_data '
                'where id_data = %s')
 
@@ -42,7 +42,7 @@ class Dict:
     def getDictDetails(dict_name):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, archived, dico_descr '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr '
                'from sigl_dico_data '
                'where dico_name = %s '
                'order by position')
@@ -57,9 +57,9 @@ class Dict:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_dico_data '
-                           '(id_owner, dico_name, label, short_label, position, code, archived) '
+                           '(id_owner, dico_name, label, short_label, position, code) '
                            'values (%(id_owner)s, %(dico_name)s, %(label)s, %(short_label)s, '
-                           '%(position)s, %(code)s, 0)', params)
+                           '%(position)s, %(code)s)', params)
 
             Dict.log.info(Logs.fileline())
 
@@ -75,7 +75,7 @@ class Dict:
 
             cursor.execute('update sigl_dico_data '
                            'set label=%(label)s, short_label=%(short_label)s, position=%(position)s, '
-                           'code=%(code)s, archived=%(archived)s '
+                           'code=%(code)s '
                            'where id_data=%(id_data)s', params)
 
             Dict.log.info(Logs.fileline())
@@ -117,6 +117,25 @@ class Dict:
             return False
 
     @staticmethod
+    def exist(dico_name):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select count(*) as nb_dico_name '
+                           'from sigl_dico_data '
+                           'where dico_name=%s', (dico_name,))
+
+            ret = cursor.fetchone()
+
+            if ret and ret['nb_dico_name'] == 0:
+                return False
+            else:
+                return True
+        except mysql.connector.Error as e:
+            Dict.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return -1
+
+    @staticmethod
     def getDictList(args):
         cursor = DB.cursor()
 
@@ -126,11 +145,11 @@ class Dict:
         if not args:
             limit = 'LIMIT 2000'
 
-            filter_cond += ' (archived=0 or archived is NULL) '  # remove deleted dicts by default
+            filter_cond += ' id_data > 0 '  # remove deleted dicts by default
         else:
             limit = 'LIMIT 2000'
 
-            filter_cond += ' (archived=0 or archived is NULL) '  # remove deleted dicts by default
+            filter_cond += ' id_data > 0 '  # remove deleted dicts by default
 
             if session['lang_db'] == 'fr_FR':
                 if args['name']:
@@ -160,6 +179,22 @@ class Dict:
                'from sigl_dico_data ' + trans +
                'where ' + filter_cond +
                'group by dico_name order by dico_name asc ' + limit)
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getDictExport(dico_name):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if dico_name:
+            cond = ' where dico_name="' + str(dico_name) + '"'
+
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr '
+               'from sigl_dico_data ' + cond)
 
         cursor.execute(req)
 

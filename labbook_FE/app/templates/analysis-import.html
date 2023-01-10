@@ -142,7 +142,7 @@ function check_stat_db()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/db/stat/last",
+        url: "{{ session['server_ext'] }}/services/db/stat/last/ANA",
         success: function(ret)
         {
         data = ret.split(";") ;

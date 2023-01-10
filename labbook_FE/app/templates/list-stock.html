@@ -102,9 +102,21 @@
                 <div class="float-start" style="margin-start:0px;">
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-end">
+                <div class="float-end d-flex align-items-end">
                     {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
+                    {#
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
+                    #}
+                    <div class="dropdown">
+                        <button class="btn btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_export" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Export des données") }}</button>
+                        <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#" onclick="export_data();">{{ _("Export du tableau") }}</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="export_products();">{{ _("Export des produits") }}</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="export_supplies();">{{ _("Export des approvisionnements") }}</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="export_uses();">{{ _("Export des usages") }}</a></li>
+                        </ul>
+                    </div>
+
                     <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
                     <input type="button" onclick="list_products();" id="btn_add" value="{{ _("Catalogue des produits") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
                     <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
@@ -120,7 +132,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var id_use_item = 0 ;
-var data_items  = {{ args|safe }} ;
+var data_items  = {{ args|safe or [] }} ;
 var p_step      = 20 ;
 var p_cur       = 1 ;
 var p_max       = Math.ceil( data_items.length / p_step ) ;
@@ -208,9 +220,9 @@ $("#list_items_total").html( data_len ) ;
         
     menu_act += "</div></ul></nav>" ;
 
-    if ( data_items[i].day_to_expir <= 0 && data_items[i].nb_total > 0 )
+    if ( data_items[i].day_to_expir <= {{ session['stock_expir_alert'] }} && data_items[i].nb_total > 0 )
     tr_style = "style=\"background-color:#FFD5D6;\"" ;
-    else if ( data_items[i].day_to_expir <= 14 && data_items[i].nb_total > 0 )
+    else if ( data_items[i].day_to_expir <= {{ session['stock_expir_warning'] }} && data_items[i].nb_total > 0 )
     tr_style = "style=\"background-color:#FFCC66;\"" ;
     else
     tr_style = "" ;
@@ -331,6 +343,132 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
         today = today.getFullYear() + '' + month + '' + day ;
 
         let filename = "stock_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun stock à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function export_products()
+{
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/quality/stock/export/products",
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "stock_products_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun stock à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function export_supplies()
+{
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/quality/stock/export/supplies",
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "stock_supplies_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun stock à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function export_uses()
+{
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/quality/stock/export/uses",
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "stock_uses_" + today + ".csv" ;
 
         download_file( "PY", filename, "GEN", 0 ) ;
         },

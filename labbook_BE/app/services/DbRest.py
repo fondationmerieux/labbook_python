@@ -14,10 +14,10 @@ from app.models.Logs import Logs
 class DbLastStat(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self):
+    def get(self, type):
         ret = ''
 
-        stat = DB.getLastStatus()
+        stat = DB.getLastStatus(type)
 
         if stat and stat['dbs_date']:
             ret = datetime.strftime(stat['dbs_date'], '%Y-%m-%d %H:%M:%S')

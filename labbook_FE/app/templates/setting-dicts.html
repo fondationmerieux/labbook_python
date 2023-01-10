@@ -86,6 +86,8 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
+                    <input type="button" onclick="import_dict();" id="btn_import" value="{{ _("Import de dictionnaire") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="export_dict('');" id="btn_export" value="{{ _("Exporter le dictionnaire") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                     <input type="button" onclick="add_dict();" id="btn_add" value="{{ _("Ajouter un dictionnaire") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
@@ -97,7 +99,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_dicts = {{ args|safe }} ;
+var data_dicts = {{ args|safe or [] }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_dicts.length / p_step ) ;
@@ -179,6 +181,7 @@ $("#list_dicts_total").html( data_len ) ;
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-det-dict/" + data_dicts[i].key + "\">{{ _("Editer") }}</a>" +
+                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"export_dict('" + data_dicts[i].key + "')\">{{ _("Exporter le dictionnaire") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_dict('" + data_dicts[i].key + "');\">{{ _("Supprimer") }}</a>";
 
     menu_act += "</div></ul></nav>" ;
@@ -232,6 +235,59 @@ var id_owner = {{ session['user_id']|safe}} ;
 function add_dict()
 {
 window.location.href = "{{ session['server_ext'] }}/setting-det-dict" ;
+}
+
+function import_dict()
+{
+window.location.href = "{{ session['server_ext'] }}/dict-import";
+}
+
+function export_dict(dico_name)
+{
+var id_user  = {{ session['user_id']|safe}} ;
+var param    = '{"id_user":' + id_user + ', "dico_name":"' + dico_name +'"}' ;
+
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/dict/export",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        if (dico_name != "")
+        dico_name = "-" + dico_name ;
+
+        let filename = "dict" + dico_name + "_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        console.log("ERROR POST export dict");
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
 }
 
 function return_home()

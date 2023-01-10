@@ -9,20 +9,6 @@ class Report:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getStatEpidemio(id_disease):
-        cursor = DB.cursor()
-
-        req = ('select nom_amont as res_cat, formule as formula, id_surveillance as id_disease, '
-               'libelle_ind as res_label, nature_prel as id_prod '
-               'from sigl_15_data '
-               'where id_surveillance = %s '
-               'order by id_data asc')
-
-        cursor.execute(req, (id_disease,))
-
-        return cursor.fetchall()
-
-    @staticmethod
     def getNbResultRecevied(l_id_var, id_prod, date_beg, date_end):
         cursor = DB.cursor()
 
@@ -80,6 +66,21 @@ class Report:
         return cursor.fetchone()
 
     @staticmethod
+    def getResultIndicator(**params):
+        cursor = DB.cursor()
+
+        req = ('select count(distinct rec.id_data) as value '
+               'from sigl_02_data as rec ' + params['inner_req'] + ' '
+               'where (rec.date_dos between %(date_beg)s and %(date_end)s) ' + params['end_req'])
+
+        Report.log.info('----------------------------------')
+        Report.log.info('getResultIndicator req=' + str(req))
+
+        cursor.execute(req, params)
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getActivityAge(date_beg, date_end, type_ana):
         cursor = DB.cursor()
 
@@ -109,7 +110,8 @@ class Report:
         if type_ana > 0:
             cond = ' and ana.famille= ' + str(type_ana) + ' '
 
-        req = ('select ana.nom as analysis, ana.code as code, pat.sexe as sex, rec.type as rec_type, count(*) as nb_ana '
+        req = ('select ana.nom as analysis, ana.code as code, pat.sexe as sex, rec.type as rec_type, '
+               'count(*) as nb_ana, rec.rec_custody '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
@@ -122,13 +124,18 @@ class Report:
         return cursor.fetchall()
 
     @staticmethod
-    def getStatPatient(date_beg, date_end):
+    def getStatPatient(date_beg, date_end, service_int):
         cursor = DB.cursor()
+
+        cond = ''
+
+        if service_int:
+            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
 
         req = ('select pat.sexe as sex, pat.age, count(*) as nb_rec, rec.type as rec_type '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
-               'where (rec.date_dos between %s and %s) '
+               'where (rec.date_dos between %s and %s) ' + cond +
                'group by pat.age order by age asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -136,13 +143,18 @@ class Report:
         return cursor.fetchall()
 
     @staticmethod
-    def getStatPrescr(date_beg, date_end):
+    def getStatPrescr(date_beg, date_end, service_int):
         cursor = DB.cursor()
+
+        cond = ''
+
+        if service_int:
+            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
 
         req = ('select doctor.nom as lastname, doctor.prenom as firstname, count(*) as nb_rec '
                'from sigl_02_data as rec '
                'inner join sigl_08_data as doctor on doctor.id_data = rec.med_prescripteur '
-               'where (date_prescription between %s and %s) '
+               'where (date_prescription between %s and %s) ' + cond +
                'group by doctor.id_data order by lastname asc, firstname asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -171,6 +183,46 @@ class Report:
                'inner join sigl_dico_data as dict on dict.id_data = prod.type_prel '
                'where (prod.date_prel between %s and %s) '
                'group by product order by product asc')
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStatNbPat(date_beg, date_end, service_int):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if service_int:
+            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+
+        req = ('select pat.sexe as sex, rec.type, rec_custody, rec.statut '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'where (rec.date_dos between %s and %s) ' + cond +
+               'order by pat.sexe asc, rec.type asc, rec_custody asc')
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStatNbAna(date_beg, date_end, service_int):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if service_int:
+            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+
+        req = ('select pat.sexe as sex, rec.type, rec_custody '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse '
+               'where (rec.date_dos between %s and %s) and ana.cote_unite != "PB" ' + cond +
+               'order by pat.sexe asc, rec.type asc, rec_custody asc')
 
         cursor.execute(req, (date_beg, date_end,))
 

@@ -1,0 +1,88 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage du stockage") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage du stockage") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration obligatoire") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
+                        <input type="radio" name="expir_oblig" value="Y" {% if args['sos_expir_oblig'] == 'Y' %} checked="true" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                    </label>
+                    <label class="form-label text-end mt-2 me-3">
+                        <input type="radio" name="expir_oblig" value="N" {% if args['sos_expir_oblig'] == 'N' %} checked="true" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                    </label>
+                </div>
+
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1" style="background-color:#FFCC66;">{{ _("Nombre de jours avant avertissement") }}</label>
+                    <input type="number" id="expir_warning" name="expir_warning" value="{{ args['sos_expir_warning'] }}" maxlength="3" class="form-control w-auto" min="0" max="9999999999999" step="1">
+                </div>
+
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1" style="background-color:#FFD5D6;">{{ _("Nombre de jours avant alerte") }}</label>
+                    <input type="number" id="expir_alert" name="expir_alert" value="{{ args['sos_expir_alert'] }}" maxlength="3" class="form-control w-auto" min="0" max="9999999999999" step="1">
+                </div>
+            </form>
+
+            <div class="clearfix mb-5">
+                <div class="float-start" style="margin-start:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save()
+{
+var id_owner = {{ session['user_id']|safe}} ;
+var expir_oblig = $("input:radio[name=expir_oblig]:checked").val() ;
+var expir_warning = $("#expir_warning").val() ;
+var expir_alert = $("#expir_alert").val() ;
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"expir_oblig":"' + expir_oblig + '", ' +
+              '"expir_warning":' + expir_warning + ', ' +
+              '"expir_alert":' + expir_alert + '}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param));
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/setting/stock",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST setting stock") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage";
+}
+</script>
+{% endblock %}

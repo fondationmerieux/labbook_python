@@ -60,7 +60,7 @@ class Various:
     def getDicoById(id_data):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code '
                'from sigl_dico_data '
                'where id_data = %s '
                'order by position')
@@ -286,3 +286,15 @@ class Various:
         cursor.execute(req)
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getNationalityById(id):
+        cursor = DB.cursor()
+
+        req = ('select nat_ser, nat_name, nat_code '
+               'from nationality '
+               'where nat_ser=%s')
+
+        cursor.execute(req, (id,))
+
+        return cursor.fetchone()

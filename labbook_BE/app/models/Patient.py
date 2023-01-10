@@ -37,6 +37,12 @@ class Patient:
             if args['firstname']:
                 filter_cond += ' and prenom LIKE "%' + args['firstname'] + '%" '
 
+            if args['phone']:
+                filter_cond += ' and (tel like "' + args['phone'] + '%" or pat_phone2 like "' + args['phone'] + '%") '
+
+            if args['sex']:
+                filter_cond += ' and sexe="' + args['sex'] + '" '
+
         req = ('select id_data, id_owner, code, code_patient as code_lab, nom as lastname, prenom as firstname, '
                'date_format(ddn, %s) as birth, sexe as sex '
                'from sigl_03_data '

@@ -13,7 +13,7 @@ class Analysis:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getAnalysisSearch(text, type="A"):
+    def getAnalysisSearch(text, type="A", status=4):
         """Search in analysis table
 
         This function is call by search field on analyze or search form on setting analyze page
@@ -33,6 +33,9 @@ class Analysis:
 
         cond  = 'ana.actif = 4'
         trans = ''
+
+        if status == 5:
+            cond  = 'ana.actif = 5'
 
         # only in analysis without sample analysis
         if type == "A":
@@ -190,7 +193,7 @@ class Analysis:
     def getProductType(id_data):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_id, dico_value_id, archived '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code '
                'from sigl_dico_data '
                'where id_data=%s')
 
@@ -215,7 +218,8 @@ class Analysis:
         req = ('select req_ana.id_data as id_data, req_ana.id_owner as id_owner, req_ana.id_dos as id_dos, '
                'req_ana.ref_analyse as ref_analyse, req_ana.prix as prix, req_ana.paye as paye, req_ana.urgent as urgent, '
                'req_ana.demande as demande, ref_ana.code as code, ref_ana.nom as nom, ref_ana.cote_unite as cote_unite, '
-               'ref_ana.cote_valeur as cote_valeur '
+               'ref_ana.cote_valeur as cote_valeur, ifnull(ref_ana.type_prel, 0) as type_samp, '
+               'ifnull(ref_ana.produit_biologique, 0) as id_samp_act '
                'from sigl_04_data as req_ana '
                'left join sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '
                'where id_dos=%s' + cond)
@@ -240,6 +244,45 @@ class Analysis:
         except mysql.connector.Error as e:
             Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def deleteAnalysisReq(id_req, id_rec, id_samp_act, type_samp):
+        try:
+            cursor = DB.cursor()
+
+            if id_samp_act:
+                # Count the number of analyses in this record that have in common the act of sampling
+                cursor.execute('select count(*) as nb_samp_ana from sigl_04_data as req '
+                               'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
+                               'where req.id_dos=%s and ana.produit_biologique=%s ', (id_rec, id_samp_act))
+
+                nb = cursor.fetchone()
+
+                if nb:
+                    if nb['nb_samp_ana'] == 1:
+                        # delete pathological product
+                        cursor.execute('delete from sigl_01_data '
+                                       'where id_dos=%s and type_prel=%s', (id_rec, type_samp))
+
+                        # delete sample act request
+                        cursor.execute('delete from sigl_04_data '
+                                       'where id_dos=%s and ref_analyse=%s', (id_rec, id_samp_act))
+
+                    # decrease pathological product
+                    else:
+                        cursor.execute('update sigl_01_data set quantite = quantite - 1 '
+                                       'where id_dos=%s and type_prel=%s and quantite > 1', (id_rec, type_samp))
+
+            # delete analysis request
+            cursor.execute('delete from sigl_04_data '
+                           'where id_data=%s and id_dos=%s', (id_req, id_rec))
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getListVariable(id_ana):
@@ -654,7 +697,7 @@ class Analysis:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_analysis, , rec.rec_custody, rec.id_patient, d_type.label as type, '
+        req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
@@ -680,3 +723,34 @@ class Analysis:
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def updateAnalysisStatus(status, id_ana):
+        try:
+            cursor = DB.cursor()
+
+            cond = ''
+
+            if status == 'E':
+                status = 4
+                cond += ' actif != 4 '
+            elif status == 'D':
+                status = 5
+                cond += ' actif != 5 '
+
+            # if a specific analysis 
+            if id_ana > 0:
+                cond += ' and id_data=' + str(id_ana)
+
+            req = ('update sigl_05_data '
+                   'set actif=%s '
+                   'where ' + cond)
+
+            cursor.execute(req, (status,))
+
+            Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

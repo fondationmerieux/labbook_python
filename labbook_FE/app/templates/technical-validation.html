@@ -62,6 +62,36 @@
             <div id="no_result" class="error mt-3">{{ _("Aucune analyse") }}</div>
             <div id="list_result" class="mt-3"></div>
 
+            <!-- Popup cancel -->
+            <div class="modal" id="dial-cancel" tabindex="-1">
+                <div class="modal-dialog w-50 mw-75" style="background:#EEE;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>{{ _("Commentaire et motif annulation") }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="control-label col-2" style=""><span data-field="reason">{{ _("Motif") }} </span></label>
+                                <select id="cancel_reason" class="form-select">
+                                    {% for reason in ihm['cancel_reason'] %}
+                                    <option value="{{ reason['id_data'] }}">{{ _(reason['label']) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-3" style=""><span data-field="comment">{{ _("Commentaire") }}</span></label>
+                                <textarea id="cancel_comm" rows="3" cols="80" class="form-select"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_cancel_res" id="btn_cancel_res" value="{{ _("Ajouter") }}"  onclick="send_cancel();">
+                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {% if args['list_res'] %}
             <form autocomplete="off">
                 <div class="mt-3">
@@ -220,6 +250,81 @@ function enabled_save( id_rec, ref_ana )
     $(".btn_save_"+id_rec+"_"+ref_ana).prop("disabled", false) ;
 }
 
+function reset_res( id_rec, id_res )
+{
+    if ( window.confirm("{{ _("Etes-vous sur de vouloir effacer ce résultat ?") }}") )
+    {
+    let param_res = '{ "id_owner": {{ session["user_id"]}}, "id_res":' + id_res + '}' ;
+
+        // result to reset
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/result/reset/" + id_rec,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param_res,
+            success: function(data)
+                {
+                window.location.href = "{{ session['server_ext'] }}/technical-validation/{{ ihm['mode'] }}/" + id_rec ;
+                },
+            error: function(data)
+                {
+                console.log("ERROR result reset") ;
+                alert("{{ _("Une erreur est survenue lors de réinitialisation d'une valeur saisie") }}") ;
+                }
+        } ) ;
+    }
+}
+
+function cancel_res( id_rec, id_res )
+{
+    if ( window.confirm("{{ _("Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible.") }}") )
+    {
+    id_rec_tmp = id_rec ;
+    id_res_tmp = id_res ;
+
+        // popup reason and comment
+        $( "#dial-cancel" ).modal( "show" ) ;
+    }
+    else
+    {
+    id_rec_tmp = 0 ;
+    id_res_tmp = 0 ;
+    }
+}
+
+function send_cancel()
+{
+let reason    = $("#cancel_reason").val() ;
+let comment   = JSON.stringify( $.trim( $("#cancel_comm").val() ) ) ;
+let param_res = '{ "id_owner": {{ session['user_id']}}, ' +
+                  '"id_res":' + id_res_tmp + ', ' +
+                  '"reason":' + reason + ',' +
+                  '"comment":' + comment  + '}' ; // NO QUOTE DUE TO STRINGIFY PROCESS
+
+    $('#dial-cancel').modal("hide") ;
+
+    // result to cancel
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/result/cancel/" + id_rec_tmp,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param_res,
+        success: function(data)
+            {
+            window.location.href = "{{ session['server_ext'] }}/technical-validation/{{ ihm['mode'] }}/" + id_rec_tmp ;
+            },
+        error: function(data)
+            {
+            console.log("ERROR result cancel") ;
+            alert("{{ _("Une erreur est survenue lors de l'annulation d'une valeur saisie") }}") ;
+            }
+    } ) ;
+}
+
 function save_valid( id_rec, ref_ana )
 {
 let date_valid = $("#date_tech_"+ id_rec +"_"+ ref_ana).val() ;
@@ -305,12 +410,12 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         // close the form and table
         res += "</tbody></table>" +
                "<div class=\"form-group\">" +
-               "<span class=\" " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
-               "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} : </label>" +
+               "<span class=\"d-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+               "<label class=\"form-label mt-2 me-1\">{{ _("Date de validation") }} : </label>" +
                "<div>" +
                "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
-               "<label class=\"form-label text-end ms-3 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>&nbsp;" +
+               "<label class=\"form-label ms-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>&nbsp;" +
                "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
                "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
@@ -368,6 +473,13 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         let res_unit   = data[i].unit ;
         let res_limit  = "" ;
         let value      = data[i].res_label ;
+        let res_reset  = '' ;
+        let res_cancel = '' ;
+        let res_type   = data[i].type_resultat ;
+
+            /* result of type labeled */
+            if ( res_type == 265 )
+            res_label = '<b>' + res_label + '</b>' ;
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
             {
@@ -394,16 +506,30 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         if (res_valid == 250  && value != "" )
         disp_valid = "show" ;
 
+        if (res_valid == 251  && res_type != 265 )
+        res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-T\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
+
+        if ( res_type != 265 && (res_valid == 250 || (res_valid == 251 && value != "")) )
+        res_cancel = '<a title="Annuler" class="color-T" onclick="cancel_res(' + id_rec +','+ id_res + ');"><i class="bi bi-x-circle" /></i></a>' ;
+
         if ( value != "" )
         res += "<span>" + value + "</span><input id=\"res_" + id_res + "\" class=\"res-" + id_rec + "-" + ref_ana + "\" type=\"hidden\" value=\"" + data[i].valeur + "\"><span class=\"unit show ms-1\">" + res_unit + "</span>" ;
         else if ( res_valid == 252 )
         {
         res += "<span>{{ _("ANNULE") }}</span>" ;
+        res_cancel = '<span>' + data[i].validation.label_motif + '<br />' + data[i].validation.commentaire + '</span>' ;
+        }
+        /* result of type labeled */
+        else if ( res_type == 265 )
+        {
+        res += '<span></span>' ;
         }
         else
         res += "<span>{{ _("Non rempli") }}</span>" ;
 
-        res += "<input type=\"hidden\" value=\"" + data[i].type_resultat + "\"></span></td></tr>" ;
+        res += "<input type=\"hidden\" value=\"" + data[i].type_resultat + "\"></span></td>" +
+               "<td class=\"text-center\">" + res_reset + "</td>" +
+               "<td class=\"text-center\">" + res_cancel + "</td></tr>" ;
         }
 
     ref_ana_p = ref_ana ;
@@ -416,12 +542,12 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     // close the form and table
     res += "</tbody></table>" +
            "<div class=\"form-group\">" +
-           "<span class=\" " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
-           "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
+           "<span class=\"d-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+           "<label class=\"form-label mt-2 me-1\">{{ _("Date de validation") }} </label>" +
            "<div>" +
            "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
            "</div>" +
-           "<label class=\"form-label text-end ms-3 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
+           "<label class=\"form-label ms-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
            "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control\" value=\"" + name + "\" readonly />" +
            "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 

@@ -1,0 +1,123 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage du rapport d'indicateurs") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage du rapport d'indicateurs") }}</span></h2>
+
+            <div class="d-flex m-3">
+                <div class="form-group">
+                    <div class="text-start upload-container">
+                        <div>
+                            <div>
+                                <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
+                                    <input id="btn-upload" name="file" type="file" style="margin-bottom:4px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="me-3 mt-1">
+                    <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer la feuille de calcul") }}" onclick="upload_indicator();">
+                </div>
+            </div>
+
+            <div class="clearfix mt-3 mb-5">
+                <div class="float-start" style="margin-start:0px;">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+var data_indicator = {% if args['data_indicator'] %}{{ args['data_indicator']|safe }}{% else %}[]{% endif %} ;
+
+function upload_indicator()
+{
+let param_form = new FormData() ;
+
+param_form.append('file', $('input[type=file]')[0].files[0]) ;
+
+    $.ajax(
+    {
+        type : 'POST',
+        url : "{{ session['server_ext'] }}/upload-indicator",
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        data: param_form,
+        success : function(response)
+        {
+        tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
+        console.log("success upload indicator") ;
+        setTimeout(function(){location.reload()}, 2400) ;
+        },
+        error: function(response)
+        {
+        console.log("ERROR upload logo") ;
+        alert("{{ _("Une erreur est survenue lors du dépot du fichier") }}") ;
+        }
+    } ) ;
+    
+}
+
+function load_data()
+{
+    for( i in data_indicator )
+    {
+    load_file( data_indicator[i] ) ;
+    }
+
+    if (data_indicator.length < 1)
+    {
+    let tr_file = '<tr><td colspan="2"><div>{{ _("Aucun fichier déposé") }}</div></td></tr>' ;
+
+    $("#tbody_file").append(tr_file) ;
+    }
+}
+
+function load_file( filename )
+{
+let tr_file = '' ;
+
+    if ( filename == "indicator.ini" && filename != undefined )
+    {
+    let tmp_tr = '<tr style="">' ;
+    
+    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'EP\', \'' + filename + '\', \'INDICATOR\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += '</div></td></tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file").append(tr_file) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage";
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

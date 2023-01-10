@@ -118,11 +118,11 @@
                                 {% endif %}
                             </div>
                             <div class="form-group d-flex align-items-start mt-2">
-                                <label for="search_doctor" class="form-label col-3 text-end mt-2 me-1">{{ _("Prescripteur") }}</label>
+                                <label for="search_doctor" class="form-label text-end mt-1 me-1">{{ _("Prescripteur") }}</label>
                                 {% if entry == 'Y' %}
-                                <div>
-                                    <select id="search_doctor" class="form-select w-auto"></select>
-                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
+                                <div class="d-flex align-items-start w-100">
+                                    <select id="search_doctor" class="form-select"></select>
+                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-plus" /></i></button>
                                 </div>
                                 {% else %}
                                     {% if args['doctor'] %}
@@ -178,7 +178,14 @@
                             <div class="form-group d-flex align-items-start mt-2">
                                 <label for="service_int" class="form-label col-6 text-end mt-2 me-1">{{ _("Service demandeur") }}</label>
                                 {% if entry == 'Y' %}
-                                <input id="service_int" type="text" value="" maxlength="50" class="form-control" style="">
+                                    {% if ihm['req_services'] %}
+                                    <select id="service_int" class="form-select w-auto">
+                                        {% from 'macros.html' import select_req_services %}
+                                        {{ select_req_services(ihm['req_services']) }}
+                                    </select>
+                                    {% else%}
+                                    <input id="service_int" type="text" value="" maxlength="50" class="form-control" style="">
+                                    {% endif %}
                                 {% else %}
                                 <span class="font-info">{{ args['record']['service_interne'] }}</span>
                                 {% endif %}

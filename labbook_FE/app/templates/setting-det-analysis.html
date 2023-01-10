@@ -194,6 +194,7 @@
                         <input type="number" name="var_accu" id="var_accu" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu'] }}{% endif %}" class="group-det-var form-control" style="width:80px;" onChange="change_data(this);">
                     </div>
 
+                    {# 02/01/2023 : Deactivate because useless for the moment
                     <div class="col-12 form-group d-flex align-items-start mt-3">
                         <label for="var_formula2" class="form-label col-2 text-end mt-2 me-1">{{ _("Formule de conversion unité 2") }}</label>
                         <div>					
@@ -211,6 +212,7 @@
                         <label for=var_accu2" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision 2") }}</label>
                         <input type="number" name="var_accu2" id="var_accu2" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu2'] }}{% endif %}" class="group-det-var form-control"  style="width:80px;" onChange="change_data(this);">			
                     </div>
+                    #}
 
                     <div class="col-12 form-group d-flex align-items-start mt-3">
                         <label for="var_num" class="form-label col-2 text-end mt-2 me-1">{{ _("Num. var pour la formule") }}</label>
@@ -677,9 +679,11 @@ $("#var_highlight").val( det_var.var_highlight ) ;
 $("#var_formula").val( det_var.formula ) ;
 $("#var_unit").val( det_var.unit ) ;
 $("#var_accu").val( det_var.accu ) ;
+{# 02/01/2023 : Deactivate because useless for the moment
 $("#var_formula2").val( det_var.formula2 ) ;
 $("#var_unit2").val( det_var.unit2 ) ;
 $("#var_accu2").val( det_var.accu2 ) ;
+#}
 $("#var_num").val( det_var.num_var ) ;
 $("#var_pos").val( det_var.pos ) ;
 $("#var_comment").val( det_var.comment ) ;
@@ -806,12 +810,14 @@ let id_elem = elem.id ;
                 }
                 else if (id_elem == "var_accu")
                 data_vars[i].accu = val_elem ;
+                {# 02/01/2023 : Deactivate because useless for the moment
                 else if (id_elem == "var_formula2")
                 data_vars[i].formula2 = val_elem ;
                 else if (id_elem == "var_unit2")
                 data_vars[i].unit2 = val_elem ;
                 else if (id_elem == "var_accu2")
                 data_vars[i].accu2 = val_elem ;
+                #}
                 else if (id_elem == "var_comment")
                 data_vars[i].comment = val_elem ;
                 else if (id_elem == "var_num")
@@ -914,6 +920,10 @@ var msg = "" ;
     return false ;
     }
 
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
     // Check if code is not already existing
     $.ajax( {
         type: "GET",
@@ -948,9 +958,11 @@ var msg = "" ;
                     var_formula  = $.trim( data_vars[i].formula ) ;
                     var_unit     = data_vars[i].unit     ;
                     var_accu     = data_vars[i].accu     ;
+                    {# 02/01/2023 : Deactivate because useless for the moment
                     var_formula2 = data_vars[i].formula2 ;
                     var_unit2    = data_vars[i].unit2    ;
                     var_accu2    = data_vars[i].accu2    ;
+                    #}
                     var_comment  = JSON.stringify( $.trim( data_vars[i].comment ) ) ;
                     var_oblig    = data_vars[i].oblig    ;
                     var_whonet   = data_vars[i].var_whonet ;
@@ -962,8 +974,10 @@ var msg = "" ;
 
                     if (var_unit == "")  var_unit  = 0 ;
                     if (var_accu == "")  var_accu  = 0 ;
+                    {# 02/01/2023 : Deactivate because useless for the moment
                     if (var_unit2 == "") var_unit2 = 0 ;
                     if (var_accu2 == "") var_accu2 = 0 ;
+                    #}
                     if (var_num == "")   var_num   = 0 ;
                     if (var_pos == "")   var_pos   = 0 ;
 
@@ -978,9 +992,11 @@ var msg = "" ;
                                       '"var_formula":"' + var_formula + '", ' +
                                       '"var_unit":' + var_unit + ', ' +
                                       '"var_accu":' + var_accu + ', ' +
+                                      {# 02/01/2023 : Deactivate because useless for the moment
                                       '"var_formula2":"' + var_formula2 + '", ' +
                                       '"var_unit2":' + var_unit2 + ', ' +
                                       '"var_accu2":' + var_accu2 + ', ' +
+                                      #}
                                       '"var_comment":' + var_comment + ', ' +
                                       '"var_oblig":' + var_oblig + ', ' +
                                       '"var_whonet":' + var_whonet + ', ' +
@@ -1019,6 +1035,7 @@ var msg = "" ;
                    data: param,
                    success: function(data)
                        {
+                       $("#dial-wait").modal("hide") ;
                        console.log("success save_ana") ;
                        tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
 
@@ -1026,6 +1043,7 @@ var msg = "" ;
                        },
                    error: function(data)
                        {
+                       $("#dial-wait").modal("hide") ;
                        console.log("ERROR POST dict det") ;
                        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
                        }
@@ -1034,6 +1052,7 @@ var msg = "" ;
         },
         error: function(ret)
         {
+        $("#dial-wait").modal("hide") ;
         console.log("ERROR GET code check") ;
         alert("{{ _("Une erreur est survenue lors de la vérification du code") }}") ;
         }

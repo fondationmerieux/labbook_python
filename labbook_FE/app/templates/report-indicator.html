@@ -1,0 +1,145 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Rapport indicateurs") }}</title>
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport indicateurs") }}</span></h2>
+            <form autocomplete="off">
+                <fieldset class="border mx-1 p-2">
+                    <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
+                        <div class="form-group d-flex align-items-start ms-3">
+                            <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
+                            <div>
+                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                            </div>
+                            <label for="f_date_end" class="form-label text-end mx-1 mt-2">{{ _("au") }}</label>
+                            <div>					
+                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                            </div>
+                        </div>
+
+                        <div class="float-end mt-2">
+                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        </div>
+                </fieldset>
+
+                <fieldset class="row border mx-1 mt-3 p-2">
+                    <legend class="legend-lbk">{{ _("Indicateurs") }}</legend>
+                    <table id="html_report" class="table table-striped table-hover col-12 table-lbk" style="border:0;">
+                        <thead>
+                            <tr>
+                                <th class="text-center font-info">{{ _("Maladie") }}</th>
+                                <th class="text-center font-info">{{ _("Nature prélèvement") }}</th>
+                                <th class="text-center font-info">{{ _("Total reçu") }}</th>
+                                <th class="text-center font-info">{{ _("Total analysé") }}</th>
+                                <th class="text-center font-info">{{ _("Résultats") }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_indicator">
+                            {% for disease in args['indicator'] %}
+                            <tr style="border:0;">
+                                <td style="border:0;" class="text-center">{{ disease['disease'] }}</td>
+                                <td style="border:0;" class="text-center">{{ disease['sample'] }}</td>
+                                <td style="border:0;" class="text-center">{{ disease['total_received'] }}</td>
+                                <td style="border:0;" class="text-center">{{ disease['total_analyzed'] }}</td>
+                                <td style="border:0;" class="text-start">
+                                    {% for res in disease['details'] %}
+                                        {% if res['res_type'] == 'T' %}
+                                    <span class="font-info">{{ res['res_label'] }}</span><br />
+                                        {% else %}
+                                    <span>{{ res['res_label'] }} : </span><span>{{ res['res_value'] }}</span><br />
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>                           
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </fieldset>
+            </form>
+
+            <div class="float-end mt-3 mb-5">
+                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function filter_data()
+{
+let date_beg = $("#f_date_beg").val() ;
+let date_end = $("#f_date_end").val() ;
+
+window.location = "{{ session['server_ext'] }}/report-indicator/" + date_beg +"/"+ date_end; 
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+function download_report()
+{
+var html_report = JSON.stringify($("#html_report")[0].outerHTML) ;
+html_report = html_report.replaceAll("border:0", "border:1px solid #000") ;
+
+var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
+              '"filename": "indicator"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "indicator_" + today + ".pdf" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+</script>
+{% endblock %}

@@ -107,12 +107,39 @@
                         <span class="ms-2">{{ args['det_eqp']['procedur'] }}</span>
                     </div>
                 </div>
+
+                <div class="form-group d-flex mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des pannes et réparations") }}</label>
+                    <table class="w-auto table table-responsive table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th hidden>{{ _("serial") }}</th>
+                                <th>{{ _("Action") }}</th>
+                                <th>{{ _("Date") }}</th>
+                                <th>{{ _("Utilisateur") }}</th>
+                                <th>{{ _("Commentaire") }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_breakdown">
+                        {% for item in args['det_eqp']['breakdown'] %}
+                            <tr>
+                                <td hidden>{{ item.lic_ser }}</td>
+                                <td class="text-center"><i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_comm({{ item.lic_ser }});"/></i></td>
+                                <td>{{ item.lic_date }}</td>
+                                <td>{{ item.username }}</td>
+                                <td>{{ item.lic_comm }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 <div class="form-group d-flex align-items-start mt-3">
                     <label for="breakdown" class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des pannes et réparations") }}</label>
                     <div>					
-                        <textarea id="breakdown" name="breakdown" rows="4" cols="50" class="form-control">{{ args['det_eqp']['breakdown'] }}</textarea>
+                        <textarea id="breakdown" name="breakdown" rows="2" cols="50" class="form-control"></textarea>
                     </div>
                 </div>
+
                 <div class="form-group d-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
                         <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
@@ -126,12 +153,37 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label for="maintenance" class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
-                    <div>					
-                        <textarea id="maintenance" name="maintenance" rows="4" cols="50" class="form-control">{{ args['det_eqp']['maintenance'] }}</textarea>
-                    </div>
+
+                <div class="form-group d-flex mt-3">
+                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
+                    <table class="w-auto table table-responsive table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th hidden>{{ _("serial") }}</th>
+                                <th>{{ _("Action") }}</th>
+                                <th>{{ _("Date") }}</th>
+                                <th>{{ _("Utilisateur") }}</th>
+                                <th>{{ _("Commentaire") }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_maintenance">
+                        {% for item in args['det_eqp']['maintenance'] %}
+                            <tr>
+                                <td hidden>{{ item.lic_ser }}</td>
+                                <td class="text-center"><i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_comm({{ item.lic_ser }});"/></i></td>
+                                <td>{{ item.lic_date }}</td>
+                                <td>{{ item.username }}</td>
+                                <td>{{ item.lic_comm }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+                <div class="form-group d-flex align-items-start mt-3">					
+                    <label for="maintenance" class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
+                    <textarea id="maintenance" name="maintenance" rows="2" cols="50" class="form-control w-auto"></textarea>
+                </div>
+
                 <div class="form-group d-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
                         <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
@@ -638,6 +690,41 @@ function delete_file( type_ref, id_file )
             console.log("ERROR DELETE document file") ;
             $("#dial-wait").modal("hide") ;
             alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
+function del_comm(lic_ser)
+{
+var id_owner = {{ session['user_id']|safe}} ;
+
+var param = '{ "id_owner":' + id_owner + '}' ;
+
+    if ( window.confirm("{{ _("Veuillez confirmer la suppression") }}") )
+    {
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
+        $.ajax(
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/quality/list/comment/" + lic_ser,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+            $("#dial-wait").modal("hide") ;
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE list comment") ;
+            $("#dial-wait").modal("hide") ;
+            alert("{{ _("Erreur lors de la suppression des données") }}") ;
             }
         } ) ;
     }

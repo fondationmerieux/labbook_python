@@ -11,6 +11,7 @@ from app.models.Constants import Constants
 from app.models.Logs import Logs
 from app.models.Quality import Quality
 from app.models.File import File
+from app.models.Setting import Setting
 from app.models.Various import Various
 
 
@@ -1031,6 +1032,20 @@ class EquipmentDet(Resource):
             if item[key] is None:
                 item[key] = ''
 
+        l_lic = Quality.getListComment(id_item, 'E', 'B')
+
+        if l_lic:
+            item['breakdown'] = l_lic
+        else:
+            item['breakdown'] = []
+
+        l_lic = Quality.getListComment(id_item, 'E', 'M')
+
+        if l_lic:
+            item['maintenance'] = l_lic
+        else:
+            item['maintenance'] = []
+
         if item['date_endcontract']:
             item['date_endcontract'] = datetime.strftime(item['date_endcontract'], '%Y-%m-%d')
 
@@ -1063,6 +1078,28 @@ class EquipmentDet(Resource):
 
         # Update item
         if id_item > 0:
+            if args['breakdown']:
+                ret = Quality.insertListComment(lic_ref=id_item,
+                                                lic_type='E',
+                                                lic_sub_type='B',
+                                                lic_user=args['id_owner'],
+                                                lic_comm=args['breakdown'])
+
+                if not ret:
+                    self.log.error(Logs.alert() + ' : EquipmentDet ERROR insert list comment breakdown')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+            if args['maintenance']:
+                ret = Quality.insertListComment(lic_ref=id_item,
+                                                lic_type='E',
+                                                lic_sub_type='M',
+                                                lic_user=args['id_owner'],
+                                                lic_comm=args['maintenance'])
+
+                if not ret:
+                    self.log.error(Logs.alert() + ' : EquipmentDet ERROR insert list comment maintenance')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
             ret = Quality.updateEquipment(id_data=id_item,
                                           id_owner=args['id_owner'],
                                           name=args['name'],
@@ -1077,8 +1114,6 @@ class EquipmentDet(Resource):
                                           incharge=args['incharge'],
                                           manual=args['manual'],
                                           procedur=args['procedur'],
-                                          breakdown=args['breakdown'],
-                                          maintenance=args['maintenance'],
                                           calibration=args['calibration'],
                                           contract=args['contract'],
                                           date_endcontract=args['date_endcontract'],
@@ -1107,8 +1142,6 @@ class EquipmentDet(Resource):
                                           incharge=args['incharge'],
                                           manual=args['manual'],
                                           procedur=args['procedur'],
-                                          breakdown=args['breakdown'],
-                                          maintenance=args['maintenance'],
                                           calibration=args['calibration'],
                                           contract=args['contract'],
                                           date_endcontract=args['date_endcontract'],
@@ -1123,6 +1156,28 @@ class EquipmentDet(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
+
+            if args['breakdown']:
+                ret = Quality.insertListComment(lic_ref=id_item,
+                                                lic_type='E',
+                                                lic_sub_type='B',
+                                                lic_user=args['id_owner'],
+                                                lic_comm=args['breakdown'])
+
+                if not ret:
+                    self.log.error(Logs.alert() + ' : EquipmentDet ERROR insert list comment breakdown')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+            if args['maintenance']:
+                ret = Quality.insertListComment(lic_ref=id_item,
+                                                lic_type='E',
+                                                lic_sub_type='M',
+                                                lic_user=args['id_owner'],
+                                                lic_comm=args['maintenance'])
+
+                if not ret:
+                    self.log.error(Logs.alert() + ' : EquipmentDet ERROR insert list comment maintenance')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentDet id_item=' + str(id_item))
         return compose_ret(id_item, Constants.cst_content_type_json)
@@ -1980,6 +2035,9 @@ class StockProductHist(Resource):
             else:
                 stock['prs_nb_pack'] = 0
 
+            if 'prs_lessor' not in stock:
+                stock['prs_lessor'] = ''
+
             if stock['date_create']:
                 stock['date_create'] = datetime.strftime(stock['date_create'], '%Y-%m-%d %H:%M')
 
@@ -2049,7 +2107,7 @@ class StockProductDet(Resource):
         args = request.get_json()
 
         if 'prd_name' not in args or 'prd_type' not in args or 'prd_nb_by_pack' not in args or \
-           'prd_supplier' not in args or 'prd_ref_supplier' not in args or \
+           'prd_supplier' not in args or 'prd_ref_supplier' not in args or 'prd_ref_catalog' not in args or \
            'prd_conserv' not in args or 'prd_safe_limit' not in args:
             self.log.error(Logs.fileline() + ' : StockProductDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
@@ -2063,6 +2121,7 @@ class StockProductDet(Resource):
                                              prd_safe_limit=args['prd_safe_limit'],
                                              prd_supplier=args['prd_supplier'],
                                              prd_ref_supplier=args['prd_ref_supplier'],
+                                             prd_ref_catalog=args['prd_ref_catalog'],
                                              prd_conserv=args['prd_conserv'])
 
             if ret is False:
@@ -2077,6 +2136,7 @@ class StockProductDet(Resource):
                                              prd_safe_limit=args['prd_safe_limit'],
                                              prd_supplier=args['prd_supplier'],
                                              prd_ref_supplier=args['prd_ref_supplier'],
+                                             prd_ref_catalog=args['prd_ref_catalog'],
                                              prd_conserv=args['prd_conserv'])
 
             if ret <= 0:
@@ -2106,10 +2166,17 @@ class StockSupplyDet(Resource):
         args = request.get_json()
 
         if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
-           'prs_receipt_date' not in args or 'prs_expir_date' not in args or 'prs_rack' not in args or \
-           'prs_batch_num' not in args or 'prs_buy_price' not in args:
+           'prs_receipt_date' not in args or 'prs_rack' not in args or \
+           'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_lessor' not in args:
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
+
+        setting = Setting.getStockSetting()
+
+        if setting and setting['sts_expir_oblig'] == 'Y' and 'prs_expir_date' not in args:
+            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
 
         """ USELESS 26/08/2021
         # Update stock product
@@ -2122,7 +2189,8 @@ class StockSupplyDet(Resource):
                                             prs_expir_date=args['prs_expir_date'],
                                             prs_rack=args['prs_rack'],
                                             prs_batch_num=args['prs_batch_num'],
-                                            prs_buy_price=args['prs_buy_price'])
+                                            prs_buy_price=args['prs_buy_price'],
+                                            prs_lessor=args['prs_lessor'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StockSupplyDet ERROR update')
@@ -2137,7 +2205,8 @@ class StockSupplyDet(Resource):
                                         prs_expir_date=args['prs_expir_date'],
                                         prs_rack=args['prs_rack'],
                                         prs_batch_num=args['prs_batch_num'],
-                                        prs_buy_price=args['prs_buy_price'])
+                                        prs_buy_price=args['prs_buy_price'],
+                                        prs_lessor=args['prs_lessor'])
 
         if ret <= 0:
             self.log.error(Logs.alert() + ' : StockSupplyDet ERROR insert')
@@ -2272,6 +2341,174 @@ class StockExport(Resource):
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE StockExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockProductsExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_data = [['prd_ser', 'date', 'name', 'type', 'nb_by_pack', 'supplier', 'ref_supplier', 'conserv',
+                   'safe_limit', 'ref_catalog']]
+        dict_data = Quality.getStockExportProducts()
+
+        Various.useLangDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['prd_ser'])
+                data.append(d['prd_date'])
+                data.append(d['prd_name'])
+                
+                type = d['type']
+                if type:
+                    data.append(_(type.strip()))
+                else:
+                    data.append('')
+
+                data.append(d['prd_nb_by_pack'])
+                data.append(d['supplier'])
+                data.append(d['prd_ref_supplier'])
+
+                conserv = d['conserv']
+                if conserv:
+                    data.append(_(conserv.strip()))
+                else:
+                    data.append('')
+
+                data.append(d['prd_safe_limit'])
+                data.append(d['prd_ref_catalog'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'stock_products_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post StockProductsExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE StockProductsExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockSuppliesExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_data = [['prs_ser', 'date', 'product', 'nb_pack', 'receipt_date', 'expir_date', 'rack', 'batch_num',
+                   'buy_price', 'user', 'empty', 'cancel', 'user_cancel', 'lessor']]
+        dict_data = Quality.getStockExportSupplies()
+
+        Various.useLangDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['prs_ser'])
+                data.append(d['prs_date'])
+                data.append(d['product'])
+                data.append(d['prs_nb_pack'])
+                data.append(d['prs_receipt_date'])
+                data.append(d['prs_expir_date'])
+                data.append(d['prs_rack'])
+                data.append(d['prs_batch_num'])
+                data.append(d['prs_buy_price']/100)
+                data.append(d['user'])
+                data.append(d['prs_empty'])
+                data.append(d['prs_cancel'])
+                data.append(d['user_cancel'])
+                data.append(d['prs_lessor'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'stock_supplies_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post StockSuppliesExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE StockSuppliesExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockUsesExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_data = [['pru_ser', 'date', 'product', 'nb_pack', 'user', 'cancel', 'user_cancel']]
+        dict_data = Quality.getStockExportUses()
+
+        Various.useLangDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['pru_ser'])
+                data.append(d['pru_date'])
+                data.append(d['product'])
+                data.append(d['pru_nb_pack'])
+                data.append(d['user'])
+                data.append(d['pru_cancel'])
+                data.append(d['user_cancel'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'stock_uses_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post StockUsesExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE StockUsesExport')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2442,4 +2679,18 @@ class SupplierExport(Resource):
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportSupplier')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class ListComment(Resource):
+    log = logging.getLogger('log_services')
+
+    def delete(self, id_item):
+        ret = Quality.deleteListComment(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE ListComment delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ListComment delete id_item=' + str(id_item))
         return compose_ret('', Constants.cst_content_type_json)

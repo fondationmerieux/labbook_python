@@ -29,8 +29,8 @@ class Record:
                 filter_cond += ' and dos.statut IN ' + str(args['stat_work']) + ' '
 
             if 'type_rec' in args and args['type_rec']:
-                if args['type_rec'] == 'G':
-                    filter_cond += ' and dos.rec_custody="O" '
+                if args['type_rec'] == 'C':
+                    filter_cond += ' and dos.rec_custody="Y" '
                 elif args['type_rec'] == 'E':
                     filter_cond += ' and dos.type=183 '
                 elif args['type_rec'] == 'I':
@@ -84,7 +84,7 @@ class Record:
                'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '
                'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 ' + table_cond +
                'where ' + filter_cond +
-               'group by dos.id_data order by dos.num_dos_an desc ' + limit)
+               'group by dos.id_data order by dos.num_dos_an desc, dos.num_dos_mois desc, dos.id_data desc ' + limit)
 
         cursor.execute(req, (Constants.cst_isodate,))
 

@@ -139,18 +139,6 @@ class Setting:
         return cursor.fetchall()
 
     @staticmethod
-    def getAgeIntervalById(ais_ser):
-        cursor = DB.cursor()
-
-        req = ('select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '
-               'from age_interval_setting '
-               'where ais_ser=%s')
-
-        cursor.execute(req, (ais_ser,))
-
-        return cursor.fetchall()
-
-    @staticmethod
     def insertAgeInterval(**params):
         try:
             cursor = DB.cursor()
@@ -190,6 +178,218 @@ class Setting:
 
             cursor.execute('delete from age_interval_setting '
                            'where ais_ser=%s', (ais_ser,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getReqServices():
+        cursor = DB.cursor()
+
+        req = ('select rqs_ser, rqs_rank, rqs_name '
+               'from requesting_services '
+               'order by rqs_rank asc')
+
+        cursor.execute(req,)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertReqServices(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into requesting_services '
+                           '(rqs_date, rqs_rank, rqs_name) '
+                           'values (NOW(), %(rqs_rank)s, %(rqs_name)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateReqServices(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update requesting_services '
+                           'set rqs_rank=%(rqs_rank)s, rqs_name= %(rqs_name)s '
+                           'where rqs_ser=%(rqs_ser)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteReqServices(rqs_ser):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from requesting_services '
+                           'where rqs_ser=%s', (rqs_ser,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getFuncUnitDet(id_unit):
+        cursor = DB.cursor()
+
+        req = ('select fun_ser, fun_rank, fun_name '
+               'from functionnal_unit '
+               'where fun_ser=%s')
+
+        cursor.execute(req, (id_unit,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getFuncUnit():
+        cursor = DB.cursor()
+
+        req = ('select fun_ser, fun_rank, fun_name, count(t_user.ful_ser) as nb_user, count(t_fam.ful_ser) as nb_fam '
+               'from functionnal_unit '
+               'left join functionnal_unit_link as t_user on t_user.ful_fun=fun_ser and t_user.ful_type="U" '
+               'left join functionnal_unit_link as t_fam on t_fam.ful_fun=fun_ser and t_fam.ful_type="F" '
+               'order by fun_rank asc')
+
+        cursor.execute(req,)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertFuncUnit(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into functionnal_unit '
+                           '(fun_date, fun_rank, fun_name) '
+                           'values (NOW(), %(fun_rank)s, %(fun_name)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateFuncUnit(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update functionnal_unit '
+                           'set fun_rank=%(fun_rank)s, fun_name= %(fun_name)s '
+                           'where fun_ser=%(fun_ser)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteFuncUnit(fun_ser):
+        try:
+            cursor = DB.cursor()
+
+            # delete link too
+            cursor.execute('delete from functionnal_unit_link '
+                           'where ful_fun=%s', (fun_ser,))
+
+            cursor.execute('delete from functionnal_unit '
+                           'where fun_ser=%s', (fun_ser,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getLinkUnit(type, id_unit):
+        cursor = DB.cursor()
+
+        req = ''
+
+        if type == 'U':
+            req = ('select id_data as id_user, firstname, lastname, username, role_type, d_role.label as role, '
+                   'ifnull(ful_fun, 0) as ful_fun '
+                   'from sigl_user_data '
+                   'inner join sigl_pj_role as d_role on d_role.type=role_type '
+                   'left join functionnal_unit_link on ful_ref=id_data and ful_type="U" and ful_fun=%s '
+                   'where role_type != "A" '
+                   'order by ful_fun desc, lastname asc, firstname asc')
+        elif type == 'F':
+            req = ('select id_data as id_fam, label, ifnull(ful_fun, 0) as ful_fun '
+                   'from sigl_dico_data '
+                   'left join functionnal_unit_link on ful_ref=id_data and ful_type="F" and ful_fun=%s '
+                   'where dico_name="famille_analyse" '
+                   'order by ful_fun desc, position asc')
+
+        cursor.execute(req, (id_unit,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getListLinkUnit(type, id_unit):
+        cursor = DB.cursor()
+
+        ret = []
+
+        req = ('select ful_ref '
+               'from functionnal_unit_link '
+               'where ful_type=%s and ful_fun=%s '
+               'order by ful_ref asc')
+
+        cursor.execute(req, (type, id_unit))
+
+        l_items = cursor.fetchall()
+
+        for item in l_items:
+            ret.append(item['ful_ref'])
+
+        return ret
+
+    @staticmethod
+    def insertLinkUnit(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into functionnal_unit_link '
+                           '(ful_date, ful_fun, ful_ref, ful_type) '
+                           'values (NOW(), %(ful_fun)s, %(ful_ref)s, %(ful_type)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteLinkUnit(type, id_unit, ref):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from functionnal_unit_link '
+                           'where ful_type=%s and ful_fun=%s and ful_ref=%s', (type, id_unit, ref))
 
             Setting.log.info(Logs.fileline())
 
@@ -438,3 +638,31 @@ class Setting:
         cursor.execute(req)
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getStockSetting():
+        cursor = DB.cursor()
+
+        req = ('select sos_ser, sos_expir_oblig, sos_expir_warning, sos_expir_alert '
+               'from stock_setting '
+               'order by sos_ser desc limit 1')
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def updateStockSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update stock_setting '
+                           'set sos_date=NOW(), sos_expir_oblig=%(expir_oblig)s, sos_expir_warning=%(expir_warning)s, '
+                           'sos_expir_alert=%(expir_alert)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

@@ -69,7 +69,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe }} ;
+var data_items = {{ args|safe or [] }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;

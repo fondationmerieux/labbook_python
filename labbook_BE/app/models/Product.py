@@ -77,11 +77,12 @@ class Product:
                'prod.quantite as quantite, prod.statut as statut, prod.id_dos as id_dos, prod.preleveur as preleveur, '
                'prod.date_reception as date_reception, prod.heure_reception as heure_reception, prod.commentaire as commentaire, '
                'prod.lieu_prel as lieu_prel, prod.lieu_prel_plus as lieu_prel_plus, prod.localisation as localisation, '
-               'dico_type.label as type_prod, dico_stat.label as stat_prod, prod.code '
+               'dico_type.label as type_prod, dico_stat.label as stat_prod, prod.code, dico_local.label as location '
                'from sigl_01_data as prod '
-               'LEFT JOIN sigl_dico_data AS dico_type ON dico_type.dico_name="type_prel" '
-               'LEFT JOIN sigl_dico_data AS dico_stat ON dico_stat.dico_name="prel_statut" '
-               'where dico_type.id_data=type_prel and dico_stat.id_data=statut and prod.id_dos=%s')
+               'LEFT JOIN sigl_dico_data AS dico_type ON dico_type.id_data=prod.type_prel '
+               'LEFT JOIN sigl_dico_data AS dico_stat ON dico_stat.id_data=prod.statut '
+               'left join sigl_dico_data as dico_local on dico_local.id_data=prod.lieu_prel '
+               'where prod.id_dos=%s')
 
         cursor.execute(req, (id_rec,))
 

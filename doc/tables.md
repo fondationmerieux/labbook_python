@@ -71,8 +71,13 @@
 | control_quality      	                         | QUALITY	 | list of control internal and external    |
 | control_internal   	                         | QUALITY	 | list of internal control value           |
 | control_external     	                         | QUALITY	 | list of external control value           |
+| requesting_services                            | SETTINGS      | list of requesting services              |
+| functionnal_unit                               | SETTINGS      | list of functionnal units                |
+| functionnal_unit_link                          | SETTINGS      | list of links for functionnal units      |
+| stock_setting                                  | SETTINGS      | settings for stock                       |
+| list_comment                                   | COMMENT       | structure for keep history of comments   |
 
-71 tables used
+76 tables used
 
 
 | Name    	                                 |

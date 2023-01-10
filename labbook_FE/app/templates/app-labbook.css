@@ -175,57 +175,73 @@ font-size        : 1rem;
 font-weight      : bold;
 }
 
+/* title for admin profil */
 .page-title-A
 {
 background-color : #FC0;
 color            : #FFF;
 }
 
+/* title for biologist profil */
 .page-title-B
 {
 background-color : #8330E2;
 color            : #FFF;
 }
 
+/* title for technician profil */
 .page-title-T
 {
 background-color : #00ADEE;
 color            : #FFF;
 }
 
+/* title for advanced technician profil */
 .page-title-TA
 {
 background-color : #00ADEE;
 color            : #FFF;
 }
 
+/* title for quality technician profil */
 .page-title-TQ
 {
 background-color : #00ADEE;
 color            : #FFF;
 }
 
+/* title for secretary profil */
 .page-title-S
 {
 background-color : #F08739;
 color            : #FFF;
 }
 
+/* title for advanced secretary profil */
 .page-title-SA
 {
 background-color : #F08739;
 color            : #FFF;
 }
 
+/* title for qualitician profil */
 .page-title-Q
 {
 background-color : #E23176;
 color            : #FFF;
 }
 
+/* title for prescriber profil */
 .page-title-P
 {
 background-color : #996633;
+color            : #FFF;
+}
+
+/* title for stock manager profil */
+.page-title-K
+{
+background-color : #452ED1;
 color            : #FFF;
 }
 
@@ -306,9 +322,21 @@ background-image  : url({{ url_for('static', filename='img/pre-profile.png') }})
 background-repeat : no-repeat;
 }
 
+.role-K
+{
+background-image  : url({{ url_for('static', filename='img/sto-profile.png') }});
+background-repeat : no-repeat;
+}
+
 .btn-A
 {
 background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-A:hover
+{
+background-color : #436B1C ;
 color            : #FFF;
 }
 
@@ -318,9 +346,21 @@ background-color : #71B330 ;
 color            : #FFF;
 }
 
+.btn-B:hover
+{
+background-color : #436B1C ;
+color            : #FFF;
+}
+
 .btn-T
 {
 background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-T:hover
+{
+background-color : #436B1C ;
 color            : #FFF;
 }
 
@@ -330,9 +370,21 @@ background-color : #71B330 ;
 color            : #FFF;
 }
 
+.btn-TA:hover
+{
+background-color : #436B1C ;
+color            : #FFF;
+}
+
 .btn-TQ
 {
 background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-TQ:hover
+{
+background-color : #436B1C ;
 color            : #FFF;
 }
 
@@ -342,9 +394,21 @@ background-color : #71B330 ;
 color            : #FFF;
 }
 
+.btn-S:hover
+{
+background-color : #436B1C ;
+color            : #FFF;
+}
+
 .btn-SA
 {
 background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-SA:hover
+{
+background-color : #436B1C ;
 color            : #FFF;
 }
 
@@ -354,9 +418,33 @@ background-color : #71B330 ;
 color            : #FFF;
 }
 
+.btn-Q:hover
+{
+background-color : #436B1C ;
+color            : #FFF;
+}
+
 .btn-P
 {
 background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-P:hover
+{
+background-color : #436B1C ;
+color            : #FFF;
+}
+
+.btn-K
+{
+background-color : #452ED1 ;
+color            : #FFF;
+}
+
+.btn-K:hover
+{
+background-color : #291B7D ;
 color            : #FFF;
 }
 
@@ -514,6 +602,22 @@ color      : #FFF !important;
 .role-P a:hover 
 {
 background      : #623201 !important;
+color           : #FFF !important;
+text-decoration : none !important; 
+}
+
+.role-K a 
+{
+display    : block;
+width      : 100px;
+background : #452ED1 !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-K a:hover 
+{
+background      : #292EBE !important;
 color           : #FFF !important;
 text-decoration : none !important; 
 }
@@ -792,6 +896,19 @@ background-color : #623201 !important;
 color            : #FFF !important;
 }
 
+.nav-K a
+{
+background-color : #452ED1 !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-K a:hover
+{
+background-color : #292EBE !important;
+color            : #FFF !important;
+}
+
 .module 
 {
 border-bottom  : 1px solid #EEE;
@@ -1049,6 +1166,7 @@ text-align       : center;
 vertical-align   : middle;
 }
 
+/* administrative status */
 .stat-A
 {
 background-color : #F08739;
@@ -1056,6 +1174,7 @@ color            : #666;
 font-weight      : bold;
 }
 
+/* biological status */
 .stat-B
 {
 background-color : #8330E2;
@@ -1063,6 +1182,7 @@ color            : #FFF;
 font-weight      : bold;
 }
 
+/* technical status */
 .stat-T
 {
 background-color : #00ADEE;
@@ -1080,6 +1200,17 @@ font-weight      : bold;
 font-size        : 1.25rem;
 float            : none;
 padding          : inherit;
+}
+
+.color-T
+{
+color : #00ADEE;
+}
+
+.bgcolor-T
+{
+background-color : #00ADEE;
+color            : #FFF;
 }
 
 .color-B

@@ -1,6 +1,8 @@
 import logging
 import configparser
 import gettext
+import os
+import csv
 
 from datetime import datetime
 from flask import request
@@ -25,8 +27,6 @@ class ReportEpidemio(Resource):
         data = []
 
         # Read epidemio.ini
-        import os
-
         config = configparser.ConfigParser()
         config.read(os.path.join(Constants.cst_epidemio, "epidemio.ini"), encoding='utf-8')
 
@@ -133,6 +133,126 @@ class ReportEpidemio(Resource):
         return compose_ret(data, Constants.cst_content_type_json)
 
 
+class ReportIndicator(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : ReportIndicator ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        data = []
+
+        # Read indicator.ini
+        config = configparser.ConfigParser()
+        config.read(os.path.join(Constants.cst_indicator, "indicator.ini"), encoding='utf-8')
+
+        nb_disease = int(config.get('SETTINGS', 'nb_disease'))
+
+        if not config or nb_disease < 1:
+            self.log.error(Logs.fileline() + ' : TRACE indicator settings not found')
+
+        # Loop on disease
+        for d in range(nb_disease):
+            x = str(d + 1)
+
+            disease = {}
+
+            disease['disease'] = config.get('DISEASE_' + x, 'disease')
+
+            # Get label for sample_type
+            dict_sample = Various.getDicoById(config.get('DISEASE_' + x, 'sample_type'))
+
+            if dict_sample:
+                disease['sample'] = dict_sample['label']
+            else:
+                disease['sample'] = 'UNKNOWN'
+
+            # self.log.error(Logs.fileline() + ' : DEBUG ##########################')
+            # self.log.error(Logs.fileline() + ' : DEBUG disease=' + disease['disease'])
+            # self.log.error(Logs.fileline() + ' : DEBUG sample=' + disease['sample'])
+
+            nb_res = int(config.get('DISEASE_' + x, 'nb_res'))
+
+            disease['details'] = []
+
+            id_prod = 0
+            l_id_var = []
+            # Loop on result to calculate
+            for r in range(nb_res):
+                y = str(r + 1)
+                details = {}
+
+                details['res_label'] = config.get('DISEASE_' + x, 'res_label_' + y)
+
+                # self.log.error(Logs.fileline() + ' : DEBUG res_label=' + details['res_label'])
+
+                formula = config.get('DISEASE_' + x, 'formula_' + y)
+
+                # self.log.error(Logs.fileline() + ' : DEBUG formula=' + formula)
+
+                if not formula:
+                    details['res_type'] = 'T'  # Title
+                elif formula == 'N/A':
+                    formula = ''
+                    details['res_type']  = 'R'
+                    details['res_value'] = 'N/A'
+                else:
+                    details['res_type'] = 'R'  # Result
+
+                    id_prod = config.get('DISEASE_' + x, 'sample_type_' + y)
+
+                    # BUILD PART of request
+                    req_part = ''
+
+                    req_part = Report.ParseFormula(formula, id_prod)
+
+                    # GET RESULT
+                    self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
+                    result = Report.getResultIndicator(inner_req=req_part['inner'],
+                                                      end_req=req_part['end'],
+                                                      date_beg=args['date_beg'],
+                                                      date_end=args['date_end'])
+
+                    if result:
+                        details['res_value'] = result['value']
+
+                    # Parse id_var for NbResult request
+                    id_var = 0
+
+                    idx_beg = formula.find("$_")
+
+                    if idx_beg >= 0:
+                        idx_end = formula.find(" ", idx_beg)
+                        idx_beg = idx_beg + 2
+                        if idx_end > idx_beg:
+                            id_var = int(formula[idx_beg:idx_end])
+
+                    if id_var > 0:
+                        l_id_var.append(id_var)
+
+                disease['details'].append(details)
+
+            l_id_var  = list(set(l_id_var))
+            disease['total_received'] = 0
+
+            received = Report.getNbResultRecevied(l_id_var, id_prod, args['date_beg'], args['date_end'])
+            analyzed = Report.getNbResultAnalyzed(l_id_var, id_prod, args['date_beg'], args['date_end'])
+
+            if received:
+                disease['total_received'] = received['total']
+
+            if analyzed:
+                disease['total_analyzed'] = analyzed['total']
+
+            data.append(disease)
+
+        self.log.info(Logs.fileline() + ' : TRACE ReportIndicator')
+        return compose_ret(data, Constants.cst_content_type_json)
+
+
 class ReportActivity(Resource):
     log = logging.getLogger('log_services')
 
@@ -183,18 +303,18 @@ class ReportStat(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'date_beg' not in args or 'date_end' not in args:
+        if 'date_beg' not in args or 'date_end' not in args or 'service_int' not in args:
             self.log.error(Logs.fileline() + ' : ReportStat ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         stat = {}
 
-        stat['patient'] = Report.getStatPatient(args['date_beg'], args['date_end'])
+        stat['patient'] = Report.getStatPatient(args['date_beg'], args['date_end'], args['service_int'])
 
         if not stat['patient']:
             self.log.error(Logs.fileline() + ' : TRACE stat patient not found')
 
-        stat['prescr'] = Report.getStatPrescr(args['date_beg'], args['date_end'])
+        stat['prescr'] = Report.getStatPrescr(args['date_beg'], args['date_end'], args['service_int'])
 
         if not stat['prescr']:
             self.log.error(Logs.fileline() + ' : TRACE stat prescr not found')
@@ -208,6 +328,16 @@ class ReportStat(Resource):
 
         if not stat['product']:
             self.log.error(Logs.fileline() + ' : TRACE stat product not found')
+
+        stat['nb_pat'] = Report.getStatNbPat(args['date_beg'], args['date_end'], args['service_int'])
+
+        if not stat['nb_pat']:
+            self.log.error(Logs.fileline() + ' : TRACE stat nb_pat not found')
+
+        stat['nb_ana'] = Report.getStatNbAna(args['date_beg'], args['date_end'], args['service_int'])
+
+        if not stat['nb_ana']:
+            self.log.error(Logs.fileline() + ' : TRACE stat nb_ana not found')
 
         self.log.info(Logs.fileline() + ' : TRACE ReportStat')
         return compose_ret(stat, Constants.cst_content_type_json)
@@ -324,8 +454,6 @@ class ReportTodayExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'report_today_' + str(today) + '.csv'

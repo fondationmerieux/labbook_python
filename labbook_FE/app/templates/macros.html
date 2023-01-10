@@ -69,8 +69,22 @@
 {%- endmacro %}
 
 {% macro select_type_record() -%}
-    <option value="0" selected=""></option>
+    <option value="A" selected=""></option>
     <option value="E">{{ _("Externe") }}</option>
     <option value="I">{{ _("Interne") }}</option>
-    <option value="G">{{ _("Garde") }}</option>
+    <option value="C">{{ _("Garde") }}</option>
+{%- endmacro %}
+
+{% macro select_sex(l_dict_sex, type_selected) -%}
+    <option value="" {% if not type_selected or type_selected == '' %} selected {% endif %}></option>
+    {% for dict_sex in l_dict_sex %}
+        <option value="{{ dict_sex['id_data'] }}" {% if type_selected and type_selected == dict_sex['id_data'] %}selected{% endif %}>{{ dict_sex['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_req_services(l_req_services, id_selected) -%}
+    <option value="" {% if not id_selected or id_selected == 0 %} selected {% endif %}></option>
+    {% for req_service in l_req_services %}
+        <option value="{{ req_service['rqs_name'] }}" {% if id_selected and id_selected == req_service['rqs_ser'] %}selected{% endif %}>{{ req_service['rqs_name'] }}</option>
+    {% endfor %}
 {%- endmacro %}

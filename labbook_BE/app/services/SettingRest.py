@@ -88,6 +88,225 @@ class SettingAgeInterval(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class SettingReqServices(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_datas = Setting.getReqServices()
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingReqServices ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in list(data.items()):
+                if data[key] is None:
+                    data[key] = ''
+
+        self.log.info(Logs.fileline() + ' : SettingReqServices')
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)
+
+    def post(self):
+        args = request.get_json()
+
+        if 'list_val' not in args:
+            self.log.error(Logs.fileline() + ' : SettingReqServices ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_req_services = Setting.getReqServices()
+
+        for val in args['list_val']:
+            name = val['rqs_name']
+
+            if val['rqs_ser'] > 0:
+                ret = Setting.updateReqServices(rqs_ser=val['rqs_ser'],
+                                                rqs_rank=val['rqs_rank'],
+                                                rqs_name=name)
+            else:
+                ret = Setting.insertReqServices(rqs_rank=val['rqs_rank'],
+                                                rqs_name=name)
+
+            if ret is False or ret <= 0:
+                self.log.info(Logs.fileline() + ' : TRACE SettingReqServices ERROR updateReqServices')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete missing values compared to age interval
+        for db_val in l_req_services:
+            exist = False
+            for ihm_val in args['list_val']:
+                if db_val['rqs_ser'] == ihm_val['rqs_ser']:
+                    exist = True
+
+            if not exist:
+                ret = Setting.deleteReqServices(db_val['rqs_ser'])
+
+                if ret is False:
+                    self.log.info(Logs.fileline() + ' : TRACE SettingReqServices ERROR deleteReqServices')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingReqServices')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class SettingFuncUnitDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_unit):
+        func_unit = Setting.getFuncUnitDet(id_unit)
+
+        if not func_unit:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingFuncUnit ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(func_unit.items()):
+            if func_unit[key] is None:
+                func_unit[key] = ''
+
+        self.log.info(Logs.fileline() + ' : SettingFuncUnitDet')
+        return compose_ret(func_unit, Constants.cst_content_type_json, 200)
+
+
+class SettingFuncUnit(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_datas = Setting.getFuncUnit()
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingFuncUnit ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in list(data.items()):
+                if data[key] is None:
+                    data[key] = ''
+
+        self.log.info(Logs.fileline() + ' : SettingFuncUnit')
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)
+
+    def post(self):
+        args = request.get_json()
+
+        if 'list_val' not in args:
+            self.log.error(Logs.fileline() + ' : SettingFuncUnit ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_req_services = Setting.getFuncUnit()
+
+        for val in args['list_val']:
+            name = val['fun_name']
+
+            if val['fun_ser'] > 0:
+                ret = Setting.updateFuncUnit(fun_ser=val['fun_ser'],
+                                             fun_rank=val['fun_rank'],
+                                             fun_name=name)
+            else:
+                ret = Setting.insertFuncUnit(fun_rank=val['fun_rank'],
+                                             fun_name=name)
+
+            if ret is False or ret <= 0:
+                self.log.info(Logs.fileline() + ' : TRACE SettingFuncUnit ERROR updateFuncUnit')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete missing values compared to age interval
+        for db_val in l_req_services:
+            exist = False
+            for ihm_val in args['list_val']:
+                if db_val['fun_ser'] == ihm_val['fun_ser']:
+                    exist = True
+
+            if not exist:
+                ret = Setting.deleteFuncUnit(db_val['fun_ser'])
+
+                if ret is False:
+                    self.log.info(Logs.fileline() + ' : TRACE SettingFuncUnit ERROR deleteFuncUnit')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingFuncUnit')
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self):
+        args = request.get_json()
+
+        if 'id_unit' not in args:
+            self.log.error(Logs.fileline() + ' : SettingFuncUnit ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Setting.deleteFuncUnit(args['id_unit'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE SettingFuncUnit delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingFuncUnit delete id_item=' + str(args['id_unit']))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class SettingLinkUnit(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type, id_unit):
+        l_datas = Setting.getLinkUnit(type, id_unit)
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingLinkUnit ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        Various.useLangDB()
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in list(data.items()):
+                if data[key] is None:
+                    data[key] = ''
+                elif key == 'role' and data[key]:
+                    data[key] = _(data[key].strip())
+
+        self.log.info(Logs.fileline() + ' : SettingLinkUnit')
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)
+
+    def post(self, type, id_unit):
+        args = request.get_json()
+
+        self.log.info(Logs.fileline() + ' : DEBUG args=' + str(args))
+
+        if 'list_link' not in args:
+            self.log.error(Logs.fileline() + ' : SettingLinkUnit ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_link_unit = Setting.getListLinkUnit(type, id_unit)
+
+        for link in args['list_link']:
+            if link['id_item'] and link['id_item'] not in l_link_unit:
+                ret = Setting.insertLinkUnit(ful_fun=id_unit,
+                                             ful_ref=link['id_item'],
+                                             ful_type=type)
+
+                if not ret:
+                    self.log.info(Logs.fileline() + ' : TRACE SettingLinkUnit ERROR insertLinkUnit')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete missing values
+        for db_val in l_link_unit:
+            exist = False
+            for ihm_val in args['list_link']:
+                if db_val == ihm_val['id_item']:
+                    exist = True
+
+            if not exist:
+                ret = Setting.deleteLinkUnit(type, id_unit, db_val)
+
+                if ret is False:
+                    self.log.info(Logs.fileline() + ' : TRACE SettingLinkUnit ERROR deleteLinkUnit')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingLinkUnit')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class SettingPref(Resource):
     log = logging.getLogger('log_services')
 
@@ -780,3 +999,42 @@ class ZipCitySearch(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE ZipCitySearch')
         return compose_ret(l_zipcity, Constants.cst_content_type_json)
+
+
+class SettingStock(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        setting = Setting.getStockSetting()
+
+        if not setting:
+            self.log.error(Logs.fileline() + ' : ERROR SettingStock not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(setting.items()):
+            if setting[key] is None:
+                setting[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingStock')
+        return compose_ret(setting, Constants.cst_content_type_json)
+
+    def post(self):
+        args = request.get_json()
+
+        if 'id_owner' not in args or 'expir_oblig' not in args or 'expir_warning' not in args or \
+           'expir_oblig' not in args:
+            self.log.error(Logs.fileline() + ' : SettingStock ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Setting.updateStockSetting(id_owner=args['id_owner'],
+                                         expir_oblig=args['expir_oblig'],
+                                         expir_warning=args['expir_warning'],
+                                         expir_alert=args['expir_alert'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : SettingStock ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingStock')
+        return compose_ret('', Constants.cst_content_type_json)

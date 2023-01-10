@@ -12,10 +12,10 @@
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport activité") }}</span></h2>
             <form autocomplete="off">
-                <fieldset class="row border mx-1 p-2">
+                <fieldset class="border mx-1 p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
-                        <div class="form-group d-flex align-items-start mt-1">
-                            <label for="f_date_beg" class="form-label col-2 text-end mt-2 me-1">{{ _("Date du") }}</label>
+                        <div class="form-group d-flex align-items-start ms-3">
+                            <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
                             <div>
                                 <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
@@ -23,9 +23,8 @@
                             <div>					
                                 <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
-                        </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="type_ana" class="form-label col-2 text-end mt-2 me-1">{{ _("Famille d'analyse") }}</label>
+
+                            <label for="type_ana" class="form-label text-end ms-3 mt-2 me-1">{{ _("Famille d'analyse") }}</label>
                             <div>
                                 <select name="type_ana" id="type_ana" class="form-select">
                                     {% from 'macros.html' import select_type_ana %}
@@ -33,10 +32,9 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <div class="float-end">
-                                <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
-                            </div>
+                        
+                        <div class="float-end mt-2">
+                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                 </fieldset>
             </form>
@@ -139,13 +137,17 @@ function display_data()
 function display_by_type( data )
 {
 let len_data = data_interval.length ;
-let res_head = '<tr><th>{{ _("Analyses") }}</th><th colspan="3">{{ _("Externes") }}</th>' +
-               '<th colspan="3">{{ _("Hospitalisés") }}</th><th colspan="2">{{ _("Total") }}</th></tr>' +
-               '<tr><td></td><td class="text-center font-info">{{ _("H") }}</td><td class="text-center font-info">{{ _("F") }}</td>' +
+let res_head = '<tr><th>{{ _("Analyses") }}</th><th class="text-center" colspan="3">{{ _("Externes") }}</th>' +
+               '<th class="text-center" colspan="3">{{ _("Hospitalisés") }}</th>' +
+               '<th class="text-center" colspan="3">{{ _("Gardes") }}</th>' +
+               '<th class="text-center" colspan="3">{{ _("Total") }}</th></tr>' +
+               '<tr><td></td><td class="text-center font-info">{{ _("H") }}</td>' +
+               '<td class="text-center font-info">{{ _("F") }}</td>' +
                '<td class="text-center font-info">{{ _("I") }}</td><td class="text-center font-info">{{ _("H") }}</td>' +
                '<td class="text-center font-info">{{ _("F") }}</td><td class="text-center font-info">{{ _("I") }}</td>' +
                '<td class="text-center font-info">{{ _("H") }}</td><td class="text-center font-info">{{ _("F") }}</td>' +
-               '<td class="text-center font-info">{{ _("I") }}</td></tr>' ;
+               '<td class="text-center font-info">{{ _("I") }}</td><td class="text-center font-info">{{ _("H") }}</td>' +
+               '<td class="text-center font-info">{{ _("F") }}</td><td class="text-center font-info">{{ _("I") }}</td></tr>' ;
 let res_body = '' ;
 
 let val_E_M = {} ;
@@ -154,6 +156,9 @@ let val_E_I = {} ;
 let val_I_M = {} ;
 let val_I_F = {} ;
 let val_I_I = {} ;
+let val_C_M = {} ;
+let val_C_F = {} ;
+let val_C_I = {} ;
 let val_T_M = {} ;
 let val_T_F = {} ;
 let val_T_I = {} ;
@@ -163,7 +168,49 @@ let val_T_I = {} ;
     {
     let nb_ana = data[i].nb_ana ;
 
-    if (data[i].rec_type == 183)
+    if (data[i].rec_custody == 'Y')
+    {
+        if ( data[i].sex == 1 )
+        {
+            if (val_C_M[data[i].code] != undefined)
+            val_C_M[data[i].code] += data[i].nb_ana ;
+            else
+            val_C_M[data[i].code] = data[i].nb_ana ;
+
+
+
+            if (val_T_M[data[i].code] != undefined)
+            val_T_M[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_M[data[i].code] = data[i].nb_ana ;
+
+        }
+        else if ( data[i].sex == 2 )
+        {
+            if (val_C_F[data[i].code] != undefined)
+            val_C_F[data[i].code] += data[i].nb_ana ;
+            else
+            val_C_F[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_F[data[i].code] != undefined)
+            val_T_F[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_F[data[i].code] = data[i].nb_ana ;
+        }
+        else
+        {
+            if (val_C_I[data[i].code] != undefined)
+            val_C_I[data[i].code] += data[i].nb_ana ;
+            else
+            val_C_I[data[i].code] = data[i].nb_ana ;
+
+            if (val_T_I[data[i].code] != undefined)
+            val_T_I[data[i].code] += data[i].nb_ana ;
+            else
+            val_T_I[data[i].code] = data[i].nb_ana ;
+        }
+    }
+    else if (data[i].rec_type == 183)
     {
         if ( data[i].sex == 1 )
         {
@@ -266,6 +313,15 @@ let val_T_I = {} ;
         if (val_I_I[data[i].code] == undefined)
         val_I_I[data[i].code] = 0 ;
 
+        if (val_C_M[data[i].code] == undefined)
+        val_C_M[data[i].code] = 0 ;
+
+        if (val_C_F[data[i].code] == undefined)
+        val_C_F[data[i].code] = 0 ;
+
+        if (val_C_I[data[i].code] == undefined)
+        val_C_I[data[i].code] = 0 ;
+
         if (val_T_M[data[i].code] == undefined)
         val_T_M[data[i].code] = 0 ;
 
@@ -289,10 +345,13 @@ let code_p = '' ;
 
         line += '<td class="text-center">' + val_E_M[data[i].code] +'</td>' ;
         line += '<td class="text-center">' + val_E_F[data[i].code] +'</td>' ;
-        line += '<td class="text-center">' + val_E_I[data[i].code] +'</td>' ;
+        line += '<td class="text-center border-end">' + val_E_I[data[i].code] +'</td>' ;
         line += '<td class="text-center">' + val_I_M[data[i].code] +'</td>' ;
         line += '<td class="text-center">' + val_I_F[data[i].code] +'</td>' ;
-        line += '<td class="text-center">' + val_I_I[data[i].code] +'</td>' ;
+        line += '<td class="text-center border-end">' + val_I_I[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_C_M[data[i].code] +'</td>' ;
+        line += '<td class="text-center">' + val_C_F[data[i].code] +'</td>' ;
+        line += '<td class="text-center border-end">' + val_C_I[data[i].code] +'</td>' ;
         line += '<td class="text-center">' + val_T_M[data[i].code] +'</td>' ;
         line += '<td class="text-center">' + val_T_F[data[i].code] +'</td>' ;
         line += '<td class="text-center">' + val_T_I[data[i].code] +'</td></tr>' ;
@@ -301,7 +360,8 @@ let code_p = '' ;
 
         csv_type += data[i].analysis + ' [' + data[i].code +'];' + val_E_M[data[i].code] + ';' + 
                     val_E_F[data[i].code] + ';' + val_E_I[data[i].code] + ';' + val_I_M[data[i].code] + ';' +
-                    val_I_F[data[i].code] + ';' + val_I_I[data[i].code] + ';' + val_T_M[data[i].code] + ';' +
+                    val_I_F[data[i].code] + ';' + val_I_I[data[i].code] + ';' + val_C_M[data[i].code] + ';' +
+                    val_C_F[data[i].code] + ';' + val_C_I[data[i].code] + ';' + val_T_M[data[i].code] + ';' +
                     val_T_F[data[i].code] + ';' + val_T_I[data[i].code] + '\n' ;
 
         line = '' ;
@@ -486,7 +546,7 @@ let csv_line = '' ;
 
         line += '<td class="text-center">' + val_M +'</td>' ;
         line += '<td class="text-center">' + val_F +'</td>' ;
-        line += '<td class="text-center">' + val_I +'</td>' ;
+        line += '<td class="text-center border-end">' + val_I +'</td>' ;
 
         csv_line += val_M + ";" + val_F + ";" + val_I + ";" ;
         {% endfor %}
@@ -514,7 +574,7 @@ function export_by_type()
     if (csv_type == "")
     return false ;
 
-csv_type = "{{ _("Analyses") }};Ext H;Ext F;Ext I;Int H;Int F;Int I;Total H;Total F;Total I\n" + csv_type ;
+csv_type = "{{ _("Analyses") }};Ext H;Ext F;Ext I;Int H;Int F;Int I;Cust H;Cust F;Cust I;Total H;Total F;Total I\n" + csv_type ;
 
 csv_type = JSON.stringify(csv_type) ; 
 

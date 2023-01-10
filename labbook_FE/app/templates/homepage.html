@@ -41,7 +41,7 @@
                     <a href="{{ session['server_ext'] }}/list-works/T/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                         {% endif %}
                     {% endif %}
-                    {% if session['user_role'] != 'Q' %}
+                    {% if session['user_role'] != 'Q' and session['user_role'] != 'K' %}
                     <a href="{{ session['server_ext'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}
@@ -164,7 +164,7 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
 
         for( i = 0; i < data_stock.length; i++ )
         {
-            if ( (data_stock[i].nb_total > 0 && data_stock[i].day_to_expir <= 14) ||
+            if ( (data_stock[i].nb_total > 0 && data_stock[i].day_to_expir <= {{ session['stock_expir_warning'] }}) ||
                  (data_stock[i].nb_total <= data_stock[i].prd_safe_limit) )
             {
             alert("{{ _("Une alerte est présente dans la gestion de stock") }}") ;

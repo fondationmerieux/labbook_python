@@ -31,6 +31,10 @@ class Result:
         if args['type_ana'] and args['type_ana'] > 0:
             filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
 
+        # Analysis specific
+        if args['id_ana'] and args['id_ana'] > 0:
+            filter_cond += ' and ana.ref_analyse=' + str(args['id_ana']) + ' '
+
         # Code patient
         if args['code_pat']:
             filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
@@ -57,6 +61,9 @@ class Result:
                'where substring(num_dos_jour, 1, 8) >= %s and '
                'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +
                'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)
+
+        Result.log.info(Logs.fileline() + ' :  DEBUG args = ' + str(args))
+        Result.log.info(Logs.fileline() + ' :  DEBUG req = ' + str(req))
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -298,6 +305,8 @@ class Result:
             if not id_fam['id_fam']:
                 fam_cond = ' ref.famille is null '
 
+            # Note 1 : var.type_resultat=265 to get result of type labeled
+            # Note 2 : res.valeur != 1013 to avoid unspecified result
             req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
                    'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
                    'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
@@ -311,8 +320,8 @@ class Result:
                    'inner join sigl_07_data as var on var.id_data = res.ref_variable '
                    'inner join sigl_05_07_data as link on var.id_data = link.id_refvariable '
                    'and ref.id_data = link.id_refanalyse '
-                   'where req.id_dos=%s and ' + fam_cond + ' and '
-                   'res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
+                   'where req.id_dos=%s and ' + fam_cond + ' and (var.type_resultat=265 or '
+                   '(res.valeur is not NULL and res.valeur != "" and res.valeur != 1013)) '
                    'order by id_req_ana asc,  ana_name asc, var_pos asc')
 
             cursor.execute(req, (id_rec,))
@@ -341,7 +350,7 @@ class Result:
     def getDataset(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_analysis, , rec.rec_custody, rec.id_patient, d_type.label as type, '
+        req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '

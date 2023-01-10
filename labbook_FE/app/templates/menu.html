@@ -54,6 +54,7 @@
                     {% if session['user_role'] != 'S' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-activity">{{ _("Rapport activité") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-epidemio">{{ _("Rapport épidémiologique") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/report-indicator">{{ _("Rapport indicateurs") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-statistic">{{ _("Rapport statistique") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/pivot-table">{{ _("Tableau croisé dynamique") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-dhis2">{{ _("Export DHIS2") }}</a>
@@ -96,12 +97,15 @@
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-age-interval">{{ _("Configuration des intervalles d'âge") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-requesting-services">{{ _("Configuration des services demandeurs") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-functionnal-units">{{ _("Configuration des unités fonctionnelles") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-template">{{ _("Configuration des modèles de documents") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes rendus") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-stock">{{ _("Configuration du stockage") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' or
                           session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
@@ -110,6 +114,7 @@
                     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dhis2">{{ _("Configuration DHIS2") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-epidemio">{{ _("Configuration Epidemio") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-indicator">{{ _("Configuration du rapport d'indicateurs") }}</a>
                     {% endif %}
                   </div>
                 </li>
@@ -120,7 +125,8 @@
             <!-- Dropdown Quality -->
             {% if session['pref_quality'] == 1 and (session['user_role'] == 'A' or session['user_role'] == 'B' or 
                   session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or 
-                  session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q') %} 
+                  session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q' or
+                  session['user_role'] == 'K') %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
                   <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-bs-toggle="dropdown">

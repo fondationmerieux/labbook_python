@@ -464,9 +464,10 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             let res_limit  = "" ;
             let res_answer = data[i].res_answer ;
             let value      = data[i].valeur ;
+            let res_type   = data[i].type_resultat ;
 
                 // LABEL TYPE
-                if ( data[i].type_resultat == 265 )
+                if ( res_type == 265 )
                 res_label = "<b>" + res_label + "</b>" ;
 
                 if ( data[i].normal_min != "" || data[i].normal_max != "" )
@@ -495,6 +496,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                    "</td>" +
                    "<td class=\"col-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
 
+            /* cell of result value */
             res += "<td class=\"d-flex align-items-start align-middle text-center border-0 p-1\"><span class=\"value d-flex align-items-start align-middle\">" ;
 
                 // CANCEL RESULT
@@ -548,7 +550,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 res += "<input type=\"hidden\" id=\"oblig_res_" + id_res + "\" value=\"" + data[i].oblig + "\"></span>&nbsp;" ;
                 }
                 // WRITE RESULT
-                else if ( data[i].type_resultat != 229 && data[i].type_resultat != 265 ) // not calc and not label
+                else if ( data[i].type_resultat != 229 && res_type != 265 ) // not calc and not label
                 {
                     // ADD a mark if obligatory result
                     if (data[i].oblig == 4)
@@ -573,12 +575,14 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
                     res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
 
+                        {# 02/01/2023 : Deactivate because useless for the moment
                         // Convert formula
                         if (data[i].formule_unite2 != "")
                         {
                         res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
                         res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
                         }
+                        #}
                     }
                     else
                     change += '"' ;
@@ -589,7 +593,9 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
                 res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
                 res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
+                {# 02/01/2023 : Deactivate because useless for the moment
                 res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
+                #}
                 res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
                 res += '<input type="hidden" id="type_res_' + id_res + '" value="W">' ;
                 res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
@@ -600,7 +606,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 let value = data[i].valeur ;
 
                     // if not label type
-                    if ( data[i].type_resultat != 265 )
+                    if ( res_type != 265 )
                     {
                         // Num var
                         if (data[i].num_var > 0)
@@ -610,19 +616,25 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                         if (data[i].formule != "")
                         res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
 
+                        {# 02/01/2023 : Deactivate because useless for the moment
                         // Convert formula
                         if (data[i].formule_unite2 != "")
                         {
                         res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
                         res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
                         }
+                        #}
 
                     res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
                     res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
                     res += '<input type="hidden" id="accu_' + id_res + '" value="' + data[i].accuracy + '">' ; // precision
+                    {# 02/01/2023 : Deactivate because useless for the moment
                     res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
+                    #}
                     res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
                     }
+                    else
+                    res += '</span>&nbsp;' ;
                 }
 
             res += '<span class="unit mt-2 show">' + res_unit + '</span></td></tr>' ;

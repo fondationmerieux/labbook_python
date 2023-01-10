@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group d-flex align-items-start me-1">
-                            <label class="form-label text-end mt-1">{{ _("Type") }}</label>
+                            <label class="form-label text-end mt-2">{{ _("Type") }}</label>
                             <div>
                                 <select name="type_ana" id="f_type_ana" class="form-select ms-1">
                                     {% from 'macros.html' import select_type_ana %}
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group d-flex align-items-start">
-                            <label for="code_pat" class="form-label col-4 text-end me-1 mt-1">{{ _("Code patient") }}</label>
+                            <label for="code_pat" class="form-label col-4 text-end me-1 mt-2">{{ _("Code patient") }}</label>
                             <div>					
                                 <input type="text" name="code_pat" id="code_pat" value="" class="form-control cnx_trigger">
                             </div>
@@ -155,7 +155,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_records = {{ args|safe }} ;
+var data_records = {{ args|safe or [] }} ;
 var p_step       = 20 ;
 var p_cur        = 1 ;
 var p_max        = Math.ceil( data_records.length / p_step ) ;
@@ -238,6 +238,10 @@ let data_len = data_records.length ;
 let i_start  = (p_cur -1) * p_step ;
 let i_stop   = Math.min( data_len, p_cur * p_step ) ;
 let tr_class = '' ;
+
+    /* Avoid vertical scrollbar for action menu */
+    if ( data_len < 5 )
+    $("#listing_dos").css("height","400px") ;
 
 $("#listing_dos_total").html( data_len ) ;
 

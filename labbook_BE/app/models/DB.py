@@ -67,7 +67,7 @@ class DB:
             cursor = DB.cursor()
 
             cursor.execute('insert into database_status '
-                           '(dbs_date, dbs_stat) '
+                           '(dbs_date, dbs_stat, dbs_type) '
                            'values '
                            '(NOW(), %(stat)s)', params)
 
@@ -79,11 +79,12 @@ class DB:
             return 0
 
     @staticmethod
-    def getLastStatus():
+    def getLastStatus(type):
         cursor = DB.cursor()
 
-        cursor.execute('select dbs_date, dbs_stat '
+        cursor.execute('select dbs_date, dbs_stat, dbs_type '
                        'from database_status '
-                       'order by dbs_date desc limit 1')
+                       'where dbs_type=%s '
+                       'order by dbs_date desc limit 1', (type,))
 
         return cursor.fetchone()

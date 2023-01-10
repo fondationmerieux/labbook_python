@@ -16,6 +16,7 @@ from app.models.Constants import Constants
 from app.models.File import File
 from app.models.General import *
 from app.models.Patient import Patient
+from app.models.Product import Product
 from app.models.Record import Record
 from app.models.Result import Result
 from app.models.Setting import Setting
@@ -315,7 +316,8 @@ class Pdf:
     def getPdfReportGeneric(html_part, filename=''):
         """Build a Generic PDF Report
 
-        This function is call by report statistic, report epidemio, report activity, enter result and list result templates
+        This function is call by report statistic, report epidemio, report indicator, report activity,
+        enter result and list result templates
 
         Args:
             html_part (string): html string.
@@ -748,12 +750,12 @@ class Pdf:
 
         data = {}  # dictionnary of data for build report
 
-        # --- Logo details
+        # === Logo details ===
         filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
         data['logo'] = (open(filepath, 'rb'), 'image/png')
 
-        # --- Label details
+        # === Label details ===
         data['label'] = {}
 
         data['label']['phone']      = str(_("Tél"))
@@ -776,7 +778,7 @@ class Pdf:
         data['label']['comm']       = str(_("Commentaire"))
         data['label']['validate']   = str(_("validé par"))
 
-        # --- Laboratory details
+        # === Laboratory details ===
         data['lab'] = {}
 
         name  = Various.getDefaultValue('entete_1')
@@ -804,7 +806,7 @@ class Pdf:
         if email['value']:
             data['lab']['email'] = str(email['value'])
 
-        # --- Report details
+        # === Report details ===
         data['report'] = {}
 
         data['report']['title']  = _("Compte rendu")
@@ -851,12 +853,12 @@ class Pdf:
         data['report']['date_now'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
         data['report']['time_now'] = datetime.strftime(datetime.now(), "%H:%M")
 
-        # --- Record details
+        # === Record details ===
         data['rec'] = {}
 
         if id_rec > 0:
             record = Record.getRecord(id_rec)
-        # For print test
+        # For print test record
         else:
             Various.useLangDB()
             record = {}
@@ -923,14 +925,15 @@ class Pdf:
         else:
             data['rec']['date_vld'] = ''
 
-        # --- Patient details
+        # === Patient details ===
         data['pat'] = {}
 
         if record['id_patient'] > 0:
             pat = Patient.getPatient(record['id_patient'])
-        # For print test
+        # For print test patient
         else:
             pat = {}
+            pat['anonyme']      = 'N'
             pat['code']         = 'Z1X2Y3'
             pat['code_patient'] = 'PAT123'
             pat['nom']          = 'PATIENT'
@@ -949,26 +952,40 @@ class Pdf:
             pat['tel']          = '0607080910'
             pat['pat_phone2']   = '0700000002'
             pat['profession']   = 'Architecte'
+            pat['pat_nation']       = 49
+            pat['pat_resident']     = 'Y'
+            pat['pat_blood_group']  = 904
+            pat['pat_blood_rhesus'] = 232
 
-        data['pat']['code']       = str(pat['code'])
-        data['pat']['code_lab']   = ''
-        data['pat']['lastname']   = ''
-        data['pat']['firstname']  = ''
-        data['pat']['maidenname'] = ''
-        data['pat']['middlename'] = ''
-        data['pat']['birth']      = ''
-        data['pat']['age']        = ''
-        data['pat']['age_unit']   = ''
-        data['pat']['age_days']   = ''
-        data['pat']['sex']        = _('Inconnu')
-        data['pat']['addr']       = ''
-        data['pat']['zipcode']    = ''
-        data['pat']['city']       = ''
-        data['pat']['district']   = ''
-        data['pat']['pbox']       = ''
-        data['pat']['phone']      = ''
-        data['pat']['phone2']     = ''
-        data['pat']['profession'] = ''
+        data['pat']['anonymous']    = ''
+        data['pat']['code']         = str(pat['code'])
+        data['pat']['code_lab']     = ''
+        data['pat']['lastname']     = ''
+        data['pat']['firstname']    = ''
+        data['pat']['maidenname']   = ''
+        data['pat']['middlename']   = ''
+        data['pat']['birth']        = ''
+        data['pat']['age']          = ''
+        data['pat']['age_unit']     = ''
+        data['pat']['age_days']     = ''
+        data['pat']['sex']          = _('Inconnu')
+        data['pat']['addr']         = ''
+        data['pat']['zipcode']      = ''
+        data['pat']['city']         = ''
+        data['pat']['district']     = ''
+        data['pat']['pbox']         = ''
+        data['pat']['phone']        = ''
+        data['pat']['phone2']       = ''
+        data['pat']['profession']   = ''
+        data['pat']['nationality']  = ''
+        data['pat']['resident']     = str(pat['pat_resident'])
+        data['pat']['blood_group']  = ''
+        data['pat']['blood_rhesus'] = ''
+
+        if pat['anonyme'] and pat['anonyme'] == 4:
+            data['pat']['anonymous'] = 'Y'
+        else:
+            data['pat']['anonymous'] = 'N'
 
         if pat['code_patient']:
             data['pat']['code_lab'] = str(pat['code_patient'])
@@ -1054,7 +1071,28 @@ class Pdf:
         if pat['profession']:
             data['pat']['profession'] = str(pat['profession'])
 
-        # --- ANALYZES details
+        if pat['pat_nation'] and pat['pat_nation'] > 0:
+            nat = Various.getNationalityById(pat['pat_nation'])
+
+            if nat:
+                Various.useLangDB()
+                trans = nat['nat_name'].strip()
+                data['pat']['nationality'] = _(trans)
+                Various.useLangPDF()
+
+        if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
+            data['pat']['blood_group'] = 'A'
+        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
+            data['pat']['blood_group'] = 'AB'
+        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
+            data['pat']['blood_group'] = 'O'
+
+        if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
+            data['pat']['blood_rhesus'] = '+'
+        elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
+            data['pat']['blood_rhesus'] = '-'
+
+        # === ANALYZES details ===
         data['l_data'] = []
         analysis       = {"fam_name": "", "ana_name": "", "l_res": [], "validate": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
@@ -1106,12 +1144,20 @@ class Pdf:
                             if id_user_valid_p > 0 and res_valid['utilisateur'] != id_user_valid_p:
                                 id_user_valid_p = res_valid['utilisateur']
 
-                                user = User.getUserDetails(res_valid['utilisateur'])
+                                ret_user = User.getUserDetails(res_valid['utilisateur'])
 
-                                if user['lastname'] and user['firstname']:
-                                    user = user['lastname'] + ' ' + user['firstname']
+                                user = ''
+
+                                if ret_user['title']:
+                                    Various.useLangDB()
+                                    trans = ret_user['title']
+                                    user += _(trans) + ' '
+                                    Various.useLangPDF()
+
+                                if ret_user['lastname'] and ret_user['firstname']:
+                                    user += ret_user['lastname'] + ' ' + ret_user['firstname']
                                 else:
-                                    user = user['username']
+                                    user += user['username']
 
                                 if res_valid['commentaire']:
                                     res_comm = res_valid['commentaire'].split("\n")
@@ -1183,6 +1229,7 @@ class Pdf:
                         prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
 
                     # Get label of value
+                    Pdf.log.error(Logs.fileline() + ' : DEBUG res=' + str(res))
                     type_res = Various.getDicoById(res['type_resultat'])
 
                     if type_res and type_res['short_label'].startswith("dico_"):
@@ -1234,6 +1281,10 @@ class Pdf:
                         # Cancel result
                         if not val:
                             val  = _("Annulée")
+                            # result of type labeled
+                            if res['type_resultat'] == 265:
+                                val = ''
+
                             prev_res = ''
                         elif res_prev and res_prev['valeur']:
                             prev_res = res_prev['valeur']
@@ -1327,14 +1378,21 @@ class Pdf:
                 # add last comment and who make validation
                 res_valid = Result.getResultValidation(id_res_p)
 
-                user = User.getUserDetails(res_valid['utilisateur'])
+                ret_user = User.getUserDetails(res_valid['utilisateur'])
 
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
+                user = ''
 
-                if user['lastname'] and user['firstname']:
-                    user = user['lastname'] + ' ' + user['firstname']
+                if ret_user['title']:
+                    Various.useLangDB()
+                    trans = ret_user['title']
+                    user +=  _(trans) + ' '
+                    Various.useLangPDF()
+
+                if ret_user['lastname'] and ret_user['firstname']:
+                    user += ret_user['lastname'] + ' ' + ret_user['firstname']
                 else:
-                    user = user['username']
+                    user += user['username']
 
                 if res_valid['commentaire']:
                     res_comm = res_valid['commentaire'].split("\n")
@@ -1351,7 +1409,7 @@ class Pdf:
                     data['l_data'].append(tmp_ana)
 
                 # Pdf.log.error(Logs.fileline() + ' : DEBUG l_data=' + str(data['l_data']))
-        # For print test
+        # For print test analysis
         else:
             Various.useLangDB()
 
@@ -1359,7 +1417,7 @@ class Pdf:
             result['value']      = _("Absent")
             result['unit']       = ''
             result['references'] = ''
-            result['prev_date']  = '01/12/2021'
+            result['prev_date']  = '01/12/2022'
             result['prev_val']   = _("Présent")
             result['prev_unit']  = ''
             result['comm']       = 'commentaire validation\n2eme ligne'.split('\n')
@@ -1403,6 +1461,92 @@ class Pdf:
 
             Various.useLangPDF()
 
+        # samples
+        """
+        [{'sample': {'date': DATE,
+                     'type': LABEL,
+                     'qty': NUMBER,
+                     'stat': LABEL,
+                     'sampler': STRING,
+                     'date_receipt': DATE,
+                     'time_receipt': TIME,
+                     'comm': STRING,
+                     'location': LABEL,
+                     'location_det': STRING,
+                     'storage': STRING,
+                     'code': STRING}
+        }]
+        """
+
+        data['samples'] = []
+        sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "", "time_receipt": "",
+                  "comm": "", "location": "", "location_det": "", "storage": "", "code": ""}
+
+        if id_rec > 0:
+            list_samples = Product.getProductReq(id_rec)
+
+            for sample in list_samples:
+                tmp_sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
+                              "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "", 
+                              "code": ""}
+
+                tmp_sample['date']         = sample.get('date_prel', "")
+                tmp_sample['type']         = sample.get('type_prod', "")
+                tmp_sample['qty']          = str(sample.get('quantite', ""))
+                tmp_sample['stat']         = sample.get('stat_prod', "")
+                tmp_sample['sampler']      = sample.get('preleveur', "")
+                tmp_sample['date_receipt'] = sample.get('date_reception', "")
+                tmp_sample['time_receipt'] = str(sample.get('heure_reception', ""))
+                tmp_sample['comm']         = sample.get('commentaire', "").split('\n')
+                tmp_sample['location']     = sample.get('location', "")
+                tmp_sample['location_det'] = str(sample.get('lieu_prel_plus', ""))
+                tmp_sample['storage']      = str(sample.get('localisation', ""))
+                tmp_sample['code']         = str(sample.get('code', ""))
+
+                # Replace None by empty string
+                for key, value in list(tmp_sample.items()):
+                    if tmp_sample[key] is None:
+                        tmp_sample[key] = ""
+
+                Various.useLangDB()
+
+                if tmp_sample['type']:
+                    trans = tmp_sample['type'].strip()
+                    tmp_sample['type'] = _(trans)
+
+                if tmp_sample['stat']:
+                    trans = tmp_sample['stat'].strip()
+                    tmp_sample['stat'] = _(trans)
+
+                if tmp_sample['location']:
+                    trans = tmp_sample['location'].strip()
+                    tmp_sample['location'] = _(trans)
+
+                Various.useLangPDF()
+
+                data['samples'].append(tmp_sample)
+
+        # For print test sample    
+        else:
+            Various.useLangDB()
+
+            sample['date']         = "01/12/2022"
+            sample['type']         = str(_("Sang"))
+            sample['qty']          = str(1)
+            sample['stat']         = str(_("Fait"))
+            sample['sampler']      = "Martin Prel"
+            sample['date_receipt'] = "03/12/2022"
+            sample['time_receipt'] = "09:45"
+            sample['comm']         = "Commentaire".split('\n')
+            sample['location']     = str(_("Interne au labo"))
+            sample['location_det'] = ""
+            sample['storage']      = ""
+            sample['code']         = "CODE_TEST_01"
+
+            data['samples'].append(sample)
+
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG data : ' + str(data))
+
         return data
 
     @staticmethod
@@ -1430,6 +1574,14 @@ class Pdf:
 
         # write odt with data and template
         try:
+            Pdf.log.error(Logs.fileline() + ' : buildPDF data = ' + str(data))
+
+            # write data sticker in a file for debugging or testing
+            path_debug = os.path.join(Constants.cst_template, Constants.cst_filedata_report)
+            file_debug = open(path_debug, "w")
+
+            file_debug.write(str(data))
+
             tpl_path = os.path.join(Constants.cst_template, template)
 
             tpl = Template(source="", filepath=tpl_path)
@@ -1556,25 +1708,34 @@ class Pdf:
                     Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load patient details')
                     return False
 
-                data['pat']['code']       = str(pat['code'])
-                data['pat']['code_lab']   = ''
-                data['pat']['lastname']   = ''
-                data['pat']['firstname']  = ''
-                data['pat']['maidenname'] = ''
-                data['pat']['middlename'] = ''
-                data['pat']['birth']      = ''
-                data['pat']['age']        = ''
-                data['pat']['age_unit']   = ''
-                data['pat']['age_days']   = ''
-                data['pat']['sex']        = _('Inconnu')
-                data['pat']['addr']       = ''
-                data['pat']['zipcode']    = ''
-                data['pat']['city']       = ''
-                data['pat']['district']   = ''
-                data['pat']['pbox']       = ''
-                data['pat']['phone']      = ''
-                data['pat']['phone2']     = ''
-                data['pat']['profession'] = ''
+                data['pat']['code']         = str(pat['code'])
+                data['pat']['code_lab']     = ''
+                data['pat']['lastname']     = ''
+                data['pat']['firstname']    = ''
+                data['pat']['maidenname']   = ''
+                data['pat']['middlename']   = ''
+                data['pat']['birth']        = ''
+                data['pat']['age']          = ''
+                data['pat']['age_unit']     = ''
+                data['pat']['age_days']     = ''
+                data['pat']['sex']          = _('Inconnu')
+                data['pat']['addr']         = ''
+                data['pat']['zipcode']      = ''
+                data['pat']['city']         = ''
+                data['pat']['district']     = ''
+                data['pat']['pbox']         = ''
+                data['pat']['phone']        = ''
+                data['pat']['phone2']       = ''
+                data['pat']['profession']   = ''
+                data['pat']['nationality']  = ''
+                data['pat']['resident']     = str(pat['pat_resident'])
+                data['pat']['blood_group']  = ''
+                data['pat']['blood_rhesus'] = ''
+
+                if pat['anonyme'] and pat['anonyme'] == 4:
+                    data['pat']['anonymous'] = 'Y'
+                else:
+                    data['pat']['anonymous'] = 'N'
 
                 if pat['code_patient']:
                     data['pat']['code_lab'] = str(pat['code_patient'])
@@ -1660,6 +1821,27 @@ class Pdf:
                 if pat['profession']:
                     data['pat']['profession'] = str(pat['profession'])
 
+                if pat['pat_nation'] and pat['pat_nation'] > 0:
+                    nat = Various.getNationalityById(pat['pat_nation'])
+
+                    if nat:
+                        Various.useLangDB()
+                        trans = nat['nat_name'].strip()
+                        data['pat']['nationality'] = _(trans)
+                        Various.useLangPDF()
+
+                if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
+                    data['pat']['blood_group'] = 'A'
+                elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
+                    data['pat']['blood_group'] = 'AB'
+                elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
+                    data['pat']['blood_group'] = 'O'
+
+                if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
+                    data['pat']['blood_rhesus'] = '+'
+                elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
+                    data['pat']['blood_rhesus'] = '-'
+
             # PDF test
             else:
                 num = '2021000001'
@@ -1719,26 +1901,31 @@ class Pdf:
                 # --- Patient details
                 data['pat'] = {}
 
-                data['pat']['code']       = 'Z1X2Y3'
-                data['pat']['code_lab']   = 'PAT123'
-                data['pat']['lastname']   = 'TEST'
-                data['pat']['firstname']  = 'Alexandre'
-                data['pat']['maidenname'] = 'PERRIERS'
-                data['pat']['middlename'] = 'Monica'
-                data['pat']['birth']      = '30/01/1940'
-                data['pat']['age']        = '42'
-                data['pat']['age_unit']   = _('ans')
+                data['pat']['anonymous']    = ''
+                data['pat']['code']         = 'Z1X2Y3'
+                data['pat']['code_lab']     = 'PAT123'
+                data['pat']['lastname']     = 'TEST'
+                data['pat']['firstname']    = 'Alexandre'
+                data['pat']['maidenname']   = 'PERRIERS'
+                data['pat']['middlename']   = 'Monica'
+                data['pat']['birth']        = '30/01/1940'
+                data['pat']['age']          = '42'
+                data['pat']['age_unit']     = _('ans')
                 age = int(data['pat']['age']) * 365
-                data['pat']['age_days']   = str(age)
-                data['pat']['sex']        = _('Masculin')
-                data['pat']['addr']       = '3 rue du Paradis'
-                data['pat']['zipcode']    = '12345'
-                data['pat']['city']       = 'Testville'
-                data['pat']['district']   = ''
-                data['pat']['pbox']       = 'BP 123'
-                data['pat']['phone']      = '0607080910'
-                data['pat']['phone2']     = '0700000002'
-                data['pat']['profession'] = 'Architecte'
+                data['pat']['age_days']     = str(age)
+                data['pat']['sex']          = _('Masculin')
+                data['pat']['addr']         = '3 rue du Paradis'
+                data['pat']['zipcode']      = '12345'
+                data['pat']['city']         = 'Testville'
+                data['pat']['district']     = ''
+                data['pat']['pbox']         = 'BP 123'
+                data['pat']['phone']        = '0607080910'
+                data['pat']['phone2']       = '0700000002'
+                data['pat']['profession']   = 'Architecte'
+                data['pat']['nationality']  = ''
+                data['pat']['resident']     = 'Y'
+                data['pat']['blood_group']  = 'AB'
+                data['pat']['blood_rhesus'] = '-'
 
         # Pdf.log.error(Logs.fileline() + ' : getPdfSticker DEBUG data : ' + str(data))
 
@@ -1747,6 +1934,12 @@ class Pdf:
 
         # write odt with data and template
         try:
+            # write data sticker in a file for debugging or testing
+            path_debug = os.path.join(Constants.cst_template, Constants.cst_filedata_sticker)
+            file_debug = open(path_debug, "w")
+
+            file_debug.write(str(data))
+
             tpl_path = os.path.join(Constants.cst_template, template)
 
             tpl = Template(source="", filepath=tpl_path)

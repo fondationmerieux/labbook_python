@@ -7,6 +7,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.1] - 2023-01-10
+### Added
+- added profile dedicated to stock management
+- functional unit associated with users and analysis families
+- name of lessor in product details
+- catalog reference in porduct details
+- customizable alert duration
+- export csv of supplies and uses products becomes a table with history
+- set up a list of requesting services
+- delete a analysis in a record between administrative validation and technical validation
+- more filters in patient history page
+- admin can disabled/enabled all analyzes
+- possible to import/export dictionnary
+- filter by analysis in list of result page
+- filter requesting services in statistic report page
+
+### Changed
+- biologist can download an original PDF report or a duplicate after 1st download
+- in details equipment textarea of breakdown and maintenance
+- Possibility to reset or cancel a result after a technical validation
+- Possibility to reset a result after a biological validation
+- time after cancel and replace sentence in report
+- Add in bold the fields of type_result free as a subtitle
+- more data (title, samples... for template report)
+- expiration date can be not mandatory in product supply
+- quotation of all sampling procedures at 0
+- no more formula 2 in analysis details
+
+## Fixed
+- Result and Analyzes dataset for pivot table
+- delete duplicate of type_result in dictionnary table
+- filter type of record in list of records page
 
 ## [3.3.0] - 2022-12-15
 ### Added

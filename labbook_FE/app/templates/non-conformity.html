@@ -694,20 +694,20 @@
                     <div class="form-group d-flex align-items-start">
                         <label for="search_followed" class="form-label col-3 text-end mt-2 me-1">{{ _("Qui") }}</label>
                         <div>
-                            <select id="search_followed" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select><br />
+                            <select id="search_followed" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}></select><br />
                             <span class="ms-2">{{ args['details']['followed'] }}</span>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-start mt-1">
                         <label for="flwd_what" class="form-label col-3 text-end mt-2 me-1">{{ _("Quoi") }}</label>
                         <div>					
-                            <textarea id="flwd_what" name="flwd_what" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>{{ args['details']['flwd_what'] }}</textarea>
+                            <textarea id="flwd_what" name="flwd_what" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>{{ args['details']['flwd_what'] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-start mt-1">
                         <label for="flwd_when" class="form-label col-3 text-end mt-2 me-1">{{ _("Quand") }}</label>
                         <div>					
-                            <input id="flwd_when" name="flwd_when" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_when'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>
+                            <input id="flwd_when" name="flwd_when" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_when'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>
                         </div>
                     </div>
 
@@ -715,29 +715,29 @@
                     <div class="form-group d-flex align-items-start">
                         <label class="form-label col-3 text-end mt-2 me-1">{{ _("Mise en place d’une action correctrice") }}</label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" class="me-1" name="impl_action" value="4" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %} {% if args['details']['impl_action'] == 4 %}checked{% endif %}>{{ _("Oui") }}</input>
+                            <input type="radio" class="me-1" name="impl_action" value="4" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %} {% if args['details']['impl_action'] == 4 %}checked{% endif %}>{{ _("Oui") }}</input>
                         </label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" class="me-1" name="impl_action" value="5" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %} {% if not args['details'] or args['details']['impl_action'] == 5 %}checked{% endif %}>{{ _("Non") }}</input>
+                            <input type="radio" class="me-1" name="impl_action" value="5" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %} {% if not args['details'] or args['details']['impl_action'] == 5 %}checked{% endif %}>{{ _("Non") }}</input>
                         </label>
                     </div>
 
                     <div class="form-group d-flex align-items-start">
                         <label for="flwd_descr_action" class="form-label col-3 text-end mt-2 me-1">{{ _("Description de l'action correctrice") }}</label>
                         <div>					
-                            <textarea id="flwd_descr_action" name="flwd_descr_action" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>{{ args['details']['flwd_descr_action'] }}</textarea>
+                            <textarea id="flwd_descr_action" name="flwd_descr_action" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>{{ args['details']['flwd_descr_action'] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-start mt-1">
                         <label for="flwd_action_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de réalisation de l'action correctrice") }}</label>
                         <div>					
-                            <input id="flwd_action_date" name="flwd_action_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_action_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>
+                            <input id="flwd_action_date" name="flwd_action_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_action_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-start mt-1">
                         <label for="search_incharge" class="form-label col-3 text-end me-1">{{ _("Responsable de l'action") }}</label>
                         <div>
-                            <select id="search_incharge" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select><br />
+                            <select id="search_incharge" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}></select><br />
                             <span class="ms-2">{{ args['details']['incharge'] }}</span>
                         </div>
                     </div>
@@ -749,20 +749,20 @@
                     <div class="form-group d-flex align-items-start">
                         <label for="close_comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaire") }}</label>
                         <div>					
-                            <textarea id="close_comment" name="close_comment" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>{{ args['details']['close_comment'] }}</textarea>
+                            <textarea id="close_comment" name="close_comment" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>{{ args['details']['close_comment'] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-start mt-1">
                         <label for="search_validate" class="form-label col-3 text-end me-1">{{ _("Validé par") }}</label>
                         <div>
-                            <select id="search_validate" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}></select><br />
+                            <select id="search_validate" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}></select><br />
                             <span class="ms-2">{{ args['details']['validate'] }}</span>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-start">
                         <label for="close_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de clôture") }}</label>
                         <div>					
-                            <input id="close_date" name="close_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['close_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' %}disabled{% endif %}>
+                            <input id="close_date" name="close_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['close_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>
                         </div>
                     </div>
                 </fieldset>

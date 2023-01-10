@@ -1,0 +1,169 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage des liens entre unité et utilisateurs") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main" style="opacity: 1;">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des liens entre unité et utilisateurs") }}</span></h2>
+
+            <div class="panel-heading row">
+                <h3 class="panel-title">{{ args['func_unit']['fun_name'] }}</h3>
+            </div>
+            
+            <table class="table table-responsive table-striped table-hover table-lbk mt-3">
+                <thead>
+                    <tr class="">
+                        <th></th>
+                        <th class="text-start">{{ _("Identifiant") }}</th>
+                        <th class="text-start">{{ _("Prénom") }}</th>
+                        <th class="text-start">{{ _("Nom") }}</th>
+                        <th class="text-start">{{ _("Rôle") }}</th>
+                </thead>
+                <tbody id="tbody_value">
+                </tbody>
+            </table>
+
+            <div class="clearfix my-2">
+                <div class="float-start">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_link();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+var id_func_unit = {{ args['id_func_unit'] or 0 }} ; 
+var data_values  = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var l_link_users = [] ;
+
+function load_value( data )
+{
+let tr_value = '' ;
+    
+let obj = data ;
+let checked_stat = false ;
+
+    if ( obj.id_user > 0 )
+    {
+    let tmp_tr = '<tr class="">' ;
+
+        if ( obj.ful_fun > 0 )
+        {
+        checked_stat = true ;
+
+        l_link_users.push( obj.id_user ) ;
+        }
+
+    let btn = '<input id="cbx_' + obj.id_user + '" class="mt-2" type="checkbox" onChange="change_data(this);" value="' + obj.id_user + '">' ;
+
+    tmp_tr += create_td("", btn, "text-center", "") ; // actions
+    tmp_tr += create_td("", obj.username, "mt-1", "") ;
+    tmp_tr += create_td("", obj.firstname, "mt-1", "") ;
+    tmp_tr += create_td("", obj.lastname, "mt-1", "") ;
+    tmp_tr += create_td("", obj.role, "mt-1", "") ;
+    tmp_tr += '</tr>' ;
+
+    tr_value += tmp_tr ;
+    }
+
+$("#tbody_value").append(tr_value) ;
+
+    if ( checked_stat && obj.id_user > 0 )
+    $('#cbx_' + obj.id_user).prop('checked', true) ;
+}
+
+function load_data()
+{
+// clear table tbody
+$("#tbody_value").empty() ;
+
+    for( i in data_values )
+    {
+    load_value( data_values[i] ) ;
+    }
+}
+
+function create_td(id, val, cls, style)
+{
+let tmp_td = '<td id="' + id + '" style="' + style + '">' +
+             '<div class="' + cls + '">' + val + '</div></td>' ;
+
+return tmp_td ;
+}
+
+function change_data( elem )
+{
+// Get id_user from input
+let id_user = $(elem).val() ;
+
+    if ( $('#cbx_' + id_user).is(':checked') )
+    {
+    l_link_users.push( Number(id_user) ) ;
+    }
+    else
+    {
+    const index = l_link_users.indexOf(Number(id_user)) ;
+
+        if (index > -1)
+        l_link_users.splice(index, 1) ;
+    }
+}
+
+function save_link()
+{
+var id_owner = {{ session['user_id']|safe}} ;
+var param = '{ "id_owner":' + id_owner + ', "list_link":[ ';
+var tmp_value = '' ;
+
+    for( i in l_link_users )
+    {
+        if (tmp_value != '')
+        tmp_value += ', ' ;
+
+        tmp_value += '{ "id_item":' + l_link_users[i] + '}' ;
+    }
+
+param += tmp_value + ' ] }';
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/setting/link/unit/U/" + id_func_unit,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
+           location.reload() ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST link func unit with users") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+load_data() ;
+} ) ;
+</script>
+{% endblock %}

@@ -74,33 +74,33 @@
             <div id="valid_div">
                 <fieldset class="d-flex flex-wrap border px-3 py-2 mt-1">
                     <legend class="legend-lbk">{{ _("Validation des résultats cochés") }}</legend>
-                    <div class="form-group d-flex align-items-start col-12">
-                        <label>{{ _("Date de validation") }} :</label>
+                    <div class="form-group d-flex align-items-start">
+                        <label class="form-label mt-2 me-1">{{ _("Date de validation") }} :</label>
                         <div>
                             <input id="date_bio" class="form-control ms-1" type="datetime-local" step="60" value="{{ now|datetime_now }}" placeholder="" style="">
                         </div>
-                        <label class="ms-3" for="validator">{{ _("Biologiste") }} :</label>
-                        <input type="text" name="validator" id="validator" class="form-control ms-1" value="" readonly />
+                        <label class="form-label ms-3 mt-2 me-1" for="validator">{{ _("Biologiste") }} :</label>
+                        <input type="text" name="validator" id="validator" class="form-control ms-1 w-auto" value="" readonly />
                         <input type="hidden" id="id_validator" class="form-control ms-1" value="0" />
                     </div>
-                    <div class="form-group d-flex align-items-start col-12">
-                        <label for="comm_valid" class="col-1 align-top">{{ _("Commentaire") }}</label>
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <label for="comm_valid" class="align-top mt-2 me-1">{{ _("Commentaire") }}</label>
                         {# We break the loop after the first comment found #}
                         {# Note: If I don't paste the jinja2 code it adds the spaces #}
                         <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control col-5 ms-1">{% set var_for = {'break': False} %}{% for res in args['list_res'] %}{% if not var_for.break %}{% if res['validation']['commentaire'] %}{{ res['validation']['commentaire'] }}{% if var_for.update({'break': True}) %}{% endif %}{% endif %}{% endif %}{% endfor %}</textarea>
                     </div>
-                    <div class="col-12">
-                        <div class="float-start" style="margin-start:0px;">
+                    <div class="col-12 my-2">
+                        <div class="d-flex justify-content-between" style="margin-start:0px; me-3">
                             <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
-                        </div>
-                        <input type="hidden" name="validation-type" value="B" id="validation-type">
-                        <div class="float-end" style="margin-start:0px;">
-                            <select id="tpl_result" class="form-select me-3" {% if ihm['tpl_result'] and ihm['tpl_result']|length < 2 %}hidden{% endif %}>
-                                {% for tpl in ihm['tpl_result'] %}
-                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
-                                {% endfor %}
-                            </select>
-                            <button name="validate" id="validate" type="button" value="Valider" class="btn btn-{{ session['user_role']|safe }}" onclick="save_valid({{ args['record']['id_data'] }});">{{ _("Valider") }}</button> 
+                            <div class="d-flex align-items-end">
+                                <input type="hidden" name="validation-type" value="B" id="validation-type">
+                                <select id="tpl_result" class="form-select me-3 w-auto" {% if ihm['tpl_result'] and ihm['tpl_result']|length < 2 %}hidden{% endif %}>
+                                    {% for tpl in ihm['tpl_result'] %}
+                                    <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button name="validate" id="validate" type="button" value="Valider" class="btn btn-{{ session['user_role']|safe }}" onclick="save_valid({{ args['record']['id_data'] }});">{{ _("Valider") }}</button>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -565,6 +565,11 @@ let disp_valid = "d-none" ;
         let res_check  = '<td class="text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="N" class="invisible result-checkbox cbx-' + id_rec + '"></span></td>' ;
         let res_reset  = '' ;
         let res_cancel = '' ;
+        let res_type   = data[i].type_resultat ;
+
+            /* result of type labeled */
+            if ( res_type == 265 )
+            res_label = '<b>' + res_label + '</b>' ;
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
             {
@@ -580,10 +585,12 @@ let disp_valid = "d-none" ;
             {
             res_check = '<td class="text-center"><span><input type="checkbox" id="cbx_' + id_res + '" value="O" checked="checked" class="show result-checkbox cbx-' + id_rec + '"></span></td>' ;
 
-            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
-
             disp_valid = "show" ;
             }
+
+            /* possible to reset value */
+            if ( res_type != 265  )
+            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
 
         res += '<tr>' +
                    res_check +
@@ -609,6 +616,11 @@ let disp_valid = "d-none" ;
         {
         res += '<span>ANNULE</span>' ;
         res_cancel = '<span>' + data[i].validation.label_motif + '<br />' + data[i].validation.commentaire + '</span>' ;
+        }
+        /* result of type labeled */
+        else if ( res_type == 265 )
+        {
+        res += '<span></span>' ;
         }
         else
         res += '<span>Non rempli</span>' ;

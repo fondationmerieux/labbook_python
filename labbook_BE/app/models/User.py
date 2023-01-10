@@ -81,10 +81,11 @@ class User:
                'u.locale as lang, u.email, u.titre as title, u.initiale as initial, u.adresse as address, '
                'u.ddn as birth, u.tel as phone, u.darrive as arrived, u.position, u.cv, u.diplome as diploma, '
                'u.formation as training, u.section, u.deval as last_eval, u.commentaire as comment, '
-               'u.side_account, u.role_type, '
+               'u.side_account, u.role_type, d_title.label as title, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_user_data as u '
                'left join sigl_08_data as pres on pres.id_data=u.side_account '
+               'left join sigl_dico_data as d_title on d_title.id_data=u.titre '
                'where u.id_data=%s')
 
         cursor.execute(req, (id_user,))

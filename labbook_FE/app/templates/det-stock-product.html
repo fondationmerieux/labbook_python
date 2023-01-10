@@ -41,14 +41,14 @@
                 </div>
 
                 <div class="form-group d-flex align-items-start mt-3">
-                    <label for="prs_expir_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration") }} *</label>
+                    <label for="prs_expir_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration") }} {% if args['stock_setting']['sts_expir_oblig'] == 'Y' %}*{% endif %}</label>
                     <div>					
                         <input id="prs_expir_date" name="prs_expir_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_expir_date'] }}" style="color: #888;">
                     </div>
                 </div>
 
                 <div class="form-group d-flex align-items-start mt-3">
-                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
+                    <label for="prs_rack" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
                     <div>					
                         <input type="text" name="prs_rack" id="prs_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control">			
                     </div>
@@ -65,6 +65,13 @@
                     <label for="prs_buy_price" class="form-label col-3 text-end mt-2 me-1">{{ _("Prix d'achat") }}</label>
                     <div class="">					
                         <input type="number" name="prs_buy_price" id="prs_buy_price" value="{{ args['stock_product']['prs_buy_price'] }}" min="0" step="0.01" class="form-control">			
+                    </div>
+                </div>
+
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="prs_lessor" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du bailleur") }}</label>
+                    <div>					
+                        <input type="text" name="prs_lessor" id="prs_lessor" value="{{ args['stock_product']['prs_lessor'] }}" class="form-control">			
                     </div>
                 </div>
                 
@@ -141,6 +148,7 @@ var expir_date   = $("#prs_expir_date").val()   ;
 var rack         = $("#prs_rack").val()         ;
 var batch_num    = $("#prs_batch_num").val()    ;
 var buy_price    = $("#prs_buy_price").val()  * 100 ;
+var lessor       = $("#prs_lessor").val()       ;
 
 var msg = "" ;
 
@@ -150,8 +158,10 @@ var msg = "" ;
     if (prs_nb_pack <= 0)
     msg += "{{ _("Veuillez saisir un nombre de paquets supérieur à 0.") }}\n" ;
 
+    {% if args['stock_setting']['sts_expir_oblig'] == 'Y' %}
     if (expir_date == "")
     msg += "{{ _("Veuillez saisir une date d'expiration.") }}\n" ;
+    {% endif %}
 
     if (msg != "")
     {
@@ -170,7 +180,8 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prs_expir_date":"' + expir_date + '", ' +
               '"prs_rack":"' + rack + '", ' +
               '"prs_batch_num":"' + batch_num + '", ' +
-              '"prs_buy_price":' + buy_price + '}' ;
+              '"prs_buy_price":' + buy_price + ', ' +
+              '"prs_lessor":"' + lessor + '" }' ;
 
     $.ajax( {
        type: "POST",

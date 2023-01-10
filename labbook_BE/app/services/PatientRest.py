@@ -25,7 +25,7 @@ class PatientList(Resource):
 
         l_patients = Patient.getPatientList(args)
 
-        self.log.info(Logs.fileline() + ' : TRACE l_patients=' + str(l_patients))
+        # self.log.info(Logs.fileline() + ' : TRACE l_patients=' + str(l_patients))
 
         if not l_patients:
             self.log.error(Logs.fileline() + ' : TRACE PatientList not found')

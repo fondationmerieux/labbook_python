@@ -2,6 +2,7 @@
 import logging
 import gettext
 
+from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
@@ -79,8 +80,7 @@ class DictDet(Resource):
                                           label=val['label'],
                                           short_label=val['short_label'],
                                           position=val['position'],
-                                          code=val['code'],
-                                          archived=0)
+                                          code=val['code'])
                 else:
                     ret = Dict.insertDict(id_owner=val['id_owner'],
                                           dico_name=dict_name,
@@ -174,3 +174,189 @@ class DictList(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE DictList')
         return compose_ret(l_dicts, Constants.cst_content_type_json)
+
+
+class DictExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_data = [['version', 'id_ana', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code', 'dico_descr']]
+
+        if 'id_user' not in args or 'dico_name' not in args:
+            self.log.error(Logs.fileline() + ' : DictExport ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        Various.useLangDB()
+
+        dico_name = args['dico_name']
+
+        dict_data = Dict.getDictExport(dico_name)
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append('v1')
+
+                # ANALYSIS
+                if d['id_data']:
+                    data.append(d['id_data'])
+                else:
+                    data.append('')
+
+                if d['id_owner']:
+                    data.append(d['id_owner'])
+                else:
+                    data.append('')
+
+                if d['dico_name']:
+                    name = d['dico_name']
+                    data.append(_(name.strip()))
+                else:
+                    data.append('')
+
+                if d['label']:
+                    label = d['label']
+                    data.append(_(label.strip()))
+                else:
+                    data.append('')
+
+                if d['short_label']:
+                    short_label = d['short_label']
+                    data.append(_(short_label.strip()))
+                else:
+                    data.append('')
+
+                if d['position']:
+                    data.append(d['position'])
+                else:
+                    data.append('')
+
+                if d['code']:
+                    data.append(d['code'])
+                else:
+                    data.append('')
+
+                if d['dico_descr']:
+                    dico_descr = d['dico_descr']
+                    data.append(_(dico_descr.strip()))
+                else:
+                    data.append('')
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            if dico_name:
+                dico_name = '-' + str(dico_name)
+
+            filename = 'dict' + dico_name  + '_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post DictExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE DictExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class DictImport(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, filename, id_user):
+
+        if not filename or id_user <= 0:
+            self.log.error(Logs.fileline() + ' : DictImport ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Read CSV user
+        import os
+
+        from csv import reader
+
+        path = Constants.cst_path_tmp
+
+        with open(os.path.join(path, filename), 'r', encoding='utf-8') as csv_file:
+            csv_reader = reader(csv_file, delimiter=';')
+            l_rows = list(csv_reader)
+
+        if not l_rows or len(l_rows) < 2:
+            self.log.error(Logs.fileline() + ' : TRACE DictImport ERROR file empty')
+            DB.insertDbStatus(stat='ERR;DictImport ERROR file empty', type='DIC')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        head_line = l_rows[0]
+
+        # remove headers line
+        l_rows.pop(0)
+
+        # check version
+        if l_rows[0][0] != 'v1':
+            self.log.error(Logs.fileline() + ' : TRACE DictImport ERROR wrong version')
+            DB.insertDbStatus(stat='ERR;DictImport ERROR wrong version', type='DIC')
+            return compose_ret('', Constants.cst_content_type_json, 409)
+
+        # check name of column
+        head_list = ['version', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code', 'dico_descr']
+
+        i = 0
+        for head in head_line:
+            if head != head_list[i]:
+                self.log.error(Logs.fileline() + ' : TRACE DictImport ERROR wrong column or order : ' + str(head))
+                DB.insertDbStatus(stat='ERR;DictImport ERROR wrong column or order', type='DIC')
+                return compose_ret('', Constants.cst_content_type_json, 409)
+            i = i + 1
+
+        i = 1
+        for row in l_rows:
+            i = i + 1
+            self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
+            self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(row))
+            if row:
+                id_owner           = row[1]
+                dico_name          = row[2]
+                label              = row[3]
+                short_label        = row[4]
+                position           = row[5]
+                code               = row[6]
+                dico_descr         = row[7]
+
+                self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert dict dico_name=' + dico_name)
+                # insert dict
+                ret = Dict.insertDict(id_owner=id_owner,
+                                      dico_name=dico_name,
+                                      label=label,
+                                      short_label=short_label,
+                                      position=position,
+                                      code=code)
+
+                if ret <= 0:
+                    self.log.info(Logs.fileline() + ' : TRACE DictImport ERROR insert dict dico_name ' + str(dico_name) + ' | csv_line=' + str(i))
+                    DB.insertDbStatus(stat='ERR;DictImport ERROR insert dict dico_name: ' + str(dico_name), type='DIC')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+                ret = Dict.updateDescr(dict_name=dico_name, dico_descr=dico_descr)
+
+                if ret is False:
+                    self.log.info(Logs.fileline() + ' : TRACE DictDescr ERROR update dico_descr')
+                    DB.insertDbStatus(stat='ERR;DictImport ERROR insert dict descr: ' + str(dico_descr), type='DIC')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE DictImport')
+        DB.insertDbStatus(stat='OK;DictImport ended OK', type='DIC')
+        return compose_ret('', Constants.cst_content_type_json, 200)

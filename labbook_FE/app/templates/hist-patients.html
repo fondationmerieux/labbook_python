@@ -15,7 +15,7 @@
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
                 <div class="panel-filter row mt-3">
-                    <div class="col-5">
+                    <div class="col-4">
                         <div class="form-group d-flex align-items-start mt-3">
                             <label for="code" class="form-label col-3 text-end mt-2 me-1">{{ _("Code") }}</label>
                             <div>					
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group d-flex align-items-start mt-3">
                             <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>					
@@ -43,6 +43,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-4">
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="phone" class="form-label col-3 text-end mt-2 me-1">{{ _("Tél.") }}</label>
+                            <div>					
+                                <input type="text" name="phone" id="phone" value="" class="form-control cnx_trigger">			
+                            </div>
+                        </div>
+                        <div class="form-group d-flex align-items-start mt-3">
+                            <label for="sex" class="form-label col-3 text-end mt-2 me-1">{{ _("Sexe") }}</label>
+                            <div class="">					
+                                <select name="sex" id="sex" class="form-select ms-1">
+                                    {% from 'macros.html' import select_sex %}
+                                    {{ select_sex(ihm['dict_sex']) }}
+                                </select>       
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-12 my-2">
                         <div class="float-end">
                             <button type="button" onclick="filter_patients();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
@@ -106,7 +124,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_patients = {{ args|safe }} ;
+var data_patients = {{ args|safe or [] }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_patients.length / p_step ) ;
@@ -117,11 +135,15 @@ let code      = $("#code").val()      ;
 let code_lab  = $("#code_lab").val()  ;
 let lastname  = $("#lastname").val()  ;
 let firstname = $("#firstname").val() ;
+let phone     = $("#phone").val()     ;
+let sex       = $("#sex").val()       ;
 
 let param = '{ "code":"' + code + '", ' +
             '"code_lab":"' + code_lab + '", ' +
             '"lastname":"' + lastname  + '", ' +
-            '"firstname":"' + firstname  + '"}' ;
+            '"firstname":"' + lastname  + '", ' +
+            '"phone":"' + phone  + '", ' +
+            '"sex":"' + sex  + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

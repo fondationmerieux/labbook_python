@@ -173,7 +173,8 @@ $("#list_items_total").html( data_len ) ;
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' ;
 
     {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'T' or
-          session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}
+          session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' or
+          session['user_role'] == 'K' %}
     menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/non-conformity/' + data_items[i].id_data + '" style="pointer-events:none">{{ _("Editer") }}</a>' +
                 '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')" style="pointer-events:none">{{ _("Supprimer") }}</a>';
 

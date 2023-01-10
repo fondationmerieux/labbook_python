@@ -21,7 +21,7 @@ class AnalysisSearch(Resource):
     def post(self, type):
         args = request.get_json()
 
-        l_analysis = Analysis.getAnalysisSearch(args['term'], type)
+        l_analysis = Analysis.getAnalysisSearch(args['term'], type, args['status'])
 
         if not l_analysis:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisSearch not found')
@@ -359,9 +359,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                                                     formula2='',  # var['var_formula2'],
+                                                     unit2=0,      # var['var_unit2'],
+                                                     accu2=0)      # var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
@@ -410,9 +410,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                                                     formula2='',  # var['var_formula2'],
+                                                     unit2=0,      # var['var_unit2'],
+                                                     accu2=0)      # var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
@@ -486,9 +486,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                                                     formula2='',  # var['var_formula2'],
+                                                     unit2=0,      # var['var_unit2'],
+                                                     accu2=0)      # var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
@@ -522,9 +522,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                                                     formula2='',  # var['var_formula2'],
+                                                     unit2=0,      # var['var_unit2'],
+                                                     accu2=0)      # var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
@@ -698,6 +698,22 @@ class AnalysisReq(Resource):
             res['id_req'] = ret
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisReq')
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_req):
+        args = request.get_json()
+
+        if 'id_rec' not in args or 'id_samp_act' not in args or 'type_samp' not in args:
+            self.log.error(Logs.fileline() + ' : AnalysisReq ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Analysis.deleteAnalysisReq(id_req, args['id_rec'], args['id_samp_act'], args['type_samp'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisReq delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisReq delete id_item=' + str(id_req))
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -981,7 +997,7 @@ class AnalysisImport(Resource):
 
         if not l_rows or len(l_rows) < 2:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR file empty')
-            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR file empty')
+            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR file empty', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         head_line = l_rows[0]
@@ -992,7 +1008,7 @@ class AnalysisImport(Resource):
         # check version
         if l_rows[0][37] != 'v3':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
-            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version')
+            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check name of column
@@ -1007,7 +1023,7 @@ class AnalysisImport(Resource):
         for head in head_line:
             if head != head_list[i]:
                 self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong column or order : ' + str(head))
-                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong column or order')
+                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong column or order', type='ANA')
                 return compose_ret('', Constants.cst_content_type_json, 409)
             i = i + 1
 
@@ -1084,7 +1100,7 @@ class AnalysisImport(Resource):
 
                     if ret == -1:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR sql')
-                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify code analysis code=' + str(code))
+                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify code analysis code=' + str(code), type='ANA')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
                     # same analysis
@@ -1108,7 +1124,7 @@ class AnalysisImport(Resource):
 
                             if ret is False:
                                 self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update analysis code: ' + str(code) + ' | csv_line=' + str(i))
-                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update analysis code: ' + str(code))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update analysis code: ' + str(code), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             code_prev = code
@@ -1132,13 +1148,13 @@ class AnalysisImport(Resource):
                                                                  formula=formule,
                                                                  unit=unite,
                                                                  accu=accuracy,
-                                                                 formula2=formule_unite2,
-                                                                 unit2=unite2,
-                                                                 accu2=precision2)
+                                                                 formula2='',  # formule_unite2,
+                                                                 unit2=0,      # unite2,
+                                                                 accu2=0)      # precision2)
 
                                 if ret is False:
                                     self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update var analysis code: ' + str(code) + ' | csv_line=' + str(i))
-                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update var analysis code: ' + str(code))
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update var analysis code: ' + str(code), type='ANA')
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
                                 # UPDATE LINK
@@ -1154,7 +1170,7 @@ class AnalysisImport(Resource):
 
                                 if not ret:
                                     self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
-                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update link var to analysis code: ' + str(code))
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update link var to analysis code: ' + str(code), type='ANA')
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         # ADD MODE
@@ -1165,7 +1181,7 @@ class AnalysisImport(Resource):
             for row in l_rows:
                 i = i + 1
                 self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
-                self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(l))
+                self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(row))
                 if row:
                     id_ana             = row[0]
                     id_owner           = row[1]
@@ -1233,7 +1249,7 @@ class AnalysisImport(Resource):
 
                     if ret == -1:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR sql')
-                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify code analysis code=' + str(code))
+                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify code analysis code=' + str(code), type='ANA')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
                     # New analysis code or same analysis after insert
@@ -1247,7 +1263,7 @@ class AnalysisImport(Resource):
 
                             if ret == -1:
                                 self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR sql')
-                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify id analysis=' + str(id_ana))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR SQL verify id analysis=' + str(id_ana), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             if ret:
@@ -1273,7 +1289,7 @@ class AnalysisImport(Resource):
 
                             if ret <= 0:
                                 self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR insert analysis code: ' + str(code) + ' | csv_line=' + str(i))
-                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert analysis code: ' + str(code))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert analysis code: ' + str(code), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             id_ana = ret
@@ -1305,13 +1321,13 @@ class AnalysisImport(Resource):
                                                                  formula=formule,
                                                                  unit=unite,
                                                                  accu=accuracy,
-                                                                 formula2=formule_unite2,
-                                                                 unit2=unite2,
-                                                                 accu2=precision2)
+                                                                 formula2='',  # formule_unite2,
+                                                                 unit2=0,      # unite2,
+                                                                 accu2=0)      # precision2)
 
                                 if ret <= 0:
                                     self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert var analysis code: ' + str(code) + ' | csv_line=' + str(i))
-                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert var analysis code: ' + str(code))
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert var analysis code: ' + str(code), type='ANA')
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
                                 id_var = ret
@@ -1331,14 +1347,33 @@ class AnalysisImport(Resource):
 
                             if ret <= 0:
                                 self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
-                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert link var analysis code: ' + str(code))
+                                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert link var analysis code: ' + str(code), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         else:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong type')
-            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong type')
+            DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong type', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE AnalysisImport')
-        DB.insertDbStatus(stat='OK;AnalysisImport ended OK')
+        DB.insertDbStatus(stat='OK;AnalysisImport ended OK', type='ANA')
         return compose_ret('', Constants.cst_content_type_json, 200)
+
+
+class AnalysisStatus(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'status' not in args or 'id_ana' not in args or 'id_user' not in args:
+            self.log.error(Logs.fileline() + ' : AnalysisStatus ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Analysis.updateAnalysisStatus(args['status'], args['id_ana'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisStatus ERROR ')
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalysisStatus by user:' + str(args['id_user']))
+        return compose_ret('', Constants.cst_content_type_json)

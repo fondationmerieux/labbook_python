@@ -16,27 +16,20 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
-                <div class="panel-filter d-flex align-items-start mt-3">
-                    <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
-                            <div>
-                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
-                            </div>
+                <div class="panel-filter d-flex align-items-start mt-1">
+                    <div class="form-group d-flex align-items-start mt-3">
+                        <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
+                        <div>
+                            <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                        </div>
+                        <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
+                        <div>					
+                            <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                         </div>
                     </div>
-                    <div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
-                            <div>					
-                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="float-end">
-                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
-                        </div>
+
+                    <div class="ms-3">
+                        <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger mt-3"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                     </div>
                 </div>
 

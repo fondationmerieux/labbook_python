@@ -18,40 +18,29 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
-                <div class="panel-filter row mt-3">
-                    <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
-                            <div>
-                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
-                            </div>
+                <div class="panel-filter mt-3">
+                    <div class="form-group d-flex align-items-start">
+                        <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
+                        <div>
+                            <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                        </div>
+                        <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
+                        <div>					
+                            <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                        </div>
+                        <label for="search_user" class="form-label text-end ms-3 mt-2 me-1">{{ _("Créateur du dossier") }}</label>
+                        <div class="mt-1">
+                            <select id="search_user" class="form-select" style="width:400px"></select>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
-                            <div>					
-                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="search_user" class="form-label text-end mt-1 me-1">{{ _("Créateur du dossier") }}</label>
-                            <div>
-                                <select id="search_user" class="form-select" style="width:400px"></select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="float-end">
-                            <button type="button" onclick="filter_bill();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
-                        </div>
+
+                    <div class="float-end mx-2">
+                        <button type="button" onclick="filter_bill();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                     </div>
                 </div>
 
                 <!-- List bills -->
-                <div class="panel panel-1 panel-primary" style="">
+                <div class="panel panel-1 panel-primary mt-3">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{ _("Liste des facturations en cours") }}</h3>
                     </div>

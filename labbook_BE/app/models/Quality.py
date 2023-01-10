@@ -516,8 +516,8 @@ class Quality:
         req = ('select eqp.id_data, eqp.nom as name, eqp.nom_fabriquant as maker, eqp.modele as model, eqp.fonction as funct, '
                'eqp.localisation as location, eqp.section, eqp.fournisseur_id as supplier_id, eqp.no_serie as serial, '
                'eqp.no_inventaire as inventory, eqp.responsable_id as incharge_id, eqp.manuel_id as manual_id, '
-               'eqp.procedures_id as procedur_id, eqp.pannes as breakdown, eqp.maintenance_preventive as maintenance, '
-               'eqp.certif_etalonnage as calibration, eqp.contrat_maintenance as contract, eqp.date_fin_contrat as date_endcontract, '
+               'eqp.procedures_id as procedur_id, eqp.certif_etalonnage as calibration, '
+               'eqp.contrat_maintenance as contract, eqp.date_fin_contrat as date_endcontract, '
                'eqp.date_reception as date_receipt, eqp.date_achat as date_buy, '
                'eqp.date_mise_en_service as date_onduty, eqp.date_de_retrait as date_revoc, eqp.commentaires as comment, '
                'u1.fournisseur_nom as supplier, u3.titre as manual, u4.titre as procedur, '
@@ -541,13 +541,13 @@ class Quality:
             cursor.execute('insert into sigl_equipement_data '
                            '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, nom, nom_fabriquant, '
                            'modele, fonction, localisation, section, fournisseur_id, no_serie, no_inventaire, '
-                           'responsable_id, manuel_id, procedures_id, pannes, maintenance_preventive, '
+                           'responsable_id, manuel_id, procedures_id, '
                            'certif_etalonnage, contrat_maintenance, date_fin_contrat, date_reception, date_achat, '
                            'date_mise_en_service, date_de_retrait, commentaires) '
                            'values '
                            '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(name)s, %(maker)s, %(model)s, '
                            '%(funct)s, %(location)s, %(section)s, %(supplier)s, %(serial)s, %(inventory)s, '
-                           '%(incharge)s, %(manual)s, %(procedur)s, %(breakdown)s, %(maintenance)s, '
+                           '%(incharge)s, %(manual)s, %(procedur)s, '
                            '%(calibration)s, %(contract)s, %(date_endcontract)s, %(date_receipt)s, %(date_buy)s, '
                            '%(date_onduty)s, %(date_revoc)s, %(comment)s)', params)
 
@@ -568,7 +568,6 @@ class Quality:
                            'modele=%(model)s, fonction=%(funct)s, localisation=%(location)s, section=%(section)s, '
                            'fournisseur_id=%(supplier)s, no_serie=%(serial)s, no_inventaire=%(inventory)s, '
                            'responsable_id=%(incharge)s, manuel_id=%(manual)s, procedures_id=%(procedur)s, '
-                           'pannes=%(breakdown)s, maintenance_preventive=%(maintenance)s, '
                            'certif_etalonnage=%(calibration)s, contrat_maintenance=%(contract)s, '
                            'date_fin_contrat=%(date_endcontract)s, date_reception=%(date_receipt)s, '
                            'date_achat=%(date_buy)s, date_mise_en_service=%(date_onduty)s, '
@@ -589,6 +588,9 @@ class Quality:
 
             cursor.execute('delete from sigl_equipement_data '
                            'where id_data=%s', (id_item,))
+
+            cursor.execute('delete from list_comment '
+                           'where lic_type="E" and lic_ref=%s', (id_item,))
 
             Quality.log.info(Logs.fileline())
 
@@ -672,6 +674,57 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
+    def getStockExportProducts():
+        cursor = DB.cursor()
+
+        req = ('select prd_ser, prd_date, prd_name, prd_type, dict1.label as type, prd_nb_by_pack, '
+               'sup.fournisseur_nom as supplier, prd_ref_supplier, dict2.label as conserv, prd_safe_limit, '
+               'prd_ref_catalog '
+               'from product_details '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
+               'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
+               'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
+               'order by prd_ser asc ')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStockExportSupplies():
+        cursor = DB.cursor()
+
+        req = ('select prs_ser, prs_date, prd_name as product, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
+               'prs_batch_num, prs_buy_price, u1.username as user, prs_empty, prs_cancel, u2.username as user_cancel, '
+               'prs_lessor '
+               'from product_supply '
+               'left join product_details on prd_ser=prs_prd '
+               'left join sigl_user_data as u1 on u1.id_data=prs_user '
+               'left join sigl_user_data as u2 on u2.id_data=prs_user_cancel '
+               'order by prs_ser asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStockExportUses():
+        cursor = DB.cursor()
+
+        req = ('select pru_ser, pru_date, prd_name as product, pru_nb_pack, u1.username as user, pru_cancel, '
+               'u2.username as user_cancel '
+               'from product_use '
+               'left join product_supply on prs_ser=pru_prs '
+               'left join product_details on prd_ser=prs_prd '
+               'left join sigl_user_data as u1 on u1.id_data=pru_user '
+               'left join sigl_user_data as u2 on u2.id_data=pru_user_cancel '
+               'order by pru_ser asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getSumStockSupply(id_item):
         cursor = DB.cursor()
 
@@ -688,7 +741,7 @@ class Quality:
         cursor = DB.cursor()
 
         req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, prs_batch_num, '
-               'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack '
+               'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
@@ -742,8 +795,8 @@ class Quality:
     def getStockProduct(id_item):
         cursor = DB.cursor()
 
-        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, '
-               'sup.fournisseur_nom as supplier_name, prd_safe_limit '
+        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
+               'prd_ref_catalog, prd_conserv, sup.fournisseur_nom as supplier_name, prd_safe_limit '
                'from product_details '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'where prd_ser=%s')
@@ -758,7 +811,7 @@ class Quality:
 
         # Take all supply  for this product
         req = ('select prs_ser, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
-               'prs_batch_num, prs_buy_price, prs_date as date_create, username '
+               'prs_batch_num, prs_buy_price, prs_date as date_create, username, prs_lessor '
                'from product_supply '
                'left join sigl_user_data on id_data=prs_user '
                'where prs_prd=%s and (prs_date between %s and %s) and prs_cancel="N"')
@@ -784,8 +837,8 @@ class Quality:
     def getStockProductList():
         cursor = DB.cursor()
 
-        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, '
-               'sup.fournisseur_nom as supplier_name, prd_safe_limit, d1.label as type, d2.label as conserv '
+        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_ref_catalog, '
+               'prd_conserv, sup.fournisseur_nom as supplier_name, prd_safe_limit, d1.label as type, d2.label as conserv '
                'from product_details '
                'left join sigl_dico_data as d1 on d1.id_data=prd_type '
                'left join sigl_dico_data as d2 on d2.id_data=prd_conserv '
@@ -802,10 +855,11 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('insert into product_details '
-                           '(prd_date, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_conserv, prd_safe_limit) '
+                           '(prd_date, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
+                           'prd_ref_catalog , prd_conserv, prd_safe_limit) '
                            'values '
                            '(NOW(), %(prd_name)s, %(prd_type)s, %(prd_nb_by_pack)s, %(prd_supplier)s, '
-                           '%(prd_ref_supplier)s, %(prd_conserv)s, %(prd_safe_limit)s)', params)
+                           '%(prd_ref_supplier)s, %(prd_ref_catalog)s, %(prd_conserv)s, %(prd_safe_limit)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -822,7 +876,8 @@ class Quality:
             cursor.execute('update product_details '
                            'set prd_name=%(prd_name)s, prd_type=%(prd_type)s, prd_nb_by_pack=%(prd_nb_by_pack)s, '
                            'prd_supplier=%(prd_supplier)s, prd_ref_supplier=%(prd_ref_supplier)s, '
-                           'prd_conserv=%(prd_conserv)s, prd_safe_limit=%(prd_safe_limit)s '
+                           'prd_ref_catalog=%(prd_ref_catalog)s, prd_conserv=%(prd_conserv)s, '
+                           'prd_safe_limit=%(prd_safe_limit)s '
                            'where prd_ser=%(prd_ser)s', params)
 
             Quality.log.info(Logs.fileline())
@@ -879,10 +934,10 @@ class Quality:
 
             cursor.execute('insert into product_supply '
                            '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
-                           'prs_rack, prs_batch_num, prs_buy_price) '
+                           'prs_rack, prs_batch_num, prs_buy_price, prs_lessor) '
                            'values '
                            '(NOW(), %(prs_user)s, %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
-                           '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s)', params)
+                           '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s, %(prs_lessor)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -899,7 +954,8 @@ class Quality:
             cursor.execute('update product_supply '
                            'set prs_user=%(prs_user)s, prs_prd=%(prs_prd)s, prs_nb_pack=%(prs_nb_pack)s, '
                            'prs_receipt_date=%(prs_receipt_date)s, prs_expir_date=%(prs_expir_date)s, '
-                           'prs_rack=%(prs_rack)s, prs_batch_num=%(prs_batch_num)s, prs_buy_price=%(prs_buy_price)s '
+                           'prs_rack=%(prs_rack)s, prs_batch_num=%(prs_batch_num)s, prs_buy_price=%(prs_buy_price)s, '
+                           'prs_lessor=%(prs_lessor)s '
                            'where prs_ser=%(prs_ser)s', params)
 
             Quality.log.info(Logs.fileline())
@@ -1360,3 +1416,49 @@ class Quality:
         cursor.execute(req, (Constants.cst_isodatetime, Constants.cst_isodatetime, Constants.cst_isodatetime,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getListComment(id_item, type, sub_type):
+        cursor = DB.cursor()
+
+        req = ('select lic_ser, date_format(lic_date, "%Y-%m-%d %H:%i") as lic_date, username, lic_comm '
+               'from list_comment '
+               'left join sigl_user_data on id_data=lic_user '
+               'where lic_ref=%s and lic_type=%s and lic_sub_type=%s '
+               'order by lic_date asc')
+
+        cursor.execute(req, (id_item, type, sub_type))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertListComment(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into list_comment '
+                           '(lic_date, lic_ref, lic_type, lic_sub_type, lic_user, lic_comm) '
+                           'values '
+                           '(NOW(), %(lic_ref)s, %(lic_type)s, %(lic_sub_type)s, %(lic_user)s, %(lic_comm)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteListComment(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from list_comment '
+                           'where lic_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

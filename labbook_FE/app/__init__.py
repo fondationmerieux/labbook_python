@@ -32,6 +32,7 @@ LANGUAGES = {
     'fr_FR': 'French',
     'en_GB': 'English',
     'en_US': 'English',
+    'es': 'Spanish',
     'ar': 'Arabic',
     'km': 'Khmer',
     'lo': 'Laotian',
@@ -115,6 +116,10 @@ def locale():
         elif lang == 'en_US':
             session['lang_select'] = 'US'
             session['date_format'] = Constants.cst_date_us
+            session.modified = True
+        elif lang == 'es':
+            session['lang_select'] = 'ES'
+            session['date_format'] = Constants.cst_date_eu
             session.modified = True
         elif lang == 'ar':
             session['lang_select'] = 'AR'
@@ -255,6 +260,20 @@ def get_init_var():
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests db_language failed, err=%s , url=%s', err, url)
+
+    # Load stock setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/stock'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            ret_json = req.json()
+            session['stock_expir_warning'] = ret_json['sos_expir_warning']
+            session['stock_expir_alert']   = ret_json['sos_expir_alert']
+            session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests default_language failed, err=%s , url=%s', err, url)
 
     log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var ends')
 
@@ -563,6 +582,12 @@ def homepage(login=''):
         session.modified = True
 
         return redirect(session['server_ext'] + '/' + session['current_page'])
+    # Stock manager homepage
+    elif session['user_role'] == 'K':
+        session['current_page'] = 'list-stock'
+        session.modified = True
+
+        return redirect(session['server_ext'] + '/' + session['current_page'])
     else:
         # Load nb_emer
         try:
@@ -784,6 +809,22 @@ def setting_pwd_user(user_id=0):
     json_data['user_id'] = user_id
 
     return render_template('setting-pwd-user.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : import dict
+@app.route('/dict-import')
+def dict_import():
+    log.info(Logs.fileline() + ' : TRACE dict import')
+
+    test_session()
+
+    session['current_page'] = 'dict-import'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    return render_template('dict-import.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : dict list
@@ -1178,6 +1219,32 @@ def setting_zipcity():
     return render_template('setting-zipcity.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : setting stock
+@app.route('/setting-stock')
+def setting_stock():
+    log.info(Logs.fileline() + ' : TRACE setting stock')
+
+    test_session()
+
+    session['current_page'] = 'setting-stock'
+    session.modified = True
+
+    json_data = {}
+
+    # Load stock setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/stock'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-stock.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : list template
 @app.route('/list-template')
 def list_template():
@@ -1332,6 +1399,154 @@ def setting_age_interval():
     return render_template('setting-age-interval.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : requesting services setting
+@app.route('/setting-requesting-services')
+def setting_requesting_services():
+    log.info(Logs.fileline() + ' : TRACE setting requesting services')
+
+    test_session()
+
+    session['current_page'] = 'setting-requesting-services'
+    session.modified = True
+
+    json_data = {}
+
+    # Load requesting services list
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+            i = 0
+            for val in json_data['data_values']:
+                val['id_ihm'] = i
+                i += 1
+
+            json_data['data_last_id'] = i
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests requesting services list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-requesting-services.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : functionnal units setting
+@app.route('/setting-functionnal-units')
+def setting_functionnal_units():
+    log.info(Logs.fileline() + ' : TRACE setting functionnal units')
+
+    test_session()
+
+    session['current_page'] = 'setting-functionnal-units'
+    session.modified = True
+
+    json_data = {}
+
+    # Load functionnal units list
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/functionnal/unit'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+            # Data never empty because of counts of user and fam
+            if not json_data['data_values'][0]['fun_name']:
+                json_data['data_values'] = []
+
+            i = 0
+            for val in json_data['data_values']:
+                val['id_ihm'] = i
+                i += 1
+
+            json_data['data_last_id'] = i
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests functionnal units list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-functionnal-units.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting link unit user
+@app.route('/setting-link-unit-user/<int:id_unit>')
+def setting_link_unit_user(id_unit):
+    log.info(Logs.fileline() + ' : TRACE setting link unit user')
+
+    test_session()
+
+    session['current_page'] = 'setting-link-unit-user'
+    session.modified = True
+
+    json_data = {}
+
+    json_data['id_func_unit'] = id_unit
+
+    # Load details of functionnal unit
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/functionnal/unit/det/' + str(id_unit)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['func_unit'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests functionnal unit details failed, err=%s , url=%s', err, url)
+
+    # Load list of user with or without link with this unit
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/link/unit/U/' + str(id_unit)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests link unit users failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-link-unit-user.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting link unit analysis family
+@app.route('/setting-link-unit-fam/<int:id_unit>')
+def setting_link_unit_fam(id_unit):
+    log.info(Logs.fileline() + ' : TRACE setting link unit fam')
+
+    test_session()
+
+    session['current_page'] = 'setting-link-unit-fam'
+    session.modified = True
+
+    json_data = {}
+
+    json_data['id_func_unit'] = id_unit
+
+    # Load details of functionnal unit
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/functionnal/unit/det/' + str(id_unit)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['func_unit'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests functionnal unit details failed, err=%s , url=%s', err, url)
+
+    # Load list of analysis family with or without link with this unit
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/link/unit/F/' + str(id_unit)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests link unit family failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-link-unit-fam.html', args=json_data, rand=random.randint(0, 999))
+
+
 # Page : setting dhis2
 @app.route('/setting-dhis2')
 def setting_dhis2():
@@ -1388,6 +1603,34 @@ def setting_epidemio():
     return render_template('setting-epidemio.html', args=json_data, rand=random.randint(0, 999))
 
 
+# Page : setting indicator
+@app.route('/setting-indicator')
+def setting_indicator():
+    log.info(Logs.fileline() + ' : TRACE setting indicator')
+
+    test_session()
+
+    session['current_page'] = 'setting-indicator'
+    session.modified = True
+
+    json_data = {}
+
+    json_data['data_indicator'] = []
+
+    # Load indicator files in indicator directory
+    try:
+        path = Constants.cst_indicator
+
+        for filename in os.listdir(path):
+            if not os.path.isdir(os.path.join(path, filename)) and filename == 'indicator.ini':
+                json_data['data_indicator'].append(filename)
+
+    except Exception as err:
+        log.error(Logs.fileline() + ' : load indicator files in indicator directory failed, err=%s', err)
+
+    return render_template('setting-indicator.html', args=json_data, rand=random.randint(0, 999))
+
+
 # ---------------------------
 # --- Administrative page ---
 # ---------------------------
@@ -1422,7 +1665,7 @@ def list_results():
         date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
         date_end = date_beg
 
-        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'emer_ana': 0, 'code_pat': '', 'valid_res': 0}
+        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'id_ana': 0, 'emer_ana': 0, 'code_pat': '', 'valid_res': 0}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/list'
         req = requests.post(url, json=payload)
@@ -2227,6 +2470,17 @@ def det_req_int(entry='Y', ref=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests billing_pat failed, err=%s , url=%s', err, url)
 
+        # load requesting services setting
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_ihm['req_services'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests requesting services setting failed, err=%s , url=%s', err, url)
+
         # add empty structure
         json_data['data_analysis'] = []
         json_data['data_samples']  = []
@@ -2500,6 +2754,17 @@ def technical_validation(id_rec=0, anchor=''):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+    # Load reasons to cancel a result
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/motif_annulation'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['cancel_reason'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests cancel reason failed, err=%s , url=%s', err, url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -2816,6 +3081,49 @@ def report_epidemio(date_beg='', date_end=''):
     return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
+# Page : report with indicator
+@app.route('/report-indicator')
+@app.route('/report-indicator/<string:date_beg>/<string:date_end>')
+def report_indicator(date_beg='', date_end=''):
+    log.info(Logs.fileline() + ' : TRACE report indicator')
+
+    test_session()
+
+    session['current_page'] = 'report-indicator'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # load data for epiodemio
+    try:
+        if not date_beg:
+            date_beg = date.today()
+            date_beg = date_beg - timedelta(days=31)
+            date_beg = datetime.strftime(date_beg.replace(day=1), Constants.cst_isodate)
+
+        if not date_end:
+            date_end = date.today()
+            date_end = datetime.strftime(date_end, Constants.cst_isodate)
+
+        json_data['date_beg'] = date_beg
+        json_data['date_end'] = date_end
+
+        payload = {'date_beg': date_beg,
+                   'date_end': date_end}
+
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/indicator'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_data['indicator'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests report indicator failed, err=%s , url=%s', err, url)
+
+    return render_template('report-indicator.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
 # Page : pivot table
 @app.route('/pivot-table')
 def pivot_table():
@@ -2865,6 +3173,17 @@ def report_statistic():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests age interval setting failed, err=%s , url=%s', err, url)
 
+    # load requesting services setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['req_services'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests requesting services setting failed, err=%s , url=%s', err, url)
+
     # load data for statistic
     try:
         date_beg = date.today()
@@ -2878,7 +3197,8 @@ def report_statistic():
         json_data['date_end'] = date_end
 
         payload = {'date_beg': date_beg,
-                   'date_end': date_end}
+                   'date_end': date_end,
+                   'service_int': ''}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/stat'
         req = requests.post(url, json=payload)
@@ -2943,7 +3263,19 @@ def hist_patients():
     session['current_page'] = 'hist-patients'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load sex
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sexe'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['dict_sex'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests dict sex failed, err=%s , url=%s', err, url)
 
     # Load list patients
     try:
@@ -2956,7 +3288,7 @@ def hist_patients():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests patients list failed, err=%s , url=%s', err, url)
 
-    return render_template('hist-patients.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('hist-patients.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : details historic patient
@@ -4150,6 +4482,17 @@ def det_stock_product(prs_ser=0):
 
     json_data['stock_product'] = []
 
+    # Load stock setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/stock'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['stock_setting'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
+
     if prs_ser > 0:
         # Load stock product details
         try:
@@ -4323,6 +4666,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # RP => Report
     # DH => DHIS2 spreadsheet
     # EP => EPIDEMIO spreadsheet
+    # IN => INDICATOR spreadsheet
     # TP => template odt
 
     if type == 'PY':
@@ -4404,6 +4748,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
         generated_name = filename
     elif type == 'EP':
         filepath = Constants.cst_epidemio
+        generated_name = filename
+    elif type == 'IN':
+        filepath = Constants.cst_indicator
         generated_name = filename
     elif type == 'TP':
         filepath = Constants.cst_template
@@ -4601,6 +4948,38 @@ def upload_epidemio():
             f.save(os.path.join(filepath, filename))
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-epidemio failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload a spreadsheet for INDICATOR
+@app.route('/upload-indicator', methods=['POST'])
+def upload_indicator():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-indicator failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_indicator
+
+        log.info(Logs.fileline())
+
+        # check if this file is a csv
+        if filename != 'indicator.ini':
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-indicator failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

@@ -57,9 +57,16 @@
                 </div>
 
                 <div class="form-group d-flex align-items-start mt-3">
-                    <label for="prd_ref_supplier" class="form-label col-3 text-end me-1">{{ _("Référence fournisseur") }}</label>
+                    <label for="prd_ref_supplier" class="form-label col-3 text-end mt-2 me-1">{{ _("Référence fournisseur") }}</label>
                     <div>
                         <input id="prd_ref_supplier" type="text" value="{{ args['stock_product']['prd_ref_supplier'] }}" maxlength="50" class="form-control" style="">
+                    </div>
+                </div>
+
+                <div class="form-group d-flex align-items-start mt-3">
+                    <label for="prd_ref_catalog" class="form-label col-3 text-end mt-2 me-1">{{ _("Référence catalogue") }}</label>
+                    <div>
+                        <input id="prd_ref_catalog" type="text" value="{{ args['stock_product']['prd_ref_catalog'] }}" maxlength="50" class="form-control" style="">
                     </div>
                 </div>
 
@@ -137,6 +144,7 @@ var nb_by_pack   = $("#prd_nb_by_pack").val()   ;
 var safe_limit   = $("#prd_safe_limit").val()   ;
 var supplier     = $("#search_supplier").val()  ;
 var ref_supplier = $("#prd_ref_supplier").val() ;
+var ref_catalog  = $("#prd_ref_catalog").val()  ;
 var conserv      = $("#prd_conserv").val()      ;
 
 var msg = "" ;
@@ -167,6 +175,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prd_safe_limit":' + safe_limit + ', ' +
               '"prd_supplier":' + supplier + ', ' +
               '"prd_ref_supplier":"' + ref_supplier + '", ' +
+              '"prd_ref_catalog":"' + ref_catalog + '", ' +
               '"prd_conserv":' + conserv + '}' ;
 
     $.ajax( {

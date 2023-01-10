@@ -101,12 +101,12 @@
                                 <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex align-items-start mt-1">
-                                <label for="search_doctor" class="form-label text-end ms-3 me-1 mt-2">{{ _("Prescripteur") }}</label>
+                            <div class="form-group d-flex align-items-start mt-2">
+                                <label for="search_doctor" class="form-label text-end me-1 mt-1">{{ _("Prescripteur") }}</label>
                                 {% if entry == 'Y' %}
-                                <div>
-                                    <select id="search_doctor" class="form-select" style="width:320px"></select>
-                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
+                                <div class="d-flex align-items-start w-100">
+                                    <select id="search_doctor" class="form-select"></select>
+                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-plus" /></i></button>
                                 </div>
                                 {% else %}
                                     {% if args['doctor'] %}

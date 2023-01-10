@@ -155,6 +155,8 @@
                     <thead>
                         <tr>
                             <th hidden>serial</th>
+                            {# Can be deleted if not yet technically validated #}
+                            {% if args['record']['statut'] < 251 %}<th></th>{% endif %}
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Nom") }}</th>
                             <th class="text-center cursor-act">{{ _("Urgent") }}</th>
@@ -333,6 +335,12 @@ let rate   = obj.cote_unite + obj.cote_valeur ;
     dem = "Non" ;
 
 tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+{# Can be deleted if not yet technically validated #}
+{% if args['record']['statut'] < 251 %}
+ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + obj.id_data + ', '  + obj.id_samp_act + ', ' + obj.type_samp + ');"/></i>' ;
+
+tmp_tr += create_td("", ico_del, "text-center", "") ;
+{% endif %}
 tmp_tr += create_td("", obj.code, "text-center", "") ;
 tmp_tr += create_td("", obj.nom, "", "") ;
 tmp_tr += create_td("", urg, "text-center", "") ;
@@ -345,6 +353,41 @@ tmp_tr += '</tr>' ;
 tr_analysis += tmp_tr ;
 
 $("#tbody_analysis").append(tr_analysis) ;
+}
+
+function del_ana(id_req, id_samp_act, type_samp)
+{
+var id_rec = {{ args['record']['id_data'] }} ;
+
+var param = '{ "id_rec":' + id_rec + ', "id_samp_act":' + id_samp_act + ', "type_samp":' + type_samp + '}' ;
+
+    if ( window.confirm("{{ _("Veuillez confirmer la suppression") }}") )
+    {
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
+        $.ajax(
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/analysis/delete/req/" + id_req,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+            $("#dial-wait").modal("hide") ;
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE analysis request") ;
+            $("#dial-wait").modal("hide") ;
+            alert("{{ _("Erreur lors de la suppression des données") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
 }
 
 {% if type_req == 'E' %}
@@ -396,7 +439,14 @@ let i_max = obj.length - 1 ;
             if ( obj[i].nb_download == 0 )
             menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
             else
+            {
+            {% if session['user_role'] == 'B' %}
+            menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+            menu_act += ' - <a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
+            {% else %}
             menu_act = '<a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
+            {% endif %}
+            }
 
             let tpl = '' ;
 
