@@ -14,41 +14,37 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
-                <div class="panel-filter row mt-3">
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
-                            <div>					
-                                <input type="text" name="name" id="name" value="" class="form-control cnx_trigger">			
-                            </div>
+                <div class="panel-filter mt-3">
+                    <div class="form-group d-flex align-items-start mt-1">
+                        <label for="name" class="form-label text-end mt-2 me-1">{{ _("Nom") }}</label>
+                        <div>					
+                            <input type="text" name="name" id="name" value="" class="form-control cnx_trigger">			
+                        </div>
+                        <label for="prod_type" class="form-label text-end ms-3 mt-2 me-1">{{ _("Type") }}</label>
+                        <div>
+                            <select name="prod_type" id="prod_type" class="form-select">
+                                <option value="0" selected="selected"></option>
+                                {% for prod_type in ihm['product_type'] %}
+                                <option value="{{ prod_type['id_data'] }}">{{ prod_type['label'] }}</option>
+                                {% endfor %}
+                            </select>       
+                        </div>
+                        <label for="prod_conserv" class="form-label text-end ms-3 mt-2 me-1">{{ _("Conservation") }}</label>
+                        <div>
+                            <select name="prod_conserv" id="prod_conserv" class="form-select">
+                                <option value="0" selected="selected"></option>
+                                {% for prod_conserv in ihm['product_conserv'] %}
+                                <option value="{{ prod_conserv['id_data'] }}">{{ prod_conserv['label'] }}</option>
+                                {% endfor %}
+                            </select>       
+                        </div>
+
+                        <label class="form-label text-end ms-3 mt-2 me-1">{{ _("Bailleur") }}</label>
+                        <div>
+                            <input type="text" name="lessor" id="lessor" value="" class="form-control cnx_trigger">	 
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="prod_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Type") }}</label>
-                            <div>
-                                <select name="prod_type" id="prod_type" class="form-select">
-                                    <option value="0" selected="selected"></option>
-                                    {% for prod_type in ihm['product_type'] %}
-                                    <option value="{{ prod_type['id_data'] }}">{{ prod_type['label'] }}</option>
-                                    {% endfor %}
-                                </select>       
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="prod_conserv" class="form-label col-5 text-end mt-2 me-1">{{ _("Conservation") }}</label>
-                            <div>
-                                <select name="prod_conserv" id="prod_conserv" class="form-select">
-                                    <option value="0" selected="selected"></option>
-                                    {% for prod_conserv in ihm['product_conserv'] %}
-                                    <option value="{{ prod_conserv['id_data'] }}">{{ prod_conserv['label'] }}</option>
-                                    {% endfor %}
-                                </select>       
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="col-12 mt-3">
                         <div class="float-end">
                             <button type="button" onclick="filter_items();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
@@ -142,10 +138,12 @@ function filter_items()
 let prod_name    = $("#name").val()      ;
 let prod_type    = $("#prod_type").val() ;
 let prod_conserv = $("#prod_conserv").val() ;
+let prod_lessor  = $("#lessor").val()    ;
 
 let param = '{ "prod_name":"' + prod_name + '", ' +
               '"prod_type":' + prod_type + ', ' +
-              '"prod_conserv":' + prod_conserv + '}' ;
+              '"prod_conserv":' + prod_conserv + ', ' +
+              '"prod_lessor":"' + prod_lessor + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

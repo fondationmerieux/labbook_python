@@ -1386,7 +1386,7 @@ class Pdf:
                 if ret_user['title']:
                     Various.useLangDB()
                     trans = ret_user['title']
-                    user +=  _(trans) + ' '
+                    user += _(trans) + ' '
                     Various.useLangPDF()
 
                 if ret_user['lastname'] and ret_user['firstname']:
@@ -1487,7 +1487,7 @@ class Pdf:
 
             for sample in list_samples:
                 tmp_sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
-                              "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "", 
+                              "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "",
                               "code": ""}
 
                 tmp_sample['date']         = sample.get('date_prel', "")
@@ -1526,7 +1526,7 @@ class Pdf:
 
                 data['samples'].append(tmp_sample)
 
-        # For print test sample    
+        # For print test sample
         else:
             Various.useLangDB()
 

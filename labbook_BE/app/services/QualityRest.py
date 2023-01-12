@@ -2177,7 +2177,6 @@ class StockSupplyDet(Resource):
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-
         """ USELESS 26/08/2021
         # Update stock product
         if id_item > 0:
@@ -2361,7 +2360,7 @@ class StockProductsExport(Resource):
                 data.append(d['prd_ser'])
                 data.append(d['prd_date'])
                 data.append(d['prd_name'])
-                
+
                 type = d['type']
                 if type:
                     data.append(_(type.strip()))
@@ -2430,7 +2429,7 @@ class StockSuppliesExport(Resource):
                 data.append(d['prs_expir_date'])
                 data.append(d['prs_rack'])
                 data.append(d['prs_batch_num'])
-                data.append(d['prs_buy_price']/100)
+                data.append(d['prs_buy_price'] / 100)
                 data.append(d['user'])
                 data.append(d['prs_empty'])
                 data.append(d['prs_cancel'])

@@ -647,13 +647,16 @@ class Quality:
 
             # filter conditions
             if args['prod_name']:
-                filter_cond += ' and prd_name LIKE "%' + args['prod_name'] + '%" '
+                filter_cond += ' and prd_name LIKE "%' + str(args['prod_name']) + '%" '
 
             if 'prod_type' in args and args['prod_type'] > 0:
                 filter_cond += ' and prd_type = ' + str(args['prod_type'])
 
             if 'prod_conserv' in args and args['prod_conserv'] > 0:
                 filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
+
+            if args['prod_lessor']:
+                filter_cond += ' and prs_lessor LIKE "%' + str(args['prod_lessor']) + '%" '
 
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, '

@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.2] - 2023-01-12
+### Added
+- filter by lessor name in list of stock page
+
+### Changed
+- import/export analysis repository in V4 without formula2, unit2 and accu2 
+
+## Fixed
+- search field analysis
+
 ## [3.3.1] - 2023-01-10
 ### Added
 - added profile dedicated to stock management

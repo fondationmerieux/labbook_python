@@ -416,9 +416,6 @@ let pat_F_cust = 0 ;
 let pat_I_ext  = 0 ;
 let pat_I_int  = 0 ;
 let pat_I_cust = 0 ;
-let pat_T_H    = 0 ;
-let pat_T_F    = 0 ;
-let pat_T_I    = 0 ;
 
     // calculate statistic
     for( i = 0; i < data.length; i++ )
@@ -431,9 +428,6 @@ let pat_T_I    = 0 ;
             pat_H_ext += 1 ;
             else
             pat_H_int += 1 ;
-
-            if ( data[i].statut == 256 )
-            pat_T_H += 1 ;
         }
         else if ( data[i].sex == 2 )
         {
@@ -443,9 +437,6 @@ let pat_T_I    = 0 ;
             pat_F_ext += 1 ;
             else
             pat_F_int += 1 ;
-
-            if ( data[i].statut == 256 )
-            pat_T_F += 1 ;
         }
         else
         {
@@ -455,9 +446,6 @@ let pat_T_I    = 0 ;
             pat_I_ext += 1 ;
             else
             pat_I_int += 1 ;
-
-            if ( data[i].statut == 256 )
-            pat_T_I += 1 ;
         }
     }
 
@@ -476,11 +464,11 @@ let tr_cust = '<tr><td class="text-start font-info">{{ _("Nombre de patients de 
               '</td><td class="text-center">' + pat_I_cust + '</td>' +
               '<td class="text-center">' + (pat_H_cust + pat_F_cust + pat_I_cust) + '</td>';
 
-let tr_tot  = '<tr><td class="text-start font-info">{{ _("Nombre de malades") }}</td>' +
-              '<td class="text-center">' + pat_T_H + '</td>' + 
-              '<td class="text-center">' + pat_T_F + '</td>' +
-              '<td class="text-center">' + pat_T_I + '</td>' +
-              '<td class="text-center">' + (pat_T_H + pat_T_F + pat_T_I) + '</td>' ;
+let tr_tot  = '<tr><td class="text-start font-info">{{ _("Nombre de patients") }}</td>' +
+              '<td class="text-center">' + (pat_H_ext + pat_H_int + pat_H_cust) + '</td>' + 
+              '<td class="text-center">' + (pat_F_ext + pat_F_int + pat_F_cust) + '</td>' +
+              '<td class="text-center">' + (pat_I_ext + pat_I_int + pat_I_cust) + '</td>' +
+              '<td class="text-center">' + (pat_H_ext + pat_H_int + pat_H_cust + pat_F_ext + pat_F_int + pat_F_cust + pat_I_ext + pat_I_int + pat_I_cust) + '</td>' ;
 
 res_pat = tr_ext + tr_int + tr_cust + tr_tot ;
 

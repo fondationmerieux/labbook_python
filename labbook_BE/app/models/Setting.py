@@ -399,6 +399,44 @@ class Setting:
             return False
 
     @staticmethod
+    def getLinkByUser(id_user):
+        # get list of ful_fun matching with id_user
+        cursor = DB.cursor()
+
+        req = ('select ful_fun '
+               'from functionnal_unit_link '
+               'where ful_type="U" and ful_ref=%s '
+               'group by ful_fun')
+
+        cursor.execute(req, (id_user,))
+
+        ret = cursor.fetchall()
+
+        if ret:
+            l_ful_fun = ''
+
+            for item in ret:
+                if not l_ful_fun:
+                    l_ful_fun = '('
+
+                l_ful_fun = l_ful_fun + str(item['ful_fun']) + ','
+
+            if l_ful_fun:
+                l_ful_fun = l_ful_fun[:-1] + ')'
+
+            # get list of id_fam matching with ful_fun in list of ful_fun
+            req = ('select ful_ref as id_fam '
+                   'from functionnal_unit_link '
+                   'where ful_type="F" and ful_fun in ' + str(l_ful_fun) + ' '
+                   'group by ful_ref')
+
+            cursor.execute(req)
+
+            return cursor.fetchall()
+        else:
+            return []
+
+    @staticmethod
     def getBackupSetting():
         cursor = DB.cursor()
 

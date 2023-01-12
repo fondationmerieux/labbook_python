@@ -4,7 +4,7 @@ import mysql.connector
 import pikepdf
 import os
 
-from pikepdf import Page, Pdf
+from pikepdf import Page
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 

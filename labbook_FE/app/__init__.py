@@ -306,6 +306,34 @@ def get_user_data(login):
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
         return False
 
+    # Get analyzes famylies linked functionnal unit for this user onfly for all technician and biologist
+    if session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'T' or \
+       session['user_role'] == 'TA' or session['user_role'] == 'TQ':
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/link/user/' + str(session['user_id'])
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json = req.json()
+
+                l_fams = []
+
+                for data in json:
+                    l_fams.append(data['id_fam'])
+
+                session['user_link_fam'] = l_fams
+                session.modified = True
+
+                log.info(Logs.fileline() + ' : DEBUG session[user_link_fam]=' + str(session['user_link_fam']))
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests setting link user failed, err=%s , url=%s', err, url)
+            return False
+    else:
+        session['user_link_fam'] = []
+        session.modified = True
+        log.info(Logs.fileline() + ' : DEBUG session[user_link_fam] vide')
+
     return True
 
 

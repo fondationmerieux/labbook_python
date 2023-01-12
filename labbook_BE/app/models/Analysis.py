@@ -21,6 +21,7 @@ class Analysis:
         Args:
             text (string): words of research.
             type (string): 'A' for search only analysis or 'P' for search only pathological product.
+            status  (int): 4 for Eanbled or 5 for disabled
 
         Returns:
             dict: dictionnary of data.
@@ -738,7 +739,7 @@ class Analysis:
                 status = 5
                 cond += ' actif != 5 '
 
-            # if a specific analysis 
+            # if a specific analysis
             if id_ana > 0:
                 cond += ' and id_data=' + str(id_ana)
 

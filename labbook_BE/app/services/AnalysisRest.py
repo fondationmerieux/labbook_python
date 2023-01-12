@@ -21,7 +21,12 @@ class AnalysisSearch(Resource):
     def post(self, type):
         args = request.get_json()
 
-        l_analysis = Analysis.getAnalysisSearch(args['term'], type, args['status'])
+        if 'status' in args and args['status']:
+            status = args['status']
+        else:
+            status = 4
+
+        l_analysis = Analysis.getAnalysisSearch(args['term'], type, status)
 
         if not l_analysis:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisSearch not found')
@@ -727,7 +732,7 @@ class AnalysisExport(Resource):
                      'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                     'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
+                     'var_formula', 'var_accu', 'var_code', 'var_whonet',
                      'var_qrcode', 'var_highlight', 'version']]
 
         if 'id_user' not in args:
@@ -898,6 +903,7 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
+                """
                 if d['unite2']:
                     data.append(d['unite2'])
                 else:
@@ -906,7 +912,7 @@ class AnalysisExport(Resource):
                 if d['formule_unite2']:
                     data.append(d['formule_unite2'])
                 else:
-                    data.append('')
+                    data.append('')"""
 
                 if d['formule']:
                     data.append(d['formule'])
@@ -918,10 +924,11 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
+                """
                 if d['precision2']:
                     data.append(d['precision2'])
                 else:
-                    data.append('')
+                    data.append('')"""
 
                 if d['code_var']:
                     data.append(d['code_var'])
@@ -946,7 +953,7 @@ class AnalysisExport(Resource):
                 else:
                     data.append('N')
 
-                data.append('v3')
+                data.append('v4')
 
                 l_data.append(data)
 
@@ -1006,7 +1013,7 @@ class AnalysisImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][37] != 'v3':
+        if l_rows[0][34] != 'v4':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)
@@ -1016,7 +1023,7 @@ class AnalysisImport(Resource):
                      'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                     'var_unit2', 'var_unit2_formula', 'var_formula', 'var_accu', 'var_accu2', 'var_code', 'var_whonet',
+                     'var_formula', 'var_accu', 'var_code', 'var_whonet',
                      'var_qrcode', 'var_highlight', 'version']
 
         i = 0
@@ -1081,20 +1088,20 @@ class AnalysisImport(Resource):
                     normal_max         = row[25]
                     var_comm           = row[26]
                     type_resultat      = row[27]
-                    unite2             = row[28]
-                    formule_unite2     = row[29]
-                    formule            = row[30]
-                    accuracy           = row[31]
-                    precision2         = row[32]
-                    code_var           = row[33]
+                    # unite2             = row[28]
+                    # formule_unite2     = row[29]
+                    formule            = row[28]
+                    accuracy           = row[29]
+                    # precision2         = row[32]
+                    code_var           = row[30]
 
-                    if row[34] and row[34] == 'Y':
+                    if row[31] and row[31] == 'Y':
                         var_whonet = 4
                     else:
                         var_whonet = 5
 
-                    var_qrcode         = row[35]
-                    var_highlight      = row[36]
+                    var_qrcode         = row[32]
+                    var_highlight      = row[33]
 
                     ret = Analysis.exist(code)
 
@@ -1230,20 +1237,20 @@ class AnalysisImport(Resource):
                     normal_max         = row[25]
                     var_comm           = row[26]
                     type_resultat      = row[27]
-                    unite2             = row[28]
-                    formule_unite2     = row[29]
-                    formule            = row[30]
-                    accuracy           = row[31]
-                    precision2         = row[32]
-                    code_var           = row[33]
+                    # unite2             = row[28]
+                    # formule_unite2     = row[29]
+                    formule            = row[28]
+                    accuracy           = row[29]
+                    # precision2         = row[32]
+                    code_var           = row[30]
 
-                    if row[34] and row[34] == 'Y':
+                    if row[31] and row[31] == 'Y':
                         var_whonet = 4
                     else:
                         var_whonet = 5
 
-                    var_qrcode     = row[35]
-                    var_highlight  = row[36]
+                    var_qrcode     = row[32]
+                    var_highlight  = row[33]
 
                     ret = Analysis.exist(code)
 

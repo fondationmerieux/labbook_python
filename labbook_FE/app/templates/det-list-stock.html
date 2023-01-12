@@ -36,6 +36,7 @@
                             <th class="text-start cursor-act">{{ _("Localisation") }}</th>
                             <th class="text-start cursor-act">{{ _("N° lot") }}</th>
                             <th class="text-start cursor-act">{{ _("Prix d'achat") }}</th>
+                            <th class="text-start cursor-act">{{ _("Bailleur") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -152,7 +153,8 @@ $("#list_items_total").html( data_len ) ;
            "<td><div class=\"text-start\">" + data_items[i].prs_expir_date + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].prs_rack + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].prs_batch_num + "</div></td>" +
-           "<td><div class=\"text-start\">" + Number(data_items[i].prs_buy_price / 100 ).toFixed(2) + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + Number(data_items[i].prs_buy_price / 100 ).toFixed(2) + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].prs_lessor + "</div></td></tr>" ;
     }
 {% endif %}
 

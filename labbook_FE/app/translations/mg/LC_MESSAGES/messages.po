@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-10 09:25+0100\n"
+"POT-Creation-Date: 2023-01-12 09:22+0100\n"
 "PO-Revision-Date: 2021-09-03 15:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: mg\n"
@@ -279,7 +279,7 @@ msgstr "Kaody"
 #: templates/list-equipment.html:31 templates/list-nonconformities.html:57
 #: templates/list-products.html:31 templates/list-records.html:54
 #: templates/list-records.html:156 templates/list-staff.html:31
-#: templates/list-stock.html:20 templates/list-stock.html:78
+#: templates/list-stock.html:19 templates/list-stock.html:74
 #: templates/list-template.html:31 templates/list-works.html:116
 #: templates/manage-pat-records.html:81 templates/manage-pat-records.html:336
 #: templates/setting-det-analysis.html:263 templates/setting-det-user.html:104
@@ -343,14 +343,14 @@ msgstr "Tatitra"
 #: templates/det-staff.html:101 templates/det-staff.html:126
 #: templates/det-staff.html:151 templates/det-staff.html:185
 #: templates/det-template.html:48 templates/hist-analyzes.html:68
-#: templates/hist-patients.html:89 templates/hist-stock-product.html:58
+#: templates/hist-patients.html:89 templates/hist-stock-product.html:52
 #: templates/list-ctrl-ext.html:30 templates/list-ctrl-int.html:30
 #: templates/list-doctors.html:79 templates/list-equipment.html:30
 #: templates/list-laboratory.html:50 templates/list-laboratory.html:73
 #: templates/list-manuals.html:30 templates/list-meeting.html:30
 #: templates/list-nonconformities.html:55 templates/list-procedure.html:30
 #: templates/list-products.html:30 templates/list-records.html:135
-#: templates/list-staff.html:30 templates/list-stock.html:77
+#: templates/list-staff.html:30 templates/list-stock.html:73
 #: templates/list-suppliers.html:30 templates/list-template.html:30
 #: templates/list-works.html:98 templates/report-today.html:59
 #: templates/res-control-ext.html:63 templates/setting-age-interval.html:29
@@ -490,7 +490,7 @@ msgstr "Azafady mba hamafiso ny famafana"
 #: templates/list-doctors.html:270 templates/list-equipment.html:169
 #: templates/list-manuals.html:180 templates/list-meeting.html:170
 #: templates/list-nonconformities.html:321 templates/list-procedure.html:182
-#: templates/list-products.html:159 templates/list-stock.html:285
+#: templates/list-products.html:159 templates/list-stock.html:283
 #: templates/list-suppliers.html:173 templates/list-template.html:178
 #: templates/setting-analyzes.html:285 templates/setting-dicts.html:227
 #: templates/setting-functionnal-units.html:143
@@ -523,15 +523,15 @@ msgstr "Hanova"
 #: templates/administrative-record.html:536
 #: templates/administrative-record.html:544 templates/det-control-ext.html:126
 #: templates/det-control-int.html:125 templates/det-hist-analysis.html:92
-#: templates/det-hist-patient.html:128 templates/det-list-stock.html:121
+#: templates/det-hist-patient.html:128 templates/det-list-stock.html:122
 #: templates/hist-analyzes.html:177 templates/hist-patients.html:199
-#: templates/hist-stock-product.html:159 templates/list-ctrl-ext.html:95
+#: templates/hist-stock-product.html:153 templates/list-ctrl-ext.html:95
 #: templates/list-ctrl-int.html:95 templates/list-doctors.html:196
 #: templates/list-equipment.html:98 templates/list-manuals.html:101
 #: templates/list-meeting.html:96 templates/list-nonconformities.html:159
 #: templates/list-procedure.html:102 templates/list-products.html:92
 #: templates/list-samples.html:108 templates/list-staff.html:109
-#: templates/list-stock.html:201 templates/list-suppliers.html:99
+#: templates/list-stock.html:199 templates/list-suppliers.html:99
 #: templates/list-template.html:95 templates/pivot-table.html:151
 #: templates/report-billing.html:225 templates/report-today.html:173
 #: templates/setting-analyzes.html:247 templates/setting-dicts.html:168
@@ -606,16 +606,16 @@ msgid "Ajoute les nouvelles analyses (code non existant en base)"
 msgstr "Manampy fitiliana vaovao (kaody tsy misy ao anaty tahiry)"
 
 #: templates/analysis-import.html:52 templates/det-control-ext.html:81
-#: templates/det-control-int.html:80 templates/det-list-stock.html:56
+#: templates/det-control-int.html:80 templates/det-list-stock.html:57
 #: templates/det-patient.html:251 templates/det-sample.html:148
 #: templates/dict-import.html:41 templates/global-report.html:33
-#: templates/hist-stock-product.html:85 templates/list-ctrl-ext.html:51
+#: templates/hist-stock-product.html:79 templates/list-ctrl-ext.html:51
 #: templates/list-ctrl-int.html:51 templates/list-doctors.html:109
 #: templates/list-equipment.html:54 templates/list-laboratory.html:86
 #: templates/list-manuals.html:57 templates/list-meeting.html:52
 #: templates/list-nonconformities.html:80 templates/list-procedure.html:58
 #: templates/list-products.html:55 templates/list-staff.html:66
-#: templates/list-stock.html:103 templates/list-suppliers.html:55
+#: templates/list-stock.html:99 templates/list-suppliers.html:55
 #: templates/list-template.html:52 templates/quality-general.html:47
 #: templates/report-dhis2.html:43 templates/setting-age-interval.html:41
 #: templates/setting-analyzes.html:102 templates/setting-backup.html:45
@@ -725,7 +725,7 @@ msgstr "Biolojista"
 msgid "Commentaire"
 msgstr "Fanehoan-kevitra"
 
-#: templates/biological-validation.html:102 templates/det-list-stock.html:80
+#: templates/biological-validation.html:102 templates/det-list-stock.html:81
 #: templates/det-req-ext.html:325 templates/det-req-ext.html:327
 #: templates/det-req-int.html:356 templates/det-req-int.html:358
 #: templates/enter-result.html:426 templates/enter-result.html:687
@@ -757,12 +757,12 @@ msgid "Ajouter"
 msgstr "Hanampy"
 
 #: templates/biological-validation.html:140 templates/det-doctor.html:117
-#: templates/det-equipment.html:301 templates/det-list-stock.html:81
+#: templates/det-equipment.html:301 templates/det-list-stock.html:82
 #: templates/det-manual.html:94 templates/det-meeting.html:66
 #: templates/det-new-product.html:86 templates/det-procedure.html:95
 #: templates/det-staff.html:202 templates/det-stock-product.html:82
 #: templates/det-supplier.html:82 templates/det-template.html:69
-#: templates/hist-stock-product.html:189 templates/non-conformity.html:773
+#: templates/hist-stock-product.html:183 templates/non-conformity.html:773
 #: templates/res-control-ext.html:84 templates/res-control-int.html:61
 #: templates/setting-backup.html:67 templates/setting-backup.html:97
 #: templates/setting-backup.html:122 templates/setting-backup.html:147
@@ -916,8 +916,8 @@ msgstr "Fizahana ivelany"
 #: templates/hist-analyzes.html:70 templates/list-ctrl-ext.html:33
 #: templates/list-ctrl-int.html:33 templates/list-meeting.html:32
 #: templates/list-products.html:32 templates/list-records.html:87
-#: templates/list-results.html:37 templates/list-stock.html:28
-#: templates/list-stock.html:83 templates/list-template.html:32
+#: templates/list-results.html:37 templates/list-stock.html:23
+#: templates/list-stock.html:79 templates/list-template.html:32
 #: templates/list-works.html:46
 msgid "Type"
 msgstr "Karazany"
@@ -967,14 +967,14 @@ msgstr "Tehirizina"
 #: templates/det-control-ext.html:42 templates/det-control-int.html:42
 #: templates/det-hist-analysis.html:17 templates/det-hist-patient.html:52
 #: templates/det-list-stock.html:15 templates/hist-analyzes.html:52
-#: templates/hist-patients.html:73 templates/hist-stock-product.html:42
+#: templates/hist-patients.html:73 templates/hist-stock-product.html:36
 #: templates/list-ctrl-ext.html:14 templates/list-ctrl-int.html:14
 #: templates/list-doctors.html:63 templates/list-equipment.html:14
 #: templates/list-manuals.html:14 templates/list-meeting.html:14
 #: templates/list-nonconformities.html:39 templates/list-procedure.html:14
 #: templates/list-products.html:14 templates/list-records.html:116
 #: templates/list-samples.html:19 templates/list-staff.html:14
-#: templates/list-stock.html:61 templates/list-suppliers.html:14
+#: templates/list-stock.html:57 templates/list-suppliers.html:14
 #: templates/list-template.html:14 templates/list-works.html:79
 #: templates/report-billing.html:50 templates/report-today.html:41
 #: templates/setting-analyzes.html:63 templates/setting-dicts.html:51
@@ -986,10 +986,10 @@ msgstr "Isan'ny andalana"
 #: templates/det-control-int.html:46 templates/det-control-int.html:71
 #: templates/det-hist-analysis.html:21 templates/det-hist-analysis.html:46
 #: templates/det-hist-patient.html:56 templates/det-hist-patient.html:82
-#: templates/det-list-stock.html:19 templates/det-list-stock.html:47
+#: templates/det-list-stock.html:19 templates/det-list-stock.html:48
 #: templates/hist-analyzes.html:56 templates/hist-analyzes.html:81
 #: templates/hist-patients.html:77 templates/hist-patients.html:104
-#: templates/hist-stock-product.html:46 templates/hist-stock-product.html:76
+#: templates/hist-stock-product.html:40 templates/hist-stock-product.html:70
 #: templates/list-ctrl-ext.html:18 templates/list-ctrl-ext.html:42
 #: templates/list-ctrl-int.html:18 templates/list-ctrl-int.html:42
 #: templates/list-doctors.html:67 templates/list-doctors.html:100
@@ -1002,8 +1002,8 @@ msgstr "Isan'ny andalana"
 #: templates/list-products.html:46 templates/list-records.html:121
 #: templates/list-records.html:166 templates/list-samples.html:24
 #: templates/list-samples.html:63 templates/list-staff.html:18
-#: templates/list-staff.html:57 templates/list-stock.html:65
-#: templates/list-stock.html:94 templates/list-suppliers.html:18
+#: templates/list-staff.html:57 templates/list-stock.html:61
+#: templates/list-stock.html:90 templates/list-suppliers.html:18
 #: templates/list-suppliers.html:46 templates/list-template.html:18
 #: templates/list-template.html:43 templates/list-works.html:84
 #: templates/list-works.html:126 templates/report-billing.html:55
@@ -1020,10 +1020,10 @@ msgstr "Voalohany"
 #: templates/det-control-int.html:47 templates/det-control-int.html:72
 #: templates/det-hist-analysis.html:22 templates/det-hist-analysis.html:47
 #: templates/det-hist-patient.html:57 templates/det-hist-patient.html:83
-#: templates/det-list-stock.html:20 templates/det-list-stock.html:48
+#: templates/det-list-stock.html:20 templates/det-list-stock.html:49
 #: templates/hist-analyzes.html:57 templates/hist-analyzes.html:82
 #: templates/hist-patients.html:78 templates/hist-patients.html:105
-#: templates/hist-stock-product.html:47 templates/hist-stock-product.html:77
+#: templates/hist-stock-product.html:41 templates/hist-stock-product.html:71
 #: templates/list-ctrl-ext.html:19 templates/list-ctrl-ext.html:43
 #: templates/list-ctrl-int.html:19 templates/list-ctrl-int.html:43
 #: templates/list-doctors.html:68 templates/list-doctors.html:101
@@ -1036,8 +1036,8 @@ msgstr "Voalohany"
 #: templates/list-products.html:47 templates/list-records.html:122
 #: templates/list-records.html:167 templates/list-samples.html:25
 #: templates/list-samples.html:64 templates/list-staff.html:19
-#: templates/list-staff.html:58 templates/list-stock.html:66
-#: templates/list-stock.html:95 templates/list-suppliers.html:19
+#: templates/list-staff.html:58 templates/list-stock.html:62
+#: templates/list-stock.html:91 templates/list-suppliers.html:19
 #: templates/list-suppliers.html:47 templates/list-template.html:19
 #: templates/list-template.html:44 templates/list-works.html:85
 #: templates/list-works.html:127 templates/report-billing.html:56
@@ -1054,10 +1054,10 @@ msgstr "Teo aloha"
 #: templates/det-control-int.html:49 templates/det-control-int.html:74
 #: templates/det-hist-analysis.html:24 templates/det-hist-analysis.html:49
 #: templates/det-hist-patient.html:59 templates/det-hist-patient.html:85
-#: templates/det-list-stock.html:22 templates/det-list-stock.html:50
+#: templates/det-list-stock.html:22 templates/det-list-stock.html:51
 #: templates/hist-analyzes.html:59 templates/hist-analyzes.html:84
 #: templates/hist-patients.html:80 templates/hist-patients.html:107
-#: templates/hist-stock-product.html:49 templates/hist-stock-product.html:79
+#: templates/hist-stock-product.html:43 templates/hist-stock-product.html:73
 #: templates/list-ctrl-ext.html:21 templates/list-ctrl-ext.html:45
 #: templates/list-ctrl-int.html:21 templates/list-ctrl-int.html:45
 #: templates/list-doctors.html:70 templates/list-doctors.html:103
@@ -1070,8 +1070,8 @@ msgstr "Teo aloha"
 #: templates/list-products.html:49 templates/list-records.html:124
 #: templates/list-records.html:169 templates/list-samples.html:27
 #: templates/list-samples.html:66 templates/list-staff.html:21
-#: templates/list-staff.html:60 templates/list-stock.html:68
-#: templates/list-stock.html:97 templates/list-suppliers.html:21
+#: templates/list-staff.html:60 templates/list-stock.html:64
+#: templates/list-stock.html:93 templates/list-suppliers.html:21
 #: templates/list-suppliers.html:49 templates/list-template.html:21
 #: templates/list-template.html:46 templates/list-works.html:87
 #: templates/list-works.html:129 templates/report-billing.html:58
@@ -1088,10 +1088,10 @@ msgstr "Manaraka"
 #: templates/det-control-int.html:50 templates/det-control-int.html:75
 #: templates/det-hist-analysis.html:25 templates/det-hist-analysis.html:50
 #: templates/det-hist-patient.html:60 templates/det-hist-patient.html:86
-#: templates/det-list-stock.html:23 templates/det-list-stock.html:51
+#: templates/det-list-stock.html:23 templates/det-list-stock.html:52
 #: templates/hist-analyzes.html:60 templates/hist-analyzes.html:85
 #: templates/hist-patients.html:81 templates/hist-patients.html:108
-#: templates/hist-stock-product.html:50 templates/hist-stock-product.html:80
+#: templates/hist-stock-product.html:44 templates/hist-stock-product.html:74
 #: templates/list-ctrl-ext.html:22 templates/list-ctrl-ext.html:46
 #: templates/list-ctrl-int.html:22 templates/list-ctrl-int.html:46
 #: templates/list-doctors.html:71 templates/list-doctors.html:104
@@ -1104,8 +1104,8 @@ msgstr "Manaraka"
 #: templates/list-products.html:50 templates/list-records.html:125
 #: templates/list-records.html:170 templates/list-samples.html:28
 #: templates/list-samples.html:67 templates/list-staff.html:22
-#: templates/list-staff.html:61 templates/list-stock.html:69
-#: templates/list-stock.html:98 templates/list-suppliers.html:22
+#: templates/list-staff.html:61 templates/list-stock.html:65
+#: templates/list-stock.html:94 templates/list-suppliers.html:22
 #: templates/list-suppliers.html:50 templates/list-template.html:22
 #: templates/list-template.html:47 templates/list-works.html:88
 #: templates/list-works.html:130 templates/report-billing.html:59
@@ -1122,13 +1122,13 @@ msgstr "Farany"
 #: templates/det-equipment.html:116 templates/det-equipment.html:162
 #: templates/det-hist-analysis.html:32 templates/det-hist-patient.html:67
 #: templates/det-list-stock.html:30 templates/hist-analyzes.html:67
-#: templates/hist-patients.html:88 templates/hist-stock-product.html:57
+#: templates/hist-patients.html:88 templates/hist-stock-product.html:51
 #: templates/list-ctrl-ext.html:29 templates/list-ctrl-int.html:29
 #: templates/list-doctors.html:78 templates/list-equipment.html:29
 #: templates/list-laboratory.html:72 templates/list-manuals.html:29
 #: templates/list-meeting.html:29 templates/list-nonconformities.html:54
 #: templates/list-procedure.html:29 templates/list-products.html:29
-#: templates/list-staff.html:29 templates/list-stock.html:76
+#: templates/list-staff.html:29 templates/list-stock.html:72
 #: templates/list-suppliers.html:29 templates/list-template.html:29
 #: templates/setting-age-interval.html:28 templates/setting-analyzes.html:78
 #: templates/setting-det-analysis.html:261 templates/setting-det-dict.html:42
@@ -1141,7 +1141,7 @@ msgstr "serial"
 #: templates/det-control-ext.html:60 templates/det-equipment.html:71
 #: templates/det-new-product.html:17 templates/det-supplier.html:5
 #: templates/det-supplier.html:12 templates/list-products.html:35
-#: templates/list-stock.html:85 templates/list-suppliers.html:31
+#: templates/list-stock.html:81 templates/list-suppliers.html:31
 #: templates/non-conformity.html:474 templates/res-control-ext.html:23
 msgid "Fournisseur"
 msgstr "Mpamatsy"
@@ -1158,7 +1158,7 @@ msgstr "Valiny"
 #: templates/list-doctors.html:112 templates/list-equipment.html:59
 #: templates/list-manuals.html:62 templates/list-meeting.html:57
 #: templates/list-nonconformities.html:83 templates/list-procedure.html:63
-#: templates/list-staff.html:71 templates/list-stock.html:111
+#: templates/list-staff.html:71 templates/list-stock.html:107
 #: templates/list-suppliers.html:60 templates/pivot-table.html:64
 #: templates/report-today.html:97
 msgid "Export des données"
@@ -1213,7 +1213,7 @@ msgstr "Vita ny fitahirizana"
 
 #: templates/det-control-ext.html:221 templates/det-control-int.html:208
 #: templates/det-doctor.html:190 templates/det-equipment.html:575
-#: templates/det-list-stock.html:213 templates/det-manual.html:292
+#: templates/det-list-stock.html:215 templates/det-manual.html:292
 #: templates/det-meeting.html:174 templates/det-new-product.html:194
 #: templates/det-procedure.html:293 templates/det-sample.html:223
 #: templates/det-staff.html:278 templates/det-stock-product.html:199
@@ -1248,21 +1248,21 @@ msgid "Aucun résultats à exporter !"
 msgstr "Tsy misy valiny azo havoaka !"
 
 #: templates/det-control-ext.html:275 templates/det-control-int.html:262
-#: templates/det-list-stock.html:272 templates/enter-result.html:944
+#: templates/det-list-stock.html:274 templates/enter-result.html:944
 #: templates/global-report.html:85 templates/hist-analyzes.html:276
-#: templates/hist-patients.html:298 templates/hist-stock-product.html:352
+#: templates/hist-patients.html:298 templates/hist-stock-product.html:346
 #: templates/list-ctrl-ext.html:181 templates/list-ctrl-int.html:181
 #: templates/list-doctors.html:335 templates/list-equipment.html:224
 #: templates/list-manuals.html:235 templates/list-meeting.html:225
 #: templates/list-nonconformities.html:288 templates/list-procedure.html:237
 #: templates/list-results.html:868 templates/list-staff.html:206
-#: templates/list-stock.html:356 templates/list-stock.html:398
-#: templates/list-stock.html:440 templates/list-stock.html:482
+#: templates/list-stock.html:354 templates/list-stock.html:396
+#: templates/list-stock.html:438 templates/list-stock.html:480
 #: templates/list-suppliers.html:228 templates/report-activity.html:619
 #: templates/report-activity.html:671 templates/report-activity.html:719
 #: templates/report-billing.html:297 templates/report-dhis2.html:104
 #: templates/report-epidemio.html:140 templates/report-indicator.html:140
-#: templates/report-statistic.html:607 templates/report-today.html:254
+#: templates/report-statistic.html:595 templates/report-today.html:254
 #: templates/setting-analyzes.html:347 templates/setting-dicts.html:288
 #: templates/setting-users.html:336 templates/user-conn-export.html:81
 #: templates/whonet-export.html:81
@@ -1399,7 +1399,7 @@ msgid "Fonction"
 msgstr "Asa"
 
 #: templates/det-equipment.html:56 templates/det-list-stock.html:36
-#: templates/det-stock-product.html:51 templates/hist-stock-product.html:63
+#: templates/det-stock-product.html:51 templates/hist-stock-product.html:57
 #: templates/list-equipment.html:34
 msgid "Localisation"
 msgstr "Toerana"
@@ -1437,7 +1437,7 @@ msgid "Liste des pannes et réparations"
 msgstr "Lisitry ny simba sy ny fanamboarana"
 
 #: templates/det-equipment.html:119 templates/det-equipment.html:165
-#: templates/hist-stock-product.html:66 templates/setting-det-user.html:5
+#: templates/hist-stock-product.html:60 templates/setting-det-user.html:5
 #: templates/setting-det-user.html:15
 msgid "Utilisateur"
 msgstr "Mpampiasa"
@@ -1502,7 +1502,7 @@ msgid "du"
 msgstr "ny"
 
 #: templates/det-hist-analysis.html:14 templates/global-report.html:21
-#: templates/hist-analyzes.html:21 templates/hist-stock-product.html:27
+#: templates/hist-analyzes.html:21 templates/hist-stock-product.html:22
 #: templates/list-nonconformities.html:24 templates/list-records.html:34
 #: templates/list-results.html:26 templates/pivot-table.html:44
 #: templates/report-activity.html:22 templates/report-billing.html:27
@@ -1573,45 +1573,50 @@ msgstr "Hiverina amin'ny lisitry ny marary"
 msgid "Liste détaillée du stock pour ce produit"
 msgstr "Lisitra feno momba ny tahirin'ity vokatra ity"
 
-#: templates/det-list-stock.html:33 templates/hist-stock-product.html:60
-#: templates/list-stock.html:79
+#: templates/det-list-stock.html:33 templates/hist-stock-product.html:54
+#: templates/list-stock.html:75
 msgid "Nb de paq."
 msgstr "Nb an'ny pq."
 
-#: templates/det-list-stock.html:34 templates/hist-stock-product.html:61
+#: templates/det-list-stock.html:34 templates/hist-stock-product.html:55
 msgid "Date recept."
 msgstr "Daty recept."
 
-#: templates/det-list-stock.html:35 templates/hist-stock-product.html:62
+#: templates/det-list-stock.html:35 templates/hist-stock-product.html:56
 msgid "Date expir."
 msgstr "Daty expir."
 
-#: templates/det-list-stock.html:37 templates/hist-stock-product.html:64
+#: templates/det-list-stock.html:37 templates/hist-stock-product.html:58
 msgid "N° lot"
 msgstr "Laharan'ny lot"
 
 #: templates/det-list-stock.html:38 templates/det-stock-product.html:65
-#: templates/hist-stock-product.html:65
+#: templates/hist-stock-product.html:59
 msgid "Prix d'achat"
 msgstr "Vidiny"
 
-#: templates/det-list-stock.html:59
+#: templates/det-list-stock.html:39 templates/list-stock.html:42
+#, fuzzy
+msgid "Bailleur"
+msgstr "Valeur"
+
+#: templates/det-list-stock.html:60
 msgid "Historique consommation"
 msgstr "Tantaran'ny fandaniana"
 
-#: templates/det-list-stock.html:68
+#: templates/det-list-stock.html:69
 msgid "Indiquer le nombre de paquets utilisée"
 msgstr "Lazao ny isan'ny fonosana nampiasaina"
 
-#: templates/det-list-stock.html:73 templates/det-stock-product.html:30
+#: templates/det-list-stock.html:74 templates/det-stock-product.html:30
 msgid "Nombre de paquets"
 msgstr "Isan'ny fonosana"
 
-#: templates/det-list-stock.html:136
+#: templates/det-list-stock.html:137
 msgid "Indiquer la quantité utilisée"
 msgstr "Lazao ny habetsaky ny nampiasana"
 
-#: templates/det-list-stock.html:270 templates/hist-stock-product.html:350
+#: templates/det-list-stock.html:272 templates/hist-stock-product.html:344
 #: templates/list-doctors.html:333
 msgid "Aucun prescripteur à exporter !"
 msgstr "Tsy misy prescripteur ho exporter-na !"
@@ -1713,7 +1718,7 @@ msgid "Référence catalogue"
 msgstr "Référence ny mpamatsy"
 
 #: templates/det-new-product.html:74 templates/list-products.html:37
-#: templates/list-stock.html:41 templates/list-stock.html:84
+#: templates/list-stock.html:32 templates/list-stock.html:80
 msgid "Conservation"
 msgstr "Fitahirizana"
 
@@ -2097,7 +2102,7 @@ msgid "Dernière évaluation des compétences"
 msgstr "Fitsarana natao farany momba ny fahaiza-manao"
 
 #: templates/det-stock-product.html:5 templates/det-stock-product.html:16
-#: templates/list-stock.html:120
+#: templates/list-stock.html:116
 msgid "Approvisionner un produit"
 msgstr "Famenoana ny vokatra"
 
@@ -2231,7 +2236,7 @@ msgid "Téléchargement de rapports d'analyse en un seul fichier"
 msgstr ""
 
 #: templates/global-report.html:17 templates/hist-analyzes.html:17
-#: templates/hist-stock-product.html:19 templates/list-nonconformities.html:20
+#: templates/hist-stock-product.html:18 templates/list-nonconformities.html:20
 #: templates/list-records.html:30 templates/pivot-table.html:40
 #: templates/report-activity.html:18 templates/report-billing.html:23
 #: templates/report-epidemio.html:18 templates/report-indicator.html:18
@@ -2259,13 +2264,13 @@ msgstr "Lisitry ny fitiliana"
 
 #: templates/hist-analyzes.html:15 templates/hist-analyzes.html:46
 #: templates/hist-patients.html:15 templates/hist-patients.html:66
-#: templates/hist-stock-product.html:16 templates/hist-stock-product.html:35
+#: templates/hist-stock-product.html:16 templates/hist-stock-product.html:29
 #: templates/list-doctors.html:15 templates/list-doctors.html:56
 #: templates/list-nonconformities.html:15
 #: templates/list-nonconformities.html:32 templates/list-records.html:17
 #: templates/list-records.html:103 templates/list-results.html:20
 #: templates/list-results.html:64 templates/list-stock.html:15
-#: templates/list-stock.html:54 templates/list-works.html:17
+#: templates/list-stock.html:50 templates/list-works.html:17
 #: templates/list-works.html:65 templates/report-activity.html:16
 #: templates/report-activity.html:37 templates/report-billing.html:19
 #: templates/report-billing.html:38 templates/report-epidemio.html:16
@@ -2284,9 +2289,9 @@ msgid "Nb. sur la période"
 msgstr "Nb. nandritra ny vanim-potoana"
 
 #: templates/hist-analyzes.html:149 templates/hist-patients.html:173
-#: templates/hist-stock-product.html:133 templates/js/display_histo.js:57
+#: templates/hist-stock-product.html:127 templates/js/display_histo.js:57
 #: templates/js/stat_rec_with_det.js:51 templates/list-doctors.html:170
-#: templates/list-nonconformities.html:133 templates/list-stock.html:175
+#: templates/list-nonconformities.html:133 templates/list-stock.html:173
 #: templates/manage-pat-records.html:812 templates/manage-pat-records.html:835
 #: templates/report-activity.html:116 templates/report-billing.html:197
 #: templates/report-statistic.html:146 templates/report-today.html:145
@@ -2317,27 +2322,27 @@ msgstr "DDN"
 msgid "Historique des approvisionnements et usages pour ce produit"
 msgstr "Tantaran'ny famatsiana sy ny fampiasana an'ity vokatra ity"
 
-#: templates/hist-stock-product.html:59
+#: templates/hist-stock-product.html:53
 msgid "E/S"
 msgstr "E/S"
 
-#: templates/hist-stock-product.html:67
+#: templates/hist-stock-product.html:61
 msgid "Date action"
 msgstr "Daty nanaovana"
 
-#: templates/hist-stock-product.html:232
+#: templates/hist-stock-product.html:226
 msgid "Vous ne pouvez pas annuler un stock déjà partiellement consommé"
 msgstr "Tsy afaka manafoana stock efa nampiasaina ianao"
 
-#: templates/hist-stock-product.html:237 templates/hist-stock-product.html:274
+#: templates/hist-stock-product.html:231 templates/hist-stock-product.html:268
 msgid "Veuillez confirmer l'annulation"
 msgstr "Hanamafy ny fanafoanana"
 
-#: templates/hist-stock-product.html:257 templates/hist-stock-product.html:294
+#: templates/hist-stock-product.html:251 templates/hist-stock-product.html:288
 msgid "Erreur lors de l'annulation de stock"
 msgstr "Olana teo am-panafoanana ny stock"
 
-#: templates/hist-stock-product.html:268
+#: templates/hist-stock-product.html:262
 msgid "Erreur lors de la vérification de l'usage de ce stock"
 msgstr "Olana teo am-pijerena ny fandehanan'ny stock"
 
@@ -2669,7 +2674,7 @@ msgstr "Lisitry ny vokatra"
 msgid "Nbr par paquet"
 msgstr "Nbr isaky ny fonosana"
 
-#: templates/list-products.html:34 templates/list-stock.html:82
+#: templates/list-products.html:34 templates/list-stock.html:78
 msgid "Seuil"
 msgstr "Fetra"
 
@@ -2677,15 +2682,15 @@ msgstr "Fetra"
 msgid "Réf. fournisseur"
 msgstr "Lah. mpamatsy"
 
-#: templates/list-products.html:107 templates/list-stock.html:218
+#: templates/list-products.html:107 templates/list-stock.html:216
 msgid "Editer la fiche produit"
 msgstr "Hanova ny momban'ny vokatra"
 
-#: templates/list-products.html:108 templates/list-stock.html:219
+#: templates/list-products.html:108 templates/list-stock.html:217
 msgid "Supprimer la fiche produit"
 msgstr "Hamafa ny momban'ny vokatra"
 
-#: templates/list-products.html:135 templates/list-stock.html:261
+#: templates/list-products.html:135 templates/list-stock.html:259
 msgid "Merci de confirmer la suppression du produit"
 msgstr "Azafady mba hamafiso ny famafana ny vokatra"
 
@@ -2818,55 +2823,55 @@ msgstr "Naoty"
 msgid "Liste des stocks"
 msgstr "Lisitra tahiry"
 
-#: templates/list-stock.html:80
+#: templates/list-stock.html:76
 msgid "Nb par paq."
 msgstr "Nb isaky ny fonosana."
 
-#: templates/list-stock.html:81
+#: templates/list-stock.html:77
 msgid "Nb total"
 msgstr "Fitambarany"
 
-#: templates/list-stock.html:113
+#: templates/list-stock.html:109
 msgid "Export du tableau"
 msgstr ""
 
-#: templates/list-stock.html:114
+#: templates/list-stock.html:110
 #, fuzzy
 msgid "Export des produits"
 msgstr "Lisitry ny vokatra"
 
-#: templates/list-stock.html:115
+#: templates/list-stock.html:111
 #, fuzzy
 msgid "Export des approvisionnements"
 msgstr "Famoahana ireo fifandraisana"
 
-#: templates/list-stock.html:116
+#: templates/list-stock.html:112
 #, fuzzy
 msgid "Export des usages"
 msgstr "Famoahana ireo mpampiasa"
 
-#: templates/list-stock.html:121
+#: templates/list-stock.html:117
 msgid "Catalogue des produits"
 msgstr "Ireo karazana vokatra"
 
-#: templates/list-stock.html:122
+#: templates/list-stock.html:118
 msgid "Nouveau produit"
 msgstr "Vokatra vaovao"
 
-#: templates/list-stock.html:216
+#: templates/list-stock.html:214
 msgid "Détails du stock"
 msgstr "Antsipirian'ny tahiry"
 
-#: templates/list-stock.html:217
+#: templates/list-stock.html:215
 msgid "Historique de ce produit"
 msgstr "Tantaran'ity vokatra ity"
 
-#: templates/list-stock.html:233 templates/list-stock.html:235
+#: templates/list-stock.html:231 templates/list-stock.html:233
 msgid "Seuil de"
 msgstr "Fetran'ny"
 
-#: templates/list-stock.html:354 templates/list-stock.html:396
-#: templates/list-stock.html:438 templates/list-stock.html:480
+#: templates/list-stock.html:352 templates/list-stock.html:394
+#: templates/list-stock.html:436 templates/list-stock.html:478
 msgid "Aucun stock à exporter !"
 msgstr "Tsy misy tahiry aondrana!"
 
@@ -3131,8 +3136,8 @@ msgstr "Fikirakirana Epidemio"
 
 #: templates/menu.html:117
 #, fuzzy
-msgid "Configuration Indicateurs"
-msgstr "Fikirakirana Epidemio"
+msgid "Configuration du rapport d'indicateurs"
+msgstr "Fanamboarana ny tatitra ara-epidemiolojika"
 
 #: templates/menu.html:121
 msgid "Paramétrages"
@@ -3794,42 +3799,42 @@ msgstr "Singa"
 msgid "Non renseigné"
 msgstr "Tsy voasoritra"
 
-#: templates/report-statistic.html:464
+#: templates/report-statistic.html:452
 #, fuzzy
 msgid "Nombre de patients externes"
 msgstr "Fangatahana fitiliana marary avy any ivelany"
 
-#: templates/report-statistic.html:469
+#: templates/report-statistic.html:457
 #, fuzzy
 msgid "Nombre de patients hospitalisés"
 msgstr "Faktiora amin'ny mararin'ny hopitaly"
 
-#: templates/report-statistic.html:474
+#: templates/report-statistic.html:462
 #, fuzzy
 msgid "Nombre de patients de garde"
 msgstr "Isan'ny fitarihana voatahiry"
 
-#: templates/report-statistic.html:479
+#: templates/report-statistic.html:467
 #, fuzzy
-msgid "Nombre de malades"
+msgid "Nombre de patients"
 msgstr "Isan'ny fonosana"
 
-#: templates/report-statistic.html:536
+#: templates/report-statistic.html:524
 #, fuzzy
 msgid "Nombre d'analyses externes"
 msgstr "Fangatahana fitiliana marary avy any ivelany"
 
-#: templates/report-statistic.html:541
+#: templates/report-statistic.html:529
 #, fuzzy
 msgid "Nombre d'analyses hospitalisées"
 msgstr "Fangatahana fitiliana marary avy amin'ny hopitaly"
 
-#: templates/report-statistic.html:546
+#: templates/report-statistic.html:534
 #, fuzzy
 msgid "Nombre d'analyses de garde"
 msgstr "Import fitiliana"
 
-#: templates/report-statistic.html:553
+#: templates/report-statistic.html:541
 #, fuzzy
 msgid "Nombre d'analyses"
 msgstr "Import fitiliana"
@@ -4831,4 +4836,10 @@ msgstr "Mahandrasa azafady"
 
 #~ msgid "Précision 2"
 #~ msgstr "Precision 2"
+
+#~ msgid "Configuration Indicateurs"
+#~ msgstr "Fikirakirana Epidemio"
+
+#~ msgid "Nombre de malades"
+#~ msgstr "Isan'ny fonosana"
 

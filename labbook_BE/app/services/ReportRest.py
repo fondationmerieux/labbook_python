@@ -212,9 +212,9 @@ class ReportIndicator(Resource):
                     # GET RESULT
                     self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
                     result = Report.getResultIndicator(inner_req=req_part['inner'],
-                                                      end_req=req_part['end'],
-                                                      date_beg=args['date_beg'],
-                                                      date_end=args['date_end'])
+                                                       end_req=req_part['end'],
+                                                       date_beg=args['date_beg'],
+                                                       date_end=args['date_end'])
 
                     if result:
                         details['res_value'] = result['value']

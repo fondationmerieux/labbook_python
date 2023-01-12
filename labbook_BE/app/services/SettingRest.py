@@ -307,6 +307,20 @@ class SettingLinkUnit(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class SettingLinkByUser(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_user):
+        l_datas = Setting.getLinkByUser(id_user)
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingLinkByUser ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        self.log.info(Logs.fileline() + ' : SettingLinkByUser id_ser=' + str(id_user))
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)
+
+
 class SettingPref(Resource):
     log = logging.getLogger('log_services')
 
