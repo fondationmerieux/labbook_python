@@ -8,30 +8,30 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de la sauvegarde") }}</span></h2>
             <form autocomplete="off" class="row mt-3">
-                <div class="col-6 text-center">
-                    <input type="button" onclick="run_time();" id="btn-run_savetime" value="{{ _("MODIFIER HEURE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="run_media();" id="btn-run_media" value="{{ _("INITIALISER LE MEDIA") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="run_key();" id="btn-run_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="run_backup();" id="btn-run_backup" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}" disabled>
-                    <input type="button" onclick="run_restore();" id="btn-run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-{{ session['user_role']|safe }}">
+                <div class="col-lg-6 text-center">
+                    <input type="button" onclick="run_time();" id="btn-run_savetime" value="{{ _("MODIFIER HEURE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_media();" id="btn-run_media" value="{{ _("INITIALISER LE MEDIA") }}" class="col-6 mt-3 btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_key();" id="btn-run_keygen" value="{{ _("GENERER CLE DE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="run_backup();" id="btn-run_backup" value="{{ _("SAUVEGARDER") }}" class="col-6 mt-3 btn btn-lbk btn-{{ session['user_role']|safe }}" disabled>
+                    <input type="button" onclick="run_restore();" id="btn-run_restore" value="{{ _("RESTAURER") }}" class="col-6 mt-3 btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="col-6">
-                    <div class="d-flex align-items mb-3">
+                <div class="col-lg-6">
+                    <div class="d-lg-flex align-items mb-3">
                         <label for="start-time" class="form-label text-end mt-2 me-2">{{ _("Heure de sauvegarde") }}</label>
                         <div>
-                            <input type="time" name="start-time" id="start-time" class="form-control" maxlength="10" size="10" value="{{  args['bks_data']['bks_start_time'] }}" style="color: #888;">     
+                            <input type="time" name="start-time" id="start-time" class="form-control form-lbk" maxlength="10" size="10" value="{{  args['bks_data']['bks_start_time'] }}" style="color: #888;">     
                         </div>
                     </div>
-                    <div class="d-flex align-items mb-3">
+                    <div class="d-lg-flex align-items mb-3">
                         <label class="form-label text-end me-2">{{ _("Dernière sauvegarde") }} :</label>
                         <div>
                             <span class="font-info" id="date_backup">{{ args['stat_backup'] }} {{ args['date_backup'] }}</span>     
                         </div>
                     </div>
-                    <div class="d-flex align-items mb-3">
+                    <div class="d-lg-flex align-items mb-3">
                         <label class="form-label text-end me-2">{{ _("Dernière sauvegarde OK") }} :</label>
                         <div>
                             <span class="font-info" id="last_backup_ok">{{ args['last_backup_ok'] }}</span>
@@ -41,8 +41,8 @@
             </form>
 
             <div class="mb-5 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_home();" id="btn-return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn-return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
             </div>
 
@@ -58,13 +58,13 @@
                             <div class="form-group form-inline">
                                 <label class="form-label me-1">{{ _("Mot de passe système") }}</label>
                                 <div>
-                                    <input id="pwd-user" type="password" class="form-control">
+                                    <input id="pwd-user" type="password" class="form-control form-lbk">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_pwd_user" id="btn_pwd_user" value="{{ _("Valider") }}"  onclick="after_pwd_user();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_pwd_user" id="btn_pwd_user" value="{{ _("Valider") }}"  onclick="after_pwd_user();">
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -80,21 +80,21 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
-                                <label class="form-label col-3 me-1">{{ _("Mot de passe") }}</label>
+                                <label class="form-label col-lg-3 me-1">{{ _("Mot de passe") }}</label>
                                 <div>
-                                    <input id="pwd-key" type="password" class="form-control">
+                                    <input id="pwd-key" type="password" class="form-control form-lbk">
                                 </div>
                             </div>
                             <div class="form-group form-inline conf-key-div">
-                                <label class="form-label col-3 me-1">{{ _("Confirmation") }}</label>
+                                <label class="form-label col-lg-3 me-1">{{ _("Confirmation") }}</label>
                                 <div>
-                                    <input id="pwd-key2" type="password" class="form-control">
+                                    <input id="pwd-key2" type="password" class="form-control form-lbk">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn-pwd-key" id="btn-pwd-key" value="{{ _("Valider") }}"  onclick="after_pwd_key();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn-pwd-key" id="btn-pwd-key" value="{{ _("Valider") }}"  onclick="after_pwd_key();">
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -118,8 +118,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn-vld-media" id="btn-vld-media" value="{{ _("Valider") }}"  onclick="after_listmedia();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn-vld-media" id="btn-vld-media" value="{{ _("Valider") }}"  onclick="after_listmedia();">
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -143,8 +143,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_restore_list" id="btn_restore_list" value="{{ _("Valider") }}"  onclick="restore();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_restore_list" id="btn_restore_list" value="{{ _("Valider") }}"  onclick="restore();">
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>

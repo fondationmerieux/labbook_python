@@ -8,12 +8,12 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des services demandeurs") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-name row mt-3">
-                    <div class="col-12">
-                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter un service") }}" class="btn btn-{{ session['user_role']|safe }} ms-2 float-end">
+                    <div class="col-lg-12">
+                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter un service") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 float-end">
                     </div>
                 </div>
                 <div class="panel-heading row">
@@ -37,10 +37,10 @@
             
             <div class="clearfix my-2">
                 <div class="float-start">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -135,7 +135,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control w-auto" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk w-auto" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;

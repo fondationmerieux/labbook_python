@@ -655,7 +655,7 @@ class Quality:
             if 'prod_conserv' in args and args['prod_conserv'] > 0:
                 filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
 
-            if args['prod_lessor']:
+            if 'prod_lessor' in args and args['prod_lessor']:
                 filter_cond += ' and prs_lessor LIKE "%' + str(args['prod_lessor']) + '%" '
 
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
@@ -681,8 +681,7 @@ class Quality:
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_date, prd_name, prd_type, dict1.label as type, prd_nb_by_pack, '
-               'sup.fournisseur_nom as supplier, prd_ref_supplier, dict2.label as conserv, prd_safe_limit, '
-               'prd_ref_catalog '
+               'sup.fournisseur_nom as supplier, prd_ref_supplier, dict2.label as conserv, prd_safe_limit '
                'from product_details '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
@@ -799,7 +798,7 @@ class Quality:
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
-               'prd_ref_catalog, prd_conserv, sup.fournisseur_nom as supplier_name, prd_safe_limit '
+               'prd_conserv, sup.fournisseur_nom as supplier_name, prd_safe_limit, prd_expir_oblig '
                'from product_details '
                'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
                'where prd_ser=%s')
@@ -840,7 +839,7 @@ class Quality:
     def getStockProductList():
         cursor = DB.cursor()
 
-        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, prd_ref_catalog, '
+        req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
                'prd_conserv, sup.fournisseur_nom as supplier_name, prd_safe_limit, d1.label as type, d2.label as conserv '
                'from product_details '
                'left join sigl_dico_data as d1 on d1.id_data=prd_type '
@@ -859,10 +858,11 @@ class Quality:
 
             cursor.execute('insert into product_details '
                            '(prd_date, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
-                           'prd_ref_catalog , prd_conserv, prd_safe_limit) '
+                           'prd_conserv, prd_safe_limit) '
                            'values '
                            '(NOW(), %(prd_name)s, %(prd_type)s, %(prd_nb_by_pack)s, %(prd_supplier)s, '
-                           '%(prd_ref_supplier)s, %(prd_ref_catalog)s, %(prd_conserv)s, %(prd_safe_limit)s)', params)
+                           '%(prd_ref_supplier)s, %(prd_conserv)s, %(prd_safe_limit)s, '
+                           '%(prd_expir_oblig)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -879,8 +879,8 @@ class Quality:
             cursor.execute('update product_details '
                            'set prd_name=%(prd_name)s, prd_type=%(prd_type)s, prd_nb_by_pack=%(prd_nb_by_pack)s, '
                            'prd_supplier=%(prd_supplier)s, prd_ref_supplier=%(prd_ref_supplier)s, '
-                           'prd_ref_catalog=%(prd_ref_catalog)s, prd_conserv=%(prd_conserv)s, '
-                           'prd_safe_limit=%(prd_safe_limit)s '
+                           'prd_conserv=%(prd_conserv)s, '
+                           'prd_safe_limit=%(prd_safe_limit)s, prd_expir_oblig=%(prd_expir_oblig)s '
                            'where prd_ser=%(prd_ser)s', params)
 
             Quality.log.info(Logs.fileline())

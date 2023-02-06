@@ -2107,8 +2107,8 @@ class StockProductDet(Resource):
         args = request.get_json()
 
         if 'prd_name' not in args or 'prd_type' not in args or 'prd_nb_by_pack' not in args or \
-           'prd_supplier' not in args or 'prd_ref_supplier' not in args or 'prd_ref_catalog' not in args or \
-           'prd_conserv' not in args or 'prd_safe_limit' not in args:
+           'prd_supplier' not in args or 'prd_ref_supplier' not in args or \
+           'prd_conserv' not in args or 'prd_safe_limit' not in args or 'prd_expir_oblig' not in args:
             self.log.error(Logs.fileline() + ' : StockProductDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -2121,8 +2121,8 @@ class StockProductDet(Resource):
                                              prd_safe_limit=args['prd_safe_limit'],
                                              prd_supplier=args['prd_supplier'],
                                              prd_ref_supplier=args['prd_ref_supplier'],
-                                             prd_ref_catalog=args['prd_ref_catalog'],
-                                             prd_conserv=args['prd_conserv'])
+                                             prd_conserv=args['prd_conserv'],
+                                             prd_expir_oblig=args['prd_expir_oblig'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StockProductDet ERROR update')
@@ -2136,8 +2136,8 @@ class StockProductDet(Resource):
                                              prd_safe_limit=args['prd_safe_limit'],
                                              prd_supplier=args['prd_supplier'],
                                              prd_ref_supplier=args['prd_ref_supplier'],
-                                             prd_ref_catalog=args['prd_ref_catalog'],
-                                             prd_conserv=args['prd_conserv'])
+                                             prd_conserv=args['prd_conserv'],
+                                             prd_expir_oblig=args['prd_expir_oblig'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : StockProductDet ERROR  insert')
@@ -2166,14 +2166,8 @@ class StockSupplyDet(Resource):
         args = request.get_json()
 
         if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
-           'prs_receipt_date' not in args or 'prs_rack' not in args or \
+           'prs_receipt_date' not in args or 'prs_rack' not in args or 'prs_expir_date' not in args or \
            'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_lessor' not in args:
-            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
-
-        setting = Setting.getStockSetting()
-
-        if setting and setting['sts_expir_oblig'] == 'Y' and 'prs_expir_date' not in args:
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -2348,7 +2342,7 @@ class StockProductsExport(Resource):
 
     def get(self):
         l_data = [['prd_ser', 'date', 'name', 'type', 'nb_by_pack', 'supplier', 'ref_supplier', 'conserv',
-                   'safe_limit', 'ref_catalog']]
+                   'safe_limit']]
         dict_data = Quality.getStockExportProducts()
 
         Various.useLangDB()
@@ -2378,7 +2372,6 @@ class StockProductsExport(Resource):
                     data.append('')
 
                 data.append(d['prd_safe_limit'])
-                data.append(d['prd_ref_catalog'])
 
                 l_data.append(data)
 

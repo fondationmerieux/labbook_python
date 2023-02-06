@@ -9,7 +9,7 @@
 {% block content %}
 <div id="content" class="text-center">
     <div class="inner text-center">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Accueil") }}</span></h2>
 
             {% if session['user_role'] == 'A' %}
@@ -34,28 +34,27 @@
             {% else %}
             <div class="module">
                 <div class="links {% if args['nb_emer'] > 0 %}mw-100 mx-5{% endif %}">
-                    {% if (session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ') and args['nb_emer'] > 0 %}
+                    {% if session['user_role'] in ('B','T','TA','TQ') and args['nb_emer'] > 0 %}
                         {% if session['user_role'] == 'B' %}
                     <a href="{{ session['server_ext'] }}/list-works/B/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                         {% else %}
                     <a href="{{ session['server_ext'] }}/list-works/T/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                         {% endif %}
                     {% endif %}
-                    {% if session['user_role'] != 'Q' and session['user_role'] != 'K' %}
-                    <a href="{{ session['server_ext'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
+                    {% if session['user_role'] not in ('Q','K') %}
+                    <a href="{{ session['server_ext'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] in ('T','TA','TQ') %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}
                     <a href="{{ session['server_ext'] }}/list-works/B" class="list-group-item b-list-bio">{{ _("Liste de travail biologiste") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                    {% if session['user_role'] in ('T','TA','TQ') %}
                     <a href="{{ session['server_ext'] }}/list-works/T" class="list-group-item t-list-tec">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'B' or
-                          session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                    {% if session['user_role'] in ('B','T','TA','TQ') %}
                     <a href="{{ session['server_ext'] }}/list-samples" class="list-group-item {% if session['user_role'] == 'B' %}prel-bio{% else %}prel-tec{% endif %}">{{ _("Etat des prélèvements en cours") }}</a>
                     <a href="{{ session['server_ext'] }}/list-results" class="list-group-item {% if session['user_role'] == 'B' %}res-bio{% else %}res-tec{% endif %}">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'S' or session['user_role'] == 'SA' %}
+                    {% if session['user_role'] in ('S','SA') %}
                     <a href="{{ session['server_ext'] }}/new-req-ext" class="list-group-item new-dos-ext-sec">{{ _("Nouvelle demande externe") }}</a>
                     <a href="{{ session['server_ext'] }}/new-req-int" class="list-group-item new-dos-int-sec">{{ _("Nouvelle demande hospitalisé") }}</a>
                     {% endif %}
@@ -68,12 +67,12 @@
             </div>
 
             <div class="home-stat row">
-                <div class="home-graph col-6">
-                    <h5 class="me-5 pe-4">{{ _("Validations à effectuer") }}</h5>
-                    <canvas id="chart" width="350px" height="250px"></canvas>
+                <div class="home-graph col-lg-6 text-lg-end">
+                    <h5 id="label-chart">{{ _("Validations à effectuer") }}</h5>
+                    <canvas id="chart"></canvas>
                 </div>
-                <div class="home-activity col-6 text-start">
-                    <h5>{{ _("Activité du laboratoire") }}</h5>
+                <div class="home-activity col-lg-6 text-start">
+                    <h5 id="label-activity">{{ _("Activité du laboratoire") }}</h5>
                     <ul>
                         <li>{{ _("Dernier numéro utilisé") }} : <strong><span class="rec-num" id="num_rec"></span></strong></li>
                         <li>{{ _("Nombre de dossiers validés aujourd'hui") }} : <strong>{{ args['nb_rec_today'] }}</strong></li>
@@ -90,7 +89,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-{% if session['user_role'] != 'A' and session['user_role'] != 'P' %}
+{% if session['user_role'] not in ('A','P','K') %}
 var pieData = [{value: "{{ args['nb_rec_bio'] }}", label: "{{ _("Biologique") }}", color: "#8330E2"}, {value: "{{ args['nb_rec_tech'] }}", label: "{{ _("Technique") }}", color: "#00ADEE"}] ;
 {% endif %}
 var val_bill    = {{ session['pref_bill'] }} ;
@@ -137,7 +136,7 @@ let ico      = "admin-gest-fact-" ;
 
 $( document ).ready( function()
 {
-{% if session['user_role'] != 'A' and session['user_role'] != 'P' %}
+{% if session['user_role'] not in ('A','P','K') %}
 let rec_num = "" ;
 
 {% if args['record'] %}
@@ -155,7 +154,7 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
 {% endif %}
 
     // Stock alert
-    {% if session['user_role'] != 'P' and session['user_role'] != 'Q' %}
+    {% if session['user_role'] not in ('P','Q') %}
     if ( sessionStorage.getItem( "stock-alert" ) != "DONE" )
     {
     var data_stock = {% if args["stock"] %}{{ args["stock"]|safe }}{% else %}[]{% endif %} ;

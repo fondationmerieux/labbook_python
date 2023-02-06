@@ -60,7 +60,7 @@ class Various:
     def getDicoById(id_data):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dict_formatting '
                'from sigl_dico_data '
                'where id_data = %s '
                'order by position')

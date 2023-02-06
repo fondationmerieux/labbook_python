@@ -30,6 +30,40 @@ class Report:
         return cursor.fetchone()
 
     @staticmethod
+    def getNbResultReceviedV2(l_id_var, l_id_prod, date_beg, date_end):
+        cursor = DB.cursor()
+
+        cond_id_prod = ''
+
+        for id_prod in l_id_prod:
+            if not cond_id_prod:
+                cond_id_prod = '('
+
+            cond_id_prod += str(id_prod) + ','
+
+        if cond_id_prod:
+            cond_id_prod = cond_id_prod[:-1] + ')'
+        else:
+            cond_id_prod = '(0)'
+
+        req = ('select count(distinct rec.id_data) as total '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'where (rec.date_dos between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
+               'and res.ref_variable in (')
+
+        for id_var in l_id_var:
+            req = req + str(id_var) + ','
+
+        req = req + '0)'
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getNbResultAnalyzed(l_id_var, id_prod, date_beg, date_end):
         cursor = DB.cursor()
 
@@ -48,6 +82,41 @@ class Report:
         req = req + '0)'
 
         cursor.execute(req, (date_beg, date_end, id_prod,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getNbResultAnalyzedV2(l_id_var, l_id_prod, date_beg, date_end):
+        cursor = DB.cursor()
+
+        cond_id_prod = ''
+
+        for id_prod in l_id_prod:
+            if not cond_id_prod:
+                cond_id_prod = '('
+
+            cond_id_prod += str(id_prod) + ','
+
+        if cond_id_prod:
+            cond_id_prod = cond_id_prod[:-1] + ')'
+        else:
+            cond_id_prod = '(0)'
+
+        req = ('select count(distinct rec.id_data) as total '
+               'from sigl_02_data as rec '
+               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
+               'where (rec.date_dos between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
+               'and vld.type_validation = 252 and res.ref_variable in (')
+
+        for id_var in l_id_var:
+            req = req + str(id_var) + ','
+
+        req = req + '0)'
+
+        cursor.execute(req, (date_beg, date_end,))
 
         return cursor.fetchone()
 
@@ -453,6 +522,193 @@ class Report:
                                         ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
+
+                        if int(id_prod) == 0:
+                            req['end'] = (req['end'] + ' ' + word + ' vld' + str(idx) + '.type_validation=252 ')
+                        else:
+                            req['end'] = (req['end'] + ' ' + word + ' ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+
+                    # Report.log.error('###  ELSE ###')
+                    # Report.log.error('word = ' + word)
+                    if word != 'AND':
+                        req['end'] = req['end'] + ' ' + word + ' '
+
+        return req
+
+    @staticmethod
+    def ParseFormulaV2(formula, l_id_prod):
+        req = {}
+
+        if formula != 'N/A':
+            idx = 0
+
+            req['inner'] = ('inner join sigl_04_data as ana' + str(idx) +
+                            ' on ana' + str(idx) + '.id_dos = rec.id_data '
+                            'inner join sigl_05_data as ref' + str(idx) +
+                            ' on ref' + str(idx) + '.id_data = ana' + str(idx) + '.ref_analyse '
+                            'inner join sigl_09_data as res' + str(idx) +
+                            ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
+                            'inner join sigl_10_data as vld' + str(idx) +
+                            ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
+
+            id_prod = l_id_prod[idx]
+
+            if int(id_prod) == 0:
+                req['end'] = (' and vld' + str(idx) + '.type_validation=252 ')
+            else:
+                req['end'] = (' and ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+
+            formula = ' '.join(formula.split())  # take off redundant white space
+            formula = formula.replace(', ', ',')
+            l_words = formula.split(' ')
+
+            # Report.log.error('l_words=' + str(l_words))
+
+            for word in l_words:
+                # id_var pattern
+                if word.startswith('$_'):
+                    # Report.log.error('### id_var pattern ###')
+                    # Report.log.error('word = ' + word)
+                    id_var = ''
+
+                    idx_beg = word.find('$_')
+
+                    if idx_beg >= 0:
+                        idx_beg = idx_beg + 2
+                        id_var = word[idx_beg:]
+
+                    if id_var:
+                        req['end'] = req['end'] + ' and res' + str(idx) + '.ref_variable=' + id_var + ' and res' + str(idx) + '.valeur '
+                # {id_var,id_var,...} pattern
+                elif word.startswith('{') and word.endswith('}'):
+                    # Report.log.error('### {id_var,id_var,...} pattern ###')
+                    # Report.log.error('word = ' + word)
+                    l_id_var = word[1:-1].split(',')
+
+                    # Report.log.error('l_id_var=' + str(l_id_var))
+
+                    # add a  '('
+                    req['end'] = req['end'] + ' and ('
+
+                    for id_var in l_id_var:
+                        req['end'] = req['end'] + 'res' + str(idx) + '.ref_variable=' + id_var + ' or '
+
+                    # take of last 'or' and add a ')'
+                    req['end'] = req['end'][:-3] + ') and res' + str(idx) + '.valeur '
+
+                # [dict_name.code] pattern
+                elif word.startswith('[') and word.endswith(']'):
+                    # Report.log.error('### [dict_name.code] pattern ###')
+                    # Report.log.error('word = ' + word)
+                    id_val = Report.ParseDictVar(word)
+
+                    if id_val:
+                        req['end'] = req['end'] + str(id_val)
+
+                # list of [dict_name.code] pattern
+                elif word.startswith('([') and word.endswith('])'):
+                    # Report.log.error('### list of [dict_name.code] pattern ###')
+                    # Report.log.error('word = ' + word)
+                    l_dict_var = word[1:len(word) - 1]  # take off bracket
+                    l_dict_var = l_dict_var.split(',')
+
+                    req['end'] = req['end'] + '('
+                    for dict_var in l_dict_var:
+                        id_val = Report.ParseDictVar(dict_var)
+
+                        if id_val:
+                            req['end'] = req['end'] + str(id_val) + ','
+
+                    req['end'] = req['end'][:len(req['end']) - 1] + ')'
+                # ON a list of analyzes codes
+                elif word.startswith('ON(') and word.endswith(')'):
+                    # Report.log.error('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
+                    l_code_ana = list(word[3:len(word) - 1].split(','))
+                    # Report.log.error('l_code_ana = ' + str(l_code_ana))
+                    l_cond_ana = ''
+
+                    i = 0
+                    for code_ana in l_code_ana:
+                        if i == 0:
+                            l_cond_ana = str(code_ana)
+                        else:
+                            l_cond_ana = l_cond_ana + ', ' + str(code_ana)
+
+                        i = i + 1
+
+                    req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
+
+                # CAT filter on category like SEX and/or AGE
+                elif word.startswith('CAT(') and word.endswith(')'):
+                    Report.log.error('### list of category CAT(SEX_x,AGE_x) pattern ###')
+                    l_cat = list(word[4:len(word) - 1].split(','))
+                    Report.log.error('l_cat = ' + str(l_cat))
+                    sex = 0
+                    age_min = 0
+                    age_max = 0
+                    for cat in l_cat:
+                        if cat.startswith('SEX_'):
+                            if cat.endswith('M'):
+                                sex = 1
+                            elif cat.endswith('F'):
+                                sex = 2
+                            else:
+                                sex = 3
+                        elif cat.startswith('AGE_'):
+                            num_cat_age = int(cat[4:]) - 1  # AGE_1 <=> interval 0 in list of interval
+                            l_interval = Setting.getAgeInterval()
+
+                            if num_cat_age < 0 or num_cat_age >= len(l_interval):
+                                Report.log.error('ERROR wrong num_cat AGE=' + str(num_cat_age))
+                                return req
+
+                            i = 0
+                            for interval in l_interval:
+                                if i == num_cat_age:
+                                    age_min = interval['ais_lower_bound']
+                                    age_max = interval['ais_upper_bound']
+
+                                    if not age_min:
+                                        age_min = 0
+
+                                    if not age_max:
+                                        age_max = 150
+
+                                i = i + 1
+                        else:
+                            Report.log.error('ERROR CAT unknown cat=' + str(cat))
+
+                    # Build SQL part for category
+                    req['inner'] = (req['inner'] +
+                                    'inner join sigl_03_data as pat' + str(idx) +
+                                    ' on pat' + str(idx) + '.id_data=rec.id_patient ')
+
+                    if sex > 0:
+                        req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
+
+                    if age_min != 0 or age_max != 0:
+                        req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
+                                      ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
+                else:
+                    # TODO rule for OR
+                    if word == 'OR':
+                        return req
+
+                    # add a another inner group
+                    if word == 'AND':
+                        idx = idx + 1
+
+                        req['inner'] = (req['inner'] +
+                                        'inner join sigl_04_data as ana' + str(idx) +
+                                        ' on ana' + str(idx) + '.id_dos = rec.id_data '
+                                        'inner join sigl_05_data as ref' + str(idx) +
+                                        ' on ref' + str(idx) + '.id_data = ana' + str(idx) + '.ref_analyse '
+                                        'inner join sigl_09_data as res' + str(idx) +
+                                        ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
+                                        'inner join sigl_10_data as vld' + str(idx) +
+                                        ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
+
+                        id_prod = l_id_prod[idx]
 
                         if int(id_prod) == 0:
                             req['end'] = (req['end'] + ' ' + word + ' vld' + str(idx) + '.type_validation=252 ')

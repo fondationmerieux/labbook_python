@@ -8,25 +8,25 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Dictionnaire") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-name row mt-3">
                     <div class="col-12">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="name" class="form-label text-end mt-2 me-1">{{ _("Nom du dictionnaire") }}</label>
                             <div class="me-3">					
-                                <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control" maxlength="20">			
+                                <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control form-lbk" maxlength="20">			
                             </div>
                             <label for="dico_descr" class="form-label text-end mt-2 me-1">{{ _("Description") }}</label>
                             <div>					
-                                <textarea id="dico_descr" name="dico_descr" rows="2" cols="40" class="form-control">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
-                                <textarea id="dico_descr_old" name="dico_descr_old" rows="2" cols="40" class="form-control d-none">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
+                                <textarea id="dico_descr" name="dico_descr" rows="2" cols="40" class="form-control form-lbk">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
+                                <textarea id="dico_descr_old" name="dico_descr_old" rows="2" cols="40" class="form-control form-lbk d-none">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="align-items-end col-12 mt-3">
-                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-{{ session['user_role']|safe }} ms-2 float-end">
+                    <div class="align-items-end col-lg-12 mt-3">
+                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 float-end">
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -35,16 +35,17 @@
                 </div>
             </form>
 
-            <form class="d-flex justify-content-center mt-3" id="value-list">
+            <form class="d-lg-flex justify-content-center mt-3" id="value-list">
                 <table class="table table-striped table-hover w-100 table-lbk">
                     <thead>
                         <tr>
-                            <th class="col" hidden>{{ _("serial") }}</th>
-                            <th class="col-2 text-start">{{ _("Action") }}</th>
-                            <th class="col-3 text-start">{{ _("Libellé") }} *</th>
-                            <th class="col-2 text-start">{{ _("Code") }} *</th>
-                            <th class="col-3 text-start">{{ _("Libellé court") }}</th>
-                            <th class="col-2 text-start">{{ _("Position") }}</th>
+                            <th class="" hidden>{{ _("serial") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start">{{ _("Libellé") }} *</th>
+                            <th class="text-start">{{ _("Code") }} *</th>
+                            <th class="text-start">{{ _("Libellé court") }}</th>
+                            <th class="text-start">{{ _("Position") }}</th>
+                            <th class="text-start">{{ _("Mise en forme") }}</th>
                     </thead>
                     <tbody id="tbody_value">
                     </tbody>
@@ -52,11 +53,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -67,9 +68,10 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var struct_val  = {"id_ihm":0, "id_data":0 ,"label":"", "code":"", "short_label":"", "position":0} ;
-var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
-var ind_values  = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
+var struct_val   = {"id_ihm":0, "id_data":0 ,"label":"", "code":"", "short_label":"", "position":0, "dict_formatting":"N"} ;
+var data_values  = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var ind_values   = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
+var new_opt_yorn = [{'value': 'Y', 'label': '{{ _("Oui") }}'}, {'value': 'N', 'label': '{{ _("Non") }}'}] ;
 
 function add_value()
 {
@@ -94,12 +96,13 @@ let obj = data ;
 
     let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
 
-    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
-    tmp_tr += create_td("", btn, " text-start col-2", "") ; // actions
-    tmp_tr += create_td("", create_input("label_"+obj.id_ihm, "text", obj.label, "","", ""), "col-3", "") ;
-    tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "col-2", "") ;
-    tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "col-3", "") ;
-    tmp_tr += create_td("", create_input("pos_"+obj.id_ihm, "number", obj.position, 0, 10, ""), "col-2", "") ;
+    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "", "display:none;") ;
+    tmp_tr += create_td("", btn, " text-start", "") ; // actions
+    tmp_tr += create_td("", create_input("label_"+obj.id_ihm, "text", obj.label, "","", ""), "", "") ;
+    tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "", "") ;
+    tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "", "") ;
+    tmp_tr += create_td("", create_input("pos_"+obj.id_ihm, "number", obj.position, 0, 10, ""), "", "") ;
+    tmp_tr += create_td("", select_yorn("format_"+obj.id_ihm, new_opt_yorn, obj.dict_formatting), "text-center", "") ;
     tmp_tr += '</tr>' ;
 
     tr_value += tmp_tr ;
@@ -153,7 +156,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
@@ -163,6 +166,25 @@ let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '"
 tmp_input += '>' ;
 
 return tmp_input ;
+}
+
+function select_yorn(id, l_options, val_select)
+{
+let tmp_select = '<select class="form-select" style="font-size:14px;" id="' + id + '" onChange="change_data(this)">' ;
+
+    for( i in l_options )
+    {
+    let selected = "" ;
+
+        if (l_options[i].value == val_select)
+        selected = "selected" ;
+
+    tmp_select += '<option value="' + l_options[i].value + '" ' + selected + ' >' + l_options[i].label + '</option>' ;
+    }
+
+tmp_select += '</select>' ;
+
+return tmp_select ;
 }
 
 function change_data( elem )
@@ -187,6 +209,8 @@ let id_ihm  = split_id[split_id.length -1] ;
             data_values[i].short_label = val ;
             else if ( split_id[0] == "pos" )
             data_values[i].position = val ;
+            else if ( split_id[0] == "format" )
+            data_values[i].dict_formatting = val ;
 
         break ;
         }
@@ -235,7 +259,8 @@ var tmp_value = '' ;
                       '"label":"' + data_values[i].label + '", ' +
                       '"short_label":"' + data_values[i].short_label + '", ' +
                       '"position":' + data_values[i].position + ', ' +
-                      '"code":"' + data_values[i].code + '"}' ;
+                      '"code":"' + data_values[i].code + '", ' +
+                      '"formatting":"' + data_values[i].dict_formatting + '"}' ;
 
     tmp_value += param_val ;
     }
@@ -293,6 +318,7 @@ $( document ).ready( function()
 {% if args['dict_name'] %}
 load_data() ;
 $("#name").prop("readonly", true) ;
+$("#name").addClass("bg-readonly") ;
 {% else %}
 add_value() ;
 {% endif %}

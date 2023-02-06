@@ -16,31 +16,16 @@
     {# TODO 01/04/2022 TEST with big database before to used it #}
     {# <script src="{{ url_for('static', filename='vendor/js/jquery.dataTables.min.js') }}"></script> #}
     <script src="{{ url_for('static', filename='js/app-labbook.js') }}?1" nonce="{{ session['nonce'] }}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% endblock %}
 </head>
 
 {% block body %}
 {% block tag_body %}<body onLoad="init_timeOut('{{ session['server_ext'] }}', {{ session['auto_logout'] }});" onmousemove="reboot_timeOut({{ session['auto_logout'] }});">{% endblock %}
-    <div id="page" class="container">
+    <div id="page" class="container-fluid">
         {% block header %}
-        <header id="page-header" class="text-center">
-            <div id="country-sel" class="btn-group" {% if locale == 'ar' %}style="left:0;right:auto;"{% endif %}>
-                <button type="button" class="btn btn-{{ session['user_role']|safe }} dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <strong>{{ session['lang_select'] }}</strong>
-                    <span class="caret"></span>
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/fr_FR">{{ _("Français (FR)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/en_GB">{{ _("English (UK)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/en_US">{{ _("English (US)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/es">{{ _("Espagnole (ES)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/ar">{{ _("Arabe (AR)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/km">{{ _("Khmer (KM)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/lo">{{ _("Laotien (LO)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/mg">{{ _("Malagasy (MG)") }}</a>
-                    <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/pt">{{ _("Portugais (PT)") }}</a>
-                </div>
-            </div>
+        <header id="page-header">
+            {% include 'menu-country.html' %}
             <div class="inner">
                 <div id="logo">
                     <h1>
@@ -48,18 +33,13 @@
                     </h1>
                 </div>
                 <div id="user-info">
-                    <div id="header_name" class="name" {% if locale == 'ar' %}style="left:160px;right:auto;"{% endif %}></div>
-                    <div class="role role-{{ session['user_role']|safe }}" {% if locale == 'ar' %}style="left:40px;right:auto;"{% endif %}>
-                        <ul>
-                            <li>
-                                <a href="{{ session['server_ext'] }}/disconnect">{{ _('Déconnexion') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ session['server_ext'] }}/setting-det-user/{{ session['user_id'] }}">{{ _('Editer utilisateur') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ session['server_ext'] }}/setting-pwd-user/{{ session['user_id'] }}">{{ _('Editer mot de passe') }}</a>
-                            </li>
+                    <div id="header_name" class="name" {% if locale == 'ar' %}style="left:150px;right:auto;"{% endif %}></div>
+                    <div class="dropdown role role-{{ session['user_role']|safe }}">
+                        <button class="btn" type="button" id="dropdownRole" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownRole">
+                            <li><a class="dropdown-item" href="{{ session['server_ext'] }}/disconnect">{{ _('Déconnexion') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ session['server_ext'] }}/setting-det-user/homepage/{{ session['user_id'] }}">{{ _('Editer utilisateur') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pwd-user/homepage/{{ session['user_id'] }}">{{ _('Editer mot de passe') }}</a></li>
                         </ul>
                     </div>
                 </div>

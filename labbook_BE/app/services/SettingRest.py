@@ -184,6 +184,20 @@ class SettingFuncUnit(Resource):
                 if data[key] is None:
                     data[key] = ''
 
+                data['nb_user'] = 0
+                data['nb_fam']  = 0
+
+                nb_user = Setting.getNbFuncUnitLink(data['fun_ser'], 'U')
+
+                if nb_user:
+                    data['nb_user'] = nb_user['nb_link']
+
+                nb_fam = Setting.getNbFuncUnitLink(data['fun_ser'], 'F')
+
+                if nb_fam:
+                    data['nb_fam'] = nb_fam['nb_link']
+
+        self.log.info(Logs.fileline() + ' : SettingFuncUnit l_datas=' + str(l_datas))
         self.log.info(Logs.fileline() + ' : SettingFuncUnit')
         return compose_ret(l_datas, Constants.cst_content_type_json, 200)
 
@@ -1036,13 +1050,11 @@ class SettingStock(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'expir_oblig' not in args or 'expir_warning' not in args or \
-           'expir_oblig' not in args:
+        if 'id_owner' not in args or 'expir_warning' not in args or 'expir_oblig' not in args:
             self.log.error(Logs.fileline() + ' : SettingStock ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Setting.updateStockSetting(id_owner=args['id_owner'],
-                                         expir_oblig=args['expir_oblig'],
                                          expir_warning=args['expir_warning'],
                                          expir_alert=args['expir_alert'])
 
@@ -1051,4 +1063,44 @@ class SettingStock(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE SettingStock')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class SettingFormList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Setting.getSettingFormList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE SettingFormList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingFormList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class SettingFormDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'id_owner' not in args or 'ref' not in args or 'stat' not in args:
+            self.log.error(Logs.fileline() + ' : SettingFormDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Setting.updateFormSetting(ref=args['ref'],
+                                        stat=args['stat'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : SettingFormDet ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingFormDet')
         return compose_ret('', Constants.cst_content_type_json)

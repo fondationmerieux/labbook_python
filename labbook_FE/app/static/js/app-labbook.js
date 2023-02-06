@@ -194,6 +194,8 @@ eval_value( id_rec, ref_ana, id_res ) ;
             //console.log("DEBUG TOTAL VIA f1="+total) ;
             let accu = $("#accu_"+id_tot).val() ;
 
+            //console.log("DEBUG accu="+accu) ;
+
                 if ( accu == null || accu == "" )
                 accu = 2 ;
 

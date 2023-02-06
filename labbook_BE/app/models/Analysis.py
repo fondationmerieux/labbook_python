@@ -218,12 +218,42 @@ class Analysis:
 
         req = ('select req_ana.id_data as id_data, req_ana.id_owner as id_owner, req_ana.id_dos as id_dos, '
                'req_ana.ref_analyse as ref_analyse, req_ana.prix as prix, req_ana.paye as paye, req_ana.urgent as urgent, '
-               'req_ana.demande as demande, ref_ana.code as code, ref_ana.nom as nom, ref_ana.cote_unite as cote_unite, '
-               'ref_ana.cote_valeur as cote_valeur, ifnull(ref_ana.type_prel, 0) as type_samp, '
+               'req_ana.demande as demande, req_ana.req_outsourced as outsourced, ref_ana.code as code, ref_ana.nom as nom, '
+               'ref_ana.cote_unite as cote_unite, ref_ana.cote_valeur as cote_valeur, '
+               'ifnull(ref_ana.type_prel, 0) as type_samp, '
                'ifnull(ref_ana.produit_biologique, 0) as id_samp_act '
                'from sigl_04_data as req_ana '
                'left join sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '
                'where id_dos=%s' + cond)
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getAnalysisOutsourced(id_rec, type_ana):
+        cursor = DB.cursor()
+
+        # Only analysis
+        if type_ana == 'Y':
+            cond = ' and (cote_unite is NULL or cote_unite != "PB")'
+        # Only samples
+        elif type_ana == 'N':
+            cond = ' and cote_unite="PB"'
+        # Everything
+        else:
+            cond = ''
+
+        req = ('select req_ana.id_data as id_data, req_ana.id_dos as id_rec, '
+               'req_ana.ref_analyse as ref_analyse, req_ana.urgent as urgent, req_ana.demande as demande, '
+               'req_ana.req_outsourced as outsourced, ref_ana.code as code, ref_ana.nom as ana_name, '
+               'd1.label as ana_fam, '
+               'ifnull(ref_ana.type_prel, 0) as type_samp, '
+               'ifnull(ref_ana.produit_biologique, 0) as id_samp_act '
+               'from sigl_04_data as req_ana '
+               'left join sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '
+               'left join sigl_dico_data as d1 on d1.id_data=ref_ana.famille '
+               'where req_ana.id_dos=%s' + cond)
 
         cursor.execute(req, (id_rec,))
 
@@ -235,9 +265,10 @@ class Analysis:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_04_data '
-                           '(id_owner, id_dos, ref_analyse, prix, paye, urgent, demande) '
+                           '(id_owner, id_dos, ref_analyse, prix, paye, urgent, demande, req_outsourced) '
                            'values '
-                           '(%(id_owner)s, %(id_dos)s, %(ref_analyse)s, %(prix)s, %(paye)s, %(urgent)s, %(demande)s)', params)
+                           '(%(id_owner)s, %(id_dos)s, %(ref_analyse)s, %(prix)s, %(paye)s, %(urgent)s, '
+                           '%(demande)s, %(outsourced)s)', params)
 
             Analysis.log.info(Logs.fileline())
 
@@ -286,6 +317,20 @@ class Analysis:
             return False
 
     @staticmethod
+    def getAllVariable():
+        cursor = DB.cursor()
+
+        req = ('select var.id_data as id_item, var.code_var, var.libelle as label, var.commentaire as comment, '
+               'd1.label as type_res '
+               'from sigl_07_data as var '
+               'left join sigl_dico_data as d1 on d1.id_data=var.type_resultat '
+               'order by label asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getListVariable(id_ana):
         cursor = DB.cursor()
 
@@ -294,7 +339,7 @@ class Analysis:
                'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.var_whonet, '
                'link.var_qrcode, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, '
-               ' var.code_var, var.var_highlight '
+               'var.code_var, var.var_highlight '
                'from sigl_07_data as var '
                'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
                'left join sigl_dico_data as d1 on d1.id_data=var.unite '
@@ -468,7 +513,7 @@ class Analysis:
     def getLastAnalysisReqByRefAna(ref_ana):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande '
+        req = ('select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande, req_outsourced as outsourced '
                'from sigl_04_data '
                'where ref_analyse=%s '
                'order by id_data desc limit 1')
@@ -606,6 +651,18 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
+    def getNbAnaByVar(id_var):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_link '
+               'from sigl_05_07_data as link '
+               'where link.id_refvariable = %s')
+
+        cursor.execute(req, (id_var,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getAnalyzesHistoDet(args):
         cursor = DB.cursor()
 
@@ -707,8 +764,8 @@ class Analysis:
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
-               'ana.code as analysis_code, ana.nom as analysis_name, d_fam.label as analysis_familly, '
-               'date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
+               'req.req_outsourced as ana_outsourced, ana.code as analysis_code, ana.nom as analysis_name, '
+               'd_fam.label as analysis_familly, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '

@@ -69,7 +69,7 @@ class DB:
             cursor.execute('insert into database_status '
                            '(dbs_date, dbs_stat, dbs_type) '
                            'values '
-                           '(NOW(), %(stat)s)', params)
+                           '(NOW(), %(stat)s, %(type)s)', params)
 
             DB.log.info(Logs.fileline())
 

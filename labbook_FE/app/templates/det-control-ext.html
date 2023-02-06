@@ -10,9 +10,9 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Contrôle externe") }}</span></h2>
-            <div class="form-group d-flex align-items-start mt-3">
+            <div class="form-group d-lg-flex align-items-start mt-3">
                 <label class="form-label col-3 text-end mx-3">{{ _("Type") }}</label>
                 <label class="form-label text-end me-3">
                     <input type="radio" name="ctrl-type" value="QL" {% if not args['control']['ctq_type_val'] or args['control']['ctq_type_val'] == "QL" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Qualitatif") }}</input>
@@ -21,22 +21,22 @@
                     <input type="radio" name="ctrl-type" value="QN" {% if args['control']['ctq_type_val'] == "QN" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Quantitatif") }}</input>
                 </label>
             </div>
-            <div class="form-group d-flex align-items-start mt-3">
+            <div class="form-group d-lg-flex align-items-start mt-3">
                 <label for="ctrl-name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du paramètre") }}</label>
                 <div>
-                    <input id="ctrl-name" class="form-control" type="text" maxlength="255" value="{{ args['control']['ctq_name'] }}">
+                    <input id="ctrl-name" class="form-control form-lbk" type="text" maxlength="255" value="{{ args['control']['ctq_name'] }}">
                 </div>
             </div>
-            <div class="form-group d-flex align-items-start mt-3">
+            <div class="form-group d-lg-flex align-items-start mt-3">
                 <label for="search_eqp" class="form-label col-3 text-end mt-2 me-1">{{ _("Equipement") }}</label>
                 <div>
-                    <select id="search_eqp" class="form-select" style="width:400px"></select><br />
+                    <select id="search_eqp" class="form-select form-lbk form-search"></select><br />
                     <span class="ms-2">{{ args['control']['eqp_name'] }}</span>
                     <input type="hidden" id="id_eqp" value="{{ args['control']['ctq_eqp'] }}">
                 </div>
             </div>
             <div class="col-12 text-end my-2">
-                <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
             </div>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
@@ -51,7 +51,7 @@
             </div>
 
             <form class="row justify-content-center mt-3" id="res-list">
-                <table id="table_items" class="table table-striped table-hover table-responsive col-12 table-lbk tablesorter">
+                <table id="table_items" class="table table-striped table-hover table-responsive col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
@@ -77,14 +77,13 @@
             </div>
 
             <div class="clearfix mb-5 mt-3">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-                          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    {% if session['user_role'] in ('A','B','Q','TQ') %}
+                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>

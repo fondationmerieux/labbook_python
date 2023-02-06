@@ -1,0 +1,98 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramétrage de formulaires") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de formulaires") }}</span></h2>
+            <span><b>{{ _("Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter") }}</b></span>
+            <form autocomplete="off">
+                {% set var_for = {'type': ''} %}
+                {% for item in args['l_fos'] %}
+                    {% if item['fos_type'] != var_for.type %}
+                        {% if item['fos_type'] == 'PAT' %}
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Formulaire patient") }}</h3>
+                </div>
+                        {% elif item['fos_type'] == 'PROD' %}
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Formulaire produit") }}</h3>
+                </div>
+                        {% elif item['fos_type'] == 'SUPP' %}
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Formulaire approvisionnement") }}</h3>
+                </div>
+                        {% endif %}
+                        {% if var_for.update({'type': item['fos_type'] }) %}{% endif %}
+                    {% endif %}
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ item['fos_name'] }}</label>
+                    <label class="form-label text-lg-end mt-2 me-3" id="{{ item['fos_ref'] }}">
+                        <input type="radio" name="{{ item['fos_ref'] }}" value="Y" {% if item['fos_stat'] == 'Y' %} checked="true" {% endif %} onChange="update_data(this);">&nbsp;{{ _("Oui") }}</input>
+                    </label>
+                    <label class="form-label text-lg-end mt-2 me-3">
+                        <input type="radio" name="{{ item['fos_ref'] }}" value="N" {% if item['fos_stat'] == 'N' %} checked="true" {% endif %} onChange="update_data(this);">&nbsp;{{ _("Non") }}</input>
+                    </label>
+                </div>
+                {% endfor %}
+            </form>
+
+            <div class="clearfix mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function update_data( elem )
+{
+// Get new value from select or input
+let val_elem = $(elem).val() ;
+
+// Change value in data structure
+let ref_elem = elem.name ;
+
+var id_owner = {{ session['user_id']|safe}} ;
+
+var param = '{ "id_owner":' + id_owner + ', ' +
+              '"ref":"' + ref_elem + '", ' +
+              '"stat":"' + val_elem + '"}' ;
+
+console.log("DEBUG param=" + JSON.stringify(param));
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/setting/form/det",
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           tempAlert("{{ _("Enregistrement réussi") }}", ref_elem) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST setting form det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage";
+}
+</script>
+{% endblock %}

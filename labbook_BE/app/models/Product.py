@@ -30,7 +30,8 @@ class Product:
     def getProductList(args):
         cursor = DB.cursor()
 
-        filter_cond = 'type_prel is not NULL '
+        table_cond  = ''
+        filter_cond = 'prod.type_prel is not NULL '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -39,6 +40,24 @@ class Product:
             filter_cond += ' and rec.statut != 256 '
         else:
             limit = 'LIMIT 15000'
+
+            if 'link_fam' in args and args['link_fam']:
+                Product.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
+                # avoid redundance of table if filter type_ana exist
+                table_cond += (' inner join sigl_04_data as ana on ana.id_dos=rec.id_data '
+                               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
+
+                cond_link_fam = ''
+                # prepare list for sql
+                for id_fam in args['link_fam']:
+                    if not cond_link_fam:
+                        cond_link_fam = '('
+
+                    cond_link_fam = cond_link_fam + str(id_fam) + ','
+
+                if cond_link_fam:
+                    cond_link_fam = cond_link_fam[:-1] + ')'
+                    filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         # take lastest product of blood, stool, urine and other for each record
         req = ('select if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(rec.num_dos_mois from 7), rec.num_dos_mois), '
@@ -61,9 +80,11 @@ class Product:
                'from sigl_01_data as prod '
                'inner join sigl_02_data as rec on prod.id_dos=rec.id_data '
                'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '
-               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 '
+               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 ' + table_cond +
                'where ' + filter_cond +
                'group by prod.id_dos order by rec.num_dos_an desc ' + limit)
+
+        Product.log.info(Logs.fileline() + ' : DEBUG req = ' + str(req))
 
         cursor.execute(req, (Constants.cst_isodate,))
 

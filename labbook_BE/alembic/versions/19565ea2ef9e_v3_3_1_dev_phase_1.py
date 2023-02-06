@@ -42,7 +42,7 @@ def upgrade():
     except Exception as err:
         print("ERROR copy alembic resource indicator,\n\terr=" + str(err))
 
-    # UPDATE default stock setting
+    # UPDATE default sample quotation
     try:
         conn.execute("update sigl_05_data set cote_valeur=0.00 "
                      "where cote_unite like 'PB%' or code like 'PB%'")

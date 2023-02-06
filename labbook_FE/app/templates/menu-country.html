@@ -1,0 +1,48 @@
+<nav id="country-sel" class="navbar navbar-light float-end" {% if locale == 'ar' %}style="left:0;right:auto;"{% endif %}>
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle btn btn-lbk btn-{{ session['user_role']|safe }}" href="#" id="navbarLang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong>{{ session['lang_select'] }}</strong>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarLang">
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/fr_FR">{{ _("Français (FR)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/en_GB">{{ _("English (UK)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/en_US">{{ _("English (US)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/es">{{ _("Espagnole (ES)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/ar">{{ _("Arabe (AR)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/km">{{ _("Khmer (KM)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/lo">{{ _("Laotien (LO)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/mg">{{ _("Malagasy (MG)") }}</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/lang/pt">{{ _("Portugais (PT)") }}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

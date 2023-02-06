@@ -171,9 +171,12 @@ class PdfReportGlobal(Resource):
 
         ret = Pdf.getPdfReportGlobal(args['filename'], args['exclu'], args['date_beg'], args['date_end'])
 
-        if not ret:
+        if ret < 0:
             self.log.error(Logs.fileline() + ' : PdfReportGlobal failed')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
+        elif ret == 0:
+            self.log.error(Logs.fileline() + ' : PdfReportGlobal failed')
+            return compose_ret(0, Constants.cst_content_type_json, 404)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGlobal')
         return compose_ret(0, Constants.cst_content_type_json)
@@ -223,3 +226,23 @@ class PdfTemplate(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE PdfTemplate')
         return compose_ret(0, Constants.cst_content_type_json)
+
+
+class PdfOutsourced(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec, template, filename):
+        tpl = Setting.getTemplateByFile(template)
+
+        if not tpl:
+            self.log.error(Logs.fileline() + ' : PdfOutsourced template not found, template=%s', str(template))
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        ret = Pdf.getPdfOutsourced(id_rec, template, filename)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfOutsourced failed id_rec=%s', str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfOutsourced')
+        return compose_ret('', Constants.cst_content_type_json)

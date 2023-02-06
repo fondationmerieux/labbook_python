@@ -1,13 +1,255 @@
-<nav class="navbar navbar-expand-md" {% if locale == 'ar' %}style="left:auto;right:224px;"{% endif %}>
-    <div class="container-fluid nav-cust-cont">
+<nav class="navbar navbar-menu navbar-expand-md" {% if locale == 'ar' %}style="left:auto;right:224px;"{% endif %}>
+    <div class="container-fluid" id="menu-mobile">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+
+                    <!-- Dropdown Administrative -->
+                    {% if session['user_role'] in ('B','P','T','TA','TQ','S','SA') %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarAdministrative" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Administratif") }}</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarAdministrative">
+                        {% if session['user_role'] != 'Q' %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-records">{{ _("Liste des dossiers") }}</a>
+                        </li>
+                        {% endif %}
+                        {% if session['user_role'] == 'B' %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/B">{{ _("Liste de travail biologiste") }}</a>
+                        </li>
+                        {% endif %}
+                        {% if session['user_role'] in ('T','TA','TQ') %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
+                        </li>
+                        {% endif %}
+                        {% if session['user_role'] == 'B' %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/global-report">{{ _("Rapport global") }}</a>
+                        </li>
+                        {% endif %}
+                        {% if session['user_role'] != 'P' %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/new-req-ext">{{ _("Nouvelle demande externe") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/new-req-int">{{ _("Nouvelle demande hospitalisé") }}</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+                        {% if session['user_role'] in ('B','T','TA','TQ') %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-samples">{{ _("Etat des prélèvements en cours") }}</a>
+                        </li>
+                        {% endif %}
+                        {% if session['user_role'] in ('B','SA','T','TA','TQ') %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-results">{{ _("Saisie des résultats") }}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- Dropdown Report -->
+                    {% if session['user_role'] in ('B','T','TA','TQ','S','SA') %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarReport" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Rapports") }}</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarReport">
+                        {% if session['user_role'] != 'S' %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-activity">{{ _("Rapport activité") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-epidemio">{{ _("Rapport épidémiologique") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-indicator">{{ _("Rapport indicateurs") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-statistic">{{ _("Rapport statistique") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/pivot-table">{{ _("Tableau croisé dynamique") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-dhis2">{{ _("Export DHIS2") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/whonet-export">{{ _("Export WHONET") }}</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/hist-patients">{{ _("Historique patient") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/hist-analyzes">{{ _("Historique d'analyse") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-today">{{ _("Rapport de fin de journée") }}</a>
+                        </li>
+                        {% if session['pref_bill'] == '1' %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-billing">{{ _("Etat de la facturation journalière") }}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- Dropdown Setting -->
+                    {% if session['user_role'] in ('A','B','SA','TA','TQ','Q') %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarSetting" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Paramétrages") }}</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarSetting">
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
+                            </li>
+                            {% if session['user_role'] != 'Q' %}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
+                            </li>
+                            {% endif %}
+                            {% if session['user_role'] in ('A','B','TA') %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-analyzes">{{ _("Référentiel des analyses") }}</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dicts">{{ _("Dictionnaires") }}</a>
+                            </li>
+                            {% endif %}
+                            {% if session['user_role'] == 'A' %}
+                            <li>
+                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-backup">{{ _("Configuration des sauvegardes") }}</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-logo">{{ _("Configuration du logo") }}</a>
+                            </li>
+                            {% endif %}
+                            {% if session['user_role'] in ('A','B','TA') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-age-interval">{{ _("Configuration des intervalles d'âge") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-requesting-services">{{ _("Configuration des services demandeurs") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-functionnal-units">{{ _("Configuration des unités fonctionnelles") }}</a>
+                            </li>
+                            {% endif %}
+                            {% if session['user_role'] == 'A' %}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/list-template">{{ _("Configuration des modèles de documents") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes rendus") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-stock">{{ _("Configuration du stockage") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-form">{{ _("Configuration de formulaires") }}</a>
+                            </li>
+                            {% endif %}
+                            {% if session['user_role'] in ('A','B','TA','TQ','SA') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/manage-pat-records">{{ _("Gestion dossier patient") }}</a>
+                            </li>
+                            {% endif %}
+                            {% if session['user_role'] in ('A','B','TA') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dhis2">{{ _("Configuration DHIS2") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-epidemio">{{ _("Configuration Epidemio") }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-indicator">{{ _("Configuration du rapport d'indicateurs") }}</a>
+                            </li>
+                            {% endif %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- Dropdown Quality -->
+                    {% if session['pref_quality'] == 1 and (session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q','K')) %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarQuality" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Qualité") }}</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarQuality">
+                        {% if session['user_role'] not in ('S','P') %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/quality-general">{{ _("Général") }}</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-laboratory">{{ _("Laboratoire") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-staff">{{ _("Personnels") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-doctors">{{ _("Prescripteurs") }}</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-equipment">{{ _("Equipements") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-suppliers">{{ _("Fournisseurs") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-manuals">{{ _("Manuels") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-procedure">{{ _("Procédures") }}</a>
+                        </li>
+                        {% if session['user_role'] not in ('S','P') %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-stock">{{ _("Gestion des stocks") }}</a>
+                        </li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li> 
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-nonconformities">{{ _("Module des non-conformités") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-ctrl-int">{{ _("Contrôle qualité interne") }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-ctrl-ext">{{ _("Contrôle qualité externe") }}</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-meeting">{{ _("Réunion du laboratoire") }}</a>
+                        </li>
+                    </ul>
+                    {% endif %}
+
+                    <!-- Non conformity -->
+                    {% if session['pref_quality'] == 1 %}
+                    <a class="nav-link non-conformite" href="{{ session['server_ext'] }}/non-conformity/0">{{ _("Non conformité") }}</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="container-fluid nav-cust-cont" id="menu-desktop">
         <ul class="navbar-nav">
             <!-- Dropdown Admin -->
-            {% if session['user_role'] == 'B' or session['user_role'] == 'P' or
-                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
-                  session['user_role'] == 'S' or session['user_role'] == 'SA' %}
+            {% if session['user_role'] in ('B','P','T','TA','TQ','S','SA') %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-admin">
-                  <a class="nav-link dropdown-toggle admin" href="#" id="navbardrop" data-bs-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle admin" href="#" id="navbarsetting" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] != 'Q' %}
@@ -16,7 +258,7 @@
                     {% if session['user_role'] == 'B' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/B">{{ _("Liste de travail biologiste") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                    {% if session['user_role'] in ('T','TA','TQ') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}
@@ -28,12 +270,10 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/new-req-int">{{ _("Nouvelle demande hospitalisé") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
                     {% endif %}
-                    {% if session['user_role'] == 'B' or 
-                          session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                    {% if session['user_role'] in ('B','T','TA','TQ') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-samples">{{ _("Etat des prélèvements en cours") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'B' or session['user_role'] == 'SA' or
-                          session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                    {% if session['user_role'] in ('B','SA','T','TA','TQ') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-results">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
                   </div>
@@ -43,12 +283,10 @@
             {% endif %}
 
             <!-- Dropdown Report -->
-            {% if session['user_role'] == 'B' or 
-                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or
-                  session['user_role'] == 'S' or session['user_role'] == 'SA' %}
+            {% if session['user_role'] in ('B','T','TA','TQ','S','SA') %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-report">
-                  <a class="nav-link dropdown-toggle report" href="#" id="navbardrop" data-bs-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle report" href="#" id="navbarreport" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     {% if session['user_role'] != 'S' %}
@@ -73,18 +311,17 @@
             {% endif %}
 
             <!-- Dropdown Setting -->
-            {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'SA' or 
-                  session['user_role'] == 'TA' or session['user_role'] == 'TQ' or session['user_role'] == 'Q' %}
+            {% if session['user_role'] in ('A','B','SA','TA','TQ','Q') %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
-                  <a class="nav-link dropdown-toggle setting" href="#" id="navbardrop" data-bs-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle setting" href="#" id="navbarsetting" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu setting-content nav-{{ session['user_role']|safe }}" style="padding:0;">
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
                     {% if session['user_role'] != 'Q' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
+                    {% if session['user_role'] in ('A','B','TA') %}
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-analyzes">{{ _("Référentiel des analyses") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
@@ -95,7 +332,7 @@
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-logo">{{ _("Configuration du logo") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
+                    {% if session['user_role'] in ('A','B','TA') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-age-interval">{{ _("Configuration des intervalles d'âge") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-requesting-services">{{ _("Configuration des services demandeurs") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-functionnal-units">{{ _("Configuration des unités fonctionnelles") }}</a>
@@ -106,12 +343,12 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-stock">{{ _("Configuration du stockage") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-form">{{ _("Configuration de formulaires") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' or
-                          session['user_role'] == 'TQ' or session['user_role'] == 'SA' %}
+                    {% if session['user_role'] in ('A','B','TA','TQ','SA') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/manage-pat-records">{{ _("Gestion dossier patient") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or session['user_role'] == 'TA' %}
+                    {% if session['user_role'] in ('A','B','TA') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dhis2">{{ _("Configuration DHIS2") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-epidemio">{{ _("Configuration Epidemio") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-indicator">{{ _("Configuration du rapport d'indicateurs") }}</a>
@@ -123,16 +360,13 @@
             {% endif %}
 
             <!-- Dropdown Quality -->
-            {% if session['pref_quality'] == 1 and (session['user_role'] == 'A' or session['user_role'] == 'B' or 
-                  session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' or 
-                  session['user_role'] == 'S' or session['user_role'] == 'SA' or session['user_role'] == 'Q' or
-                  session['user_role'] == 'K') %} 
+            {% if session['pref_quality'] == 1 and (session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q','K')) %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
-                  <a class="nav-link dropdown-toggle qualite" href="#" id="navbardrop" data-bs-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle qualite" href="#" id="navbarquality" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu qualite-content nav-{{ session['user_role']|safe }}" style="padding:0;">
-                    {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
+                    {% if session['user_role'] not in ('S','P') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/quality-general">{{ _("Général") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
                     {% endif %}
@@ -144,7 +378,7 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-suppliers">{{ _("Fournisseurs") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-manuals">{{ _("Manuels") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-procedure">{{ _("Procédures") }}</a>
-                    {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
+                    {% if session['user_role'] not in ('S','P') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-stock">{{ _("Gestion des stocks") }}</a>
                     {% endif %}
                     <div class="dropdown-divider nav-cust-divider"></div>

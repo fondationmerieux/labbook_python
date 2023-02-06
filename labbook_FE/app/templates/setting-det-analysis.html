@@ -10,7 +10,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Analyse") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
@@ -18,30 +18,30 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-2">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="code" class="form-label col-5 text-end mt-2 me-1">{{ _("Code") }} *</label>
-                            <input type="text" name="code" id="code" value="{{ args['details']['code'] }}" class="form-control" style="width:50%">			
+                            <input type="text" name="code" id="code" value="{{ args['details']['code'] }}" class="form-control form-lbk" style="width:50%">			
                             <input type="hidden" name="code_ori" id="code_ori" value="{{ args['details']['code'] }}">
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="name" class="form-label col-4 text-end mt-2 me-1">{{ _("Désignation de l'acte") }} *</label>
-                            <input type="text" name="name" id="name" value="{{ args['details']['nom'] }}" class="form-control" style="width:60%">			
+                            <input type="text" name="name" id="name" value="{{ args['details']['nom'] }}" class="form-control form-lbk" style="width:60%">			
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="abbr" class="form-label col-3 text-end mt-2 me-1">{{ _("Abréviation") }}</label>
                             <div>					
-                                <input type="text" name="abbr" id="abbr" value="{{ args['details']['abbr'] }}" class="form-control">			
+                                <input type="text" name="abbr" id="abbr" value="{{ args['details']['abbr'] }}" class="form-control form-lbk">			
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="type_ana" class="form-label col-3 text-end mt-2 me-1">{{ _("Famille d'analyse") }}</label>
                             <div>
                                 <select name="type_ana" id="type_ana" class="form-select">
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="sample" class="form-label col-4 text-end mt-2 me-1">{{ _("Type de prélèvement") }}</label>
                             <div>					
                                 <select name="type_prod" id="type_prod" class="form-select">
@@ -67,19 +67,19 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="unit" class="form-label col-6 text-end mt-2 me-1">{{ _("Unité de cotation") }}</label>
-                            <input type="text" name="unit" id="unit" value="{{ args['details']['cote_unite'] }}" class="form-control" style="width:30%">			
+                            <input type="text" name="unit" id="unit" value="{{ args['details']['cote_unite'] }}" class="form-control form-lbk" style="width:30%">			
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="value" class="form-label col-7 text-end mt-2 me-1">{{ _("Valeur de cotation") }}</label>
-                            <input type="number" name="value" id="value" min="0" step="1" value="{{ args['details']['cote_valeur'] }}" class="form-control" style="width:90px;">			
+                            <input type="number" name="value" id="value" min="0" step="1" value="{{ args['details']['cote_valeur'] }}" class="form-control form-lbk" style="width:90px;">			
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label class="form-label col-6 text-end mt-2 me-3">{{ _("Analyse active") }}</label>
                             <label class="form-label text-end mt-2 me-3">
                                 <input type="radio" name="stat" value="4" {% if not args['details'] or args['details']['actif'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label class="form-label col-6 text-end mt-2 me-3">{{ _("Export whonet") }}</label>
                             <label class="form-label text-end mt-2 me-3">
                                 <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
@@ -103,10 +103,10 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="comment" class="form-label col-2 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
                             <div>					
-                                <textarea id="comment" name="comment" rows="3" cols="80" class="form-control">{{ args['details']['commentaire'] }}</textarea>
+                                <textarea id="comment" name="comment" rows="3" cols="80" class="form-control form-lbk">{{ args['details']['commentaire'] }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -119,30 +119,30 @@
                     <h3 class="panel-title">{{ _("Variables") }}</h3>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="search_var" class="form-label col-3 text-end mt-2 me-1">{{ _("Chercher une variable") }}</label>
                         <div>
-                            <select id="search_var" class="form-select" style="width:450px"></select>
-                            <button type="button" onclick="add_var();" id="btn_var" title="{{ _("Créer une nouvelle variable") }}" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
+                            <select id="search_var" class="form-select form-lbk form-search"></select>
+                            <button type="button" onclick="add_var();" id="btn_var" title="{{ _("Créer une nouvelle variable") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
                         </div>
                     </div>
 
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_label" class="form-label col-2 text-end mt-2 me-1">{{ _("Libellé") }} *</label>
                         <div>					
-                            <input type="text" name="var_label" id="var_label" value="{% if args['var'] %}{{ args['var'][0]['label'] }}{% endif %}" class="group-det-var form-control" style="width:300px;" onChange="change_data(this);">			
+                            <input type="text" name="var_label" id="var_label" value="{% if args['var'] %}{{ args['var'][0]['label'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:300px;" onChange="change_data(this);">			
                         </div>
                         <label for="var_code" class="form-label col-2 text-end mt-2 me-1">{{ _("Code var.") }}</label>
                         <div>					
-                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);" {% if session['user_role'] != 'A' %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
+                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" {% if session['user_role'] != 'A' %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
                         </div>
                         <label for="var_id" class="form-label col-1 text-end mt-2 me-1">{{ _("Id") }}</label>
                         <div>					
-                            <input type="text" name="var_id" id="var_id" value="{% if args['var'] %}{{ args['var'][0]['id_data'] }}{% endif %}" class="form-control" readonly style="width:90px;">			
+                            <input type="text" name="var_id" id="var_id" value="{% if args['var'] %}{{ args['var'][0]['id_data'] }}{% endif %}" class="form-control form-lbk" readonly style="width:90px;">			
                         </div>
                     </div>
 
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_type_res" class="form-label col-2 text-end mt-2 me-1">{{ _("Type de résultat") }} *</label>
                         <div>					
                             <select name="var_type_res" id="var_type_res" class="group-det-var form-select" onChange="change_data(this);">
@@ -154,18 +154,18 @@
                         </div>
                         <label for="var_descr" class="form-label col-2 text-end mt-2 me-1">{{ _("Description") }}</label>
                         <div>					
-                            <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
+                            <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
                         </div>
                     </div>
 
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_min" class="form-label col-2 text-end mt-2 me-1">{{ _("Valeur normale min.") }}</label>
                         <div>					
-                            <input type="text" name="var_min" id="var_min" value="{% if args['var'] %}{{ args['var'][0]['normal_min'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
+                            <input type="text" name="var_min" id="var_min" value="{% if args['var'] %}{{ args['var'][0]['normal_min'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
                         </div>
                         <label for="var_max" class="form-label col-2 text-end mt-2 me-1">{{ _("Valeur normale max.") }}</label>
                         <div>					
-                            <input type="text" name="var_max" id="var_max" value="{% if args['var'] %}{{ args['var'][0]['normal_max'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
+                            <input type="text" name="var_max" id="var_max" value="{% if args['var'] %}{{ args['var'][0]['normal_max'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
                         </div>
                         <label class="form-label text-end mt-2 mx-3">{{ _("Souligner") }}</label>
                         <label class="form-label text-end mt-2 me-3">
@@ -176,10 +176,10 @@
                         </label>
                     </div>
 
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_formula" class="form-label col-2 text-end mt-2 me-1">{{ _("Formule") }}</label>
                         <div>					
-                            <input type="text" name="var_formula" id="var_formula" value="{% if args['var'] %}{{ args['var'][0]['formula'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">			
+                            <input type="text" name="var_formula" id="var_formula" value="{% if args['var'] %}{{ args['var'][0]['formula'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
                         </div>
                         <label for="var_unit" class="form-label col-1 text-end mt-2 me-1">{{ _("Unité") }}</label>
                         <div>					
@@ -191,14 +191,14 @@
                             </select>
                         </div>
                         <label for=var_accu" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision") }}</label>
-                        <input type="number" name="var_accu" id="var_accu" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu'] }}{% endif %}" class="group-det-var form-control" style="width:80px;" onChange="change_data(this);">
+                        <input type="number" name="var_accu" id="var_accu" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:80px;" onChange="change_data(this);">
                     </div>
 
                     {# 02/01/2023 : Deactivate because useless for the moment
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_formula2" class="form-label col-2 text-end mt-2 me-1">{{ _("Formule de conversion unité 2") }}</label>
                         <div>					
-                            <input type="text" name="var_formula2" id="var_formula2" value="{% if args['var'] %}{{ args['var'][0]['formula2'] }}{% endif %}" class="group-det-var form-control" onChange="change_data(this);">
+                            <input type="text" name="var_formula2" id="var_formula2" value="{% if args['var'] %}{{ args['var'][0]['formula2'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">
                         </div>
                         <label for="var_unit2" class="form-label col-1 text-end mt-2 me-1">{{ _("Unité 2") }}</label>
                         <div>					
@@ -210,21 +210,21 @@
                             </select>
                         </div>
                         <label for=var_accu2" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision 2") }}</label>
-                        <input type="number" name="var_accu2" id="var_accu2" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu2'] }}{% endif %}" class="group-det-var form-control"  style="width:80px;" onChange="change_data(this);">			
+                        <input type="number" name="var_accu2" id="var_accu2" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu2'] }}{% endif %}" class="group-det-var form-control form-lbk"  style="width:80px;" onChange="change_data(this);">			
                     </div>
                     #}
 
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_num" class="form-label col-2 text-end mt-2 me-1">{{ _("Num. var pour la formule") }}</label>
-                        <input type="number" name="var_num" id="var_num" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['num_var'] }}{% endif %}" class="group-det-var form-control" style="width:80px;" onChange="change_data(this);">
+                        <input type="number" name="var_num" id="var_num" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['num_var'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:80px;" onChange="change_data(this);">
                         <label for="var_pos" class="form-label col-2 text-end mt-2 me-1">{{ _("Position affichage") }}</label>
-                        <input type="number" name="var_pos" id="var_pos" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['pos'] }}{% endif %}" class="group-det-var form-control" style="width:80px;" onChange="change_data(this);">
+                        <input type="number" name="var_pos" id="var_pos" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['pos'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:80px;" onChange="change_data(this);">
                     </div>
 
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_comment" class="form-label col-2 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
                         <div>					
-                            <textarea id="var_comment" name="var_comment" rows="3" cols="30" class="group-det-var form-control" onChange="change_data(this);">{% if args['var'] %}{{ args['var'][0]['comment'] }}{% endif %}</textarea>
+                            <textarea id="var_comment" name="var_comment" rows="3" cols="30" class="group-det-var form-control form-lbk" onChange="change_data(this);">{% if args['var'] %}{{ args['var'][0]['comment'] }}{% endif %}</textarea>
                         </div>
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Résultat obligatoire") }}</label>
                         <label class="form-label text-end mt-2 me-3">
@@ -241,7 +241,7 @@
                             <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
                     </div>
-                    <div class="col-12 form-group d-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Générer un code QR") }}</label>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" id="var_qrcode_Y" name="var_qrcode" value="Y" {% if args['var'] and args['var'][0]['var_qrcode'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
@@ -255,7 +255,7 @@
 
             <!-- ### VAR TABLE ### -->
             <div class="row justify-content-center m-3" id="var-list">
-                <table id="table_var" class="table table-striped table-hover col-12 table-lbk">
+                <table id="table_var" class="table table-striped table-hover col-lg-12 table-lbk">
                     <thead>
                         <tr class="row">
                             <th hidden>{{ _("serial") }}</th>
@@ -278,11 +278,11 @@
                     <h3 class="panel-title">{{ _("Sous analyses") }}</h3>
                 </div>
                 <div class="row mt-2 d-none">
-                    <div class="col-12">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="search_ana" class="form-label col-3 text-end ">{{ _("Ajouter une analyse") }}</label>
+                    <div class="col-lg-12">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="search_analysis" class="form-label col-lg-3 text-end ">{{ _("Ajouter une analyse") }}</label>
                             <div>
-                                <select id="search_ana" class="form-select" style="width:450px"></select>
+                                <select id="search_analysis" class="form-select form-lbk form-search"></select>
                             </div>
                         </div>
                     </div>
@@ -292,18 +292,18 @@
                     <h3 class="panel-title">{{ _("Produit biologique") }}</h3>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-12">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="search_prod" class="form-label col-3 text-end mt-1 me-1">{{ _("Chercher un produit biologique") }}</label>
+                    <div class="col-lg-12">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="search_prod" class="form-label col-lg-3 text-end mt-1 me-1">{{ _("Chercher un produit biologique") }}</label>
                             <div>
                                 {% if args['details'] and args['details']['produit_biologique'] and args['details']['produit_biologique'] > 0 %}
-                                <select id="search_prod" class="form-select" style="width:450px" disabled></select>
+                                <select id="search_prod" class="form-select form-lbk form-search" disabled></select>
                                 <br />
                                 <span class="mx-2" id="product_label">{{ args['details']['product_label'] }}</span>
                                 <input type="hidden" id="product" value="{{ args['details']['produit_biologique'] }}">
                                 <img id="btn_del_prod" onclick="del_prod();" title="{{ _("Supprimer") }}" src="{{ url_for('static', filename='img/close.png') }}"> 
                                 {% else %}
-                                <select id="search_prod" class="form-select" style="width:450px"></select>
+                                <select id="search_prod" class="form-select form-lbk form-search"></select>
                                 <br />
                                 <span class="mx-2" id="product_label"></span>
                                 <input type="hidden" id="product" value="0">
@@ -317,8 +317,8 @@
 
             <div class="clearfix row mt-3">
                 <div class="col-12">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
-                    <input type="button" onclick="save_ana();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} float-end">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="save_ana();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} float-end">
                 </div>
             </div>
 
@@ -446,7 +446,7 @@ document.querySelector('.select2-search__field').focus() ;
 } ) ;
 
 /*
-$("#search_ana").select2(
+$("#search_analysis").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
@@ -507,7 +507,7 @@ var display = $(
 return display ;
 }
 
-$("#search_ana").on("select2:select", function (e) 
+$("#search_analysis").on("select2:select", function (e) 
 {
 let id_item = $(e.currentTarget).val();
 } ) ;
@@ -525,7 +525,7 @@ $("#search_prod").select2(
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        term: $("#search_analysis").text(),
+        term: $("#search_prod").text(),
         data: function (params) {
             return JSON.stringify(
             {

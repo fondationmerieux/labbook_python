@@ -8,20 +8,20 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Référentiel des analyses") }}</span></h2>
             <div class="panel-heading row">
                 <h3 class="panel-title">{{ _("Rechercher") }}</h3>
             </div>
             <div class="panel-filter row mt-3">
                 <div class="col-12">
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label for="name" class="form-label col-2 text-end ms-1 mt-2">{{ _("Désignation de l'acte") }}&nbsp;</label>
                         <div>					
-                            <input type="text" name="name" id="name" value="" class="form-control cnx_trigger">			
+                            <input type="text" name="name" id="name" value="" class="form-control form-lbk cnx_trigger">			
                         </div>
                     </div>
-                    <div class="form-group  d-flex align-items-start mt-2">
+                    <div class="form-group  d-lg-flex align-items-start mt-2">
                         <label for="type_ana" class="form-label col-2 text-end ms-1 mt-2">{{ _("Famille d'analyse") }}&nbsp;</label>
                         <div>
                             <select name="type_ana" id="type_ana" class="form-select cnx_trigger">
@@ -30,7 +30,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group  d-flex align-items-start mt-2">
+                    <div class="form-group  d-lg-flex align-items-start mt-2">
                         <label for="sample" class="form-label col-2 text-end ms-1 mt-2">{{ _("Type de prélèvement") }}&nbsp;</label>
                         <div>					
                             <select name="type_prod" id="type_prod" class="form-select cnx_trigger">
@@ -41,7 +41,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group  d-flex align-items-start mt-2">
+                    <div class="form-group  d-lg-flex align-items-start mt-2">
                         <label for="status" class="form-label col-2 text-end ms-1 mt-2">{{ _("Analyse active") }}&nbsp;</label>
                         <div>					
                             <select id="status" name="status" class="form-select cnx_trigger">
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-12">
                     <div class="float-end">
-                        <button type="button" onclick="filter_analyzes();" id="btn_search" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        <button type="button" onclick="filter_analyzes();" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
             </div>
 
             <form class="row justify-content-center mt-3" id="analyzes-list">
-                <table id="table_analyzes" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                <table id="table_analyzes" class="table table-striped table-hover col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
@@ -98,25 +98,26 @@
             </div>
 
             <div class="clearfix mb-5">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-end d-flex align-items-end">
+                <div class="float-end d-lg-flex align-items-end">
                     {% if session['user_role'] == 'A' %}
                     <div class="dropdown">
-                        <button class="btn btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_export" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Statut des analyses") }}</button>
-                        <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#" onclick="upd_status_all('E');">{{ _("Tout activer") }}</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="upd_status_all('D');">{{ _("Tout désactiver") }}</a></li>
+                        <button class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_export" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Statut des analyses") }}</button>
+                        <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownStatus">
+                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="upd_status_all('E');">{{ _("Tout activer") }}</a></li>
+                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="upd_status_all('D');">{{ _("Tout désactiver") }}</a></li>
                         </ul>
                     </div>
                     {% endif %}
-                    <input type="button" onclick="import_analyzes();" id="btn_import" value="{{ _("Importer le référentiel") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
-                    <input type="button" onclick="export_analyzes();" id="btn_export" value="{{ _("Exporter le référentiel") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="import_analyzes();" id="btn_import" value="{{ _("Importer le référentiel") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="export_analyzes();" id="btn_export" value="{{ _("Exporter le référentiel") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     <!--
-                    <input type="button" onclick="export_list();" id="btn_list" value="{{ _("Enregistrer la liste") }}" class="btn btn-{{ session['user_role']|safe }} ms-2" disabled>
+                    <input type="button" onclick="export_list();" id="btn_list" value="{{ _("Enregistrer la liste") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2" disabled>
                     -->
-                    <input type="button" onclick="add_analysis();" id="btn_add" value="{{ _("Ajouter une analyse") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="list_vars();" id="btn_var" value="{{ _("Liste des variables") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="add_analysis();" id="btn_add" value="{{ _("Ajouter une analyse") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -430,6 +431,11 @@ var msg_confirm = "{{ _("Veuillez confirmer la désactivation de cette analyse")
             }
         } ) ;
     }
+}
+
+function list_vars()
+{
+window.location.href = "{{ session['server_ext'] }}/list-vars";
 }
 
 function return_home()

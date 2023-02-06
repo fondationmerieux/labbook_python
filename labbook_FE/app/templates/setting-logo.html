@@ -10,24 +10,24 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage du logo pour les documents") }}</span></h2>
-            <div class="d-flex ms-5">
+            <div class="d-lg-flex ms-5">
                 <label>{{ _("Logo original") }} :</label>
                 <img src="{{ session['server_ext'] }}/resource/logo.png?{{ rand }}" alt="logo" class="img-fluid">
             </div>
-            <div class="d-flex ms-5">
+            <div class="d-lg-flex ms-5">
                 <label>{{ _("Logo tel qu'il apparaitra dans l'entête de rapport") }}<br />{{ _("Largeur forcée à 230 pixels et conserve les proportions") }} :</label>
                 <img src="{{ session['server_ext'] }}/resource/logo.png?{{ rand }}" width="230" alt="resized_logo">
             </div>
             <br />
             <p class="ms-5">{{ _("Le fichier doit être au format png ou jpg") }}</p>
-            <div class="d-flex">
-                <div class="offset-1" style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                    <input name="file" type="file" style="margin-bottom:4px"/>
+            <div class="d-lg-flex">
+                <div class="offset-lg-1 uploadHTML5 d-inline-block pe-3">
+                    <input name="file" type="file" class="mb-1"/>
                 </div> 
             </div>
-            <div class="d-flex">
-                <div class="offset-1">
-                    <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}" onclick="upload_logo();">
+            <div class="d-lg-flex">
+                <div class="offset-lg-1">
+                    <input type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}" onclick="upload_logo();">
                 </div>
             </div>
         </div>

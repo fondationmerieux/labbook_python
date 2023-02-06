@@ -8,11 +8,11 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des numéros de dossier") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Période de numérotation") }}</label>
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Période de numérotation") }}</label>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="period" value="1070" {% if args['periode'] == 1070 %} checked="true" {% endif %}>&nbsp;{{ _("Mois") }}</input>
                     </label>
@@ -20,8 +20,8 @@
                         <input type="radio" name="period" value="1071" {% if args['periode'] == 1071 %} checked="true" {% endif %}>&nbsp;{{ _("Année") }}</input>
                     </label>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Format de numérotation") }}</label>
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Format de numérotation") }}</label>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="format" value="1072" {% if args['format'] == 1072 %} checked="true" {% endif %}>&nbsp;{{ _("Court") }}</input>
                     </label>
@@ -31,12 +31,12 @@
                 </div>
             </form>
 
-            <div class="clearfix mb-5">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+            <div class="clearfix mt-2 mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 

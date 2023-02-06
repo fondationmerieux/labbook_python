@@ -11,20 +11,20 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Non-conformité") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de la non-conformité") }} *</label>
                     <div>					
-                        <input type="text" name="name" id="name" value="{{ args['details']['name'] }}" class="form-control">			
+                        <input type="text" name="name" id="name" value="{{ args['details']['name'] }}" class="form-control form-lbk">			
                     </div>
                 </div> 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_reporter" class="form-label col-3 text-end me-1">{{ _("Rapporteur") }} *</label>
                     <div>
                         {% if args['id_det'] == 0 %}
-                        <select id="search_reporter" class="form-select" style="width:400px"></select>
+                        <select id="search_reporter" class="form-select form-lbk form-search"></select>
                         {% else %}
                         <span class="ms-2">{{ args['details']['reporter'] }}</span>
                         <input type="hidden" id="reporter_id" value="{{ args['details']['reporter_id'] }}">
@@ -34,17 +34,17 @@
 
                 <fieldset class="border p-2">
                     <legend class="w-auto legend-lbk">{{ _("DECLARATION DE LA NON-CONFORMITE") }}</legend>
-                    <div class="form-group d-flex align-items-start mt-3">
+                    <div class="form-group d-lg-flex align-items-start mt-3">
                         <label for="report_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date") }}</label>
                         <div>					
-                            <input id="report_date" name="report_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['date_create'] }}" style="color: #888;">
+                            <input id="report_date" name="report_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['details']['date_create'] }}" style="color: #888;">
                         </div>
                     </div>
 
                     <!-- PREANA category -->
                     <span class="offset-2 font-info">{{ _("Catégorie de la non-conformité") }}</span>
 
-                    <div class="form-group d-flex align-items-start mt-3">
+                    <div class="form-group d-lg-flex align-items-start mt-3">
                         <label for="cat_preana" class="form-label col-3 text-end ms-1 me-2">{{ _("Pré analytique") }}</label>
                         <div class="form-inline">
                             <input id="cat_preana" name="cat_preana" type="checkbox" value="4" onchange="cat_change(this);">
@@ -52,25 +52,25 @@
                     </div>
 
                     <!-- preana SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Prescription") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat1" name="sub_preana_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Oubli ou examen erroné") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat2" name="sub_preana_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Dossier du patient / identité patient") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat3" name="sub_preana_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Prélèvement") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat4" name="sub_preana_cat4" type="checkbox" value="4" onchange="sub_cat_change(this);">
@@ -78,64 +78,64 @@
                     </div>
 
                     <!-- SUB category from sub_preana_cat4 -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_sub_preana_cat4 d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_sub_preana_cat4 d-none">
                         <label for="sub1_sub_preana_cat4" class="form-label col-5 text-end ms-1 me-2">{{ _("Heure de prélèvement") }}</label>
                         <div class="form-inline">
                             <input id="sub1_sub_preana_cat4" name="sub1_sub_preana_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_sub_preana_cat4 d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_sub_preana_cat4 d-none">
                         <label for="sub2_preana_cat4" class="form-label col-5 text-end ms-1 me-2">{{ _("Volume de prélèvement") }}</label>
                         <div class="form-inline">
                             <input id="sub2_sub_preana_cat4" name="sub2_sub_preana_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_sub_preana_cat4 d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_sub_preana_cat4 d-none">
                         <label for="sub3_sub_preana_cat4" class="form-label col-5 text-end ms-1 me-2">{{ _("Identification du prélèvement") }}</label>
                         <div class="form-inline">
                             <input id="sub3_sub_preana_cat4" name="sub3_sub_preana_cat4" type="checkbox" value="4">
                         </div>
                     </div>
 
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Renseignement clinique") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat5" name="sub_preana_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Transport de l'échantillon") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat6" name="sub_preana_cat6" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat7" class="form-label col-4 text-end ms-1 me-2">{{ _("Respect procédures") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat7" name="sub_preana_cat7" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat8" class="form-label col-4 text-end ms-1 me-2">{{ _("Urgence") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat8" name="sub_preana_ca8" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat9" class="form-label col-4 text-end ms-1 me-2">{{ _("Traçabilité") }}</label>
                         <div class="form-inline">
                             <input id="sub_preana_cat9" name="sub_preana_cat9" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_preana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_preana d-none">
                         <label for="sub_preana_cat10" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_preana_cat10" name="sub_preana_cat10" rows="4" cols="50" class="form-control">{{ args['details']['sub_preana_cat10'] }}</textarea>
+                            <textarea id="sub_preana_cat10" name="sub_preana_cat10" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_preana_cat10'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- ANALY category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_analy" class="form-label col-3 text-end ms-1 me-2">{{ _("Analytique") }}</label>
                         <div class="form-inline">
                             <input id="cat_analy" name="cat_analy" type="checkbox" value="4" onchange="cat_change(this);">
@@ -143,75 +143,75 @@
                     </div>
 
                     <!-- ANALY SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Conservation échantillon avant analyse") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat1" name="sub_analy_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Urgence") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat2" name="sub_analy_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Centrifugation") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat3" name="sub_analy_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Aliquotage") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat4" name="sub_analy_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Contrôle qualité interne") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat5" name="sub_analy_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Contrôle qualité externe") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat6" name="sub_analy_cat6" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat7" class="form-label col-4 text-end ms-1 me-2">{{ _("Traçabilité") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat7" name="sub_analy_cat7" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat8" class="form-label col-4 text-end ms-1 me-2">{{ _("Respect procédures") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat8" name="sub_analy_cat8" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat9" class="form-label col-4 text-end ms-1 me-2">{{ _("Absence de résultats/Résultats aberrants") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat9" name="sub_analy_cat9" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat10" class="form-label col-4 text-end ms-1 me-2">{{ _("Critère de repasse non respecté") }}</label>
                         <div class="form-inline">
                             <input id="sub_analy_cat10" name="sub_analy_cat10" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_analy d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_analy d-none">
                         <label for="sub_analy_cat11" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_analy_cat11" name="sub_analy_cat11" rows="4" cols="50" class="form-control">{{ args['details']['sub_analy_cat11'] }}</textarea>
+                            <textarea id="sub_analy_cat11" name="sub_analy_cat11" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_analy_cat11'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- POSTANA category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_postana" class="form-label col-3 text-end ms-1 me-2">{{ _("Post analytique") }}</label>
                         <div class="form-inline">
                             <input id="cat_postana" name="cat_postana" type="checkbox" value="4" onchange="cat_change(this);">
@@ -219,69 +219,69 @@
                     </div>
 
                     <!-- POSTANA SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Dossier non validé") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat1" name="sub_postana_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Validation partielle non / mal réalisée") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat2" name="sub_postana_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Résultat erroné / aberrant") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat3" name="sub_postana_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Absence de résultat") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat4" name="sub_postana_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Erreur de saisie") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat5" name="sub_postana_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Interprétation des résultats") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat6" name="sub_postana_cat6" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat7" class="form-label col-4 text-end ms-1 me-2">{{ _("Prestation de conseil") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat7" name="sub_postana_cat7" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat8" class="form-label col-4 text-end ms-1 me-2">{{ _("Sérothèque/conservation échantillon après analyse") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat8" name="sub_postana_cat8" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat9" class="form-label col-4 text-end ms-1 me-2">{{ _("Respect procédures") }}</label>
                         <div class="form-inline">
                             <input id="sub_postana_cat9" name="sub_postana_cat9" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_postana d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_postana d-none">
                         <label for="sub_postana_cat10" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_postana_cat10" name="sub_postana_cat10" rows="4" cols="50" class="form-control">{{ args['details']['sub_postana_cat10'] }}</textarea>
+                            <textarea id="sub_postana_cat10" name="sub_postana_cat10" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_postana_cat10'] }}</textarea>
                         </div>
                     </div>
                     
                     <!-- RES category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_res" class="form-label col-3 text-end ms-1 me-2">{{ _("Transmission des résultats") }}</label>
                         <div class="form-inline">
                             <input id="cat_res" name="cat_res" type="checkbox" value="4" onchange="cat_change(this);">
@@ -289,51 +289,51 @@
                     </div>
 
                     <!-- RES SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Défaut/Absence de transmission patient") }}</label>
                         <div class="form-inline">
                             <input id="sub_res_cat1" name="sub_res_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Défaut/Absence de transmission Prescripteur/Correspondant") }}</label>
                         <div class="form-inline">
                             <input id="sub_res_cat2" name="sub_res_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Accès aux résultats") }}</label>
                         <div class="form-inline">
                             <input id="sub_res_cat3" name="sub_res_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Date de rendu erronée") }}</label>
                         <div class="form-inline">
                             <input id="sub_res_cat4" name="sub_res_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Délai de transmission non respecté") }}</label>
                         <div class="form-inline">
                             <input id="sub_res_cat5" name="sub_res_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Non respect de la procédure de rendu des résultats") }}</label>
                         <div class="form-inline">
                             <input id="sub_res_cat6" name="sub_res_cat6" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_res d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_res d-none">
                         <label for="sub_res_cat7" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_res_cat7" name="sub_res_cat7" rows="4" cols="50" class="form-control">{{ args['details']['sub_res_cat7'] }}</textarea>
+                            <textarea id="sub_res_cat7" name="sub_res_cat7" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_res_cat7'] }}</textarea>
                         </div>
                     </div>
 
                     <!--HR category  -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_hr" class="form-label col-3 text-end ms-1 me-2">{{ _("Ressources humaines") }}</label>
                         <div class="form-inline">
                             <input id="cat_hr" name="cat_hr" type="checkbox" value="4" onchange="cat_change(this);">
@@ -341,39 +341,39 @@
                     </div>
 
                     <!-- HR SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_hr d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_hr d-none">
                         <label for="sub_hr_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Non respect procédure") }}</label>
                         <div class="form-inline">
                             <input id="sub_hr_cat1" name="sub_hr_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_hr d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_hr d-none">
                         <label for="sub_hr_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Absence") }}</label>
                         <div class="form-inline">
                             <input id="sub_hr_cat2" name="sub_hr_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_hr d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_hr d-none">
                         <label for="sub_hr_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Habilitation/maintien des compétences") }}</label>
                         <div class="form-inline">
                             <input id="sub_hr_cat3" name="sub_hr_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_hr d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_hr d-none">
                         <label for="sub_hr_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Accident exposition au sang / Hygiène et sécurité") }}</label>
                         <div class="form-inline">
                             <input id="sub_hr_cat4" name="sub_hr_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_hr d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_hr d-none">
                         <label for="sub_hr_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_hr_cat5" name="sub_hr_cat5" rows="4" cols="50" class="form-control">{{ args['details']['sub_hr_cat5'] }}</textarea>
+                            <textarea id="sub_hr_cat5" name="sub_hr_cat5" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_hr_cat5'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- EQUIPMENT category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_eqp" class="form-label col-3 text-end ms-1 me-2">{{ _("Equipements") }}</label>
                         <div class="form-inline">
                             <input id="cat_eqp" name="cat_eqp" type="checkbox" value="4" onchange="cat_change(this);">
@@ -381,52 +381,52 @@
                     </div>
 
                     <!-- EQUIPMENT SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
                         <label for="sub_eqp_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Etalonnage, Certification, Calibrage") }}</label>
                         <div class="form-inline">
                             <input id="sub_eqp_cat1" name="sub_eqp_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
                         <label for="sub_eqp_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Calibration automate") }}</label>
                         <div class="form-inline">
                             <input id="sub_eqp_cat2" name="sub_eqp_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
                         <label for="sub_eqp_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Alarme") }}</label>
                         <div class="form-inline">
                             <input id="sub_eqp_cat3" name="sub_eqp_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
                         <label for="sub_eqp_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Panne d'un équipement") }}</label>
                         <div class="form-inline">
                             <input id="sub_eqp_cat4" name="sub_eqp_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
                         <label for="sub_eqp_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Respect procédure") }}</label>
                         <div class="form-inline">
                             <input id="sub_eqp_cat5" name="sub_eqp_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_eqp d-none">
                         <label for="sub_eqp_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_eqp_cat6" name="sub_eqp_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_eqp_cat6'] }}</textarea>
+                            <textarea id="sub_eqp_cat6" name="sub_eqp_cat6" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_eqp_cat6'] }}</textarea>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start sub_eqp d-none mt-1">
+                    <div class="form-group d-lg-flex align-items-start sub_eqp d-none mt-1">
                         <label for="search_eqp" class="form-label col-4 text-end ms-1 me-2">{{ _("Equipement") }}</label>
                         <div>
-                            <select id="search_eqp" class="form-select" style="width:400px"></select><br />
+                            <select id="search_eqp" class="form-select form-lbk form-search"></select><br />
                             <span class="ms-2">{{ args['details']['equipment'] }}</span>
                         </div>
                     </div>
 
                     <!-- CONSUMABLE category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_consu" class="form-label col-3 text-end ms-1 me-2">{{ _("Réactifs et consommables") }}</label>
                         <div class="form-inline">
                             <input id="cat_consu" name="cat_consu" type="checkbox" value="4" onchange="cat_change(this);">
@@ -434,52 +434,52 @@
                     </div>
 
                     <!-- CONSUMABLE SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_consu d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_consu d-none">
                         <label for="sub_consu_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Réception de réactifs et/ou consommables ne correspondant pas à la commande") }}</label>
                         <div class="form-inline">
                             <input id="sub_consu_cat1" name="sub_consu_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_consu d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_consu d-none">
                         <label for="sub_consu_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Délai livraison") }}</label>
                         <div class="form-inline">
                             <input id="sub_consu_cat2" name="sub_consu_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_consu d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_consu d-none">
                         <label for="sub_consu_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Réactifs périmés") }}</label>
                         <div class="form-inline">
                             <input id="sub_consu_cat3" name="sub_consu_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_consu d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_consu d-none">
                         <label for="sub_consu_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Rupture de stock (cf nom du fournisseur)") }}</label>
                         <div class="form-inline">
                             <input id="sub_consu_cat4" name="sub_consu_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_consu d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_consu d-none">
                         <label for="sub_consu_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Déstockage produits non conforme") }}</label>
                         <div class="form-inline">
                             <input id="sub_consu_cat5" name="sub_consu_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_consu d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_consu d-none">
                         <label for="sub_consu_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_consu_cat6" name="sub_consu_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_consu_cat6'] }}</textarea>
+                            <textarea id="sub_consu_cat6" name="sub_consu_cat6" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_consu_cat6'] }}</textarea>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start sub_consu d-none mt-1">
+                    <div class="form-group d-lg-flex align-items-start sub_consu d-none mt-1">
                         <label for="search_supplier" class="form-label col-4 text-end ms-1 me-2">{{ _("Fournisseur") }}</label>
                         <div>
-                            <select id="search_supplier" class="form-select" style="width:400px"></select><br />
+                            <select id="search_supplier" class="form-select form-lbk form-search"></select><br />
                             <span class="ms-2">{{ args['details']['supplier'] }}</span>
                         </div>
                     </div>
 
                     <!-- LOCAL category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_local" class="form-label col-3 text-end ms-1 me-2">{{ _("Locaux et environnement") }}</label>
                         <div class="form-inline">
                             <input id="cat_local" name="cat_local" type="checkbox" value="4" onchange="cat_change(this);">
@@ -487,45 +487,45 @@
                     </div>
 
                     <!-- LOCAL SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_local d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_local d-none">
                         <label for="sub_local_cat1" class="form-label col-4 text-end ms-1 me-2">{{ _("Nettoyage du laboratoire") }}</label>
                         <div class="form-inline">
                             <input id="sub_local_cat1" name="sub_local_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_local d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_local d-none">
                         <label for="sub_local_cat2" class="form-label col-4 text-end ms-1 me-2">{{ _("Entretien du batiment") }}</label>
                         <div class="form-inline">
                             <input id="sub_local_cat2" name="sub_local_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_local d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_local d-none">
                         <label for="sub_local_cat3" class="form-label col-4 text-end ms-1 me-2">{{ _("Coupure d'électricité") }}</label>
                         <div class="form-inline">
                             <input id="sub_local_cat3" name="sub_local_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_local d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_local d-none">
                         <label for="sub_local_cat4" class="form-label col-4 text-end ms-1 me-2">{{ _("Coupure d'eau") }}</label>
                         <div class="form-inline">
                             <input id="sub_local_cat4" name="sub_local_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_local d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_local d-none">
                         <label for="sub_local_cat5" class="form-label col-4 text-end ms-1 me-2">{{ _("Gestion des déchets") }}</label>
                         <div class="form-inline">
                             <input id="sub_local_cat5" name="sub_local_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_local d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_local d-none">
                         <label for="sub_local_cat6" class="form-label col-4 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_local_cat6" name="sub_local_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_local_cat6'] }}</textarea>
+                            <textarea id="sub_local_cat6" name="sub_local_cat6" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_local_cat6'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- SI category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_si" class="form-label col-3 text-end ms-1 me-2">{{ _("Systèmes informatiques") }}</label>
                         <div class="form-inline">
                             <input id="cat_si" name="cat_si" type="checkbox" value="4" onchange="cat_change(this);">
@@ -533,45 +533,45 @@
                     </div>
 
                     <!-- SI SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_si d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_si d-none">
                         <label for="sub_si_cat1" class="form-label col-5 text-end ms-1 me-2">{{ _("Absence de connexion") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat1" name="sub_si_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_si d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_si d-none">
                         <label for="sub_si_cat2" class="form-label col-5 text-end ms-1 me-2">{{ _("Erreur de paramétrage") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat2" name="sub_si_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_si d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_si d-none">
                         <label for="sub_si_cat3" class="form-label col-5 text-end ms-1 me-2">{{ _("Panne réseau") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat3" name="sub_si_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_si d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_si d-none">
                         <label for="sub_si_cat4" class="form-label col-5 text-end ms-1 me-2">{{ _("Panne système d'information") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat4" name="sub_si_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_si d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_si d-none">
                         <label for="sub_si_cat5" class="form-label col-5 text-end ms-1 me-2">{{ _("Panne matériel informatique") }}</label>
                         <div class="form-inline">
                             <input id="sub_si_cat5" name="sub_si_cat5" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_si d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_si d-none">
                         <label for="sub_si_cat6" class="form-label col-5 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_si_cat6" name="sub_si_cat6" rows="4" cols="50" class="form-control">{{ args['details']['sub_si_cat6'] }}</textarea>
+                            <textarea id="sub_si_cat6" name="sub_si_cat6" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_si_cat6'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- CONTRACT category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1">
                         <label for="cat_contract" class="form-label col-3 text-end ms-1 me-2">{{ _("Sous-traitance") }}</label>
                         <div class="form-inline">
                             <input id="cat_contract" name="cat_contract" type="checkbox" value="4" onchange="cat_change(this);">
@@ -579,55 +579,55 @@
                     </div>
 
                     <!-- CONTRACT SUB category -->
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_contract d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_contract d-none">
                         <label for="sub_contract_cat1" class="form-label col-5 text-end ms-1 me-2">{{ _("Délai de rendu non respecté") }}</label>
                         <div class="form-inline">
                             <input id="sub_contract_cat1" name="sub_contract_cat1" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_contract d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_contract d-none">
                         <label for="sub_contract_cat2" class="form-label col-5 text-end ms-1 me-2">{{ _("Erreur / oubli examen") }}</label>
                         <div class="form-inline">
                             <input id="sub_contract_cat2" name="sub_contract_cat2" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_contract d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_contract d-none">
                         <label for="sub_contract_cat3" class="form-label col-5 text-end ms-1 me-2">{{ _("Mauvaise conservation lors du transport") }}</label>
                         <div class="form-inline">
                             <input id="sub_contract_cat3" name="sub_contract_cat3" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_contract d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_contract d-none">
                         <label for="sub_contract_cat4" class="form-label col-5 text-end ms-1 me-2">{{ _("Problème de facturation") }}</label>
                         <div class="form-inline">
                             <input id="sub_contract_cat4" name="sub_contract_cat4" type="checkbox" value="4">
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-n4 mt-1 sub_contract d-none">
+                    <div class="form-group d-lg-flex align-items-start mt-n4 mt-1 sub_contract d-none">
                         <label for="sub_contract_cat5" class="form-label col-5 text-end ms-1 me-2">{{ _("Autres") }}</label>
                         <div class="form-inline">
-                            <textarea id="sub_contract_cat5" name="sub_contract_cat5" rows="4" cols="50" class="form-control">{{ args['details']['sub_contract_cat5'] }}</textarea>
+                            <textarea id="sub_contract_cat5" name="sub_contract_cat5" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['sub_contract_cat5'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- CLIENT category -->
-                    <div class="form-group d-flex align-items-starti mt-1">
+                    <div class="form-group d-lg-flex align-items-starti mt-1">
                         <label for="cat_client" class="form-label col-3 text-end ms-1 me-2">{{ _("Réclamations clients") }}</label>
                         <div class="form-inline">
-                            <textarea id="cat_client" name="cat_client" rows="4" cols="50" class="form-control">{{ args['details']['cat_client'] }}</textarea>
+                            <textarea id="cat_client" name="cat_client" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['cat_client'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- OTHER category -->
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="cat_other" class="form-label col-3 text-end ms-1 me-2">{{ _("Autre") }}</label>
                         <div class="form-inline">
-                            <textarea id="cat_other" name="cat_other" rows="4" cols="50" class="form-control">{{ args['details']['cat_other'] }}</textarea>
+                            <textarea id="cat_other" name="cat_other" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['cat_other'] }}</textarea>
                         </div>
                     </div>
                     
                     <!-- ABOUT PATIENT RECORD ? -->
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label class="form-label col-3 text-end mt-2 me-1">{{ _("Est ce que cette non-conformité concerne un dossier patient ?") }}</label>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" class="me-1" name="about_pat_rec" value="4" onchange="pat_rec_change(this);" id="about_pat_rec_yes">{{ _("Oui") }}</input>
@@ -637,7 +637,7 @@
                         </label>
                     </div>
 
-                    <div class="form-group d-flex align-items-start d-none" id="group_pat_rec_num">
+                    <div class="form-group d-lg-flex align-items-start d-none" id="group_pat_rec_num">
                         <label for="pat_rec_num" class="form-label col-3 text-end ms-1 me-2">{{ _("Numéro de dossier") }}</label>
                         <div class="form-inline">
                             <input id="pat_rec_num" name="pat_rec" type="text" value="{{ args['details']['pat_rec_num'] }}">
@@ -646,15 +646,15 @@
 
 
                     <!-- DESCRIPTION -->
-                    <div class="form-group d-flex align-items-start mt-3">
+                    <div class="form-group d-lg-flex align-items-start mt-3">
                         <label for="description" class="form-label col-3 text-end mt-2 me-1">{{ _("Description de la non-conformité") }}</label>
                         <div>					
-                            <textarea id="description" name="description" rows="4" cols="50" class="form-control">{{ args['details']['description'] }}</textarea>
+                            <textarea id="description" name="description" rows="4" cols="50" class="form-control form-lbk">{{ args['details']['description'] }}</textarea>
                         </div>
                     </div>
 
                     <!-- PATIENT IMPACT -->
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label class="form-label col-3 text-end mt-2 me-1">{{ _("Impact sur le patient") }}</label>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" class="me-1" name="impact_pat" value="1053" {% if args['details']['impact_pat'] == 1053 %}checked{% endif %}>{{ _("Faible") }}</input>
@@ -671,7 +671,7 @@
                     </div>
 
                     <!-- USER IMPACT -->
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label class="form-label col-3 text-end mt-2 me-1">{{ _("Impact sur le personnel/visiteur") }}</label>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" class="me-1" name="impact_user" value="1053" {% if args['details']['impact_user'] == 1053 %}checked{% endif %}>{{ _("Faible") }}</input>
@@ -691,53 +691,53 @@
                 
                 <fieldset class="border p-2">
                     <legend class="w-auto legend-lbk">{{ _("SUIVI DE LA NON-CONFORMITE") }}</legend>
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label for="search_followed" class="form-label col-3 text-end mt-2 me-1">{{ _("Qui") }}</label>
                         <div>
-                            <select id="search_followed" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}></select><br />
+                            <select id="search_followed" class="form-select form-lbk form-search" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}></select><br />
                             <span class="ms-2">{{ args['details']['followed'] }}</span>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="flwd_what" class="form-label col-3 text-end mt-2 me-1">{{ _("Quoi") }}</label>
                         <div>					
-                            <textarea id="flwd_what" name="flwd_what" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>{{ args['details']['flwd_what'] }}</textarea>
+                            <textarea id="flwd_what" name="flwd_what" rows="4" cols="50" class="form-control form-lbk" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}>{{ args['details']['flwd_what'] }}</textarea>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="flwd_when" class="form-label col-3 text-end mt-2 me-1">{{ _("Quand") }}</label>
                         <div>					
-                            <input id="flwd_when" name="flwd_when" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_when'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>
+                            <input id="flwd_when" name="flwd_when" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_when'] }}" style="color: #888;" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}>
                         </div>
                     </div>
 
                     <!-- IMPLEMENTATION OF ACTION  -->
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label class="form-label col-3 text-end mt-2 me-1">{{ _("Mise en place d’une action correctrice") }}</label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" class="me-1" name="impl_action" value="4" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %} {% if args['details']['impl_action'] == 4 %}checked{% endif %}>{{ _("Oui") }}</input>
+                            <input type="radio" class="me-1" name="impl_action" value="4" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %} {% if args['details']['impl_action'] == 4 %}checked{% endif %}>{{ _("Oui") }}</input>
                         </label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" class="me-1" name="impl_action" value="5" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %} {% if not args['details'] or args['details']['impl_action'] == 5 %}checked{% endif %}>{{ _("Non") }}</input>
+                            <input type="radio" class="me-1" name="impl_action" value="5" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %} {% if not args['details'] or args['details']['impl_action'] == 5 %}checked{% endif %}>{{ _("Non") }}</input>
                         </label>
                     </div>
 
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label for="flwd_descr_action" class="form-label col-3 text-end mt-2 me-1">{{ _("Description de l'action correctrice") }}</label>
                         <div>					
-                            <textarea id="flwd_descr_action" name="flwd_descr_action" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>{{ args['details']['flwd_descr_action'] }}</textarea>
+                            <textarea id="flwd_descr_action" name="flwd_descr_action" rows="4" cols="50" class="form-control form-lbk" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}>{{ args['details']['flwd_descr_action'] }}</textarea>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="flwd_action_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de réalisation de l'action correctrice") }}</label>
                         <div>					
-                            <input id="flwd_action_date" name="flwd_action_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_action_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>
+                            <input id="flwd_action_date" name="flwd_action_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['details']['flwd_action_date'] }}" style="color: #888;" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="search_incharge" class="form-label col-3 text-end me-1">{{ _("Responsable de l'action") }}</label>
                         <div>
-                            <select id="search_incharge" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}></select><br />
+                            <select id="search_incharge" class="form-select form-lbk form-search" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}></select><br />
                             <span class="ms-2">{{ args['details']['incharge'] }}</span>
                         </div>
                     </div>
@@ -746,34 +746,34 @@
 
                 <fieldset class="border p-2">
                     <legend class="w-auto legend-lbk">{{ _("CLOTURE DE LA NON-CONFORMITE") }}</legend>
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label for="close_comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaire") }}</label>
                         <div>					
-                            <textarea id="close_comment" name="close_comment" rows="4" cols="50" class="form-control" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>{{ args['details']['close_comment'] }}</textarea>
+                            <textarea id="close_comment" name="close_comment" rows="4" cols="50" class="form-control form-lbk" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}>{{ args['details']['close_comment'] }}</textarea>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="search_validate" class="form-label col-3 text-end me-1">{{ _("Validé par") }}</label>
                         <div>
-                            <select id="search_validate" class="form-select" style="width:400px" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}></select><br />
+                            <select id="search_validate" class="form-select form-lbk form-search" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}></select><br />
                             <span class="ms-2">{{ args['details']['validate'] }}</span>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label for="close_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de clôture") }}</label>
                         <div>					
-                            <input id="close_date" name="close_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['details']['close_date'] }}" style="color: #888;" {% if session['user_role'] == 'TA' or session['user_role'] == 'T' or session['user_role'] == 'SA' or session['user_role'] == 'S' or session['user_role'] == 'K' %}disabled{% endif %}>
+                            <input id="close_date" name="close_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['details']['close_date'] }}" style="color: #888;" {% if session['user_role'] in ('TA','T','SA','S','K') %}disabled{% endif %}>
                         </div>
                     </div>
                 </fieldset>
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

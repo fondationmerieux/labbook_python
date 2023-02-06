@@ -9,34 +9,34 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Export WHONET") }}</span></h2>
             <form>
                 <div class="row">
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="date_beg" class="form-label col-6 text-end mt-2 me-1">{{ _("Date de validation du") }} </label>
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="date_beg" class="form-label col-lg-6 text-end mt-2 me-1">{{ _("Date de validation du") }} </label>
                             <div>					
-                                <input id="date_beg" class="form-control" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
+                                <input id="date_beg" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="date_end" class="form-label col-2 text-end mt-2 me-1"> {{ _("au") }} </label>
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="date_end" class="form-label col-lg-2 text-end mt-2 me-1"> {{ _("au") }} </label>
                             <div>					
-                                <input id="date_end" class="form-control" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
+                                <input id="date_end" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="float-start" style="margin-start:0px;">
-                        <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="col-lg-12">
+                    <div class="float-start ms-0">
+                        <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                     </div>
                     <div class="float-end me-2" style="margin-start:0px;">
-                        <input type="button" onclick="export_whonet();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Récupérer les données") }}">
+                        <input type="button" onclick="export_whonet();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Récupérer les données") }}">
                     </div>
                 </div>
             </form>

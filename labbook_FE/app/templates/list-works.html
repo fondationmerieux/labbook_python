@@ -17,32 +17,32 @@
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
                 <div class="panel-filter row mt-3 gy-3">
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start">
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start">
                             <label for="f_date_beg" class="form-label align-self-center text-end me-1 mt-1">{{ _("Date dossier supérieure à") }}</label>
                             <div>
-                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                <input id="f_date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start">
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start">
                             <label for="f_date_end" class="form-label align-self-center text-end me-1 mt-1">{{ _("Date dossier inférieure à") }}</label>
                             <div>					
-                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                <input id="f_date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start">
-                            <label for="f_emer" class="form-label align-self-center text-end me-1 mt-1">{{ _("Urgent uniquement") }}</label>
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start">
+                            <label for="f_emer" class="form-label align-self-center text-lg-end me-1 mt-1">{{ _("Urgent uniquement") }}</label>
                             <div>
                                 <input type="checkbox" id="f_emer" name="f_mer" class="mt-2" value="4" {% if ihm and ihm['emer'] == 'E' %} checked="checked"{% endif %}>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-group d-flex align-items-start me-1">
+                    <div class="col-lg-6">
+                        <div class="form-group d-lg-flex align-items-start me-lg-1">
                             <label class="form-label text-end mt-2">{{ _("Type") }}</label>
                             <div>
                                 <select name="type_ana" id="f_type_ana" class="form-select ms-1">
@@ -52,17 +52,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start">
-                            <label for="code_pat" class="form-label col-4 text-end me-1 mt-2">{{ _("Code patient") }}</label>
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start">
+                            <label for="code_pat" class="form-label col-lg-4 text-end me-1 mt-lg-2">{{ _("Code patient") }}</label>
                             <div>					
-                                <input type="text" name="code_pat" id="code_pat" value="" class="form-control cnx_trigger">
+                                <input type="text" name="code_pat" id="code_pat" value="" class="form-control form-lbk cnx_trigger">
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-lg-12">
                         <div class="float-end">
-                            <button type="button" onclick="filter_record();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            <button type="button" onclick="filter_record();return false;" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                                     <span><a class="link" id="next_rec" onclick="display_record(1000);">{{ _("Suivant") }}</a></span>
                                     <span><a class="link" id="last_rec" onclick="display_record(p_max);">{{ _("Dernier") }}</a></span>
                                 </div>
-                                <table class="table table-striped table-hover col-12 table-lbk">
+                                <table class="table table-striped table-hover col-lg-12 table-lbk">
                                     <colgroup><col><col><col><col><col><col><col><col><col></colgroup>
                                     <thead>
                                         <tr>
@@ -141,7 +141,7 @@
             </div>
             <div class="row my-3">
                 <div class="float-start">
-                    <button type="button" onclick="group_validation();return false;" id="btn_group_val" class="btn btn-{{ session['user_role']|safe }}"><span>{{ _("Commencer la validation groupée") }}</span></button>
+                    <button type="button" onclick="group_validation();return false;" id="btn_group_val" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><span>{{ _("Commencer la validation groupée") }}</span></button>
                 </div>
             </div>
             {% endif %}
@@ -167,6 +167,7 @@ let date_end = $("#f_date_end").val() ;
 let type_ana = $("#f_type_ana").val() ;
 let code_pat = $("#code_pat").val() ;
 let emer     = 5 ;
+let link_fam = {{ session['user_link_fam'] or [] }}
 
     if ( $("#f_emer").is(":checked") )
     emer = $("#f_emer").val() ;
@@ -179,7 +180,8 @@ let param = '{ "num_rec": "", ' +
             '"date_end":"' + date_end  + '", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"code_pat":"' + code_pat  + '", ' +
-            '"emer":' + emer + '}' ;
+            '"emer":' + emer + ', ' +
+            '"link_fam": [' + link_fam + ']}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -252,10 +254,10 @@ $("#listing_dos_total").html( data_len ) ;
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_records[i].type_rec + '/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' +
-                   {% if session['user_role'] == 'B' or session['user_role'] == 'T' or session['user_role'] == 'TA' or session['user_role'] == 'TQ' %}
+                   {% if session['user_role'] in ('B','T','TA','TQ') %}
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' +
-                   {% if  session['user_role'] == 'B' or session['user_role'] == 'TA' %}
+                   {% if  session['user_role'] in ('B','TA') %}
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' +
                    {% endif %}{% endif %}
                    '<a class="dropdown-item menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">{{ _("Supprimer") }}</a>' ;

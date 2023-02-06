@@ -11,13 +11,13 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Utilisateur") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Droits utilisateur") }}</h3>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3 mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3 mt-3">
                     <label for="role" class="form-label col-3 text-end mt-2 me-1">{{ _("Rôle") }} *</label>
                     <div>					
                         {% if args['user_id'] > 0 and args['role_type'] == 'A' and args['username'] == 'root' %}
@@ -32,12 +32,12 @@
                         {% endif %}
                     </div>
                 </div>
-                <div id="search_account" class="form-group d-flex align-items-start mt-3 {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'P') %}d-none{% endif %}">
+                <div id="search_account" class="form-group d-lg-flex align-items-start mt-3 {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'P') %}d-none{% endif %}">
                     <label for="search_doctor" class="form-label col-3 text-end mt-2 me-1">{{ _("Prescripteur associé") }}</label>
                     <div>
-                        <select id="search_doctor" class="form-select w-auto"></select>
+                        <select id="search_doctor" class="form-select form-lbk form-search"></select>
                         {% if args['side_account'] == 0 %}
-                        <button type="button" onclick="new_doctor();" id="btn_doctor" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
+                        <button type="button" onclick="new_doctor();" id="btn_doctor" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
                         {% else %}
                         <br /><div class="mt-2">{{ args['prescriber'] }}</div>
                         {% endif %}
@@ -47,40 +47,40 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3 mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3 mt-3">
                     <label for="login" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }}*</label>
                     <div>					
-                        <input type="text" name="login" id="login" value="{{ args['username'] }}" class="form-control">			
+                        <input type="text" name="login" id="login" value="{{ args['username'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
                 {% if args['user_id'] == 0 %}
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="pwd" class="form-label col-3 text-end mt-2 me-1">{{ _("Mot de passe") }}*</label>
                     <div>					
-                        <input type="password" name="pwd" id="pwd" value="" class="form-control">			
+                        <input type="password" name="pwd" id="pwd" value="" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="pwd2" class="form-label col-3 text-end mt-2 me-1">{{ _("Confirmation du mot de passe") }}*</label>
                     <div>					
-                        <input type="password" name="pwd2" id="pwd2" value="" class="form-control">			
+                        <input type="password" name="pwd2" id="pwd2" value="" class="form-control form-lbk">			
                     </div>
                 </div>
                 {% endif %}
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="cps" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de matricule interne") }}</label>
                     <div>					
-                        <input type="text" name="cps" id="cps" value="{{ args['cps'] }}" class="form-control">			
+                        <input type="text" name="cps" id="cps" value="{{ args['cps'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="rpps" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de la carte professionnelle") }}</label>
                     <div>					
-                        <input type="text" name="rpps" id="rpps" value="{{ args['rpps'] }}" class="form-control">			
+                        <input type="text" name="rpps" id="rpps" value="{{ args['rpps'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
                 {% if args['user_id'] > 0 %}
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Statut") }}</label>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="stat" value="A" {% if args['stat'] == 'A' %} checked="checked" {% endif %}>&nbsp;{{ _("Activé") }}</input>
@@ -94,19 +94,19 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Identité") }}</h3>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3 mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3 mt-3">
                     <label for="firstname" class="form-label col-3 text-end mt-2 me-1">{{ _("Prénom") }}</label>
                     <div class="">					
-                        <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control">			
+                        <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
-                        <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control">			
+                        <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Langues *") }}</label>
                     <div>
                         <select id="lang" name="lang" class="form-select">
@@ -121,13 +121,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="email" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse email") }}</label>
                     <div>					
-                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
+                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Titre") }}</label>
                     <div>					
                         <select id="title" name="title" class="form-select">
@@ -140,61 +140,61 @@
                         </select>			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="initial" class="form-label col-3 text-end mt-2 me-1">{{ _("Initiales") }}</label>
                     <div>					
-                        <input type="text" name="initial" id="initial" value="{{ args['initial'] }}" class="form-control">			
+                        <input type="text" name="initial" id="initial" value="{{ args['initial'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="birth" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
                     <div>					
-                        <input id="birth" class="form-control" type="date" maxlength="10" size="10" value="{{ args['birth'] }}" name="birth" style="color: #888;">
+                        <input id="birth" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['birth'] }}" name="birth" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="address" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                     <div>					
-                        <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['address'] }}</textarea>
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control form-lbk">{{ args['address'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="phone" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de téléphone") }}</label>
                     <div>					
-                        <input type="text" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control">			
+                        <input type="text" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                 <div class="form-group d-flex align-items-start mt-3">
+                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="arrived" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'arrivée au laboratoire") }}</label>
                     <div>					
-                        <input id="arrived" class="form-control" type="date" maxlength="10" size="10" value="{{ args['arrived'] }}" name="arrived" style="color: #888;">
+                        <input id="arrived" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['arrived'] }}" name="arrived" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="position" class="form-label col-3 text-end mt-2 me-1">{{ _("Position actuelle dans le laboratoire") }}</label>
                     <div>					
-                        <input type="text" name="position" id="position" value="{{ args['position'] }}" class="form-control">			
+                        <input type="text" name="position" id="position" value="{{ args['position'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="cv" class="form-label col-3 text-end mt-2 me-1">{{ _("CV") }}</label>
                     <div>					
-                        <textarea id="cv" name="cv" rows="4" cols="50" class="form-control">{{ args['cv'] }}</textarea>
+                        <textarea id="cv" name="cv" rows="4" cols="50" class="form-control form-lbk">{{ args['cv'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="diploma" class="form-label col-3 text-end mt-2 me-1">{{ _("Diplômes") }}</label>
                     <div>					
-                        <textarea id="diploma" name="diploma" rows="4" cols="50" class="form-control">{{ args['diploma'] }}</textarea>
+                        <textarea id="diploma" name="diploma" rows="4" cols="50" class="form-control form-lbk">{{ args['diploma'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="training" class="form-label col-3 text-end mt-2 me-1">{{ _("Formations continues") }}</label>
                     <div>					
-                        <textarea id="training" name="training" rows="4" cols="50" class="form-control">{{ args['training'] }}</textarea>
+                        <textarea id="training" name="training" rows="4" cols="50" class="form-control form-lbk">{{ args['training'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="section" class="form-label col-3 text-end mt-2 me-1">{{ _("Section de travail") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-select">
@@ -203,26 +203,26 @@
                         </select>			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="last_eval" class="form-label col-3 text-end mt-2 me-1">{{ _("Dernière évaluation des compétences") }}</label>
                     <div>					
-                        <input id="last_eval" class="form-control" type="date" maxlength="10" size="10" value="{{ args['last_eval'] }}" name="last_eval" style="color: #888;">
+                        <input id="last_eval" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['last_eval'] }}" name="last_eval" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
                     <div>					
-                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control form-lbk">{{ args['comment'] }}</textarea>
                     </div>
                 </div>
             </form>
             
             <div class="clearfix my-2">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>
@@ -367,7 +367,11 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        data: param,
        success: function(data)
            {
+           {% if ihm['return_page'] %}
+           window.location = "{{ session['server_ext'] }}/{{ ihm['return_page'] }}" ;
+           {% else %}
            window.location = "{{ session['server_ext'] }}/setting-users" ;
+           {% endif %}
            },
        error: function(data)
            {

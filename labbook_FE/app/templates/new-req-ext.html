@@ -10,7 +10,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Demande d'analyses patient externe") }}</span></h2>
 
             <form autocomplete="off">
@@ -18,20 +18,20 @@
                     <h3 class="panel-title">{{ _("Chercher un patient") }}</h3>
                 </div>
                 <div class="panel-patient row my-3">
-                    <div class="form-group d-flex align-items-start">
-                        <label for="search_patient" class="form-label align-self-center text-end ms-3 me-1 mt-1">{{ _("Nom, prénom, code du patient ou téléphone") }}</label>
+                    <div class="form-group d-lg-flex align-items-start">
+                        <label for="search_patient" class="form-label align-self-center text-end ms-lg-3 me-1 mt-1">{{ _("Nom, prénom, code du patient ou téléphone") }}</label>
                         <div>
-                            <select id="search_patient" class="form-select" style="width:450px"></select>
+                            <select id="search_patient" class="form-select form-lbk form-search"></select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
-                        <div class="float-start" style="margin-start:0px;">
-                            <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
+                    <div class="col-lg-12">
+                        <div class="float-start ms-0">
+                            <input type="button" onclick="return_home();" id="exit" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
-                        <div class="float-end me-2">
-                            <input type="button" onclick="new_pat();" id="new_patient" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Nouveau patient") }}">
+                        <div class="float-end me-lg-2">
+                            <input type="button" onclick="new_pat();" id="new_patient" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Nouveau patient") }}">
                         </div>
                     </div>
                 </div>

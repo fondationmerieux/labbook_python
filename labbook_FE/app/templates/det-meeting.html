@@ -14,14 +14,14 @@
         <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Réunion") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_meeting" class="form-label col-3 text-end mt-2 me-1">{{ _("Date") }} *</label>
                     <div>					
-                        <input id="date_meeting" class="form-control" type="date" maxlength="10" size="10" value="{{ args['meeting']['date_meeting'] }}" name="date_meeting" style="color: #888;">
+                        <input id="date_meeting" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['meeting']['date_meeting'] }}" name="date_meeting" style="color: #888;">
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="type" class="form-label col-3 text-end mt-2 me-1">{{ _("Type") }}</label>
                     <div>					
                         <select id="type" name="type" class="form-select">
@@ -33,23 +33,23 @@
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_promoter" class="form-label col-3 text-end me-1">{{ _("Organisateur") }}</label>
                     <div>
-                        <select id="search_promoter" class="form-select" style="width:400px"></select>
+                        <select id="search_promoter" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['meeting']['promoter'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="report" class="form-label col-3 text-end mt-2 me-1">{{ _("Compte rendu") }}</label>
                     <div>					
-                        <textarea id="report" name="report" rows="4" cols="50" class="form-control">{{ args['meeting']['report'] }}</textarea>
+                        <textarea id="report" name="report" rows="4" cols="50" class="form-control form-lbk">{{ args['meeting']['report'] }}</textarea>
                     </div>
                 </div>
                 <div class="form-group mt-3">
                     <div class="offset-3 text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="MEET" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="MEET" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -62,11 +62,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div><!-- close main -->

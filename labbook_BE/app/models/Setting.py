@@ -261,15 +261,26 @@ class Setting:
     def getFuncUnit():
         cursor = DB.cursor()
 
-        req = ('select fun_ser, fun_rank, fun_name, count(t_user.ful_ser) as nb_user, count(t_fam.ful_ser) as nb_fam '
+        req = ('select fun_ser, fun_rank, fun_name '
                'from functionnal_unit '
-               'left join functionnal_unit_link as t_user on t_user.ful_fun=fun_ser and t_user.ful_type="U" '
-               'left join functionnal_unit_link as t_fam on t_fam.ful_fun=fun_ser and t_fam.ful_type="F" '
                'order by fun_rank asc')
 
         cursor.execute(req,)
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getNbFuncUnitLink(fun_ser, ful_type):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_link '
+               'from functionnal_unit '
+               'inner join functionnal_unit_link on ful_fun=fun_ser and ful_type=%s '
+               'where fun_ser=%s')
+
+        cursor.execute(req, (ful_type, fun_ser,))
+
+        return cursor.fetchone()
 
     @staticmethod
     def insertFuncUnit(**params):
@@ -681,7 +692,7 @@ class Setting:
     def getStockSetting():
         cursor = DB.cursor()
 
-        req = ('select sos_ser, sos_expir_oblig, sos_expir_warning, sos_expir_alert '
+        req = ('select sos_ser, sos_expir_warning, sos_expir_alert '
                'from stock_setting '
                'order by sos_ser desc limit 1')
 
@@ -695,8 +706,36 @@ class Setting:
             cursor = DB.cursor()
 
             cursor.execute('update stock_setting '
-                           'set sos_date=NOW(), sos_expir_oblig=%(expir_oblig)s, sos_expir_warning=%(expir_warning)s, '
+                           'set sos_date=NOW(), sos_expir_warning=%(expir_warning)s, '
                            'sos_expir_alert=%(expir_alert)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getSettingFormList():
+        cursor = DB.cursor()
+
+        req = ('select fos_ser, fos_name, fos_type, fos_ref, fos_stat '
+               'from form_setting '
+               'order by fos_rank asc, fos_type asc, fos_name asc ')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def updateFormSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update form_setting '
+                           'set fos_date=NOW(), fos_stat=%(stat)s '
+                           'where fos_ref=%(ref)s', params)
 
             Setting.log.info(Logs.fileline())
 

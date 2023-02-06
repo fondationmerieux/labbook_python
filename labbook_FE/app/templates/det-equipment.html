@@ -11,32 +11,32 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Equipement") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de l'équipement") }}</label>
                     <div>					
-                        <input type="text" name="name" id="name" value="{{ args['det_eqp']['name'] }}" class="form-control">			
+                        <input type="text" name="name" id="name" value="{{ args['det_eqp']['name'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="maker" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du fabricant") }}</label>
                     <div>					
-                        <input type="text" name="maker" id="maker" value="{{ args['det_eqp']['maker'] }}" class="form-control">			
+                        <input type="text" name="maker" id="maker" value="{{ args['det_eqp']['maker'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="model" class="form-label col-3 text-end mt-2 me-1">{{ _("modèle") }}</label>
                     <div>					
-                        <input type="text" name="model" id="model" value="{{ args['det_eqp']['model'] }}" class="form-control">			
+                        <input type="text" name="model" id="model" value="{{ args['det_eqp']['model'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="photo" class="form-label col-3 text-end mt-2 me-1">{{ _("Photo") }}</label>
                     <div class="text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="EQPH" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQPH" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -46,19 +46,19 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="funct" class="form-label col-3 text-end mt-2 me-1">{{ _("Fonction") }}</label>
                     <div>					
-                        <input type="text" name="funct" id="funct" value="{{ args['det_eqp']['funct'] }}" class="form-control">			
+                        <input type="text" name="funct" id="funct" value="{{ args['det_eqp']['funct'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="location" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
                     <div>					
-                        <input type="text" name="location" id="location" value="{{ args['det_eqp']['location'] }}" class="form-control">			
+                        <input type="text" name="location" id="location" value="{{ args['det_eqp']['location'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="section" class="form-label col-3 text-end mt-2 me-1">{{ _("Section") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-select">
@@ -67,48 +67,48 @@
                         </select>			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_supplier" class="form-label col-3 text-end mt-2 me-1">{{ _("Fournisseur") }}</label>
                     <div>
-                        <select id="search_supplier" class="form-select" style="width:450px"></select>
+                        <select id="search_supplier" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['det_eqp']['supplier'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="serial" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de série") }}</label>
                     <div>					
-                        <input type="text" name="serial" id="serial" value="{{ args['det_eqp']['serial'] }}" class="form-control">			
+                        <input type="text" name="serial" id="serial" value="{{ args['det_eqp']['serial'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="inventory" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro d'inventaire") }}</label>
                     <div>					
-                        <input type="text" name="inventory" id="inventory" value="{{ args['det_eqp']['inventory'] }}" class="form-control">			
+                        <input type="text" name="inventory" id="inventory" value="{{ args['det_eqp']['inventory'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_incharge" class="form-label col-3 text-end mt-2 me-1">{{ _("Responsable") }}</label>
                     <div>
-                        <select id="search_incharge" class="form-select" style="width:450px"></select>
+                        <select id="search_incharge" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['det_eqp']['incharge'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_manual" class="form-label col-3 text-end mt-2 me-1">{{ _("Manuel") }}</label>
                     <div>
-                        <select id="search_manual" class="form-select" style="width:450px"></select>
+                        <select id="search_manual" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['det_eqp']['manual'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_procedure" class="form-label col-3 text-end mt-2 me-1">{{ _("Procédure") }}</label>
                     <div>
-                        <select id="search_procedure" class="form-select" style="width:450px"></select>
+                        <select id="search_procedure" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['det_eqp']['procedur'] }}</span>
                     </div>
                 </div>
 
-                <div class="form-group d-flex mt-3">
+                <div class="form-group d-lg-flex mt-3">
                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des pannes et réparations") }}</label>
                     <table class="w-auto table table-responsive table-striped table-hover">
                         <thead>
@@ -133,17 +133,17 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="breakdown" class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des pannes et réparations") }}</label>
                     <div>					
-                        <textarea id="breakdown" name="breakdown" rows="2" cols="50" class="form-control"></textarea>
+                        <textarea id="breakdown" name="breakdown" rows="2" cols="50" class="form-control form-lbk"></textarea>
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="EQBD" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQBD" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
 
-                <div class="form-group d-flex mt-3">
+                <div class="form-group d-lg-flex mt-3">
                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
                     <table class="w-auto table table-responsive table-striped table-hover">
                         <thead>
@@ -179,15 +179,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">					
+                <div class="form-group d-lg-flex align-items-start mt-3">					
                     <label for="maintenance" class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
-                    <textarea id="maintenance" name="maintenance" rows="2" cols="50" class="form-control w-auto"></textarea>
+                    <textarea id="maintenance" name="maintenance" rows="2" cols="50" class="form-control form-lbk w-auto"></textarea>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="EQPM" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQPM" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -197,16 +197,16 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="calibration" class="form-label col-3 text-end mt-2 me-1">{{ _("Certificat d'étalonnage") }}</label>
                     <div>					
-                        <input type="text" name="calibration" id="calibration" value="{{ args['det_eqp']['calibration'] }}" class="form-control">			
+                        <input type="text" name="calibration" id="calibration" value="{{ args['det_eqp']['calibration'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="EQCC" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQCC" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -216,16 +216,16 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="contract" class="form-label col-3 text-end mt-2 me-1">{{ _("Contrat de maintenance") }}</label>
                     <div>					
-                        <input type="text" name="contract" id="contract" value="{{ args['det_eqp']['contract'] }}" class="form-control">			
+                        <input type="text" name="contract" id="contract" value="{{ args['det_eqp']['contract'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="EQMC" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQMC" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -235,17 +235,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_endcontract" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de fin de contrat de maintenance") }}</label>
                     <div>					
-                        <input id="date_endcontract" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_endcontract'] }}" name="date_endcontract" style="color: #888;">
+                        <input id="date_endcontract" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_endcontract'] }}" name="date_endcontract" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label class="form-label col-3 text-end me-1">{{ _("Facture") }}</label>
                     <div class="text-start upload-container">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="EQBI" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQBI" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -256,52 +256,52 @@
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_buy" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'achat") }}</label>
                     <div>					
-                        <input id="date_buy" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_buy'] }}" name="date_buy" style="color: #888;">
+                        <input id="date_buy" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_buy'] }}" name="date_buy" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_receipt" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de réception") }}</label>
                     <div>					
-                        <input id="date_receipt" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_receipt'] }}" name="date_receipt" style="color: #888;">
+                        <input id="date_receipt" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_receipt'] }}" name="date_receipt" style="color: #888;">
                     </div>
                 </div>
                 {# USELESS 11/02/2022
-                <div class="form-group d-flex align-items-start">
+                <div class="form-group d-lg-flex align-items-start">
                     <label for="date_procur" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'acquisition") }}</label>
                     <div>					
-                        <input id="date_procur" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_procur'] }}" name="date_procur" style="color: #888;">
+                        <input id="date_procur" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_procur'] }}" name="date_procur" style="color: #888;">
                     </div>
                 </div>
                 #}
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_onduty" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de mise en service") }}</label>
                     <div>					
-                        <input id="date_onduty" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_onduty'] }}" name="date_onduty" style="color: #888;">
+                        <input id="date_onduty" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_onduty'] }}" name="date_onduty" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_revoc" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de retrait du laboratoire") }}</label>
                     <div>					
-                        <input id="date_revoc" class="form-control" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_revoc'] }}" name="date_revoc" style="color: #888;">
+                        <input id="date_revoc" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_revoc'] }}" name="date_revoc" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
                     <div>					
-                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['det_eqp']['comment'] }}</textarea>
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control form-lbk">{{ args['det_eqp']['comment'] }}</textarea>
                     </div>
                 </div>
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>
@@ -624,7 +624,7 @@ let obj = data ;
 
     if ( obj.id_data > 0 )
     {
-    let tmp_tr = '<tr style="">' ;
+    let tmp_tr = '<tr>' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';

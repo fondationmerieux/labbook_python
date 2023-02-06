@@ -12,7 +12,7 @@ margin      : 0;
 background  : #FFF;
 font-style  : normal;
 font-family : Arial, Helvetica, sans-serif;
-font-size   : 14px;
+font-size   : 0.875rem;
 color       : #666;
 display     : flex;
 margin      : auto;
@@ -126,15 +126,13 @@ bottom      : 0;
 background  : #F7F7F7;
 width       : 100%;
 line-height : 26px;
-font-size   : 12px;
+font-size   : 0.75rem;
 text-align  : center;
 }
 
 #country-sel
 {
-position : absolute;
-right    : 0;
-top      : 0;
+z-index : 3;
 }
 
 #country-sel .btn 
@@ -159,6 +157,16 @@ header #country-sel .dropdown-item
 {
 background : #71B330;
 color      : #FFF;
+}
+
+.dropdown-bgcolor-menu
+{
+background : #71B330 !important;
+}
+
+.dropdown-color-link
+{
+color : #000 !important;
 }
 
 .page-title
@@ -545,7 +553,6 @@ text-decoration : none !important;
 .role-S a 
 {
 display    : block;
-width      : 100px;
 background : #EF8839 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
@@ -561,7 +568,6 @@ text-decoration : none !important;
 .role-SA a 
 {
 display    : block;
-width      : 100px;
 background : #EF8839 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
@@ -577,7 +583,6 @@ text-decoration : none !important;
 .role-Q a 
 {
 display    : block;
-width      : 100px;
 background : #E23176 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
@@ -593,7 +598,6 @@ text-decoration : none !important;
 .role-P a 
 {
 display    : block;
-width      : 100px;
 background : #996633 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
@@ -609,7 +613,6 @@ text-decoration : none !important;
 .role-K a 
 {
 display    : block;
-width      : 100px;
 background : #452ED1 !important;
 padding    : 0px 10px;
 color      : #FFF !important; 
@@ -622,7 +625,7 @@ color           : #FFF !important;
 text-decoration : none !important; 
 }
 
-header .navbar
+header .navbar-menu
 {
 position   : absolute;
 left       : 194px;
@@ -665,7 +668,7 @@ outline        : 0;
 display         : inline-block;
 max-height      : 22px;
 width           : 100%;
-font-size       : .9em;
+font-size       : .9rem;
 color           : #000;
 vertical-align  : top;
 text-align      : center;
@@ -1065,7 +1068,19 @@ padding        : 0 43px;
 .home-graph
 {
 border-right : 1px solid #EEE;
-text-align   : right;
+}
+
+#label-chart
+{
+padding-right : 1.5rem;
+margin-right  : 3rem;
+}
+
+#chart
+{
+width  : 350px;
+height : 250px;
+margin : 0px auto;
 }
 
 .input-large
@@ -1273,4 +1288,256 @@ vertical-align      : middle;
 color   : #FFF !important;
 outline : none;
 cursor  : pointer;
+}
+
+.bg-readonly
+{
+background-color    : #E9ECEF;
+}
+
+#search_analysis
+{
+width:450px;
+}
+
+.form-search
+{
+width:400px;
+}
+
+.btn_menu_mobile
+{
+display : none ;
+}
+
+#menu-mobile
+{
+display : none;
+}
+
+#menu-desktop
+{
+display : block;
+}
+
+@media all and (max-width: 426px)
+{
+    body
+    {
+    padding     : 0;
+    margin      : 0;
+    background  : #FFF;
+    font-style  : normal;
+    font-family : Arial, Helvetica, sans-serif;
+    font-size   : 0.75rem;
+    color       : #666;
+    //display     : flex;
+    margin      : auto;
+    }
+
+    #logo
+    {
+    background-color    : transparent;
+    background-repeat   : no-repeat;
+    background-image    : url({{ url_for('static', filename='img/logo_small.png') }}) ;
+    background-position : center left;
+    position            : absolute;
+    height              : 75px;
+    width               : 52px;
+    text-indent         : -10000px;
+    }
+
+    #user-info .name 
+    { 
+    display        : block;
+    position       : absolute; 
+    left           : 210px; 
+    top            : 15px; 
+    color          : #777;
+    vertical-align : bottom; 
+    }
+
+    .role
+    {
+    position : relative;
+    right    : auto;
+    left     : 120px;
+    top      : 30px;
+    width    : 190px;
+    height   : 26px;
+    }
+
+    header .navbar-menu
+    {
+    position   : absolute;
+    left       : 43px;
+    top        : 25px;
+    margin     : 0;
+    padding    : 0;
+    background : #F7F7F7;
+    border     : none;
+    min-height : 26px; 
+    }
+
+    .btn_menu_mobile
+    {
+    display : block;
+    }
+
+    #menu-mobile
+    {
+    display : flex;
+    }
+
+    #menu-desktop
+    {
+    display : none;
+    }
+
+    nav .non-conformite
+    {
+    background      : none;
+    white-space     : nowrap; 
+    display         : block;
+    width           : auto;
+    height          : auto;
+    }
+
+    nav .non-conformite:hover
+    {
+    background      : none;
+    }
+
+    nav .setting:hover
+    {
+    background : none;
+    }
+
+    nav .qualite:hover
+    {
+    background : none;
+    }
+
+    nav .non-conformite:hover
+    {
+    background : none;
+    }
+
+    header .dropdown-item
+    {
+    font-size        : 0.75rem; 
+    }
+
+    .inner
+    {
+    margin : 0px 5px 0px;
+    }
+
+    .page-title
+    {
+    position         : fixed;
+    top              : 75px;
+    max-width        : 100%;
+    width            : 97%;
+    height           : 34px;
+    line-height      : 34px;
+    text-align       : center;
+    z-index          : 9;
+    font-size        : 1rem;
+    font-weight      : bold;
+    }
+
+    .home-stat
+    {
+    vertical-align : top;
+    padding        : 0px;
+    }
+
+    .home-graph
+    {
+    border-right : 0px;
+    }
+
+    #label-chart
+    {
+    padding-right : 0px;
+    margin-right  : 0px;
+    }
+
+    #chart
+    {
+    width  : 250px;
+    height : 200px;
+    margin : 0px auto;
+    }
+
+    #label-activity
+    {
+    margin-top : 1rem;
+    text-align : center;
+    }
+
+    #search_analysis
+    {
+    width:290px;
+    }
+
+    .legend-lbk
+    {
+    font-size        : 1rem;
+    float            : none;
+    padding          : inherit;
+    }
+
+    select:disabled
+    {
+    background-image : none;
+    }
+
+    .form-search
+    {
+    width:290px;
+    }
+    
+    .form-lbk
+    {
+    font-size        : 0.65rem;
+    padding-left     : 0.25rem;
+    padding-right    : 0.25rem;
+    }
+
+    .btn-lbk
+    {
+    font-size  : 0.70rem;
+    }
+
+    .icon
+    {
+    display          : inline-block;
+    min-width        : 20px;
+    height           : 20px;
+    line-height      : 20px;
+    text-align       : center;
+    vertical-align   : middle;
+    }
+
+    .stat-A
+    {
+    font-size : 0.65rem;
+    }
+
+    .stat-B
+    {
+    font-size : 0.65rem;
+    }
+
+    .stat-T
+    {
+    font-size : 0.65rem;
+    }
+
+    #info_pat_title
+    {
+    font-size : 0.0rem;
+    }
 }

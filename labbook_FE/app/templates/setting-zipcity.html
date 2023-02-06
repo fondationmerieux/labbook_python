@@ -8,13 +8,13 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des codes postaux") }}</span></h2>
             <div class="uploadHTML5 mb-3">
-                <label for="file" class="form-label col-3 text-end mt-2">{{ _("Charger la base à partir d'un fichier csv") }}</label>
+                <label for="file" class="form-label col-lg-3 text-end mt-2">{{ _("Charger la base à partir d'un fichier csv") }}</label>
                 <input id="ZIPCITY" name="file" type="file" />
-                <input type="button" onclick="del_items();" id="btn-del" value="{{ _("Vider la base") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
-                <input type="button" onclick="upload_file();" id="btn-add" value="{{ _("Ajouter le fichier en base") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                <input type="button" onclick="del_items();" id="btn-del" value="{{ _("Vider la base") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                <input type="button" onclick="upload_file();" id="btn-add" value="{{ _("Ajouter le fichier en base") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
             </div> 
 
             <div>
@@ -52,8 +52,8 @@
             </div>
 
             <div class="clearfix mb-5 mt-3">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
             </div>
 

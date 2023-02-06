@@ -11,7 +11,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
                 <span>{{ _("Demande d'analyses patient - Fiche patient") }}</span>
             </h2>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label class="form-label text-end mx-3">{{ _("Anonyme") }}</label>
                             <label class="form-label text-end me-3">
                                 <input type="radio" name="anonyme" value="4" {% if args['anonyme'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
@@ -31,16 +31,16 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-7">
-                        <div class="form-group d-flex align-items-start mt-3">
+                    <div class="col-lg-7">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="code_patient" class="form-label col-5 text-end mt-2 me-1" style="">{{ _("Code patient interne au laboratoire") }}</label>
                             <div>
-                                <input id="code_patient" type="text" value="{{ args['code_patient'] }}" maxlength="20" class="form-control">
+                                <input id="code_patient" type="text" value="{{ args['code_patient'] }}" maxlength="20" class="form-control form-lbk">
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <div class="pat-num" id="anon-code-ro">
                                 <span id="code">{{ args['code'] }}</span>
                             </div>
@@ -49,33 +49,33 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3 identity-group">
+                    <div class="col-lg-5">
+                        <div class="form-group d-lg-flex align-items-start mt-3 identity-group">
                             <label for="nom" class="form-label col-4 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>
-                                <input id="nom" type="text" value="{{ args['nom'] }}" maxlength="40" class="form-control" style="">
+                                <input id="nom" type="text" value="{{ args['nom'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3">
+                    <div class="col-lg-5">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="ddn" class="form-label text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
                             <div>
-                                <input id="ddn" class="form-control" type="date" maxlength="10" size="10" value="{{ args['ddn'] }}" placeholder="" style="color: #888;">
+                                <input id="ddn" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['ddn'] }}" placeholder="" style="color: #888;">
                                 <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
                             </div>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3 identity-group">
+                    <div class="col-lg-5">
+                        <div class="form-group d-lg-flex align-items-start mt-3 identity-group">
                             <label for="midname" class="form-label col-4 text-end mt-2 me-1">{{ _("Deuxième nom") }}</label>
                             <div>
-                                <input id="midname" type="text" value="{{ args['pat_midname'] }}" maxlength="40" class="form-control" style="">
+                                <input id="midname" type="text" value="{{ args['pat_midname'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3">
+                    <div class="col-lg-5">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label class="form-label text-end me-3">{{ _("Date de naissance approximative") }}</label>
                             <label class="form-label text-end me-3">
                                 <input type="radio" name="ddn_approx" value="4" {% if args['ddn_approx'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
@@ -86,23 +86,23 @@
                         </div>
                     </div>
                     <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3 identity-group">
+                        <div class="form-group d-lg-flex align-items-start mt-3 identity-group">
                             <label for="nom_jf" class="form-label col-4 text-end mt-2 me-1">{{ _("Nom de jeune fille") }}</label>
                             <div>
-                                <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control" style="">
+                                <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <div class="form-group d-flex align-items-start mt-3">
+                    <div class="col-lg-2">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="age" class="form-label text-end mt-2 me-1">{{ _("ou") }}&nbsp;&nbsp;&nbsp;{{ _("Age") }}</label>
                             <div>
-                                <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                                <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150">
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="form-group d-flex align-items-start mt-3">
+                    <div class="col-lg-4">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="unit_age" class="form-label text-end mt-2 me-1">{{ _("unité") }}</label>
                             <div>					
                                 <select name="unit_age" id="unit_age" class="form-select">
@@ -112,42 +112,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3 identity-group">
+                    <div class="col-lg-5">
+                        <div class="form-group d-lg-flex align-items-start mt-3 identity-group">
                             <label for="prenom" class="form-label col-4 text-end mt-2 me-1" style="">{{ _("Prénom(s)") }}</label>
                             <div>
-                                <input id="prenom" type="text" value="{{ args['prenom'] }}" maxlength="80" class="form-control" style="">
+                                <input id="prenom" type="text" value="{{ args['prenom'] }}" maxlength="80" class="form-control form-lbk" style="">
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="nationality" class="form-label text-end mt-2 me-1">{{ _("Nationalité") }}</label>
+
+                    {% if 'pat_nationality' in session and session['pat_nationality'] == 'Y' %}
+                    <div class="col-lg-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="pat_nationality" class="form-label text-end mt-2 me-1">{{ _("Nationalité") }}</label>
                             <div>					
-                                <select name="nationality" id="nationality" class="form-select">
+                                <select name="pat_nationality" id="pat_nationality" class="form-select">
                                     {% from 'macros.html' import select_nationality %}
                                     {{ select_nationality(ihm['nationality'], args['pat_nation']) }}
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
+                    {% endif %}
+
+                    {% if 'pat_resident' in session and session['pat_resident'] == 'Y' %}
+                    <div class="col-lg-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label class="form-label text-end mx-3">{{ _("Résident") }}</label>
                             <label class="form-label text-end me-3">
-                                <input type="radio" name="resident" value="Y" {% if not args['pat_resident'] or args['pat_resident'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                                <input type="radio" name="pat_resident" value="Y" {% if not args['pat_resident'] or args['pat_resident'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>
                             <label class="form-label text-end me-3">
-                                <input type="radio" name="resident" value="N" {% if args['pat_resident'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                                <input type="radio" name="pat_resident" value="N" {% if args['pat_resident'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
                             </label>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
 
                 <div class="row">
-                    <div class="col-5">
-                        <div class="form-group d-flex align-items-start mt-3 identity-group">
-                            <label class="form-label col-4 text-end me-3">{{ _("Sexe") }}</label>
+                    <div class="col-lg-5">
+                        <div class="form-group d-lg-flex align-items-start mt-3 identity-group">
+                            <label class="form-label col-lg-4 text-end me-3">{{ _("Sexe") }}</label>
                             <label class="form-label text-end me-3">
                                 <input type="radio" name="sexe" value="1" {% if args['sexe'] == 1 %} checked="checked" {% endif %}>&nbsp;{{ _("Masculin") }}</input>
                             </label>
@@ -159,28 +165,34 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group d-flex align-items-start mt-3">
+
+                    {% if 'pat_blood_group' in session and session['pat_blood_group'] == 'Y' %}
+                    <div class="col-lg-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="blood_group" class="form-label text-end mt-2 me-1">{{ _("Groupe sanguin") }}</label>
                             <div>					
-                                <select name="blood_group" id="blood_group" class="form-select">
+                                <select name="pat_blood_group" id="pat_blood_group" class="form-select">
                                     {% from 'macros.html' import select_blood_group %}
                                     {{ select_blood_group(ihm['blood_group'], args['pat_blood_group']) }}
                                 </select>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
+
+                    {% if 'pat_blood_rhesus' in session and session['pat_blood_rhesus'] == 'Y' %}
                     <div class="col">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="blood_rhesus" class="form-label text-end mt-2 me-1">{{ _("Rhésus") }}</label>
                             <div>					
-                                <select name="blood_rhesus" id="blood_rhesus" class="form-select">
+                                <select name="pat_blood_rhesus" id="pat_blood_rhesus" class="form-select">
                                     {% from 'macros.html' import select_blood_rhesus %}
                                     {{ select_blood_rhesus(ihm['blood_rhesus'], args['pat_blood_rhesus']) }}
                                 </select>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
 
                 <div class="panel-heading row">
@@ -188,70 +200,80 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col">
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="adresse" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="adresse" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                             <div>
-                                <textarea id="adresse" rows="4" cols="50" class="form-control">{{ args['adresse'] }}</textarea>
+                                <textarea id="adresse" rows="4" cols="50" class="form-control form-lbk">{{ args['adresse'] }}</textarea>
                             </div>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="phone1" class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone") }} 1</label>
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="phone1" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Téléphone") }} 1</label>
                             <div>
-                                <input id="phone1" type="text" value="{{ args['tel'] }}" maxlength="20" class="form-control" style="">
+                                <input id="phone1" type="text" value="{{ args['tel'] }}" maxlength="20" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="phone2" class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone") }} 2</label>
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="phone2" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Téléphone") }} 2</label>
                             <div>
-                                <input id="phone2" type="text" value="{{ args['pat_phone2'] }}" maxlength="20" class="form-control" style="">
+                                <input id="phone2" type="text" value="{{ args['pat_phone2'] }}" maxlength="20" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="profession" class="form-label col-3 text-end mt-2 me-1">{{ _("Profession") }}</label>
+
+                        {% if 'pat_profession' in session and session['pat_profession'] == 'Y' %}
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="pat_profession" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Profession") }}</label>
                             <div>
-                                <input id="profession" type="text" value="{{ args['profession'] }}" maxlength="50" class="form-control" style="">
+                                <input id="pat_profession" type="text" value="{{ args['profession'] }}" maxlength="50" class="form-control form-lbk" style="">
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                     <div class="col">
-                        <div class="form-group d-flex align-items-start mt-3">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
                             <div class="col-3"></div>
-                            <select id="search_zipcity" class="form-select" style="width:300px"></select>
+                            <select id="search_zipcity" class="form-select form-lbk form-search"></select>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="bp" class="form-label col-3 text-end mt-2 me-1">{{ _("Boite postale") }}</label>
+
+                        {% if 'pat_pbox' in session and session['pat_pbox'] == 'Y' %}
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="pat_pbox" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Boite postale") }}</label>
                             <div>
-                                <input id="bp" type="text" value="{{ args['bp'] }}" maxlength="10" class="form-control" style="">
+                                <input id="pat_pbox" type="text" value="{{ args['bp'] }}" maxlength="10" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="quartier" class="form-label col-3 text-end mt-2 me-1">{{ _("Quartier / Secteur") }}</label>
+                        {% endif %}
+
+                        {% if 'pat_district' in session and session['pat_district'] == 'Y' %}
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="pat_district" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Quartier / Secteur") }}</label>
                             <div>
-                                <input id="quartier" type="text" value="{{ args['quartier'] }}" maxlength="40" class="form-control" style="">
+                                <input id="pat_district" type="text" value="{{ args['quartier'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="cp" class="form-label col-3 text-end mt-2 me-1">{{ _("Code postal") }}</label>
+                        {% endif %}
+
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="cp" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Code postal") }}</label>
                             <div>
-                                <input id="cp" type="text" value="{{ args['cp'] }}" maxlength="10" class="form-control" style="">
+                                <input id="cp" type="text" value="{{ args['cp'] }}" maxlength="10" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                        <div class="form-group d-flex align-items-start mt-3">
-                            <label for="ville" class="form-label col-3 text-end mt-2 me-1">{{ _("Ville / Village") }}</label>
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="ville" class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Ville / Village") }}</label>
                             <div>
-                                <input id="ville" type="text" value="{{ args['ville'] }}" maxlength="40" class="form-control" style="">
+                                <input id="ville" type="text" value="{{ args['ville'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="clearfix row mb-4">
-                    <div class="col-12">
-                        <div class="float-start" style="margin-start:0px;">
-                            <input type="button" onclick="return_back();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Retour") }}">
+                    <div class="col-lg-12">
+                        <div class="float-start ms-0">
+                            <input type="button" onclick="return_back();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Retour") }}">
                         </div>
                         <div class="float-end me-2">
-                            <input type="button" onclick="save_pat( {{ args['id_pat'] }} );" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}"> 
+                            <input type="button" onclick="save_pat( {{ args['id_pat'] }} );" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer") }}"> 
                         </div>
                     </div>
                 </div>
@@ -278,18 +300,53 @@ var cp            = $("#cp").val() ;
 var ville         = $("#ville").val() ;
 var phone1        = $("#phone1").val() ;
 var phone2        = $("#phone2").val() ;
-var profession    = $("#profession").val() ;
-var nom_jf        = $("#nom_jf").val() ;
-var quartier      = $("#quartier").val() ;
-var bp            = $("#bp").val() ;
 var ddn_approx    = $("input:radio[name=ddn_approx]:checked").val() ;
 var age           = $("#age").val() ;
 var unit_age      = $("#unit_age").val() ;
 var midname       = $("#midname").val() ;
-var nationality   = $("#nationality").val() ;
-var resident      = $("input:radio[name=resident]:checked").val() ;
-var blood_group   = $("#blood_group").val() ;
-var blood_rhesus  = $("#blood_rhesus").val() ;
+var nom_jf        = $("#nom_jf").val() ;
+
+{% if 'pat_nationalit' in session and session['pat_nationalit'] == 'Y' %}
+var nationality = $("#pat_nationality").val() ;
+{% else %}
+var nationality = 0 ;
+{% endif %}
+
+{% if 'pat_resident' in session and session['pat_resident'] == 'Y' %}
+var resident = $("input:radio[name=pat_resident]:checked").val() ;
+{% else %}
+var resident = "Y" ;
+{% endif %}
+
+{% if 'pat_blood_group' in session and session['pat_blood_group'] == 'Y' %}
+var blood_group = $("#pat_blood_group").val() ;
+{% else %}
+var blood_group = 0 ;
+{% endif %}
+
+{% if 'pat_blood_rhesus' in session and session['pat_blood_rhesus'] == 'Y' %}
+var blood_rhesus = $("#pat_blood_rhesus").val() ;
+{% else %}
+var blood_rhesus = 0 ;
+{% endif %}
+
+{% if 'pat_profession' in session and session['pat_profession'] == 'Y' %}
+var profession = $("#pat_profession").val() ;
+{% else %}
+var profession = "" ;
+{% endif %}
+
+{% if 'pat_district' in session and session['pat_district'] == 'Y' %}
+var quartier = $("#pat_district").val() ;
+{% else %}
+var quartier = "" ;
+{% endif %}
+
+{% if 'pat_pbox' in session and session['pat_pbox'] == 'Y' %}
+var bp = $("#pat_pbox").val() ;
+{% else %}
+var bp = "" ;
+{% endif %}
 
     // date de naissance obligatoire
     if (ddn == "" && age == "")

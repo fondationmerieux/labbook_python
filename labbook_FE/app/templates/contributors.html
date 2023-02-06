@@ -7,10 +7,11 @@
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('labbook_css') }}" media="screen" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body class="">
-    <div id="page" class="container">
+    <div id="page" class="container-fluid">
         <header>
             <div class="inner">
                 <div id="logo">
@@ -24,8 +25,8 @@
             <div class="inner">
                 <div id="main row">
                     <h2 class="page-title"><span>{{ _("Contributeurs") }}</span></h2>
-                    <div class="d-flex justify-content-center">
-                        <div class="col-xs-7 {% if locale == 'ar' %}me-auto ms-3{% else %}ms-auto me-3{% endif %}">
+                    <div class="d-lg-flex justify-content-center">
+                        <div class="col-lg-7 {% if locale == 'ar' %}me-auto ms-3{% else %}ms-auto me-3{% endif %}">
                         <p>{{ _("LabBook est un logiciel de gestion de laboratoire Opensource.") }}</p>
                         <p>{{ _("LabBook est co-financé par l’AFD et la Fondation Mérieux.") }}</p>
                         <p>{{ _("La société Epiconcept a développé le logiciel LabBook jusqu'en 2019.") }}<br />
@@ -38,7 +39,7 @@
                         </p>
                         <p>{{ _("Le logiciel est sous licence GNU.") }}</p>
                     </div>
-                    <div class="col-xs-5 {% if locale == 'ar' %}ms-auto{% else %}me-auto{% endif %}" style="text-align: center;">
+                    <div class="col-lg-5 {% if locale == 'ar' %}ms-auto{% else %}me-auto{% endif %}" style="text-align: center;">
                         <a href="https://www.afd.fr" onclick="window.open('https://www.afd.fr', 'afd'); return false;"><img src="{{ url_for('static', filename='img/afd.png') }}" alt="AFD"></a>
                         <br /><br />
                         <a href="https://www.fondation-merieux.org" onclick="window.open('https://www.fondation-merieux.org', 'fmx'); return false;"><img src="{{ url_for('static', filename='img/fmx.png') }}" alt="Fondation Mérieux"></a>

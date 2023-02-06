@@ -24,7 +24,7 @@
             </div>
 
             <form class="row justify-content-center mt-3" id="items-list">
-                <table id="table_items" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                <table id="table_items" class="table table-striped table-hover col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
@@ -53,11 +53,11 @@
             </div>
 
             <div class="clearfix mb-5">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="hist_use_item();" id="btn_hist" value="{{ _("Historique consommation") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="hist_use_item();" id="btn_hist" value="{{ _("Historique consommation") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -70,16 +70,16 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group d-flex align-items-start mt-3">
+                            <div class="form-group d-lg-flex align-items-start mt-3">
                                 <label class="form-label mt-2 me-1">{{ _("Nombre de paquets") }}</label>
                                 <div>
-                                    <input id="pru_nb_pack" type="number" value="1" min="1" step="1" max="1" class="form-control" onchange="check_max();">
+                                    <input id="pru_nb_pack" type="number" value="1" min="1" step="1" max="1" class="form-control form-lbk" onchange="check_max();">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="button btn btn-{{ session['user_role']|safe }}" name="btn_use_item" id="btn_use_item" value="{{ _("Valider") }}"  onclick="send_use_item();">
-                            <button class="btn btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                            <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_use_item" id="btn_use_item" value="{{ _("Valider") }}"  onclick="send_use_item();">
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -130,6 +130,7 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
+    {% if session['user_role'] in ('A','K','TQ') %}
     let menu_act = "<nav class=\"\">" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
@@ -137,6 +138,9 @@ $("#list_items_total").html( data_len ) ;
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"display_use_item(" + data_items[i].prs_ser + ")\">{{ _("Indiquer la quantité utilisée") }}</a>" ;   
         
     menu_act += "</div></ul></nav>" ;
+    {% else %}
+    let menu_act = "" ;
+    {% endif %}
 
     if ( data_items[i].day_to_expir <= {{ session['stock_expir_alert'] }} && data_items[i].nb_total > 0 )
     tr_style = "style=\"background-color:#FFD5D6;\"" ;

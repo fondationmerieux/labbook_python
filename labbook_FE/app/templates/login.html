@@ -7,11 +7,11 @@
     <link href="{{ url_for('labbook_css') }}?0" media="screen" rel="stylesheet" type="text/css">
     <script src="{{ url_for('static', filename='vendor/js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
 </head>
 
 <body>
-    <div id="page" class="container">
+    <div id="page" class="container-fluid">
         <header id="page-header">
             <div class="inner">
                 <div id="logo">
@@ -23,29 +23,30 @@
         </header>
         <div id="content">
             <div class="inner">
-                <div>
-	            <div id="auth_std">
-                        <div id="auth_msg" class="alert alert-danger" style="display:none;">{{ _("Identifiant ou mot de passe incorrect.") }}</div>
-		        <h2>{{ _("Ouverture de session") }}</h2>
-                        <div class="form-group row mb-3">
-                            <label for="login" class="form-control-label col-5 text-end align-self-center">{{ _("Identifiant") }}</label>
-                            <div class="col-7">					
-                                <input type="text" name="login" id="login" value="" class="form-control cnx_trigger">			
+                <div id="auth_std">
+                    <div id="auth_msg" class="alert alert-danger d-none">{{ _("Identifiant ou mot de passe incorrect.") }}</div>
+                    <h2>{{ _("Ouverture de session") }}</h2>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="form-group mb-3">
+                            <label for="login" class="form-control-label col-lg-5 text-start align-self-center">{{ _("Identifiant") }}</label>
+                            <div class="col-lg-7">					
+                                <input type="text" name="login" id="login" value="" class="form-control form-lbk cnx_trigger">			
                             </div>
                         </div>
-                        <div class="form-group row mb-3">
-                            <label for="password" class="form-control-label col-5 text-end align-self-center">{{ _("Mot de passe") }}</label>
-                            <div class="col-7">
-                                <input type="password" name="password" id="password" value="" class="form-control cnx_trigger">	
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="form-group mb-3">
+                            <label for="password" class="form-control-label col-lg-5 text-start align-self-center">{{ _("Mot de passe") }}</label>
+                            <div class="col-lg-7">
+                                <input type="password" name="password" id="password" value="" class="form-control form-lbk cnx_trigger">	
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col text-center">
-                                <input type="button" onclick="send_login();" id="btn_cnx" value="Connexion" class="btn btn-success cnx_trigger">	
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col text-center">
+                            <input type="button" onclick="send_login();" id="btn_cnx" value="Connexion" class="btn btn-lbk btn-success cnx_trigger">	
                         </div>
-		        <div class="clearfix"></div>
-	            </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,14 +76,14 @@ var param = '{ "login":"' + login + '", "pwd":"' + pwd + '"}' ;
         data: param,
         success: function(ret_ws)
         {
-        $("#auth_msg").css("display", "none");
+        $("#auth_msg").addClass("d-none");
         console.log("SUCCESS post login") ;
         window.location.href = "{{ session['server_ext'] }}/homepage/" + login ;
         },
         error: function(ret_ws)
         {
         console.log("ERROR post login=" + login) ;
-        $("#auth_msg").css("display", "block");
+        $("#auth_msg").removeClass("d-none");
         }
     } ) ;
 }

@@ -34,7 +34,7 @@ def genere_pdf(data, template, pdf, verbose=False):
         
         print('data json = ' + str(data))
     except Exception as err:
-        print('failed, err=' + str(err) + ', data_path=' + str(data_path))
+        print('read file data, failed, err=' + str(err) + ', data_path=' + str(data_path))
         return False
 
     # write odt with data and template
@@ -48,14 +48,14 @@ def genere_pdf(data, template, pdf, verbose=False):
         f = open(tmp_odt, "wb")
         f.write(tpl.generate(o=data).render().getvalue())
     except Exception as err:
-        print('failed, err=' + str(err) + ', template=' + str(template) + ', pdf=' + str(pdf))
+        print('write odt with data and template, failed, err=' + str(err) + ', template=' + str(template) + ', pdf=' + str(pdf))
         return False
 
     # convert odt to pdf via openoffice
     try:
         cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + '/home/apps/labbook_BE/labbook_BE/tmp/' + 'unoconv.out 2>&1')
 
-        print('buildPDF cmd=' + cmd)
+        print('convert odt to pdf cmd=' + cmd)
         os.system(cmd)
 
         file_exists = os.path.exists(out_pdf + '.pdf')

@@ -8,22 +8,21 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Laboratoire") }}</span></h2>
             <form>
                 <div class="panel-name row mt-3">
                     <div class="col-6">
-                        <div class="form-group d-flex align-items-start">
+                        <div class="form-group d-lg-flex align-items-start">
                             <label for="name" class="form-label col-4 text-end me-1 mt-2">{{ _("Nom du dictionnaire") }}</label>
                             <div>					
-                                <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control" maxlength="20">			
+                                <input type="text" name="name" id="name" value="{{ args['dict_name'] }}" class="form-control form-lbk" maxlength="20">			
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-{{ session['user_role']|safe }} ms-2 float-end">
+                        {% if session['user_role'] in ('A','B','Q','TQ') %}
+                        <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 float-end">
                         {% endif %}
                     </div>
                 </div>
@@ -32,15 +31,14 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Organigramme") }}</h3>
                 </div>
-                <div class="d-flex align-items-start mt-3">
+                <div class="d-lg-flex align-items-start mt-3">
                     <div class="form-group">
                         <div class="text-start upload-container">
                             <div>
                                 <div>
-                                    <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                                        {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-                                              session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-                                        <input name="file" type="file" style="margin-bottom:4px"/>
+                                    <div class="uploadHTML5 d-inline-block pe-3">
+                                        {% if session['user_role'] in ('A','B','Q','TQ') %}
+                                        <input name="file" type="file" class="mb-1"/>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -54,9 +52,8 @@
                         </div>
                     </div>
                     <div>
-                        {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-                              session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-                        <input type="button" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
+                        {% if session['user_role'] in ('A','B','Q','TQ') %}
+                        <input type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
                         {% endif %}
                     </div>
                 </div>
@@ -82,13 +79,12 @@
             </form>
 
             <div class="clearfix my-2">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-                          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    {% if session['user_role'] in ('A','B','Q','TQ') %}
+                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
@@ -205,7 +201,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
@@ -321,8 +317,7 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    {% if session['user_role'] == 'A' or session['user_role'] == 'B' or
-          session['user_role'] == 'Q' or session['user_role'] == 'TQ' %}
+    {% if session['user_role'] in ('A','B','Q','TQ') %}
     tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a>' ;
     {% endif %}
     tmp_tr += '</div></td></tr>' ;
@@ -398,6 +393,7 @@ $( document ).ready( function()
 {% if args['dict_name'] %}
 load_data() ;
 $("#name").prop("readonly", true) ;
+$("#name").addClass("bg-readonly") ;
 {% else %}
 add_value() ;
 {% endif %}

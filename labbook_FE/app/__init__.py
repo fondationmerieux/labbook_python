@@ -275,6 +275,21 @@ def get_init_var():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests default_language failed, err=%s , url=%s', err, url)
 
+    # Load form setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/form/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            l_fos = req.json()
+
+            for fos in l_fos:
+                session[fos['fos_ref']] = fos['fos_stat']
+                session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests form setting failed, err=%s , url=%s', err, url)
+
     log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var ends')
 
 
@@ -306,9 +321,9 @@ def get_user_data(login):
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
         return False
 
-    # Get analyzes famylies linked functionnal unit for this user onfly for all technician and biologist
+    # Get analyzes famylies linked functionnal unit for this user onfly for all secretary, technician and biologist
     if session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'T' or \
-       session['user_role'] == 'TA' or session['user_role'] == 'TQ':
+       session['user_role'] == 'TA' or session['user_role'] == 'S' or session['user_role'] == 'SA':
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/link/user/' + str(session['user_id'])
             req = requests.get(url)
@@ -316,23 +331,21 @@ def get_user_data(login):
             if req.status_code == 200:
                 json = req.json()
 
-                l_fams = []
+                session['user_link_fam'] = []
 
                 for data in json:
-                    l_fams.append(data['id_fam'])
+                    session['user_link_fam'].append(data['id_fam'])
 
-                session['user_link_fam'] = l_fams
                 session.modified = True
-
-                log.info(Logs.fileline() + ' : DEBUG session[user_link_fam]=' + str(session['user_link_fam']))
-
+            else:
+                session['user_link_fam'] = []
+                session.modified = True
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests setting link user failed, err=%s , url=%s', err, url)
             return False
     else:
         session['user_link_fam'] = []
         session.modified = True
-        log.info(Logs.fileline() + ' : DEBUG session[user_link_fam] vide')
 
     return True
 
@@ -507,8 +520,8 @@ def homepage(login=''):
     elif 'login' in session and session['login']:
         login = session['login']
 
-    if 'server_ext' not in session or not session['server_ext']:
-        get_init_var()
+    # if 'server_ext' not in session or not session['server_ext']:
+    get_init_var()
 
     get_user_data(login)
     get_software_settings()
@@ -746,7 +759,8 @@ def setting_users():
 
 # Page : details user
 @app.route('/setting-det-user/<int:user_id>')
-def setting_det_user(user_id=0):
+@app.route('/setting-det-user/<string:ctx>/<int:user_id>')
+def setting_det_user(user_id=0, ctx=''):
     log.info(Logs.fileline() + ' : TRACE setting det user=' + str(user_id))
 
     test_session()
@@ -756,6 +770,10 @@ def setting_det_user(user_id=0):
 
     json_ihm  = {}
     json_data = {}
+
+    # the return page after saving
+    if ctx:
+        json_ihm['return_page'] = ctx
 
     # Load list of user role
     try:
@@ -824,7 +842,8 @@ def user_import():
 
 # Page : setting new password for a user
 @app.route('/setting-pwd-user/<int:user_id>')
-def setting_pwd_user(user_id=0):
+@app.route('/setting-pwd-user/<string:ctx>/<int:user_id>')
+def setting_pwd_user(user_id=0, ctx=''):
     log.info(Logs.fileline() + ' : TRACE setting pwd user')
 
     test_session()
@@ -832,11 +851,16 @@ def setting_pwd_user(user_id=0):
     session['current_page'] = 'setting-pwd-user/' + str(user_id)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # the return page after saving
+    if ctx:
+        json_ihm['return_page'] = ctx
 
     json_data['user_id'] = user_id
 
-    return render_template('setting-pwd-user.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-pwd-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : import dict
@@ -967,6 +991,32 @@ def setting_analyzes():
         log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
 
     return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+
+
+# Page : variables list
+@app.route('/list-vars')
+def list_vars():
+    log.info(Logs.fileline() + ' : TRACE list vars')
+
+    test_session()
+
+    session['current_page'] = 'list-vars'
+    session.modified = True
+
+    json_data = {}
+
+    # Load list vars
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/variable/all'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests vars all failed, err=%s , url=%s', err, url)
+
+    return render_template('list-vars.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : import analyzes list
@@ -1271,6 +1321,32 @@ def setting_stock():
         log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
 
     return render_template('setting-stock.html', args=json_data, rand=random.randint(0, 999))
+
+
+# Page : setting form
+@app.route('/setting-form')
+def setting_form():
+    log.info(Logs.fileline() + ' : TRACE setting form')
+
+    test_session()
+
+    session['current_page'] = 'setting-form'
+    session.modified = True
+
+    json_data = {}
+
+    # Load form setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/form/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['l_fos'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests form setting failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-form.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list template
@@ -1693,7 +1769,14 @@ def list_results():
         date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
         date_end = date_beg
 
-        payload = {'date_beg': date_beg, 'date_end': date_end, 'type_ana': 0, 'id_ana': 0, 'emer_ana': 0, 'code_pat': '', 'valid_res': 0}
+        payload = {'date_beg': date_beg,
+                   'date_end': date_end,
+                   'type_ana': 0,
+                   'id_ana': 0,
+                   'emer_ana': 0,
+                   'code_pat': '',
+                   'valid_res': 0,
+                   'link_fam': session['user_link_fam']}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/list'
         req = requests.post(url, json=payload)
@@ -1870,8 +1953,10 @@ def list_records():
 
     # Load list records
     try:
+        payload = {'link_fam': session['user_link_fam']}
+
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/list/' + str(id_pres)
-        req = requests.post(url, json={})
+        req = requests.post(url, json=payload)
 
         if req.status_code == 200:
             json_data = json.dumps(req.json())
@@ -1924,7 +2009,8 @@ def list_works(user_role='', emer=''):
                    'date_beg': '',
                    'date_end': '',
                    'code_pat': '',
-                   'emer': emer}
+                   'emer': emer,
+                   'link_fam': session['user_link_fam']}
 
         if user_role == 'B':
             # We looking for emergency record in more record status
@@ -1985,8 +2071,10 @@ def list_samples():
     dt_start_req = datetime.now()
     # Load list records
     try:
+        payload = {'link_fam': session['user_link_fam']}
+
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/product/list'
-        req = requests.post(url, json={})
+        req = requests.post(url, json=payload)
 
         if req.status_code == 200:
             json_data = json.dumps(req.json())
@@ -2627,6 +2715,17 @@ def administrative_record(type_req='E', id_rec=0):
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list template RES failed, err=%s , url=%s', err, url)
+
+    # Load list template TRA
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/OUT'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tpl_outsourced'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list template failed, err=%s , url=%s', err, url)
 
     # Load list template STI
     try:
@@ -3476,7 +3575,7 @@ def report_billing():
 
     try:
         date_end = date.today()
-        date_beg = date_end - timedelta(days=365)
+        date_beg = date_end - timedelta(days=7)
 
         date_beg = datetime.strftime(date_beg, Constants.cst_isodate)
         date_end = datetime.strftime(date_end, Constants.cst_isodate)
@@ -4505,21 +4604,9 @@ def det_stock_product(prs_ser=0):
     session['current_page'] = 'det-stock-product/' + str(prs_ser)
     session.modified = True
 
-    json_ihm  = {}
     json_data = {}
 
     json_data['stock_product'] = []
-
-    # Load stock setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/stock'
-        req = requests.get(url)
-
-        if req.status_code == 200:
-            json_data['stock_setting'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
 
     if prs_ser > 0:
         # Load stock product details
@@ -4535,7 +4622,7 @@ def det_stock_product(prs_ser=0):
 
     json_data['prs_ser'] = prs_ser
 
-    return render_template('det-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-stock-product.html', args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list nonconformities

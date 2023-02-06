@@ -19,20 +19,20 @@
                 </div>
                 <div class="panel-patient row mt-3">
                     <div class="col-10">
-                        <div class="form-group d-flex align-items-start">
+                        <div class="form-group d-lg-flex align-items-start">
                             <label for="search_patient1" class="form-label col-5 text-end mt-1 me-1">{{ _("Nom, prénom, code du patient ou téléphone") }} <b class="text-success ms-2">{{ _("A CONSERVER") }}</b></label>
                             <div>
-                                <select id="search_patient1" class="form-select" style="width:450px"></select>
+                                <select id="search_patient1" class="form-select form-lbk form-search"></select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel-patient mt-3">
                     <div class="col-10">
-                        <div class="form-group d-flex align-items-start">
+                        <div class="form-group d-lg-flex align-items-start">
                             <label for="search_patient2" class="form-label col-5 text-end mt-1 me-1">{{ _("Nom, prénom, code du patient ou téléphone") }} <b class="text-danger ms-2">{{ _("A SUPPRIMER") }}</b></label>
                             <div>
-                                <select id="search_patient2" class="form-select" style="width:450px"></select>
+                                <select id="search_patient2" class="form-select form-lbk form-search"></select>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mx-3">{{ _("Anonyme") }}</label>
                                     <label class="form-label text-end me-3">
                                         <input type="radio" id="anonyme-4_1" name="anonyme_1" value="4">&nbsp;{{ _("Oui") }}</input>
@@ -59,15 +59,15 @@
                         </div>
                         <div class="row">
                             <div class="col-9">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-4 text-end mt-2 me-1" style="">{{ _("Code laboratoire") }}</label>
                                     <div>
-                                        <input id="code_patient_1" type="text" value="" maxlength="20" class="form-control">
+                                        <input id="code_patient_1" type="text" value="" maxlength="20" class="form-control form-lbk">
                                     </div>
                                 </div>
                             </div>
                             <div class="3">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <div class="pat-num" id="anon-code-ro">
                                         <span id="code_1"></span>
                                     </div>
@@ -77,56 +77,56 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3 identity-group_1">
+                                <div class="form-group d-lg-flex align-items-start mt-3 identity-group_1">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Nom") }}</label>
                                     <div>
-                                        <input id="nom_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="nom_1" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Deuxième nom") }}</label>
                                     <div>
-                                        <input id="midname_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="midname_1" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3 identity-group_1">
+                                <div class="form-group d-lg-flex align-items-start mt-3 identity-group_1">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Nom de jeune fille") }}</label>
                                     <div>
-                                        <input id="nom_jf_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="nom_jf_1" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3 identity-group_1">
+                                <div class="form-group d-lg-flex align-items-start mt-3 identity-group_1">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Prénom(s)") }}</label>
                                     <div>
-                                        <input id="prenom_1" type="text" value="" maxlength="80" class="form-control" style="">
+                                        <input id="prenom_1" type="text" value="" maxlength="80" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
                                     <div>
-                                        <input id="ddn_1" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                        <input id="ddn_1" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                                         <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end me-3">{{ _("Date de naissance approximative") }}</label>
                                     <label class="form-label text-end me-3">
                                         <input type="radio" id="ddn_approx-4_1" name="ddn_approx_1" value="4">&nbsp;{{ _("Oui") }}</input>
@@ -137,20 +137,20 @@
                                 </div>
                             </div>
                             <div class="col-2">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <span class="form-label text-center mt-2 me-1" style="">{{ _("ou") }}</span>
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Age") }}</label>
                                     <div>
-                                        <input name="age" id="age_1" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                                        <input name="age" id="age_1" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label text-end mt-2 me-1">{{ _("unité") }}</label>
                                     <div>					
                                         <select name="unite" id="unite_1" class="form-select">
@@ -165,7 +165,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Nationalité") }}</label>
                                     <select name="nationality_1" id="nationality_1" class="form-select">
                                         <option value="0" id="nationality-0_1" {% if not args or args['pat_nat'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
@@ -186,7 +186,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3 identity-group_1">
+                                <div class="form-group d-lg-flex align-items-start mt-3 identity-group_1">
                                     <label class="form-label col-3 text-end mx-3">{{ _("Sexe") }}</label>
                                     <label class="form-label text-end me-3">
                                         <input type="radio" id="sexe-1_1" name="sexe_1" value="1">&nbsp;{{ _("Masculin") }}</input>
@@ -203,7 +203,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3 identity-group_1">
+                                <div class="form-group d-lg-flex align-items-start mt-3 identity-group_1">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Groupe sanguin") }}</label>
                                     <div>					
                                         <select name="blood_group_1" id="blood_group_1" class="form-select">
@@ -231,66 +231,66 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                                     <div>
-                                        <textarea id="adresse_1" rows="4" cols="50" class="form-control"></textarea>
+                                        <textarea id="adresse_1" rows="4" cols="50" class="form-control form-lbk"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Boite postale") }}</label>
                                     <div>
-                                        <input id="bp_1" type="text" value="" maxlength="10" class="form-control" style="">
+                                        <input id="bp_1" type="text" value="" maxlength="10" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Quartier / Secteur") }}</label>
                                     <div>
-                                        <input id="quartier_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="quartier_1" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <div class="col-3"></div>
                                     <select id="search_zipcity" class="form-select" style="width:300px"></select>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Code postal") }}</label>
                                     <div>
-                                        <input id="cp_1" type="text" value="" maxlength="10" class="form-control" style="">
+                                        <input id="cp_1" type="text" value="" maxlength="10" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Ville / Village") }}</label>
                                     <div>
-                                        <input id="ville_1" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="ville_1" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone") }} 1</label>
                                     <div>
-                                        <input id="phone1_1" type="text" value="" maxlength="20" class="form-control" style="">
+                                        <input id="phone1_1" type="text" value="" maxlength="20" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone") }} 2</label>
                                     <div>
-                                        <input id="phone2_1" type="text" value="" maxlength="20" class="form-control" style="">
+                                        <input id="phone2_1" type="text" value="" maxlength="20" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Profession") }}</label>
                                     <div>
-                                        <input id="profession_1" type="text" value="" maxlength="50" class="form-control" style="">
+                                        <input id="profession_1" type="text" value="" maxlength="50" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="float-end me-2 mb-5">
-                            <input type="button" id="btn-save" onclick="save_pat();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Modifier la fiche patient") }}"> 
+                            <input type="button" id="btn-save" onclick="save_pat();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Modifier la fiche patient") }}"> 
                         </div>
                     </div>
 
@@ -301,7 +301,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mx-3">{{ _("Anonyme") }}</label>
                                     <label class="form-label text-end me-3">
                                         <input type="radio" id="anonyme-4_2" name="anonyme" value="4">&nbsp;{{ _("Oui") }}</input>
@@ -314,15 +314,15 @@
                         </div>
                         <div class="row">
                             <div class="col-9">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-4 text-end mt-2 me-1" style="">{{ _("Code laboratoire") }}</label>
                                     <div>
-                                        <input id="code_patient_2" type="text" value="" maxlength="20" class="form-control">
+                                        <input id="code_patient_2" type="text" value="" maxlength="20" class="form-control form-lbk">
                                     </div>
                                 </div>
                             </div>
                             <div class="3">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <div class="pat-num" id="anon-code-ro">
                                         <span id="code_2"></span>
                                     </div>
@@ -332,55 +332,55 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Nom") }}</label>
                                     <div>
-                                        <input id="nom_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="nom_2" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Deuxième nom") }}</label>
                                     <div>
-                                        <input id="midname_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="midname_2" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Nom de jeune fille") }}</label>
                                     <div>
-                                        <input id="nom_jf_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="nom_jf_2" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1" style="">{{ _("Prénom(s)") }}</label>
                                     <div>
-                                        <input id="prenom_2" type="text" value="" maxlength="80" class="form-control" style="">
+                                        <input id="prenom_2" type="text" value="" maxlength="80" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
                                     <div>
-                                        <input id="ddn_2" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                                        <input id="ddn_2" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end me-3">{{ _("Date de naissance approximative") }}</label>
                                     <label class="form-label text-end me-3">
                                         <input type="radio" id="ddn_approx-4_2" name="ddn_approx" value="4">&nbsp;{{ _("Oui") }}</input>
@@ -391,20 +391,20 @@
                                 </div>
                             </div>
                             <div class="col-2">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <span class="form-label text-center mt-2 me-1" style="">{{ _("ou") }}</span>
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Age") }}</label>
                                     <div>
-                                        <input id="age_2" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control" style="width:60px;" min="0" max="150">
+                                        <input id="age_2" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label text-end mt-2 me-1">{{ _("unité") }}</label>
                                     <div>					
                                         <select name="unite" id="unite_2" class="form-select">
@@ -419,7 +419,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Nationalité") }}</label>
                                     <select name="nationality_2" id="nationality_2" class="form-select">
                                         <option value="0" id="nationality-0_2" {% if not args or args['pat_nat'] == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
@@ -440,7 +440,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mx-3">{{ _("Sexe") }}</label>
                                     <label class="form-label text-end me-3">
                                         <input type="radio" id="sexe-1_2" name="sexe" value="1">&nbsp;{{ _("Masculin") }}</input>
@@ -457,7 +457,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3 identity-group_1">
+                                <div class="form-group d-lg-flex align-items-start mt-3 identity-group_1">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Groupe sanguin") }}</label>
                                     <div>					
                                         <select name="blood_group_2" id="blood_group_2" class="form-select">
@@ -485,56 +485,56 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                                     <div>
-                                        <textarea id="adresse_2" rows="4" cols="50" class="form-control"></textarea>
+                                        <textarea id="adresse_2" rows="4" cols="50" class="form-control form-lbk"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Boite postale") }}</label>
                                     <div>
-                                        <input id="bp_2" type="text" value="" maxlength="10" class="form-control" style="">
+                                        <input id="bp_2" type="text" value="" maxlength="10" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Quartier / Secteur") }}</label>
                                     <div>
-                                        <input id="quartier_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="quartier_2" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Code postal") }}</label>
                                     <div>
-                                        <input id="cp_2" type="text" value="" maxlength="10" class="form-control" style="">
+                                        <input id="cp_2" type="text" value="" maxlength="10" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Ville / Village") }}</label>
                                     <div>
-                                        <input id="ville_2" type="text" value="" maxlength="40" class="form-control" style="">
+                                        <input id="ville_2" type="text" value="" maxlength="40" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone") }} 1</label>
                                     <div>
-                                        <input id="phone1_2" type="text" value="" maxlength="20" class="form-control" style="">
+                                        <input id="phone1_2" type="text" value="" maxlength="20" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone") }} 2</label>
                                     <div>
-                                        <input id="phone2_2" type="text" value="" maxlength="20" class="form-control" style="">
+                                        <input id="phone2_2" type="text" value="" maxlength="20" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
-                                <div class="form-group d-flex align-items-start mt-3">
+                                <div class="form-group d-lg-flex align-items-start mt-3">
                                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Profession") }}</label>
                                     <div>
-                                        <input id="profession_2" type="text" value="" maxlength="50" class="form-control" style="">
+                                        <input id="profession_2" type="text" value="" maxlength="50" class="form-control form-lbk" style="">
                                     </div>
                                 </div>
                             </div>
@@ -544,11 +544,11 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <div class="float-start" style="margin-start:0px;">
-                            <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
+                        <div class="float-start ms-0">
+                            <input type="button" onclick="return_home();" id="exit" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
                         <div class="float-end me-2">
-                            <input type="button" onclick="save_request();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Fusionner") }}">
+                            <input type="button" onclick="save_request();" id="save" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Fusionner") }}">
                         </div>
                     </div>
                 </div>

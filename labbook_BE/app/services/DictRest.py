@@ -80,14 +80,16 @@ class DictDet(Resource):
                                           label=val['label'],
                                           short_label=val['short_label'],
                                           position=val['position'],
-                                          code=val['code'])
+                                          code=val['code'],
+                                          dict_formatting=val['formatting'])
                 else:
                     ret = Dict.insertDict(id_owner=val['id_owner'],
                                           dico_name=dict_name,
                                           label=val['label'],
                                           short_label=val['short_label'],
                                           position=val['position'],
-                                          code=val['code'])
+                                          code=val['code'],
+                                          dict_formatting=val['formatting'])
 
                 if ret is False or ret <= 0:
                     self.log.info(Logs.fileline() + ' : TRACE DictDet ERROR update val dict')
@@ -118,7 +120,8 @@ class DictDet(Resource):
                                       label=val['label'],
                                       short_label=val['short_label'],
                                       position=val['position'],
-                                      code=val['code'])
+                                      code=val['code'],
+                                      dict_formatting=val['formatting'])
 
                 if ret <= 0:
                     self.log.error(Logs.alert() + ' : DictDet ERROR insert dict')
@@ -182,7 +185,8 @@ class DictExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['version', 'id_ana', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code', 'dico_descr']]
+        l_data = [['version', 'id_data', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code',
+                   'dico_descr', 'dict_formatting']]
 
         if 'id_user' not in args or 'dico_name' not in args:
             self.log.error(Logs.fileline() + ' : DictExport ERROR args missing')
@@ -244,6 +248,11 @@ class DictExport(Resource):
                     data.append(_(dico_descr.strip()))
                 else:
                     data.append('')
+
+                if d['dict_formatting']:
+                    data.append(d['dict_formatting'])
+                else:
+                    data.append('N')
 
                 l_data.append(data)
 
@@ -312,7 +321,8 @@ class DictImport(Resource):
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check name of column
-        head_list = ['version', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code', 'dico_descr']
+        head_list = ['version', 'id_data', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code',
+                     'dico_descr', 'dict_formatting']
 
         i = 0
         for head in head_line:
@@ -328,28 +338,49 @@ class DictImport(Resource):
             self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
             self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(row))
             if row:
-                id_owner           = row[1]
-                dico_name          = row[2]
-                label              = row[3]
-                short_label        = row[4]
-                position           = row[5]
-                code               = row[6]
-                dico_descr         = row[7]
+                id_data            = row[1]
+                id_owner           = row[2]
+                dico_name          = row[3]
+                label              = row[4]
+                short_label        = row[5]
+                position           = row[6]
+                code               = row[7]
+                dico_descr         = row[8]
+                dict_formatting    = row[9]
 
-                self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert dict dico_name=' + dico_name)
-                # insert dict
-                ret = Dict.insertDict(id_owner=id_owner,
-                                      dico_name=dico_name,
-                                      label=label,
-                                      short_label=short_label,
-                                      position=position,
-                                      code=code)
+                # inser dictt
+                if not id_data or int(id_data) == 0:
+                    self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert dict dico_name=' + dico_name)
+                    ret = Dict.insertDict(id_owner=id_owner,
+                                          dico_name=dico_name,
+                                          label=label,
+                                          short_label=short_label,
+                                          position=position,
+                                          code=code,
+                                          dict_formatting=dict_formatting)
 
-                if ret <= 0:
-                    self.log.info(Logs.fileline() + ' : TRACE DictImport ERROR insert dict dico_name ' + str(dico_name) + ' | csv_line=' + str(i))
-                    DB.insertDbStatus(stat='ERR;DictImport ERROR insert dict dico_name: ' + str(dico_name), type='DIC')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
+                    if ret <= 0:
+                        self.log.info(Logs.fileline() + ' : TRACE DictImport ERROR insert dict dico_name ' + str(dico_name) + ' | csv_line=' + str(i))
+                        DB.insertDbStatus(stat='ERR;DictImport ERROR insert dict dico_name: ' + str(dico_name), type='DIC')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+                   
 
+                # update dict
+                elif int(id_data) > 0:
+                    self.log.info(Logs.fileline() + ' : DEBUG IMPORT update dict id_data=' + str(id_data))
+                    ret = Dict.updateDict(id_data=id_data,
+                                          label=label,
+                                          short_label=short_label,
+                                          position=position,
+                                          code=code,
+                                          dict_formatting=dict_formatting)
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE DictImport ERROR update dict id_data ' + str(id_data) + ' | csv_line=' + str(i))
+                        DB.insertDbStatus(stat='ERR;DictImport ERROR update dict id_data=' + str(id_data) + ' dico_name: ' + str(dico_name), type='DIC')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                # update dict descr
                 ret = Dict.updateDescr(dict_name=dico_name, dico_descr=dico_descr)
 
                 if ret is False:

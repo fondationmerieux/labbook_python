@@ -15,10 +15,10 @@
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
                 <div class="panel-filter mt-3">
-                    <div class="form-group d-flex align-items-start mt-1">
+                    <div class="form-group d-lg-flex align-items-start mt-1">
                         <label for="name" class="form-label text-end mt-2 me-1">{{ _("Nom") }}</label>
                         <div>					
-                            <input type="text" name="name" id="name" value="" class="form-control cnx_trigger">			
+                            <input type="text" name="name" id="name" value="" class="form-control form-lbk cnx_trigger">			
                         </div>
                         <label for="prod_type" class="form-label text-end ms-3 mt-2 me-1">{{ _("Type") }}</label>
                         <div>
@@ -41,13 +41,13 @@
 
                         <label class="form-label text-end ms-3 mt-2 me-1">{{ _("Bailleur") }}</label>
                         <div>
-                            <input type="text" name="lessor" id="lessor" value="" class="form-control cnx_trigger">	 
+                            <input type="text" name="lessor" id="lessor" value="" class="form-control form-lbk cnx_trigger">	 
                         </div>
                     </div>
 
-                    <div class="col-12 mt-3">
+                    <div class="col-lg-12 mt-3">
                         <div class="float-end">
-                            <button type="button" onclick="filter_items();" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            <button type="button" onclick="filter_items();" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
             </div>
 
             <form class="row justify-content-center mt-3" id="items-list">
-                <table id="table_items" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                <table id="table_items" class="table table-responsive table-striped table-hover col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
@@ -95,27 +95,24 @@
             </div>
 
             <div class="clearfix mb-5">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                <div class="float-end d-flex align-items-end">
-                    {% if session['user_role'] != 'S' and session['user_role'] != 'P' %}
-                    {#
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
-                    #}
+                <div class="float-end d-lg-flex align-items-end">
+                    {% if session['user_role'] in ('A','K') %}
                     <div class="dropdown">
-                        <button class="btn btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_export" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Export des données") }}</button>
-                        <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#" onclick="export_data();">{{ _("Export du tableau") }}</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="export_products();">{{ _("Export des produits") }}</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="export_supplies();">{{ _("Export des approvisionnements") }}</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="export_uses();">{{ _("Export des usages") }}</a></li>
+                        <button class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_export" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Export des données") }}</button>
+                        <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownExport">
+                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="export_data();">{{ _("Export du tableau") }}</a></li>
+                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="export_products();">{{ _("Export des produits") }}</a></li>
+                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="export_supplies();">{{ _("Export des approvisionnements") }}</a></li>
+                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="export_uses();">{{ _("Export des usages") }}</a></li>
                         </ul>
                     </div>
 
-                    <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
-                    <input type="button" onclick="list_products();" id="btn_add" value="{{ _("Catalogue des produits") }}" class="btn btn-{{ session['user_role']|safe }} ms-3">
-                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
+                    <input type="button" onclick="list_products();" id="btn_add" value="{{ _("Catalogue des produits") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
+                    <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
@@ -213,10 +210,11 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-list-stock/" + data_items[i].prs_prd + "\">{{ _("Détails du stock") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/hist-stock-product/" + data_items[i].prs_prd + "\">{{ _("Historique de ce produit") }}</a>" +
+                   {% if session['user_role'] in ('A','K') %}
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-new-product/" + data_items[i].prs_prd + "\">{{ _("Editer la fiche produit") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].prs_prd + ")\">{{ _("Supprimer la fiche produit") }}</a>" ;   
-        
-    menu_act += "</div></ul></nav>" ;
+                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].prs_prd + ")\">{{ _("Supprimer la fiche produit") }}</a>" +
+                   {% endif %}
+                   "</div></ul></nav>" ;
 
     if ( data_items[i].day_to_expir <= {{ session['stock_expir_alert'] }} && data_items[i].nb_total > 0 )
     tr_style = "style=\"background-color:#FFD5D6;\"" ;

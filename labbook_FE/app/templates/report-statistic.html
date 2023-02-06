@@ -14,14 +14,14 @@
             <form autocomplete="off">
                 <fieldset class="border mx-1 p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
-                        <div class="form-group d-flex align-items-start ms-3">
+                        <div class="form-group d-lg-flex align-items-start ms-3">
                             <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
                             <div>
-                                <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                                <input id="f_date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
                             <label for="f_date_end" class="form-label text-end mt-2 mx-1">{{ _("au") }}</label>
                             <div>					
-                                <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                                <input id="f_date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
 
                             {% if ihm['req_services'] %}
@@ -31,12 +31,12 @@
                                 {{ select_req_services(ihm['req_services']) }}
                             </select>
                             {% else%}
-                            <input id="service_int" type="text" value="" maxlength="50" class="form-control" style="">
+                            <input id="service_int" type="text" value="" maxlength="50" class="form-control form-lbk" style="">
                             {% endif %}
                         </div>
 
                         <div class="float-end mt-2">
-                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                         </div>
                 </fieldset>
             </form>
@@ -44,7 +44,7 @@
             <form id="html_report">
                 <fieldset class="row border mx-1 mt-3 p-2">
                     <legend class="legend-lbk">{{ _("Répartition dossiers") }}</legend>
-                        <table class="table table-striped table-hover col-12 table-lbk">
+                        <table class="table table-striped table-hover col-lg-12 table-lbk">
                             <thead id="thead_stat_patient"></thead>
                             <tbody id="tbody_stat_patient"></tbody>
                         </table>
@@ -52,21 +52,21 @@
 
                 <fieldset class="row border mx-1 mt-2 p-2">
                     <legend class="legend-lbk">{{ _("Prescripteurs") }}</legend>
-                    <table class="table table-striped table-hover col-12 table-lbk">
+                    <table class="table table-striped table-hover col-lg-12 table-lbk">
                         <tbody id="tbody_stat_prescr"></tbody>
                     </table>
                 </fieldset>
 
                 <fieldset class="row border mx-1 mt-2 p-2">
                     <legend class="legend-lbk">{{ _("Préleveurs") }}</legend>
-                    <table class="table table-striped table-hover col-12 table-lbk">
+                    <table class="table table-striped table-hover col-lg-12 table-lbk">
                         <tbody id="tbody_stat_sampler"></tbody>
                     </table>
                 </fieldset>
 
                 <fieldset class="row border mx-1 mt-2 p-2">
                     <legend class="legend-lbk">{{ _("Prélèvements") }}</legend>
-                    <table class="table table-striped table-hover col-12 table-lbk">
+                    <table class="table table-striped table-hover col-lg-12 table-lbk">
                         <tbody id="tbody_stat_product"></tbody>
                     </table>
                 </fieldset>
@@ -97,7 +97,7 @@
             </form>
 
             <div class="float-end mt-3 mb-5">
-                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+                <input type="button" onclick="download_report();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div>
 
         </div>

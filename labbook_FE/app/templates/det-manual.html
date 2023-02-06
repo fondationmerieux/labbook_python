@@ -11,61 +11,61 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Manuel") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Référence") }}</label>
                     <div>					
-                        <input type="text" name="reference" id="reference" value="{{ args['manual_det']['reference'] }}" class="form-control">			
+                        <input type="text" name="reference" id="reference" value="{{ args['manual_det']['reference'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Titre") }}</label>
                     <div>					
-                        <input type="text" name="title" id="title" value="{{ args['manual_det']['title'] }}" class="form-control">			
+                        <input type="text" name="title" id="title" value="{{ args['manual_det']['title'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_writer" class="form-label col-3 text-end me-1">{{ _("Rédacteur") }}</label>
                     <div>
-                        <select id="search_writer" class="form-select" style="width:400px"></select>
+                        <select id="search_writer" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['manual_det']['writer'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_auditor" class="form-label col-3 text-end me-1">{{ _("Vérificateur") }}</label>
                     <div>
-                        <select id="search_auditor" class="form-select" style="width:400px"></select>
+                        <select id="search_auditor" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['manual_det']['auditor'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_approver" class="form-label col-3 text-end me-1">{{ _("Approbateur") }}</label>
                     <div>
-                        <select id="search_approver" class="form-select" style="width:400px"></select>
+                        <select id="search_approver" class="form-select form-lbk form-search"></select>
                         <span class="ms-2">{{ args['manual_det']['approver'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_insert" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de création") }}</label>
                     <div>					
-                        <input id="date_insert" class="form-control" type="date" maxlength="10" size="10" value="{{ args['manual_det']['date_insert'] }}" name="date_insert" style="color: #888;">
+                        <input id="date_insert" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['manual_det']['date_insert'] }}" name="date_insert" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_apply" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'application") }}</label>
                     <div>					
-                        <input id="date_apply" class="form-control" type="date" maxlength="10" size="10" value="{{ args['manual_det']['date_apply'] }}" name="date_apply" style="color: #888;">
+                        <input id="date_apply" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['manual_det']['date_apply'] }}" name="date_apply" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_update" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de modification") }}</label>
                     <div>					
-                        <input id="date_update" class="form-control" type="date" maxlength="10" size="10" value="{{ args['manual_det']['date_update'] }}" name="date_update" style="color: #888;">
+                        <input id="date_update" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['manual_det']['date_update'] }}" name="date_update" style="color: #888;">
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="section" class="form-label col-3 text-end mt-2 me-1">{{ _("Section d'application") }}</label>
                     <div>					
                         <select id="section" name="section" class="form-select">
@@ -74,10 +74,10 @@
                         </select>			
                     </div>
                 </div> 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container mt-2 me-1">
-                        <div style="display: inline-block; padding-end: 20px;" class="uploadHTML5">
-                            <input id="MANU" name="file" type="file" style="margin-bottom:4px"/>
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="MANU" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class=table-responsive">
                             <thead>
@@ -90,11 +90,11 @@
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

@@ -8,81 +8,81 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Fournisseur") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="supplier" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom fournisseur") }}</label>
                     <div>					
-                        <input type="text" name="supplier" id="supplier" value="{{ args['supplier'] }}" class="form-control">			
+                        <input type="text" name="supplier" id="supplier" value="{{ args['supplier'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
 
                 <div class="panel-heading row mt-3">
                     <h3 class="panel-title">{{ _("Contact") }}</h3>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
-                        <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control">			
+                        <input type="text" name="lastname" id="lastname" value="{{ args['lastname'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="firstname" class="form-label col-3 text-end mt-2 me-1">{{ _("Prénom") }}</label>
                     <div class="">					
-                        <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control">			
+                        <input type="text" name="firstname" id="firstname" value="{{ args['firstname'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="funct" class="form-label col-3 text-end mt-2 me-1">{{ _("Fonction") }}</label>
                     <div>					
-                        <input type="text" name="funct" id="funct" value="{{ args['funct'] }}" class="form-control">			
+                        <input type="text" name="funct" id="funct" value="{{ args['funct'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="address" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                     <div>					
-                        <textarea id="address" name="address" rows="4" cols="50" class="form-control">{{ args['address'] }}</textarea>
+                        <textarea id="address" name="address" rows="4" cols="50" class="form-control form-lbk">{{ args['address'] }}</textarea>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="phone" class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone fixe") }}</label>
                     <div>					
-                        <input type="tel" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control">			
+                        <input type="tel" name="phone" id="phone" value="{{ args['phone'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="mobile" class="form-label col-3 text-end mt-2 me-1">{{ _("Téléphone mobile") }}</label>
                     <div>					
-                        <input type="tel" name="mobile" id="mobile" value="{{ args['mobile'] }}" class="form-control">			
+                        <input type="tel" name="mobile" id="mobile" value="{{ args['mobile'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="fax" class="form-label col-3 text-end mt-2 me-1">{{ _("Fax") }}</label>
                     <div>					
-                        <input type="tel" name="fax" id="fax" value="{{ args['fax'] }}" class="form-control">			
+                        <input type="tel" name="fax" id="fax" value="{{ args['fax'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="email" class="form-label col-3 text-end mt-2 me-1">{{ _("Adresse email") }}</label>
                     <div>					
-                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control">			
+                        <input type="email" name="email" id="email" value="{{ args['email'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaire") }}</label>
                     <div>					
-                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control">{{ args['comment'] }}</textarea>
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control form-lbk">{{ args['comment'] }}</textarea>
                     </div>
                 </div>
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>

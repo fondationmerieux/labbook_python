@@ -22,8 +22,8 @@ class Record:
         else:
             limit = 'LIMIT 4000'
             # filter conditions
-            if args['num_rec']:
-                filter_cond += ' and (dos.num_dos_an LIKE "%' + args['num_rec'] + '%" or dos.num_dos_mois LIKE "%' + args['num_rec'] + '%") '
+            if 'num_rec' in args and args['num_rec']:
+                filter_cond += ' and (dos.num_dos_an LIKE "%' + args['num_rec'] + '%" or dos.num_dos_mois LIKE "%' + args['num_rec'] + '%" or dos.rec_num_int LIKE "%' + args['num_rec'] + '%") '
 
             if 'stat_work' in args and args['stat_work']:
                 filter_cond += ' and dos.statut IN ' + str(args['stat_work']) + ' '
@@ -36,7 +36,7 @@ class Record:
                 elif args['type_rec'] == 'I':
                     filter_cond += ' and dos.type=184 '
 
-            if args['stat_rec'] and args['stat_rec'] > 0:
+            if 'stat_rec' in args and args['stat_rec'] > 0:
                 filter_cond += ' and dos.statut=' + str(args['stat_rec']) + ' '
 
             if 'lastname' in args and args['lastname']:
@@ -48,14 +48,14 @@ class Record:
             if 'code' in args and args['code']:
                 filter_cond += ' and (pat.code LIKE "%' + args['code'] + '%" or pat.code_patient LIKE "%' + args['code'] + '%") '
 
-            if args['date_beg']:
+            if 'date_beg' in args and args['date_beg']:
                 filter_cond += ' and dos.date_dos >= "' + args['date_beg'] + '" '
 
-            if args['date_end']:
+            if 'date_end' in args and args['date_end']:
                 filter_cond += ' and dos.date_dos <= "' + args['date_end'] + '" '
 
             # Analysis family
-            if 'type_ana' in args and args['type_ana'] and args['type_ana'] > 0:
+            if 'type_ana' in args and args['type_ana'] > 0:
                 table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ' +
                                'left join sigl_dico_data as fam on fam.id_data = ref.famille ')
                 filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
@@ -65,8 +65,27 @@ class Record:
                 filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
 
             # 4 in base for yes
-            if args['emer'] and args['emer'] == 4:
+            if 'emer' in args and args['emer'] == 4:
                 filter_cond += ' and ana.urgent=4 '
+
+            # Functionnal unit link with analyzes families
+            if 'link_fam' in args and args['link_fam']:
+                Record.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
+                # avoid redundance of table if filter type_ana exist
+                if 'type_ana' not in args or not args['type_ana']:
+                    table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
+
+                cond_link_fam = ''
+                # prepare list for sql
+                for id_fam in args['link_fam']:
+                    if not cond_link_fam:
+                        cond_link_fam = '('
+
+                    cond_link_fam = cond_link_fam + str(id_fam) + ','
+
+                if cond_link_fam:
+                    cond_link_fam = cond_link_fam[:-1] + ')'
+                    filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         # Prescriber list
         if id_pres > 0:

@@ -11,7 +11,7 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}">
                 <span>{{ _("Demande d'analyses patient hospitalisé") }}</span>
             </h2>
@@ -24,39 +24,39 @@
                     <span class="rec-num" id="num_rec"></span>
                 </div>
                 {% endif %}
-                <div class="form-group d-flex align-items-start ms-1 my-3">
+                <div class="form-group d-lg-flex align-items-start ms-1 my-3">
                     <label for="rec_num_int" class="form-label text-end mt-2 me-1" style="">{{ _("Numéro de dossier interne au laboratoire") }}</label>
                     <div>
-                        <input id="rec_num_int" type="text" value="" maxlength="30" class="form-control">
+                        <input id="rec_num_int" type="text" value="" maxlength="30" class="form-control form-lbk">
                     </div>
                 </div>
-                <div class=" d-flex align-items-start">
-                    <div class="col-3 panel-heading ms-3">
+                <div class="d-lg-flex align-items-start">
+                    <div class="col-lg-3 panel-heading ms-3">
                         <h3 class="panel-title">{{ _("Identité") }}</h3>
                     </div>
-                    <div class="col-5 panel-heading ms-3">
+                    <div class="col-lg-5 panel-heading ms-3">
                         <h3 class="panel-title">{{ _("Prescription") }}</h3>
                     </div>
                     <div class="col panel-heading ms-3 me-1">
                         <h3 class="panel-title">{{ _("Hospitalisation") }}</h3>
                     </div>
                 </div>
-                <div class="d-flex align-items-start gy-3">
-                    <div class="col-3 ms-3">
-                        <div class="col-12 mt-3">
+                <div class="d-lg-flex align-items-start gy-3">
+                    <div class="col-lg-3 ms-3">
+                        <div class="col-lg-12 mt-3">
                             {% if args['patient'] and args['patient']['code_patient'] %}
                             <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
                             {% endif %}
                             <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
                         </div>
-                        <div class="col-12 mt-2">
+                        <div class="col-lg-12 mt-2">
                             {% if args['patient'] and args['patient']['anonyme'] != 4 %}
                             <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
                             {% else %}
                             <span class="font-info">{{ _("Patient anonyme") }}.</span>
                             {% endif %}
                         </div>
-                        <div class="col-12 mt-2">
+                        <div class="col-lg-12 mt-2">
                             <span>{{ _("Né(e) le") }}&nbsp;</span>
                             <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
                             <span>&nbsp;-&nbsp;</span>
@@ -70,7 +70,7 @@
                                                     {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
                                                     {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                         </div>
-                        <div class="col-12 mt-1">
+                        <div class="col-lg-12 mt-1">
                             {% if args['patient'] and args['patient']['tel'] %}
                             <span class="font-info">{{ args['patient']['tel'] }}</span>
                             {% endif %}
@@ -81,30 +81,30 @@
                         </div>
                         {% if entry == 'Y' %}
                         <div class="ms-3 mt-3">
-                            <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Modifier le dossier du patient") }}">
+                            <input type="button" onclick="change_pat({% if args['patient'] %}{{ args['patient']['id_data'] }}{% else %}0{% endif %});" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Modifier le dossier du patient") }}">
                         </div>
                         {% endif %}
                     </div>
 
-                    <div class="col-5">
-                        <div class="col-12 ms-3 mt-1">
-                            <div class="form-group d-flex">
-                                <label for="date_record" class="form-label col-6 text-end me-1 mt-2">{{ _("Date de réception du dossier") }} * </label>
+                    <div class="col-lg-5">
+                        <div class="col-lg-12 ms-3 mt-1">
+                            <div class="form-group d-lg-flex">
+                                <label for="date_record" class="form-label col-lg-6 text-end me-1 mt-2">{{ _("Date de réception du dossier") }} * </label>
                                 {% if entry == 'Y' %}
-                                <input id="date_record" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
+                                <input id="date_record" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_dos']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex mt-1">
-                                <label for="date_prescr" class="form-label col-6 text-end me-1 mt-2">{{ _("Date de prescription") }} * </label>
+                            <div class="form-group d-lg-flex mt-1">
+                                <label for="date_prescr" class="form-label col-lg-6 text-end me-1 mt-2">{{ _("Date de prescription") }} * </label>
                                 {% if entry == 'Y' %}
-                                <input id="date_prescr" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
+                                <input id="date_prescr" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex align-items-end">
+                            <div class="form-group d-lg-flex align-items-end">
                                 <label for="rec_custody" class="form-label text-end ms-3 me-1">{{ _("Demande de garde") }}</label>
                                 {% if entry == 'Y' %}
                                 <label class="form-label text-end me-3">
@@ -117,12 +117,12 @@
                                 <span class="font-info">{% if args['record']['rec_custody'] == 'Y' %}{{ _("Oui") }}{% else %}{{ _("Non") }}{% endif %}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex align-items-start mt-2">
+                            <div class="form-group d-lg-flex align-items-start mt-2">
                                 <label for="search_doctor" class="form-label text-end mt-1 me-1">{{ _("Prescripteur") }}</label>
                                 {% if entry == 'Y' %}
-                                <div class="d-flex align-items-start w-100">
-                                    <select id="search_doctor" class="form-select"></select>
-                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-plus" /></i></button>
+                                <div class="d-lg-flex align-items-start w-100">
+                                    <select id="search_doctor" class="form-select form-lbk form-search"></select>
+                                    <button type="button" onclick="new_doctor();" id="btn_supplier" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-plus" /></i></button>
                                 </div>
                                 {% else %}
                                     {% if args['doctor'] %}
@@ -133,8 +133,8 @@
                                     {% endif %}
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex align-items-start mt-2">
-                                <label class="form-label col-3 text-end me-3">{{ _("Colis") }}</label>
+                            <div class="form-group d-lg-flex align-items-start mt-2">
+                                <label class="form-label col-lg-3 text-end me-3">{{ _("Colis") }}</label>
                                 {% if entry == 'Y' %}
                                 <label class="form-label text-end me-3">
                                     <input type="radio" name="parcel" value="4" >&nbsp;{{ _("Oui") }}</input>
@@ -153,13 +153,13 @@
                                 {% endif %}
                             </div>
                             <div id="colis-group" class="form-group row" style="display:none;">
-                                <label class="form-label col-6 text-end" style="">{{ _("Identification du colis") }}</label>
+                                <label class="form-label col-lg-6 text-end" style="">{{ _("Identification du colis") }}</label>
                                 <div>
-                                    <input id="parcel_id" type="text" value="" maxlength="30" class="form-control" style="width: 240px;">
+                                    <input id="parcel_id" type="text" value="" maxlength="30" class="form-control form-lbk" style="width: 240px;">
                                 </div>
-                                <label class="form-label col-6 text-end mt-2">{{ _("Date de réception du colis") }}</label>
+                                <label class="form-label col-lg-6 text-end mt-2">{{ _("Date de réception du colis") }}</label>
                                 <div>
-                                    <input  id="date_parcel" class="form-control mt-2" type="date" maxlength="10" size="10" value="" placeholder="" style="color:#888;width:160px;">
+                                    <input  id="date_parcel" class="form-control form-lbk mt-2" type="date" maxlength="10" size="10" value="" placeholder="" style="color:#888;width:160px;">
                                 </div>
                             </div>
                         </div>
@@ -167,15 +167,15 @@
 
                     <div class="col">
                         <div class="col-12 mt-1">
-                            <div class="form-group d-flex align-items-start mt-2">
+                            <div class="form-group d-lg-flex align-items-start mt-2">
                                 <label for="date_hosp" class="form-label col-6 text-end mt-2 me-1">{{ _("Date d'admission") }}</label>
                                 {% if entry == 'Y' %}
-                                <input id="date_hosp" class="form-control" type="date" maxlength="10" size="10" value="" placeholder="">
+                                <input id="date_hosp" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_hosp']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex align-items-start mt-2">
+                            <div class="form-group d-lg-flex align-items-start mt-2">
                                 <label for="service_int" class="form-label col-6 text-end mt-2 me-1">{{ _("Service demandeur") }}</label>
                                 {% if entry == 'Y' %}
                                     {% if ihm['req_services'] %}
@@ -184,16 +184,16 @@
                                         {{ select_req_services(ihm['req_services']) }}
                                     </select>
                                     {% else%}
-                                    <input id="service_int" type="text" value="" maxlength="50" class="form-control" style="">
+                                    <input id="service_int" type="text" value="" maxlength="50" class="form-control form-lbk" style="">
                                     {% endif %}
                                 {% else %}
                                 <span class="font-info">{{ args['record']['service_interne'] }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-flex align-items-start mt-2">
+                            <div class="form-group d-lg-flex align-items-start mt-2">
                                 <label for="bed_num" class="form-label col-6 text-end mt-2 me-1">{{ _("Numéro de lit") }}</label>
                                 {% if entry == 'Y' %}
-                                <input id="bed_num" type="number" value="" maxlength="4" class="form-control" min="0" max="9999">
+                                <input id="bed_num" type="number" value="" maxlength="4" class="form-control form-lbk" min="0" max="9999">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['num_lit'] }}</span>
                                 {% endif %}
@@ -209,11 +209,11 @@
             </div>
             {% if entry == 'Y' %}
             <div class="row ms-3 mt-3">
-                <div class="col-12">
-                    <div class="form-group d-flex align-items-start">
-                        <label class="form-label col-3 text-end me-1 mt-1">{{ _("Rechercher une analyse") }}</label>
+                <div class="col-lg-12">
+                    <div class="form-group d-lg-flex align-items-start">
+                        <label class="form-label col-lg-3 text-end me-1 mt-1">{{ _("Rechercher une analyse") }}</label>
                         <div>
-                            <select id="search_analysis" class="form-select" style="width:450px"></select>
+                            <select id="search_analysis" class="form-select form-lbk form-search"></select>
                         </div>
                     </div>
                 </div>
@@ -223,19 +223,20 @@
                 <span class="font-info">{{ _("Analyses") }}</span>
             </div>
             <form class="row justify-content-center mt-3" autocomplete="off">
-                <table id="table_analysis" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                <table id="table_analysis" class="table table-striped table-hover col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>serial</th>
                             {% if entry == 'Y' %}
-                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-center">{{ _("Action") }}</th>
                             {% endif %}
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Nom") }}</th>
                             <th class="text-center cursor-act">{{ _("Urgent") }}</th>
                             <th class="text-center cursor-act">{{ _("Demandée") }}</th>
                             <th class="text-center cursor-act">{{ _("Cote") }}</th>
-                            <th class="text-center cursor-act">{{ _("Prix") }}</th>
+                            <th class="text-start cursor-act">{{ _("Prix") }}</th>
+                            <th class="text-start cursor-act">{{ _("Transferée") }}</th>
                     </thead>
                     <tbody id="tbody_analysis"></tbody>
                 </table>
@@ -248,15 +249,15 @@
                     <h3 class="panel-title">{{ _("Facturation") }}</h3>
                 </div>
                 <div class="row ms-3">
-                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
                         <label class="form-label text-end me-1 mt-1">{{ _("Prix total") }}</label>
                         {% if entry == 'Y' %}
-                        <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control col-3" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
+                        <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control form-lbk bg-readonly col-3" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                         {% else %}
                         <span class="font-info">{{ args['record']['prix'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
                         <label class="form-labeltext-end me-1 mt-1">{{ _("Remise sur la facturation") }}</label>
                         {% if entry == 'Y' %}
                         <select id="discount" class="form-select w-auto">
@@ -268,31 +269,31 @@
                         {% endif %}
                         <label class="form-label text-end ms-3 me-1 mt-1">{{ _("Pourcentage de la remise") }}</label>
                         {% if entry == 'Y' %}
-                        <input id="per_discount" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_discount=this.value;" onchange="change_per_discount(this);">
+                        <input id="per_discount" type="number" value="" maxlength="8" class="form-control form-lbk" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_discount=this.value;" onchange="change_per_discount(this);">
                         {% else %}
                         <span class="font-info">{{ args['record']['remise_pourcent'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
                         <label class="form-label text-end me-1 mt-1">{{ _("Pourcentage assurance maladie / mutuelle") }}</label>
                         {% if entry == 'Y' %}
-                        <input id="per_insurance" type="number" value="" maxlength="8" class="form-control" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_insurance=this.value;" onchange="change_per_insurance(this);">
+                        <input id="per_insurance" type="number" value="" maxlength="8" class="form-control form-lbk" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_insurance=this.value;" onchange="change_per_insurance(this);">
                         {% else %}
                         <span class="font-info">{{ args['record']['assu_pourcent'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
                         <label class="form-label text-end me-1 mt-1">{{ _("Reste à payer") }}</label>
                         {% if entry == 'Y' %}
-                        <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
+                        <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control form-lbk bg-readonly" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                         {% else %}
                         <span class="font-info">{{ args['record']['a_payer'] }}</span>
                         {% endif %}
                     </div>
-                    <div class="form-group d-flex align-items-start col-12 mt-3">
+                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
                         <label class="form-label text-end me-1 mt-1">{{ _("Numéro de quittance") }}</label>
                         {% if entry == 'Y' %}
-                        <input type="text" id="receipt_num" name="receipt_num" value="" maxlength="20" class="form-control" style="width: 200px;" null="">
+                        <input type="text" id="receipt_num" name="receipt_num" value="" maxlength="20" class="form-control form-lbk" style="width: 200px;" null="">
                         {% else %}
                         <span class="font-info">{{ args['record']['num_quittance'] }}</span>
                         {% endif %}
@@ -307,16 +308,16 @@
             </div>
             {% if entry == 'Y' %}
             <div class="ms-3 mt-3">
-                <input type="button" onclick="new_prod();return false;" id="prod_new" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Ajouter un prélèvement") }}">
+                <input type="button" onclick="new_prod();return false;" id="prod_new" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Ajouter un prélèvement") }}">
             </div>
             {% endif %}
             <form class="row justify-content-center mt-2" autocomplete="off">
-                <table id="table_product" class="table table-striped table-hover col-12 table-lbk tablesorter">
+                <table id="table_product" class="table table-striped table-hover col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>serial</th>
                             {% if entry == 'Y' %}
-                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-center">{{ _("Action") }}</th>
                             {% endif %}
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
                             <th class="text-center cursor-act">{{ _("Prod. pathol.") }} *</th>
@@ -337,9 +338,9 @@
                     <h3 class="panel-title">{{ _("Renseignements / Informations complémentaires") }}</h3>
                 </div>
                 <div class="row ms-3">
-                    <div class="col-7 mt-3">
+                    <div class="col-lg-7 mt-3">
                         {% if entry == 'Y' %}
-                        <textarea id="comm" rows="5" cols="80" class="form-control"></textarea>
+                        <textarea id="comm" rows="5" cols="80" class="form-control form-lbk"></textarea>
                         {% else %}
                         <span class="font-info">{{ args['record']['rc'] }}</span>
                         {% endif %}
@@ -347,15 +348,15 @@
                 </div>
 
                 <div class="mb-4 mt-3">
-                    <div class="col-12 clearfix">
-                        <div class="float-start" style="margin-start:0px;">
-                            <input type="button" onclick="return_home();" id="exit" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
+                    <div class="col-lg-12 clearfix">
+                        <div class="float-start ms-0">
+                            <input type="button" onclick="return_home();" id="exit" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Quitter") }}">
                         </div>
                         <div class="float-end me-2">
                             {% if entry == 'Y' %}
-                            <input type="button" onclick="save_requests();" id="save" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Valider") }}">
+                            <input type="button" onclick="save_requests();" id="save" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Valider") }}">
                             {% else %}
-                            <input type="button" onclick="valid_requests();" id="valid" class="btn btn-{{ session['user_role']|safe }}" value="{{ _("Valider") }}">
+                            <input type="button" onclick="valid_requests();" id="valid" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Valider") }}">
                             {% endif %}
                         </div>
                     </div>
@@ -369,7 +370,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0} ;
+var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0, "outsourced":"N"} ;
 var struct_prod   = {"id_data":0 ,"code":"","type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
 var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
 var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
@@ -383,6 +384,7 @@ var bill_remain   = {% if entry == 'Y' %}0{% else %}{{ args['record']['a_payer']
 {% endif %}
 var act_price     = {% if ihm['act_price']['value'] %}{{ ihm['act_price']['value'] }}{% else %}0{% endif %} ;
 var opt_yorn      = {{ ihm['yorn']|safe }} ;
+var new_opt_yorn  = [{'value': 'Y', 'label': '{{ _("Oui") }}'}, {'value': 'N', 'label': '{{ _("Non") }}'}] ;
 
 {% if entry == 'Y' %}
 function change_pat( id_pat ) 
@@ -596,20 +598,27 @@ let tr_analysis = '' ;
     tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "") ;
     tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "") ;
     tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "") ;
+    tmp_tr += create_td("", select_yorn("ana_trans_"+obj.id_data, new_opt_yorn, obj.outsourced), "text-center", "") ;
     {% else %}
-    let urg  = obj.urgent ;
-    let dem  = obj.demande ;
-    let rate = obj.cote_unite + obj.cote_valeur ;
+    let urg   = obj.urgent ;
+    let dem   = obj.demande ;
+    let rate  = obj.cote_unite + obj.cote_valeur ;
+    let outsourced = obj.outsourced ;
 
         if ( urg == 4 )
-        urg = "Oui" ;
+        urg = "{{ _("Oui") }}" ;
         else
-        urg = "Non" ;
+        urg = "{{ _("Non") }}" ;
 
         if ( dem == 4 )
-        dem = "Oui" ;
+        dem = "{{ _("Oui") }}" ;
         else
-        dem = "Non" ;
+        dem = "{{ _("Non") }}" ;
+
+        if ( outsourced == 'Y' )
+        outsourced = "{{ _("Oui") }}" ;
+        else
+        outsourced = "{{ _("Non") }}" ;
 
     tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
     tmp_tr += create_td("", obj.code, "text-center", "") ;
@@ -618,6 +627,7 @@ let tr_analysis = '' ;
     tmp_tr += create_td("", dem, "text-center", "") ;
     tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
     tmp_tr += create_td("", obj.prix, "text-center", "") ;
+    tmp_tr += create_td("", outsourced, "text-center", "") ;
     {% endif %}
 
     tmp_tr += '</tr>' ;
@@ -765,6 +775,25 @@ tmp_select += '</select>' ;
 return tmp_select ;
 }
 
+function select_yorn(id, l_options, val_select)
+{
+let tmp_select = '<select class="form-select" style="font-size:14px;" id="' + id + '" onChange="change_data(this)">' ;
+
+    for( i in l_options )
+    {
+    let selected = "" ;
+
+        if (l_options[i].value == val_select)
+        selected = "selected" ;
+
+    tmp_select += '<option value="' + l_options[i].value + '" ' + selected + ' >' + l_options[i].label + '</option>' ;
+    }
+
+tmp_select += '</select>' ;
+
+return tmp_select ;
+}
+
 function create_input(id, type, val, min, max, fct)
 {
 let other_fct = '' ;
@@ -773,7 +802,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="font-size:14px;min-width:50px;max-width:100px;text-align:right;"' ;
@@ -862,6 +891,8 @@ let id_data  = split_id[split_id.length -1] ;
                 data_analysis[i].req = val ;
                 else if ( split_id[1] == "price" )
                 data_analysis[i].price = val ;
+                else if ( split_id[1] == "outsourced" )
+                data_analysis[i].outsourced = val ;
 
             break ;
             }
@@ -1125,7 +1156,8 @@ var rec_num_int   = $("#rec_num_int").val() ;
                                       '"price":' + data_analysis[i].price + ', ' +
                                       '"paid": 5, ' +
                                       '"emer":' + data_analysis[i].emer + ', ' +
-                                      '"req":' + data_analysis[i].req + '}' ;
+                                      '"req":' + data_analysis[i].req + ', ' +
+                                      '"outsourced":"' + data_analysis[i].outsourced + '"}' ;
 
                     param_list_ana += param_ana ;
                     }

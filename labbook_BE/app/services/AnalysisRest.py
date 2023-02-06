@@ -565,6 +565,39 @@ class AnalysisDet(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class AnalysisVarAll(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_vars = Analysis.getAllVariable()
+
+        if not l_vars:
+            self.log.error(Logs.fileline() + ' : ' + 'AnalysisVarAll ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        Various.useLangDB()
+
+        for var in l_vars:
+            # Replace None by empty string
+            for key, value in list(var.items()):
+                if var[key] is None:
+                    var[key] = ''
+                elif key == 'label' and var[key]:
+                    var[key] = _(var[key].strip())
+                elif key == 'comment' and var[key]:
+                    var[key] = _(var[key].strip())
+
+                nb = Analysis.getNbAnaByVar(var['id_item'])
+
+                if nb:
+                    var['nb_link'] = nb['nb_link']
+                else:
+                    var['nb_link'] = 0
+
+        self.log.info(Logs.fileline() + ' : AnalysisVarAlll')
+        return compose_ret(l_vars, Constants.cst_content_type_json, 200)
+
+
 class AnalysisVarList(Resource):
     log = logging.getLogger('log_services')
 
@@ -683,7 +716,7 @@ class AnalysisReq(Resource):
         for ana in args['list_ana']:
 
             if 'id_owner' not in ana or 'id_rec' not in ana or 'id_ana' not in ana or 'price' not in ana or \
-               'paid' not in ana or 'emer' not in ana or 'req' not in ana:
+               'paid' not in ana or 'emer' not in ana or 'req' not in ana or 'outsourced' not in ana:
                 self.log.error(Logs.fileline() + ' : AnalysisReq ERROR ana missing')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -693,7 +726,8 @@ class AnalysisReq(Resource):
                                              prix=ana['price'],
                                              paye=ana['paid'],
                                              urgent=ana['emer'],
-                                             demande=ana['req'])
+                                             demande=ana['req'],
+                                             outsourced=ana['outsourced'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : AnalysisReq ERROR  insert')
@@ -728,12 +762,11 @@ class AnalysisExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
-                     'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
-                     'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
-                     'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                     'var_formula', 'var_accu', 'var_code', 'var_whonet',
-                     'var_qrcode', 'var_highlight', 'version']]
+        l_data = [['version', 'id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
+                   'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
+                   'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
+                   'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
+                   'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -746,6 +779,8 @@ class AnalysisExport(Resource):
         if dict_data:
             for d in dict_data:
                 data = []
+
+                data.append('v3')
 
                 # ANALYSIS
                 if d['id_data']:
@@ -903,17 +938,6 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
-                """
-                if d['unite2']:
-                    data.append(d['unite2'])
-                else:
-                    data.append('')
-
-                if d['formule_unite2']:
-                    data.append(d['formule_unite2'])
-                else:
-                    data.append('')"""
-
                 if d['formule']:
                     data.append(d['formule'])
                 else:
@@ -923,12 +947,6 @@ class AnalysisExport(Resource):
                     data.append(d['accuracy'])
                 else:
                     data.append('')
-
-                """
-                if d['precision2']:
-                    data.append(d['precision2'])
-                else:
-                    data.append('')"""
 
                 if d['code_var']:
                     data.append(d['code_var'])
@@ -952,8 +970,6 @@ class AnalysisExport(Resource):
                     data.append(d['var_highlight'])
                 else:
                     data.append('N')
-
-                data.append('v4')
 
                 l_data.append(data)
 
@@ -1013,24 +1029,23 @@ class AnalysisImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][34] != 'v4':
+        if l_rows[0][0] != 'v3':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check name of column
-        head_list = ['id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
+        head_list = ['version', 'id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
                      'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                     'var_formula', 'var_accu', 'var_code', 'var_whonet',
-                     'var_qrcode', 'var_highlight', 'version']
+                     'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight']
 
         i = 0
         for head in head_line:
             if head != head_list[i]:
                 self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong column or order : ' + str(head))
-                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong column or order', type='ANA')
+                DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong column or order : ' + str(head), type='ANA')
                 return compose_ret('', Constants.cst_content_type_json, 409)
             i = i + 1
 
@@ -1042,66 +1057,63 @@ class AnalysisImport(Resource):
             for row in l_rows:
                 i = i + 1
                 if row:
-                    id_ana             = row[0]
-                    id_owner           = row[1]
-                    code               = row[2]
-                    nom                = row[3]
-                    abbr               = row[4]
-                    famille            = row[5]
-                    cote_unite         = row[6]
+                    id_ana             = row[1]
+                    id_owner           = row[2]
+                    code               = row[3]
+                    nom                = row[4]
+                    abbr               = row[5]
+                    famille            = row[6]
+                    cote_unite         = row[7]
 
-                    if row[7]:
-                        cote_valeur = float(row[7])
+                    if row[8]:
+                        cote_valeur = float(row[8])
                     else:
                         cote_valeur = 0
-                    commentaire        = row[8]
-                    produit_biologique = row[9]
-                    type_prel          = row[10]
-                    # type_analyse       = row[11]  # useless
+                    commentaire        = row[9]
+                    produit_biologique = row[10]
+                    type_prel          = row[11]
+                    # type_analyse       = row[12]  # useless
 
-                    if row[12] and row[12] == 'Y':
+                    if row[13] and row[13] == 'Y':
                         actif = 4
                     else:
                         actif = 5
 
-                    if row[13] and row[13] == 'Y':
+                    if row[14] and row[14] == 'Y':
                         ana_whonet = 4
                     else:
                         ana_whonet = 5
 
-                    id_link            = row[14]
-                    # id_refanalyse      = row[15]
-                    id_refvariable     = row[16]
-                    position           = row[17]
-                    num_var            = row[18]
+                    id_link            = row[15]
+                    # id_refanalyse      = row[16]
+                    id_refvariable     = row[17]
+                    position           = row[18]
+                    num_var            = row[19]
 
-                    if row[19] and row[19] == 'Y':
+                    if row[20] and row[20] == 'Y':
                         obligatoire = 4
                     else:
                         obligatoire = 5
 
-                    id_var             = row[20]
-                    libelle            = row[21]
-                    description        = row[22]
-                    unite              = row[23]
-                    normal_min         = row[24]
-                    normal_max         = row[25]
-                    var_comm           = row[26]
-                    type_resultat      = row[27]
-                    # unite2             = row[28]
-                    # formule_unite2     = row[29]
-                    formule            = row[28]
-                    accuracy           = row[29]
-                    # precision2         = row[32]
-                    code_var           = row[30]
+                    id_var             = row[21]
+                    libelle            = row[22]
+                    description        = row[23]
+                    unite              = row[24]
+                    normal_min         = row[25]
+                    normal_max         = row[26]
+                    var_comm           = row[27]
+                    type_resultat      = row[28]
+                    formule            = row[29]
+                    accuracy           = row[30]
+                    code_var           = row[31]
 
-                    if row[31] and row[31] == 'Y':
+                    if row[32] and row[32] == 'Y':
                         var_whonet = 4
                     else:
                         var_whonet = 5
 
-                    var_qrcode         = row[32]
-                    var_highlight      = row[33]
+                    var_qrcode         = row[33]
+                    var_highlight      = row[34]
 
                     ret = Analysis.exist(code)
 
@@ -1190,67 +1202,64 @@ class AnalysisImport(Resource):
                 self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
                 self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(row))
                 if row:
-                    id_ana             = row[0]
-                    id_owner           = row[1]
-                    code               = row[2]
-                    nom                = row[3]
-                    abbr               = row[4]
-                    famille            = row[5]
-                    cote_unite         = row[6]
+                    id_ana             = row[1]
+                    id_owner           = row[2]
+                    code               = row[3]
+                    nom                = row[4]
+                    abbr               = row[5]
+                    famille            = row[6]
+                    cote_unite         = row[7]
 
-                    if row[7]:
-                        cote_valeur = float(row[7])
+                    if row[8]:
+                        cote_valeur = float(row[8])
                     else:
                         cote_valeur = 0
 
-                    commentaire        = row[8]
-                    produit_biologique = row[9]
-                    type_prel          = row[10]
-                    # type_analyse       = row[11]  # useless
+                    commentaire        = row[9]
+                    produit_biologique = row[10]
+                    type_prel          = row[11]
+                    # type_analyse       = row[12]  # useless
 
-                    if row[12] and row[12] == 'Y':
+                    if row[13] and row[13] == 'Y':
                         actif = 4
                     else:
                         actif = 5
 
-                    if row[13] and row[13] == 'Y':
+                    if row[14] and row[14] == 'Y':
                         ana_whonet = 4
                     else:
                         ana_whonet = 5
 
-                    id_link            = row[14]
-                    # id_refanalyse      = row[15]
-                    id_refvariable     = row[16]
-                    position           = row[17]
-                    num_var            = row[18]
+                    id_link            = row[15]
+                    # id_refanalyse      = row[16]
+                    id_refvariable     = row[17]
+                    position           = row[18]
+                    num_var            = row[19]
 
-                    if row[19] and row[19] == 'Y':
+                    if row[20] and row[20] == 'Y':
                         obligatoire = 4
                     else:
                         obligatoire = 5
 
-                    id_var             = row[20]
-                    libelle            = row[21]
-                    description        = row[22]
-                    unite              = row[23]
-                    normal_min         = row[24]
-                    normal_max         = row[25]
-                    var_comm           = row[26]
-                    type_resultat      = row[27]
-                    # unite2             = row[28]
-                    # formule_unite2     = row[29]
-                    formule            = row[28]
-                    accuracy           = row[29]
-                    # precision2         = row[32]
-                    code_var           = row[30]
+                    id_var             = row[21]
+                    libelle            = row[22]
+                    description        = row[23]
+                    unite              = row[24]
+                    normal_min         = row[25]
+                    normal_max         = row[26]
+                    var_comm           = row[27]
+                    type_resultat      = row[28]
+                    formule            = row[29]
+                    accuracy           = row[30]
+                    code_var           = row[31]
 
-                    if row[31] and row[31] == 'Y':
+                    if row[32] and row[32] == 'Y':
                         var_whonet = 4
                     else:
                         var_whonet = 5
 
-                    var_qrcode     = row[32]
-                    var_highlight  = row[33]
+                    var_qrcode     = row[33]
+                    var_highlight  = row[34]
 
                     ret = Analysis.exist(code)
 

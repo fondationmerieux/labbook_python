@@ -12,77 +12,85 @@
 {% block content %}
 <div id="content">
     <div class="inner">
-        <div id="main" style="opacity: 1;">
+        <div id="main">
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Approvisionner un produit") }}</span></h2>
             <form autocomplete="off">
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_product" class="form-label col-3 text-end mt-2 me-1">{{ _("Produit") }} *</label>
                     <div>
                         {% if args['prs_ser'] == 0 %}
-                        <select id="search_product" class="form-select" style="width:400px"></select>
-                        <button type="button" onclick="new_product();" id="btn_product" class="btn btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
+                        <select id="search_product" class="form-select form-lbk form-search"></select>
+                        <button type="button" onclick="new_product();" id="btn_product" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
                         {% endif %}
                         <span class="ms-2">{{ args['stock_product']['prd_name'] }}</span>
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="prs_nb_pack" class="form-label col-3 text-end mt-2 me-1">{{ _("Nombre de paquets") }} *</label>
                     <div>
-                        <input id="prs_nb_pack" type="number" value="{{ args['stock_product']['prs_nb_pack'] }}" min="1" step="1" class="form-control">
+                        <input id="prs_nb_pack" type="number" value="{{ args['stock_product']['prs_nb_pack'] }}" min="1" step="1" class="form-control form-lbk">
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="prs_receipt_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de réception") }}</label>
                     <div>					
-                        <input id="prs_receipt_date" name="prs_receipt_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_receipt_date'] }}" style="color: #888;">
+                        <input id="prs_receipt_date" name="prs_receipt_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_receipt_date'] }}" style="color: #888;">
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label for="prs_expir_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration") }} {% if args['stock_setting']['sts_expir_oblig'] == 'Y' %}*{% endif %}</label>
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label id="label_prs_expir_date" for="prs_expir_date" class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration") }} <span id="label_expir_oblig">{% if args['stock_product']['prd_expir_oblig'] == 'Y' %}*{% endif %}</span></label>
                     <div>					
-                        <input id="prs_expir_date" name="prs_expir_date" class="form-control" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_expir_date'] }}" style="color: #888;">
+                        <input id="prs_expir_date" name="prs_expir_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['stock_product']['prs_expir_date'] }}" style="color: #888;">
                     </div>
                 </div>
 
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label for="prs_rack" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
+                {% if 'supp_rack' in session and session['supp_rack'] == 'Y' %}
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="supp_rack" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
                     <div>					
-                        <input type="text" name="prs_rack" id="prs_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control">			
+                        <input type="text" name="supp_rack" id="supp_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
+                {% endif %}
 
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label for="title" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de lot") }}</label>
+                {% if 'supp_batch_num' in session and session['supp_batch_num'] == 'Y' %}
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="supp_batch_num" class="form-label col-3 text-end mt-2 me-1">{{ _("Numéro de lot") }}</label>
                     <div>					
-                        <input type="text" name="prs_batch_num" id="prs_batch_num" value="{{ args['stock_product']['prs_batch_num'] }}" class="form-control">			
+                        <input type="text" name="supp_batch_num" id="supp_batch_num" value="{{ args['stock_product']['prs_batch_num'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
+                {% endif %}
 
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label for="prs_buy_price" class="form-label col-3 text-end mt-2 me-1">{{ _("Prix d'achat") }}</label>
+                {% if 'supp_buy_price' in session and session['supp_buy_price'] == 'Y' %}
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="supp_buy_price" class="form-label col-3 text-end mt-2 me-1">{{ _("Prix d'achat") }}</label>
                     <div class="">					
-                        <input type="number" name="prs_buy_price" id="prs_buy_price" value="{{ args['stock_product']['prs_buy_price'] }}" min="0" step="0.01" class="form-control">			
+                        <input type="number" name="supp_buy_price" id="supp_buy_price" value="{{ args['stock_product']['prs_buy_price'] }}" min="0" step="0.01" class="form-control form-lbk">			
                     </div>
                 </div>
+                {% endif %}
 
-                <div class="form-group d-flex align-items-start mt-3">
-                    <label for="prs_lessor" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du bailleur") }}</label>
+                {% if 'supp_lessor' in session and session['supp_lessor'] == 'Y' %}
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="supp_lessor" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du bailleur") }}</label>
                     <div>					
-                        <input type="text" name="prs_lessor" id="prs_lessor" value="{{ args['stock_product']['prs_lessor'] }}" class="form-control">			
+                        <input type="text" name="supp_lessor" id="supp_lessor" value="{{ args['stock_product']['prs_lessor'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
+                {% endif %}
                 
             </form>
             
             <div class="my-2 clearfix">
-                <div class="float-start" style="margin-start:0px;">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-{{ session['user_role']|safe }}">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
         </div>
@@ -92,6 +100,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var expir_oblig = "{{ args['stock_product']['prd_expir_oblig'] or Y }}" ;
 
 $("#search_product").select2(
 {
@@ -127,7 +136,25 @@ $("#search_product").select2(
 
 $("#search_product").on("select2:select", function (e) 
 {
-let id_item = $(e.currentTarget).val();
+let id_item = $(e.currentTarget).val() ;
+ 
+    // GET det product for
+    $.ajax( {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/quality/stock/product/det/" +  id_item,
+        success: function(data_prod)
+            {
+            expir_oblig = data_prod.prd_expir_oblig ;
+
+                if (expir_oblig == 'Y')
+                $("#label_expir_oblig").text("*") ;
+            },
+        error: function(data_prod)
+            {
+            console.log("ERROR GET det product");
+            alert("{{ _("Erreur lors la récupération des données") }}") ;
+            }
+    } ) ;
 } ) ;
 
 // fix bug between jquery 3.6.0 and select2
@@ -145,10 +172,26 @@ var prs_prd      = {% if args['prs_ser'] == 0 %}$("#search_product").val(){% els
 var prs_nb_pack  = $("#prs_nb_pack").val()      ;
 var receipt_date = $("#prs_receipt_date").val() ;
 var expir_date   = $("#prs_expir_date").val()   ;
-var rack         = $("#prs_rack").val()         ;
-var batch_num    = $("#prs_batch_num").val()    ;
-var buy_price    = $("#prs_buy_price").val()  * 100 ;
-var lessor       = $("#prs_lessor").val()       ;
+{% if 'supp_rack' in session and session['supp_rack'] == 'Y' %}
+var rack         = $("#supp_rack").val() ;
+{% else %}
+var rack         = "" ;
+{% endif %}
+{% if 'supp_batch_num' in session and session['supp_batch_num'] == 'Y' %}
+var batch_num    = $("#supp_batch_num").val()    
+{% else %}
+var batch_num    = "" ;
+{% endif %}
+{% if 'supp_buy_price' in session and session['supp_buy_price'] == 'Y' %}
+var buy_price    = $("#supp_buy_price").val()    
+{% else %}
+var buy_price    = 0 ;
+{% endif %}
+{% if 'supp_lessor' in session and session['supp_lessor'] == 'Y' %}
+var lessor       = $("#supp_lessor").val()    
+{% else %}
+var lessor       = "" ;
+{% endif %}
 
 var msg = "" ;
 
@@ -158,10 +201,8 @@ var msg = "" ;
     if (prs_nb_pack <= 0)
     msg += "{{ _("Veuillez saisir un nombre de paquets supérieur à 0.") }}\n" ;
 
-    {% if args['stock_setting']['sts_expir_oblig'] == 'Y' %}
-    if (expir_date == "")
+    if (expir_date == "" && expir_oblig == 'Y')
     msg += "{{ _("Veuillez saisir une date d'expiration.") }}\n" ;
-    {% endif %}
 
     if (msg != "")
     {
@@ -182,6 +223,8 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prs_batch_num":"' + batch_num + '", ' +
               '"prs_buy_price":' + buy_price + ', ' +
               '"prs_lessor":"' + lessor + '" }' ;
+
+    console.log("DEBUG param=" + JSON.stringify(param)) ;
 
     $.ajax( {
        type: "POST",

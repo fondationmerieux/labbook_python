@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Liste des produits") }}</title>
+    <title>{{ _("Liste des variables") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des produits") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des variables") }}</span></h2>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>
@@ -26,15 +26,13 @@
                 <table id="table_items" class="table table-striped table-hover col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
-                            <th hidden>{{ _("serial") }}</th>
-                            <th class="text-start">{{ _("Action") }}</th>
-                            <th class="text-start cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-start cursor-act">{{ _("Type") }}</th>
-                            <th class="text-start cursor-act">{{ _("Nbr par paquet") }}</th>
-                            <th class="text-start cursor-act">{{ _("Seuil") }}</th>
-                            <th class="text-start cursor-act">{{ _("Fournisseur") }}</th>
-                            <th class="text-start cursor-act">{{ _("Réf. fournisseur") }}</th>
-                            <th class="text-start cursor-act">{{ _("Conservation") }}</th>
+                            {#<th class="text-start">{{ _("Action") }}</th>#}
+                            <th class="text-start cursor-act">{{ _("Libellé") }}</th>
+                            <th class="text-start cursor-act">{{ _("Code var.") }}</th>
+                            <th class="text-start cursor-act">{{ _("Id") }}</th>
+                            <th class="text-start cursor-act">{{ _("Type de résultat") }}</th>
+                            <th class="text-start cursor-act">{{ _("Commentaires") }}</th>
+                            <th class="text-start cursor-act">{{ _("Nb. analyse") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -88,7 +86,7 @@ let res = ''
 
 {% if not args %}
 res = '<tr>' +
-      '<td colspan="8">' +
+      '<td colspan="7">' +
       '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
 {% else %}
 let data_len = data_items.length ;
@@ -100,6 +98,7 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
+    {#
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
@@ -108,16 +107,15 @@ $("#list_items_total").html( data_len ) ;
                    '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prd_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
         
     menu_act += '</div></ul></nav>' ;
+    #}
 
-    res += '<tr><td hidden><div>' + data_items[i].prd_ser + '</div></td>' +
-           '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].prd_name + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].type + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].prd_nb_by_pack + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].prd_safe_limit + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].supplier_name + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].prd_ref_supplier + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].conserv + '</div></td></tr>' ;
+    res += '<tr><td><div class="text-start">' + data_items[i].label + '</div></td>' +
+           {#'<td><div>' + menu_act + '</div></td>' +#}
+           '<td><div class="text-start">' + data_items[i].code_var + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].id_item + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].type_res + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].comment + '</div></td>' +
+           '<td><div class="text-start">' + data_items[i].nb_link + '</div></td></tr>' ;
     }
 {% endif %}
 
@@ -128,6 +126,7 @@ $("#list_items_total").html( data_len ) ;
     $("#table_items").tablesorter() ;  // sort only data on screen 
 }
 
+{#
 function delete_item(id_item)
 {
 var id_user = {{ session['user_id']|safe}} ;
@@ -163,10 +162,11 @@ var id_user = {{ session['user_id']|safe}} ;
     else
     return false ; 
 }
+#}
 
 function return_back()
 {
-window.location.href = "{{ session['server_ext'] }}/list-stock" ;
+window.location.href = "{{ session['server_ext'] }}/setting-analyzes" ;
 }
 
 $( document ).ready( function()

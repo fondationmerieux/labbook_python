@@ -19,23 +19,23 @@
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
                 </div>
                 <div class="panel-filter mt-3">
-                    <div class="form-group d-flex align-items-start">
+                    <div class="form-group d-lg-flex align-items-start">
                         <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
                         <div>
-                            <input id="f_date_beg" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                            <input id="f_date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                         </div>
-                        <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
+                        <label for="f_date_end" class="form-label text-end ms-lg-1 mt-2 me-1">{{ _("au") }}</label>
                         <div>					
-                            <input id="f_date_end" class="form-control cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                            <input id="f_date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                         </div>
-                        <label for="search_user" class="form-label text-end ms-3 mt-2 me-1">{{ _("Créateur du dossier") }}</label>
+                        <label for="search_user" class="form-label text-end ms-lg-3 mt-2 me-1">{{ _("Créateur du dossier") }}</label>
                         <div class="mt-1">
-                            <select id="search_user" class="form-select" style="width:400px"></select>
+                            <select id="search_user" class="form-select form-lbk form-search"></select>
                         </div>
                     </div>
 
                     <div class="float-end mx-2">
-                        <button type="button" onclick="filter_bill();return false;" id="btn_search" class="btn btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        <button type="button" onclick="filter_bill();return false;" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                                     <span><a class="link" id="next_rec" onclick="display_bill(1000);">{{ _("Suivant") }}</a></span>
                                     <span><a class="link" id="last_rec" onclick="display_bill(p_max);">{{ _("Dernier") }}</a></span>
                                 </div>
-                                <table class="table table-striped table-hover col-12 table-lbk">
+                                <table class="table table-striped table-hover col-lg-12 table-lbk">
                                     <thead>
                                         <tr>
                                             <th class="text-center" hidden>
@@ -98,7 +98,7 @@
             </form>
 
             <div class="float-end mt-3 mb-5">
-                <input type="button" onclick="download_report();" class="btn btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+                <input type="button" onclick="download_report();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div> 
 
         </div><!-- close main -->

@@ -42,7 +42,7 @@ class Dict:
     def getDictDetails(dict_name):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
                'from sigl_dico_data '
                'where dico_name = %s '
                'order by position')
@@ -57,9 +57,9 @@ class Dict:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_dico_data '
-                           '(id_owner, dico_name, label, short_label, position, code) '
+                           '(id_owner, dico_name, label, short_label, position, code, dict_formatting) '
                            'values (%(id_owner)s, %(dico_name)s, %(label)s, %(short_label)s, '
-                           '%(position)s, %(code)s)', params)
+                           '%(position)s, %(code)s, %(dict_formatting)s)', params)
 
             Dict.log.info(Logs.fileline())
 
@@ -75,7 +75,7 @@ class Dict:
 
             cursor.execute('update sigl_dico_data '
                            'set label=%(label)s, short_label=%(short_label)s, position=%(position)s, '
-                           'code=%(code)s '
+                           'code=%(code)s, dict_formatting=%(dict_formatting)s '
                            'where id_data=%(id_data)s', params)
 
             Dict.log.info(Logs.fileline())
@@ -193,7 +193,7 @@ class Dict:
         if dico_name:
             cond = ' where dico_name="' + str(dico_name) + '"'
 
-        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr '
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
                'from sigl_dico_data ' + cond)
 
         cursor.execute(req)

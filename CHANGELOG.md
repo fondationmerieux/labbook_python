@@ -7,6 +7,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.3] - 2023-02-06
+### Added
+- Functional unit active in the pages list-records, list-works, list-results and list-samples
+- Indicator page (see indicator.md)
+- The obligation of the expiration date of a product supply is configurable
+- Some form fields can be enabled or disabled
+- Page list of analysis variables
+- add formatting option on dictionnary details to display in report if your template use it
+- possible to indicate that an analysis is outsourced
+- outsourced template (test version)
+
+### Changed
+- More control over numeric result fields
+- took off new catalog reference because is redondant with supplier reference
+- pages : login, homepage, list-result and enter-result are responsive on smartphone
+- numerical results are rounded to the precision defined in the analysis repository
+
+## Fixed
+- redirect on homepage after edit user details or password via menu
+- product supply
+- display no result alert if no result to print for global report
+- import / export dictionnary (import doesnt removed dictionnary, only add and update)
+
 ## [3.3.2] - 2023-01-12
 ### Added
 - filter by lessor name in list of stock page

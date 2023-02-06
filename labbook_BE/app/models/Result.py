@@ -24,32 +24,48 @@ class Result:
         date_end = args['date_end']
 
         # NULL (5 sometimes) or 4 in base
-        if args['emer_ana'] and args['emer_ana'] == 4:
+        if 'emer_ana' in args and args['emer_ana'] == 4:
             filter_cond += ' and urgent=4 and ref_var.type_resultat not in ("229", "265") '
 
         # Analysis family
-        if args['type_ana'] and args['type_ana'] > 0:
+        if 'type_ana' in args and args['type_ana'] > 0:
             filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
 
         # Analysis specific
-        if args['id_ana'] and args['id_ana'] > 0:
+        if 'id_ana' in args and args['id_ana'] > 0:
             filter_cond += ' and ana.ref_analyse=' + str(args['id_ana']) + ' '
 
         # Code patient
-        if args['code_pat']:
+        if 'code_pat' in args and args['code_pat']:
             filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
             table_cond += ' inner join sigl_03_data as pat on pat.id_data=dos.id_patient '
 
         # Without valid result
-        if args['valid_res'] and args['valid_res'] > 0:
+        if 'valid_res' in args and args['valid_res'] > 0:
             filter_cond += ' and res.id_data not in (select id_resultat from sigl_10_data where type_validation > 250 and res.id_data=id_resultat) '
+
+        # Functionnal unit link with analyzes families
+        if 'link_fam' in args and args['link_fam']:
+            Result.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
+
+            cond_link_fam = ''
+            # prepare list for sql
+            for id_fam in args['link_fam']:
+                if not cond_link_fam:
+                    cond_link_fam = '('
+
+                cond_link_fam = cond_link_fam + str(id_fam) + ','
+
+            if cond_link_fam:
+                cond_link_fam = cond_link_fam[:-1] + ')'
+                filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, dos.id_patient, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
                'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
                'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
                'ana.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
-               'var_pos.obligatoire as oblig '
+               'var_pos.obligatoire as oblig, ana.req_outsourced as outsourced '
                'from sigl_04_data as ana '
                'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '
                'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '
@@ -83,7 +99,7 @@ class Result:
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
                'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
                'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
-               'ana.id_owner as id_owner, dos.id_patient as id_pat, '
+               'ana.id_owner as id_owner, dos.id_patient as id_pat, ana.req_outsourced as outsourced, '
                'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig '
                'from sigl_04_data as ana '
                'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '
@@ -359,9 +375,10 @@ class Result:
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
-               'ref.code as analysis_code, ref.nom as analysis_name, d_fam.label as analysis_familly, '
-               'res.valeur as result_value, var.libelle as variable_name, var.type_resultat as type_result, '
-               'd_unit.label as result_unit, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
+               'req.req_outsourced as ana_outsourced ref.code as analysis_code, ref.nom as analysis_name, '
+               'd_fam.label as analysis_familly, res.valeur as result_value, var.libelle as variable_name, '
+               'var.type_resultat as type_result, d_unit.label as result_unit, '
+               'date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
