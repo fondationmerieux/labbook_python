@@ -32,7 +32,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div id="search_account" class="form-group d-lg-flex align-items-start mt-3 {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'P') %}d-none{% endif %}">
+                <div id="search_account" class="form-group align-items-start mt-3 {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'P') %}d-none{% else %}d-lg-flex{% endif %}">
                     <label for="search_doctor" class="form-label col-3 text-end mt-2 me-1">{{ _("Prescripteur associé") }}</label>
                     <div>
                         <select id="search_doctor" class="form-select form-lbk form-search"></select>
