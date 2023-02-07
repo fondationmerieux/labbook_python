@@ -7,6 +7,7 @@ Create Date: 2021-07-09 09:44:24.628280
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -26,8 +27,8 @@ def upgrade():
 
     # MODIFY E02 Ebola analysis update name
     try:
-        conn.execute('update sigl_05_data set nom="Recherche par prélèvement buccal de l\'ADN viral de la maladie '
-                     'à virus Ebola par RT-PCR" where code="E02"')
+        conn.execute(text('update sigl_05_data set nom="Recherche par prélèvement buccal de l\'ADN viral de la maladie '
+                          'à virus Ebola par RT-PCR" where code="E02"'))
     except Exception as err:
         print("ERROR rename E02 analysis,\n\terr=" + str(err))
 

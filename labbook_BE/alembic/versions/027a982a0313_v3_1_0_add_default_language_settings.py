@@ -7,6 +7,7 @@ Create Date: 2021-08-31 16:22:10.739567
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -26,15 +27,15 @@ def upgrade():
 
     # Insert default language settings
     try:
-        conn.execute('insert into sigl_06_data (id_owner, identifiant, label, value) '
-                     'values (1000, "default_language", "Langue par défaut (rapport aussi)", "fr_FR")')
+        conn.execute(text('insert into sigl_06_data (id_owner, identifiant, label, value) '
+                     'values (1000, "default_language", "Langue par défaut (rapport aussi)", "fr_FR")'))
     except Exception as err:
         print("ERROR insert default language settings,\n\terr=" + str(err))
 
     # Insert default language settings
     try:
-        conn.execute('insert into sigl_06_data (id_owner, identifiant, label, value) '
-                     'values (1000, "db_language", "Langue du référentiel", "fr_FR")')
+        conn.execute(text('insert into sigl_06_data (id_owner, identifiant, label, value) '
+                     'values (1000, "db_language", "Langue du référentiel", "fr_FR")'))
     except Exception as err:
         print("ERROR insert default language settings,\n\terr=" + str(err))
 

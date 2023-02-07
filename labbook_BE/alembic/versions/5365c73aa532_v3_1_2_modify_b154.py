@@ -7,6 +7,7 @@ Create Date: 2021-10-06 14:14:45.013818
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -26,29 +27,29 @@ def upgrade():
 
     # Update name of variable
     try:
-        conn.execute("update sigl_07_data set libelle='TCA ou TCK (témoin : 28s)' "
-                     "where code_var=199")
+        conn.execute(text("update sigl_07_data set libelle='TCA ou TCK (témoin : 28s)' "
+                     "where code_var=199"))
     except Exception as err:
         print("ERROR update sigl_07_data libelle='TCA ou TCK (témoin : 28s),\n\terr=" + str(err))
 
     # delete link (code_var=200)
     try:
-        conn.execute("delete from sigl_05_07_data "
-                     "where id_refvariable = 200")
+        conn.execute(text("delete from sigl_05_07_data "
+                     "where id_refvariable = 200"))
     except Exception as err:
         print("ERROR remove link with code_var=200,\n\terr=" + str(err))
 
     # delete variable (code_var=200)
     try:
-        conn.execute("delete from sigl_07_data "
-                     "where code_var = 200")
+        conn.execute(text("delete from sigl_07_data "
+                     "where code_var = 200"))
     except Exception as err:
         print("ERROR remove var with code_var=200,\n\terr=" + str(err))
 
     # ask for update translation in DB
     try:
         # insert a line in init_version
-        conn.execute("insert into init_version (ini_date, ini_stat) values (NOW(), 'Y')")
+        conn.execute(text("insert into init_version (ini_date, ini_stat) values (NOW(), 'Y')"))
     except Exception as err:
         print("ERROR insert init_version,\n\terr=" + str(err))
 

@@ -158,7 +158,7 @@ param += tmp_value + ' ] }';
 
 function cancel()
 {
-window.history.back() ;
+window.location.href = "{{ session['server_ext'] }}/setting-functionnal-units" ;
 }
 
 $( document ).ready( function()

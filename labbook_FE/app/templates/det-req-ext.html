@@ -607,7 +607,7 @@ let tr_analysis = '' ;
     tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "") ;
     tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "") ;
     tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "") ;
-    tmp_tr += create_td("", select_yorn("ana_trans_"+obj.id_data, new_opt_yorn, obj.outsourced), "text-center", "") ;
+    tmp_tr += create_td("", select_yorn("ana_outsourced_"+obj.id_data, new_opt_yorn, obj.outsourced), "text-center", "") ;
     {% else %}
     let urg   = obj.urgent ;
     let dem   = obj.demande ;

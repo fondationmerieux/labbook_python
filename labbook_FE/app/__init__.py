@@ -632,8 +632,10 @@ def homepage(login=''):
     else:
         # Load nb_emer
         try:
+            payload = {'link_fam': session['user_link_fam']}
+
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/emergency'
-            req = requests.get(url)
+            req = requests.post(url, json=payload)
 
             if req.status_code == 200:
                 json_data['nb_emer'] = req.json()

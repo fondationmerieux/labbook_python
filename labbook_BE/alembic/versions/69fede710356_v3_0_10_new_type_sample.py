@@ -7,6 +7,7 @@ Create Date: 2021-06-24 14:33:02.851562
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -26,19 +27,19 @@ def upgrade():
 
     # Insert new type of sample
     try:
-        conn.execute('insert into sigl_dico_data (id_owner, dico_name, label, short_label, position, code) '
-                     'values (1000, "type_prel", "Prélèvement pus", "Pus", 1200, "Pus")')
+        conn.execute(text('insert into sigl_dico_data (id_owner, dico_name, label, short_label, position, code) '
+                     'values (1000, "type_prel", "Prélèvement pus", "Pus", 1200, "Pus")'))
     except Exception as err:
         print("ERROR insert type of sample Pus,\n\terr=" + str(err))
 
     # database_status
     try:
         # Create table for database_status
-        conn.execute("create table database_status("
+        conn.execute(text("create table database_status("
                      "dbs_ser int not NULL AUTO_INCREMENT,"
                      "dbs_date DATETIME,"
                      "dbs_stat VARCHAR(255),"
-                     "PRIMARY KEY (dbs_ser))")
+                     "PRIMARY KEY (dbs_ser))"))
     except Exception as err:
         print("ERROR create table database_status,\n\terr=" + str(err))
 

@@ -261,7 +261,7 @@ param += tmp_value + ' ] }';
 
 function cancel()
 {
-window.history.back() ;
+window.location.href = "{{ session['server_ext'] }}/homepage" ;
 }
 
 $( document ).ready( function()

@@ -371,8 +371,12 @@ let old_value = $("#old_res_"+id_res).val() ;
     if ( new_value != old_value ) 
     {
     $("#span_valid_"+id_rec+"_"+ref_ana).addClass('d-none') ;
+    $("#span_valid_"+id_rec+"_"+ref_ana).removeClass('d-lg-flex') ;
     $("#span_valid_"+id_rec+"_"+ref_ana).removeClass('show') ;
     }
+    else
+    $("#span_valid_"+id_rec+"_"+ref_ana).addClass('d-lg-flex') ;
+
 }
 
 function save_valid( id_rec, ref_ana )
@@ -455,7 +459,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                "<button type=\"button\" class=\"btn btn-lbk btn-{{ session['user_role']|safe }} btn_save_" + id_rec_p +"_"+ ref_ana_p + " me-2 mb-1\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p + ", "  + ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
 
         {% if session['user_role'] in ('B','T','TA','TQ') %}
-        res += "<span class=\"d-lg-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
+        res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
                "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
                "<div>" +
                "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
@@ -607,7 +611,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     value = data[i].valeur ;
 
                         if (res_valid == 250)
-                        disp_valid = "show" ;
+                        disp_valid = "show d-lg-flex" ;
                     }
                     // NOTE : works because 1013 is always the last choice
                     else if ( selected == "" && (value == "" || value == "0") && res_answer[j].id_data == 1013 )
@@ -634,7 +638,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             let change = 'onchange="check_change(' + id_rec + ',' + ref_ana + ',' + id_res + ');' ;
 
                 if ( value != "" && res_valid == 250 )
-                disp_valid = "show" ;
+                disp_valid = "show d-lg-flex" ;
 
                 if ( data[i].normal_min != "" && data[i].normal_max != "" )
                 change += 'check_min_max(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
@@ -745,7 +749,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
            "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} mb-1 btn_save_" + id_rec_p +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec_p +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
 
     {% if session['user_role'] in ('B','T','TA','TQ') %}
-    res += "<span class=\"d-lg-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
+    res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec_p +"_"+ ref_ana_p  + "\">" +
            "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
            "<div>" +
            "<input id=\"date_tech_" + id_rec_p +"_"+ ref_ana_p  + "\" class=\"voo_date voo_date_field_1 form-control form-lbk\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\">" +

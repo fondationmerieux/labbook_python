@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.3.3] - 2023-02-06
+## [3.3.3] - 2023-02-07
 ### Added
 - Functional unit active in the pages list-records, list-works, list-results and list-samples
 - Indicator page (see indicator.md)

@@ -7,6 +7,7 @@ Create Date: 2021-06-21 09:58:52.549906
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -26,9 +27,9 @@ def upgrade():
 
     # Insert new sample analysis PB25
     try:
-        conn.execute('insert into sigl_05_data (id_owner, code, nom, abbr, famille, '
-                     'cote_unite, commentaire, actif, ana_whonet, produit_biologique, type_prel) '
-                     'values (1000, "PB25", "Prélèvement pus", "Pus", 0, "PB", "", 4, 5, 0, 0)')
+        conn.execute(text('insert into sigl_05_data (id_owner, code, nom, abbr, famille, '
+                          'cote_unite, commentaire, actif, ana_whonet, produit_biologique, type_prel) '
+                          'values (1000, "PB25", "Prélèvement pus", "Pus", 0, "PB", "", 4, 5, 0, 0)'))
     except Exception as err:
         print("ERROR insert PB25 sample analysis,\n\terr=" + str(err))
 

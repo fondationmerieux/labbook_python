@@ -7,6 +7,7 @@ Create Date: 2021-11-08 14:26:42.330399
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -46,143 +47,143 @@ def upgrade():
     # TEMPLATE TABLE
     try:
         # Create table for template_setting
-        conn.execute("create table template_setting("
+        conn.execute(text("create table template_setting("
                      "tpl_ser int not NULL AUTO_INCREMENT, "
                      "tpl_date datetime, "
                      "tpl_name varchar(100) not NULL, "
                      "tpl_file varchar(40) not NULL, "
                      "tpl_default varchar(1) not NULL, "
                      "tpl_type varchar(4) not NULL, "
-                     "PRIMARY KEY (tpl_ser), INDEX (tpl_name), INDEX (tpl_type), INDEX (tpl_default))")
+                     "PRIMARY KEY (tpl_ser), INDEX (tpl_name), INDEX (tpl_type), INDEX (tpl_default))"))
     except Exception as err:
         print("ERROR create table template_setting,\n\terr=" + str(err))
     else:
         try:
             # insert a default template for result report
-            conn.execute("insert into template_setting "
+            conn.execute(text("insert into template_setting "
                          "(tpl_date, tpl_name, tpl_file, tpl_default, tpl_type) "
-                         "values (NOW(), 'Modèle résultat', 'template_result.odt', 'Y', 'RES')")
+                         "values (NOW(), 'Modèle résultat', 'template_result.odt', 'Y', 'RES')"))
         except Exception as err:
             print("ERROR insert default result template for template_setting,\n\terr=" + str(err))
 
         try:
             # insert a arabic default template for result report
-            conn.execute("insert into template_setting "
+            conn.execute(text("insert into template_setting "
                          "(tpl_date, tpl_name, tpl_file, tpl_default, tpl_type) "
-                         "values (NOW(), 'Modèle résultat écriture de droite à gauche', 'template_result-RtL.odt', 'N', 'RES')")
+                         "values (NOW(), 'Modèle résultat écriture de droite à gauche', 'template_result-RtL.odt', 'N', 'RES')"))
         except Exception as err:
             print("ERROR insert default result RtL template for template_setting,\n\terr=" + str(err))
 
         try:
             # insert a default template for stickers
-            conn.execute("insert into template_setting "
+            conn.execute(text("insert into template_setting "
                          "(tpl_date, tpl_name, tpl_file, tpl_default, tpl_type) "
-                         "values (NOW(), 'Modèle étiquette', 'template_sticker.odt', 'Y', 'STI')")
+                         "values (NOW(), 'Modèle étiquette', 'template_sticker.odt', 'Y', 'STI')"))
         except Exception as err:
             print("ERROR insert default sticker template for template_setting,\n\terr=" + str(err))
 
     # ADD COLUMN for description in dictionnary table
     try:
-        conn.execute("alter table sigl_dico_data add column dico_descr text")
+        conn.execute(text("alter table sigl_dico_data add column dico_descr text"))
     except Exception as err:
         print("ERROR add column dico_descr to sigl_dico_data,\n\terr=" + str(err))
 
     # ADD COLUMN for code sample request
     try:
-        conn.execute("alter table sigl_01_data add column code varchar(20)")
+        conn.execute(text("alter table sigl_01_data add column code varchar(20)"))
     except Exception as err:
         print("ERROR add column code to sigl_01_data,\n\terr=" + str(err))
     else:
         try:
             # update code sample by id_data
-            conn.execute("update sigl_01_data set code=id_data")
+            conn.execute(text("update sigl_01_data set code=id_data"))
         except Exception as err:
             print("ERROR update default code for sigl_01_data,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table sigl_01_deleted add column code varchar(20)")
+        conn.execute(text("alter table sigl_01_deleted add column code varchar(20)"))
     except Exception as err:
         print("ERROR add column code to sigl_01_deleted,\n\terr=" + str(err))
     else:
         try:
             # update code sample by id_data
-            conn.execute("update sigl_01_deleted set code=id_data")
+            conn.execute(text("update sigl_01_deleted set code=id_data"))
         except Exception as err:
             print("ERROR update default code for sigl_01_deleted,\n\terr=" + str(err))
 
     # ADD COLUMN for cancel stock and trace cancellation
     try:
-        conn.execute("alter table product_supply add column prs_cancel varchar(1) not null default 'N'")
+        conn.execute(text("alter table product_supply add column prs_cancel varchar(1) not null default 'N'"))
     except Exception as err:
         print("ERROR add column prs_cancel to product_supply,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table product_supply add column prs_user_cancel int default 0")
+        conn.execute(text("alter table product_supply add column prs_user_cancel int default 0"))
     except Exception as err:
         print("ERROR add column prs_user_cancel to product_supply,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table product_use add column pru_cancel varchar(1) not null default 'N'")
+        conn.execute(text("alter table product_use add column pru_cancel varchar(1) not null default 'N'"))
     except Exception as err:
         print("ERROR add column pru_cancel to product_use,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table product_use add column pru_user_cancel int default 0")
+        conn.execute(text("alter table product_use add column pru_user_cancel int default 0"))
     except Exception as err:
         print("ERROR add column pru_user_cancel to product_use,\n\terr=" + str(err))
 
     # MODIFY COLUMN cote_valeur analysis
     try:
-        conn.execute("alter table sigl_05_data modify column cote_valeur decimal(10,2)")
+        conn.execute(text("alter table sigl_05_data modify column cote_valeur decimal(10,2)"))
     except Exception as err:
         print("ERROR alter table sigl_05_data modify column cote_valeur decimal(10,2),\n\terr=" + str(err))
 
     # MODIFY COLUMN code patient
     try:
-        conn.execute("alter table sigl_03_data modify column code_patient varchar(20)")
+        conn.execute(text("alter table sigl_03_data modify column code_patient varchar(20)"))
     except Exception as err:
         print("ERROR alter table sigl_03_data modify column code_patient varchar(20),\n\terr=" + str(err))
 
     # ADD COLUMN for patient
     try:
-        conn.execute("alter table sigl_03_data add column pat_midname varchar(40)")
+        conn.execute(text("alter table sigl_03_data add column pat_midname varchar(40)"))
     except Exception as err:
         print("ERROR add column pat_midname to sigl_03_data,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table sigl_03_data add column pat_nation int(3) default 0")
+        conn.execute(text("alter table sigl_03_data add column pat_nation int(3) default 0"))
     except Exception as err:
         print("ERROR add column pat_nation to sigl_03_data,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table sigl_03_data add column pat_resident varchar(1) not null default 'Y'")
+        conn.execute(text("alter table sigl_03_data add column pat_resident varchar(1) not null default 'Y'"))
     except Exception as err:
         print("ERROR add column pat_resident to sigl_03_data,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table sigl_03_data add column pat_blood_group int default 0")
+        conn.execute(text("alter table sigl_03_data add column pat_blood_group int default 0"))
     except Exception as err:
         print("ERROR add column pat_blood_group to sigl_03_data,\n\terr=" + str(err))
 
     try:
-        conn.execute("alter table sigl_03_data add column pat_blood_rhesus int default 0")
+        conn.execute(text("alter table sigl_03_data add column pat_blood_rhesus int default 0"))
     except Exception as err:
         print("ERROR add column pat_blood_rhesus to sigl_03_data,\n\terr=" + str(err))
 
     # NEW TABLE nationality
     try:
         # Create table for age interval setting
-        conn.execute("create table nationality("
+        conn.execute(text("create table nationality("
                      "nat_ser int not NULL AUTO_INCREMENT, "
                      "nat_name varchar(30) not null, "
                      "nat_code varchar(3) not null, "
                      "PRIMARY KEY (nat_ser), "
-                     "INDEX (nat_name), INDEX (nat_code)) character set=utf8")
+                     "INDEX (nat_name), INDEX (nat_code)) character set=utf8"))
     except Exception as err:
         print("ERROR create table nationality,\n\terr=" + str(err))
     else:
         try:
-            conn.execute("insert into nationality "
+            conn.execute(text("insert into nationality "
                          "(nat_name, nat_code) "
                          "values ('Algérienne','dz'), "
                          "('Allemande', 'de'), "
@@ -313,34 +314,34 @@ def upgrade():
                          "('Vietnamienne', 'vn'), "
                          "('Vénézuelienne', 've'), "
                          "('Zambienne', 'zm'), "
-                         "('Zimbabwéenne', 'zw')")
+                         "('Zimbabwéenne', 'zw')"))
         except Exception as err:
             print("ERROR insert into nationality,\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table ecversion, premieretransition, session, sys_context, sys_editor, sys_editor_publication")
+        conn.execute(text("drop table ecversion, premieretransition, session, sys_context, sys_editor, sys_editor_publication"))
     except Exception as err:
         print("ERROR drop table ecversion, premieretransition, session, sys_context, sys_editor ,sys_editor_publication\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sys_dico_data, sys_module, sys_module_acl, sys_project, sys_project_user, "
-                     "sys_script, sys_script_error, sys_user, sticker_setting")
+        conn.execute(text("drop table sys_dico_data, sys_module, sys_module_acl, sys_project, sys_project_user, "
+                     "sys_script, sys_script_error, sys_user, sticker_setting"))
     except Exception as err:
         print("ERROR drop table sys_dico_data, sys_module, sys_module_acl, sys_project, sys_project_user, sys_script, sys_script_error, sys_user\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sigl_varset_n16s_data, sigl_varset_n16s_data_group, sigl_varset_n16s_data_group_mode, "
+        conn.execute(text("drop table sigl_varset_n16s_data, sigl_varset_n16s_data_group, sigl_varset_n16s_data_group_mode, "
                      "sigl_varset_n16s_deleted, sigl_varsetmonitor_data, sigl_varsetmonitor_data_group, "
-                     "sigl_varsetmonitor_data_group_mode, sigl_varsetmonitor_deleted")
+                     "sigl_varsetmonitor_data_group_mode, sigl_varsetmonitor_deleted"))
     except Exception as err:
         print("ERROR drop table like sigl_varset*\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sigl_01_data_group, sigl_01_data_group_mode, sigl_02_data_group, "
+        conn.execute(text("drop table sigl_01_data_group, sigl_01_data_group_mode, sigl_02_data_group, "
                      "sigl_02_data_group_mode, sigl_03_data_group, sigl_03_data_group_mode, "
                      "sigl_04_data_group, sigl_04_data_group_mode, sigl_05_05_data_group, sigl_05_05_data_group_mode, "
                      "sigl_05_07_data_group, sigl_05_07_data_group_mode, sigl_05_data_group, sigl_05_data_group_mode, "
@@ -349,13 +350,13 @@ def upgrade():
                      "sigl_10_data_group, sigl_10_data_group_mode, sigl_11_data_group, sigl_11_data_group_mode, "
                      "sigl_12_data_group, sigl_12_data_group_mode, sigl_13_data_group, sigl_13_data_group_mode, "
                      "sigl_14_data_group, sigl_14_data_group_mode, sigl_15_data_group, sigl_15_data_group_mode, "
-                     "sigl_16_data_group, sigl_16_data_group_mode")
+                     "sigl_16_data_group, sigl_16_data_group_mode"))
     except Exception as err:
         print("ERROR drop table like sigl_XX_data_group and group_mode\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sigl_controle_externe_ctrl_resultat__file_data_group, "
+        conn.execute(text("drop table sigl_controle_externe_ctrl_resultat__file_data_group, "
                      "sigl_controle_externe_ctrl_resultat__file_data_group_mode, "
                      "sigl_controle_externe_ctrl_resultat_cr__file_data_group, "
                      "sigl_controle_externe_ctrl_resultat_cr__file_data_group_mode, "
@@ -401,13 +402,13 @@ def upgrade():
                      "sigl_user_cv__file_data_group_mode, sigl_user_data_group, sigl_user_data_group_mode, "
                      "sigl_user_diplomes__file_data_group, sigl_user_diplomes__file_data_group_mode, "
                      "sigl_user_evaluation__file_data_group, sigl_user_evaluation__file_data_group_mode, "
-                     "sigl_user_formations__file_data_group, sigl_user_formations__file_data_group_mode")
+                     "sigl_user_formations__file_data_group, sigl_user_formations__file_data_group_mode"))
     except Exception as err:
         print("ERROR drop table like sigl_[abc]_data_group and group_mode\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sigl_non_conf_data, sigl_non_conf_deleted, sigl_non_conf_dico_anal_abs_result_data, "
+        conn.execute(text("drop table sigl_non_conf_data, sigl_non_conf_deleted, sigl_non_conf_dico_anal_abs_result_data, "
                      "sigl_non_conf_dico_anal_abs_result_deleted, sigl_non_conf_dico_anal_aliquo_data, "
                      "sigl_non_conf_dico_anal_aliquo_deleted, sigl_non_conf_dico_anal_autre_data, "
                      "sigl_non_conf_dico_anal_autre_deleted, sigl_non_conf_dico_anal_centrif_data, "
@@ -497,13 +498,13 @@ def upgrade():
                      "sigl_non_conf_dico_trans_result_non_trans_pat_deleted, "
                      "sigl_non_conf_dico_trans_result_non_trans_presc_data, "
                      "sigl_non_conf_dico_trans_result_non_trans_presc_deleted, sigl_non_conf_dico_trans_result_proc_data, "
-                     "sigl_non_conf_dico_trans_result_proc_deleted")
+                     "sigl_non_conf_dico_trans_result_proc_deleted"))
     except Exception as err:
         print("ERROR drop table like sigl_non_conf_dico_[abc]_data and deleted\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sigl_query_data, sigl_query_deleted, sigl_query_dico_runlevel_data, "
+        conn.execute(text("drop table sigl_query_data, sigl_query_deleted, sigl_query_dico_runlevel_data, "
                      "sigl_queryvar_data, sigl_queryvar_deleted, sigl_resource_data, sigl_resource_deleted, "
                      "sigl_storage_deleted, sigl_mgt_qlt_deleted, sigl_evtlog_deleted, sigl_dicostatus_deleted, "
                      "sigl_dicostatus_data, sigl_mgt_qlt_data, sigl_param_cr_deleted, sigl_param_num_dos_deleted, "
@@ -511,7 +512,7 @@ def upgrade():
                      "sigl_revue_pj__file_data, sigl_revue_pj__file_deleted, sigl_user_cv__file_deleted, "
                      "sigl_user_dico_profil_bis_data, sigl_user_dico_profil_bis_deleted, sigl_user_dico_profil_data, "
                      "sigl_user_dico_profil_deleted, sigl_user_diplomes__file_deleted, "
-                     "sigl_user_evaluation__file_deleted, sigl_user_formations__file_deleted")
+                     "sigl_user_evaluation__file_deleted, sigl_user_formations__file_deleted"))
     except Exception as err:
         print("ERROR drop table like various sigl_...\n\terr=" + str(err))
 

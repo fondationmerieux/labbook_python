@@ -434,8 +434,13 @@ class RecordListAna(Resource):
 class RecordNbEmer(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self):
-        res = Record.getRecordNbEmer()
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        res = Record.getRecordNbEmer(args)
 
         if not res:
             self.log.error(Logs.fileline() + ' : TRACE RecordNbEmer not found')

@@ -70,7 +70,7 @@ class Record:
 
             # Functionnal unit link with analyzes families
             if 'link_fam' in args and args['link_fam']:
-                Record.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
+                # Record.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
                 # avoid redundance of table if filter type_ana exist
                 if 'type_ana' not in args or not args['type_ana']:
                     table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
@@ -298,13 +298,33 @@ class Record:
             return False
 
     @staticmethod
-    def getRecordNbEmer():
+    def getRecordNbEmer(args):
         cursor = DB.cursor()
+
+        table_cond = ''
+        filter_cond = ''
+
+        # Functionnal unit link with analyzes families
+        if 'link_fam' in args and args['link_fam']:
+            # avoid redundance of table if filter type_ana exist
+            table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
+
+            cond_link_fam = ''
+            # prepare list for sql
+            for id_fam in args['link_fam']:
+                if not cond_link_fam:
+                    cond_link_fam = '('
+
+                cond_link_fam = cond_link_fam + str(id_fam) + ','
+
+            if cond_link_fam:
+                cond_link_fam = cond_link_fam[:-1] + ')'
+                filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         req = ('select count(distinct(rec.id_data)) as nb_emer '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos=rec.id_data '
-               'where ana.urgent=4 and rec.statut in (181,182,253,254,255) ')
+               'inner join sigl_04_data as ana on ana.id_dos=rec.id_data ' + table_cond +
+               'where ana.urgent=4 and rec.statut in (181,182,253,254,255) ' + filter_cond)
 
         cursor.execute(req)
 

@@ -410,7 +410,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         // close the form and table
         res += "</tbody></table>" +
                "<div class=\"form-group\">" +
-               "<span class=\"d-lg-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+               "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
                "<label class=\"form-label mt-2 me-1\">{{ _("Date de validation") }} : </label>" +
                "<div>" +
                "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
@@ -510,7 +510,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         res += "<td class=\"text-center\"><span class=\"value\">" ;
 
         if (res_valid == 250  && value != "" )
-        disp_valid = "show" ;
+        disp_valid = "show d-lg-flex" ;
 
         if (res_valid == 251  && res_type != 265 )
         res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-T\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
@@ -548,7 +548,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     // close the form and table
     res += "</tbody></table>" +
            "<div class=\"form-group\">" +
-           "<span class=\"d-lg-flex align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+           "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
            "<label class=\"form-label mt-2 me-1\">{{ _("Date de validation") }} </label>" +
            "<div>" +
            "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control\" type=\"datetime-local\" step=\"60\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +

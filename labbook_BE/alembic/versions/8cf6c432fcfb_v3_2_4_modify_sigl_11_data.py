@@ -7,6 +7,7 @@ Create Date: 2022-03-23 15:50:57.756373
 
 """
 from alembic import op
+from sqlalchemy import text
 
 from datetime import datetime
 
@@ -37,26 +38,26 @@ def upgrade():
 
     # ADD COLUMN for id_template with report
     try:
-        conn.execute("alter table sigl_11_data add column id_tpl int default 0")
+        conn.execute(text("alter table sigl_11_data add column id_tpl int default 0"))
     except Exception as err:
         print("ERROR add column id_tpl to sigl_11_data,\n\terr=" + str(err))
 
     # ADD COLUMN for nb_donwload with report
     try:
-        conn.execute("alter table sigl_11_data add column nb_download int default 0")
+        conn.execute(text("alter table sigl_11_data add column nb_download int default 0"))
     except Exception as err:
         print("ERROR add column nb_donwload to sigl_11_data,\n\terr=" + str(err))
 
     # ADD INDEX
     try:
-        conn.execute("create index idx_id_tpl on sigl_11_data (id_tpl)")
-        conn.execute("create index idx_tpl_file on template_setting (tpl_file)")
+        conn.execute(text("create index idx_id_tpl on sigl_11_data (id_tpl)"))
+        conn.execute(text("create index idx_tpl_file on template_setting (tpl_file)"))
     except Exception as err:
         print("ERROR create index,\n\terr=" + str(err))
 
     # DROP OLD TABLE
     try:
-        conn.execute("drop table sigl_05_05_deleted, sigl_05_07_deleted, sigl_06_deleted, sigl_10_delete, "
+        conn.execute(text("drop table sigl_05_05_deleted, sigl_05_07_deleted, sigl_06_deleted, sigl_10_delete, "
                      "sigl_13_deleted, sigl_14_deleted, sigl_15_deleted, sigl_16_deleted, "
                      "sigl_equipement_certif_etalonnage__file_deleted, sigl_equipement_contrat_maintenance__file_deleted, "
                      "sigl_equipement_facture__file_deleted, sigl_equipement_maintenance_preventive__file_deleted, "
@@ -65,7 +66,7 @@ def upgrade():
                      "sigl_manuels_document__file_deleted, sigl_non_conformite_deleted, sigl_planning_ctrl_ext_data, "
                      "sigl_planning_ctrl_ext_deleted, sigl_planning_ctrl_int_data, sigl_planning_ctrl_int_deleted, "
                      "sigl_procedures_deleted, sigl_procedures_document__file_deleted, sigl_reunion_deleted, "
-                     "sigl_reunion_pj__file_deleted, sigl_user_deleted")
+                     "sigl_reunion_pj__file_deleted, sigl_user_deleted"))
     except Exception as err:
         print("ERROR drop table unused\n\terr=" + str(err))
 
