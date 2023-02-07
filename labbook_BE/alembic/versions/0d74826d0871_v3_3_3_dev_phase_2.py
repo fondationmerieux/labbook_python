@@ -38,8 +38,8 @@ def upgrade():
     # ADD template outsourced
     try:
         conn.execute(text("insert into template_setting "
-                     "(tpl_date, tpl_name, tpl_file, tpl_default, tpl_type) "
-                     "values (NOW(), 'Modèle bon de transfert', 'tpl_outsourced.odt', 'Y', 'OUT')"))
+                          "(tpl_date, tpl_name, tpl_file, tpl_default, tpl_type) "
+                          "values (NOW(), 'Modèle bon de transfert', 'tpl_outsourced.odt', 'Y', 'OUT')"))
     except Exception as err:
         print("ERROR insert outsourced template for template_setting,\n\terr=" + str(err))
 
@@ -82,36 +82,36 @@ def upgrade():
     # Create table for enable/disable fields of forms
     try:
         conn.execute(text("create table form_setting("
-                     "fos_ser int not NULL AUTO_INCREMENT,"
-                     "fos_date DATETIME,"
-                     "fos_rank INT default 0,"
-                     "fos_name varchar(255) NOT NULL,"  # name of fields
-                     "fos_type varchar(5) NOT NULL,"  # 'PAT'ient form, 'PROD'uct form, 'SUPP'LY form
-                     "fos_ref varchar(50) NOT NULL,"  # name of html ref
-                     "fos_stat varchar(1) NOT NULL default 'Y',"
-                     "PRIMARY KEY (fos_ser),"
-                     "INDEX (fos_type), INDEX (fos_ref), INDEX (fos_stat), INDEX (fos_rank)) "
-                     "character set=utf8"))
+                          "fos_ser int not NULL AUTO_INCREMENT,"
+                          "fos_date DATETIME,"
+                          "fos_rank INT default 0,"
+                          "fos_name varchar(255) NOT NULL,"  # name of fields
+                          "fos_type varchar(5) NOT NULL,"  # 'PAT'ient form, 'PROD'uct form, 'SUPP'LY form
+                          "fos_ref varchar(50) NOT NULL,"  # name of html ref
+                          "fos_stat varchar(1) NOT NULL default 'Y',"
+                          "PRIMARY KEY (fos_ser),"
+                          "INDEX (fos_type), INDEX (fos_ref), INDEX (fos_stat), INDEX (fos_rank)) "
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table form_setting,\n\terr=" + str(err))
 
     # ADD fields in form setting
     try:
         conn.execute(text('insert into form_setting '
-                     '(fos_date, fos_rank, fos_name, fos_type, fos_ref, fos_stat) '
-                     'values '
-                     '(NOW(), 5, "Nationalité", "PAT", "pat_nationality", "Y"), '
-                     '(NOW(), 10, "Résident", "PAT", "pat_resident", "Y"), '
-                     '(NOW(), 15, "Groupe sanguin", "PAT", "pat_blood_group", "Y"), '
-                     '(NOW(), 20, "Rhésus", "PAT", "pat_blood_rhesus", "Y"), '
-                     '(NOW(), 25, "Profession", "PAT", "pat_profession", "Y"), '
-                     '(NOW(), 30, "Boite postale", "PAT", "pat_pbox", "Y"), '
-                     '(NOW(), 35, "Quartier / Secteur", "PAT", "pat_district", "Y"), '
-                     '(NOW(), 50, "Réference fournisseur", "PROD", "prod_ref_supplier", "Y"), '
-                     '(NOW(), 60, "Localisation", "SUPP", "supp_rack", "Y"), '
-                     '(NOW(), 65, "Numéro de lot", "SUPP", "supp_batch_num", "Y"), '
-                     '(NOW(), 70, "Prix d\'achat", "SUPP", "supp_buy_price", "Y"), '
-                     '(NOW(), 75, "Nom bailleur", "SUPP", "supp_lessor", "Y")'))
+                          '(fos_date, fos_rank, fos_name, fos_type, fos_ref, fos_stat) '
+                          'values '
+                          '(NOW(), 5, "Nationalité", "PAT", "pat_nationality", "Y"), '
+                          '(NOW(), 10, "Résident", "PAT", "pat_resident", "Y"), '
+                          '(NOW(), 15, "Groupe sanguin", "PAT", "pat_blood_group", "Y"), '
+                          '(NOW(), 20, "Rhésus", "PAT", "pat_blood_rhesus", "Y"), '
+                          '(NOW(), 25, "Profession", "PAT", "pat_profession", "Y"), '
+                          '(NOW(), 30, "Boite postale", "PAT", "pat_pbox", "Y"), '
+                          '(NOW(), 35, "Quartier / Secteur", "PAT", "pat_district", "Y"), '
+                          '(NOW(), 50, "Réference fournisseur", "PROD", "prod_ref_supplier", "Y"), '
+                          '(NOW(), 60, "Localisation", "SUPP", "supp_rack", "Y"), '
+                          '(NOW(), 65, "Numéro de lot", "SUPP", "supp_batch_num", "Y"), '
+                          '(NOW(), 70, "Prix d\'achat", "SUPP", "supp_buy_price", "Y"), '
+                          '(NOW(), 75, "Nom bailleur", "SUPP", "supp_lessor", "Y")'))
     except Exception as err:
         print('ERROR insert default form_setting,\n\terr=' + str(err))
 

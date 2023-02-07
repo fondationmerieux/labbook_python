@@ -46,7 +46,7 @@ def upgrade():
     # UPDATE default sample quotation
     try:
         conn.execute(text("update sigl_05_data set cote_valeur=0.00 "
-                     "where cote_unite like 'PB%' or code like 'PB%'"))
+                          "where cote_unite like 'PB%' or code like 'PB%'"))
     except Exception as err:
         print("ERROR update cote_valeur in sigl_05_data,\n\terr=" + str(err))
 
@@ -71,100 +71,100 @@ def upgrade():
     # ADD NEW USER ROLE
     try:
         conn.execute(text("insert into sigl_pj_role (name, label, type) "
-                     "values ('gestionnaire stock', 'Gestionnaire de stock', 'K')"))
+                          "values ('gestionnaire stock', 'Gestionnaire de stock', 'K')"))
     except Exception as err:
         print("ERROR insert into sigl_pj_role (gestionnaire stock),\n\terr=" + str(err))
 
     # Create table for requesting services
     try:
         conn.execute(text("create table requesting_services("
-                     "rqs_ser int not NULL AUTO_INCREMENT,"
-                     "rqs_date DATETIME,"
-                     "rqs_rank INT default 0,"
-                     "rqs_name varchar(255) NOT NULL,"
-                     "PRIMARY KEY (rqs_ser),"
-                     "INDEX (rqs_rank)) "
-                     "character set=utf8"))
+                          "rqs_ser int not NULL AUTO_INCREMENT,"
+                          "rqs_date DATETIME,"
+                          "rqs_rank INT default 0,"
+                          "rqs_name varchar(255) NOT NULL,"
+                          "PRIMARY KEY (rqs_ser),"
+                          "INDEX (rqs_rank)) "
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table requesting_services,\n\terr=" + str(err))
 
     # Create table for operating units
     try:
         conn.execute(text("create table functionnal_unit("
-                     "fun_ser int not NULL AUTO_INCREMENT,"
-                     "fun_date DATETIME,"
-                     "fun_rank INT default 0,"
-                     "fun_name varchar(255) NOT NULL,"
-                     "PRIMARY KEY (fun_ser),"
-                     "INDEX (fun_rank)) "
-                     "character set=utf8"))
+                          "fun_ser int not NULL AUTO_INCREMENT,"
+                          "fun_date DATETIME,"
+                          "fun_rank INT default 0,"
+                          "fun_name varchar(255) NOT NULL,"
+                          "PRIMARY KEY (fun_ser),"
+                          "INDEX (fun_rank)) "
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table functionnal_unit,\n\terr=" + str(err))
 
     # Create table for functionnal_unit_link
     try:
         conn.execute(text("create table functionnal_unit_link("
-                     "ful_ser int not NULL AUTO_INCREMENT,"
-                     "ful_date DATETIME,"
-                     "ful_fun INT NOT NULL,"
-                     "ful_ref INT NOT NULL,"  # serial of user or analysis family
-                     "ful_type varchar(1) NOT NULL,"  # 'U'ser or analysis 'F'amily
-                     "PRIMARY KEY (ful_ser),"
-                     "INDEX (ful_fun), INDEX (ful_ref), INDEX (ful_type)) "
-                     "character set=utf8"))
+                          "ful_ser int not NULL AUTO_INCREMENT,"
+                          "ful_date DATETIME,"
+                          "ful_fun INT NOT NULL,"
+                          "ful_ref INT NOT NULL,"  # serial of user or analysis family
+                          "ful_type varchar(1) NOT NULL,"  # 'U'ser or analysis 'F'amily
+                          "PRIMARY KEY (ful_ser),"
+                          "INDEX (ful_fun), INDEX (ful_ref), INDEX (ful_type)) "
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table functionnal_unit_link,\n\terr=" + str(err))
 
     # Create table for stock setting
     try:
         conn.execute(text("create table stock_setting("
-                     "sos_ser int not NULL AUTO_INCREMENT,"
-                     "sos_date DATETIME,"
-                     "sos_expir_oblig varchar(1) NOT NULL default 'Y',"
-                     "sos_expir_warning INT NOT NULL default 14,"
-                     "sos_expir_alert INT NOT NULL default 0,"
-                     "PRIMARY KEY (sos_ser))"
-                     "character set=utf8"))
+                          "sos_ser int not NULL AUTO_INCREMENT,"
+                          "sos_date DATETIME,"
+                          "sos_expir_oblig varchar(1) NOT NULL default 'Y',"
+                          "sos_expir_warning INT NOT NULL default 14,"
+                          "sos_expir_alert INT NOT NULL default 0,"
+                          "PRIMARY KEY (sos_ser))"
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table stock_setting,\n\terr=" + str(err))
 
     # ADD default stock setting
     try:
         conn.execute(text("insert into stock_setting "
-                     "(sos_date, sos_expir_oblig, sos_expir_warning, sos_expir_alert) "
-                     "values (NOW(), 'Y', 14, 0)"))
+                          "(sos_date, sos_expir_oblig, sos_expir_warning, sos_expir_alert) "
+                          "values (NOW(), 'Y', 14, 0)"))
     except Exception as err:
         print("ERROR insert default stock_setting,\n\terr=" + str(err))
 
     # Create table for list of comment
     try:
         conn.execute(text("create table list_comment("
-                     "lic_ser int not NULL AUTO_INCREMENT,"
-                     "lic_date DATETIME,"
-                     "lic_ref INT NOT NULL,"  # serial of item, like id_data from sigl_equipement_data
-                     "lic_type varchar(1) NOT NULL,"  # 'E'quipment
-                     "lic_sub_type varchar(1) NOT NULL,"  # 'B'reakdown, 'M'aintenance
-                     "lic_user INT NOT NULL,"
-                     "lic_comm text NOT NULL,"
-                     "PRIMARY KEY (lic_ser), "
-                     "INDEX (lic_ref), INDEX (lic_type), INDEX (lic_sub_type), INDEX (lic_user))"
-                     "character set=utf8"))
+                          "lic_ser int not NULL AUTO_INCREMENT,"
+                          "lic_date DATETIME,"
+                          "lic_ref INT NOT NULL,"  # serial of item, like id_data from sigl_equipement_data
+                          "lic_type varchar(1) NOT NULL,"  # 'E'quipment
+                          "lic_sub_type varchar(1) NOT NULL,"  # 'B'reakdown, 'M'aintenance
+                          "lic_user INT NOT NULL,"
+                          "lic_comm text NOT NULL,"
+                          "PRIMARY KEY (lic_ser), "
+                          "INDEX (lic_ref), INDEX (lic_type), INDEX (lic_sub_type), INDEX (lic_user))"
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table list_comment,\n\terr=" + str(err))
 
     # ADD old entry in pannes fields
     try:
         conn.execute(text("insert into list_comment (lic_date, lic_type, lic_sub_type, lic_ref, lic_user, lic_comm) "
-                     "select NOW(), 'E', 'B', id_data, id_owner, pannes from sigl_equipement_data "
-                     "where pannes is not null and pannes != ''"))
+                          "select NOW(), 'E', 'B', id_data, id_owner, pannes from sigl_equipement_data "
+                          "where pannes is not null and pannes != ''"))
     except Exception as err:
         print("ERROR insert old entry from sigl_equipement_data.pannes in list_comment,\n\terr=" + str(err))
 
     # ADD old entry in maintenance_preventive fields
     try:
         conn.execute(text("insert into list_comment (lic_date, lic_type, lic_sub_type, lic_ref, lic_user, lic_comm) "
-                     "select NOW(), 'E', 'M', id_data, id_owner, maintenance_preventive from sigl_equipement_data "
-                     "where maintenance_preventive is not null and maintenance_preventive != ''"))
+                          "select NOW(), 'E', 'M', id_data, id_owner, maintenance_preventive from sigl_equipement_data "
+                          "where maintenance_preventive is not null and maintenance_preventive != ''"))
     except Exception as err:
         print("ERROR insert old entry from sigl_equipement_data.maintenance_preventive in list_comment,\n\terr=" + str(err))
 
@@ -189,7 +189,7 @@ def upgrade():
     # DELETE duplicates type_resultat TO sigl_dico_data TABLE
     try:
         conn.execute(text("delete from sigl_dico_data where id_data in (1126,1141,1132,602,1125,1136,1139,1140) and "
-                     "dico_name='type_resultat'"))
+                          "dico_name='type_resultat'"))
     except Exception as err:
         print("ERROR delete id_data in (1126,1141,1132,602,1125,1136,1139,1140) to sigl_dico_data,\n\terr=" + str(err))
 
@@ -198,7 +198,7 @@ def upgrade():
     try:
         conn.execute(text("update sigl_07_data set type_resultat=585 where type_resultat=1127"))
 
-        conn.execute(text("delete from sigl_dico_data where id_data=1127")
+        conn.execute(text("delete from sigl_dico_data where id_data=1127"))
     except Exception as err:
         print("ERROR update type_resultat 1127 to 585 in sigl_07_data then delete in sigl_dico_data,\n\terr=" + str(err))
 
