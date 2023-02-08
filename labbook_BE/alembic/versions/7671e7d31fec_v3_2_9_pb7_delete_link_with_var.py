@@ -28,8 +28,8 @@ def upgrade():
     # MODIFY PB7 remove link with Détection et titrage des IgG et de IgM (Toxoplasmose) variable
     try:
         conn.execute(text("delete from sigl_05_07_data "
-                     "where id_refanalyse=7 and id_refvariable in (select id_data from sigl_07_data "
-                     "where libelle='Détection et titrage des IgG et de IgM (Toxoplasmose)')"))
+                          "where id_refanalyse=7 and id_refvariable in (select id_data from sigl_07_data "
+                          "where libelle='Détection et titrage des IgG et de IgM (Toxoplasmose)')"))
     except Exception as err:
         print("ERROR remove link with variable for PB7,\n\terr=" + str(err))
 

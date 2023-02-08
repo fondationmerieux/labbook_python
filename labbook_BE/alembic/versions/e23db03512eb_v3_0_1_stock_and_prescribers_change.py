@@ -77,8 +77,8 @@ def upgrade():
 
     try:
         conn.execute(text("insert into sigl_dico_data "
-                     "(id_owner, dico_name, label, short_label, position, code) "
-                     "values (100, 'product_type', 'Hématologie', 'hematologie', 60, 'hematologie' )"))
+                          "(id_owner, dico_name, label, short_label, position, code) "
+                          "values (100, 'product_type', 'Hématologie', 'hematologie', 60, 'hematologie' )"))
     except Exception as err:
         print("ERROR insert into sigl_dico_data a product_type (hematologie),\n\terr=" + str(err))
 
@@ -141,8 +141,8 @@ def upgrade():
 
     try:
         conn.execute(text("insert into sigl_dico_data "
-                     "(id_owner, dico_name, label, short_label, position, code) "
-                     "values (100, 'product_conserv', 'T ambiante', 'ambiante', 60, 'ambiante' )"))
+                          "(id_owner, dico_name, label, short_label, position, code) "
+                          "values (100, 'product_conserv', 'T ambiante', 'ambiante', 60, 'ambiante' )"))
     except Exception as err:
         print("ERROR insert into sigl_dico_data a product_conserv (ambiante),\n\terr=" + str(err))
 
@@ -157,7 +157,7 @@ def upgrade():
         try:
             conn = op.get_bind()
 
-            conn.execute(text('update sigl_user_data set side_account=0')
+            conn.execute(text('update sigl_user_data set side_account=0'))
         except Exception as err:
             print("ERROR update sigl_user_data set side_account=0,\n\terr=" + str(err))
 

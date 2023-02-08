@@ -58,15 +58,15 @@ def upgrade():
     # DROP OLD TABLE
     try:
         conn.execute(text("drop table sigl_05_05_deleted, sigl_05_07_deleted, sigl_06_deleted, sigl_10_delete, "
-                     "sigl_13_deleted, sigl_14_deleted, sigl_15_deleted, sigl_16_deleted, "
-                     "sigl_equipement_certif_etalonnage__file_deleted, sigl_equipement_contrat_maintenance__file_deleted, "
-                     "sigl_equipement_facture__file_deleted, sigl_equipement_maintenance_preventive__file_deleted, "
-                     "sigl_equipement_pannes__file_deleted, sigl_equipement_photo__file_deleted, sigl_file_deleted, "
-                     "sigl_laboratoire_deleted, sigl_laboratoire_organigramme__file_deleted, sigl_manuels_deleted, "
-                     "sigl_manuels_document__file_deleted, sigl_non_conformite_deleted, sigl_planning_ctrl_ext_data, "
-                     "sigl_planning_ctrl_ext_deleted, sigl_planning_ctrl_int_data, sigl_planning_ctrl_int_deleted, "
-                     "sigl_procedures_deleted, sigl_procedures_document__file_deleted, sigl_reunion_deleted, "
-                     "sigl_reunion_pj__file_deleted, sigl_user_deleted"))
+                          "sigl_13_deleted, sigl_14_deleted, sigl_15_deleted, sigl_16_deleted, "
+                          "sigl_equipement_certif_etalonnage__file_deleted, sigl_equipement_contrat_maintenance__file_deleted, "
+                          "sigl_equipement_facture__file_deleted, sigl_equipement_maintenance_preventive__file_deleted, "
+                          "sigl_equipement_pannes__file_deleted, sigl_equipement_photo__file_deleted, sigl_file_deleted, "
+                          "sigl_laboratoire_deleted, sigl_laboratoire_organigramme__file_deleted, sigl_manuels_deleted, "
+                          "sigl_manuels_document__file_deleted, sigl_non_conformite_deleted, sigl_planning_ctrl_ext_data, "
+                          "sigl_planning_ctrl_ext_deleted, sigl_planning_ctrl_int_data, sigl_planning_ctrl_int_deleted, "
+                          "sigl_procedures_deleted, sigl_procedures_document__file_deleted, sigl_reunion_deleted, "
+                          "sigl_reunion_pj__file_deleted, sigl_user_deleted"))
     except Exception as err:
         print("ERROR drop table unused\n\terr=" + str(err))
 

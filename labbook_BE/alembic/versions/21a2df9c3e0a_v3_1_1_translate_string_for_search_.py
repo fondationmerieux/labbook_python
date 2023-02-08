@@ -66,15 +66,15 @@ def upgrade():
     try:
         # Create table for translations used by fields search
         conn.execute(text("create table translations("
-                     "tra_ser int not NULL AUTO_INCREMENT,"
-                     "tra_date DATETIME,"
-                     "tra_lang varchar(6) NOT NULL,"
-                     "tra_ref INT default 0,"
-                     "tra_type varchar(10) NOT NULL,"
-                     "tra_text text,"
-                     "PRIMARY KEY (tra_ser),"
-                     "INDEX (tra_lang), INDEX (tra_type), INDEX (tra_ref)) "
-                     "character set=utf8"))
+                          "tra_ser int not NULL AUTO_INCREMENT,"
+                          "tra_date DATETIME,"
+                          "tra_lang varchar(6) NOT NULL,"
+                          "tra_ref INT default 0,"
+                          "tra_type varchar(10) NOT NULL,"
+                          "tra_text text,"
+                          "PRIMARY KEY (tra_ser),"
+                          "INDEX (tra_lang), INDEX (tra_type), INDEX (tra_ref)) "
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table translations,\n\terr=" + str(err))
 
@@ -82,12 +82,12 @@ def upgrade():
     try:
         # Create table for launch some process (not possible with alembic) after start a new version
         conn.execute(text("create table init_version("
-                     "ini_ser int not NULL AUTO_INCREMENT,"
-                     "ini_date DATETIME,"
-                     "ini_stat varchar(1) NOT NULL,"
-                     "PRIMARY KEY (ini_ser),"
-                     "INDEX (ini_date)) "
-                     "character set=utf8"))
+                          "ini_ser int not NULL AUTO_INCREMENT,"
+                          "ini_date DATETIME,"
+                          "ini_stat varchar(1) NOT NULL,"
+                          "PRIMARY KEY (ini_ser),"
+                          "INDEX (ini_date)) "
+                          "character set=utf8"))
     except Exception as err:
         print("ERROR create table init_version,\n\terr=" + str(err))
     else:

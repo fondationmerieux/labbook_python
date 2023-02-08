@@ -140,7 +140,7 @@ class Pdf:
                         trans = ana['nom'].strip()
 
                     if ana['outsourced'] == 'Y':
-                            trans2 = ' <i>[' + label_out + ']</i>'
+                        trans2 = ' <i>[' + label_out + ']</i>'
 
                     ana_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
                                 'text-align:left;">' + str(ana['code']) + '</span>'
@@ -158,7 +158,7 @@ class Pdf:
                     if ana['prix'] > 0:
                         trans  = ''
                         trans2 = ''
-                        
+
                         if ana['code']:
                             trans = ana['code'].strip()
 
@@ -2483,7 +2483,7 @@ class Pdf:
                     # if id request of this analysis is different of previous one
                     # and id result is different of previous one.
                     if res['id_data'] != id_req_ana_p:
-                       
+
                         # init new analysis
                         tmp_ana = {"fam_name": "", "ana_name": "", "ana_outsourced": ""}
 

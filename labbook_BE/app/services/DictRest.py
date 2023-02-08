@@ -363,7 +363,6 @@ class DictImport(Resource):
                         self.log.info(Logs.fileline() + ' : TRACE DictImport ERROR insert dict dico_name ' + str(dico_name) + ' | csv_line=' + str(i))
                         DB.insertDbStatus(stat='ERR;DictImport ERROR insert dict dico_name: ' + str(dico_name), type='DIC')
                         return compose_ret('', Constants.cst_content_type_json, 500)
-                   
 
                 # update dict
                 elif int(id_data) > 0:

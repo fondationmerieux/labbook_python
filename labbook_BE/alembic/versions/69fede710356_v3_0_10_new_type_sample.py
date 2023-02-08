@@ -36,10 +36,10 @@ def upgrade():
     try:
         # Create table for database_status
         conn.execute(text("create table database_status("
-                     "dbs_ser int not NULL AUTO_INCREMENT,"
-                     "dbs_date DATETIME,"
-                     "dbs_stat VARCHAR(255),"
-                     "PRIMARY KEY (dbs_ser))"))
+                          "dbs_ser int not NULL AUTO_INCREMENT,"
+                          "dbs_date DATETIME,"
+                          "dbs_stat VARCHAR(255),"
+                          "PRIMARY KEY (dbs_ser))"))
     except Exception as err:
         print("ERROR create table database_status,\n\terr=" + str(err))
 
