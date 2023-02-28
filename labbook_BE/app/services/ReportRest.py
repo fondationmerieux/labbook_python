@@ -52,9 +52,9 @@ class ReportEpidemio(Resource):
             else:
                 disease['sample'] = 'UNKNOWN'
 
-            # self.log.error(Logs.fileline() + ' : DEBUG ##########################')
-            # self.log.error(Logs.fileline() + ' : DEBUG disease=' + disease['disease'])
-            # self.log.error(Logs.fileline() + ' : DEBUG sample=' + disease['sample'])
+            # self.log.error(Logs.fileline() + ' : DEBUG-TRACE ##########################')
+            # self.log.error(Logs.fileline() + ' : DEBUG-TRACE disease=' + disease['disease'])
+            # self.log.error(Logs.fileline() + ' : DEBUG-TRACE sample=' + disease['sample'])
 
             nb_res = int(config.get('DISEASE_' + x, 'nb_res'))
 
@@ -69,11 +69,11 @@ class ReportEpidemio(Resource):
 
                 details['res_label'] = config.get('DISEASE_' + x, 'res_label_' + y)
 
-                # self.log.error(Logs.fileline() + ' : DEBUG res_label=' + details['res_label'])
+                # self.log.error(Logs.fileline() + ' : DEBUG-TRACE res_label=' + details['res_label'])
 
                 formula = config.get('DISEASE_' + x, 'formula_' + y)
 
-                # self.log.error(Logs.fileline() + ' : DEBUG formula=' + formula)
+                # self.log.error(Logs.fileline() + ' : DEBUG-TRACE formula=' + formula)
 
                 if not formula:
                     details['res_type'] = 'T'  # Title
@@ -91,7 +91,7 @@ class ReportEpidemio(Resource):
 
                     req_part = Report.ParseFormula(formula, id_prod)
 
-                    # self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
+                    # self.log.error(Logs.fileline() + ' : DEBUG-TRACE req_part=' + str(req_part))
                     result = Report.getResultEpidemio(inner_req=req_part['inner'],
                                                       end_req=req_part['end'],
                                                       date_beg=args['date_beg'],
@@ -178,9 +178,9 @@ class ReportIndicator(Resource):
             if disease['sample']:
                 disease['sample'] = disease['sample'][:-2]
 
-            # self.log.error(Logs.fileline() + ' : DEBUG ##########################')
-            # self.log.error(Logs.fileline() + ' : DEBUG disease=' + disease['disease'])
-            # self.log.error(Logs.fileline() + ' : DEBUG sample=' + disease['sample'])
+            # self.log.error(Logs.fileline() + ' : DEBUG-TRACE ##########################')
+            # self.log.error(Logs.fileline() + ' : DEBUG-TRACE disease=' + disease['disease'])
+            # self.log.error(Logs.fileline() + ' : DEBUG-TRACE sample=' + disease['sample'])
 
             nb_res = int(config.get('DISEASE_' + x, 'nb_res'))
 
@@ -195,11 +195,11 @@ class ReportIndicator(Resource):
 
                 details['res_label'] = config.get('DISEASE_' + x, 'res_label_' + y)
 
-                # self.log.error(Logs.fileline() + ' : DEBUG res_label=' + details['res_label'])
+                # self.log.error(Logs.fileline() + ' : DEBUG-TRACE res_label=' + details['res_label'])
 
                 formula = config.get('DISEASE_' + x, 'formula_' + y)
 
-                # self.log.error(Logs.fileline() + ' : DEBUG formula=' + formula)
+                # self.log.error(Logs.fileline() + ' : DEBUG-TRACE formula=' + formula)
 
                 if not formula:
                     details['res_type'] = 'T'  # Title
@@ -218,7 +218,7 @@ class ReportIndicator(Resource):
                     req_part = Report.ParseFormulaV2(formula, l_id_prod)
 
                     # GET RESULT
-                    self.log.error(Logs.fileline() + ' : DEBUG req_part=' + str(req_part))
+                    self.log.error(Logs.fileline() + ' : DEBUG-TRACE req_part=' + str(req_part))
                     result = Report.getResultIndicator(inner_req=req_part['inner'],
                                                        end_req=req_part['end'],
                                                        date_beg=args['date_beg'],

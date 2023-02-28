@@ -194,7 +194,7 @@ class Dict:
             cond = ' where dico_name="' + str(dico_name) + '"'
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
-               'from sigl_dico_data ' + cond)
+               'from sigl_dico_data ' + cond + ' order by dico_name')
 
         cursor.execute(req)
 

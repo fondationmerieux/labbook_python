@@ -155,6 +155,7 @@ let value_res      = '' ;
                       '"price":0, ' +
                       '"paid": 5, ' +
                       '"emer": 5, ' +
+                      '"outsourced":"N", ' +
                       '"req": 5 }' ;
 
     let param_res = '{ "ref_analyse":' + list_id_ana[i] + '}' ;
@@ -494,7 +495,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             // outsourced icon
             if (data[i].outsourced == "Y")
             {
-            res_limit += "<span title=\"{{ _("Sous-traitée") }}\"><i class=\"bi bi-building-gear fs-5 text-primary\"></i></span>" ;
+            res_limit += "<span title=\"{{ _("Sous-traitée") }}\"><i class=\"bi bi-building-gear fs-5 color-T\"></i></span>" ;
             }
 
         res += "<tr>" +
@@ -603,7 +604,8 @@ $("#search_analysis").select2(
         data: function (params) {
             return JSON.stringify(
             {
-                term: params.term
+                term: params.term,
+                link_fam: {{ session['user_link_fam'] or [] }}
             } ) ;
         },
         processResults: function (data) {

@@ -166,7 +166,7 @@ $ make help
 Makefile:23: *** LABBOOK_DB_USER undefined.  Stop.
 ~~~
 
-Note3: `make devrun` creates the log directories ./labbook_FE/logs and ./labbook_BE/logs if necessary
+Note3: `make devrun` creates the log directories ./logs if necessary
 and mounts them into the container to facilitate access and to preserve logs across restarts.
 These 2 directories are ignored by git.
 
@@ -203,6 +203,7 @@ Elements for configuring:
 
 - the epidemiological report [epidemio.md](doc/epidemio.md)
 - the DHIS2 export [dhis2.md](doc/dhis2.md)
+- the indicator report [indicator.md](doc/indicator.md)
 
 ## Database
 

@@ -13,7 +13,7 @@ class Analysis:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getAnalysisSearch(text, type="A", status=4):
+    def getAnalysisSearch(text, type="A", status=4, link_fam=[]):
         """Search in analysis table
 
         This function is call by search field on analyze or search form on setting analyze page
@@ -61,11 +61,28 @@ class Analysis:
                         'tr.tra_text like "%' + word + '%" or '
                         'ana.abbr like "%' + word + '%") ')
 
+        # Functionnal unit link with analyzes families
+        if link_fam:
+
+            cond_link_fam = ''
+            # prepare list for sql
+            for id_fam in list(link_fam):
+                if not cond_link_fam:
+                    cond_link_fam = '('
+
+                cond_link_fam = cond_link_fam + str(id_fam) + ','
+
+            if cond_link_fam:
+                cond_link_fam = cond_link_fam[:-1] + ')'
+                cond += ' and ana.famille in ' + cond_link_fam + ' '
+
         req = ('select ana.id_data as id, CONCAT(ana.code, " ", COALESCE(ana.abbr, "")) as code, '
                'ana.nom as name,  COALESCE(dict.label, "") as label '
                'from sigl_05_data as ana '
                'left join sigl_dico_data as dict on dict.id_data=ana.famille ' + trans +
                'where ' + cond + ' order by nom asc limit 1000')
+
+        # Analysis.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
 
         cursor.execute(req)
 
@@ -626,8 +643,8 @@ class Analysis:
 
         req = ('select ref.id_data, ref.code, dict.label as fam_name, ref.nom as name '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse and ref.cote_unite != "PB" '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
                'left join sigl_dico_data as dict on dict.id_data=ref.famille '
                'where (rec.date_dos between %s and %s) and ref.actif=4 ' + filter_cond +
                'group by ref.code order by ref.code asc ' + limit)
@@ -642,9 +659,9 @@ class Analysis:
 
         req = ('select count(*) as total '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse and ref.cote_unite != "PB" '
-               'where (rec.date_dos between %s and %s) and ana.ref_analyse = %s and ref.actif=4')
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
+               'where (rec.date_dos between %s and %s) and req.ref_analyse = %s and ref.actif=4')
 
         cursor.execute(req, (date_beg, date_end, id_ana))
 
@@ -678,9 +695,9 @@ class Analysis:
                'ref_var.libelle as variable, '
                'IF("dico_" = substring(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
-               'inner join sigl_09_data as res on res.id_analyse=ana.id_data '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse=req.id_data '
                'inner join sigl_07_data as ref_var on ref_var.id_data=res.ref_variable '
                'left join sigl_05_07_data as ref_link on ref_link.id_data=res.ref_variable '
                'left join sigl_dico_data as dict_type on dict_type.id_data=ref_var.type_resultat '

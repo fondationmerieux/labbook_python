@@ -111,7 +111,7 @@ def upgrade():
                           '(NOW(), 60, "Localisation", "SUPP", "supp_rack", "Y"), '
                           '(NOW(), 65, "Numéro de lot", "SUPP", "supp_batch_num", "Y"), '
                           '(NOW(), 70, "Prix d\'achat", "SUPP", "supp_buy_price", "Y"), '
-                          '(NOW(), 75, "Nom bailleur", "SUPP", "supp_lessor", "Y")'))
+                          '(NOW(), 75, "Nom du bailleur", "SUPP", "supp_lessor", "Y")'))
     except Exception as err:
         print('ERROR insert default form_setting,\n\terr=' + str(err))
 

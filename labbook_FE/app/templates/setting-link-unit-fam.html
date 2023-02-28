@@ -45,8 +45,6 @@ var id_func_unit = {{ args['id_func_unit'] or 0 }} ;
 var data_values  = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
 var l_link_fams  = [] ;
 
-console.log("DEBUG data_values={{ args['data_values']|safe }}");
-
 function load_value( data )
 {
 let tr_value = '' ;
@@ -115,8 +113,6 @@ let id_fam = $(elem).val() ;
         if (index > -1)
         l_link_fams.splice(index, 1) ;
     }
-
-    console.log("DEBUG l_link_fams=" + JSON.stringify(l_link_fams));
 }
 
 function save_link()

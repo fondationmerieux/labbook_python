@@ -12,7 +12,7 @@
 | Popper                  | 2.11.0    | MIT          | x         |         |         |
 | select2                 | 4.0.13    | MIT          | x         |         |         |
 | Babel                   | 2.11.0    | BSD          |           | x       | x       |
-| Flask                   | 2.2.2     | BSD          |           | x       | x       |
+| Flask                   | 2.2.3     | BSD          |           | x       | x       |
 | Flask-Babel             | 2.0.0     | BSD          |           | x       | x       |
 | gunicorn                | 20.1.0    | MIT          |           | x       | x       |
 | pip                     | 22.3.1    | MIT          |           | x       | x       |
@@ -30,7 +30,7 @@
 | relatorio               | 0.10.1    | GPL          |           |         | x       |
 | reportlab               | 3.6.12    | BSD          |           |         | x       |
 | toml                    | 0.10.2    | MIT          |           |         | x       |
-| unoserver-fork          | 1.3.1     | MIT          |           |         | x       |
+| unoserver               | 1.3.0     | MIT          |           |         | x       |
 
 > Note :
 >

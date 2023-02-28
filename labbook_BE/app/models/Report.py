@@ -14,9 +14,9 @@ class Report:
 
         req = ('select count(distinct rec.id_data) as total '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
-               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = req.id_data '
                'where (rec.date_dos between %s and %s) and ref.type_prel = %s '
                'and res.ref_variable in (')
 
@@ -48,9 +48,9 @@ class Report:
 
         req = ('select count(distinct rec.id_data) as total '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
-               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = req.id_data '
                'where (rec.date_dos between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
                'and res.ref_variable in (')
 
@@ -69,9 +69,9 @@ class Report:
 
         req = ('select count(distinct rec.id_data) as total '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
-               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = req.id_data '
                'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
                'where (rec.date_dos between %s and %s) and ref.type_prel = %s '
                'and vld.type_validation = 252 and res.ref_variable in (')
@@ -104,9 +104,9 @@ class Report:
 
         req = ('select count(distinct rec.id_data) as total '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos = rec.id_data '
-               'inner join sigl_05_data as ref on ref.id_data = ana.ref_analyse '
-               'inner join sigl_09_data as res on res.id_analyse = ana.id_data '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse = req.id_data '
                'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
                'where (rec.date_dos between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
                'and vld.type_validation = 252 and res.ref_variable in (')
@@ -328,13 +328,13 @@ class Report:
                'from `sigl_10_data` as vld '
                'inner join sigl_dico_data as dict on dict.id_data=vld.type_validation '
                'inner join sigl_09_data as res on res.id_data=vld.id_resultat '
-               'inner join sigl_04_data as ana on ana.id_data=res.id_analyse '
-               'inner join sigl_05_data as ref on ref.id_data=ana.ref_analyse '
-               'inner join sigl_02_data as rec on rec.id_data=ana.id_dos '
+               'inner join sigl_04_data as req on req.id_data=res.id_analyse '
+               'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
+               'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
                'left join sigl_dico_data as dict_fam on dict_fam.id_data=ref.famille '
                'where (rec.date_dos between %s and %s) '
-               'group by ana.id_data order by rec.id_data asc limit 7000')
+               'group by req.id_data order by rec.id_data asc limit 7000')
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -359,12 +359,12 @@ class Report:
         if formula != 'N/A':
             idx = 0
 
-            req['inner'] = ('inner join sigl_04_data as ana' + str(idx) +
-                            ' on ana' + str(idx) + '.id_dos = rec.id_data '
+            req['inner'] = ('inner join sigl_04_data as req' + str(idx) +
+                            ' on req' + str(idx) + '.id_dos = rec.id_data '
                             'inner join sigl_05_data as ref' + str(idx) +
-                            ' on ref' + str(idx) + '.id_data = ana' + str(idx) + '.ref_analyse '
+                            ' on ref' + str(idx) + '.id_data = req' + str(idx) + '.ref_analyse '
                             'inner join sigl_09_data as res' + str(idx) +
-                            ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
+                            ' on res' + str(idx) + '.id_analyse = req' + str(idx) + '.id_data '
                             'inner join sigl_10_data as vld' + str(idx) +
                             ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
@@ -505,7 +505,7 @@ class Report:
                         req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
                                       ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                 else:
-                    # TODO rule for OR
+                    # No rule for OR
                     if word == 'OR':
                         return req
 
@@ -514,12 +514,12 @@ class Report:
                         idx = idx + 1
 
                         req['inner'] = (req['inner'] +
-                                        'inner join sigl_04_data as ana' + str(idx) +
-                                        ' on ana' + str(idx) + '.id_dos = rec.id_data '
+                                        'inner join sigl_04_data as req' + str(idx) +
+                                        ' on req' + str(idx) + '.id_dos = rec.id_data '
                                         'inner join sigl_05_data as ref' + str(idx) +
-                                        ' on ref' + str(idx) + '.id_data = ana' + str(idx) + '.ref_analyse '
+                                        ' on ref' + str(idx) + '.id_data = req' + str(idx) + '.ref_analyse '
                                         'inner join sigl_09_data as res' + str(idx) +
-                                        ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
+                                        ' on res' + str(idx) + '.id_analyse = req' + str(idx) + '.id_data '
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
@@ -542,12 +542,12 @@ class Report:
         if formula != 'N/A':
             idx = 0
 
-            req['inner'] = ('inner join sigl_04_data as ana' + str(idx) +
-                            ' on ana' + str(idx) + '.id_dos = rec.id_data '
+            req['inner'] = ('inner join sigl_04_data as req' + str(idx) +
+                            ' on req' + str(idx) + '.id_dos = rec.id_data '
                             'inner join sigl_05_data as ref' + str(idx) +
-                            ' on ref' + str(idx) + '.id_data = ana' + str(idx) + '.ref_analyse '
+                            ' on ref' + str(idx) + '.id_data = req' + str(idx) + '.ref_analyse '
                             'inner join sigl_09_data as res' + str(idx) +
-                            ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
+                            ' on res' + str(idx) + '.id_analyse = req' + str(idx) + '.id_data '
                             'inner join sigl_10_data as vld' + str(idx) +
                             ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
@@ -690,7 +690,7 @@ class Report:
                         req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
                                       ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                 else:
-                    # TODO rule for OR
+                    # No rule for OR
                     if word == 'OR':
                         return req
 
@@ -699,12 +699,12 @@ class Report:
                         idx = idx + 1
 
                         req['inner'] = (req['inner'] +
-                                        'inner join sigl_04_data as ana' + str(idx) +
-                                        ' on ana' + str(idx) + '.id_dos = rec.id_data '
+                                        'inner join sigl_04_data as req' + str(idx) +
+                                        ' on req' + str(idx) + '.id_dos = rec.id_data '
                                         'inner join sigl_05_data as ref' + str(idx) +
-                                        ' on ref' + str(idx) + '.id_data = ana' + str(idx) + '.ref_analyse '
+                                        ' on ref' + str(idx) + '.id_data = req' + str(idx) + '.ref_analyse '
                                         'inner join sigl_09_data as res' + str(idx) +
-                                        ' on res' + str(idx) + '.id_analyse = ana' + str(idx) + '.id_data '
+                                        ' on res' + str(idx) + '.id_analyse = req' + str(idx) + '.id_data '
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 

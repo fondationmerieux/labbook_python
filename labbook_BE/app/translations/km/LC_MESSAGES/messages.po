@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-17 18:41+0100\n"
+"POT-Creation-Date: 2023-02-26 18:37+0100\n"
 "PO-Revision-Date: 2021-09-03 15:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
@@ -18,225 +18,248 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.11.0\n"
 
-#: models/File.py:469
+#: models/File.py:483
 msgid "DUPLICATA"
-msgstr ""
+msgstr "ស្ទួន"
 
-#: models/Pdf.py:66 models/Pdf.py:258
+#: models/Pdf.py:67 models/Pdf.py:265
 msgid "N° quittance"
 msgstr "លេខបង្កាន់ដៃ"
 
-#: models/Pdf.py:121
+#: models/Pdf.py:122
 msgid "Analyses demandées"
 msgstr "ការវិភាគដែលបានស្នើសុំ"
 
-#: models/Pdf.py:122
+#: models/Pdf.py:123
 msgid "Actes de prélèvements"
 msgstr "សកម្មភាពឥណពន្ធ"
 
-#: models/Pdf.py:179 models/Pdf.py:276
+#: models/Pdf.py:137 models/Pdf.py:2541 models/Pdf.py:2567
+msgid "Sous-traitée"
+msgstr "បានប្រើប្រាស់សេវាវិភាគខាងក្រៅ"
+
+#: models/Pdf.py:186 models/Pdf.py:283
 msgid "Total"
 msgstr "សរុប"
 
-#: models/Pdf.py:183
+#: models/Pdf.py:190
 msgid "Total à payer"
 msgstr "សរុបដែលត្រូវបង់"
 
-#: models/Pdf.py:191
+#: models/Pdf.py:198
 msgid "FACTURE"
 msgstr "វិក្កយបត្រ"
 
-#: models/Pdf.py:192 models/Pdf.py:257
+#: models/Pdf.py:199 models/Pdf.py:264
 msgid "N° dossier"
 msgstr "លេខឯកសារ"
 
-#: models/Pdf.py:199
+#: models/Pdf.py:206
 msgid "Facture n°"
 msgstr "លេខវិក្កយបត្រ"
 
-#: models/Pdf.py:199 models/Pdf.py:771
+#: models/Pdf.py:206 models/Pdf.py:788 models/Pdf.py:2177
 msgid "édité le"
 msgstr "កែសម្រួលវា"
 
-#: models/Pdf.py:201 models/Pdf.py:292
+#: models/Pdf.py:208 models/Pdf.py:299
 msgid "Page"
 msgstr "ទំព័រ"
 
-#: models/Pdf.py:252
+#: models/Pdf.py:259
 msgid "ETAT DE LA FACTURATION DU"
 msgstr "ស្ថានភាពនៃការធ្វើវិក្កយបត្រពី"
 
-#: models/Pdf.py:252
+#: models/Pdf.py:259
 msgid "AU"
 msgstr "ទៅកាន់"
 
-#: models/Pdf.py:259
+#: models/Pdf.py:266
 msgid "N° facture"
 msgstr "លេខ​វិក្កយបត្រ"
 
-#: models/Pdf.py:260
+#: models/Pdf.py:267
 msgid "Prix"
 msgstr "តម្លៃ"
 
-#: models/Pdf.py:261
+#: models/Pdf.py:268
 msgid "A payer"
 msgstr "បង់ថ្លៃ"
 
-#: models/Pdf.py:290
+#: models/Pdf.py:297
 msgid "Etat de la facturation, édité le"
 msgstr "ស្ថានភាពចេញវិក្កយបត្រ, បានកែសម្រួលទៅលើ"
 
-#: models/Pdf.py:654 models/Pdf.py:759
+#: models/Pdf.py:670 models/Pdf.py:776 models/Pdf.py:2165
 msgid "Tél"
 msgstr "ទូរស័ព្ទ"
 
-#: models/Pdf.py:659 models/Pdf.py:760
+#: models/Pdf.py:675 models/Pdf.py:777 models/Pdf.py:2166
 msgid "Fax"
 msgstr "ទូរសារ"
 
-#: models/Pdf.py:664 models/Pdf.py:761
+#: models/Pdf.py:680 models/Pdf.py:778 models/Pdf.py:2167
 msgid "Email"
 msgstr "អ៊ីមែល"
 
-#: models/Pdf.py:762
+#: models/Pdf.py:779 models/Pdf.py:2168
 msgid "Dossier"
 msgstr "ករណី"
 
-#: models/Pdf.py:763
+#: models/Pdf.py:780 models/Pdf.py:2169
 msgid "Code"
-msgstr ""
+msgstr "កូដ"
 
-#: models/Pdf.py:764
+#: models/Pdf.py:781 models/Pdf.py:2170
 msgid "Né(e) le"
 msgstr "កើត"
 
-#: models/Pdf.py:765
+#: models/Pdf.py:782 models/Pdf.py:2171
 msgid "Admis le"
 msgstr "បានបញ្ជូនចូលនៅ"
 
-#: models/Pdf.py:766
+#: models/Pdf.py:783 models/Pdf.py:2172
 msgid "en"
 msgstr "នៅក្នុង"
 
-#: models/Pdf.py:767
+#: models/Pdf.py:784 models/Pdf.py:2173
 msgid "Lit"
 msgstr "គ្រែ"
 
-#: models/Pdf.py:768
+#: models/Pdf.py:785 models/Pdf.py:2174
 msgid "par"
 msgstr "តាមរយៈ"
 
-#: models/Pdf.py:769
+#: models/Pdf.py:786 models/Pdf.py:2175
 msgid "Examen prescrit le"
 msgstr "ការពិនិត្យត្រូវបានកំណត់នៅ"
 
-#: models/Pdf.py:770
+#: models/Pdf.py:787 models/Pdf.py:2176
 msgid "Enregistré le"
 msgstr "បានចុះឈ្មោះនៅ"
 
-#: models/Pdf.py:772
+#: models/Pdf.py:789 models/Pdf.py:2178
 msgid "ANALYSE"
 msgstr "ធ្វើការវិភាគ"
 
-#: models/Pdf.py:773
+#: models/Pdf.py:790 models/Pdf.py:2179
 msgid "RESULTAT"
 msgstr "លទ្ធផល"
 
-#: models/Pdf.py:774
+#: models/Pdf.py:791 models/Pdf.py:2180
 msgid "Références"
 msgstr ""
 
-#: models/Pdf.py:775
+#: models/Pdf.py:792 models/Pdf.py:2181
 msgid "Antériorités"
 msgstr "អាទិភាព"
 
-#: models/Pdf.py:776
+#: models/Pdf.py:793 models/Pdf.py:2182
 msgid "Commentaire"
-msgstr ""
+msgstr "យោបល់"
 
-#: models/Pdf.py:777
+#: models/Pdf.py:794 models/Pdf.py:2183
 msgid "validé par"
 msgstr "កំណត់សុពលភាពដោយ"
 
-#: models/Pdf.py:810 translations/messages_pybabel.py:291
+#: models/Pdf.py:827 translations/messages_pybabel.py:291
 msgid "Compte rendu"
 msgstr "របាយការណ៍"
 
-#: models/Pdf.py:825
+#: models/Pdf.py:842
 msgid "COMPLET"
 msgstr "ពេញ"
 
-#: models/Pdf.py:834 models/Pdf.py:1216
+#: models/Pdf.py:851 models/Pdf.py:1291
 msgid "PARTIEL"
 msgstr "PARTIEL"
 
-#: models/Pdf.py:840
-msgid "ANNULE ET REMPLACE"
-msgstr "លុបចោល និងជំនួស"
+#: models/Pdf.py:857
+msgid "Annule et remplace le précédent"
+msgstr "បោះបង់ និងជំនួសពាក្យមុន។"
 
-#: models/Pdf.py:870 translations/messages_pybabel.py:592
+#: models/Pdf.py:895 models/Pdf.py:2248 translations/messages_pybabel.py:592
 msgid "Microbiologie"
 msgstr ""
 
-#: models/Pdf.py:918
+#: models/Pdf.py:943 models/Pdf.py:2296
 msgid "Renseignements cliniques"
 msgstr "ព័ត៌មានគ្លីនិក"
 
-#: models/Pdf.py:963 models/Pdf.py:1569 translations/messages_pybabel.py:596
+#: models/Pdf.py:994 models/Pdf.py:1751 models/Pdf.py:2347
+#: translations/messages_pybabel.py:596
 msgid "Inconnu"
 msgstr "មិនស្គាល់"
 
-#: models/Pdf.py:1001 models/Pdf.py:1013 models/Pdf.py:1607 models/Pdf.py:1619
-#: models/Pdf.py:1730
+#: models/Pdf.py:1041 models/Pdf.py:1053 models/Pdf.py:1798 models/Pdf.py:1810
+#: models/Pdf.py:1943 models/Pdf.py:2394 models/Pdf.py:2406
 msgid "ans"
 msgstr "ឆ្នាំ"
 
-#: models/Pdf.py:1004 models/Pdf.py:1025 models/Pdf.py:1610 models/Pdf.py:1631
+#: models/Pdf.py:1044 models/Pdf.py:1065 models/Pdf.py:1801 models/Pdf.py:1822
+#: models/Pdf.py:2397 models/Pdf.py:2418
 msgid "jours"
 msgstr "ថ្ងៃ"
 
-#: models/Pdf.py:1008 models/Pdf.py:1017 models/Pdf.py:1614 models/Pdf.py:1623
+#: models/Pdf.py:1048 models/Pdf.py:1057 models/Pdf.py:1805 models/Pdf.py:1814
+#: models/Pdf.py:2401 models/Pdf.py:2410
 msgid "mois"
 msgstr "ខែ"
 
-#: models/Pdf.py:1021 models/Pdf.py:1627
+#: models/Pdf.py:1061 models/Pdf.py:1818 models/Pdf.py:2414
 msgid "semaines"
 msgstr "សប្តាហ៍"
 
-#: models/Pdf.py:1029 models/Pdf.py:1635 models/Pdf.py:1733
+#: models/Pdf.py:1069 models/Pdf.py:1826 models/Pdf.py:1946 models/Pdf.py:2422
 #: translations/messages_pybabel.py:597
 msgid "Masculin"
 msgstr "ប្រុស"
 
-#: models/Pdf.py:1031 models/Pdf.py:1637
+#: models/Pdf.py:1071 models/Pdf.py:1828 models/Pdf.py:2424
 msgid "Feminin"
 msgstr "ស្រី"
 
-#: models/Pdf.py:1236 models/Pdf.py:1242 models/Pdf.py:1252
+#: models/Pdf.py:1311 models/Pdf.py:1321 models/Pdf.py:1331
 msgid "Annulée"
 msgstr "បានលុបចោល"
 
-#: models/Pdf.py:1358 translations/messages_pybabel.py:1477
+#: models/Pdf.py:1445 models/Pdf.py:2554 translations/messages_pybabel.py:1477
 #: translations/messages_pybabel.py:1478 translations/messages_pybabel.py:1479
 #: translations/messages_pybabel.py:1480
 msgid "Albumine"
 msgstr ""
 
-#: models/Pdf.py:1359 translations/messages_pybabel.py:90
+#: models/Pdf.py:1446 models/Pdf.py:2555 translations/messages_pybabel.py:90
 msgid "Absent"
 msgstr ""
 
-#: models/Pdf.py:1363 translations/messages_pybabel.py:91
+#: models/Pdf.py:1450 models/Pdf.py:2559 translations/messages_pybabel.py:91
 msgid "Présent"
 msgstr ""
 
-#: models/Pdf.py:1369 translations/messages_pybabel.py:313
+#: models/Pdf.py:1456 models/Pdf.py:2565 translations/messages_pybabel.py:313
 msgid "Biochimie urinaire"
 msgstr ""
 
-#: models/Pdf.py:1370 translations/messages_pybabel.py:1348
+#: models/Pdf.py:1457 models/Pdf.py:2566 translations/messages_pybabel.py:1348
 msgid "Bandelettes urinaires"
 msgstr ""
+
+#: models/Pdf.py:1563 models/Pdf.py:2643 translations/messages_pybabel.py:689
+msgid "Sang"
+msgstr ""
+
+#: models/Pdf.py:1565 models/Pdf.py:2645 translations/messages_pybabel.py:544
+msgid "Fait"
+msgstr ""
+
+#: models/Pdf.py:1570 models/Pdf.py:2650 translations/messages_pybabel.py:482
+msgid "Interne au labo"
+msgstr ""
+
+#: models/Pdf.py:2216
+msgid "Bon de transfert"
+msgstr "ប័ណ្ណផ្ទេរប្រាក់"
 
 #: services/ExportRest.py:371 translations/messages_pybabel.py:527
 msgid "Années"
@@ -257,7 +280,7 @@ msgstr "ថ្ងៃ"
 
 #: services/ResultRest.py:103 services/ResultRest.py:217
 msgid "validation"
-msgstr ""
+msgstr "សុពលភាព"
 
 #: translations/messages_pybabel.py:8
 msgid "abondance"
@@ -1893,10 +1916,6 @@ msgstr ""
 msgid "Hôpital"
 msgstr ""
 
-#: translations/messages_pybabel.py:482
-msgid "Interne au labo"
-msgstr ""
-
 #: translations/messages_pybabel.py:484
 msgid "Positif +"
 msgstr ""
@@ -2075,10 +2094,6 @@ msgstr ""
 
 #: translations/messages_pybabel.py:543
 msgid "Apporté"
-msgstr ""
-
-#: translations/messages_pybabel.py:544
-msgid "Fait"
 msgstr ""
 
 #: translations/messages_pybabel.py:545
@@ -2584,10 +2599,6 @@ msgstr ""
 msgid "Prélèvement vaginal"
 msgstr ""
 
-#: translations/messages_pybabel.py:689
-msgid "Sang"
-msgstr ""
-
 #: translations/messages_pybabel.py:690
 msgid "Selles"
 msgstr ""
@@ -2683,6 +2694,7 @@ msgid "Gram (2)"
 msgstr ""
 
 #: translations/messages_pybabel.py:721 translations/messages_pybabel.py:1855
+#: translations/messages_pybabel.py:2455
 msgid "Groupe sanguin"
 msgstr ""
 
@@ -6599,7 +6611,7 @@ msgstr ""
 msgid "Résultat (poliomyélite)"
 msgstr ""
 
-#: translations/messages_pybabel.py:2132
+#: translations/messages_pybabel.py:2132 translations/messages_pybabel.py:2456
 msgid "Rhésus"
 msgstr ""
 
@@ -6975,522 +6987,575 @@ msgstr ""
 msgid "Secrétaire avancée"
 msgstr "លេខាធិការជាន់ខ្ពស់"
 
-#: translations/messages_pybabel.py:2316
-msgid "Algérienne"
+#: translations/messages_pybabel.py:2312
+msgid "Gestionnaire de stock"
 msgstr ""
 
 #: translations/messages_pybabel.py:2317
-msgid "Allemande"
+msgid "Algérienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2318
-msgid "Américaine"
+msgid "Allemande"
 msgstr ""
 
 #: translations/messages_pybabel.py:2319
-msgid "Angolaise"
+msgid "Américaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2320
-msgid "Argentine"
+msgid "Angolaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2321
-msgid "Arménienne"
+msgid "Argentine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2322
-msgid "Australienne"
+msgid "Arménienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2323
-msgid "Autrichienne"
+msgid "Australienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2324
-msgid "Bahamienne"
+msgid "Autrichienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2325
-msgid "Bangladaise"
+msgid "Bahamienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2326
-msgid "Barbadienne"
+msgid "Bangladaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2327
-msgid "Belge"
+msgid "Barbadienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2328
-msgid "Beninoise"
+msgid "Belge"
 msgstr ""
 
 #: translations/messages_pybabel.py:2329
-msgid "Bermudienne"
+msgid "Beninoise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2330
-msgid "Bolivienne"
+msgid "Bermudienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2331
-msgid "Bosnienne"
+msgid "Bolivienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2332
-msgid "Britannique"
+msgid "Bosnienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2333
-msgid "Brésilienne"
+msgid "Britannique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2334
-msgid "Bulgare"
+msgid "Brésilienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2335
-msgid "Burkinabe"
+msgid "Bulgare"
 msgstr ""
 
 #: translations/messages_pybabel.py:2336
-msgid "Cambodgienne"
+msgid "Burkinabe"
 msgstr ""
 
 #: translations/messages_pybabel.py:2337
-msgid "Camerounaise"
+msgid "Cambodgienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2338
-msgid "Canadienne"
+msgid "Camerounaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2339
-msgid "Chilienne"
+msgid "Canadienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2340
-msgid "Chinoise"
+msgid "Chilienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2341
-msgid "Chypriote"
+msgid "Chinoise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2342
-msgid "Colombienne"
+msgid "Chypriote"
 msgstr ""
 
 #: translations/messages_pybabel.py:2343
-msgid "Congolaise"
+msgid "Colombienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2344
-msgid "Costaricaine"
+msgid "Congolaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2345
-msgid "Croate"
+msgid "Costaricaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2346
-msgid "Cubaine"
+msgid "Croate"
 msgstr ""
 
 #: translations/messages_pybabel.py:2347
-msgid "Danoise"
+msgid "Cubaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2348
-msgid "Djiboutienne"
+msgid "Danoise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2349
-msgid "Dominiquaise"
+msgid "Djiboutienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2350
-msgid "Egyptienne"
+msgid "Dominiquaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2351
-msgid "Equatorienne"
+msgid "Egyptienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2352
-msgid "Espagnole"
+msgid "Equatorienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2353
-msgid "Estonienne"
+msgid "Espagnole"
 msgstr ""
 
 #: translations/messages_pybabel.py:2354
-msgid "Ethiopienne"
+msgid "Estonienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2355
-msgid "Fidjienne"
+msgid "Ethiopienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2356
-msgid "Finlandaise"
+msgid "Fidjienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2357
-msgid "Française"
+msgid "Finlandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2358
-msgid "Gambienne"
+msgid "Française"
 msgstr ""
 
 #: translations/messages_pybabel.py:2359
-msgid "Gambonaise"
+msgid "Gambienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2360
-msgid "Ghanéenne"
+msgid "Gambonaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2361
-msgid "Grecque"
+msgid "Ghanéenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2362
-msgid "Grenadienne"
+msgid "Grecque"
 msgstr ""
 
 #: translations/messages_pybabel.py:2363
-msgid "Guatémaltèque"
+msgid "Grenadienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2364
-msgid "Guinéenne"
+msgid "Guatémaltèque"
 msgstr ""
 
 #: translations/messages_pybabel.py:2365
-msgid "Guyanaise"
+msgid "Guinéenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2366
-msgid "Haïtienne"
+msgid "Guyanaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2367
-msgid "Hondurienne"
+msgid "Haïtienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2368
-msgid "Hongroise"
+msgid "Hondurienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2369
-msgid "Indienne"
+msgid "Hongroise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2370
-msgid "Indonésienne"
+msgid "Indienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2371
-msgid "Irakienne"
+msgid "Indonésienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2372
-msgid "Iranienne"
+msgid "Irakienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2373
-msgid "Irlandaise"
+msgid "Iranienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2374
-msgid "Islandaise"
+msgid "Irlandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2375
-msgid "Israélienne"
+msgid "Islandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2376
-msgid "Italienne"
+msgid "Israélienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2377
-msgid "Ivoirienne"
+msgid "Italienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2378
-msgid "Jamaicaine"
+msgid "Ivoirienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2379
-msgid "Japonaise"
+msgid "Jamaicaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2380
-msgid "Kenyane"
+msgid "Japonaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2381
-msgid "Lettone"
+msgid "Kenyane"
 msgstr ""
 
 #: translations/messages_pybabel.py:2382
-msgid "Libanaise"
+msgid "Lettone"
 msgstr ""
 
 #: translations/messages_pybabel.py:2383
-msgid "Libyenne"
+msgid "Libanaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2384
-msgid "Libérienne"
+msgid "Libyenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2385
-msgid "Lituanne"
+msgid "Libérienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2386
-msgid "Luxembourgeoise"
+msgid "Lituanne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2387
-msgid "Macédoinienne"
+msgid "Luxembourgeoise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2388
-msgid "Malaisienne"
+msgid "Macédoinienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2389
-msgid "Malawite"
+msgid "Malaisienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2390
-msgid "Malgache"
+msgid "Malawite"
 msgstr ""
 
 #: translations/messages_pybabel.py:2391
-msgid "Malienne"
+msgid "Malgache"
 msgstr ""
 
 #: translations/messages_pybabel.py:2392
-msgid "Marocaine"
+msgid "Malienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2393
-msgid "Mauricienne"
+msgid "Marocaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2394
-msgid "Mauritanienne"
+msgid "Mauricienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2395
-msgid "Mexicaine"
+msgid "Mauritanienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2396
-msgid "Mongole"
+msgid "Mexicaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2397
-msgid "Mozambicaine"
+msgid "Mongole"
 msgstr ""
 
 #: translations/messages_pybabel.py:2398
-msgid "Namibienne"
+msgid "Mozambicaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2399
-msgid "Nicaraguayenne"
+msgid "Namibienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2400
-msgid "Nigérienne"
+msgid "Nicaraguayenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2401
-msgid "Norvégienne"
+msgid "Nigérienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2402
-msgid "Néerlandaise"
+msgid "Norvégienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2403
-msgid "Néo-Zélandaise"
+msgid "Néerlandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2404
-msgid "Ougandaise"
+msgid "Néo-Zélandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2405
-msgid "Pakistanaise"
+msgid "Ougandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2406
-msgid "Panaméenne"
+msgid "Pakistanaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2407
-msgid "Papouasienne"
+msgid "Panaméenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2408
-msgid "Paraguayenne"
+msgid "Papouasienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2409
-msgid "Philippine"
+msgid "Paraguayenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2410
-msgid "Polonaise"
+msgid "Philippine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2411
-msgid "Portugaise"
+msgid "Polonaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2412
-msgid "Péruvienne"
+msgid "Portugaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2413
-msgid "Roumaine"
+msgid "Péruvienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2414
-msgid "Russe"
+msgid "Roumaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2415
-msgid "Rwandaise"
+msgid "Russe"
 msgstr ""
 
 #: translations/messages_pybabel.py:2416
-msgid "Salvadorienne"
+msgid "Rwandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2417
-msgid "Saoudienne"
+msgid "Salvadorienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2418
-msgid "Serbe"
+msgid "Saoudienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2419
-msgid "Sierra-Léonaise"
+msgid "Serbe"
 msgstr ""
 
 #: translations/messages_pybabel.py:2420
-msgid "Singapourienne"
+msgid "Sierra-Léonaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2421
-msgid "Slovaque"
+msgid "Singapourienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2422
-msgid "Slovène"
+msgid "Slovaque"
 msgstr ""
 
 #: translations/messages_pybabel.py:2423
-msgid "Somalienne"
+msgid "Slovène"
 msgstr ""
 
 #: translations/messages_pybabel.py:2424
-msgid "Soudanaise"
+msgid "Somalienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2425
-msgid "Sud-Africaine"
+msgid "Soudanaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2426
-msgid "Sud-Coréenne "
+msgid "Sud-Africaine"
 msgstr ""
 
 #: translations/messages_pybabel.py:2427
-msgid "Suisse"
+msgid "Sud-Coréenne "
 msgstr ""
 
 #: translations/messages_pybabel.py:2428
-msgid "Suédoise"
+msgid "Suisse"
 msgstr ""
 
 #: translations/messages_pybabel.py:2429
-msgid "Swazie"
+msgid "Suédoise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2430
-msgid "Syrienne"
+msgid "Swazie"
 msgstr ""
 
 #: translations/messages_pybabel.py:2431
-msgid "Sénégalaise"
+msgid "Syrienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2432
-msgid "Taiwanaise"
+msgid "Sénégalaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2433
-msgid "Tanzanienne"
+msgid "Taiwanaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2434
-msgid "Tchadienne"
+msgid "Tanzanienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2435
-msgid "Tchèque"
+msgid "Tchadienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2436
-msgid "Thaïlandaise"
+msgid "Tchèque"
 msgstr ""
 
 #: translations/messages_pybabel.py:2437
-msgid "Togolaise"
+msgid "Thaïlandaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2438
-msgid "Tunisienne"
+msgid "Togolaise"
 msgstr ""
 
 #: translations/messages_pybabel.py:2439
-msgid "Turque"
+msgid "Tunisienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2440
-msgid "Ukrainienne"
+msgid "Turque"
 msgstr ""
 
 #: translations/messages_pybabel.py:2441
-msgid "Uruguayenne"
+msgid "Ukrainienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2442
-msgid "Vietnamienne"
+msgid "Uruguayenne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2443
-msgid "Vénézuelienne"
+msgid "Vietnamienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2444
-msgid "Zambienne"
+msgid "Vénézuelienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2445
+msgid "Zambienne"
+msgstr ""
+
+#: translations/messages_pybabel.py:2446
 msgid "Zimbabwéenne"
 msgstr ""
+
+#: translations/messages_pybabel.py:2451
+msgid "Deuxième nom"
+msgstr "ឈ្មោះ​ទីពីរ"
+
+#: translations/messages_pybabel.py:2452
+msgid "Nom de jeune fille"
+msgstr "ឈ្មោះដើម"
+
+#: translations/messages_pybabel.py:2453
+msgid "Nationalité"
+msgstr "សញ្ជាតិ"
+
+#: translations/messages_pybabel.py:2454
+msgid "Résident"
+msgstr "អ្នកស្រុក"
+
+#: translations/messages_pybabel.py:2457
+msgid "Profession"
+msgstr "វិជ្ជាជីវៈ"
+
+#: translations/messages_pybabel.py:2458
+msgid "Boite postale"
+msgstr "ប្រអប់​សំបុត្រ"
+
+#: translations/messages_pybabel.py:2459
+msgid "Quartier / Secteur"
+msgstr "តំបន់ជិតខាង / ផ្នែក"
+
+#: translations/messages_pybabel.py:2460
+msgid "Réference fournisseur"
+msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+
+#: translations/messages_pybabel.py:2461
+msgid "Localisation"
+msgstr "ទីតាំង"
+
+#: translations/messages_pybabel.py:2462
+msgid "Numéro de lot"
+msgstr "លេខឡូត៏"
+
+#: translations/messages_pybabel.py:2463
+msgid "Prix d'achat"
+msgstr "តម្លៃទិញ"
+
+#: translations/messages_pybabel.py:2464
+msgid "Nom bailleur"
+msgstr "ឈ្មោះអ្នកផ្តល់មូលនិធិ"
+

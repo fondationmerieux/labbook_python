@@ -112,10 +112,14 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
+                    {% if session['user_role'] in ('A') %}
                     <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    {% endif %}
                     <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    {% if session['user_role'] in ('A') %}
                     <input type="button" onclick="add_user();" id="btn_add" value="{{ _("Ajouter un utilisateur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    {% endif %}
                 </div>
             </div>
 

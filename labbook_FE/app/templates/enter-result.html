@@ -160,10 +160,26 @@ let oblig_ok = true ;
     let res_type    = $("#res_type_" + tmp_id_res ).val() ;
     let accu        = $("#accu_" + tmp_id_res ).val() ;
 
-        if ( res_type== 227 )
-        tmp_val_res = Number(tmp_val_res).toFixed( 0 ) ;
-        else if ( res_type== 228 )
-        tmp_val_res = Number(tmp_val_res).toFixed( accu ) ;    
+        if ( res_type == 227 )
+        {
+        // replace coma by dot
+        tmp_val_res = tmp_val_res.replace(/,/g, '.') ;
+
+        convert_res = Number(tmp_val_res).toFixed( 0 ) ;
+
+            if ( !isNaN(convert_res) )
+            tmp_val_res = convert_res ;
+        }
+        else if ( res_type == 228 )
+        {
+        // replace coma by dot
+        tmp_val_res = tmp_val_res.replace(/,/g, '.') ;
+
+        convert_res = Number(tmp_val_res).toFixed( accu ) ;
+
+            if ( !isNaN(convert_res) )
+            tmp_val_res = convert_res ;
+        }
 
         if ( oblig_stat == 4 )
         {
@@ -504,7 +520,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 // outsourced icon
                 if (data[i].outsourced == "Y")
                 {
-                res_limit += "<span title=\"{{ _("Sous-traitée") }}\"><i class=\"bi bi-building-gear fs-5 text-primary\"></i></span>" ;
+                res_limit += "<span title=\"{{ _("Sous-traitée") }}\"><i class=\"bi bi-building-gear fs-5 color-T\"></i></span>" ;
                 }
 
             res += "<tr class=\"p-0 align-middle\">" +
@@ -611,6 +627,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     if (res_valid != 250)
                     change = 'disabled' ;
 
+                    /* 22/02/2023 : deactivate because it prevents writing results with exponent
                     if ( res_type== 227 )
                     type_input = 'type="number" step="1"' ;
                     else if ( res_type== 228 )
@@ -622,6 +639,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
                     type_input = 'type="number" step="' + step + '"' ;
                     }
+                    */
 
                 res += '<input id="res_' + id_res + '" ' + type_input +  ' value="' + value + '" class="form-control form-lbk saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
                 res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
@@ -759,6 +777,7 @@ let value_res      = '' ;
                       '"price":0, ' +
                       '"paid": 5, ' +
                       '"emer": 5, ' +
+                      '"outsourced":"N", ' + 
                       '"req": 5 }' ;
 
     let param_res = '{ "ref_analyse":' + list_id_ana[i] + '}' ;
@@ -842,7 +861,8 @@ $("#search_analysis").select2(
         data: function (params) {
             return JSON.stringify(
             {
-                term: params.term
+                term: params.term,
+                link_fam: {{ session['user_link_fam'] or [] }}
             } ) ;
         },
         processResults: function (data) {

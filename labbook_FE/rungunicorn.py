@@ -15,7 +15,7 @@ def prep_log(logger_nom, log_fich, niveau=logging.INFO):
     logger.addHandler(fileHandler)
 
 
-prep_log('log_wsgi', r'../logs/log_wsgi.log')
+prep_log('log_wsgi', '/home/apps/logs/log_wsgi.log')
 
 log = logging.getLogger('log_wsgi')
 
@@ -60,6 +60,3 @@ class ReverseProxied(object):
 
 
 app.wsgi_app = ReverseProxied(app.wsgi_app)
-
-# if __name__ == '__main__':
-#    app.run(host='0.0.0.0',port=8888)

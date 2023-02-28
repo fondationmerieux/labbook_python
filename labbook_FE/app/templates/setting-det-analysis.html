@@ -462,7 +462,8 @@ $("#search_analysis").select2(
         data: function (params) {
             return JSON.stringify(
             {
-                term: params.term
+                term: params.term,
+                link_fam: {{ session['user_link_fam'] or [] }}
             } ) ;
         },
         processResults: function (data) {

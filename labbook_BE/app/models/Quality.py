@@ -858,7 +858,7 @@ class Quality:
 
             cursor.execute('insert into product_details '
                            '(prd_date, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
-                           'prd_conserv, prd_safe_limit) '
+                           'prd_conserv, prd_safe_limit, prd_expir_oblig) '
                            'values '
                            '(NOW(), %(prd_name)s, %(prd_type)s, %(prd_nb_by_pack)s, %(prd_supplier)s, '
                            '%(prd_ref_supplier)s, %(prd_conserv)s, %(prd_safe_limit)s, '

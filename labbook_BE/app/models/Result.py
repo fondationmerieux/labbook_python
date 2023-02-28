@@ -33,21 +33,19 @@ class Result:
 
         # Analysis specific
         if 'id_ana' in args and args['id_ana'] > 0:
-            filter_cond += ' and ana.ref_analyse=' + str(args['id_ana']) + ' '
+            filter_cond += ' and req.ref_analyse=' + str(args['id_ana']) + ' '
 
         # Code patient
         if 'code_pat' in args and args['code_pat']:
             filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
-            table_cond += ' inner join sigl_03_data as pat on pat.id_data=dos.id_patient '
+            table_cond += ' inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
 
         # Without valid result
         if 'valid_res' in args and args['valid_res'] > 0:
-            filter_cond += ' and res.id_data not in (select id_resultat from sigl_10_data where type_validation > 250 and res.id_data=id_resultat) '
+            filter_cond += ' and res.id_data not in (select id_resultat from sigl_10_data where type_validation > 250 and res.id_data=id_resultat) and rec.statut < 254 '
 
         # Functionnal unit link with analyzes families
         if 'link_fam' in args and args['link_fam']:
-            Result.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
-
             cond_link_fam = ''
             # prepare list for sql
             for id_fam in args['link_fam']:
@@ -60,26 +58,23 @@ class Result:
                 cond_link_fam = cond_link_fam[:-1] + ')'
                 filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
 
-        req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, dos.id_patient, '
+        req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, rec.id_patient, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
-               'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
-               'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
-               'ana.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
-               'var_pos.obligatoire as oblig, ana.req_outsourced as outsourced '
-               'from sigl_04_data as ana '
-               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '
-               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '
+               'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
+               'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, '
+               'req.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
+               'var_pos.obligatoire as oblig, req.req_outsourced as outsourced '
+               'from sigl_04_data as req '
+               'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
                'left join sigl_dico_data as fam on fam.id_data = ref.famille '
-               'inner join sigl_09_data as res on ana.id_data = res.id_analyse '
+               'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
                'and ref.id_data = var_pos.id_refanalyse ' + table_cond +
                'where substring(num_dos_jour, 1, 8) >= %s and '
                'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +
                'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)
-
-        Result.log.info(Logs.fileline() + ' :  DEBUG args = ' + str(args))
-        Result.log.info(Logs.fileline() + ' :  DEBUG req = ' + str(req))
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -95,17 +90,17 @@ class Result:
         if not empty:
             cond = ' and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
 
-        req = ('select ana.ref_analyse as ref_ana, ana.id_data as id_ana, dos.id_data as id_dos, '
+        req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
-               'dos.num_dos_mois as num_dos_mois, dos.num_dos_an as num_dos_an, dos.date_dos as date_dos, '
-               'dos.date_prescription as date_prescr, dos.statut as stat, ana.urgent as urgent, '
-               'ana.id_owner as id_owner, dos.id_patient as id_pat, ana.req_outsourced as outsourced, '
+               'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
+               'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, '
+               'req.id_owner as id_owner, rec.id_patient as id_pat, req.req_outsourced as outsourced, '
                'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig '
-               'from sigl_04_data as ana '
-               'inner join sigl_02_data as dos on dos.id_data = ana.id_dos '
-               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data '
+               'from sigl_04_data as req '
+               'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
                'left join sigl_dico_data as fam on fam.id_data = ref.famille '
-               'inner join sigl_09_data as res on ana.id_data = res.id_analyse '
+               'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
                'and ref.id_data = var_pos.id_refanalyse '
@@ -129,9 +124,9 @@ class Result:
                'from sigl_09_data as res '
                'inner join sigl_05_07_data as ref on ref.id_refvariable = res.ref_variable '
                'inner join sigl_04_data as dem on dem.ref_analyse = ref.id_refanalyse and dem.id_data = res.id_analyse '
-               'inner join sigl_02_data as dos on dos.id_data = dem.id_dos '
+               'inner join sigl_02_data as rec on rec.id_data = dem.id_dos '
                'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
-               'where dos.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '
+               'where rec.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '
                'and vld.type_validation=252 and vld.motif_annulation is NULL and res.id_data != %s '
                'and vld.date_validation < %s '
                'order by vld.date_validation desc limit 1')
@@ -326,7 +321,7 @@ class Result:
             req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
                    'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
                    'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
-                   'rec.date_prescription as prescr_date, rec.statut as rec_stat, '
+                   'rec.date_prescription as prescr_date, rec.statut as rec_stat, req.req_outsourced as ana_outsourced, '
                    'req.id_owner as id_owner, rec.id_patient as id_pat, link.position as var_pos, link.var_qrcode '
                    'from sigl_04_data as req '
                    'inner join sigl_02_data as rec on rec.id_data = req.id_dos '

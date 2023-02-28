@@ -26,7 +26,12 @@ class AnalysisSearch(Resource):
         else:
             status = 4
 
-        l_analysis = Analysis.getAnalysisSearch(args['term'], type, status)
+        if 'link_fam' in args and args['link_fam']:
+            link_fam = args['link_fam']
+        else:
+            link_fam = []
+
+        l_analysis = Analysis.getAnalysisSearch(args['term'], type, status, link_fam)
 
         if not l_analysis:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisSearch not found')
@@ -1199,8 +1204,8 @@ class AnalysisImport(Resource):
             i = 1
             for row in l_rows:
                 i = i + 1
-                self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
-                self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(row))
+                self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT LINE ' + str(i) + ' #############')
+                self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT row=' + str(row))
                 if row:
                     id_ana             = row[1]
                     id_owner           = row[2]
@@ -1270,10 +1275,10 @@ class AnalysisImport(Resource):
 
                     # New analysis code or same analysis after insert
                     if not ret or code == code_prev:
-                        self.log.info(Logs.fileline() + ' : DEBUG IMPORT not ret or code == code_prev')
+                        self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT not ret or code == code_prev')
                         # different analysis
                         if code != code_prev:
-                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT code != code_prev')
+                            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT code != code_prev')
                             # check if id_data is available
                             ret = Analysis.freeIdAna(id_ana)
 
@@ -1287,7 +1292,7 @@ class AnalysisImport(Resource):
                             else:
                                 id_data = 0
 
-                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert analysis code=' + code)
+                            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT insert analysis code=' + code)
                             # insert analysis
                             ret = Analysis.insertAnalysis(id_owner=id_owner,
                                                           code=code,
@@ -1314,16 +1319,16 @@ class AnalysisImport(Resource):
 
                         if id_link and int(id_link) > 0:
                             # get same variable from these criteria
-                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT criteria code_var=' + str(code_var))
+                            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT criteria code_var=' + str(code_var))
                             var = Analysis.getAnalysisVarExist(libelle, type_resultat, unite, normal_min, normal_max, code_var)
-                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT criteria var=' + str(var))
+                            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT criteria var=' + str(var))
 
                             if var:
-                                self.log.info(Logs.fileline() + ' : DEBUG IMPORT variable exist id_data=' + str(var['id_data']))
+                                self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT variable exist id_data=' + str(var['id_data']))
                                 id_var = var['id_data']
                             else:
-                                self.log.info(Logs.fileline() + ' : DEBUG IMPORT variable NOT exist')
-                                self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert VAR code_var=' + code_var)
+                                self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT variable NOT exist')
+                                self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT insert VAR code_var=' + code_var)
                                 # INSERT UNKNOW VAR
                                 ret = Analysis.insertAnalysisVar(id_owner=id_owner,
                                                                  label=libelle,
@@ -1348,8 +1353,8 @@ class AnalysisImport(Resource):
 
                                 id_var = ret
 
-                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT id_var=' + str(id_var))
-                            self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert LINK')
+                            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT id_var=' + str(id_var))
+                            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT insert LINK')
 
                             # INSERT NEW LINK
                             ret = Analysis.insertRefVariable(id_owner=id_owner,

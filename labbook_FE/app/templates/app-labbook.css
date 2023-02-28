@@ -1320,6 +1320,248 @@ display : none;
 display : block;
 }
 
+.identity-group
+{
+display : flex;
+}
+
+.identity-group_1
+{
+display : flex;
+}
+
+@media all and (max-width: 767px)
+{
+    body
+    {
+    padding     : 0;
+    margin      : 0;
+    background  : #FFF;
+    font-style  : normal;
+    font-family : Arial, Helvetica, sans-serif;
+    font-size   : 0.8125rem;
+    color       : #666;
+    display     : flex;
+    margin      : auto;
+    }
+
+    #logo
+    {
+    background-color    : transparent;
+    background-repeat   : no-repeat;
+    background-image    : url({{ url_for('static', filename='img/logo_small.png') }}) ;
+    background-position : center left;
+    position            : absolute;
+    height              : 75px;
+    width               : 52px;
+    text-indent         : -10000px;
+    }
+
+    #user-info .name 
+    { 
+    display        : block;
+    position       : absolute; 
+    left           : 210px; 
+    top            : 15px; 
+    color          : #777;
+    vertical-align : bottom; 
+    }
+
+    .role
+    {
+    position : relative;
+    right    : auto;
+    left     : 120px;
+    top      : 30px;
+    width    : 190px;
+    height   : 26px;
+    }
+
+    header .navbar-menu
+    {
+    position   : absolute;
+    left       : 43px;
+    top        : 25px;
+    margin     : 0;
+    padding    : 0;
+    background : #F7F7F7;
+    border     : none;
+    min-height : 26px; 
+    }
+
+    .btn_menu_mobile
+    {
+    display : block;
+    }
+
+    #menu-mobile
+    {
+    display : flex;
+    }
+
+    #menu-desktop
+    {
+    display : none;
+    }
+
+    nav .non-conformite
+    {
+    background      : none;
+    white-space     : nowrap; 
+    display         : block;
+    width           : auto;
+    height          : auto;
+    }
+
+    nav .non-conformite:hover
+    {
+    background      : none;
+    }
+
+    nav .setting:hover
+    {
+    background : none;
+    }
+
+    nav .qualite:hover
+    {
+    background : none;
+    }
+
+    nav .non-conformite:hover
+    {
+    background : none;
+    }
+
+    header .dropdown-item
+    {
+    font-size        : 0.8125rem; 
+    }
+
+    .inner
+    {
+    margin : 0px 5px 0px;
+    }
+
+    .page-title
+    {
+    position         : fixed;
+    top              : 75px;
+    max-width        : 100%;
+    width            : 97%;
+    height           : 34px;
+    line-height      : 34px;
+    text-align       : center;
+    z-index          : 9;
+    font-size        : 1rem;
+    font-weight      : bold;
+    }
+
+    .home-stat
+    {
+    vertical-align : top;
+    padding        : 0px;
+    }
+
+    .home-graph
+    {
+    border-right : 0px;
+    }
+
+    #label-chart
+    {
+    padding-right : 0px;
+    margin-right  : 0px;
+    }
+
+    #chart
+    {
+    width  : 250px;
+    height : 200px;
+    margin : 0px auto;
+    }
+
+    #label-activity
+    {
+    margin-top : 1rem;
+    text-align : center;
+    }
+
+    #search_analysis
+    {
+    width:290px;
+    }
+
+    .legend-lbk
+    {
+    font-size        : 1rem;
+    float            : none;
+    padding          : inherit;
+    }
+
+    select:disabled
+    {
+    background-image : none;
+    }
+
+    .form-search
+    {
+    width:290px;
+    }
+    
+    .form-lbk
+    {
+    font-size        : 0.70rem;
+    padding-left     : 0.25rem;
+    padding-right    : 0.25rem;
+    }
+
+    .btn-lbk
+    {
+    font-size  : 0.75rem;
+    }
+
+    .icon
+    {
+    display          : inline-block;
+    min-width        : 20px;
+    height           : 20px;
+    line-height      : 20px;
+    text-align       : center;
+    vertical-align   : middle;
+    }
+
+    .stat-A
+    {
+    font-size : 0.70rem;
+    }
+
+    .stat-B
+    {
+    font-size : 0.70rem;
+    }
+
+    .stat-T
+    {
+    font-size : 0.70rem;
+    }
+
+    #info_pat_title
+    {
+    font-size : 0.65rem;
+    }
+
+    .identity-group
+    {
+    display : block;
+    }
+    
+    .identity-group_1
+    {
+    display : block;
+    }
+}
+
 @media all and (max-width: 426px)
 {
     body
@@ -1539,5 +1781,15 @@ display : block;
     #info_pat_title
     {
     font-size : 0.0rem;
+    }
+
+    .identity-group
+    {
+    display : block;
+    }
+    
+    .identity-group_1
+    {
+    display : block;
     }
 }

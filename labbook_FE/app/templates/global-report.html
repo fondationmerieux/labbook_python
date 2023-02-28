@@ -79,7 +79,13 @@ var param = '{"filename": "' + filename + '", "exclu":"' + exclu + '", "date_beg
         {
             $("#dial-wait").modal("hide") ;
 
-            if (ret.status == 404)
+            if (ret.status == 409)
+            {
+            download_file( "PY", filename, "GEN", 0 ) ;
+
+            alert("{{ _("Certains rapports sont manquants") }}") ;
+            }
+            else if (ret.status == 404)
             alert("{{ _("Aucun résultat à exporter !") }}") ;
             else
             alert("{{ _("Erreur lors de la génération du fichier") }}") ;

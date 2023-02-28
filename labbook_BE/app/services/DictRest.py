@@ -335,8 +335,8 @@ class DictImport(Resource):
         i = 1
         for row in l_rows:
             i = i + 1
-            self.log.info(Logs.fileline() + ' : DEBUG IMPORT LINE ' + str(i) + ' #############')
-            self.log.info(Logs.fileline() + ' : DEBUG IMPORT row=' + str(row))
+            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT LINE ' + str(i) + ' #############')
+            self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT row=' + str(row))
             if row:
                 id_data            = row[1]
                 id_owner           = row[2]
@@ -350,7 +350,7 @@ class DictImport(Resource):
 
                 # inser dictt
                 if not id_data or int(id_data) == 0:
-                    self.log.info(Logs.fileline() + ' : DEBUG IMPORT insert dict dico_name=' + dico_name)
+                    self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT insert dict dico_name=' + dico_name)
                     ret = Dict.insertDict(id_owner=id_owner,
                                           dico_name=dico_name,
                                           label=label,
@@ -366,7 +366,7 @@ class DictImport(Resource):
 
                 # update dict
                 elif int(id_data) > 0:
-                    self.log.info(Logs.fileline() + ' : DEBUG IMPORT update dict id_data=' + str(id_data))
+                    self.log.info(Logs.fileline() + ' : DEBUG-TRACE IMPORT update dict id_data=' + str(id_data))
                     ret = Dict.updateDict(id_data=id_data,
                                           label=label,
                                           short_label=short_label,

@@ -7,6 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.4] - 2023-02-28
+### Changed
+- gunicorn logs, Front-end and Back-end logs have been moved in /storage/log/ , rotate over a month
+- Add some form fields can be enabled or disabled
+- Functional units are active on analysis search 
+- cancel and replace date on report is the date of previous report
+- Undo : More control over numeric result fields
+- export dictionnary order by dico_name
+
+## Fixed
+- add stock product, wrong insert
+- display none overstepped by d-*-flex, like in detail patient with anonymous function
+- download indicator.ini
+- lastname and firstname filters in patient history page 
+- add_analysis function, outsourced parameter missed
+- empty report if an analysis is with a labeled varaible at first position
+
 ## [3.3.3] - 2023-02-08
 ### Added
 - Functional unit active in the pages list-records, list-works, list-results and list-samples

@@ -171,12 +171,15 @@ class PdfReportGlobal(Resource):
 
         ret = Pdf.getPdfReportGlobal(args['filename'], args['exclu'], args['date_beg'], args['date_end'])
 
-        if ret < 0:
+        if ret == 500:
             self.log.error(Logs.fileline() + ' : PdfReportGlobal failed')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
-        elif ret == 0:
+        elif ret == 404:
             self.log.error(Logs.fileline() + ' : PdfReportGlobal failed')
             return compose_ret(0, Constants.cst_content_type_json, 404)
+        elif ret == 409:
+            self.log.error(Logs.fileline() + ' : PdfReportGlobal failed partially')
+            return compose_ret(0, Constants.cst_content_type_json, 409)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGlobal')
         return compose_ret(0, Constants.cst_content_type_json)

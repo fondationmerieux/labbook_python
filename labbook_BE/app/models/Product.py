@@ -42,10 +42,9 @@ class Product:
             limit = 'LIMIT 15000'
 
             if 'link_fam' in args and args['link_fam']:
-                Product.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
                 # avoid redundance of table if filter type_ana exist
-                table_cond += (' inner join sigl_04_data as ana on ana.id_dos=rec.id_data '
-                               'inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
+                table_cond += (' inner join sigl_04_data as req on req.id_dos=rec.id_data '
+                               'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ')
 
                 cond_link_fam = ''
                 # prepare list for sql
@@ -60,8 +59,8 @@ class Product:
                     filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         # take lastest product of blood, stool, urine and other for each record
-        req = ('select if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(rec.num_dos_mois from 7), rec.num_dos_mois), '
-               'if(param_num_dos.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
+        req = ('select if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), rec.num_dos_mois), '
+               'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
                'date_format(rec.date_dos, %s) as rec_date, '
                'pat.nom as lastname, pat.nom_jf as maidenname, pat.prenom as firstname, '
                'MAX(CASE when (prod.type_prel in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142) and prod.statut in (8, 9, 10)) '
@@ -80,11 +79,11 @@ class Product:
                'from sigl_01_data as prod '
                'inner join sigl_02_data as rec on prod.id_dos=rec.id_data '
                'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '
-               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 ' + table_cond +
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 ' + table_cond +
                'where ' + filter_cond +
                'group by prod.id_dos order by rec.num_dos_an desc ' + limit)
 
-        Product.log.info(Logs.fileline() + ' : DEBUG req = ' + str(req))
+        # Product.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
 
         cursor.execute(req, (Constants.cst_isodate,))
 

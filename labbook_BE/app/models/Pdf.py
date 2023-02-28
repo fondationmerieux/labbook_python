@@ -438,6 +438,7 @@ class Pdf:
         path = Constants.cst_path_tmp
 
         l_file_rec = []
+        missing = 0
 
         l_id_rec = Record.getRecordListGlobal(date_beg, date_end)
 
@@ -459,19 +460,26 @@ class Pdf:
 
                 for file_rec in l_file_rec:
                     filepath = os.path.join(Constants.cst_report, file_rec)
-                    src = pikepdf.Pdf.open(filepath)
-                    pdf.pages.extend(src.pages)
+                    # test if file exist
+                    if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
+                        src = pikepdf.Pdf.open(filepath)
+                        pdf.pages.extend(src.pages)
+                    else:
+                        missing += 1
 
                 filepath = os.path.join(path, filename)
 
                 pdf.save(filepath)
             except Exception as err:
                 Pdf.log.error(Logs.fileline() + ' : getPdfReportGlobal failed, err=%s', err)
-                return -1
+                return 500
         else:
-            return 0
+            return 404
 
-        return 1
+        if missing > 0:
+            return 409
+
+        return 200
 
     @staticmethod
     def getPdfHeader(full_header, report_status='&nbsp;'):
@@ -726,7 +734,7 @@ class Pdf:
 
         # 2 - run data with template
         # 3 - convert odt to PDF
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG data : ' + str(datas))
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE data : ' + str(datas))
 
         ret = Pdf.buildReport(template, filename, datas, id_rec)
 
@@ -846,8 +854,16 @@ class Pdf:
         data['report']['replace_date'] = ''
         # regenerated a report
         if reedit == 'Y':
-            data['report']['replace'] = _("ANNULE ET REMPLACE")
-            data['report']['replace_date'] = datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M")
+            data['report']['replace'] = _("Annule et remplace le précédent")
+
+            # get date of previous report
+            prev_report = File.getPreviousFileReport(id_rec)
+
+            if not prev_report:
+                Pdf.log.error(Logs.fileline() + ' : ERROR getPreviousFileReport not found')
+                return False
+
+            data['report']['replace_date'] = datetime.strftime(prev_report['date'], "%d/%m/%Y %H:%M")
 
             if id_rec > 0:
                 # update date of file
@@ -1101,7 +1117,7 @@ class Pdf:
 
         # === ANALYZES details ===
         data['l_data'] = []
-        analysis       = {"fam_name": "", "ana_name": "", "l_res": [], "validate": ""}
+        analysis       = {"fam_name": "", "ana_name": "", "l_res": [], "validate": "", "ana_outsourced": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
                           "formatting": "N"}
@@ -1138,254 +1154,265 @@ class Pdf:
                 res_fam_p = 'empty'  # previous result family
                 with_fam  = False    # with or without family
 
+                # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE list_result = ' + str(list_result))
+
                 # ----- LOOP RESULT -----
                 for res in list_result:
-                    # NEW ANALYSIS
-                    # if id request of this analysis is different of previous one
-                    # and id result is different of previous one.
-                    if res['id_req_ana'] != id_req_ana_p and res['id_res'] != id_res_p:
-                        # --- close PREVIOUS analysis ---
-                        if id_req_ana_p > 0:
-                            # comment and who make validation
-                            res_valid = Result.getResultValidation(id_res_p)
+                    # if variable is biologically validated or variable is labeled type
+                    test_res_valid = Result.getResultValidation(res['id_res'])
 
-                            # If valid user change we display who valid previous analisys
-                            if id_user_valid_p > 0 and res_valid['utilisateur'] != id_user_valid_p:
-                                id_user_valid_p = res_valid['utilisateur']
+                    if test_res_valid['type_validation'] == 252 or res['type_resultat'] == 265:
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE res to displayed, res[id_res] = ' + str(res['id_res']))
 
-                                ret_user = User.getUserDetails(res_valid['utilisateur'])
+                        # NEW ANALYSIS
+                        # if id request of this analysis is different of previous one
+                        # and id result is different of previous one.
+                        if res['id_req_ana'] != id_req_ana_p and res['id_res'] != id_res_p:
+                            # --- close PREVIOUS analysis ---
+                            if id_req_ana_p > 0:
+                                # comment and who make validation
+                                res_valid_p = Result.getResultValidation(id_res_p)
 
-                                user = ''
+                                # If valid user change we display who valid previous analisys
+                                if id_user_valid_p > 0 and res_valid_p['utilisateur'] != id_user_valid_p:
+                                    id_user_valid_p = res_valid_p['utilisateur']
 
-                                if ret_user['title']:
-                                    Various.useLangDB()
-                                    trans = ret_user['title']
-                                    user += _(trans) + ' '
-                                    Various.useLangPDF()
+                                    ret_user = User.getUserDetails(res_valid_p['utilisateur'])
 
-                                if ret_user['lastname'] and ret_user['firstname']:
-                                    user += ret_user['lastname'] + ' ' + ret_user['firstname']
-                                else:
-                                    user += user['username']
+                                    user = ''
 
-                                if res_valid['commentaire']:
-                                    res_comm = res_valid['commentaire'].split("\n")
-                                else:
-                                    res_comm = ''
+                                    if ret_user['title']:
+                                        Various.useLangDB()
+                                        trans = ret_user['title']
+                                        user += _(trans) + ' '
+                                        Various.useLangPDF()
 
-                                tmp_ana['l_res'][-1]["comm"] = res_comm
+                                    if ret_user['lastname'] and ret_user['firstname']:
+                                        user += ret_user['lastname'] + ' ' + ret_user['firstname']
+                                    else:
+                                        user += user['username']
 
-                                tmp_ana['validate'] = str(user)
+                                    if res_valid_p['commentaire']:
+                                        res_comm = res_valid_p['commentaire'].split("\n")
+                                    else:
+                                        res_comm = ''
 
-                            # we add only result with biological validation
-                            if res_valid['type_validation'] == 252:
+                                    tmp_ana['l_res'][-1]["comm"] = res_comm
+
+                                    tmp_ana['validate'] = str(user)
+
                                 # Add previous analysis to list of data
                                 data['l_data'].append(tmp_ana)
+                                # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE tmp_ana = ' + str(tmp_ana))
 
-                        # --- end of close previous analysis ---
+                            # --- end of close previous analysis ---
 
-                        # init new analysis
-                        tmp_ana = {"fam_name": "", "ana_name": "", "l_res": [], "validate": ""}
+                            # init new analysis
+                            tmp_ana = {"fam_name": "", "ana_name": "", "l_res": [], "validate": "", "ana_outsourced": ""}
 
-                        id_req_ana_p = res['id_req_ana']
-                        id_res_p     = res['id_res']
+                            id_req_ana_p = res['id_req_ana']
+                            id_res_p     = res['id_res']
 
-                        # if family analysis exist and is different of previous one
-                        if res['ana_fam'] and res['ana_fam'] != res_fam_p:
-                            res_fam   = res['ana_fam']
-                            res_fam_p = res_fam
-                            with_fam  = True
-                        # analysis without family
-                        else:
-                            res_fam = ' '
-                            with_fam = False
-
-                        # ==== ANALYSIS FAMILY ====
-                        if with_fam:
-                            Various.useLangDB()
-                            if res_fam and res_fam != ' ':
-                                res_fam = _(res_fam.strip())
-
-                            tmp_ana['fam_name'] = res_fam
-                            Various.useLangPDF()
-
-                        # ==== ANALYSIS NAME ====
-                        if res['ana_name']:
-                            Various.useLangDB()
-                            trans = res['ana_name'].strip()
-
-                            if trans:
-                                tmp_ana['ana_name'] = _(trans)
+                            # if family analysis exist and is different of previous one
+                            if res['ana_fam'] and res['ana_fam'] != res_fam_p:
+                                res_fam   = res['ana_fam']
+                                res_fam_p = res_fam
+                                with_fam  = True
+                            # analysis without family
                             else:
-                                tmp_ana['ana_name'] = ''
+                                res_fam = ' '
+                                with_fam = False
 
+                            # ==== ANALYSIS FAMILY ====
+                            if with_fam:
+                                Various.useLangDB()
+                                if res_fam and res_fam != ' ':
+                                    res_fam = _(res_fam.strip())
+
+                                tmp_ana['fam_name'] = res_fam
+                                Various.useLangPDF()
+
+                            # ==== ANALYSIS NAME ====
+                            if res['ana_name']:
+                                Various.useLangDB()
+                                trans = res['ana_name'].strip()
+
+                                if trans:
+                                    tmp_ana['ana_name'] = _(trans)
+                                else:
+                                    tmp_ana['ana_name'] = ''
+
+                                Various.useLangPDF()
+
+                            if res['ana_outsourced'] == 'Y':
+                                tmp_ana['ana_outsourced'] = _("Sous-traitée")
+
+                        # init new result
+                        tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N", "highlight": "N", "formatting": "N"}
+
+                        # Start to get previous result if exist
+                        prev_date = ''
+                        prev_res  = ''
+                        prev_unit = ''
+
+                        formatting = 'N'
+
+                        res_valid    = Result.getResultValidation(id_res_p)
+                        res_date_vld = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y %H:%M:%S')
+
+                        res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'], res_date_vld)
+
+                        if res_prev and res_prev['date_valid']:
+                            prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
+
+                        # Get label of value
+                        type_res = Various.getDicoById(res['type_resultat'])
+
+                        if type_res and type_res['short_label'].startswith("dico_"):
+                            Various.useLangDB()
+                            trans = type_res['short_label'][5:]
+                            type_res = _(trans.strip())
                             Various.useLangPDF()
+                        else:
+                            type_res = ''
 
-                    # init new result
-                    tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N", "highlight": "N", "formatting": "N"}
+                        # Value to be interpreted
+                        if type_res and res['value']:
+                            Various.useLangDB()
+                            if res['value'] != '0':
+                                val = Various.getDicoById(res['value'])
+                                trans = val['label']
 
-                    # Start to get previous result if exist
-                    prev_date = ''
-                    prev_res  = ''
-                    prev_unit = ''
-
-                    formatting = 'N'
-
-                    res_valid = Result.getResultValidation(id_res_p)
-                    res_date_vld  = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y %H:%M:%S')
-
-                    res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'], res_date_vld)
-
-                    if res_prev and res_prev['date_valid']:
-                        prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
-
-                    # Get label of value
-                    Pdf.log.error(Logs.fileline() + ' : DEBUG res=' + str(res))
-                    type_res = Various.getDicoById(res['type_resultat'])
-
-                    if type_res and type_res['short_label'].startswith("dico_"):
-                        Various.useLangDB()
-                        trans = type_res['short_label'][5:]
-                        type_res = _(trans.strip())
-                        Various.useLangPDF()
-                    else:
-                        type_res = ''
-
-                    # Value to be interpreted
-                    if type_res and res['value']:
-                        Various.useLangDB()
-                        if res['value'] != '0':
-                            val = Various.getDicoById(res['value'])
-                            trans = val['label']
-
-                            if trans:
-                                formatting = val['dict_formatting']
-                                val = _(trans.strip())
+                                if trans:
+                                    formatting = val['dict_formatting']
+                                    val = _(trans.strip())
+                                else:
+                                    val = ''
                             else:
                                 val = ''
-                        else:
-                            val = ''
 
-                        # specific response for bold format
-                        if trans == 'Positif':
-                            tmp_res['bold_value'] = 'Y'
+                            # specific response for bold format
+                            if trans == 'Positif':
+                                tmp_res['bold_value'] = 'Y'
 
-                        # specific response for partial report
-                        if trans == 'en cours':
-                            data['report']['status'] = _("PARTIEL")
+                            # specific response for partial report
+                            if trans == 'en cours':
+                                data['report']['status'] = _("PARTIEL")
 
-                        # interpreted previous value
-                        if res_prev and res_prev['valeur']:
-                            label_prev = Various.getDicoById(res_prev['valeur'])
-                            trans = label_prev['label'].strip()
+                            # interpreted previous value
+                            if res_prev and res_prev['valeur']:
+                                label_prev = Various.getDicoById(res_prev['valeur'])
+                                trans = label_prev['label'].strip()
 
-                            if trans:
-                                prev_res = _(trans)
+                                if trans:
+                                    prev_res = _(trans)
+                                else:
+                                    prev_res = ''
                             else:
                                 prev_res = ''
+
+                            Various.useLangPDF()
+                        # Numerical value or canceled
                         else:
-                            prev_res = ''
+                            val = res['value']
+                            # Cancel result
+                            if not val:
+                                val  = _("Annulée")
+                                # result of type labeled
+                                if res['type_resultat'] == 265:
+                                    val = ''
 
+                                prev_res = ''
+                            elif res_prev and res_prev['valeur']:
+                                prev_res = res_prev['valeur']
+
+                            if res['normal_min'] or res['normal_max']:
+                                if val != _("Annulée"):
+                                    # bold style if out of range min/max
+                                    try:
+                                        if res['normal_min'] and float(val) < float(res['normal_min']):
+                                            tmp_res['bold_value'] = 'Y'
+                                        elif res['normal_max'] and float(val) > float(res['normal_max']):
+                                            tmp_res['bold_value'] = 'Y'
+                                    except Exception:
+                                        Pdf.log.error(Logs.fileline() + ' : ERROR convert to float, val=' + str(val))
+
+                            if res['unite'] and val != _("Annulée"):
+                                unit = Various.getDicoById(res['unite'])
+
+                                if unit:
+                                    tmp_res['unit'] = unit['label']
+
+                                    if prev_res:
+                                        prev_unit = unit['label']
+
+                        if res['var_highlight']:
+                            tmp_res['highlight'] = res['var_highlight']
+
+                        tmp_res['prev_date'] = prev_date
+                        tmp_res['prev_val']  = prev_res
+                        tmp_res['prev_unit'] = prev_unit
+
+                        # Get normal of value
+                        if res['normal_min'] and res['normal_max']:
+                            tmp_res['references'] = str(res['normal_min']) + ' - ' + str(res['normal_max'])
+                        elif res['normal_min']:
+                            tmp_res['references'] = '> ' + str(res['normal_min'])
+                        elif res['normal_max']:
+                            tmp_res['references'] = '< ' + str(res['normal_max'])
+
+                        # ==== ANALYSIS RESULT ====
+                        Various.useLangDB()
+                        trans = ''
+
+                        if res['libelle'].strip():
+                            trans = str(res['libelle'].strip())
+                            tmp_res['label'] = _(trans)
+                        else:
+                            tmp_res['label'] = ''
+
+                        tmp_res['value'] = str(val)
+                        tmp_res['formatting'] = str(formatting)
                         Various.useLangPDF()
-                    # Numerical value or canceled
-                    else:
-                        val = res['value']
-                        # Cancel result
-                        if not val:
-                            val  = _("Annulée")
-                            # result of type labeled
-                            if res['type_resultat'] == 265:
-                                val = ''
 
-                            prev_res = ''
-                        elif res_prev and res_prev['valeur']:
-                            prev_res = res_prev['valeur']
+                        if res['commentaire'] and not res['commentaire'].startswith('Project-Id-Version'):
+                            tmp_res['var_comm'] = res['commentaire'].split("\n")
+                        else:
+                            tmp_res['var_comm'] = ''
 
-                        if res['normal_min'] or res['normal_max']:
-                            if val != _("Annulée"):
-                                # bold style if out of range min/max
-                                try:
-                                    if res['normal_min'] and float(val) < float(res['normal_min']):
-                                        tmp_res['bold_value'] = 'Y'
-                                    elif res['normal_max'] and float(val) > float(res['normal_max']):
-                                        tmp_res['bold_value'] = 'Y'
-                                except Exception:
-                                    Pdf.log.error(Logs.fileline() + ' : ERROR convert to float, val=' + str(val))
+                        # check if we need to generate a QR code
+                        if res['var_qrcode'] == 'Y':
+                            qrc_filename = 'tpl_qrcode.png'
 
-                        if res['unite'] and val != _("Annulée"):
-                            unit = Various.getDicoById(res['unite'])
+                            data['res'] = {}
+                            data['res']['value']      = tmp_res['value']
+                            data['res']['unit']       = tmp_res['unit']
+                            data['res']['qrcode']     = ''
 
-                            if unit:
-                                tmp_res['unit'] = unit['label']
+                            # to keep same syntaxe of odt template
+                            qrc_data = {}
+                            qrc_data['o'] = data
 
-                                if prev_res:
-                                    prev_unit = unit['label']
+                            res_valid = Result.getResultValidation(id_res_p)
+                            data['res']['valid_date'] = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y')
 
-                    if res['var_highlight']:
-                        tmp_res['highlight'] = res['var_highlight']
+                            # 1 - call function generate QR code
+                            ret_qr = Pdf.qrcodeByTemplate(qrc_filename, qrc_data)
 
-                    tmp_res['prev_date'] = prev_date
-                    tmp_res['prev_val']  = prev_res
-                    tmp_res['prev_unit'] = prev_unit
+                            # 2 - add qr code image in data structure
+                            if ret_qr:
+                                filepath = os.path.join(Constants.cst_path_tmp, qrc_filename)
 
-                    # Get normal of value
-                    if res['normal_min'] and res['normal_max']:
-                        tmp_res['references'] = str(res['normal_min']) + ' - ' + str(res['normal_max'])
-                    elif res['normal_min']:
-                        tmp_res['references'] = '> ' + str(res['normal_min'])
-                    elif res['normal_max']:
-                        tmp_res['references'] = '< ' + str(res['normal_max'])
+                                if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
+                                    data['res']['qrcode'] = (open(filepath, 'rb'), 'image/png')
+                                else:
+                                    Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
+                                    data['res']['qrcode'] = ''
 
-                    # ==== ANALYSIS RESULT ====
-                    Various.useLangDB()
-                    trans = ''
+                        # Add this result to list of result of this analysis
+                        tmp_ana['l_res'].append(tmp_res)
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE tmp_res = ' + str(tmp_res))
 
-                    if res['libelle'].strip():
-                        trans = str(res['libelle'].strip())
-                        tmp_res['label'] = _(trans)
-                    else:
-                        tmp_res['label'] = ''
-
-                    tmp_res['value'] = str(val)
-                    tmp_res['formatting'] = str(formatting)
-                    Various.useLangPDF()
-
-                    if res['commentaire'] and not res['commentaire'].startswith('Project-Id-Version'):
-                        tmp_res['var_comm'] = res['commentaire'].split("\n")
-                    else:
-                        tmp_res['var_comm'] = ''
-
-                    # check if we need to generate a QR code
-                    if res['var_qrcode'] == 'Y':
-                        qrc_filename = 'tpl_qrcode.png'
-
-                        data['res'] = {}
-                        data['res']['value']      = tmp_res['value']
-                        data['res']['unit']       = tmp_res['unit']
-                        data['res']['qrcode']     = ''
-
-                        # to keep same syntaxe of odt template
-                        qrc_data = {}
-                        qrc_data['o'] = data
-
-                        res_valid = Result.getResultValidation(id_res_p)
-                        data['res']['valid_date'] = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y')
-
-                        # 1 - call function generate QR code
-                        ret_qr = Pdf.qrcodeByTemplate(qrc_filename, qrc_data)
-
-                        # 2 - add qr code image in data structure
-                        if ret_qr:
-                            filepath = os.path.join(Constants.cst_path_tmp, qrc_filename)
-
-                            if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
-                                data['res']['qrcode'] = (open(filepath, 'rb'), 'image/png')
-                            else:
-                                Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
-                                data['res']['qrcode'] = ''
-
-                    # Add this result to list of result of this analysis
-                    tmp_ana['l_res'].append(tmp_res)
                 # --- END OF LOOP RESULT ---
 
                 # add last comment and who make validation
@@ -1393,7 +1420,7 @@ class Pdf:
 
                 ret_user = User.getUserDetails(res_valid['utilisateur'])
 
-                # Pdf.log.error(Logs.fileline() + ' : DEBUG user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
+                # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
                 user = ''
 
                 if ret_user['title']:
@@ -1416,12 +1443,9 @@ class Pdf:
 
                 tmp_ana['validate'] = str(user)
 
-                # we add only result with biological validation
-                if res_valid['type_validation'] == 252:
-                    # Add last analysis to list of data
-                    data['l_data'].append(tmp_ana)
+                # Add last analysis to list of data
+                data['l_data'].append(tmp_ana)
 
-                # Pdf.log.error(Logs.fileline() + ' : DEBUG l_data=' + str(data['l_data']))
         # For print test analysis
         else:
             Various.useLangDB()
@@ -1439,6 +1463,7 @@ class Pdf:
 
             analysis['fam_name'] = _("Biochimie urinaire")
             analysis['ana_name'] = _("Bandelettes urinaires")
+            analysis['ana_outsourced'] = ""
             analysis['l_res'].append(result)
             analysis['validate'] = 'BIO Bernard'
 
@@ -1558,7 +1583,7 @@ class Pdf:
 
             data['samples'].append(sample)
 
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG data : ' + str(data))
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE data : ' + str(data))
 
         return data
 
@@ -2109,7 +2134,7 @@ class Pdf:
 
         # 2 - run data with template
         # 3 - convert odt to PDF
-        Pdf.log.error(Logs.fileline() + ' : DEBUG Outsourced datas : ' + str(datas))
+        Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE Outsourced datas : ' + str(datas))
 
         ret = Pdf.buildPdf('OUT', template, filename, datas)
 
@@ -2470,7 +2495,7 @@ class Pdf:
             # GET all analysis for a record
             list_ana = Analysis.getAnalysisOutsourced(id_rec, 'Y')
 
-            # Pdf.log.info(Logs.fileline() + ' : DEBUG list_ana=' + str(list_ana))
+            # Pdf.log.info(Logs.fileline() + ' : DEBUG-TRACE list_ana=' + str(list_ana))
 
             if list_ana:
                 res_fam   = ''       # family result
@@ -2521,16 +2546,13 @@ class Pdf:
                             Various.useLangPDF()
 
                         if res['outsourced'] == 'Y':
-                            Various.useLangDB()
                             tmp_ana['ana_outsourced'] = _("Sous-traitée")
-
-                            Various.useLangPDF()
 
                         data['l_data'].append(tmp_ana)
 
                 # --- END OF LOOP ANALYSIS ---
 
-                # Pdf.log.error(Logs.fileline() + ' : DEBUG l_data=' + str(data['l_data']))
+                # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE l_data=' + str(data['l_data']))
         # For print test analysis
         else:
             Various.useLangDB()
@@ -2638,6 +2660,6 @@ class Pdf:
 
             data['samples'].append(sample)
 
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG data : ' + str(data))
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE data : ' + str(data))
 
         return data

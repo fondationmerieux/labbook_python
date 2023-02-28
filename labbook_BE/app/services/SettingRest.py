@@ -285,7 +285,7 @@ class SettingLinkUnit(Resource):
     def post(self, type, id_unit):
         args = request.get_json()
 
-        self.log.info(Logs.fileline() + ' : DEBUG args=' + str(args))
+        # self.log.info(Logs.fileline() + ' : DEBUG-TRACE args=' + str(args))
 
         if 'list_link' not in args:
             self.log.error(Logs.fileline() + ' : SettingLinkUnit ERROR args missing')
@@ -1075,11 +1075,15 @@ class SettingFormList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE SettingFormList not found')
 
+        Various.useLangPDF()
+
         for item in l_items:
             # Replace None by empty string
             for key, value in list(item.items()):
                 if item[key] is None:
                     item[key] = ''
+                elif key == 'fos_name' and item[key]:
+                    item[key] = _(item[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE SettingFormList')
         return compose_ret(l_items, Constants.cst_content_type_json)

@@ -56,18 +56,18 @@ LANGUAGES = {
 # ######################################
 
 
-def prep_log(logger_nom, log_fich, niveau=logging.INFO):
-    logger = logging.getLogger(logger_nom)
+def prep_log(logger_name, log_file, level=logging.INFO):
+    logger = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(asctime)s : %(message)s')
-    fileHandler = WatchedFileHandler(log_fich)
+    fileHandler = WatchedFileHandler(log_file)
     fileHandler.setFormatter(formatter)
 
-    logger.setLevel(niveau)
+    logger.setLevel(level)
     logger.addHandler(fileHandler)
 
 
-prep_log('log_services', r'../logs/log_services.log')
-prep_log('log_db', r'../logs/log_db.log')
+prep_log('log_services', '/home/apps/logs/log_services.log')
+prep_log('log_db', '/home/apps/logs/log_db.log')
 
 log = logging.getLogger('log_services')
 
@@ -133,7 +133,7 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
-# app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
+# app.config["CACHE_TYPE"] = "null"  # NOTE : Use if flask keep translation in cache
 
 
 # ######################################

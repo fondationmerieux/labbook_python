@@ -110,8 +110,8 @@ location.href = disconnect_page ;
 
 function calc( id_rec, ref_ana, id_res, num_var )
 {
-//console.log("####################### DEBUG CALC ###################");
-//console.log("DEBUG ref_ana=" + ref_ana + " | id_res=" + id_res + " | num_var=" + num_var) ;
+//console.log("####################### DEBUG-TRACE CALC ###################");
+//console.log("DEBUG-TRACE ref_ana=" + ref_ana + " | id_res=" + id_res + " | num_var=" + num_var) ;
 
 // start by evaluate this var
 eval_value( id_rec, ref_ana, id_res ) ;
@@ -125,7 +125,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
         // EVAL f1
         if ( f1.search("_"+num_var) >= 0 )
         {
-        //console.log("DEBUG calc num_var found in f1") ;
+        //console.log("DEBUG-TRACE calc num_var found in f1") ;
 
         // GET current value for all var in this formula
         // NOTE if num var greater than 9 ???
@@ -151,7 +151,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
                 }
             }
 
-         //console.log("DEBUG f1 l_var="+l_var) ;
+         //console.log("DEBUG-TRACE f1 l_var="+l_var) ;
 
          let l_value = [] ;
 
@@ -178,7 +178,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
                 } ) ;
             }
         
-         //console.log("DEBUG f1 l_value="+l_value) ;
+         //console.log("DEBUG-TRACE f1 l_value="+l_value) ;
 
             // Calculation
             if ( l_var.length == l_value.length )
@@ -188,18 +188,18 @@ eval_value( id_rec, ref_ana, id_res ) ;
                 f1 = f1.replace("$_"+l_var[k], l_value[k]) ;
                 }
 
-            //console.log("DEBUG formule f1 avant eval : " + f1);
+            //console.log("DEBUG-TRACE formule f1 avant eval : " + f1);
             let total = eval(f1) ;
 
-            //console.log("DEBUG TOTAL VIA f1="+total) ;
+            //console.log("DEBUG-TRACE TOTAL VIA f1="+total) ;
             let accu = $("#accu_"+id_tot).val() ;
 
-            //console.log("DEBUG accu="+accu) ;
+            //console.log("DEBUG-TRACE accu="+accu) ;
 
                 if ( accu == null || accu == "" )
                 accu = 2 ;
 
-            //console.log("DEBUG #res_" + id_tot + " = " + Number(total).toFixed( accu ) ) ;
+            //console.log("DEBUG-TRACE #res_" + id_tot + " = " + Number(total).toFixed( accu ) ) ;
 
             $("#res_"+id_tot).val( Number(total).toFixed( accu ) ) ;
             }
@@ -209,7 +209,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
 
 function eval_value( id_rec, ref_ana, id_res )
 {
-//console.log("DEBUG EVAL_VALUE -------------------------------------");
+//console.log("DEBUG-TRACE EVAL_VALUE -------------------------------------");
 let val  = $( "#res_"+id_res ).val()  ;
 
     if ( val == null || val == "" )

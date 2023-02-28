@@ -346,6 +346,20 @@ class File:
         return cursor.fetchone()
 
     @staticmethod
+    def getPreviousFileReport(id_rec):
+        cursor = DB.cursor()
+
+        req = ('select id_data, id_owner, id_dos, file, file_type, doc_type, date, tpl_name, nb_download '
+               'from sigl_11_data '
+               'left join template_setting on tpl_ser=id_tpl '
+               'where id_dos=%s and doc_type=257 '
+               'order by id_data desc limit 1,1')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertFileReport(**params):
         try:
             cursor = DB.cursor()

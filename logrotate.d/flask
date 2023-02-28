@@ -1,0 +1,24 @@
+# coding: utf8
+# définir l'emplacement du fichier et son pattern pour le nom
+/storage/log/log_*.log {
+# fréquence de rotation daily, weekly, monthly
+daily
+# keep 60 days of rotation
+rotate 60
+# Ajouter YYYYMMDD au lieu d'un simple numéro (par défaut)
+# dateext
+# Si le fichier est manquant, continue sur le suivant sans msg d'erreur
+missingok
+# peut compresser en GZIP les vieilles versions de log
+compress
+# Truncate l'ancien fichier pour etre sur que les process vont ecrire dans le nouveau
+copytruncate
+# Pas de rotation si le fichier est vide
+notifempty
+# partie spécifiqueGUNICORN, kill du process
+# AR je desactive car ca semble inutile de faire une relance ici
+# Une relance daily est deja programmee cote PHM
+postrotate
+# /home/admin/supervisor/supervisorctl.sh restart gunicorn_fe
+endscript
+}

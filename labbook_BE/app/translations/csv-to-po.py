@@ -7,7 +7,7 @@ import locale
 from datetime import datetime
 from logging.handlers import WatchedFileHandler
 
-locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
+# locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
 
 
 def prep_log(logger_nom, log_fich, niveau=logging.INFO):
@@ -20,7 +20,7 @@ def prep_log(logger_nom, log_fich, niveau=logging.INFO):
     logger.addHandler(fileHandler)
 
 
-prep_log('log_script', r'/home/apps/labbook_BE/logs/log_script.log')
+prep_log('log_script', '/home/apps/logs/log_script.log')
 
 log = logging.getLogger('log_script')
 
@@ -38,7 +38,7 @@ def conv_csv_to_po(test=False, verbose=False):
     from csv import reader
 
     path_csv     = '/home/apps/labbook_BE/labbook_BE/tmp/'
-    filename_csv = 'LBK-IHM_PT.csv'  # TODO ask by args
+    filename_csv = 'labBook_esp_javier_02-2023.csv'  # TODO ask by args
     path_po      = '/home/apps/labbook_BE/labbook_BE/tmp/'
     filename_po  = 'messages.po'
     filename_ref = 'messages_pybabel.py'

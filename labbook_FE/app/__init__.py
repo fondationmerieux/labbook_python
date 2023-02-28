@@ -45,17 +45,17 @@ LANGUAGES = {
 # ######################################
 
 
-def prep_log(logger_nom, log_fich, niveau=logging.INFO):
-    logger = logging.getLogger(logger_nom)
+def prep_log(logger_name, log_file, level=logging.INFO):
+    logger = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(asctime)s : %(message)s')
-    fileHandler = WatchedFileHandler(log_fich)
+    fileHandler = WatchedFileHandler(log_file)
     fileHandler.setFormatter(formatter)
 
-    logger.setLevel(niveau)
+    logger.setLevel(level)
     logger.addHandler(fileHandler)
 
 
-prep_log('log_front', r'../logs/log_front.log')
+prep_log('log_front', '/home/apps/logs/log_front.log')
 
 log = logging.getLogger('log_front')
 
@@ -77,7 +77,7 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
-# app.config["CACHE_TYPE"] = "null"  # DEBUG : Use if flask keep translation in cache
+# app.config["CACHE_TYPE"] = "null"  # NOTE : Use if flask keep translation in cache
 
 babel = Babel(app)
 
@@ -370,10 +370,7 @@ def get_software_settings():
 
 
 def test_session():
-    if session['user_role'] != 'A' and session['user_role'] != 'B' and session['user_role'] != 'TQ' and \
-       session['user_role'] != 'T' and session['user_role'] != 'TA' and session['user_role'] != 'TQ' and \
-       session['user_role'] != 'S' and session['user_role'] != 'SA' and session['user_role'] != 'P' and \
-       session['user_role'] != 'Q':
+    if session['user_role'] not in ('A', 'B', 'TQ', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K'):
         return redirect(session['server_ext'] + '/disconnect')
 
 

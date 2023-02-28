@@ -63,7 +63,7 @@ APP_NAME=labbook_BE
 HOME_APP=/home/apps/$APP_NAME
 APP_DIR=${HOME_APP}/${APP_NAME}
 VENV_DIR=${APP_DIR}/venv
-LOGS_DIR=${HOME_APP}/logs
+LOGS_DIR=/home/apps/logs
 LOGS_PERM=/storage/log
 GUNICORN_DIR=${HOME_APP}/gunicorn
 GUNICORN_TIMEOUT=0  # Because restore and backup scripts that run synchronously
@@ -103,8 +103,8 @@ exec gunicorn \
     --timeout ${GUNICORN_TIMEOUT} \
     --pid ${GUNICORN_DIR}/gunicorn.pid \
     --bind ${HOST}:${PORT} \
-    --access-logfile ${LOGS_DIR}/gunicorn-access.log \
+    --access-logfile ${LOGS_DIR}/gunicorn-BE-access.log \
     --access-logformat "%(h)s %(l)s %(u)s %(t)s \"%(r)s\" %(s)s %(b)s \"%(f)s\" \"%(a)s\" \"%({uniqueid}i)s\"" \
-    --error-logfile ${LOGS_DIR}/gunicorn-error.log \
+    --error-logfile ${LOGS_DIR}/gunicorn-BE-error.log \
     rungunicorn:app > ${LOGS_DIR}/gunicorn.out 2>&1
 

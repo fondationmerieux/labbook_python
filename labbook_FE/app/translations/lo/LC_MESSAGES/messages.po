@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-30 09:28+0100\n"
+"POT-Creation-Date: 2023-02-23 11:38+0100\n"
 "PO-Revision-Date: 2021-09-03 15:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: lo\n"
@@ -27,7 +27,7 @@ msgstr "ການບັນທຶກດ້ານບໍລິຫານ"
 
 #: templates/administrative-record.html:19
 #: templates/biological-validation.html:20
-#: templates/biological-validation.html:665 templates/det-req-ext.html:21
+#: templates/biological-validation.html:672 templates/det-req-ext.html:21
 #: templates/det-req-int.html:21 templates/det-sample.html:18
 #: templates/enter-result.html:20 templates/pivot-table.html:31
 #: templates/technical-validation.html:20
@@ -38,7 +38,7 @@ msgstr "ບັນທຶກ"
 #: templates/biological-validation.html:25 templates/det-req-ext.html:28
 #: templates/det-req-int.html:28 templates/technical-validation.html:25
 msgid "Numéro de dossier interne au laboratoire"
-msgstr ""
+msgstr "ໝາຍເລກໄຟລ໌ຫ້ອງທົດລອງພາຍໃນ"
 
 #: templates/administrative-record.html:32
 #: templates/biological-validation.html:31 templates/det-patient.html:20
@@ -56,59 +56,59 @@ msgid "Patient anonyme"
 msgstr "ຄົນເຈັບບໍ່ລະບຸຊື່"
 
 #: templates/administrative-record.html:49
-#: templates/administrative-record.html:756
+#: templates/administrative-record.html:791
 #: templates/biological-validation.html:46
-#: templates/biological-validation.html:807 templates/det-req-ext.html:57
+#: templates/biological-validation.html:815 templates/det-req-ext.html:57
 #: templates/det-req-int.html:60 templates/det-sample.html:37
-#: templates/enter-result.html:40 templates/enter-result.html:986
+#: templates/enter-result.html:40 templates/enter-result.html:1007
 #: templates/technical-validation.html:46
-#: templates/technical-validation.html:699
+#: templates/technical-validation.html:707
 msgid "Né(e) le"
 msgstr "ວັນ ເດືອນ ປີ ເກີດ"
 
 #: templates/administrative-record.html:53
-#: templates/administrative-record.html:758
+#: templates/administrative-record.html:793
 #: templates/biological-validation.html:50
-#: templates/biological-validation.html:809 templates/det-sample.html:41
-#: templates/enter-result.html:44 templates/enter-result.html:988
+#: templates/biological-validation.html:817 templates/det-sample.html:41
+#: templates/enter-result.html:44 templates/enter-result.html:1009
 #: templates/technical-validation.html:50
-#: templates/technical-validation.html:701
+#: templates/technical-validation.html:709
 msgid "années"
 msgstr "ປີ"
 
 #: templates/administrative-record.html:54
-#: templates/administrative-record.html:759
+#: templates/administrative-record.html:794
 #: templates/biological-validation.html:51
-#: templates/biological-validation.html:810 templates/det-sample.html:42
-#: templates/enter-result.html:45 templates/enter-result.html:989
+#: templates/biological-validation.html:818 templates/det-sample.html:42
+#: templates/enter-result.html:45 templates/enter-result.html:1010
 #: templates/technical-validation.html:51
-#: templates/technical-validation.html:702
+#: templates/technical-validation.html:710
 msgid "mois"
 msgstr "ເດືອນ"
 
 #: templates/administrative-record.html:55
-#: templates/administrative-record.html:760
+#: templates/administrative-record.html:795
 #: templates/biological-validation.html:52
-#: templates/biological-validation.html:811 templates/det-sample.html:43
-#: templates/enter-result.html:46 templates/enter-result.html:990
+#: templates/biological-validation.html:819 templates/det-sample.html:43
+#: templates/enter-result.html:46 templates/enter-result.html:1011
 #: templates/technical-validation.html:52
-#: templates/technical-validation.html:703
+#: templates/technical-validation.html:711
 msgid "semaines"
 msgstr "ອາທິດ"
 
 #: templates/administrative-record.html:56
-#: templates/administrative-record.html:761
+#: templates/administrative-record.html:796
 #: templates/biological-validation.html:53
-#: templates/biological-validation.html:812 templates/det-sample.html:44
-#: templates/enter-result.html:47 templates/enter-result.html:991
+#: templates/biological-validation.html:820 templates/det-sample.html:44
+#: templates/enter-result.html:47 templates/enter-result.html:1012
 #: templates/technical-validation.html:53
-#: templates/technical-validation.html:704
+#: templates/technical-validation.html:712
 msgid "jours"
 msgstr "ມື້"
 
 #: templates/administrative-record.html:58
 #: templates/biological-validation.html:55 templates/det-hist-patient.html:39
-#: templates/det-patient.html:158 templates/det-req-ext.html:66
+#: templates/det-patient.html:166 templates/det-req-ext.html:66
 #: templates/det-req-int.html:69 templates/det-sample.html:46
 #: templates/enter-result.html:49 templates/hist-analyzes.html:217
 #: templates/hist-patients.html:241 templates/manage-pat-records.html:192
@@ -119,7 +119,7 @@ msgstr "ຊາຍ"
 
 #: templates/administrative-record.html:59
 #: templates/biological-validation.html:56 templates/det-hist-patient.html:40
-#: templates/det-patient.html:161 templates/det-req-ext.html:67
+#: templates/det-patient.html:169 templates/det-req-ext.html:67
 #: templates/det-req-int.html:70 templates/det-sample.html:47
 #: templates/enter-result.html:50 templates/hist-analyzes.html:219
 #: templates/hist-patients.html:243 templates/manage-pat-records.html:195
@@ -130,7 +130,7 @@ msgstr "ຍິງ"
 
 #: templates/administrative-record.html:60
 #: templates/biological-validation.html:57 templates/det-hist-patient.html:41
-#: templates/det-patient.html:164 templates/det-req-ext.html:68
+#: templates/det-patient.html:172 templates/det-req-ext.html:68
 #: templates/det-req-int.html:71 templates/det-sample.html:48
 #: templates/enter-result.html:51 templates/hist-analyzes.html:214
 #: templates/hist-patients.html:238 templates/macros.html:44
@@ -160,15 +160,19 @@ msgstr "ວັນທີຂອງໃບສັ່ງຢາ"
 
 #: templates/administrative-record.html:90 templates/det-req-int.html:108
 msgid "Demande de garde"
-msgstr ""
+msgstr "ຄຳຂໍແມ່ນຢູ່ໃນໂມງເວນຍາມ"
 
 #: templates/administrative-record.html:92
-#: templates/administrative-record.html:113 templates/det-new-product.html:88
-#: templates/det-patient.html:27 templates/det-patient.html:81
-#: templates/det-patient.html:143 templates/det-req-ext.html:124
-#: templates/det-req-ext.html:358 templates/det-req-int.html:111
+#: templates/administrative-record.html:113 templates/det-new-product.html:81
+#: templates/det-patient.html:27 templates/det-patient.html:85
+#: templates/det-patient.html:151 templates/det-req-ext.html:124
+#: templates/det-req-ext.html:358 templates/det-req-ext.html:619
+#: templates/det-req-ext.html:624 templates/det-req-ext.html:629
+#: templates/det-req-ext.html:719 templates/det-req-int.html:111
 #: templates/det-req-int.html:117 templates/det-req-int.html:140
-#: templates/det-template.html:34 templates/list-nonconformities.html:214
+#: templates/det-req-int.html:387 templates/det-req-int.html:610
+#: templates/det-req-int.html:615 templates/det-req-int.html:620
+#: templates/det-template.html:35 templates/list-nonconformities.html:212
 #: templates/manage-pat-records.html:52 templates/manage-pat-records.html:132
 #: templates/manage-pat-records.html:178 templates/manage-pat-records.html:307
 #: templates/manage-pat-records.html:386 templates/manage-pat-records.html:432
@@ -184,13 +188,17 @@ msgid "Oui"
 msgstr "ແມ່ນ"
 
 #: templates/administrative-record.html:94
-#: templates/administrative-record.html:119 templates/det-new-product.html:91
-#: templates/det-patient.html:30 templates/det-patient.html:84
-#: templates/det-patient.html:146 templates/det-req-ext.html:127
+#: templates/administrative-record.html:119 templates/det-new-product.html:84
+#: templates/det-patient.html:30 templates/det-patient.html:88
+#: templates/det-patient.html:154 templates/det-req-ext.html:127
 #: templates/det-req-ext.html:135 templates/det-req-ext.html:358
+#: templates/det-req-ext.html:621 templates/det-req-ext.html:626
+#: templates/det-req-ext.html:631 templates/det-req-ext.html:721
 #: templates/det-req-int.html:114 templates/det-req-int.html:117
 #: templates/det-req-int.html:143 templates/det-req-int.html:151
-#: templates/det-template.html:37 templates/list-nonconformities.html:216
+#: templates/det-req-int.html:387 templates/det-req-int.html:612
+#: templates/det-req-int.html:617 templates/det-req-int.html:622
+#: templates/det-template.html:38 templates/list-nonconformities.html:214
 #: templates/manage-pat-records.html:55 templates/manage-pat-records.html:135
 #: templates/manage-pat-records.html:181 templates/manage-pat-records.html:310
 #: templates/manage-pat-records.html:389 templates/manage-pat-records.html:435
@@ -259,13 +267,13 @@ msgstr "ການວິເຄາະ"
 #: templates/administrative-record.html:180 templates/det-doctor.html:18
 #: templates/det-hist-patient.html:17 templates/det-req-ext.html:181
 #: templates/det-req-ext.html:204 templates/det-req-ext.html:291
-#: templates/det-req-int.html:233 templates/det-req-int.html:321
+#: templates/det-req-int.html:233 templates/det-req-int.html:322
 #: templates/hist-analyzes.html:26 templates/hist-analyzes.html:69
 #: templates/hist-patients.html:20 templates/hist-patients.html:90
 #: templates/list-doctors.html:20 templates/list-doctors.html:80
-#: templates/list-laboratory.html:75 templates/list-records.html:62
+#: templates/list-laboratory.html:72 templates/list-records.html:62
 #: templates/setting-analyzes.html:80 templates/setting-det-analysis.html:22
-#: templates/setting-det-dict.html:45 templates/setting-dicts.html:36
+#: templates/setting-det-dict.html:45 templates/setting-dicts.html:32
 msgid "Code"
 msgstr "ລະຫັດ"
 
@@ -285,7 +293,7 @@ msgstr "ລະຫັດ"
 #: templates/list-template.html:31 templates/list-works.html:116
 #: templates/manage-pat-records.html:81 templates/manage-pat-records.html:336
 #: templates/setting-det-analysis.html:263 templates/setting-det-user.html:104
-#: templates/setting-dicts.html:20 templates/setting-dicts.html:68
+#: templates/setting-dicts.html:20 templates/setting-dicts.html:64
 #: templates/setting-functionnal-units.html:30
 #: templates/setting-link-unit-fam.html:22
 #: templates/setting-link-unit-user.html:24
@@ -320,8 +328,11 @@ msgid "Prix"
 msgstr "ລາຄາ"
 
 #: templates/administrative-record.html:166
-msgid "Transférée"
-msgstr ""
+#: templates/biological-validation.html:588 templates/det-req-ext.html:187
+#: templates/det-req-int.html:239 templates/enter-result.html:517
+#: templates/list-results.html:578 templates/technical-validation.html:498
+msgid "Sous-traitée"
+msgstr "ຜູ້ຖືກຈ້າງເໝົາຍ່ອຍ" 
 
 #: templates/administrative-record.html:173 templates/det-req-ext.html:194
 msgid "Actes de prélèvement"
@@ -345,14 +356,14 @@ msgstr "ການລາຍງານ"
 #: templates/det-manual.html:84 templates/det-meeting.html:56
 #: templates/det-procedure.html:85 templates/det-req-ext.html:179
 #: templates/det-req-ext.html:202 templates/det-req-ext.html:289
-#: templates/det-req-int.html:231 templates/det-req-int.html:319
+#: templates/det-req-int.html:231 templates/det-req-int.html:320
 #: templates/det-staff.html:101 templates/det-staff.html:126
 #: templates/det-staff.html:151 templates/det-staff.html:185
-#: templates/det-template.html:48 templates/hist-analyzes.html:68
+#: templates/det-template.html:49 templates/hist-analyzes.html:68
 #: templates/hist-patients.html:89 templates/hist-stock-product.html:52
 #: templates/list-ctrl-ext.html:30 templates/list-ctrl-int.html:30
 #: templates/list-doctors.html:79 templates/list-equipment.html:30
-#: templates/list-laboratory.html:50 templates/list-laboratory.html:73
+#: templates/list-laboratory.html:48 templates/list-laboratory.html:70
 #: templates/list-manuals.html:30 templates/list-meeting.html:30
 #: templates/list-nonconformities.html:55 templates/list-procedure.html:30
 #: templates/list-products.html:30 templates/list-records.html:134
@@ -362,7 +373,7 @@ msgstr "ການລາຍງານ"
 #: templates/res-control-ext.html:63 templates/setting-age-interval.html:29
 #: templates/setting-analyzes.html:79 templates/setting-det-analysis.html:262
 #: templates/setting-det-dict.html:43 templates/setting-dhis2.html:26
-#: templates/setting-dicts.html:67 templates/setting-epidemio.html:26
+#: templates/setting-dicts.html:63 templates/setting-epidemio.html:26
 #: templates/setting-functionnal-units.html:29
 #: templates/setting-indicator.html:26
 #: templates/setting-requesting-services.html:29
@@ -379,47 +390,47 @@ msgid "Date"
 msgstr "ວັນທີ"
 
 #: templates/administrative-record.html:202
-#: templates/biological-validation.html:665 templates/list-equipment.html:33
+#: templates/biological-validation.html:672 templates/list-equipment.html:33
 msgid "Modèle"
 msgstr "ຕົວແບບ"
 
 #: templates/administrative-record.html:212 templates/det-req-ext.html:218
-#: templates/det-req-int.html:248
+#: templates/det-req-int.html:249
 msgid "Facturation"
 msgstr "ໃບເກັບເງິນ"
 
 #: templates/administrative-record.html:216 templates/det-req-ext.html:222
-#: templates/det-req-int.html:252
+#: templates/det-req-int.html:253
 msgid "Prix total"
 msgstr "ລາຄາທັງໝົດ"
 
 #: templates/administrative-record.html:220 templates/det-req-ext.html:230
-#: templates/det-req-int.html:260
+#: templates/det-req-int.html:261
 msgid "Remise sur la facturation"
 msgstr "ສ່ວນຫຼຸດໃນໃບເກັບເງິນ"
 
 #: templates/administrative-record.html:224 templates/det-req-ext.html:239
-#: templates/det-req-int.html:269
+#: templates/det-req-int.html:270
 msgid "Pourcentage de la remise"
 msgstr "ເປີເຊັນສ່ວນຫຼຸດ"
 
 #: templates/administrative-record.html:228 templates/det-req-ext.html:247
-#: templates/det-req-int.html:277
+#: templates/det-req-int.html:278
 msgid "Pourcentage assurance maladie / mutuelle"
 msgstr "ປະກັນສຸຂະພາບ"
 
 #: templates/administrative-record.html:232 templates/det-req-ext.html:255
-#: templates/det-req-int.html:285 templates/report-billing.html:95
+#: templates/det-req-int.html:286 templates/report-billing.html:95
 msgid "Reste à payer"
 msgstr "ສ່ວນທີ່ເຫຼືອຕ້ອງຈ່າຍ"
 
 #: templates/administrative-record.html:236 templates/det-req-ext.html:263
-#: templates/det-req-int.html:293
+#: templates/det-req-int.html:294
 msgid "Numéro de quittance"
 msgstr "ນ້ຳເບີທີ່ໄດ້ຮັບ"
 
 #: templates/administrative-record.html:244 templates/det-req-ext.html:307
-#: templates/det-req-int.html:337
+#: templates/det-req-int.html:338
 msgid "Renseignements / Informations complémentaires"
 msgstr "ຂໍ້ມູນ"
 
@@ -434,7 +445,7 @@ msgstr "ເອກະສານຕິດຂັດ"
 #: templates/det-meeting.html:56 templates/det-procedure.html:85
 #: templates/det-staff.html:101 templates/det-staff.html:126
 #: templates/det-staff.html:151 templates/det-staff.html:185
-#: templates/det-template.html:48 templates/list-laboratory.html:50
+#: templates/det-template.html:49 templates/list-laboratory.html:48
 #: templates/list-template.html:34 templates/res-control-ext.html:63
 #: templates/setting-dhis2.html:26 templates/setting-epidemio.html:26
 #: templates/setting-indicator.html:26
@@ -442,157 +453,158 @@ msgid "Fichier"
 msgstr "ຟາຍ"
 
 #: templates/administrative-record.html:278 templates/analysis-import.html:34
-#: templates/dict-import.html:34 templates/list-laboratory.html:59
+#: templates/dict-import.html:34 templates/list-laboratory.html:56
 #: templates/user-import.html:31
 msgid "Enregistrer le document"
 msgstr "ບັນທຶກເອກະສານ"
 
 #: templates/administrative-record.html:286
 #: templates/biological-validation.html:94 templates/det-req-ext.html:322
-#: templates/det-req-int.html:352 templates/hist-analyzes.html:90
+#: templates/det-req-int.html:353 templates/hist-analyzes.html:90
 #: templates/hist-patients.html:113 templates/manage-pat-records.html:548
 #: templates/new-req-ext.html:31 templates/new-req-int.html:30
 #: templates/report-today.html:94 templates/setting-pref.html:114
 msgid "Quitter"
 msgstr "ອອກ"
 
-#: templates/administrative-record.html:290
+#: templates/administrative-record.html:296
 msgid "Bon de transfert"
-msgstr ""
+msgstr "ໃບບິນການໂອນ"
 
-#: templates/administrative-record.html:292
+#: templates/administrative-record.html:299
 msgid "Imprimer la facture"
 msgstr "ພິມໃບບິນ"
 
-#: templates/administrative-record.html:299
+#: templates/administrative-record.html:306
 msgid "Code barre"
 msgstr "ບາໂຄດ"
 
-#: templates/administrative-record.html:352 templates/det-equipment.html:127
+#: templates/administrative-record.html:359 templates/det-equipment.html:127
 #: templates/det-equipment.html:173 templates/det-equipment.html:631
 #: templates/det-manual.html:318 templates/det-meeting.html:200
-#: templates/det-procedure.html:319 templates/det-req-ext.html:600
-#: templates/det-req-ext.html:702 templates/det-req-ext.html:787
-#: templates/det-req-int.html:589 templates/det-req-int.html:683
+#: templates/det-procedure.html:319 templates/det-req-ext.html:601
+#: templates/det-req-ext.html:705 templates/det-req-ext.html:790
+#: templates/det-req-int.html:592 templates/det-req-int.html:696
 #: templates/det-staff.html:322 templates/list-doctors.html:212
-#: templates/list-equipment.html:116 templates/list-laboratory.html:131
-#: templates/list-laboratory.html:326 templates/list-manuals.html:119
-#: templates/list-meeting.html:114 templates/list-nonconformities.html:179
-#: templates/list-procedure.html:120 templates/list-records.html:303
-#: templates/list-suppliers.html:117 templates/list-template.html:117
+#: templates/list-equipment.html:115 templates/list-laboratory.html:127
+#: templates/list-laboratory.html:322 templates/list-manuals.html:118
+#: templates/list-meeting.html:112 templates/list-nonconformities.html:177
+#: templates/list-procedure.html:119 templates/list-records.html:300
+#: templates/list-suppliers.html:116 templates/list-template.html:116
 #: templates/list-works.html:263 templates/res-control-ext.html:207
 #: templates/setting-age-interval.html:80 templates/setting-analyzes.html:220
 #: templates/setting-det-analysis.html:304
 #: templates/setting-det-analysis.html:310
-#: templates/setting-det-analysis.html:629 templates/setting-det-dict.html:97
-#: templates/setting-dhis2.html:105 templates/setting-dicts.html:185
+#: templates/setting-det-analysis.html:630 templates/setting-det-dict.html:97
+#: templates/setting-dhis2.html:105 templates/setting-dicts.html:181
 #: templates/setting-functionnal-units.html:93
 #: templates/setting-requesting-services.html:79
 msgid "Supprimer"
 msgstr "ລຶບຖິ້ມ"
 
-#: templates/administrative-record.html:377 templates/det-equipment.html:706
-#: templates/list-records.html:340 templates/list-works.html:291
+#: templates/administrative-record.html:384 templates/det-equipment.html:706
+#: templates/list-records.html:337 templates/list-works.html:291
 msgid "Veuillez confirmer la suppression"
 msgstr "ກະລຸນາຢືນຢັນການລືບຂໍ້ມູນ"
 
-#: templates/administrative-record.html:398 templates/det-equipment.html:727
-#: templates/list-doctors.html:270 templates/list-equipment.html:169
-#: templates/list-manuals.html:180 templates/list-meeting.html:170
-#: templates/list-nonconformities.html:321 templates/list-procedure.html:182
+#: templates/administrative-record.html:405 templates/det-equipment.html:727
+#: templates/list-doctors.html:270 templates/list-equipment.html:168
+#: templates/list-manuals.html:179 templates/list-meeting.html:168
+#: templates/list-nonconformities.html:319 templates/list-procedure.html:181
 #: templates/list-products.html:159 templates/list-stock.html:281
-#: templates/list-suppliers.html:173 templates/list-template.html:178
-#: templates/setting-analyzes.html:286 templates/setting-dicts.html:227
+#: templates/list-suppliers.html:172 templates/list-template.html:177
+#: templates/setting-analyzes.html:286 templates/setting-dicts.html:223
 #: templates/setting-functionnal-units.html:143
 #: templates/setting-zipcity.html:145
 msgid "Erreur lors de la suppression des données"
 msgstr "ມີຂໍ້ຜິດພາດເມື່ອລຶບຂໍ້ມູນ"
 
-#: templates/administrative-record.html:453
-#: templates/administrative-record.html:457
-#: templates/administrative-record.html:509 templates/det-equipment.html:630
+#: templates/administrative-record.html:460
+#: templates/administrative-record.html:464
+#: templates/administrative-record.html:516 templates/det-equipment.html:630
 #: templates/det-manual.html:317 templates/det-meeting.html:199
 #: templates/det-procedure.html:318 templates/det-staff.html:321
-#: templates/det-template.html:56 templates/list-laboratory.html:323
+#: templates/det-template.html:57 templates/list-laboratory.html:320
 #: templates/res-control-ext.html:71 templates/res-control-ext.html:206
 #: templates/setting-dhis2.html:104 templates/setting-epidemio.html:104
 #: templates/setting-indicator.html:104
 msgid "Télécharger"
 msgstr "ດາວໂຫຼດ"
 
-#: templates/administrative-record.html:458
-#: templates/administrative-record.html:460
+#: templates/administrative-record.html:465
+#: templates/administrative-record.html:467
 msgid "Duplicata"
-msgstr ""
+msgstr "ຊໍ້າກັນ"
 
-#: templates/administrative-record.html:470
+#: templates/administrative-record.html:477
 msgid "Ré-éditer"
 msgstr "ແກ້ໄຂໃໝ່"
 
-#: templates/administrative-record.html:536
-#: templates/administrative-record.html:549
-#: templates/administrative-record.html:557 templates/det-control-ext.html:126
-#: templates/det-control-int.html:125 templates/det-hist-analysis.html:92
+#: templates/administrative-record.html:543
+#: templates/administrative-record.html:556
+#: templates/administrative-record.html:564 templates/det-control-ext.html:125
+#: templates/det-control-int.html:124 templates/det-hist-analysis.html:92
 #: templates/det-hist-patient.html:128 templates/det-list-stock.html:122
 #: templates/hist-analyzes.html:177 templates/hist-patients.html:199
-#: templates/hist-stock-product.html:153 templates/list-ctrl-ext.html:95
-#: templates/list-ctrl-int.html:95 templates/list-doctors.html:196
-#: templates/list-equipment.html:98 templates/list-manuals.html:101
-#: templates/list-meeting.html:96 templates/list-nonconformities.html:159
-#: templates/list-procedure.html:102 templates/list-products.html:92
-#: templates/list-samples.html:108 templates/list-staff.html:109
-#: templates/list-stock.html:196 templates/list-suppliers.html:99
-#: templates/list-template.html:95 templates/list-vars.html:90
+#: templates/hist-stock-product.html:153 templates/list-ctrl-ext.html:94
+#: templates/list-ctrl-int.html:94 templates/list-doctors.html:196
+#: templates/list-equipment.html:97 templates/list-manuals.html:100
+#: templates/list-meeting.html:95 templates/list-nonconformities.html:159
+#: templates/list-procedure.html:101 templates/list-products.html:92
+#: templates/list-samples.html:108 templates/list-staff.html:108
+#: templates/list-stock.html:196 templates/list-suppliers.html:98
+#: templates/list-template.html:94 templates/list-vars.html:90
 #: templates/pivot-table.html:151 templates/report-billing.html:225
 #: templates/report-today.html:173 templates/setting-analyzes.html:248
-#: templates/setting-dicts.html:168 templates/setting-users.html:199
+#: templates/setting-dicts.html:164 templates/setting-users.html:199
 #: templates/setting-zipcity.html:93
 msgid "Aucune donnée à afficher"
 msgstr "ບໍ່ມີຂໍ້ມູນໃຫ້ສະແດງ"
 
-#: templates/administrative-record.html:573 templates/setting-dhis2.html:89
+#: templates/administrative-record.html:580 templates/setting-dhis2.html:89
 #: templates/setting-epidemio.html:89 templates/setting-indicator.html:89
 msgid "Aucun fichier déposé"
 msgstr "ບໍ່ມີຟາຍອັບໂຫຼດ"
 
-#: templates/administrative-record.html:599
+#: templates/administrative-record.html:606
 msgid ""
 "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
 " y figurera)"
 msgstr "ທ່ານຕ້ອງການແກ້ໄຂລາຍງານໃໝ່ບໍ່? (ຍົກເລີກ ແລະ ທົດແທນຈະສະແດງຂຶ້ນ)"
 
-#: templates/administrative-record.html:618 templates/pivot-table.html:155
+#: templates/administrative-record.html:625 templates/pivot-table.html:155
 msgid "Une erreur est survenue lors du traitement"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນ"
 
-#: templates/administrative-record.html:651 templates/analysis-import.html:96
+#: templates/administrative-record.html:658 templates/analysis-import.html:96
 #: templates/det-equipment.html:665 templates/det-manual.html:352
 #: templates/det-meeting.html:234 templates/det-procedure.html:353
 #: templates/det-staff.html:356 templates/dict-import.html:85
-#: templates/list-laboratory.html:357 templates/res-control-ext.html:180
+#: templates/list-laboratory.html:353 templates/res-control-ext.html:180
 #: templates/setting-zipcity.html:222 templates/user-import.html:82
 msgid "Une erreur est survenue lors du dépot d'un fichier"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງອັບໂຫຼດຟາຍ"
 
-#: templates/administrative-record.html:658 templates/det-equipment.html:673
+#: templates/administrative-record.html:665 templates/det-equipment.html:673
 #: templates/det-manual.html:361 templates/det-procedure.html:361
-#: templates/det-staff.html:364 templates/list-laboratory.html:364
+#: templates/det-staff.html:364 templates/list-laboratory.html:360
 #: templates/setting-dhis2.html:116
 msgid "Le fichier sera définitivement supprimé"
 msgstr "ຟາຍຈະຖືກລຶບອອກຕະຫຼອດການ"
 
-#: templates/administrative-record.html:677 templates/det-equipment.html:692
+#: templates/administrative-record.html:684 templates/det-equipment.html:692
 #: templates/det-manual.html:380 templates/det-procedure.html:380
-#: templates/det-staff.html:383 templates/list-laboratory.html:383
+#: templates/det-staff.html:383 templates/list-laboratory.html:379
 #: templates/setting-dhis2.html:135
 msgid "Erreur lors de la suppression d'un fichier"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງລຶບຟາຍ"
 
-#: templates/administrative-record.html:705
-#: templates/administrative-record.html:734
-#: templates/administrative-record.html:741
-#: templates/biological-validation.html:862 templates/list-template.html:203
-#: templates/list-template.html:210
+#: templates/administrative-record.html:715
+#: templates/administrative-record.html:740
+#: templates/administrative-record.html:769
+#: templates/administrative-record.html:776
+#: templates/biological-validation.html:870 templates/list-template.html:202
+#: templates/list-template.html:209
 msgid "Erreur lors de la génération du PDF"
 msgstr "ເກີດຂໍ້ຜິດພາດລະວ່າງສ້າງ PDF File"
 
@@ -618,11 +630,11 @@ msgstr "ເພີ່ມການວິເຄາະໃໝ່ (ບໍ່ມີລ�
 
 #: templates/analysis-import.html:52 templates/det-control-ext.html:81
 #: templates/det-control-int.html:80 templates/det-list-stock.html:57
-#: templates/det-patient.html:273 templates/det-sample.html:148
+#: templates/det-patient.html:281 templates/det-sample.html:148
 #: templates/dict-import.html:41 templates/global-report.html:33
 #: templates/hist-stock-product.html:79 templates/list-ctrl-ext.html:51
 #: templates/list-ctrl-int.html:51 templates/list-doctors.html:109
-#: templates/list-equipment.html:54 templates/list-laboratory.html:86
+#: templates/list-equipment.html:54 templates/list-laboratory.html:83
 #: templates/list-manuals.html:57 templates/list-meeting.html:52
 #: templates/list-nonconformities.html:80 templates/list-procedure.html:58
 #: templates/list-products.html:55 templates/list-staff.html:66
@@ -631,7 +643,7 @@ msgstr "ເພີ່ມການວິເຄາະໃໝ່ (ບໍ່ມີລ�
 #: templates/quality-general.html:47 templates/report-dhis2.html:43
 #: templates/setting-age-interval.html:41 templates/setting-analyzes.html:102
 #: templates/setting-backup.html:45 templates/setting-det-dict.html:57
-#: templates/setting-dhis2.html:39 templates/setting-dicts.html:86
+#: templates/setting-dhis2.html:39 templates/setting-dicts.html:82
 #: templates/setting-epidemio.html:39 templates/setting-form.html:48
 #: templates/setting-functionnal-units.html:42
 #: templates/setting-indicator.html:39 templates/setting-link-unit-fam.html:30
@@ -648,8 +660,8 @@ msgstr "ກັບຄືນ"
 msgid "Importer des analyses"
 msgstr "ກຳລັງນຳການວິເຄາະເຂົ້າ"
 
-#: templates/analysis-import.html:89 templates/det-template.html:141
-#: templates/det-template.html:180 templates/dict-import.html:78
+#: templates/analysis-import.html:89 templates/det-template.html:142
+#: templates/det-template.html:181 templates/dict-import.html:78
 #: templates/setting-dhis2.html:67 templates/setting-epidemio.html:67
 #: templates/setting-indicator.html:67 templates/setting-zipcity.html:192
 #: templates/user-import.html:75
@@ -697,7 +709,7 @@ msgid "Accès non autorisé"
 msgstr "ການເຂົ້າເຖິງທີ່ບໍ່ໄດ້ຮັບອະນຸຍາດ"
 
 #: templates/biological-validation.html:5
-#: templates/biological-validation.html:16 templates/list-records.html:299
+#: templates/biological-validation.html:16 templates/list-records.html:297
 #: templates/list-works.html:261
 msgid "Validation biologique"
 msgstr "ການຢືນຢັນທາງຊີວະພາບ"
@@ -715,10 +727,10 @@ msgstr "ບໍ່ມີການວິເຄາະ"
 msgid "Validation des résultats cochés"
 msgstr "ການຢືນຢັນການກວດສອບຜົນ"
 
-#: templates/biological-validation.html:78 templates/enter-result.html:404
-#: templates/enter-result.html:686 templates/list-results.html:460
-#: templates/list-results.html:745 templates/technical-validation.html:414
-#: templates/technical-validation.html:546
+#: templates/biological-validation.html:78 templates/enter-result.html:416
+#: templates/enter-result.html:705 templates/list-results.html:474
+#: templates/list-results.html:765 templates/technical-validation.html:415
+#: templates/technical-validation.html:553
 msgid "Date de validation"
 msgstr "ການຢືນຢັນວັນທີ"
 
@@ -730,7 +742,7 @@ msgstr "ນັກຊີວະວິທະຍາ"
 #: templates/biological-validation.html:134 templates/det-control-ext.html:62
 #: templates/det-control-int.html:62 templates/det-equipment.html:120
 #: templates/det-equipment.html:166 templates/det-req-ext.html:298
-#: templates/det-req-int.html:328 templates/det-sample.html:137
+#: templates/det-req-int.html:329 templates/det-sample.html:137
 #: templates/det-supplier.html:73 templates/js/display_histo.js:39
 #: templates/non-conformity.html:750 templates/res-control-ext.html:49
 #: templates/res-control-int.html:52 templates/technical-validation.html:83
@@ -739,13 +751,13 @@ msgstr "ຄຳຄິດເຫັນ"
 
 #: templates/biological-validation.html:102 templates/det-list-stock.html:81
 #: templates/det-req-ext.html:326 templates/det-req-ext.html:328
-#: templates/det-req-int.html:356 templates/det-req-int.html:358
-#: templates/enter-result.html:432 templates/enter-result.html:714
-#: templates/list-results.html:488 templates/list-results.html:773
+#: templates/det-req-int.html:357 templates/det-req-int.html:359
+#: templates/enter-result.html:444 templates/enter-result.html:733
+#: templates/list-results.html:502 templates/list-results.html:793
 #: templates/setting-backup.html:66 templates/setting-backup.html:96
 #: templates/setting-backup.html:121 templates/setting-backup.html:146
-#: templates/technical-validation.html:442
-#: templates/technical-validation.html:574
+#: templates/technical-validation.html:443
+#: templates/technical-validation.html:581
 msgid "Valider"
 msgstr "ການຢືນຢັນ"
 
@@ -760,9 +772,9 @@ msgid "Motif"
 msgstr "ເຫດຜົນ"
 
 #: templates/biological-validation.html:139
-#: templates/biological-validation.html:157 templates/det-control-ext.html:87
-#: templates/det-control-int.html:86 templates/enter-result.html:75
-#: templates/list-ctrl-ext.html:57 templates/list-ctrl-int.html:57
+#: templates/biological-validation.html:157 templates/det-control-ext.html:86
+#: templates/det-control-int.html:85 templates/enter-result.html:75
+#: templates/list-ctrl-ext.html:56 templates/list-ctrl-int.html:56
 #: templates/technical-validation.html:88
 #: templates/technical-validation.html:106
 msgid "Ajouter"
@@ -771,9 +783,9 @@ msgstr "ເພີ່ມ"
 #: templates/biological-validation.html:140 templates/det-doctor.html:117
 #: templates/det-equipment.html:301 templates/det-list-stock.html:82
 #: templates/det-manual.html:94 templates/det-meeting.html:66
-#: templates/det-new-product.html:98 templates/det-procedure.html:95
+#: templates/det-new-product.html:91 templates/det-procedure.html:95
 #: templates/det-staff.html:202 templates/det-stock-product.html:90
-#: templates/det-supplier.html:82 templates/det-template.html:69
+#: templates/det-supplier.html:82 templates/det-template.html:70
 #: templates/hist-stock-product.html:182 templates/non-conformity.html:773
 #: templates/res-control-ext.html:84 templates/res-control-int.html:61
 #: templates/setting-backup.html:67 templates/setting-backup.html:97
@@ -800,62 +812,62 @@ msgstr "ການບັນທຶກຕໍ່ໃປ"
 msgid "Fin de la liste des dossiers"
 msgstr "ສິ້ນສຸດລາຍການບັນທຶກ"
 
-#: templates/biological-validation.html:325
+#: templates/biological-validation.html:326
 msgid "Une erreur est survenue du changement de statut du dossier"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການປ່ຽນແປງສະຖານະຂອງຟາຍ"
 
-#: templates/biological-validation.html:334
+#: templates/biological-validation.html:335
 msgid "Une erreur est survenue lors de création des résultats"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການສ້າງຜົນ"
 
-#: templates/biological-validation.html:343 templates/det-req-ext.html:1413
-#: templates/det-req-int.html:1249 templates/enter-result.html:817
-#: templates/technical-validation.html:232
+#: templates/biological-validation.html:344 templates/det-req-ext.html:1416
+#: templates/det-req-int.html:1284 templates/enter-result.html:837
+#: templates/technical-validation.html:233
 msgid "Une erreur est survenue lors de l'enregistrement des analyses"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງບັນທຶກການວິເຄາະ"
 
-#: templates/biological-validation.html:361
-#: templates/technical-validation.html:255
+#: templates/biological-validation.html:362
+#: templates/technical-validation.html:256
 msgid "Etes-vous sur de vouloir effacer ce résultat ?"
 msgstr "ທ່ານແນ່ໃຈທີ່ຈະລຶບຜົນບໍ່?"
 
-#: templates/biological-validation.html:380
-#: templates/technical-validation.html:274
+#: templates/biological-validation.html:381
+#: templates/technical-validation.html:275
 msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຕັ້ງຄ່າທີ່ປ້ອນເຂົ້າໃໝ່"
 
-#: templates/biological-validation.html:388
-#: templates/technical-validation.html:282
+#: templates/biological-validation.html:389
+#: templates/technical-validation.html:283
 msgid ""
 "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
 "irreversible."
 msgstr "ທ່ານແນ່ໃຈທີ່ຈະຍົກເລີກຜົນນີ້ບໍ່?\\n ການກະທຳນີ້ແມ່ນບໍ່ສາມາດປ່ຽນຄືນໄດ້"
 
-#: templates/biological-validation.html:429
-#: templates/technical-validation.html:323
+#: templates/biological-validation.html:430
+#: templates/technical-validation.html:324
 msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຍົກເລີກຄ່າທີ່ປ້ອນເຂົ້າ"
 
-#: templates/biological-validation.html:511
+#: templates/biological-validation.html:512
 msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
 msgstr "ຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຢືນຢັນຄ່າທາງຊີວະພາບທີ່ປ້ອນເຂົ້າ"
 
-#: templates/biological-validation.html:593
-#: templates/technical-validation.html:510
+#: templates/biological-validation.html:600
+#: templates/technical-validation.html:517
 msgid "Réinitialiser la valeur"
 msgstr "ການຕັ້ງມູນຄ່າຄືນ"
 
-#: templates/biological-validation.html:694 templates/det-control-ext.html:282
-#: templates/det-control-int.html:269 templates/det-equipment.html:323
+#: templates/biological-validation.html:701 templates/det-control-ext.html:281
+#: templates/det-control-int.html:268 templates/det-equipment.html:323
 #: templates/det-equipment.html:366 templates/det-equipment.html:403
 #: templates/det-equipment.html:440 templates/det-manual.html:111
 #: templates/det-manual.html:154 templates/det-manual.html:191
-#: templates/det-meeting.html:83 templates/det-new-product.html:114
+#: templates/det-meeting.html:83 templates/det-new-product.html:107
 #: templates/det-procedure.html:112 templates/det-procedure.html:155
 #: templates/det-procedure.html:192 templates/det-req-ext.html:368
-#: templates/det-req-ext.html:400 templates/det-req-int.html:395
-#: templates/det-req-int.html:427 templates/det-stock-product.html:107
-#: templates/enter-result.html:824 templates/list-results.html:89
+#: templates/det-req-ext.html:400 templates/det-req-int.html:397
+#: templates/det-req-int.html:429 templates/det-stock-product.html:107
+#: templates/enter-result.html:844 templates/list-results.html:89
 #: templates/manage-pat-records.html:568 templates/manage-pat-records.html:596
 #: templates/new-req-ext.html:48 templates/new-req-int.html:47
 #: templates/non-conformity.html:790 templates/non-conformity.html:833
@@ -863,33 +875,33 @@ msgstr "ການຕັ້ງມູນຄ່າຄືນ"
 #: templates/non-conformity.html:944 templates/non-conformity.html:981
 #: templates/report-billing.html:118 templates/setting-det-analysis.html:339
 #: templates/setting-det-analysis.html:451
-#: templates/setting-det-analysis.html:518 templates/setting-det-user.html:237
-#: templates/technical-validation.html:586
+#: templates/setting-det-analysis.html:519 templates/setting-det-user.html:237
+#: templates/technical-validation.html:593
 msgid "Cliquer pour commencer une recherche"
 msgstr "ກົດປຸ່ມເພື່ອຄົ້ນຫາ"
 
-#: templates/biological-validation.html:761 templates/enter-result.html:891
-#: templates/technical-validation.html:653
+#: templates/biological-validation.html:769 templates/enter-result.html:912
+#: templates/technical-validation.html:661
 msgid "Analyse déjà présente !"
 msgstr "ການຄົ້ນຫາແມ່ນປະກົດຂື້ນມາໃຫ້ເຫັນ"
 
-#: templates/biological-validation.html:786 templates/enter-result.html:916
-#: templates/technical-validation.html:678
+#: templates/biological-validation.html:794 templates/enter-result.html:937
+#: templates/technical-validation.html:686
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "ຄວາມຜິດພາດເວລາຮຽກຄືນການຄົ້ນຫາໃດໜຶ່ງ"
 
-#: templates/biological-validation.html:869 templates/setting-backup.html:692
+#: templates/biological-validation.html:877 templates/setting-backup.html:692
 #: templates/setting-backup.html:795 templates/skeleton.html:91
 msgid "Une erreur est survenue"
 msgstr "ມີຂໍ້​ຜິດ​ພາດ​ເກີດ​ຂຶ້ນ"
 
-#: templates/biological-validation.html:877
+#: templates/biological-validation.html:885
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr "ກະລຸນາເບິ່ງອີກເຈົ້າກຳລັງອອກການບັນທຶກປາດສະຈາກການຢືນຢັນຄືນ"
 
 #: templates/contributors.html:6 templates/contributors.html:27
 #: templates/contributors.html:54 templates/initialization.html:32
-#: templates/login.html:50 templates/skeleton.html:56
+#: templates/login.html:54 templates/skeleton.html:56
 msgid "Contributeurs"
 msgstr "ຜູ້ມີສ່ວນຮ່ວມ"
 
@@ -954,12 +966,12 @@ msgstr "ອຸປະກອນ"
 #: templates/det-control-ext.html:39 templates/det-control-int.html:39
 #: templates/det-doctor.html:120 templates/det-equipment.html:304
 #: templates/det-manual.html:97 templates/det-meeting.html:69
-#: templates/det-new-product.html:101 templates/det-patient.html:276
+#: templates/det-new-product.html:94 templates/det-patient.html:284
 #: templates/det-procedure.html:98 templates/det-sample.html:151
 #: templates/det-staff.html:205 templates/det-stock-product.html:93
-#: templates/det-supplier.html:85 templates/det-template.html:72
-#: templates/enter-result.html:399 templates/enter-result.html:681
-#: templates/list-results.html:455 templates/list-results.html:740
+#: templates/det-supplier.html:85 templates/det-template.html:73
+#: templates/enter-result.html:412 templates/enter-result.html:701
+#: templates/list-results.html:470 templates/list-results.html:761
 #: templates/non-conformity.html:776 templates/res-control-ext.html:87
 #: templates/res-control-int.html:64 templates/setting-age-interval.html:44
 #: templates/setting-det-analysis.html:321 templates/setting-det-dict.html:60
@@ -988,7 +1000,7 @@ msgstr "ການບັນທຶກ"
 #: templates/list-template.html:14 templates/list-vars.html:14
 #: templates/list-works.html:79 templates/report-billing.html:50
 #: templates/report-today.html:41 templates/setting-analyzes.html:63
-#: templates/setting-dicts.html:51 templates/setting-users.html:70
+#: templates/setting-dicts.html:47 templates/setting-users.html:70
 #: templates/setting-zipcity.html:21
 msgid "Nombre total de lignes"
 msgstr "ຈຳນວນແຖວທັງໝົດ"
@@ -1021,8 +1033,8 @@ msgstr "ຈຳນວນແຖວທັງໝົດ"
 #: templates/list-works.html:126 templates/report-billing.html:55
 #: templates/report-billing.html:84 templates/report-today.html:46
 #: templates/report-today.html:81 templates/setting-analyzes.html:67
-#: templates/setting-analyzes.html:93 templates/setting-dicts.html:55
-#: templates/setting-dicts.html:77 templates/setting-users.html:74
+#: templates/setting-analyzes.html:93 templates/setting-dicts.html:51
+#: templates/setting-dicts.html:73 templates/setting-users.html:74
 #: templates/setting-users.html:103 templates/setting-zipcity.html:25
 #: templates/setting-zipcity.html:47
 msgid "Premier"
@@ -1056,8 +1068,8 @@ msgstr "ທຳອິດ"
 #: templates/list-works.html:127 templates/report-billing.html:56
 #: templates/report-billing.html:85 templates/report-today.html:47
 #: templates/report-today.html:82 templates/setting-analyzes.html:68
-#: templates/setting-analyzes.html:94 templates/setting-dicts.html:56
-#: templates/setting-dicts.html:78 templates/setting-users.html:75
+#: templates/setting-analyzes.html:94 templates/setting-dicts.html:52
+#: templates/setting-dicts.html:74 templates/setting-users.html:75
 #: templates/setting-users.html:104 templates/setting-zipcity.html:26
 #: templates/setting-zipcity.html:48
 msgid "Précédent"
@@ -1091,8 +1103,8 @@ msgstr "ກ່ອນໜ້ານີ້"
 #: templates/list-works.html:129 templates/report-billing.html:58
 #: templates/report-billing.html:87 templates/report-today.html:49
 #: templates/report-today.html:84 templates/setting-analyzes.html:70
-#: templates/setting-analyzes.html:96 templates/setting-dicts.html:58
-#: templates/setting-dicts.html:80 templates/setting-users.html:77
+#: templates/setting-analyzes.html:96 templates/setting-dicts.html:54
+#: templates/setting-dicts.html:76 templates/setting-users.html:77
 #: templates/setting-users.html:106 templates/setting-zipcity.html:28
 #: templates/setting-zipcity.html:50
 msgid "Suivant"
@@ -1126,8 +1138,8 @@ msgstr "ຕໍ່ໃປ"
 #: templates/list-works.html:130 templates/report-billing.html:59
 #: templates/report-billing.html:88 templates/report-today.html:50
 #: templates/report-today.html:85 templates/setting-analyzes.html:71
-#: templates/setting-analyzes.html:97 templates/setting-dicts.html:59
-#: templates/setting-dicts.html:81 templates/setting-users.html:78
+#: templates/setting-analyzes.html:97 templates/setting-dicts.html:55
+#: templates/setting-dicts.html:77 templates/setting-users.html:78
 #: templates/setting-users.html:107 templates/setting-zipcity.html:29
 #: templates/setting-zipcity.html:51
 msgid "Dernier"
@@ -1140,14 +1152,14 @@ msgstr "ສຸດທ້າຍ"
 #: templates/hist-patients.html:88 templates/hist-stock-product.html:51
 #: templates/list-ctrl-ext.html:29 templates/list-ctrl-int.html:29
 #: templates/list-doctors.html:78 templates/list-equipment.html:29
-#: templates/list-laboratory.html:72 templates/list-manuals.html:29
+#: templates/list-laboratory.html:69 templates/list-manuals.html:29
 #: templates/list-meeting.html:29 templates/list-nonconformities.html:54
 #: templates/list-procedure.html:29 templates/list-products.html:29
 #: templates/list-staff.html:29 templates/list-stock.html:72
 #: templates/list-suppliers.html:29 templates/list-template.html:29
 #: templates/setting-age-interval.html:28 templates/setting-analyzes.html:78
 #: templates/setting-det-analysis.html:261 templates/setting-det-dict.html:42
-#: templates/setting-dicts.html:66 templates/setting-functionnal-units.html:28
+#: templates/setting-dicts.html:62 templates/setting-functionnal-units.html:28
 #: templates/setting-requesting-services.html:28
 #: templates/setting-users.html:85 templates/setting-zipcity.html:36
 msgid "serial"
@@ -1167,58 +1179,58 @@ msgstr "ຜູ້ສະໜອງ"
 msgid "Résultat"
 msgstr "ຜັນ"
 
-#: templates/det-control-ext.html:86 templates/det-control-int.html:85
+#: templates/det-control-ext.html:85 templates/det-control-int.html:84
 #: templates/hist-analyzes.html:93 templates/hist-patients.html:116
-#: templates/list-ctrl-ext.html:56 templates/list-ctrl-int.html:56
-#: templates/list-doctors.html:112 templates/list-equipment.html:59
-#: templates/list-manuals.html:62 templates/list-meeting.html:57
-#: templates/list-nonconformities.html:83 templates/list-procedure.html:63
-#: templates/list-staff.html:71 templates/list-stock.html:104
-#: templates/list-suppliers.html:60 templates/pivot-table.html:64
+#: templates/list-ctrl-ext.html:55 templates/list-ctrl-int.html:55
+#: templates/list-doctors.html:112 templates/list-equipment.html:58
+#: templates/list-manuals.html:61 templates/list-meeting.html:56
+#: templates/list-nonconformities.html:83 templates/list-procedure.html:62
+#: templates/list-staff.html:70 templates/list-stock.html:104
+#: templates/list-suppliers.html:59 templates/pivot-table.html:64
 #: templates/report-today.html:97
 msgid "Export des données"
 msgstr "ວັນທີສົ່ງອອກ"
 
-#: templates/det-control-ext.html:143 templates/det-control-int.html:142
-#: templates/list-ctrl-ext.html:112 templates/list-ctrl-int.html:112
-#: templates/list-doctors.html:211 templates/list-equipment.html:115
-#: templates/list-manuals.html:118 templates/list-meeting.html:113
-#: templates/list-nonconformities.html:178 templates/list-procedure.html:119
-#: templates/list-staff.html:126 templates/list-suppliers.html:116
-#: templates/list-template.html:112 templates/setting-analyzes.html:211
-#: templates/setting-dicts.html:183
+#: templates/det-control-ext.html:142 templates/det-control-int.html:141
+#: templates/list-ctrl-ext.html:111 templates/list-ctrl-int.html:111
+#: templates/list-doctors.html:211 templates/list-equipment.html:114
+#: templates/list-manuals.html:117 templates/list-meeting.html:111
+#: templates/list-nonconformities.html:176 templates/list-procedure.html:118
+#: templates/list-staff.html:125 templates/list-suppliers.html:115
+#: templates/list-template.html:111 templates/setting-analyzes.html:211
+#: templates/setting-dicts.html:179
 msgid "Editer"
 msgstr "ແກ້ໄຂ "
 
-#: templates/det-control-ext.html:152 templates/res-control-ext.html:41
+#: templates/det-control-ext.html:151 templates/res-control-ext.html:41
 msgid "Conforme"
 msgstr "ສອດຄ່ອງ"
 
-#: templates/det-control-ext.html:153 templates/res-control-ext.html:42
+#: templates/det-control-ext.html:152 templates/res-control-ext.html:42
 msgid "Non conforme"
 msgstr "ບໍ່ສອດຄ່ອງ"
 
-#: templates/det-control-ext.html:154 templates/list-samples.html:56
+#: templates/det-control-ext.html:153 templates/list-samples.html:56
 #: templates/non-conformity.html:623
 msgid "Autre"
 msgstr "ອື່ນໆ"
 
-#: templates/det-control-ext.html:187 templates/det-control-int.html:174
+#: templates/det-control-ext.html:186 templates/det-control-int.html:173
 msgid "Veuillez saisir un nom de paramètre."
 msgstr "ກະລຸນາປ້ອນຊື່ພາຣາມິດເຕີ້"
 
-#: templates/det-control-ext.html:190 templates/det-control-int.html:177
+#: templates/det-control-ext.html:189 templates/det-control-int.html:176
 msgid "Veuillez sélectionner un équipement."
 msgstr "ກະລຸນາເລືອກເຄື່ອງມື"
 
-#: templates/det-control-ext.html:212 templates/det-control-int.html:199
-#: templates/list-laboratory.html:303 templates/manage-pat-records.html:731
+#: templates/det-control-ext.html:211 templates/det-control-int.html:198
+#: templates/list-laboratory.html:300 templates/manage-pat-records.html:731
 #: templates/res-control-ext.html:143 templates/res-control-int.html:116
 #: templates/setting-age-interval.html:217 templates/setting-backup.html:330
-#: templates/setting-det-analysis.html:1040 templates/setting-det-dict.html:291
-#: templates/setting-det-dict.html:301 templates/setting-form.html:83
+#: templates/setting-det-analysis.html:1041 templates/setting-det-dict.html:291
+#: templates/setting-det-dict.html:301 templates/setting-form.html:81
 #: templates/setting-functionnal-units.html:251
-#: templates/setting-link-unit-fam.html:146
+#: templates/setting-link-unit-fam.html:142
 #: templates/setting-link-unit-user.html:148 templates/setting-pref.html:187
 #: templates/setting-rec-num.html:68 templates/setting-report.html:68
 #: templates/setting-requesting-services.html:211
@@ -1226,23 +1238,23 @@ msgstr "ກະລຸນາເລືອກເຄື່ອງມື"
 msgid "Enregistrement réussi"
 msgstr "ການລົງທະບຽນສຳເລັດ"
 
-#: templates/det-control-ext.html:221 templates/det-control-int.html:208
+#: templates/det-control-ext.html:220 templates/det-control-int.html:207
 #: templates/det-doctor.html:190 templates/det-equipment.html:575
 #: templates/det-list-stock.html:219 templates/det-manual.html:292
-#: templates/det-meeting.html:174 templates/det-new-product.html:214
+#: templates/det-meeting.html:174 templates/det-new-product.html:205
 #: templates/det-procedure.html:293 templates/det-sample.html:223
 #: templates/det-staff.html:278 templates/det-stock-product.html:242
-#: templates/det-supplier.html:147 templates/det-template.html:159
-#: templates/homepage.html:133 templates/list-laboratory.html:308
-#: templates/manage-pat-records.html:736 templates/non-conformity.html:1377
+#: templates/det-supplier.html:147 templates/det-template.html:160
+#: templates/homepage.html:132 templates/list-laboratory.html:305
+#: templates/manage-pat-records.html:736 templates/non-conformity.html:1383
 #: templates/res-control-ext.html:150 templates/res-control-int.html:123
 #: templates/setting-age-interval.html:222 templates/setting-analyzes.html:391
 #: templates/setting-analyzes.html:430 templates/setting-backup.html:334
-#: templates/setting-backup.html:343 templates/setting-det-analysis.html:1048
+#: templates/setting-backup.html:343 templates/setting-det-analysis.html:1049
 #: templates/setting-det-dict.html:296 templates/setting-det-dict.html:306
-#: templates/setting-det-user.html:379 templates/setting-form.html:88
+#: templates/setting-det-user.html:379 templates/setting-form.html:86
 #: templates/setting-functionnal-units.html:257
-#: templates/setting-link-unit-fam.html:152
+#: templates/setting-link-unit-fam.html:148
 #: templates/setting-link-unit-user.html:154 templates/setting-pref.html:192
 #: templates/setting-pwd-user.html:85 templates/setting-rec-num.html:73
 #: templates/setting-report.html:73
@@ -1251,34 +1263,34 @@ msgstr "ການລົງທະບຽນສຳເລັດ"
 msgid "Une erreur est survenue lors de l'enregistrement"
 msgstr "ຄວາມຜິດພາດປະກົດຂື້ນເວລາເກັບຂໍ້ມູນ"
 
-#: templates/det-control-ext.html:273 templates/det-control-int.html:260
+#: templates/det-control-ext.html:272 templates/det-control-int.html:259
 #: templates/hist-analyzes.html:274 templates/hist-patients.html:296
-#: templates/list-ctrl-ext.html:179 templates/list-ctrl-int.html:179
-#: templates/list-equipment.html:222 templates/list-manuals.html:233
-#: templates/list-meeting.html:223 templates/list-nonconformities.html:286
-#: templates/list-procedure.html:235 templates/list-staff.html:204
-#: templates/list-suppliers.html:226 templates/report-today.html:252
+#: templates/list-ctrl-ext.html:178 templates/list-ctrl-int.html:178
+#: templates/list-equipment.html:221 templates/list-manuals.html:232
+#: templates/list-meeting.html:221 templates/list-nonconformities.html:284
+#: templates/list-procedure.html:234 templates/list-staff.html:203
+#: templates/list-suppliers.html:225 templates/report-today.html:252
 #: templates/user-conn-export.html:79
 msgid "Aucun résultats à exporter !"
 msgstr "ບໍ່ມີຜົນການສົ່ງອອກ"
 
-#: templates/det-control-ext.html:275 templates/det-control-int.html:262
-#: templates/det-list-stock.html:278 templates/enter-result.html:971
-#: templates/global-report.html:85 templates/hist-analyzes.html:276
+#: templates/det-control-ext.html:274 templates/det-control-int.html:261
+#: templates/det-list-stock.html:278 templates/enter-result.html:992
+#: templates/global-report.html:91 templates/hist-analyzes.html:276
 #: templates/hist-patients.html:298 templates/hist-stock-product.html:345
-#: templates/list-ctrl-ext.html:181 templates/list-ctrl-int.html:181
-#: templates/list-doctors.html:335 templates/list-equipment.html:224
-#: templates/list-manuals.html:235 templates/list-meeting.html:225
-#: templates/list-nonconformities.html:288 templates/list-procedure.html:237
-#: templates/list-results.html:898 templates/list-staff.html:206
+#: templates/list-ctrl-ext.html:180 templates/list-ctrl-int.html:180
+#: templates/list-doctors.html:335 templates/list-equipment.html:223
+#: templates/list-manuals.html:234 templates/list-meeting.html:223
+#: templates/list-nonconformities.html:286 templates/list-procedure.html:236
+#: templates/list-results.html:918 templates/list-staff.html:205
 #: templates/list-stock.html:352 templates/list-stock.html:394
 #: templates/list-stock.html:436 templates/list-stock.html:478
-#: templates/list-suppliers.html:228 templates/report-activity.html:619
+#: templates/list-suppliers.html:227 templates/report-activity.html:619
 #: templates/report-activity.html:671 templates/report-activity.html:719
 #: templates/report-billing.html:297 templates/report-dhis2.html:104
 #: templates/report-epidemio.html:140 templates/report-indicator.html:140
 #: templates/report-statistic.html:595 templates/report-today.html:254
-#: templates/setting-analyzes.html:348 templates/setting-dicts.html:288
+#: templates/setting-analyzes.html:348 templates/setting-dicts.html:284
 #: templates/setting-users.html:336 templates/user-conn-export.html:81
 #: templates/whonet-export.html:81
 msgid "Erreur lors de la génération du fichier"
@@ -1353,7 +1365,7 @@ msgstr "ສະຖານທີ່ເຮັດວຽກ"
 msgid "Service"
 msgstr "ການບໍລິການ"
 
-#: templates/det-doctor.html:67 templates/det-patient.html:204
+#: templates/det-doctor.html:67 templates/det-patient.html:212
 #: templates/det-staff.html:59 templates/det-supplier.html:43
 #: templates/list-doctors.html:86 templates/list-staff.html:35
 #: templates/list-suppliers.html:37 templates/manage-pat-records.html:235
@@ -1388,7 +1400,7 @@ msgstr "ໂທລະສານ"
 msgid "Adresse email"
 msgstr "ອີເມວ"
 
-#: templates/det-doctor.html:152 templates/det-template.html:94
+#: templates/det-doctor.html:152 templates/det-template.html:95
 msgid "Veuillez saisir un nom."
 msgstr "ກະລຸນາປ້ອນຊື່ໃສ່"
 
@@ -1563,7 +1575,7 @@ msgstr "ລະຫັດຫ້ອງວິເຄາະ"
 msgid "Date de naissance"
 msgstr "ວັນ ເດືອນ ປີ ເກີດ"
 
-#: templates/det-hist-patient.html:37 templates/det-patient.html:156
+#: templates/det-hist-patient.html:37 templates/det-patient.html:164
 #: templates/hist-patients.html:54 templates/hist-patients.html:95
 #: templates/manage-pat-records.html:190 templates/manage-pat-records.html:444
 msgid "Sexe"
@@ -1611,9 +1623,8 @@ msgid "Prix d'achat"
 msgstr "ລາຄາຊື້"
 
 #: templates/det-list-stock.html:39 templates/list-stock.html:42
-#, fuzzy
 msgid "Bailleur"
-msgstr "ຄ່າ"
+msgstr "ຜູ້ສະໜອງ"
 
 #: templates/det-list-stock.html:60
 msgid "Historique consommation"
@@ -1727,26 +1738,20 @@ msgstr "ຂອບເຂດຄວາມປອດໄພ"
 msgid "Référence fournisseur"
 msgstr "ການອ້າງອີງຫາຜູ້ສະໜອງ"
 
-#: templates/det-new-product.html:69
-#, fuzzy
-msgid "Référence catalogue"
-msgstr "ການອ້າງອີງຫາຜູ້ສະໜອງ"
-
-#: templates/det-new-product.html:76 templates/list-products.html:37
+#: templates/det-new-product.html:69 templates/list-products.html:37
 #: templates/list-stock.html:32 templates/list-stock.html:80
 msgid "Conservation"
 msgstr "ການຮັກສາ"
 
-#: templates/det-new-product.html:86
-#, fuzzy
+#: templates/det-new-product.html:79
 msgid "Date d'expiration obligatoire"
-msgstr "ວັນທີໝົດອາຍຸ"
+msgstr "ວັນທີໝົດອາຍຸ ຕ້ອງໃສ່"
 
-#: templates/det-new-product.html:170
+#: templates/det-new-product.html:162
 msgid "Veuillez saisir un nom de produit."
 msgstr "ກະລຸນາປ້ອນຊື່ຜະລິດຕະພັນ"
 
-#: templates/det-new-product.html:173
+#: templates/det-new-product.html:165
 msgid "Veuillez saisir un nombre de produits par paquet supérieur à 0."
 msgstr "ກະລຸນາປ້ອນຈໍານວນຜະລິດຕະພັນຕໍ່ຊຸດໃຫ້ໂຕເລກຫຼາຍກວ່າ ສູນ (0)"
 
@@ -1767,110 +1772,110 @@ msgstr "ບໍ່ລະບຸຊື່"
 msgid "Code patient interne au laboratoire"
 msgstr "ລະຫັດຄົນເຈັບພາຍໃນຫ້ອງວິເຄາະ"
 
-#: templates/det-patient.html:71 templates/manage-pat-records.html:91
+#: templates/det-patient.html:73 templates/manage-pat-records.html:91
 #: templates/manage-pat-records.html:346
 msgid "Deuxième nom"
 msgstr "ຊື່ທີສອງ"
 
-#: templates/det-patient.html:79 templates/manage-pat-records.html:130
+#: templates/det-patient.html:83 templates/manage-pat-records.html:130
 #: templates/manage-pat-records.html:384
 msgid "Date de naissance approximative"
 msgstr "ວັນ ເດືອນ ປີ ເກີດ"
 
-#: templates/det-patient.html:90 templates/manage-pat-records.html:101
+#: templates/det-patient.html:96 templates/manage-pat-records.html:101
 #: templates/manage-pat-records.html:356
 msgid "Nom de jeune fille"
 msgstr "ຊື່ເພດຍິງ"
 
-#: templates/det-patient.html:98 templates/list-results.html:45
+#: templates/det-patient.html:106 templates/list-results.html:45
 #: templates/manage-pat-records.html:141 templates/manage-pat-records.html:395
 msgid "ou"
 msgstr "ຫຼື"
 
-#: templates/det-patient.html:98 templates/manage-pat-records.html:146
+#: templates/det-patient.html:106 templates/manage-pat-records.html:146
 #: templates/manage-pat-records.html:400
 msgid "Age"
 msgstr "ອາຍຸ"
 
-#: templates/det-patient.html:106 templates/manage-pat-records.html:154
+#: templates/det-patient.html:114 templates/manage-pat-records.html:154
 #: templates/manage-pat-records.html:408
 msgid "unité"
 msgstr "ຫົວໜ່ວຍ"
 
-#: templates/det-patient.html:117 templates/manage-pat-records.html:111
+#: templates/det-patient.html:125 templates/manage-pat-records.html:111
 #: templates/manage-pat-records.html:366
 msgid "Prénom(s)"
 msgstr "ຊື່"
 
-#: templates/det-patient.html:127 templates/manage-pat-records.html:169
+#: templates/det-patient.html:135 templates/manage-pat-records.html:169
 #: templates/manage-pat-records.html:423
 msgid "Nationalité"
 msgstr "ສັນຊາດ"
 
-#: templates/det-patient.html:141 templates/manage-pat-records.html:176
+#: templates/det-patient.html:149 templates/manage-pat-records.html:176
 #: templates/manage-pat-records.html:430
 msgid "Résident"
 msgstr "ທີ່ຢູ່"
 
-#: templates/det-patient.html:172 templates/manage-pat-records.html:207
+#: templates/det-patient.html:180 templates/manage-pat-records.html:207
 #: templates/manage-pat-records.html:461
 msgid "Groupe sanguin"
 msgstr "ກຸບເລືອດ"
 
-#: templates/det-patient.html:186 templates/manage-pat-records.html:216
+#: templates/det-patient.html:194 templates/manage-pat-records.html:216
 #: templates/manage-pat-records.html:470
 msgid "Rhésus"
 msgstr "Rhesus"
 
-#: templates/det-patient.html:199 templates/manage-pat-records.html:230
+#: templates/det-patient.html:207 templates/manage-pat-records.html:230
 #: templates/manage-pat-records.html:484
 msgid "Coordonnées"
 msgstr "ຂໍ້ມູນການຕິດຕໍ່"
 
-#: templates/det-patient.html:210 templates/det-patient.html:216
+#: templates/det-patient.html:218 templates/det-patient.html:224
 #: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
 #: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
 msgid "Téléphone"
 msgstr "ໂທລະສັບ"
 
-#: templates/det-patient.html:224 templates/manage-pat-records.html:285
+#: templates/det-patient.html:232 templates/manage-pat-records.html:285
 #: templates/manage-pat-records.html:535
 msgid "Profession"
 msgstr "ອາຊີບ"
 
-#: templates/det-patient.html:239 templates/manage-pat-records.html:243
+#: templates/det-patient.html:247 templates/manage-pat-records.html:243
 #: templates/manage-pat-records.html:497
 msgid "Boite postale"
 msgstr "ທີ່ຢູ່ໄປສະນີ"
 
-#: templates/det-patient.html:248 templates/manage-pat-records.html:249
+#: templates/det-patient.html:256 templates/manage-pat-records.html:249
 #: templates/manage-pat-records.html:503
 msgid "Quartier / Secteur"
 msgstr "ກຸ່ມບ້ານ/ພາກສ່ວນ"
 
-#: templates/det-patient.html:256 templates/manage-pat-records.html:259
+#: templates/det-patient.html:264 templates/manage-pat-records.html:259
 #: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
 msgid "Code postal"
 msgstr "ລະຫັດຊິບໂຄດ"
 
-#: templates/det-patient.html:262 templates/manage-pat-records.html:265
+#: templates/det-patient.html:270 templates/manage-pat-records.html:265
 #: templates/manage-pat-records.html:515
 msgid "Ville / Village"
 msgstr "ເມືອງ/ບ້ານ"
 
-#: templates/det-patient.html:354
+#: templates/det-patient.html:372
 msgid "Veuillez sélectionner une date de naissance ou saisir un age"
 msgstr "ກະລຸນາເລືອກວັນເດືອປີເກີດ ຫຼື ປ້ອນອາຍຸ"
 
-#: templates/det-patient.html:415
+#: templates/det-patient.html:433
 msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາການແກ້ໄຂ/ຕື່ມຈຳນວນຄົນເຈັບ"
 
-#: templates/det-patient.html:475 templates/manage-pat-records.html:947
+#: templates/det-patient.html:493 templates/manage-pat-records.html:947
 msgid "Recherche de code postal ou ville"
 msgstr "ການຊອກຫາລະຫັດໄປສະນີ ຫຼື ເມືອງ"
 
-#: templates/det-patient.html:522 templates/manage-pat-records.html:994
+#: templates/det-patient.html:540 templates/manage-pat-records.html:994
 msgid "Erreur lors de la récupération des données"
 msgstr "ເກີດການຜິດພາດລະວ່າງກູ້ຂໍ້ມູນຄືນ"
 
@@ -1910,24 +1915,20 @@ msgstr "ແກ້ໄຂຂໍ້ມູນຂອງຄົນເຈັບ"
 msgid "Rechercher une analyse"
 msgstr "ຄົ້ນຫາການວິເຄາະໃດໜຶ່ງ"
 
-#: templates/det-req-ext.html:187
-msgid "Transferée"
-msgstr ""
-
-#: templates/det-req-ext.html:276 templates/det-req-int.html:306
+#: templates/det-req-ext.html:276 templates/det-req-int.html:307
 #: templates/det-sample.html:5 templates/det-sample.html:14
 msgid "Produits pathologiques"
 msgstr "ບັນດາເຊື້ອໃຫ້ພະຍາດ"
 
-#: templates/det-req-ext.html:280 templates/det-req-int.html:310
+#: templates/det-req-ext.html:280 templates/det-req-int.html:311
 msgid "Ajouter un prélèvement"
 msgstr "ຕຶ່ມຕົວຢ່າງໃສ່"
 
-#: templates/det-req-ext.html:292 templates/det-req-int.html:322
+#: templates/det-req-ext.html:292 templates/det-req-int.html:323
 msgid "Prod. pathol."
 msgstr "ບັນດາເຊື້ອໃຫ້ພະຍາດ"
 
-#: templates/det-req-ext.html:293 templates/det-req-int.html:323
+#: templates/det-req-ext.html:293 templates/det-req-int.html:324
 #: templates/det-sample.html:56 templates/list-records.html:70
 #: templates/list-records.html:137 templates/list-works.html:101
 #: templates/setting-analyzes.html:84 templates/setting-det-user.html:84
@@ -1935,109 +1936,109 @@ msgstr "ບັນດາເຊື້ອໃຫ້ພະຍາດ"
 msgid "Statut"
 msgstr "ສະຖານະ"
 
-#: templates/det-req-ext.html:294 templates/det-req-int.html:324
+#: templates/det-req-ext.html:294 templates/det-req-int.html:325
 msgid "Date prél."
 msgstr "ວັນທີເກັບຕົວຢ່າງ"
 
-#: templates/det-req-ext.html:295 templates/det-req-int.html:325
+#: templates/det-req-ext.html:295 templates/det-req-int.html:326
 msgid "Date réception"
 msgstr "ວັນທີຮັບ"
 
-#: templates/det-req-ext.html:296 templates/det-req-int.html:326
+#: templates/det-req-ext.html:296 templates/det-req-int.html:327
 #: templates/det-sample.html:102
 msgid "Préleveur"
 msgstr "ຜູ້ເກັບຕົວຢ່າງ"
 
-#: templates/det-req-ext.html:297 templates/det-req-int.html:327
+#: templates/det-req-ext.html:297 templates/det-req-int.html:328
 msgid "Qté"
 msgstr "ຈໍານວນ"
 
-#: templates/det-req-ext.html:524
+#: templates/det-req-ext.html:525
 msgid "Erreur lors la récupération des prélèvements"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນເມື່ອດຶງຕົວຢ່າງອອກ"
 
-#: templates/det-req-ext.html:563 templates/det-req-int.html:552
+#: templates/det-req-ext.html:564 templates/det-req-int.html:555
 msgid "Erreur lors la récupération des produits pathologiques"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການຄົ້ນຫາບັນດາເຊື້ອໃຫ້ພະຍາດ"
 
-#: templates/det-req-ext.html:572 templates/det-req-int.html:561
+#: templates/det-req-ext.html:573 templates/det-req-int.html:564
 msgid "Erreur lors de la récupération des analyses"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການຄົ້ນຫາບັນດາເຊື້ອໃຫ້ພະຍາດ"
 
-#: templates/det-req-ext.html:662 templates/det-req-ext.html:749
-#: templates/det-req-ext.html:824 templates/det-req-int.html:643
-#: templates/det-req-int.html:720 templates/list-doctors.html:246
-#: templates/list-equipment.html:145 templates/list-laboratory.html:153
-#: templates/list-manuals.html:156 templates/list-meeting.html:146
-#: templates/list-nonconformities.html:297 templates/list-procedure.html:158
-#: templates/list-suppliers.html:149 templates/list-template.html:154
+#: templates/det-req-ext.html:663 templates/det-req-ext.html:752
+#: templates/det-req-ext.html:827 templates/det-req-int.html:654
+#: templates/det-req-int.html:733 templates/list-doctors.html:246
+#: templates/list-equipment.html:144 templates/list-laboratory.html:149
+#: templates/list-manuals.html:155 templates/list-meeting.html:144
+#: templates/list-nonconformities.html:295 templates/list-procedure.html:157
+#: templates/list-suppliers.html:148 templates/list-template.html:153
 #: templates/setting-age-interval.html:97
-#: templates/setting-det-analysis.html:591
-#: templates/setting-det-analysis.html:730 templates/setting-det-dict.html:116
-#: templates/setting-dicts.html:209
+#: templates/setting-det-analysis.html:592
+#: templates/setting-det-analysis.html:731 templates/setting-det-dict.html:116
+#: templates/setting-dicts.html:205
 #: templates/setting-functionnal-units.html:119
 #: templates/setting-requesting-services.html:95
 #: templates/setting-zipcity.html:121
 msgid "Merci de confirmer la suppression"
 msgstr "ກະລຸນາຢືນຢັນກ່ອນລຶບຖີ້ມ"
 
-#: templates/det-req-ext.html:1146 templates/det-req-int.html:1000
+#: templates/det-req-ext.html:1149 templates/det-req-int.html:1034
 msgid "Veuillez sélectionner au moins une analyse"
 msgstr "ກະລຸນາເລືອກການວິເຄາະຈໍານວນໜຶ່ງປະເພດ"
 
-#: templates/det-req-ext.html:1159 templates/det-req-int.html:1016
+#: templates/det-req-ext.html:1162 templates/det-req-int.html:1050
 msgid "Veuillez sélectionner une date de réception du dossier"
 msgstr "ກະລຸນາເລືອກວັນທີຮັບທີເກັບໃນຄັງນີ້"
 
-#: templates/det-req-ext.html:1166 templates/det-req-int.html:1023
+#: templates/det-req-ext.html:1169 templates/det-req-int.html:1057
 msgid "Veuillez sélectionner une date de prescription"
 msgstr "ກະລຸນາເລືອກວັນທີສັ່ງຢາ"
 
-#: templates/det-req-ext.html:1176 templates/det-req-int.html:1033
+#: templates/det-req-ext.html:1179 templates/det-req-int.html:1067
 msgid "Veuillez renseigner le code de prélèvement"
 msgstr "ກະລຸນາໃສ່ລະຫັດການເກັບຕົວຢ່າງ"
 
-#: templates/det-req-ext.html:1183 templates/det-req-int.html:1040
+#: templates/det-req-ext.html:1186 templates/det-req-int.html:1074
 msgid "Veuillez renseigner le type du produit"
 msgstr "ກະລຸນາເລືອກວັນທີສັ່ງຢາ"
 
-#: templates/det-req-ext.html:1189 templates/det-req-int.html:1046
+#: templates/det-req-ext.html:1192 templates/det-req-int.html:1080
 msgid "Veuillez renseigner le statut du produit"
 msgstr "ກະລຸນາປ້ອນສະຖານະຂອງຜະລິດຕະພັນ"
 
-#: templates/det-req-ext.html:1196 templates/det-req-int.html:1053
+#: templates/det-req-ext.html:1199 templates/det-req-int.html:1087
 msgid "Veuillez renseigner toutes les dates de réception"
 msgstr "ກະລຸນາຕື່ມວັນທີຮັບຕົວຢ່າງທັງໝົດ"
 
-#: templates/det-req-ext.html:1202 templates/det-req-int.html:1059
+#: templates/det-req-ext.html:1205 templates/det-req-int.html:1093
 msgid "Veuillez renseigner toutes les identités des préleveurs"
 msgstr "ກະລຸນາຕື່ມເລກລະຫັດຂອງຜູ້ເກັບຕົວຢ່າງທັງໝົດ"
 
-#: templates/det-req-ext.html:1209 templates/det-req-int.html:1066
+#: templates/det-req-ext.html:1212 templates/det-req-int.html:1100
 msgid "Avertissement : Ce dossier n'est associé à aucun prélèvement"
 msgstr "ຄຳ ເຕືອນ: ໄຟລ This ນີ້ບໍ່ກ່ຽວຂ້ອງກັບຕົວຢ່າງໃດ"
 
-#: templates/det-req-ext.html:1212 templates/det-req-int.html:1069
+#: templates/det-req-ext.html:1215 templates/det-req-int.html:1103
 msgid "Merci de confirmer la création et validation de ce dossier"
 msgstr "ກະລຸນາຢືນຢັນການສ້າງແລະກວດສອບຄວາມຖືກຕ້ອງຂອງໄຟລນີ້"
 
-#: templates/det-req-ext.html:1386 templates/det-req-ext.html:1473
-#: templates/det-req-int.html:1222 templates/det-req-int.html:1309
-#: templates/enter-result.html:803 templates/technical-validation.html:214
+#: templates/det-req-ext.html:1389 templates/det-req-ext.html:1476
+#: templates/det-req-int.html:1257 templates/det-req-int.html:1344
+#: templates/enter-result.html:823 templates/technical-validation.html:215
 msgid "Une erreur est survenue lors du changement de statut du dossier"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການປ່ຽນແປງສະຖານະຂອງການບັນທຶກ"
 
-#: templates/det-req-ext.html:1395 templates/det-req-ext.html:1482
-#: templates/det-req-int.html:1231 templates/det-req-int.html:1318
-#: templates/enter-result.html:810 templates/technical-validation.html:223
+#: templates/det-req-ext.html:1398 templates/det-req-ext.html:1485
+#: templates/det-req-int.html:1266 templates/det-req-int.html:1353
+#: templates/enter-result.html:830 templates/technical-validation.html:224
 msgid "Une erreur est survenue lors de la création des résultats"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນເວລາສ້າງຜົນ"
 
-#: templates/det-req-ext.html:1404 templates/det-req-int.html:1240
+#: templates/det-req-ext.html:1407 templates/det-req-int.html:1275
 msgid "Une erreur est survenue lors de l'enregistrement des prélèvements"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການບັນທຶກຕົວຢ່າງ"
 
-#: templates/det-req-ext.html:1422 templates/det-req-int.html:1258
+#: templates/det-req-ext.html:1425 templates/det-req-int.html:1293
 msgid "Une erreur est survenue lors de l'enregistrement du dossier"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການເກັບການບັນທຶກ"
 
@@ -2142,7 +2143,7 @@ msgstr "ເລກຊຸດຜະລິດ"
 
 #: templates/det-stock-product.html:79
 msgid "Nom du bailleur"
-msgstr ""
+msgstr "ຊື່ຜູ້ສະໜອງ"
 
 #: templates/det-stock-product.html:155 templates/setting-det-analysis.html:435
 msgid "Erreur lors la récupération des données"
@@ -2192,33 +2193,35 @@ msgstr "ສະຫຼາກ"
 msgid "Code QR"
 msgstr "ລະຫັດ QR"
 
-#: templates/det-template.html:32
+#: templates/det-template.html:27 templates/non-conformity.html:575
+msgid "Sous-traitance"
+msgstr "ການຈ້າງເໝົາຍ່ອຍ"
+
+#: templates/det-template.html:33
 msgid "Par défaut pour ce type"
 msgstr "ໃຫ້ເປັນປະເພດອ້າງອີງ"
 
-#: templates/det-template.html:97 templates/setting-zipcity.html:162
+#: templates/det-template.html:98 templates/setting-zipcity.html:162
 msgid "Veuillez choisir un fichier."
 msgstr "ກະລຸນາເລືອກ file"
 
-#: templates/det-template.html:147 templates/det-template.html:188
+#: templates/det-template.html:148 templates/det-template.html:189
 #: templates/setting-dhis2.html:74 templates/setting-epidemio.html:74
 #: templates/setting-indicator.html:74
 msgid "Une erreur est survenue lors du dépot du fichier"
 msgstr "ເກີດຂໍ້ຜິດພາດລະວ່າງການສ້າງ file"
 
 #: templates/dict-import.html:5 templates/dict-import.html:13
-#: templates/dict-import.html:44 templates/setting-dicts.html:89
-#, fuzzy
+#: templates/dict-import.html:44 templates/setting-dicts.html:85
 msgid "Import de dictionnaire"
-msgstr "ຊື່ວັດຈະນານຸກົມ"
+msgstr "ນຳວັດຈະນານຸກົມເຂົ້າ"
 
 #: templates/dict-import.html:97
-#, fuzzy
 msgid "Lancer l'import de dictionnaire ?"
-msgstr "ຊື່ວັດຈະນານຸກົມ"
+msgstr "ຢືນຢັນການນຳວັດຈະນານຸກົມເຂົ້າ?"
 
 #: templates/enter-result.html:5 templates/enter-result.html:16
-#: templates/list-records.html:290 templates/list-results.html:5
+#: templates/list-records.html:289 templates/list-results.html:5
 #: templates/list-results.html:16 templates/list-works.html:258
 msgid "Saisie de résultats"
 msgstr "ປ້ອນຜົນເຂົ້າ"
@@ -2227,39 +2230,39 @@ msgstr "ປ້ອນຜົນເຂົ້າ"
 msgid "Feuille de paillasse"
 msgstr "ແບບຟອມບັນທຶກການວິເຄາະ"
 
-#: templates/enter-result.html:188 templates/list-results.html:261
+#: templates/enter-result.html:198 templates/list-results.html:272
 msgid "Certains résultats obligatoires ne sont pas saisis"
 msgstr "ບາງຜົນການວິເຄາະທີ່ຈຳເປັນບໍ່ໄດ້ຖືກປ້ອນເຂົ້າ"
 
-#: templates/enter-result.html:215 templates/list-results.html:279
+#: templates/enter-result.html:225 templates/list-results.html:290
 msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການບັນທຶກຄ່າ"
 
-#: templates/enter-result.html:361 templates/list-results.html:417
-#: templates/technical-validation.html:375
+#: templates/enter-result.html:374 templates/list-results.html:432
+#: templates/technical-validation.html:376
 msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນລະຫວ່າງການຢືນຢັນຄ່າທີ່ປ້ອນເຂົ້າ"
 
-#: templates/enter-result.html:408 templates/enter-result.html:690
-#: templates/list-results.html:464 templates/list-results.html:749
-#: templates/technical-validation.html:418
-#: templates/technical-validation.html:550
+#: templates/enter-result.html:420 templates/enter-result.html:709
+#: templates/list-results.html:478 templates/list-results.html:769
+#: templates/technical-validation.html:419
+#: templates/technical-validation.html:557
 msgid "Technicien"
 msgstr "ວິຊາການ"
 
-#: templates/enter-result.html:517 templates/js/display_histo.js:36
-#: templates/list-results.html:575 templates/technical-validation.html:519
+#: templates/enter-result.html:535 templates/js/display_histo.js:36
+#: templates/list-results.html:595 templates/technical-validation.html:526
 msgid "ANNULE"
 msgstr "ຍົກເລີກ"
 
 #: templates/global-report.html:5 templates/global-report.html:13
 #: templates/menu.html:31 templates/menu.html:265
 msgid "Rapport global"
-msgstr ""
+msgstr "ບົດລາຍງານໂດຍລວມ"
 
 #: templates/global-report.html:14
 msgid "Téléchargement de rapports d'analyse en un seul fichier"
-msgstr ""
+msgstr "ດາວໂຫລດລາຍງານການສະແກນໃນໄຟລ໌ດຽວ"
 
 #: templates/global-report.html:17 templates/hist-analyzes.html:17
 #: templates/hist-stock-product.html:18 templates/list-nonconformities.html:20
@@ -2273,14 +2276,18 @@ msgstr "ຈາກວັນທີ"
 
 #: templates/global-report.html:25
 msgid "Exclure ceux déjà téléchargés"
-msgstr ""
+msgstr "ບໍ່ລວມເອົາສິ່ງທີ່ດາວໂຫຼດແລ້ວ"
 
 #: templates/global-report.html:36 templates/report-dhis2.html:46
 #: templates/user-conn-export.html:39 templates/whonet-export.html:39
 msgid "Récupérer les données"
 msgstr "ດຶງຂໍ້ມູນ"
 
-#: templates/global-report.html:83 templates/whonet-export.html:79
+#: templates/global-report.html:86
+msgid "Certains rapports sont manquants"
+msgstr "ບາງລາຍງານຍັງບໍ່ຄົບບາງລາຍງານຍັງບໍ່ຄົບ"
+
+#: templates/global-report.html:89 templates/whonet-export.html:79
 msgid "Aucun résultat à exporter !"
 msgstr "ບໍ່ມີຜົນສົ່ງອອກ!"
 
@@ -2305,7 +2312,7 @@ msgstr "ລາຍການວິເຄາະ"
 #: templates/report-statistic.html:39 templates/report-today.html:17
 #: templates/report-today.html:32 templates/setting-analyzes.html:14
 #: templates/setting-analyzes.html:57 templates/setting-dicts.html:15
-#: templates/setting-dicts.html:44 templates/setting-users.html:15
+#: templates/setting-dicts.html:40 templates/setting-users.html:15
 #: templates/setting-users.html:63
 msgid "Rechercher"
 msgstr "ຄົ້ນຫາ"
@@ -2322,7 +2329,7 @@ msgstr "ຈໍານວນເລກທີເກີນໄລຍະກໍານົ
 #: templates/report-activity.html:116 templates/report-billing.html:197
 #: templates/report-statistic.html:146 templates/report-today.html:145
 #: templates/setting-analyzes.html:173 templates/setting-backup.html:659
-#: templates/setting-backup.html:671 templates/setting-dicts.html:142
+#: templates/setting-backup.html:671 templates/setting-dicts.html:138
 #: templates/setting-users.html:173
 msgid "Une erreur est survenue lors de la récupération des données"
 msgstr "ມີຂໍ້ຜິດພາດເກີດຂື້ນໃນລະຫວ່າງການກູ້ຂໍ້ມູນ"
@@ -2409,12 +2416,12 @@ msgstr "ການຄຸ້ມຄອງໃບເກັບເງິນ"
 msgid "Management de la Qualité"
 msgstr "ການຄຸ້ມຄອງຄຸນນະພາບ"
 
-#: templates/homepage.html:29 templates/homepage.html:64
+#: templates/homepage.html:29 templates/homepage.html:63
 #: templates/setting-backup.html:35
 msgid "Dernière sauvegarde OK"
 msgstr "ການສຳຮອງຂໍ້ມູນຄັ້ງສຸດທ້າຍຖືກຕ້ອງ"
 
-#: templates/homepage.html:31 templates/homepage.html:66
+#: templates/homepage.html:31 templates/homepage.html:65
 #: templates/setting-backup.html:29
 msgid "Dernière sauvegarde"
 msgstr "ສຳຮອງຂໍ້ມູນຄັ້ງສຸດທ້າຍ"
@@ -2441,54 +2448,54 @@ msgstr "ລາຍການກ່ຽວກັບວຽກງານດ້ານຊ
 msgid "Liste de travail technicien"
 msgstr "ລາຍການກ່ຽວກັບວຽກຂອງນັກວິຊາການດ້ານຊີວະວິທະຍາ"
 
-#: templates/homepage.html:55 templates/list-samples.html:5
+#: templates/homepage.html:54 templates/list-samples.html:5
 #: templates/list-samples.html:12 templates/menu.html:46
 #: templates/menu.html:274
 msgid "Etat des prélèvements en cours"
 msgstr "ສະຖານະພາບຂອງຕົວຢ່າງທີ່ກຳລັງດຳເນີນຢູ່"
 
-#: templates/homepage.html:56 templates/menu.html:51 templates/menu.html:277
+#: templates/homepage.html:55 templates/menu.html:51 templates/menu.html:277
 msgid "Saisie des résultats"
 msgstr "ຜົນໄດ້ຮັບຂາເຂົ້າ"
 
-#: templates/homepage.html:59 templates/menu.html:37 templates/menu.html:269
+#: templates/homepage.html:58 templates/menu.html:37 templates/menu.html:269
 msgid "Nouvelle demande externe"
 msgstr "ຄຳຮ້ອງຂໍໃໝ່ຈາກພາຍນອກ"
 
-#: templates/homepage.html:60 templates/menu.html:40 templates/menu.html:270
+#: templates/homepage.html:59 templates/menu.html:40 templates/menu.html:270
 #: templates/new-req-int.html:5
 msgid "Nouvelle demande hospitalisé"
 msgstr "ຄຳຮ້ອງຂໍໃໝ່ຈາກພາຍໃນ"
 
-#: templates/homepage.html:72
+#: templates/homepage.html:71
 msgid "Validations à effectuer"
 msgstr "ການກວດສອບທີ່ຄວນຈະປະຕິບັດ"
 
-#: templates/homepage.html:76
+#: templates/homepage.html:75
 msgid "Activité du laboratoire"
 msgstr "ກິດຈະກຳຫ້ອງທົດລອງ"
 
-#: templates/homepage.html:78
+#: templates/homepage.html:77
 msgid "Dernier numéro utilisé"
 msgstr "ຕົວເລກສຸດທ້າຍທີ່ໃຊ້ແລ້ວ"
 
-#: templates/homepage.html:79
+#: templates/homepage.html:78
 msgid "Nombre de dossiers validés aujourd'hui"
 msgstr "ຈຳນວນບັນທຶກຂອງມື້"
 
-#: templates/homepage.html:80
+#: templates/homepage.html:79
 msgid "Nombre de dossiers enregistrés"
 msgstr "ບັນທຶກຈຳນວນທີ່ລົງທະບຽນ"
 
-#: templates/homepage.html:94
+#: templates/homepage.html:93
 msgid "Biologique"
 msgstr "ນັກຊີວະວິທະຍາ"
 
-#: templates/homepage.html:94
+#: templates/homepage.html:93
 msgid "Technique"
 msgstr "ວິຊາການ"
 
-#: templates/homepage.html:170
+#: templates/homepage.html:169
 msgid "Une alerte est présente dans la gestion de stock"
 msgstr "ມີການແຈ້ງເຕືອນໃນການຈັດການສາງ"
 
@@ -2497,7 +2504,7 @@ msgstr "ມີການແຈ້ງເຕືອນໃນການຈັດກາ
 msgid "LabBook"
 msgstr "ປຶ້ມຄູ່ມືຫ້ອງທົດລອງ / LabBook"
 
-#: templates/initialization.html:32 templates/login.html:50
+#: templates/initialization.html:32 templates/login.html:54
 #: templates/skeleton.html:56
 msgid "Version"
 msgstr "ສະບັບ"
@@ -2551,7 +2558,7 @@ msgstr "ລາຍຊື່ອຸປະກອນ"
 msgid "Fabricant"
 msgstr "ຜູ້ຜະລິດ"
 
-#: templates/list-equipment.html:60
+#: templates/list-equipment.html:59
 msgid "Ajouter un équipement"
 msgstr "ເພີ່ມອຸປະກອນ"
 
@@ -2564,29 +2571,29 @@ msgstr "ຫ້ອງທົດລອງ"
 msgid "Nom du dictionnaire"
 msgstr "ຊື່ວັດຈະນານຸກົມ"
 
-#: templates/list-laboratory.html:26 templates/setting-det-dict.html:29
+#: templates/list-laboratory.html:25 templates/setting-det-dict.html:29
 msgid "Ajouter une valeur"
 msgstr "ເພີ່ມມູນຄ່າ"
 
-#: templates/list-laboratory.html:33
+#: templates/list-laboratory.html:32
 msgid "Organigramme"
 msgstr "ຕາຕະລາງການຈັດຕັ້ງ"
 
-#: templates/list-laboratory.html:67 templates/setting-det-dict.html:34
+#: templates/list-laboratory.html:64 templates/setting-det-dict.html:34
 msgid "Valeurs"
 msgstr "ຄຸນຄ່າ"
 
-#: templates/list-laboratory.html:74 templates/list-vars.html:30
+#: templates/list-laboratory.html:71 templates/list-vars.html:30
 #: templates/setting-det-analysis.html:131 templates/setting-det-dict.html:44
-#: templates/setting-dicts.html:28 templates/setting-pref.html:17
+#: templates/setting-dicts.html:26 templates/setting-pref.html:17
 msgid "Libellé"
 msgstr "ສະຫຼາກ"
 
-#: templates/list-laboratory.html:76 templates/setting-det-dict.html:46
+#: templates/list-laboratory.html:73 templates/setting-det-dict.html:46
 msgid "Libellé court"
 msgstr "ສະຫຼາກຫຍໍ້"
 
-#: templates/list-laboratory.html:77 templates/list-staff.html:39
+#: templates/list-laboratory.html:74 templates/list-staff.html:39
 #: templates/setting-age-interval.html:32
 #: templates/setting-det-analysis.html:268 templates/setting-det-dict.html:47
 #: templates/setting-functionnal-units.html:33
@@ -2594,21 +2601,21 @@ msgstr "ສະຫຼາກຫຍໍ້"
 msgid "Position"
 msgstr "ຕຳແໜ່ງ"
 
-#: templates/list-laboratory.html:91
+#: templates/list-laboratory.html:87
 msgid "Enregistrer les valeurs"
 msgstr "ເກັບກຳຄ່າຕ່າງໆ"
 
-#: templates/list-laboratory.html:255 templates/setting-det-dict.html:229
+#: templates/list-laboratory.html:251 templates/setting-det-dict.html:229
 msgid "Veuillez saisir un nom de dictionnaire."
 msgstr "ກະລຸນາຂຽນຊື່ວັດຈະນານຸກົມ"
 
-#: templates/list-laboratory.html:264 templates/setting-det-dict.html:238
+#: templates/list-laboratory.html:260 templates/setting-det-dict.html:238
 #: templates/setting-functionnal-units.html:229
 #: templates/setting-requesting-services.html:189
 msgid "Veuillez renseigner le(s) libellé(s)."
 msgstr "ກະລຸນາຕື່ມໃສ່ສະຫຼາກ"
 
-#: templates/list-laboratory.html:270 templates/setting-det-dict.html:244
+#: templates/list-laboratory.html:266 templates/setting-det-dict.html:244
 msgid "Veuillez renseigner le(s) code(s)."
 msgstr "ກະລຸນາໃສ່ລະຫັດ"
 
@@ -2620,7 +2627,7 @@ msgstr "ບັນຊີລາຍຊື່ຄູ່ມື"
 msgid "Date création"
 msgstr "ວັນທີສ້າງ"
 
-#: templates/list-manuals.html:63
+#: templates/list-manuals.html:62
 msgid "Ajouter un manuel"
 msgstr "ເພີ່ມຄູ່ມື"
 
@@ -2628,7 +2635,7 @@ msgstr "ເພີ່ມຄູ່ມື"
 msgid "Liste des réunions"
 msgstr "ບັນຊີລາຍຊື່ຂອງກອງປະຊຸມ"
 
-#: templates/list-meeting.html:58
+#: templates/list-meeting.html:57
 msgid "Ajouter une réunion"
 msgstr "ເພີ່ມການປະຊຸມ"
 
@@ -2660,22 +2667,22 @@ msgstr "ວັນທີປິດ"
 msgid "Ajouter une non-conformité"
 msgstr "ເພີ່ມຄວາມບໍ່ສອດຄ່ອງ"
 
-#: templates/list-nonconformities.html:226 templates/non-conformity.html:660
+#: templates/list-nonconformities.html:224 templates/non-conformity.html:660
 #: templates/non-conformity.html:677
 msgid "Faible"
 msgstr "ອ່ອນແອ"
 
-#: templates/list-nonconformities.html:228 templates/non-conformity.html:663
+#: templates/list-nonconformities.html:226 templates/non-conformity.html:663
 #: templates/non-conformity.html:680
 msgid "Important"
 msgstr "ສຳຄັນ"
 
-#: templates/list-nonconformities.html:230 templates/non-conformity.html:666
+#: templates/list-nonconformities.html:228 templates/non-conformity.html:666
 #: templates/non-conformity.html:683
 msgid "Grave"
 msgstr "ຮ້າຍແຮງ"
 
-#: templates/list-nonconformities.html:232 templates/non-conformity.html:669
+#: templates/list-nonconformities.html:230 templates/non-conformity.html:669
 #: templates/non-conformity.html:686
 msgid "Aucun"
 msgstr "ບໍ່ລະບຸ"
@@ -2689,7 +2696,7 @@ msgstr "ຂັ້ນຕອນ"
 msgid "Date modification"
 msgstr "ວັນທີທີ່ຖືກດັດແກ້"
 
-#: templates/list-procedure.html:64
+#: templates/list-procedure.html:63
 msgid "Ajouter une procédure"
 msgstr "ເພີ່ມຂັ້ນຕອນ"
 
@@ -2723,7 +2730,7 @@ msgstr "ກະລຸນາຢືນຢັນການລຶບຜະລິດຕ
 
 #: templates/list-records.html:42
 msgid "Type dossier"
-msgstr ""
+msgstr "ປະເພດແຟ້ມ"
 
 #: templates/list-records.html:74
 msgid "Nouveau"
@@ -2766,12 +2773,12 @@ msgstr "ລະຫັດຄົນເຈັບ"
 msgid "Une erreur est survenue lors de la récupération de la liste des dossiers"
 msgstr "ເກີດຂໍ້ຜິດພາດໃນຂະນະຮຽກຂໍ້ມູນຈາກລາຍການບັນທຶກ"
 
-#: templates/list-records.html:295 templates/list-works.html:259
+#: templates/list-records.html:293 templates/list-works.html:259
 #: templates/technical-validation.html:5 templates/technical-validation.html:16
 msgid "Validation technique"
 msgstr "ກວດກາຄວາມຖືກຕ້ອງດ້ານເຕັກນິກ"
 
-#: templates/list-records.html:359 templates/list-works.html:310
+#: templates/list-records.html:356 templates/list-works.html:310
 msgid "Erreur lors de la suppression d'un dossier"
 msgstr "ເກີດຂໍ້ພິດຜາດໃນຂະນະລຶບຂໍ້ມູນບັນທຶກ"
 
@@ -2788,21 +2795,21 @@ msgid "Masquer les résultats déjà validés"
 msgstr "ເຊື່ອງຜົນທີ່ກວດກາແລ້ວ"
 
 #: templates/list-results.html:63
-#, fuzzy
 msgid "Réinitialiser"
-msgstr "ການຕັ້ງມູນຄ່າຄືນ"
+msgstr "ຣີເຊັດ"
 
-#: templates/list-results.html:849
+#: templates/list-results.html:530 templates/list-samples.html:44
+#: templates/pivot-table.html:30
+msgid "Patient"
+msgstr "ຄົນເຈັບ"
+
+#: templates/list-results.html:869
 msgid "Une erreur est survenue lors de la récupération des résultats"
 msgstr "ເກີດຂໍ້ຜິດພາດໃນຂະນະຮຽກຂໍ້ມູນຈາກລາຍການຜົນກວດ"
 
 #: templates/list-samples.html:41
 msgid "Date dossier"
 msgstr "ວັນທີບັນທຶກ"
-
-#: templates/list-samples.html:44 templates/pivot-table.html:30
-msgid "Patient"
-msgstr "ຄົນເຈັບ"
 
 #: templates/list-samples.html:47
 msgid "Sang"
@@ -2832,7 +2839,7 @@ msgstr "ວັນທີມາຮອດ"
 msgid "Date éval."
 msgstr "ວັນທີປະເມີນ"
 
-#: templates/list-staff.html:42 templates/login.html:30
+#: templates/list-staff.html:42 templates/login.html:31
 #: templates/setting-det-user.html:51 templates/setting-link-unit-user.html:22
 #: templates/setting-users.html:20 templates/setting-users.html:88
 msgid "Identifiant"
@@ -2860,22 +2867,19 @@ msgstr "ຈຳນວນລວມ"
 
 #: templates/list-stock.html:106
 msgid "Export du tableau"
-msgstr ""
+msgstr "ນຳຕາຕ່າລ່າງອອກ"
 
 #: templates/list-stock.html:107
-#, fuzzy
 msgid "Export des produits"
-msgstr "ລາຍການສິນຄ້າ"
+msgstr "ນຳສິນຄ້າອອກ"
 
 #: templates/list-stock.html:108
-#, fuzzy
 msgid "Export des approvisionnements"
-msgstr "ການເຊື່ອມຕໍ່ເພື່ອສົ່ງອອກ"
+msgstr "ນຳການສະໜອງອອກ"
 
 #: templates/list-stock.html:109
-#, fuzzy
 msgid "Export des usages"
-msgstr "ສົ່ງອອກຜູ້ນຳໃຊ້"
+msgstr "ນຳສິ່ງນຳໄຊ້ອອກ"
 
 #: templates/list-stock.html:114
 msgid "Catalogue des produits"
@@ -2914,11 +2918,11 @@ msgstr "ນາມສະກຸນຜູ້ຕິດຕໍ່"
 msgid "Prénom contact"
 msgstr "ຊື່ຜູ້ຕິດຕໍ່"
 
-#: templates/list-suppliers.html:61
+#: templates/list-suppliers.html:60
 msgid "Ajouter un fournisseur"
 msgstr "ເພີ່ມລາຍຊື່ຜູ້ສະຫນອງ"
 
-#: templates/list-suppliers.html:149
+#: templates/list-suppliers.html:148
 msgid "Note : certains equipements pourraient être associés à ce fournisseur"
 msgstr "ຫມາຍເຫດ: ເຄື່ອງມືອຸປະກອນບາງຊະນິດອາດສາມາດລວມເຂົ້ານຳຜູ້ສະຫນອງນີ້"
 
@@ -2930,19 +2934,18 @@ msgstr "ການຕັ້ງຄ່າແມ່ແບບເອກະສານ"
 msgid "Défaut"
 msgstr "ອ້າງອີງ"
 
-#: templates/list-template.html:57
+#: templates/list-template.html:56
 msgid "Ajouter un modèle"
 msgstr "ເພີ່ມຮູບແບບ"
 
-#: templates/list-template.html:115
+#: templates/list-template.html:114
 msgid "Tester"
 msgstr "ການທົດລອງ"
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
-#, fuzzy
 msgid "Liste des variables"
-msgstr "ບັນຊີການວິເຄາະ"
+msgstr "ລາຍການຕົວແປ"
 
 #: templates/list-vars.html:31 templates/setting-det-analysis.html:135
 msgid "Code var."
@@ -2958,9 +2961,8 @@ msgid "Type de résultat"
 msgstr "ປະເພດຜົນ"
 
 #: templates/list-vars.html:35
-#, fuzzy
 msgid "Nb. analyse"
-msgstr "ບໍ່ມີການວິເຄາະ"
+msgstr "ໝາຍເລກວິເຄາະ"
 
 #: templates/list-works.html:5 templates/list-works.html:13
 msgid "Liste de travail"
@@ -2990,7 +2992,7 @@ msgstr "ຊື່ຜູ້ນຳໃຊ້ ແລະລະຫັດບໍ່ຖ�
 msgid "Ouverture de session"
 msgstr "ເຂົ້າລະບົບ"
 
-#: templates/login.html:36 templates/setting-backup.html:83
+#: templates/login.html:39 templates/setting-backup.html:83
 #: templates/setting-det-user.html:58 templates/setting-pwd-user.html:15
 msgid "Mot de passe"
 msgstr "ລະຫັດ"
@@ -3005,7 +3007,7 @@ msgstr "ພາຍໃນ"
 
 #: templates/macros.html:75
 msgid "Garde"
-msgstr ""
+msgstr "ເວນຍາມ"
 
 #: templates/manage-pat-records.html:5 templates/manage-pat-records.html:14
 #: templates/menu.html:165 templates/menu.html:349
@@ -3090,7 +3092,7 @@ msgstr "ອັງກິດ (US)"
 
 #: templates/menu-country.html:22
 msgid "Espagnole (ES)"
-msgstr ""
+msgstr "ພາສາສະເປນ"
 
 #: templates/menu-country.html:26 templates/setting-det-user.html:116
 msgid "Arabe (AR)"
@@ -3132,9 +3134,8 @@ msgstr "ບົດລາຍງານລະບາດວິທະຍາ"
 
 #: templates/menu.html:69 templates/menu.html:295
 #: templates/report-indicator.html:5 templates/report-indicator.html:13
-#, fuzzy
 msgid "Rapport indicateurs"
-msgstr "ການສົ່ງເຂົ້າສໍາລັບຜູ້ນຳໃຊ້"
+msgstr "ບົດລາຍງານຕົວຊີ້ວັດ"
 
 #: templates/menu.html:72 templates/menu.html:296
 #: templates/report-statistic.html:5 templates/report-statistic.html:13
@@ -3186,14 +3187,12 @@ msgid "Configuration des intervalles d'âge"
 msgstr "ການຕັ້ງຄ່າຊ່ວງອາຍຸ"
 
 #: templates/menu.html:137 templates/menu.html:337
-#, fuzzy
 msgid "Configuration des services demandeurs"
-msgstr "ການຕັ້ງຄ່າບົດລາຍງານ"
+msgstr "ການຕັ້ງຄ່າຜູ້ບໍລິການທີ່ຮ້ອງຂໍ"
 
 #: templates/menu.html:140 templates/menu.html:338
-#, fuzzy
 msgid "Configuration des unités fonctionnelles"
-msgstr "ການຕັ້ງຄ່າຊ່ວງອາຍຸ"
+msgstr "ການຕັ້ງຄ່າໜ່ວຍງານທີ່ເຮັດວຽກ"
 
 #: templates/menu.html:145 templates/menu.html:341
 msgid "Configuration des modèles de documents"
@@ -3212,14 +3211,12 @@ msgid "Configuration des codes postaux"
 msgstr "ການ​ຕັ້ງ​ຄ່າ​ລະ​ຫັດ​ໄປ​ສະ​ນີ"
 
 #: templates/menu.html:157 templates/menu.html:345
-#, fuzzy
 msgid "Configuration du stockage"
-msgstr "ການຕັ້ງຄ່າໂລໂກ້"
+msgstr "ການຕັ້ງຄ່າການຈັດເກັບ"
 
 #: templates/menu.html:160 templates/menu.html:346
-#, fuzzy
 msgid "Configuration de formulaires"
-msgstr "ການ​ຕັ້ງ​ຄ່າ​ການສໍາ​ຮອງ​ຂໍ້​ມູນ"
+msgstr "ການຕັ້ງຄ່າແບບຟອມ"
 
 #: templates/menu.html:170 templates/menu.html:352
 msgid "Configuration DHIS2"
@@ -3230,9 +3227,8 @@ msgid "Configuration Epidemio"
 msgstr "ການຕັ້ງຄ່າການລະບາດ"
 
 #: templates/menu.html:176 templates/menu.html:354
-#, fuzzy
 msgid "Configuration du rapport d'indicateurs"
-msgstr "ຕັ້ງຄ່າການລາຍງານຜົນດ້ານລະບາດວິທະຍາ"
+msgstr "ການຕັ້ງຄ່າບົດລາຍງານຕົວຊີ້ວັດ"
 
 #: templates/menu.html:184 templates/menu.html:392
 msgid "Qualité"
@@ -3583,10 +3579,6 @@ msgstr "ລະບົບຂໍ້ມູນຂ່າວສານລົ້ມເຫ
 msgid "Panne matériel informatique"
 msgstr "ຄວາມລົ້ມເຫຼວຂອງ Hardware"
 
-#: templates/non-conformity.html:575
-msgid "Sous-traitance"
-msgstr "ການຈ້າງເໝົາຍ່ອຍ ຫຼື Subcontracting"
-
 #: templates/non-conformity.html:583
 msgid "Délai de rendu non respecté"
 msgstr "ກາຍກຳນົດການສົ່ງເຄື່ອງ"
@@ -3663,11 +3655,11 @@ msgstr "ການປິດວຽກທີ່ບໍ່ເປັນໃປຕາມ
 msgid "Validé par"
 msgstr "ຢືນຢັນໂດຍ"
 
-#: templates/non-conformity.html:1225
+#: templates/non-conformity.html:1231
 msgid "Veuillez saisir un nom pour cette non-conformité."
 msgstr "ກະລຸນາປ້ອນຊື່ວຽກທີ່ບໍ່ເປັນໃປຕາມຂໍ້ກຳນົດນີ້"
 
-#: templates/non-conformity.html:1228
+#: templates/non-conformity.html:1234
 msgid "Veuillez sélectionner un rapporteur."
 msgstr "ກະລຸນາເລືອກຜູ້ລາຍງານ."
 
@@ -3748,7 +3740,7 @@ msgstr "ຄົນເຈັບພາຍໃນ"
 
 #: templates/report-activity.html:142
 msgid "Gardes"
-msgstr ""
+msgstr "ແພດຍາມ"
 
 #: templates/report-activity.html:143 templates/report-activity.html:512
 #: templates/report-statistic.html:81 templates/report-statistic.html:92
@@ -3868,9 +3860,8 @@ msgid "Résultats"
 msgstr "ຜົນ"
 
 #: templates/report-indicator.html:34
-#, fuzzy
 msgid "Indicateurs"
-msgstr "ຜູ້ກວດສອບ"
+msgstr "ຕົວຊີ້ວັດ"
 
 #: templates/report-statistic.html:46
 msgid "Répartition dossiers"
@@ -3890,44 +3881,36 @@ msgid "Non renseigné"
 msgstr "ບໍ່ມີຂໍ້ມູນ"
 
 #: templates/report-statistic.html:452
-#, fuzzy
 msgid "Nombre de patients externes"
-msgstr "ໃບສັ່ງກວດຂອງຄົນເຈັບພາຍນອກ"
+msgstr "ຈຳນວນຄົນເຈັບພາຍນອກ"
 
 #: templates/report-statistic.html:457
-#, fuzzy
 msgid "Nombre de patients hospitalisés"
-msgstr "ໃບບິນຄົນເຈັບພາຍໃນ"
+msgstr "ຈຳນວນຄົນເຈັບທີ່ນອນໂຮງໝໍ"
 
 #: templates/report-statistic.html:462
-#, fuzzy
 msgid "Nombre de patients de garde"
-msgstr "ຈຳນວນຄູ່ມືທີ່ບັນທຶກໄວ້"
+msgstr "ຈຳນວນຄົນເຈັບທີ່ເຂົ້າຮັກສາໃນໂມງຍາມ"
 
 #: templates/report-statistic.html:467
-#, fuzzy
 msgid "Nombre de patients"
-msgstr "ເລກຈໍານວນຊຸດຫີບຫໍ່"
+msgstr "ຈຳນວນຄົນເຈັບ"
 
 #: templates/report-statistic.html:524
-#, fuzzy
 msgid "Nombre d'analyses externes"
-msgstr "ໃບສັ່ງກວດຂອງຄົນເຈັບພາຍນອກ"
+msgstr "ຈຳນວນການວິເຄາະຂອງຄົນເຈັບພາຍນອກ"
 
 #: templates/report-statistic.html:529
-#, fuzzy
 msgid "Nombre d'analyses hospitalisées"
-msgstr "ຄົນເຈັບບໍ່ມີໃບສັ່ງກວດ"
+msgstr "ຈຳນວນການວິເຄາະຂອງຄົນເຈັບທີ່ນອນໂຮງໝໍ"
 
 #: templates/report-statistic.html:534
-#, fuzzy
 msgid "Nombre d'analyses de garde"
-msgstr "ນຳການວິເຄາະເຂົ້າ"
+msgstr "ຈຳນວນການວິເຄາະຂອງຄົນເຈັບທີ່ເຂົ້າຮັກສາໃນໂມງຍາມ"
 
 #: templates/report-statistic.html:541
-#, fuzzy
 msgid "Nombre d'analyses"
-msgstr "ນຳການວິເຄາະເຂົ້າ"
+msgstr "ຈຳນວນການວິເຄາະ"
 
 #: templates/report-today.html:68 templates/setting-analyzes.html:83
 msgid "Famille"
@@ -4011,17 +3994,16 @@ msgid "Produit bio."
 msgstr "ຜະລິດຕະພັນຊີວະພາບ"
 
 #: templates/setting-analyzes.html:107
-#, fuzzy
 msgid "Statut des analyses"
-msgstr "ບັນຊີການວິເຄາະ"
+msgstr "ສະຖານະການວິເຄາະ"
 
 #: templates/setting-analyzes.html:109
 msgid "Tout activer"
-msgstr ""
+msgstr "ເປີດໄຊ້ທັງໝັດ"
 
 #: templates/setting-analyzes.html:110
 msgid "Tout désactiver"
-msgstr ""
+msgstr "ປິດໄຊ້ທັງໝົດ"
 
 #: templates/setting-analyzes.html:114
 msgid "Importer le référentiel"
@@ -4040,14 +4022,12 @@ msgid "Ajouter une analyse"
 msgstr "ເພີ່ມການວິເຄາະ"
 
 #: templates/setting-analyzes.html:215
-#, fuzzy
 msgid "Activer"
-msgstr "ຜູ້ຂຽນ"
+msgstr "ເປິດໄຊ້"
 
 #: templates/setting-analyzes.html:217
-#, fuzzy
 msgid "Désactiver"
-msgstr "ປິດການໄຊ້ງານແລ້ວ"
+msgstr "ປິດໄຊ້"
 
 #: templates/setting-analyzes.html:224 templates/setting-det-user.html:86
 #: templates/setting-users.html:55 templates/setting-users.html:228
@@ -4066,24 +4046,20 @@ msgid ""
 msgstr "ຢືນຢັນການລຶບຂໍ້ມູນວິເຄາະນີ້.//ໝາຍເຫດ:​ການບັນທຶກທີ່ກ່ຽວຂ້ອງກັບການວິເຄາະນີ້ຈະມີຂໍ້ຄວາມການຜິດພາດເກີດຂື້ນ"
 
 #: templates/setting-analyzes.html:363
-#, fuzzy
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
-msgstr "ກະລຸນາຢືນຢັນການປ່ຽນແປງສະຖານະ"
+msgstr "ກະລຸນາຢືນຢັນການປິດການໄຊ້ງານຂອງການວິເຄາະທັງໝົດ"
 
 #: templates/setting-analyzes.html:366
-#, fuzzy
 msgid "Veuillez confirmer l'activation de toutes les analyses"
-msgstr "ກະລຸນາຢືນຢັນການປ່ຽນແປງສະຖານະ"
+msgstr "ກະລຸນາຢືນຢັນການເປິດການໄຊ້ງານຂອງການວິເຄາະທັງໝົດ"
 
 #: templates/setting-analyzes.html:402
-#, fuzzy
 msgid "Veuillez confirmer la désactivation de cette analyse"
-msgstr "ກະລຸນາຢືນຢັນການປ່ຽນແປງສະຖານະ"
+msgstr "ກະລຸນາຢືນຢັນການປິດການໄຊ້ງານຂອງການວິເຄາະນີ້"
 
 #: templates/setting-analyzes.html:405
-#, fuzzy
 msgid "Veuillez confirmer l'activation de cette analyse"
-msgstr "ກະລຸນາຢືນຢັນການປ່ຽນແປງສະຖານະ"
+msgstr "ກະລຸນາຢືນຢັນການເປິດການໄຊ້ງານຂອງການວິເຄາະນີ້"
 
 #: templates/setting-backup.html:5 templates/setting-backup.html:12
 msgid "Paramétrage de la sauvegarde"
@@ -4275,7 +4251,7 @@ msgid "Par défaut sera l'ID de la variable"
 msgstr "ຄ່າເລີ່ມຕົ້ນຈະເປັນ ID ຂອງໂຕປ່ຽນແປງ"
 
 #: templates/setting-det-analysis.html:155 templates/setting-det-dict.html:21
-#: templates/setting-dicts.html:69
+#: templates/setting-dicts.html:65
 msgid "Description"
 msgstr "ລາຍລະອຽດ"
 
@@ -4289,7 +4265,7 @@ msgstr "ຄ່າທີ່ຫຼາຍທີ່ສຸດ"
 
 #: templates/setting-det-analysis.html:170
 msgid "Souligner"
-msgstr ""
+msgstr "ຂີດກ້ອງ"
 
 #: templates/setting-det-analysis.html:180
 msgid "Formule"
@@ -4348,27 +4324,27 @@ msgstr "ຄົ້ນຫາຜະລິດຕະພັນດ້ານຊີວະ
 msgid "Variable déjà utilisée dans cette analyse"
 msgstr "ໂຕປ່ຽນແປງໄດ້ຖືກນຳໃຊ້ໃນການວິເຄາະນີ້"
 
-#: templates/js/stat_sample.js:8 templates/setting-det-analysis.html:630
+#: templates/js/stat_sample.js:8 templates/setting-det-analysis.html:631
 msgid "Modifier"
 msgstr "ແກ້ໄຂ"
 
-#: templates/setting-det-analysis.html:909
+#: templates/setting-det-analysis.html:910
 msgid "Veuillez saisir un code."
 msgstr "ກະລຸນາໃສ່ລະຫັດ"
 
-#: templates/setting-det-analysis.html:912
+#: templates/setting-det-analysis.html:913
 msgid "Veuillez saisir un nom d'analyse."
 msgstr "ກະລຸນາໃສ່ຊື່ວິເຄາະ"
 
-#: templates/setting-det-analysis.html:915
+#: templates/setting-det-analysis.html:916
 msgid "Veuillez choisir ou définir au moins une variable."
 msgstr "ກະລຸນາເລືອກ ຫຼື ກໍານົດໂຕປ່ຽນແປງຢ່າງໜ້ອຍ 1 ໂຕເລກ"
 
-#: templates/setting-det-analysis.html:935
+#: templates/setting-det-analysis.html:936
 msgid "Ce code existe déjà"
 msgstr "ລະຫັດນີ້ມີແລ້ວ"
 
-#: templates/setting-det-analysis.html:1057
+#: templates/setting-det-analysis.html:1058
 msgid "Une erreur est survenue lors de la vérification du code"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາການກວດກາລະຫັດ"
 
@@ -4378,7 +4354,7 @@ msgstr "ວັດຈະນານຸກົມ"
 
 #: templates/setting-det-dict.html:48
 msgid "Mise en forme"
-msgstr ""
+msgstr "ການຈັດຮູບແບບ"
 
 #: templates/setting-det-user.html:18
 msgid "Droits utilisateur"
@@ -4454,12 +4430,11 @@ msgstr "ປ້ອນຂໍ້ມູນລົງໃສ່ໃນແບບຟອມ
 msgid "Liste des dictionnaires (choix de réponses)"
 msgstr "ລາຍການວັດຈະນານຸກົມ (ໃຫ້ເລືອກຄຳຕອບ)"
 
-#: templates/setting-dicts.html:90 templates/setting-dicts.html:184
-#, fuzzy
+#: templates/setting-dicts.html:86 templates/setting-dicts.html:180
 msgid "Exporter le dictionnaire"
-msgstr "ເພີ່ມວັດຈະນານຸກົມ"
+msgstr "ການນຳວັດຈະນານຸກົມອອກ"
 
-#: templates/setting-dicts.html:91
+#: templates/setting-dicts.html:87
 msgid "Ajouter un dictionnaire"
 msgstr "ເພີ່ມວັດຈະນານຸກົມ"
 
@@ -4468,82 +4443,70 @@ msgid "Paramétrage du rapport épidémiologique"
 msgstr "ຕັ້ງຄ່າການລາຍງານຜົນດ້ານລະບາດວິທະຍາ"
 
 #: templates/setting-form.html:5 templates/setting-form.html:12
-#, fuzzy
 msgid "Paramétrage de formulaires"
-msgstr "ຕັ້ງຄ່າການລາຍງານ"
+msgstr "ການຕັ້ງຄ່າແບບຟອມ"
 
 #: templates/setting-form.html:13
 msgid ""
 "Les modifications sont instantanément enregistrées pour la prise en "
 "compte des changements il faut revenir à la page d'accueil ou se "
 "reconnecter"
-msgstr ""
+msgstr "ການປ່ຽນແປງຈະຖືກບັນທຶກທັນທີ, ກະລຸນາກັບຄືນສູ່ໜ້າຫຼັກ ຫຼື ເຂົ້າສູ່ລະບົບໃໝ່ເພື່ອພິຈາລະນາການປ່ຽນແປງ"
 
 #: templates/setting-form.html:20
-#, fuzzy
 msgid "Formulaire patient"
-msgstr "ຄົນເຈັບໃຫມ່"
+msgstr "ແບບຟອມຄົນເຈັບ"
 
 #: templates/setting-form.html:24
-#, fuzzy
 msgid "Formulaire produit"
-msgstr "ຊື່ຜູ້ຜະລິດ"
+msgstr "ແບບຟອມສິນຄ້າ"
 
 #: templates/setting-form.html:28
-#, fuzzy
 msgid "Formulaire approvisionnement"
-msgstr "ການເຊື່ອມຕໍ່ເພື່ອສົ່ງອອກ"
+msgstr "ແບບຟອມການສະໜອງ"
 
 #: templates/setting-functionnal-units.html:5
 #: templates/setting-functionnal-units.html:12
-#, fuzzy
 msgid "Paramétrage des unités fonctionnelles"
-msgstr "ການຕັ້ງຄ່າຊ່ວງອາຍຸ"
+msgstr "ການຕັ້ງຄ່າໜ່ວຍງານທີ່ເຮັດວຽກ"
 
 #: templates/setting-functionnal-units.html:16
-#, fuzzy
 msgid "Ajouter une unité"
-msgstr "ເພີ່ມການປະຊຸມ"
+msgstr "ເພີ່ມຫົວໜ່ວຍ"
 
 #: templates/setting-functionnal-units.html:20
 msgid "Unité fonctionnelle"
-msgstr ""
+msgstr "ຫົວໜ່ວຍທີ່ເຮັດວຽກ"
 
 #: templates/setting-functionnal-units.html:31
-#, fuzzy
 msgid "Nb. utilisateurs"
-msgstr "ການສົ່ງເຂົ້າສໍາລັບຜູ້ນຳໃຊ້"
+msgstr "ຈຳນວນຜູ້ນຳໄຊ້"
 
 #: templates/setting-functionnal-units.html:32
-#, fuzzy
 msgid "Nb. famille ana."
-msgstr "ກຸ່ມວິເຄາະ"
+msgstr "ຈຳນວນກຸ່ມວິເຄາະ"
 
 #: templates/setting-functionnal-units.html:88
-#, fuzzy
 msgid "Affecter des utilisateurs"
-msgstr "ລາຍການຜູ້ນຳໃຊ້"
+msgstr "ແຕ່ງຕັ້ງຜູ້ນຳໄຊ້"
 
 #: templates/setting-functionnal-units.html:89
-#, fuzzy
 msgid "Affecter des familles d'analyses"
-msgstr "ເພີ່ມການວິເຄາະໃໝ່"
+msgstr "ມອບໝາຍກຸ່ມວິເຄາະ"
 
 #: templates/setting-indicator.html:5 templates/setting-indicator.html:12
-#, fuzzy
 msgid "Paramétrage du rapport d'indicateurs"
-msgstr "ຕັ້ງຄ່າການລາຍງານຜົນດ້ານລະບາດວິທະຍາ"
+msgstr "ການຕັ້ງຄ່າບົດລາຍງານຕົວຊີ້ວັດ"
 
 #: templates/setting-link-unit-fam.html:5
 #: templates/setting-link-unit-fam.html:12
-#, fuzzy
 msgid "Paramétrage des liens entre unité et familles d'analyses"
-msgstr "ການຕັ້ງຄ່າຊ່ວງອາຍຸ"
+msgstr "ການຕັ້ງຄ່າການເຊື່ອມໂຍງລະຫວ່າງຫົວໜ່ວຍ ແລະ ກຸ່ມວິເຄາະ"
 
 #: templates/setting-link-unit-user.html:5
 #: templates/setting-link-unit-user.html:12
 msgid "Paramétrage des liens entre unité et utilisateurs"
-msgstr ""
+msgstr "ການຕັ້ງຄ່າການເຊື່ອມໂຍງລະຫວ່າງຫົວໜ່ວຍ ແລະ ຜູ້ນຳໄຊ້"
 
 #: templates/setting-logo.html:5 templates/setting-logo.html:12
 msgid "Paramétrage du logo pour les documents"
@@ -4727,32 +4690,28 @@ msgstr "ສະແດງຄຳຄິດເຫັນ"
 
 #: templates/setting-requesting-services.html:5
 #: templates/setting-requesting-services.html:12
-#, fuzzy
 msgid "Paramétrage des services demandeurs"
-msgstr "ຕັ້ງຄ່າການລາຍງານ"
+msgstr "ການຕັ້ງຄ່າຜູ້ບໍລິການທີ່ຮ້ອງຂໍ"
 
 #: templates/setting-requesting-services.html:16
-#, fuzzy
 msgid "Ajouter un service"
-msgstr "ເພີ່ມໄລຍະຫ່າງ"
+msgstr "ເພີ່ມຜູ້ບໍລິການ"
 
 #: templates/setting-requesting-services.html:20
-#, fuzzy
 msgid "Services demandeurs"
-msgstr "ພະແນກທີ່ເຂົ້າຮັກສາ"
+msgstr "ຜູ້ບໍລິການທີ່ຮ້ອງຂໍ"
 
 #: templates/setting-stock.html:5 templates/setting-stock.html:12
-#, fuzzy
 msgid "Paramétrage du stockage"
-msgstr "ການຕັ້ງຄ່າ"
+msgstr "ການຕັ້ງຄ່າການຈັດເກັບ"
 
 #: templates/setting-stock.html:15
 msgid "Nombre de jours avant avertissement"
-msgstr ""
+msgstr "ໝາຍເຫດ ຈຳນວນມື້ກ່ອນຮອດວັນທີໝົດອາຍຸ"
 
 #: templates/setting-stock.html:20
 msgid "Nombre de jours avant alerte"
-msgstr ""
+msgstr "ແຈ້ງເຕືອນ ຈຳນວນມື້ກ່ອນຮອດວັນທີໝົດອາຍຸ"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"
@@ -4826,7 +4785,7 @@ msgstr "ເກີດການຜິດພາດລະວ່າງການນຳ
 msgid "Déconnexion"
 msgstr "ຕັດການເຊື່ອມຕໍ່"
 
-#: templates/technical-validation.html:528
+#: templates/technical-validation.html:535
 msgid "Non rempli"
 msgstr "ບໍ່ໄດ້ຕື່ມໃສ່"
 
@@ -4881,25 +4840,3 @@ msgstr "ກຳລັງດຳເນີນການ"
 #: templates/popup/popup_wait.html:12
 msgid "Veuillez patienter"
 msgstr "ກະ​ລຸ​ນາ​ລໍ​ຖ້າ"
-
-#~ msgid "T"
-#~ msgstr ""
-
-#~ msgid "Nombre de patients"
-#~ msgstr "ເລກຈໍານວນຊຸດຫີບຫໍ່"
-
-#~ msgid "Formule de conversion unité 2"
-#~ msgstr "ການປ່ຽນສູດ ຫົວໜ່ວຍ 2"
-
-#~ msgid "Unité 2"
-#~ msgstr "ຫົວໜ່ວຍ 2"
-
-#~ msgid "Précision 2"
-#~ msgstr "ຄວາມຖືກຕ້ອງ 2"
-
-#~ msgid "Configuration Indicateurs"
-#~ msgstr "ການຕັ້ງຄ່າການລະບາດ"
-
-#~ msgid "Nombre de malades"
-#~ msgstr "ເລກຈໍານວນຊຸດຫີບຫໍ່"
-

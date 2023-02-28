@@ -76,8 +76,9 @@
 | functionnal_unit_link                          | SETTINGS      | list of links for functionnal units      |
 | stock_setting                                  | SETTINGS      | settings for stock                       |
 | list_comment                                   | COMMENT       | structure for keep history of comments   |
+| form_setting                                   | SETTINGS      | structure for enable or disabled fields  |
 
-76 tables used
+77 tables used
 
 
 | Name    	                                 |

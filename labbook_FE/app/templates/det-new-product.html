@@ -78,7 +78,7 @@
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label class="form-label col-3 text-end mt-2 me-1">{{ _("Date d'expiration obligatoire") }}</label>
                     <label class="form-label text-end mt-2 me-3">
-                        <input type="radio" name="prd_expir_oblig" value="Y" {% if args['stock_product']['prd_expir_oblig'] == 'Y' %} checked="true" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                        <input type="radio" name="prd_expir_oblig" value="Y" {% if not args['stock_product']['prd_expir_oblig'] or args['stock_product']['prd_expir_oblig'] == 'Y' %} checked="true" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                     </label>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="prd_expir_oblig" value="N" {% if args['stock_product']['prd_expir_oblig'] == 'N' %} checked="true" {% endif %}>&nbsp;{{ _("Non") }}</input>
@@ -187,7 +187,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prd_conserv":' + conserv + ', ' +
               '"prd_expir_oblig":"' + expir_oblig + '"}' ;
 
-    console.log("DEBUG param=" + JSON.stringify(param)) ;
+    // console.log("DEBUG-TRACE param=" + JSON.stringify(param)) ;
 
     $.ajax( {
        type: "POST",

@@ -47,9 +47,12 @@ POD_NETWORK=slirp4netns:allow_host_loopback=true
 CONTAINER_NAME=labbook_python
 DEVRUN_HTTP=5000
 DEVRUN_STORAGE?=$(shell pwd)/devrun_storage
+# The Z option tells Podman that two or more <<containers|pods>> share the volume content
 DEVRUN_MAP_STORAGE=$(DEVRUN_STORAGE):/storage:Z
-DEVRUN_FE_LOG_DIR=./labbook_FE/logs
-DEVRUN_BE_LOG_DIR=./labbook_BE/logs
+# DEVRUN_FE_LOG_DIR=./labbook_FE/log
+# DEVRUN_BE_LOG_DIR=./labbook_BE/log
+DEVRUN_LOG_DIR?=$(shell pwd)/logs
+DEVRUN_BASE_PATH=/home/apps
 DEVRUN_FE_BASE_PATH=/home/apps/labbook_FE
 DEVRUN_BE_BASE_PATH=/home/apps/labbook_BE
 DEVRUN_GENERAL_OPTIONS=--rm --detach --pod=$(POD_NAME) --name=$(CONTAINER_NAME)
@@ -70,12 +73,11 @@ DEVRUN_ENV_OPTIONS=--tz=local --env TZ --env TERM --env LANG \
 --env LABBOOK_MAP_STORAGE=$(DEVRUN_MAP_STORAGE)
 DEVRUN_VOLUME_OPTIONS=\
 --volume=$(DEVRUN_MAP_STORAGE) \
+--volume=$(DEVRUN_LOG_DIR):$(DEVRUN_BASE_PATH)/logs \
 --volume=./labbook_FE/app:$(DEVRUN_FE_BASE_PATH)/labbook_FE/app \
---volume=$(DEVRUN_FE_LOG_DIR):$(DEVRUN_FE_BASE_PATH)/logs \
 --volume=./labbook_BE/alembic:$(DEVRUN_BE_BASE_PATH)/labbook_BE/alembic \
 --volume=./labbook_BE/app:$(DEVRUN_BE_BASE_PATH)/labbook_BE/app \
---volume=./labbook_BE/script:$(DEVRUN_BE_BASE_PATH)/labbook_BE/script \
---volume=$(DEVRUN_BE_LOG_DIR):$(DEVRUN_BE_BASE_PATH)/logs
+--volume=./labbook_BE/script:$(DEVRUN_BE_BASE_PATH)/labbook_BE/script 
 
 ifdef VERSION
 BUILD_VERSION=$(VERSION)
@@ -184,7 +186,7 @@ devclean:
 
 .PHONY: devrun
 devrun:
-	mkdir -p $(DEVRUN_FE_LOG_DIR) $(DEVRUN_BE_LOG_DIR)
+	mkdir -p $(DEVRUN_LOG_DIR)
 	mkdir -p $(DEVRUN_STORAGE)
 	rsync -a ./storage/ $(DEVRUN_STORAGE)
 	$(DOCKER_COMMAND) pod exists $(POD_NAME) || $(DOCKER_COMMAND) pod create --name=$(POD_NAME) --network=$(POD_NETWORK) --publish=$(DEVRUN_HTTP):80

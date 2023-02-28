@@ -33,6 +33,8 @@ RUN yum install -y mod_ssl
 
 RUN yum install -y unoconv
 
+RUN yum install -y logrotate
+
 RUN yum clean all
 
 # install supervisor

@@ -70,8 +70,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"ref":"' + ref_elem + '", ' +
               '"stat":"' + val_elem + '"}' ;
 
-console.log("DEBUG param=" + JSON.stringify(param));
-
     $.ajax( {
        type: "POST",
        url: "{{ session['server_ext'] }}/services/setting/form/det",

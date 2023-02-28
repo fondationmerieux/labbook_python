@@ -2309,6 +2309,7 @@ _("Technicien qualiticien")
 _("Secrétaire avancée")
 _("Qualiticien")
 _("Prescripteur")
+_("Gestionnaire de stock")
 
 # ----------------------------------------------------------------------------
 # NATIONALITY NAME SECTION
@@ -2443,3 +2444,21 @@ _("Vietnamienne")
 _("Vénézuelienne")
 _("Zambienne")
 _("Zimbabwéenne")
+
+# ----------------------------------------------------------------------------
+# DISABLED / ENABLED FORM FIELDS NAME
+# ----------------------------------------------------------------------------
+_("Deuxième nom")
+_("Nom de jeune fille")
+_("Nationalité")
+_("Résident")
+_("Groupe sanguin")
+_("Rhésus")
+_("Profession")
+_("Boite postale")
+_("Quartier / Secteur")
+_("Réference fournisseur")
+_("Localisation")
+_("Numéro de lot")
+_("Prix d'achat")
+_("Nom du bailleur")

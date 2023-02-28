@@ -15,7 +15,7 @@ class Record:
         cursor = DB.cursor()
 
         table_cond  = ''
-        filter_cond = 'length(dos.num_dos_an) = 10 '
+        filter_cond = 'length(rec.num_dos_an) = 10 '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -23,21 +23,21 @@ class Record:
             limit = 'LIMIT 4000'
             # filter conditions
             if 'num_rec' in args and args['num_rec']:
-                filter_cond += ' and (dos.num_dos_an LIKE "%' + args['num_rec'] + '%" or dos.num_dos_mois LIKE "%' + args['num_rec'] + '%" or dos.rec_num_int LIKE "%' + args['num_rec'] + '%") '
+                filter_cond += ' and (rec.num_dos_an LIKE "%' + args['num_rec'] + '%" or rec.num_dos_mois LIKE "%' + args['num_rec'] + '%" or rec.rec_num_int LIKE "%' + args['num_rec'] + '%") '
 
             if 'stat_work' in args and args['stat_work']:
-                filter_cond += ' and dos.statut IN ' + str(args['stat_work']) + ' '
+                filter_cond += ' and rec.statut IN ' + str(args['stat_work']) + ' '
 
             if 'type_rec' in args and args['type_rec']:
                 if args['type_rec'] == 'C':
-                    filter_cond += ' and dos.rec_custody="Y" '
+                    filter_cond += ' and rec.rec_custody="Y" '
                 elif args['type_rec'] == 'E':
-                    filter_cond += ' and dos.type=183 '
+                    filter_cond += ' and rec.type=183 '
                 elif args['type_rec'] == 'I':
-                    filter_cond += ' and dos.type=184 '
+                    filter_cond += ' and rec.type=184 '
 
             if 'stat_rec' in args and args['stat_rec'] > 0:
-                filter_cond += ' and dos.statut=' + str(args['stat_rec']) + ' '
+                filter_cond += ' and rec.statut=' + str(args['stat_rec']) + ' '
 
             if 'lastname' in args and args['lastname']:
                 filter_cond += ' and pat.nom LIKE "' + args['lastname'] + '%" '
@@ -49,14 +49,14 @@ class Record:
                 filter_cond += ' and (pat.code LIKE "%' + args['code'] + '%" or pat.code_patient LIKE "%' + args['code'] + '%") '
 
             if 'date_beg' in args and args['date_beg']:
-                filter_cond += ' and dos.date_dos >= "' + args['date_beg'] + '" '
+                filter_cond += ' and rec.date_dos >= "' + args['date_beg'] + '" '
 
             if 'date_end' in args and args['date_end']:
-                filter_cond += ' and dos.date_dos <= "' + args['date_end'] + '" '
+                filter_cond += ' and rec.date_dos <= "' + args['date_end'] + '" '
 
             # Analysis family
             if 'type_ana' in args and args['type_ana'] > 0:
-                table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ' +
+                table_cond += (' inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ' +
                                'left join sigl_dico_data as fam on fam.id_data = ref.famille ')
                 filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
 
@@ -66,14 +66,13 @@ class Record:
 
             # 4 in base for yes
             if 'emer' in args and args['emer'] == 4:
-                filter_cond += ' and ana.urgent=4 '
+                filter_cond += ' and req.urgent=4 '
 
             # Functionnal unit link with analyzes families
             if 'link_fam' in args and args['link_fam']:
-                # Record.log.info(Logs.fileline() + ' : DEBUG TODO FILTER link_fam = ' + str(args['link_fam']))
                 # avoid redundance of table if filter type_ana exist
                 if 'type_ana' not in args or not args['type_ana']:
-                    table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
+                    table_cond += (' inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ')
 
                 cond_link_fam = ''
                 # prepare list for sql
@@ -89,21 +88,21 @@ class Record:
 
         # Prescriber list
         if id_pres > 0:
-            filter_cond += ' and dos.med_prescripteur=' + str(id_pres) + ' '
+            filter_cond += ' and rec.med_prescripteur=' + str(id_pres) + ' '
 
         # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
-        req = ('select dos.statut as stat, dos.type as type_rec, dos.rec_num_int, '
-               'if(param_num_dos.periode=1070, if(param_num_dos.format=1072,substring(dos.num_dos_mois from 7), '
-               'dos.num_dos_mois), if(param_num_dos.format=1072, substring(dos.num_dos_an from 7), dos.num_dos_an)) '
-               'as num_dos, if(param_num_dos.periode=1070, dos.num_dos_mois, dos.num_dos_an) as num_dos_long, '
-               'dos.id_data as id_data, date_format(dos.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, '
+        req = ('select rec.statut as stat, rec.type as type_rec, rec.rec_num_int, '
+               'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
+               'rec.num_dos_mois), if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) '
+               'as num_dos, if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_dos_long, '
+               'rec.id_data as id_data, date_format(rec.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, '
                'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab '
-               'from sigl_02_data as dos '
-               'inner join sigl_03_data as pat on dos.id_patient=pat.id_data '
-               'inner join sigl_04_data as ana on ana.id_dos=dos.id_data '
-               'left join sigl_param_num_dos_data as param_num_dos on param_num_dos.id_data=1 ' + table_cond +
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '
+               'inner join sigl_04_data as req on req.id_dos=rec.id_data '
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 ' + table_cond +
                'where ' + filter_cond +
-               'group by dos.id_data order by dos.num_dos_an desc, dos.num_dos_mois desc, dos.id_data desc ' + limit)
+               'group by rec.id_data order by rec.num_dos_an desc, rec.num_dos_mois desc, rec.id_data desc ' + limit)
 
         cursor.execute(req, (Constants.cst_isodate,))
 
@@ -194,11 +193,11 @@ class Record:
         cursor = DB.cursor()
 
         req = ('select refana.nom as name, max(vld.type_validation) as last_vld '
-               'from sigl_04_data as ana '
-               'inner join sigl_05_data as refana on refana.id_data=ana.ref_analyse '
-               'inner join sigl_09_data as res on res.id_analyse=ana.id_data '
+               'from sigl_04_data as req '
+               'inner join sigl_05_data as refana on refana.id_data=req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse=req.id_data '
                'inner join sigl_10_data as vld on vld.id_resultat=res.id_data '
-               'where (refana.cote_unite != "PB" or refana.cote_unite is null) and ana.id_dos=%s '
+               'where (refana.cote_unite != "PB" or refana.cote_unite is null) and req.id_dos=%s '
                'group by name order by last_vld asc, name asc')
 
         cursor.execute(req, (id_rec,))
@@ -307,7 +306,7 @@ class Record:
         # Functionnal unit link with analyzes families
         if 'link_fam' in args and args['link_fam']:
             # avoid redundance of table if filter type_ana exist
-            table_cond += (' inner join sigl_05_data as ref on ana.ref_analyse = ref.id_data ')
+            table_cond += (' inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ')
 
             cond_link_fam = ''
             # prepare list for sql
@@ -323,8 +322,8 @@ class Record:
 
         req = ('select count(distinct(rec.id_data)) as nb_emer '
                'from sigl_02_data as rec '
-               'inner join sigl_04_data as ana on ana.id_dos=rec.id_data ' + table_cond +
-               'where ana.urgent=4 and rec.statut in (181,182,253,254,255) ' + filter_cond)
+               'inner join sigl_04_data as req on req.id_dos=rec.id_data ' + table_cond +
+               'where req.urgent=4 and rec.statut in (181,182,253,254,255) ' + filter_cond)
 
         cursor.execute(req)
 
