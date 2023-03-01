@@ -12,9 +12,9 @@
 | v3 | id_ana | integer  | string   | string   | string   | id_family  | string          | float            | string      | id_product      | id_sample_type  | id_ana_type | Y or N     | Y or N     | id_link  | id_ana      | id_var       | integer  | integer      | Y or N     | id_var | string    | string    | id_unit  | float   | float   | string      | id_res_type  | string      | integer  | string   | Y or N     | Y or N     | Y or N     |
 
 ## Dictionnary
-| version | id_data | id_owner | dico_name  | label       | short_label | position | code       | dico_descr | dict_formatting |
-|---------|:-------:|:--------:|:----------:|:-----------:|:-----------:|:--------:|:----------:|:----------:|:---------------:|
-| v1      | serial  | integer  | string(20) | string(255) | string(20)  | integer  | string(10) | text       | Y or N          |
+| version | id_data                 | id_owner | dico_name  | label       | short_label | position | code       | dico_descr | dict_formatting |
+|---------|:-----------------------:|:--------:|:----------:|:-----------:|:-----------:|:--------:|:----------:|:----------:|:---------------:|
+| v1      | serial (upd) or 0 (ins) | integer  | string(20) | string(255) | string(20)  | integer  | string(10) | text       | Y or N          |
 
 ## Zip code and city
 | zip_code | city_name |

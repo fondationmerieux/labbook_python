@@ -1,5 +1,7 @@
 The [inidicator.ini](storage/resource/indicator/indicator.ini) file must be present and compliant (UTF-8 encoding)
 
+In administrator access you can override the indicator.ini file, to know you have to keep the same file name
+
 [SETTINGS] section
 version : version number
 nb_disease : number of disease defined

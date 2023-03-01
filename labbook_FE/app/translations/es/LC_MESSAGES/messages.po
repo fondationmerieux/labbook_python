@@ -570,7 +570,7 @@ msgstr "Ningún expediente archivado"
 msgid ""
 "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
 " y figurera)"
-msgstr "¿Le gustaría volver a editar el informe? (la mención Cancela y reemplaza aparecerá allí)"
+msgstr "¿Le gustaría volver a editar el reporte? (la mención Cancela y reemplaza aparecerá allí)"
 
 #: templates/administrative-record.html:625 templates/pivot-table.html:155
 msgid "Une erreur est survenue lors du traitement"
@@ -3074,7 +3074,7 @@ msgid ""
 "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
 "irréversible)"
-msgstr "El expediente del paciente A ELIMINAR se adjuntará\\nal paciente A CONSERVAR.\\n¿Confirma esta fusión? (Esta acción es irreversible)"
+msgstr "El expediente del paciente PARA ELIMINAR se adjuntará\\nal paciente PARA CONSERVAR.\\n¿Confirma esta fusión?\\n(Esta acción es irreversible)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -3515,7 +3515,7 @@ msgstr "Reactivos y consumibles"
 msgid ""
 "Réception de réactifs et/ou consommables ne correspondant pas à la "
 "commande"
-msgstr "Recepción de reactivos y/o consumibles no correspondientes al pedido"
+msgstr "Recepción de reactivos y/o consumibles que no corresponden al pedido"
 
 #: templates/non-conformity.html:444
 msgid "Délai livraison"
@@ -3819,7 +3819,7 @@ msgstr "Fecha de inicio del periodo"
 msgid ""
 "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
 "respectivement les dates de début et fin de période."
-msgstr "Para una hoja de cálculo semanal, el lunes y el domingo deben ser las fechas de inicio y finalización del período, respectivamente."
+msgstr "Para una hoja de cálculo semanal, el lunes y el domingo deben ser las fechas de inicio y de finalización del período, respectivamente."
 
 #: templates/report-dhis2.html:28
 msgid ""
@@ -4043,7 +4043,7 @@ msgstr "Desactivado"
 msgid ""
 "Veuillez confirmer la suppression du cette analyse\\nAttention les "
 "dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr "Confirme la eliminación de este escaneo.\\nTenga en cuenta que todos los archivos asociados con este análisis serán erróneos."
+msgstr "Por favor, confirme la eliminación de esta análisis.\\nTenga en cuenta que cualquier archivo asociado a este análisis dará error"
 
 #: templates/setting-analyzes.html:363
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
@@ -4131,7 +4131,7 @@ msgid ""
 "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
 " seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
 "clé ?"
-msgstr "Ya existe una clave, al volver a generar una clave, las copias de seguridad antiguas no se podrán recuperar.\\n¿Confirmas la generación de una nueva clave"
+msgstr "Ya existe una clave, al volver a generar una clave, las copias antiguas no se podrán recuperar.\\n¿Confirme la generación de una nueva clave?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -4199,7 +4199,7 @@ msgstr "Reinicio activado"
 msgid ""
 "Les services ont redémarré ou une erreur est survenue lors de la demande "
 "de redémarrage\\nveuillez recharger la page"
-msgstr "Los servicios se reiniciaron o se produjo un error al solicitar un reinicio.\\nPor favor recarga la página"
+msgstr "Los servicios se reiniciaron o se produjo un error al solicitar un reinicio.\\nPor favor recargue la página"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
@@ -4445,7 +4445,7 @@ msgid ""
 "Les modifications sont instantanément enregistrées pour la prise en "
 "compte des changements il faut revenir à la page d'accueil ou se "
 "reconnecter"
-msgstr "Las modificaciones se guardan al instante para que se tengan en cuenta los cambios, debe volver a la página de inicio o volver a conectarse"
+msgstr "Los cambios se guardan instantáneamente para tener en cuenta los cambios, se debe volver a la página de inicio o iniciar sesión nuevamente"
 
 #: templates/setting-form.html:20
 msgid "Formulaire patient"

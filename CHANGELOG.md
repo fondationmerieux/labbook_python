@@ -22,7 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - download indicator.ini
 - lastname and firstname filters in patient history page 
 - add_analysis function, outsourced parameter missed
-- empty report if an analysis is with a labeled varaible at first position
+- empty report if an analysis is with a labeled variable at first position
+- focus on search field supplier of det-new-product page
 
 ## [3.3.3] - 2023-02-08
 ### Added
