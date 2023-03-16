@@ -71,6 +71,23 @@
                                                     {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                         </div>
                         <div class="col-md-12 mt-1">
+                            {% if args['patient'] and args['patient']['adresse'] %}
+                            <span class="font-info">{{ args['patient']['adresse'] }}</span>
+                            {% endif %}
+                            {% if args['patient'] and args['patient']['quartier'] %}
+                            <span class="font-info">{{ args['patient']['quartier'] }}</span>
+                            {% endif %}
+                            {% if args['patient'] and args['patient']['bp'] %}
+                            <span class="font-info">{{ args['patient']['bp'] }}</span>
+                            {% endif %}
+                            {% if args['patient'] and args['patient']['cp'] %}
+                            <span class="font-info">{{ args['patient']['cp'] }}</span>
+                            {% endif %}
+                            {% if args['patient'] and args['patient']['ville'] %}
+                            <span class="font-info">{{ args['patient']['ville'] }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12 mt-1">
                             {% if args['patient'] and args['patient']['tel'] %}
                             <span class="font-info">{{ args['patient']['tel'] }}</span>
                             {% endif %}
@@ -104,8 +121,8 @@
                                 <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                                 {% endif %}
                             </div>
-                            <div class="form-group d-md-flex align-items-end">
-                                <label for="rec_custody" class="form-label text-end ms-3 me-1">{{ _("Demande de garde") }}</label>
+                            <div class="form-group d-md-flex align-items-end mt-2">
+                                <label for="rec_custody" class="form-label col-md-5 text-end ms-3 me-1 me-md-3">{{ _("Demande de garde") }}</label>
                                 {% if entry == 'Y' %}
                                 <label class="form-label text-end me-3">
                                     <input type="radio" name="rec_custody" value="Y" >&nbsp;{{ _("Oui") }}</input>
@@ -664,7 +681,7 @@ function del_analysis( id_data )
             refresh_bill() ;
             {% endif %}
 
-            delete data_analysis[i] ;
+            data_analysis.splice(i, 1);
 
             break ;
             }
@@ -736,7 +753,7 @@ function del_product( id_data )
         {
             if (data_products[i].id_data == id_data)
             {
-            delete data_products[i] ;
+            data_products.splice(i, 1);
 
             break ;
             }

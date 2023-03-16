@@ -149,6 +149,7 @@ class RecordDet(Resource):
 
             # Different day so we start a new number
             if num_dos_jour[:8] != date_now:
+                self.log.info(Logs.fileline() + ' : DEBUG RecordDet num_dos_jour [' + str(num_dos_jour[:8]) + '] != date_now [' + str(date_now) + ']')
                 num_dos_jour = date_record + '0001'
             else:
                 num_jour  = num_dos_jour[8:]
@@ -160,6 +161,7 @@ class RecordDet(Resource):
 
             # Different month so we start a new number
             if num_dos_mois[:6] != date_now[:6]:
+                self.log.info(Logs.fileline() + ' : DEBUG RecordDet num_dos_mois [' + str(num_dos_mois[:6]) + '] != date_now [' + str(date_now) + ']')
                 num_dos_mois = date_record[:6] + '0001'
             else:
                 num_mois  = num_dos_mois[6:]
@@ -171,6 +173,7 @@ class RecordDet(Resource):
 
             # Different year so we start a new number
             if num_dos_an[:4] != date_now[:4]:
+                self.log.info(Logs.fileline() + ' : DEBUG RecordDet num_dos_an [' + str(num_dos_an[:4]) + '] != date_now[' + str(date_now) + ']')
                 num_dos_an = date_record[:4] + '000001'
             else:
                 num_an  = num_dos_an[4:]
@@ -296,6 +299,26 @@ class RecordDet(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE RecordDet delete')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class RecordComm(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_rec):
+        args = request.get_json()
+
+        if 'comm' not in args:
+            self.log.error(Logs.fileline() + ' : RecordComm ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Record.updateRecordComm(id_rec, args['comm'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR RecordComm update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordComm')
         return compose_ret('', Constants.cst_content_type_json)
 
 

@@ -81,7 +81,7 @@ class Result:
         return cursor.fetchall()
 
     @staticmethod
-    def getResultRecord(id_rec, empty=True):
+    def getResultRecord(id_rec, empty=True, link_fam=[]):
         cursor = DB.cursor()
 
         cond = ''
@@ -89,6 +89,20 @@ class Result:
         # avoid empty result of this request
         if not empty:
             cond = ' and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013 '
+
+        # Functionnal unit link with analyzes families
+        if link_fam:
+            cond_link_fam = ''
+            # prepare list for sql
+            for id_fam in link_fam:
+                if not cond_link_fam:
+                    cond_link_fam = '('
+
+                cond_link_fam = cond_link_fam + str(id_fam) + ','
+
+            if cond_link_fam:
+                cond_link_fam = cond_link_fam[:-1] + ')'
+                cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
@@ -370,10 +384,11 @@ class Result:
                'rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, rec.a_payer as to_pay, '
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
-               'req.req_outsourced as ana_outsourced ref.code as analysis_code, ref.nom as analysis_name, '
-               'd_fam.label as analysis_familly, res.valeur as result_value, var.libelle as variable_name, '
+               'req.req_outsourced as ana_outsourced, ref.code as analysis_code, ref.nom as analysis_name, '
+               'd_fam.label as analysis_family, res.valeur as result_value, var.libelle as variable_name, '
                'var.type_resultat as type_result, d_unit.label as result_unit, '
-               'date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
+               'date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit, d_sex.label as sex, '
+               'pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
@@ -388,6 +403,7 @@ class Result:
                'and ref.id_data = link.id_refanalyse '
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
+               'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
                'where rec.statut in (255, 256) and rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 

@@ -45,33 +45,13 @@ class ExportDHIS2(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'date_beg' not in args or 'date_end' not in args or 'filename' not in args or 'id_user' not in args:
+        if 'date_beg' not in args or 'date_end' not in args or 'filename' not in args or 'id_user' not in args or \
+           'period' not in args:
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        # Read CSV spreadsheet
-        import os
-
-        from csv import reader
-
-        path = Constants.cst_dhis2
-
-        with open(os.path.join(path, args['filename']), 'r', encoding='utf-8') as csv_file:
-            csv_reader = reader(csv_file, delimiter=';')
-            l_rows = list(csv_reader)
-
-        if not l_rows or len(l_rows) < 2:
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet empty')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        version = l_rows[1][2]
-
-        if version != 'v1' and version != 'v2':
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet wrong version')
-            return compose_ret('', Constants.cst_content_type_json, 409)
-
-        # Determine the period
-        period = l_rows[1][1]
+        period   = args['period']
+        filename = args['filename'][:-4]
 
         l_period = []
 
@@ -154,98 +134,184 @@ class ExportDHIS2(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR wrong period : ' + str(period))
             return compose_ret('', Constants.cst_content_type_json, 409)
 
-        # Determine orgunit
-        orgunit = ''
+        # --- BUILD DATA ---
 
-        if version != 'v1' and l_rows[1][7]:
-            orgunit = l_rows[1][7]
+        # Pre-defined export
+        if filename == "LIST_OUTSOURCING":
+            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_OUTSOURCING')
 
-        # Determine storedby
-        storedby = ''
-
-        if version != 'v1' and l_rows[1][8]:
-            storedby = l_rows[1][8]
-
-        # Data
-        l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value", "storedby",
-                   "lastupdated", "comment", "followup", "deleted"]]
-
-        date_now = datetime.now()
-
-        lab_name = ''
-
-        lab = Various.getDefaultValue('entete_1')
-
-        if lab:
-            lab_name = lab['value']
-
-        user = User.getUserDetails(args['id_user'])
-
-        user_ident = ''
-
-        if user:
-            user_ident = user['firstname'] + user['lastname']
-
-        # remove space
-        user_ident = user_ident.replace(' ', '')
-
-        if l_rows:
-            # remove headers line
-            l_rows.pop(0)
+            # Data headers
+            l_data = [["period", "code patient", "record number", "record date", "analysis outsourced"]]
 
             for period in l_period:
+                l_rows = Export.getListOutsourcing(period[1], period[2])
+                
                 for row in l_rows:
-
                     if row:
+
                         data = []
 
-                        data.append(row[0])
+                        code = str(row['code'])
+
+                        if row['code_patient']:
+                            code += ' / ' + str(row['code_patient'])
+
+                        num_rec = str(row['num_dos_an'])
+
+                        date_rec = str(row['date_rec'])
+
+                        ana_outsourced = str(row['ana_code']) + ' ' + str(row['ana_name'])
+
                         data.append(period[0])
-
-                        period_beg_db = period[1]
-                        period_end_db = period[2]
-
-                        if orgunit:
-                            data.append(orgunit)
-                        else:
-                            data.append(lab_name)
-
-                        data.append(row[5])
-                        data.append(row[6])
-
-                        # Parse formula for result request
-                        formula   = row[3]
-                        type_samp = row[4]
-
-                        self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 --- before ParseFormula ---')
-                        self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 formula=%s', formula)
-                        self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 type_samp=%s', type_samp)
-
-                        req_part = ''
-
-                        req_part = Report.ParseFormula(formula, type_samp)
-
-                        result = Report.getResultEpidemio(inner_req=req_part['inner'],
-                                                          end_req=req_part['end'],
-                                                          date_beg=period_beg_db,
-                                                          date_end=period_end_db)
-
-                        if result:
-                            data.append(str(result['value']))
-                        else:
-                            data.append('')
-
-                        if storedby:
-                            data.append(storedby)
-                        else:
-                            data.append(user_ident)
-
-                        data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
-                        data.append('')
-                        data.append('FALSE')
-                        data.append('')
+                        data.append(code)
+                        data.append(num_rec)
+                        data.append(date_rec)
+                        data.append(ana_outsourced)
 
                         l_data.append(data)
+        else:
+            # Data headers
+            l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value",
+                       "storedby", "lastupdated", "comment", "followup", "deleted"]]
+
+            # Read CSV spreadsheet
+            import os
+
+            from csv import reader
+
+            path = Constants.cst_dhis2
+
+            with open(os.path.join(path, args['filename']), 'r', encoding='utf-8') as csv_file:
+                csv_reader = reader(csv_file, delimiter=';')
+                l_rows = list(csv_reader)
+
+            if not l_rows or len(l_rows) < 2:
+                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet empty')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            l_cols = l_rows[0]  # keep first row to read l_cols of csv
+
+            idx_version = l_cols.index("version")
+
+            if idx_version:
+                version = l_rows[1][idx_version]
+
+                if version != 'v1' and version != 'v2' and version != 'v3':
+                    self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet wrong version')
+                    return compose_ret('', Constants.cst_content_type_json, 409)
+            else:
+                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet not found version')
+                return compose_ret('', Constants.cst_content_type_json, 409)
+
+            # 09/03/2023 period comes by ihm no longer by spreadsheet
+            """
+            idx_period = l_cols.index("period")
+
+            if not idx_period:
+                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet not found period')
+                return compose_ret('', Constants.cst_content_type_json, 409)
+
+            # Determine the period
+            period = l_rows[1][idx_period]
+            """
+
+            # Determine orgunit
+            orgunit = ''
+
+            idx_orgunit = l_cols.index("orgunit")
+
+            if idx_orgunit:
+                orgunit = l_rows[1][idx_orgunit]
+            
+            if not orgunit:
+                lab = Various.getDefaultValue('entete_1')
+
+                if lab:
+                    orgunit = lab['value']
+
+            # Determine storedby
+            storedby = ''
+
+            idx_storedby = l_cols.index("storedby")
+
+            if idx_storedby:
+                storedby = l_rows[1][idx_storedby]
+
+            if not storedby:
+                user = User.getUserDetails(args['id_user'])
+
+                if user:
+                    storedby = user['firstname'] + user['lastname']
+
+            # remove space
+            storedby = storedby.replace(' ', '')
+
+            date_now = datetime.now()
+
+            if l_rows:
+                # remove headers line
+                l_rows.pop(0)
+
+                for period in l_period:
+                    for row in l_rows:
+
+                        if row:
+                            data = []
+
+                            data.append(row[0])
+                            data.append(period[0])
+                            data.append(orgunit)
+                            data.append(row[5])
+                            data.append(row[6])
+
+                            period_beg_db = period[1]
+                            period_end_db = period[2]
+
+                            filter_row = row[3].strip()
+
+                            # --- check if formula or others statistic object  ---
+                            # formula case
+                            if filter_row.startswith("$") or filter_row.startswith("{"):
+                                # Parse formula for result request
+                                formula   = filter_row
+                                type_samp = row[4]
+
+                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 --- before ParseFormula ---')
+                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 formula=%s', formula)
+                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 type_samp=%s', type_samp)
+
+                                req_part = ''
+
+                                req_part = Report.ParseFormula(formula, type_samp)
+
+                                result = Report.getResultEpidemio(inner_req=req_part['inner'],
+                                                                  end_req=req_part['end'],
+                                                                  date_beg=period_beg_db,
+                                                                  date_end=period_end_db)
+
+                                if result:
+                                    data.append(str(result['value']))
+                                else:
+                                    data.append('')
+                            
+                            # statistic case
+                            else:
+                                result = Export.getStatDHIS2(period_beg_db, period_end_db, filter_row)
+
+                                if result:
+                                    data.append(str(result['value']))
+                                else:
+                                    data.append('')
+
+                            data.append(storedby)
+                            data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
+                            data.append('')
+                            data.append('FALSE')
+                            data.append('')
+
+                            l_data.append(data)
+
+        # --- WRITE FILE ---
 
         # if no result to export
         if len(l_data) < 2:
@@ -255,7 +321,7 @@ class ExportDHIS2(Resource):
         try:
             import csv
 
-            filename = 'dhis2_' + args['filename'][:-4] + '_' + args['date_beg'] + '-' + args['date_end'] + '.csv'
+            filename = 'dhis2_' + filename + '_' + args['date_beg'] + '-' + args['date_end'] + '.csv'
 
             with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter=',')

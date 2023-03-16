@@ -20,6 +20,7 @@
                     <h3 class="panel-title">{{ _("Identité") }}</h3>
                 </div>
                 <div class="row mt-3">
+                    {# Anonymous #}
                     <div class="col">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label class="form-label text-end mx-3">{{ _("Anonyme") }}</label>
@@ -31,6 +32,7 @@
                             </label>
                         </div>
                     </div>
+                    {# Code lab #}
                     <div class="col-md-7">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label for="code_patient" class="form-label col-md-5 text-end mt-2 me-1" style="">{{ _("Code patient interne au laboratoire") }}</label>
@@ -39,6 +41,7 @@
                             </div>
                         </div>
                     </div>
+                    {# code #}
                     <div class="col">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <div class="pat-num" id="anon-code-ro">
@@ -49,117 +52,44 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md">
+                        {# Name #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="nom" class="form-label col-md-4 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>
                                 <input id="nom" type="text" value="{{ args['nom'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label for="ddn" class="form-label text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
-                            <div>
-                                <input id="ddn" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['ddn'] }}" placeholder="" style="color: #888;">
-                                <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
-                            </div>
-                        </div>
-                    </div>
-
-                    {% if 'pat_midname' in session and session['pat_midname'] == 'Y' %}
-                    <div class="col-md-5">
+                    
+                        {% if 'pat_midname' in session and session['pat_midname'] == 'Y' %}
+                        {# Second name #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="midname" class="form-label col-md-4 text-end mt-2 me-1">{{ _("Deuxième nom") }}</label>
                             <div>
                                 <input id="midname" type="text" value="{{ args['pat_midname'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                    </div>
-                    {% endif %}
+                        {% endif %}
 
-                    <div class="col-md-5">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label class="form-label text-end me-3">{{ _("Date de naissance approximative") }}</label>
-                            <label class="form-label text-end me-3">
-                                <input type="radio" name="ddn_approx" value="4" {% if args['ddn_approx'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
-                            </label>
-                            <label class="form-label text-end me-3">
-                                <input type="radio" name="ddn_approx" value="5" {% if not args['ddn_approx'] or args['ddn_approx'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
-                            </label>
-                        </div>
-                    </div>
-
-                    {% if 'nom_jf' in session and session['nom_jf'] == 'Y' %}
-                    <div class="col-5">
+                        {% if 'nom_jf' in session and session['nom_jf'] == 'Y' %}
+                        {# Maiden name #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="nom_jf" class="form-label col-md-4 text-end mt-2 me-1">{{ _("Nom de jeune fille") }}</label>
                             <div>
                                 <input id="nom_jf" type="text" value="{{ args['nom_jf'] }}" maxlength="40" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                    </div>
-                    {% endif %}
+                        {% endif %}
 
-                    <div class="col-md-2">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label for="age" class="form-label text-end mt-2 me-1">{{ _("ou") }}&nbsp;&nbsp;&nbsp;{{ _("Age") }}</label>
-                            <div>
-                                <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label for="unit_age" class="form-label text-end mt-2 me-1">{{ _("unité") }}</label>
-                            <div>					
-                                <select name="unit_age" id="unit_age" class="form-select">
-                                    {% from 'macros.html' import select_unit_age %}
-                                    {{ select_unit_age(ihm['unit_age'], args['unite']) }}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
+                        {# Firstname #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="prenom" class="form-label col-md-4 text-end mt-2 me-1" style="">{{ _("Prénom(s)") }}</label>
                             <div>
                                 <input id="prenom" type="text" value="{{ args['prenom'] }}" maxlength="80" class="form-control form-lbk" style="">
                             </div>
                         </div>
-                    </div>
 
-                    {% if 'pat_nationality' in session and session['pat_nationality'] == 'Y' %}
-                    <div class="col-md-3">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label for="pat_nationality" class="form-label text-end mt-2 me-1">{{ _("Nationalité") }}</label>
-                            <div>					
-                                <select name="pat_nationality" id="pat_nationality" class="form-select">
-                                    {% from 'macros.html' import select_nationality %}
-                                    {{ select_nationality(ihm['nationality'], args['pat_nation']) }}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if 'pat_resident' in session and session['pat_resident'] == 'Y' %}
-                    <div class="col-md-3">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label class="form-label text-end mx-3">{{ _("Résident") }}</label>
-                            <label class="form-label text-end me-3">
-                                <input type="radio" name="pat_resident" value="Y" {% if not args['pat_resident'] or args['pat_resident'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
-                            </label>
-                            <label class="form-label text-end me-3">
-                                <input type="radio" name="pat_resident" value="N" {% if args['pat_resident'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
-                            </label>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="row">
-                    <div class="col-md-5">
+                        {# Sex #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label class="form-label col-md-4 text-end me-3">{{ _("Sexe") }}</label>
                             <label class="form-label text-end me-3">
@@ -172,42 +102,106 @@
                                 <input type="radio" name="sexe" id="unknown_sex" value="3" {% if not args['sexe'] or args['sexe'] == 3 %} checked="checked" {% endif %}>&nbsp;{{ _("Inconnu") }}</input>
                             </label>
                         </div>
-                    </div>
 
-                    {% if 'pat_blood_group' in session and session['pat_blood_group'] == 'Y' %}
-                    <div class="col-md-3">
+                    </div>{# close first col group #}
+
+                    <div class="col-md">
+                        {# Birth #}
                         <div class="form-group d-md-flex align-items-start mt-3">
+                            <label for="ddn" class="form-label text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
+                            <div>
+                                <input id="ddn" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['ddn'] }}" placeholder="" style="color: #888;">
+                                <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
+                            </div>
+                        </div>
+
+                        {# Birth approx. #}
+                        <div class="form-group d-md-flex align-items-start mt-3">
+                            <label class="form-label text-end me-3">{{ _("Date de naissance approximative") }}</label>
+                            <label class="form-label text-end me-3">
+                                <input type="radio" name="ddn_approx" value="4" {% if args['ddn_approx'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                            </label>
+                            <label class="form-label text-end me-3">
+                                <input type="radio" name="ddn_approx" value="5" {% if not args['ddn_approx'] or args['ddn_approx'] == 5 %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                            </label>
+                        </div>
+
+                        <div class="form-group d-md-flex align-items-start mt-3">
+                            {# Age #}
+                            <label for="age" class="form-label text-end mt-2 me-1">{{ _("ou") }}&nbsp;&nbsp;&nbsp;{{ _("Age") }}</label>
+                            <div>
+                                <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150">
+                            </div>
+
+                            {# Age unit #}
+                            <label for="unit_age" class="form-label text-end ms-md-3 mt-2 me-1">{{ _("unité") }}</label>
+                            <div>					
+                                <select name="unit_age" id="unit_age" class="form-select form-lbk">
+                                    {% from 'macros.html' import select_unit_age %}
+                                    {{ select_unit_age(ihm['unit_age'], args['unite']) }}
+                                </select>
+                            </div>
+                        </div>
+
+                        {% if 'pat_nationality' in session and session['pat_nationality'] == 'Y' %}
+                        {# Nationality #}
+                        <div class="form-group d-md-flex align-items-start mt-3">
+                            <label for="pat_nationality" class="form-label text-end mt-2 me-1">{{ _("Nationalité") }}</label>
+                            <div>					
+                                <select name="pat_nationality" id="pat_nationality" class="form-select form-lbk">
+                                    {% from 'macros.html' import select_nationality %}
+                                    {{ select_nationality(ihm['nationality'], args['pat_nation']) }}
+                                </select>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if 'pat_resident' in session and session['pat_resident'] == 'Y' %}
+                        {# Resident #}
+                        <div class="form-group d-md-flex align-items-start mt-3">
+                            <label class="form-label text-end mx-3">{{ _("Résident") }}</label>
+                            <label class="form-label text-end me-3">
+                                <input type="radio" name="pat_resident" value="Y" {% if not args['pat_resident'] or args['pat_resident'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                            </label>
+                            <label class="form-label text-end me-3">
+                                <input type="radio" name="pat_resident" value="N" {% if args['pat_resident'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                            </label>
+                        </div>
+                        {% endif %}
+
+                        <div class="form-group d-md-flex align-items-start mt-3">
+                            {% if 'pat_blood_group' in session and session['pat_blood_group'] == 'Y' %}
+                            {# Blood group #}
                             <label for="blood_group" class="form-label text-end mt-2 me-1">{{ _("Groupe sanguin") }}</label>
                             <div>					
-                                <select name="pat_blood_group" id="pat_blood_group" class="form-select">
+                                <select name="pat_blood_group" id="pat_blood_group" class="form-select form-lbk">
                                     {% from 'macros.html' import select_blood_group %}
                                     {{ select_blood_group(ihm['blood_group'], args['pat_blood_group']) }}
                                 </select>
                             </div>
-                        </div>
-                    </div>
-                    {% endif %}
+                            {% endif %}
 
-                    {% if 'pat_blood_rhesus' in session and session['pat_blood_rhesus'] == 'Y' %}
-                    <div class="col">
-                        <div class="form-group d-md-flex align-items-start mt-3">
-                            <label for="blood_rhesus" class="form-label text-end mt-2 me-1">{{ _("Rhésus") }}</label>
+                            {% if 'pat_blood_rhesus' in session and session['pat_blood_rhesus'] == 'Y' %}
+                            {# Blood rhesus #}
+                            <label for="blood_rhesus" class="form-label text-end ms-md-3 mt-2 me-1">{{ _("Rhésus") }}</label>
                             <div>					
-                                <select name="pat_blood_rhesus" id="pat_blood_rhesus" class="form-select">
+                                <select name="pat_blood_rhesus" id="pat_blood_rhesus" class="form-select form-lbk">
                                     {% from 'macros.html' import select_blood_rhesus %}
                                     {{ select_blood_rhesus(ihm['blood_rhesus'], args['pat_blood_rhesus']) }}
                                 </select>
                             </div>
+                            {% endif %}
                         </div>
-                    </div>
-                    {% endif %}
+
+                    </div>{# close second col group #}
                 </div>
 
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Coordonnées") }}</h3>
                 </div>
+
                 <div class="row mt-3">
-                    <div class="col">
+                    <div class="col-md">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label for="adresse" class="form-label col-md-3 text-end mt-2 me-1">{{ _("Adresse") }}</label>
                             <div>
@@ -236,7 +230,8 @@
                         </div>
                         {% endif %}
                     </div>
-                    <div class="col">
+
+                    <div class="col-md">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <div class="col-md-3"></div>
                             <select id="search_zipcity" class="form-select form-lbk form-search"></select>

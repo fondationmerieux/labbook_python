@@ -100,7 +100,7 @@ function del_value( id_ihm )
         {
             if (data_values[i].id_ihm == id_ihm)
             {
-            delete data_values[i] ;
+            data_values.splice(i, 1) ;
 
             break ;
             }

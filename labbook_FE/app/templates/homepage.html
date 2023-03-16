@@ -62,7 +62,7 @@
                 {% if args['stat_backup'] == 'OK' %}
                 <div class="text-end"><i class="fs-4 bi bi-database-check text-success me-1" title="{{ _("Dernière sauvegarde OK") }}"></i> <small>{{ args['date_backup'] }}</small></div>
                 {% else %}
-                <div class="text-end"><i class="fs-4 bi bi-database-x text-danger me-1" title="{{ _("Dernière sauvegarde") }}"></i> <small{{ args['date_backup'] }}</small></div>
+                <div class="text-end"><i class="fs-4 bi bi-database-x text-danger me-1" title="{{ _("Dernière sauvegarde") }}"></i> <small>{{ args['date_backup'] }}</small></div>
                 {% endif %}
             </div>
 

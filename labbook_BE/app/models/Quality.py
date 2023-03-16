@@ -646,7 +646,7 @@ class Quality:
                 limit = 'LIMIT 500'
 
             # filter conditions
-            if args['prod_name']:
+            if 'prod_name' in args and args['prod_name']:
                 filter_cond += ' and prd_name LIKE "%' + str(args['prod_name']) + '%" '
 
             if 'prod_type' in args and args['prod_type'] > 0:
@@ -659,7 +659,7 @@ class Quality:
                 filter_cond += ' and prs_lessor LIKE "%' + str(args['prod_lessor']) + '%" '
 
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
-               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, '
+               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, '
                'dict1.label as type,  dict2.label as conserv, '
                'sup.fournisseur_nom as supplier, Min(if(prs_empty="Y", NULL, prs_expir_date)) as expir_date '
                'from product_supply '
@@ -743,7 +743,7 @@ class Quality:
         cursor = DB.cursor()
 
         req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, prs_batch_num, '
-               'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor '
+               'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor, prd_expir_oblig '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser and pru_cancel="N" '

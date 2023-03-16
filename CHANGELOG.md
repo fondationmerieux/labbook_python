@@ -7,9 +7,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.5] - 2023-03-16
+### Added
+- new predefined DHIS2 export for outsourced samples
+- add some predefined keys for DHIS2 export (new version 3)
+- custody application choice in external test request
+- add patient sex, phone1, phone2 in dataset Result, Record, Analysis for pivot table 
+- display internal record number if exist under other number in list of records and list of works
+- possibility to update clinic information after administrative validation
+
+### Changed
+- change settings of DHIS2
+- update dhis2.md
+- responsive patient details IHM
+
+## Fixed
+- missing date backup status except in admin profil
+- replace history.back in some pages (like edit product details)
+- filter of list of record and list of work pages with pofil in functionnal unit
+- delete a pathological product in a record
+- refresh bill price and remain after del an analysis in an administrative record
+- some buttons of non-conformity ihm were disabled
+- the expiration date of a product was badly managed if it was not mandatory
+- problem with update of stock setting 
+
 ## [3.3.4] - 2023-02-28
 ### Changed
-- gunicorn logs, Front-end and Back-end logs have been moved in /storage/log/ , rotate over a month
+- gunicorn logs, Front-end and Back-end logs have been moved in logs
 - Add some form fields can be enabled or disabled
 - Functional units are active on analysis search 
 - cancel and replace date on report is the date of previous report

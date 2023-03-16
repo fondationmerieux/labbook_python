@@ -16,27 +16,27 @@
                 <span>{{ _("Saisie de résultats") }}</span><span id="info_pat_title"></span>
             </h2>
             <form id="benchsheet" autocomplete="off">
-                <div class="d-lg-flex align-items-start ms-3 mt-1">
+                <div class="d-md-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :&nbsp;</span> 
                     <span class="rec-num" id="num_rec"></span>
                     <div class="ms-2" id="rec_stat"></div>
                 </div>
-                <fieldset class="d-lg-flex flex-wrap border px-3 py-2">
+                <fieldset class="d-md-flex flex-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         {% if args['patient'] and args['patient']['code_patient'] %}
                         <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
                         {% endif %}
                         <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
                     </div>
-                    <div class="col-lg-12 mt-2">
+                    <div class="col-md-12 mt-2">
                         {% if args['patient'] and args['patient']['anonyme'] != 4 %}
                         <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
                         {% else %}
                         <span class="font-info">{{ _("Patient anonyme") }}.</span>
                         {% endif %}
                     </div>
-                    <div class="col-lg-12 mt-2">
+                    <div class="col-md-12 mt-2">
                         <span>{{ _("Né(e) le") }}&nbsp;</span>
                         <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
                         <span>&nbsp;-&nbsp;</span>
@@ -49,6 +49,32 @@
                         <span class="font-info">{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
                                                 {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
                                                 {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        {% if args['patient'] and args['patient']['adresse'] %}
+                        <span class="font-info">{{ args['patient']['adresse'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['quartier'] %}
+                        <span class="font-info">{{ args['patient']['quartier'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['bp'] %}
+                        <span class="font-info">{{ args['patient']['bp'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['cp'] %}
+                        <span class="font-info">{{ args['patient']['cp'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['ville'] %}
+                        <span class="font-info">{{ args['patient']['ville'] }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        {% if args['patient'] and args['patient']['tel'] %}
+                        <span class="font-info">{{ args['patient']['tel'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
+                        {% if args['patient'] and args['patient']['pat_phone2'] %}
+                        <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
+                        {% endif %}
                     </div>
                 </fieldset>
 
@@ -64,12 +90,12 @@
             {% if args['list_res'] and session['user_role'] != 'P' %}
             <form autocomplete="off">
                 <div class="mt-3">
-                    <fieldset class="d-lg-flex flex-wrap border px-lg-3 py-2">
+                    <fieldset class="d-md-flex flex-wrap border px-md-3 py-2">
                         <legend class="legend-lbk">{{ _("Ajouter de nouvelles analyses") }}</legend>
                         <div class="form-group">
                             <select id="search_analysis" class="form-select form-lbk form-search"></select>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-md-12">
                             <div id="new_analysis"></div>
                             <div id="div_add_analysis" class="form-group button" style="display:none">
                                 <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_add_analysis" id="btn_add_analysis" value="{{ _("Ajouter") }}"  onclick="add_analysis();">

@@ -59,15 +59,32 @@
                                                 {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
                                                 {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                     </div>
+                    <div class="col-md-12 mt-1">
+                        {% if args['patient'] and args['patient']['adresse'] %}
+                        <span class="font-info">{{ args['patient']['adresse'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['quartier'] %}
+                        <span class="font-info">{{ args['patient']['quartier'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['bp'] %}
+                        <span class="font-info">{{ args['patient']['bp'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['cp'] %}
+                        <span class="font-info">{{ args['patient']['cp'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['ville'] %}
+                        <span class="font-info">{{ args['patient']['ville'] }}</span>
+                        {% endif %}
+                    </div>
                     <div class="col-lg-12 mt-1">
-                            {% if args['patient'] and args['patient']['tel'] %}
-                            <span class="font-info">{{ args['patient']['tel'] }}</span>
-                            {% endif %}
-                            {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
-                            {% if args['patient'] and args['patient']['pat_phone2'] %}
-                            <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
-                            {% endif %}
-                        </div>
+                        {% if args['patient'] and args['patient']['tel'] %}
+                        <span class="font-info">{{ args['patient']['tel'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
+                        {% if args['patient'] and args['patient']['pat_phone2'] %}
+                        <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <!-- Prescription -->
@@ -85,7 +102,6 @@
                         <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                     </div>
 
-                    {% if type_req == 'I' %}
                     <div class="d-lg-flex align-items-start mt-2">
                         <span class="text-start me-1">{{ _("Demande de garde") }}</span>
                         {% if args['record']['rec_custody'] == 'Y' %}
@@ -94,7 +110,6 @@
                         <span class="font-info">{{ _("Non") }}</span>
                         {% endif %}
                     </div>
-                    {% endif %}
 
                     <div class="col-lg-12 mt-2">
                         <span>{{ _("Prescripteur") }}</span>
@@ -244,8 +259,9 @@
                     <h3 class="panel-title">{{ _("Renseignements / Informations complémentaires") }}</h3>
                 </div>
                 <div class="row ms-3">
-                    <div class="col-lg-12 mt-3">
-                        <span class="font-info">{{ args['record']['rc'] }}</span>
+                    <div class="col-md-7 mt-3">
+                        <textarea id="comm" rows="5" cols="80" class="form-control form-lbk">{{ args['record']['rc'] }}</textarea>
+                        <input type="button" onclick="save_comm();" id="btn_comm" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} mt-2">
                     </div>
                 </div>
 
@@ -356,7 +372,7 @@ let trans  = obj.outsourced ;
 tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
 {# Can be deleted if not yet technically validated #}
 {% if args['record']['statut'] < 251 %}
-ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + obj.id_data + ', '  + obj.id_samp_act + ', ' + obj.type_samp + ');"/></i>' ;
+ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + obj.id_data + ', '  + obj.id_samp_act + ', ' + obj.type_samp + ', ' + obj.prix + ');"/></i>' ;
 
 tmp_tr += create_td("", ico_del, "text-center", "") ;
 {% endif %}
@@ -375,11 +391,14 @@ tr_analysis += tmp_tr ;
 $("#tbody_analysis").append(tr_analysis) ;
 }
 
-function del_ana(id_req, id_samp_act, type_samp)
+function del_ana(id_req, id_samp_act, type_samp, price)
 {
 var id_rec = {{ args['record']['id_data'] }} ;
 
-var param = '{ "id_rec":' + id_rec + ', "id_samp_act":' + id_samp_act + ', "type_samp":' + type_samp + '}' ;
+var param = '{ "id_rec":' + id_rec + ', ' +
+              '"id_samp_act":' + id_samp_act + ', ' +
+              '"type_samp":' + type_samp + ', ' +
+              '"price": ' + price + '}' ;
 
     if ( window.confirm("{{ _("Veuillez confirmer la suppression") }}") )
     {
@@ -626,6 +645,40 @@ let template = $("#tpl_result").val() ;
             }
         } ) ;
     }
+}
+
+function save_comm()
+{
+var id_rec = {{ args['record']['id_data'] }} ;
+var comm   = JSON.stringify( $.trim( $("#comm").val() ) ) ;
+
+var param = '{ "comm":' + comm + '}' ; // NO QUOTE DUE TO STRINGIFY PROCESS
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        // CREATE Record
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/record/comm/" + id_rec,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret_rec)
+        {
+            $("#dial-wait").modal("hide") ;
+        },
+        error: function(ret_rec)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        console.log("ERROR record comment") ;
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
+    } ) ;
+
 }
 
 function upload_file( id_rec )

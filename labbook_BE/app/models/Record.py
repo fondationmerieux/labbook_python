@@ -23,7 +23,8 @@ class Record:
             limit = 'LIMIT 4000'
             # filter conditions
             if 'num_rec' in args and args['num_rec']:
-                filter_cond += ' and (rec.num_dos_an LIKE "%' + args['num_rec'] + '%" or rec.num_dos_mois LIKE "%' + args['num_rec'] + '%" or rec.rec_num_int LIKE "%' + args['num_rec'] + '%") '
+                filter_cond += (' and (rec.num_dos_an LIKE "%' + args['num_rec'] + '%" or rec.num_dos_mois LIKE "%' +
+                                args['num_rec'] + '%" or rec.rec_num_int LIKE "%' + args['num_rec'] + '%") ')
 
             if 'stat_work' in args and args['stat_work']:
                 filter_cond += ' and rec.statut IN ' + str(args['stat_work']) + ' '
@@ -254,6 +255,24 @@ class Record:
             return 0
 
     @staticmethod
+    def updateRecordComm(id_rec, comm):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update sigl_02_data '
+                   'set rc=%s '
+                   'where id_data=%s')
+
+            cursor.execute(req, (comm, id_rec,))
+
+            Record.log.info(Logs.fileline() + ' : updateRecordComm id_rec=' + str(id_rec))
+
+            return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def updateRecordStat(id_rec, stat):
         try:
             cursor = DB.cursor()
@@ -265,6 +284,24 @@ class Record:
             cursor.execute(req, (stat, id_rec,))
 
             Record.log.info(Logs.fileline() + ' : updateRecordStat id_rec=' + str(id_rec))
+
+            return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def updateRecordBill(id_rec, diff_price, diff_remain):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update sigl_02_data '
+                   'set prix = prix - %s, a_payer = a_payer - %s '
+                   'where id_data=%s')
+
+            cursor.execute(req, (diff_price, diff_remain, id_rec,))
+
+            Record.log.info(Logs.fileline() + ' : updateRecordBill id_rec=' + str(id_rec))
 
             return True
         except mysql.connector.Error as e:
@@ -452,7 +489,8 @@ class Record:
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, '
                'rec.remise as discount, rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, '
                'rec.a_payer as to_pay, d_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
-               'd_sex.label as sex, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
+               'd_sex.label as sex, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit, '
+               'pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_08_data as doctor on doctor.id_data=rec.med_prescripteur '

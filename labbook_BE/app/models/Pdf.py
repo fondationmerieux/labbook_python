@@ -1190,7 +1190,7 @@ class Pdf:
                                     if ret_user['lastname'] and ret_user['firstname']:
                                         user += ret_user['lastname'] + ' ' + ret_user['firstname']
                                     else:
-                                        user += user['username']
+                                        user += ret_user['username']
 
                                     if res_valid_p['commentaire']:
                                         res_comm = res_valid_p['commentaire'].split("\n")
@@ -1432,7 +1432,7 @@ class Pdf:
                 if ret_user['lastname'] and ret_user['firstname']:
                     user += ret_user['lastname'] + ' ' + ret_user['firstname']
                 else:
-                    user += user['username']
+                    user += ret_user['username']
 
                 if res_valid['commentaire']:
                     res_comm = res_valid['commentaire'].split("\n")

@@ -1818,8 +1818,10 @@ def enter_result(id_rec=0, anchor=''):
     dt_start_req = datetime.now()
     # Load list results
     try:
+        payload = {'link_fam': session['user_link_fam']}
+
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/record/' + str(id_rec)
-        req = requests.get(url)
+        req = requests.post(url, json=payload)
 
         if req.status_code == 200:
             json_data['list_res'] = req.json()
@@ -2769,8 +2771,10 @@ def technical_validation(id_rec=0, anchor=''):
     dt_start_req = datetime.now()
     # Load list results
     try:
+        payload = {'link_fam': session['user_link_fam']}
+
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/record/' + str(id_rec)
-        req = requests.get(url)
+        req = requests.post(url, json=payload)
 
         if req.status_code == 200:
             json_data['list_res'] = req.json()
@@ -2967,8 +2971,10 @@ def biological_validation(mode='', id_rec=0):
 
     # Load list results
     try:
+        payload = {'link_fam': session['user_link_fam']}
+
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/record/' + str(id_rec)
-        req = requests.get(url)
+        req = requests.post(url, json=payload)
 
         if req.status_code == 200:
             json_data['list_res'] = req.json()

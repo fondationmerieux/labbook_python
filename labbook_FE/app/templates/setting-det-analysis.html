@@ -734,7 +734,7 @@ function del_var( id_item )
         {
             if (data_vars[i].id_item == id_item)
             {
-            delete data_vars[i] ;
+            data_vars.splice(i, 1) ;
 
             break ;
             }

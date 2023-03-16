@@ -25,22 +25,22 @@ class Patient:
                 limit = 'LIMIT 5000'
 
             # filter conditions
-            if args['code']:
+            if 'code' in args and args['code']:
                 filter_cond += ' and code LIKE "%' + args['code'] + '%" '
 
-            if args['code_lab']:
+            if 'code_lab' in args and args['code_lab']:
                 filter_cond += ' and code_patient LIKE "%' + args['code_lab'] + '%" '
 
-            if args['lastname']:
+            if 'lastname' in args and args['lastname']:
                 filter_cond += ' and nom LIKE "%' + args['lastname'] + '%" '
 
-            if args['firstname']:
+            if 'firstname' in args and args['firstname']:
                 filter_cond += ' and prenom LIKE "%' + args['firstname'] + '%" '
 
-            if args['phone']:
+            if 'phone' in args and args['phone']:
                 filter_cond += ' and (tel like "' + args['phone'] + '%" or pat_phone2 like "' + args['phone'] + '%") '
 
-            if args['sex']:
+            if 'sex' in args and args['sex']:
                 filter_cond += ' and sexe="' + args['sex'] + '" '
 
         req = ('select id_data, id_owner, code, code_patient as code_lab, nom as lastname, prenom as firstname, '

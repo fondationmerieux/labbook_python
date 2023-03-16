@@ -3,19 +3,20 @@
 
 a new spreadsheet can be submitted via the menu Settings => DHIS2 Settings
 
+new version 3 since march 2023
 
-## CSV COLUMNS
+## CSV COLUMNS (keep order)
 
 Fisrt line name of column (do not change this) :
 dhis2_label;period;version;filter;type_sample;categorieoptioncombo;attributeoptioncombo
 
 dhis2_label : this label will be copied identically to the corresponding line in the result file
 
-period : W for week or M for Month, must be present at least on the line after the header line
+~~period : W for week or M for Month, must be present at least on the line after the header line~~ (useless from March 2023 in v3)
 
-version : version number, v1, must be present at least on the line after the header line
+version : version number, v3, must be present at least on the line after the header line
 
-filter : use to calculate, see below FILTER chapter
+filter : use to calculate, see below FILTER chapter or PREDEFINED KEYS
 
 type_sample : serial corresponding to the type of sample in the database (cf table below) or 0, useful for calculate with the filter
 
@@ -23,6 +24,9 @@ categorieoptioncombo : will be copied identically to the corresponding line in t
 
 attributeoptioncombo : will be copied identically to the corresponding line in the result file
 
+orgunit :  will be copied identically to the corresponding line in the result file if empty the document header 1 will be used
+
+storedby : will be copied identically to the corresponding line in the result file if empty the *FisrtnameLastname* of profile who does export will be used
 
 ## SYNTAX FOR FILTER
 
@@ -80,3 +84,32 @@ mysql> select id_data, label from sigl_dico_data where dico_name='type_prel';
 |    1015 | Eau usée                        |
 |    1016 | Eau de surface                  |
 |    1189 | Prélèvement pus                 |
+
+## LIST OF PREDEFINED KEYS FOR STATISTICS
+
+The text in the column type_sample will be useless with predefined key
+
+| key                            | period  | definitions                                                        |
+|--------------------------------|---------|--------------------------------------------------------------------|
+| NB_REC_SAVED                   | W or M  | Number of record with adminstrative status at least  in the period |
+| NB_ANA_SAVED                   | W or M  | Number of analysis prescribed in the period                        |
+| NB_SAMP_OUTSOURCED             | W or M  | Number of outsourced samples in the period                         |
+| NB_STAFF                       | *none*  | Number of staff                                                    |
+| NB_SECRETARY_TYPE              | *none*  | Number of secretary and advanced secretary                         |
+| NB_TECHNICIAN_TYPE             | *none*  | Number of technician, advanced technican and qualitican techician  |
+| NB_QUALITICIAN_TYPE            | *none*  | Number of qualitician and qualitician technician                   |
+| NB_BIOLOGIST_TYPE              | *none*  | Number of biologist                                                |
+| NB_EQUIPMENT                   | *none*  | Number of equipment                                                |
+| NB_EQP_BREAKDOWN               | W or M  | Number of broken equipment in the period                           |
+| NB_PROCEDURE                   | *none*  | Number of procedure                                                |
+| NB_PRODUCT_WITH_EXPIRY_WARNING | *none*  | Number of product with expiry warning compared to the current date |
+| NB_PRODUCT_WITH_EXPIRY_ALERT   | *none*  | Number of product with expiry alert compared to the current date   |
+| NB_PRODUCT_UNDER_SAFE_LIMIT    | *none*  | Number of product under safe limit                                 |
+| NB_PRODUCT_OUT_OF_STOCK        | *none*  | Number of product out of stock                                     |
+| NB_OPEN_NON_CONFORMITY         | *none*  | Number of non conformity opened                                    |
+| NB_NON_CONFORMITY              | W or M  | Number of non conformity (open and closed) in the period           |
+| NB_INTERNAL_QUALITY_CONTROL    | *none*  | Number of internal control (even without result)                   |
+| NB_INTERNAL_QUALITY_RESULT     | W or M  | Number of internal control results inthe period                    |
+| NB_EXTERNAL_QUALITY_CONTROL    | *none*  | Number of external control (even without result)                   |
+| NB_MEETING                     | W or M  | Number of meeting in the period                                    |
+

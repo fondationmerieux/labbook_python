@@ -25,19 +25,19 @@ class Doctor:
                 limit = 'LIMIT 500'
 
             # filter conditions
-            if args['code']:
+            if 'code' in args and args['code']:
                 filter_cond += ' and pres.code LIKE "%' + args['code'] + '%" '
 
-            if args['lastname']:
+            if 'lastname' in args and args['lastname']:
                 filter_cond += ' and pres.nom LIKE "%' + args['lastname'] + '%" '
 
-            if args['firstname']:
+            if 'firstname' in args and args['firstname']:
                 filter_cond += ' and pres.prenom LIKE "%' + args['firstname'] + '%" '
 
-            if args['service']:
+            if 'service' in args and args['service']:
                 filter_cond += ' and pres.service LIKE "%' + args['service'] + '%" '
 
-            if args['city']:
+            if 'city' in args and args['city']:
                 filter_cond += ' and pres.ville LIKE "%' + args['city'] + '%" '
 
         req = ('select pres.id_data, pres.id_owner, pres.code, pres.nom as lastname, pres.prenom as firstname, '

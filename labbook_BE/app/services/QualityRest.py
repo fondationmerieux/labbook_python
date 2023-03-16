@@ -1928,11 +1928,17 @@ class StockList(Resource):
             stock['nb_total'] = float(stock['prs_nb_pack'] * stock['prd_nb_by_pack'])
 
             if stock['expir_date']:
-                delta = stock['expir_date'] - datetime.now()
-                stock['day_to_expir'] = delta.days
+                if stock['prd_expir_oblig'] == 'Y':
+                    delta = stock['expir_date'] - datetime.now()
+                    stock['day_to_expir'] = delta.days
+                else:
+                    stock['day_to_expir'] = 1000  # big number to not trigger stock alert
                 stock['expir_date']   = datetime.strftime(stock['expir_date'], '%Y-%m-%d')
             else:
-                stock['day_to_expir'] = 0
+                if stock['prd_expir_oblig'] == 'Y':
+                    stock['day_to_expir'] = 0
+                else:
+                    stock['day_to_expir'] = 1000  # big number to not trigger stock alert
                 stock['expir_date'] = ''
 
         self.log.info(Logs.fileline() + ' : TRACE StockList')
@@ -1958,11 +1964,18 @@ class StockListDet(Resource):
                 stock['prs_receipt_date'] = datetime.strftime(stock['prs_receipt_date'], '%Y-%m-%d')
 
             if stock['prs_expir_date']:
-                delta = stock['prs_expir_date'] - datetime.now()
-                stock['day_to_expir'] = delta.days
+                if stock['prd_expir_oblig'] == 'Y':
+                    delta = stock['expir_date'] - datetime.now()
+                    stock['day_to_expir'] = delta.days
+                else:
+                    stock['day_to_expir'] = 1000  # big number to not trigger stock alert
                 stock['prs_expir_date'] = datetime.strftime(stock['prs_expir_date'], '%Y-%m-%d')
             else:
-                stock['day_to_expir'] = 0
+                if stock['prd_expir_oblig'] == 'Y':
+                    stock['day_to_expir'] = 0
+                else:
+                    stock['day_to_expir'] = 1000  # big number to not trigger stock alert
+
                 stock['prs_expir_date'] = ''
 
             if stock['pru_nb_pack']:

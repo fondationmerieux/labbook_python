@@ -56,6 +56,32 @@
                                                 {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
                                                 {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                     </div>
+                    <div class="col-md-12 mt-1">
+                        {% if args['patient'] and args['patient']['adresse'] %}
+                        <span class="font-info">{{ args['patient']['adresse'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['quartier'] %}
+                        <span class="font-info">{{ args['patient']['quartier'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['bp'] %}
+                        <span class="font-info">{{ args['patient']['bp'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['cp'] %}
+                        <span class="font-info">{{ args['patient']['cp'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['ville'] %}
+                        <span class="font-info">{{ args['patient']['ville'] }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        {% if args['patient'] and args['patient']['tel'] %}
+                        <span class="font-info">{{ args['patient']['tel'] }}</span>
+                        {% endif %}
+                        {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
+                        {% if args['patient'] and args['patient']['pat_phone2'] %}
+                        <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
+                        {% endif %}
+                    </div>
                 </fieldset>
             </form> 
 

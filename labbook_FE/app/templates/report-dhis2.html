@@ -13,24 +13,32 @@
             <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Export DHIS2") }}</span></h2>
             <form>
                 <div class="row">
-                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
-                        <label for="date_beg" class="form-label col-2 text-end mt-2 me-1">{{ _("Date de début de période ") }} </label>
+                    <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
+                        <label for="date_beg" class="form-label text-end mt-2 me-1">{{ _("Date de début de période ") }} </label>
                         <div>					
                             <input id="date_beg" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" name="date_beg" style="color: #888;">
                         </div>
-                        <label for="date_end" class="form-label col-1 text-end mt-2 me-1">{{ _("au") }} </label>
+                        <label for="date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }} </label>
                         <div>					
                             <input id="date_end" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" name="date_end" style="color: #888;">
                         </div>
+                        <label class="form-label text-end mx-3 mt-2">{{ _("Type période") }}</label>
+                        <label class="form-label text-end me-3 mt-2">
+                            <input type="radio" name="type_period" value="W" checked="checked" >&nbsp;{{ _("Hebdomadaire") }}</input>
+                        </label>
+                        <label class="form-label text-end me-3 mt-2">
+                            <input type="radio" name="type_period" value="M">&nbsp;{{ _("Mensuelle") }}</input>
+                        </label>
                     </div>
-                    <div class="form-group col-lg-12 mt-1">
+                    <div class="form-group col-md-12 mt-1">
                         <span>{{ _("Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période.") }}</span><br />
                         <span>{{ _("Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné.") }}</span>
                     </div>
-                    <div class="form-group d-lg-flex align-items-start col-lg-12 mt-3">
+                    <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
                         <label for="calc" class="form-label col-2 text-end mt-2 me-1"> {{ _("Feuille de calcul") }} </label>
                        <select name="spreadsheet" id="spreadsheet" class="form-select w-50">
                            <option value="" selected="selected"></option>
+                           <option value="LIST_OUTSOURCING.csv">{{ _("Sous-traitance") }}</option>
                            {% for filename in args['data_dhis2'] %}
                            <option value="{{ filename }}">{{ filename }}</option>
                            {% endfor %}
@@ -60,9 +68,11 @@ function export_dhis2()
 var id_user  = {{ session['user_id']|safe}} ;
 var date_beg = $("#date_beg").val() ;
 var date_end = $("#date_end").val() ;
+var period   = $("input:radio[name=type_period]:checked").val() ;
 var filename = $("#spreadsheet").val() ;
 var param    = '{"date_beg":"' + date_beg + '", ' +
                 '"date_end":"' + date_end + '", ' +
+                '"period":"' + period + '", ' +
                 '"filename":"' + filename + '", ' +
                 '"id_user":' + id_user + '}' ;
 
@@ -100,8 +110,10 @@ var param    = '{"date_beg":"' + date_beg + '", ' +
         {
             $("#dial-wait").modal("hide") ;
 
-        console.log("ERROR POST export dhis2");
-        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultat à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
         }
     } ) ;
 }

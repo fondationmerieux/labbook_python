@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-26 18:37+0100\n"
+"POT-Creation-Date: 2023-03-09 15:02+0100\n"
 "PO-Revision-Date: 2021-09-03 15:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: lo\n"
@@ -34,7 +34,7 @@ msgstr "ລາຍການສັ່ງກວດ"
 msgid "Actes de prélèvements"
 msgstr "ການຖອນເງິນ"
 
-#: models/Pdf.py:137 models/Pdf.py:2541 models/Pdf.py:2567
+#: models/Pdf.py:137 models/Pdf.py:1248 models/Pdf.py:2549 models/Pdf.py:2573
 msgid "Sous-traitée"
 msgstr "ຜູ້ຖືກຈ້າງເໝົາຍ່ອຍ"
 
@@ -58,7 +58,7 @@ msgstr "ເອກະສານໝາຍເລກ"
 msgid "Facture n°"
 msgstr "ໃບແຈ້ງໜີ້ໝາຍເລກ"
 
-#: models/Pdf.py:206 models/Pdf.py:788 models/Pdf.py:2177
+#: models/Pdf.py:206 models/Pdf.py:788 models/Pdf.py:2186
 msgid "édité le"
 msgstr "ການແກ້ໄຂ"
 
@@ -90,75 +90,75 @@ msgstr "ຕ້ອງຈ່າຍ"
 msgid "Etat de la facturation, édité le"
 msgstr "ສະຖານະຂອງການແຈ້ງໜີ້, ແກ້ໄຂວັນທີ"
 
-#: models/Pdf.py:670 models/Pdf.py:776 models/Pdf.py:2165
+#: models/Pdf.py:670 models/Pdf.py:776 models/Pdf.py:2174
 msgid "Tél"
 msgstr "ໂທລະສັບ"
 
-#: models/Pdf.py:675 models/Pdf.py:777 models/Pdf.py:2166
+#: models/Pdf.py:675 models/Pdf.py:777 models/Pdf.py:2175
 msgid "Fax"
 msgstr "ແຟັກ"
 
-#: models/Pdf.py:680 models/Pdf.py:778 models/Pdf.py:2167
+#: models/Pdf.py:680 models/Pdf.py:778 models/Pdf.py:2176
 msgid "Email"
 msgstr "ອີເມລ"
 
-#: models/Pdf.py:779 models/Pdf.py:2168
+#: models/Pdf.py:779 models/Pdf.py:2177
 msgid "Dossier"
 msgstr "ກໍລະນີ"
 
-#: models/Pdf.py:780 models/Pdf.py:2169
+#: models/Pdf.py:780 models/Pdf.py:2178
 msgid "Code"
 msgstr "ລະຫັດ"
 
-#: models/Pdf.py:781 models/Pdf.py:2170
+#: models/Pdf.py:781 models/Pdf.py:2179
 msgid "Né(e) le"
 msgstr "ເກີດວັນທີ"
 
-#: models/Pdf.py:782 models/Pdf.py:2171
+#: models/Pdf.py:782 models/Pdf.py:2180
 msgid "Admis le"
 msgstr "ຮັບວັນທີ"
 
-#: models/Pdf.py:783 models/Pdf.py:2172
+#: models/Pdf.py:783 models/Pdf.py:2181
 msgid "en"
 msgstr "ໃນ"
 
-#: models/Pdf.py:784 models/Pdf.py:2173
+#: models/Pdf.py:784 models/Pdf.py:2182
 msgid "Lit"
 msgstr "ຕຽງ"
 
-#: models/Pdf.py:785 models/Pdf.py:2174
+#: models/Pdf.py:785 models/Pdf.py:2183
 msgid "par"
 msgstr "ຜ່ານ"
 
-#: models/Pdf.py:786 models/Pdf.py:2175
+#: models/Pdf.py:786 models/Pdf.py:2184
 msgid "Examen prescrit le"
 msgstr "ກຳນົດການກວດວັນທີ"
 
-#: models/Pdf.py:787 models/Pdf.py:2176
+#: models/Pdf.py:787 models/Pdf.py:2185
 msgid "Enregistré le"
 msgstr "ລົງທະບຽນວັນທີ"
 
-#: models/Pdf.py:789 models/Pdf.py:2178
+#: models/Pdf.py:789 models/Pdf.py:2187
 msgid "ANALYSE"
 msgstr "ວິເຄາະ"
 
-#: models/Pdf.py:790 models/Pdf.py:2179
+#: models/Pdf.py:790 models/Pdf.py:2188
 msgid "RESULTAT"
 msgstr "ຜົນການວິເຄາະ"
 
-#: models/Pdf.py:791 models/Pdf.py:2180
+#: models/Pdf.py:791 models/Pdf.py:2189
 msgid "Références"
 msgstr ""
 
-#: models/Pdf.py:792 models/Pdf.py:2181
+#: models/Pdf.py:792 models/Pdf.py:2190
 msgid "Antériorités"
 msgstr "ບູລິມະສິດ"
 
-#: models/Pdf.py:793 models/Pdf.py:2182
+#: models/Pdf.py:793 models/Pdf.py:2191
 msgid "Commentaire"
 msgstr "ຄຳຄິດເຫັນ"
 
-#: models/Pdf.py:794 models/Pdf.py:2183
+#: models/Pdf.py:794 models/Pdf.py:2192
 msgid "validé par"
 msgstr "ຢືນຢັນໂດຍ"
 
@@ -170,7 +170,7 @@ msgstr "ລາຍງານ"
 msgid "COMPLET"
 msgstr "ເຕັມ"
 
-#: models/Pdf.py:851 models/Pdf.py:1291
+#: models/Pdf.py:851 models/Pdf.py:1300
 msgid "PARTIEL"
 msgstr "ພາກສ່ວນ"
 
@@ -178,107 +178,107 @@ msgstr "ພາກສ່ວນ"
 msgid "Annule et remplace le précédent"
 msgstr "ຍົກ​ເລີກ​ແລະ​ທົດ​ແທນ​ທີ່​ຜ່ານ​ມາ​"
 
-#: models/Pdf.py:895 models/Pdf.py:2248 translations/messages_pybabel.py:592
+#: models/Pdf.py:895 models/Pdf.py:2257 translations/messages_pybabel.py:592
 msgid "Microbiologie"
 msgstr ""
 
-#: models/Pdf.py:943 models/Pdf.py:2296
+#: models/Pdf.py:943 models/Pdf.py:2305
 msgid "Renseignements cliniques"
 msgstr "ຂໍ້ມູນທາງການແພດ"
 
-#: models/Pdf.py:994 models/Pdf.py:1751 models/Pdf.py:2347
+#: models/Pdf.py:994 models/Pdf.py:1760 models/Pdf.py:2356
 #: translations/messages_pybabel.py:596
 msgid "Inconnu"
 msgstr "ບໍ່ຮູ້ຈັກ"
 
-#: models/Pdf.py:1041 models/Pdf.py:1053 models/Pdf.py:1798 models/Pdf.py:1810
-#: models/Pdf.py:1943 models/Pdf.py:2394 models/Pdf.py:2406
+#: models/Pdf.py:1041 models/Pdf.py:1053 models/Pdf.py:1807 models/Pdf.py:1819
+#: models/Pdf.py:1952 models/Pdf.py:2403 models/Pdf.py:2415
 msgid "ans"
 msgstr "ປີ"
 
-#: models/Pdf.py:1044 models/Pdf.py:1065 models/Pdf.py:1801 models/Pdf.py:1822
-#: models/Pdf.py:2397 models/Pdf.py:2418
+#: models/Pdf.py:1044 models/Pdf.py:1065 models/Pdf.py:1810 models/Pdf.py:1831
+#: models/Pdf.py:2406 models/Pdf.py:2427
 msgid "jours"
 msgstr "ມື້"
 
-#: models/Pdf.py:1048 models/Pdf.py:1057 models/Pdf.py:1805 models/Pdf.py:1814
-#: models/Pdf.py:2401 models/Pdf.py:2410
+#: models/Pdf.py:1048 models/Pdf.py:1057 models/Pdf.py:1814 models/Pdf.py:1823
+#: models/Pdf.py:2410 models/Pdf.py:2419
 msgid "mois"
 msgstr "ເດືອນ"
 
-#: models/Pdf.py:1061 models/Pdf.py:1818 models/Pdf.py:2414
+#: models/Pdf.py:1061 models/Pdf.py:1827 models/Pdf.py:2423
 msgid "semaines"
 msgstr "ອາທິດ"
 
-#: models/Pdf.py:1069 models/Pdf.py:1826 models/Pdf.py:1946 models/Pdf.py:2422
+#: models/Pdf.py:1069 models/Pdf.py:1835 models/Pdf.py:1955 models/Pdf.py:2431
 #: translations/messages_pybabel.py:597
 msgid "Masculin"
 msgstr "ຜູ້​ຊາຍ"
 
-#: models/Pdf.py:1071 models/Pdf.py:1828 models/Pdf.py:2424
+#: models/Pdf.py:1071 models/Pdf.py:1837 models/Pdf.py:2433
 msgid "Feminin"
 msgstr "ເພດຍິງ"
 
-#: models/Pdf.py:1311 models/Pdf.py:1321 models/Pdf.py:1331
+#: models/Pdf.py:1320 models/Pdf.py:1330 models/Pdf.py:1340
 msgid "Annulée"
 msgstr "ຍົກເລີກແລ້ວ"
 
-#: models/Pdf.py:1445 models/Pdf.py:2554 translations/messages_pybabel.py:1477
+#: models/Pdf.py:1453 models/Pdf.py:2560 translations/messages_pybabel.py:1477
 #: translations/messages_pybabel.py:1478 translations/messages_pybabel.py:1479
 #: translations/messages_pybabel.py:1480
 msgid "Albumine"
 msgstr ""
 
-#: models/Pdf.py:1446 models/Pdf.py:2555 translations/messages_pybabel.py:90
+#: models/Pdf.py:1454 models/Pdf.py:2561 translations/messages_pybabel.py:90
 msgid "Absent"
 msgstr ""
 
-#: models/Pdf.py:1450 models/Pdf.py:2559 translations/messages_pybabel.py:91
+#: models/Pdf.py:1458 models/Pdf.py:2565 translations/messages_pybabel.py:91
 msgid "Présent"
 msgstr ""
 
-#: models/Pdf.py:1456 models/Pdf.py:2565 translations/messages_pybabel.py:313
+#: models/Pdf.py:1464 models/Pdf.py:2571 translations/messages_pybabel.py:313
 msgid "Biochimie urinaire"
 msgstr ""
 
-#: models/Pdf.py:1457 models/Pdf.py:2566 translations/messages_pybabel.py:1348
+#: models/Pdf.py:1465 models/Pdf.py:2572 translations/messages_pybabel.py:1348
 msgid "Bandelettes urinaires"
 msgstr ""
 
-#: models/Pdf.py:1563 models/Pdf.py:2643 translations/messages_pybabel.py:689
+#: models/Pdf.py:1572 models/Pdf.py:2649 translations/messages_pybabel.py:689
 msgid "Sang"
 msgstr ""
 
-#: models/Pdf.py:1565 models/Pdf.py:2645 translations/messages_pybabel.py:544
+#: models/Pdf.py:1574 models/Pdf.py:2651 translations/messages_pybabel.py:544
 msgid "Fait"
 msgstr ""
 
-#: models/Pdf.py:1570 models/Pdf.py:2650 translations/messages_pybabel.py:482
+#: models/Pdf.py:1579 models/Pdf.py:2656 translations/messages_pybabel.py:482
 msgid "Interne au labo"
 msgstr ""
 
-#: models/Pdf.py:2216
+#: models/Pdf.py:2225
 msgid "Bon de transfert"
 msgstr "ໃບບິນການໂອນ"
 
-#: services/ExportRest.py:371 translations/messages_pybabel.py:527
+#: services/ExportRest.py:436 translations/messages_pybabel.py:527
 msgid "Années"
 msgstr "ປີ"
 
-#: services/ExportRest.py:373 translations/messages_pybabel.py:521
+#: services/ExportRest.py:438 translations/messages_pybabel.py:521
 #: translations/messages_pybabel.py:529
 msgid "Mois"
 msgstr "ເດືອນ"
 
-#: services/ExportRest.py:375 translations/messages_pybabel.py:530
+#: services/ExportRest.py:440 translations/messages_pybabel.py:530
 msgid "Semaines"
 msgstr "ອາທິດ"
 
-#: services/ExportRest.py:377 translations/messages_pybabel.py:528
+#: services/ExportRest.py:442 translations/messages_pybabel.py:528
 msgid "Jours"
 msgstr "ວັນ"
 
-#: services/ResultRest.py:103 services/ResultRest.py:217
+#: services/ResultRest.py:103 services/ResultRest.py:224
 msgid "validation"
 msgstr "ການຢືນຢັນ"
 
@@ -7556,6 +7556,6 @@ msgid "Prix d'achat"
 msgstr "ລາຄາຊື້"
 
 #: translations/messages_pybabel.py:2464
-msgid "Nom bailleur"
+msgid "Nom du bailleur"
 msgstr "ຊື່ຜູ້ສະໜອງ"
 

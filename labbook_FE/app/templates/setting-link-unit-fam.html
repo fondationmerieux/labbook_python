@@ -140,7 +140,15 @@ param += tmp_value + ' ] }';
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
-           location.reload() ;
+
+               if ('referrer' in document) 
+               {
+               window.location = document.referrer ;
+               }
+               else 
+               {
+               window.history.back() ;
+               }
            },
        error: function(data)
            {

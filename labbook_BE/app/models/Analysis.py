@@ -583,27 +583,27 @@ class Analysis:
 
             filter_cond += ' '  # remove deleted analyzes by default
             # filter conditions
-            if args['status'] and args['status'] > 0:
+            if 'status' in args and args['status'] > 0:
                 filter_cond += ' ana.actif=' + str(args['status']) + ' '
             else:
                 filter_cond += ' ana.actif=4 '  # keep only activated analyzes by default
 
             if session and session['lang_db'] == 'fr_FR':
-                if args['name']:
+                if 'name' in args and args['name']:
                     filter_cond += (' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
                                     args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
             else:
-                if args['name']:
+                if 'name' in args and args['name']:
                     trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
                              'tr.tra_type="ana_name" and tr.tra_ref=ana.id_data ')
 
                     filter_cond += (' and (tr.tra_text LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
                                     args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
 
-            if args['type_ana'] and args['type_ana'] > 0:
+            if 'type_ana' in args and args['type_ana'] > 0:
                 filter_cond += ' and ana.famille=' + str(args['type_ana']) + ' '
 
-            if args['type_prod'] and args['type_prod'] > 0:
+            if 'type_prod' in args and args['type_prod'] > 0:
                 filter_cond += ' and ana.type_prel=' + str(args['type_prod']) + ' '
 
         req = ('select ana.id_data, ana.code, ana.nom as name, ana.abbr, ana.actif as stat, '
@@ -782,7 +782,8 @@ class Analysis:
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
                'req.req_outsourced as ana_outsourced, ana.code as analysis_code, ana.nom as analysis_name, '
-               'd_fam.label as analysis_familly, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit '
+               'd_fam.label as analysis_family, date_format(pat.ddn, %s) as birth, pat.age, d_sex.label as sex, '
+               'd_age_unit.label as age_unit, pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
@@ -792,6 +793,7 @@ class Analysis:
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
+               'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
                'where rec.date_dos between %s and %s '
                'order by rec.id_data desc')
 

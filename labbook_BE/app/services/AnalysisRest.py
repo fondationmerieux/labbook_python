@@ -9,6 +9,7 @@ from flask_restful import Resource
 from app.models.General import compose_ret
 from app.models.Constants import *
 from app.models.Analysis import *
+from app.models.Record import *
 from app.models.User import *
 from app.models.DB import *
 from app.models.Logs import Logs
@@ -747,9 +748,16 @@ class AnalysisReq(Resource):
     def delete(self, id_req):
         args = request.get_json()
 
-        if 'id_rec' not in args or 'id_samp_act' not in args or 'type_samp' not in args:
+        if 'id_rec' not in args or 'id_samp_act' not in args or 'type_samp' not in args or 'price' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisReq ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
+
+        if args['price'] > 0:
+            ret = Record.updateRecordBill(args['id_rec'], args['price'], args['price'])
+
+            if not ret:
+                self.log.error(Logs.fileline() + ' : TRACE AnalysisReq updateRecordBill ERROR')
+                return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Analysis.deleteAnalysisReq(id_req, args['id_rec'], args['id_samp_act'], args['type_samp'])
 

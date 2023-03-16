@@ -166,6 +166,11 @@ background : #71B330 !important;
 
 .dropdown-color-link
 {
+color : #FFF !important;
+}
+
+.dropdown-color-link:hover
+{
 color : #000 !important;
 }
 

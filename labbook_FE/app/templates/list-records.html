@@ -215,7 +215,7 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
             '"date_end":"' + date_end  + '", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"emer":' + emer + ', ' +
-            '"link_fam": ' + link_fam + '}' ;
+            '"link_fam": [' + link_fam + ']}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -307,11 +307,16 @@ let res = ''
             else
             tr_style = '' ;
 
+        num_int = '' ;
+
+            if (data_records[i].rec_num_int != "")
+                num_int = '<p style="color: black">' + data_records[i].rec_num_int + '</p>' ;
+
         res += '<tr ' + tr_style + '><td hidden><div>' + data_records[i].id_data + '</div></td>' +
                '<td><div class="text-start">' + menu_act + '</div></td>' +
                '<td><div class="text-start">' + status_rec_with_det( data_records[i].stat, data_records[i].id_data, data_records[i].num_dos_long ) + '</div></td>' +
                '<td><div class="text-start">' + emer( data_records[i].urgent ) + '</div></td>' +
-               '<td><div class="text-start"><span class="rec-num" title="' + data_records[i].num_dos_long + ' / ' + data_records[i].rec_num_int + '">' + data_records[i].num_dos + '</span></div></td>' +
+               '<td><div class="text-start"><span class="rec-num" title="' + data_records[i].num_dos_long + ' / ' + data_records[i].rec_num_int + '">' + data_records[i].num_dos + num_int + '</span></div></td>' +
                '<td><div class="text-start">' + data_records[i].date_dos + '</div></td>' +
                '<td><div class="text-start">' + data_records[i].code + '</div></td>' +
                '<td><div class="text-start">' + data_records[i].code_lab + '</div></td>' +

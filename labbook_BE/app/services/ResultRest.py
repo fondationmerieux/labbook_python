@@ -170,8 +170,15 @@ class ResultList(Resource):
 class ResultRecord(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_rec):
-        l_results = Result.getResultRecord(id_rec)
+    def post(self, id_rec):
+        args = request.get_json()
+
+        link_fam = []
+
+        if args:
+            link_fam = args['link_fam']
+
+        l_results = Result.getResultRecord(id_rec, True, link_fam)
 
         if not l_results:
             self.log.error(Logs.fileline() + ' : ResultRecord ERROR not found')
@@ -337,6 +344,13 @@ class ResultValid(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ResultValid type_valid ERROR')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
+        """ 16/03/2023 seems useless
+        link_fam = []
+
+        if 'link_fam' in args and args['link_fam']:
+            link_fam = args['link_fam']
+        """
+
         # VALIDATION : insert validation
         for valid in args['list_valid']:
             id_owner = valid['id_owner']
@@ -357,6 +371,7 @@ class ResultValid(Resource):
             res['id_valid'] = ret
 
         # check if it was the last validation to do
+        # 08/03/2023 no filter with link_fam to be sure to keep correct record status
         l_res = Result.getResultRecord(id_rec)
 
         if not l_res:

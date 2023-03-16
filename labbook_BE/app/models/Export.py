@@ -204,3 +204,322 @@ class Export:
                 res['lab_email'] = ''
 
         return l_res
+
+    @staticmethod
+    def getStatDHIS2(date_beg, date_end, key):
+        res = ''
+
+        cursor = DB.cursor()
+
+        # Number of records saved on a period
+        if key == 'NB_REC_SAVED':
+            req = ('select count(*) as value '
+                   'from sigl_02_data '
+                   'where (date_dos between %s and %s) and statut > 181')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        # Number of analyses saved on a period (without sample request)
+        elif key == 'NB_ANA_SAVED':
+            req = ('select count(*) as value '
+                   'from sigl_04_data as req '
+                   'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
+                   'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
+                   'where (rec.date_dos between %s and %s) and rec.statut > 181 and ref.actif=4')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        # Number of sample outsourced on a period
+        elif key == 'NB_SAMP_OUTSOURCED':
+            req = ('select count(*) as value '
+                   'from sigl_04_data as req '
+                   'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
+                   'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
+                   'where (rec.date_dos between %s and %s) and rec.statut > 181 and ref.actif=4 and '
+                   'req.req_outsourced = "Y"')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        # Number of staff
+        elif key == 'NB_STAFF':
+            req = ('select count(*) as value '
+                   'from sigl_user_data '
+                   'where status="A"')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of secretary type
+        elif key == 'NB_SECRETARY_TYPE':
+            req = ('select count(*) as value '
+                   'from sigl_user_data '
+                   'where status="A" and role_type in ("S", "SA")')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of technician type
+        elif key == 'NB_TECHNICIAN_TYPE':
+            req = ('select count(*) as value '
+                   'from sigl_user_data '
+                   'where status="A" and role_type in ("T", "TA", "TQ")')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of qualitician type
+        elif key == 'NB_QUALITICIAN_TYPE':
+            req = ('select count(*) as value '
+                   'from sigl_user_data '
+                   'where status="A" and role_type in ("Q", "TQ")')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of biologist type
+        elif key == 'NB_BIOLOGIST_TYPE':
+            req = ('select count(*) as value '
+                   'from sigl_user_data '
+                   'where status="A" and role_type in ("B")')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of equipment
+        elif key == 'NB_EQUIPMENT':
+            req = ('select count(*) as value '
+                   'from sigl_equipement_data')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of breakdown equipement  on a period
+        elif key == 'NB_EQP_BREAKDOWN':
+            req = ('select count(*) as value '
+                   'from list_comment as comm '
+                   'inner join sigl_equipement_data as eqp on eqp.id_data=comm.lic_ref and comm.lic_type="E" '
+                   'where (comm.lic_date between %s and %s) and comm.lic_sub_type="B"')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        # Number of procedure
+        elif key == 'NB_PROCEDURE':
+            req = ('select count(*) as value '
+                   'from sigl_procedures_data')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of product with expiry warning
+        elif key == 'NB_PRODUCT_WITH_EXPIRY_WARNING':
+            # get expiry warning setting
+            req = ('select sos_expir_warning '
+                   'from stock_setting')
+
+            cursor.execute(req)
+
+            setting = cursor.fetchone()
+
+            req = ('select prs_prd '
+                   'from product_supply '
+                   'inner join product_details on prd_ser=prs_prd and prd_expir_oblig="Y" '
+                   'where TIMESTAMPDIFF(SECOND, NOW(), prs_expir_date)/86400 > 0 and '
+                   'TIMESTAMPDIFF(SECOND, NOW(), prs_expir_date)/86400 < %s and prs_empty="N" and prs_cancel="N" '
+                   'group by prs_prd')
+
+            cursor.execute(req, (setting['sos_expir_warning'],))
+
+            row = cursor.fetchall()
+
+            res = {}
+            res['value'] = 0
+
+            if row:
+                res['value'] = len(row)
+
+        # Number of product with expiry alert
+        elif key == 'NB_PRODUCT_WITH_EXPIRY_ALERT':
+            req = ('select prs_prd '
+                   'from product_supply '
+                   'inner join product_details on prd_ser=prs_prd and prd_expir_oblig="Y" '
+                   'where TIMESTAMPDIFF(SECOND, NOW(), prs_expir_date)/86400 <= 0 and prs_empty="N" and prs_cancel="N" '
+                   'group by prs_prd')
+
+            cursor.execute(req)
+
+            row = cursor.fetchall()
+
+            res = {}
+            res['value'] = 0
+
+            if row:
+                res['value'] = len(row)
+
+        # Number of product close to be out of stock
+        elif key == 'NB_PRODUCT_UNDER_SAFE_LIMIT':
+            res = {}
+            res['value'] = 0
+
+            # count supply not canceled
+            req = ('select prd_name, prd_safe_limit, sum(prs_nb_pack * prd_nb_by_pack) as nb_sup '
+                   'from product_supply '
+                   'inner join product_details on prd_ser=prs_prd '
+                   'where prs_cancel="N" '
+                   'group by prd_name order by prd_name')
+
+            cursor.execute(req)
+
+            l_sup = cursor.fetchall()
+
+            # count use not canceled
+            req = ('select prd_name, sum(pru_nb_pack * prd_nb_by_pack) as nb_use '
+                   'from product_use '
+                   'inner join product_supply on pru_prs=prs_ser '
+                   'inner join product_details on prd_ser=prs_prd '
+                   'where prs_cancel="N" and pru_cancel="N" '
+                   'group by prd_name order by prd_name')
+
+            cursor.execute(req)
+
+            l_use = cursor.fetchall()
+
+            for sup in l_sup:
+                for use in l_use:
+                    if sup['prd_name'] == use['prd_name']:
+                        nb_stock = sup['nb_sup'] - use['nb_use']
+
+                        if nb_stock > 0 and nb_stock <= sup['prd_safe_limit']:
+                            res['value'] += 1
+
+        # Number of product at 0 in stock
+        elif key == 'NB_PRODUCT_OUT_OF_STOCK':
+            res = {}
+            res['value'] = 0
+
+            # count supply not canceled
+            req = ('select prd_name, prd_safe_limit, sum(prs_nb_pack * prd_nb_by_pack) as nb_sup '
+                   'from product_supply '
+                   'inner join product_details on prd_ser=prs_prd '
+                   'where prs_cancel="N" '
+                   'group by prd_name order by prd_name')
+
+            cursor.execute(req)
+
+            l_sup = cursor.fetchall()
+
+            # count use not canceled
+            req = ('select prd_name, sum(pru_nb_pack * prd_nb_by_pack) as nb_use '
+                   'from product_use '
+                   'inner join product_supply on pru_prs=prs_ser '
+                   'inner join product_details on prd_ser=prs_prd '
+                   'where prs_cancel="N" and pru_cancel="N" '
+                   'group by prd_name order by prd_name')
+
+            cursor.execute(req)
+
+            l_use = cursor.fetchall()
+
+            for sup in l_sup:
+                for use in l_use:
+                    if sup['prd_name'] == use['prd_name']:
+                        nb_stock = sup['nb_sup'] - use['nb_use']
+
+                        if nb_stock <= 0:
+                            res['value'] += 1
+
+        # Number of opened non-conformity
+        elif key == 'NB_OPEN_NON_CONFORMITY':
+            req = ('select count(*) as value '
+                   'from sigl_non_conformite_data '
+                   'where cloture_date != "0000-00-00"')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of non-conformity on a period
+        elif key == 'NB_NON_CONFORMITY':
+            req = ('select count(*) as value '
+                   'from sigl_non_conformite_data '
+                   'where (sys_creation_date between %s and %s)')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        # Number of internal quality control
+        elif key == 'NB_INTERNAL_QUALITY_CONTROL':
+            req = ('select count(*) as value '
+                   'from control_quality '
+                   'where ctq_type_ctrl = "INT"')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of internal quality control on a period
+        elif key == 'NB_INTERNAL_QUALITY_RESULT':
+            req = ('select count(*) as value '
+                   'from control_internal '
+                   'where (cti_date between %s and %s)')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        # Number of external quality control
+        elif key == 'NB_EXTERNAL_QUALITY_CONTROL':
+            req = ('select count(*) as value '
+                   'from control_quality '
+                   'where ctq_type_ctrl = "EXT"')
+
+            cursor.execute(req)
+
+            res = cursor.fetchone()
+
+        # Number of meeting on a period
+        elif key == 'NB_MEETING':
+            req = ('select count(*) as value '
+                   'from sigl_reunion_data '
+                   'where (sys_creation_date between %s and %s)')
+
+            cursor.execute(req, (date_beg, date_end))
+
+            res = cursor.fetchone()
+
+        else:
+            Export.log.info(Logs.fileline() + ' : getStatDHIS2 ERROR wrong filter_row = ' + str(key))
+            res = 'WRONG FILTER'
+
+        return res
+
+    @staticmethod
+    def getListOutsourcing(date_beg, date_end):
+        cursor = DB.cursor()
+
+        req = ('select pat.code, pat.code_patient, rec.num_dos_an, rec.date_dos as date_rec, ref.code as ana_code, '
+               'ref.nom as ana_name '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
+               'inner join sigl_04_data as req on req.id_dos=rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
+               'where (rec.date_dos between %s and %s) and rec.statut > 181 and req.req_outsourced="Y"')
+
+        cursor.execute(req, (date_beg, date_end))
+
+        return cursor.fetchall()

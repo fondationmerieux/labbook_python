@@ -1050,7 +1050,7 @@ class SettingStock(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'expir_warning' not in args or 'expir_oblig' not in args:
+        if 'id_owner' not in args or 'expir_warning' not in args or 'expir_alert' not in args:
             self.log.error(Logs.fileline() + ' : SettingStock ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 

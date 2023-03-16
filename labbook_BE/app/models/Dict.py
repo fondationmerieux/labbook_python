@@ -152,27 +152,27 @@ class Dict:
             filter_cond += ' id_data > 0 '  # remove deleted dicts by default
 
             if session['lang_db'] == 'fr_FR':
-                if args['name']:
+                if 'name' in args and args['name']:
                     filter_cond += ' and dico_name LIKE "%' + str(args['name']) + '%" '
 
-                if args['label']:
+                if 'label' in args and args['label']:
                     filter_cond += ' and label LIKE "%' + str(args['label']) + '%" '
             else:
-                if args['name']:
+                if 'name' in args and args['name']:
                     trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
                              'tr.tra_type="dict_name" and tr.tra_ref=id_data ')
 
                     filter_cond += (' and (tr.tra_text LIKE "%' + str(args['name']) + '%" or '
                                     ' dico_name LIKE "%' + str(args['name']) + '%") ')
 
-                if args['label']:
+                if 'label' in args and args['label']:
                     trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
                              'tr.tra_type="dict_label" and tr.tra_ref=id_data ')
 
                     filter_cond += (' and tr.tra_text LIKE "%' + str(args['label']) + '%" or '
                                     ' label LIKE "%' + str(args['name']) + '%") ')
 
-            if args['code']:
+            if 'code' in args and args['code']:
                 filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
 
         req = ('select id_data, dico_name as name, dico_descr '
