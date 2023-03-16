@@ -258,23 +258,37 @@ class ExportDHIS2(Resource):
                         if row:
                             data = []
 
-                            data.append(row[0])
-                            data.append(period[0])
-                            data.append(orgunit)
-                            data.append(row[5])
-                            data.append(row[6])
+                            if version == 'v3':
+                                data.append(row[0])
+                                data.append(period[0])
+                                data.append(orgunit)
+                                data.append(row[4])
+                                data.append(row[5])
+                            else:
+                                data.append(row[0])
+                                data.append(period[0])
+                                data.append(orgunit)
+                                data.append(row[5])
+                                data.append(row[6])
 
                             period_beg_db = period[1]
                             period_end_db = period[2]
 
-                            filter_row = row[3].strip()
+                            if version == 'v3':
+                                filter_row = row[2].strip()
+                            else:
+                                filter_row = row[3].strip()
 
                             # --- check if formula or others statistic object  ---
                             # formula case
                             if filter_row.startswith("$") or filter_row.startswith("{"):
                                 # Parse formula for result request
                                 formula   = filter_row
-                                type_samp = row[4]
+
+                                if version == 'v3':
+                                    type_samp = row[3]
+                                else:
+                                    type_samp = row[4]
 
                                 self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 --- before ParseFormula ---')
                                 self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 formula=%s', formula)
