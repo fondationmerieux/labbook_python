@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.6] - 2023-04-05
+### Added
+- note on the keyword OR in dhis2.md
+
+### Changed
+- in setting analyzes disabled or enabled all analyzes except sample acts
+- stock setting is allowed for the stock manager profil too
+
+### Fixed
+- no more empty result displayed in report
+- menu in small viewport add a scroll to see the bottom items
+
 ## [3.3.5] - 2023-03-16
 ### Added
 - new predefined DHIS2 export for outsourced samples
@@ -21,7 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - update dhis2.md
 - responsive patient details IHM
 
-## Fixed
+### Fixed
 - missing date backup status except in admin profil
 - replace history.back in some pages (like edit product details)
 - filter of list of record and list of work pages with pofil in functionnal unit
@@ -40,7 +52,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Undo : More control over numeric result fields
 - export dictionnary order by dico_name
 
-## Fixed
+### Fixed
 - add stock product, wrong insert
 - display none overstepped by d-*-flex, like in detail patient with anonymous function
 - download indicator.ini
@@ -66,7 +78,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - pages : login, homepage, list-result and enter-result are responsive on smartphone
 - numerical results are rounded to the precision defined in the analysis repository
 
-## Fixed
+### Fixed
 - redirect on homepage after edit user details or password via menu
 - product supply
 - display no result alert if no result to print for global report
@@ -79,7 +91,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - import/export analysis repository in V4 without formula2, unit2 and accu2 
 
-## Fixed
+### Fixed
 - search field analysis
 
 ## [3.3.1] - 2023-01-10
@@ -110,7 +122,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - quotation of all sampling procedures at 0
 - no more formula 2 in analysis details
 
-## Fixed
+### Fixed
 - Result and Analyzes dataset for pivot table
 - delete duplicate of type_result in dictionnary table
 - filter type of record in list of records page

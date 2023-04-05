@@ -8,7 +8,7 @@ new version 3 since march 2023
 ## CSV COLUMNS (keep order)
 
 Fisrt line name of column (do not change this) :
-dhis2_label;period;version;filter;type_sample;categorieoptioncombo;attributeoptioncombo
+dhis2_label;version;filter;type_sample;categorieoptioncombo;attributeoptioncombo;orgunit;storedby
 
 dhis2_label : this label will be copied identically to the corresponding line in the result file
 
@@ -31,6 +31,8 @@ storedby : will be copied identically to the corresponding line in the result fi
 ## SYNTAX FOR FILTER
 
 the operators =, !=, <, >, IN, AND ... must be preceded and followed by at least one space.
+
+keyword OR : too complex and long request so the algorithm stops at the processing of the left part of the formula.
 
 $_IDVARIABLE : Identifier of an analysis variable, see the details of an analysis using this variable from the analysis repository
 

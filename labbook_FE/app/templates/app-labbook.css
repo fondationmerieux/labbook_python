@@ -470,7 +470,7 @@ list-style-type  : none;
 position         : absolute;
 right            : 0;
 top              : 26px;
-padding-top      : 11px;
+padding-top      : 1px;
 border-bottom    : 1px solid #FFF;
 background-color : rgba(0,0,0,0);
 }
@@ -1438,9 +1438,16 @@ display : flex;
     background : none;
     }
 
+    header .dropdown-toggle
+    {
+    font-size  : 0.8125rem; 
+    padding    : 0.3125rem 0.625rem;
+    }
+
     header .dropdown-item
     {
-    font-size        : 0.8125rem; 
+    font-size  : 0.8125rem; 
+    padding    : 0rem 0.625rem;
     }
 
     .inner
@@ -1565,6 +1572,12 @@ display : flex;
     {
     display : block;
     }
+
+    #navbarMenu
+    {
+    overflow  : auto ;
+    max-height : 95vh ;
+    }
 }
 
 @media all and (max-width: 426px)
@@ -1670,9 +1683,16 @@ display : flex;
     background : none;
     }
 
+    header .dropdown-toggle
+    {
+    font-size  : 0.75rem; 
+    padding    : 0.3125rem 0.625rem;
+    }
+
     header .dropdown-item
     {
-    font-size        : 0.75rem; 
+    font-size  : 0.75rem; 
+    padding    : 0rem 0.625rem;
     }
 
     .inner
@@ -1796,5 +1816,11 @@ display : flex;
     .identity-group_1
     {
     display : block;
+    }
+
+    #navbarMenu
+    {
+    overflow  : auto ;
+    max-height : 95vh ;
     }
 }

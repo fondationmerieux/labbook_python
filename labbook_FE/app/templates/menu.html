@@ -26,7 +26,7 @@
                             <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
                         </li>
                         {% endif %}
-                        {% if session['user_role'] == 'B' %}
+                        {% if session['user_role'] in ('B','T','TA','TQ','S','SA') %}
                         <li>
                             <a class="dropdown-item" href="{{ session['server_ext'] }}/global-report">{{ _("Rapport global") }}</a>
                         </li>
@@ -99,13 +99,15 @@
                     {% endif %}
 
                     <!-- Dropdown Setting -->
-                    {% if session['user_role'] in ('A','B','SA','TA','TQ','Q') %}
+                    {% if session['user_role'] in ('A','B','SA','TA','TQ','Q','K') %}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarSetting" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Paramétrages") }}</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarSetting">
+                            {% if session['user_role'] not in ('Q','K') %}
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
                             </li>
-                            {% if session['user_role'] != 'Q' %}
+                            {% endif %}
+                            {% if session['user_role'] not in ('Q','K') %}
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
                             </li>
@@ -153,9 +155,13 @@
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
                             </li>
+                            {% endif %}
+                            {% if session['user_role'] in ('A','K') %}
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-stock">{{ _("Configuration du stockage") }}</a>
                             </li>
+                            {% endif %}
+                            {% if session['user_role'] == 'A' %}
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-form">{{ _("Configuration de formulaires") }}</a>
                             </li>
@@ -261,7 +267,7 @@
                     {% if session['user_role'] in ('T','TA','TQ') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-works/T">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
-                    {% if session['user_role'] == 'B' %}
+                    {% if session['user_role'] in ('B','T','TA','TQ','S','SA') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/global-report">{{ _("Rapport global") }}</a>
                     {% endif %}
                     {% if session['user_role'] != 'P' %}
@@ -311,14 +317,16 @@
             {% endif %}
 
             <!-- Dropdown Setting -->
-            {% if session['user_role'] in ('A','B','SA','TA','TQ','Q') %}
+            {% if session['user_role'] in ('A','B','SA','TA','TQ','Q','K') %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
                   <a class="nav-link dropdown-toggle setting" href="#" id="navbarsetting" data-bs-toggle="dropdown">
                   </a>
                   <div class="dropdown-menu setting-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                    {% if session['user_role'] not in ('Q','K') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
-                    {% if session['user_role'] != 'Q' %}
+                    {% endif %}
+                    {% if session['user_role'] not in ('Q','K') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
                     {% endif %}
                     {% if session['user_role'] in ('A','B','TA') %}
@@ -342,7 +350,11 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes rendus") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
+                    {% endif %}
+                    {% if session['user_role'] in ('A','K') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-stock">{{ _("Configuration du stockage") }}</a>
+                    {% endif %}
+                    {% if session['user_role'] == 'A' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-form">{{ _("Configuration de formulaires") }}</a>
                     {% endif %}
                     {% if session['user_role'] in ('A','B','TA','TQ','SA') %}

@@ -806,14 +806,15 @@ class Analysis:
         try:
             cursor = DB.cursor()
 
-            cond = ''
+            # 29/03/2023 FMX ask for not disabled sample acts
+            cond = ' (cote_unite != "PB" or cote_unite is NULL) '
 
             if status == 'E':
                 status = 4
-                cond += ' actif != 4 '
+                cond += ' and actif != 4 '
             elif status == 'D':
                 status = 5
-                cond += ' actif != 5 '
+                cond += ' and actif != 5 '
 
             # if a specific analysis
             if id_ana > 0:

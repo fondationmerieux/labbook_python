@@ -145,7 +145,7 @@ class ExportDHIS2(Resource):
 
             for period in l_period:
                 l_rows = Export.getListOutsourcing(period[1], period[2])
-                
+
                 for row in l_rows:
                     if row:
 
@@ -222,7 +222,7 @@ class ExportDHIS2(Resource):
 
             if idx_orgunit:
                 orgunit = l_rows[1][idx_orgunit]
-            
+
             if not orgunit:
                 lab = Various.getDefaultValue('entete_1')
 
@@ -307,7 +307,7 @@ class ExportDHIS2(Resource):
                                     data.append(str(result['value']))
                                 else:
                                     data.append('')
-                            
+
                             # statistic case
                             else:
                                 result = Export.getStatDHIS2(period_beg_db, period_end_db, filter_row)

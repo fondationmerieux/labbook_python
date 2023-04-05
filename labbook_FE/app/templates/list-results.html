@@ -234,7 +234,7 @@ let oblig_ok = true ;
     let res_type    = $("#res_type_" + tmp_id_res ).val() ;
     let accu        = $("#accu_" + tmp_id_res ).val() ;
 
-        if ( res_type == 227 )
+        if ( tmp_val_res != "" && res_type == 227 )
         {
         // replace coma by dot
         tmp_val_res = tmp_val_res.replace(/,/g, '.') ;
@@ -244,7 +244,7 @@ let oblig_ok = true ;
             if ( !isNaN(convert_res) )
             tmp_val_res = convert_res ;
         }
-        else if ( res_type == 228 )
+        else if ( tmp_val_res != "" && res_type == 228 )
         {
         // replace coma by dot
         tmp_val_res = tmp_val_res.replace(/,/g, '.') ;
