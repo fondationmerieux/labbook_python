@@ -80,11 +80,16 @@ var lastname  = "{{ session['user_lastname']|safe}}" ;
 $("#header_name").text( name ) ;
 }
 
-function download_file( type, filename, type_ref, ref )
+function download_file( type, filename, type_ref, ref)
 {
     try
     {
-        window.open("{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref, "_blank") ;
+        if ( type_ref == "PROC" )
+        {
+        console.log("TODO tracer lecture procédure");
+        }
+
+    window.open("{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref, "_blank") ;
     }
     catch(err)
     {

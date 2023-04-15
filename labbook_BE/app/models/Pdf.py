@@ -713,8 +713,410 @@ class Pdf:
         return cursor.fetchone()
 
     @staticmethod
+    def qrcodeByTemplate(filename, data):
+        """Generate a QR code image by a template
+
+        This function is call by getDataReport if a analysis variable with QR code.
+
+        Args:
+            filename  (string): filename of image.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        from jinja2 import Template
+
+        # 1 - load default QRC template
+        tpl = Setting.getDefaultTemplate('QRC')
+
+        if not tpl:
+            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate no default template')
+            return False
+
+        # 2 - render template with data
+        try:
+            import toml
+
+            filepath = os.path.join(Constants.cst_template, tpl['tpl_file'])
+
+            qrc_tpl = toml.load(filepath)
+
+            # tpl_version = qrc_tpl['version']
+
+            qrc_version = int(qrc_tpl['QRcode']['version'])
+            qrc_error   = qrc_tpl['QRcode']['error_correction']
+            qrc_text    = qrc_tpl['QRcode']['text']
+
+            template = Template(qrc_text)
+            tpl_str  = template.render(data)
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate render template failed, err=%s , filename=%s', err, str(filename))
+            return False
+
+        # 3 - generate QR code image
+        try:
+            if qrc_version > 0:
+                fit = False
+            else:
+                qrc_version = 1
+                fit = True
+
+            if qrc_error == 'L':
+                qrc_error = qrcode.constants.ERROR_CORRECT_L
+            elif qrc_error == 'M':
+                qrc_error = qrcode.constants.ERROR_CORRECT_M
+            elif qrc_error == 'Q':
+                qrc_error = qrcode.constants.ERROR_CORRECT_Q
+            elif qrc_error == 'H':
+                qrc_error = qrcode.constants.ERROR_CORRECT_H
+            else:
+                qrc_error = qrcode.constants.ERROR_CORRECT_L
+
+            qrc = qrcode.QRCode(version=qrc_version, error_correction=qrc_error)
+
+            qrc.add_data(str(tpl_str))
+
+            qrc.make(fit=fit)
+
+            img = qrc.make_image(fill_color="black", back_color="white")
+
+            type(img)
+
+            img.save('tmp/' + filename)
+        except Exception as err:
+            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate generate QR image failed, err=%s , filename=%s', err, str(filename))
+            return False
+
+        Pdf.log.info(Logs.fileline() + ' : qrcodeByTemplate')
+        return True
+
+    @staticmethod
+    def getPdfSticker(id, type_id, template):
+        """Initiates a PDF Barcode page
+
+        This function is call by administrative record or settings stickers templates.
+
+        Args:
+            id         (int): serial.
+            type_id (string): specify which type of serial.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        Various.useLangPDF()
+
+        # --------------------------------------------------
+        data = {}  # dictionnary of data for build report
+
+        filename = ''
+
+        # Get data
+        if type_id == 'REC':
+            if id > 0:
+                record = Record.getRecord(id)
+
+                if not record:
+                    Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load record details')
+                    return False
+
+                num = record['num_rec']
+
+                filename = 'sticker_REC' + str(id)
+
+                imgcode39_name  = 'sticker_code39_' + str(num) + '.png'
+                imgqrcode_name  = 'sticker_qrcode_' + str(num) + '.png'
+
+                # Generate barcode code39 type
+                try:
+                    checksum = False
+
+                    CODE39 = barcode.get_barcode_class('code39')
+
+                    options = {'font_size': 0,
+                               'text_distance': 0.0,
+                               'module_height': 24.0,
+                               'quiet_zone': 0.0}
+                    options['center_text'] = False
+
+                    ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
+                    ean.save('tmp/sticker_code39_' + num, options=options)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                # Generate qrcode type
+                try:
+                    img = qrcode.make(str(num))
+
+                    type(img)
+
+                    img.save('tmp/' + imgqrcode_name)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                filepath_code39 = os.path.join(Constants.cst_path_tmp, imgcode39_name)
+                filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
+
+                data['img'] = {}
+                data['img']['code39'] = open(filepath_code39, 'rb')
+                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
+
+                data['rec'] = {}
+                data['rec']['num']   = str(record['num_rec'])
+                data['rec']['num_y'] = str(record['num_dos_an'])
+                data['rec']['num_m'] = str(record['num_dos_mois'])
+                data['rec']['num_d'] = str(record['num_dos_jour'])
+
+                if record['date_dos']:
+                    data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+                else:
+                    data['rec']['rec_date'] = ''
+
+                # --- Patient details
+                data['pat'] = {}
+
+                pat = Patient.getPatient(record['id_patient'])
+
+                if not pat:
+                    Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load patient details')
+                    return False
+
+                data['pat']['code']         = str(pat['code'])
+                data['pat']['code_lab']     = ''
+                data['pat']['lastname']     = ''
+                data['pat']['firstname']    = ''
+                data['pat']['maidenname']   = ''
+                data['pat']['middlename']   = ''
+                data['pat']['birth']        = ''
+                data['pat']['age']          = ''
+                data['pat']['age_unit']     = ''
+                data['pat']['age_days']     = ''
+                data['pat']['sex']          = _('Inconnu')
+                data['pat']['addr']         = ''
+                data['pat']['zipcode']      = ''
+                data['pat']['city']         = ''
+                data['pat']['district']     = ''
+                data['pat']['pbox']         = ''
+                data['pat']['phone']        = ''
+                data['pat']['phone2']       = ''
+                data['pat']['profession']   = ''
+                data['pat']['nationality']  = ''
+                data['pat']['resident']     = str(pat['pat_resident'])
+                data['pat']['blood_group']  = ''
+                data['pat']['blood_rhesus'] = ''
+
+                if pat['anonyme'] and pat['anonyme'] == 4:
+                    data['pat']['anonymous'] = 'Y'
+                else:
+                    data['pat']['anonymous'] = 'N'
+
+                if pat['code_patient']:
+                    data['pat']['code_lab'] = str(pat['code_patient'])
+
+                if pat['nom']:
+                    data['pat']['lastname'] = str(pat['nom'])
+
+                if pat['prenom']:
+                    data['pat']['firstname'] = str(pat['prenom'])
+
+                if pat['nom_jf']:
+                    data['pat']['maidenname'] = str(pat['nom_jf'])
+
+                if pat['pat_midname']:
+                    data['pat']['middlename'] = str(pat['pat_midname'])
+
+                if pat['ddn']:
+                    data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+
+                    # calc age
+                    today = datetime.now()
+                    born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
+
+                    age = (today - born).days
+
+                    data['pat']['age_days'] = str(age)
+
+                    if age >= 365:
+                        data['pat']['age']  = str(today.year - born.year)
+                        data['pat']['age_unit'] = _('ans')
+                    elif age > 0 and age <= 31:
+                        data['pat']['age']  = str((today - born).days)
+                        data['pat']['age_unit'] = _('jours')
+                    elif today.month - born.month > 0:
+                        tmp_age = int((today - born).days / 28)
+                        data['pat']['age']  = str(tmp_age)
+                        data['pat']['age_unit'] = _('mois')
+                elif pat['age']:
+                    data['pat']['age'] = str(pat['age'])
+
+                    if pat['unite'] == 1037:
+                        data['pat']['age_unit'] = _('ans')
+                        age = int(pat['age']) * 365
+                        data['pat']['age_days'] = str(age)
+                    elif pat['unite'] == 1036:
+                        data['pat']['age_unit'] = _('mois')
+                        age = int(pat['age']) * 30
+                        data['pat']['age_days'] = str(age)
+                    elif pat['unite'] == 1035:
+                        data['pat']['age_unit'] = _('semaines')
+                        age = int(pat['age']) * 7
+                        data['pat']['age_days'] = str(age)
+                    elif pat['unite'] == 1034:
+                        data['pat']['age_unit'] = _('jours')
+                        data['pat']['age_days'] = str(pat['age'])
+
+                if pat['sexe'] == 1:
+                    data['pat']['sex'] = _('Masculin')
+                elif pat['sexe'] == 2:
+                    data['pat']['sex'] = _('Feminin')
+
+                if pat['adresse']:
+                    data['pat']['addr'] = str(pat['adresse'])
+
+                if pat['cp']:
+                    data['pat']['zipcode'] = str(pat['cp'])
+
+                if pat['ville']:
+                    data['pat']['city'] = str(pat['ville'])
+
+                if pat['quartier']:
+                    data['pat']['district'] = str(pat['quartier'])
+
+                if pat['bp']:
+                    data['pat']['pbox'] = str(pat['bp'])
+
+                if pat['tel']:
+                    data['pat']['phone'] = str(pat['tel'])
+
+                if pat['pat_phone2']:
+                    data['pat']['phone2'] = str(pat['pat_phone2'])
+
+                if pat['profession']:
+                    data['pat']['profession'] = str(pat['profession'])
+
+                if pat['pat_nation'] and pat['pat_nation'] > 0:
+                    nat = Various.getNationalityById(pat['pat_nation'])
+
+                    if nat:
+                        Various.useLangDB()
+                        trans = nat['nat_name'].strip()
+                        data['pat']['nationality'] = _(trans)
+                        Various.useLangPDF()
+
+                if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
+                    data['pat']['blood_group'] = 'A'
+                elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
+                    data['pat']['blood_group'] = 'AB'
+                elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
+                    data['pat']['blood_group'] = 'O'
+
+                if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
+                    data['pat']['blood_rhesus'] = '+'
+                elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
+                    data['pat']['blood_rhesus'] = '-'
+
+            # PDF test
+            else:
+                num = '2021000001'
+
+                filename = 'test_template'
+
+                imgcode39_name  = 'sticker_code39_' + str(num) + '.png'
+                imgqrcode_name  = 'sticker_qrcode_' + str(num) + '.png'
+
+                # Generate barcode code39 type
+                try:
+                    filepath = os.path.join(Constants.cst_path_tmp, 'sticker_code39_' + num)
+
+                    checksum = False
+
+                    CODE39 = barcode.get_barcode_class('code39')
+
+                    options = {'font_size': 0,
+                               'text_distance': 0.0,
+                               'module_height': 24.0,
+                               'quiet_zone': 0.0}
+                    options['center_text'] = False
+
+                    ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
+                    ean.save(filepath, options=options)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                # Generate qrcode type
+                try:
+                    filepath = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
+
+                    img = qrcode.make(str(num))
+
+                    type(img)
+
+                    img.save(filepath)
+                except Exception as err:
+                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
+                    return False
+
+                filepath_code39 = os.path.join(Constants.cst_path_tmp, imgcode39_name)
+                filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
+
+                data['img'] = {}
+                data['img']['code39'] = open(filepath_code39, 'rb')
+                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
+
+                data['rec'] = {}
+                data['rec']['num']   = '2021000001'
+                data['rec']['num_y'] = '2021000001'
+                data['rec']['num_d'] = '2022010001'
+                data['rec']['num_m'] = '202201010001'
+                data['rec']['rec_date'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
+
+                # --- Patient details
+                data['pat'] = {}
+
+                data['pat']['anonymous']    = ''
+                data['pat']['code']         = 'Z1X2Y3'
+                data['pat']['code_lab']     = 'PAT123'
+                data['pat']['lastname']     = 'TEST'
+                data['pat']['firstname']    = 'Alexandre'
+                data['pat']['maidenname']   = 'PERRIERS'
+                data['pat']['middlename']   = 'Monica'
+                data['pat']['birth']        = '30/01/1940'
+                data['pat']['age']          = '42'
+                data['pat']['age_unit']     = _('ans')
+                age = int(data['pat']['age']) * 365
+                data['pat']['age_days']     = str(age)
+                data['pat']['sex']          = _('Masculin')
+                data['pat']['addr']         = '3 rue du Paradis'
+                data['pat']['zipcode']      = '12345'
+                data['pat']['city']         = 'Testville'
+                data['pat']['district']     = ''
+                data['pat']['pbox']         = 'BP 123'
+                data['pat']['phone']        = '0607080910'
+                data['pat']['phone2']       = '0700000002'
+                data['pat']['profession']   = 'Architecte'
+                data['pat']['nationality']  = ''
+                data['pat']['resident']     = 'Y'
+                data['pat']['blood_group']  = 'AB'
+                data['pat']['blood_rhesus'] = '-'
+
+        ret = Pdf.buildPdf('STI', template, filename, data)
+
+        if not ret:
+            Pdf.log.error(Logs.fileline() + ' : getPdfSticker ERROR buildPdf STI')
+            return False
+
+        Pdf.log.info(Logs.fileline() + ' : getPdfSticker')
+        return True
+
+    @staticmethod
     def getPdfReport(id_rec, template, filename, reedit='N'):
-        """Build a PDF Report
+        """Initiates a PDF Report
 
         This function is call by administrative record and biological validation template
 
@@ -1416,28 +1818,38 @@ class Pdf:
                 # --- END OF LOOP RESULT ---
 
                 # add last comment and who make validation
-                res_valid = Result.getResultValidation(id_res_p)
+                l_validators = Result.getListValidators(id_rec)
 
-                ret_user = User.getUserDetails(res_valid['utilisateur'])
+                id_user_p = 0
+                comment_p = ''
+                user      = ''
+                res_comm  = []
 
-                # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
-                user = ''
+                for validator in l_validators:
 
-                if ret_user['title']:
-                    Various.useLangDB()
-                    trans = ret_user['title']
-                    user += _(trans) + ' '
-                    Various.useLangPDF()
+                    id_user = validator['user']
+                    comment = validator['comment']
 
-                if ret_user['lastname'] and ret_user['firstname']:
-                    user += ret_user['lastname'] + ' ' + ret_user['firstname']
-                else:
-                    user += ret_user['username']
+                    if id_user != id_user_p:
+                        ret_user = User.getUserDetails(id_user)
 
-                if res_valid['commentaire']:
-                    res_comm = res_valid['commentaire'].split("\n")
-                else:
-                    res_comm = ''
+                        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
+                        if user:
+                            user = user + ', '
+
+                        if ret_user['title']:
+                            Various.useLangDB()
+                            trans = ret_user['title']
+                            user += _(trans) + ' '
+                            Various.useLangPDF()
+
+                        if ret_user['lastname'] and ret_user['firstname']:
+                            user += ret_user['lastname'] + ' ' + ret_user['firstname']
+                        else:
+                            user += ret_user['username']
+
+                    if comment and comment != comment_p:
+                        res_comm = res_comm + comment.split("\n")
 
                 tmp_ana['l_res'][-1]["comm"] = res_comm
 
@@ -1589,7 +2001,7 @@ class Pdf:
 
     @staticmethod
     def buildReport(template, filename, data, id_rec):
-        """Build a PDF from a template
+        """Build a PDF from a template with data
 
         This function is call by getPdfReport()
 
@@ -1654,412 +2066,10 @@ class Pdf:
         return True
 
     @staticmethod
-    def getPdfSticker(id, type_id, template):
-        """Build a PDF Barcode page
-
-        This function is call by administrative record or settings stickers templates.
-
-        Args:
-            id         (int): serial.
-            type_id (string): specify which type of serial.
-
-        Returns:
-            bool: True for success, False otherwise.
-
-        """
-
-        Various.useLangPDF()
-
-        # --------------------------------------------------
-        data = {}  # dictionnary of data for build report
-
-        filename = ''
-
-        # Get data
-        if type_id == 'REC':
-            if id > 0:
-                record = Record.getRecord(id)
-
-                if not record:
-                    Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load record details')
-                    return False
-
-                num = record['num_rec']
-
-                filename = 'sticker_REC' + str(id)
-
-                imgcode39_name  = 'sticker_code39_' + str(num) + '.png'
-                imgqrcode_name  = 'sticker_qrcode_' + str(num) + '.png'
-
-                # Generate barcode code39 type
-                try:
-                    checksum = False
-
-                    CODE39 = barcode.get_barcode_class('code39')
-
-                    options = {'font_size': 0,
-                               'text_distance': 0.0,
-                               'module_height': 24.0,
-                               'quiet_zone': 0.0}
-                    options['center_text'] = False
-
-                    ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-                    ean.save('tmp/sticker_code39_' + num, options=options)
-                except Exception as err:
-                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
-                    return False
-
-                # Generate qrcode type
-                try:
-                    img = qrcode.make(str(num))
-
-                    type(img)
-
-                    img.save('tmp/' + imgqrcode_name)
-                except Exception as err:
-                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
-                    return False
-
-                filepath_code39 = os.path.join(Constants.cst_path_tmp, imgcode39_name)
-                filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
-
-                data['img'] = {}
-                data['img']['code39'] = open(filepath_code39, 'rb')
-                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
-
-                data['rec'] = {}
-                data['rec']['num']   = str(record['num_rec'])
-                data['rec']['num_y'] = str(record['num_dos_an'])
-                data['rec']['num_m'] = str(record['num_dos_mois'])
-                data['rec']['num_d'] = str(record['num_dos_jour'])
-
-                if record['date_dos']:
-                    data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
-                else:
-                    data['rec']['rec_date'] = ''
-
-                # --- Patient details
-                data['pat'] = {}
-
-                pat = Patient.getPatient(record['id_patient'])
-
-                if not pat:
-                    Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load patient details')
-                    return False
-
-                data['pat']['code']         = str(pat['code'])
-                data['pat']['code_lab']     = ''
-                data['pat']['lastname']     = ''
-                data['pat']['firstname']    = ''
-                data['pat']['maidenname']   = ''
-                data['pat']['middlename']   = ''
-                data['pat']['birth']        = ''
-                data['pat']['age']          = ''
-                data['pat']['age_unit']     = ''
-                data['pat']['age_days']     = ''
-                data['pat']['sex']          = _('Inconnu')
-                data['pat']['addr']         = ''
-                data['pat']['zipcode']      = ''
-                data['pat']['city']         = ''
-                data['pat']['district']     = ''
-                data['pat']['pbox']         = ''
-                data['pat']['phone']        = ''
-                data['pat']['phone2']       = ''
-                data['pat']['profession']   = ''
-                data['pat']['nationality']  = ''
-                data['pat']['resident']     = str(pat['pat_resident'])
-                data['pat']['blood_group']  = ''
-                data['pat']['blood_rhesus'] = ''
-
-                if pat['anonyme'] and pat['anonyme'] == 4:
-                    data['pat']['anonymous'] = 'Y'
-                else:
-                    data['pat']['anonymous'] = 'N'
-
-                if pat['code_patient']:
-                    data['pat']['code_lab'] = str(pat['code_patient'])
-
-                if pat['nom']:
-                    data['pat']['lastname'] = str(pat['nom'])
-
-                if pat['prenom']:
-                    data['pat']['firstname'] = str(pat['prenom'])
-
-                if pat['nom_jf']:
-                    data['pat']['maidenname'] = str(pat['nom_jf'])
-
-                if pat['pat_midname']:
-                    data['pat']['middlename'] = str(pat['pat_midname'])
-
-                if pat['ddn']:
-                    data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
-
-                    # calc age
-                    today = datetime.now()
-                    born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
-
-                    age = (today - born).days
-
-                    data['pat']['age_days'] = str(age)
-
-                    if age >= 365:
-                        data['pat']['age']  = str(today.year - born.year)
-                        data['pat']['age_unit'] = _('ans')
-                    elif age > 0 and age <= 31:
-                        data['pat']['age']  = str((today - born).days)
-                        data['pat']['age_unit'] = _('jours')
-                    elif today.month - born.month > 0:
-                        tmp_age = int((today - born).days / 28)
-                        data['pat']['age']  = str(tmp_age)
-                        data['pat']['age_unit'] = _('mois')
-                elif pat['age']:
-                    data['pat']['age'] = str(pat['age'])
-
-                    if pat['unite'] == 1037:
-                        data['pat']['age_unit'] = _('ans')
-                        age = int(pat['age']) * 365
-                        data['pat']['age_days'] = str(age)
-                    elif pat['unite'] == 1036:
-                        data['pat']['age_unit'] = _('mois')
-                        age = int(pat['age']) * 30
-                        data['pat']['age_days'] = str(age)
-                    elif pat['unite'] == 1035:
-                        data['pat']['age_unit'] = _('semaines')
-                        age = int(pat['age']) * 7
-                        data['pat']['age_days'] = str(age)
-                    elif pat['unite'] == 1034:
-                        data['pat']['age_unit'] = _('jours')
-                        data['pat']['age_days'] = str(pat['age'])
-
-                if pat['sexe'] == 1:
-                    data['pat']['sex'] = _('Masculin')
-                elif pat['sexe'] == 2:
-                    data['pat']['sex'] = _('Feminin')
-
-                if pat['adresse']:
-                    data['pat']['addr'] = str(pat['adresse'])
-
-                if pat['cp']:
-                    data['pat']['zipcode'] = str(pat['cp'])
-
-                if pat['ville']:
-                    data['pat']['city'] = str(pat['ville'])
-
-                if pat['quartier']:
-                    data['pat']['district'] = str(pat['quartier'])
-
-                if pat['bp']:
-                    data['pat']['pbox'] = str(pat['bp'])
-
-                if pat['tel']:
-                    data['pat']['phone'] = str(pat['tel'])
-
-                if pat['pat_phone2']:
-                    data['pat']['phone2'] = str(pat['pat_phone2'])
-
-                if pat['profession']:
-                    data['pat']['profession'] = str(pat['profession'])
-
-                if pat['pat_nation'] and pat['pat_nation'] > 0:
-                    nat = Various.getNationalityById(pat['pat_nation'])
-
-                    if nat:
-                        Various.useLangDB()
-                        trans = nat['nat_name'].strip()
-                        data['pat']['nationality'] = _(trans)
-                        Various.useLangPDF()
-
-                if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
-                    data['pat']['blood_group'] = 'A'
-                elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
-                    data['pat']['blood_group'] = 'AB'
-                elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
-                    data['pat']['blood_group'] = 'O'
-
-                if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
-                    data['pat']['blood_rhesus'] = '+'
-                elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
-                    data['pat']['blood_rhesus'] = '-'
-
-            # PDF test
-            else:
-                num = '2021000001'
-
-                filename = 'test_template'
-
-                imgcode39_name  = 'sticker_code39_' + str(num) + '.png'
-                imgqrcode_name  = 'sticker_qrcode_' + str(num) + '.png'
-
-                # Generate barcode code39 type
-                try:
-                    filepath = os.path.join(Constants.cst_path_tmp, 'sticker_code39_' + num)
-
-                    checksum = False
-
-                    CODE39 = barcode.get_barcode_class('code39')
-
-                    options = {'font_size': 0,
-                               'text_distance': 0.0,
-                               'module_height': 24.0,
-                               'quiet_zone': 0.0}
-                    options['center_text'] = False
-
-                    ean = CODE39(str(num), writer=ImageWriter(), add_checksum=checksum)
-                    ean.save(filepath, options=options)
-                except Exception as err:
-                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
-                    return False
-
-                # Generate qrcode type
-                try:
-                    filepath = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
-
-                    img = qrcode.make(str(num))
-
-                    type(img)
-
-                    img.save(filepath)
-                except Exception as err:
-                    Pdf.log.error(Logs.fileline() + ' : getPdfSticker failed, err=%s , num=%s', err, str(num))
-                    return False
-
-                filepath_code39 = os.path.join(Constants.cst_path_tmp, imgcode39_name)
-                filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
-
-                data['img'] = {}
-                data['img']['code39'] = open(filepath_code39, 'rb')
-                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
-
-                data['rec'] = {}
-                data['rec']['num']   = '2021000001'
-                data['rec']['num_y'] = '2021000001'
-                data['rec']['num_d'] = '2022010001'
-                data['rec']['num_m'] = '202201010001'
-                data['rec']['rec_date'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
-
-                # --- Patient details
-                data['pat'] = {}
-
-                data['pat']['anonymous']    = ''
-                data['pat']['code']         = 'Z1X2Y3'
-                data['pat']['code_lab']     = 'PAT123'
-                data['pat']['lastname']     = 'TEST'
-                data['pat']['firstname']    = 'Alexandre'
-                data['pat']['maidenname']   = 'PERRIERS'
-                data['pat']['middlename']   = 'Monica'
-                data['pat']['birth']        = '30/01/1940'
-                data['pat']['age']          = '42'
-                data['pat']['age_unit']     = _('ans')
-                age = int(data['pat']['age']) * 365
-                data['pat']['age_days']     = str(age)
-                data['pat']['sex']          = _('Masculin')
-                data['pat']['addr']         = '3 rue du Paradis'
-                data['pat']['zipcode']      = '12345'
-                data['pat']['city']         = 'Testville'
-                data['pat']['district']     = ''
-                data['pat']['pbox']         = 'BP 123'
-                data['pat']['phone']        = '0607080910'
-                data['pat']['phone2']       = '0700000002'
-                data['pat']['profession']   = 'Architecte'
-                data['pat']['nationality']  = ''
-                data['pat']['resident']     = 'Y'
-                data['pat']['blood_group']  = 'AB'
-                data['pat']['blood_rhesus'] = '-'
-
-        ret = Pdf.buildPdf('STI', template, filename, data)
-
-        if not ret:
-            Pdf.log.error(Logs.fileline() + ' : getPdfSticker ERROR buildPdf STI')
-            return False
-
-        Pdf.log.info(Logs.fileline() + ' : getPdfSticker')
-        return True
-
-    @staticmethod
-    def qrcodeByTemplate(filename, data):
-        """Generate a QR code image by a template
-
-        This function is call by getDataReport if a analysis variable with QR code.
-
-        Args:
-            filename  (string): filename of image.
-
-        Returns:
-            bool: True for success, False otherwise.
-
-        """
-
-        from jinja2 import Template
-
-        # 1 - load default QRC template
-        tpl = Setting.getDefaultTemplate('QRC')
-
-        if not tpl:
-            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate no default template')
-            return False
-
-        # 2 - render template with data
-        try:
-            import toml
-
-            filepath = os.path.join(Constants.cst_template, tpl['tpl_file'])
-
-            qrc_tpl = toml.load(filepath)
-
-            # tpl_version = qrc_tpl['version']
-
-            qrc_version = int(qrc_tpl['QRcode']['version'])
-            qrc_error   = qrc_tpl['QRcode']['error_correction']
-            qrc_text    = qrc_tpl['QRcode']['text']
-
-            template = Template(qrc_text)
-            tpl_str  = template.render(data)
-        except Exception as err:
-            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate render template failed, err=%s , filename=%s', err, str(filename))
-            return False
-
-        # 3 - generate QR code image
-        try:
-            if qrc_version > 0:
-                fit = False
-            else:
-                qrc_version = 1
-                fit = True
-
-            if qrc_error == 'L':
-                qrc_error = qrcode.constants.ERROR_CORRECT_L
-            elif qrc_error == 'M':
-                qrc_error = qrcode.constants.ERROR_CORRECT_M
-            elif qrc_error == 'Q':
-                qrc_error = qrcode.constants.ERROR_CORRECT_Q
-            elif qrc_error == 'H':
-                qrc_error = qrcode.constants.ERROR_CORRECT_H
-            else:
-                qrc_error = qrcode.constants.ERROR_CORRECT_L
-
-            qrc = qrcode.QRCode(version=qrc_version, error_correction=qrc_error)
-
-            qrc.add_data(str(tpl_str))
-
-            qrc.make(fit=fit)
-
-            img = qrc.make_image(fill_color="black", back_color="white")
-
-            type(img)
-
-            img.save('tmp/' + filename)
-        except Exception as err:
-            Pdf.log.error(Logs.fileline() + ' : qrcodeByTemplate generate QR image failed, err=%s , filename=%s', err, str(filename))
-            return False
-
-        Pdf.log.info(Logs.fileline() + ' : qrcodeByTemplate')
-        return True
-
-    @staticmethod
     def buildPdf(type, template, filename, data):
-        """Build a PDF from a template
+        """Build a PDF from a template with data
 
-        This function is call by getPdfReport()
+        This function is call by getPdfSticker() and getPdfOutsourced()
 
         Args:
             type     (string): type of template.
@@ -2116,7 +2126,7 @@ class Pdf:
 
     @staticmethod
     def getPdfOutsourced(id_rec, template, filename):
-        """Build a PDF Outsourced
+        """Initiates a PDF Outsourced
 
         This function is call by administrative record
 
@@ -2556,17 +2566,6 @@ class Pdf:
         # For print test analysis
         else:
             Various.useLangDB()
-
-            result['label']      = _("Albumine")
-            result['value']      = _("Absent")
-            result['unit']       = ''
-            result['references'] = ''
-            result['prev_date']  = '01/12/2022'
-            result['prev_val']   = _("Présent")
-            result['prev_unit']  = ''
-            result['comm']       = 'commentaire validation\n2eme ligne'.split('\n')
-            result['bold_value'] = 'N'
-            result['highlight']  = 'Y'
 
             analysis['fam_name'] = _("Biochimie urinaire")
             analysis['ana_name'] = _("Bandelettes urinaires")

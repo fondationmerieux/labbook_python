@@ -200,10 +200,10 @@ class Patient:
             code = ""
 
             for i in range(length):
-                code += random.choice(chars)
+                code += random.choice(chars)  # nosec B311
 
             for i in range(1):
-                code += random.choice(numbers)
+                code += random.choice(numbers)  # nosec B311
 
             # check if code not already exist in DB
             cursor = DB.cursor()

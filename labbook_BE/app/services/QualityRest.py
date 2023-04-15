@@ -1965,7 +1965,7 @@ class StockListDet(Resource):
 
             if stock['prs_expir_date']:
                 if stock['prd_expir_oblig'] == 'Y':
-                    delta = stock['expir_date'] - datetime.now()
+                    delta = stock['prs_expir_date'] - datetime.now()
                     stock['day_to_expir'] = delta.days
                 else:
                     stock['day_to_expir'] = 1000  # big number to not trigger stock alert

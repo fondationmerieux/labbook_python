@@ -110,7 +110,7 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-template/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>" ;
 
-    if (data_items[i].tpl_type == "STI" || data_items[i].tpl_type == "RES")
+    if (data_items[i].tpl_type == "STI" || data_items[i].tpl_type == "RES" || data_items[i].tpl_type == "OUT" )
     menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"print_test(" + data_items[i].id_item + ")\">{{ _("Tester") }}</a>" ;
 
     menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_item + ")\">{{ _("Supprimer") }}</a>";   

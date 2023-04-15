@@ -407,10 +407,10 @@ def index():
             session['lang_chosen'] = False
             session.modified = True
             log.info(Logs.fileline() + ' : TRACE Labbook_FE no current_page => Login')
-            return render_template('login.html', rand=random.randint(0, 999))
+            return render_template('login.html', rand=random.randint(0, 999))  # nosec B311
         else:
             log.info(Logs.fileline() + ' : TRACE Labbook_FE no current_page AND labbook_BE not OK or problem with session')
-            return render_template('initialization.html', rand=random.randint(0, 999))
+            return render_template('initialization.html', rand=random.randint(0, 999))  # nosec B311
     else:
         log.info(Logs.fileline() + ' : TRACE Labbook FRONT END current_page=' + str(session['current_page']))
         if 'redirect_name' not in session or not session['redirect_name']:
@@ -426,7 +426,7 @@ def index():
 def initialization():
     log.info(Logs.fileline() + ' : TRACE initialization')
 
-    return render_template('initialization.html', rand=random.randint(0, 999))
+    return render_template('initialization.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page :
@@ -441,7 +441,7 @@ def api():
         debug = 0
 
     log.info(Logs.fileline() + ' : TRACE api LABBOOK_DEBUG=' + str(debug))
-    return render_template('api.html', debug=debug, rand=random.randint(0, 999))
+    return render_template('api.html', debug=debug, rand=random.randint(0, 999))  # nosec B311
 
 
 # Change la langue
@@ -711,7 +711,7 @@ def homepage(login=''):
 
         log.info(Logs.fileline() + ' : TRACE homepage processing time = ' + str(dt_time_req))
 
-        return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))
+        return render_template('homepage.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # --------------------
@@ -753,7 +753,7 @@ def setting_users():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-users.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-users.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details user
@@ -810,7 +810,7 @@ def setting_det_user(user_id=0, ctx=''):
 
     json_data['user_id'] = user_id
 
-    return render_template('setting-det-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-det-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : users connection export
@@ -823,7 +823,7 @@ def user_conn_export():
     session['current_page'] = 'user-conn-export'
     session.modified = True
 
-    return render_template('user-conn-export.html', rand=random.randint(0, 999))
+    return render_template('user-conn-export.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : users import
@@ -836,7 +836,7 @@ def user_import():
     session['current_page'] = 'user-import'
     session.modified = True
 
-    return render_template('user-import.html', rand=random.randint(0, 999))
+    return render_template('user-import.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting new password for a user
@@ -859,7 +859,7 @@ def setting_pwd_user(user_id=0, ctx=''):
 
     json_data['user_id'] = user_id
 
-    return render_template('setting-pwd-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-pwd-user.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : import dict
@@ -875,7 +875,7 @@ def dict_import():
     json_ihm  = {}
     json_data = {}
 
-    return render_template('dict-import.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('dict-import.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : dict list
@@ -901,7 +901,7 @@ def setting_dicts():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests dicts list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-dicts.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-dicts.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details dictionnary
@@ -940,7 +940,7 @@ def setting_det_dict(dict_name=''):
 
     json_data['dict_name'] = str(dict_name)
 
-    return render_template('setting-det-dict.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-det-dict.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : analyzes list
@@ -989,7 +989,7 @@ def setting_analyzes():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : variables list
@@ -1015,7 +1015,7 @@ def list_vars():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests vars all failed, err=%s , url=%s', err, url)
 
-    return render_template('list-vars.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-vars.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : import analyzes list
@@ -1031,7 +1031,7 @@ def analysis_import():
     json_ihm  = {}
     json_data = {}
 
-    return render_template('analysis-import.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('analysis-import.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details analysis
@@ -1119,7 +1119,7 @@ def setting_det_analysis(analysis_id=0):
 
     json_data['analysis_id'] = analysis_id
 
-    return render_template('setting-det-analysis.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-det-analysis.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : manage patient records
@@ -1179,7 +1179,7 @@ def manage_pat_records():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
 
-    return render_template('manage-pat-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('manage-pat-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : preferences list
@@ -1204,7 +1204,7 @@ def setting_preferences():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-pref.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-pref.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting backup and restore
@@ -1266,7 +1266,7 @@ def setting_backup():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-backup.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-backup.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : zip code and city list
@@ -1293,7 +1293,7 @@ def setting_zipcity():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests zipcity list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-zipcity.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-zipcity.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting stock
@@ -1319,7 +1319,7 @@ def setting_stock():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-stock.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-stock.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting form
@@ -1345,7 +1345,7 @@ def setting_form():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests form setting failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-form.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-form.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list template
@@ -1370,7 +1370,7 @@ def list_template():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests template list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-template.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-template.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : template details
@@ -1401,7 +1401,7 @@ def det_template(id_tpl=0):
 
     json_data['id_tpl'] = id_tpl
 
-    return render_template('det-template.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-template.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting report
@@ -1427,7 +1427,7 @@ def setting_report():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests setting report failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-report.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-report.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting record number
@@ -1453,7 +1453,7 @@ def setting_rec_num():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests record number setting failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-rec-num.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-rec-num.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : logo
@@ -1466,7 +1466,7 @@ def setting_logo():
     session['current_page'] = 'setting-logo'
     session.modified = True
 
-    return render_template('setting-logo.html', rand=random.randint(0, 999))
+    return render_template('setting-logo.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : age interval setting
@@ -1499,7 +1499,7 @@ def setting_age_interval():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-age-interval.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-age-interval.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : requesting services setting
@@ -1532,7 +1532,7 @@ def setting_requesting_services():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests requesting services list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-requesting-services.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-requesting-services.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : functionnal units setting
@@ -1569,7 +1569,7 @@ def setting_functionnal_units():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests functionnal units list failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-functionnal-units.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-functionnal-units.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting link unit user
@@ -1608,7 +1608,7 @@ def setting_link_unit_user(id_unit):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests link unit users failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-link-unit-user.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-link-unit-user.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting link unit analysis family
@@ -1647,7 +1647,7 @@ def setting_link_unit_fam(id_unit):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests link unit family failed, err=%s , url=%s', err, url)
 
-    return render_template('setting-link-unit-fam.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-link-unit-fam.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting dhis2
@@ -1675,7 +1675,7 @@ def setting_dhis2():
     except Exception as err:
         log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
 
-    return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting epidemio
@@ -1703,7 +1703,7 @@ def setting_epidemio():
     except Exception as err:
         log.error(Logs.fileline() + ' : load epidemio files in epidemio directory failed, err=%s', err)
 
-    return render_template('setting-epidemio.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-epidemio.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting indicator
@@ -1731,7 +1731,7 @@ def setting_indicator():
     except Exception as err:
         log.error(Logs.fileline() + ' : load indicator files in indicator directory failed, err=%s', err)
 
-    return render_template('setting-indicator.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('setting-indicator.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # ---------------------------
@@ -1791,7 +1791,7 @@ def list_results():
 
     log.info(Logs.fileline() + ' : TRACE list-results processing time = ' + str(dt_time_req))
 
-    return render_template('list-results.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('list-results.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : enter result
@@ -1919,7 +1919,7 @@ def enter_result(id_rec=0, anchor=''):
 
     log.info(Logs.fileline() + ' : TRACE enter-result processing time = ' + str(dt_time_req))
 
-    return render_template('enter-result.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('enter-result.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : List of records
@@ -1971,7 +1971,7 @@ def list_records():
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : TRACE list-records processing time = ' + str(dt_time_req))
-    return render_template('list-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('list-records.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 @app.route('/list-works/<string:user_role>')
@@ -2039,7 +2039,7 @@ def list_works(user_role='', emer=''):
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : TRACE list-works processing time = ' + str(dt_time_req))
-    return render_template('list-works.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('list-works.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : global report
@@ -2054,7 +2054,7 @@ def global_report():
 
     json_data = {}
 
-    return render_template('global-report.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('global-report.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : List of samples to do or modify
@@ -2087,7 +2087,7 @@ def list_samples():
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : TRACE list-samples processing time = ' + str(dt_time_req))
-    return render_template('list-samples.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-samples.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details of a sample
@@ -2173,7 +2173,7 @@ def det_sample(id_prod=0):
 
     json_data['id_prod'] = id_prod
 
-    return render_template('det-sample.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-sample.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : doctors list (prescribers exactly)
@@ -2199,7 +2199,7 @@ def list_doctors():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests doctors list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-doctors.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-doctors.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details doctor (prescribers exactly
@@ -2240,7 +2240,7 @@ def det_doctor(id_doctor=0):
 
     json_data['id_doctor'] = id_doctor
 
-    return render_template('det-doctor.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-doctor.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : new external request
@@ -2253,7 +2253,7 @@ def new_req_ext():
     session['current_page'] = 'new-req-ext'
     session.modified = True
 
-    return render_template('new-req-ext.html', rand=random.randint(0, 999))
+    return render_template('new-req-ext.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : new internal request
@@ -2266,7 +2266,7 @@ def new_req_int():
     session['current_page'] = 'new-req-int'
     session.modified = True
 
-    return render_template('new-req-int.html', rand=random.randint(0, 999))
+    return render_template('new-req-int.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : patient details
@@ -2379,7 +2379,7 @@ def det_patient(type_req='E', id_pat=0):
 
     log.info(Logs.fileline() + ' : TRACE det-patient processing time = ' + str(dt_time_req))
 
-    return render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : external request details
@@ -2489,7 +2489,7 @@ def det_req_ext(entry='Y', ref=0):
 
     log.info(Logs.fileline() + ' : TRACE det-req-ext processing time = ' + str(dt_time_req))
 
-    return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : internal request details
@@ -2604,7 +2604,7 @@ def det_req_int(entry='Y', ref=0):
         json_data['data_products'] = []
         json_data['record']        = []
 
-    return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : administrative record
@@ -2744,7 +2744,7 @@ def administrative_record(type_req='E', id_rec=0):
 
     log.info(Logs.fileline() + ' : TRACE administrative-record processing time = ' + str(dt_time_req))
 
-    return render_template('administrative-record.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('administrative-record.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : technical validation
@@ -2901,7 +2901,7 @@ def technical_validation(id_rec=0, anchor=''):
 
     log.info(Logs.fileline() + ' : TRACE technical-validation processing time = ' + str(dt_time_req))
 
-    return render_template('technical-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('technical-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : biological validation
@@ -3100,7 +3100,7 @@ def biological_validation(mode='', id_rec=0):
 
     log.info(Logs.fileline() + ' : TRACE biological-validation processing time = ' + str(dt_time_req))
 
-    return render_template('biological-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('biological-validation.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # --------------------
@@ -3167,7 +3167,7 @@ def report_activity():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests report activity failed, err=%s , url=%s', err, url)
 
-    return render_template('report-activity.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('report-activity.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report epidemiological
@@ -3210,7 +3210,7 @@ def report_epidemio(date_beg='', date_end=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests report epidemio failed, err=%s , url=%s', err, url)
 
-    return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report with indicator
@@ -3253,7 +3253,7 @@ def report_indicator(date_beg='', date_end=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests report indicator failed, err=%s , url=%s', err, url)
 
-    return render_template('report-indicator.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('report-indicator.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : pivot table
@@ -3278,7 +3278,7 @@ def pivot_table():
     json_data['date_beg'] = date_beg
     json_data['date_end'] = date_end
 
-    return render_template('pivot-table.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('pivot-table.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report statistic
@@ -3341,7 +3341,7 @@ def report_statistic():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests report stat failed, err=%s , url=%s', err, url)
 
-    return render_template('report-statistic.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('report-statistic.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report dhis2
@@ -3369,7 +3369,7 @@ def report_dhis2():
     except Exception as err:
         log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
 
-    return render_template('report-dhis2.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('report-dhis2.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : WHONET export
@@ -3382,7 +3382,7 @@ def whonet_export():
     session['current_page'] = 'whonet-export'
     session.modified = True
 
-    return render_template('whonet-export.html', rand=random.randint(0, 999))
+    return render_template('whonet-export.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : historic patients
@@ -3420,7 +3420,7 @@ def hist_patients():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests patients list failed, err=%s , url=%s', err, url)
 
-    return render_template('hist-patients.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('hist-patients.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details historic patient
@@ -3446,7 +3446,7 @@ def det_hist_patient(id_pat=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests details hitoric patient failed, err=%s , url=%s', err, url)
 
-    return render_template('det-hist-patient.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-hist-patient.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : historic analyzes
@@ -3495,7 +3495,7 @@ def hist_analyzes():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
 
-    return render_template('hist-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('hist-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details historic patient
@@ -3526,7 +3526,7 @@ def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests details hitoric analysis failed, err=%s , url=%s', err, url)
 
-    return render_template('det-hist-analysis.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-hist-analysis.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report today
@@ -3562,7 +3562,7 @@ def report_today():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests today list failed, err=%s , url=%s', err, url)
 
-    return render_template('report-today.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('report-today.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report billing
@@ -3599,7 +3599,7 @@ def report_billing():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests billing list failed, err=%s , url=%s', err, url)
 
-    return render_template('report-billing.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('report-billing.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # --------------------
@@ -3673,7 +3673,7 @@ def quality_general():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests count noncompliances month failed, err=%s , url=%s', err, url)
 
-    return render_template('quality-general.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('quality-general.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list laboratory
@@ -3719,7 +3719,7 @@ def list_laboratory():
 
     json_data['dict_name'] = 'sections'
 
-    return render_template('list-laboratory.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-laboratory.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list staff
@@ -3744,7 +3744,7 @@ def list_staff():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-staff.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-staff.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details staff
@@ -3831,7 +3831,7 @@ def det_staff(user_id=0):
 
     json_data['user_id'] = user_id
 
-    return render_template('det-staff.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-staff.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list equipment
@@ -3856,7 +3856,7 @@ def list_equipment():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests equipment list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-equipment.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-equipment.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details equipment
@@ -3919,6 +3919,17 @@ def det_equipment(id_eqp=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests Equipment Preventive Maintenance files failed, err=%s , url=%s', err, url)
 
+        # Load Equipment Bill files
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBI/' + str(id_eqp)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_EQBI'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Equipment Bill files failed, err=%s , url=%s', err, url)
+
         # Load Equipment Calibration Certificat files
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQCC/' + str(id_eqp)
@@ -3965,7 +3976,7 @@ def det_equipment(id_eqp=0):
 
     json_data['id_eqp'] = id_eqp
 
-    return render_template('det-equipment.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-equipment.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : suppliers list
@@ -3991,7 +4002,7 @@ def list_suppliers():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests suppliers list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-suppliers.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-suppliers.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details supplier
@@ -4020,7 +4031,7 @@ def det_supplier(id_supplier=0):
 
     json_data['id_supplier'] = id_supplier
 
-    return render_template('det-supplier.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-supplier.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list manuals
@@ -4045,7 +4056,7 @@ def list_manuals():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests manual list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-manuals.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-manuals.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details manual
@@ -4099,7 +4110,7 @@ def det_manual(id_manual=0):
 
     json_data['id_manual'] = id_manual
 
-    return render_template('det-manual.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-manual.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list procedure
@@ -4124,7 +4135,7 @@ def list_procedure():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests procedure list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-procedure.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-procedure.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details procedure
@@ -4178,7 +4189,7 @@ def det_procedure(id_procedure=0):
 
     json_data['id_procedure'] = id_procedure
 
-    return render_template('det-procedure.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-procedure.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : internal control list
@@ -4203,7 +4214,7 @@ def list_ctrl_int():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests internal control list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-ctrl-int.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-ctrl-int.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : internal control details
@@ -4246,7 +4257,7 @@ def det_control_int(id_ctrl=0):
 
     json_data['id_ctrl'] = id_ctrl
 
-    return render_template('det-control-int.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-control-int.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : internal control results
@@ -4279,7 +4290,7 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
     json_data['type_val'] = type_val
     json_data['cti_ser']  = cti_ser
 
-    return render_template('res-control-int.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('res-control-int.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : external control list
@@ -4304,7 +4315,7 @@ def list_ctrl_ext():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests external control list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-ctrl-ext.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-ctrl-ext.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : external control details
@@ -4347,7 +4358,7 @@ def det_control_ext(id_ctrl=0):
 
     json_data['id_ctrl'] = id_ctrl
 
-    return render_template('det-control-ext.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-control-ext.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : external control results
@@ -4391,7 +4402,7 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
     json_data['type_val'] = type_val
     json_data['cte_ser']  = cte_ser
 
-    return render_template('res-control-ext.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('res-control-ext.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list stock
@@ -4440,7 +4451,7 @@ def list_stock():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : products list
@@ -4466,7 +4477,7 @@ def list_products():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-products.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-products.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details list stock
@@ -4498,7 +4509,7 @@ def det_list_stock(prd_ser=0):
 
     json_data['prd_ser'] = prd_ser
 
-    return render_template('det-list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : history of supply and use of a product
@@ -4542,7 +4553,7 @@ def hist_stock_product(prd_ser=0):
 
     json_data['prd_ser'] = prd_ser
 
-    return render_template('hist-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('hist-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details of a product
@@ -4596,7 +4607,7 @@ def det_new_product(prd_ser=0):
 
     json_data['prd_ser'] = prd_ser
 
-    return render_template('det-new-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
+    return render_template('det-new-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details a stock product
@@ -4627,7 +4638,7 @@ def det_stock_product(prs_ser=0):
 
     json_data['prs_ser'] = prs_ser
 
-    return render_template('det-stock-product.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-stock-product.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list nonconformities
@@ -4663,7 +4674,7 @@ def list_nonconformities():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests conformity list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-nonconformities.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-nonconformities.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : apply a non-conformity
@@ -4693,7 +4704,7 @@ def non_conformity(id_det=0):
 
     json_data['id_det'] = id_det
 
-    return render_template('non-conformity.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('non-conformity.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list meeting
@@ -4718,7 +4729,7 @@ def list_meeting():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests meeting list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-meeting.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('list-meeting.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details meeting
@@ -4760,7 +4771,7 @@ def det_meeting(id_meeting=0):
 
     json_data['id_meeting'] = id_meeting
 
-    return render_template('det-meeting.html', args=json_data, rand=random.randint(0, 999))
+    return render_template('det-meeting.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # --------------------
@@ -4772,7 +4783,7 @@ def det_meeting(id_meeting=0):
 def contributors():
     log.info(Logs.fileline() + ' : TRACE contributors')
 
-    return render_template('contributors.html', rand=random.randint(0, 999))
+    return render_template('contributors.html', rand=random.randint(0, 999))  # nosec B311
 
 
 # Route : download a file
@@ -5236,7 +5247,3 @@ def labbook_css():
 @app.route('/app-swagger-api.yaml')
 def swagger_api():
     return Response(render_template('app-swagger-api.yaml'), mimetype='text/yaml')
-
-
-# if __name__ == "__main__":
-#    app.run()

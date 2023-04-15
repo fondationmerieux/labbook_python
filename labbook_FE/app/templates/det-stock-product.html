@@ -234,7 +234,14 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        data: param,
        success: function(data)
            {
-           window.location = "{{ session['server_ext'] }}/list-stock" ;
+               if ('referrer' in document) 
+               {
+               window.location = document.referrer ;
+               }
+               else
+               {
+               window.location = "{{ session['server_ext'] }}/list-stock" ;
+               }
            },
        error: function(data)
            {

@@ -219,6 +219,8 @@ class PdfTemplate(Resource):
             ret = Pdf.getPdfReport(0, tpl['tpl_file'], 'test_template', 'Y')
         elif tpl['tpl_type'] == 'STI':
             ret = Pdf.getPdfSticker(0, 'REC', tpl['tpl_file'])
+        elif tpl['tpl_type'] == 'OUT':
+            ret = Pdf.getPdfOutsourced(0, tpl['tpl_file'], 'test_template')
         else:
             self.log.error(Logs.fileline() + ' : PdfTemplate failed unknow type=%s', str(tpl['tpl_type']))
             return compose_ret(-1, Constants.cst_content_type_json, 500)

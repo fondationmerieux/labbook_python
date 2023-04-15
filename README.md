@@ -128,11 +128,11 @@ $ make help
 Usage:
 
 When shipping an image:
-  make build [VERSION=version]       build image localhost/labbook-python:version from v3.3.4 tag
+  make build [VERSION=version]       build image localhost/labbook-python:version from v3.3.7 tag
   make save [VERSION=version]        save image localhost/labbook-python:version to /tmp/labbook-python-version.tar,
                                      compress tar to tar.xz and compute md5sums for them
   make clean [VERSION=version]       remove image localhost/labbook-python:version
-Default version value in VERSION file=3.3.4 TAG_NAME=v3.3.4
+Default version value in VERSION file=3.3.7 TAG_NAME=v3.3.7
 
 For developers:
   make dbtest        test connection to MySQL with username=myuser password=mypass

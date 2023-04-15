@@ -257,6 +257,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"training":' + training + ', ' + // No quotes with stringify
               '"comment":' + comment + '}' ; // No quotes with stringify
 
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
     $.ajax( {
        type: "POST",
        url: "{{ session['server_ext'] }}/services/user/staff/det/" + id_user,
@@ -265,16 +269,23 @@ var param = '{ "id_owner":' + id_owner + ', ' +
        data: param,
        success: function(data)
            {
-           upload_file("USCV", id_user) ;
-           upload_file("USDI", id_user) ;
-           upload_file("USTR", id_user) ;
-           upload_file("USEV", id_user) ;
+           upload_file("USCV", id_user)
+           .then( upload_file("USDI", id_user) )
+           .then( upload_file("USTR", id_user) )
+           .then( upload_file("USEV", id_user) )
+           .then( function()
+               {
+               $("#dial-wait").modal("hide") ;
 
-           window.location = "{{ session['server_ext'] }}/list-staff" ;
+               window.location = "{{ session['server_ext'] }}/list-staff" ;
+               } ) ;
            },
        error: function(data)
            {
            console.log("ERROR POST user staff det") ;
+
+               $("#dial-wait").modal("hide") ;
+
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;
@@ -336,26 +347,44 @@ let input_file = $('#' + type_ref)[0] ;
     // TEST if an file is waiting
     if (input_file.files.length > 0)
     {
+    console.log( "1 file to upload ") ;
+
     param_form.append('file', input_file.files[0]) ;
 
-        $.ajax(
+        return new Promise(function (resolve, reject)
         {
-            type : 'POST',
-            url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + id_ref,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            data: param_form,
-            success : function(response)
+            $.ajax(
             {
-            console.log( "success upload ") ;
-            },
-            error: function(response)
-            {
-            console.log("ERROR upload file") ;
-            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
-            }
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + id_ref,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: param_form,
+                success : function(response)
+                {
+                console.log( "success upload ") ;
+
+                resolve(response) ;
+                },
+                error: function(response)
+                {
+                console.log("ERROR upload file") ;
+
+                    $("#dial-wait").modal("hide") ;
+
+                alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+
+                reject(response) ;
+                }
+            } ) ;
         } ) ;
+    }
+    else
+    {
+    console.log( "file empty upload ") ;
+
+        return new Promise(function (resolve, reject) { resolve(true) } ) ;
     }
 }
 

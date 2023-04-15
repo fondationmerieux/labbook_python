@@ -1,16 +1,19 @@
-The [inidicator.ini](storage/resource/indicator/indicator.ini) file must be present and compliant (UTF-8 encoding)
+# TO DEFINED A CONFIG FILE FOR INDICATOR REPORT
+The [indicator.ini](storage/resource/indicator/indicator.ini) file must be present and compliant (UTF-8 encoding)
 
 In administrator access you can override the indicator.ini file, to know you have to keep the same file name
 
+17/04/2023 : version = 1
+
 [SETTINGS] section
-version : version number
+version : version number 
 nb_disease : number of disease defined
 
 If nb_disease = 4 then [DISEASE_1] to [DISEASE_4] need to be defined
 
 [DISEASE_xxx] section
 disease : label of disease
-sample_type : list of serial corresponding to the type of sample in the database (cf table below) or 0, useful for display not for formula, enenv for one serial you have to write it like this : [my_serial]
+sample_type : list of serial corresponding to the type of sample in the database (cf table below) or 0, useful for display not for formula, even for one serial you have to write it like this : [my_serial]
 nb_res : number of result to display
 
 If nb_res = 4 then res_label_1 to res_label_4, formula_1 to formula_4 and sample_type_1 to sample_type_4  need to be defined
@@ -22,7 +25,7 @@ Note : formula with a AND first part use first sample_type and second part use s
 
 If formula_xxx is empty then res_label_xxx will be considered as a separation title and sample_type_xxx will not be necessary
 
-sample_type_xxx : serial corresponding to the type of sample in the database (cf table below) or 0, useful for calculate with the formula_xxx
+sample_type_xxx : serial corresponding to the type of sample in the database (cf table below) or 0, useful for calculate with the formula_xxx, even for one serial you have to write it like this : [my_serial]
 
 
 LIST OF SAMPLING TYPES

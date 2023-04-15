@@ -55,10 +55,12 @@ class ResultList(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # convert isodate format to ymd format
-        args['date_beg'] = datetime.strptime(args['date_beg'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
-        args['date_end'] = datetime.strptime(args['date_end'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
+        # args['date_beg'] = datetime.strptime(args['date_beg'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
+        # args['date_end'] = datetime.strptime(args['date_end'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
 
         l_results = Result.getResultList(args)
+
+        self.log.error(Logs.fileline() + ' : DEBUG ResultList l_results=' + str(l_results))
 
         if not l_results:
             self.log.error(Logs.fileline() + ' : TRACE ResultList not found')

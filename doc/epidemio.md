@@ -1,4 +1,11 @@
+# TO DEFINED A CONFIG FILE FOR EPIDEMIOLOGICAL REPORT
 The [epidemio.ini](storage/resource/epidemio/epidemio.ini) file must be present and compliant (UTF-8 encoding)
+
+In administrator access you can override the epidemio.ini file, to know you have to keep the same file name
+
+17/04/2023 : version = 1
+
+Note : differences with indicator.ini are only how defined sample_type and sample_type_xxx
 
 [SETTINGS] section
 version : version number

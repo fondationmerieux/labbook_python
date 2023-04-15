@@ -15,18 +15,18 @@
 | Flask                   | 2.2.3     | BSD          |           | x       | x       |
 | Flask-Babel             | 2.0.0     | BSD          |           | x       | x       |
 | gunicorn                | 20.1.0    | MIT          |           | x       | x       |
-| pip                     | 22.3.1    | MIT          |           | x       | x       |
-| pipenv                  | 2022.10.10| MIT          |           | x       | x       |
-| requests                | 2.28.1    | Apache 2.0   |           | x       |         |
+| pip                     | 23.1.0    | MIT          |           | x       | x       |
+| pipenv                  | 2023.3.20 | MIT          |           | x       | x       |
+| requests                | 2.28.2    | Apache 2.0   |           | x       |         |
 | swagger-ui              | 4.15.5    | Apache 2.0   |           | x       |         |
 | alembic                 | 1.8.1     | MIT          |           |         | x       |
 | Flask-RESTful           | 0.3.9     | BSD          |           |         | x       |
-| mysql-connector-python  | 8.0.31    | GPL 2        |           |         | x       |
+| mysql-connector-python  | 8.0.32    | GPL 2        |           |         | x       |
 | pdfkit                  | 1.0.0     | MIT          |           |         | x       |
-| pikepdf                 | 6.2.4     | MPL 2.0      |           |         | x       |
+| pikepdf                 | 6.2.9     | MPL 2.0      |           |         | x       |
 | Pillow                  | 9.3.0     | HPND         |           |         | x       |
 | python-barcode          | 0.14.0    | MIT          |           |         | x       |
-| qrcode                  | 7.3.2     | BSD          |           |         | x       |
+| qrcode                  | 7.3.1     | BSD          |           |         | x       |
 | relatorio               | 0.10.1    | GPL          |           |         | x       |
 | reportlab               | 3.6.12    | BSD          |           |         | x       |
 | toml                    | 0.10.2    | MIT          |           |         | x       |

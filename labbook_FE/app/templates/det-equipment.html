@@ -550,6 +550,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"maintenance":' + maintenance + ', ' + // No quotes with stringify
               '"comment":' + comment + '}' ;          // No quotes with stringify
 
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
     $.ajax( {
        type: "POST",
        url: "{{ session['server_ext'] }}/services/quality/equipment/det/" + id_item,
@@ -560,18 +564,25 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            {
            let ref = JSON.stringify(data) ;
 
-           upload_file("EQCC", ref);  // Calibration Certificat 
-           upload_file("EQMC", ref);  // Maintenance Contract
-           upload_file("EQBI", ref);  // Bill
-           upload_file("EQPM", ref);  // Preventive maintenance
-           upload_file("EQBD", ref);  // Breakdown
-           upload_file("EQPH", ref);  // Photo
+           upload_file("EQCC", ref)
+           .then( upload_file("EQMC", ref) )  
+           .then( upload_file("EQBI", ref) ) 
+           .then( upload_file("EQPM", ref) )
+           .then( upload_file("EQBD", ref) )
+           .then( upload_file("EQPH", ref) )
+           .then( function()
+               {
+               $("#dial-wait").modal("hide") ;
 
-           window.location = "{{ session['server_ext'] }}/list-equipment" ;
+               window.location = "{{ session['server_ext'] }}/list-equipment" ;
+               } ) ;
            },
        error: function(data)
            {
            console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;
@@ -645,27 +656,47 @@ let input_file = $('#' + type_ref)[0] ;
     // TEST if an file is waiting
     if (input_file.files.length > 0)
     {
+    console.log( "1 file to upload ") ;
+
     param_form.append('file', input_file.files[0]) ;
 
-        $.ajax(
+        return new Promise(function (resolve, reject)
         {
-            type : 'POST',
-            url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + ref,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            data: param_form,
-            success : function(response)
+        console.log( "new promise for " + type_ref ) ;
+
+            $.ajax(
             {
-            console.log( "success upload ") ;
-            },
-            error: function(response)
-            {
-            console.log("ERROR upload file") ;
-            alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
-            }
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + ref,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: param_form,
+                success : function(response)
+                {
+                console.log( "success upload ") ;
+
+                resolve(response) ;
+                },
+                error: function(response)
+                {
+                console.log("ERROR upload file") ;
+
+                    $("#dial-wait").modal("hide") ;
+
+                alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+
+                reject(response) ;
+                }
+            } ) ;
         } ) ;
     }    
+    else
+    {
+    console.log( "file empty upload ") ;
+
+        return new Promise(function (resolve, reject) { resolve(true) } ) ;
+    }
 }
 
 function delete_file( type_ref, id_file )

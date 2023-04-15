@@ -1,0 +1,22 @@
+dhis2_label;version;filter;type_sample;categorieoptioncombo;attributeoptioncombo;orgunit;storedby
+"Nombre de dossiers enregistrés";v3;NB_REC_SAVED;;;;;
+"Nombre d’analyses enregistrées";;NB_ANA_SAVED;;;;;
+"Nombre d’échantillons sous-traités";;NB_SAMP_OUTSOURCED;;;;;
+"Nombre de personnels dans le laboratoire";;NB_STAFF;;;;;
+"Combien en catégorie secrétaire";;NB_SECRETARY_TYPE;;;;;
+"Combien en catégorie technicien";;NB_TECHNICIAN_TYPE;;;;;
+"Combien en catégorie qualiticien";;NB_QUALITICIAN_TYPE;;;;;
+"Combien en catégorie biologiste";;NB_BIOLOGIST_TYPE;;;;;
+"Combien d’équipement enregistrées";;NB_EQUIPMENT;;;;;
+"Combien d’equipement en panne";;NB_EQP_BREAKDOWN;;;;;
+"Nombre de procédures enregistrées";;NB_PROCEDURE;;;;;
+"Nombre de produits avec proche de l’expiration";;NB_PRODUCT_WITH_EXPIRY_WARNING;;;;;
+"Nombre de produits expirés";;NB_PRODUCT_WITH_EXPIRY_ALERT;;;;;
+"Nombre de produits en dessous du seuil";;NB_PRODUCT_UNDER_SAFE_LIMIT;;;;;
+"Nombre de produits manquants";;NB_PRODUCT_OUT_OF_STOCK;;;;;
+"Nombre de non-conformités ouvertes";;NB_OPEN_NON_CONFORMITY;;;;;
+"Nombre de non conformités";;NB_NON_CONFORMITY;;;;;
+"Nombre de contrôle qualité interne";;NB_INTERNAL_QUALITY_CONTROL;;;;;
+"Nombre de résultat qualité interne";;NB_INTERNAL_QUALITY_RESULT;;;;;
+"Nombre de contrôle qualité externe";;NB_EXTERNAL_QUALITY_CONTROL;;;;;
+"Nombre de réunion";;NB_MEETING;;;;;

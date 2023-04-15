@@ -446,7 +446,7 @@ class Export:
         elif key == 'NB_OPEN_NON_CONFORMITY':
             req = ('select count(*) as value '
                    'from sigl_non_conformite_data '
-                   'where cloture_date != "0000-00-00"')
+                   'where cloture_date = "0000-00-00"')
 
             cursor.execute(req)
 

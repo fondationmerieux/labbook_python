@@ -273,6 +273,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"date_update":"' + date_update + '", ' +
               '"section":' + section + '}' ;
 
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
     $.ajax( {
        type: "POST",
        url: "{{ session['server_ext'] }}/services/quality/procedure/det/" + id_proc,
@@ -283,13 +287,14 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            {
            let ref = JSON.stringify(data) ;
 
-           upload_file(ref);
-
-           window.location = "{{ session['server_ext'] }}/list-procedure" ;
+           upload_file(ref) ; // redirect after upload finished
            },
        error: function(data)
            {
            console.log("ERROR POST item det") ;
+
+                $("#dial-wait").modal("hide") ;
+
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;
@@ -346,14 +351,34 @@ let input_file = $("#PROC")[0] ;
             success : function(response)
             {
             console.log( "success upload ") ;
+
+                $("#dial-wait").modal("hide") ;
+                
+                if ('referrer' in document) 
+                {
+                window.location = document.referrer ;
+                }
+                else
+                {
+                window.location = "{{ session['server_ext'] }}/list-procedure" ;
+                }
             },
             error: function(response)
             {
             console.log("ERROR upload file") ;
+
+                $("#dial-wait").modal("hide") ;
+
             alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
             }
         } ) ;
-    }    
+    }
+    else
+    {
+    $("#dial-wait").modal("hide") ;
+
+    window.location = "{{ session['server_ext'] }}/list-procedure" ;
+    }
 }
 
 function delete_file( id_file )

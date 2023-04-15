@@ -128,6 +128,10 @@ var param = '{ "id_item":' + id_item + ', ' +
               '"cte_conform":"' + conform + '", ' +
               '"cte_comment":' + comment + '}' ;
 
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
     $.ajax( {
        type: "POST",
        url: "{{ session['server_ext'] }}/services/quality/control/ext/res/" + id_item,
@@ -139,14 +143,13 @@ var param = '{ "id_item":' + id_item + ', ' +
            let ref = JSON.stringify(data) ;
 
            upload_file("CTRL", ref);  // Report for external control
-
-           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ; 
-
-           setTimeout(function(){location.href="{{ session['server_ext'] }}/det-control-ext/"+ctq_ser}, 2400) ;
            },
        error: function(data)
            {
            console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;
@@ -173,14 +176,37 @@ let input_file = $('#' + type_ref)[0] ;
             success : function(response)
             {
             console.log( "success upload ") ;
+
+                $("#dial-wait").modal("hide") ;
+
+            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
+
+               if ('referrer' in document) 
+               {
+               window.location = document.referrer ;
+               }
             },
             error: function(response)
             {
             console.log("ERROR upload file") ;
+
+                $("#dial-wait").modal("hide") ;
+
             alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
             }
         } ) ;
     }    
+    else
+    {
+    $("#dial-wait").modal("hide") ;
+
+    tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
+
+       if ('referrer' in document) 
+       {
+       window.location = document.referrer ;
+       } 
+    }
 }
 
 function load_data()

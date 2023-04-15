@@ -72,8 +72,7 @@ class Result:
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
                'and ref.id_data = var_pos.id_refanalyse ' + table_cond +
-               'where substring(num_dos_jour, 1, 8) >= %s and '
-               'substring(num_dos_jour, 1, 8) <= %s ' + filter_cond +
+               'where (rec.date_dos between %s and %s) ' + filter_cond +
                'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)
 
         cursor.execute(req, (date_beg, date_end,))
@@ -238,6 +237,21 @@ class Result:
         cursor.execute(req, (id_ana,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getListValidators(id_rec):
+        cursor = DB.cursor()
+
+        req = ('select vld.utilisateur as user, vld.commentaire as comment '
+               'from sigl_10_data as vld '
+               'inner join sigl_09_data as res on res.id_data = vld.id_resultat '
+               'inner join sigl_04_data as req on req.id_data = res.id_analyse '
+               'where req.id_dos=%s and vld.type_validation=252 '
+               'group by vld.utilisateur, vld.commentaire order by vld.id_data ')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
 
     @staticmethod
     def insertValidation(**params):

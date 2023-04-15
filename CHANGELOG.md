@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.7] - 2023-04-17
+### Added
+- default indicator.ini
+- new default spreadsheet for statistic in DHIS2
+- in list template setting added test on menu for outsourced template
+
+### Changed
+- if a record has 2 analyses with 2 different functionnal unit, we add up comment and validator on report
+
+### Fixed
+- syntax error for details of stock on treatment of prs_expir_date
+- dhsi2 key NB_OPEN_NON_CONFORMITY was wrong count
+- upload procedure, external control, manual, meeting, staff and equipment
+
 ## [3.3.6] - 2023-04-05
 ### Added
 - note on the keyword OR in dhis2.md

@@ -154,25 +154,31 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"promoter":' + promoter + ', ' +
               '"report":' + report + '}' ;  // No quotes with stringify
 
-    $.ajax( {
-       type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/meeting/det/" + id_meeting,
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           let ref = JSON.stringify(data) ;
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
 
-           upload_file(ref);
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/quality/meeting/det/" + id_meeting,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        let ref = JSON.stringify(data) ;
 
-           window.location = "{{ session['server_ext'] }}/list-meeting" ;
-           },
-       error: function(data)
-           {
-           console.log("ERROR POST item det") ;
-           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-           }
+        upload_file(ref);
+        },
+        error: function(data)
+        {
+        console.log("ERROR POST item det") ;
+
+            $("#dial-wait").modal("hide") ;
+
+        alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+        }
     } ) ;
 }
 
@@ -227,14 +233,41 @@ let input_file = $("#MEET")[0] ;
             success : function(response)
             {
             console.log( "success upload ") ;
+
+                $("#dial-wait").modal("hide") ;
+
+                if ('referrer' in document) 
+                {
+                window.location = document.referrer ;
+                }
+                else
+                {
+                window.location = "{{ session['server_ext'] }}/list-meeting" ;
+                }
             },
             error: function(response)
             {
             console.log("ERROR upload file") ;
+
+                $("#dial-wait").modal("hide") ;
+
             alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
             }
         } ) ;
     }    
+    else
+    {
+        $("#dial-wait").modal("hide") ;
+
+        if ('referrer' in document) 
+        {
+        window.location = document.referrer ;
+        }
+        else
+        {
+        window.location = "{{ session['server_ext'] }}/list-meeting" ;
+        }
+    }
 }
 
 function cancel()
