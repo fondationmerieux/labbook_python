@@ -6,7 +6,7 @@ Create Date: 2023-04-07 16:01:53.242302
 
 """
 from alembic import op
-import sqlalchemy import text
+from sqlalchemy import text
 
 from datetime import datetime
 
