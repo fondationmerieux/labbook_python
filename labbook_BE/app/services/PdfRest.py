@@ -216,7 +216,7 @@ class PdfTemplate(Resource):
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         if tpl['tpl_type'] == 'RES':
-            ret = Pdf.getPdfReport(0, tpl['tpl_file'], 'test_template', 'Y')
+            ret = Pdf.getPdfReport(0, tpl['tpl_file'], 'test_template', 'N')
         elif tpl['tpl_type'] == 'STI':
             ret = Pdf.getPdfSticker(0, 'REC', tpl['tpl_file'])
         elif tpl['tpl_type'] == 'OUT':

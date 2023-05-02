@@ -3,6 +3,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- MENU MOBILE -->
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
@@ -248,7 +249,7 @@
         </div>
     </div>
 
-
+    <!-- MENU DESKTOP -->
     <div class="container-fluid nav-cust-cont" id="menu-desktop">
         <ul class="navbar-nav">
             <!-- Dropdown Admin -->
@@ -257,7 +258,7 @@
                 <li class="nav-item dropdown btn-admin">
                   <a class="nav-link dropdown-toggle admin" href="#" id="navbarsetting" data-bs-toggle="dropdown">
                   </a>
-                  <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                  <div class="dropdown-menu admin-content nav-{{ session['user_role']|safe }} menu-choice-desktop" style="padding:0;">
                     {% if session['user_role'] != 'Q' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-records">{{ _("Liste des dossiers") }}</a>
                     {% endif %}
@@ -294,7 +295,7 @@
                 <li class="nav-item dropdown btn-report">
                   <a class="nav-link dropdown-toggle report" href="#" id="navbarreport" data-bs-toggle="dropdown">
                   </a>
-                  <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                  <div class="dropdown-menu report-content nav-{{ session['user_role']|safe }} menu-choice-desktop" style="padding:0;">
                     {% if session['user_role'] != 'S' %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-activity">{{ _("Rapport activité") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/report-epidemio">{{ _("Rapport épidémiologique") }}</a>
@@ -317,12 +318,12 @@
             {% endif %}
 
             <!-- Dropdown Setting -->
-            {% if session['user_role'] in ('A','B','SA','TA','TQ','Q','K') %}
+            {% if session['user_role'] in ('A','B','SA','TA','TQ','K') %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
                   <a class="nav-link dropdown-toggle setting" href="#" id="navbarsetting" data-bs-toggle="dropdown">
                   </a>
-                  <div class="dropdown-menu setting-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                  <div class="dropdown-menu setting-content nav-{{ session['user_role']|safe }} menu-choice-desktop" style="padding:0;">
                     {% if session['user_role'] not in ('Q','K') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
                     {% endif %}
@@ -377,7 +378,7 @@
                 <li class="nav-item dropdown btn-qualite">
                   <a class="nav-link dropdown-toggle qualite" href="#" id="navbarquality" data-bs-toggle="dropdown">
                   </a>
-                  <div class="dropdown-menu qualite-content nav-{{ session['user_role']|safe }}" style="padding:0;">
+                  <div class="dropdown-menu qualite-content nav-{{ session['user_role']|safe }} menu-choice-desktop" style="padding:0;">
                     {% if session['user_role'] not in ('S','P') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/quality-general">{{ _("Général") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>

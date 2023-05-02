@@ -52,7 +52,8 @@
                         <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                     </div>
                     <div class="float-end ms-0 me-2">
-                        <input type="button" id="import-analysis" onclick="import_analysis();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Importer des analyses") }}" disabled>
+                        <input type="button" id="import-analysis-test" onclick="import_analysis('Y');" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _("Tester l'importation des analyses") }}" disabled>
+                        <input type="button" id="import-analysis" onclick="import_analysis('N');" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Importer des analyses") }}" disabled>
                     </div>
                 </div>
             </form>
@@ -88,7 +89,7 @@ filename = $('input[type=file]')[0].files[0].name ;
             {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
             console.log( "success upload ") ;
-            $("#import-analysis").prop('disabled', false);
+            $("#import-analysis-test").prop('disabled', false);
             },
             error: function(response)
             {
@@ -101,9 +102,14 @@ filename = $('input[type=file]')[0].files[0].name ;
     alert("{{ _("Le fichier doit être un csv") }}") ;
 }
 
-function import_analysis()
+function import_analysis(mode_test)
 {
 var type = $("input:radio[name=type_import]:checked").val() ;
+
+var param = '{ "id_user":{{ session["user_id"] }}, ' +
+              '"filename":"' + filename + '", ' +
+              '"type":"' + type + '", ' +
+              '"test":"' + mode_test + '"}' ;
 
     if ( window.confirm("{{ _("Lancer l'import du référentiel d'analyses ?") }}") )
     {
@@ -113,20 +119,32 @@ var type = $("input:radio[name=type_import]:checked").val() ;
 
         $.ajax( 
         {
-            type: "GET",
-            async: false,
+            type: "POST",
+            //async: false, // 19/04/2023 : dial wait doesnt display
             timeout: 6000000,
-            url: "{{ session['server_ext'] }}/services/analysis/import/" + filename + "/" + type +"/{{ session['user_id'] }}",
+            url: "{{ session['server_ext'] }}/services/analysis/import",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
 
             tempAlert("{{ _("Traitement réussi") }}", "import-analysis") ;
-            setTimeout(function(){location.href="{{ session['server_ext'] }}/setting-analyzes"}, 2400) ;
+
+                if ( mode_test == "N" ) 
+                setTimeout(function(){location.href="{{ session['server_ext'] }}/setting-analyzes"}, 2400) ;
+                else
+                {
+                check_stat_db() ;
+                $("#import-analysis").prop('disabled', false) ;
+                }
             },
             error: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
+
+            check_stat_db() ;
 
             console.log("ERROR import analysis") ;
             alert("{{ _("Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut") }}") ;
@@ -156,9 +174,14 @@ function check_stat_db()
                 statut = statut + ' ERROR : ' + data[2] ;
                 }
                 else if (data[1] == "OK")
+                {
+                    if (data[2].startsWith("TEST"))
+                    statut = statut + ' TEST' ; 
+
                 statut = statut + ' OK' ;
 
                 $('#stat-imp').text( statut ) ;
+                }
             }
             else
                 $('#stat-imp').text("{{ _("Aucun statut") }}") ;

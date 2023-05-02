@@ -22,7 +22,7 @@ import uuid
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
 
-from flask import Flask, render_template, request, session, redirect, send_file, url_for, Response
+from flask import Flask, render_template, request, session, redirect, send_file, Response
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -150,7 +150,6 @@ def locale():
 
 
 # Selection de langues avec Babel
-@babel.localeselector
 def get_locale():
     log.info(Logs.fileline() + ' : LANG = ' + str(os.environ['LANG']))
     lang = request.accept_languages.best_match(list(LANGUAGES.keys()), default='fr_FR')
@@ -164,6 +163,10 @@ def get_locale():
     return lang
 
 
+# 02/05/2023 update Flask-Babel 2.2.3 => 3.1.0, no more @babel.localeselector before get_locale
+babel.init_app(app, locale_selector=get_locale)
+
+
 def check_init_version():
     log.info(Logs.fileline() + ' : LABBOOK_FE check_init_version begins')
 
@@ -174,7 +177,6 @@ def check_init_version():
         log.error(Logs.fileline() + ' : requests check init version failed, err=%s , url=%s', err, url)
         session['labbook_BE_OK'] = False
         session.modified = True
-        return False
 
 
 def get_init_var():
@@ -296,7 +298,7 @@ def get_init_var():
 def get_user_data(login):
     if not login:
         log.error(Logs.fileline() + ' : get_user_data ERROR no login')
-        return False
+        return disconnect()  # redirect(session['server_ext'] + '/disconnect')
 
     try:
         if 'server_int' not in session or not session['server_int']:
@@ -370,7 +372,7 @@ def get_software_settings():
 
 
 def test_session():
-    if session['user_role'] not in ('A', 'B', 'TQ', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K'):
+    if 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K'):
         return redirect(session['server_ext'] + '/disconnect')
 
 
@@ -495,7 +497,7 @@ def lang(lang='fr_FR'):
 def disconnect():
     log.info(Logs.fileline() + ' : TRACE Labbook FRONT END disconnect')
     session.clear()
-    return redirect(url_for('index'))
+    return index()
 
 
 # Page : homepage
@@ -535,6 +537,8 @@ def homepage(login=''):
         elif session['user_locale'] == 75:
             session['lang']  = 'en_US'
             session.modified = True
+        elif session['user_locale'] == 724:
+            session['lang']  = 'es'
         elif session['user_locale'] == 118:
             session['lang']  = 'ar'
             session.modified = True
@@ -608,8 +612,11 @@ def homepage(login=''):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests pref_bill failed, err=%s , url=%s', err, url)
 
+    if 'user_role' not in session:
+        log.info(Logs.fileline() + ' : TRACE Labbook_FE homepage no user_role in session => Login')
+        return render_template('login.html', rand=random.randint(0, 999))  # nosec B311
     # Prescriber homepage
-    if session['user_role'] == 'P':
+    elif session['user_role'] == 'P':
         session['current_page'] = 'list-records'
         session.modified = True
 
@@ -759,7 +766,8 @@ def setting_users():
 # Page : details user
 @app.route('/setting-det-user/<int:user_id>')
 @app.route('/setting-det-user/<string:ctx>/<int:user_id>')
-def setting_det_user(user_id=0, ctx=''):
+@app.route('/setting-det-user/<string:ctx>/<int:user_id>/<string:role_type>')
+def setting_det_user(user_id=0, ctx='', role_type=''):
     log.info(Logs.fileline() + ' : TRACE setting det user=' + str(user_id))
 
     test_session()
@@ -774,16 +782,30 @@ def setting_det_user(user_id=0, ctx=''):
     if ctx:
         json_ihm['return_page'] = ctx
 
-    # Load list of user role
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
-        req = requests.get(url)
+    # specific role_type, only for add staff
+    if role_type:
+        # Load list of one user role type
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list/Z'
+            req = requests.get(url)
 
-        if req.status_code == 200:
-            json_ihm['user_role'] = req.json()
+            if req.status_code == 200:
+                json_ihm['user_role']  = req.json()
+                json_data['role_type'] = 'Z'
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+    else:
+        # Load list of user role
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_ihm['user_role'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
 
     # Load sections
     try:

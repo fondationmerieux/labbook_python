@@ -908,7 +908,7 @@ class Quality:
 
         req = ('select sum(pru_nb_pack) as nb_pack '
                'from product_use '
-               'where pru_prs=%s '
+               'where pru_prs=%s and pru_cancel="N" '
                'group by pru_prs')
 
         cursor.execute(req, (id_item,))
@@ -977,7 +977,7 @@ class Quality:
                            'set prs_empty="Y" '
                            'where prs_ser=%s', (prs_ser,))
 
-            Quality.log.info(Logs.fileline())
+            Quality.log.info(Logs.fileline() + ' : prs_ser = ' + str(prs_ser))
 
             return True
         except mysql.connector.Error as e:
@@ -1458,6 +1458,51 @@ class Quality:
 
             cursor.execute('delete from list_comment '
                            'where lic_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getTraceDownload(id_user, type, ref):
+        cursor = DB.cursor()
+
+        req = ('select trd_ser, trd_date, trd_last_access, trd_type, trd_ref, trd_user '
+               'from trace_download '
+               'where trd_user=%s and trd_type=%s and trd_ref=%s')
+
+        cursor.execute(req, (id_user, type, ref))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertTraceDownload(id_user, type, ref):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into trace_download '
+                           '(trd_date, trd_last_access, trd_user, trd_type, trd_ref) '
+                            'values (NOW(), NOW(), %s, %s, %s)', (id_user, type, ref))
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateTraceDownload(id_user, type, ref):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update trace_download set trd_last_access=NOW() '
+                   'where trd_user=%s and trd_type=%s and trd_ref=%s')
+
+            cursor.execute(req, (id_user, type, ref))
 
             Quality.log.info(Logs.fileline())
 

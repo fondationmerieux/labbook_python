@@ -36,7 +36,7 @@
                     <label for="search_doctor" class="form-label col-3 text-end mt-2 me-1">{{ _("Prescripteur associé") }}</label>
                     <div>
                         <select id="search_doctor" class="form-select form-lbk form-search"></select>
-                        {% if args['side_account'] == 0 %}
+                        {% if not args['side_account'] or args['side_account'] == 0  %}
                         <button type="button" onclick="new_doctor();" id="btn_doctor" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><i class="bi bi-plus" /></i></button>
                         {% else %}
                         <br /><div class="mt-2">{{ args['prescriber'] }}</div>
@@ -47,20 +47,20 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
                 </div>
-                <div class="form-group d-lg-flex align-items-start mt-3 mt-3">
+                <div class="form-group align-items-start mt-3 mt-3 {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'Z') %}d-lg-flex{% else %}d-none{% endif %}" id="div_login">
                     <label for="login" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }}*</label>
                     <div>					
                         <input type="text" name="login" id="login" value="{{ args['username'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
                 {% if args['user_id'] == 0 %}
-                <div class="form-group d-lg-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3" id="div_pwd">
                     <label for="pwd" class="form-label col-3 text-end mt-2 me-1">{{ _("Mot de passe") }}*</label>
                     <div>					
                         <input type="password" name="pwd" id="pwd" value="" class="form-control form-lbk">			
                     </div>
                 </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
+                <div class="form-group d-lg-flex align-items-start mt-3" id="div_pwd2">
                     <label for="pwd2" class="form-label col-3 text-end mt-2 me-1">{{ _("Confirmation du mot de passe") }}*</label>
                     <div>					
                         <input type="password" name="pwd2" id="pwd2" value="" class="form-control form-lbk">			
@@ -114,6 +114,7 @@
                             <option value="34" {% if args['lang'] == 34 %} selected {% endif %}>{{ _("Anglais (UK)") }}</option>
                             <option value="75" {% if args['lang'] == 75 %} selected {% endif %}>{{ _("Américain (US)") }}</option>
                             <option value="118" {% if args['lang'] == 118 %} selected {% endif %}>{{ _("Arabe (AR)") }}</option>
+                            <option value="724" {% if args['lang'] == 724 %} selected {% endif %}>{{ _("Espagnole (ES)") }}</option>
                             <option value="1113" {% if args['lang'] == 1113 %} selected {% endif %}>{{ _("Khmer (KM)") }}</option>
                             <option value="1215" {% if args['lang'] == 1215 %} selected {% endif %}>{{ _("Laotien (LO)") }}</option>
                             <option value="137" {% if args['lang'] == 137 %} selected {% endif %}>{{ _("Malagasy (MG)") }}</option>
@@ -299,12 +300,21 @@ var msg = "" ;
     if (id_pres == "" || id_pres == null)
     id_pres= 0 ;
 
+    if (role_type == "Z")
+    login = "staff_zzz" ; // temporary login to pass control
+
     if (login == "")
     msg += "{{ _("Veuillez saisir un identifiant.") }}\n" ;
 
 {% if args['user_id'] == 0 %}
-var pwd  = $("#pwd").val()    ;
+var pwd  = $("#pwd").val()  ;
 var pwd2 = $("#pwd2").val() ;
+
+    if (role_type == "Z")
+    {
+    pwd  = "zzzzzzzzz" ; // fake password modify by an another longer fake password by backend 
+    pwd2 = "zzzzzzzzz" ;
+    }
 
     if (pwd == "")
     msg += "{{ _("Veuillez saisir un mot de passe.") }}\n" ;
@@ -386,9 +396,44 @@ function role_choice( elem )
 let val = $(elem).val() ;
 
     if ( val == 'P' )
+    {
     $("#search_account").removeClass('d-none') ;
-    else
+    $("#search_account").addClass('d-lg-flex') ;
+
+    $("#div_login").removeClass('d-none') ;
+    $("#div_pwd").removeClass('d-none') ;
+    $("#div_pwd2").removeClass('d-none') ;
+
+    $("#div_login").addClass('d-lg-flex') ;
+    $("#div_pwd").addClass('d-lg-flex') ;
+    $("#div_pwd2").addClass('d-lg-flex') ;
+    }
+    else if ( val == 'Z' )
+    {
+    $("#div_login").addClass('d-none') ;
+    $("#div_pwd").addClass('d-none') ;
+    $("#div_pwd2").addClass('d-none') ;
+
+    $("#div_login").removeClass('d-lg-flex') ;
+    $("#div_pwd").removeClass('d-lg-flex') ;
+    $("#div_pwd2").removeClass('d-lg-flex') ;
+
     $("#search_account").addClass('d-none') ;
+    $("#search_account").removeClass('d-lg-flex') ;
+    }
+    else
+    {
+    $("#div_login").removeClass('d-none') ;
+    $("#div_pwd").removeClass('d-none') ;
+    $("#div_pwd2").removeClass('d-none') ;
+
+    $("#div_login").addClass('d-lg-flex') ;
+    $("#div_pwd").addClass('d-lg-flex') ;
+    $("#div_pwd2").addClass('d-lg-flex') ;
+
+    $("#search_account").addClass('d-none') ;
+    $("#search_account").removeClass('d-lg-flex') ;
+    }
 }
 
 function new_doctor()

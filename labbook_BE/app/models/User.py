@@ -154,10 +154,15 @@ class User:
             return False
 
     @staticmethod
-    def getUserRoleList():
+    def getUserRoleList(type=''):
         cursor = DB.cursor()
 
-        req = ('select id_role, name, label, type from sigl_pj_role')
+        cond = ''
+
+        if type:
+            cond += ' where type="' + str(type) + '"'
+
+        req = ('select id_role, name, label, type from sigl_pj_role' + cond)
 
         cursor.execute(req)
 

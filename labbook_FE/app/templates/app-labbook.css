@@ -1335,6 +1335,12 @@ display : flex;
 display : flex;
 }
 
+.menu-choice-desktop
+{
+overflow  : auto ;
+max-height : 92vh ;
+}
+
 @media all and (max-width: 767px)
 {
     body

@@ -10,9 +10,12 @@
 | sigl_04_data	                                 | REQ ANALYSIS	 | request for analysis                     |
 | sigl_04_deleted	                         | REQ ANALYSIS	 | deleted request for analysis             |
 | sigl_05_07_data	                         | LINK ANA-VAR	 | link between analysis and variable       |
+| sigl_05_07_data_test	                         | LINK ANA-VAR	 | link between analysis and variable test  |
 | sigl_05_data	                                 | REF ANALYSIS	 | analysis details                         |
+| sigl_05_data_test                              | REF ANALYSIS	 | analysis details for testing             |
 | sigl_06_data	                                 | DEFAULT VAL	 | values in the preferences menu           |
 | sigl_07_data	                                 | REF VARIABLE	 | definition variable analysis             |
+| sigl_07_data_test                              | REF VARIABLE	 | definition variable analysis for testing |
 | sigl_08_data	                                 | DOCTOR	 | doctor                                   |
 | sigl_09_data	                                 | RESULT	 | analysis result                          |
 | sigl_09_deleted	                         | RESULT	 | analysis result deleted                  |
@@ -77,8 +80,9 @@
 | stock_setting                                  | SETTINGS      | settings for stock                       |
 | list_comment                                   | COMMENT       | structure for keep history of comments   |
 | form_setting                                   | SETTINGS      | structure for enable or disabled fields  |
+| trace_download                                 | QUALITY       | tracks file downloads (only procedure)   |
 
-77 tables used
+81 tables used
 
 
 | Name    	                                 |

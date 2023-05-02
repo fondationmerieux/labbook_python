@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 import gettext
+import random, string
 
 from datetime import datetime
 from flask import request
@@ -156,6 +157,13 @@ class UserDet(Resource):
                 self.log.error(Logs.fileline() + ' : UserDet ERROR args missing')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
+            if args['role_type'] == 'Z':
+                # replace login by empty string
+                args['login'] = ''
+
+                # generate a long fake password for unused type of account
+                args['password'] = ''.join(random.choices(string.ascii_letters + string.digits, k=24))
+
             pwd_db = User.getPasswordDB(args['password'])
 
             # insert in sigl_user_data
@@ -293,8 +301,8 @@ class UserList(Resource):
 class UserRoleList(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self):
-        l_roles = User.getUserRoleList()
+    def get(self, type=''):
+        l_roles = User.getUserRoleList(type)
 
         if not l_roles:
             self.log.error(Logs.fileline() + ' : TRACE UserRoleList not found')
@@ -467,9 +475,9 @@ class UserExport(Resource):
     def post(self):
         args = request.get_json()
 
-        l_data = [['firstname', 'lastname', 'username', 'password', 'title', 'email', 'status', 'locale',
+        l_data = [['version', 'firstname', 'lastname', 'username', 'password', 'title', 'email', 'status', 'locale',
                    'cps_id', 'rpps', 'phone', 'initial', 'birth', 'address', 'position', 'cv', 'diploma',
-                   'formation', 'darrived', 'deval', 'section', 'comment', 'side_account', 'role', 'version']]
+                   'formation', 'darrived', 'deval', 'section', 'comment', 'side_account', 'role']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : UserExport ERROR args missing')
@@ -480,6 +488,8 @@ class UserExport(Resource):
         if dict_data:
             for d in dict_data:
                 data = []
+
+                data.append('v2')
 
                 if d['firstname']:
                     data.append(d['firstname'])
@@ -517,6 +527,25 @@ class UserExport(Resource):
                     data.append('D')
 
                 if d['locale']:
+                    if d['locale'] == 35:
+                        d['locale'] = 'FR'
+                    elif d['locale'] == 34:
+                        d['locale'] = 'EN'
+                    elif d['locale'] == 75:
+                        d['locale'] = 'US'
+                    elif d['locale'] == 724:
+                        d['locale'] = 'ES'
+                    elif d['locale'] == 118:
+                        d['locale'] = 'AR'
+                    elif d['locale'] == 1113:
+                        d['locale'] = 'KM'
+                    elif d['locale'] == 1215:
+                        d['locale'] = 'LO'
+                    elif d['locale'] == 137:
+                        d['locale'] = 'MG'
+                    elif d['locale'] == 1620:
+                        d['locale'] = 'PT'
+
                     data.append(d['locale'])
                 else:
                     data.append('')
@@ -601,8 +630,6 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
-                data.append('v2')
-
                 l_data.append(data)
 
         # if no result to export
@@ -658,7 +685,7 @@ class UserImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][24] != 'v2':
+        if l_rows[0][0] != 'v2':
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
@@ -669,30 +696,30 @@ class UserImport(Resource):
 
         for row in l_rows:
             if row:
-                firstname    = row[0]
-                lastname     = row[1]
-                username     = row[2]
-                password     = row[3]
-                title        = row[4]
-                email        = row[5]
-                status       = row[6]
-                locale       = row[7]
-                cps_id       = row[8]
-                rpps         = row[9]
-                phone        = row[10]
-                initial      = row[11]
-                birth        = row[12]
-                address      = row[13]
-                position     = row[14]
-                cv           = row[15]
-                diploma      = row[16]
-                formation    = row[17]
-                darrived     = row[18]
-                deval        = row[19]
-                section      = row[20]
-                comment      = row[21]
-                side_account = row[22]
-                role_type    = row[23]
+                firstname    = row[1]
+                lastname     = row[2]
+                username     = row[3]
+                password     = row[4]
+                title        = row[5]
+                email        = row[6]
+                status       = row[7]
+                locale       = row[8]
+                cps_id       = row[9]
+                rpps         = row[10]
+                phone        = row[11]
+                initial      = row[12]
+                birth        = row[13]
+                address      = row[14]
+                position     = row[15]
+                cv           = row[16]
+                diploma      = row[17]
+                formation    = row[18]
+                darrived     = row[19]
+                deval        = row[20]
+                section      = row[21]
+                comment      = row[22]
+                side_account = row[23]
+                role_type    = row[24]
 
                 # status convert
                 if status and status == 'A':
@@ -708,6 +735,8 @@ class UserImport(Resource):
                         locale = 34
                     elif locale == 'US':
                         locale = 75
+                    elif locale == 'ES':
+                        locale = 724
                     elif locale == 'AR':
                         locale = 118
                     elif locale == 'KM':

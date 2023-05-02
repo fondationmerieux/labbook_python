@@ -162,12 +162,14 @@ class Record:
                'rec.num_dos_an, rec.med_prescripteur, rec.date_prescription, rec.service_interne, rec.num_lit, '
                'rec.id_colis, rec.date_reception_colis, rec.rc, rec.colis, rec.prix, rec.remise, rec.rec_date_vld, '
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
-               'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, '
+               'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, '
                'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, '
+               'd_doc_title.label as prescriber_title, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_02_data as rec '
                'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
+               'left join sigl_dico_data as d_doc_title on d_doc_title.id_data=pres.titre '
                'where rec.id_data=%s')
 
         cursor.execute(req, (id_rec,))
@@ -181,7 +183,7 @@ class Record:
         req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
                'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
-               'rec_custody, rec_num_int '
+               'rec_custody, rec_num_int, rec.rec_modified '
                'from sigl_02_data '
                'order by id_data desc limit 1')
 
@@ -239,13 +241,13 @@ class Record:
                            '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, '
                            'prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
-                           'num_dos_mois, date_hosp, rec_custody, rec_num_int) '
+                           'num_dos_mois, date_hosp, rec_custody, rec_num_int, rec_modified) '
                            'values '
                            '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, '
                            '%(med_prescripteur)s, %(date_prescription)s, %(service_interne)s, %(num_lit)s, %(id_colis)s, '
                            '%(date_reception_colis)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
                            '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, '
-                           '%(num_dos_mois)s, %(date_hosp)s, %(rec_custody)s, %(rec_num_int)s)', params)
+                           '%(num_dos_mois)s, %(date_hosp)s, %(rec_custody)s, %(rec_num_int)s, %(rec_modified)s)', params)
 
             Record.log.info(Logs.fileline())
 
@@ -284,6 +286,24 @@ class Record:
             cursor.execute(req, (stat, id_rec,))
 
             Record.log.info(Logs.fileline() + ' : updateRecordStat id_rec=' + str(id_rec))
+
+            return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def updateRecordModified(id_rec, modified):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update sigl_02_data '
+                   'set rec_modified=%s '
+                   'where id_data=%s')
+
+            cursor.execute(req, (modified, id_rec))
+
+            Record.log.info(Logs.fileline() + ' : updateRecordModified id_rec=' + str(id_rec))
 
             return True
         except mysql.connector.Error as e:
@@ -483,7 +503,7 @@ class Record:
 
         req = ('select rec.id_data as id_record, rec.rec_custody, rec.id_patient,  d_type.label as type, rec.rec_num_int, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
-               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, '
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, '

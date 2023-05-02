@@ -11,7 +11,6 @@ from app.models.Constants import Constants
 from app.models.Logs import Logs
 from app.models.Quality import Quality
 from app.models.File import File
-from app.models.Setting import Setting
 from app.models.Various import Various
 
 
@@ -2195,7 +2194,7 @@ class StockSupplyDet(Resource):
                                             prs_expir_date=args['prs_expir_date'],
                                             prs_rack=args['prs_rack'],
                                             prs_batch_num=args['prs_batch_num'],
-                                            prs_buy_price=args['prs_buy_price'],
+                                            prs_buy_price=args['prs_buy_price'] * 100,
                                             prs_lessor=args['prs_lessor'])
 
             if ret is False:
@@ -2211,7 +2210,7 @@ class StockSupplyDet(Resource):
                                         prs_expir_date=args['prs_expir_date'],
                                         prs_rack=args['prs_rack'],
                                         prs_batch_num=args['prs_batch_num'],
-                                        prs_buy_price=args['prs_buy_price'],
+                                        prs_buy_price=args['prs_buy_price'] * 100,
                                         prs_lessor=args['prs_lessor'])
 
         if ret <= 0:
@@ -2262,7 +2261,10 @@ class StockUse(Resource):
         PackSupply = Quality.getNbStockSupply(args['pru_prs'])
         PackUse    = Quality.getNbStockUse(args['pru_prs'])
 
-        if (PackSupply['nb_pack'] - PackUse['nb_pack']) == 0:
+        self.log.error(Logs.alert() + ' : StockUse prs_ser=' + str(args['pru_prs']) + ' PackSupply=' + str(PackSupply) + ' PackUse=' + str(PackUse))
+
+        if (int(PackSupply['nb_pack']) - int(PackUse['nb_pack'])) == 0:
+            self.log.error(Logs.alert() + ' : StockUse update empty prs_ser=' + str(args['pru_prs']))
             ret = Quality.emptyStockSupply(args['pru_prs'])
 
             if ret is False:
@@ -2698,4 +2700,32 @@ class ListComment(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ListComment delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class TraceDownload(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'type' not in args or 'ref' not in args:
+            self.log.error(Logs.fileline() + ' : TraceDownload ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        trace = Quality.getTraceDownload(args['id_user'], args['type'], args['ref'])
+
+        if trace:
+            self.log.error(Logs.fileline() + ' : TRACE TraceDownload found then update last_access')
+
+            ret = Quality.updateTraceDownload(args['id_user'], args['type'], args['ref'])
+        else:
+            self.log.error(Logs.fileline() + ' : TRACE TraceDownload not found then insert first access')
+
+            ret = Quality.insertTraceDownload(args['id_user'], args['type'], args['ref'])
+
+        if not ret:
+            self.log.info(Logs.fileline() + ' : TraceDownload ERROR for id_user=' + str(args['id_user']) + ', type=' + str(args['type']) + ', ref=' + str(args['ref']))
+
+        self.log.info(Logs.fileline() + ' : TRACE TraceDownload')
         return compose_ret('', Constants.cst_content_type_json)

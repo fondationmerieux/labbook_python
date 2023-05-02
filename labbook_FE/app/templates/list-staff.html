@@ -69,6 +69,9 @@
                     {% if session['user_role'] in ('A','B','Q','TQ') %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
+                    {% if session['user_role'] in ('A','B','Q','TQ') %}
+                    <input type="button" onclick="add_staff();" id="btn_add" value="{{ _("Ajouter un personnel") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    {% endif %}
                 </div>
             </div>
 
@@ -206,6 +209,14 @@ var param = '{}' ;
         }
     } ) ;
 }
+
+{% if session['user_role'] in ('A','B','Q','TQ') %}
+{# we avoid showing the url if it is not useful #}
+function add_staff()
+{
+window.location.href = "{{ session['server_ext'] }}/setting-det-user/list-staff/0/Z";
+}
+{% endif %}
 
 function return_home()
 {

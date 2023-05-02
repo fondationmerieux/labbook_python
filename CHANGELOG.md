@@ -7,6 +7,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.3.8] - 2023-05-03
+### Added
+- testing function for import analysis repository
+- added a new user without access, with staff role
+- trace in DB when a procedure is downloaded (new trace_download table)
+- concat prescriber title (if exist) with prescriber_name for PDF report
+
+### Changed
+- reference to "Cancels and replaces" if a report already exists and the file has been modified (= cancel or reset value) 
+- rewriting import.md
+- add right to stock manager profil to edit and delete suppliers
+- update Pipfile packages (see dependencies.md) 
+- only biologist profile can delete a record
+
+### Fixed
+- user setting add new doctor button displayed
+- vertical scrollbar in menu in desktop mode if they need
+- redundancy of the name of the biological validator in the report
+- add Spanish in choice of locale in details of user
+- wrong count of product in stock if an used product was canceled
+
 ## [3.3.7] - 2023-04-17
 ### Added
 - default indicator.ini

@@ -472,6 +472,13 @@ class ResultReset(Resource):
             self.log.error(Logs.fileline() + ' : ERROR ResultReset record stat update')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
+        # update modified record
+        ret = Record.updateRecordModified(id_rec, 'Y')
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR ResultReset record modified update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
         self.log.info(Logs.fileline() + ' : TRACE ResultReset')
         return compose_ret('', Constants.cst_content_type_json)
 
@@ -520,6 +527,13 @@ class ResultCancel(Resource):
 
         if not ret:
             self.log.error(Logs.fileline() + ' : ERROR ResultCancel record stat update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # update modified record
+        ret = Record.updateRecordModified(id_rec, 'Y')
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR ResultReset record modified update')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ResultCancel')

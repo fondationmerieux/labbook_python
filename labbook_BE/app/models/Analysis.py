@@ -145,6 +145,11 @@ class Analysis:
     @staticmethod
     def insertAnalysis(**params):
         try:
+            if 'test' in params and params['test'] == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
             # try to insert to a specidfic id_data
@@ -155,7 +160,7 @@ class Analysis:
                 lid_data = ''
                 vid_data = ''
 
-            req = ('insert into sigl_05_data '
+            req = ('insert into sigl_05_data' + mode_test +
                    '(' + lid_data + 'id_owner, code, nom, abbr, famille, type_prel, cote_unite, cote_valeur, commentaire, '
                    'produit_biologique, type_analyse, actif, ana_whonet) '
                    'values '
@@ -174,9 +179,14 @@ class Analysis:
     @staticmethod
     def updateAnalysis(**params):
         try:
+            if 'test' in params and params['test'] == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
-            cursor.execute('update sigl_05_data '
+            cursor.execute('update sigl_05_data' + mode_test +
                            'set id_owner=%(id_owner)s, code=%(code)s, nom=%(name)s, abbr=%(abbr)s, actif=%(stat)s, '
                            'famille=%(type_ana)s, type_prel=%(type_prod)s, cote_unite=%(unit)s, cote_valeur=%(value)s, '
                            'commentaire=%(comment)s, produit_biologique=%(product)s, ana_whonet=%(whonet)s '
@@ -348,8 +358,13 @@ class Analysis:
         return cursor.fetchall()
 
     @staticmethod
-    def getListVariable(id_ana):
+    def getListVariable(id_ana, test='N'):
         cursor = DB.cursor()
+
+        if test == 'Y':
+            mode_test = '_test '
+        else:
+            mode_test = ' '
 
         req = ('select var.id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
@@ -357,8 +372,8 @@ class Analysis:
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.var_whonet, '
                'link.var_qrcode, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, '
                'var.code_var, var.var_highlight '
-               'from sigl_07_data as var '
-               'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data '
+               'from sigl_07_data' + mode_test + ' as var '
+               'inner join sigl_05_07_data' + mode_test + ' as link on link.id_refvariable=var.id_data '
                'left join sigl_dico_data as d1 on d1.id_data=var.unite '
                'where link.id_refanalyse=%s '
                'order by link.position, link.id_data')
@@ -383,14 +398,19 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
-    def getAnalysisVarExist(label, type_res, unit, var_min, var_max, code_var):
+    def getAnalysisVarExist(label, type_res, unit, var_min, var_max, code_var, test='N'):
         cursor = DB.cursor()
+
+        if test == 'Y':
+            mode_test = '_test '
+        else:
+            mode_test = ' '
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var, '
                'var_highlight '
-               'from sigl_07_data '
+               'from sigl_07_data' + mode_test +
                'where libelle=%s and type_resultat=%s and unite=%s and normal_min=%s and normal_max=%s and code_var=%s '
                'order by id_data asc limit 1')
 
@@ -401,9 +421,15 @@ class Analysis:
     @staticmethod
     def insertAnalysisVar(**params):
         try:
+            if 'test' in params and params['test'] == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+                params['test'] = 'N'
+
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_07_data '
+            cursor.execute('insert into sigl_07_data' + mode_test +
                            '(id_owner, libelle, description, unite, normal_min, normal_max, commentaire, type_resultat, '
                            'unite2, formule_unite2, formule, accuracy, precision2, code_var, var_highlight) '
                            'values '
@@ -432,7 +458,8 @@ class Analysis:
                                            accu=params['accu'],
                                            formula2=params['formula2'],
                                            unit2=params['unit2'],
-                                           accu2=params['accu2'])
+                                           accu2=params['accu2'],
+                                           test=params['test'])
 
                 Analysis.log.info(Logs.fileline() + ' : update and init code_var')
 
@@ -444,9 +471,14 @@ class Analysis:
     @staticmethod
     def updateAnalysisVar(**params):
         try:
+            if 'test' in params and params['test'] == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
-            cursor.execute('update sigl_07_data '
+            cursor.execute('update sigl_07_data' + mode_test +
                            'set id_owner=%(id_owner)s, libelle=%(label)s, description=%(descr)s, '
                            'unite=%(unit)s, normal_min=%(var_min)s, normal_max=%(var_max)s, '
                            'commentaire=%(comment)s, type_resultat=%(type_res)s, unite2=%(unit2)s, '
@@ -477,9 +509,14 @@ class Analysis:
     @staticmethod
     def insertRefVariable(**params):
         try:
+            if 'test' in params and params['test'] == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_05_07_data '
+            cursor.execute('insert into sigl_05_07_data' + mode_test +
                            '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet, '
                            'var_qrcode) '
                            'values '
@@ -496,9 +533,14 @@ class Analysis:
     @staticmethod
     def updateRefVariable(**params):
         try:
+            if 'test' in params and params['test'] == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
-            cursor.execute('update sigl_05_07_data '
+            cursor.execute('update sigl_05_07_data' + mode_test +
                            'set id_owner=%(id_owner)s, id_refanalyse=%(id_refana)s, id_refvariable=%(id_refvar)s, '
                            'position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s, var_whonet=%(var_whonet)s, '
                            'var_qrcode=%(var_qrcode)s '
@@ -711,12 +753,17 @@ class Analysis:
         return cursor.fetchall()
 
     @staticmethod
-    def exist(code):
+    def exist(code, test='N'):
         try:
+            if test == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
             cursor.execute('select count(*) as nb_code '
-                           'from sigl_05_data '
+                           'from sigl_05_data' + mode_test +
                            'where code=%s', (code,))
 
             ret = cursor.fetchone()
@@ -730,12 +777,17 @@ class Analysis:
             return -1
 
     @staticmethod
-    def freeIdAna(id_ana):
+    def freeIdAna(id_ana, test='N'):
         try:
+            if test == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
             cursor = DB.cursor()
 
             cursor.execute('select count(*) as nb_ana '
-                           'from sigl_05_data '
+                           'from sigl_05_data' + mode_test +
                            'where id_data=%s', (id_ana,))
 
             ret = cursor.fetchone()
@@ -774,7 +826,7 @@ class Analysis:
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
-               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
                'rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '
@@ -827,6 +879,52 @@ class Analysis:
             cursor.execute(req, (status,))
 
             Analysis.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def dropTableTest():
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('truncate table sigl_05_data_test')
+            cursor.execute('truncate table sigl_05_07_data_test')
+            cursor.execute('truncate table sigl_07_data_test')
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def initTableTest():
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into sigl_05_data_test select * from sigl_05_data')
+            cursor.execute('insert into sigl_05_07_data_test select * from sigl_05_07_data')
+            cursor.execute('insert into sigl_07_data_test select * from sigl_07_data')
+
+            return True
+        except mysql.connector.Error as e:
+            Analysis.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def cleanGhostVar(test='N'):
+        try:
+            if test == 'Y':
+                mode_test = '_test '
+            else:
+                mode_test = ' '
+
+            cursor = DB.cursor()
+
+            cursor.execute('delete from sigl_07_data' + mode_test + ' as var '
+                           'where id_data not in (select id_refvariable from sigl_05_07_data' + mode_test + ')')
 
             return True
         except mysql.connector.Error as e:

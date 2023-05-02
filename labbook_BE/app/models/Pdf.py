@@ -1340,7 +1340,13 @@ class Pdf:
             data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
 
         if record['prescriber']:
-            data['rec']['presc_name'] = str(record['prescriber'])
+            if record['prescriber_title']:
+                Various.useLangDB()
+                trans = record['prescriber_title']
+                data['rec']['presc_name'] += _(trans) + ' '
+                Various.useLangPDF()
+
+            data['rec']['presc_name'] += str(record['prescriber'])
 
         data['rec']['comm_title'] = _("Renseignements cliniques")
         data['rec']['comm'] = record['rc'].split("\n")
@@ -1833,7 +1839,6 @@ class Pdf:
                     if id_user != id_user_p:
                         ret_user = User.getUserDetails(id_user)
 
-                        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE user=' + str(user) + ' for id_user=' + str(res_valid['utilisateur']))
                         if user:
                             user = user + ', '
 
@@ -1847,6 +1852,8 @@ class Pdf:
                             user += ret_user['lastname'] + ' ' + ret_user['firstname']
                         else:
                             user += ret_user['username']
+
+                        id_user_p = id_user
 
                     if comment and comment != comment_p:
                         res_comm = res_comm + comment.split("\n")

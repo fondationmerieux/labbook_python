@@ -61,7 +61,7 @@ class Result:
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, rec.id_patient, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
-               'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, '
+               'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec.rec_modified, '
                'req.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
                'var_pos.obligatoire as oblig, req.req_outsourced as outsourced '
                'from sigl_04_data as req '
@@ -106,7 +106,7 @@ class Result:
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
-               'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, '
+               'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec_modified, '
                'req.id_owner as id_owner, rec.id_patient as id_pat, req.req_outsourced as outsourced, '
                'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig '
                'from sigl_04_data as req '
@@ -346,7 +346,7 @@ class Result:
 
             # Note 1 : var.type_resultat=265 to get result of type labeled
             # Note 2 : res.valeur != 1013 to avoid unspecified result
-            req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, '
+            req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, rec.rec_modified, '
                    'ref.nom as ana_name, fam.label as ana_fam, res.id_data as id_res, res.valeur as value, var.*, '
                    'rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, rec.date_dos as rec_date, '
                    'rec.date_prescription as prescr_date, rec.statut as rec_stat, req.req_outsourced as ana_outsourced, '
@@ -391,7 +391,7 @@ class Result:
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
-               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
                'rec.num_lit as bed_num, rec.prix as price, rec.remise as discount,  '

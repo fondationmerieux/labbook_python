@@ -109,7 +109,7 @@ class RecordDet(Resource):
            'price' not in args or 'discount' not in args or 'percent_discount' not in args or \
            'percent_insurance' not in args or 'bill_remain' not in args or 'receipt_num' not in args or \
            'bill_num' not in args or 'stat' not in args or 'id_patient' not in args or 'rec_custody' not in args or \
-           'rec_num_int' not in args:
+           'rec_num_int' not in args or 'rec_modified' not in args:
             self.log.error(Logs.fileline() + ' : RecordDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -208,7 +208,8 @@ class RecordDet(Resource):
                                       num_dos_mois=num_dos_mois,
                                       date_hosp=args['date_hosp'],
                                       rec_custody=args['rec_custody'],
-                                      rec_num_int=args['rec_num_int'])
+                                      rec_num_int=args['rec_num_int'],
+                                      rec_modified=args['rec_modified'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : RecordDet ERROR  insert')

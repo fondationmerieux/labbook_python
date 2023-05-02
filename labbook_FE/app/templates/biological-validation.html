@@ -468,7 +468,7 @@ let reedit     = "N" ;
 
     // New analysis added after biological validation
     // we need to reedit for add Cancel and replace text
-    if ( data_reports.length > 0 )
+    if ( data_reports.length > 0 && data_res[0].rec_modified == 'Y' )
     reedit = "Y" ;
 
 let param_list_valid = '{ "reedit": "' + reedit + '", "template": "' + template + '", "comm_valid": ' + comm_valid + ', "list_valid":[ ' ;

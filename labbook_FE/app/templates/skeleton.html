@@ -86,7 +86,22 @@ function download_file( type, filename, type_ref, ref)
     {
         if ( type_ref == "PROC" )
         {
-        console.log("TODO tracer lecture procédure");
+        var id_user = {{ session['user_id']|safe}} ;
+
+        var param = '{ "id_user":' + id_user + ', "type":"' + type_ref + '", "ref":' + ref + '}' ;
+
+            $.ajax( 
+            {
+                type: "POST",
+                url: "{{ session['server_ext'] }}/services/quality/trace/download",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param,
+                error: function(ret)
+                {
+                console.log("ERROR POST trace download") ;
+                }
+            } ) ;
         }
 
     window.open("{{ session['server_ext'] }}/download-file/type/" + type + "/name/" + filename + "/ref/" + type_ref + "/" + ref, "_blank") ;
