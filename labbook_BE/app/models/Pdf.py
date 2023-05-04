@@ -1340,7 +1340,7 @@ class Pdf:
             data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
 
         if record['prescriber']:
-            if record['prescriber_title']:
+            if 'prescriber_title' in record and record['prescriber_title']:
                 Various.useLangDB()
                 trans = record['prescriber_title']
                 data['rec']['presc_name'] += _(trans) + ' '
