@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.3.8] - 2023-05-03
+## [3.3.8] - 2023-05-04
 ### Added
 - testing function for import analysis repository
 - added a new user without access, with staff role

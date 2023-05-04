@@ -47,13 +47,13 @@
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
                 </div>
-                <div class="form-group align-items-start mt-3 mt-3 {% if args['user_id'] == 0 or (args['user_id'] > 0 and args['role_type'] != 'Z') %}d-lg-flex{% else %}d-none{% endif %}" id="div_login">
+                <div class="form-group align-items-start mt-3 mt-3 {% if args['user_id'] == 0 and args['role_type'] != 'Z' %}d-lg-flex{% else %}d-none{% endif %}" id="div_login">
                     <label for="login" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }}*</label>
                     <div>					
                         <input type="text" name="login" id="login" value="{{ args['username'] }}" class="form-control form-lbk">			
                     </div>
                 </div>
-                {% if args['user_id'] == 0 %}
+                {% if args['user_id'] == 0 and args['role_type'] != 'Z' %}
                 <div class="form-group d-lg-flex align-items-start mt-3" id="div_pwd">
                     <label for="pwd" class="form-label col-3 text-end mt-2 me-1">{{ _("Mot de passe") }}*</label>
                     <div>					
