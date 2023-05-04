@@ -183,7 +183,7 @@ class Record:
         req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
                'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
-               'rec_custody, rec_num_int, rec.rec_modified '
+               'rec_custody, rec_num_int, rec_modified '
                'from sigl_02_data '
                'order by id_data desc limit 1')
 
