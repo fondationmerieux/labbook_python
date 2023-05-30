@@ -10,7 +10,7 @@ Jinja2 = "~=3.1.2"
 gunicorn = "~=20.1.0"
 Babel = "~=2.12.1"
 Flask-Babel = "~=3.1.0"
-requests = "~=2.29.0"
+requests = "~=2.31.0"
 urllib3 = "~=1.26.2"
 
 [dev-packages]
