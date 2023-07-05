@@ -97,7 +97,7 @@ def upgrade():
                           "INDEX (mas_rank), INDEX (mas_name)) "
                           "character set=utf8"))
     except Exception as err:
-        print("ERROR create table manual_setting,\n\terr=" + str(er
+        print("ERROR create table manual_setting,\n\terr=" + str(err))
 
     # ADD COLUMN for serial of manual category in sigl_manuels_data table
     try:
