@@ -58,8 +58,13 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] in ('A','B','Q','TQ') %}
+                    {% if session['user_role'] in ('A','Q','L') %}
+                    <input type="button" onclick="list_trace('PROC');" id="btn_trace" value="{{ _("Tableau consultation") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
+                    {% endif %}
+                    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
+                    {% endif %}
+                    {% if session['user_role'] in ('A','B','Q','TQ') %}
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une procédure") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
@@ -109,13 +114,16 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    {% if session["user_role"] in ("A","B","Q","TQ") %}
+    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-procedure/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>";   
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-procedure/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" ;
+
+        {% if session['user_role'] in ('A','B','Q','TQ') %}
+        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>" ;
+        {% endif %}
         
     menu_act += "</div></ul></nav>" ;
     {% else %}
@@ -188,6 +196,11 @@ var id_user = {{ session['user_id']|safe}} ;
 function add_item()
 {
 window.location.href = "{{ session['server_ext'] }}/det-procedure/0";
+}
+
+function list_trace(type_trace)
+{
+window.location.href = "{{ session['server_ext'] }}/list-trace-download/" + type_trace ;
 }
 
 function export_data()

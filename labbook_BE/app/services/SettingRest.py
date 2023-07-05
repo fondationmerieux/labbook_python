@@ -1108,3 +1108,84 @@ class SettingFormDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE SettingFormDet')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class SettingManual(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_datas = Setting.getManualSetting()
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingManual ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in list(data.items()):
+                if data[key] is None:
+                    data[key] = ''
+
+        self.log.info(Logs.fileline() + ' : SettingManual')
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)
+
+    def post(self):
+        args = request.get_json()
+
+        if 'list_val' not in args:
+            self.log.error(Logs.fileline() + ' : SettingManual ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_manuals = Setting.getManualSetting()
+
+        for val in args['list_val']:
+            name = val['mas_name']
+
+            if val['mas_ser'] > 0:
+                ret = Setting.updateManualSetting(mas_ser=val['mas_ser'],
+                                                  mas_rank=val['mas_rank'],
+                                                  mas_name=name)
+            else:
+                ret = Setting.insertManualSetting(mas_rank=val['mas_rank'],
+                                                  mas_name=name)
+
+            if ret is False or ret <= 0:
+                self.log.info(Logs.fileline() + ' : TRACE SettingManual ERROR updateManual')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # delete missing values compared to age interval
+        for db_val in l_manuals:
+            exist = False
+            for ihm_val in args['list_val']:
+                if db_val['mas_ser'] == ihm_val['mas_ser']:
+                    exist = True
+
+            if not exist:
+                ret = Setting.deleteManualSetting(db_val['mas_ser'])
+
+                if ret is False:
+                    self.log.info(Logs.fileline() + ' : TRACE SettingManual ERROR deleteManual')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingManual')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class SettingManualCat(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_datas = Setting.getManualCategory()
+
+        if not l_datas:
+            self.log.error(Logs.fileline() + ' : ' + 'SettingManualCat ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for data in l_datas:
+            # Replace None by empty string
+            for key, value in list(data.items()):
+                if data[key] is None:
+                    data[key] = ''
+
+        self.log.info(Logs.fileline() + ' : SettingManualCat')
+        return compose_ret(l_datas, Constants.cst_content_type_json, 200)

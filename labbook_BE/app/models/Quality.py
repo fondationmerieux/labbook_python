@@ -658,8 +658,30 @@ class Quality:
             if 'prod_lessor' in args and args['prod_lessor']:
                 filter_cond += ' and prs_lessor LIKE "%' + str(args['prod_lessor']) + '%" '
 
+            """ To be postponed for the next version 3.3.10
+            if 'prod_local' in args and args['prod_local'] > 0:
+                filter_cond += ' and prs_prl = ' + str(args['prod_local'])
+            """
+
+        """ To be postponed for the next version 3.3.10
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
-               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, '
+               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, prl_name, '
+               'dict1.label as type,  dict2.label as conserv, '
+               'sup.fournisseur_nom as supplier, Min(if(prs_empty="Y", NULL, prs_expir_date)) as expir_date '
+               'from product_supply '
+               'inner join product_details on prd_ser=prs_prd '
+               'left join product_local on prl_ser=prs_prl '
+               'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
+               'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
+               'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
+               'where ' + filter_cond + ' ' +
+               'group by prd_name, prl_name '
+               'order by prd_name asc, prl_name asc ' + limit)
+        """
+
+        req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
+               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, prs_rack, '
                'dict1.label as type,  dict2.label as conserv, '
                'sup.fournisseur_nom as supplier, Min(if(prs_empty="Y", NULL, prs_expir_date)) as expir_date '
                'from product_supply '
@@ -695,6 +717,18 @@ class Quality:
     @staticmethod
     def getStockExportSupplies():
         cursor = DB.cursor()
+
+        """ To be postponed for the next version 3.3.10
+        req = ('select prs_ser, prs_date, prd_name as product, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, '
+               'prs_batch_num, prs_buy_price, u1.username as user, prs_empty, prs_cancel, u2.username as user_cancel, '
+               'prs_lessor '
+               'from product_supply '
+               'left join product_details on prd_ser=prs_prd '
+               'left join product_local on prl_ser=prs_prl '
+               'left join sigl_user_data as u1 on u1.id_data=prs_user '
+               'left join sigl_user_data as u2 on u2.id_data=prs_user_cancel '
+               'order by prs_ser asc')
+        """
 
         req = ('select prs_ser, prs_date, prd_name as product, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
                'prs_batch_num, prs_buy_price, u1.username as user, prs_empty, prs_cancel, u2.username as user_cancel, '
@@ -742,8 +776,20 @@ class Quality:
     def getStockListDet(id_item):
         cursor = DB.cursor()
 
-        req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, prs_batch_num, '
-               'prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor, prd_expir_oblig '
+        """ To be postponed for the next version 3.3.10
+        req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, prs_prl, '
+               'prs_batch_num, prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor, prd_expir_oblig '
+               'from product_supply '
+               'inner join product_details on prd_ser=prs_prd '
+               'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
+               'left join product_local on prl_ser=prs_prl '
+               'where (prs_empty="N" and prs_cancel="N") and prd_ser=%s '
+               'group by prs_ser '
+               'order by prs_expir_date asc ')
+        """
+
+        req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
+               'prs_batch_num, prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor, prd_expir_oblig '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
@@ -812,6 +858,15 @@ class Quality:
         cursor = DB.cursor()
 
         # Take all supply  for this product
+        """ To be postponed for the next version 3.3.10
+        req = ('select prs_ser, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, prs_prl, '
+               'prs_batch_num, prs_buy_price, prs_date as date_create, username, prs_lessor '
+               'from product_supply '
+               'left join product_local on prl_ser=prs_prl '
+               'left join sigl_user_data on id_data=prs_user '
+               'where prs_prd=%s and (prs_date between %s and %s) and prs_cancel="N"')
+        """
+
         req = ('select prs_ser, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
                'prs_batch_num, prs_buy_price, prs_date as date_create, username, prs_lessor '
                'from product_supply '
@@ -890,6 +945,100 @@ class Quality:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
 
+    """ To be postponed for the next version 3.3.10
+    @staticmethod
+    def getStockSupplyList(args):
+        cursor = DB.cursor()
+
+        filter_cond = ' '
+
+        if args:
+            # filter conditions
+            if 'prod_name' in args and args['prod_name']:
+                filter_cond += ' and prd_name LIKE "%' + str(args['prod_name']) + '%" '
+
+            if 'prod_local' in args and args['prod_local'] > 0:
+                filter_cond += ' and prs_prl = ' + str(args['prod_local'])
+
+        req = ('select prs_ser, prd_name, prs_date, prs_nb_pack, prs_prl, prl_name '
+               'from product_supply '
+               'inner join product_details on prd_ser=prs_prd '
+               'left join product_local on prl_ser=prs_prl '
+               'where prs_empty="N" and prs_cancel="N" ' + filter_cond + ' ' +
+               'order by prd_name asc, prl_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+    """
+
+    @staticmethod
+    def getStockSupply(id_item):
+        cursor = DB.cursor()
+
+        req = ('select prs_ser, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num, prs_buy_price, '
+               'prs_user, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl '
+               'from product_supply '
+               'where prs_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    """ To be postponed for the next version 3.3.10
+    @staticmethod
+    def updateStockSupplyLocal(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update product_supply '
+                           'set prs_prl=%(prs_prl)s '
+                           'where prs_ser=%(prs_ser)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def insertStockSupplySplit(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into product_supply '
+                           '(prs_date, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num, '
+                           'prs_buy_price, prs_user, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl) '
+                           'select NOW(), prs_prd, %(prs_nb_pack)s, prs_receipt_date, prs_expir_date, prs_batch_num, '
+                           'prs_buy_price, %(prs_user)s, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl '
+                           'from product_supply '
+                           'where prs_ser=%(prs_ser)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStockSupplySplit(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update product_supply '
+                           'set prs_nb_pack=%(prs_nb_pack)s '
+                           'where prs_ser=%(prs_ser)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+    """
+
     @staticmethod
     def getNbStockSupply(id_item):
         cursor = DB.cursor()
@@ -935,6 +1084,15 @@ class Quality:
         try:
             cursor = DB.cursor()
 
+            """ To be postponed for the next version 3.3.10
+            cursor.execute('insert into product_supply '
+                           '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
+                           'prs_prl, prs_batch_num, prs_buy_price, prs_lessor) '
+                           'values '
+                           '(NOW(), %(prs_user)s, %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
+                           '%(prs_expir_date)s, %(prs_prl)s, %(prs_batch_num)s, %(prs_buy_price)s, %(prs_lessor)s)', params)
+            """
+
             cursor.execute('insert into product_supply '
                            '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
                            'prs_rack, prs_batch_num, prs_buy_price, prs_lessor) '
@@ -953,6 +1111,15 @@ class Quality:
     def updateStockSupply(**params):
         try:
             cursor = DB.cursor()
+
+            """ To be postponed for the next version 3.3.10
+            cursor.execute('update product_supply '
+                           'set prs_user=%(prs_user)s, prs_prd=%(prs_prd)s, prs_nb_pack=%(prs_nb_pack)s, '
+                           'prs_receipt_date=%(prs_receipt_date)s, prs_expir_date=%(prs_expir_date)s, '
+                           'prs_prl=%(prs_prl)s, prs_batch_num=%(prs_batch_num)s, prs_buy_price=%(prs_buy_price)s, '
+                           'prs_lessor=%(prs_lessor)s '
+                           'where prs_ser=%(prs_ser)s', params)
+            """
 
             cursor.execute('update product_supply '
                            'set prs_user=%(prs_user)s, prs_prd=%(prs_prd)s, prs_nb_pack=%(prs_nb_pack)s, '
@@ -1000,6 +1167,20 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    """ To be postponed for the next version 3.3.10
+    @staticmethod
+    def getStockLocalList():
+        cursor = DB.cursor()
+
+        req = ('select prl_ser, prl_name, prl_rank '
+               'from product_local '
+               'order by prl_rank asc, prl_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+    """
 
     @staticmethod
     def getSupplierList():
@@ -1105,17 +1286,29 @@ class Quality:
             return False
 
     @staticmethod
-    def getManualList():
+    def getManualList(args):
         cursor = DB.cursor()
 
-        req = ('select manu.id_data, manu.titre as title, manu.reference, '
+        filter_cond = ' manu.titre != "" '
+
+        if args:
+            # filter conditions
+            if 'title' in args and args['title']:
+                filter_cond += ' and manu.titre LIKE "%' + str(args['title']) + '%" '
+
+            if 'man_mas' in args and args['man_mas'] > 0:
+                filter_cond += ' and manu.man_mas = ' + str(args['man_mas'])
+
+        req = ('select manu.id_data, manu.titre as title, mas_name, manu.reference, '
                'u1.initiale as writer, u2.initiale as auditor, u3.initiale as approver, '
                'date_insert, date_apply, date_update, dict.label as section '
                'from sigl_manuels_data as manu '
+               'left join manual_setting on mas_ser=manu.man_mas '
                'left join sigl_user_data as u1 on u1.id_data=manu.redacteur_id '
                'left join sigl_user_data as u2 on u2.id_data=manu.verificateur_id '
                'left join sigl_user_data as u3 on u3.id_data=manu.approbateur_id '
                'left join sigl_dico_data as dict on dict.id_data=manu.section '
+               'where ' + filter_cond + ' ' +
                'order by title asc ')
 
         cursor.execute(req)
@@ -1145,7 +1338,7 @@ class Quality:
     def getManual(id_item):
         cursor = DB.cursor()
 
-        req = ('select manu.id_data ,manu.id_owner, manu.titre as title, manu.reference, '
+        req = ('select manu.id_data ,manu.id_owner, manu.titre as title, manu.reference, mas_name, '
                'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as writer, '
                'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as auditor, '
                'TRIM(CONCAT(u3.lastname," ",u3.firstname," - ",u3.username)) as approver, '
@@ -1153,6 +1346,7 @@ class Quality:
                'manu.approbateur_id as approver_id, manu.date_insert, manu.date_apply, '
                'manu.date_update, manu.section '
                'from sigl_manuels_data as manu '
+               'left join manual_setting on mas_ser=manu.man_mas '
                'left join sigl_user_data as u1 on u1.id_data=manu.redacteur_id '
                'left join sigl_user_data as u2 on u2.id_data=manu.verificateur_id '
                'left join sigl_user_data as u3 on u3.id_data=manu.approbateur_id '
@@ -1168,10 +1362,10 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_manuels_data '
-                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, titre , reference, '
+                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, titre , man_mas, reference, '
                            'redacteur_id, verificateur_id, approbateur_id, date_insert, date_apply, date_update, section) '
                            'values '
-                           '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(title)s, %(reference)s, %(writer)s, %(auditor)s, '
+                           '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(title)s, %(man_mas)s, %(reference)s, %(writer)s, %(auditor)s, '
                            '%(approver)s, %(date_insert)s, %(date_apply)s, %(date_update)s, %(section)s)', params)
 
             Quality.log.info(Logs.fileline())
@@ -1187,7 +1381,7 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('update sigl_manuels_data '
-                           'set titre=%(title)s , reference=%(reference)s, redacteur_id=%(writer)s, '
+                           'set titre=%(title)s, man_mas=%(man_mas)s, reference=%(reference)s, redacteur_id=%(writer)s, '
                            'verificateur_id=%(auditor)s, approbateur_id=%(approver)s, date_insert=%(date_insert)s, '
                            'date_apply=%(date_apply)s, date_update=%(date_update)s, section=%(section)s '
                            'where id_data=%(id_data)s', params)
@@ -1465,6 +1659,63 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getTraceList(type_trace):
+        cursor = DB.cursor()
+
+        info_doc  = ''
+        table_doc = ''
+
+        if type_trace == 'PROC':
+            info_doc  = 'proc.titre as doc_name '
+            table_doc = ('inner join sigl_procedures_document__file_data as proc_file on proc_file.id_file=trd_ref '
+                         'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
+        else:
+            Quality.log.info(Logs.fileline() + ': WRONG type_trace : ' + str(type_trace))
+            return []
+
+        req = ('select trd_ser, trd_date, trd_last_access, trd_type, trd_ref, trd_user, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as user_name, ' + info_doc +
+               'from trace_download ' + table_doc +
+               'inner join sigl_user_data as u1 on u1.id_data=trd_user '
+               'where trd_type=%s order by trd_last_access desc')
+
+        cursor.execute(req, (type_trace,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getTraceListSearch(type_trace, args):
+        cursor = DB.cursor()
+
+        info_doc  = ''
+        table_doc = ''
+        cond      = ''
+
+        if args['user_id']:
+            cond += ' and u1.id_data=' + str(args['user_id']) + ' '
+
+        if type_trace == 'PROC':
+            info_doc  = 'proc.titre as doc_name '
+            table_doc = ('inner join sigl_procedures_document__file_data as proc_file on proc_file.id_file=trd_ref '
+                         'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
+
+            if args['doc_name']:
+                cond += ' and proc.titre like "%' + args['doc_name'] + '%" '
+        else:
+            Quality.log.info(Logs.fileline() + ': WRONG type_trace : ' + str(type_trace))
+            return []
+
+        req = ('select trd_ser, trd_date, trd_last_access, trd_type, trd_ref, trd_user, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as user_name, ' + info_doc +
+               'from trace_download ' + table_doc +
+               'inner join sigl_user_data as u1 on u1.id_data=trd_user '
+               'where trd_type=%s ' + cond + 'order by trd_last_access desc')
+
+        cursor.execute(req, (type_trace,))
+
+        return cursor.fetchall()
 
     @staticmethod
     def getTraceDownload(id_user, type, ref):

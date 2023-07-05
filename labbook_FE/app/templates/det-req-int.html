@@ -215,6 +215,14 @@
                                 <span class="font-info">{{ args['record']['num_lit'] }}</span>
                                 {% endif %}
                             </div>                   
+                            <div class="form-group d-md-flex align-items-start mt-2">
+                                <label for="rec_hosp_id" class="form-label col-6 text-end mt-2 me-1">{{ _("Numéro d'identification") }}</label>
+                                {% if entry == 'Y' %}
+                                <input id="rec_hosp_num" type="text" value="" class="form-control form-lbk" min="0" max="9999">
+                                {% else %}
+                                <span class="font-info">{{ args['record']['rec_hosp_num'] }}</span>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1035,6 +1043,7 @@ var receipt_num   = $("#receipt_num").val() ;
 var date_hosp     = $("#date_hosp").val() ;
 var service_int   = $("#service_int").val() ;
 var bed_num       = $("#bed_num").val() ;
+var rec_hosp_num  = $("#rec_hosp_num").val() ;
 var bill_num      = "" ;
 var stat          = 181 ;
 var rec_custody   = $("input[type='radio'][name='rec_custody']:checked").val() ;
@@ -1139,6 +1148,7 @@ var rec_num_int   = $("#rec_num_int").val() ;
                   '"date_hosp":"' + date_hosp + '", ' +
                   '"service_int":"' + service_int + '", ' +
                   '"bed_num":' + bed_num + ', ' +
+                  '"rec_hosp_num":"' + rec_hosp_num + '", ' +
                   '"stat":' + stat + ', ' +
                   '"rec_custody":"' + rec_custody + '", ' +
                   '"rec_num_int":"' + rec_num_int + '", ' +

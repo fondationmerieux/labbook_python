@@ -1295,7 +1295,8 @@ class Pdf:
             record['type']              = 184
             record['date_hosp']         = datetime.now()
             record['service_interne']   = _("Microbiologie")
-            record['num_lit']           = 'ABC123'
+            record['num_lit']           = 'BED_NUM_123'
+            record['rec_hosp_num']      = 'HOSP_NUM_123'
             record['date_prescription'] = datetime.now()
             record['prescriber']        = 'Damien DOC'
             record['rc']                = 'commentaire dossier\n2eme ligne'
@@ -1335,6 +1336,9 @@ class Pdf:
 
             if record['num_lit']:
                 data['rec']['hosp_bed'] = str(record['num_lit'])
+
+            if record['rec_hosp_num']:
+                data['rec']['rec_hosp_num'] = str(record['rec_hosp_num'])
 
         if record['date_prescription']:
             data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
@@ -1525,13 +1529,13 @@ class Pdf:
 
         # === ANALYZES details ===
         data['l_data'] = []
-        analysis       = {"fam_name": "", "ana_name": "", "l_res": [], "validate": "", "ana_outsourced": ""}
+        analysis       = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "", "ana_outsourced": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
                           "formatting": "N"}
 
         """
-        [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME,
+        [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME, 'ana_comm': ANALYSIS_COMMENTARY
                        'l_res': [{'label': VAR_NAME,
                                   'value': RESULT_VALUE,
                                   'unit': UNIT_RESULT_VALUE,
@@ -1616,7 +1620,7 @@ class Pdf:
                             # --- end of close previous analysis ---
 
                             # init new analysis
-                            tmp_ana = {"fam_name": "", "ana_name": "", "l_res": [], "validate": "", "ana_outsourced": ""}
+                            tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "", "ana_outsourced": ""}
 
                             id_req_ana_p = res['id_req_ana']
                             id_res_p     = res['id_res']
@@ -1651,6 +1655,11 @@ class Pdf:
                                     tmp_ana['ana_name'] = ''
 
                                 Various.useLangPDF()
+
+                            if res['ana_comm'] and not res['ana_comm'].startswith('Project-Id-Version'):
+                                tmp_ana['ana_comm'] = res['ana_comm'].split("\n")
+                            else:
+                                tmp_ana['ana_comm'] = ''
 
                             if res['ana_outsourced'] == 'Y':
                                 tmp_ana['ana_outsourced'] = _("Sous-traitée")
@@ -1882,6 +1891,7 @@ class Pdf:
 
             analysis['fam_name'] = _("Biochimie urinaire")
             analysis['ana_name'] = _("Bandelettes urinaires")
+            analysis['ana_comm'] = "commentaire d'analyse\n2eme ligne".split('\n')
             analysis['ana_outsourced'] = ""
             analysis['l_res'].append(result)
             analysis['validate'] = 'BIO Bernard'
@@ -2272,7 +2282,8 @@ class Pdf:
             record['type']              = 184
             record['date_hosp']         = datetime.now()
             record['service_interne']   = _("Microbiologie")
-            record['num_lit']           = 'ABC123'
+            record['num_lit']           = 'BED_NUM_123'
+            record['rec_hosp_num']      = 'HOSP_NUM_123'
             record['date_prescription'] = datetime.now()
             record['prescriber']        = 'Damien DOC'
             record['rc']                = 'commentaire dossier\n2eme ligne'
@@ -2312,6 +2323,9 @@ class Pdf:
 
             if record['num_lit']:
                 data['rec']['hosp_bed'] = str(record['num_lit'])
+
+            if record['rec_hosp_num']:
+                data['rec']['rec_hosp_num'] = str(record['rec_hosp_num'])
 
         if record['date_prescription']:
             data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
@@ -2496,11 +2510,7 @@ class Pdf:
 
         # === ANALYZES details ===
         data['l_data'] = []
-        analysis       = {"fam_name": "", "ana_name": "", "ana_outsourced": ""}
-
-        """
-        [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME }]
-        """
+        analysis       = {"fam_name": "", "ana_name": "", "ana_comm": "", "ana_outsourced": ""}
 
         # temp var for build l_data
         tmp_ana = analysis.copy()
@@ -2527,7 +2537,7 @@ class Pdf:
                     if res['id_data'] != id_req_ana_p:
 
                         # init new analysis
-                        tmp_ana = {"fam_name": "", "ana_name": "", "ana_outsourced": ""}
+                        tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "ana_outsourced": ""}
 
                         id_req_ana_p = res['id_data']
 
@@ -2562,6 +2572,11 @@ class Pdf:
 
                             Various.useLangPDF()
 
+                        if res['ana_comm'] and not res['ana_comm'].startswith('Project-Id-Version'):
+                            tmp_ana['ana_comm'] = res['ana_comm'].split("\n")
+                        else:
+                            tmp_ana['ana_comm'] = ''
+
                         if res['outsourced'] == 'Y':
                             tmp_ana['ana_outsourced'] = _("Sous-traitée")
 
@@ -2576,6 +2591,7 @@ class Pdf:
 
             analysis['fam_name'] = _("Biochimie urinaire")
             analysis['ana_name'] = _("Bandelettes urinaires")
+            analysis['ana_comm'] = "commentaire d'analyse\n2eme ligne".split('\n')
             analysis['ana_outsourced'] = _("Sous-traitée")
 
             data['l_data'].append(analysis)

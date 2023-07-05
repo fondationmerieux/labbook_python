@@ -621,8 +621,8 @@ def homepage(login=''):
         session.modified = True
 
         return redirect(session['server_ext'] + '/' + session['current_page'])
-    # Qualitican homepage
-    elif session['user_role'] == 'Q':
+    # Qualitican or Laboratory homepage
+    elif session['user_role'] in ('Q', 'L'):
         session['current_page'] = 'quality-general'
         session.modified = True
 
@@ -1592,6 +1592,39 @@ def setting_functionnal_units():
         log.error(Logs.fileline() + ' : requests functionnal units list failed, err=%s , url=%s', err, url)
 
     return render_template('setting-functionnal-units.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : manual setting
+@app.route('/setting-manual')
+def setting_manual():
+    log.info(Logs.fileline() + ' : TRACE setting manual')
+
+    test_session()
+
+    session['current_page'] = 'setting-manual'
+    session.modified = True
+
+    json_data = {}
+
+    # Load requesting services list
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/manual'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+            i = 0
+            for val in json_data['data_values']:
+                val['id_ihm'] = i
+                i += 1
+
+            json_data['data_last_id'] = i
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests setting manual list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-manual.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting link unit user
@@ -3771,7 +3804,9 @@ def list_staff():
 
 # Page : details staff
 @app.route('/det-staff/<int:user_id>')
-def det_staff(user_id=0):
+@app.route('/det-staff/<string:ctx>/<int:user_id>')
+@app.route('/det-staff/<string:ctx>/<int:user_id>/<string:role_type>')
+def det_staff(user_id=0, ctx='', role_type=''):
     log.info(Logs.fileline() + ' : TRACE det staff=' + str(user_id))
 
     test_session()
@@ -3781,6 +3816,10 @@ def det_staff(user_id=0):
 
     json_ihm  = {}
     json_data = {}
+
+    # the return page after saving
+    if ctx:
+        json_ihm['return_page'] = ctx
 
     # Load sections
     try:
@@ -4066,11 +4105,23 @@ def list_manuals():
     session['current_page'] = 'list-manuals'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # Load list of manual category
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/manual/category'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_manualCat'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
 
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/manual/list'
-        req = requests.get(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_data = req.json()
@@ -4078,7 +4129,7 @@ def list_manuals():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests manual list failed, err=%s , url=%s', err, url)
 
-    return render_template('list-manuals.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template('list-manuals.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : details manual
@@ -4095,6 +4146,17 @@ def det_manual(id_manual=0):
     json_data = {}
 
     json_data['manual_det'] = []
+
+    # Load list of manual category
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/manual/category'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_manualCat'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
 
     # Load sections
     try:
@@ -4212,6 +4274,45 @@ def det_procedure(id_procedure=0):
     json_data['id_procedure'] = id_procedure
 
     return render_template('det-procedure.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list trace download
+@app.route('/list-trace-download/<string:type_trace>')
+def list_trace_download(type_trace=''):
+    log.info(Logs.fileline() + ' : TRACE list trace download')
+
+    test_session()
+
+    session['current_page'] = 'list-trace-download' + str(type_trace)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_ihm['type_trace'] = type_trace
+
+    # Load list of user ident
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/ident/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['user_ident'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user ident list failed, err=%s , url=%s', err, url)
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/trace/list/' + str(type_trace)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests trace download list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-trace-download.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : internal control list
@@ -4462,6 +4563,17 @@ def list_stock():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)
 
+    # Load list of local
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_local'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+
     # Load list of stock
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list'
@@ -4474,6 +4586,44 @@ def list_stock():
         log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
 
     return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : move stock product
+@app.route('/move-stock-product')
+def move_stock_product():
+    log.info(Logs.fileline() + ' : TRACE setting move stock product')
+
+    test_session()
+
+    session['current_page'] = 'move-stock-product'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load list of local
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_local'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+
+    # Load stock product by local
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/supply/list'
+        req = requests.post(url, json={})
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list supply product failed, err=%s , url=%s', err, url)
+
+    return render_template('move-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : products list
@@ -4642,9 +4792,21 @@ def det_stock_product(prs_ser=0):
     session['current_page'] = 'det-stock-product/' + str(prs_ser)
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
     json_data['stock_product'] = []
+
+    # Load list of local
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['product_local'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
 
     if prs_ser > 0:
         # Load stock product details
@@ -4660,7 +4822,7 @@ def det_stock_product(prs_ser=0):
 
     json_data['prs_ser'] = prs_ser
 
-    return render_template('det-stock-product.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template('det-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list nonconformities

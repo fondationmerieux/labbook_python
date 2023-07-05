@@ -27,6 +27,15 @@
                     </div>
                 </div>
                 <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="man_mas" class="form-label col-3 text-end mt-2 me-1">{{ _("Catégorie") }}</label>
+                    <div>					
+                        <select name="man_mas" id="man_mas" class="form-select">
+                            {% from 'macros.html' import select_manualCat %}
+                            {{ select_manualCat(ihm['l_manualCat'], args['manual_det']['man_mas']) }}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_writer" class="form-label col-3 text-end me-1">{{ _("Rédacteur") }}</label>
                     <div>
                         <select id="search_writer" class="form-select form-lbk form-search"></select>
@@ -93,9 +102,11 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
+                {% if session['user_role'] in ('A','B','Q','TQ') %}
                 <div class="float-end">
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -229,6 +240,7 @@ var id_owner    = {{ session['user_id']|safe}} ;
 var id_manual   = {{ args['id_manual']|safe }} ;
 var reference   = $("#reference").val()   ;
 var title       = $("#title").val()       ;
+var man_mas     = $("#man_mas").val()     ;
 var writer      = $("#search_writer").val()   ;
 var auditor     = $("#search_auditor").val()  ;
 var approver    = $("#search_approver").val() ;
@@ -264,6 +276,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"id_item":' + id_manual + ', ' +
               '"reference":"' + reference + '", ' +
               '"title":"' + title + '", ' +
+              '"man_mas":' + man_mas + ', ' +
               '"writer":' + writer + ', ' +
               '"auditor":' + auditor + ', ' +
               '"approver":' + approver + ', ' +
@@ -320,7 +333,9 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'MANU\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    {% if session['user_role'] in ('A','B','Q','TQ') %}
     tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    {% endif %}
     tmp_tr += '</tr>' ;
 
     tr_file += tmp_tr ;

@@ -321,6 +321,25 @@ class UserRoleList(Resource):
         return compose_ret(l_roles, Constants.cst_content_type_json)
 
 
+class UserIdentList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_ident = User.getUserIdentList()
+
+        if not l_ident:
+            self.log.error(Logs.fileline() + ' : TRACE UserIdentList not found')
+
+        for ident in l_ident:
+            # Replace None by empty string
+            for key, value in list(ident.items()):
+                if ident[key] is None:
+                    ident[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE UserIdentList')
+        return compose_ret(l_ident, Constants.cst_content_type_json)
+
+
 class UserSearch(Resource):
     log = logging.getLogger('log_services')
 

@@ -41,7 +41,7 @@
                     <a href="{{ session['server_ext'] }}/list-works/T/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                         {% endif %}
                     {% endif %}
-                    {% if session['user_role'] not in ('Q','K') %}
+                    {% if session['user_role'] in ('B','T','TA','TQ','S','SA') %}
                     <a href="{{ session['server_ext'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] in ('T','TA','TQ') %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}

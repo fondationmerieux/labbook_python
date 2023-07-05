@@ -24,8 +24,8 @@
                                 <input id="f_date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
 
-                            {% if ihm['req_services'] %}
                             <label for="service_int" class="form-label text-end ms-3 mt-2 me-1">{{ _("Service demandeur") }}</label>
+                            {% if ihm['req_services'] %}
                             <select id="service_int" class="form-select w-auto">
                                 {% from 'macros.html' import select_req_services %}
                                 {{ select_req_services(ihm['req_services']) }}

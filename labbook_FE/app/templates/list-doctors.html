@@ -110,7 +110,7 @@
                 </div>
                 <div class="float-end">
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
-                    {% if session['user_role'] != 'P' %}
+                    {% if session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q') %}
                     <input type="button" onclick="add_doctor();" id="btn_add" value="{{ _("Ajouter un prescripteur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
@@ -208,8 +208,11 @@ $("#list_doctors_total").html( data_len ) ;
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + data_doctors[i].id_data + "\">{{ _("Editer") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_doctors[i].id_data + ")\">{{ _("Supprimer") }}</a>";   
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + data_doctors[i].id_data + "\">{{ _("Editer") }}</a>" ;
+
+    {% if session["user_role"] not in ("L") %}
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_doctors[i].id_data + ")\">{{ _("Supprimer") }}</a>";
+    {% endif %}
         
     menu_act += "</div></ul></nav>" ;
 

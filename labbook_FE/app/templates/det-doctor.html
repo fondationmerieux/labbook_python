@@ -116,9 +116,11 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
+                {% if session['user_role'] not in ('L') %}
                 <div class="float-end">
                     <input type="button" onclick="save_doctor();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

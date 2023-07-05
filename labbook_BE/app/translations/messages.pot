@@ -2164,10 +2164,6 @@ msgstr ""
 msgid "Secrétaire"
 msgstr ""
 
-#: translations/messages_pybabel.py:567
-msgid "Secretaire avancée"
-msgstr ""
-
 #: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305
 msgid "Technicien"
 msgstr ""
@@ -6983,7 +6979,7 @@ msgid "Zone thérapeutique : 0.5 à 1.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2309
-msgid "Secrétaire avancée"
+msgid "Secrétaire avancé"
 msgstr ""
 
 #: translations/messages_pybabel.py:2312

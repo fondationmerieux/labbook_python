@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
+- location fields in supply of product becomes a drop-down menu
+- location of stock product can be changed to another location
+- edit user able to upload file like CV, diploma ... as for edit staff GUI
+
+## [3.3.9] - 2023-07-03
+### Added
+- analysis commentary variable for pdf report, ana_comm (like var_comm)
+- laboratory profil (can only read and export quality sections) 
+- identification number field for internal request (rec_hosp_num)
+- GUI for view procedure downloads (Admin and Qualitician) 
+- add category (configurable) for manual
+
+### Fixed
+- indicator.ini replace CAT_H => CAT_M (Labbooks already installed to be corrected manually)
+- short cut for edit user able to upload file like CV, diploma ... as for edit staff GUI
 
 ## [3.3.8] - 2023-05-04
 ### Added
@@ -66,7 +81,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - change settings of DHIS2
 - update dhis2.md
-- responsive patient details IHM
+- responsive patient details GUI
 
 ### Fixed
 - missing date backup status except in admin profil
@@ -181,7 +196,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - more details displayed in search patient field
 
 ### Fixed
-- Almost all IHM (85 files) because of change to Bootstrap 5
+- Almost all GUI (85 files) because of change to Bootstrap 5
 - add popup wait when deleting something
 
 ## [3.2.15] - 2022-11-02
@@ -420,7 +435,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [3.1.0] - 2021-09-15
 ### Added
 - New languages avaible : Arabic, Khmer, Laotian, Malagasy, Portuguese
-- Add default language of laboratory in Pref settings (for IHM and Report)
+- Add default language of laboratory in Pref settings (for GUI and Report)
 - Add default language of analysis repository in Pref settings
 - Add new column code lab in list of records
 

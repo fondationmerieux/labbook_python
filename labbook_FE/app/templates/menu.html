@@ -154,6 +154,8 @@
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
                             </li>
                             <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-manual">{{ _("Configuration des manuels") }}</a>
+                            <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
                             </li>
                             {% endif %}
@@ -187,7 +189,7 @@
                     {% endif %}
 
                     <!-- Dropdown Quality -->
-                    {% if session['pref_quality'] == 1 and (session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q','K')) %}
+                    {% if session['pref_quality'] == 1 and (session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q','K','L')) %}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarQuality" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Qualité") }}</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarQuality">
                         {% if session['user_role'] not in ('S','P') %}
@@ -350,6 +352,7 @@
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-template">{{ _("Configuration des modèles de documents") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-report">{{ _("Configuration des comptes rendus") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-rec-num">{{ _("Configuration des numéros de dossier") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-manual">{{ _("Configuration des manuels") }}</a>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-zipcity">{{ _("Configuration des codes postaux") }}</a>
                     {% endif %}
                     {% if session['user_role'] in ('A','K') %}
@@ -373,7 +376,7 @@
             {% endif %}
 
             <!-- Dropdown Quality -->
-            {% if session['pref_quality'] == 1 and (session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q','K')) %} 
+            {% if session['pref_quality'] == 1 and (session['user_role'] in ('A','B','T','TA','TQ','S','SA','Q','K','L')) %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
                   <a class="nav-link dropdown-toggle qualite" href="#" id="navbarquality" data-bs-toggle="dropdown">

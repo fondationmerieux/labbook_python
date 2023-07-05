@@ -35,9 +35,11 @@
                     <input type="hidden" id="id_eqp" value="{{ args['control']['ctq_eqp'] }}">
                 </div>
             </div>
+            {% if session['user_role'] in ('A','B','Q','TQ') %}
             <div class="col-12 text-end my-2">
                 <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
             </div>
+            {% endif %}
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>
@@ -132,8 +134,7 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    {% if session["user_role"] == "A" or session["user_role"] == "B" or
-          session["user_role"] == "Q" or session["user_role"] == "TQ" %}
+    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +

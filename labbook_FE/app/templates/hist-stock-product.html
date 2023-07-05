@@ -192,6 +192,9 @@ $("#list_items_total").html( data_len ) ;
            '<td><div class="text-start">' + nb_pack + '</div></td>' +
            '<td><div class="text-start">' + data_items[i].prs_receipt_date + '</div></td>' +
            '<td><div class="text-start">' + data_items[i].prs_expir_date + '</div></td>' +
+           {# To be postponed for the next version 3.3.10
+           '<td><div class="text-start">' + data_items[i].prl_name + '</div></td>' +
+           #}
            '<td><div class="text-start">' + data_items[i].prs_rack + '</div></td>' +
            '<td><div class="text-start">' + data_items[i].prs_batch_num + '</div></td>' +
            '<td><div class="text-end">' + Number(data_items[i].prs_buy_price / 100 ).toFixed(2) + '</div></td>' +

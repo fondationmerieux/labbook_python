@@ -51,7 +51,13 @@
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="supp_rack" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation") }}</label>
                     <div>					
-                        <input type="text" name="supp_rack" id="supp_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control form-lbk">			
+                        {# To be postponed for the next version 3.3.10
+                        <select name="prod_local" id="prod_local" class="form-select">
+                            {% from 'macros.html' import select_prl_local %}
+                            {{ select_prl_local(ihm['product_local'], args['stock_product']['prs_prl']) }}
+                        </select>
+                        #}
+                        <input type="text" name="supp_rack" id="supp_rack" value="{{ args['stock_product']['prs_rack'] }}" class="form-control form-lbk">
                     </div>
                 </div>
                 {% endif %}
@@ -175,6 +181,9 @@ var expir_date   = $("#prs_expir_date").val()   ;
 {% if 'supp_rack' in session and session['supp_rack'] == 'Y' %}
 var rack         = $("#supp_rack").val() ;
 {% else %}
+{# To be postponed for the next version 3.3.10
+var rack         = 0 ;
+#}
 var rack         = "" ;
 {% endif %}
 {% if 'supp_batch_num' in session and session['supp_batch_num'] == 'Y' %}
@@ -219,6 +228,9 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"prs_nb_pack":' + prs_nb_pack + ', ' +
               '"prs_receipt_date":"' + receipt_date + '", ' +
               '"prs_expir_date":"' + expir_date + '", ' +
+              {# To be postponed for the next version 3.3.10
+              '"prs_rack":' + rack + ', ' +
+              #}
               '"prs_rack":"' + rack + '", ' +
               '"prs_batch_num":"' + batch_num + '", ' +
               '"prs_buy_price":' + buy_price + ', ' +

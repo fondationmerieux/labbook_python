@@ -122,8 +122,7 @@ let obj = data ;
     {
     let tmp_tr = "<tr style=\"\">" ;
 
-    {% if session["user_role"] == "A" or session["user_role"] == "B" or
-          session["user_role"] == "Q" or session["user_role"] == "TQ" %}
+    {% if session['user_role'] in ('A','B','Q','TQ') %}
     let btn = "<input type=\"button\" onclick=\"del_value(" + obj.id_ihm + ");load_data();\" value=\"" + "{{ _("Supprimer") }}" + "\">" ;
     {% else %}
     let btn = "" ;

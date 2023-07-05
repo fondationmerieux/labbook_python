@@ -201,9 +201,11 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
+                {% if session['user_role'] in ('A','B','TQ','Q') %}
                 <div class="float-end">
                     <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -277,7 +279,11 @@ var param = '{ "id_owner":' + id_owner + ', ' +
                {
                $("#dial-wait").modal("hide") ;
 
+               {% if ihm['return_page'] %}
+               window.location = "{{ session['server_ext'] }}/{{ ihm['return_page'] }}" ;
+               {% else %}
                window.location = "{{ session['server_ext'] }}/list-staff" ;
+               {% endif %}
                } ) ;
            },
        error: function(data)
@@ -330,7 +336,10 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+
+    {% if session['user_role'] in ('A','B','TQ','Q') %}
     tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\',' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    {% endif %}
     tmp_tr += '</tr>' ;
 
     tr_file += tmp_tr ;

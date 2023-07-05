@@ -360,15 +360,19 @@ class ExportWhonet(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportWhonet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        """ To be postponed for the next version 3.3.10
+        "Numéro d'identification",
+        """
+
         # Data
         l_data = [["Laboratoire", "Lab adresse", "Lab ville", "Téléphone laboratoire", "Email laboratoire",
                    "Specialité du prescripteur", "Numéro d'identification", "Nom de famille",
                    "Prénom", "Nom et prénom ", "Sexe", "Date de naissance", "Age", "Catégorie d'âge", "Adresse (patient)",
                    "Ville (patient)", "Code postal (patient)", "Téléphone (patient)", "Profession (patient)",
-                   "Date d'admission", "Service demandeur", "Numéro de lit", "Type patient", "Isolate number",
-                   "Numéro de prélèvement", "Date de prélèvement", "Type de prélèvement", "Commentaire de prélèvement",
-                   "Micro-organisme", "Nom de l'antibiotique", "Methode de détermination", "Method value",
-                   "Resultat d'antibiotique"]]
+                   "Date d'admission", "Service demandeur", "Numéro de lit", "Type patient",
+                   "Isolate number", "Numéro de prélèvement", "Date de prélèvement", "Type de prélèvement", 
+                   "Commentaire de prélèvement", "Micro-organisme", "Nom de l'antibiotique", "Methode de détermination", 
+                   "Method value", "Resultat d'antibiotique"]]
         dict_data = Export.getDataWhonet(args['date_beg'], args['date_end'])
 
         Various.useLangDB()
@@ -501,6 +505,13 @@ class ExportWhonet(Resource):
                     data.append(d['num_lit'])
                 else:
                     data.append('')
+
+                """ To be postponed for the next version 3.3.10
+                if d['rec_hosp_num']:
+                    data.append(d['rec_hosp_num'])
+                else:
+                    data.append('')
+                """
 
                 if d['rec_type']:
                     rec_type = d['rec_type']

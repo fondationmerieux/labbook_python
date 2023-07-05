@@ -743,3 +743,74 @@ class Setting:
         except mysql.connector.Error as e:
             Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getManualSetting():
+        cursor = DB.cursor()
+
+        req = ('select mas_ser, mas_rank, mas_name '
+               'from manual_setting '
+               'order by mas_rank asc')
+
+        cursor.execute(req,)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertManualSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into manual_setting '
+                           '(mas_date, mas_rank, mas_name) '
+                           'values (NOW(), %(mas_rank)s, %(mas_name)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateManualSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update manual_setting '
+                           'set mas_rank=%(mas_rank)s, mas_name= %(mas_name)s '
+                           'where mas_ser=%(mas_ser)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteManualSetting(mas_ser):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from manual_setting '
+                           'where mas_ser=%s', (mas_ser,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getManualCategory():
+        cursor = DB.cursor()
+
+        req = ('select mas_ser, mas_name, mas_rank '
+               'from manual_setting '
+               'order by mas_rank asc, mas_name asc ')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()

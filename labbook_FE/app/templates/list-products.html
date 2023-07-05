@@ -100,14 +100,21 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    let menu_act = '<nav class="">' +
-                   '<ul class="navbar-nav">' +
-                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
-                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-new-product/' + data_items[i].prd_ser + '">{{ _("Editer la fiche produit") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prd_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
+    let menu_act = '' ;
+
+    {% if session['user_role'] in ('A','K','L') %}
+    menu_act += '<nav class="">' +
+                '<ul class="navbar-nav">' +
+                '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
+                '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-new-product/' + data_items[i].prd_ser + '">{{ _("Editer la fiche produit") }}</a>' ;
+
+        {% if session['user_role'] in ('A','K') %}
+        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prd_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;
+        {% endif %}
         
     menu_act += '</div></ul></nav>' ;
+    {% endif %}
 
     res += '<tr><td hidden><div>' + data_items[i].prd_ser + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +

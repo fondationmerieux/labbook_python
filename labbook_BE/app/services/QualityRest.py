@@ -1247,8 +1247,13 @@ class EquipmentExport(Resource):
 class ManualList(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self):
-        l_items = Quality.getManualList()
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_items = Quality.getManualList(args)
 
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE ManualList not found')
@@ -1321,7 +1326,7 @@ class ManualDet(Resource):
 
         if 'id_owner' not in args or 'id_item' not in args or 'reference' not in args or 'title' not in args or \
            'writer' not in args or 'auditor' not in args or 'approver' not in args or 'date_insert' not in args or \
-           'date_apply' not in args or 'date_update' not in args or 'section' not in args:
+           'date_apply' not in args or 'date_update' not in args or 'section' not in args or 'man_mas' not in args:
             self.log.error(Logs.fileline() + ' : ManualDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -1331,6 +1336,7 @@ class ManualDet(Resource):
                                        id_owner=args['id_owner'],
                                        reference=args['reference'],
                                        title=args['title'],
+                                       man_mas=args['man_mas'],
                                        writer=args['writer'],
                                        auditor=args['auditor'],
                                        approver=args['approver'],
@@ -1348,6 +1354,7 @@ class ManualDet(Resource):
             ret = Quality.insertManual(id_owner=args['id_owner'],
                                        reference=args['reference'],
                                        title=args['title'],
+                                       man_mas=args['man_mas'],
                                        writer=args['writer'],
                                        auditor=args['auditor'],
                                        approver=args['approver'],
@@ -1380,9 +1387,14 @@ class ManualExport(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
-        l_data = [['id_data', 'title', 'reference', 'writer', 'auditor', 'approver', 'date_insert',
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_data = [['id_data', 'title', 'category', 'reference', 'writer', 'auditor', 'approver', 'date_insert',
                    'date_apply', 'date_update', 'section', ]]
-        dict_data = Quality.getManualList()
+        dict_data = Quality.getManualList(args)
 
         Various.useLangDB()
 
@@ -1392,6 +1404,7 @@ class ManualExport(Resource):
 
                 data.append(d['id_data'])
                 data.append(d['title'])
+                data.append(d['mas_name'])
                 data.append(d['reference'])
                 data.append(d['writer'])
                 data.append(d['auditor'])
@@ -2018,8 +2031,10 @@ class StockProductHist(Resource):
             if 'username' not in stock:
                 stock['username'] = ''
 
-            if 'prs_rack' not in stock:
-                stock['prs_rack'] = ''
+            """ To be postponed for the next version 3.3.10
+            if 'prl_name' not in stock:
+                stock['prl_name'] = ''
+            """
 
             if 'prs_batch_num' not in stock:
                 stock['prs_batch_num'] = ''
@@ -2171,11 +2186,51 @@ class StockProductDet(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class StockSupplyList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if not args:
+            args = {}
+
+        l_supplys = Quality.getStockSupplyList(args)
+
+        if not l_supplys:
+            self.log.error(Logs.fileline() + ' : TRACE StockSupplyList not found')
+
+        for supply in l_supplys:
+            # Replace None by empty string
+            for key, value in list(supply.items()):
+                if supply[key] is None:
+                    supply[key] = ''
+
+            if supply['prs_date']:
+                supply['prs_date'] = datetime.strftime(supply['prs_date'], '%Y-%m-%d %H:%M')
+
+            packUse = Quality.getNbStockUse(supply['prs_ser'])
+
+            if packUse and int(packUse['nb_pack']) > 0:
+                supply['prs_nb_pack'] = int(supply['prs_nb_pack']) - int(packUse['nb_pack'])
+
+        self.log.info(Logs.fileline() + ' : TRACE StockSupplyList')
+        return compose_ret(l_supplys, Constants.cst_content_type_json)
+
+
 class StockSupplyDet(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, id_item):
         args = request.get_json()
+
+        """ To be postponed for the next version 3.3.10
+        if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
+           'prs_receipt_date' not in args or 'prs_prl' not in args or 'prs_expir_date' not in args or \
+           'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_lessor' not in args:
+            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+        """
 
         if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
            'prs_receipt_date' not in args or 'prs_rack' not in args or 'prs_expir_date' not in args or \
@@ -2192,7 +2247,7 @@ class StockSupplyDet(Resource):
                                             prs_nb_pack=args['prs_nb_pack'],
                                             prs_receipt_date=args['prs_receipt_date'],
                                             prs_expir_date=args['prs_expir_date'],
-                                            prs_rack=args['prs_rack'],
+                                            prs_prl=args['prs_prl'],
                                             prs_batch_num=args['prs_batch_num'],
                                             prs_buy_price=args['prs_buy_price'] * 100,
                                             prs_lessor=args['prs_lessor'])
@@ -2220,6 +2275,61 @@ class StockSupplyDet(Resource):
         id_item = ret
 
         self.log.info(Logs.fileline() + ' : TRACE StockSupplyDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockSupplyMove(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'list_supply' not in args:
+            self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        for supply in args['list_supply']:
+            prev_prs_ser = supply['prev_prs_ser']
+
+            prev_supply = Quality.getStockSupply(prev_prs_ser)
+
+            if not prev_supply:
+                self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR prev_supply prs_ser=' + str(prev_prs_ser))
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            self.log.error(Logs.fileline() + ' DEBUG prev_prs_ser = ' + str(prev_prs_ser))
+            self.log.error(Logs.fileline() + ' DEBUG prs_ser = ' + str(supply['prs_ser']))
+
+            # change only location
+            if prev_prs_ser == supply['prs_ser']:
+                ret = Quality.updateStockSupplyLocal(prs_ser=prev_prs_ser, prs_prl=supply['prs_prl'])
+
+                if ret is False:
+                    self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateSupplyLocal')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+            else:
+                upd_nb_pack = prev_supply['prs_nb_pack'] - supply['prs_nb_pack']
+
+                self.log.error(Logs.fileline() + ' DEBUG upd_nb_pack = ' + str(upd_nb_pack))
+
+                # insert new supply
+                ret = Quality.insertStockSupplySplit(prs_user=args['id_user'],
+                                                     prs_nb_pack=supply['prs_nb_pack'],
+                                                     prs_prl=supply['prs_prl'],
+                                                     prs_ser=prev_prs_ser)
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : StockSupplyMove ERROR insertStockSupplySplit')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+                
+                # update previous supply
+                ret = Quality.updateStockSupplySplit(prs_nb_pack=upd_nb_pack, prs_ser=prev_prs_ser)
+
+                if ret is False:
+                    self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateStockSupplySplit')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StockSupplyMove')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2258,12 +2368,12 @@ class StockUse(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # check if it is the last pack to use
-        PackSupply = Quality.getNbStockSupply(args['pru_prs'])
-        PackUse    = Quality.getNbStockUse(args['pru_prs'])
+        packSupply = Quality.getNbStockSupply(args['pru_prs'])
+        packUse    = Quality.getNbStockUse(args['pru_prs'])
 
-        self.log.error(Logs.alert() + ' : StockUse prs_ser=' + str(args['pru_prs']) + ' PackSupply=' + str(PackSupply) + ' PackUse=' + str(PackUse))
+        self.log.error(Logs.fileline() + ' : StockUse prs_ser=' + str(args['pru_prs']) + ' packSupply=' + str(packSupply) + ' packUse=' + str(packUse))
 
-        if (int(PackSupply['nb_pack']) - int(PackUse['nb_pack'])) == 0:
+        if (int(packSupply['nb_pack']) - int(packUse['nb_pack'])) == 0:
             self.log.error(Logs.alert() + ' : StockUse update empty prs_ser=' + str(args['pru_prs']))
             ret = Quality.emptyStockSupply(args['pru_prs'])
 
@@ -2435,6 +2545,9 @@ class StockSuppliesExport(Resource):
                 data.append(d['prs_nb_pack'])
                 data.append(d['prs_receipt_date'])
                 data.append(d['prs_expir_date'])
+                """ To be postponed for the next version 3.3.10
+                data.append(d['prl_name'])
+                """
                 data.append(d['prs_rack'])
                 data.append(d['prs_batch_num'])
                 data.append(d['prs_buy_price'] / 100)
@@ -2517,6 +2630,26 @@ class StockUsesExport(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE StockUsesExport')
         return compose_ret('', Constants.cst_content_type_json)
+
+""" To be postponed for the next version 3.3.10
+class StockLocalList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Quality.getStockLocalList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE StockLocalList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE StockProductList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+"""
 
 
 class SupplierList(Resource):
@@ -2729,3 +2862,51 @@ class TraceDownload(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE TraceDownload')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class TraceList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type_trace):
+        l_items = Quality.getTraceList(type_trace)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE TraceList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['trd_date']:
+                item['trd_date'] = datetime.strftime(item['trd_date'], '%Y-%m-%d %H:%M')
+
+            if item['trd_last_access']:
+                item['trd_last_access'] = datetime.strftime(item['trd_last_access'], '%Y-%m-%d %H:%M')
+
+        self.log.info(Logs.fileline() + ' : TRACE TraceList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+    def post(self, type_trace):
+        args = request.get_json()
+
+        l_items = Quality.getTraceListSearch(type_trace, args)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE TraceList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['trd_date']:
+                item['trd_date'] = datetime.strftime(item['trd_date'], '%Y-%m-%d %H:%M')
+
+            if item['trd_last_access']:
+                item['trd_last_access'] = datetime.strftime(item['trd_last_access'], '%Y-%m-%d %H:%M')
+
+        self.log.info(Logs.fileline() + ' : TRACE TraceList')
+        return compose_ret(l_items, Constants.cst_content_type_json)

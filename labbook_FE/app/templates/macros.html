@@ -19,6 +19,15 @@
     {% endfor %}
 {%- endmacro %}
 
+{# To be postponed for the next version 3.3.10
+{% macro select_prl_local(l_prl_local, id_selected) -%}
+    <option selected value="0"></option>
+    {% for prl_local in l_prl_local %}
+        <option value="{{ prl_local['prl_ser'] }}" {% if id_selected and id_selected == prl_local['prl_ser'] %}selected{% endif %}>{{ prl_local['prl_name'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+#}
+
 {% macro select_type_ana(l_type_ana, id_selected) -%}
     <option selected value="0"></option>
     {% for type_ana in l_type_ana %}
@@ -68,6 +77,13 @@
     {% endfor %}
 {%- endmacro %}
 
+{% macro select_user_ident(l_user_ident, type_selected) -%}
+    <option value="0" {% if not type_selected or type_selected == '' %} selected {% endif %}></option>
+    {% for user_ident in l_user_ident %}
+        <option value="{{ user_ident['id_user'] }}" {% if type_selected and type_selected == user_ident['id_user'] %}selected{% endif %}>{{ user_ident['user_ident'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
 {% macro select_type_record() -%}
     <option value="A" selected=""></option>
     <option value="E">{{ _("Externe") }}</option>
@@ -86,5 +102,12 @@
     <option value="" {% if not id_selected or id_selected == 0 %} selected {% endif %}></option>
     {% for req_service in l_req_services %}
         <option value="{{ req_service['rqs_name'] }}" {% if id_selected and id_selected == req_service['rqs_ser'] %}selected{% endif %}>{{ req_service['rqs_name'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_manualCat(l_manualCat, id_selected) -%}
+    <option selected value="0"></option>
+    {% for manualCat in l_manualCat %}
+        <option value="{{ manualCat['mas_ser'] }}" {% if id_selected and id_selected == manualCat['mas_ser'] %}selected{% endif %}>{{ manualCat['mas_name'] }}</option>
     {% endfor %}
 {%- endmacro %}

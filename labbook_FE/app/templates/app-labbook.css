@@ -258,6 +258,13 @@ background-color : #452ED1;
 color            : #FFF;
 }
 
+/* title for laboratory profil */
+.page-title-L
+{
+background-color : #BB2688;
+color            : #FFF;
+}
+
 #user-info 
 {
 margin  : 0;
@@ -338,6 +345,12 @@ background-repeat : no-repeat;
 .role-K
 {
 background-image  : url({{ url_for('static', filename='img/sto-profile.png') }});
+background-repeat : no-repeat;
+}
+
+.role-L
+{
+background-image  : url({{ url_for('static', filename='img/lab-profile.png') }});
 background-repeat : no-repeat;
 }
 
@@ -458,6 +471,18 @@ color            : #FFF;
 .btn-K:hover
 {
 background-color : #291B7D ;
+color            : #FFF;
+}
+
+.btn-L
+{
+background-color : #71B330 ;
+color            : #FFF;
+}
+
+.btn-L:hover
+{
+background-color : #436B1C ;
 color            : #FFF;
 }
 
@@ -626,6 +651,21 @@ color      : #FFF !important;
 .role-K a:hover 
 {
 background      : #292EBE !important;
+color           : #FFF !important;
+text-decoration : none !important; 
+}
+
+.role-L a 
+{
+display    : block;
+background : #BB2688 !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-L a:hover 
+{
+background      : #A52396 !important;
 color           : #FFF !important;
 text-decoration : none !important; 
 }
@@ -914,6 +954,19 @@ border           : 0;
 .nav-K a:hover
 {
 background-color : #292EBE !important;
+color            : #FFF !important;
+}
+
+.nav-L a
+{
+background-color : #BB2688 !important;
+color            : #FFF; !important
+border           : 0;
+}
+
+.nav-L a:hover
+{
+background-color : #A52396 !important;
 color            : #FFF !important;
 }
 

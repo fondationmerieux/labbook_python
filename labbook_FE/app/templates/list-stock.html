@@ -23,26 +23,32 @@
                         <label for="prod_type" class="form-label text-end ms-3 mt-2 me-1">{{ _("Type") }}</label>
                         <div>
                             <select name="prod_type" id="prod_type" class="form-select">
-                                <option value="0" selected="selected"></option>
-                                {% for prod_type in ihm['product_type'] %}
-                                <option value="{{ prod_type['id_data'] }}">{{ prod_type['label'] }}</option>
-                                {% endfor %}
-                            </select>       
+                                {% from 'macros.html' import select_prd_type %}
+                                {{ select_prd_type(ihm['product_type']) }}
+                            </select>
                         </div>
                         <label for="prod_conserv" class="form-label text-end ms-3 mt-2 me-1">{{ _("Conservation") }}</label>
                         <div>
                             <select name="prod_conserv" id="prod_conserv" class="form-select">
-                                <option value="0" selected="selected"></option>
-                                {% for prod_conserv in ihm['product_conserv'] %}
-                                <option value="{{ prod_conserv['id_data'] }}">{{ prod_conserv['label'] }}</option>
-                                {% endfor %}
-                            </select>       
+                                {% from 'macros.html' import select_prd_conserv %}
+                                {{ select_prd_type(ihm['product_conserv']) }}
+                            </select>
                         </div>
 
                         <label class="form-label text-end ms-3 mt-2 me-1">{{ _("Bailleur") }}</label>
                         <div>
                             <input type="text" name="lessor" id="lessor" value="" class="form-control form-lbk cnx_trigger">	 
                         </div>
+
+                        {# To be postponed for the next version 3.3.10
+                        <label for="prod_local" class="form-label text-end ms-3 mt-2 me-1">{{ _("Localisation") }}</label>
+                        <div>
+                            <select name="prod_local" id="prod_local" class="form-select">
+                                {% from 'macros.html' import select_prl_local %}
+                                {{ select_prl_local(ihm['product_local']) }}
+                            </select>
+                        </div>
+                        #}
                     </div>
 
                     <div class="col-lg-12 mt-3">
@@ -79,6 +85,9 @@
                             <th class="text-start cursor-act">{{ _("Type") }}</th>
                             <th class="text-start cursor-act">{{ _("Conservation") }}</th>
                             <th class="text-start cursor-act">{{ _("Fournisseur") }}</th>
+                            {# To be postponed for the next version 3.3.10
+                            <th class="text-start cursor-act">{{ _("Localisation") }}</th>
+                            #}
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -99,7 +108,7 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end d-lg-flex align-items-end">
-                    {% if session['user_role'] in ('A','K') %}
+                    {% if session['user_role'] in ('A','K','L') %}
                     <div class="dropdown">
                         <button class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_export" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Export des données") }}</button>
                         <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownExport">
@@ -109,9 +118,18 @@
                             <li><a class="dropdown-item dropdown-color-link" href="#" onclick="export_uses();">{{ _("Export des usages") }}</a></li>
                         </ul>
                     </div>
+                    {% endif %}
 
+                    {% if session['user_role'] in ('A','K') %}
                     <input type="button" onclick="stock_item();" id="btn_add" value="{{ _("Approvisionner un produit") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
-                    <input type="button" onclick="list_products();" id="btn_add" value="{{ _("Catalogue des produits") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
+                    {# To be postponed for the next version 3.3.10
+                    <input type="button" onclick="move_items();" id="btn_add" value="{{ _("Déplacer des produits") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    #}
+                    {% endif %}
+                    {% if session['user_role'] in ('A','K','L') %}
+                    <input type="button" onclick="list_products();" id="btn_add" value="{{ _("Catalogue des produits") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    {% endif %}
+                    {% if session['user_role'] in ('A','K') %}
                     <input type="button" onclick="new_item();" id="btn_add" value="{{ _("Nouveau produit") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
@@ -132,15 +150,21 @@ var p_max       = Math.ceil( data_items.length / p_step ) ;
 
 function filter_items()
 {
-let prod_name    = $("#name").val()      ;
-let prod_type    = $("#prod_type").val() ;
+let prod_name    = $("#name").val()         ;
+let prod_type    = $("#prod_type").val()    ;
 let prod_conserv = $("#prod_conserv").val() ;
-let prod_lessor  = $("#lessor").val()    ;
+let prod_lessor  = $("#lessor").val()       ;
+{# To be postponed for the next version 3.3.10
+let prod_local   = $("#prod_local").val()   ;
+#}
 
 let param = '{ "prod_name":"' + prod_name + '", ' +
               '"prod_type":' + prod_type + ', ' +
               '"prod_conserv":' + prod_conserv + ', ' +
               '"prod_lessor":"' + prod_lessor + '"}' ;
+              {# To be postponed for the next version 3.3.10
+              '"prod_local":' + prod_local + '}' ;
+              #}
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -166,7 +190,7 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
         {
              $("#dial-wait").modal("hide") ;
 
-        console.log("ERROR doctor list") ;
+        console.log("ERROR stock list") ;
         alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
         }
     } ) ;
@@ -210,7 +234,7 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-list-stock/" + data_items[i].prs_prd + "\">{{ _("Détails du stock") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/hist-stock-product/" + data_items[i].prs_prd + "\">{{ _("Historique de ce produit") }}</a>" +
-                   {% if session['user_role'] in ('A','K') %}
+                   {% if session['user_role'] in ('A','K','L') %}
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-new-product/" + data_items[i].prs_prd + "\">{{ _("Editer la fiche produit") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].prs_prd + ")\">{{ _("Supprimer la fiche produit") }}</a>" +
                    {% endif %}
@@ -239,7 +263,8 @@ $("#list_items_total").html( data_len ) ;
            "<td><div class=\"text-center\">" + prod_limit + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].type + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].conserv + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].supplier + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + data_items[i].supplier + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].prl_name + "</div></td></tr>" ;
     }
 {% endif %}
 
@@ -289,6 +314,11 @@ var id_user = {{ session['user_id']|safe}} ;
 function stock_item()
 {
 window.location.href = "{{ session['server_ext'] }}/det-stock-product/0";
+}
+
+function move_items()
+{
+window.location.href = "{{ session['server_ext'] }}/move-stock-product";
 }
 
 function list_products()

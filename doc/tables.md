@@ -67,6 +67,7 @@
 | product_details	                         | STOCK	 | product sheet                            |
 | product_supply	                         | STOCK	 | product supply                           |
 | product_use	                                 | STOCK	 | product used                             |
+| product_local                                  | SETTINGS      | list of localization of stock product    |
 | translations  	                         | LANGUAGE	 | translations for search fields           |
 | template_setting	                         | SETTINGS	 | setting for template to build document   |
 | nationality   	                         | DICTIONNARY	 | list of nationality                      |
@@ -81,8 +82,9 @@
 | list_comment                                   | COMMENT       | structure for keep history of comments   |
 | form_setting                                   | SETTINGS      | structure for enable or disabled fields  |
 | trace_download                                 | QUALITY       | tracks file downloads (only procedure)   |
+| manual_setting                                 | SETTINGS      | settings for manual                      |
 
-81 tables used
+83 tables used
 
 
 | Name    	                                 |

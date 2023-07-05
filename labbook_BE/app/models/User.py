@@ -157,12 +157,24 @@ class User:
     def getUserRoleList(type=''):
         cursor = DB.cursor()
 
-        cond = ''
+        cond = ' order by label'
 
         if type:
             cond += ' where type="' + str(type) + '"'
 
         req = ('select id_role, name, label, type from sigl_pj_role' + cond)
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getUserIdentList():
+        cursor = DB.cursor()
+
+        req = ('select id_data as id_user, TRIM(CONCAT(lastname," ",firstname," - ",username)) as user_ident '
+               'from sigl_user_data '
+               'where status="A" order by lastname asc, firstname asc')
 
         cursor.execute(req)
 
