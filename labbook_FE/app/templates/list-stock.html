@@ -264,7 +264,10 @@ $("#list_items_total").html( data_len ) ;
            "<td><div class=\"text-start\">" + data_items[i].type + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].conserv + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].supplier + "</div></td>" +
+           "</tr>" ;
+           {# To be postponed for the next version 3.3.10
            "<td><div class=\"text-start\">" + data_items[i].prl_name + "</div></td></tr>" ;
+           #}
     }
 {% endif %}
 
