@@ -255,9 +255,8 @@ msgid "Numéro de lit"
 msgstr "Número do leito"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
-#, fuzzy
 msgid "Numéro d'identification"
-msgstr "Número de inventário"
+msgstr ""
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -722,9 +721,8 @@ msgid "Retour"
 msgstr "Voltar"
 
 #: templates/analysis-import.html:55
-#, fuzzy
 msgid "Tester l'importation des analyses"
-msgstr "importar as análises"
+msgstr ""
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -2748,9 +2746,8 @@ msgid "Date modification"
 msgstr "Data modificada"
 
 #: templates/list-procedure.html:62
-#, fuzzy
 msgid "Tableau consultation"
-msgstr "Valor da cotação"
+msgstr ""
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2910,9 +2907,8 @@ msgid "Evaluations"
 msgstr "Avaliações"
 
 #: templates/list-staff.html:73
-#, fuzzy
 msgid "Ajouter un personnel"
-msgstr "Lista de funcionários"
+msgstr ""
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -3008,14 +3004,12 @@ msgid "Liste des téléchargements éffectués"
 msgstr ""
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-#, fuzzy
 msgid "Document"
-msgstr "Modelo de documento"
+msgstr ""
 
 #: templates/list-trace-download.html:58
-#, fuzzy
 msgid "Dernier accès"
-msgstr "Último"
+msgstr ""
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3284,9 +3278,8 @@ msgid "Configuration des numéros de dossier"
 msgstr "Definições do número de registros"
 
 #: templates/menu.html:157 templates/menu.html:355
-#, fuzzy
 msgid "Configuration des manuels"
-msgstr "Configuração do formulário"
+msgstr ""
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3370,24 +3363,20 @@ msgid "Non conformité"
 msgstr "Não conformidade"
 
 #: templates/move-stock-product.html:5 templates/move-stock-product.html:12
-#, fuzzy
 msgid "Déplacer des produits"
-msgstr "Exportação de produtos"
+msgstr ""
 
 #: templates/move-stock-product.html:60
-#, fuzzy
 msgid "Nombre de paquet"
-msgstr "Número da embalagem"
+msgstr ""
 
 #: templates/move-stock-product.html:62
-#, fuzzy
 msgid "Nombre de paquet à déplacer"
-msgstr "Número da embalagem"
+msgstr ""
 
 #: templates/move-stock-product.html:63
-#, fuzzy
 msgid "Destination"
-msgstr "Designação"
+msgstr ""
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -4656,19 +4645,16 @@ msgid "Une erreur est survenue lors du dépot du logo"
 msgstr "Ocorreu um erro durante o carregamento do logótipo"
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
-#, fuzzy
 msgid "Paramétrage des manuels"
-msgstr "Definições de formulários"
+msgstr ""
 
 #: templates/setting-manual.html:16
-#, fuzzy
 msgid "Ajouter une catégorie"
-msgstr "Adicionar uma unidade"
+msgstr ""
 
 #: templates/setting-manual.html:20
-#, fuzzy
 msgid "Catégories de manuels"
-msgstr "Lista de manuais"
+msgstr ""
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4852,9 +4838,8 @@ msgid "Nombre de jours avant alerte"
 msgstr "Número de dias antes do alerta"
 
 #: templates/setting-stock.html:26
-#, fuzzy
 msgid "Ajouter une localisation"
-msgstr "Data de validação"
+msgstr ""
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"

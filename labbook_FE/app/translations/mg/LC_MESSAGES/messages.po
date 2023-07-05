@@ -255,9 +255,8 @@ msgid "Numéro de lit"
 msgstr "Laharana fandriana"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
-#, fuzzy
 msgid "Numéro d'identification"
-msgstr "Laharana anaty lisitra"
+msgstr ""
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -720,9 +719,8 @@ msgid "Retour"
 msgstr "Miverina"
 
 #: templates/analysis-import.html:55
-#, fuzzy
 msgid "Tester l'importation des analyses"
-msgstr "Import ireo fitiliana"
+msgstr ""
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -2750,9 +2748,8 @@ msgid "Date modification"
 msgstr "Daty nanovana"
 
 #: templates/list-procedure.html:62
-#, fuzzy
 msgid "Tableau consultation"
-msgstr "Valeur de cotation"
+msgstr ""
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2912,9 +2909,8 @@ msgid "Evaluations"
 msgstr "Naoty"
 
 #: templates/list-staff.html:73
-#, fuzzy
 msgid "Ajouter un personnel"
-msgstr "Lisitry ny mpiasa"
+msgstr ""
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -3010,14 +3006,12 @@ msgid "Liste des téléchargements éffectués"
 msgstr ""
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-#, fuzzy
 msgid "Document"
-msgstr "Modelina document"
+msgstr ""
 
 #: templates/list-trace-download.html:58
-#, fuzzy
 msgid "Dernier accès"
-msgstr "Farany"
+msgstr ""
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3285,9 +3279,8 @@ msgid "Configuration des numéros de dossier"
 msgstr "Fikarakarana ny laharan'ny dossier"
 
 #: templates/menu.html:157 templates/menu.html:355
-#, fuzzy
 msgid "Configuration des manuels"
-msgstr "Configuration de formulaires"
+msgstr ""
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3371,24 +3364,20 @@ msgid "Non conformité"
 msgstr "Tsy fanarahana"
 
 #: templates/move-stock-product.html:5 templates/move-stock-product.html:12
-#, fuzzy
 msgid "Déplacer des produits"
-msgstr "Export produit"
+msgstr ""
 
 #: templates/move-stock-product.html:60
-#, fuzzy
 msgid "Nombre de paquet"
-msgstr "Isan'ny fonosana"
+msgstr ""
 
 #: templates/move-stock-product.html:62
-#, fuzzy
 msgid "Nombre de paquet à déplacer"
-msgstr "Isan'ny fonosana"
+msgstr ""
 
 #: templates/move-stock-product.html:63
-#, fuzzy
 msgid "Destination"
-msgstr "Fanondroana"
+msgstr ""
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -4659,19 +4648,16 @@ msgid "Une erreur est survenue lors du dépot du logo"
 msgstr "Nisy olana teo am-pametrahana ny logo"
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
-#, fuzzy
 msgid "Paramétrage des manuels"
-msgstr "Paramétrage de formulaires"
+msgstr ""
 
 #: templates/setting-manual.html:16
-#, fuzzy
 msgid "Ajouter une catégorie"
-msgstr "Manampy vondrona"
+msgstr ""
 
 #: templates/setting-manual.html:20
-#, fuzzy
 msgid "Catégories de manuels"
-msgstr "Lisitry ny boky fitarihana"
+msgstr ""
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4855,9 +4841,8 @@ msgid "Nombre de jours avant alerte"
 msgstr "Isan'ny andro alohan'ny fanairana"
 
 #: templates/setting-stock.html:26
-#, fuzzy
 msgid "Ajouter une localisation"
-msgstr "Daty fanamarinana"
+msgstr ""
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"

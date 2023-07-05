@@ -255,9 +255,8 @@ msgid "Numéro de lit"
 msgstr "លេខគ្រែ"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
-#, fuzzy
 msgid "Numéro d'identification"
-msgstr "លេខសារពើភ័ណ្ឌ"
+msgstr ""
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -720,9 +719,8 @@ msgid "Retour"
 msgstr "ត្រឡប់"
 
 #: templates/analysis-import.html:55
-#, fuzzy
 msgid "Tester l'importation des analyses"
-msgstr "កំពុងនាំការវិភាគចូល"
+msgstr ""
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -2744,9 +2742,8 @@ msgid "Date modification"
 msgstr "កែប្រែកាលបរិច្ឆេទ"
 
 #: templates/list-procedure.html:62
-#, fuzzy
 msgid "Tableau consultation"
-msgstr "តម្លៃដែលបានកំណត់ "
+msgstr ""
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2906,9 +2903,8 @@ msgid "Evaluations"
 msgstr "ការវាយតម្លៃ"
 
 #: templates/list-staff.html:73
-#, fuzzy
 msgid "Ajouter un personnel"
-msgstr "បញ្ជីបុគ្គលិក"
+msgstr ""
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -3004,14 +3000,12 @@ msgid "Liste des téléchargements éffectués"
 msgstr ""
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-#, fuzzy
 msgid "Document"
-msgstr "គំរូឯកសារ"
+msgstr ""
 
 #: templates/list-trace-download.html:58
-#, fuzzy
 msgid "Dernier accès"
-msgstr "ចុងក្រោយ"
+msgstr ""
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3278,9 +3272,8 @@ msgid "Configuration des numéros de dossier"
 msgstr "កំណត់រចនាសម្ព័ន្ធលេខកំណត់ត្រា"
 
 #: templates/menu.html:157 templates/menu.html:355
-#, fuzzy
 msgid "Configuration des manuels"
-msgstr "កំណត់រចនាសម្ព័ន្ធទម្រង់"
+msgstr ""
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3364,24 +3357,20 @@ msgid "Non conformité"
 msgstr "ភាពមិនប្រក្រតី"
 
 #: templates/move-stock-product.html:5 templates/move-stock-product.html:12
-#, fuzzy
 msgid "Déplacer des produits"
-msgstr "នាំចេញផលិតផល"
+msgstr ""
 
 #: templates/move-stock-product.html:60
-#, fuzzy
 msgid "Nombre de paquet"
-msgstr "ចំនួនកញ្ចប់"
+msgstr ""
 
 #: templates/move-stock-product.html:62
-#, fuzzy
 msgid "Nombre de paquet à déplacer"
-msgstr "ចំនួនកញ្ចប់"
+msgstr ""
 
 #: templates/move-stock-product.html:63
-#, fuzzy
 msgid "Destination"
-msgstr "ការរចនា"
+msgstr ""
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -4645,19 +4634,16 @@ msgid "Une erreur est survenue lors du dépot du logo"
 msgstr "មានកំហុសកើតឡើងពេលផ្ទុករូបយីហោ "
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
-#, fuzzy
 msgid "Paramétrage des manuels"
-msgstr "ការកំណត់រចនាសម្ព័ន្ធទម្រង់"
+msgstr ""
 
 #: templates/setting-manual.html:16
-#, fuzzy
 msgid "Ajouter une catégorie"
-msgstr "បានបន្ថែមឯកតាមួយ"
+msgstr ""
 
 #: templates/setting-manual.html:20
-#, fuzzy
 msgid "Catégories de manuels"
-msgstr "បញ្ជីសៀវភៅណែនាំ"
+msgstr ""
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4841,9 +4827,8 @@ msgid "Nombre de jours avant alerte"
 msgstr "ចំនួនថ្ងៃមុនពេលជូនដំណឹង"
 
 #: templates/setting-stock.html:26
-#, fuzzy
 msgid "Ajouter une localisation"
-msgstr "សុពលភាពនៃ កាលបរិច្ឆេទ"
+msgstr ""
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"

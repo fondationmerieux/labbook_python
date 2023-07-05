@@ -255,9 +255,8 @@ msgid "Numéro de lit"
 msgstr "ຕໝາຍເລກຕຽງ"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
-#, fuzzy
 msgid "Numéro d'identification"
-msgstr "ເລກທີຢູ່ສາງ"
+msgstr ""
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -720,9 +719,8 @@ msgid "Retour"
 msgstr "ກັບຄືນ"
 
 #: templates/analysis-import.html:55
-#, fuzzy
 msgid "Tester l'importation des analyses"
-msgstr "ກຳລັງນຳການວິເຄາະເຂົ້າ"
+msgstr ""
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -2746,9 +2744,8 @@ msgid "Date modification"
 msgstr "ວັນທີທີ່ຖືກດັດແກ້"
 
 #: templates/list-procedure.html:62
-#, fuzzy
 msgid "Tableau consultation"
-msgstr "ມູນຄ່າໃບສະເໜີລາຄາ"
+msgstr ""
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2908,9 +2905,8 @@ msgid "Evaluations"
 msgstr "ການປະເມີນຜົນ"
 
 #: templates/list-staff.html:73
-#, fuzzy
 msgid "Ajouter un personnel"
-msgstr "ລາຍຊື່ພະນັກງານ"
+msgstr ""
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -3006,14 +3002,12 @@ msgid "Liste des téléchargements éffectués"
 msgstr ""
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-#, fuzzy
 msgid "Document"
-msgstr "ຮູບແບບເອກະສານ"
+msgstr ""
 
 #: templates/list-trace-download.html:58
-#, fuzzy
 msgid "Dernier accès"
-msgstr "ສຸດທ້າຍ"
+msgstr ""
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3280,9 +3274,8 @@ msgid "Configuration des numéros de dossier"
 msgstr "ການຕັ້ງຄ່າລະຫັດເອກະສານ"
 
 #: templates/menu.html:157 templates/menu.html:355
-#, fuzzy
 msgid "Configuration des manuels"
-msgstr "ການຕັ້ງຄ່າແບບຟອມ"
+msgstr ""
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3366,24 +3359,20 @@ msgid "Non conformité"
 msgstr "ບໍ່ຖືກຕາມຂໍ້ກຳນົດ"
 
 #: templates/move-stock-product.html:5 templates/move-stock-product.html:12
-#, fuzzy
 msgid "Déplacer des produits"
-msgstr "ນຳສິນຄ້າອອກ"
+msgstr ""
 
 #: templates/move-stock-product.html:60
-#, fuzzy
 msgid "Nombre de paquet"
-msgstr "ເລກຈໍານວນຊຸດຫີບຫໍ່"
+msgstr ""
 
 #: templates/move-stock-product.html:62
-#, fuzzy
 msgid "Nombre de paquet à déplacer"
-msgstr "ເລກຈໍານວນຊຸດຫີບຫໍ່"
+msgstr ""
 
 #: templates/move-stock-product.html:63
-#, fuzzy
 msgid "Destination"
-msgstr "ການອອກແບບ"
+msgstr ""
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -4645,19 +4634,16 @@ msgid "Une erreur est survenue lors du dépot du logo"
 msgstr "ຄວາມຜິດພາດເກີດຂື້ນໃນເວລາປ້ອນໂລໂກ້"
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
-#, fuzzy
 msgid "Paramétrage des manuels"
-msgstr "ການຕັ້ງຄ່າແບບຟອມ"
+msgstr ""
 
 #: templates/setting-manual.html:16
-#, fuzzy
 msgid "Ajouter une catégorie"
-msgstr "ເພີ່ມຫົວໜ່ວຍ"
+msgstr ""
 
 #: templates/setting-manual.html:20
-#, fuzzy
 msgid "Catégories de manuels"
-msgstr "ບັນຊີລາຍຊື່ຄູ່ມື"
+msgstr ""
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4841,9 +4827,8 @@ msgid "Nombre de jours avant alerte"
 msgstr "ແຈ້ງເຕືອນ ຈຳນວນມື້ກ່ອນຮອດວັນທີໝົດອາຍຸ"
 
 #: templates/setting-stock.html:26
-#, fuzzy
 msgid "Ajouter une localisation"
-msgstr "ການຢືນຢັນວັນທີ"
+msgstr ""
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"
