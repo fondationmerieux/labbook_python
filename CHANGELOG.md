@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - location of stock product can be changed to another location
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.3.9] - 2023-07-03
+## [3.3.9] - 2023-07-05
 ### Added
 - analysis commentary variable for pdf report, ana_comm (like var_comm)
 - laboratory profil (can only read and export quality sections) 

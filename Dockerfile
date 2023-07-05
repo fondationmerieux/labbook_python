@@ -1,4 +1,4 @@
-FROM almalinux
+FROM almalinux:8
 
 # permanent files (manuals, reports, logo ...)
 COPY storage /storage
