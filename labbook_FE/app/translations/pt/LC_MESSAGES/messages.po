@@ -909,7 +909,7 @@ msgstr "Ocorreu um erro ao reiniciar um valor introduzido"
 msgid ""
 "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
 "irreversible."
-msgstr "Tem a certeza de querer cancelar este resultado? Esta ação é irreversível."
+msgstr "Tem a certeza de querer cancelar este resultado?\\nEsta ação é irreversível."
 
 #: templates/biological-validation.html:456
 #: templates/technical-validation.html:350
@@ -4313,8 +4313,7 @@ msgid ""
 "de redémarrage\\nveuillez recharger la page"
 msgstr ""
 "Os serviços foram reiniciados ou ocorreu um erro durante o pedido de "
-"reinício\n"
-"Por favor, recarregue a página."
+"reinício\\nPor favor, recarregue a página."
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"

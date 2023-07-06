@@ -908,7 +908,7 @@ msgid ""
 "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
 "irreversible."
 msgstr ""
-"Are you sure you want to cancel this result?\n"
+"Are you sure you want to cancel this result?\\n"
 "This action is irreversible."
 
 #: templates/biological-validation.html:456
@@ -4313,8 +4313,7 @@ msgid ""
 "de redémarrage\\nveuillez recharger la page"
 msgstr ""
 "The services have restarted or an error occurred during the restart "
-"request\n"
-"Please reload the page"
+"request\\nPlease reload the page"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"

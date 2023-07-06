@@ -905,7 +905,7 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលក
 msgid ""
 "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
 "irreversible."
-msgstr "តើអ្នកពិតជាចង់រំសាយលទ្ធផលនេះទេ? \\ n សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។"
+msgstr "តើអ្នកពិតជាចង់រំសាយលទ្ធផលនេះទេ?\\n សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។"
 
 #: templates/biological-validation.html:456
 #: templates/technical-validation.html:350
