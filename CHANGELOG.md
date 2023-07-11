@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - location of stock product can be changed to another location
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.3.11] - 2023-07-11
+### Fixed
+- some translations with double backslash n, one backslash missin
+- stock setting
+
 ## [3.3.10] - 2023-07-06
 ### Fixed
 - some translations with double backslash n, one backslash missing

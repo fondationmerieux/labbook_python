@@ -3140,9 +3140,9 @@ msgid ""
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
 "irréversible)"
 msgstr ""
-"The patient files TO BE DELETED will be attached\n"
-"to the patient TO BE KEPT.\n"
-"Please confirm this merger?\n"
+"The patient files TO BE DELETED will be attached\\n"
+"to the patient TO BE KEPT.\\n"
+"Please confirm this merger?\\n"
 "(This action is irreversible)"
 
 #: templates/manage-pat-records.html:937
@@ -4240,8 +4240,7 @@ msgid ""
 "clé ?"
 msgstr ""
 "A key already exists,if a key is re-generated, the old backups will not "
-"be recoverable\n"
-"Please confirm the generation of a new key?"
+"be recoverable\\nPlease confirm the generation of a new key?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"

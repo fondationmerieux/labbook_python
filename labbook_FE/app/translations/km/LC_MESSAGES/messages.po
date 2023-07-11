@@ -4304,7 +4304,7 @@ msgid ""
 "de redémarrage\\nveuillez recharger la page"
 msgstr ""
 "សេវាកម្មបានចាប់ផ្តើមឡើងវិញឬមានកំហុសកើតឡើងខណៈពេលកំពុងស្នើសុំចាប់ផ្តើមឡើងវិញ"
-" nplease ផ្ទុកទំព័រឡើងវិញ"
+" \\nplease ផ្ទុកទំព័រឡើងវិញ"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"

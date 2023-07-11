@@ -3142,8 +3142,8 @@ msgid ""
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
 "irréversible)"
 msgstr ""
-"Os registros dos pacientes A APAGAR serão anexados ao paciente A SEGUIR "
-"KEPT.nPor favor, confirme esta fusão?n(Esta acção é irreversível)"
+"Os registros dos pacientes A APAGAR serão anexados\\nao paciente A SEGUIR "
+"KEPT.\\nPor favor, confirme esta fusão?\\n(Esta acção é irreversível)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -4240,7 +4240,7 @@ msgid ""
 "clé ?"
 msgstr ""
 "Já existe uma chave, se uma chave for gerada de novo, os backups antigos "
-"não serão recuperáveis.\n"
+"não serão recuperáveis.\\n"
 "Por favor, confirme a geração de uma nova chave."
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274

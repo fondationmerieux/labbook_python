@@ -4142,7 +4142,7 @@ msgstr "ປິດການໄຊ້ງານແລ້ວ"
 msgid ""
 "Veuillez confirmer la suppression du cette analyse\\nAttention les "
 "dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr "ຢືນຢັນການລຶບຂໍ້ມູນວິເຄາະນີ້.//ໝາຍເຫດ:​ການບັນທຶກທີ່ກ່ຽວຂ້ອງກັບການວິເຄາະນີ້ຈະມີຂໍ້ຄວາມການຜິດພາດເກີດຂື້ນ"
+msgstr "ຢືນຢັນການລຶບຂໍ້ມູນວິເຄາະນີ້.\\nໝາຍເຫດ:​ການບັນທຶກທີ່ກ່ຽວຂ້ອງກັບການວິເຄາະນີ້ຈະມີຂໍ້ຄວາມການຜິດພາດເກີດຂື້ນ"
 
 #: templates/setting-analyzes.html:363
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
@@ -4303,7 +4303,7 @@ msgid ""
 "Les services ont redémarré ou une erreur est survenue lors de la demande "
 "de redémarrage\\nveuillez recharger la page"
 msgstr ""
-"ການບໍລິການໄດ້ເປີດຄືນໃໜ່ ຫຼື ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຂໍເປີດຄືນໃໝ່ //"
+"ການບໍລິການໄດ້ເປີດຄືນໃໜ່ ຫຼື ມີຄວາມຜິດພາດເກີດຂຶ້ນລະຫວ່າງການຂໍເປີດຄືນໃໝ່ \\n"
 " ກະລຸນາໂຫຼດໜ້າຄືນໃໝ່"
 
 #: templates/setting-backup.html:782

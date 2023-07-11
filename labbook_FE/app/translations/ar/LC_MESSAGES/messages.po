@@ -3137,8 +3137,8 @@ msgid ""
 "CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
 "irréversible)"
 msgstr ""
-"سيتم إرفاق سجلات المريض المراد حذفه \\ n بالمريض ليبقى. \\ n هل تؤكد هذا "
-"الدمج؟ \\ n (هذا الإجراء لا رجوع فيه)"
+"سيتم إرفاق سجلات المريض المراد حذفه \\n بالمريض ليبقى. \\n هل تؤكد هذا "
+"الدمج؟ \\n (هذا الإجراء لا رجوع فيه)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -4235,7 +4235,7 @@ msgid ""
 "clé ?"
 msgstr ""
 "نسخ إحتياطية موجودة سابقًا - بعد إعادة إنشاء حافظة جديدة لن تتمكن من "
-"استعادة النسخ القديمة /n تأكيد إنشاء حافظة جديدة؟ "
+"استعادة النسخ القديمة \\n تأكيد إنشاء حافظة جديدة؟ "
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -4306,7 +4306,7 @@ msgid ""
 "Les services ont redémarré ou une erreur est survenue lors de la demande "
 "de redémarrage\\nveuillez recharger la page"
 msgstr ""
-"تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \\ n "
+"تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \\n "
 "يرجى إعادة تحميل الصفحة"
 
 #: templates/setting-backup.html:782

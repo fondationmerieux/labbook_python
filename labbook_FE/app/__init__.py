@@ -77,7 +77,7 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
-# app.config["CACHE_TYPE"] = "null"  # NOTE : Use if flask keep translation in cache
+app.config["CACHE_TYPE"] = "null"  # NOTE : Use if flask keep translation in cache
 
 babel = Babel(app)
 
