@@ -10,6 +10,7 @@ from flask_restful import Resource
 from app.models.General import compose_ret
 from app.models.Constants import Constants
 from app.models.Logs import Logs
+from app.models.Quality import Quality
 from app.models.Setting import Setting
 from app.models.Various import Various
 
@@ -1050,7 +1051,8 @@ class SettingStock(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'expir_warning' not in args or 'expir_alert' not in args:
+        if 'id_owner' not in args or 'expir_warning' not in args or 'expir_alert' not in args or \
+           'list_local' not in args:
             self.log.error(Logs.fileline() + ' : SettingStock ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -1061,6 +1063,38 @@ class SettingStock(Resource):
         if ret is False:
             self.log.error(Logs.alert() + ' : SettingStock ERROR update')
             return compose_ret('', Constants.cst_content_type_json, 500)
+
+        if args['list_local']:
+            l_local = Quality.getStockLocalList()
+
+            for local in args['list_local']:
+                name = local['prl_name']
+
+                if local['prl_ser'] > 0:
+                    ret = Setting.updateStockLocal(prl_ser=local['prl_ser'],
+                                                   prl_rank=local['prl_rank'],
+                                                   prl_name=name)
+                else:
+                    ret = Setting.insertStockLocal(prl_rank=local['prl_rank'],
+                                                   prl_name=name)
+
+                if ret is False or ret <= 0:
+                    self.log.info(Logs.fileline() + ' : TRACE SettingStock ERROR updateStockLocal')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # delete missing values compared to local list
+            for db_local in l_local:
+                exist = False
+                for ihm_local in args['list_local']:
+                    if db_local['prl_ser'] == ihm_local['prl_ser']:
+                        exist = True
+
+                if not exist:
+                    ret = Setting.deleteStockLocal(db_local['prl_ser'])
+
+                    if ret is False:
+                        self.log.info(Logs.fileline() + ' : TRACE SettingStock ERROR deleteStockLocal')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE SettingStock')
         return compose_ret('', Constants.cst_content_type_json)

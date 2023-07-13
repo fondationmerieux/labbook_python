@@ -155,10 +155,7 @@ $("#list_items_total").html( data_len ) ;
            "<td><div class=\"text-start\" id=\"max_" + data_items[i].prs_ser + "\">" + data_items[i].prs_nb_pack + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].prs_receipt_date + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].prs_expir_date + "</div></td>" +
-           {# To be postponed for the next version 3.3.10
            "<td><div class=\"text-start\">" + data_items[i].prl_name + "</div></td>" +
-           #}
-           "<td><div class=\"text-start\">" + data_items[i].prs_rack + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].prs_batch_num + "</div></td>" +
            "<td><div class=\"text-start\">" + Number(data_items[i].prs_buy_price / 100 ).toFixed(2) + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].prs_lessor + "</div></td></tr>" ;
@@ -226,7 +223,7 @@ let param       = '{ "pru_user": ' + id_user + ', ' +
 
 function hist_use_item()
 {
-window.location.href = "{{ session['server_ext'] }}/hist-stock-product/{{args['prd_ser']|safe }}";
+window.location.href = "{{ session['server_ext'] }}/hist-stock-product/{{args['prd_ser']|safe }}/{{args['prl_ser']|safe }}";
 }
 
 /*

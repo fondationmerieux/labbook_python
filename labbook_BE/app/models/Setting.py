@@ -717,6 +717,57 @@ class Setting:
             return False
 
     @staticmethod
+    def insertStockLocal(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into product_local '
+                           '(prl_date, prl_rank, prl_name) '
+                           'values (NOW(), %(prl_rank)s, %(prl_name)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStockLocal(**params):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update product_local set prl_rank=%(prl_rank)s, prl_name=%(prl_name)s '
+                   'where prl_ser=%(prl_ser)s')
+
+            cursor.execute(req, params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteStockLocal(prl_ser):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from product_local '
+                           'where prl_ser=%s', (prl_ser,))
+
+            cursor.execute('update product_supply set prs_prl=0 '
+                           'where prs_prl=%s', (prl_ser,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getSettingFormList():
         cursor = DB.cursor()
 

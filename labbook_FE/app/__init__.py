@@ -77,7 +77,7 @@ if config_envvar in os.environ:
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
 
-app.config["CACHE_TYPE"] = "null"  # NOTE : Use if flask keep translation in cache
+# app.config["CACHE_TYPE"] = "null"  # NOTE : Use if flask keep translation in cache
 
 babel = Babel(app)
 
@@ -1340,6 +1340,24 @@ def setting_stock():
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
+
+    # Load local list
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_values'] = req.json()
+
+            i = 0
+            for val in json_data['data_values']:
+                val['id_ihm'] = i
+                i += 1
+
+            json_data['data_last_id'] = i
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests stock local list failed, err=%s , url=%s', err, url)
 
     return render_template('setting-stock.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -4653,13 +4671,13 @@ def list_products():
 
 
 # Page : details list stock
-@app.route('/det-list-stock/<int:prd_ser>')
-def det_list_stock(prd_ser=0):
-    log.info(Logs.fileline() + ' : TRACE setting det list stock=' + str(prd_ser))
+@app.route('/det-list-stock/<int:prd_ser>/<int:prl_ser>')
+def det_list_stock(prd_ser=0, prl_ser=0):
+    log.info(Logs.fileline() + ' : TRACE setting det list stock=' + str(prd_ser) + ' local=' + str(prl_ser))
 
     test_session()
 
-    session['current_page'] = 'det-list-stock/' + str(prd_ser)
+    session['current_page'] = 'det-list-stock/' + str(prd_ser) + '/' + str(prl_ser)
     session.modified = True
 
     json_ihm  = {}
@@ -4670,7 +4688,7 @@ def det_list_stock(prd_ser=0):
     if prd_ser > 0:
         # Load stock product details
         try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list/det/' + str(prd_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list/det/' + str(prd_ser) + '/' + str(prl_ser)
             req = requests.get(url)
 
             if req.status_code == 200:
@@ -4680,18 +4698,19 @@ def det_list_stock(prd_ser=0):
             log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
 
     json_data['prd_ser'] = prd_ser
+    json_data['prl_ser'] = prl_ser
 
     return render_template('det-list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : history of supply and use of a product
-@app.route('/hist-stock-product/<int:prd_ser>')
-def hist_stock_product(prd_ser=0):
-    log.info(Logs.fileline() + ' : TRACE setting hist stock product=' + str(prd_ser))
+@app.route('/hist-stock-product/<int:prd_ser>/<int:prl_ser>')
+def hist_stock_product(prd_ser=0, prl_ser=0):
+    log.info(Logs.fileline() + ' : TRACE setting hist stock product=' + str(prd_ser) + ' local=' + str(prl_ser))
 
     test_session()
 
-    session['current_page'] = 'hist-stock-product/' + str(prd_ser)
+    session['current_page'] = 'hist-stock-product/' + str(prd_ser) + '/' + str(prl_ser)
     session.modified = True
 
     json_ihm  = {}
@@ -4714,7 +4733,7 @@ def hist_stock_product(prd_ser=0):
 
             payload = {'date_beg': date_beg, 'date_end': date_end}
 
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/history/' + str(prd_ser)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/history/' + str(prd_ser) + '/' + str(prl_ser)
             req = requests.post(url, json=payload)
 
             if req.status_code == 200:
@@ -4724,6 +4743,7 @@ def hist_stock_product(prd_ser=0):
             log.error(Logs.fileline() + ' : requests history stock product failed, err=%s , url=%s', err, url)
 
     json_data['prd_ser'] = prd_ser
+    json_data['prl_ser'] = prl_ser
 
     return render_template('hist-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 

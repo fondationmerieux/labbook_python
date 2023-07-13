@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 import logging
 import gettext
-import random, string
+import random
+import string
 
 from datetime import datetime
 from flask import request

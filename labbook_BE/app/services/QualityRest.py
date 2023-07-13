@@ -1930,7 +1930,7 @@ class StockList(Resource):
             else:
                 stock['pru_nb_pack'] = 0
 
-            nb_supply = Quality.getSumStockSupply(stock['prs_prd'])
+            nb_supply = Quality.getSumStockSupply(stock['prs_prd'], stock['prs_prl'])
             if nb_supply:
                 stock['prs_nb_pack'] = nb_supply['total']
                 stock['prs_nb_pack'] = float(stock['prs_nb_pack']) - float(stock['pru_nb_pack'])
@@ -1960,8 +1960,8 @@ class StockList(Resource):
 class StockListDet(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_item):
-        l_stocks = Quality.getStockListDet(id_item)
+    def get(self, id_item, id_local):
+        l_stocks = Quality.getStockListDet(id_item, id_local)
 
         if not l_stocks:
             self.log.error(Logs.fileline() + ' : TRACE StockListDet not found')
@@ -2007,14 +2007,14 @@ class StockListDet(Resource):
 class StockProductHist(Resource):
     log = logging.getLogger('log_services')
 
-    def post(self, id_item):
+    def post(self, id_item, id_local):
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args:
             self.log.error(Logs.fileline() + ' : StockProductHist ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        l_stocks = Quality.getStockProductHist(id_item, args['date_beg'], args['date_end'])
+        l_stocks = Quality.getStockProductHist(id_item, args['date_beg'], args['date_end'], id_local)
 
         if not l_stocks:
             self.log.error(Logs.fileline() + ' : TRACE StockProductHist not found')
@@ -2031,10 +2031,8 @@ class StockProductHist(Resource):
             if 'username' not in stock:
                 stock['username'] = ''
 
-            """ To be postponed for the next version 3.3.10
             if 'prl_name' not in stock:
                 stock['prl_name'] = ''
-            """
 
             if 'prs_batch_num' not in stock:
                 stock['prs_batch_num'] = ''
@@ -2224,16 +2222,8 @@ class StockSupplyDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        """ To be postponed for the next version 3.3.10
         if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
            'prs_receipt_date' not in args or 'prs_prl' not in args or 'prs_expir_date' not in args or \
-           'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_lessor' not in args:
-            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
-            return compose_ret('', Constants.cst_content_type_json, 400)
-        """
-
-        if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
-           'prs_receipt_date' not in args or 'prs_rack' not in args or 'prs_expir_date' not in args or \
            'prs_batch_num' not in args or 'prs_buy_price' not in args or 'prs_lessor' not in args:
             self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
@@ -2263,7 +2253,7 @@ class StockSupplyDet(Resource):
                                         prs_nb_pack=args['prs_nb_pack'],
                                         prs_receipt_date=args['prs_receipt_date'],
                                         prs_expir_date=args['prs_expir_date'],
-                                        prs_rack=args['prs_rack'],
+                                        prs_prl=args['prs_prl'],
                                         prs_batch_num=args['prs_batch_num'],
                                         prs_buy_price=args['prs_buy_price'] * 100,
                                         prs_lessor=args['prs_lessor'])
@@ -2290,28 +2280,16 @@ class StockSupplyMove(Resource):
 
         for supply in args['list_supply']:
             prev_prs_ser = supply['prev_prs_ser']
-
-            prev_supply = Quality.getStockSupply(prev_prs_ser)
-
-            if not prev_supply:
-                self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR prev_supply prs_ser=' + str(prev_prs_ser))
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            self.log.error(Logs.fileline() + ' DEBUG prev_prs_ser = ' + str(prev_prs_ser))
-            self.log.error(Logs.fileline() + ' DEBUG prs_ser = ' + str(supply['prs_ser']))
+            next_prs_ser = supply['prs_ser']
 
             # change only location
-            if prev_prs_ser == supply['prs_ser']:
+            if prev_prs_ser == next_prs_ser:
                 ret = Quality.updateStockSupplyLocal(prs_ser=prev_prs_ser, prs_prl=supply['prs_prl'])
 
                 if ret is False:
                     self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateSupplyLocal')
                     return compose_ret('', Constants.cst_content_type_json, 500)
             else:
-                upd_nb_pack = prev_supply['prs_nb_pack'] - supply['prs_nb_pack']
-
-                self.log.error(Logs.fileline() + ' DEBUG upd_nb_pack = ' + str(upd_nb_pack))
-
                 # insert new supply
                 ret = Quality.insertStockSupplySplit(prs_user=args['id_user'],
                                                      prs_nb_pack=supply['prs_nb_pack'],
@@ -2321,15 +2299,28 @@ class StockSupplyMove(Resource):
                 if ret <= 0:
                     self.log.error(Logs.alert() + ' : StockSupplyMove ERROR insertStockSupplySplit')
                     return compose_ret('', Constants.cst_content_type_json, 500)
-                
-                # update previous supply
-                ret = Quality.updateStockSupplySplit(prs_nb_pack=upd_nb_pack, prs_ser=prev_prs_ser)
-
-                if ret is False:
-                    self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateStockSupplySplit')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockSupplyMove')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StockSupplyRemove(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item, id_local):
+        args = request.get_json()
+
+        if 'id_user' not in args:
+            self.log.error(Logs.fileline() + ' : StockSupplyRemove ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.removeStockSupply(id_item, id_local, args['id_user'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StockSupplyRemove ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StockSupplyRemove')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2410,7 +2401,7 @@ class StockExport(Resource):
                 else:
                     d['pru_nb_pack'] = 0
 
-                nb_supply = Quality.getSumStockSupply(d['prs_prd'])
+                nb_supply = Quality.getSumStockSupply(d['prs_prd'], d['prs_prl'])
                 if nb_supply:
                     d['prs_nb_pack'] = nb_supply['total']
                     d['prs_nb_pack'] = float(d['prs_nb_pack']) - float(d['pru_nb_pack'])
@@ -2530,7 +2521,7 @@ class StockSuppliesExport(Resource):
 
     def get(self):
         l_data = [['prs_ser', 'date', 'product', 'nb_pack', 'receipt_date', 'expir_date', 'rack', 'batch_num',
-                   'buy_price', 'user', 'empty', 'cancel', 'user_cancel', 'lessor']]
+                   'buy_price', 'user', 'empty', 'cancel', 'user_cancel', 'lessor', 'remove', 'user_remove']]
         dict_data = Quality.getStockExportSupplies()
 
         Various.useLangDB()
@@ -2545,10 +2536,7 @@ class StockSuppliesExport(Resource):
                 data.append(d['prs_nb_pack'])
                 data.append(d['prs_receipt_date'])
                 data.append(d['prs_expir_date'])
-                """ To be postponed for the next version 3.3.10
                 data.append(d['prl_name'])
-                """
-                data.append(d['prs_rack'])
                 data.append(d['prs_batch_num'])
                 data.append(d['prs_buy_price'] / 100)
                 data.append(d['user'])
@@ -2556,6 +2544,8 @@ class StockSuppliesExport(Resource):
                 data.append(d['prs_cancel'])
                 data.append(d['user_cancel'])
                 data.append(d['prs_lessor'])
+                data.append(d['prs_remove'])
+                data.append(d['user_remove'])
 
                 l_data.append(data)
 
@@ -2631,7 +2621,7 @@ class StockUsesExport(Resource):
         self.log.info(Logs.fileline() + ' : TRACE StockUsesExport')
         return compose_ret('', Constants.cst_content_type_json)
 
-""" To be postponed for the next version 3.3.10
+
 class StockLocalList(Resource):
     log = logging.getLogger('log_services')
 
@@ -2647,9 +2637,15 @@ class StockLocalList(Resource):
                 if item[key] is None:
                     item[key] = ''
 
+            nb_used = Quality.countStockLocalUsed(item['prl_ser'])
+
+            if nb_used:
+                item['nb_used'] = nb_used['nb_used']
+            else:
+                item['nb_used'] = 0
+
         self.log.info(Logs.fileline() + ' : TRACE StockProductList')
         return compose_ret(l_items, Constants.cst_content_type_json)
-"""
 
 
 class SupplierList(Resource):

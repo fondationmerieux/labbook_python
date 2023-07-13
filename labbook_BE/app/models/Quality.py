@@ -635,7 +635,7 @@ class Quality:
     def getStockList(args):
         cursor = DB.cursor()
 
-        filter_cond = ' prs_ser > 0 and prs_cancel="N" '
+        filter_cond = ' prs_ser > 0 and prs_cancel="N" and prs_remove="N" '
 
         if not args:
             limit = 'LIMIT 1000'
@@ -658,14 +658,11 @@ class Quality:
             if 'prod_lessor' in args and args['prod_lessor']:
                 filter_cond += ' and prs_lessor LIKE "%' + str(args['prod_lessor']) + '%" '
 
-            """ To be postponed for the next version 3.3.10
             if 'prod_local' in args and args['prod_local'] > 0:
                 filter_cond += ' and prs_prl = ' + str(args['prod_local'])
-            """
 
-        """ To be postponed for the next version 3.3.10
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
-               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, prl_name, '
+               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, prs_prl, prl_name, '
                'dict1.label as type,  dict2.label as conserv, '
                'sup.fournisseur_nom as supplier, Min(if(prs_empty="Y", NULL, prs_expir_date)) as expir_date '
                'from product_supply '
@@ -678,21 +675,6 @@ class Quality:
                'where ' + filter_cond + ' ' +
                'group by prd_name, prl_name '
                'order by prd_name asc, prl_name asc ' + limit)
-        """
-
-        req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
-               'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, prs_rack, '
-               'dict1.label as type,  dict2.label as conserv, '
-               'sup.fournisseur_nom as supplier, Min(if(prs_empty="Y", NULL, prs_expir_date)) as expir_date '
-               'from product_supply '
-               'inner join product_details on prd_ser=prs_prd '
-               'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
-               'left join sigl_fournisseurs_data as sup on sup.id_data=prd_supplier '
-               'left join sigl_dico_data as dict1 on dict1.id_data=prd_type '
-               'left join sigl_dico_data as dict2 on dict2.id_data=prd_conserv '
-               'where ' + filter_cond + ' ' +
-               'group by prd_name '
-               'order by prd_name asc ' + limit)
 
         cursor.execute(req)
 
@@ -718,25 +700,15 @@ class Quality:
     def getStockExportSupplies():
         cursor = DB.cursor()
 
-        """ To be postponed for the next version 3.3.10
         req = ('select prs_ser, prs_date, prd_name as product, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, '
                'prs_batch_num, prs_buy_price, u1.username as user, prs_empty, prs_cancel, u2.username as user_cancel, '
-               'prs_lessor '
+               'prs_lessor, prs_remove, u3.username as user_remove '
                'from product_supply '
                'left join product_details on prd_ser=prs_prd '
                'left join product_local on prl_ser=prs_prl '
                'left join sigl_user_data as u1 on u1.id_data=prs_user '
                'left join sigl_user_data as u2 on u2.id_data=prs_user_cancel '
-               'order by prs_ser asc')
-        """
-
-        req = ('select prs_ser, prs_date, prd_name as product, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
-               'prs_batch_num, prs_buy_price, u1.username as user, prs_empty, prs_cancel, u2.username as user_cancel, '
-               'prs_lessor '
-               'from product_supply '
-               'left join product_details on prd_ser=prs_prd '
-               'left join sigl_user_data as u1 on u1.id_data=prs_user '
-               'left join sigl_user_data as u2 on u2.id_data=prs_user_cancel '
+               'left join sigl_user_data as u3 on u3.id_data=prs_user_remove '
                'order by prs_ser asc')
 
         cursor.execute(req)
@@ -761,43 +733,33 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
-    def getSumStockSupply(id_item):
+    def getSumStockSupply(id_item, id_local):
         cursor = DB.cursor()
 
         req = ('select sum(prs_nb_pack) as total '
                'from product_supply '
-               'where prs_prd=%s and prs_cancel="N" group by prs_prd')
+               'where prs_prd=%s and prs_cancel="N" and prs_remove="N" and prs_prl=%s '
+               'group by prs_prd')
 
-        cursor.execute(req, (id_item,))
+        cursor.execute(req, (id_item, id_local))
 
         return cursor.fetchone()
 
     @staticmethod
-    def getStockListDet(id_item):
+    def getStockListDet(id_item, id_local=0):
         cursor = DB.cursor()
 
-        """ To be postponed for the next version 3.3.10
         req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, prs_prl, '
                'prs_batch_num, prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor, prd_expir_oblig '
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
                'left join product_local on prl_ser=prs_prl '
-               'where (prs_empty="N" and prs_cancel="N") and prd_ser=%s '
-               'group by prs_ser '
-               'order by prs_expir_date asc ')
-        """
-
-        req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
-               'prs_batch_num, prs_buy_price, sum(pru_nb_pack) as pru_nb_pack, prs_lessor, prd_expir_oblig '
-               'from product_supply '
-               'inner join product_details on prd_ser=prs_prd '
-               'left join product_use on pru_prs=prs_ser and pru_cancel="N" '
-               'where (prs_empty="N" and prs_cancel="N") and prd_ser=%s '
+               'where (prs_empty="N" and prs_cancel="N" and prs_remove="N") and prd_ser=%s and prs_prl=%s '
                'group by prs_ser '
                'order by prs_expir_date asc ')
 
-        cursor.execute(req, (id_item,))
+        cursor.execute(req, (id_item, id_local))
 
         return cursor.fetchall()
 
@@ -854,26 +816,18 @@ class Quality:
         return cursor.fetchone()
 
     @staticmethod
-    def getStockProductHist(id_item, date_beg, date_end):
+    def getStockProductHist(id_item, date_beg, date_end, id_local=0):
         cursor = DB.cursor()
 
         # Take all supply  for this product
-        """ To be postponed for the next version 3.3.10
         req = ('select prs_ser, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, prs_prl, '
                'prs_batch_num, prs_buy_price, prs_date as date_create, username, prs_lessor '
                'from product_supply '
                'left join product_local on prl_ser=prs_prl '
                'left join sigl_user_data on id_data=prs_user '
-               'where prs_prd=%s and (prs_date between %s and %s) and prs_cancel="N"')
-        """
+               'where prs_prd=%s and prs_prl=%s and (prs_date between %s and %s) and prs_cancel="N"')
 
-        req = ('select prs_ser, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_rack, '
-               'prs_batch_num, prs_buy_price, prs_date as date_create, username, prs_lessor '
-               'from product_supply '
-               'left join sigl_user_data on id_data=prs_user '
-               'where prs_prd=%s and (prs_date between %s and %s) and prs_cancel="N"')
-
-        cursor.execute(req, (id_item, date_beg, date_end,))
+        cursor.execute(req, (id_item, id_local, date_beg, date_end))
 
         ret = cursor.fetchall()
 
@@ -882,9 +836,9 @@ class Quality:
                'from product_use '
                'inner join product_supply on prs_ser=pru_prs '
                'left join sigl_user_data on id_data=pru_user '
-               'where prs_prd=%s and (pru_date between %s and %s) and pru_cancel="N"')
+               'where prs_prd=%s and prs_prl=%s and (pru_date between %s and %s) and pru_cancel="N"')
 
-        cursor.execute(req, (id_item, date_beg, date_end,))
+        cursor.execute(req, (id_item, id_local, date_beg, date_end,))
 
         ret = ret + cursor.fetchall()
 
@@ -945,7 +899,6 @@ class Quality:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
 
-    """ To be postponed for the next version 3.3.10
     @staticmethod
     def getStockSupplyList(args):
         cursor = DB.cursor()
@@ -964,28 +917,13 @@ class Quality:
                'from product_supply '
                'inner join product_details on prd_ser=prs_prd '
                'left join product_local on prl_ser=prs_prl '
-               'where prs_empty="N" and prs_cancel="N" ' + filter_cond + ' ' +
+               'where prs_empty="N" and prs_cancel="N" and prs_remove="N" ' + filter_cond + ' ' +
                'order by prd_name asc, prl_name asc')
 
         cursor.execute(req)
 
         return cursor.fetchall()
-    """
 
-    @staticmethod
-    def getStockSupply(id_item):
-        cursor = DB.cursor()
-
-        req = ('select prs_ser, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num, prs_buy_price, '
-               'prs_user, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl '
-               'from product_supply '
-               'where prs_ser=%s')
-
-        cursor.execute(req, (id_item,))
-
-        return cursor.fetchone()
-
-    """ To be postponed for the next version 3.3.10
     @staticmethod
     def updateStockSupplyLocal(**params):
         try:
@@ -1011,7 +949,7 @@ class Quality:
                            '(prs_date, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num, '
                            'prs_buy_price, prs_user, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl) '
                            'select NOW(), prs_prd, %(prs_nb_pack)s, prs_receipt_date, prs_expir_date, prs_batch_num, '
-                           'prs_buy_price, %(prs_user)s, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl '
+                           'prs_buy_price, %(prs_user)s, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, %(prs_prl)s '
                            'from product_supply '
                            'where prs_ser=%(prs_ser)s', params)
 
@@ -1023,13 +961,13 @@ class Quality:
             return 0
 
     @staticmethod
-    def updateStockSupplySplit(**params):
+    def removeStockSupply(id_item, id_local, id_user):
         try:
             cursor = DB.cursor()
 
             cursor.execute('update product_supply '
-                           'set prs_nb_pack=%(prs_nb_pack)s '
-                           'where prs_ser=%(prs_ser)s', params)
+                           'set prs_remove="Y", prs_user_remove=%s '
+                           'where prs_prd=%s and prs_prl=%s', (id_user, id_item, id_local))
 
             Quality.log.info(Logs.fileline())
 
@@ -1037,7 +975,6 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
-    """
 
     @staticmethod
     def getNbStockSupply(id_item):
@@ -1045,7 +982,7 @@ class Quality:
 
         req = ('select prs_nb_pack as nb_pack '
                'from product_supply '
-               'where prs_ser=%s and prs_cancel="N"')
+               'where prs_ser=%s and prs_cancel="N" and prs_remove="N"')
 
         cursor.execute(req, (id_item,))
 
@@ -1084,21 +1021,12 @@ class Quality:
         try:
             cursor = DB.cursor()
 
-            """ To be postponed for the next version 3.3.10
             cursor.execute('insert into product_supply '
                            '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
                            'prs_prl, prs_batch_num, prs_buy_price, prs_lessor) '
                            'values '
                            '(NOW(), %(prs_user)s, %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
                            '%(prs_expir_date)s, %(prs_prl)s, %(prs_batch_num)s, %(prs_buy_price)s, %(prs_lessor)s)', params)
-            """
-
-            cursor.execute('insert into product_supply '
-                           '(prs_date, prs_user, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, '
-                           'prs_rack, prs_batch_num, prs_buy_price, prs_lessor) '
-                           'values '
-                           '(NOW(), %(prs_user)s, %(prs_prd)s, %(prs_nb_pack)s, %(prs_receipt_date)s, '
-                           '%(prs_expir_date)s, %(prs_rack)s, %(prs_batch_num)s, %(prs_buy_price)s, %(prs_lessor)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -1112,19 +1040,10 @@ class Quality:
         try:
             cursor = DB.cursor()
 
-            """ To be postponed for the next version 3.3.10
             cursor.execute('update product_supply '
                            'set prs_user=%(prs_user)s, prs_prd=%(prs_prd)s, prs_nb_pack=%(prs_nb_pack)s, '
                            'prs_receipt_date=%(prs_receipt_date)s, prs_expir_date=%(prs_expir_date)s, '
                            'prs_prl=%(prs_prl)s, prs_batch_num=%(prs_batch_num)s, prs_buy_price=%(prs_buy_price)s, '
-                           'prs_lessor=%(prs_lessor)s '
-                           'where prs_ser=%(prs_ser)s', params)
-            """
-
-            cursor.execute('update product_supply '
-                           'set prs_user=%(prs_user)s, prs_prd=%(prs_prd)s, prs_nb_pack=%(prs_nb_pack)s, '
-                           'prs_receipt_date=%(prs_receipt_date)s, prs_expir_date=%(prs_expir_date)s, '
-                           'prs_rack=%(prs_rack)s, prs_batch_num=%(prs_batch_num)s, prs_buy_price=%(prs_buy_price)s, '
                            'prs_lessor=%(prs_lessor)s '
                            'where prs_ser=%(prs_ser)s', params)
 
@@ -1168,7 +1087,6 @@ class Quality:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
 
-    """ To be postponed for the next version 3.3.10
     @staticmethod
     def getStockLocalList():
         cursor = DB.cursor()
@@ -1180,7 +1098,18 @@ class Quality:
         cursor.execute(req)
 
         return cursor.fetchall()
-    """
+
+    @staticmethod
+    def countStockLocalUsed(id_local):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_used '
+               'from product_supply '
+               'where prs_prl=%s and prs_cancel="N" and prs_remove="N"')
+
+        cursor.execute(req, (id_local,))
+
+        return cursor.fetchone()
 
     @staticmethod
     def getSupplierList():

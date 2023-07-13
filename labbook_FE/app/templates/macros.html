@@ -19,14 +19,12 @@
     {% endfor %}
 {%- endmacro %}
 
-{# To be postponed for the next version 3.3.10
 {% macro select_prl_local(l_prl_local, id_selected) -%}
     <option selected value="0"></option>
     {% for prl_local in l_prl_local %}
         <option value="{{ prl_local['prl_ser'] }}" {% if id_selected and id_selected == prl_local['prl_ser'] %}selected{% endif %}>{{ prl_local['prl_name'] }}</option>
     {% endfor %}
 {%- endmacro %}
-#}
 
 {% macro select_type_ana(l_type_ana, id_selected) -%}
     <option selected value="0"></option>

@@ -16,12 +16,8 @@ class Export:
         l_res = []
         l_tmp = []
 
-        """ To be postponed for the next version 3.3.10
-        , rec.rec_hosp_num
-        """
-
         # Records list between two date
-        req = ('select rec.id_data as id_rec, rec.date_hosp, rec.service_interne, rec.num_lit, '
+        req = ('select rec.id_data as id_rec, rec.date_hosp, rec.service_interne, rec.num_lit, rec.rec_hosp_num, '
                'dico.label as rec_type, rec.id_patient, ifnull(dict_med.label, "") as med_spe, num_dos_an '
                'from sigl_02_data as rec '
                'inner join sigl_dico_data as dico on rec.type=dico.id_data and dico.dico_name = "type_dossier" '

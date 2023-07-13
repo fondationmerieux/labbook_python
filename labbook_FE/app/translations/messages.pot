@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-05 12:00+0200\n"
+"POT-Creation-Date: 2023-07-12 17:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -254,7 +253,7 @@ msgid "Numéro de lit"
 msgstr ""
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
-msgid "Numéro d'identification"
+msgid "Identification hôpital"
 msgstr ""
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
@@ -295,7 +294,7 @@ msgstr ""
 #: templates/list-equipment.html:31 templates/list-nonconformities.html:57
 #: templates/list-products.html:31 templates/list-records.html:54
 #: templates/list-records.html:155 templates/list-staff.html:31
-#: templates/list-stock.html:19 templates/list-stock.html:80
+#: templates/list-stock.html:19 templates/list-stock.html:78
 #: templates/list-template.html:31 templates/list-works.html:116
 #: templates/manage-pat-records.html:81 templates/manage-pat-records.html:336
 #: templates/move-stock-product.html:58 templates/setting-det-analysis.html:263
@@ -374,7 +373,7 @@ msgstr ""
 #: templates/list-manuals.html:57 templates/list-meeting.html:30
 #: templates/list-nonconformities.html:55 templates/list-procedure.html:30
 #: templates/list-products.html:30 templates/list-records.html:134
-#: templates/list-staff.html:30 templates/list-stock.html:79
+#: templates/list-staff.html:30 templates/list-stock.html:77
 #: templates/list-suppliers.html:30 templates/list-template.html:30
 #: templates/list-works.html:98 templates/report-today.html:59
 #: templates/res-control-ext.html:63 templates/setting-age-interval.html:29
@@ -462,7 +461,7 @@ msgstr ""
 #: templates/setting-pwd-user.html:36 templates/setting-rec-num.html:39
 #: templates/setting-report.html:39
 #: templates/setting-requesting-services.html:43
-#: templates/setting-stock.html:55
+#: templates/setting-stock.html:54
 msgid "Enregistrer"
 msgstr ""
 
@@ -517,7 +516,7 @@ msgstr ""
 #: templates/det-procedure.html:327 templates/det-req-ext.html:631
 #: templates/det-req-ext.html:735 templates/det-req-ext.html:820
 #: templates/det-req-int.html:617 templates/det-req-int.html:721
-#: templates/det-staff.html:337 templates/list-doctors.html:214
+#: templates/det-staff.html:341 templates/list-doctors.html:214
 #: templates/list-equipment.html:118 templates/list-laboratory.html:126
 #: templates/list-laboratory.html:321 templates/list-manuals.html:187
 #: templates/list-meeting.html:114 templates/list-nonconformities.html:177
@@ -531,6 +530,7 @@ msgstr ""
 #: templates/setting-dhis2.html:105 templates/setting-dicts.html:181
 #: templates/setting-functionnal-units.html:93 templates/setting-manual.html:79
 #: templates/setting-requesting-services.html:79
+#: templates/setting-stock.html:90
 msgid "Supprimer"
 msgstr ""
 
@@ -543,9 +543,10 @@ msgstr ""
 #: templates/list-doctors.html:273 templates/list-equipment.html:172
 #: templates/list-manuals.html:250 templates/list-meeting.html:171
 #: templates/list-nonconformities.html:319 templates/list-procedure.html:188
-#: templates/list-products.html:166 templates/list-stock.html:306
-#: templates/list-suppliers.html:176 templates/list-template.html:177
-#: templates/setting-analyzes.html:286 templates/setting-dicts.html:223
+#: templates/list-products.html:166 templates/list-stock.html:299
+#: templates/list-stock.html:335 templates/list-suppliers.html:176
+#: templates/list-template.html:177 templates/setting-analyzes.html:286
+#: templates/setting-dicts.html:223
 #: templates/setting-functionnal-units.html:143
 #: templates/setting-zipcity.html:145
 msgid "Erreur lors de la suppression des données"
@@ -555,7 +556,7 @@ msgstr ""
 #: templates/administrative-record.html:487
 #: templates/administrative-record.html:539 templates/det-equipment.html:643
 #: templates/det-manual.html:335 templates/det-meeting.html:207
-#: templates/det-procedure.html:325 templates/det-staff.html:334
+#: templates/det-procedure.html:325 templates/det-staff.html:338
 #: templates/det-template.html:57 templates/list-laboratory.html:319
 #: templates/res-control-ext.html:71 templates/res-control-ext.html:234
 #: templates/setting-dhis2.html:104 templates/setting-epidemio.html:104
@@ -584,7 +585,7 @@ msgstr ""
 #: templates/list-meeting.html:95 templates/list-nonconformities.html:159
 #: templates/list-procedure.html:106 templates/list-products.html:92
 #: templates/list-samples.html:108 templates/list-staff.html:111
-#: templates/list-stock.html:220 templates/list-suppliers.html:100
+#: templates/list-stock.html:210 templates/list-suppliers.html:100
 #: templates/list-template.html:94 templates/list-trace-download.html:153
 #: templates/list-vars.html:90 templates/move-stock-product.html:161
 #: templates/pivot-table.html:151 templates/report-billing.html:225
@@ -614,11 +615,11 @@ msgstr ""
 #: templates/det-equipment.html:588 templates/det-list-stock.html:219
 #: templates/det-manual.html:310 templates/det-meeting.html:182
 #: templates/det-new-product.html:214 templates/det-procedure.html:300
-#: templates/det-sample.html:223 templates/det-staff.html:291
+#: templates/det-sample.html:223 templates/det-staff.html:295
 #: templates/det-stock-product.html:252 templates/det-supplier.html:149
 #: templates/det-template.html:160 templates/homepage.html:132
 #: templates/list-laboratory.html:304 templates/manage-pat-records.html:736
-#: templates/move-stock-product.html:275 templates/non-conformity.html:1383
+#: templates/move-stock-product.html:277 templates/non-conformity.html:1383
 #: templates/res-control-ext.html:155 templates/res-control-int.html:125
 #: templates/setting-age-interval.html:222 templates/setting-analyzes.html:391
 #: templates/setting-analyzes.html:430 templates/setting-backup.html:334
@@ -631,14 +632,14 @@ msgstr ""
 #: templates/setting-pref.html:192 templates/setting-pwd-user.html:85
 #: templates/setting-rec-num.html:73 templates/setting-report.html:73
 #: templates/setting-requesting-services.html:217
-#: templates/setting-stock.html:89
+#: templates/setting-stock.html:236
 msgid "Une erreur est survenue lors de l'enregistrement"
 msgstr ""
 
 #: templates/administrative-record.html:715 templates/analysis-import.html:97
 #: templates/det-equipment.html:691 templates/det-manual.html:386
 #: templates/det-meeting.html:258 templates/det-procedure.html:376
-#: templates/det-staff.html:381 templates/dict-import.html:85
+#: templates/det-staff.html:385 templates/dict-import.html:85
 #: templates/list-laboratory.html:352 templates/res-control-ext.html:197
 #: templates/setting-zipcity.html:222 templates/user-import.html:82
 msgid "Une erreur est survenue lors du dépot d'un fichier"
@@ -646,14 +647,14 @@ msgstr ""
 
 #: templates/administrative-record.html:722 templates/det-equipment.html:708
 #: templates/det-manual.html:408 templates/det-procedure.html:390
-#: templates/det-staff.html:398 templates/list-laboratory.html:359
+#: templates/det-staff.html:402 templates/list-laboratory.html:359
 #: templates/setting-dhis2.html:116
 msgid "Le fichier sera définitivement supprimé"
 msgstr ""
 
 #: templates/administrative-record.html:741 templates/det-equipment.html:727
 #: templates/det-manual.html:427 templates/det-procedure.html:409
-#: templates/det-staff.html:417 templates/list-laboratory.html:378
+#: templates/det-staff.html:421 templates/list-laboratory.html:378
 #: templates/setting-dhis2.html:135
 msgid "Erreur lors de la suppression d'un fichier"
 msgstr ""
@@ -697,7 +698,7 @@ msgstr ""
 #: templates/list-manuals.html:85 templates/list-meeting.html:52
 #: templates/list-nonconformities.html:80 templates/list-procedure.html:58
 #: templates/list-products.html:55 templates/list-staff.html:66
-#: templates/list-stock.html:108 templates/list-suppliers.html:55
+#: templates/list-stock.html:104 templates/list-suppliers.html:55
 #: templates/list-template.html:52 templates/list-trace-download.html:78
 #: templates/list-vars.html:53 templates/move-stock-product.html:81
 #: templates/quality-general.html:47 templates/report-dhis2.html:51
@@ -711,7 +712,7 @@ msgstr ""
 #: templates/setting-pwd-user.html:33 templates/setting-rec-num.html:36
 #: templates/setting-report.html:36
 #: templates/setting-requesting-services.html:40
-#: templates/setting-stock.html:52 templates/setting-users.html:112
+#: templates/setting-stock.html:51 templates/setting-users.html:112
 #: templates/setting-zipcity.html:56 templates/user-conn-export.html:36
 #: templates/user-import.html:38 templates/whonet-export.html:36
 msgid "Retour"
@@ -1002,7 +1003,7 @@ msgstr ""
 #: templates/list-ctrl-int.html:33 templates/list-meeting.html:32
 #: templates/list-products.html:32 templates/list-records.html:87
 #: templates/list-results.html:37 templates/list-stock.html:23
-#: templates/list-stock.html:85 templates/list-template.html:32
+#: templates/list-stock.html:83 templates/list-template.html:32
 #: templates/list-works.html:46
 msgid "Type"
 msgstr ""
@@ -1036,7 +1037,7 @@ msgstr ""
 #: templates/list-nonconformities.html:39 templates/list-procedure.html:14
 #: templates/list-products.html:14 templates/list-records.html:116
 #: templates/list-samples.html:19 templates/list-staff.html:14
-#: templates/list-stock.html:63 templates/list-suppliers.html:14
+#: templates/list-stock.html:61 templates/list-suppliers.html:14
 #: templates/list-template.html:14 templates/list-trace-download.html:42
 #: templates/list-vars.html:14 templates/list-works.html:79
 #: templates/move-stock-product.html:42 templates/report-billing.html:50
@@ -1066,8 +1067,8 @@ msgstr ""
 #: templates/list-products.html:46 templates/list-records.html:121
 #: templates/list-records.html:165 templates/list-samples.html:24
 #: templates/list-samples.html:63 templates/list-staff.html:18
-#: templates/list-staff.html:57 templates/list-stock.html:67
-#: templates/list-stock.html:99 templates/list-suppliers.html:18
+#: templates/list-staff.html:57 templates/list-stock.html:65
+#: templates/list-stock.html:95 templates/list-suppliers.html:18
 #: templates/list-suppliers.html:46 templates/list-template.html:18
 #: templates/list-template.html:43 templates/list-trace-download.html:46
 #: templates/list-trace-download.html:69 templates/list-vars.html:18
@@ -1103,8 +1104,8 @@ msgstr ""
 #: templates/list-products.html:47 templates/list-records.html:122
 #: templates/list-records.html:166 templates/list-samples.html:25
 #: templates/list-samples.html:64 templates/list-staff.html:19
-#: templates/list-staff.html:58 templates/list-stock.html:68
-#: templates/list-stock.html:100 templates/list-suppliers.html:19
+#: templates/list-staff.html:58 templates/list-stock.html:66
+#: templates/list-stock.html:96 templates/list-suppliers.html:19
 #: templates/list-suppliers.html:47 templates/list-template.html:19
 #: templates/list-template.html:44 templates/list-trace-download.html:47
 #: templates/list-trace-download.html:70 templates/list-vars.html:19
@@ -1140,8 +1141,8 @@ msgstr ""
 #: templates/list-products.html:49 templates/list-records.html:124
 #: templates/list-records.html:168 templates/list-samples.html:27
 #: templates/list-samples.html:66 templates/list-staff.html:21
-#: templates/list-staff.html:60 templates/list-stock.html:70
-#: templates/list-stock.html:102 templates/list-suppliers.html:21
+#: templates/list-staff.html:60 templates/list-stock.html:68
+#: templates/list-stock.html:98 templates/list-suppliers.html:21
 #: templates/list-suppliers.html:49 templates/list-template.html:21
 #: templates/list-template.html:46 templates/list-trace-download.html:49
 #: templates/list-trace-download.html:72 templates/list-vars.html:21
@@ -1177,8 +1178,8 @@ msgstr ""
 #: templates/list-products.html:50 templates/list-records.html:125
 #: templates/list-records.html:169 templates/list-samples.html:28
 #: templates/list-samples.html:67 templates/list-staff.html:22
-#: templates/list-staff.html:61 templates/list-stock.html:71
-#: templates/list-stock.html:103 templates/list-suppliers.html:22
+#: templates/list-staff.html:61 templates/list-stock.html:69
+#: templates/list-stock.html:99 templates/list-suppliers.html:22
 #: templates/list-suppliers.html:50 templates/list-template.html:22
 #: templates/list-template.html:47 templates/list-trace-download.html:50
 #: templates/list-trace-download.html:73 templates/list-vars.html:22
@@ -1204,7 +1205,7 @@ msgstr ""
 #: templates/list-laboratory.html:69 templates/list-manuals.html:56
 #: templates/list-meeting.html:29 templates/list-nonconformities.html:54
 #: templates/list-procedure.html:29 templates/list-products.html:29
-#: templates/list-staff.html:29 templates/list-stock.html:78
+#: templates/list-staff.html:29 templates/list-stock.html:76
 #: templates/list-suppliers.html:29 templates/list-template.html:29
 #: templates/list-trace-download.html:57 templates/move-stock-product.html:57
 #: templates/setting-age-interval.html:28 templates/setting-analyzes.html:78
@@ -1220,7 +1221,7 @@ msgstr ""
 #: templates/det-control-ext.html:62 templates/det-equipment.html:71
 #: templates/det-new-product.html:17 templates/det-supplier.html:5
 #: templates/det-supplier.html:12 templates/list-products.html:35
-#: templates/list-stock.html:87 templates/list-suppliers.html:31
+#: templates/list-stock.html:85 templates/list-suppliers.html:31
 #: templates/non-conformity.html:474 templates/res-control-ext.html:23
 msgid "Fournisseur"
 msgstr ""
@@ -1237,7 +1238,7 @@ msgstr ""
 #: templates/list-doctors.html:112 templates/list-equipment.html:58
 #: templates/list-manuals.html:89 templates/list-meeting.html:56
 #: templates/list-nonconformities.html:83 templates/list-procedure.html:65
-#: templates/list-staff.html:70 templates/list-stock.html:113
+#: templates/list-staff.html:70 templates/list-stock.html:109
 #: templates/list-suppliers.html:59 templates/pivot-table.html:64
 #: templates/report-today.html:97
 msgid "Export des données"
@@ -1287,7 +1288,7 @@ msgstr ""
 #: templates/setting-pref.html:187 templates/setting-rec-num.html:68
 #: templates/setting-report.html:68
 #: templates/setting-requesting-services.html:211
-#: templates/setting-stock.html:84
+#: templates/setting-stock.html:231
 msgid "Enregistrement réussi"
 msgstr ""
 
@@ -1311,8 +1312,8 @@ msgstr ""
 #: templates/list-manuals.html:305 templates/list-meeting.html:226
 #: templates/list-nonconformities.html:286 templates/list-procedure.html:248
 #: templates/list-results.html:928 templates/list-staff.html:207
-#: templates/list-stock.html:382 templates/list-stock.html:424
-#: templates/list-stock.html:466 templates/list-stock.html:508
+#: templates/list-stock.html:411 templates/list-stock.html:453
+#: templates/list-stock.html:495 templates/list-stock.html:537
 #: templates/list-suppliers.html:231 templates/report-activity.html:619
 #: templates/report-activity.html:671 templates/report-activity.html:719
 #: templates/report-billing.html:297 templates/report-dhis2.html:116
@@ -1455,7 +1456,8 @@ msgstr ""
 
 #: templates/det-equipment.html:56 templates/det-list-stock.html:36
 #: templates/det-stock-product.html:52 templates/hist-stock-product.html:57
-#: templates/list-equipment.html:34 templates/move-stock-product.html:24
+#: templates/list-equipment.html:34 templates/list-stock.html:43
+#: templates/list-stock.html:86 templates/move-stock-product.html:24
 #: templates/move-stock-product.html:61 templates/setting-stock.html:30
 msgid "Localisation"
 msgstr ""
@@ -1631,7 +1633,7 @@ msgid "Liste détaillée du stock pour ce produit"
 msgstr ""
 
 #: templates/det-list-stock.html:33 templates/hist-stock-product.html:54
-#: templates/list-stock.html:81
+#: templates/list-stock.html:79
 msgid "Nb de paq."
 msgstr ""
 
@@ -1774,7 +1776,7 @@ msgid "Référence fournisseur"
 msgstr ""
 
 #: templates/det-new-product.html:69 templates/list-products.html:37
-#: templates/list-stock.html:30 templates/list-stock.html:86
+#: templates/list-stock.html:30 templates/list-stock.html:84
 msgid "Conservation"
 msgstr ""
 
@@ -2014,7 +2016,7 @@ msgstr ""
 #: templates/setting-functionnal-units.html:119
 #: templates/setting-manual.html:95
 #: templates/setting-requesting-services.html:95
-#: templates/setting-zipcity.html:121
+#: templates/setting-stock.html:107 templates/setting-zipcity.html:121
 msgid "Merci de confirmer la suppression"
 msgstr ""
 
@@ -2161,7 +2163,7 @@ msgid "Dernière évaluation des compétences"
 msgstr ""
 
 #: templates/det-stock-product.html:5 templates/det-stock-product.html:16
-#: templates/list-stock.html:124
+#: templates/list-stock.html:120
 msgid "Approvisionner un produit"
 msgstr ""
 
@@ -2342,7 +2344,7 @@ msgstr ""
 #: templates/list-nonconformities.html:32 templates/list-records.html:17
 #: templates/list-records.html:103 templates/list-results.html:20
 #: templates/list-results.html:64 templates/list-stock.html:15
-#: templates/list-stock.html:56 templates/list-trace-download.html:15
+#: templates/list-stock.html:54 templates/list-trace-download.html:15
 #: templates/list-trace-download.html:35 templates/list-works.html:17
 #: templates/list-works.html:65 templates/move-stock-product.html:15
 #: templates/move-stock-product.html:35 templates/report-activity.html:16
@@ -2366,7 +2368,7 @@ msgstr ""
 #: templates/hist-stock-product.html:127 templates/js/display_histo.js:57
 #: templates/js/stat_rec_with_det.js:51 templates/list-doctors.html:170
 #: templates/list-manuals.html:142 templates/list-nonconformities.html:133
-#: templates/list-stock.html:194 templates/list-trace-download.html:127
+#: templates/list-stock.html:184 templates/list-trace-download.html:127
 #: templates/manage-pat-records.html:812 templates/manage-pat-records.html:835
 #: templates/move-stock-product.html:135 templates/report-activity.html:116
 #: templates/report-billing.html:197 templates/report-statistic.html:146
@@ -2656,6 +2658,7 @@ msgstr ""
 #: templates/setting-functionnal-units.html:229
 #: templates/setting-manual.html:189
 #: templates/setting-requesting-services.html:189
+#: templates/setting-stock.html:208
 msgid "Veuillez renseigner le(s) libellé(s)."
 msgstr ""
 
@@ -2756,7 +2759,7 @@ msgstr ""
 msgid "Nbr par paquet"
 msgstr ""
 
-#: templates/list-products.html:34 templates/list-stock.html:84
+#: templates/list-products.html:34 templates/list-stock.html:82
 msgid "Seuil"
 msgstr ""
 
@@ -2764,15 +2767,15 @@ msgstr ""
 msgid "Réf. fournisseur"
 msgstr ""
 
-#: templates/list-products.html:110 templates/list-stock.html:238
+#: templates/list-products.html:110 templates/list-stock.html:228
 msgid "Editer la fiche produit"
 msgstr ""
 
-#: templates/list-products.html:113 templates/list-stock.html:239
+#: templates/list-products.html:113 templates/list-stock.html:232
 msgid "Supprimer la fiche produit"
 msgstr ""
 
-#: templates/list-products.html:142 templates/list-stock.html:282
+#: templates/list-products.html:142 templates/list-stock.html:311
 msgid "Merci de confirmer la suppression du produit"
 msgstr ""
 
@@ -2909,52 +2912,65 @@ msgstr ""
 msgid "Liste des stocks"
 msgstr ""
 
-#: templates/list-stock.html:82
+#: templates/list-stock.html:80
 msgid "Nb par paq."
 msgstr ""
 
-#: templates/list-stock.html:83
+#: templates/list-stock.html:81
 msgid "Nb total"
 msgstr ""
 
-#: templates/list-stock.html:115
+#: templates/list-stock.html:111
 msgid "Export du tableau"
 msgstr ""
 
-#: templates/list-stock.html:116
+#: templates/list-stock.html:112
 msgid "Export des produits"
 msgstr ""
 
-#: templates/list-stock.html:117
+#: templates/list-stock.html:113
 msgid "Export des approvisionnements"
 msgstr ""
 
-#: templates/list-stock.html:118
+#: templates/list-stock.html:114
 msgid "Export des usages"
 msgstr ""
 
-#: templates/list-stock.html:130
+#: templates/list-stock.html:121 templates/move-stock-product.html:5
+#: templates/move-stock-product.html:12
+msgid "Déplacer des produits"
+msgstr ""
+
+#: templates/list-stock.html:124
 msgid "Catalogue des produits"
 msgstr ""
 
-#: templates/list-stock.html:133
+#: templates/list-stock.html:127
 msgid "Nouveau produit"
 msgstr ""
 
-#: templates/list-stock.html:235
+#: templates/list-stock.html:225
 msgid "Détails du stock"
 msgstr ""
 
-#: templates/list-stock.html:236
+#: templates/list-stock.html:226
 msgid "Historique de ce produit"
 msgstr ""
 
-#: templates/list-stock.html:253 templates/list-stock.html:255
+#: templates/list-stock.html:231
+msgid "Enlever cette ligne"
+msgstr ""
+
+#: templates/list-stock.html:246 templates/list-stock.html:248
 msgid "Seuil de"
 msgstr ""
 
-#: templates/list-stock.html:380 templates/list-stock.html:422
-#: templates/list-stock.html:464 templates/list-stock.html:506
+#: templates/list-stock.html:275
+msgid "Merci de confirmer la désactivation de cette ligne"
+msgstr ""
+
+#: templates/list-stock.html:409 templates/list-stock.html:451
+#: templates/list-stock.html:493 templates/list-stock.html:535
 msgid "Aucun stock à exporter !"
 msgstr ""
 
@@ -3351,10 +3367,6 @@ msgstr ""
 
 #: templates/menu.html:247 templates/menu.html:418
 msgid "Non conformité"
-msgstr ""
-
-#: templates/move-stock-product.html:5 templates/move-stock-product.html:12
-msgid "Déplacer des produits"
 msgstr ""
 
 #: templates/move-stock-product.html:60
@@ -4813,6 +4825,10 @@ msgstr ""
 
 #: templates/setting-stock.html:26
 msgid "Ajouter une localisation"
+msgstr ""
+
+#: templates/setting-stock.html:42
+msgid "Usage"
 msgstr ""
 
 #: templates/setting-users.html:5 templates/setting-users.html:12

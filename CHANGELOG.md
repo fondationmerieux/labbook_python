@@ -6,9 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
+- edit user able to upload file like CV, diploma ... as for edit staff GUI
+
+## [3.3.12] - 2023-07-13
+### Added
+- stock setting add location stock
 - location fields in supply of product becomes a drop-down menu
 - location of stock product can be changed to another location
-- edit user able to upload file like CV, diploma ... as for edit staff GUI
+- stock supply can be split to another location
+- hospital identification to WHONET export
 
 ## [3.3.11] - 2023-07-11
 ### Fixed
