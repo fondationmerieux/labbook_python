@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.3.12] - 2023-07-21
+### Changed
+- system enhancement insertion of an analysis variable for code_var
+
+### Fixed
+- move stock more than one item
+- move stock when split number of pack
+
 ## [3.3.12] - 2023-07-13
 ### Added
 - stock setting add location stock
@@ -18,7 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [3.3.11] - 2023-07-11
 ### Fixed
-- some translations with double backslash n, one backslash missin
+- some translations with double backslash n, one backslash missing
 - stock setting
 
 ## [3.3.10] - 2023-07-06

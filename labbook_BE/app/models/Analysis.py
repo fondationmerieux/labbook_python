@@ -398,6 +398,21 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
+    def getLastAnalysisVar():
+        cursor = DB.cursor()
+
+        req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
+               'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
+               'formule_unite2 as formula2, formule as formula, accuracy as accu, precision2 as accu2, code_var, '
+               'var_highlight '
+               'from sigl_07_data '
+               'order by id_data desc limit 1')
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getAnalysisVarExist(label, type_res, unit, var_min, var_max, code_var, test='N'):
         cursor = DB.cursor()
 
@@ -427,6 +442,20 @@ class Analysis:
                 mode_test = ' '
                 params['test'] = 'N'
 
+            upd_code_var = False
+
+            # avoid empty code_var
+            if not params['code_var']:
+                upd_code_var = True
+
+                last_var = Analysis.getLastAnalysisVar()
+
+                if last_var:
+                    last_var = int(last_var['code_var']) + 1
+                    params['code_var'] = str(last_var)
+                else:
+                    params['code_var'] = "NO_CODE_VAR"
+
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_07_data' + mode_test +
@@ -442,7 +471,7 @@ class Analysis:
             id_var = cursor.lastrowid
 
             # if code_var is empty update with id_data
-            if not params['code_var']:
+            if upd_code_var:
                 Analysis.updateAnalysisVar(id_data=id_var,
                                            id_owner=params['id_owner'],
                                            label=params['label'],

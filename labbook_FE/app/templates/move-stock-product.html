@@ -216,6 +216,8 @@ var id_user = {{ session['user_id']|safe}} ;
 
 var param = '{ "id_user":' + id_user + ', "list_supply" : [' ;
 
+let param_supply = '' ;
+
     $(".supply_data" ).each( function(i, elem)
     {
     let prs_ser      = $(this).attr("id") ;
@@ -226,17 +228,15 @@ var param = '{ "id_user":' + id_user + ', "list_supply" : [' ;
 
         if ( next_local == "" ) next_local = 0 ;
 
-    let param_supply = '' ;
-
         if ( prev_local != next_local )
         {
             if (param_supply != '')
-            param += ', ' ;
+            param_supply += ', ' ;
 
-        param_supply = '{ "prs_ser":' + prs_ser + ', ' +
-                         '"prev_prs_ser":' + prs_ser + ',' +
-                         '"prs_nb_pack":' + next_nb_pack + ', ' +
-                         '"prs_prl":' + next_local + '}' ;
+        param_supply += '{ "prs_ser":' + prs_ser + ', ' +
+                          '"prev_prs_ser":' + prs_ser + ',' +
+                          '"prs_nb_pack":' + next_nb_pack + ', ' +
+                          '"prs_prl":' + next_local + '}' ;
 
             // if nb_pack is changed then we split supply entry in database
             if ( prev_nb_pack != next_nb_pack )
@@ -251,11 +251,9 @@ var param = '{ "id_user":' + id_user + ', "list_supply" : [' ;
                               '"prs_prl":' + prev_local + '}' ;
             }
         }
-
-    param += param_supply ;
     } ) ;
 
-param += ' ] }' ;
+param += param_supply + ' ] }' ;
 
     $.ajax( {
         type: "POST",

@@ -2284,7 +2284,9 @@ class StockSupplyMove(Resource):
 
             # change only location
             if prev_prs_ser == next_prs_ser:
-                ret = Quality.updateStockSupplyLocal(prs_ser=prev_prs_ser, prs_prl=supply['prs_prl'])
+                ret = Quality.updateStockSupplyLocal(prs_ser=prev_prs_ser,
+                                                     prs_nb_pack=supply['prs_nb_pack'],
+                                                     prs_prl=supply['prs_prl'])
 
                 if ret is False:
                     self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateSupplyLocal')
