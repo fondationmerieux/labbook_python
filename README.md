@@ -189,6 +189,12 @@ Changes to the analyses repository are documented in [analyzes.md](doc/analyzes.
 
 The architecture of the standard LabBook installation is described in [architecture.md](doc/architecture.md).
 
+The architecture of the standard LabBook installation is described in [architecture.md](doc/architecture.md).
+
+## Manual update
+
+Manually updating a LabBook container with an archive obtained from a `make save` command is described in [manual_update.md](doc/manual_update.md).
+
 ## Backups
 
 The API between labbook_BE and the script performing backup and restore actions is decribed in [backup_api.md](doc/backup_api.md).

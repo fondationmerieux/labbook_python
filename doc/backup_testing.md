@@ -73,9 +73,9 @@ as described in [extra_key.md](extra_key.md).
 
 Verify last backup ERR information on screen.
 
-## Command line access to the LabBook container
+## <a name="exec_bash"></a>Command line access to the LabBook container
 
-For testing purposes you may want to access a running LabBook application.
+For testing or debugging purposes you may want to access a running LabBook application.
 This is not as easy as connecting to the LabBook system because the application runs inside a container.
 The purpose of using containers is to isolate as much as possible the application from the underlying Ubuntu system.
 
@@ -147,45 +147,41 @@ USB
 
 The container is removed when you exit the `bash` session.
 
-## Update the labbook-python image
+## Reload database dump
 
-You must be logged in as `sigl`.
+You may want to restore your LabBook database from a SQL dump file.
+This file may be the result of a previous dump or backup.
 
 Steps:
 
-- stop the application,
-- remove the labbook-python image,
-- replace the labbook-python image archive in `/home/LabBook_images`,
-- start the application.
+- you must be logged in as `user_labbook`.
+- open a bash session into the running LabBook container [as explained here](#exec_bash),
+- invoke the internal command `loaddb` from `backup.sh` with the path of the SQL dump file.
+- restart the container
 
-ATTENTION: When the application starts, it upgrades the database if necessary.
-But downgrading the database is not supported, you should not install an image from a previous version.
+ATTENTION: this command drops and recreates the database. All data will be lost.
 
 ~~~
-# verify initial state
-sigl@labbook3-test:~$ sudo podman ps
-CONTAINER ID  IMAGE                           COMMAND               CREATED        STATUS            PORTS               NAMES
-b5db8a0daff3  localhost/labbook-pod:3.2                             3 minutes ago  Up 3 minutes ago  0.0.0.0:80->80/tcp  18b0b7e4e7cf-infra
-913b6b12cf9d  localhost/labbook-python:3.0.1  supervisord -c /h...  3 minutes ago  Up 3 minutes ago  0.0.0.0:80->80/tcp  labbook_python
+# open a bash session
+user_labbook@labbook3-test:~$ sudo podman exec -it labbook_python bash
 
-# stop labbook
-sigl@labbook3-test:~$ sudo /usr/bin/systemctl stop labbook
+# setup the environment needed to access the database
+export LABBOOK_DB_NAME=SIGL
+export LABBOOK_DB_HOST=10.88.0.1
+export LABBOOK_DB_USER=xxxxx
+export LABBOOK_DB_PWD=xxxxx
 
-# all running containers should have been stopped
-sigl@labbook3-test:~$ sudo podman ps
-CONTAINER ID  IMAGE   COMMAND  CREATED  STATUS  PORTS   NAMES
-sigl@labbook3-test:~$ 
+# drop/create the database and load from SQL dump
+[root@labbook labbook_BE]# script/backup.sh -i /storage/dump/dump.sql loaddb
 
-# look for the image id and remove it
-sigl@labbook3-test:~$ sudo podman image ls localhost/labbook-python
-sigl@labbook3-test:~$ sudo podman rmi image_id_from_above
+# setup the environment needed to restart the container
+export LABBOOK_USER=user_labbook
+export LABBOOK_USER_PWD=xxxxx
 
-# or in one step
-sigl@labbook3-test:~$ sudo podman rmi $(sudo podman image ls --format '{{.ID}}' localhost/labbook-python)
+# restart the container
+[root@labbook labbook_BE]# script/backup.sh restart
 
-# install the new image
-sigl@labbook3-test:~$ sudo mv /tmp/labbook-python-3.0.2.tar /home/LabBook_images
-
-# start labbook
-sigl@labbook3-test:~$ sudo /usr/bin/systemctl start labbook
+# if the previous command is successful, the container having been stopped
+# you should return to your user_labbook session
+user_labbook@labbook3-test:~$
 ~~~
