@@ -8,7 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.3.12] - 2023-07-21
+## [3.3.14] - 2023-09-27
+### Fixed
+- status of last import of analysis repository
+- export WHONET variables when "Diam. inhibition" missing then looking for "... inhibition diam."
+
+### Changed
+- logo AEGLE
+
+## [3.3.13] - 2023-07-21
 ### Changed
 - system enhancement insertion of an analysis variable for code_var
 

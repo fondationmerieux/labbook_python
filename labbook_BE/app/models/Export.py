@@ -37,7 +37,7 @@ class Export:
             req = ('select ana.id_data as id_ana, req.id_data as id_req, code as ana_code, nom as ana_name '
                    'from sigl_04_data as req '
                    'left join sigl_05_data as ana on req.ref_analyse=ana.id_data '
-                   'where ana.famille=18 and ana.ana_whonet=4 and req.id_dos=%s')
+                   'where ana.famille=18 and ana.ana_whonet=4 and ana.actif=4 and req.id_dos=%s')
 
             cursor.execute(req, (rec['id_rec'],))
 
@@ -78,14 +78,21 @@ class Export:
 
                         res = ana.copy()
                         res.update(res_var)
+
+                        res['method_value'] = ''
                     # add method result on the same line
-                    elif res_var['libelle'].startswith('Diam. inhibition ') or res_var['libelle'].startswith('CMI '):
+                    elif res_var['libelle'].startswith('Diam. inhibition ') or res_var['libelle'].startswith('CMI ') or \
+                         res_var['libelle'].endswith('inhibition diam.') or res_var['libelle'].endswith(' CMI'):
                         res['method_value'] = res_var['valeur']
                         l_res.append(res)
+
                     # in case of something else than antiobic and method result
                     else:
                         res = ana.copy()
                         res.update(res_var)
+
+                        res['method_value'] = ''
+
                         l_res.append(res)
 
         # Export.log.info(Logs.fileline() + ' : l_res=' + str(l_res))

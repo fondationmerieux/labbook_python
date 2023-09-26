@@ -351,7 +351,7 @@ class Analysis:
                'd1.label as type_res '
                'from sigl_07_data as var '
                'left join sigl_dico_data as d1 on d1.id_data=var.type_resultat '
-               'order by label asc')
+               'order by var.libelle asc')
 
         cursor.execute(req)
 

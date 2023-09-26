@@ -1023,7 +1023,7 @@ class AnalysisImport(Resource):
 
         filename = args['filename']
         type     = args['type']
-        id_user  = args['id_user']
+        # id_user  = args['id_user']
         test     = args['test']
 
         if test and test == 'Y':
@@ -1184,9 +1184,9 @@ class AnalysisImport(Resource):
                             if ret is False:
                                 self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update analysis code: ' + str(code) + ' | csv_line=' + str(i))
                                 if test == 'N':
-                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update analysis code: ' + str(code), type='ANA')
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                 else:
-                                    DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR update analysis code: ' + str(code), type='ANA')
+                                    DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR update analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             code_prev = code
@@ -1218,9 +1218,9 @@ class AnalysisImport(Resource):
                                 if ret is False:
                                     self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update var analysis code: ' + str(code) + ' | csv_line=' + str(i))
                                     if test == 'N':
-                                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update var analysis code: ' + str(code), type='ANA')
+                                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update var analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                     else:
-                                        DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR update var analysis code: ' + str(code), type='ANA')
+                                        DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR update var analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
                                 # UPDATE LINK
@@ -1238,9 +1238,9 @@ class AnalysisImport(Resource):
                                 if not ret:
                                     self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR update link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
                                     if test == 'N':
-                                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update link var to analysis code: ' + str(code), type='ANA')
+                                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR update link var to analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                     else:
-                                        DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR update link var to analysis code: ' + str(code), type='ANA')
+                                        DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR update link var to analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
 
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
@@ -1365,9 +1365,9 @@ class AnalysisImport(Resource):
                             if ret <= 0:
                                 self.log.info(Logs.fileline() + ' : TRACE AnalysisImport ERROR insert analysis code: ' + str(code) + ' | csv_line=' + str(i))
                                 if test == 'N':
-                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert analysis code: ' + str(code), type='ANA')
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                 else:
-                                    DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR insert analysis code: ' + str(code), type='ANA')
+                                    DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR insert analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             id_ana = ret
@@ -1407,9 +1407,9 @@ class AnalysisImport(Resource):
                                 if ret <= 0:
                                     self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert var analysis code: ' + str(code) + ' | csv_line=' + str(i))
                                     if test == 'N':
-                                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert var analysis code: ' + str(code), type='ANA')
+                                        DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert var analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                     else:
-                                        DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR insert var analysis code: ' + str(code), type='ANA')
+                                        DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR insert var analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                     return compose_ret('', Constants.cst_content_type_json, 500)
 
                                 id_var = ret
@@ -1431,9 +1431,9 @@ class AnalysisImport(Resource):
                             if ret <= 0:
                                 self.log.info(Logs.fileline() + ' : AnalysisImport ERROR insert link var to analysis code: ' + str(code) + ' | csv_line=' + str(i))
                                 if test == 'N':
-                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert link var analysis code: ' + str(code), type='ANA')
+                                    DB.insertDbStatus(stat='ERR;AnalysisImport ERROR insert link var analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                 else:
-                                    DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR insert link var analysis code: ' + str(code), type='ANA')
+                                    DB.insertDbStatus(stat='ERR;TEST AnalysisImport ERROR insert link var analysis code: ' + str(code) + ' | csv_line=' + str(i), type='ANA')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         else:
