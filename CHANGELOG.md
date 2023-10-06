@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.3.15] - 2023-10-06
+### Fixed
+- rebuild ISO and retry to create manual_setting table by Alembic
+
 ## [3.3.14] - 2023-09-27
 ### Fixed
 - status of last import of analysis repository
@@ -15,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - logo AEGLE
+- Minor changes in documentation concerning restores and upgrade
 
 ## [3.3.13] - 2023-07-21
 ### Changed

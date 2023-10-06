@@ -4301,7 +4301,7 @@ def list_trace_download(type_trace=''):
 
     test_session()
 
-    session['current_page'] = 'list-trace-download' + str(type_trace)
+    session['current_page'] = 'list-trace-download/' + str(type_trace)
     session.modified = True
 
     json_ihm  = {}
