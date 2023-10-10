@@ -6,10 +6,9 @@ Create Date: 2023-10-06 09:11:04.870990
 
 """
 from alembic import op
-import sqlalchemy import text
+from sqlalchemy import text
 
 from datetime import datetime
-
 
 # revision identifiers, used by Alembic.
 revision = 'f7f46cfe7e02'
