@@ -23,52 +23,52 @@ class File:
 
         # RECORD
         if type_ref == 'REC':
-            tablename = 'sigl_dos_valisedoc__file_data'
+            tablename = 'record_file'  # 'sigl_dos_valisedoc__file_data'
         # CALIBRATION CERTIFICAT
         elif type_ref == 'EQCC':
-            tablename = 'sigl_equipement_certif_etalonnage__file_data'
+            tablename = 'eqp_calibration_file'  # 'sigl_equipement_certif_etalonnage__file_data'
         # MAINTENANCE CONTRACT
         elif type_ref == 'EQMC':
-            tablename = 'sigl_equipement_contrat_maintenance__file_data'
+            tablename = 'eqp_maintenance_file'  # 'sigl_equipement_contrat_maintenance__file_data'
         # BILL OF EQUIPMENT
         elif type_ref == 'EQBI':
-            tablename = 'sigl_equipement_facture__file_data'
+            tablename = 'eqp_invoice_file'  # 'sigl_equipement_facture__file_data'
         # PREVENTIVE MAINTENANCE
         elif type_ref == 'EQPM':
-            tablename = 'sigl_equipement_maintenance_preventive__file_data'
+            tablename = 'eqp_preventive_maintenance_file'  # 'sigl_equipement_maintenance_preventive__file_data'
         # BREAKDOWN
         elif type_ref == 'EQBD':
-            tablename = 'sigl_equipement_pannes__file_data'
+            tablename = 'eqp_failure_file'  # 'sigl_equipement_pannes__file_data'
         # PHOTO OF EQUIPMENT
         elif type_ref == 'EQPH':
-            tablename = 'sigl_equipement_photo__file_data'
+            tablename = 'eqp_photo_file'  # 'sigl_equipement_photo__file_data'
         # LABORATORY
         elif type_ref == 'LABO':
-            tablename = 'sigl_laboratoire_organigramme__file_data'
+            tablename = 'lab_chart_file'  # 'sigl_laboratoire_organigramme__file_data'
         # MANUALS
         elif type_ref == 'MANU':
-            tablename = 'sigl_manuels_document__file_data'
+            tablename = 'manual_file'  # 'sigl_manuels_document__file_data'
         # PROCEDURES
         elif type_ref == 'PROC':
-            tablename = 'sigl_procedures_document__file_data'
+            tablename = 'procedure_file'  # 'sigl_procedures_document__file_data'
         # MEETINGS
         elif type_ref == 'MEET':
-            tablename = 'sigl_reunion_pj__file_data'
+            tablename = 'meeting_file'  # 'sigl_reunion_pj__file_data'
         # CV
         elif type_ref == 'USCV':
-            tablename = 'sigl_user_cv__file_data'
+            tablename = 'user_cv_file'  # 'sigl_user_cv__file_data'
         # DIPLOMA
         elif type_ref == 'USDI':
-            tablename = 'sigl_user_diplomes__file_data'
+            tablename = 'user_diploma_file'  # 'sigl_user_diplomes__file_data'
         # EVALUATION
         elif type_ref == 'USEV':
-            tablename = 'sigl_user_evaluation__file_data'
+            tablename = 'user_evaluation_file'  # 'sigl_user_evaluation__file_data'
         # TRAININGS
         elif type_ref == 'USTR':
-            tablename = 'sigl_user_formations__file_data'
+            tablename = 'user_training_file'  # 'sigl_user_formations__file_data'
         # EXTERNAL CONTROL
         elif type_ref == 'CTRL':
-            tablename = 'sigl_controle_externe_ctrl_resultat_cr__file_data'
+            tablename = 'ctrl_ext_res_report_file'  # 'sigl_controle_externe_ctrl_resultat_cr__file_data'
         else:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
@@ -120,52 +120,52 @@ class File:
 
             # RECORD
             if params['type_ref'] == 'REC':
-                tablename = 'sigl_dos_valisedoc__file_data'
+                tablename = 'record_file'  # 'sigl_dos_valisedoc__file_data'
             # CALIBRATION CERTIFICAT
             elif params['type_ref'] == 'EQCC':
-                tablename = 'sigl_equipement_certif_etalonnage__file_data'
+                tablename = 'eqp_calibration_file'  # 'sigl_equipement_certif_etalonnage__file_data'
             # MAINTENANCE CONTRACT
             elif params['type_ref'] == 'EQMC':
-                tablename = 'sigl_equipement_contrat_maintenance__file_data'
+                tablename = 'eqp_maintenance_file'  # 'sigl_equipement_contrat_maintenance__file_data'
             # BILL OF EQUIPMENT
             elif params['type_ref'] == 'EQBI':
-                tablename = 'sigl_equipement_facture__file_data'
+                tablename = 'eqp_invoice_file'  # 'sigl_equipement_facture__file_data'
             # PREVENTIVE MAINTENANCE
             elif params['type_ref'] == 'EQPM':
-                tablename = 'sigl_equipement_maintenance_preventive__file_data'
+                tablename = 'eqp_preventive_maintenance_file'  # 'sigl_equipement_maintenance_preventive__file_data'
             # BREAKDOWN
             elif params['type_ref'] == 'EQBD':
-                tablename = 'sigl_equipement_pannes__file_data'
+                tablename = 'eqp_failure_file'  # 'sigl_equipement_pannes__file_data'
             # PHOTO OF EQUIPMENT
             elif params['type_ref'] == 'EQPH':
-                tablename = 'sigl_equipement_photo__file_data'
+                tablename = 'eqp_photo_file'  # 'sigl_equipement_photo__file_data'
             # LABORATORY
             elif params['type_ref'] == 'LABO':
-                tablename = 'sigl_laboratoire_organigramme__file_data'
+                tablename = 'lab_chart_file'  # 'sigl_laboratoire_organigramme__file_data'
             # MANUALS
             elif params['type_ref'] == 'MANU':
-                tablename = 'sigl_manuels_document__file_data'
+                tablename = 'manual_file'  # 'sigl_manuels_document__file_data'
             # PROCEDURES
             elif params['type_ref'] == 'PROC':
-                tablename = 'sigl_procedures_document__file_data'
+                tablename = 'procedure_file'  # 'sigl_procedures_document__file_data'
             # MEETINGS
             elif params['type_ref'] == 'MEET':
-                tablename = 'sigl_reunion_pj__file_data'
+                tablename = 'meeting_file'  # 'sigl_reunion_pj__file_data'
             # CV
             elif params['type_ref'] == 'USCV':
-                tablename = 'sigl_user_cv__file_data'
+                tablename = 'user_cv_file'  # 'sigl_user_cv__file_data'
             # DIPLOMA
             elif params['type_ref'] == 'USDI':
-                tablename = 'sigl_user_diplomes__file_data'
+                tablename = 'user_diploma_file'  # 'sigl_user_diplomes__file_data'
             # EVALUATION
             elif params['type_ref'] == 'USEV':
-                tablename = 'sigl_user_evaluation__file_data'
+                tablename = 'user_evaluation_file'  # 'sigl_user_evaluation__file_data'
             # TRAININGS
             elif params['type_ref'] == 'USTR':
-                tablename = 'sigl_user_formations__file_data'
+                tablename = 'user_training_file'  # 'sigl_user_formations__file_data'
             # EXTERNAL CONTROL
             elif params['type_ref'] == 'CTRL':
-                tablename = 'sigl_controle_externe_ctrl_resultat_cr__file_data'
+                tablename = 'ctrl_ext_res_report_file'  # 'sigl_controle_externe_ctrl_resultat_cr__file_data'
             else:
                 return 0
 
@@ -188,52 +188,52 @@ class File:
 
             # RECORD
             if type_ref == 'REC':
-                tablename = 'sigl_dos_valisedoc__file_data'
+                tablename = 'record_file'  # 'sigl_dos_valisedoc__file_data'
             # CALIBRATION CERTIFICAT
             elif type_ref == 'EQCC':
-                tablename = 'sigl_equipement_certif_etalonnage__file_data'
+                tablename = 'eqp_calibration_file'  # 'sigl_equipement_certif_etalonnage__file_data'
             # MAINTENANCE CONTRACT
             elif type_ref == 'EQMC':
-                tablename = 'sigl_equipement_contrat_maintenance__file_data'
+                tablename = 'eqp_maintenance_file'  # 'sigl_equipement_contrat_maintenance__file_data'
             # BILL OF EQUIPMENT
             elif type_ref == 'EQBI':
-                tablename = 'sigl_equipement_facture__file_data'
+                tablename = 'eqp_invoice_file'  # 'sigl_equipement_facture__file_data'
             # PREVENTIVE MAINTENANCE
             elif type_ref == 'EQPM':
-                tablename = 'sigl_equipement_maintenance_preventive__file_data'
+                tablename = 'eqp_preventive_maintenance_file'  # 'sigl_equipement_maintenance_preventive__file_data'
             # BREAKDOWN
             elif type_ref == 'EQBD':
-                tablename = 'sigl_equipement_pannes__file_data'
+                tablename = 'eqp_failure_file'  # 'sigl_equipement_pannes__file_data'
             # PHOTO OF EQUIPMENT
             elif type_ref == 'EQPH':
-                tablename = 'sigl_equipement_photo__file_data'
+                tablename = 'eqp_photo_file'  # 'sigl_equipement_photo__file_data'
             # LABORATORY
             elif type_ref == 'LABO':
-                tablename = 'sigl_laboratoire_organigramme__file_data'
+                tablename = 'lab_chart_file'  # 'sigl_laboratoire_organigramme__file_data'
             # MANUALS
             elif type_ref == 'MANU':
-                tablename = 'sigl_manuels_document__file_data'
+                tablename = 'manual_file'  # 'sigl_manuels_document__file_data'
             # PROCEDURES
             elif type_ref == 'PROC':
-                tablename = 'sigl_procedures_document__file_data'
+                tablename = 'procedure_file'  # 'sigl_procedures_document__file_data'
             # MEETINGS
             elif type_ref == 'MEET':
-                tablename = 'sigl_reunion_pj__file_data'
+                tablename = 'meeting_file'  # 'sigl_reunion_pj__file_data'
             # CV
             elif type_ref == 'USCV':
-                tablename = 'sigl_user_cv__file_data'
+                tablename = 'user_cv_file'  # 'sigl_user_cv__file_data'
             # DIPLOMA
             elif type_ref == 'USDI':
-                tablename = 'sigl_user_diplomes__file_data'
+                tablename = 'user_diploma_file'  # 'sigl_user_diplomes__file_data'
             # EVALUATION
             elif type_ref == 'USEV':
-                tablename = 'sigl_user_evaluation__file_data'
+                tablename = 'user_evaluation_file'  # 'sigl_user_evaluation__file_data'
             # TRAININGS
             elif type_ref == 'USTR':
-                tablename = 'sigl_user_formations__file_data'
+                tablename = 'user_training_file'  # 'sigl_user_formations__file_data'
             # EXTERNAL CONTROL
             elif type_ref == 'CTRL':
-                tablename = 'sigl_controle_externe_ctrl_resultat_cr__file_data'
+                tablename = 'ctrl_ext_res_report_file'  # 'sigl_controle_externe_ctrl_resultat_cr__file_data'
             else:
                 File.log.error(Logs.fileline() + ' : ERROR deleteFileDoc type_ref=' + str(type_ref))
                 return False
@@ -254,19 +254,19 @@ class File:
             cursor = DB.cursor()
 
             cursor.execute('select id_data '
-                           'from sigl_dos_valisedoc__file_data '
+                           'from record_file '  # sigl_dos_valisedoc__file_data
                            'where id_ext=%s', (id_rec,))
 
             l_file = cursor.fetchall()
 
             for filedata in l_file:
-                cursor.execute('insert into sigl_dos_valisedoc__file_deleted '
+                cursor.execute('insert into record_file_deleted '
                                '(id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, id_ext, id_file) '
                                'select id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, id_ext, id_file '
-                               'from sigl_dos_valisedoc__file_data '
+                               'from record_file '  # sigl_dos_valisedoc__file_data
                                'where id_data=%s', (filedata['id_data'],))
 
-                cursor.execute('delete from sigl_dos_valisedoc__file_data '
+                cursor.execute('delete from record_file '  # sigl_dos_valisedoc__file_data
                                'where id_data=%s', (filedata['id_data'],))
 
             File.log.info(Logs.fileline())

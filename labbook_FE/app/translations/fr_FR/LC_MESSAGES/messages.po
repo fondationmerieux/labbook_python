@@ -1,22 +1,11 @@
-# French (France) translations for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-12 17:37+0200\n"
-"PO-Revision-Date: 2021-02-21 15:20+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: fr_FR\n"
-"Language-Team: fr_FR <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: fr\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:107
@@ -603,9 +592,7 @@ msgid "Aucun fichier déposé"
 msgstr ""
 
 #: templates/administrative-record.html:629
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
 msgstr ""
 
 #: templates/administrative-record.html:648 templates/pivot-table.html:155
@@ -751,9 +738,7 @@ msgid "Traitement réussi"
 msgstr ""
 
 #: templates/analysis-import.html:150 templates/dict-import.html:121
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
 msgstr ""
 
 #: templates/analysis-import.html:187 templates/dict-import.html:153
@@ -761,9 +746,7 @@ msgid "Aucun statut"
 msgstr ""
 
 #: templates/analysis-import.html:193 templates/dict-import.html:159
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr ""
 
 #: templates/api.html:3
@@ -904,9 +887,7 @@ msgstr ""
 
 #: templates/biological-validation.html:415
 #: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
 msgstr ""
 
 #: templates/biological-validation.html:456
@@ -3134,9 +3115,7 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr ""
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
 msgstr ""
 
 #: templates/manage-pat-records.html:906
@@ -3148,10 +3127,7 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr ""
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
 msgstr ""
 
 #: templates/manage-pat-records.html:937
@@ -3606,9 +3582,7 @@ msgid "Réactifs et consommables"
 msgstr ""
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
 msgstr ""
 
 #: templates/non-conformity.html:444
@@ -3922,15 +3896,11 @@ msgid "Mensuelle"
 msgstr ""
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
 msgstr ""
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
 msgstr ""
 
 #: templates/report-dhis2.html:38
@@ -4146,9 +4116,7 @@ msgid "Désactivé"
 msgstr ""
 
 #: templates/setting-analyzes.html:262
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
 msgstr ""
 
 #: templates/setting-analyzes.html:363
@@ -4233,10 +4201,7 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr ""
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
 msgstr ""
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
@@ -4281,10 +4246,7 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr ""
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
 msgstr ""
 
 #: templates/setting-backup.html:604
@@ -4292,9 +4254,7 @@ msgid "Délai d'attente dépassé"
 msgstr ""
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
 msgstr ""
 
 #: templates/setting-backup.html:767
@@ -4302,9 +4262,7 @@ msgid "Redémarrage activé"
 msgstr ""
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
 msgstr ""
 
 #: templates/setting-backup.html:782
@@ -4312,9 +4270,7 @@ msgid "Sauvegarde réussie"
 msgstr ""
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
 msgstr ""
 
 #: templates/setting-backup.html:819
@@ -4547,10 +4503,7 @@ msgid "Paramétrage de formulaires"
 msgstr ""
 
 #: templates/setting-form.html:13
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
 msgstr ""
 
 #: templates/setting-form.html:20

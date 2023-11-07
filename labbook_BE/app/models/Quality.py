@@ -1598,7 +1598,7 @@ class Quality:
 
         if type_trace == 'PROC':
             info_doc  = 'proc.titre as doc_name '
-            table_doc = ('inner join sigl_procedures_document__file_data as proc_file on proc_file.id_file=trd_ref '
+            table_doc = ('inner join procedure_file as proc_file on proc_file.id_file=trd_ref '
                          'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
         else:
             Quality.log.info(Logs.fileline() + ': WRONG type_trace : ' + str(type_trace))
@@ -1627,7 +1627,7 @@ class Quality:
 
         if type_trace == 'PROC':
             info_doc  = 'proc.titre as doc_name '
-            table_doc = ('inner join sigl_procedures_document__file_data as proc_file on proc_file.id_file=trd_ref '
+            table_doc = ('inner join procedure_file as proc_file on proc_file.id_file=trd_ref '
                          'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
 
             if args['doc_name']:

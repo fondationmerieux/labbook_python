@@ -1,23 +1,11 @@
-# Arabic translations for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-12 17:37+0200\n"
-"PO-Revision-Date: 2021-09-03 15:20+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ar\n"
-"Language-Team: ar <LL@li.org>\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
-"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: ar\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:107
@@ -257,7 +245,7 @@ msgstr "رقم السرير"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
 msgid "Identification hôpital"
-msgstr ""
+msgstr "رقم تعريف المستشفى"
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -604,9 +592,7 @@ msgid "Aucun fichier déposé"
 msgstr "لم يتم إدخال أي ملف"
 
 #: templates/administrative-record.html:629
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
 msgstr "هل ترغب في تعديل التقرير؟ (ستظهر العبارة إلغاء واستبدال)"
 
 #: templates/administrative-record.html:648 templates/pivot-table.html:155
@@ -723,7 +709,7 @@ msgstr "عودة "
 
 #: templates/analysis-import.html:55
 msgid "Tester l'importation des analyses"
-msgstr ""
+msgstr "إختَبِر تحميل التحاليل "
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -752,9 +738,7 @@ msgid "Traitement réussi"
 msgstr "تمت معالجة البيانات بنجاح"
 
 #: templates/analysis-import.html:150 templates/dict-import.html:121
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
 msgstr "طرأ خلل في معالجة البيانات ، قم بتحديث الصفحة لمعرفة الوضع العام  "
 
 #: templates/analysis-import.html:187 templates/dict-import.html:153
@@ -762,9 +746,7 @@ msgid "Aucun statut"
 msgstr "لا توجد حالة"
 
 #: templates/analysis-import.html:193 templates/dict-import.html:159
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr "حدث خطأ أثناء التحقق من حالة قاعدة البيانات"
 
 #: templates/api.html:3
@@ -905,9 +887,7 @@ msgstr "طرأ خلل أثناء إعادة إدخال نتيجة  "
 
 #: templates/biological-validation.html:415
 #: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
 msgstr "هل تريد بالتأكيد التراجع عن هذه النتيجة؟  لا يمكن عكس هذا الإجراء."
 
 #: templates/biological-validation.html:456
@@ -1690,7 +1670,7 @@ msgstr "مرجع"
 #: templates/det-manual.html:30 templates/list-manuals.html:24
 #: templates/list-manuals.html:59
 msgid "Catégorie"
-msgstr ""
+msgstr "الفئة"
 
 #: templates/det-manual.html:39 templates/det-procedure.html:30
 #: templates/list-manuals.html:61 templates/list-procedure.html:33
@@ -2748,7 +2728,7 @@ msgstr "تاريخ التعديل"
 
 #: templates/list-procedure.html:62
 msgid "Tableau consultation"
-msgstr ""
+msgstr "جدول المعاينات"
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2909,7 +2889,7 @@ msgstr "التقييمات"
 
 #: templates/list-staff.html:73
 msgid "Ajouter un personnel"
-msgstr ""
+msgstr "إضافة موظف"
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -2942,7 +2922,7 @@ msgstr "تنزيل سجل الاستخدامات"
 #: templates/list-stock.html:121 templates/move-stock-product.html:5
 #: templates/move-stock-product.html:12
 msgid "Déplacer des produits"
-msgstr ""
+msgstr "تغيير مكان التخزين"
 
 #: templates/list-stock.html:124
 msgid "Catalogue des produits"
@@ -2962,7 +2942,7 @@ msgstr "سجل المنتج"
 
 #: templates/list-stock.html:231
 msgid "Enlever cette ligne"
-msgstr ""
+msgstr "إزالة هذا السطر من اللائحة"
 
 #: templates/list-stock.html:246 templates/list-stock.html:248
 msgid "Seuil de"
@@ -2970,7 +2950,7 @@ msgstr "عتبة"
 
 #: templates/list-stock.html:275
 msgid "Merci de confirmer la désactivation de cette ligne"
-msgstr ""
+msgstr "يرجى تأكيد  إلغاء تفعيل هذا السطر"
 
 #: templates/list-stock.html:409 templates/list-stock.html:451
 #: templates/list-stock.html:493 templates/list-stock.html:535
@@ -3015,15 +2995,15 @@ msgstr "اختبار"
 
 #: templates/list-trace-download.html:5 templates/list-trace-download.html:12
 msgid "Liste des téléchargements éffectués"
-msgstr ""
+msgstr "لائحة المستندات التي تم تنزيلها"
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
 msgid "Document"
-msgstr ""
+msgstr "المستند"
 
 #: templates/list-trace-download.html:58
 msgid "Dernier accès"
-msgstr ""
+msgstr "تاريخ آخر تنزيل "
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3135,9 +3115,7 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "يرجى تحديد تاريخ الولادة أو إدخال العمر"
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
 msgstr "يجب عليك تحديد سجلين مختلفين للمرضى لإجراء عملية دمج"
 
 #: templates/manage-pat-records.html:906
@@ -3149,13 +3127,8 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "ملف المريض مفقود لإجراء عملية دمج الملفات"
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
-msgstr ""
-"سيتم إرفاق سجلات المريض المراد حذفه \\n بالمريض ليبقى. \\n هل تؤكد هذا "
-"الدمج؟ \\n (هذا الإجراء لا رجوع فيه)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "سيتم إرفاق سجلات المريض المراد حذفه \\n بالمريض ليبقى. \\n هل تؤكد هذا الدمج؟ \\n (هذا الإجراء لا رجوع فيه)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -3291,7 +3264,7 @@ msgstr "إعدادات أرقام المجلدات"
 
 #: templates/menu.html:157 templates/menu.html:355
 msgid "Configuration des manuels"
-msgstr ""
+msgstr "إعدادات دفاتر الإرشادات"
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3376,15 +3349,15 @@ msgstr "مسألة غير مطابقة"
 
 #: templates/move-stock-product.html:60
 msgid "Nombre de paquet"
-msgstr ""
+msgstr "عدد الصناديق"
 
 #: templates/move-stock-product.html:62
 msgid "Nombre de paquet à déplacer"
-msgstr ""
+msgstr "عدد الصناديق التي يجب تغيير مكان تخزينها"
 
 #: templates/move-stock-product.html:63
 msgid "Destination"
-msgstr ""
+msgstr "مكان التخزين الجديد"
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -3609,9 +3582,7 @@ msgid "Réactifs et consommables"
 msgstr "الكواشف واللوازم"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
 msgstr "عدم مطابقة المواد المستلمة مع الطلبية"
 
 #: templates/non-conformity.html:444
@@ -3925,20 +3896,12 @@ msgid "Mensuelle"
 msgstr "شهريا"
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
-msgstr ""
-"لجدول البيانات الاسبوعي، تاريخ بداية الفترة يجب ان يكون يوم الاثنين "
-"وتاريخ نهايتها يوم الأحد"
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
+msgstr "لجدول البيانات الاسبوعي، تاريخ بداية الفترة يجب ان يكون يوم الاثنين وتاريخ نهايتها يوم الأحد"
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
-"أما بالنسبة لجدول البيانات الشهري، تاريخ بداية الفترة يجب أن يكون أول يوم"
-" من الشهر وتاريخ نهايتها آخر يوم من الشهر نفسه"
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgstr "أما بالنسبة لجدول البيانات الشهري، تاريخ بداية الفترة يجب أن يكون أول يوم من الشهر وتاريخ نهايتها آخر يوم من الشهر نفسه"
 
 #: templates/report-dhis2.html:38
 msgid "Feuille de calcul"
@@ -4153,12 +4116,8 @@ msgid "Désactivé"
 msgstr "غير مُفعَّل"
 
 #: templates/setting-analyzes.html:262
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr ""
-"يرجى تأكيد حذف هذا التحليل \\n تنبيه: الخلل سوف يلحق أي ملفات مرتبطة بهذا"
-" التحليل "
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "يرجى تأكيد حذف هذا التحليل \\n تنبيه: الخلل سوف يلحق أي ملفات مرتبطة بهذا التحليل "
 
 #: templates/setting-analyzes.html:363
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
@@ -4242,13 +4201,8 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "يرجى تأكيد تغيير موعد حفظ النسخ الاحتياطية "
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
-msgstr ""
-"نسخ إحتياطية موجودة سابقًا - بعد إعادة إنشاء حافظة جديدة لن تتمكن من "
-"استعادة النسخ القديمة \\n تأكيد إنشاء حافظة جديدة؟ "
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "نسخ إحتياطية موجودة سابقًا - بعد إعادة إنشاء حافظة جديدة لن تتمكن من استعادة النسخ القديمة \\n تأكيد إنشاء حافظة جديدة؟ "
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -4292,22 +4246,15 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "يرجى تأكيد البدء الفوري لعملية إستعادة البيانات"
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
-msgstr ""
-"طرأ خلل أثناء إستعادة البيانات، يرجى الاتصال بالمسؤول للتحقق يدويًا من "
-"اكتمال العملية"
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "طرأ خلل أثناء إستعادة البيانات، يرجى الاتصال بالمسؤول للتحقق يدويًا من اكتمال العملية"
 
 #: templates/setting-backup.html:604
 msgid "Délai d'attente dépassé"
 msgstr "تم تجاوز فترة الانتظار"
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
 msgstr "اكتملت عملية إستعادة البيانات، وسيقوم LabBook بإعادة تشغيل خدمات التطبيق"
 
 #: templates/setting-backup.html:767
@@ -4315,21 +4262,15 @@ msgid "Redémarrage activé"
 msgstr "إعادة التشغيل"
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \\n "
-"يرجى إعادة تحميل الصفحة"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "تمت إعادة تشغيل خدمات البرنامج أو طرأ خلل أثناء طلب إعادة التشغيل \\n يرجى إعادة تحميل الصفحة"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
 msgstr "تم الحفظ بنجاح"
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
 msgstr "طرأ خلل أثناء متابعة وضع العمليات الحالية ، الوضع غير معروف"
 
 #: templates/setting-backup.html:819
@@ -4562,15 +4503,8 @@ msgid "Paramétrage de formulaires"
 msgstr "تحديد معايير الاستمارات"
 
 #: templates/setting-form.html:13
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
-msgstr ""
-"يتم حفظ التعديلات فورًا لأخذ التغييرات بعين الاعتبار ، يجب عليك العودة "
-"إلى الصفحة الرئيسية أو إعادة الاتصاليتم حفظ التعديلات فورًا لأخذ "
-"التغييرات بعين الاعتبار ، يجب عليك العودة إلى الصفحة الرئيسية أو إعادة "
-"الاتصال"
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
+msgstr "يتم حفظ التعديلات فورًا لأخذ التغييرات بعين الاعتبار ، يجب عليك العودة إلى الصفحة الرئيسية أو إعادة الاتصاليتم حفظ التعديلات فورًا لأخذ التغييرات بعين الاعتبار ، يجب عليك العودة إلى الصفحة الرئيسية أو إعادة الاتصال"
 
 #: templates/setting-form.html:20
 msgid "Formulaire patient"
@@ -4653,15 +4587,15 @@ msgstr "طرأ خلل أثناء إدخال الشعار (logo) "
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
 msgid "Paramétrage des manuels"
-msgstr ""
+msgstr "إعدادات دفاتر الإرشادات"
 
 #: templates/setting-manual.html:16
 msgid "Ajouter une catégorie"
-msgstr ""
+msgstr "إضافة فئة دفاتر الإرشادات"
 
 #: templates/setting-manual.html:20
 msgid "Catégories de manuels"
-msgstr ""
+msgstr "فئة دفاتر الإرشادات"
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4846,11 +4780,11 @@ msgstr "عدد الأيام قبل الإنذار"
 
 #: templates/setting-stock.html:26
 msgid "Ajouter une localisation"
-msgstr ""
+msgstr "إضافة مكان للتخزين"
 
 #: templates/setting-stock.html:42
 msgid "Usage"
-msgstr ""
+msgstr "الاستخدام"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"

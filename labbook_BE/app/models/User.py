@@ -157,10 +157,10 @@ class User:
     def getUserRoleList(type=''):
         cursor = DB.cursor()
 
-        cond = ' order by label'
+        cond = ' order by label '
 
         if type:
-            cond += ' where type="' + str(type) + '"'
+            cond = ' where type="' + str(type) + '"' + cond
 
         req = ('select id_role, name, label, type from sigl_pj_role' + cond)
 

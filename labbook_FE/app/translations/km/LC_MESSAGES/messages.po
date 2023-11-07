@@ -1,22 +1,11 @@
-# Khmer translations for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-12 17:37+0200\n"
-"PO-Revision-Date: 2021-09-03 15:20+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: km\n"
-"Language-Team: km <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: km\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:107
@@ -256,7 +245,7 @@ msgstr "លេខគ្រែ"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
 msgid "Identification hôpital"
-msgstr ""
+msgstr "លេខកូដមន្ទីរពេទ្យ"
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -603,9 +592,7 @@ msgid "Aucun fichier déposé"
 msgstr "គ្មានឯកសារផ្ទុកឡើងទេ"
 
 #: templates/administrative-record.html:629
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
 msgstr "តើអ្នកចង់កែសម្រួលរបាយការណ៍ឡើងវិញទេ? (ពាក្យបោះបង់និងជំនួសនឹងបង្ហាញនៅទីនោះ)"
 
 #: templates/administrative-record.html:648 templates/pivot-table.html:155
@@ -722,7 +709,7 @@ msgstr "ត្រឡប់"
 
 #: templates/analysis-import.html:55
 msgid "Tester l'importation des analyses"
-msgstr ""
+msgstr "សាកល្បងការនាំចូលនៃការវិភាគ"
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -751,9 +738,7 @@ msgid "Traitement réussi"
 msgstr "ដំណើរការទទួលជោគជ័យ"
 
 #: templates/analysis-import.html:150 templates/dict-import.html:121
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
 msgstr "មានកំហុសក្នុងការដំណើរការទិន្នន័យផ្ទុកទំព័រឡើងវិញរហូតដល់អ្នកដឹងពីស្ថានភាព"
 
 #: templates/analysis-import.html:187 templates/dict-import.html:153
@@ -761,9 +746,7 @@ msgid "Aucun statut"
 msgstr "គ្មានឋានៈ"
 
 #: templates/analysis-import.html:193 templates/dict-import.html:159
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពនៃឃ្លាំងទិន្នន័យ"
 
 #: templates/api.html:3
@@ -904,9 +887,7 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលក
 
 #: templates/biological-validation.html:415
 #: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
 msgstr "តើអ្នកពិតជាចង់រំសាយលទ្ធផលនេះទេ?\\n សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។"
 
 #: templates/biological-validation.html:456
@@ -1689,7 +1670,7 @@ msgstr "ឯកសារយោង"
 #: templates/det-manual.html:30 templates/list-manuals.html:24
 #: templates/list-manuals.html:59
 msgid "Catégorie"
-msgstr ""
+msgstr "ប្រភេទ"
 
 #: templates/det-manual.html:39 templates/det-procedure.html:30
 #: templates/list-manuals.html:61 templates/list-procedure.html:33
@@ -2747,7 +2728,7 @@ msgstr "កែប្រែកាលបរិច្ឆេទ"
 
 #: templates/list-procedure.html:62
 msgid "Tableau consultation"
-msgstr ""
+msgstr "តារាងពិគ្រោះ"
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2908,7 +2889,7 @@ msgstr "ការវាយតម្លៃ"
 
 #: templates/list-staff.html:73
 msgid "Ajouter un personnel"
-msgstr ""
+msgstr "បន្ថែមបុគ្គលិក"
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -2941,7 +2922,7 @@ msgstr "ការនាំចេញការប្រើប្រាស់"
 #: templates/list-stock.html:121 templates/move-stock-product.html:5
 #: templates/move-stock-product.html:12
 msgid "Déplacer des produits"
-msgstr ""
+msgstr "ផ្លាស់ទីផលិតផល"
 
 #: templates/list-stock.html:124
 msgid "Catalogue des produits"
@@ -2961,7 +2942,7 @@ msgstr "ប្រវត្តិនៃផលិតផលនេះ"
 
 #: templates/list-stock.html:231
 msgid "Enlever cette ligne"
-msgstr ""
+msgstr "ដក​បន្ទាត់​នេះ​ចេញ"
 
 #: templates/list-stock.html:246 templates/list-stock.html:248
 msgid "Seuil de"
@@ -2969,7 +2950,7 @@ msgstr "កម្រិតនៃ"
 
 #: templates/list-stock.html:275
 msgid "Merci de confirmer la désactivation de cette ligne"
-msgstr ""
+msgstr "សូមបញ្ជាក់ការបិទដំណើរការបន្ទាត់នេះ"
 
 #: templates/list-stock.html:409 templates/list-stock.html:451
 #: templates/list-stock.html:493 templates/list-stock.html:535
@@ -3014,15 +2995,15 @@ msgstr "សាកល្បង"
 
 #: templates/list-trace-download.html:5 templates/list-trace-download.html:12
 msgid "Liste des téléchargements éffectués"
-msgstr ""
+msgstr "បញ្ជីនៃការទាញយកត្រូវបានអនុវត្ត"
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
 msgid "Document"
-msgstr ""
+msgstr "ឯកសារ"
 
 #: templates/list-trace-download.html:58
 msgid "Dernier accès"
-msgstr ""
+msgstr "ការចូលប្រើចុងក្រោយ"
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3134,9 +3115,7 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "សូមជ្រើសរើសថ្ងៃខែឆ្នាំកំណើតឬបញ្ចូលអាយុ"
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
 msgstr "អ្នកត្រូវជ្រើសរើសកំណត់ត្រាអ្នកជំងឺពីរផ្សេងគ្នាដើម្បីអនុវត្តការបញ្ចូលចូលគ្នា។"
 
 #: templates/manage-pat-records.html:906
@@ -3148,13 +3127,8 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "ឯកសារអ្នកជំងឺដែលបាត់ត្រូវអនុវត្តការរួមបញ្ចូលឯកសារ។"
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
-msgstr ""
-"កំណត់ត្រារបស់អ្នកជម្ងឺដែលត្រូវលុបចោលនឹងត្រូវបានភ្ជាប់ទៅនឹងអ្នកជម្ងឺ៊/អ្នកជំងឺដាក់ត្រូវរក្សាទុក"
-" សូមបញ្ជាក់ការបញ្ចូលគ្នានេះ(សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "កំណត់ត្រារបស់អ្នកជម្ងឺដែលត្រូវលុបចោលនឹងត្រូវបានភ្ជាប់ទៅនឹងអ្នកជម្ងឺ៊/អ្នកជំងឺដាក់ត្រូវរក្សាទុក សូមបញ្ជាក់ការបញ្ចូលគ្នានេះ(សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -3290,7 +3264,7 @@ msgstr "កំណត់រចនាសម្ព័ន្ធលេខកំណត
 
 #: templates/menu.html:157 templates/menu.html:355
 msgid "Configuration des manuels"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធសៀវភៅណែនាំ"
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3375,15 +3349,15 @@ msgstr "ភាពមិនប្រក្រតី"
 
 #: templates/move-stock-product.html:60
 msgid "Nombre de paquet"
-msgstr ""
+msgstr "ចំនួនកញ្ចប់"
 
 #: templates/move-stock-product.html:62
 msgid "Nombre de paquet à déplacer"
-msgstr ""
+msgstr "ចំនួនកញ្ចប់ដែលត្រូវផ្លាស់ទី"
 
 #: templates/move-stock-product.html:63
 msgid "Destination"
-msgstr ""
+msgstr "ទិសដៅ"
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -3608,9 +3582,7 @@ msgid "Réactifs et consommables"
 msgstr "ប្រតិករនិងសម្ភារៈប្រើប្រាស់"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
 msgstr "វិក័យបត្ររបស់ប្រតិករ​និងសម្ភារៈប្រើប្រាស់មិនឆ្លើយតបទៅនឹងការស្នើសុំទេ"
 
 #: templates/non-conformity.html:444
@@ -3924,20 +3896,12 @@ msgid "Mensuelle"
 msgstr "ប្រចាំខែ"
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
-msgstr ""
-"សម្រាប់បញ្ជីប្រចាំសប្តាហ៍ ថ្ងៃច័ន្ទ និងថ្ងៃអាទិត្យ គួរតែជាការចាប់ផ្តើម "
-"និង ការបញ្ចប់នៃរយៈពេលនេះរៀងៗខ្លួន។"
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
+msgstr "សម្រាប់បញ្ជីប្រចាំសប្តាហ៍ ថ្ងៃច័ន្ទ និងថ្ងៃអាទិត្យ គួរតែជាការចាប់ផ្តើម និង ការបញ្ចប់នៃរយៈពេលនេះរៀងៗខ្លួន។"
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
-"សម្រាប់បញ្ជីប្រចាំខែ កាលបរិច្ឆេទចាប់ផ្តើមគួរតែជាថ្ងៃទី១នៃខែ "
-"ហើយកាលបរិច្ឆេទបញ្ចប់គួរតែជាថ្ងៃចុងក្រោយនៃខែដែលបានជ្រើសរើស។"
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgstr "សម្រាប់បញ្ជីប្រចាំខែ កាលបរិច្ឆេទចាប់ផ្តើមគួរតែជាថ្ងៃទី១នៃខែ ហើយកាលបរិច្ឆេទបញ្ចប់គួរតែជាថ្ងៃចុងក្រោយនៃខែដែលបានជ្រើសរើស។"
 
 #: templates/report-dhis2.html:38
 msgid "Feuille de calcul"
@@ -4152,9 +4116,7 @@ msgid "Désactivé"
 msgstr "បានធ្វើឱ្យអសកម្ម"
 
 #: templates/setting-analyzes.html:262
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
 msgstr "សូមបញ្ជាក់ពីការលុបនៃការវិភាគនេះ!សូមបញ្ជាក់ថាសារណាមួយដែលទាក់ទងនឹងការវិភាគនេះនឹងមានកំហុស!"
 
 #: templates/setting-analyzes.html:363
@@ -4239,13 +4201,8 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "សូមបញ្ជាក់ពីការផ្លាស់ប្តូរពេលវេលាបម្រុងទុកទិន្នន័យប្រចាំថ្ងៃ។"
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
-msgstr ""
-"មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ "
-"សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -4289,22 +4246,15 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "សូមបញ្ជាក់ពីការចាប់ផ្តើមនៃការស្តារឡើងវិញជាបន្ទាន់!"
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
-msgstr ""
-"មានកំហុសកើតឡើងក្នុងកំឡុងពេលស្តារ "
-"សូមទាក់ទងអ្នកគ្រប់គ្រងរបស់អ្នកដើម្បីផ្ទៀងផ្ទាត់ដោយដៃថាការស្តារឡើងវិញបានបញ្ចប់។"
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "មានកំហុសកើតឡើងក្នុងកំឡុងពេលស្តារ សូមទាក់ទងអ្នកគ្រប់គ្រងរបស់អ្នកដើម្បីផ្ទៀងផ្ទាត់ដោយដៃថាការស្តារឡើងវិញបានបញ្ចប់។"
 
 #: templates/setting-backup.html:604
 msgid "Délai d'attente dépassé"
 msgstr "លើសពីរយៈពេលរង់ចាំ"
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
 msgstr "ការស្តារឡើងវិញរួចរាល់ កម្មវិធីLabBook នឹងចាប់ផ្តើមសេវាកម្មកម្មវិធីឡើងវិញ"
 
 #: templates/setting-backup.html:767
@@ -4312,21 +4262,15 @@ msgid "Redémarrage activé"
 msgstr "បានបើកដំណើរការឡើងវិញ"
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"សេវាកម្មបានចាប់ផ្តើមឡើងវិញឬមានកំហុសកើតឡើងខណៈពេលកំពុងស្នើសុំចាប់ផ្តើមឡើងវិញ\\nplease"
-" ផ្ទុកទំព័រឡើងវិញ"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "សេវាកម្មបានចាប់ផ្តើមឡើងវិញឬមានកំហុសកើតឡើងខណៈពេលកំពុងស្នើសុំចាប់ផ្តើមឡើងវិញ\\nplease ផ្ទុកទំព័រឡើងវិញ"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
 msgstr "បានរក្សាទុកដោយជោគជ័យ"
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពបច្ចុប្បន្ន, ស្ថានភាពមិនដឹង "
 
 #: templates/setting-backup.html:819
@@ -4559,13 +4503,8 @@ msgid "Paramétrage de formulaires"
 msgstr "ការកំណត់រចនាសម្ព័ន្ធទម្រង់"
 
 #: templates/setting-form.html:13
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
-msgstr ""
-"ការកែប្រែត្រូវបានរក្សាទុកភ្លាមៗសម្រាប់ការផ្លាស់ប្តូរដែលត្រូវយកមកពិចារណា "
-"អ្នកត្រូវតែត្រលប់ទៅទំព័រដើម ឬភ្ជាប់ឡើងវិញ"
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
+msgstr "ការកែប្រែត្រូវបានរក្សាទុកភ្លាមៗសម្រាប់ការផ្លាស់ប្តូរដែលត្រូវយកមកពិចារណា អ្នកត្រូវតែត្រលប់ទៅទំព័រដើម ឬភ្ជាប់ឡើងវិញ"
 
 #: templates/setting-form.html:20
 msgid "Formulaire patient"
@@ -4648,15 +4587,15 @@ msgstr "មានកំហុសកើតឡើងពេលផ្ទុករូ
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
 msgid "Paramétrage des manuels"
-msgstr ""
+msgstr "ការកំណត់ដោយដៃ"
 
 #: templates/setting-manual.html:16
 msgid "Ajouter une catégorie"
-msgstr ""
+msgstr "បន្ថែមប្រភេទ"
 
 #: templates/setting-manual.html:20
 msgid "Catégories de manuels"
-msgstr ""
+msgstr "ប្រភេទសៀវភៅណែនាំ"
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4841,11 +4780,11 @@ msgstr "ចំនួនថ្ងៃមុនពេលជូនដំណឹង"
 
 #: templates/setting-stock.html:26
 msgid "Ajouter une localisation"
-msgstr ""
+msgstr "បន្ថែមទីតាំង"
 
 #: templates/setting-stock.html:42
 msgid "Usage"
-msgstr ""
+msgstr "ការប្រើប្រាស់"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"

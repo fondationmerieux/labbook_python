@@ -85,33 +85,11 @@ class Patient:
         try:
             cursor = DB.cursor()
 
-            # NOTE : Dont knwow the use of these tables
-            # sigl_01_dico_analyse_data
-            # sigl_01_dico_analyse_deleted
-            # sigl_12_data
-            # sigl_12_deleted
-
-            cursor.execute('update sigl_01_dico_analyse_data '
-                           'set id_pat=%s '
-                           'where id_pat=%s', (id_pat1, id_pat2,))
-
-            cursor.execute('update sigl_01_dico_analyse_deleted '
-                           'set id_pat=%s '
-                           'where id_pat=%s', (id_pat1, id_pat2,))
-
             cursor.execute('update sigl_02_data '
                            'set id_patient=%s '
                            'where id_patient=%s', (id_pat1, id_pat2,))
 
             cursor.execute('update sigl_02_deleted '
-                           'set id_patient=%s '
-                           'where id_patient=%s', (id_pat1, id_pat2,))
-
-            cursor.execute('update sigl_12_data '
-                           'set id_patient=%s '
-                           'where id_patient=%s', (id_pat1, id_pat2,))
-
-            cursor.execute('update sigl_12_deleted '
                            'set id_patient=%s '
                            'where id_patient=%s', (id_pat1, id_pat2,))
 

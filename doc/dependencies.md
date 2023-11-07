@@ -24,8 +24,8 @@
 | mysql-connector-python  | 8.0.33    | GPL 2        |           |         | x       |
 | pdfkit                  | 1.0.0     | MIT          |           |         | x       |
 | pikepdf                 | 7.2.0     | MPL 2.0      |           |         | x       |
-| Pillow                  | 9.5.0     | HPND         |           |         | x       |
-| python-barcode          | 0.14.0    | MIT          |           |         | x       |
+| Pillow                  | 10.0.1    | HPND         |           |         | x       |
+| python-barcode          | 0.15.1    | MIT          |           |         | x       |
 | qrcode                  | 7.4.2     | BSD          |           |         | x       |
 | relatorio               | 0.10.1    | GPL          |           |         | x       |
 | reportlab               | 3.6.13    | BSD          |           |         | x       |
@@ -37,3 +37,4 @@
 > - static FE = file are located at path labbook_FE/app/static/vendor/
 > - venv FE = major library installed in python virtual environment of labbook front end via pip install command
 > - venv BE = major library installed in python virtual environment of labbook back end via pip install command
+> - python-barcode and Pillow are related

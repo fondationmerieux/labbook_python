@@ -2,8 +2,6 @@
 |------------------------------------------------|---------------|------------------------------------------|
 | sigl_01_data	                                 | REQ SAMPLE	 | request for a sample                     |
 | sigl_01_deleted	                         | REQ SAMPLE    | deleted request for a sample             |
-| sigl_01_dico_analyse_data	                 | ?	         | ? update during a merger                 |
-| sigl_01_dico_analyse_deleted	                 | ?	         | ? update during a merger                 |
 | sigl_02_data	                                 | RECORD	 | record                                   |
 | sigl_02_deleted	                         | RECORD	 | record  deleted                          |
 | sigl_03_data	                                 | PATIENT	 | patient                                  |
@@ -23,42 +21,40 @@
 | sigl_10_deleted	                         | VALIDATION	 | validation result deleted                |
 | sigl_11_data	                                 | FILE	         | report file                              |
 | sigl_11_deleted	                         | FILE	         | report file deleted                      |
-| sigl_12_data	                                 | ?	         | ? update during a merger                 |
-| sigl_12_deleted	                         | ?	         | ? update during a merger                 |
 | sigl_14_data	                                 | DHIS2	 | surveillance epidemio and dhis2          |
 | sigl_15_data	                                 | DHIS2	 | epidemiological surveillance details     |
 | sigl_dico_data	                         | DICTIONNARY	 | dictionnary                              |
-| sigl_controle_externe_ctrl_resultat_cr__file_d | FILE          | attached file                            |
-| sigl_dos_valisedoc__file_data	                 | FILE	         | attached file                            |
-| sigl_dos_valisedoc__file_deleted	         | FILE	         | deleted attachment                       |
-| sigl_equipement_certif_etalonnage__file_data	 | FILE	         | attached file                            |
-| sigl_equipement_contrat_maintenance__file_data | FILE	         | attached file                            |
+| ctrl_ext_res_report_file                       | FILE          | attached file                            |
+| record_file           	                 | FILE	         | attached file                            |
+| record_file_deleted           	         | FILE	         | deleted attachment                       |
+| eqp_calibration_file                  	 | FILE	         | attached file                            |
+| eqp_maintenance_file                           | FILE	         | attached file                            |
 | sigl_equipement_data	                         | EQUIPMENT	 | equipment details                        |
-| sigl_equipement_facture__file_data	         | FILE	         | attached file                            |
-| sigl_equipement_maintenance_preventive__file_d | FILE    	 | attached file                            |
-| sigl_equipement_pannes__file_data	         | FILE    	 | attached file                            |
-| sigl_equipement_photo__file_data	         | FILE    	 | attached file                            |
+| eqp_invoice_file                  	         | FILE	         | attached file                            |
+| eqp_preventive_maintenance_file                | FILE    	 | attached file                            |
+| eqp_failure_file              	         | FILE    	 | attached file                            |
+| eqp_photo_file                 	         | FILE    	 | attached file                            |
 | sigl_evtlog_data	                         | LOG	         | log evenement                            |
 | sigl_file_data	                         | FILE	         | files details (path, hash...)            |
 | sigl_fournisseurs_data	                 | SUPPLIER	 | supplier                                 |
-| sigl_laboratoire_organigramme__file_data	 | FILE	         | attached file                            |
+| lab_chart_file                        	 | FILE	         | attached file                            |
 | sigl_manuels_data	                         | MANUAL	 | manual                                   |
-| sigl_manuels_document__file_data	         | FILE	         | attached file                            |
+| manual_file                   	         | FILE	         | attached file                            |
 | sigl_non_conformite_data	                 | CONFORMITY	 | no conformity                            |
 | sigl_param_cr_data	                         | SETTINGS	 | report parameter                         |
 | sigl_param_num_dos_data	                 | SETTINGS	 | record number parameter                  |
 | sigl_pj_role	                                 | USER    	 | user role                                |
 | sigl_pj_sequence	                         | -	         | last number (record, bill)               |
 | sigl_procedures_data	                         | PROCEDURE	 | procedure                                |
-| sigl_procedures_document__file_data     	 | FILE	         | attached file                            |
+| procedure_file                             	 | FILE	         | attached file                            |
 | sigl_reunion_data	                         | MEETING	 | meeting                                  |
-| sigl_reunion_pj__file_data	                 | FILE	         | attached file                            |
+| meeting_file          	                 | FILE	         | attached file                            |
 | sigl_storage_data	                         | FILE	         | file storage path                        |
-| sigl_user_cv__file_data	                 | FILE	         | attached file                            |
+| user_cv_file          	                 | FILE	         | attached file                            |
 | sigl_user_data	                         | USER	         | users                                    |
-| sigl_user_diplomes__file_data	                 | FILE	         | attached file                            |
-| sigl_user_evaluation__file_data	         | FILE	         | attached file                            |
-| sigl_user_formations__file_data	         | FILE	         | attached file                            |
+| user_diploma_file     	                 | FILE	         | attached file                            |
+| user_evaluation_file          	         | FILE	         | attached file                            |
+| user_training_file            	         | FILE	         | attached file                            |
 | age_interval_setting	                         | SETTINGS	 | age ranges parameter                     |
 | alembic_version	                         | -       	 | version number migration DB by Alembic   |
 | backup_setting	                         | SETTINGS	 | backup parameter                         |
@@ -84,20 +80,4 @@
 | trace_download                                 | QUALITY       | tracks file downloads (only procedure)   |
 | manual_setting                                 | SETTINGS      | settings for manual                      |
 
-83 tables used
-
-
-| Name    	                                 |
-| sigl_03_deleted                                |                                
-| sigl_05_05_data                                |
-| sigl_05_deleted                                |
-| sigl_07_deleted                                |
-| sigl_08_deleted                                |
-| sigl_13_data                                   |
-| sigl_16_data                                   |
-| sigl_dico_deleted                              |
-| sigl_equipement_deleted                        |
-| sigl_fournisseurs_deleted                      |
-| sigl_laboratoire_data                          |
-
-11 tables unused but not deleted yet
+79 tables used

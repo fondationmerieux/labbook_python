@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.3.16] - 2023-11-07
+### Changed
+- rename 17 tables
+- deleted 15 unused tables
+
+### Fixed
+- add staff by quality menu 
+
 ## [3.3.15] - 2023-10-06
 ### Fixed
 - rebuild ISO and retry to create manual_setting table by Alembic

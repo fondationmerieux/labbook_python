@@ -1,22 +1,11 @@
-# Spanish translations for PROJECT.
-# Copyright (C) 2022 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-12 17:37+0200\n"
-"PO-Revision-Date: 2022-12-15 11:34+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: es\n"
-"Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: es\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:107
@@ -256,7 +245,7 @@ msgstr "Número de cama"
 
 #: templates/administrative-record.html:159 templates/det-req-int.html:219
 msgid "Identification hôpital"
-msgstr ""
+msgstr "Identificación hospitalaria"
 
 #: templates/administrative-record.html:167 templates/det-req-ext.html:186
 #: templates/det-req-int.html:233
@@ -603,12 +592,8 @@ msgid "Aucun fichier déposé"
 msgstr "Ningún expediente archivado"
 
 #: templates/administrative-record.html:629
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
-msgstr ""
-"¿Le gustaría volver a editar el reporte? (la mención Cancela y reemplaza "
-"aparecerá allí)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
+msgstr "¿Le gustaría volver a editar el reporte? (la mención Cancela y reemplaza aparecerá allí)"
 
 #: templates/administrative-record.html:648 templates/pivot-table.html:155
 msgid "Une erreur est survenue lors du traitement"
@@ -724,7 +709,7 @@ msgstr "Volver"
 
 #: templates/analysis-import.html:55
 msgid "Tester l'importation des analyses"
-msgstr ""
+msgstr "Probar la importación de análisis"
 
 #: templates/analysis-import.html:56
 msgid "Importer des analyses"
@@ -753,9 +738,7 @@ msgid "Traitement réussi"
 msgstr "Tratamiento exitoso"
 
 #: templates/analysis-import.html:150 templates/dict-import.html:121
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
 msgstr "Error durante el tratamiento de los datos"
 
 #: templates/analysis-import.html:187 templates/dict-import.html:153
@@ -763,9 +746,7 @@ msgid "Aucun statut"
 msgstr "Sin estado"
 
 #: templates/analysis-import.html:193 templates/dict-import.html:159
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr "Ocurrió un error al verificar el estado de la base de datos"
 
 #: templates/api.html:3
@@ -906,9 +887,7 @@ msgstr "Se ha producido un error al restablecer un valor introducido"
 
 #: templates/biological-validation.html:415
 #: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
 msgstr "¿Estás seguro de que quieres borrar este resultado?"
 
 #: templates/biological-validation.html:456
@@ -918,9 +897,7 @@ msgstr "Se ha producido un error al anular un valor introducido"
 
 #: templates/biological-validation.html:538
 msgid "Une erreur est survenue lors de validation biologique des valeurs saisies"
-msgstr ""
-"Se ha producido un error durante la validación biológica de los valores "
-"introducidos"
+msgstr "Se ha producido un error durante la validación biológica de los valores introducidos"
 
 #: templates/biological-validation.html:626
 #: templates/technical-validation.html:543
@@ -967,9 +944,7 @@ msgstr "Se ha producido un error"
 
 #: templates/biological-validation.html:911
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
-msgstr ""
-"Atención, tenga en cuenta que saldrá de este expediente sin haberlo "
-"validado."
+msgstr "Atención, tenga en cuenta que saldrá de este expediente sin haberlo validado."
 
 #: templates/contributors.html:6 templates/contributors.html:27
 #: templates/contributors.html:54 templates/initialization.html:32
@@ -1695,7 +1670,7 @@ msgstr "Referencia"
 #: templates/det-manual.html:30 templates/list-manuals.html:24
 #: templates/list-manuals.html:59
 msgid "Catégorie"
-msgstr ""
+msgstr "Categoría"
 
 #: templates/det-manual.html:39 templates/det-procedure.html:30
 #: templates/list-manuals.html:61 templates/list-procedure.html:33
@@ -2288,9 +2263,7 @@ msgstr "Se ha producido un error al registrar los valores introducidos"
 #: templates/enter-result.html:407 templates/list-results.html:442
 #: templates/technical-validation.html:402
 msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
-msgstr ""
-"Se ha producido un error durante la validación técnica de los valores "
-"introducidos"
+msgstr "Se ha producido un error durante la validación técnica de los valores introducidos"
 
 #: templates/enter-result.html:453 templates/enter-result.html:742
 #: templates/list-results.html:488 templates/list-results.html:779
@@ -2755,7 +2728,7 @@ msgstr "Fecha de modificación"
 
 #: templates/list-procedure.html:62
 msgid "Tableau consultation"
-msgstr ""
+msgstr "Tabla de consulta"
 
 #: templates/list-procedure.html:68
 msgid "Ajouter une procédure"
@@ -2916,7 +2889,7 @@ msgstr "Evaluaciones"
 
 #: templates/list-staff.html:73
 msgid "Ajouter un personnel"
-msgstr ""
+msgstr "Añadir personal"
 
 #: templates/list-stock.html:5 templates/list-stock.html:12
 msgid "Liste des stocks"
@@ -2949,7 +2922,7 @@ msgstr "Exportación de usos"
 #: templates/list-stock.html:121 templates/move-stock-product.html:5
 #: templates/move-stock-product.html:12
 msgid "Déplacer des produits"
-msgstr ""
+msgstr "Traslado de productos"
 
 #: templates/list-stock.html:124
 msgid "Catalogue des produits"
@@ -2969,7 +2942,7 @@ msgstr "Historia de este producto"
 
 #: templates/list-stock.html:231
 msgid "Enlever cette ligne"
-msgstr ""
+msgstr "Eliminar esta línea"
 
 #: templates/list-stock.html:246 templates/list-stock.html:248
 msgid "Seuil de"
@@ -2977,7 +2950,7 @@ msgstr "Umbral de"
 
 #: templates/list-stock.html:275
 msgid "Merci de confirmer la désactivation de cette ligne"
-msgstr ""
+msgstr "Confirme que desea desactivar esta línea"
 
 #: templates/list-stock.html:409 templates/list-stock.html:451
 #: templates/list-stock.html:493 templates/list-stock.html:535
@@ -3022,15 +2995,15 @@ msgstr "Probar"
 
 #: templates/list-trace-download.html:5 templates/list-trace-download.html:12
 msgid "Liste des téléchargements éffectués"
-msgstr ""
+msgstr "Lista de descargas efectuadas"
 
 #: templates/list-trace-download.html:19 templates/list-trace-download.html:59
 msgid "Document"
-msgstr ""
+msgstr "Documento"
 
 #: templates/list-trace-download.html:58
 msgid "Dernier accès"
-msgstr ""
+msgstr "Último acceso"
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3142,12 +3115,8 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "Seleccione una fecha de nacimiento o introduzca una edad"
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
-msgstr ""
-"Debe seleccionar 2 archivos de pacientes diferentes para realizar una "
-"combinación."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
+msgstr "Debe seleccionar 2 archivos de pacientes diferentes para realizar una combinación."
 
 #: templates/manage-pat-records.html:906
 msgid "Les fiches patients sont les mêmes dans la base de données."
@@ -3158,13 +3127,8 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "Falta una ficha del paciente para realizar la fusión de expedientes"
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
-msgstr ""
-"El expediente del paciente PARA ELIMINAR se adjuntará\\nal paciente PARA "
-"CONSERVAR.\\n¿Confirma esta fusión?\\n(Esta acción es irreversible)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "El expediente del paciente PARA ELIMINAR se adjuntará\\nal paciente PARA CONSERVAR.\\n¿Confirma esta fusión?\\n(Esta acción es irreversible)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -3300,7 +3264,7 @@ msgstr "Configuración de los números de expediente"
 
 #: templates/menu.html:157 templates/menu.html:355
 msgid "Configuration des manuels"
-msgstr ""
+msgstr "Configuración de manuales"
 
 #: templates/menu.html:159 templates/menu.html:356
 msgid "Configuration des codes postaux"
@@ -3385,15 +3349,15 @@ msgstr "No conformidad"
 
 #: templates/move-stock-product.html:60
 msgid "Nombre de paquet"
-msgstr ""
+msgstr "Número de paquetes"
 
 #: templates/move-stock-product.html:62
 msgid "Nombre de paquet à déplacer"
-msgstr ""
+msgstr "Número de paquetes a desplazar"
 
 #: templates/move-stock-product.html:63
 msgid "Destination"
-msgstr ""
+msgstr "Destinación"
 
 #: templates/new-req-ext.html:5
 msgid "Patient externe"
@@ -3618,9 +3582,7 @@ msgid "Réactifs et consommables"
 msgstr "Reactivos y consumibles"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
 msgstr "Recepción de reactivos y/o consumibles que no corresponden al pedido"
 
 #: templates/non-conformity.html:444
@@ -3934,21 +3896,12 @@ msgid "Mensuelle"
 msgstr "Mensual"
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
-msgstr ""
-"Para una hoja de cálculo semanal, el lunes y el domingo deben ser las "
-"fechas de inicio y de finalización del período, respectivamente."
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
+msgstr "Para una hoja de cálculo semanal, el lunes y el domingo deben ser las fechas de inicio y de finalización del período, respectivamente."
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
-"Para una hoja de cálculo mensual, la fecha de inicio debe ser el primer "
-"día del mes y la fecha de finalización debe ser el último día del mes "
-"seleccionado."
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgstr "Para una hoja de cálculo mensual, la fecha de inicio debe ser el primer día del mes y la fecha de finalización debe ser el último día del mes seleccionado."
 
 #: templates/report-dhis2.html:38
 msgid "Feuille de calcul"
@@ -4163,12 +4116,8 @@ msgid "Désactivé"
 msgstr "Desactivado"
 
 #: templates/setting-analyzes.html:262
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr ""
-"Por favor, confirme la eliminación de esta análisis.\\nTenga en cuenta "
-"que cualquier archivo asociado a este análisis dará error"
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "Por favor, confirme la eliminación de esta análisis.\\nTenga en cuenta que cualquier archivo asociado a este análisis dará error"
 
 #: templates/setting-analyzes.html:363
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
@@ -4252,13 +4201,8 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "Por favor, confirme el cambio de la hora de la copia de seguridad diaria."
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
-msgstr ""
-"Ya existe una clave, al volver a generar una clave, las copias antiguas "
-"no se podrán recuperar.\\n¿Confirme la generación de una nueva clave?"
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "Ya existe una clave, al volver a generar una clave, las copias antiguas no se podrán recuperar.\\n¿Confirme la generación de una nueva clave?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -4302,46 +4246,31 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "Por favor, confirme el inicio inmediato de la restauración."
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
-msgstr ""
-"Ocurrió un error durante la restauración, comuníquese con su "
-"administrador para verificar manualmente que la restauración se completó."
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "Ocurrió un error durante la restauración, comuníquese con su administrador para verificar manualmente que la restauración se completó."
 
 #: templates/setting-backup.html:604
 msgid "Délai d'attente dépassé"
 msgstr "Período de espera superado"
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
-msgstr ""
-"La restauración está completa, LabBook reiniciará los servicios de la "
-"aplicación"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
+msgstr "La restauración está completa, LabBook reiniciará los servicios de la aplicación"
 
 #: templates/setting-backup.html:767
 msgid "Redémarrage activé"
 msgstr "Reinicio activado"
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"Los servicios se reiniciaron o se produjo un error al solicitar un "
-"reinicio.\\nPor favor recargue la página"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "Los servicios se reiniciaron o se produjo un error al solicitar un reinicio.\\nPor favor recargue la página"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
 msgstr "Copia de seguridad exitosa"
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
 msgstr "Se ha producido un error al comprobar el estado de la tarea en curso"
 
 #: templates/setting-backup.html:819
@@ -4574,13 +4503,8 @@ msgid "Paramétrage de formulaires"
 msgstr "Ajuste de formularios"
 
 #: templates/setting-form.html:13
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
-msgstr ""
-"Los cambios se guardan instantáneamente. Para tenerlos en cuenta, se debe"
-" volver a la página de inicio o iniciar sesión nuevamente."
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
+msgstr "Los cambios se guardan instantáneamente. Para tenerlos en cuenta, se debe volver a la página de inicio o iniciar sesión nuevamente."
 
 #: templates/setting-form.html:20
 msgid "Formulaire patient"
@@ -4663,15 +4587,15 @@ msgstr "Se ha producido un error al introducir el logotipo"
 
 #: templates/setting-manual.html:5 templates/setting-manual.html:12
 msgid "Paramétrage des manuels"
-msgstr ""
+msgstr "Configuración manual"
 
 #: templates/setting-manual.html:16
 msgid "Ajouter une catégorie"
-msgstr ""
+msgstr "Añadir una categoría"
 
 #: templates/setting-manual.html:20
 msgid "Catégories de manuels"
-msgstr ""
+msgstr "Categorías de manuales"
 
 #: templates/setting-pref.html:5 templates/setting-pref.html:12
 msgid "Liste des préférences"
@@ -4856,11 +4780,11 @@ msgstr "Número de días antes de la alerta"
 
 #: templates/setting-stock.html:26
 msgid "Ajouter une localisation"
-msgstr ""
+msgstr "Añadir una localización"
 
 #: templates/setting-stock.html:42
 msgid "Usage"
-msgstr ""
+msgstr "Utilización"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"
