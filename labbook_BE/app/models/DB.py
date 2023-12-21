@@ -44,7 +44,7 @@ class DB:
                 if True:
                     DB.log.info(Logs.fileline() + ' : open_cnx() TRACE connect MYSQL')
                     DB.cnx = mysql.connector.connect(user='root',
-                                                     password='test',
+                                                     password='root',
                                                      host='10.88.0.1',
                                                      database='SIGL')
                     """
