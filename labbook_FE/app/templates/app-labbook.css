@@ -1014,6 +1014,11 @@ background : transparent url({{ url_for('static', filename='img/admin-conf-cr.pn
 background : transparent url({{ url_for('static', filename='img/admin-conf-num-doss.png') }}) center top no-repeat;
 }
 
+.module .admin-connect
+{ 
+background : transparent url({{ url_for('static', filename='img/admin-connect.png') }}) center top no-repeat;
+}
+
 .module .admin-gest-fact-0 
 { 
 background : transparent url({{ url_for('static', filename='img/admin-gest-facture-0.png') }}) center top no-repeat;

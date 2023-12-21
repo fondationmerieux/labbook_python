@@ -8,10 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.4.0] - 2023-12-08
+## [3.4.0] - 2023-12-22
 ### Added
 - hl7apy library
 - UI and DB table for setting analyzer
+- Icon for Connect in admin homepage
 
 ### Changed
 - upgrade python-barcode

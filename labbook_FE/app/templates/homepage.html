@@ -21,6 +21,7 @@
                     <a href="{{ session['server_ext'] }}/setting-analyzes" class="list-group-item admin-referentiel">{{ _("Référentiel des analyses") }}</a>
                     <a href="{{ session['server_ext'] }}/setting-dicts" class="list-group-item admin-conf-cr">{{ _("Dictionnaires") }}</a>
                     <a href="{{ session['server_ext'] }}/setting-backup" class="list-group-item admin-num-doss">{{ _("Gestion des sauvegardes") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-analyzers" class="list-group-item admin-connect">{{ _("Configuration des analyseurs") }}</a>
                     <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ session['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
 
                     <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ session['pref_quality'] }});" class="list-group-item admin-qualite-{{ session['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
