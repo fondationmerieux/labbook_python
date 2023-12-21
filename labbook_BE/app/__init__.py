@@ -26,6 +26,7 @@ from app.services.GeneralRest import *
 from app.services.UserRest import *
 from app.services.AnalysisRest import *
 from app.services.DbRest import *
+from app.services.DeviceRest import *
 from app.services.ExportRest import *
 from app.services.ProductRest import *
 from app.services.DoctorRest import *
@@ -87,6 +88,9 @@ if config_envvar in os.environ:
     log.info(Logs.fileline() + ' : LABBOOK_KEY_DIR=' + str(os.environ['LABBOOK_KEY_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_STATUS_DIR=' + str(os.environ['LABBOOK_STATUS_DIR']))
     log.info(Logs.fileline() + ' : LABBOOK_LOG_DIR=' + str(os.environ['LABBOOK_LOG_DIR']))
+
+    if app.config['APP_VERSION']:
+        log.info(Logs.fileline() + ' : LABBOOK VERSION : ' + str(app.config['APP_VERSION']))
 
     # check if LABBOOK_USER already exist in os.environ if not use one from Constants
     if 'LABBOOK_USER' in os.environ and os.environ['LABBOOK_USER']:
@@ -169,6 +173,10 @@ api.add_resource(AnalysisTypeProd,    '/services/analysis/type/product/<int:id_t
 api.add_resource(AnalysisVarAll,      '/services/analysis/variable/all')
 api.add_resource(AnalysisVarList,     '/services/analysis/variable/list/<int:id_ana>')
 api.add_resource(AnalysisVarDet,      '/services/analysis/variable/det/<int:id_var>')
+api.add_resource(AnalyzerDet,         '/services/device/analyzer/det/<int:id_analyzer>')
+api.add_resource(AnalyzerFile,        '/services/device/analyzer/file')
+api.add_resource(AnalyzerLab29,       '/services/device/analyzer/lab29')
+api.add_resource(AnalyzerList,        '/services/device/analyzer/list')
 api.add_resource(ConformityList,      '/services/quality/nonconformity/list')
 api.add_resource(ConformityDet,       '/services/quality/nonconformity/det/<int:id_item>')
 api.add_resource(ConformityExport,    '/services/quality/nonconformity/export')

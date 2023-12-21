@@ -305,32 +305,31 @@ class Analysis:
             return 0
 
     @staticmethod
-    def deleteAnalysisReq(id_req, id_rec, id_samp_act, type_samp):
+    def deleteAnalysisReq(id_req, id_rec, id_ana, type_samp):
         try:
             cursor = DB.cursor()
 
-            if id_samp_act:
-                # Count the number of analyses in this record that have in common the act of sampling
-                cursor.execute('select count(*) as nb_samp_ana from sigl_04_data as req '
+            if id_ana:
+                # Count the number of analysis in this record that have in common the act of sampling
+                cursor.execute('select count(*) as nb_samp_act from sigl_04_data as req '
                                'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
-                               'where req.id_dos=%s and ana.produit_biologique=%s ', (id_rec, id_samp_act))
+                               'where req.id_dos=%s and ana.produit_biologique = '
+                               '(select produit_biologique from sigl_05_data where id_data=%s)', (id_rec, id_ana))
 
                 nb = cursor.fetchone()
 
                 if nb:
-                    if nb['nb_samp_ana'] == 1:
-                        # delete pathological product
-                        cursor.execute('delete from sigl_01_data '
-                                       'where id_dos=%s and type_prel=%s', (id_rec, type_samp))
-
+                    if nb['nb_samp_act'] == 1:
                         # delete sample act request
-                        cursor.execute('delete from sigl_04_data '
-                                       'where id_dos=%s and ref_analyse=%s', (id_rec, id_samp_act))
+                        cursor.execute('delete from sigl_04_data as req '
+                                       'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
+                                       'where req.id_dos=%s and req.ref_analyse = '
+                                       '(select produit_biologique from sigl_05_data where id_data=%s)', (id_rec, id_ana))
 
-                    # decrease pathological product
-                    else:
-                        cursor.execute('update sigl_01_data set quantite = quantite - 1 '
-                                       'where id_dos=%s and type_prel=%s and quantite > 1', (id_rec, type_samp))
+                    # delete all pathological product for this analysis
+                    cursor.execute('delete from sigl_01_data '
+                                   'where id_dos=%s and samp_id_ana=%s', (id_rec, id_ana))
+
 
             # delete analysis request
             cursor.execute('delete from sigl_04_data '

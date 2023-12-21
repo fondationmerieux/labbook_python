@@ -23,9 +23,11 @@ class Constants:
     cst_path_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
     cst_path_script = '/home/apps/labbook_BE/labbook_BE/script/'
     cst_path_lang   = '/home/apps/labbook_BE/labbook_BE/app/translations/'
+    cst_path_log    = '/home/apps/logs/'
 
-    cst_script_user   = 'user_labbook'
-    cst_script_backup = 'backup.sh '
+    cst_script_user     = 'user_labbook'
+    cst_script_backup   = 'backup.sh '
+    cst_script_analyzer = 'analyzer.sh '
 
     # CMD LIST for backup & restore
     cst_io_backup      = 'backup'
@@ -45,3 +47,7 @@ class Constants:
     cst_filedata_report     = 'data_template_report'
     cst_filedata_sticker    = 'data_template_sticker'
     cst_filedata_outsourced = 'data_template_outsourced'
+
+    # HL7 Constants
+    cst_stat_init    = 'IN'
+    cst_stat_pending = 'PD'

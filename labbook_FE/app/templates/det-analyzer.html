@@ -1,0 +1,141 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Analyseur") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Analyseur") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="name" id="name" value="{{ args['analyzer']['ans_name'] }}" class="form-control form-lbk">			
+                    </div>
+                </div>
+                
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="analyzer" class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des analyseurs") }}</label>
+                    <div>					
+                        <select id="analyzer" name="analyzer" class="form-select">
+                            {% from 'macros.html' import select_analyzer %}
+                            {{ select_analyzer(ihm['analyzers'], args['analyzer']['ans_filename']) }}
+                        </select>			
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="id" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }}</label>
+                    <div>					
+                        <input type="text" name="id" id="id" value="{{ args['analyzer']['ans_id'] }}" class="form-control form-lbk">			
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="lab28" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse LAB-28") }}</label>
+                    <div>					
+                        <input type="text" name="lab28" id="lab28" value="{{ args['analyzer']['ans_lab28'] }}" class="form-control form-lbk">			
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="mapping" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse transcodage") }}</label>
+                    <div>					
+                        <input type="text" name="mapping" id="mapping" value="{{ args['analyzer']['ans_mapping'] }}" class="form-control form-lbk">			
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="rank" class="form-label col-3 text-end mt-2 me-1">{{ _("position") }}</label>
+                    <div>					
+                        <input type="number" name="rank" id="rank" min="0" step="1" value="{% if args['analyzer']['ans_rank'] %}{{args['analyzer']['ans_rank']}}{% else %}0{% endif %}" class="form-control form-lbk">			
+                    </div>
+                </div>
+                
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                {% if session['user_role'] in ('A','B','TA') %}
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+var id_user     = {{ session['user_id']|safe}} ;
+var id_item     = {{ args['id_analyzer']|safe }} ;
+var name        = $("#name").val()     ;
+var key         = $("#id").val()       ;
+var lab28       = $("#lab28").val()    ;
+var mapping     = $("#mapping").val()  ;
+var rank        = $("#rank").val()     ;
+var filename    = $("#analyzer").val() ;
+
+var msg = "" ;
+
+    if (name == "" || key == "" || lab28 == "" || mapping == "")
+    msg += "{{ _("Veuillez saisir un nom, un identifiant unique et leurs adresses.") }}\n" ;
+
+    if (filename == "")
+    msg += "{{ _("Veuillez sélectionner un analyzer dans la liste.") }}" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }  
+
+var param = '{ "id_user":' + id_user + ', ' +
+              '"name":"' + name + '", ' +
+              '"key":"' + key + '", ' +
+              '"lab28":"' + lab28 + '", ' +
+              '"mapping":"' + mapping + '", ' +
+              '"rank":' + rank + ', ' +
+              '"filename":"' + filename + '"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/device/analyzer/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           window.location = document.referrer ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-analyzers";
+}
+</script>
+{% endblock %}

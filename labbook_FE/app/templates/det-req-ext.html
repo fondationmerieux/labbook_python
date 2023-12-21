@@ -119,7 +119,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group d-md-flex align-items-end mt-2">
-                                <label for="rec_custody" class="form-label col-md-5 text-end ms-3 me-1 me-md-3">{{ _("Demande de garde") }}</label>
+                                <label class="form-label col-md-5 text-end ms-3 me-1 me-md-3">{{ _("Demande de garde") }}</label>
                                 {% if entry == 'Y' %}
                                 <label class="form-label text-end me-3">
                                     <input type="radio" name="rec_custody" value="Y" >&nbsp;{{ _("Oui") }}</input>
@@ -324,7 +324,7 @@
                             <th class="text-center cursor-act">{{ _("Date prél.") }}</th>
                             <th class="text-center cursor-act">{{ _("Date réception") }}</th>
                             <th class="text-center cursor-act">{{ _("Préleveur") }}</th>
-                            <th class="text-center cursor-act">{{ _("Qté") }}</th>
+                            <th class="text-center cursor-act">{{ _("Analyse") }}</th>
                             <th class="text-center cursor-act">{{ _("Commentaire") }}</th>
                     </thead>
                     <tbody id="tbody_product"></tbody>
@@ -371,7 +371,7 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0, "outsourced":"N"} ;
 var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0, "outsourced":"N"} ;
-var struct_prod   = {"id_data":0 ,"code":"","type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "qty":0, "comm":""} ;
+var struct_prod   = {"id_data":0 ,"code":"","type":0, "stat":0, "dateSamp":"", "dateReceipt":"", "sampler":"", "ana":0, "comm":""} ;
 var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
 var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|safe }}{% else %}[]{% endif %}   ;
 var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
@@ -386,6 +386,7 @@ var bill_remain   = {% if entry == 'Y' %}0{% else %}{{ args['record']['a_payer']
 var act_price     = {% if ihm['act_price']['value'] %}{{ ihm['act_price']['value'] }}{% else %}0{% endif %} ;
 var opt_yorn      = {{ ihm['yorn']|safe }} ;
 var new_opt_yorn  = [{'value': 'Y', 'label': '{{ _("Oui") }}'}, {'value': 'N', 'label': '{{ _("Non") }}'}] ;
+var opt_ana       = [] ;
 
 {% if entry == 'Y' %}
 function change_pat( id_pat ) 
@@ -500,7 +501,7 @@ let data_exist = false ;
     {
         $("#search_analysis").empty() ;
 
-        // GET det analysis
+        // ADD det analysis
         $.ajax( {
             type: "GET",
             url: "{{ session['server_ext'] }}/services/analysis/det/" + id_item,
@@ -520,7 +521,10 @@ let data_exist = false ;
                 load_analysis( tmp_struct_ana, 1) ;
                 refresh_bill() ;
 
-                    // GET det sample linked to analysis
+                // push values in opt_ana array
+                opt_ana.push({'id_data': data_ana.id_data, 'label': data_ana.code})
+
+                    // GET det sampling act linked to analysis
                     if ( data_ana.produit_biologique > 0 )
                     {
                     // check if this analysis is not already used
@@ -529,7 +533,7 @@ let data_exist = false ;
 
                         if (!data_exist)
                         {
-                            // GET det sample
+                            // ADD det sampling act
                             $.ajax( {
                                 type: "GET",
                                 url: "{{ session['server_ext'] }}/services/analysis/det/" +  data_ana.produit_biologique,
@@ -564,37 +568,31 @@ let data_exist = false ;
                     if ( data_ana.type_prel > 0 )
                     {
                     let id_type_prod = data_ana.type_prel ;
+                        
+                        // ADD type product
+                        $.ajax( {
+                            type: "GET",
+                            url: "{{ session['server_ext'] }}/services/analysis/type/product/" +  id_type_prod,
+                            success: function(data_prod)
+                                {
+                                let tmp_struct_prod = JSON.parse(JSON.stringify(struct_prod)) ;
 
-                    // check if this analysis is not already used
-                    if (!$.isEmptyObject(data_products) )
-                    $.map(data_products,function(val,key) { if ( val != null && val.type == data_ana.type_prel ) { data_exist = true; } } ) ;
+                                tmp_struct_prod.id_data    = ind_products++ ;
+                                tmp_struct_prod.type       = data_prod.id_data ;
+                                tmp_struct_prod.stat       = 9 ;
+                                tmp_struct_prod.ana        = data_ana.id_data ;
 
-                        if (!data_exist)
-                        {
-                            // GET type product
-                            $.ajax( {
-                                type: "GET",
-                                url: "{{ session['server_ext'] }}/services/analysis/type/product/" +  id_type_prod,
-                                success: function(data_prod)
-                                    {
-                                    let tmp_struct_prod = JSON.parse(JSON.stringify(struct_prod)) ;
+                                data_products.push(tmp_struct_prod) ;
 
-                                    tmp_struct_prod.id_data    = ind_products++ ;
-                                    tmp_struct_prod.type       = data_prod.id_data ;
-                                    tmp_struct_prod.stat       = 9 ;
-
-                                    data_products.push(tmp_struct_prod) ;
-
-                                    // load new product in table
-                                    load_product( tmp_struct_prod ) ;
-                                    },
-                                error: function(data_prod)
-                                    {
-                                    console.log("ERROR GET type product");
-                                    alert("{{ _("Erreur lors la récupération des produits pathologiques") }}") ;
-                                    }
-                            } ) ;
-                        }
+                                // load new product in table
+                                load_product( tmp_struct_prod ) ;
+                                },
+                            error: function(data_prod)
+                                {
+                                console.log("ERROR GET type product");
+                                alert("{{ _("Erreur lors la récupération des produits pathologiques") }}") ;
+                                }
+                        } ) ;
                     }
                 },
             error: function(data_ana)
@@ -703,7 +701,25 @@ function del_analysis( id_data )
             refresh_bill() ;
             {% endif %}
 
-            data_analysis.splice(i, 1); ;
+                // remove all specimen associated
+                for( k in data_products )
+                {
+                    if (data_products[k].ana == id_data)
+                    data_products.splice(k, 1);
+                }
+
+                // remove analysis choice in opt_ana
+                for( j in opt_ana )
+                { 
+                    if ( opt_ana[j].id_data == id_data )
+                    {
+                    opt_ana.splice(j, 1) ;
+                    break ;
+                    }
+                }
+
+            // remove analysis in data_analysis
+            data_analysis.splice(i, 1);
 
             break ;
             }
@@ -827,7 +843,7 @@ let tr_product = '' ;
         tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0, ""), "text-center", "") ; // input date prel
         tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "date", obj.dateReceipt, 0, 0, ""), "text-center", "") ; // input date recept
         tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0, ""), "text-center", "") ; // input text preleveur
-        tmp_tr += create_td("", create_input("prod_qty_"+obj.id_data, "number", obj.qty, 0, 9, ""), "text-center", "") ; // input number qtte
+        tmp_tr += create_td("", create_select("prod_ana_"+obj.id_data, opt_ana, obj.ana, true), "text-center", "") ;
         tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0, ""), "text-center", "") ; // input text comm
         {% else %}
         tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
@@ -837,7 +853,7 @@ let tr_product = '' ;
         tmp_tr += create_td("", obj.date_prel, "text-center", "") ;
         tmp_tr += create_td("", obj.date_reception, "text-center", "") ;
         tmp_tr += create_td("", obj.preleveur, "text-center", "") ;
-        tmp_tr += create_td("", obj.quantite, "text-center", "") ;
+        tmp_tr += create_td("", obj.code, "text-center", "") ; // TODO A VERIFIER
         tmp_tr += create_td("", obj.commentaire, "text-center", "") ;
         {% endif %}
 
@@ -1060,8 +1076,8 @@ let id_data  = split_id[split_id.length -1] ;
                 data_products[i].dateReceipt = val ;
                 else if ( split_id[1] == "sampler" )
                 data_products[i].sampler = val ;
-                else if ( split_id[1] == "qty" )
-                data_products[i].qty = val ;
+                else if ( split_id[1] == "ana" )
+                data_products[i].ana = val ;
                 else if ( split_id[1] == "comm" )
                 data_products[i].comm = val ;
 
@@ -1356,7 +1372,7 @@ var rec_num_int   = $("#rec_num_int").val() ;
                                                '"code":"' + data_products[i].code + '", ' +
                                                '"date_samp":"' + data_products[i].dateSamp + '", ' +
                                                '"type_samp":"' + data_products[i].type + '", ' +
-                                               '"qty":' + data_products[i].qty + ', ' +
+                                               '"ana":' + data_products[i].ana + ', ' +
                                                '"stat":' + data_products[i].stat + ', ' +
                                                '"id_rec":' + id_rec + ', ' +
                                                '"sampler":"' + data_products[i].sampler + '", ' +

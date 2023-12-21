@@ -70,6 +70,12 @@
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
+                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Analyse associée") }}</div>
+                        <div>
+                            <input type="text" name="prod_ana" id="prod_ana" value="{{ args['product']['code_ana'] }}" class="form-control form-lbk" readonly disabled>       
+                        </div>
+                    </div>
+                    <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Produit pathologique") }} *</div>
                         <div>
                             <select name="prod_type" id="prod_type" class="form-select ms-1">
@@ -84,12 +90,6 @@
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Localisation prélèvement") }}</div>
                         <div>
                             <input type="text" name="prod_storage" id="prod_storage" value="{{ args['product']['storage'] }}" class="form-control form-lbk">     
-                        </div>
-                    </div>
-                    <div class="form-group d-lg-flex align-items-start mt-3">
-                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Quantité") }}</div>
-                        <div>
-                            <input type="number" name="prod_qty" id="prod_qty" value="{{ args['product']['qty'] }}" class="form-control form-lbk">       
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
@@ -169,7 +169,7 @@ var code          = $("#prod_code").val()          ;
 var stat          = $("#prod_stat").val()          ;
 var type          = $("#prod_type").val()          ;
 var storage       = $("#prod_storage").val()       ;
-var prod_qty      = $("#prod_qty").val()           ;
+var prod_ana      = $("#prod_ana").val()           ;
 var prod_date     = $("#prod_date").val()          ;
 var sampler       = $("#prod_sampler").val()       ;
 var prod_location = $("#prod_location").val()      ;
@@ -198,7 +198,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"code":"' + code + '", ' +
               '"type":' + type + ', ' +
               '"storage":"' + storage + '", ' +
-              '"qty":' + prod_qty + ', ' +
+              '"ana":{{ args["product"]["samp_id_ana"] }}, ' +
               '"prod_date":"' + prod_date + '", ' +
               '"sampler":"' + sampler + '", ' +
               '"location":' + prod_location + ', ' +

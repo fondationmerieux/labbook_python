@@ -425,3 +425,45 @@ class Result:
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def updateResultDemo():
+        try:
+            cursor = DB.cursor()
+
+            req = ('select id_data from sigl_09_data where ref_variable=203 and valeur is NULL '
+                   'order by id_data desc limit 1')
+
+            cursor.execute(req)
+
+            group = cursor.fetchone()
+
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_09_data set '
+                           'id_owner=666, '
+                           'valeur=903 '
+                           'where id_data=%s', (group['id_data'],))
+
+            cursor = DB.cursor()
+
+            req = ('select id_data from sigl_09_data where ref_variable=204 and valeur is NULL '
+                   'order by id_data desc limit 1')
+
+            cursor.execute(req)
+
+            rhesus = cursor.fetchone()
+
+            cursor = DB.cursor()
+
+            cursor.execute('update sigl_09_data set '
+                           'id_owner=666, '
+                           'valeur=232 '
+                           'where id_data=%s', (rhesus['id_data'],))
+
+            Result.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Result.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

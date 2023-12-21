@@ -1953,13 +1953,13 @@ class Pdf:
             list_samples = Product.getProductReq(id_rec)
 
             for sample in list_samples:
-                tmp_sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
+                tmp_sample = {"date": "", "type": "", "code_ana": '', "stat": "", "sampler": "", "date_receipt": "",
                               "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "",
                               "code": ""}
 
                 tmp_sample['date']         = sample.get('date_prel', "")
                 tmp_sample['type']         = sample.get('type_prod', "")
-                tmp_sample['qty']          = str(sample.get('quantite', ""))
+                tmp_sample['code_ana']     = str(sample.get('code_ana', ""))
                 tmp_sample['stat']         = sample.get('stat_prod', "")
                 tmp_sample['sampler']      = sample.get('preleveur', "")
                 tmp_sample['date_receipt'] = sample.get('date_reception', "")
@@ -2623,13 +2623,13 @@ class Pdf:
             list_samples = Product.getProductReq(id_rec)
 
             for sample in list_samples:
-                tmp_sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
+                tmp_sample = {"date": "", "type": "", "code_ana": '', "stat": "", "sampler": "", "date_receipt": "",
                               "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "",
                               "code": ""}
 
                 tmp_sample['date']         = sample.get('date_prel', "")
                 tmp_sample['type']         = sample.get('type_prod', "")
-                tmp_sample['qty']          = str(sample.get('quantite', ""))
+                tmp_sample['code_ana']     = str(sample.get('code_ana', ""))
                 tmp_sample['stat']         = sample.get('stat_prod', "")
                 tmp_sample['sampler']      = sample.get('preleveur', "")
                 tmp_sample['date_receipt'] = sample.get('date_reception', "")

@@ -376,7 +376,7 @@ let trans  = obj.outsourced ;
 tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
 {# Can be deleted if not yet technically validated #}
 {% if args['record']['statut'] < 251 %}
-ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + obj.id_data + ', '  + obj.id_samp_act + ', ' + obj.type_samp + ', ' + obj.prix + ');"/></i>' ;
+ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + obj.id_data + ', '  + obj.ref_analyse + ', ' + obj.type_samp + ', ' + obj.prix + ');"/></i>' ;
 
 tmp_tr += create_td("", ico_del, "text-center", "") ;
 {% endif %}
@@ -395,12 +395,12 @@ tr_analysis += tmp_tr ;
 $("#tbody_analysis").append(tr_analysis) ;
 }
 
-function del_ana(id_req, id_samp_act, type_samp, price)
+function del_ana(id_req, id_ana, type_samp, price)
 {
 var id_rec = {{ args['record']['id_data'] }} ;
 
 var param = '{ "id_rec":' + id_rec + ', ' +
-              '"id_samp_act":' + id_samp_act + ', ' +
+              '"id_ana":' + id_ana + ', ' +
               '"type_samp":' + type_samp + ', ' +
               '"price": ' + price + '}' ;
 

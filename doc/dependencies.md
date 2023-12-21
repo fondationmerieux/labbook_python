@@ -17,14 +17,15 @@
 | gunicorn                | 20.1.0    | MIT          |           | x       | x       |
 | pip                     | 23.1.2    | MIT          |           | x       | x       |
 | pipenv                  | 2023.4.29 | MIT          |           | x       | x       |
-| requests                | 2.29.0    | Apache 2.0   |           | x       |         |
+| requests                | 2.31.0    | Apache 2.0   |           | x       | x       |
 | swagger-ui              | 4.15.5    | Apache 2.0   |           | x       |         |
 | alembic                 | 1.10.4    | MIT          |           |         | x       |
 | Flask-RESTful           | 0.3.9     | BSD          |           |         | x       |
+| hl7apy                  | 1.3.4     | MIT          |           |         | x       |
 | mysql-connector-python  | 8.0.33    | GPL 2        |           |         | x       |
 | pdfkit                  | 1.0.0     | MIT          |           |         | x       |
 | pikepdf                 | 7.2.0     | MPL 2.0      |           |         | x       |
-| Pillow                  | 10.0.1    | HPND         |           |         | x       |
+| Pillow                  | 9.5.0     | HPND         |           |         | x       |
 | python-barcode          | 0.15.1    | MIT          |           |         | x       |
 | qrcode                  | 7.4.2     | BSD          |           |         | x       |
 | relatorio               | 0.10.1    | GPL          |           |         | x       |

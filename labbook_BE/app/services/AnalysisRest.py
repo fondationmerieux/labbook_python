@@ -748,7 +748,7 @@ class AnalysisReq(Resource):
     def delete(self, id_req):
         args = request.get_json()
 
-        if 'id_rec' not in args or 'id_samp_act' not in args or 'type_samp' not in args or 'price' not in args:
+        if 'id_rec' not in args or 'id_ana' not in args or 'type_samp' not in args or 'price' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisReq ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -759,7 +759,7 @@ class AnalysisReq(Resource):
                 self.log.error(Logs.fileline() + ' : TRACE AnalysisReq updateRecordBill ERROR')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-        ret = Analysis.deleteAnalysisReq(id_req, args['id_rec'], args['id_samp_act'], args['type_samp'])
+        ret = Analysis.deleteAnalysisReq(id_req, args['id_rec'], args['id_ana'], args['type_samp'])
 
         if not ret:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisReq delete ERROR')

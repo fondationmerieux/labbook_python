@@ -1,12 +1,16 @@
 # -*- coding:utf-8 -*-
 import logging
 import gettext
+import shlex
+import subprocess  # nosec B404
+import os
 
 from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
 from app.models.General import compose_ret
+from app.models.Analyzer import Analyzer
 from app.models.Constants import *
 from app.models.Product import *
 from app.models.User import *
@@ -39,7 +43,7 @@ class ProductDet(Resource):
     def post(self, id_prod):
         args = request.get_json()
 
-        if 'stat' not in args or 'type' not in args or 'storage' not in args or 'qty' not in args or \
+        if 'stat' not in args or 'type' not in args or 'storage' not in args or 'ana' not in args or \
            'prod_date' not in args or 'sampler' not in args or 'location' not in args or \
            'location_accu' not in args or 'receipt_date' not in args or 'receipt_time' not in args or \
            'comment' not in args or 'code' not in args:
@@ -51,7 +55,7 @@ class ProductDet(Resource):
             ret = Product.updateProduct(id_data=id_prod,
                                         date_prel=args['prod_date'],
                                         type_prel=args['type'],
-                                        quantite=args['qty'],
+                                        samp_id_ana=args['ana'],
                                         statut=args['stat'],
                                         id_dos=args['id_rec'],
                                         preleveur=args['sampler'],
@@ -75,7 +79,7 @@ class ProductDet(Resource):
             ret = Product.insertProductReq(id_owner=args['id_owner'],
                                            date_prel=args['prod_date'],
                                            type_prel=args['type'],
-                                           quantite=args['qty'],
+                                           samp_id_ana=args['ana'],
                                            statut=args['stat'],
                                            id_dos=args['id_rec'],
                                            preleveur=args['sampler'],
@@ -154,9 +158,12 @@ class ProductReq(Resource):
             self.log.error(Logs.fileline() + ' : ProductReq ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # Check if an analyzer is configured
+        l_analyzer = Analyzer.getAnalyzerList()
+
         # Loop on list_prod
         for prod in args['list_prod']:
-            if 'id_owner' not in prod or 'date_samp' not in prod or 'type_samp' not in prod or 'qty' not in prod or \
+            if 'id_owner' not in prod or 'date_samp' not in prod or 'type_samp' not in prod or 'ana' not in prod or \
                'stat' not in prod or 'id_rec' not in prod or 'sampler' not in prod or 'date_receipt' not in prod or \
                'time_receipt' not in prod or 'comm' not in prod or 'locat_samp' not in prod or \
                'locat_samp_more' not in prod or 'location' not in prod or 'code' not in prod:
@@ -172,7 +179,7 @@ class ProductReq(Resource):
             ret = Product.insertProductReq(id_owner=prod['id_owner'],
                                            date_prel=prod['date_samp'],
                                            type_prel=prod['type_samp'],
-                                           quantite=prod['qty'],
+                                           samp_id_ana=prod['ana'],
                                            statut=prod['stat'],
                                            id_dos=prod['id_rec'],
                                            preleveur=prod['sampler'],
@@ -190,6 +197,24 @@ class ProductReq(Resource):
 
             res = {}
             res['id_req'] = ret
+
+            # prepare task and run script for analyzer
+            if l_analyzer:
+                Analyzer.log.info(Logs.fileline() + ' DEBUG prepare task LAB28 for id_req=' + str(res['id_req']))
+                # prepare task to save for analyzer
+                ret = Analyzer.buildLab28(res['id_req'])
+
+                if ret:
+                    # run script analyzer for LAB28 request
+                    cmd = 'sh ' + Constants.cst_path_script + Constants.cst_script_analyzer
+                    cmd_split = shlex.split(cmd)
+
+                    out_file = Constants.cst_path_log + 'log_script_analyzer.log'
+                    out_file = os.open(out_file, os.O_CREAT | os.O_APPEND)
+
+                    self.log.info(Logs.fileline() + ' : RecordStat script analyzer cmd_split : ' + str(cmd_split))
+
+                    subprocess.Popen(cmd_split, stdout=out_file, stderr=subprocess.STDOUT)  # nosec B603 
 
         self.log.info(Logs.fileline() + ' : TRACE ProductReq')
         return compose_ret('', Constants.cst_content_type_json)

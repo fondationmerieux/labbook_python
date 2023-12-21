@@ -14,13 +14,15 @@ class Product:
     def getProductDet(id_prod):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, date_prel as prod_date, type_prel as prod_type, '
-               'quantite as qty, statut as stat, id_dos as id_rec, preleveur as sampler, '
-               'date_reception as receipt_date, time_format(heure_reception, "%T") as receipt_time, '
-               'commentaire as comment, lieu_prel as prod_location, lieu_prel_plus as prod_location_accu, '
-               'localisation as storage, code '
-               'from sigl_01_data '
-               'where id_data=%s')
+        # TODO CHECK MODIF
+        req = ('select samp.id_data, samp.id_owner, samp.date_prel as prod_date, samp.type_prel as prod_type, '
+               'samp.samp_id_ana, samp.statut as stat, samp.id_dos as id_rec, samp.preleveur as sampler, '
+               'samp.date_reception as receipt_date, time_format(samp.heure_reception, "%T") as receipt_time, '
+               'samp.commentaire as comment, samp.lieu_prel as prod_location, samp.lieu_prel_plus as prod_location_accu, '
+               'samp.localisation as storage, samp.code, ana.code as code_ana '
+               'from sigl_01_data as samp '
+               'left join sigl_05_data as ana on ana.id_data=samp_id_ana '
+               'where samp.id_data=%s')
 
         cursor.execute(req, (id_prod,))
 
@@ -94,14 +96,15 @@ class Product:
         cursor = DB.cursor()
 
         req = ('select prod.id_data as id_data, prod.id_owner as id_owner, prod.date_prel as date_prel, prod.type_prel as type_prel, '
-               'prod.quantite as quantite, prod.statut as statut, prod.id_dos as id_dos, prod.preleveur as preleveur, '
+               'ana.code as code_ana, prod.statut as statut, prod.id_dos as id_dos, prod.preleveur as preleveur, '
                'prod.date_reception as date_reception, prod.heure_reception as heure_reception, prod.commentaire as commentaire, '
                'prod.lieu_prel as lieu_prel, prod.lieu_prel_plus as lieu_prel_plus, prod.localisation as localisation, '
                'dico_type.label as type_prod, dico_stat.label as stat_prod, prod.code, dico_local.label as location '
                'from sigl_01_data as prod '
-               'LEFT JOIN sigl_dico_data AS dico_type ON dico_type.id_data=prod.type_prel '
-               'LEFT JOIN sigl_dico_data AS dico_stat ON dico_stat.id_data=prod.statut '
+               'left join sigl_dico_data AS dico_type ON dico_type.id_data=prod.type_prel '
+               'left join sigl_dico_data AS dico_stat ON dico_stat.id_data=prod.statut '
                'left join sigl_dico_data as dico_local on dico_local.id_data=prod.lieu_prel '
+               'left join sigl_05_data as ana on ana.id_data=prod.samp_id_ana '
                'where prod.id_dos=%s')
 
         cursor.execute(req, (id_rec,))
@@ -114,10 +117,10 @@ class Product:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_01_data '
-                           '(id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, '
+                           '(id_owner, date_prel, type_prel, samp_id_ana, statut, id_dos, preleveur, date_reception, '
                            'heure_reception, commentaire, lieu_prel, lieu_prel_plus, localisation, code) '
                            'values '
-                           '(%(id_owner)s, %(date_prel)s, %(type_prel)s, %(quantite)s, %(statut)s, %(id_dos)s, %(preleveur)s, %(date_reception)s, '
+                           '(%(id_owner)s, %(date_prel)s, %(type_prel)s, %(samp_id_ana)s, %(statut)s, %(id_dos)s, %(preleveur)s, %(date_reception)s, '
                            '%(heure_reception)s, %(commentaire)s, %(lieu_prel)s, %(lieu_prel_plus)s, %(localisation)s, '
                            '%(code)s)', params)
 
@@ -134,7 +137,7 @@ class Product:
             cursor = DB.cursor()
 
             cursor.execute('update sigl_01_data '
-                           'set date_prel=%(date_prel)s, type_prel=%(type_prel)s, quantite=%(quantite)s, '
+                           'set date_prel=%(date_prel)s, type_prel=%(type_prel)s, samp_id_ana=%(samp_id_ana)s, '
                            'statut=%(statut)s, id_dos=%(id_dos)s, preleveur=%(preleveur)s, '
                            'date_reception=%(date_reception)s, heure_reception=%(heure_reception)s, '
                            'commentaire=%(commentaire)s, lieu_prel=%(lieu_prel)s, '
@@ -161,9 +164,9 @@ class Product:
 
             for product in l_product:
                 cursor.execute('insert into sigl_01_deleted '
-                               '(id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
+                               '(id_data, id_owner, date_prel, type_prel, samp_id_ana, statut, id_dos, preleveur, date_reception, heure_reception, '
                                'commentaire, lieu_prel, lieu_prel_plus, localisation, code) '
-                               'select id_data, id_owner, date_prel, type_prel, quantite, statut, id_dos, preleveur, date_reception, heure_reception, '
+                               'select id_data, id_owner, date_prel, type_prel, samp_id_ana, statut, id_dos, preleveur, date_reception, heure_reception, '
                                'commentaire, lieu_prel, lieu_prel_plus, localisation, code '
                                'from sigl_01_data '
                                'where id_data=%s', (product['id_data'],))

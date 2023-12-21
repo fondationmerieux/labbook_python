@@ -118,6 +118,9 @@
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-analyzes">{{ _("Référentiel des analyses") }}</a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/list-analyzers">{{ _("Configuration des analyseurs") }}</a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dicts">{{ _("Dictionnaires") }}</a>
@@ -335,6 +338,7 @@
                     {% if session['user_role'] in ('A','B','TA') %}
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-analyzes">{{ _("Référentiel des analyses") }}</a>
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/list-analyzers">{{ _("Configuration des analyseurs") }}</a>
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dicts">{{ _("Dictionnaires") }}</a>
                     {% endif %}

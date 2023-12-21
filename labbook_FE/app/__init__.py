@@ -68,6 +68,9 @@ if config_envvar in os.environ:
     print(("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar])))
     app.config.from_envvar(config_envvar)
 
+    if app.config['APP_VERSION']:
+        log.info(Logs.fileline() + ' : LABBOOK VERSION : ' + str(app.config['APP_VERSION']))
+
     # check if LABBOOK_URL_PREFIX already exist in os.environ if not use one from default_settings
     if 'LABBOOK_URL_PREFIX' in os.environ and os.environ['LABBOOK_URL_PREFIX']:
         app.config['REDIRECT_NAME'] = os.environ['LABBOOK_URL_PREFIX']
@@ -1012,6 +1015,75 @@ def setting_analyzes():
         log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
 
     return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : analyzers list
+@app.route('/list-analyzers')
+def list_analyzers():
+    log.info(Logs.fileline() + ' : TRACE setting analyzers')
+
+    test_session()
+
+    session['current_page'] = 'setting-analyzers'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analyzers list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-analyzers.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : details analyzer
+@app.route('/det-analyzer/<int:id_analyzer>')
+def det_analyzer(id_analyzer=0):
+    log.info(Logs.fileline() + ' : TRACE setting det analyzer=' + str(id_analyzer))
+
+    test_session()
+
+    session['current_page'] = 'det-analyzer/' + str(id_analyzer)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['analyzer'] = []
+
+    # Load list of analyzers
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/file'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['analyzers'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list of analyzers files failed, err=%s , url=%s', err, url)
+
+    if id_analyzer > 0:
+        # Load analyzer details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/det/' + str(id_analyzer)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['analyzer'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests analyzer det failed, err=%s , url=%s', err, url)
+
+    json_data['id_analyzer'] = id_analyzer
+
+    return render_template('det-analyzer.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : variables list
