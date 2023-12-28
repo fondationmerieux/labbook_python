@@ -3,11 +3,15 @@ class Constants:
     cst_content_type_plain = 1
     cst_content_type_json  = 2
 
-    cst_isodate  = '%Y-%m-%d'
-    cst_isodatetime = '%Y-%m-%d %H:%M:%S'
-    cst_date_eu  = '%d/%m/%Y'
-    cst_date_us  = '%m/%d/%Y'
-    cst_date_ymd = '%Y%m%d'
+    cst_isodate   = '%Y-%m-%d'
+    cst_dt_ext_HM = '%Y-%m-%dT%H:%M'
+    cst_dt_HMS    = '%Y-%m-%d %H:%M:%S'
+    cst_dt_HM     = '%Y-%m-%d %H:%M'
+    cst_dt_long   = "%d/%m/%Y à %H:%M"
+    cst_date_eu   = '%d/%m/%Y'
+    cst_date_us   = '%m/%d/%Y'
+    cst_date_ymd  = '%Y%m%d'
+    cst_time_HM   = '%H:%M'
 
     cst_storage     = '/storage'
     cst_io          = '/storage/io/'

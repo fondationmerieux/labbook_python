@@ -8,6 +8,7 @@
 | JQuery                  | 3.6.1     | MIT          | x         |         |         |
 | JQuery tablesorter      | 2.31.3    | MIT and GPL  | x         |         |         |
 | JQuery UI               | 1.13.2    | MIT          | x         |         |         |
+| Moment                  | 2.29.4    | MIT          | x         |         |         |
 | pivot                   | 2.23.0    | MIT          | x         |         |         |
 | Popper                  | 2.11.0    | MIT          | x         |         |         |
 | select2                 | 4.0.13    | MIT          | x         |         |         |

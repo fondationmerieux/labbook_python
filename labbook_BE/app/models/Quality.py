@@ -1119,11 +1119,11 @@ class Quality:
                'contact_prenom as firstname, contact_fonction as funct, fournisseur_adresse as address, '
                'contact_tel as phone, contact_mobile as mobile, contact_fax as fax, contact_email as email, '
                'commentaire as comment, date_format(sys_creation_date, %s) as date_create, '
-               'date_format(sys_last_mod_date, %s) as date_update, sys_last_mod_user as id_user_upd '
+               'date_format(sys_last_mod_date, %s) as date_update, sys_last_mod_user as id_user_upd, supp_critical '
                'from sigl_fournisseurs_data '
                'order by supplier asc, lastname asc, firstname asc')
 
-        cursor.execute(req, (Constants.cst_isodatetime, Constants.cst_isodatetime,))
+        cursor.execute(req, (Constants.cst_dt_HMS, Constants.cst_dt_HMS,))
 
         return cursor.fetchall()
 
@@ -1152,7 +1152,7 @@ class Quality:
 
         req = ('select id_data ,id_owner, fournisseur_nom as supplier, contact_nom as lastname, '
                'contact_prenom as firstname, contact_fonction as funct, contact_tel as phone, '
-               'contact_email as email, fournisseur_adresse as address, '
+               'contact_email as email, fournisseur_adresse as address, supp_critical '
                'contact_mobile as mobile, contact_fax as fax, commentaire as comment '
                'from sigl_fournisseurs_data '
                'where id_data=%s')
@@ -1169,10 +1169,10 @@ class Quality:
             cursor.execute('insert into sigl_fournisseurs_data '
                            '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, fournisseur_nom, '
                            'contact_nom, contact_prenom, contact_fonction, fournisseur_adresse, contact_tel, '
-                           'contact_email, contact_mobile, contact_fax, commentaire) '
+                           'contact_email, contact_mobile, contact_fax, commentaire, supp_critical) '
                            'values '
                            '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(supplier)s, %(lastname)s, %(firstname)s, '
-                           '%(funct)s, %(address)s, %(phone)s, %(email)s, %(mobile)s, %(fax)s, %(comment)s)', params)
+                           '%(funct)s, %(address)s, %(phone)s, %(email)s, %(mobile)s, %(fax)s, %(comment)s, %(critical)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -1189,7 +1189,8 @@ class Quality:
             cursor.execute('update sigl_fournisseurs_data '
                            'set fournisseur_nom=%(supplier)s, contact_nom=%(lastname)s, contact_prenom=%(firstname)s, '
                            'contact_fonction=%(funct)s, fournisseur_adresse=%(address)s, contact_tel=%(phone)s, '
-                           'contact_email=%(email)s, contact_mobile=%(mobile)s, contact_fax=%(fax)s, commentaire=%(comment)s '
+                           'contact_email=%(email)s, contact_mobile=%(mobile)s, contact_fax=%(fax)s, '
+                           'commentaire=%(comment)s, supp_critical=%(critical)s '
                            'where id_data=%(id_data)s', params)
 
             Quality.log.info(Logs.fileline())
@@ -1539,7 +1540,7 @@ class Quality:
                'where usr.status="' + Constants.cst_user_active + '" '
                'order by usr.lastname asc, usr.firstname asc')
 
-        cursor.execute(req, (Constants.cst_isodatetime, Constants.cst_isodatetime, Constants.cst_isodatetime,))
+        cursor.execute(req, (Constants.cst_dt_HMS, Constants.cst_dt_HMS, Constants.cst_dt_HMS,))
 
         return cursor.fetchall()
 

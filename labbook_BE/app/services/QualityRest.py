@@ -2724,7 +2724,8 @@ class SupplierDet(Resource):
                                          funct=args['funct'],
                                          comment=args['comment'],
                                          mobile=args['mobile'],
-                                         fax=args['fax'])
+                                         fax=args['fax'],
+                                         critical=args['critical'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : SupplierDet ERROR update')
@@ -2742,7 +2743,8 @@ class SupplierDet(Resource):
                                          funct=args['funct'],
                                          comment=args['comment'],
                                          mobile=args['mobile'],
-                                         fax=args['fax'])
+                                         fax=args['fax'],
+                                         critical=args['critical'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : SupplierDet ERROR  insert')
@@ -2769,7 +2771,7 @@ class SupplierExport(Resource):
 
     def post(self):
         l_data = [['id_data', 'id_owner', 'supplier', 'lastname', 'firstname', 'funct', 'address',
-                   'phone', 'mobile', 'fax', 'email', 'comment',
+                   'phone', 'mobile', 'fax', 'email', 'comment', 'critical',
                    'date_create', 'date_update', 'id_user_upd', ]]
         dict_data = Quality.getSupplierList()
 
@@ -2789,6 +2791,7 @@ class SupplierExport(Resource):
                 data.append(d['fax'])
                 data.append(d['email'])
                 data.append(d['comment'])
+                data.append(d['supp_critical'])
                 data.append(d['date_create'])
                 data.append(d['date_update'])
                 data.append(d['id_user_upd'])

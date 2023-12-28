@@ -95,7 +95,7 @@
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Date du prélèvement") }}</div>
                         <div>
-                            <input id="prod_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['product']['prod_date'] }}" name="prod_date" style="color: #888;">      
+                            <input id="prod_date" class="form-control form-lbk" type="datetime-local" value="{{ args['product']['prod_date'] }}" name="prod_date" style="color: #888;">      
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
@@ -124,13 +124,7 @@
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Date de réception") }}</div>
                         <div>
-                            <input id="prod_receipt_date" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['product']['receipt_date'] }}" name="prod_receipt_date" style="color: #888;">       
-                        </div>
-                    </div>
-                    <div class="form-group d-lg-flex align-items-start mt-3">
-                        <div class="control-label col-2 text-end mt-2 me-1">{{ _("Heure de réception") }}</div>
-                        <div>
-                            <input id="prod_receipt_time" class="form-control form-lbk" type="time" maxlength="10" size="10" value="{{ args['product']['receipt_time'] }}" step="1" name="prod_receipt_time" style="color: #888;">     
+                            <input id="prod_receipt_date" class="form-control form-lbk" type="datetime-local" value="{{ args['product']['receipt_date'] }}" name="prod_receipt_date" style="color: #888;">       
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
@@ -175,7 +169,6 @@ var sampler       = $("#prod_sampler").val()       ;
 var prod_location = $("#prod_location").val()      ;
 var location_accu = $("#prod_location_accu").val() ;
 var receipt_date  = $("#prod_receipt_date").val()  ; 
-var receipt_time  = $("#prod_receipt_time").val()  ;
 var comment       = $("#prod_comm").val()          ;
 
 var msg = "" ;
@@ -204,7 +197,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"location":' + prod_location + ', ' +
               '"location_accu":"' + location_accu + '", ' +
               '"receipt_date":"' + receipt_date + '", ' +
-              '"receipt_time":"' + receipt_time + '", ' +
               '"comment":"' + comment + '"}' ;
 
     $.ajax( {

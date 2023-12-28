@@ -199,7 +199,7 @@ class Pdf:
                      '<div><span class="ft_bill_rec">' + _("N° dossier") + ' : ' + str(num_rec) + '</span>'
                      '</div>' + receipt_num + '</div>' + addr_div + '<div style="clear:both;"></div>' + bill_div + '</div>')
 
-        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y à %H:%M")
+        date_now = datetime.strftime(datetime.now(), Constants.cst_dt_long)
 
         page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
                        '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
@@ -290,7 +290,7 @@ class Pdf:
 
         page_body = bill_div
 
-        date_now = datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M")
+        date_now = datetime.strftime(datetime.now(), Constants.cst_dt_HM)
 
         page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
                        '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
@@ -300,7 +300,7 @@ class Pdf:
                        '<hr style="width:100%;border-top: 2px dashed dimgrey;"></div>')
 
         date_now = datetime.now()
-        today    = date_now.strftime("%Y%m%d")
+        today    = date_now.strftime(Constants.cst_date_ymd)
 
         filename = 'list_bill_' + today + '.pdf'
 
@@ -337,7 +337,7 @@ class Pdf:
         path = Constants.cst_path_tmp
 
         date_now = datetime.now()
-        today    = date_now.strftime("%Y%m%d")
+        today    = date_now.strftime(Constants.cst_date_ymd)
 
         filename = filename + '_' + today + '.pdf'
 
@@ -394,6 +394,10 @@ class Pdf:
             if not report:
                 Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGrouped report not found, id_rec=' + str(id_rec))
 
+            # increase nb_download
+            if not File.raiseReportNbDL(report['file']):
+                Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGrouped raise nb_download, id_rec=' + str(id_rec['id_rec']))
+
             l_file_rec.append(report['file'])
 
         if l_file_rec:
@@ -449,6 +453,10 @@ class Pdf:
                 Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGlobal report not found, id_rec=' + str(id_rec['id_rec']))
 
             if exclu == 'N' or (exclu == 'O' and report['nb_download'] == 0):
+                # increase nb_download
+                if not File.raiseReportNbDL(report['file']):
+                    Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGlobal raise nb_download, id_rec=' + str(id_rec['id_rec']))
+
                 l_file_rec.append(report['file'])
 
         if l_file_rec:
@@ -873,7 +881,7 @@ class Pdf:
                 data['rec']['num_d'] = str(record['num_dos_jour'])
 
                 if record['date_dos']:
-                    data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+                    data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
                 else:
                     data['rec']['rec_date'] = ''
 
@@ -931,11 +939,11 @@ class Pdf:
                     data['pat']['middlename'] = str(pat['pat_midname'])
 
                 if pat['ddn']:
-                    data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+                    data['pat']['birth'] = datetime.strftime(pat['ddn'], Constants.cst_date_eu)
 
                     # calc age
                     today = datetime.now()
-                    born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
+                    born  = datetime.strptime(str(pat['ddn']), Constants.cst_isodate)
 
                     age = (today - born).days
 
@@ -1074,7 +1082,7 @@ class Pdf:
                 data['rec']['num_y'] = '2021000001'
                 data['rec']['num_d'] = '2022010001'
                 data['rec']['num_m'] = '202201010001'
-                data['rec']['rec_date'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
+                data['rec']['rec_date'] = datetime.strftime(datetime.now(), Constants.cst_date_eu)
 
                 # --- Patient details
                 data['pat'] = {}
@@ -1265,7 +1273,7 @@ class Pdf:
                 Pdf.log.error(Logs.fileline() + ' : ERROR getPreviousFileReport not found')
                 return False
 
-            data['report']['replace_date'] = datetime.strftime(prev_report['date'], "%d/%m/%Y %H:%M")
+            data['report']['replace_date'] = datetime.strftime(prev_report['date'], Constants.cst_dt_HM)
 
             if id_rec > 0:
                 # update date of file
@@ -1275,8 +1283,8 @@ class Pdf:
                     Pdf.log.error(Logs.fileline() + ' : ERROR getDataReport cant update date report')
                     return False
 
-        data['report']['date_now'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
-        data['report']['time_now'] = datetime.strftime(datetime.now(), "%H:%M")
+        data['report']['date_now'] = datetime.strftime(datetime.now(), Constants.cst_date_eu)
+        data['report']['time_now'] = datetime.strftime(datetime.now(), Constants.cst_time_HM)
 
         # === Record details ===
         data['rec'] = {}
@@ -1306,7 +1314,7 @@ class Pdf:
             record['rec_date_vld']      = datetime.now()
             Various.useLangPDF()
 
-        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
 
         data['rec']['num']   = str(record['num_rec'])
         data['rec']['num_y'] = str(record['num_dos_an'])
@@ -1329,7 +1337,7 @@ class Pdf:
             data['rec']['custody'] = str(record['rec_custody'])
 
             if record['date_hosp']:
-                data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], '%d/%m/%Y')
+                data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], Constants.cst_date_eu)
 
             if record['service_interne']:
                 data['rec']['hosp_service'] = str(record['service_interne'])
@@ -1341,7 +1349,7 @@ class Pdf:
                 data['rec']['rec_hosp_num'] = str(record['rec_hosp_num'])
 
         if record['date_prescription']:
-            data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
+            data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], Constants.cst_date_eu)
 
         if record['prescriber']:
             if 'prescriber_title' in record and record['prescriber_title']:
@@ -1356,7 +1364,7 @@ class Pdf:
         data['rec']['comm'] = record['rc'].split("\n")
 
         if record['rec_date_vld']:
-            data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], '%d/%m/%Y %H:%M')
+            data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], Constants.cst_dt_HM)
         else:
             data['rec']['date_vld'] = ''
 
@@ -1375,7 +1383,7 @@ class Pdf:
             pat['prenom']       = 'Pauline'
             pat['nom_jf']       = 'PERRIERS'
             pat['pat_midname']  = 'Monica'
-            pat['ddn']          = datetime.strptime('1979-04-01', '%Y-%m-%d').date()
+            pat['ddn']          = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
             pat['age']          = 42
             pat['unite']        = '1037'
             pat['sexe']         = '2'
@@ -1438,11 +1446,11 @@ class Pdf:
             data['pat']['middlename'] = str(pat['pat_midname'])
 
         if pat['ddn']:
-            data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+            data['pat']['birth'] = datetime.strftime(pat['ddn'], Constants.cst_date_eu)
 
             # calc age
             today = datetime.now()
-            born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
+            born  = datetime.strptime(str(pat['ddn']), Constants.cst_isodate)
 
             age = (today - born).days
 
@@ -1675,12 +1683,12 @@ class Pdf:
                         formatting = 'N'
 
                         res_valid    = Result.getResultValidation(id_res_p)
-                        res_date_vld = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y %H:%M:%S')
+                        res_date_vld = datetime.strftime(res_valid['date_validation'], Constants.cst_dt_HMS)
 
                         res_prev = Result.getPreviousResult(res['id_pat'], res['id_ref_ana'], res['id_data'], res['id_res'], res_date_vld)
 
                         if res_prev and res_prev['date_valid']:
-                            prev_date = datetime.strftime(res_prev['date_valid'], '%d/%m/%Y')
+                            prev_date = datetime.strftime(res_prev['date_valid'], Constants.cst_date_eu)
 
                         # Get label of value
                         type_res = Various.getDicoById(res['type_resultat'])
@@ -1811,7 +1819,7 @@ class Pdf:
                             qrc_data['o'] = data
 
                             res_valid = Result.getResultValidation(id_res_p)
-                            data['res']['valid_date'] = datetime.strftime(res_valid['date_validation'], '%d/%m/%Y')
+                            data['res']['valid_date'] = datetime.strftime(res_valid['date_validation'], Constants.cst_date_eu)
 
                             # 1 - call function generate QR code
                             ret_qr = Pdf.qrcodeByTemplate(qrc_filename, qrc_data)
@@ -1936,7 +1944,6 @@ class Pdf:
                      'stat': LABEL,
                      'sampler': STRING,
                      'date_receipt': DATE,
-                     'time_receipt': TIME,
                      'comm': STRING,
                      'location': LABEL,
                      'location_det': STRING,
@@ -1946,7 +1953,7 @@ class Pdf:
         """
 
         data['samples'] = []
-        sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "", "time_receipt": "",
+        sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
                   "comm": "", "location": "", "location_det": "", "storage": "", "code": ""}
 
         if id_rec > 0:
@@ -1954,16 +1961,15 @@ class Pdf:
 
             for sample in list_samples:
                 tmp_sample = {"date": "", "type": "", "code_ana": '', "stat": "", "sampler": "", "date_receipt": "",
-                              "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "",
+                              "comm": "", "location": "", "location_det": "", "storage": "",
                               "code": ""}
 
-                tmp_sample['date']         = sample.get('date_prel', "")
+                tmp_sample['date']         = sample.get('samp_date', "")
                 tmp_sample['type']         = sample.get('type_prod', "")
                 tmp_sample['code_ana']     = str(sample.get('code_ana', ""))
                 tmp_sample['stat']         = sample.get('stat_prod', "")
                 tmp_sample['sampler']      = sample.get('preleveur', "")
-                tmp_sample['date_receipt'] = sample.get('date_reception', "")
-                tmp_sample['time_receipt'] = str(sample.get('heure_reception', ""))
+                tmp_sample['date_receipt'] = sample.get('samp_receipt_date', "")
                 tmp_sample['comm']         = sample.get('commentaire', "").split('\n')
                 tmp_sample['location']     = sample.get('location', "")
                 tmp_sample['location_det'] = str(sample.get('lieu_prel_plus', ""))
@@ -2262,8 +2268,8 @@ class Pdf:
         if pdfpref and pdfpref['entete'] == 1069:
             data['report']['full_head'] = 'Y'
 
-        data['report']['date_now'] = datetime.strftime(datetime.now(), "%d/%m/%Y")
-        data['report']['time_now'] = datetime.strftime(datetime.now(), "%H:%M")
+        data['report']['date_now'] = datetime.strftime(datetime.now(), Constants.cst_date_eu)
+        data['report']['time_now'] = datetime.strftime(datetime.now(), Constants.cst_time_HM)
 
         # === Record details ===
         data['rec'] = {}
@@ -2293,7 +2299,7 @@ class Pdf:
             record['rec_date_vld']      = datetime.now()
             Various.useLangPDF()
 
-        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], '%d/%m/%Y')
+        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
 
         data['rec']['num']   = str(record['num_rec'])
         data['rec']['num_y'] = str(record['num_dos_an'])
@@ -2356,7 +2362,7 @@ class Pdf:
             pat['prenom']       = 'Pauline'
             pat['nom_jf']       = 'PERRIERS'
             pat['pat_midname']  = 'Monica'
-            pat['ddn']          = datetime.strptime('1979-04-01', '%Y-%m-%d').date()
+            pat['ddn']          = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
             pat['age']          = 42
             pat['unite']        = '1037'
             pat['sexe']         = '2'
@@ -2423,7 +2429,7 @@ class Pdf:
 
             # calc age
             today = datetime.now()
-            born  = datetime.strptime(str(pat['ddn']), '%Y-%m-%d')
+            born  = datetime.strptime(str(pat['ddn']), Constants.cst_isodate)
 
             age = (today - born).days
 
@@ -2606,7 +2612,6 @@ class Pdf:
                      'stat': LABEL,
                      'sampler': STRING,
                      'date_receipt': DATE,
-                     'time_receipt': TIME,
                      'comm': STRING,
                      'location': LABEL,
                      'location_det': STRING,
@@ -2616,7 +2621,7 @@ class Pdf:
         """
 
         data['samples'] = []
-        sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "", "time_receipt": "",
+        sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
                   "comm": "", "location": "", "location_det": "", "storage": "", "code": ""}
 
         if id_rec > 0:
@@ -2624,16 +2629,15 @@ class Pdf:
 
             for sample in list_samples:
                 tmp_sample = {"date": "", "type": "", "code_ana": '', "stat": "", "sampler": "", "date_receipt": "",
-                              "time_receipt": "", "comm": "", "location": "", "location_det": "", "storage": "",
+                              "comm": "", "location": "", "location_det": "", "storage": "",
                               "code": ""}
 
-                tmp_sample['date']         = sample.get('date_prel', "")
+                tmp_sample['date']         = sample.get('samp_date', "")
                 tmp_sample['type']         = sample.get('type_prod', "")
                 tmp_sample['code_ana']     = str(sample.get('code_ana', ""))
                 tmp_sample['stat']         = sample.get('stat_prod', "")
                 tmp_sample['sampler']      = sample.get('preleveur', "")
-                tmp_sample['date_receipt'] = sample.get('date_reception', "")
-                tmp_sample['time_receipt'] = str(sample.get('heure_reception', ""))
+                tmp_sample['date_receipt'] = sample.get('samp_receipt_date', "")
                 tmp_sample['comm']         = sample.get('commentaire', "").split('\n')
                 tmp_sample['location']     = sample.get('location', "")
                 tmp_sample['location_det'] = str(sample.get('lieu_prel_plus', ""))

@@ -149,6 +149,34 @@ class DictDet(Resource):
         return compose_ret('', Constants.cst_content_type_json)
 
 
+class DictDetById(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_dict):
+        l_dicts = Dict.getDictDetailsById(id_dict)
+
+        if not l_dicts:
+            self.log.error(Logs.fileline() + ' : TRACE DictDetById no l_dicts')
+            l_dicts = {}
+
+        Various.useLangDB()
+
+        for dict in l_dicts:
+            # Replace None by empty string
+            for key, value in list(dict.items()):
+                if dict[key] is None:
+                    dict[key] = ''
+                elif key == 'label' and dict[key]:
+                    dict[key] = _(dict[key].strip())
+                elif key == 'short_label' and dict[key]:
+                    dict[key] = _(dict[key].strip())
+                elif key == 'dico_descr' and dict[key]:
+                    dict[key] = _(dict[key].strip())
+
+        self.log.info(Logs.fileline() + ' : TRACE DictDetById id_dict=' + str(id_dict))
+        return compose_ret(l_dicts, Constants.cst_content_type_json)
+
+
 class DictList(Resource):
     log = logging.getLogger('log_services')
 

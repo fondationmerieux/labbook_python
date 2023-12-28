@@ -4,6 +4,9 @@ class Constants:
     cst_date_eu  = '%d/%m/%Y'
     cst_date_us  = '%m/%d/%Y'
     cst_date_ymd = '%Y%m%d'
+    cst_dt_HM    = '%Y-%m-%d %H:%M'
+    cst_dt_eu_HM = '%d/%m/%Y %H:%M'
+    cst_dt_us_HM = '%m/%d/%Y %H:%M'
 
     cst_dhis2     = '/storage/resource/dhis2/'
     cst_epidemio  = '/storage/resource/epidemio/'

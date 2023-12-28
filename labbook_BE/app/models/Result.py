@@ -63,7 +63,7 @@ class Result:
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec.rec_modified, '
                'req.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
-               'var_pos.obligatoire as oblig, req.req_outsourced as outsourced '
+               'var_pos.obligatoire as oblig, req.req_outsourced as outsourced, rec.rec_num_int '
                'from sigl_04_data as req '
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
@@ -108,7 +108,7 @@ class Result:
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec_modified, '
                'req.id_owner as id_owner, rec.id_patient as id_pat, req.req_outsourced as outsourced, '
-               'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig '
+               'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig, rec.rec_num_int '
                'from sigl_04_data as req '
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
@@ -129,9 +129,9 @@ class Result:
         cursor = DB.cursor()
 
         if not date_vld:
-            date_today = datetime.strftime(date.today(), Constants.cst_isodatetime)
+            date_today = datetime.strftime(date.today(), Constants.cst_dt_HMS)
         else:
-            date_today = datetime.strptime(date_vld, '%d/%m/%Y %H:%M:%S')
+            date_today = datetime.strptime(date_vld, Constants.cst_dt_HMS)
 
         req = ('select res.valeur as valeur, vld.date_validation as date_valid '
                'from sigl_09_data as res '
@@ -391,7 +391,7 @@ class Result:
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
-               'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
+               'date_format(rec.date_dos, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
@@ -403,7 +403,7 @@ class Result:
                'd_fam.label as analysis_family, res.valeur as result_value, var.libelle as variable_name, '
                'var.type_resultat as type_result, d_unit.label as result_unit, '
                'date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit, d_sex.label as sex, '
-               'pat.tel as phone1, pat.pat_phone2 as phone2 '
+               'pat.nom as pat_name, pat.prenom as pat_firstname, pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '

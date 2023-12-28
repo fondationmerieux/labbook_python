@@ -105,7 +105,7 @@
                             <div class="form-group d-md-flex">
                                 <label for="date_record" class="form-label col-md-6 text-end me-1 mt-2">{{ _("Date de réception du dossier") }} * </label>
                                 {% if entry == 'Y' %}
-                                <input id="date_record" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
+                                <input id="date_record" class="form-control form-lbk" type="date" value="" placeholder="" style="width:160px;">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_dos']|date_format }}</span>
                                 {% endif %}
@@ -113,7 +113,7 @@
                             <div class="form-group d-md-flex mt-1">
                                 <label for="date_prescr" class="form-label col-md-6 text-end me-1 mt-2">{{ _("Date de prescription") }} * </label>
                                 {% if entry == 'Y' %}
-                                <input id="date_prescr" class="form-control form-lbk" type="date" maxlength="10" size="10" value="" placeholder="" style="width:160px;">
+                                <input id="date_prescr" class="form-control form-lbk" type="date" value="" placeholder="" style="width:160px;">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                                 {% endif %}
@@ -159,7 +159,7 @@
                                 {% else %}
                                     {% if args['record']['colis'] == 4 %}
                                 <span class="font-info">
-                                    {{ args['record']['id_colis'] }} {{ args['record']['date_reception_colis']|date_format }}
+                                    {{ args['record']['id_colis'] }} {{ args['record']['rec_parcel_date']|date_format }}
                                 </span>
                                     {% else %}
                                 <span class="font-info">{{ _("Non") }}</span>
@@ -167,13 +167,17 @@
                                 {% endif %}
                             </div>
                             <div id="colis-group" class="form-group row" style="display:none;">
-                                <label class="form-label col-md-6 text-end" style="">{{ _("Identification du colis") }}</label>
-                                <div>
-                                    <input id="parcel_id" type="text" value="" maxlength="30" class="form-control form-lbk" style="width: 240px;">
+                                <div class="form-group d-md-flex align-items-start">
+                                    <label class="form-label col-md-5 text-end mt-2" style="">{{ _("Identification du colis") }}</label>
+                                    <div>
+                                        <input id="parcel_id" type="text" value="" maxlength="30" class="form-control form-lbk ms-1" style="width: 240px;">
+                                    </div>
                                 </div>
-                                <label class="form-label col-md-6 text-end mt-2">{{ _("Date de réception du colis") }}</label>
-                                <div>
-                                    <input  id="date_parcel" class="form-control form-lbk mt-2" type="date" maxlength="10" size="10" value="" placeholder="" style="color:#888;width:160px;">
+                                <div class="form-group d-md-flex align-items-start mt-1">
+                                    <label class="form-label col-md-5 text-end mt-2">{{ _("Date de réception du colis") }}</label>
+                                    <div>
+                                        <input id="parcel_date" class="form-control form-lbk ms-1" type="datetime-local" value="" placeholder="" style="color:#888;width:180px;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -311,21 +315,23 @@
             </div>
             {% endif %}
             <form class="row justify-content-center mt-2" autocomplete="off">
-                <table id="table_product" class="table table-striped table-hover col-md-12 table-lbk tablesorter">
+                <table id="table_product" class="table table-responsive table-striped table-hover col-md-12 table-lbk">
                     <thead>
                         <tr>
                             <th hidden>serial</th>
                             {% if entry == 'Y' %}
                             <th class="text-center">{{ _("Action") }}</th>
                             {% endif %}
+                            <th class="text-left cursor-act">{{ _("Date prélèvement") }}</th>
+                            <th class="text-center cursor-act">{{ _("Produit pathologiques") }} *</th>
                             <th class="text-center cursor-act">{{ _("Code") }}</th>
-                            <th class="text-center cursor-act">{{ _("Prod. pathol.") }} *</th>
-                            <th class="text-center cursor-act">{{ _("Statut") }} *</th>
-                            <th class="text-center cursor-act">{{ _("Date prél.") }}</th>
-                            <th class="text-center cursor-act">{{ _("Date réception") }}</th>
                             <th class="text-center cursor-act">{{ _("Préleveur") }}</th>
+                        </tr><tr>
                             <th class="text-center cursor-act">{{ _("Analyse") }}</th>
-                            <th class="text-center cursor-act">{{ _("Commentaire") }}</th>
+                            <th class="text-left cursor-act">{{ _("Date réception") }}</th>
+                            <th class="text-center cursor-act">{{ _("Statut") }} *</th>
+                            <th class="text-center cursor-act" colspan="2">{{ _("Commentaire") }}</th>
+                        </tr>
                     </thead>
                     <tbody id="tbody_product"></tbody>
                 </table>
@@ -628,15 +634,15 @@ let tr_analysis = '' ;
     {% if entry == 'Y' %}
     let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_analysis(' + obj.id_data + ');load_data(0);refresh_bill();" >' ;
 
-    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-    tmp_tr += create_td("", btn, "text-center", "") ;
-    tmp_tr += create_td("", obj.code, "text-center", "") ;
-    tmp_tr += create_td("", obj.name, "", "") ;
-    tmp_tr += create_td("", create_select("ana_emer_"+obj.id_data, opt_yorn, obj.emer, true), "text-center", "") ;
-    tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "") ;
-    tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "") ;
-    tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "") ;
-    tmp_tr += create_td("", select_yorn("ana_outsourced_"+obj.id_data, new_opt_yorn, obj.outsourced), "text-center", "") ;
+    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+    tmp_tr += create_td("", btn, "text-center", "", 0) ;
+    tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
+    tmp_tr += create_td("", obj.name, "", "", 0) ;
+    tmp_tr += create_td("", create_select("ana_emer_"+obj.id_data, opt_yorn, obj.emer, true), "text-center", "", 0) ;
+    tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "", 0) ;
+    tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "", 0) ;
+    tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "", 0) ;
+    tmp_tr += create_td("", select_yorn("ana_outsourced_"+obj.id_data, new_opt_yorn, obj.outsourced), "text-center", "", 0) ;
     {% else %}
     let urg   = obj.urgent ;
     let dem   = obj.demande ;
@@ -658,14 +664,14 @@ let tr_analysis = '' ;
         else
         outsourced = "{{ _("Non") }}" ;
 
-    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-    tmp_tr += create_td("", obj.code, "text-center", "") ;
-    tmp_tr += create_td("", obj.nom, "", "") ;
-    tmp_tr += create_td("", urg, "text-center", "") ;
-    tmp_tr += create_td("", dem, "text-center", "") ;
-    tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
-    tmp_tr += create_td("", obj.prix, "text-center", "") ;
-    tmp_tr += create_td("", outsourced, "text-center", "") ;
+    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+    tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
+    tmp_tr += create_td("", obj.nom, "", "", 0) ;
+    tmp_tr += create_td("", urg, "text-center", "", 0) ;
+    tmp_tr += create_td("", dem, "text-center", "", 0) ;
+    tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "", 0) ;
+    tmp_tr += create_td("", obj.prix, "text-center", "", 0) ;
+    tmp_tr += create_td("", outsourced, "text-center", "", 0) ;
     {% endif %}
 
     tmp_tr += '</tr>' ;
@@ -750,13 +756,13 @@ let tr_sample = '' ;
         {% if entry == 'Y' %}
         let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_sample(' + obj.id_data + ');load_data(0);refresh_bill();" >' ;
 
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", btn, "text-center", "") ;
-        tmp_tr += create_td("", obj.code, "text-center", "") ;
-        tmp_tr += create_td("", obj.name, "", "") ;
-        tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "") ;
-        tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "") ;
-        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "") ;
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+        tmp_tr += create_td("", btn, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.name, "", "", 0) ;
+        tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "", 0) ;
+        tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "", 0) ;
+        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "", 0) ;
         {% else %}
         let dem  = obj.demande ;
         let rate = obj.cote_unite + obj.cote_valeur ;
@@ -766,12 +772,12 @@ let tr_sample = '' ;
             else
             dem = "{{ _("Non") }}" ;
 
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", obj.code, "text-center", "") ;
-        tmp_tr += create_td("", obj.nom, "", "") ;
-        tmp_tr += create_td("", dem, "text-center", "") ;
-        tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
-        tmp_tr += create_td("", obj.prix, "text-center", "") ;
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.nom, "", "", 0) ;
+        tmp_tr += create_td("", dem, "text-center", "", 0) ;
+        tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.prix, "text-center", "", 0) ;
         {% endif %}
 
         tmp_tr += '</tr>' ;
@@ -821,7 +827,7 @@ let tr_product = '' ;
 
     if (data.length < 1)
     {
-    tr_product = '' ; //'<tr class=""><td colspan="7">' +
+    tr_product = '' ; //'<tr class=""><td colspan="4">' +
                   //'<div>Aucune donnée à afficher</div></td></tr>' ;
     }
     else
@@ -835,26 +841,29 @@ let tr_product = '' ;
         {% if entry == 'Y' %}
         let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_product(' + obj.id_data + ');load_data(0);" >' ;
 
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", btn, "text-center", "") ; // actions
-        tmp_tr += create_td("", create_input("prod_code_"+obj.id_data, "text", obj.code, 0, 0, ""), "text-center", "") ; // input code product
-        tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "text-center", "") ; // select product
-        tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "text-center", "") ; // select statut
-        tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "date", obj.dateSamp, 0, 0, ""), "text-center", "") ; // input date prel
-        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "date", obj.dateReceipt, 0, 0, ""), "text-center", "") ; // input date recept
-        tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0, ""), "text-center", "") ; // input text preleveur
-        tmp_tr += create_td("", create_select("prod_ana_"+obj.id_data, opt_ana, obj.ana, true), "text-center", "") ;
-        tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0, ""), "text-center", "") ; // input text comm
+        // displayed on 2 lines
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+        tmp_tr += create_td("", btn, "text-center", "", 0) ; // actions
+        tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "datetime-local", obj.dateSamp, 0, 0, ""), "text-center", "", 0) ; // input date prel
+        tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "text-center", "", 0) ; // select product
+        tmp_tr += create_td("", create_input("prod_code_"+obj.id_data, "text", obj.code, 0, 0, ""), "text-center", "", 0) ; // input code product
+        tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0, ""), "text-center", "", 0) ; // input text preleveur 
+        tmp_tr += '</tr><tr style="vertical-align:middle;">' ;
+        tmp_tr += create_td("", create_select("prod_ana_"+obj.id_data, opt_ana, obj.ana, true), "text-center", "", 0) ;
+        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "datetime-local", obj.dateReceipt, 0, 0, "", 0), "text-center", "") ; // input date recept
+        tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "text-center", "", 0) ; // select statut
+        tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0, ""), "text-center", "", 2) ; // input text comm
         {% else %}
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", obj.code, "text-center", "") ;
-        tmp_tr += create_td("", obj.type_prod, "text-center", "") ;
-        tmp_tr += create_td("", obj.stat_prod, "text-center", "") ;
-        tmp_tr += create_td("", obj.date_prel, "text-center", "") ;
-        tmp_tr += create_td("", obj.date_reception, "text-center", "") ;
-        tmp_tr += create_td("", obj.preleveur, "text-center", "") ;
-        tmp_tr += create_td("", obj.code, "text-center", "") ; // TODO A VERIFIER
-        tmp_tr += create_td("", obj.commentaire, "text-center", "") ;
+        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+        tmp_tr += create_td("", obj.samp_date, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.type_prod, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.preleveur, "text-center", "", 0) ;
+        tmp_tr += '</tr><tr style="vertical-align:middle;">' ;
+        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.samp_receipt_date, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.stat_prod, "text-center", "", 0) ;
+        tmp_tr += create_td("", obj.commentaire, "text-center", "", 2) ;
         {% endif %}
 
         tmp_tr += '</tr>' ;
@@ -864,7 +873,6 @@ let tr_product = '' ;
     }
 
 $("#tbody_product").append(tr_product) ;
-$("#table_product").tablesorter() ;  // sort only data on screen
 }
 
 {% if entry == 'Y' %}
@@ -887,11 +895,15 @@ function del_product( id_data )
 }
 {% endif %}
 
-function create_td(id, val, cls, style)
+function create_td(id, val, cls, style, nb_colspan)
 {
-style = "font-size:14px;vertical-align:middle;padding-start:.3rem;padding-end:.3rem;" + style ; 
+style = "font-size:14px;vertical-align:middle;padding-start:.3rem;padding-end:.3rem;" + style ;
 
-let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '">' +
+colspan = "" ;
+
+    if (nb_colspan > 1) colspan = ' colspan="' + nb_colspan + '"';
+
+let tmp_td = '<td class="' + cls + '" id="' + id + '" style="' + style + '"' + colspan + '>' +
              '<div>' + val + '</div></td>' ;
 
 return tmp_td ;
@@ -951,8 +963,10 @@ let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + 
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="font-size:14px;min-width:50px;max-width:100px;text-align:right;"' ;
+    else if (type == "datetime-local")
+    tmp_input += 'style="font-size:14px;min-width:50px;max-width:160px;"' ;
     else
-    tmp_input += 'style="font-size:14px;min-width:50px;max-width:150px;"' ;
+    tmp_input += 'style="font-size:14px;min-width:50px;"' ;
 
 tmp_input += '>' ;
 
@@ -1169,7 +1183,7 @@ var date_record   = $("#date_record").val() ;
 var id_med        = $("#search_doctor").val() ;
 var date_prescr   = $("#date_prescr").val() ;
 var parcel_id     = $("#parcel_id").val() ;
-var date_parcel   = $("#date_parcel").val() ;
+var parcel_date   = $("#parcel_date").val() ;
 var comm          = JSON.stringify( $.trim( $("#comm").val() ) ) ;
 var parcel        = $("input[type='radio'][name='parcel']:checked").val() ;
 var price         = {% if session['pref_bill'] == '1' %}$("#bill_price").val(){% else %} 0{%endif%};
@@ -1267,7 +1281,7 @@ var rec_num_int   = $("#rec_num_int").val() ;
                   '"id_med":' + id_med + ', ' +
                   '"date_prescr":"' + date_prescr + '", ' +
                   '"parcel_id":"' + parcel_id + '", ' +
-                  '"date_parcel":"' + date_parcel + '", ' +
+                  '"parcel_date":"' + parcel_date + '", ' +
                   '"comm":' + comm + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
                   '"parcel":' + parcel + ', ' +
                   '"price":' + price + ', ' +

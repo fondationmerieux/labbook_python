@@ -25,9 +25,11 @@
                             </div>
                         </div>
                     </div>
+                    {% if not ihm['readonly'] %}
                     <div class="align-items-end col-lg-12 mt-3">
                         <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 float-end">
                     </div>
+                    {% endif %}
                 </div>
                 <div class="clearfix"></div>
                 <div class="panel-heading row">
@@ -56,9 +58,11 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
+                {% if not ihm['readonly'] %}
                 <div class="float-end">
                     <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
+                {% endif %}
             </div>
 
         </div>
@@ -95,6 +99,8 @@ let obj = data ;
     let tmp_tr = '<tr style="">' ;
 
     let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+
+    {% if ihm['readonly'] %} btn = '' ; {% endif %}
 
     tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "", "display:none;") ;
     tmp_tr += create_td("", btn, " text-start", "") ; // actions

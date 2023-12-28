@@ -530,14 +530,17 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         let num_dos = data[i].num_dos_an ;
         {% endif %}
         let num_rec = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-        let per_rec = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;        
+        /* AlC DESACT 26/12/2023 */
+        // let per_rec = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+        let per_rec = per_num_rec(data_res[0].date_dos, "{{ session['lang_select'] }}" ) ;
+        let rec_num_int = data[i].rec_num_int ;
 
             if (res_fam.length < 4) res_fam = "" ;
 
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> " + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + data[i].patient +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + data[i].patient +
                "<table class=\"table table-responsive table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }

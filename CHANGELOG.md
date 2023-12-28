@@ -8,15 +8,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.4.0] - 2023-12-22
+## [3.4.0] - 2023-12-28
 ### Added
 - hl7apy library
 - UI and DB table for setting analyzer
 - Icon for Connect in admin homepage
+- name and firstname of patient for pivot table
+- rec_num_int in result and analysis dataset for pivot table
+- In the details of an analysis variable, a button to obtain the dictionary details of the type of results
+- a critical new feature for suppliers
 
 ### Changed
 - upgrade python-barcode
 - UI for specimen in record request (link to analysis and no more quantity)
+- new background image on login page
+- forced to choose a type of sex for patient form
+- instead of period (year of mont/year) we displayed date of record next to record number
+- change few columns date to datetime (rec_parcel_date, samp_date, samp_receipt_date)
+- increases the report download counter for group validation and global reports
+- DHIS2 spreadsheet can use keyword OR (be careful calculation could be long !)
 
 ## [3.3.16] - 2023-11-07
 ### Changed

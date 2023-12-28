@@ -20,6 +20,10 @@
                     <span>{{ _("Dossier") }} :&nbsp;</span> 
                     <span class="rec-num" id="num_rec"></span>
                     <div class="ms-2" id="rec_stat"></div>
+                    <div class="ms-3 mt-1 d-none" id="div-num_rec_int">
+                        <span>{{ _("Numéro de dossier interne au laboratoire") }} :&nbsp;</span> 
+                        <span class="font-info" id="num_rec_int"></span>
+                    </div>
                 </div>
                 <fieldset class="d-md-flex flex-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
@@ -495,7 +499,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> " + per_rec +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec +
                "<table class=\"table table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }
@@ -1062,11 +1066,20 @@ num_dos = data_res[0].num_dos_an ;
 {% endif %}
 
 num_rec  = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+/* AlC DESACT 26/12/2023 */
+// per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+per_rec = per_num_rec(data_res[0].date_dos, "{{ session['lang_select'] }}" ) ;
 rec_stat = status_rec(data_res[0].stat) ;
+rec_num_int = data_res[0].rec_num_int
 
     $("#num_rec").html(num_rec)   ;
     $("#rec_stat").html(rec_stat) ;
+
+    if ( rec_num_int )
+    {
+    $("#div-num_rec_int").removeClass("d-none");
+    $("#num_rec_int").html(rec_num_int) ;
+    }
 
 display_result( 1 ) ;
 

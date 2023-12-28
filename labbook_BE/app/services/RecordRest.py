@@ -62,16 +62,16 @@ class RecordDet(Resource):
                 record[key] = ''
 
         if record['date_dos']:
-            record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
+            record['date_dos'] = datetime.strftime(record['date_dos'], Constants.cst_isodate)
 
         if record['date_prescription']:
-            record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
+            record['date_prescription'] = datetime.strftime(record['date_prescription'], Constants.cst_isodate)
 
-        if record['date_reception_colis']:
-            record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')
+        if record['rec_parcel_date']:
+            record['rec_parcel_date'] = datetime.strftime(record['rec_parcel_date'], Constants.cst_dt_HM)
 
         if record['date_hosp']:
-            record['date_hosp'] = datetime.strftime(record['date_hosp'], '%Y-%m-%d')
+            record['date_hosp'] = datetime.strftime(record['date_hosp'], Constants.cst_isodate)
 
         if record['rec_date_vld']:
             record['rec_date_vld'] = datetime.strftime(record['rec_date_vld'], '%Y-%m-%d %H:%M')
@@ -105,7 +105,7 @@ class RecordDet(Resource):
 
         if 'id_owner' not in args or 'type' not in args or 'date_record' not in args or 'id_med' not in args or \
            'date_prescr' not in args or 'service_int' not in args or 'bed_num' not in args or 'parcel_id' not in args or \
-           'date_parcel' not in args or 'comm' not in args or 'parcel' not in args or 'date_hosp' not in args or \
+           'parcel_date' not in args or 'comm' not in args or 'parcel' not in args or 'date_hosp' not in args or \
            'price' not in args or 'discount' not in args or 'percent_discount' not in args or \
            'percent_insurance' not in args or 'bill_remain' not in args or 'receipt_num' not in args or \
            'bill_num' not in args or 'stat' not in args or 'id_patient' not in args or 'rec_custody' not in args or \
@@ -118,8 +118,8 @@ class RecordDet(Resource):
             args['date_record'] = datetime.strptime(args['date_record'], Constants.cst_isodate)
             args['date_prescr'] = datetime.strptime(args['date_prescr'], Constants.cst_isodate)
 
-            if args['date_parcel']:
-                args['date_parcel'] = datetime.strptime(args['date_parcel'], Constants.cst_isodate)
+            if args['parcel_date']:
+                args['parcel_date'] = datetime.strptime(args['parcel_date'], Constants.cst_dt_ext_HM)
 
             if args['date_hosp']:
                 args['date_hosp'] = datetime.strptime(args['date_hosp'], Constants.cst_isodate)
@@ -194,7 +194,7 @@ class RecordDet(Resource):
                                       service_interne=args['service_int'],
                                       num_lit=args['bed_num'],
                                       id_colis=args['parcel_id'],
-                                      date_reception_colis=args['date_parcel'],
+                                      rec_parcel_date=args['parcel_date'],
                                       rc=args['comm'],
                                       colis=args['parcel'],
                                       prix=args['price'],
@@ -340,16 +340,16 @@ class RecordLast(Resource):
                 record[key] = ''
 
         if record['date_dos']:
-            record['date_dos'] = datetime.strftime(record['date_dos'], '%Y-%m-%d')
+            record['date_dos'] = datetime.strftime(record['date_dos'], Constants.cst_isodate)
 
         if record['date_prescription']:
-            record['date_prescription'] = datetime.strftime(record['date_prescription'], '%Y-%m-%d')
+            record['date_prescription'] = datetime.strftime(record['date_prescription'], Constants.cst_isodate)
 
-        if record['date_reception_colis']:
-            record['date_reception_colis'] = datetime.strftime(record['date_reception_colis'], '%Y-%m-%d')
+        if record['rec_parcel_date']:
+            record['rec_parcel_date'] = datetime.strftime(record['rec_parcel_date'], Constants.cst_dt_HM)
 
         if record['date_hosp']:
-            record['date_hosp'] = datetime.strftime(record['date_hosp'], '%Y-%m-%d')
+            record['date_hosp'] = datetime.strftime(record['date_hosp'], Constants.cst_isodate)
 
         # decimal number not serializable in JSON, convert except if empty string
         if record['prix']:

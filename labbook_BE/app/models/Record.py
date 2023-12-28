@@ -160,7 +160,7 @@ class Record:
 
         req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.date_dos, rec.num_dos_jour, '
                'rec.num_dos_an, rec.med_prescripteur, rec.date_prescription, rec.service_interne, rec.num_lit, '
-               'rec.id_colis, rec.date_reception_colis, rec.rc, rec.colis, rec.prix, rec.remise, rec.rec_date_vld, '
+               'rec.id_colis, rec.rec_parcel_date, rec.rc, rec.colis, rec.prix, rec.remise, rec.rec_date_vld, '
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
                'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, rec.rec_hosp_num, '
                'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, '
@@ -181,7 +181,7 @@ class Record:
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
-               'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, remise, '
+               'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, remise, '
                'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
                'rec_custody, rec_num_int, rec_modified, rec_hosp_num '
                'from sigl_02_data '
@@ -239,13 +239,13 @@ class Record:
 
             cursor.execute('insert into sigl_02_data '
                            '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
-                           'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, '
+                           'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, '
                            'prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
                            'num_dos_mois, date_hosp, rec_custody, rec_num_int, rec_modified, rec_hosp_num) '
                            'values '
                            '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, '
                            '%(med_prescripteur)s, %(date_prescription)s, %(service_interne)s, %(num_lit)s, %(id_colis)s, '
-                           '%(date_reception_colis)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
+                           '%(rec_parcel_date)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
                            '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, '
                            '%(num_dos_mois)s, %(date_hosp)s, %(rec_custody)s, %(rec_num_int)s, %(rec_modified)s, %(rec_hosp_num)s)', params)
 
@@ -335,10 +335,10 @@ class Record:
 
             cursor.execute('insert into sigl_02_deleted '
                            '(id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
-                           'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, '
+                           'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, '
                            'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois) '
                            'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
-                           'date_prescription, service_interne, num_lit, id_colis, date_reception_colis, rc, colis, prix, '
+                           'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, '
                            'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois '
                            'from sigl_02_data '
                            'where id_data=%s', (id_rec,))
@@ -510,7 +510,7 @@ class Record:
                'rec.remise as discount, rec.remise_pourcent as discount_percent, rec.assu_pourcent as insurance_percent, '
                'rec.a_payer as to_pay, d_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'd_sex.label as sex, date_format(pat.ddn, %s) as birth, pat.age, d_age_unit.label as age_unit, '
-               'pat.tel as phone1, pat.pat_phone2 as phone2 '
+               'pat.nom as pat_name, pat.prenom as pat_firstname, pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_08_data as doctor on doctor.id_data=rec.med_prescripteur '

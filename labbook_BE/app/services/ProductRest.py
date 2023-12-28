@@ -32,10 +32,10 @@ class ProductDet(Resource):
                 prod[key] = ''
 
         if prod['prod_date']:
-            prod['prod_date'] = datetime.strftime(prod['prod_date'], '%Y-%m-%d')
+            prod['prod_date'] = datetime.strftime(prod['prod_date'], Constants.cst_dt_HM)
 
         if prod['receipt_date']:
-            prod['receipt_date'] = datetime.strftime(prod['receipt_date'], '%Y-%m-%d')
+            prod['receipt_date'] = datetime.strftime(prod['receipt_date'], Constants.cst_dt_HM)
 
         self.log.info(Logs.fileline() + ' : TRACE ProductDet ' + str(id_prod))
         return compose_ret(prod, Constants.cst_content_type_json)
@@ -45,7 +45,7 @@ class ProductDet(Resource):
 
         if 'stat' not in args or 'type' not in args or 'storage' not in args or 'ana' not in args or \
            'prod_date' not in args or 'sampler' not in args or 'location' not in args or \
-           'location_accu' not in args or 'receipt_date' not in args or 'receipt_time' not in args or \
+           'location_accu' not in args or 'receipt_date' not in args or \
            'comment' not in args or 'code' not in args:
             self.log.error(Logs.fileline() + ' : ProductDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
@@ -53,14 +53,13 @@ class ProductDet(Resource):
         if id_prod > 0:
 
             ret = Product.updateProduct(id_data=id_prod,
-                                        date_prel=args['prod_date'],
+                                        samp_date=args['prod_date'],
                                         type_prel=args['type'],
                                         samp_id_ana=args['ana'],
                                         statut=args['stat'],
                                         id_dos=args['id_rec'],
                                         preleveur=args['sampler'],
-                                        date_reception=args['receipt_date'],
-                                        heure_reception=args['receipt_time'],
+                                        samp_receipt_date=args['receipt_date'],
                                         commentaire=args['comment'],
                                         lieu_prel=args['location'],
                                         lieu_prel_plus=args['location_accu'],
@@ -77,14 +76,13 @@ class ProductDet(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
             ret = Product.insertProductReq(id_owner=args['id_owner'],
-                                           date_prel=args['prod_date'],
+                                           samp_date=args['prod_date'],
                                            type_prel=args['type'],
                                            samp_id_ana=args['ana'],
                                            statut=args['stat'],
                                            id_dos=args['id_rec'],
                                            preleveur=args['sampler'],
-                                           date_reception=args['receipt_date'],
-                                           heure_reception=args['receipt_time'],
+                                           samp_receipt_date=args['receipt_date'],
                                            commentaire=args['comment'],
                                            lieu_prel=args['location'],
                                            lieu_prel_plus=args['location_accu'],
@@ -139,14 +137,11 @@ class ProductReq(Resource):
                 elif key == 'stat_prod' and prod[key]:
                     prod[key] = _(prod[key].strip())
 
-            if prod['date_prel']:
-                prod['date_prel'] = datetime.strftime(prod['date_prel'], '%Y-%m-%d')
+            if prod['samp_date']:
+                prod['samp_date'] = datetime.strftime(prod['samp_date'], Constants.cst_dt_HM)
 
-            if prod['date_reception']:
-                prod['date_reception'] = datetime.strftime(prod['date_reception'], '%Y-%m-%d')
-
-            # TODO format time heure_reception ?
-            prod['heure_reception'] = ''
+            if prod['samp_receipt_date']:
+                prod['samp_receipt_date'] = datetime.strftime(prod['samp_receipt_date'], Constants.cst_dt_HM)
 
         self.log.info(Logs.fileline() + ' : ProductReq id_rec=' + str(id_rec))
         return compose_ret(l_prod, Constants.cst_content_type_json, 200)
@@ -171,20 +166,19 @@ class ProductReq(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
             if prod['date_samp']:
-                prod['date_samp'] = datetime.strptime(prod['date_samp'], Constants.cst_isodate)
+                prod['date_samp'] = datetime.strptime(prod['date_samp'], Constants.cst_dt_ext_HM)
 
             if prod['date_receipt']:
-                prod['date_receipt'] = datetime.strptime(prod['date_receipt'], Constants.cst_isodate)
+                prod['date_receipt'] = datetime.strptime(prod['date_receipt'], Constants.cst_dt_ext_HM)
 
             ret = Product.insertProductReq(id_owner=prod['id_owner'],
-                                           date_prel=prod['date_samp'],
+                                           samp_date=prod['date_samp'],
                                            type_prel=prod['type_samp'],
                                            samp_id_ana=prod['ana'],
                                            statut=prod['stat'],
                                            id_dos=prod['id_rec'],
                                            preleveur=prod['sampler'],
-                                           date_reception=prod['date_receipt'],
-                                           heure_reception=prod['time_receipt'],
+                                           samp_receipt_date=prod['date_receipt'],
                                            commentaire=prod['comm'],
                                            lieu_prel=prod['locat_samp'],
                                            lieu_prel_plus=prod['locat_samp_more'],
@@ -214,7 +208,7 @@ class ProductReq(Resource):
 
                     self.log.info(Logs.fileline() + ' : RecordStat script analyzer cmd_split : ' + str(cmd_split))
 
-                    subprocess.Popen(cmd_split, stdout=out_file, stderr=subprocess.STDOUT)  # nosec B603 
+                    subprocess.Popen(cmd_split, stdout=out_file, stderr=subprocess.STDOUT)  # nosec B603
 
         self.log.info(Logs.fileline() + ' : TRACE ProductReq')
         return compose_ret('', Constants.cst_content_type_json)

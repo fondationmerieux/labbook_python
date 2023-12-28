@@ -330,7 +330,6 @@ class Analysis:
                     cursor.execute('delete from sigl_01_data '
                                    'where id_dos=%s and samp_id_ana=%s', (id_rec, id_ana))
 
-
             # delete analysis request
             cursor.execute('delete from sigl_04_data '
                            'where id_data=%s and id_dos=%s', (id_req, id_rec))
@@ -853,7 +852,7 @@ class Analysis:
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
-               'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
+               'date_format(rec.date_dos, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
@@ -862,7 +861,8 @@ class Analysis:
                'd_status.label as status, date_format(rec.date_hosp, %s) as hosp_date, '
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
                'req.req_outsourced as ana_outsourced, ana.code as analysis_code, ana.nom as analysis_name, '
-               'd_fam.label as analysis_family, date_format(pat.ddn, %s) as birth, pat.age, d_sex.label as sex, '
+               'd_fam.label as analysis_family, date_format(pat.ddn, %s) as birth, pat.nom as pat_name, '
+               'pat.prenom as pat_firstname, pat.age, d_sex.label as sex, '
                'd_age_unit.label as age_unit, pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '

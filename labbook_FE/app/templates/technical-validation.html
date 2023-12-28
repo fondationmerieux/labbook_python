@@ -755,7 +755,9 @@ num_dos = data_res[0].num_dos_an ;
 {% endif %}
 
 num_rec  = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+/* AlC DESACT 26/12/2023 */
+// per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
+per_rec = per_num_rec(data_res[0].date_dos, "{{ session['lang_select'] }}" )
 rec_stat = status_rec(data_res[0].stat) ;
 
     $("#num_rec").html(num_rec)   ;

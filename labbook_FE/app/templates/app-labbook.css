@@ -78,6 +78,17 @@ display     : block;
 text-indent : -999999px;
 }
 
+#content-login
+{
+background-image    : url({{ url_for('static', filename='img/background-login.jpg') }}) ;
+background-size     : cover;
+background-position : center;
+padding-top         : 114px;
+padding-bottom      : 32px;
+min-height          : 520px;
+height              : 100vh;
+}
+
 #content
 {
 padding-top    : 114px;
@@ -88,8 +99,11 @@ min-height     : 520px;
 
 #auth_std
 {
-margin      : 0 auto;
-padding-top : 26px;
+max-width      : 340px;
+margin         : 0 auto;
+padding-top    : 26px;
+padding-bottom : 26px;
+background     : #FFF;
 }
 
 #auth_std h2

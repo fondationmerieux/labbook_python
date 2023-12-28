@@ -111,42 +111,52 @@ def locale():
         if lang == 'fr_FR':
             session['lang_select'] = 'FR'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'en_GB':
             session['lang_select'] = 'UK'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'en_US':
             session['lang_select'] = 'US'
             session['date_format'] = Constants.cst_date_us
+            session['dt_format']   = Constants.cst_dt_us_HM
             session.modified = True
         elif lang == 'es':
             session['lang_select'] = 'ES'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'ar':
             session['lang_select'] = 'AR'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'km':
             session['lang_select'] = 'KM'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'lo':
             session['lang_select'] = 'LO'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'mg':
             session['lang_select'] = 'MG'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         elif lang == 'pt':
             session['lang_select'] = 'PT'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
         else:
             session['lang_select'] = 'FR'
             session['date_format'] = Constants.cst_date_eu
+            session['dt_format']   = Constants.cst_dt_eu_HM
             session.modified = True
 
     return dict(locale=lang)
@@ -388,6 +398,15 @@ def date_format(date_iso):
         return
 
 
+@app.template_filter('dt_format')
+def dt_format(dt_iso):
+    if dt_iso:
+        date_tmp = datetime.strptime(dt_iso, Constants.cst_dt_HM)
+        return datetime.strftime(date_tmp, session['dt_format'])
+    else:
+        return
+
+
 @app.template_filter('date_now')
 def date_now(date_now):
     return datetime.strftime(date.today(), "%Y-%m-%d")
@@ -455,38 +474,47 @@ def lang(lang='fr_FR'):
     if lang == 'fr_FR':
         session['lang_select'] = 'FR'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     elif lang == 'en_GB':
         session['lang_select'] = 'UK'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     elif lang == 'en_US':
         session['lang_select'] = 'US'
         session['date_format'] = Constants.cst_date_us
+        session['dt_format']   = Constants.cst_dt_us_HM
         session.modified = True
     elif lang == 'ar':
         session['lang_select'] = 'AR'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     elif lang == 'km':
         session['lang_select'] = 'KM'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     elif lang == 'lo':
         session['lang_select'] = 'LO'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     elif lang == 'mg':
         session['lang_select'] = 'MG'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     elif lang == 'pt':
         session['lang_select'] = 'PT'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
     else:
         session['lang_select'] = 'FR'
         session['date_format'] = Constants.cst_date_eu
+        session['dt_format']   = Constants.cst_dt_eu_HM
         session.modified = True
 
     session['lang']  = lang
@@ -932,14 +960,20 @@ def setting_dicts():
 # Page : details dictionnary
 @app.route('/setting-det-dict')
 @app.route('/setting-det-dict/<string:dict_name>')
-def setting_det_dict(dict_name=''):
-    log.info(Logs.fileline() + ' : TRACE setting det dict=' + str(dict_name))
+@app.route('/setting-det-dict/<int:id_dict>')
+def setting_det_dict(dict_name='', id_dict=0):
+    log.info(Logs.fileline() + ' : TRACE setting det dict=' + str(dict_name) + ', id_dict=' + str(id_dict))
 
     test_session()
 
     session['current_page'] = 'setting-det-dict/' + str(dict_name)
+
+    if not dict_name and id_dict > 0:
+        session['current_page'] = 'setting-det-dict/' + str(id_dict)
+
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
     if dict_name:
@@ -960,12 +994,33 @@ def setting_det_dict(dict_name=''):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+    elif id_dict > 0:
+        # Load dict details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/id/' + str(id_dict)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_values'] = req.json()
+
+                i = 0
+                for val in json_data['data_values']:
+                    dict_name = val['dico_name']
+                    val['id_ihm'] = i
+                    i += 1
+
+                json_data['data_last_id'] = i
+
+                json_ihm['readonly'] = 'Y'
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests dict det by id failed, err=%s , url=%s', err, url)
     else:
         json_data['data_values'] = []
 
     json_data['dict_name'] = str(dict_name)
 
-    return render_template('setting-det-dict.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template('setting-det-dict.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : analyzes list
@@ -5176,6 +5231,8 @@ def download_file(type='', filename='', type_ref='', ref=''):
     ret_file.headers["x-suggested-filename"] = filename
     ret_file.headers["Cache-Control"] = 'no-store, must-revalidate'
     ret_file.headers["Expires"] = '0'
+    ret_file.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    ret_file.headers["Content-Length"] = str(os.stat(path).st_size)
 
     return ret_file
 

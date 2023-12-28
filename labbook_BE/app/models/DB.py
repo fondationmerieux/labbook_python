@@ -2,8 +2,8 @@
 # import informixdb
 import mysql.connector
 import logging
+import re
 
-# from flask import current_app
 from app.exception.DBException import DBException
 from app.models.Logs import Logs
 
@@ -17,22 +17,13 @@ class DB:
         if ecr is True:
             cursor = DB.open_cnx().cursor()
         else:
-            # if current_app.config['DB_TYPE'] == 'MYSQL':
-            if True:
-                # DB.log.info(Logs.fileline() + ' : cursor() MYSQL')
-                DB.open_cnx()
-                try:
-                    cursor = DB.cnx.cursor(dictionary=True)
-                except mysql.connector.Error as e:
-                    DB.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-                    DB.cnx = None
-                    cursor = DB.open_cnx().cursor(dictionary=True)
-            """ TODO DESACT POUR DEMO CONNECT
-            elif current_app.config['DB_TYPE'] == 'IFX':
-                # cursor = DB.open_cnx().cursor(rowformat = informixdb.ROW_AS_DICT)
-                DB.log.critical(Logs.fileline() + ' : cursor() error TODO IFX')
-            else:
-                DB.log.critical(Logs.fileline() + ' : cursor() error DB_TYPE = %s', current_app.config['DB_TYPE'])"""
+            DB.open_cnx()
+            try:
+                cursor = DB.cnx.cursor(dictionary=True)
+            except mysql.connector.Error as e:
+                DB.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+                DB.cnx = None
+                cursor = DB.open_cnx().cursor(dictionary=True)
 
         return cursor
 
@@ -40,33 +31,24 @@ class DB:
     def open_cnx():
         try:
             if DB.cnx is None:
-                # if current_app.config['DB_TYPE'] == 'MYSQL':
-                if True:
+                # read default_settings.py
+                file_path = '/home/apps/labbook_BE/labbook_BE/default_settings.py'
+                config_data = DB.read_config_file(file_path)
+
+                if config_data.get('DB_TYPE', 'MYSQL') == 'MYSQL':
                     DB.log.info(Logs.fileline() + ' : open_cnx() TRACE connect MYSQL')
-                    DB.cnx = mysql.connector.connect(user='root',
-                                                     password='root',
-                                                     host='10.88.0.1',
-                                                     database='SIGL')
-                    """
-                    DB.cnx = mysql.connector.connect(user=current_app.config['DB_USER'],
-                                                     password=current_app.config['DB_PWD'],
-                                                     host=current_app.config['DB_HOST'],
-                                                     database=current_app.config['DB_NAME'])"""
+                    DB.cnx = mysql.connector.connect(user=config_data.get('DB_USER', 'root'),
+                                                     password=config_data.get('DB_PWD', 'root'),
+                                                     host=config_data.get('DB_HOST', '10.88.0.1'),
+                                                     database=config_data.get('DB_NAME', 'SIGL'))
                     DB.cnx.autocommit = True
-                """
-                elif current_app.config['DB_TYPE'] == 'IFX':
-                    DB.log.critical(Logs.fileline() + ' : cursor() error TODO')
-                    '''DB.cnx = informixdb.connect(current_app.config.DB_NAME,
-                                                   current_app.config.DB_USER,
-                                                   current_app.config.DB_PWD)
-                    DB.cnx.autocommit = True'''
                 else:
-                    DB.log.critical(Logs.fileline() + ' : open_cnx() error DB_TYPE = %s', current_app.config.DB_TYPE)"""
+                    DB.log.critical(Logs.fileline() + ' : open_cnx() error DB_TYPE = %s', current_app.config.DB_TYPE)
 
             return DB.cnx
 
         except Exception as e:
-            DB.log.critical(Logs.fileline() + ' : open_cnx() error: %s %s', e.errno, e)
+            DB.log.critical(Logs.fileline() + ' : open_cnx() error: %s ', e)
             raise DBException(repr(e))
 
     @staticmethod
@@ -96,3 +78,18 @@ class DB:
                        'order by dbs_date desc limit 1', (type,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def read_config_file(file_path):
+        config = {}
+
+        with open(file_path, 'r') as file:
+            content = file.read()
+
+            matches = re.findall(r'(\w+)\s*=\s*([\'"])(.*?)\2', content)
+
+            for match in matches:
+                key, _, value = match
+                config[key] = value
+
+        return config

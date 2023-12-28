@@ -196,6 +196,7 @@ api.add_resource(DefaultValue,        '/services/default/val/<string:name>', '/s
 api.add_resource(DicoById,            '/services/dico/id/<int:id_data>')
 api.add_resource(DictDescr,           '/services/dict/descr/<string:dict_name>')
 api.add_resource(DictDet,             '/services/dict/det/<string:dict_name>')
+api.add_resource(DictDetById,         '/services/dict/det/id/<int:id_dict>')
 api.add_resource(DictExport,          '/services/dict/export')
 api.add_resource(DictImport,          '/services/dict/import/<string:filename>/<int:id_user>')
 api.add_resource(DictList,            '/services/dict/list')

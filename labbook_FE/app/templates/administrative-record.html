@@ -129,7 +129,7 @@
                         <span>{{ _("Identification du colis") }}</span>
                         <span class="font-info">{{ args['record']['id_colis'] }}</span><br />
                         <span>{{ _("Date de réception du colis") }}</span>
-                        <span class="font-info">{{ args['record']['date_reception_colis']|date_format }}</span>
+                        <span class="font-info">{{ args['record']['rec_parcel_date']|dt_format }}</span>
                         {% else %}
                         <span class="font-info">{{ _("Non") }}</span>
                         {% endif %}

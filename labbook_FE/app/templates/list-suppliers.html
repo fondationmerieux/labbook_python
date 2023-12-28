@@ -35,6 +35,7 @@
                             <th class="text-start cursor-act">{{ _("Mobile") }}</th>
                             <th class="text-start cursor-act">{{ _("Email") }}</th>
                             <th class="text-start cursor-act">{{ _("Adresse") }}</th>
+                            <th class="text-start">{{ _("Critique") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -126,6 +127,10 @@ $("#list_items_total").html( data_len ) ;
 
     link_email = "<a href=\"mailto:" + data_items[i].email + "\">" + data_items[i].email + "</a>" ;
 
+    let critical = "" ;
+
+    if (data_items[i].supp_critical == 'Y' ) critical = "<i class=\"text-success bi bi-check-lg\"></i>" ;
+
     res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].supplier + "</div></td>" +
@@ -134,7 +139,8 @@ $("#list_items_total").html( data_len ) ;
            "<td><div class=\"text-start\">" + data_items[i].phone + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].mobile + "</div></td>" +
            "<td><div class=\"text-start\">" + link_email + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].address + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + data_items[i].address + "</div></td>" +
+           "<td><div class=\"text-start\">" + critical + "</div></td></tr>" ;
     }
 {% endif %}
 

@@ -93,13 +93,13 @@
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label class="form-label col-md-4 text-end me-3">{{ _("Sexe") }}</label>
                             <label class="form-label text-end me-3">
-                                <input type="radio" name="sexe" value="1" {% if args['sexe'] == 1 %} checked="checked" {% endif %}>&nbsp;{{ _("Masculin") }}</input>
+                                <input type="radio" name="sex" value="1" {% if args['sexe'] == 1 %} checked="checked" {% endif %}>&nbsp;{{ _("Masculin") }}</input>
                             </label>
                             <label class="form-label text-end me-3">
-                                <input type="radio" name="sexe" value="2" {% if args['sexe'] == 2 %} checked="checked" {% endif %}>&nbsp;{{ _("Féminin") }}</input>
+                                <input type="radio" name="sex" value="2" {% if args['sexe'] == 2 %} checked="checked" {% endif %}>&nbsp;{{ _("Féminin") }}</input>
                             </label>
                             <label class="form-label text-end me-3">
-                                <input type="radio" name="sexe" id="unknown_sex" value="3" {% if not args['sexe'] or args['sexe'] == 3 %} checked="checked" {% endif %}>&nbsp;{{ _("Inconnu") }}</input>
+                                <input type="radio" name="sex" id="unknown_sex" value="3" {% if args['sexe'] == 3 %} checked="checked" {% endif %}>&nbsp;{{ _("Inconnu") }}</input>
                             </label>
                         </div>
 
@@ -297,7 +297,7 @@ var code_patient  = $("#code_patient").val() ;
 var nom           = $("#nom").val() ;
 var prenom        = $("#prenom").val() ;
 var ddn           = $("#ddn").val() ;
-var sexe          = $("input:radio[name=sexe]:checked").val() ;
+var sex           = $("input:radio[name=sex]:checked").val() ;
 var adresse       = JSON.stringify( $.trim( $("#adresse").val() ) ) ;
 var cp            = $("#cp").val() ;
 var ville         = $("#ville").val() ;
@@ -361,10 +361,17 @@ var bp = $("#pat_pbox").val() ;
 var bp = "" ;
 {% endif %}
 
-    // date de naissance obligatoire
+    // mandatory birthday or age
     if (ddn == "" && age == "")
     {
     alert("{{ _("Veuillez sélectionner une date de naissance ou saisir un age") }}") ;
+    return false;
+    }
+
+    // mandatory sex
+    if ( typeof sex == "undefined" || sex == "")
+    {
+    alert("{{ _("Veuillez sélectionner un sexe") }}") ;
     return false;
     }
 
@@ -378,7 +385,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"nom":"' + nom + '", ' +
               '"prenom":"' + prenom + '", ' +
               '"ddn":"' + ddn + '", ' +
-              '"sexe":' + sexe + ', ' +
+              '"sexe":' + sex + ', ' +
               '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
               '"cp":"' + cp + '", ' +
               '"ville":"' + ville + '", ' +

@@ -144,13 +144,14 @@
 
                     <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label for="var_type_res" class="form-label col-2 text-end mt-2 me-1">{{ _("Type de résultat") }} *</label>
-                        <div>					
+                        <div class="form-group d-lg-flex align-items-start">					
                             <select name="var_type_res" id="var_type_res" class="group-det-var form-select" onChange="change_data(this);">
                                 <option value="0" selected="selected"></option>
                                 {% for type_res in ihm['type_res'] %}
                                 <option value="{{ type_res['id_data'] }}" {% if args['var'] and args['var'][0]['type_res'] == type_res['id_data'] %} selected {% endif %}>{{ type_res['label'] }}</option>
                                 {% endfor %}
                             </select>
+                            <button type="button" onclick="det_dict();" id="btn_det_dict" title="{{ _("Détails de ce dictionnaire") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-question-square" /></i></button>
                         </div>
                         <label for="var_descr" class="form-label col-2 text-end mt-2 me-1">{{ _("Description") }}</label>
                         <div>					
@@ -1070,6 +1071,13 @@ function enabled_det_var( enabled )
     {
         $(".group-det-var").prop("disabled", true) ;
     }
+}
+
+function det_dict()
+{
+let id_dict = $("#var_type_res").val() ;
+
+window.open("{{ session['server_ext'] }}/setting-det-dict/" + id_dict, "_blank") ;
 }
 
 function cancel()

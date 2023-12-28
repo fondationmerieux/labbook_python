@@ -100,9 +100,9 @@ class Analyzer:
         ret = []
 
         # get list of file a specific permanent directory
-        path = "/storage/resource/connect/"
+        path = "/storage/resource/connect/analyzer/setting/"
 
-        l_files = [f for f in os.listdir(path) if f.startswith("analyzer_") and os.path.isfile(os.path.join(path, f))]
+        l_files = [f for f in os.listdir(path) if f.endswith(".toml") and os.path.isfile(os.path.join(path, f))]
 
         Analyzer.log.info(Logs.fileline() + ' DEBUG l_files= ' + str(l_files))
 
@@ -138,7 +138,7 @@ class Analyzer:
         if not stat:
             cond = ' anl_stat != NULL'
 
-        req = ('select anl_ser, anl_date, anl_date_upd, anl_id_samp, anl_stat, anl_OML_O33, anl_ORL_O34 '
+        req = ('select anl_ser, anl_date, anl_date_upd, anl_id_samp, anl_stat, anl_OML_O33, anl_ORL_O34, anl_ans '
                'from analyzer_lab28 '
                'where ' + cond + ' order by anl_date')
 
@@ -159,7 +159,7 @@ class Analyzer:
         id_rec = samp['id_rec']
 
         # get record details
-        rec = Record.getRecord(id_rec) 
+        rec = Record.getRecord(id_rec)
 
         if not rec:
             Analyzer.log.error(Logs.fileline() + ' ERROR buildLab28 getRecord for id_rec=' + str(id_rec))
@@ -184,7 +184,7 @@ class Analyzer:
 
         for analyzer in l_analyzer:
             # Save OML33 task for one analyzer
-            ret = Analyzer.insertLab28(id_analyzer=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, OML_O33='')
+            ret = Analyzer.insertLab28(ans_ser=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, OML_O33='', )
 
             if not ret:
                 Analyzer.log.error(Logs.fileline() + ' ERROR insertLab28 for id_analyzer=' + str(analyzer['ans_ser']) + 'and id_samp=' + str(id_samp))
@@ -206,7 +206,7 @@ class Analyzer:
                 msg.msh.msh_11 = "P"                # Processing ID, "D"ebugging, "P"roduction, "T"raining.
                 msg.msh.msh_12 = "2.5.1"            # HL7 version
                 msg.msh.msh_18 = "UTF-8"            # Character set
-                msg.msh.msh_21 = "LAB-28^IHE"       # Message profile identifier 
+                msg.msh.msh_21 = "LAB-28^IHE"       # Message profile identifier
 
                 try:
                     msg.msh.validate()
@@ -216,7 +216,7 @@ class Analyzer:
 
                 # Patient group
                 msg.add_group('OML_O33_PATIENT')
-                
+
                 # Patient segment
                 msg.oml_o33_patient.add_segment('PID')
                 msg.oml_o33_patient.pid.pid_1  = "1"                  # ID of this transaction
@@ -299,20 +299,20 @@ class Analyzer:
                 msg.oml_o33_specimen.oml_o33_order.add_segment('OBR')
                 msg.oml_o33_specimen.oml_o33_order.obr.obr_1  = "1"                # ID OBR
                 msg.oml_o33_specimen.oml_o33_order.obr.obr_2  = str(id_task) + "_1"   # Place order number. Same ad orc_2
-                msg.oml_o33_specimen.oml_o33_order.obr.obr_4  = "CODE_TEST^Blood Group Analysis" # Name of observation aka name of test
+                msg.oml_o33_specimen.oml_o33_order.obr.obr_4  = "CODE_TEST^Blood Group Analysis"  # Name of observation aka name of test
 
                 try:
                     msg.oml_o33_specimen.oml_o33_order.obr.validate()
                     Analyzer.log.error(Logs.fileline() + ' DEBUG OBR Validated')
                 except Exception as e:
                     Analyzer.log.error(Logs.fileline() + ' ERROR e : ' + str(e))
-                
+
                 # Convertir le message en une chaîne
                 hl7_string = msg.to_er7()
 
                 Analyzer.log.info(Logs.fileline() + ' DEBUG buildLab28 hl7_string=' + str(hl7_string))
 
-                #update task lab28 with hl7 message
+                # update task lab28 with hl7 message
                 ret = Analyzer.updateLab28_OML_O33(id_task=id_task, stat=Constants.cst_stat_pending, OML_O33=str(hl7_string))
 
                 if not ret:
@@ -327,8 +327,8 @@ class Analyzer:
             cursor = DB.cursor()
 
             cursor.execute('insert into analyzer_lab28 '
-                           '(anl_date, anl_id_samp, anl_stat, anl_OML_O33) '
-                            'values (NOW(), %(id_samp)s, %(stat)s, %(OML_O33)s)', params)
+                           '(anl_date, anl_id_samp, anl_stat, anl_OML_O33, anl_ans) '
+                            'values (NOW(), %(id_samp)s, %(stat)s, %(OML_O33)s, %(ans_ser)s)', params)
 
             Analyzer.log.info(Logs.fileline())
 
@@ -341,6 +341,8 @@ class Analyzer:
     def updateLab28_OML_O33(**params):
         try:
             cursor = DB.cursor()
+
+            Analyzer.log.error(Logs.fileline() + 'DEBUG params=' + str(params))
 
             req = ('update analyzer_lab28 set anl_date_upd=NOW(), anl_stat=%(stat)s, anl_OML_O33=%(OML_O33)s '
                    'where anl_ser=%(id_task)s')
@@ -377,7 +379,7 @@ class Analyzer:
         hl7_msg = 'TODO'  # parse_message(msg)
 
         Analyzer.log.info(Logs.fileline() + ' : DEBUG hl7_msg received = ' + str(hl7_msg))
-        
+
         Result.updateResultDemo()
 
         return True

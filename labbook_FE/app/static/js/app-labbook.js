@@ -36,13 +36,30 @@ let ret = num_rec ;
 return ret ; 
 }
 
+/* AlC DESACT 26/12/2023 */
 // Return period for record number
+/*
 function per_num_rec( num_rec, fmt, period )
 {
 let ret = "" ;
 
     if ( period == 1070 && fmt == 1072 ) // month period and short format
     ret = (num_rec.toString()).substr(4,2) + "/" + (num_rec.toString()).substr(0,4) ;
+
+return ret ;
+}
+*/
+function per_num_rec( rec_date, lang )
+{
+let ret = "" ;
+
+ret = moment(rec_date, "DD-MM-YYYY") ;
+ret = ret.toDate();
+
+    if ( lang == "US" ) 
+    ret = moment(ret).format("MM/DD/YYYY") ;
+    else
+    ret = moment(ret).format("DD/MM/YYYY") ;
 
 return ret ;
 }

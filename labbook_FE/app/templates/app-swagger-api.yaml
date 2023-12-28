@@ -351,9 +351,9 @@ components:
           type: integer
         id_colis:
           type: string
-        date_reception_colis:
+        rec_parcel_date:
           type: string
-          format: date
+          format: datetime
         rc:
           type: string
         colis:

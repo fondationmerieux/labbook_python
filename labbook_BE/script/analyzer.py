@@ -56,15 +56,23 @@ def analyzer(test=False, verbose=False):
         # get list of pending LAB28 tasks
         l_tasks = Analyzer.listTaskLab28('PD')
 
-        url = 'http://integ-connect33:8080/connect/lab28/'
-
         while l_tasks:
             for task in l_tasks:
                 print('OML_O33 : ' + task['anl_OML_O33'])
                 OML_O33 = task['anl_OML_O33']
 
+                analyzer_setting = Analyzer.getAnalyzerDet(task['anl_ans'])
+
+                if not analyzer_setting:
+                    print('analyzer_setting causes an error, ans_ser = ' + str(task['anl_ans']))
+                    return False
+
+                id_analyzer = analyzer_setting['ans_id']
+
+                url_lab28 = analyzer_setting['ans_lab28'] + str(id_analyzer)
+
                 # send OML33 to Connect
-                req = requests.post(url + str(task['anl_ans']), data=OML_O33, headers={"Content-Type": "application/hl7-v2"})
+                req = requests.post(url_lab28 , data=OML_O33, headers={"Content-Type": "application/hl7-v2"})
 
                 print('req.status_code : ' + str(req.status_code))
 

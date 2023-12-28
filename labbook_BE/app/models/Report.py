@@ -236,7 +236,7 @@ class Report:
 
         req = ('select preleveur as sampler, count(*) as nb_prod '
                'from sigl_01_data '
-               'where (date_prel between %s and %s) '
+               'where (samp_date between %s and %s) '
                'group by sampler order by sampler asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -250,7 +250,7 @@ class Report:
         req = ('select dict.label as product, count(*) as nb_prod '
                'from sigl_01_data as prod '
                'inner join sigl_dico_data as dict on dict.id_data = prod.type_prel '
-               'where (prod.date_prel between %s and %s) '
+               'where (prod.samp_date between %s and %s) '
                'group by product order by product asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -507,7 +507,24 @@ class Report:
                 else:
                     # No rule for OR
                     if word == 'OR':
-                        return req
+                        idx = idx + 1
+
+                        req['inner'] = (req['inner'] +
+                                        'inner join sigl_04_data as req' + str(idx) +
+                                        ' on req' + str(idx) + '.id_dos = rec.id_data '
+                                        'inner join sigl_05_data as ref' + str(idx) +
+                                        ' on ref' + str(idx) + '.id_data = req' + str(idx) + '.ref_analyse '
+                                        'inner join sigl_09_data as res' + str(idx) +
+                                        ' on res' + str(idx) + '.id_analyse = req' + str(idx) + '.id_data '
+                                        'inner join sigl_10_data as vld' + str(idx) +
+                                        ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
+
+                        if int(id_prod) == 0:
+                            req['end'] = (req['end'] + ' ' + word + '( vld' + str(idx) + '.type_validation=252 ')
+                        else:
+                            req['end'] = (req['end'] + ' ' + word + '( ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+
+                        req['end'] = req['end'] + ') '
 
                     # add a another inner group
                     if word == 'AND':
@@ -530,7 +547,7 @@ class Report:
 
                     # Report.log.error('###  ELSE ###')
                     # Report.log.error('word = ' + word)
-                    if word != 'AND':
+                    if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
 
         return req

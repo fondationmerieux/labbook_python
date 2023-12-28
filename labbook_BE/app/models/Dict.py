@@ -52,6 +52,20 @@ class Dict:
         return cursor.fetchall()
 
     @staticmethod
+    def getDictDetailsById(id_dict):
+        cursor = DB.cursor()
+
+        req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
+               'from sigl_dico_data '
+               'where dico_name = (select SUBSTRING_INDEX(short_label, "_", -1) AS dico_name '
+               'from sigl_dico_data where id_data=%s) '
+               'order by position')
+
+        cursor.execute(req, (id_dict,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def insertDict(**params):
         try:
             cursor = DB.cursor()
