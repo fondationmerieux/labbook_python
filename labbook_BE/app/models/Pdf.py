@@ -1312,6 +1312,7 @@ class Pdf:
             record['rec_custody']       = 'Y'
             record['rec_num_int']       = 'rec-num-int-123'
             record['rec_date_vld']      = datetime.now()
+            record['rec_date_save']     = datetime.now()
             Various.useLangPDF()
 
         data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
@@ -1367,6 +1368,11 @@ class Pdf:
             data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], Constants.cst_dt_HM)
         else:
             data['rec']['date_vld'] = ''
+
+        if record['rec_date_save']:
+            data['rec']['date_save'] = datetime.strftime(record['rec_date_save'], Constants.cst_dt_HM)
+        else:
+            data['rec']['date_save'] = ''
 
         # === Patient details ===
         data['pat'] = {}
@@ -1844,14 +1850,14 @@ class Pdf:
                 l_validators = Result.getListValidators(id_rec)
 
                 id_user_p = 0
-                comment_p = ''
                 user      = ''
                 res_comm  = []
 
                 for validator in l_validators:
 
                     id_user = validator['user']
-                    comment = validator['comment']
+                    """ TODO USELESS 03/01/2024 we try record_validation
+                    comment = validator['comment']"""
 
                     if id_user != id_user_p:
                         ret_user = User.getUserDetails(id_user)
@@ -1872,8 +1878,16 @@ class Pdf:
 
                         id_user_p = id_user
 
-                    if comment and comment != comment_p:
-                        res_comm = res_comm + comment.split("\n")
+                    """ TODO USELESS 03/01/2024 we try record_validation
+                    if comment:
+                        res_comm = comment.split("\n")"""
+
+                rev = Record.getRecordValidation(id_rec)
+
+                res_comm = ''
+
+                if rev and rev['rev_comm']:
+                    res_comm = rev['rev_comm'].split("\n")
 
                 tmp_ana['l_res'][-1]["comm"] = res_comm
 
@@ -2297,6 +2311,7 @@ class Pdf:
             record['rec_custody']       = 'Y'
             record['rec_num_int']       = 'rec-num-int-123'
             record['rec_date_vld']      = datetime.now()
+            record['rec_date_save']     = datetime.now()
             Various.useLangPDF()
 
         data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
@@ -2322,7 +2337,7 @@ class Pdf:
             data['rec']['custody'] = str(record['rec_custody'])
 
             if record['date_hosp']:
-                data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], '%d/%m/%Y')
+                data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], Constants.cst_date_eu)
 
             if record['service_interne']:
                 data['rec']['hosp_service'] = str(record['service_interne'])
@@ -2334,7 +2349,7 @@ class Pdf:
                 data['rec']['rec_hosp_num'] = str(record['rec_hosp_num'])
 
         if record['date_prescription']:
-            data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], '%d/%m/%Y')
+            data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], Constants.cst_date_eu)
 
         if record['prescriber']:
             data['rec']['presc_name'] = str(record['prescriber'])
@@ -2343,9 +2358,14 @@ class Pdf:
         data['rec']['comm'] = record['rc'].split("\n")
 
         if record['rec_date_vld']:
-            data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], '%d/%m/%Y %H:%M')
+            data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], Constants.cst_dt_HM)
         else:
             data['rec']['date_vld'] = ''
+
+        if record['rec_date_save']:
+            data['rec']['date_save'] = datetime.strftime(record['rec_date_save'], Constants.cst_dt_HM)
+        else:
+            data['rec']['date_save'] = ''
 
         # === Patient details ===
         data['pat'] = {}

@@ -43,7 +43,7 @@ class DB:
                                                      database=config_data.get('DB_NAME', 'SIGL'))
                     DB.cnx.autocommit = True
                 else:
-                    DB.log.critical(Logs.fileline() + ' : open_cnx() error DB_TYPE = %s', current_app.config.DB_TYPE)
+                    DB.log.critical(Logs.fileline() + ' : open_cnx() error DB_TYPE = %s', config_data.get('DB_TYPE'))
 
             return DB.cnx
 

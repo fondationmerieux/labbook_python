@@ -41,9 +41,9 @@ class Doctor:
                 filter_cond += ' and pres.ville LIKE "%' + args['city'] + '%" '
 
         req = ('select pres.id_data, pres.id_owner, pres.code, pres.nom as lastname, pres.prenom as firstname, '
-               'pres.ville as city, pres.etablissement as facility, pres.specialite as spe_id, pres.tel as phone, '
-               'pres.email, pres.titre as title, pres.initiale as initial, pres.service, pres.adresse as address, '
-               'pres.mobile, pres.fax, d1.label as spe '
+               'pres.doc_zipcity, pres.ville as city, pres.etablissement as facility, pres.specialite as spe_id, '
+               'pres.tel as phone, pres.email, pres.titre as title, pres.initiale as initial, pres.service, '
+               'pres.adresse as address, pres.mobile, pres.fax, d1.label as spe '
                'from sigl_08_data as pres '
                'left join sigl_dico_data as d1 on d1.id_data = pres.specialite '
                'where ' + filter_cond +
@@ -84,7 +84,7 @@ class Doctor:
         cursor = DB.cursor()
 
         req = ('select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '
-               'doctor.prenom as prenom, doctor.ville as ville, doctor.etablissement as facility, '
+               'doctor.prenom as prenom, doctor.doc_zipcity, doctor.ville as ville, doctor.etablissement as facility, '
                'doctor.specialite as specialite, doctor.tel as tel, doctor.email as email, doctor.titre as titre,'
                'doctor.initiale as initiale, doctor.service as service, doctor.adresse as adresse, '
                'doctor.mobile as mobile, doctor.fax as fax, dico.label as spe_doctor '
@@ -103,10 +103,11 @@ class Doctor:
 
             cursor.execute('insert into sigl_08_data '
                            '(id_owner, code, nom, prenom, ville, etablissement, specialite, tel, email, '
-                           'titre, initiale, service, adresse, mobile, fax) '
+                           'titre, initiale, service, adresse, mobile, fax, doc_zipcity) '
                            'values '
                            '(%(id_owner)s, %(code)s, %(nom)s, %(prenom)s, %(ville)s, %(facility)s, %(specialite)s, '
-                           '%(tel)s, %(email)s, %(titre)s, %(initiale)s, %(service)s, %(adresse)s, %(mobile)s, %(fax)s)', params)
+                           '%(tel)s, %(email)s, %(titre)s, %(initiale)s, %(service)s, %(adresse)s, %(mobile)s, %(fax)s, '
+                           '%(zipcity)s)', params)
 
             Doctor.log.info(Logs.fileline())
 
@@ -124,7 +125,7 @@ class Doctor:
                            'set code=%(code)s, nom=%(nom)s, prenom=%(prenom)s, ville=%(ville)s, '
                            'etablissement=%(facility)s, specialite=%(specialite)s, tel=%(tel)s, email=%(email)s, '
                            'titre=%(titre)s, initiale=%(initiale)s, service=%(service)s, adresse=%(adresse)s, '
-                           'mobile=%(mobile)s, fax=%(fax)s '
+                           'mobile=%(mobile)s, fax=%(fax)s, doc_zipcity=%(zipcity)s '
                            'where id_data=%(id_data)s', params)
 
             Doctor.log.info(Logs.fileline())

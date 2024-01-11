@@ -111,9 +111,7 @@
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <label for="comm_valid" class="align-top mt-2 me-1">{{ _("Commentaire") }}</label>
-                        {# We break the loop after the first comment found #}
-                        {# Note: If I don't paste the jinja2 code it adds the spaces #}
-                        <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control form-lbk col-5 ms-1">{% set var_for = {'break': False} %}{% for res in args['list_res'] %}{% if not var_for.break %}{% if res['validation']['commentaire'] %}{{ res['validation']['commentaire'] }}{% if var_for.update({'break': True}) %}{% endif %}{% endif %}{% endif %}{% endfor %}</textarea>
+                        <textarea id="comm_valid" name="comm_valid" cols="60" rows="5" class="form-control form-lbk col-5 ms-1">{% if args['record']['valid'] %}{{ args['record']['valid']['rev_comm'] }}{% endif %}</textarea>
                     </div>
                     <div class="col-lg-12 my-2">
                         <div class="d-lg-flex justify-content-between ms-0 me-3">
@@ -496,45 +494,66 @@ param_list_valid += ' ] }' ;
     $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
+let param_rec_valid = '{ "id_user": {{ session['user_id']}}, "comm": ' + comm_valid + '}' ;
+
     // result to validate
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/valid/B/" + id_rec,
+        url: "{{ session['server_ext'] }}/services/record/valid/" + id_rec,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        data: param_list_valid,
+        data: param_rec_valid,
         success: function(data)
         {
-            $("#dial-wait").modal("hide") ;
-
-            {% if ihm['mode'] == 'G' %}
-            // save id record in session storage
-            if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
+            // result to validate
+            $.ajax( 
             {
-            let l_id_rec_vld = JSON.parse( sessionStorage.getItem("l_id_rec_vld") ) ;
+                type: "POST",
+                url: "{{ session['server_ext'] }}/services/result/valid/B/" + id_rec,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: param_list_valid,
+                success: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
 
-            l_id_rec_vld.push(id_rec) ;
+                    {% if ihm['mode'] == 'G' %}
+                    // save id record in session storage
+                    if ( sessionStorage.getItem( "l_id_rec_vld" ) != "null" )
+                    {
+                    let l_id_rec_vld = JSON.parse( sessionStorage.getItem("l_id_rec_vld") ) ;
 
-            sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
-            }
-            else
-            {
-            let l_id_rec_vld = [] ;
+                    l_id_rec_vld.push(id_rec) ;
 
-            l_id_rec_vld.push(id_rec) ;
+                    sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
+                    }
+                    else
+                    {
+                    let l_id_rec_vld = [] ;
 
-            sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
-            }
-            {% endif %}
+                    l_id_rec_vld.push(id_rec) ;
 
-        window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+                    sessionStorage.setItem( "l_id_rec_vld", JSON.stringify(l_id_rec_vld) ) ;
+                    }
+                    {% endif %}
+
+                window.location.href = "{{ session['server_ext'] }}/biological-validation/{{ ihm['mode'] }}/" + id_rec ;
+                },
+                error: function(data)
+                {
+                    $("#dial-wait").modal("hide") ;
+                    
+                console.log("ERROR result valid bio") ;
+                alert("{{ _("Une erreur est survenue lors de validation biologique des valeurs saisies") }}") ;
+                }
+            } ) ;
         },
         error: function(data)
         {
             $("#dial-wait").modal("hide") ;
             
-        console.log("ERROR result valid bio") ;
+        console.log("ERROR record validation") ;
         alert("{{ _("Une erreur est survenue lors de validation biologique des valeurs saisies") }}") ;
         }
     } ) ;
@@ -623,7 +642,7 @@ let disp_valid = "d-none" ;
 
             /* possible to reset value */
             if ( res_type != 265  )
-            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
+            res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-B ms-2\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
 
         res += '<tr>' +
                    res_check +
@@ -658,9 +677,13 @@ let disp_valid = "d-none" ;
         else
         res += '<span>Non rempli</span>' ;
 
+        /* Previous result */
+        res_prev = '<span class="xs-text">' + data[i].prev_val + '</span><span class="xs-text ms-2">' + data[i].prev_date + '</span>' ;
+
+        /* Assemble result type, previous results and reset and cancel buttons */
         res += '<input type="hidden" value="' + data[i].type_resultat + '"></span></td>' +
-               '<td class="text-center">' + res_reset + '</td>' +
-               '<td class="text-center">' + res_cancel + '</td></tr>' ;
+               '<td>' + res_prev + '</td>' +
+               '<td class="text-center">' + res_cancel + res_reset + '</td></tr>' ;
         }
 
     ref_ana_p = ref_ana ;

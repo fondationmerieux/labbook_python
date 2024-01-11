@@ -74,7 +74,10 @@ class RecordDet(Resource):
             record['date_hosp'] = datetime.strftime(record['date_hosp'], Constants.cst_isodate)
 
         if record['rec_date_vld']:
-            record['rec_date_vld'] = datetime.strftime(record['rec_date_vld'], '%Y-%m-%d %H:%M')
+            record['rec_date_vld'] = datetime.strftime(record['rec_date_vld'], Constants.cst_dt_HM)
+
+        if record['rec_date_save']:
+            record['rec_date_save'] = datetime.strftime(record['rec_date_save'], Constants.cst_dt_HM)
 
         # decimal number not serializable in JSON, convert except if empty string
         if record['prix']:
@@ -541,3 +544,36 @@ class RecordNbRecToday(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordNbRecToday')
         return compose_ret(nb_rec_today, Constants.cst_content_type_json)
+
+
+class RecordValid(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec):
+        rev = Record.getRecordValidation(id_rec)
+
+        if not rev:
+            self.log.error(Logs.fileline() + ' : TRACE RecordValida not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        if rev['rev_date']:
+            rev['rev_date'] = datetime.strftime(rev['rev_date'], Constants.cst_dt_HM)
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordValid')
+        return compose_ret(rev, Constants.cst_content_type_json)
+
+    def post(self, id_rec):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'comm' not in args:
+            self.log.error(Logs.fileline() + ' : ERROR RecordValid args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Record.insertRecordValidation(id_user=args['id_user'], id_rec=id_rec, comm=args['comm'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : ERROR RecordValid insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE RecordValid')
+        return compose_ret('', Constants.cst_content_type_json)

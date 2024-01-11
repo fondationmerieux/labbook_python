@@ -3,14 +3,14 @@
 
 a new spreadsheet can be submitted via the menu Settings => DHIS2 Settings
 
-new version 3 since march 2023
+new version 3 since march 2023 updated in january 2024
 
 ## CSV COLUMNS (keep order)
 
 Fisrt line name of column (do not change this) :
 dhis2_label;version;filter;type_sample;categorieoptioncombo;attributeoptioncombo;orgunit;storedby
 
-dhis2_label : this label will be copied identically to the corresponding line in the result file
+dhis2_label : this label will be copied identically to the corresponding line in the result file. Surround it with double quotes.
 
 ~~period : W for week or M for Month, must be present at least on the line after the header line~~ (useless from March 2023 in v3)
 
@@ -28,11 +28,13 @@ orgunit :  will be copied identically to the corresponding line in the result fi
 
 storedby : will be copied identically to the corresponding line in the result file if empty the *FisrtnameLastname* of profile who does export will be used
 
+Note : The semicolon is the field separator
+
 ## SYNTAX FOR FILTER
 
-the operators =, !=, <, >, IN, AND ... must be preceded and followed by at least one space.
+the operators =, !=, <, >, IN, AND, OR ... must be preceded and followed by at least one space.
 
-keyword OR : too complex and long request so the algorithm stops at the processing of the left part of the formula.
+keyword OR : be careful with this keyword process time could be long.
 
 $_IDVARIABLE : Identifier of an analysis variable, see the details of an analysis using this variable from the analysis repository
 
@@ -54,7 +56,9 @@ selects the analyses where one of the results does not correspond to the indicat
 CAT(SEX_M) : Selects the analyses in the records concerning male patients
 CAT(SEX_F) : Selects the analyses in the records concerning female patients
 CAT(AGE_1) : Selects the analyses in the records concerning the patients whose age is in the interval 1 (see age ranges settings in menu Settings => Age ranges)
+CAT(AGE[0,5]) : Selects the analyses in the records concerning the patients whose age is between 0 to 5 years old both included
 CAT(SEX_M,AGE_2) : Selects the analyses in the records concerning male patients and whose age is in the interval 2
+CAT(SEX_F,AGE[18,65]) : Selects the analyses in the records concerning female patients and whose age is between 18 and 65 years old both included
 
 ON('CODE_OF_ANALYSIS1','CODE_OF_ANALYSIS2',...) : Selects the analyses whose code corresponds to this list 
 

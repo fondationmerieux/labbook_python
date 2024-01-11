@@ -338,6 +338,8 @@ class ResultValid(Resource):
         elif type_valid == 'B':
             type_validation = 252  # Biological result
             stat_rec = 256         # Biological record
+
+            # TODO USELESS 03/01/2024, we leave time to try record_validation
             if args['comm_valid']:
                 comment = args['comm_valid']
             else:
@@ -575,3 +577,48 @@ class ResultHisto(Resource):
 
         self.log.info(Logs.fileline() + ' : ResultHisto id_res=' + str(id_res))
         return compose_ret(l_valid, Constants.cst_content_type_json, 200)
+
+
+class ResultPrevious(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        res_prev = {}
+
+        if 'id_pat' not in args or 'ref_ana' not in args or 'ref_var' not in args or 'id_res' not in args or \
+           'res_type' not in args:
+            self.log.error(Logs.fileline() + ' : TRACE ResultPrevious ERROR missing args')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        res_prev = Result.getPreviousResult(args['id_pat'], args['ref_ana'], args['ref_var'], args['id_res'])
+
+        if res_prev:
+            if res_prev['date_valid']:
+                res_prev['date_valid'] = datetime.strftime(res_prev['date_valid'], Constants.cst_date_eu)
+
+            Various.useLangDB()
+
+            # Get label of value
+            type_res = Various.getDicoById(args['res_type'])
+
+            if type_res and type_res['short_label'].startswith("dico_"):
+                type_res = type_res['short_label'][5:].strip()
+            else:
+                type_res = ''
+
+            # interpreted previous value
+            if type_res and res_prev and res_prev['valeur']:
+                label_prev = Various.getDicoById(res_prev['valeur'])
+                trans = label_prev['label'].strip()
+
+                if trans:
+                    res_prev['valeur'] = _(trans)
+                else:
+                    res_prev['valeur'] = ''
+
+        self.log.info(Logs.fileline() + ' : ResultPrevious DEBUG res_type=' + str(args['res_type']))
+
+        self.log.info(Logs.fileline() + ' : ResultPrevious')
+        return compose_ret(res_prev, Constants.cst_content_type_json, 200)

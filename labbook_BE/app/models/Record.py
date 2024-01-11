@@ -163,7 +163,7 @@ class Record:
                'rec.id_colis, rec.rec_parcel_date, rec.rc, rec.colis, rec.prix, rec.remise, rec.rec_date_vld, '
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
                'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, rec.rec_hosp_num, '
-               'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, '
+               'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, rec.rec_date_save, '
                'd_doc_title.label as prescriber_title, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_02_data as rec '
@@ -183,7 +183,7 @@ class Record:
         req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, remise, '
                'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
-               'rec_custody, rec_num_int, rec_modified, rec_hosp_num '
+               'rec_custody, rec_num_int, rec_modified, rec_hosp_num, rec_date_save '
                'from sigl_02_data '
                'order by id_data desc limit 1')
 
@@ -241,13 +241,14 @@ class Record:
                            '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, '
                            'prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
-                           'num_dos_mois, date_hosp, rec_custody, rec_num_int, rec_modified, rec_hosp_num) '
+                           'num_dos_mois, date_hosp, rec_custody, rec_num_int, rec_modified, rec_hosp_num, rec_date_save) '
                            'values '
                            '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, '
                            '%(med_prescripteur)s, %(date_prescription)s, %(service_interne)s, %(num_lit)s, %(id_colis)s, '
                            '%(rec_parcel_date)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
                            '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, '
-                           '%(num_dos_mois)s, %(date_hosp)s, %(rec_custody)s, %(rec_num_int)s, %(rec_modified)s, %(rec_hosp_num)s)', params)
+                           '%(num_dos_mois)s, %(date_hosp)s, %(rec_custody)s, %(rec_num_int)s, %(rec_modified)s, '
+                           '%(rec_hosp_num)s, NOW())', params)
 
             Record.log.info(Logs.fileline())
 
@@ -336,10 +337,12 @@ class Record:
             cursor.execute('insert into sigl_02_deleted '
                            '(id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, '
-                           'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois) '
+                           'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut,num_dos_mois, '
+                           'date_hosp, rec_custody, rec_num_int, rec_date_vld, rec_modified, rec_hosp_num, rec_date_save) '
                            'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, '
-                           'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, num_dos_mois '
+                           'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut,num_dos_mois, '
+                           'date_hosp, rec_custody, rec_num_int, rec_date_vld, rec_modified, rec_hosp_num, rec_date_save '
                            'from sigl_02_data '
                            'where id_data=%s', (id_rec,))
 
@@ -502,7 +505,8 @@ class Record:
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_record, rec.rec_custody, rec.id_patient,  d_type.label as type, rec.rec_num_int, '
-               'date_format(rec.date_dos, %s) as record_date, rec.num_dos_an as rec_num_year, '
+               'date_format(rec.date_dos, %s) as record_date, date_format(rec.rec_date_save, %s) as record_created, '
+               'rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.rec_hosp_num, '
@@ -524,3 +528,34 @@ class Record:
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getRecordValidation(id_rec):
+        cursor = DB.cursor()
+
+        # return last validation
+        req = ('select rev_date, rev_user, rev_rec, rev_comm '
+               'from record_validation '
+               'where rev_rec=%s '
+               'order by rev_ser desc limit 1')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertRecordValidation(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into record_validation '
+                           '(rev_date, rev_user, rev_rec, rev_comm) '
+                           'values '
+                           '(NOW(), %(id_user)s, %(id_rec)s, %(comm)s)', params)
+
+            Record.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0

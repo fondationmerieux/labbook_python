@@ -3,6 +3,8 @@
 {% block head %}
 {{ super() }}
     <title>{{ _("Prescripteur") }}</title>
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -69,6 +71,18 @@
                         <textarea id="address" name="address" rows="4" cols="50" class="form-control form-lbk">{{ args['adresse'] }}</textarea>
                     </div>
                 </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <div class="col-3"></div>
+                    <select id="search_zipcity" class="form-select form-lbk form-search"></select>
+                </div>
+                <div class="form-group d-md-flex align-items-start mt-3">
+                    <label for="zipcity" class="form-label col-3 text-end mt-2 me-1">{{ _("Code postal") }}</label>
+                    <div>
+                        <input id="zipcity" type="text" value="{{ args['doc_zipcity'] }}" maxlength="10" class="form-control form-lbk" style="">
+                    </div>
+                </div>
+
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="city" class="form-label col-3 text-end mt-2 me-1">{{ _("Ville") }}</label>
                     <div>					
@@ -141,12 +155,13 @@ var initial   = $("#initial").val()   ;
 var facility  = $("#facility").val();
 var service   = $("#service").val()   ;
 var address   = JSON.stringify( $.trim( $("#address").val() ) ) ;
-var city      = $("#city").val()   ;
-var spe       = $("#spe").val()    ;
-var phone     = $("#phone").val()  ;
-var mobile    = $("#mobile").val() ;
-var fax       = $("#fax").val()    ; 
-var email     = $("#email").val()  ;
+var city      = $("#city").val()    ;
+var zipcity   = $("#zipcity").val() ;
+var spe       = $("#spe").val()     ;
+var phone     = $("#phone").val()   ;
+var mobile    = $("#mobile").val()  ;
+var fax       = $("#fax").val()     ; 
+var email     = $("#email").val()   ;
 
 var msg = "" ;
 
@@ -170,6 +185,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"service":"' + service + '", ' +
               '"address":' + address + ', ' +   // No quotes with stringify
               '"city":"' + city + '", ' +
+              '"zipcity":"' + zipcity + '", ' +
               '"spe":' + spe + ', ' +
               '"phone":"' + phone + '", ' +
               '"mobile":"' + mobile + '", ' +
@@ -193,6 +209,66 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            }
     } ) ;
 }
+
+$("#search_zipcity").select2(
+{
+    placeholder: "{{ _("Recherche de code postal ou ville") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_zipcity").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_item
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_zipcity").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+
+    // GET det zipcity
+    $.ajax( 
+        {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/det/" + id_item,
+        success: function(data_zipcity)
+            {
+            $("#zipcity").val(data_zipcity.zic_zip) ;
+            $("#city").val(data_zipcity.zic_city) ;
+            },
+        error: function(data_zipcity)
+            {
+            console.log("ERROR GET det zipcity");
+            alert("{{ _("Erreur lors de la récupération des données") }}") ;
+            }
+        } ) ;
+} ) ;
+
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
 
 function cancel()
 {

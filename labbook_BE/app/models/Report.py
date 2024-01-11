@@ -490,6 +490,13 @@ class Report:
                                         age_max = 150
 
                                 i = i + 1
+                        elif cat.startswith('AGE['):
+                            idx_age_beg = cat.find('[')
+                            idx_age_mid = cat.find(',')
+                            idx_age_end = cat.find(']')
+
+                            age_min = cat[idx_age_beg + 1:idx_age_mid]
+                            age_max = cat[idx_age_mid + 1:idx_age_end]
                         else:
                             Report.log.error('ERROR CAT unknown cat=' + str(cat))
 
@@ -505,7 +512,6 @@ class Report:
                         req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
                                       ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                 else:
-                    # No rule for OR
                     if word == 'OR':
                         idx = idx + 1
 
@@ -519,10 +525,12 @@ class Report:
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
+                        # same id_prod with OR
+
                         if int(id_prod) == 0:
-                            req['end'] = (req['end'] + ' ' + word + '( vld' + str(idx) + '.type_validation=252 ')
+                            req['end'] = (req['end'] + ' ' + word + ' ( vld' + str(idx) + '.type_validation=252 ')
                         else:
-                            req['end'] = (req['end'] + ' ' + word + '( ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                            req['end'] = (req['end'] + ' ' + word + ' ( ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
                         req['end'] = req['end'] + ') '
 
@@ -707,9 +715,25 @@ class Report:
                         req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
                                       ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
                 else:
-                    # No rule for OR
                     if word == 'OR':
-                        return req
+                        idx = idx + 1
+
+                        req['inner'] = (req['inner'] +
+                                        'inner join sigl_04_data as req' + str(idx) +
+                                        ' on req' + str(idx) + '.id_dos = rec.id_data '
+                                        'inner join sigl_05_data as ref' + str(idx) +
+                                        ' on ref' + str(idx) + '.id_data = req' + str(idx) + '.ref_analyse '
+                                        'inner join sigl_09_data as res' + str(idx) +
+                                        ' on res' + str(idx) + '.id_analyse = req' + str(idx) + '.id_data '
+                                        'inner join sigl_10_data as vld' + str(idx) +
+                                        ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
+
+                        if int(id_prod) == 0:
+                            req['end'] = (req['end'] + ' ' + word + ' ( vld' + str(idx) + '.type_validation=252 ')
+                        else:
+                            req['end'] = (req['end'] + ' ' + word + ' ( ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+
+                        req['end'] = req['end'] + ') '
 
                     # add a another inner group
                     if word == 'AND':
@@ -734,7 +758,7 @@ class Report:
 
                     # Report.log.error('###  ELSE ###')
                     # Report.log.error('word = ' + word)
-                    if word != 'AND':
+                    if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
 
         return req

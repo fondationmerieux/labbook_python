@@ -36,6 +36,11 @@ cursor          : pointer;
 text-decoration : none;
 }
 
+.xs-text
+{
+font-size : 0.688rem;
+}
+
 #page
 {
 padding   : 0;

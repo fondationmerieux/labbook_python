@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.4.1] - 2024-01-11
+### Added
+- new filter AGE for DHIS2 (see documentation dhis2.md) 
+- new system for recording biological validation comments
+- recording the date of administrative validation of a file, (for template use o.rec.rec_date_save)
+- the display of min and max values for the results screen can be forced
+- displays last previous result to date for enter-result and list-results pages
+
+### Fixed
+- Indicator formula can use keyword OR, same sample_type for both part of formula
+
 ## [3.4.0] - 2023-12-28
 ### Added
 - hl7apy library

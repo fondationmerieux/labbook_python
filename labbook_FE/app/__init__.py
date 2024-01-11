@@ -3039,6 +3039,28 @@ def technical_validation(id_rec=0, anchor=''):
                     except requests.exceptions.RequestException as err:
                         log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
 
+                    # get previous result
+                    try:
+                        res['prev_val']  = ''
+                        res['prev_date'] = ''
+
+                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat']}
+
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/previous'
+                        req = requests.post(url, json=payload)
+
+                        if req.status_code == 200:
+                            prev = req.json()
+
+                            if prev:
+                                res['prev_val']  = prev['valeur']
+                                res['prev_date'] = prev['date_valid']
+
+                            log.info(Logs.fileline() + ' : DEBUG prev = ' + str(prev))
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)
+
             # Load data patient
             if res and res['id_pat']:
                 id_pat = res['id_pat']
@@ -3166,8 +3188,15 @@ def biological_validation(mode='', id_rec=0):
         if req.status_code == 200:
             json_data['record'] = req.json()
 
+            # Get last record_validation
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/valid/' + str(id_rec)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['record']['valid'] = req.json()
+
     except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests record failed, err=%s , url=%s', err, url)
+        log.error(Logs.fileline() + ' : requests det record and validation failed, err=%s , url=%s', err, url)
 
     # Load list results
     try:
@@ -3178,6 +3207,8 @@ def biological_validation(mode='', id_rec=0):
 
         if req.status_code == 200:
             json_data['list_res'] = req.json()
+
+            log.error(Logs.fileline() + ' : list_res = ' + str(json_data['list_res']))
 
             # Get result answer
             if json_data['list_res']:
@@ -3237,6 +3268,28 @@ def biological_validation(mode='', id_rec=0):
 
                     except requests.exceptions.RequestException as err:
                         log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+
+                    # get previous result
+                    try:
+                        res['prev_val']  = ''
+                        res['prev_date'] = ''
+
+                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat']}
+
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/previous'
+                        req = requests.post(url, json=payload)
+
+                        if req.status_code == 200:
+                            prev = req.json()
+
+                            if prev:
+                                res['prev_val']  = prev['valeur']
+                                res['prev_date'] = prev['date_valid']
+
+                            log.info(Logs.fileline() + ' : DEBUG prev = ' + str(prev))
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)
 
             # Load data patient
             if res and res['id_pat']:
@@ -3427,7 +3480,7 @@ def report_indicator(date_beg='', date_end=''):
     json_ihm  = {}
     json_data = {}
 
-    # load data for epiodemio
+    # load data for indicator
     try:
         if not date_beg:
             date_beg = date.today()

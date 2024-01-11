@@ -536,33 +536,43 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
         res += "<td class=\"text-center\"><span class=\"value\">" ;
 
+        /* Administrative validation with a value */
         if (res_valid == 250  && value != "" )
         disp_valid = "show d-lg-flex" ;
 
+        /* Technical validation and not type labeled */
         if (res_valid == 251  && res_type != 265 )
         res_reset = "<a title=\"{{ _("Réinitialiser la valeur") }}\" class=\"color-T\" onclick=\"reset_res(" + id_rec +","+ id_res + ");\"><i class=\"bi bi-bootstrap-reboot\" /></i></a>" ;
 
+        /* Possible to canceled this value */
         if ( res_type != 265 && (res_valid == 250 || (res_valid == 251 && value != "")) )
-        res_cancel = '<a title="Annuler" class="color-T" onclick="cancel_res(' + id_rec +','+ id_res + ');"><i class="bi bi-x-circle" /></i></a>' ;
+        res_cancel = '<a title="Annuler" class="color-T ms-2" onclick="cancel_res(' + id_rec +','+ id_res + ');"><i class="bi bi-x-circle" /></i></a>' ;
 
+        /* Display the value */
         if ( value != "" )
         res += "<span>" + value + "</span><input id=\"res_" + id_res + "\" class=\"res-" + id_rec + "-" + ref_ana + "\" type=\"hidden\" value=\"" + data[i].valeur + "\"><span class=\"unit show ms-1\">" + res_unit + "</span>" ;
+        /* Value canceled, we display the reason */
         else if ( res_valid == 252 )
         {
         res += "<span>{{ _("ANNULE") }}</span>" ;
         res_cancel = '<span>' + data[i].validation.label_motif + '<br />' + data[i].validation.commentaire + '</span>' ;
         }
-        /* result of type labeled */
+        /* Result of type labeled */
         else if ( res_type == 265 )
         {
         res += '<span></span>' ;
         }
+        /* NO result */
         else
         res += "<span>{{ _("Non rempli") }}</span>" ;
 
+        /* Previous result */
+        res_prev = '<span class="xs-text">' + data[i].prev_val + '</span><span class="xs-text ms-2">' + data[i].prev_date + '</span>' ;
+
+        /* Assemble result type, previous results and reset and cancel buttons */
         res += "<input type=\"hidden\" value=\"" + data[i].type_resultat + "\"></span></td>" +
-               "<td class=\"text-center\">" + res_reset + "</td>" +
-               "<td class=\"text-center\">" + res_cancel + "</td></tr>" ;
+               "<td>" + res_prev + "</td>" +
+               "<td class=\"text-center\">" + res_reset + res_cancel + "</td></tr>" ;
         }
 
     ref_ana_p = ref_ana ;

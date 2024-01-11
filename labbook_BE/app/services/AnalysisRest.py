@@ -365,6 +365,7 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_show_minmax=var['var_show_minmax'],
                                                      var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
@@ -416,6 +417,7 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_show_minmax=var['var_show_minmax'],
                                                      var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
@@ -528,6 +530,7 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_show_minmax=var['var_show_minmax'],
                                                      var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
@@ -779,7 +782,7 @@ class AnalysisExport(Resource):
                    'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
                    'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                    'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                   'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight']]
+                   'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -984,6 +987,11 @@ class AnalysisExport(Resource):
                 else:
                     data.append('N')
 
+                if d['var_show_minmax']:
+                    data.append(d['var_show_minmax'])
+                else:
+                    data.append('N')
+
                 l_data.append(data)
 
         # if no result to export
@@ -1075,7 +1083,7 @@ class AnalysisImport(Resource):
                      'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                     'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight']
+                     'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax']
 
         i = 0
         for head in head_line:
@@ -1151,6 +1159,11 @@ class AnalysisImport(Resource):
                     var_qrcode         = row[33]
                     var_highlight      = row[34]
 
+                    if len(row) > 35:
+                        var_show_minmax = row[35]
+                    else:
+                        var_show_minmax = 'N'
+
                     ret = Analysis.exist(code, test)
 
                     if ret == -1:
@@ -1205,6 +1218,7 @@ class AnalysisImport(Resource):
                                                                  type_res=type_resultat,
                                                                  var_min=normal_min,
                                                                  var_max=normal_max,
+                                                                 var_show_minmax=var_show_minmax,
                                                                  var_highlight=var_highlight,
                                                                  comment=var_comm,
                                                                  formula=formule,
@@ -1313,6 +1327,11 @@ class AnalysisImport(Resource):
                     var_qrcode     = row[33]
                     var_highlight  = row[34]
 
+                    if len(row) > 35:
+                        var_show_minmax = row[35]
+                    else:
+                        var_show_minmax = 'N'
+
                     ret = Analysis.exist(code, test)
 
                     if ret == -1:
@@ -1394,6 +1413,7 @@ class AnalysisImport(Resource):
                                                                  type_res=type_resultat,
                                                                  var_min=normal_min,
                                                                  var_max=normal_max,
+                                                                 var_show_minmax=var_show_minmax,
                                                                  var_highlight=var_highlight,
                                                                  comment=var_comm,
                                                                  formula=formule,

@@ -173,7 +173,11 @@ class Analyzer:
             Analyzer.log.error(Logs.fileline() + ' ERROR buildLab28 getPatient for id_pat=' + str(id_pat))
 
         pat_sex = 'U'
-        pat_birth = datetime.strftime(pat['ddn'], "%Y%m%d%H%M%S")
+
+        if pat['ddn']:
+            pat_birth = datetime.strftime(pat['ddn'], "%Y%m%d%H%M%S")
+        else:
+            pat_birth = ''
 
         if pat['sexe'] == 1:
             pat_sex = 'M'

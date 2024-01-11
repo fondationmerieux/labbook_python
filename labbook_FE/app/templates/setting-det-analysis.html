@@ -168,11 +168,19 @@
                         <div>					
                             <input type="text" name="var_max" id="var_max" value="{% if args['var'] %}{{ args['var'][0]['normal_max'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
                         </div>
-                        <label class="form-label text-end mt-2 mx-3">{{ _("Souligner") }}</label>
-                        <label class="form-label text-end mt-2 me-3">
+                    </div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
+
+                        <label for="var_show_minmax" class="form-label col-2 text-end mt-1 me-1">{{ _("Affichage min./max.") }}</label>
+                        <div>
+                            <input type="checkbox" id="var_show_minmax" name="var_show_minmax" class="mt-2" value="Y" {% if args['var'] and args['var'][0]['normal_min'] == 'Y' %}checked{% endif %} onChange="change_data(this);">
+                        </div>
+
+                        <label class="form-label text-end mt-1 mx-3">{{ _("Souligner") }}</label>
+                        <label class="form-label text-end mt-1 me-3">
                             <input type="radio" id="var_highlight_Y" name="var_highlight" value="Y" {% if args['var'] and args['var'][0]['var_highlight'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
                         </label>
-                        <label class="form-label text-end mt-2 me-3">
+                        <label class="form-label text-end mt-1 me-3">
                             <input type="radio" id="var_highlight_N" name="var_highlight" value="N" {% if not args['var'] or args['var'][0]['var_highlight'] == 'N' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
                     </div>
@@ -330,7 +338,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "var_highlight":"N", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "var_qrcode":"N", "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
+var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "var_show_minmax":"N", "var_highlight":"N", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "var_qrcode":"N", "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
 var data_vars   = {% if args['var'] %}{{ args['var']|safe }}{% else %}[]{% endif %} ;
 var ind_var     = 0 ;
 var ind_sel_var = {% if args['var'] %}1{% else %}0{% endif %} ;
@@ -404,6 +412,7 @@ let id_var = $(e.currentTarget).val();
                 tmp_struct_var.type_res   = replaceUndefined(data_var.type_res, 0) ;
                 tmp_struct_var.min        = replaceUndefined(data_var.min, "") ;
                 tmp_struct_var.max        = replaceUndefined(data_var.max, "") ;
+                tmp_struct_var.var_show_minmax = "N" ;
                 tmp_struct_var.var_highlight = "N" ;
                 tmp_struct_var.formula    = replaceUndefined(data_var.formula, "") ;
                 tmp_struct_var.unit       = replaceUndefined(data_var.unit, 0) ;
@@ -717,6 +726,11 @@ $("#var_comment").val( det_var.comment ) ;
     $("#var_qrcode_N").prop("checked", true)  ;
     }
 
+    if ( det_var.var_show_minmax == 'Y' )
+    $("#var_show_minmax").prop('checked', true);
+    else
+    $("#var_show_minmax").prop('checked', false);
+
     if ( det_var.var_highlight == "Y")
     {
     $("#var_highlight_Y").prop("checked", true)  ;
@@ -782,6 +796,7 @@ let id_elem = elem.id ;
     if ( id_elem != "var_oblig_4" && id_elem != "var_oblig_5" &&
          id_elem != "var_whonet_4" && id_elem != "var_whonet_5" &&
          id_elem != "var_qrcode_Y" && id_elem != "var_qrcode_N" &&
+         id_elem != "var_show_minmax" &&
          id_elem != "var_highlight_Y" && id_elem != "var_highlight_N")
     {
         for( i in data_vars )
@@ -870,6 +885,28 @@ let id_elem = elem.id ;
             }
         }
     }
+    else if ( id_elem == "var_show_minmax" )
+    {
+        for( i in data_vars )
+        {
+            if (data_vars[i].id_item == ind_sel_var )
+            {
+                if ( $("#var_show_minmax").is(":checked") )
+                {
+                console.log("DEBUG var_show_minmax = Y");
+                data_vars[i].var_show_minmax = 'Y' ;
+                }
+                else
+                {
+                console.log("DEBUG var_show_minmax = N");
+                data_vars[i].var_show_minmax = 'N' ;
+                }
+
+            break ;
+            }
+        }
+    }
+
     else if ( id_elem == "var_highlight_Y" || id_elem == "var_highlight_N" )
     {
         for( i in data_vars )
@@ -956,6 +993,7 @@ var msg = "" ;
                     var_type_res = data_vars[i].type_res ;
                     var_min      = $.trim( data_vars[i].min ) ;
                     var_max      = $.trim( data_vars[i].max ) ;
+                    var_show_minmax = $.trim( data_vars[i].var_show_minmax ) ;
                     var_highlight= $.trim( data_vars[i].var_highlight ) ;
                     var_formula  = $.trim( data_vars[i].formula ) ;
                     var_unit     = data_vars[i].unit     ;
@@ -990,6 +1028,7 @@ var msg = "" ;
                                       '"var_type_res":' + var_type_res + ', ' +
                                       '"var_min":"' + var_min + '", ' +
                                       '"var_max":"' + var_max + '", ' +
+                                      '"var_show_minmax":"' + var_show_minmax + '", ' +
                                       '"var_highlight":"' + var_highlight + '", ' +
                                       '"var_formula":"' + var_formula + '", ' +
                                       '"var_unit":' + var_unit + ', ' +
@@ -1077,7 +1116,12 @@ function det_dict()
 {
 let id_dict = $("#var_type_res").val() ;
 
-window.open("{{ session['server_ext'] }}/setting-det-dict/" + id_dict, "_blank") ;
+dict_empty = [0,265,226,227,228,229] ;
+
+console.log("DEBUG id_dict=" + id_dict);
+
+    if (!dict_empty.includes(parseInt(id_dict)))
+    window.open("{{ session['server_ext'] }}/setting-det-dict/" + id_dict, "_blank") ;
 }
 
 function cancel()

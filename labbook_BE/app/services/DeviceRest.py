@@ -121,6 +121,21 @@ class AnalyzerFile(Resource):
         return compose_ret(l_analyzers, Constants.cst_content_type_json)
 
 
+class AnalyzerLab27(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        msg_hl7 = request.data.decode('utf-8')
+
+        if msg_hl7:
+            self.log.info(Logs.fileline() + ' : TRACE AnalyzerLab27 msg_hl7 : ' + str(msg_hl7))
+
+        # TODO
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalyzerLab27')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class AnalyzerLab29(Resource):
     log = logging.getLogger('log_services')
 

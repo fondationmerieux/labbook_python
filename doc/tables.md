@@ -27,6 +27,7 @@
 | ctrl_ext_res_report_file                       | FILE          | attached file                            |
 | record_file           	                 | FILE	         | attached file                            |
 | record_file_deleted           	         | FILE	         | deleted attachment                       |
+| record_validation           	                 | RECORD        | save comment of biological validation    |
 | eqp_calibration_file                  	 | FILE	         | attached file                            |
 | eqp_maintenance_file                           | FILE	         | attached file                            |
 | sigl_equipement_data	                         | EQUIPMENT	 | equipment details                        |
@@ -80,4 +81,4 @@
 | trace_download                                 | QUALITY       | tracks file downloads (only procedure)   |
 | manual_setting                                 | SETTINGS      | settings for manual                      |
 
-79 tables used
+80 tables used

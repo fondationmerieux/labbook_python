@@ -136,10 +136,10 @@ class Result:
         req = ('select res.valeur as valeur, vld.date_validation as date_valid '
                'from sigl_09_data as res '
                'inner join sigl_05_07_data as ref on ref.id_refvariable = res.ref_variable '
-               'inner join sigl_04_data as dem on dem.ref_analyse = ref.id_refanalyse and dem.id_data = res.id_analyse '
-               'inner join sigl_02_data as rec on rec.id_data = dem.id_dos '
+               'inner join sigl_04_data as req on req.ref_analyse = ref.id_refanalyse and req.id_data = res.id_analyse '
+               'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
                'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
-               'where rec.id_patient=%s and dem.ref_analyse=%s and res.ref_variable=%s '
+               'where rec.id_patient=%s and req.ref_analyse=%s and res.ref_variable=%s '
                'and vld.type_validation=252 and vld.motif_annulation is NULL and res.id_data != %s '
                'and vld.date_validation < %s '
                'order by vld.date_validation desc limit 1')
@@ -247,7 +247,7 @@ class Result:
                'inner join sigl_09_data as res on res.id_data = vld.id_resultat '
                'inner join sigl_04_data as req on req.id_data = res.id_analyse '
                'where req.id_dos=%s and vld.type_validation=252 '
-               'group by vld.utilisateur, vld.commentaire order by vld.id_data ')
+               'group by vld.utilisateur, vld.commentaire order by vld.id_data asc')
 
         cursor.execute(req, (id_rec,))
 

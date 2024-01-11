@@ -197,7 +197,7 @@ class ExportDHIS2(Resource):
                 version = l_rows[1][idx_version]
 
                 if version != 'v1' and version != 'v2' and version != 'v3':
-                    self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet wrong version')
+                    self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet wrong version :' + str(version))
                     return compose_ret('', Constants.cst_content_type_json, 409)
             else:
                 self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR spreadsheet not found version')

@@ -177,9 +177,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group d-md-flex align-items-start mt-1">
-                                    <label class="form-label col-md-5 text-end mt-2">{{ _("Date de réception du colis") }}</label>
+                                    <label class="form-label col-md-5 text-end mt-2">{{ _("Date de réception du colis") }} *</label>
                                     <div>
-                                        <input  id="parcel_date" class="form-control form-lbk ms-1" type="datetime-local" value="" placeholder="" style="color:#888;width:180px;">
+                                        <input  id="parcel_date" class="form-control form-lbk ms-1" type="datetime-local" value="" placeholder="" style="color:#888;">
                                     </div>
                                 </div>
                             </div>
@@ -863,7 +863,7 @@ let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="font-size:14px;min-width:50px;max-width:100px;text-align:right;"' ;
     else if (type == "datetime-local")
-    tmp_input += 'style="font-size:14px;min-width:50px;max-width:160px;"' ;
+    tmp_input += 'style="font-size:14px;min-width:50px;"' ;
     else
     tmp_input += 'style="font-size:14px;min-width:50px;"' ;
 
@@ -1084,6 +1084,11 @@ var rec_num_int   = $("#rec_num_int").val() ;
 
     if (parcel == null)
     parcel = 5 ;
+    else if (parcel == 4 && parcel_date == "")
+    {
+    alert( "{{ _("Veuillez sélectionner une date et heure de réception du colis") }}" ) ;
+    return false ;
+    }
 
     if (data_analysis.length < 1)
     {

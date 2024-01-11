@@ -522,6 +522,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             let res_type   = data[i].type_resultat ;
             let type_input = 'type="text"' ;
             let res_accu   = data[i].accuracy ;
+            let show_minmax= data[i].var_show_minmax ;
 
                 // Default accuracy for real or calc number
                 if ( res_accu == 0 && (res_type== 228 || res_type== 229) )
@@ -535,7 +536,9 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 {
                 let ico_limit = "d-none" ;
 
-                    if ( value < parseFloat(data[i].normal_min) && value != "" )
+                    if ( show_minmax == 'Y' )
+                    ico_limit = "show" ;
+                    else if ( value < parseFloat(data[i].normal_min) && value != "" )
                     ico_limit = "show" ;
                     else if ( value > parseFloat(data[i].normal_max) && value != "" )
                     ico_limit = "show" ;
@@ -628,11 +631,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     if ( value != "" && res_valid == 250 )
                     disp_valid = "show d-lg-flex" ;
 
-                    if ( data[i].normal_min != "" && data[i].normal_max != "" )
+                    if ( show_minmax == 'N' && data[i].normal_min != "" && data[i].normal_max != "" )
                     change += 'check_min_max(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
-                    else if ( data[i].normal_min != "" && data[i].normal_max == "" )
+                    else if ( show_minmax == 'N' && data[i].normal_min != "" && data[i].normal_max == "" )
                     change += 'check_min(' + id_res + ', ' + data[i].normal_min + ');' ;
-                    else if ( data[i].normal_min == "" && data[i].normal_max != "" )
+                    else if ( show_minmax == 'N' && data[i].normal_min == "" && data[i].normal_max != "" )
                     change += 'check_max(' + id_res + ', ' + data[i].normal_max + ');' ;
 
                     // Num var

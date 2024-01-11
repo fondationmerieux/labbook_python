@@ -23,6 +23,8 @@ formula_xxx : formula will be read and interpreted by LabBook (cf DHIS2.md filte
 
 Note : formula with a AND first part use first sample_type and second part use second sample_type, if they use same sample_type you should write sampletype like this : [serial_of_first_sample_type, serial_of_second_sample_type]
 
+Note 2 : with keyword OR sample_type will be share with both part of formula.
+
 If formula_xxx is empty then res_label_xxx will be considered as a separation title and sample_type_xxx will not be necessary
 
 sample_type_xxx : serial corresponding to the type of sample in the database (cf table below) or 0, useful for calculate with the formula_xxx, even for one serial you have to write it like this : [my_serial]

@@ -84,8 +84,8 @@ class DoctorDet(Resource):
 
         if 'id_owner' not in args or 'id_doctor' not in args or 'code' not in args or 'title' not in args or \
            'lastname' not in args or 'firstname' not in args or 'initial' not in args or 'facility' not in args or \
-           'service' not in args or 'address' not in args or 'city' not in args or 'spe' not in args or \
-           'phone' not in args or 'mobile' not in args or 'fax' not in args or 'email' not in args:
+           'service' not in args or 'address' not in args or 'city' not in args or 'zipcity' not in args or \
+           'spe' not in args or 'phone' not in args or 'mobile' not in args or 'fax' not in args or 'email' not in args:
             self.log.error(Logs.fileline() + ' : DoctorDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -106,7 +106,8 @@ class DoctorDet(Resource):
                                       service=args['service'],
                                       adresse=args['address'],
                                       mobile=args['mobile'],
-                                      fax=args['fax'])
+                                      fax=args['fax'],
+                                      zipcity=args['zipcity'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : DoctorDet ERROR update')
@@ -128,7 +129,8 @@ class DoctorDet(Resource):
                                       service=args['service'],
                                       adresse=args['address'],
                                       mobile=args['mobile'],
-                                      fax=args['fax'])
+                                      fax=args['fax'],
+                                      zipcity=args['zipcity'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : DoctorDet ERROR  insert')
@@ -161,7 +163,7 @@ class DoctorExport(Resource):
 
         args['limit'] = 50000  # for overpassed default limit
 
-        l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'city',
+        l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'zipcity', 'city',
                    'facility', 'spe', 'spe_id', 'phone', 'mobile', 'fax', 'email', 'title',
                    'initial', 'service', 'address', ]]
         dict_data = Doctor.getDoctorList(args)
@@ -177,6 +179,7 @@ class DoctorExport(Resource):
                 data.append(d['code'])
                 data.append(d['lastname'])
                 data.append(d['firstname'])
+                data.append(d['doc_zipcity'])
                 data.append(d['city'])
                 data.append(d['facility'])
                 spe = d['spe']

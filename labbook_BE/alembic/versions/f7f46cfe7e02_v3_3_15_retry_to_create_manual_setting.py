@@ -24,7 +24,7 @@ def upgrade():
     # Get the current
     conn = op.get_bind()
 
-     # Create table for manual category
+    # Create table for manual category
     try:
         conn.execute(text("create table if not exists manual_setting("
                           "mas_ser int not NULL AUTO_INCREMENT,"
