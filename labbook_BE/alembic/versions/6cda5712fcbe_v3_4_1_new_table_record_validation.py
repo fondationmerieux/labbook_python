@@ -71,15 +71,16 @@ def upgrade():
     # insert into record_validation, last comment validated for each record
     try:
         conn.execute(text("insert into record_validation (rev_date, rev_user, rev_rec, rev_comm) "
-                          "WITH RankedValidation AS ("
-                          "select vld.date_validation as rev_date, vld.id_owner as rev_user, rec.id_data as rev_rec, vld.commentaire as rev_comm "
+                          "select rev_date, rev_user, rev_rec, rev_comm "
+                          "from ( "
+                          "select vld.date_validation as rev_date, vld.id_owner as rev_user, rec.id_data as rev_rec, "
+                          "vld.commentaire as rev_comm, "
                           "ROW_NUMBER() OVER (PARTITION BY rec.id_data ORDER BY vld.date_validation DESC) AS row_num "
                           "from sigl_02_data AS rec "
                           "inner join sigl_04_data AS req ON req.id_dos = rec.id_data "
                           "inner join sigl_09_data AS res ON res.id_analyse = req.id_data "
-                          "inner join sigl_10_data AS vld ON vld.id_resultat = res.id_data AND vld.type_validation = 252 )"
-                          "select rev_date, rev_user, rev_rec, rev_comm "
-                          "from RankedValidation where row_num=1"))
+                          "inner join sigl_10_data AS vld ON vld.id_resultat = res.id_data and "
+                          "vld.type_validation = 252 ) as RankedValidation where row_num=1"))
     except Exception as err:
         print("ERROR update record_validation,\n\terr=" + str(err))
 
