@@ -53,7 +53,7 @@ function per_num_rec( rec_date, lang )
 {
 let ret = "" ;
 
-ret = moment(rec_date, "DD-MM-YYYY") ;
+ret = moment(rec_date, "YYYY-MM-DD") ;
 ret = ret.toDate();
 
     if ( lang == "US" ) 
@@ -224,7 +224,7 @@ eval_value( id_rec, ref_ana, id_res ) ;
     } ) ;
 }
 
-function eval_value( id_rec, ref_ana, id_res )
+function eval_value( id_rec, ref_ana, num_var, id_res )
 {
 //console.log("DEBUG-TRACE EVAL_VALUE -------------------------------------");
 let val  = $( "#res_"+id_res ).val()  ;
@@ -233,4 +233,31 @@ let val  = $( "#res_"+id_res ).val()  ;
     return "";
 
 //console.log("------------------------------------------------------");
+}
+
+function conv_val( formula2, accu2, val )
+{
+console.log("####################### DEBUG-TRACE CONV_VAL ###################");
+
+    // start by evaluate this value
+    if ( val == null || val == "" )
+    return "" ;
+
+// search formula for this var
+formula2 = formula2.replace("$", val) ;
+
+console.log("DEBUG-TRACE conv formula2 = " + formula2 ) ;
+
+let total = eval(formula2) ;
+
+console.log("DEBUG-TRACE total : " + total);
+
+console.log("DEBUG-TRACE accu2="+accu2) ;
+
+    if ( accu2 == null || accu2 == "" )
+    accu2 = 2 ;
+
+console.log("DEBUG-TRACE conv_val = " + Number(total).toFixed( accu2 ) ) ;
+
+return Number(total).toFixed( accu2 ) ;
 }

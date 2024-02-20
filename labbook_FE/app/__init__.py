@@ -646,6 +646,12 @@ def homepage(login=''):
     if 'user_role' not in session:
         log.info(Logs.fileline() + ' : TRACE Labbook_FE homepage no user_role in session => Login')
         return render_template('login.html', rand=random.randint(0, 999))  # nosec B311
+    # API access
+    elif session['user_role'] == 'API':
+        session['current_page'] = 'api'
+        session.modified = True
+
+        return redirect(session['server_ext'] + '/' + session['current_page'])
     # Prescriber homepage
     elif session['user_role'] == 'P':
         session['current_page'] = 'list-records'
@@ -2063,7 +2069,23 @@ def enter_result(id_rec=0, anchor=''):
                                 res['unit'] = unit['label']
 
                     except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+                        log.error(Logs.fileline() + ' : requests result unit failed, err=%s , url=%s', err, url)
+
+                    # get unit2 label
+                    try:
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['unite2'])
+                        req = requests.get(url)
+
+                        res['unit2'] = ''
+
+                        if req.status_code == 200:
+                            unit2 = req.json()
+
+                            if unit2 and unit2['label']:
+                                res['unit2'] = unit2['label']
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests result unit2 failed, err=%s , url=%s', err, url)
 
                     # init list of answer
                     res['res_answer'] = []
@@ -3037,7 +3059,23 @@ def technical_validation(id_rec=0, anchor=''):
                                 res['unit'] = unit['label']
 
                     except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+                        log.error(Logs.fileline() + ' : requests result unit failed, err=%s , url=%s', err, url)
+
+                    # get unit2 label
+                    try:
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['unite2'])
+                        req = requests.get(url)
+
+                        res['unit2'] = ''
+
+                        if req.status_code == 200:
+                            unit2 = req.json()
+
+                            if unit2 and unit2['label']:
+                                res['unit2'] = unit2['label']
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests result unit2 failed, err=%s , url=%s', err, url)
 
                     # get previous result
                     try:
@@ -3267,7 +3305,23 @@ def biological_validation(mode='', id_rec=0):
                                 res['unit'] = unit['label']
 
                     except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+                        log.error(Logs.fileline() + ' : requests result unit failed, err=%s , url=%s', err, url)
+
+                    # get unit2 label
+                    try:
+                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dico/id/' + str(res['unite2'])
+                        req = requests.get(url)
+
+                        res['unit2'] = ''
+
+                        if req.status_code == 200:
+                            unit2 = req.json()
+
+                            if unit2 and unit2['label']:
+                                res['unit2'] = unit2['label']
+
+                    except requests.exceptions.RequestException as err:
+                        log.error(Logs.fileline() + ' : requests result unit2 failed, err=%s , url=%s', err, url)
 
                     # get previous result
                     try:
@@ -3595,6 +3649,33 @@ def report_statistic():
         log.error(Logs.fileline() + ' : requests report stat failed, err=%s , url=%s', err, url)
 
     return render_template('report-statistic.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : report tat
+@app.route('/report-tat')
+def report_tat():
+    log.info(Logs.fileline() + ' : TRACE report tat')
+
+    test_session()
+
+    session['current_page'] = 'report-tat'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load analysis type
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['type_ana'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+
+    return render_template('report-tat.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report dhis2

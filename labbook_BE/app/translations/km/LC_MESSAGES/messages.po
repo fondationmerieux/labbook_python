@@ -12,11 +12,11 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
 "Language-Team: km <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: models/File.py:483
 msgid "DUPLICATA"
@@ -2164,10 +2164,6 @@ msgstr "អ្នកជំនាញផ្នែកគុណភាព"
 #: translations/messages_pybabel.py:566 translations/messages_pybabel.py:2306
 msgid "Secrétaire"
 msgstr "លេខាធិការ"
-
-#: translations/messages_pybabel.py:567
-msgid "Secretaire avancée"
-msgstr ""
 
 #: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305
 msgid "Technicien"
@@ -6984,7 +6980,8 @@ msgid "Zone thérapeutique : 0.5 à 1.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2309
-msgid "Secrétaire avancée"
+#, fuzzy
+msgid "Secrétaire avancé"
 msgstr "លេខាធិការជាន់ខ្ពស់"
 
 #: translations/messages_pybabel.py:2312
@@ -7558,4 +7555,7 @@ msgstr "តម្លៃទិញ"
 #: translations/messages_pybabel.py:2464
 msgid "Nom du bailleur"
 msgstr "ឈ្មោះអ្នកផ្តល់មូលនិធិ"
+
+#~ msgid "Secretaire avancée"
+#~ msgstr ""
 

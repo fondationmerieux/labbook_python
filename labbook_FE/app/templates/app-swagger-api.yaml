@@ -7,7 +7,7 @@ info:
   license:
     name: GPL-2.0
     url: https://github.com/fondationmerieux/labbook_python/blob/master/LICENSE.md
-  version: 3.2.1
+  version: 3.4.2
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
@@ -97,6 +97,513 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Analysis'
+  /external/record/det/0:
+    post:
+      tags:
+      - record
+      summary: Create a new record
+      operationId: RecordFromExt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_login:
+                  type: string
+                  required: true
+                user_pwd:
+                  type: string
+                  format: password
+                  required: true
+                record:
+                  type: object
+                  properties:
+                    rec_type:
+                      type: string
+                      description: |
+                        type of record \
+                        E = External \
+                        I = Internal
+                      enum:
+                      - E
+                      - I
+                      default: E
+                      required: true
+                    rec_date:
+                      type: string
+                      format: date
+                      description: date of receipt, (format YYYY-MM-DD)
+                      required: true
+                    rec_date_prescr:
+                      type: string
+                      format: date
+                      description: date of prescription, (format YYYY-MM-DD)
+                      required: true
+                    rec_num_int:
+                      type: string
+                      description: internal laboratory record number
+                      default: ""
+                    rec_custody:
+                      type: string
+                      description: request for custody, Yes / No
+                      enum:
+                      - Y
+                      - N
+                      default: N
+                    rec_comm:
+                      type: string
+                      description: comments on the record
+                      default: ""
+                    rec_parcel_id:
+                      type: string
+                      description: parcel identifier
+                      default: ""
+                    rec_parcel_date:
+                      type: string
+                      format: date-time
+                      description: datetime of receipt of parcel, (format YYYY-MM-DD HH:MM:SS)
+                      default: ""
+                    rec_invoice_discount:
+                      type: string
+                      description: discount on invoicing, Staff / Exemption / Other
+                      enum:
+                      - S
+                      - E
+                      - O
+                      default: ""
+                    rec_percent_discount:
+                      type: number
+                      format: double
+                      minimum: 0
+                      description: percentage of discount
+                      default: 0
+                    rec_insurance_cover:
+                      type: number
+                      format: double
+                      minimum: 0
+                      description: health insurance coverage
+                      default: 0
+                    rec_receipt_num:
+                      type: string
+                      description: invoice receipt number
+                      default: ""
+                    rec_date_hosp:
+                      type: string
+                      format: date
+                      description: date of admission, (format YYYY-MM-DD)
+                      default: ""
+                    rec_int_service:
+                      type: string
+                      description: requesting department
+                      default: ""
+                    rec_bed_num:
+                      type: integer
+                      description: bed number
+                      default: 0
+                    rec_hosp_num:
+                      type: string
+                      description: hospital identification
+                      default: ""
+                patient:
+                  type: object
+                  properties:
+                    pat_code:
+                      type: string
+                      description: unique LabBook code, if filled in then a match will be found in the database
+                      default: ""
+                    pat_code_lab:
+                      type: string
+                      description: code, if filled in then a match will be found in the database (after pat_code)
+                      default: ""
+                    pat_anonymous:
+                      type: string
+                      description: anonymous patient (names and gender will not be recorded), Yes / No
+                      enum:
+                      - Y
+                      - N
+                      default: N
+                    pat_name:
+                      type: string
+                      description: patient's name, name + firstname + sex + date of birth or age and age_unit will be used to search for a match.
+                      default: ""
+                    pat_middle_name:
+                      type: string
+                      description: patient's middle name
+                      default: ""
+                    pat_maiden_name:
+                      type: string
+                      description: patient's maiden name
+                      default: ""
+                    pat_firstname:
+                      type: string
+                      description: patient's firstname, name + firstname + sex + date of birth or age and age_unit will be used to search for a match.
+                      default: ""
+                    pat_sex:
+                      type: string
+                      description: patient's gender
+                      default: ""
+                    pat_birth:
+                      type: string
+                      format: date
+                      description: patient's date of birth (format YYYY-MM-DD), name + firstname + sex + date of birth or age and age_unit will be used to search for a match.
+                      default: ""
+                    pat_date_approx:
+                      type: string
+                      description: approximate date of birth, Yes / No
+                      enum:
+                      - Y
+                      - N
+                      default: N
+                    pat_age:
+                      type: integer
+                      description: patient's age, name + firstname + sex + date of birth or age and age_unit will be used to search for a match.
+                      default: 0
+                    pat_age_unit:
+                      type: string
+                      description: unit patient's age, Day / Week / Month / Year
+                      enum:
+                      - D
+                      - W
+                      - M
+                      - Y
+                      default: Y
+                    pat_address:
+                      type: string
+                      description: patient's address
+                      default: ""
+                    pat_pbox:
+                      type: string
+                      description: patient's P.O. box
+                      default: ""
+                    pat_area:
+                      type: string
+                      description: patient's area
+                      default: ""
+                    pat_zipcode:
+                      type: string
+                      description: patient's zipcode
+                      default: ""
+                    pat_city:
+                      type: string
+                      description: patient's city
+                      default: ""
+                    pat_phone1:
+                      type: string
+                      description: patient's phone 1
+                      default: ""
+                    pat_phone2:
+                      type: string
+                      description: patient's phone 2
+                      default: ""
+                    pat_job:
+                      type: string
+                      description: patient's job
+                      default: ""
+                    pat_nationality:
+                      type: string
+                      description: patient's nationality code
+                      default: ""
+                    pat_resident:
+                      type: string
+                      description: indicates if the patient is a resident, Yes / No
+                      enum:
+                      - Y
+                      - N
+                      default: Y
+                    pat_blood_group:
+                      type: string
+                      description: patient's blood group
+                      enum:
+                      - A
+                      - B
+                      - AB
+                      - O
+                      default: ""
+                    pat_blood_rhesus:
+                      type: string
+                      description: patient's blood rhesus
+                      enum:
+                      - +
+                      - -
+                      default: ""
+                prescriber:
+                  type: object
+                  properties:
+                    prescr_code:
+                      type: string
+                      description: prescriber's code, if filled in then a match will be found in the database
+                      default: ""
+                    prescr_title:
+                      type: string
+                      description: |
+                        prescriber's title
+                        MA = Madam \
+                        SI = Sir \
+                        MI = Miss \
+                        DO = Doctor \
+                        PR = Professor
+                      enum:
+                      - MA
+                      - SI 
+                      - MI
+                      - DO
+                      - PR
+                      default: ""
+                    prescr_name:
+                      type: string
+                      description: prescriber's name, name + firstname will be used to search for a match.
+                      default: ""
+                    prescr_firstname:
+                      type: string
+                      description: prescriber's firstname, name + firstname will be used to search for a match.
+                      default: ""
+                    prescr_initial:
+                      type: string
+                      description: prescriber's initials
+                      default: ""
+                    prescr_workplace:
+                      type: string
+                      description: prescriber's work place
+                      default: ""
+                    prescr_service:
+                      type: string
+                      description: prescriber's service
+                      default: ""
+                    prescr_address:
+                      type: string
+                      description: prescriber's address
+                      default: ""
+                    prescr_zipcode:
+                      type: string
+                      description: prescriber's zipcode
+                      default: ""
+                    prescr_city:
+                      type: string
+                      description: prescriber's city
+                      default: ""
+                    prescr_spe:
+                      type: string
+                      description: |
+                        prescriber's speciality \
+                        ALL = Allergist \
+                        ANDR = Andrologist \
+                        ANAT = Anatomopathologist \
+                        ANES = Anesthetist \
+                        CANC = Cancerlogist \
+                        CARD = Cardiologist \
+                        SURG = Surgeon \
+                        DERM = Dermatologist \
+                        ENDO = Endocrinologist \
+                        GAST = Gastroenterologist \
+                        GENE = Geneticist \
+                        GERA = Geriatrician \
+                        GYNE = Gynecologist \
+                        HEMA = Hematologist \
+                        INF = Infectiologist \
+                        GEN = General \
+                        EMER = Emergency \
+                        NUTR = Nutritionist \
+                        NEPH = Nephrologist \
+                        ONCO = Oncologist \
+                        OPHT = Ophthalmologist \
+                        OTO = Otorhinolaryngologist \
+                        PEDI = Pediatrician \
+                        CHPS = Child Psychiatrist \
+                        PSY = Psychiatrist \
+                        RADIO = Radiologist \
+                        RHEU = Rheumatologist \
+                        DENT = Dentist \
+                        UROL = Urologist \
+                        ORTH = Orthopedic \
+                        NURS = Nurse \
+                        MIDW = Midwife \
+                        PULM = Pulmonologist \
+                        INT = Internal
+                      enum:
+                      - ALL    # Allergist
+                      - ANDR   # Andrologist
+                      - ANAT   # Anatomopathologist
+                      - ANES   # Anesthetist
+                      - CANC   # Cancerlogist
+                      - CARD   # Cardiologist
+                      - SURG   # Surgeon
+                      - DERM   # Dermatologist
+                      - ENDO   # Endocrinologist
+                      - GAST   # Gastroenterologist
+                      - GENE   # Geneticist
+                      - GERA   # Geriatrician
+                      - GYNE   # Gynecologist
+                      - HEMA   # Hematologist
+                      - INF    # Infectiologist
+                      - GEN    # General
+                      - EMER   # Emergency
+                      - NUTR   # Nutritionist
+                      - NEPH   # Nephrologist
+                      - ONCO   # Oncologist
+                      - OPHT   # Ophthalmologist
+                      - OTO    # Otorhinolaryngologist
+                      - PEDI   # Pediatrician
+                      - CHPS   # Child Psychiatrist
+                      - PSY    # Psychiatrist
+                      - RADIO  # Radiologist
+                      - RHEU   # Rheumatologist
+                      - DENT   # Dentist
+                      - UROL   # Urologist
+                      - ORTH   # Orthopedic
+                      - NURS   # Nurse
+                      - MIDW   # Midwife
+                      - PULM   # Pulmonologist
+                      - INT    # Internal
+                      default: ""
+                    prescr_phone:
+                      type: string
+                      description: prescriber's fix phone number
+                      default: ""
+                    prescr_mobile:
+                      type: string
+                      description: prescriber's mobile phone number
+                      default: ""
+                    prescr_fax:
+                      type: string
+                      description: prescriber's fax
+                      default: ""
+                    prescr_email:
+                      type: string
+                      description: prescriber's email
+                      default: ""
+                ana_list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ana_code:
+                        type: string
+                        description: analysis code
+                        exemple: "B001"
+                        default: ""
+                        required: true
+                      ana_emer:
+                        type: string
+                        description: emergency analysis states, Yes / No.
+                        enum:
+                        - Y
+                        - N
+                        default: N
+                      ana_req:
+                        type: string
+                        description: requested analysis states, Yes / No.
+                        enum:
+                        - Y
+                        - N
+                        default: Y
+                      ana_out:
+                        type: string
+                        description: outsourced analysis states, Yes / No.
+                        enum:
+                        - Y
+                        - N
+                        default: N
+                samp_list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      samp_ana:
+                        type: string
+                        description: analysis code
+                        exemple: "B001"
+                        default: ""
+                      samp_date:
+                        type: string
+                        format: date-time
+                        description: datetime of sampling, (format YYYY-MM-DD HH:MM:SS)
+                        default: ""
+                      samp_date_receipt:
+                        type: string
+                        format: date-time
+                        description: datetime of receipt sample, (format YYYY-MM-DD HH:MM:SS)
+                        default: ""
+                      samp_type:
+                        type: string
+                        description: |
+                          type of sample \
+                          APF  = Alveolar puncture fluid \
+                          APFL = Ascites puncture fluid \
+                          BAL  = Bronchoalveolar lavage \
+                          BIO  = Biopsy \
+                          BLD  = Blood \
+                          BPF  = Bronchial Puncture Fluid \
+                          CSF  = Cerebrospinal fluid \
+                          DW   = Drinking water \
+                          GS   = Genital swab \
+                          JPFL = Joint Puncture Fluid \
+                          OTH  = Other \
+                          PPF  = Pleural puncture fluid \
+                          PS   = Pus sampling \
+                          SPUT = Sputum \
+                          STL  = Stool \
+                          SW   = Surface water \
+                          TS   = Throat swab \
+                          URN  = Urine \
+                          US   = Urethral swab \
+                          VS   = Vaginal swab \
+                          WW   = Wastewater
+                        enum:
+                        - APF   # Alveolar puncture fluid
+                        - APFL  # Ascites puncture fluid
+                        - BAL   # Bronchoalveolar lavage
+                        - BIO   # Biopsy
+                        - BLD   # Blood
+                        - BPF   # Bronchial Puncture Fluid
+                        - CSF   # Cerebrospinal fluid
+                        - DW    # Drinking water
+                        - GS    # Genital swab
+                        - JPFL  # Joint Puncture Fluid
+                        - OTH   # Other
+                        - PPF   # Pleural puncture fluid
+                        - PS    # Pus sampling
+                        - SPUT  # Sputum
+                        - STL   # Stool
+                        - SW    # Surface water
+                        - TS    # Throat swab
+                        - URN   # Urine
+                        - US    # Urethral swab
+                        - VS    # Vaginal swab
+                        - WW    # Wastewater
+                        default: ""
+                      samp_status:
+                        type: string
+                        description: |
+                          sample status \
+                          D = Done \
+                          T = To do \
+                          P = Provided
+                        enum:
+                        - D
+                        - T
+                        - P
+                        default: "T"
+                      samp_code:
+                        type: string
+                        description: sample's code
+                        default: ""
+                      samp_name:
+                        type: string
+                        description: sampler name
+                        default: ""
+                      samp_comm:
+                        type: string
+                        description: comment
+                        default: ""
+      responses:
+        200:
+          description: successful operation, return id record created
+          content:
+            application/json:
+              schema:
+                type: integer
   /patient/list:
     post:
       tags:
@@ -204,6 +711,21 @@ paths:
                   type: string
                 role:
                   type: string
+                  description: |
+                    role type \
+                    A = Admin \
+                    B = Biologist \
+                    T = Technician \
+                    TA = Advanced technician \
+                    TQ = Qualitician technician \
+                    S = Secretary \
+                    SA = Advanced secretary \
+                    Q = Qualitician \
+                    P = Prescriber \
+                    K = Stock manager \
+                    L = Laboratory \
+                    Z = Personnal
+                    API = API
                   enum:
                   - A
                   - B
@@ -214,6 +736,10 @@ paths:
                   - SA
                   - Q
                   - P
+                  - K
+                  - L
+                  - Z
+                  - API
       responses:
         200:
           description: successful operation
@@ -308,18 +834,6 @@ components:
           type: integer
         pat_blood_rhesus:
           type: integer
-        role_type:
-          type: string
-          enum:
-          - A
-          - B
-          - T
-          - TA
-          - TQ
-          - S
-          - SA
-          - Q
-          - P
     Record:
       type: object
       properties:
@@ -353,7 +867,7 @@ components:
           type: string
         rec_parcel_date:
           type: string
-          format: datetime
+          format: date-time
         rc:
           type: string
         colis:
@@ -458,4 +972,33 @@ components:
           type: integer
         role_type:
           type: string
+          description: |
+            role type \
+            A = Admin \
+            B = Biologist \
+            T = Technician \
+            TA = Advanced technician \
+            TQ = Qualitician technician \
+            S = Secretary \
+            SA = Advanced secretary \
+            Q = Qualitician \
+            P = Prescriber \
+            K = Stock manager \
+            L = Laboratory \
+            Z = Personnal
+            API = API
+          enum:
+          - A
+          - B
+          - T
+          - TA
+          - TQ
+          - S
+          - SA
+          - Q
+          - P
+          - K
+          - L
+          - Z
+          - API
 

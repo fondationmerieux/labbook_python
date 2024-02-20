@@ -97,6 +97,43 @@ class Doctor:
         return cursor.fetchone()
 
     @staticmethod
+    def getDoctorByCode(code):
+        cursor = DB.cursor()
+
+        if not code:
+            return {}
+
+        req = ('select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '
+               'doctor.prenom as prenom, doctor.doc_zipcity, doctor.ville as ville, doctor.etablissement as facility, '
+               'doctor.specialite as specialite, doctor.tel as tel, doctor.email as email, doctor.titre as titre,'
+               'doctor.initiale as initiale, doctor.service as service, doctor.adresse as adresse, '
+               'doctor.mobile as mobile, doctor.fax as fax, dico.label as spe_doctor '
+               'from sigl_08_data as doctor '
+               'left join sigl_dico_data as dico on dico.id_data = doctor.specialite '
+               'where doctor.code=%s')
+
+        cursor.execute(req, (code,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getDoctorByIdentity(name, firstname):
+        cursor = DB.cursor()
+
+        req = ('select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '
+               'doctor.prenom as prenom, doctor.doc_zipcity, doctor.ville as ville, doctor.etablissement as facility, '
+               'doctor.specialite as specialite, doctor.tel as tel, doctor.email as email, doctor.titre as titre,'
+               'doctor.initiale as initiale, doctor.service as service, doctor.adresse as adresse, '
+               'doctor.mobile as mobile, doctor.fax as fax, dico.label as spe_doctor '
+               'from sigl_08_data as doctor '
+               'left join sigl_dico_data as dico on dico.id_data = doctor.specialite '
+               'where doctor.nom=%s and doctor.prenom=%s')
+
+        cursor.execute(req, (name, firstname))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertDoctor(**params):
         try:
             cursor = DB.cursor()

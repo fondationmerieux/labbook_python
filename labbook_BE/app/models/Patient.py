@@ -120,6 +120,72 @@ class Patient:
         return cursor.fetchone()
 
     @staticmethod
+    def getPatientByCode(code, code_lab):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if code:
+            cond = 'code="' + str(code) + '"'
+        elif code_lab:
+            cond = 'code_patient="' + str(code_lab) + '"'
+
+        if not cond:
+            return {}
+
+        req = ('select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, '
+               'adresse, cp, ville, tel, pat_phone2, profession, '
+               'nom_jf, quartier, bp, ddn_approx, age, unite, '
+               'pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus '
+               'from sigl_03_data '
+               'where ' + cond)
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getPatientByIdentity(name, fname, sex, birth, age, age_unit):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if sex == 'M':
+            sex = 1
+        elif sex == 'F':
+            sex = 2
+        else:
+            sex = 3
+
+        if birth:
+            cond = ' and ddn="' + str(birth) + '"'
+        else:
+            if age_unit == 'D':
+                age_unit = 1034
+            elif age_unit == 'M':
+                age_unit = 1035
+            elif age_unit == 'W':
+                age_unit = 1036
+            else:
+                age_unit = 1037
+
+            cond = ' and age=' + str(age) + ' and unite=' + str(age_unit)
+
+        if not cond:
+            return {}
+
+        req = ('select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, '
+               'adresse, cp, ville, tel, pat_phone2, profession, '
+               'nom_jf, quartier, bp, ddn_approx, age, unite, '
+               'pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus '
+               'from sigl_03_data '
+               'where nom=%s and prenom=%s and sexe=%s ' + cond)
+
+        cursor.execute(req, (name, fname, sex))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def updatePatient(**params):
         try:
             cursor = DB.cursor()

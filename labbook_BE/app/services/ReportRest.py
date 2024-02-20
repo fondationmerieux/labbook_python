@@ -5,7 +5,7 @@ import os
 import csv
 import json
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import request
 from flask_restful import Resource
 
@@ -351,6 +351,75 @@ class ReportStat(Resource):
         return compose_ret(stat, Constants.cst_content_type_json)
 
 
+class ReportTAT(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args or 'type_ana' not in args or 'id_ana' not in args or \
+           'code_pat' not in args:
+            self.log.error(Logs.fileline() + ' : ReportTAT ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_TAT = Report.getTAT(date_beg=args['date_beg'],
+                              date_end=args['date_end'],
+                              type_ana=args['type_ana'],
+                              id_ana=args['id_ana'],
+                              code_pat=args['code_pat'])
+
+        if not l_TAT:
+            self.log.error(Logs.fileline() + ' : TRACE TAT not found')
+
+        nb_tat = 0
+
+        for data in l_TAT:
+            for key, value in list(data.items()):
+                if data[key] is None:
+                    data[key] = ''
+
+            date_save = ''
+            date_vld  = ''
+
+            if data['rec_date']:
+                data['rec_date'] = datetime.strftime(data['rec_date'], Constants.cst_date_eu)
+            else:
+                data['rec_date'] = ''
+
+            if data['rec_date_save']:
+                data['rec_date_save'] = datetime.strftime(data['rec_date_save'], Constants.cst_dt_HM)
+                date_save = datetime.strptime(data['rec_date_save'], Constants.cst_dt_HM)
+            else:
+                data['rec_date_save'] = ''
+
+            if data['rec_date_vld']:
+                data['rec_date_vld'] = datetime.strftime(data['rec_date_vld'], Constants.cst_dt_HM)
+                date_vld = datetime.strptime(data['rec_date_vld'], Constants.cst_dt_HM)
+            else:
+                data['rec_date_vld'] = ''
+
+            total_tat = timedelta()
+
+            # TAT calculation
+            if date_save and date_vld:
+                diff_date = date_vld - date_save
+                data['tat_days']  = diff_date.days
+                data['tat_hours'], remain = divmod(diff_date.seconds, 3600)
+                data['tat_mins'], sec = divmod(remain, 60)
+
+                nb_tat += 1
+
+                total_tat = total_tat + diff_date / nb_tat
+
+            if total_tat:
+                data['tot_days']  = total_tat.days
+                data['tot_hours'], remain = divmod(total_tat.seconds, 3600)
+                data['tot_mins'], sec = divmod(remain, 60)
+
+        self.log.info(Logs.fileline() + ' : TRACE ReportTAT')
+        return compose_ret(l_TAT, Constants.cst_content_type_json)
+
+
 class ReportBilling(Resource):
     log = logging.getLogger('log_services')
 
@@ -412,7 +481,7 @@ class ReportToday(Resource):
                     data[key] = _(data[key].strip())
 
             if data['rec_date']:
-                data['rec_date'] = datetime.strftime(data['rec_date'], '%Y-%m-%d')
+                data['rec_date'] = datetime.strftime(data['rec_date'], Constants.cst_isodate)
             else:
                 data['rec_date'] = ''
 
@@ -462,7 +531,7 @@ class ReportTodayExport(Resource):
 
         # write csv file
         try:
-            today = datetime.now().strftime("%Y%m%d")
+            today = datetime.now().strftime(Constants.cst_date_ymd)
 
             filename = 'report_today_' + str(today) + '.csv'
 

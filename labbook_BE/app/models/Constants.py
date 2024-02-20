@@ -48,6 +48,8 @@ class Constants:
     cst_user_inactive = 'D'
     cst_user_deleted  = 'X'
 
+    cst_user_type_api = 'API'
+
     cst_filedata_report     = 'data_template_report'
     cst_filedata_sticker    = 'data_template_sticker'
     cst_filedata_outsourced = 'data_template_outsourced'

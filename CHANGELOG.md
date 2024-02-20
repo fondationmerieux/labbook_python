@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.4.2] - 2024-02-20
+### Added
+- Turn Around Time report
+- Numerical results can be converted into another unit. Enter the conversion formula in the analysis repository. 
+(Example if you want multiply the value by 1000, write : $ * 1000)
+- New type of profile for api access
+- Possibility to create a new record via API
+
+### Changed
+- new text and logos in contributors page
+
+### Fixed
+- the display of min and max values can be forced for technical and biological validation
+
 ## [3.4.1] - 2024-01-11
 ### Added
 - new filter AGE for DHIS2 (see documentation dhis2.md) 

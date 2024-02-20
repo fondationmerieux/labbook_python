@@ -492,7 +492,7 @@ class Report:
                                 i = i + 1
                         elif cat.startswith('AGE['):
                             idx_age_beg = cat.find('[')
-                            idx_age_mid = cat.find(',')
+                            idx_age_mid = cat.find('-')
                             idx_age_end = cat.find(']')
 
                             age_min = cat[idx_age_beg + 1:idx_age_mid]
@@ -700,6 +700,13 @@ class Report:
                                         age_max = 150
 
                                 i = i + 1
+                        elif cat.startswith('AGE['):
+                            idx_age_beg = cat.find('[')
+                            idx_age_mid = cat.find('-')
+                            idx_age_end = cat.find(']')
+
+                            age_min = cat[idx_age_beg + 1:idx_age_mid]
+                            age_max = cat[idx_age_mid + 1:idx_age_end]
                         else:
                             Report.log.error('ERROR CAT unknown cat=' + str(cat))
 
@@ -781,12 +788,12 @@ class Report:
                     dict_name = str(dict_var[idx_beg:idx_end])
                     code      = str(dict_var[idx_end + 1:len(dict_var) - 1])
 
-                    # Report.log.error('dict_name=' + dict_name)
-                    # Report.log.error('code=' + code)
+                    # Report.log.info('dict_name=' + dict_name)
+                    # Report.log.info('code=' + code)
 
             id_val = Report.getIdValueForFormula(dict_name, code)
 
-            # Report.log.error('id_val=' + str(id_val))
+            # Report.log.info('id_val=' + str(id_val))
 
             if id_val:
                 res = id_val['id_data']
@@ -795,3 +802,36 @@ class Report:
                                  ' for getIdValueForFormula(' + str(dict_name) + ', ' + str(code) + ')')
 
         return res
+
+    @staticmethod
+    def getTAT(date_beg, date_end, type_ana, id_ana, code_pat):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if id_ana:
+            cond += ' and req.ref_analyse=' + str(id_ana) + ' '
+        elif type_ana:
+            cond += ' and fam.id_data=' + str(type_ana) + ' '
+
+        if code_pat:
+            cond += ' and (pat.code like "' + str(code_pat) + '%" or pat.code_patient like "' + str(code_pat) + '%") '
+
+        req = ('select rec.rec_date_save, rec.rec_date_vld, rec.rec_num_int, rec.id_data as rec_id, rec.type as rec_type, '
+               'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
+               'rec.num_dos_mois), if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) '
+               'as rec_num, if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as rec_num_long, '
+               'rec.date_dos as rec_date, pat.nom as pat_name, pat.prenom as pat_firstname, pat.code as pat_code, '
+               'pat.code_patient as pat_code_lab, ana.nom as ana_name, ana.code as ana_code '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
+               'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse '
+               'left join sigl_dico_data as fam on fam.id_data = ana.famille '
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
+               'where (rec.date_dos between %s and %s) and ana.cote_unite != "PB" and rec.statut=256 ' + cond +
+               'order by rec.id_data desc')
+
+        cursor.execute(req, (date_beg, date_end,))
+
+        return cursor.fetchall()

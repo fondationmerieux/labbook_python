@@ -499,14 +499,35 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         let res_label  = data[i].libelle ;
         let res_unit   = data[i].unit ;
         let res_limit  = "" ;
+        let res_outsrc = "" ;
         let value      = data[i].res_label ;
         let res_reset  = '' ;
         let res_cancel = '' ;
         let res_type   = data[i].type_resultat ;
+        let show_minmax= data[i].var_show_minmax ;
+        let minmax     = "" ;
+        let conv2_val  = "" ;
 
             /* result of type labeled */
             if ( res_type == 265 )
             res_label = '<b>' + res_label + '</b>' ;
+
+            if ( show_minmax == 'Y' )
+            {
+            let val_min = "" ;
+            let val_max = "" ;
+
+               if (data[i].normal_min != "")
+               val_min = data[i].normal_min ;
+
+               if (data[i].normal_max != "")
+               val_max = data[i].normal_max ;
+
+               if (data[i].normal_min != "" && data[i].normal_max != "")
+               val_max = " - " + val_max ;
+
+            minmax = "<span class=\"xs-text\">[" + val_min + val_max + "]</span>" ;
+            }
 
             if ( data[i].normal_min != "" && data[i].normal_max != "" && value != "" )
             {
@@ -521,11 +542,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             // outsourced icon
             if (data[i].outsourced == "Y")
             {
-            res_limit += "<span title=\"{{ _("Sous-traitée") }}\"><i class=\"bi bi-building-gear fs-5 color-T\"></i></span>" ;
+            res_outsrc = "<span title=\"{{ _("Sous-traitée") }}\"><i class=\"bi bi-building-gear fs-5 color-T\"></i></span>" ;
             }
 
         res += "<tr>" +
-               "<td class=\"col-lg-1\">" + res_limit + "</td>" +
+               "<td class=\"col-lg-1\"><div class=\"d-flex flex-column\">" + res_limit + minmax + "</div>" +  res_outsrc + "</td>" +
                "<td class=\"col-lg-1 text-center\">" + res_emer + "</td>" +
                "<td class=\"text-center\">" + res_stat +
                "</td>" +
@@ -550,7 +571,20 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
         /* Display the value */
         if ( value != "" )
-        res += "<span>" + value + "</span><input id=\"res_" + id_res + "\" class=\"res-" + id_rec + "-" + ref_ana + "\" type=\"hidden\" value=\"" + data[i].valeur + "\"><span class=\"unit show ms-1\">" + res_unit + "</span>" ;
+        {
+            // Convert formula
+            if (data[i].formule_unite2 != "")
+            {
+            console.log("DEBUG formule_unite2 not empty") ;
+
+            conv2_val = conv_val( data[i].formule_unite2,  data[i].precision2, value) ;
+
+                if ( conv2_val != "") 
+                conv2_val = conv2_val + ' ' + data[i].unit2 ;
+            }
+
+        res += "<div class=\"d-flex flex-column\"><span>" + value + " " + res_unit + "</span><span id=\"conv2_" + id_res + "\" class=\"mt-1\">" + conv2_val + "</span></div><input id=\"res_" + id_res + "\" class=\"res-" + id_rec + "-" + ref_ana + "\" type=\"hidden\" value=\"" + data[i].valeur + "\">" ;
+        }
         /* Value canceled, we display the reason */
         else if ( res_valid == 252 )
         {

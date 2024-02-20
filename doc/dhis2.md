@@ -56,9 +56,9 @@ selects the analyses where one of the results does not correspond to the indicat
 CAT(SEX_M) : Selects the analyses in the records concerning male patients
 CAT(SEX_F) : Selects the analyses in the records concerning female patients
 CAT(AGE_1) : Selects the analyses in the records concerning the patients whose age is in the interval 1 (see age ranges settings in menu Settings => Age ranges)
-CAT(AGE[0,5]) : Selects the analyses in the records concerning the patients whose age is between 0 to 5 years old both included
+CAT(AGE[0-5]) : Selects the analyses in the records concerning the patients whose age is between 0 to 5 years old both included
 CAT(SEX_M,AGE_2) : Selects the analyses in the records concerning male patients and whose age is in the interval 2
-CAT(SEX_F,AGE[18,65]) : Selects the analyses in the records concerning female patients and whose age is between 18 and 65 years old both included
+CAT(SEX_F,AGE[18-65]) : Selects the analyses in the records concerning female patients and whose age is between 18 and 65 years old both included
 
 ON('CODE_OF_ANALYSIS1','CODE_OF_ANALYSIS2',...) : Selects the analyses whose code corresponds to this list 
 

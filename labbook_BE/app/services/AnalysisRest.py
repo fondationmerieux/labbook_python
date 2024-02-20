@@ -371,9 +371,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2='',  # var['var_formula2'],
-                                                     unit2=0,      # var['var_unit2'],
-                                                     accu2=0)      # var['var_accu2'])
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
@@ -423,9 +423,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2='',  # var['var_formula2'],
-                                                     unit2=0,      # var['var_unit2'],
-                                                     accu2=0)      # var['var_accu2'])
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
@@ -499,9 +499,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2='',  # var['var_formula2'],
-                                                     unit2=0,      # var['var_unit2'],
-                                                     accu2=0)      # var['var_accu2'])
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
@@ -536,9 +536,9 @@ class AnalysisDet(Resource):
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
                                                      accu=var['var_accu'],
-                                                     formula2='',  # var['var_formula2'],
-                                                     unit2=0,      # var['var_unit2'],
-                                                     accu2=0)      # var['var_accu2'])
+                                                     formula2=var['var_formula2'],
+                                                     unit2=var['var_unit2'],
+                                                     accu2=var['var_accu2'])
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
@@ -756,10 +756,10 @@ class AnalysisReq(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         if args['price'] > 0:
-            ret = Record.updateRecordBill(args['id_rec'], args['price'], args['price'])
+            ret = Record.removeRecordBill(args['id_rec'], args['price'], args['price'])
 
             if not ret:
-                self.log.error(Logs.fileline() + ' : TRACE AnalysisReq updateRecordBill ERROR')
+                self.log.error(Logs.fileline() + ' : TRACE AnalysisReq removeRecordBill ERROR')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Analysis.deleteAnalysisReq(id_req, args['id_rec'], args['id_ana'], args['type_samp'])
@@ -1164,6 +1164,8 @@ class AnalysisImport(Resource):
                     else:
                         var_show_minmax = 'N'
 
+                    # TODO re-add formula2, unit2, accu2
+
                     ret = Analysis.exist(code, test)
 
                     if ret == -1:
@@ -1331,6 +1333,8 @@ class AnalysisImport(Resource):
                         var_show_minmax = row[35]
                     else:
                         var_show_minmax = 'N'
+                        
+                    # TODO re-add formula2, unit2, accu2
 
                     ret = Analysis.exist(code, test)
 

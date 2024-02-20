@@ -143,6 +143,21 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
+    def getAnalysisByCode(code):
+        cursor = DB.cursor()
+
+        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
+               'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet '
+               'from sigl_05_data as ana '
+               'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
+               'where ana.code=%s')
+
+        cursor.execute(req, (code,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertAnalysis(**params):
         try:
             if 'test' in params and params['test'] == 'Y':

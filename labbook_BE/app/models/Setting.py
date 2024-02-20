@@ -345,7 +345,7 @@ class Setting:
                    'from sigl_user_data '
                    'inner join sigl_pj_role as d_role on d_role.type=role_type '
                    'left join functionnal_unit_link on ful_ref=id_data and ful_type="U" and ful_fun=%s '
-                   'where role_type != "A" '
+                   'where role_type not in("A","Z","API") '
                    'order by ful_fun desc, lastname asc, firstname asc')
         elif type == 'F':
             req = ('select id_data as id_fam, label, ifnull(ful_fun, 0) as ful_fun '

@@ -168,17 +168,15 @@ function check_min_max(id_res, min, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( (min != '' && val < parseFloat(min+0.00000001)) || (max != '' && val > parseFloat(max-0.00000001)) )
+    if ( (min != '' && val <= parseFloat(min-0.00000001)) || (max != '' && val >= parseFloat(max+0.00000001)) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
-        //$("#res_"+id_res).addClass('error') ;
     }
     else
     {
         $("#limit_"+id_res).addClass('d-none') ;
         $("#limit_"+id_res).removeClass('show') ;
-        //$("#res_"+id_res).removeClass('error') ;
     }
 }
 
@@ -186,17 +184,15 @@ function check_min(id_res, min)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( min != '' && val < parseFloat(min+0.00000001) )
+    if ( min != '' && val <= parseFloat(min-0.00000001) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
-        //$("#res_"+id_res).addClass('error') ;
     }
     else
     {
         $("#limit_"+id_res).addClass('d-none') ;
         $("#limit_"+id_res).removeClass('show') ;
-        //$("#res_"+id_res).removeClass('error') ;
     }
 }
 
@@ -204,17 +200,15 @@ function check_max(id_res, max)
 {
 let val = $( "#res_"+id_res ).val() ;
 
-    if ( max != '' && val > parseFloat(max-0.00000001) )
+    if ( max != '' && val >= parseFloat(max+0.00000001) )
     {
         $("#limit_"+id_res).addClass('show') ;
         $("#limit_"+id_res).removeClass('d-none') ;
-        //$("#res_"+id_res).addClass('error') ;
     }
     else
     {
         $("#limit_"+id_res).addClass('d-none') ;
         $("#limit_"+id_res).removeClass('show') ;
-        //$("#res_"+id_res).removeClass('error') ;
     }
 }
 
@@ -281,6 +275,11 @@ param_list_answer += ' ] }' ;
     return false;
     }
 
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    // UPDATE value
     $.ajax( 
     {
         type: "POST",
@@ -294,6 +293,8 @@ param_list_answer += ' ] }' ;
         },
         error: function(data)
         {
+            $("#dial-wait").modal("hide") ;
+
         console.log("ERROR result list") ;
         alert("{{ _("Une erreur est survenue lors de l'enregistrement des valeurs saisies") }}") ;
         }
@@ -321,9 +322,11 @@ function check_change( id_rec, ref_ana, id_res )
 let new_value = $("#res_"+id_res).val() ;
 
 new_value = new_value.trim() ;
+ori_value = new_value ;                              
 
 var regex_exp = /^[-0-9]*\^([0-9]+)$/ ;
 
+    // Value to be transformed into scientific notation
     if ( new_value.match(regex_exp) )
     {
     var pos_exp = new_value.indexOf("^") ;
@@ -332,53 +335,53 @@ var regex_exp = /^[-0-9]*\^([0-9]+)$/ ;
     var exp_val = new_value.substr(pos_exp + 1, len_val) ;
     var exp_str = "" ;
 
-        for (let i = 0; i < exp_val.length; i++)
-        {
-        tmp_exp = exp_val.substr(i, i+1) ;
+    for (let i = 0; i < exp_val.length; i++)
+    {
+    tmp_exp = exp_val.substr(i, i+1) ;
 
-            if ( tmp_exp == 0 )
-            {
-            exp_str += String.fromCharCode(0x2070) ;
-            }
-            else if ( tmp_exp == 1 )
-            {
-            exp_str += String.fromCharCode(0x00B9) ;
-            }
-            else if ( tmp_exp == 2 )
-            {
-            exp_str += String.fromCharCode(0x00B2) ;
-            }
-            else if ( tmp_exp == 3 )
-            {
-            exp_str += String.fromCharCode(0x00B3) ;
-            }
-            else if ( tmp_exp == 4 )
-            {
-            exp_str += String.fromCharCode(0x2074) ;
-            }
-            else if ( tmp_exp == 5 )
-            {
-            exp_str += String.fromCharCode(0x2075) ;
-            }
-            else if ( tmp_exp == 6 )
-            {
-            exp_str += String.fromCharCode(0x2076) ;
-            }
-            else if ( tmp_exp == 7 )
-            {
-            exp_str += String.fromCharCode(0x2077) ;
-            }
-            else if ( tmp_exp == 8 )
-            {
-            exp_str += String.fromCharCode(0x2078) ;
-            }
-            else if ( tmp_exp == 9 )
-            {
-            exp_str += String.fromCharCode(0x2079) ;
-            }
-            else
-            new_value = new_value ;
+        if ( tmp_exp == 0 )
+        {
+        exp_str += String.fromCharCode(0x2070) ;
         }
+        else if ( tmp_exp == 1 )
+        {
+        exp_str += String.fromCharCode(0x00B9) ;
+        }
+        else if ( tmp_exp == 2 )
+        {
+        exp_str += String.fromCharCode(0x00B2) ;
+        }
+        else if ( tmp_exp == 3 )
+        {
+        exp_str += String.fromCharCode(0x00B3) ;
+        }
+        else if ( tmp_exp == 4 )
+        {
+        exp_str += String.fromCharCode(0x2074) ;
+        }
+        else if ( tmp_exp == 5 )
+        {
+        exp_str += String.fromCharCode(0x2075) ;
+        }
+        else if ( tmp_exp == 6 )
+        {
+        exp_str += String.fromCharCode(0x2076) ;
+        }
+        else if ( tmp_exp == 7 )
+        {
+        exp_str += String.fromCharCode(0x2077) ;
+        }
+        else if ( tmp_exp == 8 )
+        {
+        exp_str += String.fromCharCode(0x2078) ;
+        }
+        else if ( tmp_exp == 9 )
+        {
+        exp_str += String.fromCharCode(0x2079) ;
+        }
+        else
+        new_value = new_value ;
+    }
 
     new_value = num_val + exp_str ;
 
@@ -396,6 +399,33 @@ let old_value = $("#old_res_"+id_res).val() ;
     else
     $("#span_valid_"+id_rec+"_"+ref_ana).addClass('d-lg-flex') ;
 
+let unit2    = $("#unit2_"+id_res).val() ;
+let formula2 = $("#formula2_"+id_res).val() ;
+let accu2    = $("#accu2_"+id_res).val() ;
+
+    // convert and display value into unit2
+    if ( unit2 && formula2 && ori_value != "" )
+    {
+    ori_value = ori_value.replace("^", "e"); 
+    ori_value = ori_value.replace(",", ".");
+
+    let regex_number = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?/ ;
+
+        if ( ori_value.match(regex_number) )
+        {
+        conv2_value = conv_val( formula2, accu2, ori_value ) ;
+
+            if ( conv2_value == "")
+            $("#conv2_"+id_res).addClass("d-none") ;
+            else
+            {
+            $("#conv2_"+id_res).removeClass("d-none") ;
+            $("#conv2_"+id_res).html( conv2_value + ' ' + unit2 ) ;
+            }
+        }
+    }
+    else
+    $("#conv2_"+id_res).addClass("d-none") ;
 }
 
 function save_valid( id_rec, ref_ana )
@@ -422,7 +452,9 @@ let param_list_valid = '{ "list_valid":[ ' ;
 
 param_list_valid += ' ] }' ;
 
-//console.log("DEBUG save_valid param_list_valid = " + JSON.stringify(param_list_valid)) ;
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
 
     // result to validate
     $.ajax( 
@@ -434,10 +466,14 @@ param_list_valid += ' ] }' ;
         data: param_list_valid,
         success: function(data)
         {
+            $("#dial-wait").modal("hide") ;
+
         filter_result() ; // refresh page with filter parameters
         },
         error: function(data)
         {
+            $("#dial-wait").modal("hide") ;
+
         console.log("ERROR result valid") ;
         alert("{{ _("Une erreur est survenue lors de validation technique des valeurs saisies") }}") ;
         }
@@ -559,7 +595,10 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         let res_type   = data[i].type_resultat ;
         let type_input = 'type="text"' ;
         let res_accu   = data[i].accuracy ;
+        let res_accu2  = data[i].precision2 ;
         let show_minmax= data[i].var_show_minmax ;
+        let minmax     = "" ;
+        let conv2_val  = "" ;
 
             // Default accuracy for real or calc number
             if ( res_accu == 0 && (res_type== 228 || res_type== 229) )
@@ -574,18 +613,33 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             let ico_limit = "d-none" ;
 
                 if ( show_minmax == 'Y' )
-                ico_limit = "show" ;
-                else if ( value < parseFloat(data[i].normal_min) && value != "" )
+                {
+                let val_min = "" ;
+                let val_max = "" ;
+
+                   if (data[i].normal_min != "")
+                   val_min = data[i].normal_min ;
+
+                   if (data[i].normal_max != "")
+                   val_max = data[i].normal_max ;
+
+                   if (data[i].normal_min != "" && data[i].normal_max != "")
+                   val_max = " - " + val_max ;
+
+                minmax = "<span class=\"xs-text\">[" + val_min + val_max + "]</span>" ;
+                }
+
+                if ( value < parseFloat(data[i].normal_min) && value != "" )
                 ico_limit = "show" ;
                 else if ( value > parseFloat(data[i].normal_max) && value != "" )
                 ico_limit = "show" ;
 
                 if (data[i].normal_max == "")
-                res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>=" + data[i].normal_min + "&nbsp;]\"></span>" ;
+                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>=" + data[i].normal_min + "&nbsp;]\"></span>" + minmax +"<div>" ;
                 else if (data[i].normal_min == "")
-                res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<=" + data[i].normal_max + "&nbsp;]\"></span>" ;
+                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<=" + data[i].normal_max + "&nbsp;]\"></span>" + minmax +"<div>" ;
                 else
-                res_limit = "<span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" ;
+                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" + minmax +"<div>" ;
             }
 
             // outsourced icon
@@ -667,11 +721,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 if ( value != "" && res_valid == 250 )
                 disp_valid = "show d-lg-flex" ;
 
-                if ( show_minmax == 'N' && data[i].normal_min != "" && data[i].normal_max != "" )
+                if ( data[i].normal_min != "" && data[i].normal_max != "" )
                 change += 'check_min_max(' + id_res + ', ' + data[i].normal_min + ', ' + data[i].normal_max + ');' ;
-                else if ( show_minmax == 'N' && data[i].normal_min != "" && data[i].normal_max == "" )
+                else if ( data[i].normal_min != "" && data[i].normal_max == "" )
                 change += 'check_min(' + id_res + ', ' + data[i].normal_min + ');' ;
-                else if ( show_minmax == 'N' && data[i].normal_min == "" && data[i].normal_max != "" )
+                else if ( data[i].normal_min == "" && data[i].normal_max != "" )
                 change += 'check_max(' + id_res + ', ' + data[i].normal_max + ');' ;
 
                 // Num var
@@ -681,21 +735,34 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
                 res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
 
-                    {# 02/01/2023 : Deactivate because useless for the moment
-                    // Convert formula
+                    // Convert with formule_unite2
                     if (data[i].formule_unite2 != "")
                     {
                     res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
-                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
+                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unit2 + '">' ;
+                    res += '<input type="hidden" id="accu2_' + id_res + '" value="' + res_accu2 + '">' ;
                     }
-                    #}
                 }
                 else
                 change += '"' ;
 
                 // Validated
                 if (res_valid != 250)
+                {
                 change = 'disabled' ;
+
+                    // Convert formula
+                    if (data[i].formule_unite2 != "")
+                    {
+                    console.log("DEBUG formule_unite2 not empty") ;
+
+                    conv2_val = conv_val( data[i].formule_unite2, data[i].accu2, value) ;
+
+                        if ( conv2_val != "") 
+                        conv2_val = conv2_val + ' ' + data[i].unit2 ;
+                    }
+
+                }
 
             /* 22/02/2023 : deactivate because it prevents writing results with exponent
             if ( res_type== 227 )
@@ -711,14 +778,12 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             }
             */
 
-            res += '<input id="res_' + id_res + '" ' + type_input + ' value="' + value + '" class="form-control form-lbk saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6">' ;
-            res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
-            {# 02/01/2023 : Deactivate because useless for the moment
-            res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
-            #}
+            res += '<div class="d-flex flex-column"><input id="res_' + id_res + '" ' + type_input + ' value="' + value + '" class="form-control form-lbk saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6"><span id="conv2_' + id_res + '" class="mt-1">' + conv2_val + '</span></div>' ;
+            res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ;
             res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
             res += '<input type="hidden" id="res_type_' + id_res + '" value="' + res_type + '">' ;
             res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ;
+            res += '<input type="hidden" id="accu2_' + id_res + '" value="' + res_accu2 + '">' ;
             res += '<input type="hidden" id="type_res_' + id_res + '" value="W">' ;
             res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
             }
@@ -738,22 +803,19 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     if (data[i].formule != "")
                     res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
 
-                    {# 02/01/2023 : Deactivate because useless for the moment
                     // Convert formula
                     if (data[i].formule_unite2 != "")
                     {
-                    res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
-                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unite2 + '">' ; // unite2
-                    }
-                    #}
+                    conv2_val = conv_val( data[i].formule_unite2, res_accu2, value) ;
 
-                res += '<input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control form-lbk bg-readonly saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6">' ;
-                res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ; // unite
+                        if ( conv2_val != "") 
+                        conv2_val = conv2_val + ' ' + data[i].unit2 ;
+                    }
+
+                res += '<div class="d-flex flex-column"><input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control form-lbk bg-readonly saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6"><span id="conv2_' + id_res + '" class="mt-1">' + conv2_val + '</span></div>' ;
+                res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ;
                 res += '<input type="hidden" id="res_type_' + id_res + '" value="' + res_type + '">' ;
-                res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ; // precision
-                {# 02/01/2023 : Deactivate because useless for the moment
-                res += '<input type="hidden" id="res2_' + id_res + '" value="">' ; // value for formula_unite2
-                #}
+                res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ;
                 res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
                 }
                 else
@@ -898,7 +960,7 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
-    $("#dial-wait").modal( "show" ) ;
+    $("#dial-wait").modal("show") ;
 
     $.ajax( 
     {

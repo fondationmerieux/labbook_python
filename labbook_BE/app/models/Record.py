@@ -312,7 +312,7 @@ class Record:
             return False
 
     @staticmethod
-    def updateRecordBill(id_rec, diff_price, diff_remain):
+    def removeRecordBill(id_rec, diff_price, diff_remain):
         try:
             cursor = DB.cursor()
 
@@ -321,6 +321,24 @@ class Record:
                    'where id_data=%s')
 
             cursor.execute(req, (diff_price, diff_remain, id_rec,))
+
+            Record.log.info(Logs.fileline() + ' : removeRecordBill id_rec=' + str(id_rec))
+
+            return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def updateRecordBill(id_rec, price, remain):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update sigl_02_data '
+                   'set prix = %s, a_payer = %s '
+                   'where id_data=%s')
+
+            cursor.execute(req, (price, remain, id_rec,))
 
             Record.log.info(Logs.fileline() + ' : updateRecordBill id_rec=' + str(id_rec))
 
@@ -525,7 +543,7 @@ class Record:
                'where date_dos between %s and %s '
                'order by id_record desc')
 
-        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()
 

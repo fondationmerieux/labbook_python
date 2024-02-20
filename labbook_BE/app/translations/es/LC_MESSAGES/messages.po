@@ -12,11 +12,11 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: models/File.py:483
 msgid "DUPLICATA"
@@ -2164,10 +2164,6 @@ msgstr "Responsable de calidad"
 #: translations/messages_pybabel.py:566 translations/messages_pybabel.py:2306
 msgid "Secrétaire"
 msgstr "Secretario"
-
-#: translations/messages_pybabel.py:567
-msgid "Secretaire avancée"
-msgstr "Secretaria avanzada"
 
 #: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305
 msgid "Technicien"
@@ -6984,7 +6980,8 @@ msgid "Zone thérapeutique : 0.5 à 1.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2309
-msgid "Secrétaire avancée"
+#, fuzzy
+msgid "Secrétaire avancé"
 msgstr "Secretaria avanzada"
 
 #: translations/messages_pybabel.py:2312
@@ -7558,4 +7555,7 @@ msgstr "Precio de compra"
 #: translations/messages_pybabel.py:2464
 msgid "Nom du bailleur"
 msgstr "Nombre del donante"
+
+#~ msgid "Secretaire avancée"
+#~ msgstr "Secretaria avanzada"
 

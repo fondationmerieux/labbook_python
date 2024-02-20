@@ -115,8 +115,8 @@ role            : string (max 10 characters)
 ## Zip code and city
 List of columns and theirs types of datas
 
-zip_code  : string
-city_name : string
+zip_code  : string (max 10 char.)
+city_name : string (max 40 char.)
 
 
 > Note :

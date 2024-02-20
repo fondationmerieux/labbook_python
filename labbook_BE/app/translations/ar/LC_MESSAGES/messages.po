@@ -13,11 +13,11 @@ msgstr ""
 "Language: ar\n"
 "Language-Team: ar <LL@li.org>\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
-"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5);\n"
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: models/File.py:483
 msgid "DUPLICATA"
@@ -2165,10 +2165,6 @@ msgstr "الجودة"
 #: translations/messages_pybabel.py:566 translations/messages_pybabel.py:2306
 msgid "Secrétaire"
 msgstr "سكرتير"
-
-#: translations/messages_pybabel.py:567
-msgid "Secretaire avancée"
-msgstr ""
 
 #: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2305
 msgid "Technicien"
@@ -6985,7 +6981,8 @@ msgid "Zone thérapeutique : 0.5 à 1.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2309
-msgid "Secrétaire avancée"
+#, fuzzy
+msgid "Secrétaire avancé"
 msgstr "سكرتير متقدم"
 
 #: translations/messages_pybabel.py:2312
@@ -7559,4 +7556,7 @@ msgstr "سعر الشراء"
 #: translations/messages_pybabel.py:2464
 msgid "Nom du bailleur"
 msgstr "اسم الممول"
+
+#~ msgid "Secretaire avancée"
+#~ msgstr ""
 

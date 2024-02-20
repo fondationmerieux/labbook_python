@@ -28,7 +28,8 @@
                     <div class="d-lg-flex justify-content-center">
                         <div class="col-lg-7 {% if locale == 'ar' %}me-auto ms-3{% else %}ms-auto me-3{% endif %}">
                         <p>{{ _("LabBook est un logiciel de gestion de laboratoire Opensource.") }}</p>
-                        <p>{{ _("LabBook est co-financé par l’AFD et la Fondation Mérieux.") }}</p>
+                        <p>{{ _("LabBook est co-financé par l'Agence Française de Développement (AFD) et la Fondation Mérieux.") }}</p>
+                        <p>{{ _("Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé (OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le projet est financé par la Banque allemande de développement (KFW) et contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO.") }}</p>
                         <p>{{ _("La société Epiconcept a développé le logiciel LabBook jusqu'en 2019.") }}<br />
                            {{ _("La société &AElig;GL&Eacute; a pris le relais à partir de 2020.") }}</p>
                         <p>© LabBook / Fondation Mérieux :<br>
@@ -43,6 +44,10 @@
                         <a href="https://www.afd.fr" onclick="window.open('https://www.afd.fr', 'afd'); return false;"><img src="{{ url_for('static', filename='img/afd.png') }}" alt="AFD"></a>
                         <br /><br />
                         <a href="https://www.fondation-merieux.org" onclick="window.open('https://www.fondation-merieux.org', 'fmx'); return false;"><img src="{{ url_for('static', filename='img/fmx.png') }}" alt="Fondation Mérieux"></a>
+                        <br /><br />
+                        <a href="https://www.wahooas.org/web-ooas/fr/photos-videos/launch-proalab-project" onclick="window.open('https://www.wahooas.org/web-ooas/fr/photos-videos/launch-proalab-project', 'proalab'); return false;"><img src="{{ url_for('static', filename='img/proalab.png') }}" alt="Proalab" width="150px"></a>
+                        <br /><br />
+                        <a href="https://www.wahooas.org/web-ooas/fr" onclick="window.open('https://www.wahooas.org/web-ooas/fr', 'ooas'); return false;"><img src="{{ url_for('static', filename='img/OOAS.png') }}" alt="OOAS" width="90px"></a>
                         <br /><br />
                         <a href="https://www.aegle.fr/" onclick="window.open('https://www.aegle.fr/', 'AEGLE'); return false;"><img src="{{ url_for('static', filename='img/aegle.png') }}" alt="AEGLE" width="180px"></a>
                     </div>

@@ -1,0 +1,478 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Rapport sur le temps de rendu du résultat") }}</title>
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport sur le temps de rendu du résultat") }}</span></h2>
+            <form autocomplete="off">
+                <fieldset class="border mx-1 p-2">
+                    <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
+                        <div class="form-group d-md-flex align-items-start ms-2">
+                            <label for="date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
+                            <div>
+                                <input id="date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                            </div>
+                            <label for="date_end" class="form-label text-end mt-2 mx-1">{{ _("au") }}</label>
+                            <div class="me-3">					
+                                <input id="date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                            </div>
+
+                            <div class="control-label ms-lg-3 mt-2 me-1">{{ _("Code patient") }}</div>
+                            <div>					
+                                <input type="text" name="code_pat" id="code_pat" value="" class="form-control form-lbk cnx_trigger">			
+                            </div>
+                        </div>
+
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <div class="control-label mt-2">{{ _("Type") }}</div>
+                            <div>
+                                <select name="type_ana" id="type_ana" class="form-select form-lbk ms-lg-1">
+                                    {% from 'macros.html' import select_type_ana %}
+                                    {{ select_type_ana(ihm['type_ana']) }}
+                                </select>       
+                            </div>
+
+                            <div class="control-label ms-lg-3 mt-2 me-1">{{ _("ou") }}</div>
+
+                            <div class="control-label ms-lg-1 mt-2 me-1">{{ _("Analyse") }}</div>
+                            <select id="search_analysis" class="ms-1 form-select form-lbk form-search" style="margin-top:8px;"></select>
+                        </div>
+
+                    <div class="offset-lg-5 col-lg-7 mt-2">
+                        <span id="name_ana"></span>
+                        <span id="id_ana" hidden>0</span>
+                    </div>
+
+                        <div class="float-end mt-2">
+                            <button type="button" onclick="filter_reset();return false;" id="btn_reset" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger me-3"><i class="bi bi-arrow-counterclockwise pe-1" /></i><span>{{ _("Réinitialiser") }}</span></button>
+                            <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1" /></i><span>{{ _("Rechercher") }}</span></button>
+                        </div>
+                </fieldset>
+            </form>
+
+            <form id="html_report">
+                <table class="table table-striped table-hover col-md-12 table-lbk mt-3">
+                    <thead>
+                        <th></th>
+                        <th class="text-center">{{ _("Réception dossier") }}</th>
+                        <th class="text-center">{{ _("N° dossier") }}</th>
+                        <th class="text-center">{{ _("Patient") }}</th>
+                        <th class="text-center">{{ _("Analyse") }}</th>
+                        <th class="text-center">{{ _("Temps de rendu du résultat") }}</th>
+                    </thead>
+                    <tbody id="tbody_tat"></tbody>
+                </table>
+                <div>{{ _("Moyenne des temps de rendu du résultat") }} : <span id="tat_avg"></span></div>
+            </form>
+
+            <div class="float-end mt-3 mb-5">
+                <input type="button" onclick="export_tat();" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _("Export") }}">
+                <input type="button" onclick="download_report();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+var data_tat = {% if args['tat'] %}{{ args['tat']|safe }}{% else %}[]{% endif %} ;
+
+$("#search_analysis").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/analysis/search/A",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_analysis").text(),
+        data: function (params) {
+            return JSON.stringify(
+            {
+                term: params.term,
+                link_fam: {{ session['user_link_fam'] or [] }}
+            } ) ;
+        },
+        processResults: function (data) {
+            return {
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
+        }
+    },
+    templateResult: formatRepoAnalysis
+} ) ;
+
+function formatRepoAnalysis(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ;
+
+var name = "" ;
+
+    if (repo.name)
+    name += repo.name ;
+
+var cat = "" ;
+
+    if (repo.label)
+    cat += repo.label ;
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__code'><b>" + code + "</b></div>" +
+            "<div class='select2-result-repository__name'>" + name + "</div>" +
+            "<div class='select2-result-repository__category'>" + cat + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+$("#search_analysis").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val() ;
+
+let data_search = $("#search_analysis").select2('data') ;
+
+$("#name_ana").text( data_search[0].name ) ;
+$("#id_ana").text( id_item ) ;
+
+$("#search_analysis").empty() ;
+} ) ;
+
+return display ;
+}
+
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
+function filter_reset()
+{
+$("#date_beg").val( "{{ now|date_now }}" ) ;
+$("#date_end").val( "{{ now|date_now }}" ) ;
+
+$("#code_pat").val("") ;
+$("#type_ana").val(0);
+$("#name_ana").text("") ;
+$("#id_ana").text(0) ;
+}
+
+function filter_data()
+{
+let date_beg  = $("#date_beg").val() ;
+let date_end  = $("#date_end").val() ;
+let type_ana  = $("#type_ana").val() ;
+let id_ana    = $("#id_ana").text()  ;
+let code_pat  = $("#code_pat").val() ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
+            '"type_ana":' + type_ana  + ', ' +
+            '"id_ana":' + id_ana  + ', ' +
+            '"code_pat":"' + code_pat  + '"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/report/tat",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(data)
+        {
+        data_tat = data ;
+
+        display_data() ;
+
+            $("#dial-wait").modal("hide") ;
+        },
+        error: function(data)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        console.log("ERROR report stat") ;
+        alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+        }
+    } ) ;
+}
+
+function display_data()
+{
+    $("#tbody_tat").empty() ;
+
+let data_len = data_tat.length ;
+let res      = '' ;
+let tat_avg  = '' ;
+
+    if (data_len <= 0)
+    {
+        let res = '<tr><td colspan="6">{{ _("Aucune donnée à afficher") }}</td></tr>' ;
+
+    $("#tbody_tat").append( res ) ;
+    }
+    else
+    {
+        for( i = 0; i < data_len; i++ )
+        {
+        let menu_act = '<nav>' +
+                       '<ul class="navbar-nav">' +
+                       '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
+                       '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                       '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_tat[i].rec_type + '/' + data_tat[i].rec_id + '">{{ _("Dossier administratif") }}</a>' ;
+
+        menu_act += '</div></li></ul></nav>' ;
+
+        rec_date = data_tat[i].rec_date ;
+
+        num_int = '' ;
+
+            if (data_tat[i].rec_num_int != "")
+            num_int = '<p style="color: black">' + data_tat[i].rec_num_int + '</p>' ;
+
+        rec_num  = '<span class="rec-num" title="' + data_tat[i].rec_num_long + '">' + data_tat[i].rec_num + num_int + '</span>' ;
+
+        patient = '' ;
+
+            if (data_tat[i].pat_name != "")
+            patient += data_tat[i].pat_name + ' ' ;
+
+            if (data_tat[i].pat_firstname != "")
+            patient += data_tat[i].pat_firstname ;
+
+        code_pat = '<p>' ;
+
+            if (data_tat[i].pat_code != "")
+            code_pat += data_tat[i].pat_code ;
+
+            if (code_pat != '<p>' && data_tat[i].pat_code_lab != "")
+            code_pat += ' / '
+
+            if (data_tat[i].pat_code_lab != "")
+            code_pat += data_tat[i].pat_code_lab ;
+
+            if (code_pat != '<p>')
+            code_pat += '</p>' ;
+            else
+            code_pat = '' ;
+
+        analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
+        tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }}' ;
+
+        res += '<tr><td class="nav_cell">' + menu_act + '</td>' +
+               '<td class="text-center">' + rec_date + '</td>' +
+               '<td class="text-center">' + rec_num + '</td>' +
+               '<td class="text-center">' + patient + code_pat + '</td>' +
+               '<td class="text-center">' + analysis + '</td>' +
+               '<td class="text-center">' + tat + '</td></tr>' ;
+
+        tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }}' ;
+        }
+    $("#tbody_tat").append(res) ;
+
+    $("#tat_avg").html( tat_avg ) ;
+    }
+}
+
+function export_tat()
+{
+let csv_tat = '"{{ _("Réception dossier") }}";"{{ _("N° dossier") }}";"{{ _("Patient") }}";"{{ _("Analyse") }}";"{{ _("Temps de rendu du résultat") }}"\n' ;
+
+let data_len = data_tat.length ;
+
+    if (data_len <= 0)
+    return false ;
+    
+    // build csv data
+    for( i = 0; i < data_len; i++ )
+    {
+    rec_date = data_tat[i].rec_date ;
+
+    rec_num  = data_tat[i].rec_num ;
+
+        if (data_tat[i].rec_num_int != "")
+        rec_num += ' / ' + data_tat[i].rec_num_int ;
+
+    patient = '' ;
+
+        if (data_tat[i].pat_name != "")
+        patient += data_tat[i].pat_name + ' ' ;
+
+        if (data_tat[i].pat_firstname != "")
+        patient += data_tat[i].pat_firstname ;
+
+    code_pat = ' | ' ;
+
+        if (data_tat[i].pat_code != "")
+        code_pat += data_tat[i].pat_code ;
+
+        if (code_pat != ' | ' && data_tat[i].pat_code_lab != "")
+        code_pat += ' / '
+
+        if (data_tat[i].pat_code_lab != "")
+        code_pat += data_tat[i].pat_code_lab ;
+
+        if (code_pat == ' | ')
+        code_pat = '' ;
+
+    analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
+    tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }}' ;
+
+    csv_tat += rec_date + ';"' + rec_num + '";"' + patient + code_pat + '";"' + analysis + '";"' + tat + '"\n' ;
+
+    //tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }}' ;
+    }
+
+csv_tat = JSON.stringify(csv_tat) ;
+
+let today = new Date();
+
+let month = today.getMonth() + 1 ;
+
+    if (month < 10) month = '0' + month ;
+
+let day = today.getDate() ;
+
+    if (day < 10) day = '0' + day ;
+
+today = today.getFullYear() + '' + month + '' + day ;
+
+var filename = "TAT_" + today + ".csv" ;
+
+var param = '{ "filename":"' + filename + '", ' +
+              '"csv_str":' + csv_tat + '}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/export/csv",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function download_report()
+{
+// hide nav menu before to export
+var nav_cells = document.querySelectorAll('.nav_cell');
+
+    nav_cells.forEach(function(nav_cell) 
+    {
+    var navElement = nav_cell.querySelector('nav');
+
+        if (navElement) 
+        navElement.style.display = 'none';
+    } ) ;
+
+var html_report = JSON.stringify($("#html_report")[0].outerHTML) ;
+html_report = html_report.replaceAll("border:0", "border:1px solid #000") ;
+
+var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
+              '"filename": "TAT"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+        
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "TAT_" + today + ".pdf" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+
+    // unhide nav menu before to export
+    nav_cells.forEach(function(nav_cell) 
+    {
+    var navElement = nav_cell.querySelector('nav');
+
+        if (navElement) 
+        navElement.style.display = '';
+    } ) ;
+}
+
+$(".cnx_trigger").keyup( function(event) 
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+$( document ).ready( function()
+{
+$("#date_beg").val( "{{ now|date_now }}" ) ;
+$("#date_end").val( "{{ now|date_now }}" ) ;
+} ) ;
+</script>
+{% endblock %}

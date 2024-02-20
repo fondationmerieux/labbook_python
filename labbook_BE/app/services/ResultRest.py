@@ -136,6 +136,14 @@ class ResultList(Resource):
                 if unit and unit['label']:
                     result['unit'] = unit['label']
 
+            # Get unit2 label
+            if result['unite2']:
+                unit2 = Various.getDicoById(result['unite2'])
+
+                # get short_label (without prefix "dico_") in type_res
+                if unit2 and unit2['label']:
+                    result['unit2'] = unit2['label']
+
             if result['type_resultat']:
                 type_res = Various.getDicoById(result['type_resultat'])
 
