@@ -28,7 +28,7 @@
     </style>
 </head>
 
-{% if debug == 1 or session['user_role'] == 'A' %}
+{% if debug == 1 or session['user_role'] in ('A','API') %}
 <body>
     <div id="swagger-ui"></div>
     
