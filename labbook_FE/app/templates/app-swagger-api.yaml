@@ -103,6 +103,8 @@ paths:
       - record
       summary: Create a new record
       operationId: RecordFromExt
+      security:
+      - BasicAuth: []
       requestBody:
         required: true
         content:
@@ -110,13 +112,6 @@ paths:
             schema:
               type: object
               properties:
-                user_login:
-                  type: string
-                  required: true
-                user_pwd:
-                  type: string
-                  format: password
-                  required: true
                 record:
                   type: object
                   properties:
@@ -750,6 +745,10 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
 components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
   schemas:
     Analysis:
       type: object

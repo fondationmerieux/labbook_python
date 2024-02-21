@@ -315,21 +315,24 @@ class RecordDetFromExt(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, id_rec=0):
+        auth = request.authorization
+
+        if not auth:
+            self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR auth missing')
+            err = {"error": "Authentification required"}
+            return compose_ret(err, Constants.cst_content_type_json, 401)
+
+        login = auth.username 
+        pwd   = auth.password
+
         args = request.get_json()
 
         self.log.info(Logs.fileline() + ' : DEBUG args= ' + str(args))
-
-        if 'user_login' not in args or 'user_pwd' not in args:
-            self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR args missing')
-            err = {"error": "user_login or user_pwd missing"}
-            return compose_ret(err, Constants.cst_content_type_json, 400)
 
         if 'patient' not in args or 'record' not in args or 'ana_list' not in args:
             self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR args missing')
             err = {"error": "patient, record or ana_list missing"}
             return compose_ret(err, Constants.cst_content_type_json, 400)
-
-        login = args['user_login']
 
         user = User.getUserByLogin(login)
 
@@ -341,7 +344,7 @@ class RecordDetFromExt(Resource):
         salt_start = user['password'].find(":")
         salt = user['password'][salt_start + 1:]
 
-        pwd_db = User.getPasswordDB(args['user_pwd'], salt)
+        pwd_db = User.getPasswordDB(pwd, salt)
 
         ret = User.checkUserAccess(login, pwd_db)
 
