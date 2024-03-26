@@ -942,7 +942,7 @@ class ControlExtResExport(Resource):
                 data.append(eqp_name)
 
                 if d['cte_date']:
-                    data.append(datetime.strftime(d['cte_date'], '%Y-%m-%d %H:%M'))
+                    data.append(datetime.strftime(d['cte_date'], Constants.cst_dt_HM))
                 else:
                     data.append('')
 
@@ -997,6 +997,16 @@ class EquipmentList(Resource):
                 elif key == 'section' and item[key]:
                     item[key] = _(item[key].strip())
 
+            # load photo of equipment
+            l_doc = File.getFileDocList('EQPH', item['id_data'])
+
+            if l_doc:
+                photo = File.getFileData(l_doc[0]['id_data'])
+
+                if photo:
+                    item['photo_name'] = photo['original_name']
+                    item['photo_url']  = "resource/photo/" + photo['path'] + str(photo['generated_name'])
+
         self.log.info(Logs.fileline() + ' : TRACE EquipmentList')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
@@ -1031,6 +1041,7 @@ class EquipmentDet(Resource):
             if item[key] is None:
                 item[key] = ''
 
+        """
         l_lic = Quality.getListComment(id_item, 'E', 'B')
 
         if l_lic:
@@ -1046,19 +1057,19 @@ class EquipmentDet(Resource):
             item['maintenance'] = []
 
         if item['date_endcontract']:
-            item['date_endcontract'] = datetime.strftime(item['date_endcontract'], '%Y-%m-%d')
+            item['date_endcontract'] = datetime.strftime(item['date_endcontract'], Constants.cst_isodate)"""
 
         if item['date_receipt']:
-            item['date_receipt'] = datetime.strftime(item['date_receipt'], '%Y-%m-%d')
+            item['date_receipt'] = datetime.strftime(item['date_receipt'], Constants.cst_isodate)
 
         if item['date_buy']:
-            item['date_buy'] = datetime.strftime(item['date_buy'], '%Y-%m-%d')
+            item['date_buy'] = datetime.strftime(item['date_buy'], Constants.cst_isodate)
 
         if item['date_onduty']:
-            item['date_onduty'] = datetime.strftime(item['date_onduty'], '%Y-%m-%d')
+            item['date_onduty'] = datetime.strftime(item['date_onduty'], Constants.cst_isodate)
 
         if item['date_revoc']:
-            item['date_revoc'] = datetime.strftime(item['date_revoc'], '%Y-%m-%d')
+            item['date_revoc'] = datetime.strftime(item['date_revoc'], Constants.cst_isodate)
 
         self.log.info(Logs.fileline() + ' : EquipmentDet id_item=' + str(id_item))
         return compose_ret(item, Constants.cst_content_type_json, 200)
@@ -1066,17 +1077,17 @@ class EquipmentDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        if 'id_owner' not in args or 'id_item' not in args or 'name' not in args or 'maker' not in args or 'model' not in args or \
-           'funct' not in args or 'location' not in args or 'section' not in args or 'supplier' not in args or \
-           'serial' not in args or 'inventory' not in args or 'incharge' not in args or 'manual' not in args or  \
-           'procedur' not in args or 'breakdown' not in args or 'maintenance' not in args or 'calibration' not in args or \
-           'contract' not in args or 'date_endcontract' not in args or 'date_receipt' not in args or 'date_buy' not in args or \
-           'date_onduty' not in args or 'date_revoc' not in args or 'comment' not in args:
+        if 'id_owner' not in args or 'id_item' not in args or 'name' not in args or 'maker' not in args or \
+           'model' not in args or 'funct' not in args or 'location' not in args or 'section' not in args or \
+           'supplier' not in args or 'serial' not in args or 'inventory' not in args or 'incharge' not in args or \
+           'date_receipt' not in args or 'date_buy' not in args or 'date_onduty' not in args or \
+           'date_revoc' not in args or 'comment' not in args or 'critical' not in args:
             self.log.error(Logs.fileline() + ' : EquipmentDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
         if id_item > 0:
+            """
             if args['breakdown']:
                 ret = Quality.insertListComment(lic_ref=id_item,
                                                 lic_type='E',
@@ -1097,7 +1108,7 @@ class EquipmentDet(Resource):
 
                 if not ret:
                     self.log.error(Logs.alert() + ' : EquipmentDet ERROR insert list comment maintenance')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
+                    return compose_ret('', Constants.cst_content_type_json, 500)"""
 
             ret = Quality.updateEquipment(id_data=id_item,
                                           id_owner=args['id_owner'],
@@ -1111,15 +1122,16 @@ class EquipmentDet(Resource):
                                           serial=args['serial'],
                                           inventory=args['inventory'],
                                           incharge=args['incharge'],
-                                          manual=args['manual'],
-                                          procedur=args['procedur'],
-                                          calibration=args['calibration'],
-                                          contract=args['contract'],
-                                          date_endcontract=args['date_endcontract'],
+                                          # manual=args['manual'],
+                                          # procedur=args['procedur'],
+                                          # calibration=args['calibration'],
+                                          # contract=args['contract'],
+                                          # date_endcontract=args['date_endcontract'],
                                           date_receipt=args['date_receipt'],
                                           date_buy=args['date_buy'],
                                           date_onduty=args['date_onduty'],
                                           date_revoc=args['date_revoc'],
+                                          critical=args['critical'],
                                           comment=args['comment'])
 
             if ret is False:
@@ -1139,15 +1151,16 @@ class EquipmentDet(Resource):
                                           serial=args['serial'],
                                           inventory=args['inventory'],
                                           incharge=args['incharge'],
-                                          manual=args['manual'],
-                                          procedur=args['procedur'],
-                                          calibration=args['calibration'],
-                                          contract=args['contract'],
-                                          date_endcontract=args['date_endcontract'],
+                                          # manual=args['manual'],
+                                          # procedur=args['procedur'],
+                                          # calibration=args['calibration'],
+                                          # contract=args['contract'],
+                                          # date_endcontract=args['date_endcontract'],
                                           date_receipt=args['date_receipt'],
                                           date_buy=args['date_buy'],
                                           date_onduty=args['date_onduty'],
                                           date_revoc=args['date_revoc'],
+                                          critical=args['critical'],
                                           comment=args['comment'])
 
             if ret <= 0:
@@ -1156,6 +1169,7 @@ class EquipmentDet(Resource):
 
             id_item = ret
 
+            """
             if args['breakdown']:
                 ret = Quality.insertListComment(lic_ref=id_item,
                                                 lic_type='E',
@@ -1176,7 +1190,7 @@ class EquipmentDet(Resource):
 
                 if not ret:
                     self.log.error(Logs.alert() + ' : EquipmentDet ERROR insert list comment maintenance')
-                    return compose_ret('', Constants.cst_content_type_json, 500)
+                    return compose_ret('', Constants.cst_content_type_json, 500)"""
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentDet id_item=' + str(id_item))
         return compose_ret(id_item, Constants.cst_content_type_json)
@@ -1188,7 +1202,140 @@ class EquipmentDet(Resource):
             self.log.error(Logs.fileline() + ' : TRACE EquipmentDet delete ERROR')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
+        ret = Quality.deleteEqpPreventive(id_item, True)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EquipmentDet Preventive delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        ret = Quality.deleteEqpContract(id_item, True)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EquipmentDet Contract delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        ret = Quality.deleteEqpFailure(id_item, True)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EquipmentDet Failure delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        ret = Quality.deleteEqpMetrology(id_item, True)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EquipmentDet Metrology delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
         self.log.info(Logs.fileline() + ' : TRACE EquipmentDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EquipmentComm(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type, id_eqp):
+        comm = Quality.getEquipmentComm(type, id_eqp)
+
+        if not comm:
+            self.log.error(Logs.fileline() + ' : TRACE EquipmentComm not found')
+
+        for key, value in list(comm.items()):
+            if comm[key] is None:
+                comm[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE EquipmentComm')
+        return compose_ret(comm, Constants.cst_content_type_json)
+
+    def post(self, type, id_eqp):
+        args = request.get_json()
+
+        if 'comm' not in args:
+            self.log.error(Logs.fileline() + ' : EquipmentComm ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.updateEquipmentComm(type, id_eqp, args['comm'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : EquipmentComm ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE EquipmentComm id_eqp=' + str(id_eqp))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpDoc(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, type, id_eqp):
+        l_items = Quality.getEquipmentDoc(type, id_eqp)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE EqpDoc not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpDoc')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+    def post(self, id_eqp):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'l_MANU' not in args or 'l_PROC' not in args:
+            self.log.error(Logs.fileline() + ' : EqpDoc ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_exist_MANU = []
+        l_exist_PROC = []
+
+        for MANU in args['l_MANU']:
+            if MANU['id_eqd'] == 0:
+                ret = Quality.insertEquipmentDoc(args['id_user'], id_eqp, 'MANU', MANU['id_MANU'])
+
+                if not ret:
+                    self.log.error(Logs.alert() + ' : EqpDoc ERROR insert doc MANU')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+                else:
+                    l_exist_MANU.append(ret)
+            else:
+                l_exist_MANU.append(MANU['id_eqd'])
+
+        for PROC in args['l_PROC']:
+            if PROC['id_eqd'] == 0:
+                ret = Quality.insertEquipmentDoc(args['id_user'], id_eqp, 'PROC', PROC['id_PROC'])
+
+                if not ret:
+                    self.log.error(Logs.alert() + ' : EqpDoc ERROR insert doc PROC')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+                else:
+                    l_exist_PROC.append(ret)
+            else:
+                l_exist_PROC.append(PROC['id_eqd'])
+
+        # --- Delete entry for missing doc ---
+        l_MANU = Quality.getEquipmentDoc('MANU', id_eqp)
+        l_PROC = Quality.getEquipmentDoc('PROC', id_eqp)
+
+        for MANU in l_MANU:
+            if MANU['eqd_ser'] not in l_exist_MANU:
+                ret = Quality.deleteEquipmentDoc(MANU['eqd_ser'])
+
+                if not ret:
+                    self.log.error(Logs.fileline() + ' : TRACE EqpDoc MANU delete ERROR')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        for PROC in l_PROC:
+            if PROC['eqd_ser'] not in l_exist_PROC:
+                ret = Quality.deleteEquipmentDoc(PROC['eqd_ser'])
+
+                if not ret:
+                    self.log.error(Logs.fileline() + ' : TRACE EqpDoc PROC delete ERROR')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpDoc id_eqp=' + str(id_eqp))
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1196,8 +1343,10 @@ class EquipmentExport(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
-        l_data = [['id_data', 'name', 'maker', 'model', 'funct', 'location', 'section', ]]
-        dict_data = Quality.getEquipmentList()
+        l_data = [['id_data', 'creation_date', 'name', 'maker', 'model', 'funct', 'location', 'section', 'supplier',
+                   'serial_number', 'inventory_number', 'incharge', 'purchase_date', 'receipt_date', 'commissioning_date',
+                   'withdrawal_date', 'critical', 'comments']]
+        dict_data = Quality.getEquipmentListExport()
 
         Various.useLangDB()
 
@@ -1206,6 +1355,7 @@ class EquipmentExport(Resource):
                 data = []
 
                 data.append(d['id_data'])
+                data.append(d['creation_date'])
                 data.append(d['name'])
                 data.append(d['maker'])
                 data.append(d['model'])
@@ -1216,6 +1366,16 @@ class EquipmentExport(Resource):
                     data.append(_(section.strip()))
                 else:
                     data.append('')
+                data.append(d['supplier'])
+                data.append(d['serial_number'])
+                data.append(d['inventory_number'])
+                data.append(d['incharge'])
+                data.append(d['purchase_date'])
+                data.append(d['receipt_date'])
+                data.append(d['commissioning_date'])
+                data.append(d['withdrawal_date'])
+                data.append(d['eqp_critical'])
+                data.append(d['comments'])
 
                 l_data.append(data)
 
@@ -1241,6 +1401,592 @@ class EquipmentExport(Resource):
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportEquipment')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpFailureList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_eqp):
+        l_items = Quality.getEqpFailureList(id_eqp)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE EqpFailureList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['eqf_date']:
+                item['eqf_date'] = datetime.strftime(item['eqf_date'], Constants.cst_dt_HM)
+
+            # load doc of this failure or repair
+            item['l_doc'] = File.getFileDocList('EQBD', item['eqf_ser'])
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpFailureList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class EqpFailureExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_eqp):
+        eqp = Quality.getEquipment(id_eqp)
+
+        l_data = [['serial', 'date', 'equipment', 'type', 'incharge', 'supplier', 'comments']]
+        dict_data = Quality.getEqpFailureList(id_eqp)
+
+        Various.useLangDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['eqf_ser'])
+                data.append(d['eqf_date'])
+                data.append(eqp['name'])
+
+                if d['eqf_type'] == 'FAIL':
+                    data.append(_("Pannes"))
+                else:
+                    data.append(_("Réparations"))
+
+                data.append(d['incharge'])
+                data.append(d['supplier'])
+                data.append(d['eqf_comm'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'eqp_failure_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post EqpFailureExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpFailureExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpFailureDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'id_eqp' not in args or 'date_fail' not in args or 'type' not in args or \
+           'incharge' not in args or 'supplier' not in args or 'comment' not in args:
+            self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        """
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateEquipment(id_data=id_item,
+                                          id_owner=args['id_owner'],
+                                          name=args['name'],
+                                          maker=args['maker'],
+                                          model=args['model'],
+                                          funct=args['funct'],
+                                          location=args['location'],
+                                          section=args['section'],
+                                          supplier=args['supplier'],
+                                          serial=args['serial'],
+                                          inventory=args['inventory'],
+                                          incharge=args['incharge'],
+                                          # manual=args['manual'],
+                                          # procedur=args['procedur'],
+                                          # calibration=args['calibration'],
+                                          # contract=args['contract'],
+                                          # date_endcontract=args['date_endcontract'],
+                                          date_receipt=args['date_receipt'],
+                                          date_buy=args['date_buy'],
+                                          date_onduty=args['date_onduty'],
+                                          date_revoc=args['date_revoc'],
+                                          critical=args['critical'],
+                                          comment=args['comment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : EqpFailureDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+        """
+        ret = Quality.insertEqpFailure(id_user=args['id_user'],
+                                       date=args['date_fail'],
+                                       id_eqp=args['id_eqp'],
+                                       type=args['type'],
+                                       incharge=args['incharge'],
+                                       supplier=args['supplier'],
+                                       comm=args['comment'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : EqpFailureDet ERROR  insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpFailureDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteEqpFailure(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EqpFailureDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpFailureDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpMetrologyList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_eqp):
+        l_items = Quality.getEqpMetrologyList(id_eqp)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE EqpMetrologyList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['eqm_date']:
+                item['eqm_date'] = datetime.strftime(item['eqm_date'], Constants.cst_dt_HM)
+
+            # load doc of this metrology
+            item['l_doc'] = File.getFileDocList('EQCC', item['eqm_ser'])
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class EqpMetrologyExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_eqp):
+        eqp = Quality.getEquipment(id_eqp)
+
+        l_data = [['serial', 'date', 'equipment', 'supplier', 'comments']]
+        dict_data = Quality.getEqpMetrologyList(id_eqp)
+
+        Various.useLangDB()
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['eqm_ser'])
+                data.append(d['eqm_date'])
+                data.append(eqp['name'])
+                data.append(d['supplier'])
+                data.append(d['eqm_comm'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'eqp_metrology_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post EqpMetrologyExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpMetrologyDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'id_eqp' not in args or 'date_metr' not in args or 'supplier' not in args or \
+           'comment' not in args:
+            self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        """
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateEquipment(id_data=id_item,
+                                          id_owner=args['id_owner'],
+                                          name=args['name'],
+                                          maker=args['maker'],
+                                          model=args['model'],
+                                          funct=args['funct'],
+                                          location=args['location'],
+                                          section=args['section'],
+                                          supplier=args['supplier'],
+                                          serial=args['serial'],
+                                          inventory=args['inventory'],
+                                          incharge=args['incharge'],
+                                          # manual=args['manual'],
+                                          # procedur=args['procedur'],
+                                          # calibration=args['calibration'],
+                                          # contract=args['contract'],
+                                          # date_endcontract=args['date_endcontract'],
+                                          date_receipt=args['date_receipt'],
+                                          date_buy=args['date_buy'],
+                                          date_onduty=args['date_onduty'],
+                                          date_revoc=args['date_revoc'],
+                                          critical=args['critical'],
+                                          comment=args['comment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : EqpMetrologyDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+        """
+        ret = Quality.insertEqpMetrology(id_user=args['id_user'],
+                                         date=args['date_metr'],
+                                         id_eqp=args['id_eqp'],
+                                         supplier=args['supplier'],
+                                         comm=args['comment'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : EqpMetrologyDet ERROR  insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteEqpMetrology(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EqpMetrologyDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpPreventList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_eqp):
+        l_items = Quality.getEquipmentPreventiveList(id_eqp)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE EqpPreventList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['eqs_date']:
+                item['eqs_date'] = datetime.strftime(item['eqs_date'], Constants.cst_dt_HM)
+
+            # load doc of this metrology
+            item['l_doc'] = File.getFileDocList('EQPM', item['eqs_ser'])
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpPreventList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class EqpPreventExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_eqp):
+        eqp = Quality.getEquipment(id_eqp)
+
+        l_data = [['serial', 'date', 'equipment_name', 'operator', 'comments']]
+        dict_data = Quality.getEquipmentPreventiveList(id_eqp)
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['eqs_ser'])
+                data.append(d['eqs_date'])
+                data.append(eqp['name'])
+                data.append(d['operator'])
+                data.append(d['eqs_comm'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'eqp_preventive_maintenance_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post EqpPreventExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpPreventExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpPreventiveDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'id_eqp' not in args or 'date_prevent' not in args or \
+           'operator' not in args or 'comment' not in args:
+            self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        """
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateEquipment(id_data=id_item,
+                                          id_owner=args['id_owner'],
+                                          name=args['name'],
+                                          maker=args['maker'],
+                                          model=args['model'],
+                                          funct=args['funct'],
+                                          location=args['location'],
+                                          section=args['section'],
+                                          supplier=args['supplier'],
+                                          serial=args['serial'],
+                                          inventory=args['inventory'],
+                                          incharge=args['incharge'],
+                                          # manual=args['manual'],
+                                          # procedur=args['procedur'],
+                                          # calibration=args['calibration'],
+                                          # contract=args['contract'],
+                                          # date_endcontract=args['date_endcontract'],
+                                          date_receipt=args['date_receipt'],
+                                          date_buy=args['date_buy'],
+                                          date_onduty=args['date_onduty'],
+                                          date_revoc=args['date_revoc'],
+                                          critical=args['critical'],
+                                          comment=args['comment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : EqpPreventiveDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+        """
+        ret = Quality.insertEqpPreventive(id_user=args['id_user'],
+                                          date=args['date_prevent'],
+                                          id_eqp=args['id_eqp'],
+                                          operator=args['operator'],
+                                          comm=args['comment'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : EqpPreventiveDet ERROR  insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpPreventiveDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteEqpPreventive(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EqpPreventiveDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpPreventiveDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpContractList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_eqp):
+        l_items = Quality.getEquipmentContractList(id_eqp)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE EqpContractList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['eqc_date']:
+                item['eqc_date'] = datetime.strftime(item['eqc_date'], Constants.cst_dt_HM)
+
+            if item['eqc_date_upd']:
+                item['eqc_date_upd'] = datetime.strftime(item['eqc_date_upd'], Constants.cst_isodate)
+
+            # load doc of this metrology
+            item['l_doc'] = File.getFileDocList('EQMC', item['eqc_ser'])
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpContractList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class EqpContractExport(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_eqp):
+        eqp = Quality.getEquipment(id_eqp)
+
+        l_data = [['serial', 'date', 'equipment', 'supplier', 'update', 'comments']]
+        dict_data = Quality.getEquipmentContractList(id_eqp)
+
+        if dict_data:
+            for d in dict_data:
+                data = []
+
+                data.append(d['eqc_ser'])
+                data.append(d['eqc_date'])
+                data.append(eqp['name'])
+                data.append(d['supplier'])
+                data.append(d['eqc_date_upd'])
+                data.append(d['eqc_comm'])
+
+                l_data.append(data)
+
+        # if no result to export
+        if len(l_data) < 2:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # write csv file
+        try:
+            import csv
+
+            today = datetime.now().strftime("%Y%m%d")
+
+            filename = 'eqp_maintenance_contract_' + str(today) + '.csv'
+
+            with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=';')
+                for line in l_data:
+                    writer.writerow(line)
+
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : post EqpContractExport failed, err=%s', err)
+            return False
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpContractExport')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class EqpContractDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'id_eqp' not in args or 'date_contract' not in args or 'supplier' not in args or \
+           'date_upd' not in args or 'comment' not in args:
+            self.log.error(Logs.fileline() + ' : EqpContractDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        """
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateEquipment(id_data=id_item,
+                                          id_owner=args['id_owner'],
+                                          name=args['name'],
+                                          maker=args['maker'],
+                                          model=args['model'],
+                                          funct=args['funct'],
+                                          location=args['location'],
+                                          section=args['section'],
+                                          supplier=args['supplier'],
+                                          serial=args['serial'],
+                                          inventory=args['inventory'],
+                                          incharge=args['incharge'],
+                                          # manual=args['manual'],
+                                          # procedur=args['procedur'],
+                                          # calibration=args['calibration'],
+                                          # contract=args['contract'],
+                                          # date_endcontract=args['date_endcontract'],
+                                          date_receipt=args['date_receipt'],
+                                          date_buy=args['date_buy'],
+                                          date_onduty=args['date_onduty'],
+                                          date_revoc=args['date_revoc'],
+                                          critical=args['critical'],
+                                          comment=args['comment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : EqpContractDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+        """
+        ret = Quality.insertEqpContract(id_user=args['id_user'],
+                                        date=args['date_contract'],
+                                        id_eqp=args['id_eqp'],
+                                        supplier=args['supplier'],
+                                        date_upd=args['date_upd'],
+                                        comm=args['comment'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : EqpContractDet ERROR  insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpContractDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteEqpContract(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE EqpContractDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE EqpContractDet delete id_item=' + str(id_item))
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2886,6 +3632,9 @@ class TraceList(Resource):
             if item['trd_last_access']:
                 item['trd_last_access'] = datetime.strftime(item['trd_last_access'], '%Y-%m-%d %H:%M')
 
+            if item['doc_date']:
+                item['doc_date'] = datetime.strftime(item['doc_date'], '%Y-%m-%d %H:%M')
+
         self.log.info(Logs.fileline() + ' : TRACE TraceList')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
@@ -2908,6 +3657,9 @@ class TraceList(Resource):
 
             if item['trd_last_access']:
                 item['trd_last_access'] = datetime.strftime(item['trd_last_access'], '%Y-%m-%d %H:%M')
+
+            if item['doc_date']:
+                item['doc_date'] = datetime.strftime(item['doc_date'], '%Y-%m-%d %H:%M')
 
         self.log.info(Logs.fileline() + ' : TRACE TraceList')
         return compose_ret(l_items, Constants.cst_content_type_json)

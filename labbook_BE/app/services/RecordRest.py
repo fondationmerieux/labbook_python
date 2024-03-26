@@ -60,13 +60,17 @@ class RecordDet(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'RecordDet ERROR not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        Various.useLangDB()
+
         # Replace None by empty string
         for key, value in list(record.items()):
             if record[key] is None:
                 record[key] = ''
+            elif key == 'remise' and record[key]:
+                record[key] = _(record[key].strip())
 
-        if record['date_dos']:
-            record['date_dos'] = datetime.strftime(record['date_dos'], Constants.cst_isodate)
+        if record['rec_date_receipt']:
+            record['rec_date_receipt'] = datetime.strftime(record['rec_date_receipt'], Constants.cst_dt_HM)
 
         if record['date_prescription']:
             record['date_prescription'] = datetime.strftime(record['date_prescription'], Constants.cst_isodate)
@@ -122,7 +126,7 @@ class RecordDet(Resource):
 
         # Insert Record
         if id_rec == 0:
-            args['date_record'] = datetime.strptime(args['date_record'], Constants.cst_isodate)
+            args['date_record'] = datetime.strptime(args['date_record'], Constants.cst_dt_ext_HM)
             args['date_prescr'] = datetime.strptime(args['date_prescr'], Constants.cst_isodate)
 
             if args['parcel_date']:
@@ -193,7 +197,7 @@ class RecordDet(Resource):
             ret = Record.insertRecord(id_owner=args['id_owner'],
                                       id_patient=args['id_patient'],
                                       type=args['type'],
-                                      date_dos=args['date_record'],
+                                      rec_date_receipt=args['date_record'],
                                       num_dos_jour=num_dos_jour,
                                       num_dos_an=num_dos_an,
                                       med_prescripteur=args['id_med'],
@@ -319,10 +323,10 @@ class RecordDetFromExt(Resource):
 
         if not auth:
             self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR auth missing')
-            err = {"error": "Authentification required"}
+            err = {"error": "Authentication required"}
             return compose_ret(err, Constants.cst_content_type_json, 401)
 
-        login = auth.username 
+        login = auth.username
         pwd   = auth.password
 
         args = request.get_json()
@@ -568,7 +572,7 @@ class RecordDetFromExt(Resource):
                                                          fax=doctor['prescr_fax'],
                                                          zipcity=doctor['prescr_zipcode'])
 
-                            if ret <= 0:
+                            if id_doc <= 0:
                                 self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertDoctor')
                                 err = {"error": "insertDoctor SQL error"}
                                 return compose_ret(err, Constants.cst_content_type_json, 500)
@@ -666,7 +670,7 @@ class RecordDetFromExt(Resource):
                 id_rec = Record.insertRecord(id_owner=user['id_data'],
                                              id_patient=id_pat,
                                              type=record['rec_type'],
-                                             date_dos=record['rec_date'],
+                                             rec_date_receipt=record['rec_date'],
                                              num_dos_jour=num_dos_jour,
                                              num_dos_an=num_dos_an,
                                              med_prescripteur=id_doc,
@@ -722,11 +726,66 @@ class RecordDetFromExt(Resource):
                     self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertPjSequence numdosmois')
 
                 # --- ANALYSIS ---
-                l_ana      = args['ana_list']
-                l_ana_code = []
-                l_id_act   = []
+                l_ana       = args['ana_list']
+                l_ana_code  = []
+                l_id_act    = []
+                l_samp      = args['samp_list']
+                l_type_prel = []
 
                 tot_price = 0
+
+                # make list of (ana_code,type_prel) from l_samp
+                for samp in l_samp:
+                    # check if samp_ana in l_ana_code
+                    if samp['samp_ana'] in l_ana_code:
+                        if samp['samp_type'] == 'APF':
+                            elem = (samp['samp_code'], 102)
+                        elif samp['samp_type'] == 'APFL':
+                            elem = (samp['samp_code'], 35)
+                        elif samp['samp_type'] == 'BAL':
+                            elem = (samp['samp_code'], 56)
+                        elif samp['samp_type'] == 'BIO':
+                            elem = (samp['samp_code'], 38)
+                        elif samp['samp_type'] == 'BLD':
+                            elem = (samp['samp_code'], 138)
+                        elif samp['samp_type'] == 'BPF':
+                            elem = (samp['samp_code'], 100)
+                        elif samp['samp_type'] == 'CSF':
+                            elem = (samp['samp_code'], 99)
+                        elif samp['samp_type'] == 'DW':
+                            elem = (samp['samp_code'], 1014)
+                        elif samp['samp_type'] == 'GS':
+                            elem = (samp['samp_code'], 1000)
+                        elif samp['samp_type'] == 'JPFL':
+                            elem = (samp['samp_code'], 34)
+                        elif samp['samp_type'] == 'OTH':
+                            elem = (samp['samp_code'], 163)
+                        elif samp['samp_type'] == 'PPF':
+                            elem = (samp['samp_code'], 104)
+                        elif samp['samp_type'] == 'PS':
+                            elem = (samp['samp_code'], 1189)
+                        elif samp['samp_type'] == 'SPUT':
+                            elem = (samp['samp_code'], 50)
+                        elif samp['samp_type'] == 'STL':
+                            elem = (samp['samp_code'], 141)
+                        elif samp['samp_type'] == 'SW':
+                            elem = (samp['samp_code'], 1016)
+                        elif samp['samp_type'] == 'TS':
+                            elem = (samp['samp_code'], 75)
+                        elif samp['samp_type'] == 'URN':
+                            elem = (samp['samp_code'], 153)
+                        elif samp['samp_type'] == 'US':
+                            elem = (samp['samp_code'], 152)
+                        elif samp['samp_type'] == 'VS':
+                            elem = (samp['samp_code'], 162)
+                        elif samp['samp_type'] == 'WW':
+                            elem = (samp['samp_code'], 1015)
+                        else:
+                            self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR samp_type does not match')
+                            err = {"error": "samp_type does not match"}
+                            return compose_ret(err, Constants.cst_content_type_json, 400)
+
+                        l_type_prel.append(elem)
 
                 for ana in l_ana:
                     if not ana['ana_code']:
@@ -815,9 +874,30 @@ class RecordDetFromExt(Resource):
 
                         l_id_act.append(tmp_ana['produit_biologique'])
 
-                # --- SAMPLE ---
-                l_samp = args['samp_list']
+                    # insert defaut sample associated to sampling act if not already required by received data
+                    elem = (ana['ana_code'], tmp_ana['type_prel'])
 
+                    if tmp_ana['type_prel'] and elem not in l_type_prel:
+                        id_samp = Product.insertProductReq(id_owner=user['id_data'],
+                                                           samp_date='',
+                                                           type_prel=elem[1],
+                                                           samp_id_ana=tmp_ana['id_data'],
+                                                           statut=9,
+                                                           id_dos=id_rec,
+                                                           preleveur='',
+                                                           samp_receipt_date='',
+                                                           commentaire='',
+                                                           lieu_prel=0,
+                                                           lieu_prel_plus='',
+                                                           localisation='',
+                                                           code=elem[0])
+
+                        if id_samp <= 0:
+                            self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertProduct')
+                            err = {"error": "insertProduct SQL error"}
+                            return compose_ret(err, Constants.cst_content_type_json, 500)
+
+                # --- SAMPLE ---
                 for samp in l_samp:
                     # check if samp_ana in l_ana_code
                     if samp['samp_ana'] in l_ana_code:
@@ -1016,8 +1096,8 @@ class RecordLast(Resource):
             if record[key] is None:
                 record[key] = ''
 
-        if record['date_dos']:
-            record['date_dos'] = datetime.strftime(record['date_dos'], Constants.cst_isodate)
+        if record['rec_date_receipt']:
+            record['rec_date_receipt'] = datetime.strftime(record['rec_date_receipt'], Constants.cst_dt_HM)
 
         if record['date_prescription']:
             record['date_prescription'] = datetime.strftime(record['date_prescription'], Constants.cst_isodate)

@@ -261,3 +261,51 @@ console.log("DEBUG-TRACE conv_val = " + Number(total).toFixed( accu2 ) ) ;
 
 return Number(total).toFixed( accu2 ) ;
 }
+
+function check_min_max(id_res, min, max)
+{
+let val = $( "#res_"+id_res ).val() ;
+
+    if ( (min != '' && val <= parseFloat(min)) || (max != '' && val >= parseFloat(max)) )
+    {
+        $("#limit_"+id_res).addClass('show') ;
+        $("#limit_"+id_res).removeClass('d-none') ;
+    }
+    else
+    {
+        $("#limit_"+id_res).addClass('d-none') ;
+        $("#limit_"+id_res).removeClass('show') ;
+    }
+}
+
+function check_min(id_res, min)
+{
+let val = $( "#res_"+id_res ).val() ;
+
+    if ( min != '' && val <= parseFloat(min) )
+    {
+        $("#limit_"+id_res).addClass('show') ;
+        $("#limit_"+id_res).removeClass('d-none') ;
+    }
+    else
+    {
+        $("#limit_"+id_res).addClass('d-none') ;
+        $("#limit_"+id_res).removeClass('show') ;
+    }
+}
+
+function check_max(id_res, max)
+{
+let val = $( "#res_"+id_res ).val() ;
+
+    if ( max != '' && val >= parseFloat(max) )
+    {
+        $("#limit_"+id_res).addClass('show') ;
+        $("#limit_"+id_res).removeClass('d-none') ;
+    }
+    else
+    {
+        $("#limit_"+id_res).addClass('d-none') ;
+        $("#limit_"+id_res).removeClass('show') ;
+    }
+}

@@ -23,7 +23,7 @@ class Export:
                'inner join sigl_dico_data as dico on rec.type=dico.id_data and dico.dico_name = "type_dossier" '
                'left join sigl_08_data as med on med.id_data=rec.med_prescripteur '
                'left join sigl_dico_data as dict_med on dict_med.id_data=med.specialite '
-               'where statut=256 and date_dos >= %s and date_dos <= %s '
+               'where statut=256 and rec_date_receipt >= %s and rec_date_receipt <= %s '
                'order by rec.id_data asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -222,7 +222,7 @@ class Export:
         if key == 'NB_REC_SAVED':
             req = ('select count(*) as value '
                    'from sigl_02_data '
-                   'where (date_dos between %s and %s) and statut > 181')
+                   'where (rec_date_receipt between %s and %s) and statut > 181')
 
             cursor.execute(req, (date_beg, date_end))
 
@@ -234,7 +234,7 @@ class Export:
                    'from sigl_04_data as req '
                    'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
                    'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
-                   'where (rec.date_dos between %s and %s) and rec.statut > 181 and ref.actif=4')
+                   'where (rec.rec_date_receipt between %s and %s) and rec.statut > 181 and ref.actif=4')
 
             cursor.execute(req, (date_beg, date_end))
 
@@ -246,7 +246,7 @@ class Export:
                    'from sigl_04_data as req '
                    'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
                    'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
-                   'where (rec.date_dos between %s and %s) and rec.statut > 181 and ref.actif=4 and '
+                   'where (rec.rec_date_receipt between %s and %s) and rec.statut > 181 and ref.actif=4 and '
                    'req.req_outsourced = "Y"')
 
             cursor.execute(req, (date_beg, date_end))
@@ -519,13 +519,13 @@ class Export:
     def getListOutsourcing(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select pat.code, pat.code_patient, rec.num_dos_an, rec.date_dos as date_rec, ref.code as ana_code, '
+        req = ('select pat.code, pat.code_patient, rec.num_dos_an, rec.rec_date_receipt as date_rec, ref.code as ana_code, '
                'ref.nom as ana_name '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
-               'where (rec.date_dos between %s and %s) and rec.statut > 181 and req.req_outsourced="Y"')
+               'where (rec.rec_date_receipt between %s and %s) and rec.statut > 181 and req.req_outsourced="Y"')
 
         cursor.execute(req, (date_beg, date_end))
 

@@ -1971,8 +1971,8 @@ def list_results():
 
     # Load list results
     try:
-        date_beg = datetime.strftime(date.today(), Constants.cst_isodate)
-        date_end = date_beg
+        date_beg = datetime.strftime(datetime.now().replace(hour=0, minute=0), Constants.cst_iso_dt_HM)
+        date_end = datetime.strftime(datetime.now().replace(hour=23, minute=59), Constants.cst_iso_dt_HM)
 
         payload = {'date_beg': date_beg,
                    'date_end': date_end,
@@ -3081,8 +3081,12 @@ def technical_validation(id_rec=0, anchor=''):
                     try:
                         res['prev_val']  = ''
                         res['prev_date'] = ''
+                        date_res = ''
 
-                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat']}
+                        if res['validation'] and 'date_res' in res['validation']:
+                            date_res = res['validation']['date_res']
+
+                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat'], 'date_res': date_res}
 
                         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/previous'
                         req = requests.post(url, json=payload)
@@ -3093,8 +3097,6 @@ def technical_validation(id_rec=0, anchor=''):
                             if prev:
                                 res['prev_val']  = prev['valeur']
                                 res['prev_date'] = prev['date_valid']
-
-                            log.info(Logs.fileline() + ' : DEBUG prev = ' + str(prev))
 
                     except requests.exceptions.RequestException as err:
                         log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)
@@ -3327,8 +3329,12 @@ def biological_validation(mode='', id_rec=0):
                     try:
                         res['prev_val']  = ''
                         res['prev_date'] = ''
+                        date_res = ''
 
-                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat']}
+                        if res['validation'] and 'date_res' in res['validation']:
+                            date_res = res['validation']['date_res']
+
+                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat'], 'date_res': date_res}
 
                         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/previous'
                         req = requests.post(url, json=payload)
@@ -3339,8 +3345,6 @@ def biological_validation(mode='', id_rec=0):
                             if prev:
                                 res['prev_val']  = prev['valeur']
                                 res['prev_date'] = prev['date_valid']
-
-                            log.info(Logs.fileline() + ' : DEBUG prev = ' + str(prev))
 
                     except requests.exceptions.RequestException as err:
                         log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)
@@ -3505,8 +3509,8 @@ def report_epidemio(date_beg='', date_end=''):
         json_data['date_beg'] = date_beg
         json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg,
-                   'date_end': date_end}
+        payload = {'date_beg': date_beg + " 00:00",
+                   'date_end': date_end + " 23:59"}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/epidemio'
         req = requests.post(url, json=payload)
@@ -3548,8 +3552,8 @@ def report_indicator(date_beg='', date_end=''):
         json_data['date_beg'] = date_beg
         json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg,
-                   'date_end': date_end}
+        payload = {'date_beg': date_beg + " 00:00",
+                   'date_end': date_end + " 23:59"}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/indicator'
         req = requests.post(url, json=payload)
@@ -3635,8 +3639,8 @@ def report_statistic():
         json_data['date_beg'] = date_beg
         json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg,
-                   'date_end': date_end,
+        payload = {'date_beg': date_beg + " 00:00",
+                   'date_end': date_end + " 23:59",
                    'service_int': ''}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/stat'
@@ -3885,7 +3889,7 @@ def report_today():
         json_data['date_beg'] = date_beg
         json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg, 'date_end': date_end}
+        payload = {'date_beg': date_beg + " 00:00", 'date_end': date_end + " 23:59"}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/today'
         req = requests.post(url, json=payload)
@@ -4237,28 +4241,6 @@ def det_equipment(id_eqp=0):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests Equipment Photo files failed, err=%s , url=%s', err, url)
 
-        # Load Equipment Breakdown files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBD/' + str(id_eqp)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_EQBD'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Breakdown files failed, err=%s , url=%s', err, url)
-
-        # Load Equipment Preventive Maintenance files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQPM/' + str(id_eqp)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_EQPM'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Preventive Maintenance files failed, err=%s , url=%s', err, url)
-
         # Load Equipment Bill files
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBI/' + str(id_eqp)
@@ -4266,39 +4248,6 @@ def det_equipment(id_eqp=0):
 
             if req.status_code == 200:
                 json_data['data_EQBI'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Bill files failed, err=%s , url=%s', err, url)
-
-        # Load Equipment Calibration Certificat files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQCC/' + str(id_eqp)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_EQCC'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Calibration Certificat files failed, err=%s , url=%s', err, url)
-
-        # Load Equipment Maintenance Contract files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQMC/' + str(id_eqp)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_EQMC'] = req.json()
-
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Maintenance Contract files failed, err=%s , url=%s', err, url)
-
-        # Load Equipment Bill files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBI/' + str(id_eqp)
-            req = requests.get(url)
-
-            if req.status_code == 200:
-                json_data['data_USEV'] = req.json()
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests Equipment Bill files failed, err=%s , url=%s', err, url)
@@ -4317,6 +4266,299 @@ def det_equipment(id_eqp=0):
     json_data['id_eqp'] = id_eqp
 
     return render_template('det-equipment.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : documents equipment
+@app.route('/eqp-document/<int:id_eqp>')
+def eqp_document(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE eqp document=' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'eqp-document/' + str(id_eqp)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load Equipment document Manuels
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/doc/MANU/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_MANU'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests Equipment document MANU failed, err=%s , url=%s', err, url)
+
+    # Load Equipment document Procedures
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/doc/PROC/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_PROC'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests Equipment document PROC failed, err=%s , url=%s', err, url)
+
+    # Load equipment document comment
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/comm/DOC/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['comm'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment comm DOC failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('eqp-document.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list failure of equipment
+@app.route('/list-eqp-failure/<int:id_eqp>')
+def list_eqp_failure(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE list eqp failure' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'list-eqp-failure/' + str(id_eqp)
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/failure/list/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['eqf'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment failure list failed, err=%s , url=%s', err, url)
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('list-eqp-failure.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : failures equipment
+@app.route('/eqp-failure/<int:id_eqp>')
+def eqp_failure(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE eqp failure=' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'eqp-failure/' + str(id_eqp)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('eqp-failure.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list metrology of equipment
+@app.route('/list-eqp-metrology/<int:id_eqp>')
+def list_eqp_metrology(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE list eqp metrology' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'list-eqp-metrology/' + str(id_eqp)
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/metrology/list/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['eqm'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment metrology list failed, err=%s , url=%s', err, url)
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('list-eqp-metrology.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : metrology equipment
+@app.route('/eqp-metrology/<int:id_eqp>')
+def eqp_metrology(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE eqp metrology=' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'eqp-metrology/' + str(id_eqp)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('eqp-metrology.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list maintenance of equipment
+@app.route('/list-eqp-maintenance/<int:id_eqp>')
+def list_eqp_maintenance(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE list eqp maintenance' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'list-eqp-maintenance/' + str(id_eqp)
+    session.modified = True
+
+    json_data = {}
+
+    # List of preventive maintenance
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/preventive/list/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['eqpm'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment preventive maintenance list failed, err=%s , url=%s', err, url)
+
+    # List of maintenance contract
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/contract/list/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['eqmc'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment maintenance contract list failed, err=%s , url=%s', err, url)
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('list-eqp-maintenance.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : preventive maintenance equipment
+@app.route('/eqp-maintenance-preventive/<int:id_eqp>')
+def eqp_maintenance_preventive(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE eqp preventive maintenance=' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'eqp-maintenance-preventive/' + str(id_eqp)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('eqp-maintenance-preventive.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : maintenance contract equipment
+@app.route('/eqp-maintenance-contract/<int:id_eqp>')
+def eqp_maintenance_contract(id_eqp=0):
+    log.info(Logs.fileline() + ' : TRACE eqp maintenance contract=' + str(id_eqp))
+
+    test_session()
+
+    session['current_page'] = 'eqp-maintenance-contract/' + str(id_eqp)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load equipment details to get name
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['det_eqp'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+
+    json_data['id_eqp'] = id_eqp
+
+    return render_template('eqp-maintenance-contract.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : suppliers list
@@ -5259,6 +5501,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # TYPE
     # PY => Python : BarCode, Bill, Whonet
     # JF => Join File
+    # PH => Photo
     # RP => Report
     # DH => DHIS2 spreadsheet
     # EP => EPIDEMIO spreadsheet
@@ -5285,6 +5528,23 @@ def download_file(type='', filename='', type_ref='', ref=''):
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests file document failed, err=%s , url=%s', err, url)
+    elif type == 'PH':
+        # ref = id_file
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/' + str(type_ref) + '/' + str(ref)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                file_info = req.json()
+
+                if file_info:
+                    filepath = os.path.join(file_info['storage'] + '/resource/photo', file_info['path'])
+                    generated_name = file_info['generated_name']
+                else:
+                    return False
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests file photo failed, err=%s , url=%s', err, url)
     elif type == 'RP':
         filepath = Constants.cst_report
         generated_name = filename
@@ -5371,7 +5631,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     return ret_file
 
 
-# Route : upload a file form permanent storage
+# Route : upload a file to permanent storage
 @app.route('/upload-file/<string:type_ref>/<int:id_ref>', methods=['POST'])
 def upload_file(type_ref='', id_ref=0):
     log.info(Logs.fileline() + ' : type_ref = ' + str(type_ref) + ' | id_ref = ' + str(id_ref))
@@ -5392,7 +5652,7 @@ def upload_file(type_ref='', id_ref=0):
             # Create end of storage path
             end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file-rec failed to hash name, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file failed to hash name, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -5404,7 +5664,7 @@ def upload_file(type_ref='', id_ref=0):
                 storage = req.json()
 
                 if not storage:
-                    log.error(Logs.fileline() + ' : upload-file-rec storage failed')
+                    log.error(Logs.fileline() + ' : upload-file storage failed')
                     return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-file failed requests storage, err=%s', err)
@@ -5416,13 +5676,13 @@ def upload_file(type_ref='', id_ref=0):
             pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)
             pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=False, exist_ok=True)
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file-rec failed to filepath, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file failed to filepath, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
             f.save(os.path.join(filepath + end_path, generated_name))
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file-rec failed to save file, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -5450,11 +5710,102 @@ def upload_file(type_ref='', id_ref=0):
             req = requests.post(url, json=payload)
 
             if req.status_code != 200:
-                log.error(Logs.fileline() + ' : upload-file-rec insert failed')
+                log.error(Logs.fileline() + ' : upload-file insert failed')
                 return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file-rec failed information file, err=%s', err)
+            log.error(Logs.fileline() + ' : upload-file failed information file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload a photo to permanent storage
+@app.route('/upload-photo/<string:type_ref>/<int:id_ref>', methods=['POST'])
+def upload_photo(type_ref='', id_ref=0):
+    log.info(Logs.fileline() + ' : type_ref = ' + str(type_ref) + ' | id_ref = ' + str(id_ref))
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            original_name = f.filename
+
+            # random name kind like VOOZANOO
+            # PHP version : md5( mt_rand() . mt_rand() .microtime() )
+            import pathlib
+            import time
+            import hashlib
+            generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
+            hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
+
+            # Create end of storage path
+            end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-photo failed to hash name, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        try:
+            # Get last storage path
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/storage'
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                storage = req.json()
+
+                if not storage:
+                    log.error(Logs.fileline() + ' : upload-photo storage failed')
+                    return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-photo failed requests storage, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_photo
+
+        try:
+            pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)
+            pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=False, exist_ok=True)
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-photo failed to filepath, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath + end_path, generated_name))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-photo failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        try:
+            # Get info on file
+            file_ext  = pathlib.Path(original_name).suffix
+            file_size = pathlib.Path(os.path.join(filepath + end_path, generated_name)).stat().st_size
+            mime_type = f.mimetype
+
+            # remove first dot
+            if file_ext.startswith('.'):
+                file_ext = file_ext[1:]
+
+            # insert upload information in DB
+            payload = {'id_owner': session['user_id'],
+                       'original_name': original_name,
+                       'generated_name': generated_name,
+                       'size': file_size,
+                       'hash': hash_name,
+                       'ext': file_ext,
+                       'content_type': mime_type,
+                       'id_storage': storage['id_data'],
+                       'end_path': end_path}
+
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/' + str(type_ref) + '/' + str(id_ref)
+            req = requests.post(url, json=payload)
+
+            if req.status_code != 200:
+                log.error(Logs.fileline() + ' : upload-photo insert failed')
+                return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-photo failed information file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

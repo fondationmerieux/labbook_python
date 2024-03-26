@@ -41,7 +41,7 @@ def upgrade():
         conn.execute(text("alter table sigl_02_data add column rec_date_save datetime"))
     except Exception as err:
         print("ERROR add column rec_date_save to sigl_02_data,\n\terr=" + str(err))
-    
+
     # update rec_save with date_dos
     try:
         conn.execute(text("update sigl_02_data set rec_date_save = date_dos"))

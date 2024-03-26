@@ -108,15 +108,15 @@
                             <div class="form-group d-md-flex">
                                 <label for="date_record" class="form-label col-md-6 text-end me-1 mt-2">{{ _("Date de réception du dossier") }} * </label>
                                 {% if entry == 'Y' %}
-                                <input id="date_record" class="form-control form-lbk" type="date" value="" placeholder="" style="width:160px;">
+                                <input id="date_record" class="form-control form-lbk" type="datetime-local" value="" placeholder="">
                                 {% else %}
-                                <span class="font-info">{{ args['record']['date_dos']|date_format }}</span>
+                                <span class="font-info">{{ args['record']['rec_date_receipt']|date_format }}</span>
                                 {% endif %}
                             </div>
                             <div class="form-group d-md-flex mt-1">
                                 <label for="date_prescr" class="form-label col-md-6 text-end me-1 mt-2">{{ _("Date de prescription") }} * </label>
                                 {% if entry == 'Y' %}
-                                <input id="date_prescr" class="form-control form-lbk" type="date" value="" placeholder="" style="width:160px;">
+                                <input id="date_prescr" class="form-control form-lbk" type="date" value="" placeholder="">
                                 {% else %}
                                 <span class="font-info">{{ args['record']['date_prescription']|date_format }}</span>
                                 {% endif %}
@@ -1432,7 +1432,7 @@ window.location.href = "{{ session['server_ext'] }}/sigl/homepage";
 $( document ).ready( function()
 {
     {% if entry == 'Y' %}
-    $("#date_record").val( "{{ now|date_now }}" ) ;
+    $("#date_record").val( "{{ now|datetime_now }}" ) ;
     {% else %}
         {% if session['record_period'] == 1070 %} // Month period
         let num_dos = {{ args['record']['num_dos_mois'] }} ;

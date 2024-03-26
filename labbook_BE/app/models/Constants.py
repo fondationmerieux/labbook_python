@@ -3,15 +3,17 @@ class Constants:
     cst_content_type_plain = 1
     cst_content_type_json  = 2
 
-    cst_isodate   = '%Y-%m-%d'
-    cst_dt_ext_HM = '%Y-%m-%dT%H:%M'
-    cst_dt_HMS    = '%Y-%m-%d %H:%M:%S'
-    cst_dt_HM     = '%Y-%m-%d %H:%M'
-    cst_dt_long   = "%d/%m/%Y à %H:%M"
-    cst_date_eu   = '%d/%m/%Y'
-    cst_date_us   = '%m/%d/%Y'
-    cst_date_ymd  = '%Y%m%d'
-    cst_time_HM   = '%H:%M'
+    cst_isodate    = '%Y-%m-%d'
+    cst_dt_ext_HM  = '%Y-%m-%dT%H:%M'
+    cst_dt_HMS     = '%Y-%m-%d %H:%M:%S'
+    cst_dt_HMS_SQL = '%Y-%m-%d %H:%i:%S'
+    cst_dt_HM      = '%Y-%m-%d %H:%M'
+    cst_dt_HM_SQL  = '%Y-%m-%d %H:%i'
+    cst_dt_long    = "%d/%m/%Y à %H:%M"
+    cst_date_eu    = '%d/%m/%Y'
+    cst_date_us    = '%m/%d/%Y'
+    cst_date_ymd   = '%Y%m%d'
+    cst_time_HM    = '%H:%M'
 
     cst_storage     = '/storage'
     cst_io          = '/storage/io/'
@@ -23,6 +25,7 @@ class Constants:
     cst_epidemio    = '/storage/resource/epidemio/'
     cst_indicator   = '/storage/resource/indicator/'
     cst_template    = '/storage/resource/template/'
+    cst_photo       = '/storage/resource/photo/'
     cst_upload      = '/storage/upload/'
     cst_path_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
     cst_path_script = '/home/apps/labbook_BE/labbook_BE/script/'

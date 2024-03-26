@@ -1333,7 +1333,7 @@ class AnalysisImport(Resource):
                         var_show_minmax = row[35]
                     else:
                         var_show_minmax = 'N'
-                        
+
                     # TODO re-add formula2, unit2, accu2
 
                     ret = Analysis.exist(code, test)

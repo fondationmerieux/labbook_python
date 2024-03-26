@@ -12,6 +12,7 @@ from flask_restful import Resource
 from app.models.General import *
 from app.models.Logs import Logs
 from app.models.Report import Report
+from app.models.Result import Result
 from app.models.Various import Various
 
 
@@ -358,7 +359,7 @@ class ReportTAT(Resource):
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args or 'type_ana' not in args or 'id_ana' not in args or \
-           'code_pat' not in args:
+           'code_pat' not in args or 'rec_num' not in args:
             self.log.error(Logs.fileline() + ' : ReportTAT ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -366,23 +367,37 @@ class ReportTAT(Resource):
                               date_end=args['date_end'],
                               type_ana=args['type_ana'],
                               id_ana=args['id_ana'],
-                              code_pat=args['code_pat'])
+                              code_pat=args['code_pat'],
+                              rec_num=args['rec_num'])
 
         if not l_TAT:
             self.log.error(Logs.fileline() + ' : TRACE TAT not found')
 
         nb_tat = 0
+        nb_tat_tech = 0
+        nb_tat_ana = 0
 
         for data in l_TAT:
             for key, value in list(data.items()):
                 if data[key] is None:
                     data[key] = ''
 
-            date_save = ''
-            date_vld  = ''
+            date_save     = ''
+            date_vld      = ''
+            date_vld_tech = ''
+            date_vld_ana  = ''
+
+            res_tech = Result.getValidationByReq(data['id_req'], 251)
+            res_bio  = Result.getValidationByReq(data['id_req'], 252)
+
+            if res_tech and res_tech['date_vld']:
+                date_vld_tech = res_tech['date_vld']
+
+            if res_bio and res_bio['date_vld']:
+                date_vld_ana = res_bio['date_vld']
 
             if data['rec_date']:
-                data['rec_date'] = datetime.strftime(data['rec_date'], Constants.cst_date_eu)
+                data['rec_date'] = datetime.strftime(data['rec_date'], Constants.cst_dt_HM)
             else:
                 data['rec_date'] = ''
 
@@ -399,8 +414,10 @@ class ReportTAT(Resource):
                 data['rec_date_vld'] = ''
 
             total_tat = timedelta()
+            total_tat_tech = timedelta()
+            total_tat_ana = timedelta()
 
-            # TAT calculation
+            # TAT Record calculation
             if date_save and date_vld:
                 diff_date = date_vld - date_save
                 data['tat_days']  = diff_date.days
@@ -415,6 +432,46 @@ class ReportTAT(Resource):
                 data['tot_days']  = total_tat.days
                 data['tot_hours'], remain = divmod(total_tat.seconds, 3600)
                 data['tot_mins'], sec = divmod(remain, 60)
+
+            # TAT technical validation calculation
+            if date_save and date_vld_tech:
+                diff_date = date_vld_tech - date_save
+                data['tat_tech_days']  = diff_date.days
+                data['tat_tech_hours'], remain = divmod(diff_date.seconds, 3600)
+                data['tat_tech_mins'], sec = divmod(remain, 60)
+
+                nb_tat_tech += 1
+
+                total_tat_tech = total_tat_tech + diff_date / nb_tat_tech
+
+            if total_tat_tech:
+                data['tot_tech_days']  = total_tat_tech.days
+                data['tot_tech_hours'], remain = divmod(total_tat_tech.seconds, 3600)
+                data['tot_tech_mins'], sec = divmod(remain, 60)
+            else:
+                data['tot_tech_days']  = 0
+                data['tot_tech_hours'] = 0
+                data['tot_tech_mins']  = 0
+
+            # TAT Analysis calculation
+            if date_save and date_vld_ana:
+                diff_date = date_vld_ana - date_save
+                data['tat_ana_days']  = diff_date.days
+                data['tat_ana_hours'], remain = divmod(diff_date.seconds, 3600)
+                data['tat_ana_mins'], sec = divmod(remain, 60)
+
+                nb_tat_ana += 1
+
+                total_tat_ana = total_tat_ana + diff_date / nb_tat_ana
+
+            if total_tat_ana:
+                data['tot_ana_days']  = total_tat_ana.days
+                data['tot_ana_hours'], remain = divmod(total_tat_ana.seconds, 3600)
+                data['tot_ana_mins'], sec = divmod(remain, 60)
+            else:
+                data['tot_ana_days']  = 0
+                data['tot_ana_hours'] = 0
+                data['tot_ana_mins']  = 0
 
         self.log.info(Logs.fileline() + ' : TRACE ReportTAT')
         return compose_ret(l_TAT, Constants.cst_content_type_json)

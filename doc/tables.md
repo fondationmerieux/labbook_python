@@ -76,9 +76,14 @@
 | functionnal_unit                               | SETTINGS      | list of functionnal units                |
 | functionnal_unit_link                          | SETTINGS      | list of links for functionnal units      |
 | stock_setting                                  | SETTINGS      | settings for stock                       |
-| list_comment                                   | COMMENT       | structure for keep history of comments   |
+| ~~list_comment~~                               | COMMENT       | **will be removed next version**         |
 | form_setting                                   | SETTINGS      | structure for enable or disabled fields  |
 | trace_download                                 | QUALITY       | tracks file downloads (only procedure)   |
 | manual_setting                                 | SETTINGS      | settings for manual                      |
+| eqp_document                                   | EQUIPMENT     | link equipment with documents            |
+| eqp_preventive_maintenance                     | EQUIPMENT     | link equipment with preventive mainten.  |
+| eqp_maintenance_contract                       | EQUIPMENT     | link equipment with maintenance contract |
+| eqp_failure                                    | EQUIPMENT     | link equipment with failure and repair   |
+| eqp_metrology                                  | EQUIPMENT     | link equipment with metrology and calib. |
 
-80 tables used
+85 tables used

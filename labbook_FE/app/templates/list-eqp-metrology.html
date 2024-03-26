@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Liste des équipements") }}</title>
+    <title>{{ _("Liste des métrologies et étalonnages") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des équipements") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des métrologies et étalonnages") }}{% if args['det_eqp'] %} : {{ args['det_eqp']['name'] }}{% endif %}</span></h2>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>
@@ -28,13 +28,10 @@
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
                             <th class="text-start">{{ _("Action") }}</th>
-                            <th class="text-start">{{ _("Photo") }}</th>
-                            <th class="text-start cursor-act">{{ _("Nom") }}</th>
-                            <th class="text-start cursor-act">{{ _("Fabricant") }}</th>
-                            <th class="text-start cursor-act">{{ _("Modèle") }}</th>
-                            <th class="text-start cursor-act">{{ _("Localisation") }}</th>
-                            <th class="text-start cursor-act">{{ _("Section") }}</th>
-                            <th class="text-start cursor-act">{{ _("Fonction") }}</th>
+                            <th class="text-start">{{ _("Date") }}</th>
+                            <th class="text-start cursor-act">{{ _("Fournisseur") }}</th>
+                            <th class="text-start cursor-act">{{ _("Commentaire") }}</th>
+                            <th class="text-start cursor-act">{{ _("Document") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -52,14 +49,14 @@
 
             <div class="mb-5 mt-3">
                 <div class="float-start ms-0">
-                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
                     {% if session['user_role'] in ('A','B','Q','TQ','L') %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
                     {% endif %}
                     {% if session['user_role'] in ('A','B','Q','TQ') %}
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter un équipement") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
@@ -71,7 +68,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ args['eqm']|safe or [] }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -96,7 +93,7 @@ let res = "" ;
 
 {% if not args %}
 res = "<tr>" +
-      "<td colspan=\"8\">" +
+      "<td colspan=\"5\">" +
       "<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>" ;
 {% else %}
 let data_len = data_items.length ;
@@ -108,40 +105,29 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    {% if session["user_role"] in ("A","B","Q","TQ","L") %}
+    {% if session["user_role"] in ("A","B","Q","TQ") %}
     let menu_act = "<nav class=\"\">" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-equipment/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/eqp-document/" + data_items[i].id_data + "\">{{ _("Document") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-maintenance/" + data_items[i].id_data + "\">{{ _("Maintenances") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-failure/" + data_items[i].id_data + "\">{{ _("Pannes et réparations") }}</a>" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-metrology/" + data_items[i].id_data + "\">{{ _("Métrologie") }}</a>" ;
-
-        {% if session["user_role"] in ("A","B","Q","TQ") %}
-        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>" ;
-        {% endif %}
+                   "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].eqm_ser + ")\">{{ _("Supprimer") }}</a>" ;
         
     menu_act += "</div></ul></nav>" ;
     {% else %}
     let menu_act = "" ;
     {% endif %}
 
-    let photo = '' ;
+    let l_doc = '' ;
 
-        if (data_items[i].photo_name)
-        photo = "<img style=\"max-width:64px;max-height:64px;\" src=\"{{ session['server_ext'] }}/" + data_items[i].photo_url + "\" alt=\"" + data_items[i].photo_name + "\" >" ;
+        if (data_items[i].l_doc.length > 0)
+        l_doc = build_list_doc(data_items[i].l_doc) ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
+    res += "<tr><td hidden><div>" + data_items[i].eqm_ser + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + photo + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].maker + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].model + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].location + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].section + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].funct + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + data_items[i].eqm_date + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].supplier + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].eqm_comm + "</div></td>" +
+           "<td><div class=\"text-start\">" + l_doc + "</div></td></tr>" ;
     }
 {% endif %}
 
@@ -149,7 +135,7 @@ $("#list_items_total").html( data_len ) ;
     $("#num_page_t").text( p_cur ) ;
     $("#num_page_b").text( p_cur ) ;
 
-    $("#table_items").tablesorter() ;  // sort only data on screen
+    $("#table_items").tablesorter() ; // sort only data on screen
 }
 
 function delete_item(id_item)
@@ -167,7 +153,7 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/quality/equipment/det/" + id_item,
+            url: "{{ session['server_ext'] }}/services/quality/equipment/metrology/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -188,9 +174,24 @@ var id_user = {{ session['user_id']|safe}} ;
     return false ; 
 }
 
+function build_list_doc(data)
+{
+let l_doc = '' ;
+let type  = 'JF' ;
+
+    for( j in data )
+    {
+        if ( j > 0) l_doc += '<br />' ;
+
+    l_doc += '<div>' + data[j].name + '  <a href="#" onclick="download_file(\'' + type + '\', \'' + data[j].name + '\', \'EQCC\', ' + data[j].id_data + ');"><span class="bi bi-download"></span></a><div>' ;
+    }
+
+return l_doc ;
+}
+
 function add_item()
 {
-window.location.href = "{{ session['server_ext'] }}/det-equipment/0";
+window.location.href = "{{ session['server_ext'] }}/eqp-metrology/{{ args['id_eqp'] }}";
 }
 
 function export_data()
@@ -204,7 +205,7 @@ var param = '{}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/equipment/export",
+        url: "{{ session['server_ext'] }}/services/quality/equipment/metrology/export/{{ args['id_eqp'] }}",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -224,7 +225,7 @@ var param = '{}' ;
 
         today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "equipment_" + today + ".csv" ;
+        let filename = "eqp_metrology_" + today + ".csv" ;
 
         download_file( "PY", filename, "GEN", 0 ) ;
         },
@@ -240,9 +241,9 @@ var param = '{}' ;
     } ) ;
 }
 
-function return_home()
+function return_back()
 {
-window.location.href = "{{ session['server_ext'] }}/homepage";
+window.location.href = "{{ session['server_ext'] }}/list-equipment";
 }
 
 $( document ).ready( function()

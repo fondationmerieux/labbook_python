@@ -141,8 +141,8 @@ class DatasetByName(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             # convert isodate format to ymd format
-            date_beg = datetime.strptime(args['date_beg'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
-            date_end = datetime.strptime(args['date_end'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
+            date_beg = datetime.strptime(args['date_beg'], Constants.cst_dt_HM)
+            date_end = datetime.strptime(args['date_end'], Constants.cst_dt_HM)
 
         if name == 'record':
             l_items = Record.getDataset(date_beg, date_end)
@@ -150,6 +150,8 @@ class DatasetByName(Resource):
             l_items = Analysis.getDataset(date_beg, date_end)
         elif name == 'result':
             l_items = Result.getDataset(date_beg, date_end)
+
+        self.log.info(Logs.fileline() + ' : DEBUG dataset l_items = ' + str(l_items))
 
         if not l_items:
             self.log.error(Logs.fileline() + ' : ERROR dataset not found')

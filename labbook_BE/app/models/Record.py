@@ -50,10 +50,10 @@ class Record:
                 filter_cond += ' and (pat.code LIKE "%' + args['code'] + '%" or pat.code_patient LIKE "%' + args['code'] + '%") '
 
             if 'date_beg' in args and args['date_beg']:
-                filter_cond += ' and rec.date_dos >= "' + args['date_beg'] + '" '
+                filter_cond += ' and rec.rec_date_receipt >= "' + args['date_beg'] + '" '
 
             if 'date_end' in args and args['date_end']:
-                filter_cond += ' and rec.date_dos <= "' + args['date_end'] + '" '
+                filter_cond += ' and rec.rec_date_receipt <= "' + args['date_end'] + '" '
 
             # Analysis family
             if 'type_ana' in args and args['type_ana'] > 0:
@@ -91,21 +91,21 @@ class Record:
         if id_pres > 0:
             filter_cond += ' and rec.med_prescripteur=' + str(id_pres) + ' '
 
-        # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
+        # struct : stat, urgent, num_dos, id_data, rec_date_receipt, code, nom, prenom, id_pat
         req = ('select rec.statut as stat, rec.type as type_rec, rec.rec_num_int, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) '
                'as num_dos, if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_dos_long, '
-               'rec.id_data as id_data, date_format(rec.date_dos, %s) as date_dos, pat.code as code, pat.nom as nom, '
+               'rec.id_data as id_data, date_format(rec.rec_date_receipt, %s) as rec_date_receipt, pat.code as code, pat.nom as nom, '
                'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 ' + table_cond +
                'where ' + filter_cond +
-               'group by rec.id_data order by rec.num_dos_an desc, rec.num_dos_mois desc, rec.id_data desc ' + limit)
+               'group by rec.id_data order by rec.id_data desc, rec.num_dos_an desc, rec.num_dos_mois desc ' + limit)
 
-        cursor.execute(req, (Constants.cst_isodate,))
+        cursor.execute(req, (Constants.cst_dt_HM_SQL,))
 
         l_rec = cursor.fetchall()
 
@@ -134,21 +134,21 @@ class Record:
         limit = 'LIMIT 1000'
         # filter conditions
         if date_beg:
-            filter_cond += ' and rec.date_dos >= "' + date_beg + '" '
+            filter_cond += ' and rec.rec_date_receipt >= "' + date_beg + '" '
 
         if date_end:
-            filter_cond += ' and rec.date_dos <= "' + date_end + '" '
+            filter_cond += ' and rec.rec_date_receipt <= "' + date_end + '" '
 
         """
         # Prescriber list
         if id_pres > 0:
             filter_cond += ' and rec.med_prescripteur=' + str(id_pres) + ' '"""
 
-        # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
+        # struct : stat, urgent, num_dos, id_data, rec_date_receipt, code, nom, prenom, id_pat
         req = ('select rec.id_data as id_rec '
                'from sigl_02_data as rec '
                'where rec.statut = 256 ' + filter_cond +
-               'group by rec.id_data order by rec.date_dos asc ' + limit)
+               'group by rec.id_data order by rec.rec_date_receipt asc ' + limit)
 
         cursor.execute(req)
 
@@ -158,18 +158,19 @@ class Record:
     def getRecord(id_rec):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.date_dos, rec.num_dos_jour, '
+        req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.rec_date_receipt, rec.num_dos_jour, '
                'rec.num_dos_an, rec.med_prescripteur, rec.date_prescription, rec.service_interne, rec.num_lit, '
-               'rec.id_colis, rec.rec_parcel_date, rec.rc, rec.colis, rec.prix, rec.remise, rec.rec_date_vld, '
+               'rec.id_colis, rec.rec_parcel_date, rec.rc, rec.colis, rec.prix, rec.rec_date_vld, '
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
                'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, rec.rec_hosp_num, '
                'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, rec.rec_date_save, '
-               'd_doc_title.label as prescriber_title, '
+               'd_doc_title.label as prescriber_title, d_remise.label as remise, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_02_data as rec '
                'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
                'left join sigl_dico_data as d_doc_title on d_doc_title.id_data=pres.titre '
+               'left join sigl_dico_data as d_remise on d_remise.id_data=rec.remise '
                'where rec.id_data=%s')
 
         cursor.execute(req, (id_rec,))
@@ -180,7 +181,7 @@ class Record:
     def getLastRecord():
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+        req = ('select id_data, id_owner, id_patient, type, rec_date_receipt, num_dos_jour, num_dos_an, med_prescripteur, '
                'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, remise, '
                'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
                'rec_custody, rec_num_int, rec_modified, rec_hosp_num, rec_date_save '
@@ -238,12 +239,12 @@ class Record:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_02_data '
-                           '(id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+                           '(id_owner, id_patient, type, rec_date_receipt, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, '
                            'prix, remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut, '
                            'num_dos_mois, date_hosp, rec_custody, rec_num_int, rec_modified, rec_hosp_num, rec_date_save) '
                            'values '
-                           '(%(id_owner)s, %(id_patient)s, %(type)s, %(date_dos)s, %(num_dos_jour)s, %(num_dos_an)s, '
+                           '(%(id_owner)s, %(id_patient)s, %(type)s, %(rec_date_receipt)s, %(num_dos_jour)s, %(num_dos_an)s, '
                            '%(med_prescripteur)s, %(date_prescription)s, %(service_interne)s, %(num_lit)s, %(id_colis)s, '
                            '%(rec_parcel_date)s, %(rc)s, %(colis)s, %(prix)s, %(remise)s, %(remise_pourcent)s, '
                            '%(assu_pourcent)s, %(a_payer)s, %(num_quittance)s, %(num_fact)s, %(statut)s, '
@@ -353,11 +354,11 @@ class Record:
             cursor = DB.cursor()
 
             cursor.execute('insert into sigl_02_deleted '
-                           '(id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+                           '(id_data, id_owner, id_patient, type, rec_date_receipt, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, '
                            'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut,num_dos_mois, '
                            'date_hosp, rec_custody, rec_num_int, rec_date_vld, rec_modified, rec_hosp_num, rec_date_save) '
-                           'select id_data, id_owner, id_patient, type, date_dos, num_dos_jour, num_dos_an, med_prescripteur, '
+                           'select id_data, id_owner, id_patient, type, rec_date_receipt, num_dos_jour, num_dos_an, med_prescripteur, '
                            'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, '
                            'remise, remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact,statut,num_dos_mois, '
                            'date_hosp, rec_custody, rec_num_int, rec_date_vld, rec_modified, rec_hosp_num, rec_date_save '
@@ -523,7 +524,7 @@ class Record:
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_record, rec.rec_custody, rec.id_patient,  d_type.label as type, rec.rec_num_int, '
-               'date_format(rec.date_dos, %s) as record_date, date_format(rec.rec_date_save, %s) as record_created, '
+               'date_format(rec.rec_date_receipt, %s) as record_date, date_format(rec.rec_date_save, %s) as record_created, '
                'rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
@@ -540,10 +541,10 @@ class Record:
                'left join sigl_dico_data as d_status on d_status.id_data=rec.statut '
                'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
                'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
-               'where date_dos between %s and %s '
+               'where rec_date_receipt between %s and %s '
                'order by id_record desc')
 
-        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
+        cursor.execute(req, (Constants.cst_dt_HM_SQL, Constants.cst_dt_HM_SQL, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))
 
         return cursor.fetchall()
 

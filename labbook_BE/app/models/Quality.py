@@ -491,6 +491,28 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
+    def getEquipmentListExport():
+        cursor = DB.cursor()
+
+        req = ('select eqp.id_data, date_format(eqp.sys_creation_date, %s) as creation_date, eqp.nom as name, '
+               'eqp.nom_fabriquant as maker, eqp.modele as model, eqp.fonction as funct, eqp.localisation as location, '
+               'dict.label as section, supp.fournisseur_nom as supplier, eqp.no_serie as serial_number, '
+               'eqp.no_inventaire as inventory_number, date_format(eqp.date_achat, %s) as purchase_date, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as incharge, '
+               'date_format(eqp.date_reception, %s) as receipt_date, '
+               'date_format(eqp.date_mise_en_service, %s) as commissioning_date, '
+               'date_format(eqp.date_de_retrait, %s) as withdrawal_date, eqp.eqp_critical, eqp.commentaires as comments '
+               'from sigl_equipement_data as eqp '
+               'left join sigl_dico_data as dict on dict.id_data=eqp.section '
+               'left join sigl_fournisseurs_data as supp on supp.id_data=eqp.fournisseur_id '
+               'left join sigl_user_data as u1 on u1.id_data=eqp.responsable_id '
+               'order by name asc')
+
+        cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getEquipmentSearch(text):
         cursor = DB.cursor()
 
@@ -513,20 +535,16 @@ class Quality:
     def getEquipment(id_item):
         cursor = DB.cursor()
 
-        req = ('select eqp.id_data, eqp.nom as name, eqp.nom_fabriquant as maker, eqp.modele as model, eqp.fonction as funct, '
-               'eqp.localisation as location, eqp.section, eqp.fournisseur_id as supplier_id, eqp.no_serie as serial, '
-               'eqp.no_inventaire as inventory, eqp.responsable_id as incharge_id, eqp.manuel_id as manual_id, '
-               'eqp.procedures_id as procedur_id, eqp.certif_etalonnage as calibration, '
-               'eqp.contrat_maintenance as contract, eqp.date_fin_contrat as date_endcontract, '
-               'eqp.date_reception as date_receipt, eqp.date_achat as date_buy, '
+        req = ('select eqp.id_data, eqp.nom as name, eqp.nom_fabriquant as maker, eqp.modele as model, '
+               'eqp.fonction as funct, eqp.localisation as location, eqp.section, eqp.fournisseur_id as supplier_id, '
+               'eqp.no_serie as serial, eqp.no_inventaire as inventory, eqp.responsable_id as incharge_id, '
+               'eqp.date_reception as date_receipt, eqp.date_achat as date_buy, eqp_critical, '
                'eqp.date_mise_en_service as date_onduty, eqp.date_de_retrait as date_revoc, eqp.commentaires as comment, '
-               'u1.fournisseur_nom as supplier, u3.titre as manual, u4.titre as procedur, '
+               'u1.fournisseur_nom as supplier, '
                'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as incharge '
                'from sigl_equipement_data as eqp '
                'left join sigl_fournisseurs_data as u1 on u1.id_data=eqp.fournisseur_id '
                'left join sigl_user_data as u2 on u2.id_data=eqp.responsable_id '
-               'left join sigl_manuels_data as u3 on u3.id_data=eqp.manuel_id '
-               'left join sigl_procedures_data as u4 on u4.id_data=eqp.procedures_id '
                'where eqp.id_data=%s')
 
         cursor.execute(req, (id_item,))
@@ -541,15 +559,13 @@ class Quality:
             cursor.execute('insert into sigl_equipement_data '
                            '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, nom, nom_fabriquant, '
                            'modele, fonction, localisation, section, fournisseur_id, no_serie, no_inventaire, '
-                           'responsable_id, manuel_id, procedures_id, '
-                           'certif_etalonnage, contrat_maintenance, date_fin_contrat, date_reception, date_achat, '
-                           'date_mise_en_service, date_de_retrait, commentaires) '
+                           'responsable_id, date_reception, date_achat, '
+                           'date_mise_en_service, date_de_retrait, eqp_critical, commentaires) '
                            'values '
                            '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(name)s, %(maker)s, %(model)s, '
                            '%(funct)s, %(location)s, %(section)s, %(supplier)s, %(serial)s, %(inventory)s, '
-                           '%(incharge)s, %(manual)s, %(procedur)s, '
-                           '%(calibration)s, %(contract)s, %(date_endcontract)s, %(date_receipt)s, %(date_buy)s, '
-                           '%(date_onduty)s, %(date_revoc)s, %(comment)s)', params)
+                           '%(incharge)s, %(date_receipt)s, %(date_buy)s, '
+                           '%(date_onduty)s, %(date_revoc)s, %(critical)s, %(comment)s)', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -567,11 +583,9 @@ class Quality:
                            'set nom=%(name)s, nom_fabriquant=%(maker)s, '
                            'modele=%(model)s, fonction=%(funct)s, localisation=%(location)s, section=%(section)s, '
                            'fournisseur_id=%(supplier)s, no_serie=%(serial)s, no_inventaire=%(inventory)s, '
-                           'responsable_id=%(incharge)s, manuel_id=%(manual)s, procedures_id=%(procedur)s, '
-                           'certif_etalonnage=%(calibration)s, contrat_maintenance=%(contract)s, '
-                           'date_fin_contrat=%(date_endcontract)s, date_reception=%(date_receipt)s, '
+                           'responsable_id=%(incharge)s, date_reception=%(date_receipt)s, '
                            'date_achat=%(date_buy)s, date_mise_en_service=%(date_onduty)s, '
-                           'date_de_retrait=%(date_revoc)s, commentaires=%(comment)s  '
+                           'date_de_retrait=%(date_revoc)s, eqp_critical=%(critical)s, commentaires=%(comment)s  '
                            'where id_data=%(id_data)s', params)
 
             Quality.log.info(Logs.fileline())
@@ -586,11 +600,353 @@ class Quality:
         try:
             cursor = DB.cursor()
 
+            cursor.execute('delete from eqp_document '
+                           'where eqd_eqp=%s', (id_item,))
+
             cursor.execute('delete from sigl_equipement_data '
                            'where id_data=%s', (id_item,))
 
-            cursor.execute('delete from list_comment '
-                           'where lic_type="E" and lic_ref=%s', (id_item,))
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getEquipmentComm(type_comm, id_eqp):
+        cursor = DB.cursor()
+
+        cond_select = ''
+
+        if type_comm == 'DOC':
+            cond_select = 'eqp_comm_doc '
+        else:
+            Quality.log.error(Logs.alert() + 'type_comm unknown : ' + str(type_comm))
+
+        req = ('select ' + cond_select +
+               'from sigl_equipement_data '
+               'where id_data=%s ')
+
+        cursor.execute(req, (id_eqp,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def updateEquipmentComm(type_comm, id_eqp, comm):
+        try:
+            cursor = DB.cursor()
+
+            cond_set = ''
+
+            if type_comm == 'DOC':
+                cond_set = 'eqp_comm_doc=%s '
+            elif type_comm == 'MAIN':
+                cond_set = 'eqp_comm_maintenance=%s '
+
+            cursor.execute('update sigl_equipement_data '
+                           'set ' + cond_set +
+                           'where id_data=%s', (comm, id_eqp))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getEquipmentDoc(type_doc, id_eqp):
+        cursor = DB.cursor()
+
+        cond = ''
+
+        if type_doc == 'MANU':
+            cond = ('inner join sigl_manuels_data as doc on doc.id_data=eqd_ref '
+                    'inner join manual_file as link on link.id_ext=doc.id_data ')
+        elif type_doc == 'PROC':
+            cond = ('inner join sigl_procedures_data as doc on doc.id_data=eqd_ref '
+                    'inner join procedure_file as link on link.id_ext=doc.id_data ')
+        else:
+            Quality.log.error(Logs.alert() + 'type_doc unknown : ' + str(type_doc))
+
+        req = ('select eqd_ser, doc.titre as title, file.id_data as id_file, file.original_name as name '
+               'from eqp_document ' + cond +
+               'inner join sigl_file_data as file on file.id_data=link.id_file '
+               'where eqd_eqp=%s and eqd_type=%s ')
+
+        cursor.execute(req, (id_eqp, type_doc))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertEquipmentDoc(id_user, id_eqp, type, ref):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into eqp_document '
+                           '(eqd_date, eqd_user, eqd_eqp, eqd_type, eqd_ref) '
+                           'values '
+                           '(NOW(), %s, %s, %s, %s)', (id_user, id_eqp, type, ref))
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteEquipmentDoc(id_eqd):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from eqp_document '
+                           'where eqd_ser=%s', (id_eqd,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getEqpFailureList(id_eqp):
+        cursor = DB.cursor()
+
+        req = ('select eqf_ser, eqf_date, eqf_user, eqf_eqp, eqf_type, eqf_incharge, eqf_supplier, eqf_comm, '
+               'sup.fournisseur_nom as supplier, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as incharge '
+               'from eqp_failure '
+               'left join sigl_user_data as u1 on u1.id_data=eqf_incharge '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=eqf_supplier '
+               'where eqf_eqp=%s '
+               'order by eqf_date desc')
+
+        cursor.execute(req, (id_eqp,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertEqpFailure(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into eqp_failure '
+                           '(eqf_date, eqf_user, eqf_eqp, eqf_type, eqf_incharge, eqf_supplier, eqf_comm) '
+                           'values '
+                           '(%(date)s, %(id_user)s, %(id_eqp)s, %(type)s, %(incharge)s, '
+                           '%(supplier)s, %(comm)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteEqpFailure(id_item, with_id_eqp=False):
+        try:
+            cursor = DB.cursor()
+
+            cond  = id_item
+            cond2 = 'eqf_ser = %s'
+
+            if with_id_eqp:
+                cond  = '(select eqf_ser from eqp_failure where eqf_eqp=%s)'
+                cond2 = 'eqf_eqp = %s'
+
+            cursor.execute('delete from sigl_file_data '
+                           'where id_data in (select id_file from eqp_failure_file where id_ext in ' + cond + ')', (id_item,))
+
+            cursor.execute('delete from eqp_failure_file '
+                           'where id_ext in ' + cond, (id_item,))
+
+            cursor.execute('delete from eqp_failure '
+                           'where ' + cond2, (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getEqpMetrologyList(id_eqp):
+        cursor = DB.cursor()
+
+        req = ('select eqm_ser, eqm_date, eqm_user, eqm_eqp, eqm_supplier, eqm_comm, '
+               'sup.fournisseur_nom as supplier '
+               'from eqp_metrology '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=eqm_supplier '
+               'where eqm_eqp=%s '
+               'order by eqm_date desc')
+
+        cursor.execute(req, (id_eqp,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertEqpMetrology(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into eqp_metrology '
+                           '(eqm_date, eqm_user, eqm_eqp, eqm_supplier, eqm_comm) '
+                           'values '
+                           '(%(date)s, %(id_user)s, %(id_eqp)s, %(supplier)s, %(comm)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteEqpMetrology(id_item, with_id_eqp=False):
+        try:
+            cursor = DB.cursor()
+
+            cond  = id_item
+            cond2 = 'eqm_ser = %s'
+
+            if with_id_eqp:
+                cond  = '(select eqm_ser from eqp_metrology where eqm_eqp=%s)'
+                cond2 = 'eqm_eqp = %s'
+
+            cursor.execute('delete from sigl_file_data '
+                           'where id_data in (select id_file from eqp_calibration_file where id_ext in ' + cond + ')', (id_item,))
+
+            cursor.execute('delete from eqp_calibration_file '
+                           'where id_ext in ' + cond, (id_item,))
+
+            cursor.execute('delete from eqp_metrology '
+                           'where ' + cond2, (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getEquipmentPreventiveList(id_eqp):
+        cursor = DB.cursor()
+
+        req = ('select eqs_ser, eqs_date, eqs_user, eqs_eqp, eqs_operator, eqs_comm, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as operator '
+               'from eqp_preventive_maintenance '
+               'left join sigl_user_data as u1 on u1.id_data=eqs_operator '
+               'where eqs_eqp=%s '
+               'order by eqs_date desc')
+
+        cursor.execute(req, (id_eqp,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertEqpPreventive(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into eqp_preventive_maintenance '
+                           '(eqs_date, eqs_user, eqs_eqp, eqs_operator, eqs_comm) '
+                           'values '
+                           '(%(date)s, %(id_user)s, %(id_eqp)s, %(operator)s, %(comm)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteEqpPreventive(id_item, with_id_eqp=False):
+        try:
+            cursor = DB.cursor()
+
+            cond  = id_item
+            cond2 = 'eqs_ser = %s'
+
+            if with_id_eqp:
+                cond  = '(select eqs_ser from eqp_preventive_maintenance where eqs_eqp=%s)'
+                cond2 = 'eqs_eqp = %s'
+
+            cursor.execute('delete from sigl_file_data '
+                           'where id_data in (select id_file from eqp_preventive_maintenance_file '
+                           'where id_ext in ' + cond + ')', (id_item,))
+
+            cursor.execute('delete from eqp_preventive_maintenance_file '
+                           'where id_ext in ' + cond, (id_item,))
+
+            cursor.execute('delete from eqp_preventive_maintenance '
+                           'where ' + cond2, (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getEquipmentContractList(id_eqp):
+        cursor = DB.cursor()
+
+        req = ('select eqc_ser, eqc_date, eqc_user, eqc_eqp, eqc_supplier, eqc_date_upd, eqc_comm, '
+               'sup.fournisseur_nom as supplier '
+               'from eqp_maintenance_contract '
+               'left join sigl_fournisseurs_data as sup on sup.id_data=eqc_supplier '
+               'where eqc_eqp=%s '
+               'order by eqc_date desc')
+
+        cursor.execute(req, (id_eqp,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def insertEqpContract(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into eqp_maintenance_contract '
+                           '(eqc_date, eqc_user, eqc_eqp, eqc_supplier, eqc_date_upd, eqc_comm) '
+                           'values '
+                           '(%(date)s, %(id_user)s, %(id_eqp)s, %(supplier)s, %(date_upd)s, %(comm)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteEqpContract(id_item, with_id_eqp=False):
+        try:
+            cursor = DB.cursor()
+
+            cond  = id_item
+            cond2 = 'eqc_ser = %s'
+
+            if with_id_eqp:
+                cond  = '(select eqc_ser from eqp_maintenance_contract where eqc_eqp=%s)'
+                cond2 = 'eqc_eqp = %s'
+
+            cursor.execute('delete from sigl_file_data '
+                           'where id_data in (select id_file from eqp_maintenance_file where id_ext in ' + cond + ')', (id_item,))
+
+            cursor.execute('delete from eqp_maintenance_file '
+                           'where id_ext in ' + cond, (id_item,))
+
+            cursor.execute('delete from eqp_maintenance_contract '
+                           'where ' + cond2, (id_item,))
 
             Quality.log.info(Logs.fileline())
 
@@ -1123,7 +1479,7 @@ class Quality:
                'from sigl_fournisseurs_data '
                'order by supplier asc, lastname asc, firstname asc')
 
-        cursor.execute(req, (Constants.cst_dt_HMS, Constants.cst_dt_HMS,))
+        cursor.execute(req, (Constants.cst_dt_HMS_SQL, Constants.cst_dt_HMS_SQL,))
 
         return cursor.fetchall()
 
@@ -1256,7 +1612,8 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
 
-        req = ('select CONCAT(titre," / ref: ",reference) as field_value, id_data '
+        req = ('select CONCAT(titre, IF(reference is not NULL and reference != "", CONCAT(" / ref: ",reference), "")) '
+               'as field_value, id_data '
                'from sigl_manuels_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
@@ -1447,7 +1804,8 @@ class Quality:
         for word in l_words:
             cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
 
-        req = ('select CONCAT(titre," / ref: ",reference) as field_value, id_data '
+        req = ('select CONCAT(titre, IF(reference is not NULL and reference != "", CONCAT(" / ref: ",reference), "")) '
+               'as field_value, id_data '
                'from sigl_procedures_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
@@ -1540,7 +1898,7 @@ class Quality:
                'where usr.status="' + Constants.cst_user_active + '" '
                'order by usr.lastname asc, usr.firstname asc')
 
-        cursor.execute(req, (Constants.cst_dt_HMS, Constants.cst_dt_HMS, Constants.cst_dt_HMS,))
+        cursor.execute(req, (Constants.cst_dt_HMS_SQL, Constants.cst_dt_HMS_SQL, Constants.cst_dt_HMS_SQL,))
 
         return cursor.fetchall()
 
@@ -1598,7 +1956,7 @@ class Quality:
         table_doc = ''
 
         if type_trace == 'PROC':
-            info_doc  = 'proc.titre as doc_name '
+            info_doc  = 'proc.titre as doc_name, proc_file.sys_creation_date as doc_date '
             table_doc = ('inner join procedure_file as proc_file on proc_file.id_file=trd_ref '
                          'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
         else:
@@ -1627,7 +1985,7 @@ class Quality:
             cond += ' and u1.id_data=' + str(args['user_id']) + ' '
 
         if type_trace == 'PROC':
-            info_doc  = 'proc.titre as doc_name '
+            info_doc  = 'proc.titre as doc_name, proc_file.sys_creation_date as doc_date '
             table_doc = ('inner join procedure_file as proc_file on proc_file.id_file=trd_ref '
                          'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
 

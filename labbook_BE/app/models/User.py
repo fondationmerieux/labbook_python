@@ -232,7 +232,6 @@ class User:
             if 'role' in args and args['role']:
                 filter_cond += ' and u.role_type="' + str(args['role']) + '" '
 
-        # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = ('select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '
                'u.initiale as initial, u.ddn as birth, u.adresse as address, u.tel as phone, u.email, '
                'u.darrive as arrived, u.position as position, dict.label as section, u.deval as last_eval, '
@@ -265,7 +264,6 @@ class User:
 
         limit = ' limit 1000'
 
-        # struct : stat, urgent, num_dos, id_data, date_dos, code, nom, prenom, id_pat
         req = ('select id_data, TRIM(CONCAT(lastname," ",firstname," - ",username)) AS field_value '
                'from sigl_user_data '
                'where ' + cond + limit)

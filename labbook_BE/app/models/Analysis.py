@@ -732,7 +732,7 @@ class Analysis:
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
                'left join sigl_dico_data as dict on dict.id_data=ref.famille '
-               'where (rec.date_dos between %s and %s) and ref.actif=4 ' + filter_cond +
+               'where (rec.rec_date_receipt between %s and %s) and ref.actif=4 ' + filter_cond +
                'group by ref.code order by ref.code asc ' + limit)
 
         cursor.execute(req, (date_beg, date_end,))
@@ -747,7 +747,7 @@ class Analysis:
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
-               'where (rec.date_dos between %s and %s) and req.ref_analyse = %s and ref.actif=4')
+               'where (rec.rec_date_receipt between %s and %s) and req.ref_analyse = %s and ref.actif=4')
 
         cursor.execute(req, (date_beg, date_end, id_ana))
 
@@ -789,7 +789,7 @@ class Analysis:
                'left join sigl_dico_data as dict_type on dict_type.id_data=ref_var.type_resultat '
                'left join sigl_dico_data as dict_res on dict_res.id_data=res.valeur '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data = 1 '
-               'where (rec.date_dos between %s and %s) and ref.id_data=%s '
+               'where (rec.rec_date_receipt between %s and %s) and ref.id_data=%s '
                'order by rec.num_dos_an desc ' + limit)
 
         cursor.execute(req, (date_beg, date_end, id_ana))
@@ -869,7 +869,7 @@ class Analysis:
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
-               'date_format(rec.date_dos, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
+               'date_format(rec.rec_date_receipt, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
@@ -891,7 +891,7 @@ class Analysis:
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
                'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
-               'where rec.date_dos between %s and %s '
+               'where rec.rec_date_receipt between %s and %s '
                'order by rec.id_data desc')
 
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))

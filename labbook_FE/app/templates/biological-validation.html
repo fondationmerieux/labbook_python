@@ -634,6 +634,10 @@ let disp_valid = "d-none" ;
 
                if (data[i].normal_min != "" && data[i].normal_max != "")
                val_max = " - " + val_max ;
+               else if (val_min)
+               val_min = "> " + val_min ;
+               else if (val_max)
+               val_max = "< " + val_max ;
 
             minmax = "<span class=\"xs-text\">[" + val_min + val_max + "]</span>" ;
             }
@@ -992,7 +996,7 @@ num_dos = data_res[0].num_dos_an ;
 num_rec  = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
 /* AlC DESACT 26/12/2023 */
 // per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-per_rec = per_num_rec(data_res[0].date_dos, "{{ session['lang_select'] }}" ) ;
+per_rec = per_num_rec(data_res[0].rec_date_receipt, "{{ session['lang_select'] }}" ) ;
 rec_stat = status_rec(data_res[0].stat) ;
 
     $("#num_rec").html(num_rec)   ;

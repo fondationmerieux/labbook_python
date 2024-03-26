@@ -126,54 +126,6 @@ var num_rec      = "" ;
 var per_rec      = "" ;
 var rec_stat     = 0  ;
 
-function check_min_max(id_res, min, max)
-{
-let val = $( "#res_"+id_res ).val() ;
-
-    if ( (min != '' && val <= parseFloat(min-0.00000001)) || (max != '' && val >= parseFloat(max+0.00000001)) )
-    {
-        $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('d-none') ;
-    }
-    else
-    {
-        $("#limit_"+id_res).addClass('d-none') ;
-        $("#limit_"+id_res).removeClass('show') ;
-    }
-}
-
-function check_min(id_res, min)
-{
-let val = $( "#res_"+id_res ).val() ;
-
-    if ( min != '' && val <= parseFloat(min-0.00000001) )
-    {
-        $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('d-none') ;
-    }
-    else
-    {
-        $("#limit_"+id_res).addClass('d-none') ;
-        $("#limit_"+id_res).removeClass('show') ;
-    }
-}
-
-function check_max(id_res, max)
-{
-let val = $( "#res_"+id_res ).val() ;
-
-    if ( max != '' && val >= parseFloat(max+0.00000001) )
-    {
-        $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('d-none') ;
-    }
-    else
-    {
-        $("#limit_"+id_res).addClass('d-none') ;
-        $("#limit_"+id_res).removeClass('show') ;
-    }
-}
-
 function save_res( id_rec, ref_ana )
 {
 let param_list_answer = '{ "list_answer":[ ' ;
@@ -582,6 +534,10 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
                        if (data[i].normal_min != "" && data[i].normal_max != "")
                        val_max = " - " + val_max ;
+                       else if (val_min)
+                       val_min = "> " + val_min ;
+                       else if (val_max)
+                       val_max = "< " + val_max ;
 
                     minmax = "<span class=\"xs-text\">[" + val_min + val_max + "]</span>" ;
                     }
@@ -714,7 +670,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                         {
                         console.log("DEBUG formule_unite2 not empty") ;
 
-                        conv2_val = conv_val( data[i].formule_unite2, data[i].accu2, value) ;
+                        conv2_val = conv_val( data[i].formule_unite2, res_accu2, value) ;
 
                             if ( conv2_val != "") 
                             conv2_val = conv2_val + ' ' + data[i].unit2 ;
@@ -763,8 +719,6 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                         // Convert formula
                         if (data[i].formule_unite2 != "")
                         {
-                        console.log("DEBUG formule_unite2 not empty") ;
-
                         conv2_val = conv_val( data[i].formule_unite2, res_accu2, value) ;
 
                             if ( conv2_val != "") 
@@ -1128,7 +1082,7 @@ num_dos = data_res[0].num_dos_an ;
 num_rec  = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
 /* AlC DESACT 26/12/2023 */
 // per_rec  = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-per_rec = per_num_rec(data_res[0].date_dos, "{{ session['lang_select'] }}" ) ;
+per_rec = per_num_rec(data_res[0].rec_date_receipt, "{{ session['lang_select'] }}" ) ;
 rec_stat = status_rec(data_res[0].stat) ;
 rec_num_int = data_res[0].rec_num_int
 

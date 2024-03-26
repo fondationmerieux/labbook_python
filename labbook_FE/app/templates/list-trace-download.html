@@ -57,6 +57,7 @@
                             <th hidden>{{ _("serial") }}</th>
                             <th class="text-start cursor-act">{{ _("Dernier accès") }}</th>
                             <th class="text-start cursor-act">{{ _("Document") }}</th>
+                            <th class="text-start cursor-act">{{ _("Dépôt") }}</th>
                             <th class="text-start cursor-act">{{ _("Utilisateur") }}</th>
                         </tr>
                     </thead>
@@ -164,6 +165,7 @@ $("#list_items_total").html( data_len ) ;
     res += "<tr><td hidden><div>" + data_items[i].trd_ser + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].trd_last_access + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].doc_name + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].doc_date + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].user_name + "</div></td></tr>" ;
     }
 {% endif %}

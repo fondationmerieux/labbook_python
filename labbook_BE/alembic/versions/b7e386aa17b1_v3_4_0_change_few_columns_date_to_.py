@@ -107,7 +107,7 @@ def upgrade():
         conn.execute(text("alter table sigl_01_deleted drop column heure_reception"))
     except Exception as err:
         print("ERROR drop column heure_reception to sigl_01_deleted,\n\terr=" + str(err))
-    
+
     print(str(datetime.today()) + " : END of migration change_few_columns_date_to_datetime revision=b7e386aa17b1")
 
 

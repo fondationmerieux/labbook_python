@@ -102,19 +102,19 @@ def upgrade():
     except Exception as err:
         print("ERROR rename table sigl_manuels_document__file_data,\n\terr=" + str(err))
 
-    # rename sigl_user_diplomes__file_data to user_diploma_file 
+    # rename sigl_user_diplomes__file_data to user_diploma_file
     try:
         conn.execute(text("rename table sigl_user_diplomes__file_data to user_diploma_file"))
     except Exception as err:
         print("ERROR rename table sigl_user_diplomes__file_data,\n\terr=" + str(err))
 
-    # rename sigl_user_evaluation__file_data to user_evaluation_file 
+    # rename sigl_user_evaluation__file_data to user_evaluation_file
     try:
         conn.execute(text("rename table sigl_user_evaluation__file_data to user_evaluation_file"))
     except Exception as err:
         print("ERROR rename table sigl_user_evaluation__file_data,\n\terr=" + str(err))
 
-    # rename sigl_user_cv__file_data to user_cv_file 
+    # rename sigl_user_cv__file_data to user_cv_file
     try:
         conn.execute(text("rename table sigl_user_cv__file_data to user_cv_file"))
     except Exception as err:

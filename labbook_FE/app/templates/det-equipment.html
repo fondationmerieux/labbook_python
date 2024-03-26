@@ -93,154 +93,7 @@
                         <span class="ms-2">{{ args['det_eqp']['incharge'] }}</span>
                     </div>
                 </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="search_manual" class="form-label col-3 text-end mt-2 me-1">{{ _("Manuel") }}</label>
-                    <div>
-                        <select id="search_manual" class="form-select form-lbk form-search"></select>
-                        <span class="ms-2">{{ args['det_eqp']['manual'] }}</span>
-                    </div>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="search_procedure" class="form-label col-3 text-end mt-2 me-1">{{ _("Procédure") }}</label>
-                    <div>
-                        <select id="search_procedure" class="form-select form-lbk form-search"></select>
-                        <span class="ms-2">{{ args['det_eqp']['procedur'] }}</span>
-                    </div>
-                </div>
 
-                <div class="form-group d-lg-flex mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des pannes et réparations") }}</label>
-                    <table class="w-auto table table-responsive table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th hidden>{{ _("serial") }}</th>
-                                <th>{{ _("Action") }}</th>
-                                <th>{{ _("Date") }}</th>
-                                <th>{{ _("Utilisateur") }}</th>
-                                <th>{{ _("Commentaire") }}</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_breakdown">
-                        {% for item in args['det_eqp']['breakdown'] %}
-                            <tr>
-                                <td hidden>{{ item.lic_ser }}</td>
-                                <td class="text-center"><i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_comm({{ item.lic_ser }});"/></i></td>
-                                <td>{{ item.lic_date }}</td>
-                                <td>{{ item.username }}</td>
-                                <td>{{ item.lic_comm }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="breakdown" class="form-label col-3 text-end mt-2 me-1">{{ _("Liste des pannes et réparations") }}</label>
-                    <div>					
-                        <textarea id="breakdown" name="breakdown" rows="2" cols="50" class="form-control form-lbk"></textarea>
-                    </div>
-                </div>
-
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <div class="offset-3 text-start upload-container">
-                        <div class="uploadHTML5 d-inline-block pe-3">
-                            <input id="EQBD" name="file" type="file" class="mb-1"/>
-                        </div>
-                        <table class=table-responsive">
-                            <thead>
-                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
-                            </thead>
-                            <tbody id="tbody_file_EQBD"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="form-group d-lg-flex mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
-                    <table class="w-auto table table-responsive table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th hidden>{{ _("serial") }}</th>
-                                <th>{{ _("Action") }}</th>
-                                <th>{{ _("Date") }}</th>
-                                <th>{{ _("Utilisateur") }}</th>
-                                <th>{{ _("Commentaire") }}</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_maintenance">
-                        {% for item in args['det_eqp']['maintenance'] %}
-                            <tr>
-                                <td hidden>{{ item.lic_ser }}</td>
-                                <td class="text-center"><i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_comm({{ item.lic_ser }});"/></i></td>
-                                <td>{{ item.lic_date }}</td>
-                                <td>{{ item.username }}</td>
-                                <td>{{ item.lic_comm }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">					
-                    <label for="maintenance" class="form-label col-3 text-end mt-2 me-1">{{ _("Maintenance préventive") }}</label>
-                    <textarea id="maintenance" name="maintenance" rows="2" cols="50" class="form-control form-lbk w-auto"></textarea>
-                </div>
-
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <div class="offset-3 text-start upload-container">
-                        <div class="uploadHTML5 d-inline-block pe-3">
-                            <input id="EQPM" name="file" type="file" class="mb-1"/>
-                        </div>
-                        <table class=table-responsive">
-                            <thead>
-                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
-                            </thead>
-                            <tbody id="tbody_file_EQPM"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="calibration" class="form-label col-3 text-end mt-2 me-1">{{ _("Certificat d'étalonnage") }}</label>
-                    <div>					
-                        <input type="text" name="calibration" id="calibration" value="{{ args['det_eqp']['calibration'] }}" class="form-control form-lbk">			
-                    </div>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <div class="offset-3 text-start upload-container">
-                        <div class="uploadHTML5 d-inline-block pe-3">
-                            <input id="EQCC" name="file" type="file" class="mb-1"/>
-                        </div>
-                        <table class=table-responsive">
-                            <thead>
-                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
-                            </thead>
-                            <tbody id="tbody_file_EQCC"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="contract" class="form-label col-3 text-end mt-2 me-1">{{ _("Contrat de maintenance") }}</label>
-                    <div>					
-                        <input type="text" name="contract" id="contract" value="{{ args['det_eqp']['contract'] }}" class="form-control form-lbk">			
-                    </div>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <div class="offset-3 text-start upload-container">
-                        <div class="uploadHTML5 d-inline-block pe-3">
-                            <input id="EQMC" name="file" type="file" class="mb-1"/>
-                        </div>
-                        <table class=table-responsive">
-                            <thead>
-                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
-                            </thead>
-                            <tbody id="tbody_file_EQMC"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="date_endcontract" class="form-label col-3 text-end mt-2 me-1">{{ _("Date de fin de contrat de maintenance") }}</label>
-                    <div>					
-                        <input id="date_endcontract" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['det_eqp']['date_endcontract'] }}" name="date_endcontract" style="color: #888;">
-                    </div>
-                </div>
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label class="form-label col-3 text-end me-1">{{ _("Facture") }}</label>
                     <div class="text-start upload-container">
@@ -289,11 +142,18 @@
                     </div>
                 </div>
                 <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="critical" class="form-label col-3 align-self-center text-lg-end me-1">{{ _("Critique") }}</label>
+                    <div>
+                        <input type="checkbox" id="critical" name="critical" class="mt-1" value="Y" {% if args and args['det_eqp']['eqp_critical'] == 'Y' %} checked="checked"{% endif %}>
+                    </div>
+                </div>
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
                     <div>					
                         <textarea id="comment" name="comment" rows="4" cols="50" class="form-control form-lbk">{{ args['det_eqp']['comment'] }}</textarea>
                     </div>
                 </div>
+
             </form>
             
             <div class="my-2 clearfix">
@@ -314,10 +174,6 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var data_EQPH = {% if args['data_EQPH'] %}{{ args['data_EQPH']|safe }}{% else %}[]{% endif %} ;
-var data_EQBD = {% if args['data_EQBD'] %}{{ args['data_EQBD']|safe }}{% else %}[]{% endif %} ;
-var data_EQPM = {% if args['data_EQPM'] %}{{ args['data_EQPM']|safe }}{% else %}[]{% endif %} ;
-var data_EQCC = {% if args['data_EQCC'] %}{{ args['data_EQCC']|safe }}{% else %}[]{% endif %} ;
-var data_EQMC = {% if args['data_EQMC'] %}{{ args['data_EQMC']|safe }}{% else %}[]{% endif %} ;
 var data_EQBI = {% if args['data_EQBI'] %}{{ args['data_EQBI']|safe }}{% else %}[]{% endif %} ;
 
 $("#search_supplier").select2(
@@ -400,80 +256,6 @@ $("#search_incharge").on("select2:select", function (e)
 let id_item = $(e.currentTarget).val();
 } ) ;
 
-$("#search_manual").select2(
-{
-    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
-    tags: false,
-    multiple: false,
-    tokenSeparators: [','],
-    minimumInputLength: 2,
-    ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/manual/search",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        term: $("#search_manual").text(),
-        data: function (params) {
-
-            return JSON.stringify({
-                term: params.term
-            });
-        },
-        processResults: function (data) {
-            return {
-                results: $.map(data, function (item) {
-                    return {
-                        text: item.field_value,
-                        id: item.id_data
-                    }
-                })
-            };
-        }
-    }
-} ) ;
-
-$("#search_manual").on("select2:select", function (e) 
-{
-let id_item = $(e.currentTarget).val();
-} ) ;
-
-$("#search_procedure").select2(
-{
-    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
-    tags: false,
-    multiple: false,
-    tokenSeparators: [','],
-    minimumInputLength: 2,
-    ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/procedure/search",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        term: $("#search_procedure").text(),
-        data: function (params) {
-
-            return JSON.stringify({
-                term: params.term
-            });
-        },
-        processResults: function (data) {
-            return {
-                results: $.map(data, function (item) {
-                    return {
-                        text: item.field_value,
-                        id: item.id_data
-                    }
-                })
-            };
-        }
-    }
-} ) ;
-
-$("#search_procedure").on("select2:select", function (e) 
-{
-let id_item = $(e.currentTarget).val();
-} ) ;
-
 function save_item()
 {
 var id_owner    = {{ session['user_id']|safe}} ;
@@ -488,33 +270,23 @@ var supplier    = $("#search_supplier").val()  ;
 var serial      = $("#serial").val()           ;
 var inventory   = $("#inventory").val()        ;
 var incharge    = $("#search_incharge").val()  ;
-var manual      = $("#search_manual").val()    ;
-var procedur    = $("#search_procedure").val() ;
-var calibration = $("#calibration").val()      ;
-var contract    = $("#contract").val()         ;
-
-var breakdown   = JSON.stringify( $.trim( $("#breakdown").val() ) )   ;
-var maintenance = JSON.stringify( $.trim( $("#maintenance").val() ) ) ;
+var critical    = "N" ;
 var comment     = JSON.stringify( $.trim( $("#comment").val() ) )     ;
 
-var date_endcontract = $("#date_endcontract").val() ;
 var date_buy         = $("#date_buy").val()         ;
 var date_receipt     = $("#date_receipt").val()     ;
 // var date_procur      = $("#date_procur").val()      ; // USELESS 11/02/2022
 var date_onduty      = $("#date_onduty").val()      ;
 var date_revoc       = $("#date_revoc").val()       ;
 
+    if ( $("#critical").is(":checked") )
+    critical = $("#critical").val() ;
+
     if (supplier == null)
     supplier = 0;
 
     if (incharge == null)
     incharge = 0;
-
-    if (manual == null)
-    manual = 0;
-
-    if (procedur == null)
-    procedur = 0;
 
 var msg = "" ;
 
@@ -539,17 +311,11 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"serial":"' + serial + '", ' +
               '"inventory":"' + inventory + '", ' +
               '"incharge":' + incharge + ', ' +
-              '"manual":' + manual + ', ' +
-              '"procedur":' + procedur + ', ' +
-              '"calibration":"' + calibration + '", ' +
-              '"contract":"' + contract + '", ' +
-              '"date_endcontract":"' + date_endcontract + '", ' +
               '"date_receipt":"' + date_receipt + '", ' + 
               '"date_buy":"' + date_buy + '", ' +
               '"date_onduty":"' + date_onduty + '", ' + 
               '"date_revoc":"' + date_revoc + '", ' +
-              '"breakdown":' + breakdown + ', ' +     // No quotes with stringify
-              '"maintenance":' + maintenance + ', ' + // No quotes with stringify
+              '"critical":"' + critical + '", ' +
               '"comment":' + comment + '}' ;          // No quotes with stringify
 
     // popup wait
@@ -566,12 +332,8 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            {
            let ref = JSON.stringify(data) ;
 
-           upload_file("EQCC", ref)
-           .then( upload_file("EQMC", ref) )  
-           .then( upload_file("EQBI", ref) ) 
-           .then( upload_file("EQPM", ref) )
-           .then( upload_file("EQBD", ref) )
-           .then( upload_file("EQPH", ref) )
+           upload_file("EQBI", ref)
+           .then( upload_photo("EQPH", ref) )
            .then( function()
                {
                $("#dial-wait").modal("hide") ;
@@ -593,35 +355,11 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 function load_data()
 {
 $("#tbody_file_EQPH").empty() ;
-$("#tbody_file_EQBD").empty() ;
-$("#tbody_file_EQPM").empty() ;
-$("#tbody_file_EQCC").empty() ;
-$("#tbody_file_EQMC").empty() ;
 $("#tbody_file_EQBI").empty() ;
 
     for( i in data_EQPH )
     {
     load_file( data_EQPH[i], "EQPH" ) ;
-    }
-
-    for( i in data_EQBD )
-    {
-    load_file( data_EQBD[i], "EQBD" ) ;
-    }
-
-    for( i in data_EQPM )
-    {
-    load_file( data_EQPM[i], "EQPM" ) ;
-    }
-
-    for( i in data_EQCC )
-    {
-    load_file( data_EQCC[i], "EQCC" ) ;
-    }
-
-    for( i in data_EQMC )
-    {
-    load_file( data_EQMC[i], "EQMC" ) ;
     }
 
     for( i in data_EQBI )
@@ -633,16 +371,24 @@ $("#tbody_file_EQBI").empty() ;
 function load_file( data, type_ref )
 {
 let tr_file = '' ;
-let obj = data ;
+let obj     = data ;
+let type    = 'JF' ;
+
+    if (type_ref == 'EQPH')
+    type = 'PH' ;
 
     if ( obj.id_data > 0 )
     {
     let tmp_tr = '<tr>' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
     {% if session['user_role'] in ('A','B','TQ','Q') %}
     tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+
+        if (type_ref == 'EQPH')
+        tmp_tr += '<td class="action"><div> - <a href="{{ session['server_ext'] }}/resource/photo/' + obj.dir + obj.gen_name + '" target="_blank">{{ _("Voir") }}</a></div></td>' ;
+
     {% endif %}
     tmp_tr += '</tr>' ;
 
@@ -672,6 +418,57 @@ let input_file = $('#' + type_ref)[0] ;
             {
                 type : 'POST',
                 url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + ref,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: param_form,
+                success : function(response)
+                {
+                console.log( "success upload ") ;
+
+                resolve(response) ;
+                },
+                error: function(response)
+                {
+                console.log("ERROR upload file") ;
+
+                    $("#dial-wait").modal("hide") ;
+
+                alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+
+                reject(response) ;
+                }
+            } ) ;
+        } ) ;
+    }    
+    else
+    {
+    console.log( "file empty upload ") ;
+
+        return new Promise(function (resolve, reject) { resolve(true) } ) ;
+    }
+}
+
+function upload_photo(type_ref, ref)
+{
+let param_form = new FormData() ;
+let input_file = $('#' + type_ref)[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    console.log( "1 file to upload ") ;
+
+    param_form.append('file', input_file.files[0]) ;
+
+        return new Promise(function (resolve, reject)
+        {
+        console.log( "new promise for " + type_ref ) ;
+
+            $.ajax(
+            {
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/upload-photo/" + type_ref + "/" + ref,
                 dataType: 'json',
                 contentType: false,
                 processData: false,

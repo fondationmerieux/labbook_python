@@ -3,7 +3,7 @@ function display_histo( i )
 $("#tbody_histo").empty() ;
 
 let tr_histo = "<tr class=\"row\"><td class=\" col-1 icon\"><span class=\"icon status-n\">N</span></td>" +
-               "<td class=\"col-2\"><span id=\"date_rec\">" + data_res[i].date_dos + "</span></td>" +
+               "<td class=\"col-2\"><span id=\"date_rec\">" + data_res[i].rec_date_receipt + "</span></td>" +
                "<td class=\"col\"><ul style=\"padding:10px;\"><li>{{ _("Création du dossier") }} (" + 
                {% if session["record_period"] == 1070 %}data_res[i].num_dos_mois{% else %}data_res[i].num_dos_an{% endif %} + ").</li>" +
                "<li>{{ _("Analyse demandée") }} : " + data_res[i].nom + "</li>" +

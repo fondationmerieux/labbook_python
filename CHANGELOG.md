@@ -7,6 +7,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
+- re-add formula2, unit2 and accu2 in import/export analysis repository
+
+## [3.4.3] - 2024-03-26
+### Added
+- Redesigned equipment GUI
+- Turn Around Time report, add record number as filter
+- Turn Around Time report, add technical time as column
+- Turn Around Time report, add result time as column
+
+### Changed
+- Turn Around Time report, calculation changed
+
+### Fixed
+- previous result displayed even if from the same day
+- calculation for indicator, dhis2, epidemio reports
+- display min or max if only one of them
+- Record via API, fixed problem with prescriber
+- Record via API, rec_invoice_discount doesnt display label in administrative page
+- Record via API, add enum to pat_sex
+- Record via API, add a default pathological product associated with the analysis if doesnt exist in the data received
+- accuracy of numerical results can be converted into another unit.
 
 ## [3.4.2] - 2024-02-20
 ### Added

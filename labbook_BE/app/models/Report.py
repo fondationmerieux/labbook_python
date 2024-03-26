@@ -17,7 +17,7 @@ class Report:
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
                'inner join sigl_09_data as res on res.id_analyse = req.id_data '
-               'where (rec.date_dos between %s and %s) and ref.type_prel = %s '
+               'where (rec.rec_date_receipt between %s and %s) and ref.type_prel = %s '
                'and res.ref_variable in (')
 
         for id_var in l_id_var:
@@ -51,7 +51,7 @@ class Report:
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
                'inner join sigl_09_data as res on res.id_analyse = req.id_data '
-               'where (rec.date_dos between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
+               'where (rec.rec_date_receipt between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
                'and res.ref_variable in (')
 
         for id_var in l_id_var:
@@ -73,7 +73,7 @@ class Report:
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
                'inner join sigl_09_data as res on res.id_analyse = req.id_data '
                'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
-               'where (rec.date_dos between %s and %s) and ref.type_prel = %s '
+               'where (rec.rec_date_receipt between %s and %s) and ref.type_prel = %s '
                'and vld.type_validation = 252 and res.ref_variable in (')
 
         for id_var in l_id_var:
@@ -108,7 +108,7 @@ class Report:
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
                'inner join sigl_09_data as res on res.id_analyse = req.id_data '
                'inner join sigl_10_data as vld on vld.id_resultat = res.id_data '
-               'where (rec.date_dos between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
+               'where (rec.rec_date_receipt between %s and %s) and ref.type_prel in ' + cond_id_prod + ' '
                'and vld.type_validation = 252 and res.ref_variable in (')
 
         for id_var in l_id_var:
@@ -126,8 +126,9 @@ class Report:
 
         req = ('select count(distinct rec.id_data) as value '
                'from sigl_02_data as rec ' + params['inner_req'] + ' '
-               'where (rec.date_dos between %(date_beg)s and %(date_end)s) ' + params['end_req'])
+               'where (rec.rec_date_receipt between %(date_beg)s and %(date_end)s) ' + params['end_req'])
 
+        Report.log.info('----------------------------------')
         Report.log.info('getResultEpidemio req=' + str(req))
 
         cursor.execute(req, params)
@@ -140,7 +141,7 @@ class Report:
 
         req = ('select count(distinct rec.id_data) as value '
                'from sigl_02_data as rec ' + params['inner_req'] + ' '
-               'where (rec.date_dos between %(date_beg)s and %(date_end)s) ' + params['end_req'])
+               'where (rec.rec_date_receipt between %(date_beg)s and %(date_end)s) ' + params['end_req'])
 
         Report.log.info('----------------------------------')
         Report.log.info('getResultIndicator req=' + str(req))
@@ -163,7 +164,7 @@ class Report:
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse and ana.cote_unite != "PB" '
-               'where (rec.date_dos between %s and %s) and rec.statut=256 ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) and rec.statut=256 ' + cond +
                'group by ana.id_data, pat.age, pat.sexe order by ana.nom asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -185,7 +186,7 @@ class Report:
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse and ana.cote_unite != "PB" '
-               'where (rec.date_dos between %s and %s) and rec.statut=256 ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) and rec.statut=256 ' + cond +
                'group by ana.id_data, rec.type, pat.sexe order by ana.nom asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -204,7 +205,7 @@ class Report:
         req = ('select pat.sexe as sex, pat.age, count(*) as nb_rec, rec.type as rec_type '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
-               'where (rec.date_dos between %s and %s) ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) ' + cond +
                'group by pat.age order by age asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -269,7 +270,7 @@ class Report:
         req = ('select pat.sexe as sex, rec.type, rec_custody, rec.statut '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
-               'where (rec.date_dos between %s and %s) ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) ' + cond +
                'order by pat.sexe asc, rec.type asc, rec_custody asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -290,7 +291,7 @@ class Report:
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse '
-               'where (rec.date_dos between %s and %s) and ana.cote_unite != "PB" ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) and ana.cote_unite != "PB" ' + cond +
                'order by pat.sexe asc, rec.type asc, rec_custody asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -309,7 +310,7 @@ class Report:
         req = ('select rec.id_data, rec.num_dos_jour as rec_num, rec.num_fact as bill_num, '
                'rec.prix as bill_price, rec.a_payer as bill_remain, rec.num_quittance as receipt_num '
                'from sigl_02_data as rec '
-               'where (rec.date_dos between %s and %s) ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) ' + cond +
                'order by rec.id_data asc limit 7000')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -320,7 +321,7 @@ class Report:
     def getTodayList(date_beg, date_end):
         cursor = DB.cursor()
 
-        req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.date_dos as rec_date, ref.nom as analysis, dict_fam.label as family, '
+        req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.rec_date_receipt as rec_date, ref.nom as analysis, dict_fam.label as family, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
                'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
@@ -333,7 +334,7 @@ class Report:
                'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
                'left join sigl_dico_data as dict_fam on dict_fam.id_data=ref.famille '
-               'where (rec.date_dos between %s and %s) '
+               'where (rec.rec_date_receipt between %s and %s) '
                'group by req.id_data order by rec.id_data asc limit 7000')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -369,9 +370,9 @@ class Report:
                             ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
             if int(id_prod) == 0:
-                req['end'] = (' and vld' + str(idx) + '.type_validation=252 ')
+                req['end'] = (' and (vld' + str(idx) + '.type_validation=252 ')
             else:
-                req['end'] = (' and ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                req['end'] = (' and (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
             formula = ' '.join(formula.split())  # take off redundant white space
             formula = formula.replace(', ', ',')
@@ -558,6 +559,8 @@ class Report:
                     if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
 
+            req['end'] = req['end'] + ')'
+
         return req
 
     @staticmethod
@@ -579,9 +582,9 @@ class Report:
             id_prod = l_id_prod[idx]
 
             if int(id_prod) == 0:
-                req['end'] = (' and vld' + str(idx) + '.type_validation=252 ')
+                req['end'] = (' and (vld' + str(idx) + '.type_validation=252 ')
             else:
-                req['end'] = (' and ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                req['end'] = (' and (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
             formula = ' '.join(formula.split())  # take off redundant white space
             formula = formula.replace(', ', ',')
@@ -768,6 +771,8 @@ class Report:
                     if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
 
+            req['end'] = req['end'] + ')'
+
         return req
 
     @staticmethod
@@ -804,10 +809,14 @@ class Report:
         return res
 
     @staticmethod
-    def getTAT(date_beg, date_end, type_ana, id_ana, code_pat):
+    def getTAT(date_beg, date_end, type_ana, id_ana, code_pat, rec_num):
         cursor = DB.cursor()
 
         cond = ''
+
+        if rec_num:
+            cond += (' and (rec.num_dos_an LIKE "%' + str(rec_num) + '%" or rec.num_dos_mois LIKE "%' +
+                     str(rec_num) + '%" or rec.rec_num_int LIKE "%' + str(rec_num) + '%") ')
 
         if id_ana:
             cond += ' and req.ref_analyse=' + str(id_ana) + ' '
@@ -821,15 +830,15 @@ class Report:
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) '
                'as rec_num, if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as rec_num_long, '
-               'rec.date_dos as rec_date, pat.nom as pat_name, pat.prenom as pat_firstname, pat.code as pat_code, '
-               'pat.code_patient as pat_code_lab, ana.nom as ana_name, ana.code as ana_code '
-               'from sigl_02_data as rec '
+               'rec.rec_date_receipt as rec_date, pat.nom as pat_name, pat.prenom as pat_firstname, pat.code as pat_code, '
+               'pat.code_patient as pat_code_lab, ana.nom as ana_name, ana.code as ana_code, req.id_data as id_req '
+               'from sigl_04_data as req '
+               'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
-               'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse '
                'left join sigl_dico_data as fam on fam.id_data = ana.famille '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
-               'where (rec.date_dos between %s and %s) and ana.cote_unite != "PB" and rec.statut=256 ' + cond +
+               'where (rec.rec_date_receipt between %s and %s) and ana.cote_unite != "PB" and rec.statut=256 ' + cond +
                'order by rec.id_data desc')
 
         cursor.execute(req, (date_beg, date_end,))

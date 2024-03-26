@@ -36,7 +36,7 @@ def upgrade():
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table manual_setting,\n\terr=" + str(err))
-    
+
     print(str(datetime.today()) + " : END of migration v3_3_15_retry_to_create_manual_setting revision=f7f46cfe7e02")
 
 

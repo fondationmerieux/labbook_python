@@ -73,7 +73,8 @@ class File:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
 
-        req = ('select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage '
+        req = ('select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage, '
+               'file.generated_name as gen_name '
                'from ' + tablename + ' as valise, sigl_file_data as file, sigl_storage_data as storage '
                'where file.id_data=valise.id_file and storage.id_data=file.id_storage and valise.id_ext=%s '
                'order by id_data desc ')

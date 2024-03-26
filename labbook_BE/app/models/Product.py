@@ -62,7 +62,7 @@ class Product:
         # take lastest product of blood, stool, urine and other for each record
         req = ('select if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), rec.num_dos_mois), '
                'if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
-               'date_format(rec.date_dos, %s) as rec_date, '
+               'date_format(rec.rec_date_receipt, %s) as rec_date, '
                'pat.nom as lastname, pat.nom_jf as maidenname, pat.prenom as firstname, '
                'MAX(CASE when (prod.type_prel in (78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 127, 138, 142) and prod.statut in (8, 9, 10)) '
                'then prod.id_data END) as id_prod_blood, '

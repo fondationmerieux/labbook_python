@@ -128,8 +128,8 @@ paths:
                       required: true
                     rec_date:
                       type: string
-                      format: date
-                      description: date of receipt, (format YYYY-MM-DD)
+                      format: date-time
+                      description: datetime of receipt, (format YYYY-MM-DD HH:MM:SS)
                       required: true
                     rec_date_prescr:
                       type: string
@@ -162,7 +162,11 @@ paths:
                       default: ""
                     rec_invoice_discount:
                       type: string
-                      description: discount on invoicing, Staff / Exemption / Other
+                      description: |
+                        discount on invoicing \
+                        S = Staff \
+                        E = Exemption \
+                        O = Other
                       enum:
                       - S
                       - E
@@ -237,8 +241,16 @@ paths:
                       default: ""
                     pat_sex:
                       type: string
-                      description: patient's gender
-                      default: ""
+                      description: |
+                        patient's gender \
+                        M = Male \
+                        F = Female \
+                        U = Unknown
+                      enum:
+                      - M
+                      - F
+                      - U
+                      default: "U"
                     pat_birth:
                       type: string
                       format: date
@@ -257,7 +269,12 @@ paths:
                       default: 0
                     pat_age_unit:
                       type: string
-                      description: unit patient's age, Day / Week / Month / Year
+                      description: |
+                        unit patient's age \
+                        D = Day \
+                        W = Week \
+                        M = Month \
+                        Y = Year
                       enum:
                       - D
                       - W
@@ -320,8 +337,8 @@ paths:
                       type: string
                       description: patient's blood rhesus
                       enum:
-                      - +
-                      - -
+                      - "+"
+                      - "-"
                       default: ""
                 prescriber:
                   type: object
@@ -664,10 +681,10 @@ paths:
                   type: string
                 date_beg:
                   type: string
-                  format: date
+                  format: date-time
                 date_end:
                   type: string
-                  format: date
+                  format: date-time
                 type_ana:
                   type: integer
                 code_pat:
@@ -844,9 +861,9 @@ components:
           type: integer
         type:
           type: integer
-        date_dos:
+        rec_date_receipt:
           type: string
-          format: date
+          format: date-time
         num_dos_jour:
           type: string
         num_dos_mois:

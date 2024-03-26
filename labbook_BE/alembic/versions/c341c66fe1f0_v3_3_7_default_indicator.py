@@ -5,9 +5,6 @@ Revises: 6fee80b9f8b8
 Create Date: 2023-04-07 16:01:53.242302
 
 """
-from alembic import op
-from sqlalchemy import text
-
 from datetime import datetime
 
 # revision identifiers, used by Alembic.
@@ -20,9 +17,6 @@ depends_on = None
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
     print("START of migration v3_3_7_default_indicator revision=c341c66fe1f0")
-
-    # Get the current
-    conn = op.get_bind()
 
     # NEW DIRECTORY IN STORAGE
     try:

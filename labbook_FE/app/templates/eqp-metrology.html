@@ -1,0 +1,283 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Métrologie et étalonnage") }}</title>
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Métrologie et étalonnage") }}{% if args['det_eqp'] %} : {{ args['det_eqp']['name'] }}{% endif %}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="date_cc" class="form-label col-3 text-end mt-2 me-1">{{ _("Date") }}</label>
+                    <div>					
+                        <input id="date_metr" class="form-control form-lbk" type="datetime-local" name="date_metr" style="color: #888;">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="search_supplier" class="form-label col-3 text-end mt-2 me-1">{{ _("Fournisseur") }}</label>
+                    <div>
+                        <select id="search_supplier" class="form-select form-lbk form-search"></select>
+                    </div>
+                </div>
+                
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <div class="offset-3 text-start upload-container">
+                        <div class="uploadHTML5 d-inline-block pe-3">
+                            <input id="EQCC" name="file" type="file" class="mb-1"/>
+                        </div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_EQCC"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
+                    <div>					
+                        <textarea id="comment" name="comment" rows="4" cols="50" class="form-control form-lbk"></textarea>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                {% if session["user_role"] in ("A","B","Q","TQ") %}
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+$("#search_supplier").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/quality/supplier/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_supplier").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_supplier").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
+function save_item()
+{
+var id_item   = 0 ;    
+var id_user   = {{ session['user_id']|safe}} ;
+var id_eqp    = {{ args['id_eqp']|safe }}    ;
+var date_metr = $("#date_metr").val()        ;
+var supplier  = $("#search_supplier").val()  ;
+var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
+
+    if (supplier == null)
+    supplier = 0;
+
+    if (date_metr == "")
+    {
+    alert( "{{ _("Veuillez sélectionner une date") }}" ) ;
+    return false ;
+    }
+
+var param = '{ "id_user":' + id_user + ', ' +
+              '"id_eqp":' + id_eqp + ', ' +
+              '"date_metr":"' + date_metr + '", ' +
+              '"supplier":' + supplier + ', ' +
+              '"comment":' + comment + '}' ; // No quotes with stringify
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/quality/equipment/metrology/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           let ref = JSON.stringify(data) ;
+
+           upload_file("EQCC", ref)
+           .then( function()
+               {
+               $("#dial-wait").modal("hide") ;
+
+               window.location = "{{ session['server_ext'] }}/list-eqp-metrology/" + id_eqp ;
+               } ) ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function load_file( data, type_ref )
+{
+let tr_file = '' ;
+let obj     = data ;
+let type    = 'JF' ;
+
+    if ( obj.id_data > 0 )
+    {
+    let tmp_tr = '<tr>' ;
+    
+    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    {% if session['user_role'] in ('A','B','TQ','Q') %}
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    {% endif %}
+    tmp_tr += '</tr>' ;
+
+    tr_file += tmp_tr ;
+    }
+
+$("#tbody_file_"+type_ref).append(tr_file) ;
+}
+
+function upload_file(type_ref, ref)
+{
+let param_form = new FormData() ;
+let input_file = $('#' + type_ref)[0] ;
+
+    // TEST if an file is waiting
+    if (input_file.files.length > 0)
+    {
+    console.log( "1 file to upload ") ;
+
+    param_form.append('file', input_file.files[0]) ;
+
+        return new Promise(function (resolve, reject)
+        {
+        console.log( "new promise for " + type_ref ) ;
+
+            $.ajax(
+            {
+                type : 'POST',
+                url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + ref,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: param_form,
+                success : function(response)
+                {
+                console.log( "success upload ") ;
+
+                resolve(response) ;
+                },
+                error: function(response)
+                {
+                console.log("ERROR upload file") ;
+
+                    $("#dial-wait").modal("hide") ;
+
+                alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
+
+                reject(response) ;
+                }
+            } ) ;
+        } ) ;
+    }    
+    else
+    {
+    console.log( "file empty upload ") ;
+
+        return new Promise(function (resolve, reject) { resolve(true) } ) ;
+    }
+}
+
+function delete_file( type_ref, id_file )
+{
+    if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
+    {
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
+        $.ajax( 
+        {
+            type: "DELETE",
+            url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,
+            success: function(ret)
+            {
+            $("#dial-wait").modal("hide") ;
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR DELETE document file") ;
+            $("#dial-wait").modal("hide") ;
+            alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+//load_data() ;
+} ) ;
+</script>
+{% endblock %}

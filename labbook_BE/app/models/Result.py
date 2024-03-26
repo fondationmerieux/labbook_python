@@ -60,7 +60,7 @@ class Result:
 
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, rec.id_patient, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
-               'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
+               'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.rec_date_receipt, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec.rec_modified, '
                'req.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
                'var_pos.obligatoire as oblig, req.req_outsourced as outsourced, rec.rec_num_int '
@@ -72,7 +72,7 @@ class Result:
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
                'and ref.id_data = var_pos.id_refanalyse ' + table_cond +
-               'where (rec.date_dos between %s and %s) ' + filter_cond +
+               'where (rec.rec_date_receipt between %s and %s) ' + filter_cond +
                'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)
 
         cursor.execute(req, (date_beg, date_end,))
@@ -105,7 +105,7 @@ class Result:
 
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
-               'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.date_dos as date_dos, '
+               'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.rec_date_receipt, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec_modified, '
                'req.id_owner as id_owner, rec.id_patient as id_pat, req.req_outsourced as outsourced, '
                'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig, rec.rec_num_int '
@@ -239,6 +239,19 @@ class Result:
         return cursor.fetchone()
 
     @staticmethod
+    def getValidationByReq(id_req, type_vld=252):
+        cursor = DB.cursor()
+
+        req = ('select vld.type_validation as type_vld, vld.date_validation as date_vld '
+               'from sigl_10_data as vld, sigl_09_data as res '
+               'where vld.id_resultat=res.id_data and res.id_analyse=%s and type_validation=%s '
+               'order by vld.id_data desc limit 1')
+
+        cursor.execute(req, (id_req, type_vld))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getListValidators(id_rec):
         cursor = DB.cursor()
 
@@ -349,7 +362,7 @@ class Result:
             req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, rec.rec_modified, '
                    'ref.nom as ana_name, ref.commentaire as ana_comm, fam.label as ana_fam, res.id_data as id_res, '
                    'res.valeur as value, var.*, rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, '
-                   'rec.date_dos as rec_date, rec.date_prescription as prescr_date, rec.statut as rec_stat, '
+                   'rec.rec_date_receipt, rec.date_prescription as prescr_date, rec.statut as rec_stat, '
                    'req.req_outsourced as ana_outsourced, req.id_owner as id_owner, rec.id_patient as id_pat, '
                    'link.position as var_pos, link.var_qrcode '
                    'from sigl_04_data as req '
@@ -391,7 +404,7 @@ class Result:
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
-               'date_format(rec.date_dos, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
+               'date_format(rec.rec_date_receipt, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
                'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
@@ -419,7 +432,7 @@ class Result:
                'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
                'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
                'left join sigl_dico_data as d_sex on d_sex.id_data=pat.sexe '
-               'where rec.statut in (255, 256) and rec.date_dos between %s and %s '
+               'where rec.statut in (255, 256) and rec.rec_date_receipt between %s and %s '
                'order by rec.id_data desc')
 
         cursor.execute(req, (Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, Constants.cst_isodate, date_beg, date_end))

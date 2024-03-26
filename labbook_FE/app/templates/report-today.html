@@ -18,13 +18,13 @@
                 </div>
                 <div class="panel-filter d-lg-flex align-items-start mt-1">
                     <div class="form-group d-lg-flex align-items-start mt-3">
-                        <label for="f_date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
+                        <label for="date_beg" class="form-label text-end mt-2 me-1">{{ _("Date du") }}</label>
                         <div>
-                            <input id="f_date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
+                            <input id="date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                         </div>
-                        <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
+                        <label for="date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
                         <div>					
-                            <input id="f_date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                            <input id="date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                         </div>
                     </div>
 
@@ -111,11 +111,11 @@ var p_max  = Math.ceil( data_today.length / p_step ) ;
 
 function filter_data()
 {
-let date_beg = $("#f_date_beg").val() ;
-let date_end = $("#f_date_end").val() ;
+let date_beg = $("#date_beg").val() ;
+let date_end = $("#date_end").val() ;
 
-let param = '{ "date_beg":"' + date_beg  + '", ' +
-            '"date_end":"' + date_end  + '"}' ;
+let param = '{ "date_beg":"' + date_beg  + ' 00:00", ' +
+            '"date_end":"' + date_end  + ' 23:59"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

@@ -2,7 +2,7 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Rapport sur le temps de rendu du résultat") }}</title>
+    <title>{{ _("Rapport sur le délai de rendu du résultat") }}</title>
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
@@ -12,7 +12,8 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport sur le temps de rendu du résultat") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport sur le délai de rendu du résultat") }}</span></h2>
+            <p>{{ _("Le calcul du délai de rendu des résultats est basé sur la date d’enregistrement du dossier et les dates de validation des analyses du dossier") }}</p>
             <form autocomplete="off">
                 <fieldset class="border mx-1 p-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
@@ -26,9 +27,14 @@
                                 <input id="date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
 
+                            <div class="control-label ms-lg-3 mt-2 me-1">{{ _("N° dossier") }}</div>
+                            <div>					
+                                <input id="rec_num" type="text" value="" maxlength="10" class="form-control form-lbk cnx_trigger">
+                            </div>
+
                             <div class="control-label ms-lg-3 mt-2 me-1">{{ _("Code patient") }}</div>
                             <div>					
-                                <input type="text" name="code_pat" id="code_pat" value="" class="form-control form-lbk cnx_trigger">			
+                                <input name="code_pat" id="code_pat" type="text" value="" class="form-control form-lbk cnx_trigger">			
                             </div>
                         </div>
 
@@ -67,11 +73,14 @@
                         <th class="text-center">{{ _("N° dossier") }}</th>
                         <th class="text-center">{{ _("Patient") }}</th>
                         <th class="text-center">{{ _("Analyse") }}</th>
-                        <th class="text-center">{{ _("Temps de rendu du résultat") }}</th>
+                        <th class="text-center">{{ _("Délai de validation technique des résultats") }}</th>
+                        <th class="text-center">{{ _("Délai de rendu des résultats") }}</th>
+                        <th class="text-center">{{ _("Délai de rendu du dossier") }}</th>
                     </thead>
                     <tbody id="tbody_tat"></tbody>
                 </table>
-                <div>{{ _("Moyenne des temps de rendu du résultat") }} : <span id="tat_avg"></span></div>
+                <div>{{ _("Moyenne des délais de validation technique du résultat") }} : <span id="tat_tech_avg"></span></div>
+                <div>{{ _("Moyenne des délais de rendu du résultat") }} : <span id="tat_ana_avg"></span></div>
             </form>
 
             <div class="float-end mt-3 mb-5">
@@ -173,6 +182,7 @@ function filter_reset()
 $("#date_beg").val( "{{ now|date_now }}" ) ;
 $("#date_end").val( "{{ now|date_now }}" ) ;
 
+$("#rec_num").val("") ;
 $("#code_pat").val("") ;
 $("#type_ana").val(0);
 $("#name_ana").text("") ;
@@ -185,12 +195,14 @@ let date_beg  = $("#date_beg").val() ;
 let date_end  = $("#date_end").val() ;
 let type_ana  = $("#type_ana").val() ;
 let id_ana    = $("#id_ana").text()  ;
+let rec_num   = $("#rec_num").val() ;
 let code_pat  = $("#code_pat").val() ;
 
-let param = '{ "date_beg":"' + date_beg  + '", ' +
-            '"date_end":"' + date_end  + '", ' +
+let param = '{ "date_beg":"' + date_beg  + ' 00:00", ' +
+            '"date_end":"' + date_end  + ' 23:59", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"id_ana":' + id_ana  + ', ' +
+            '"rec_num":"' + rec_num  + '", ' +
             '"code_pat":"' + code_pat  + '"}' ;
 
     // popup wait
@@ -225,9 +237,10 @@ function display_data()
 {
     $("#tbody_tat").empty() ;
 
-let data_len = data_tat.length ;
-let res      = '' ;
-let tat_avg  = '' ;
+let data_len    = data_tat.length ;
+let res         = '' ;
+let tat_ana_avg = '' ;
+//let tat_avg     = '' ;
 
     if (data_len <= 0)
     {
@@ -281,6 +294,8 @@ let tat_avg  = '' ;
             code_pat = '' ;
 
         analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
+        tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }}' ;
+        tat_ana  = data_tat[i].tat_ana_days + '{{ _("j") }} ' + data_tat[i].tat_ana_hours + '{{ _("h") }} ' + data_tat[i].tat_ana_mins + '{{ _("min") }}' ;
         tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }}' ;
 
         res += '<tr><td class="nav_cell">' + menu_act + '</td>' +
@@ -288,19 +303,25 @@ let tat_avg  = '' ;
                '<td class="text-center">' + rec_num + '</td>' +
                '<td class="text-center">' + patient + code_pat + '</td>' +
                '<td class="text-center">' + analysis + '</td>' +
+               '<td class="text-center">' + tat_tech + '</td>' +
+               '<td class="text-center">' + tat_ana + '</td>' +
                '<td class="text-center">' + tat + '</td></tr>' ;
 
-        tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }}' ;
+        tat_tech_avg = data_tat[i].tot_tech_days + '{{ _("j") }} ' + data_tat[i].tot_tech_hours + '{{ _("h") }} ' + data_tat[i].tot_tech_mins + '{{ _("min") }}' ;
+        tat_ana_avg = data_tat[i].tot_ana_days + '{{ _("j") }} ' + data_tat[i].tot_ana_hours + '{{ _("h") }} ' + data_tat[i].tot_ana_mins + '{{ _("min") }}' ;
+        //tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }}' ;
         }
     $("#tbody_tat").append(res) ;
 
-    $("#tat_avg").html( tat_avg ) ;
+    $("#tat_tech_avg").html( tat_tech_avg ) ;
+    $("#tat_ana_avg").html( tat_ana_avg ) ;
+    //$("#tat_avg").html( tat_avg ) ;
     }
 }
 
 function export_tat()
 {
-let csv_tat = '"{{ _("Réception dossier") }}";"{{ _("N° dossier") }}";"{{ _("Patient") }}";"{{ _("Analyse") }}";"{{ _("Temps de rendu du résultat") }}"\n' ;
+let csv_tat = '"{{ _("Réception dossier") }}";"{{ _("N° dossier") }}";"{{ _("Patient") }}";"{{ _("Analyse") }}";"{{ _("Délai de validation technique des résultats") }}";"{{ _("Délai de rendu des résultats") }}";"{{ _("Délai de rendu du dossier") }}"\n' ;
 
 let data_len = data_tat.length ;
 
@@ -340,9 +361,11 @@ let data_len = data_tat.length ;
         code_pat = '' ;
 
     analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
+    tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }}' ;
+    tat_ana  = data_tat[i].tat_ana_days + '{{ _("j") }} ' + data_tat[i].tat_ana_hours + '{{ _("h") }} ' + data_tat[i].tat_ana_mins + '{{ _("min") }}' ;
     tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }}' ;
 
-    csv_tat += rec_date + ';"' + rec_num + '";"' + patient + code_pat + '";"' + analysis + '";"' + tat + '"\n' ;
+    csv_tat += rec_date + ';"' + rec_num + '";"' + patient + code_pat + '";"' + analysis + '";"' + tat_tech + '";"' + tat_ana + '";"' + tat + '"\n' ;
 
     //tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }}' ;
     }

@@ -880,8 +880,8 @@ class Pdf:
                 data['rec']['num_m'] = str(record['num_dos_mois'])
                 data['rec']['num_d'] = str(record['num_dos_jour'])
 
-                if record['date_dos']:
-                    data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
+                if record['rec_date_receipt']:
+                    data['rec']['rec_date'] = datetime.strftime(record['rec_date_receipt'], Constants.cst_date_eu)
                 else:
                     data['rec']['rec_date'] = ''
 
@@ -1295,7 +1295,7 @@ class Pdf:
         else:
             Various.useLangDB()
             record = {}
-            record['date_dos']          = datetime.now()
+            record['rec_date_receipt']  = datetime.now()
             record['num_rec']           = '2022000001'
             record['num_dos_an']        = '2022000001'
             record['num_dos_mois']      = '2022010001'
@@ -1315,7 +1315,7 @@ class Pdf:
             record['rec_date_save']     = datetime.now()
             Various.useLangPDF()
 
-        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
+        data['rec']['rec_date'] = datetime.strftime(record['rec_date_receipt'], Constants.cst_date_eu)
 
         data['rec']['num']   = str(record['num_rec'])
         data['rec']['num_y'] = str(record['num_dos_an'])
@@ -2294,7 +2294,7 @@ class Pdf:
         else:
             Various.useLangDB()
             record = {}
-            record['date_dos']          = datetime.now()
+            record['rec_date_receipt']  = datetime.now()
             record['num_rec']           = '2022000001'
             record['num_dos_an']        = '2022000001'
             record['num_dos_mois']      = '2022010001'
@@ -2314,7 +2314,7 @@ class Pdf:
             record['rec_date_save']     = datetime.now()
             Various.useLangPDF()
 
-        data['rec']['rec_date'] = datetime.strftime(record['date_dos'], Constants.cst_date_eu)
+        data['rec']['rec_date'] = datetime.strftime(record['rec_date_receipt'], Constants.cst_date_eu)
 
         data['rec']['num']   = str(record['num_rec'])
         data['rec']['num_y'] = str(record['num_dos_an'])

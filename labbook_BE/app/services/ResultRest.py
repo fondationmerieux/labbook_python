@@ -85,8 +85,8 @@ class ResultList(Resource):
                 comment = result['commentaire']
                 result['commentaire'] = _(comment.strip())
 
-            if result['date_dos']:
-                result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
+            if result['rec_date_receipt']:
+                result['rec_date_receipt'] = datetime.strftime(result['rec_date_receipt'], '%Y-%m-%d')
 
             if result['date_prescr']:
                 result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
@@ -95,6 +95,7 @@ class ResultList(Resource):
             result['validation'] = Result.getResultValidation(result['id_res'])
 
             if result['validation']['date_validation']:
+                result['validation']['date_res'] = datetime.strftime(result['validation']['date_validation'], Constants.cst_dt_HMS)
                 result['validation']['date_validation'] = datetime.strftime(result['validation']['date_validation'], '%Y-%m-%d')
 
             # Replace None by empty string
@@ -214,8 +215,8 @@ class ResultRecord(Resource):
                 comment = result['commentaire']
                 result['commentaire'] = _(comment.strip())
 
-            if result['date_dos']:
-                result['date_dos'] = datetime.strftime(result['date_dos'], '%Y-%m-%d')
+            if result['rec_date_receipt']:
+                result['rec_date_receipt'] = datetime.strftime(result['rec_date_receipt'], '%Y-%m-%d')
 
             if result['date_prescr']:
                 result['date_prescr'] = datetime.strftime(result['date_prescr'], '%Y-%m-%d')
@@ -224,6 +225,7 @@ class ResultRecord(Resource):
             result['validation'] = Result.getResultValidation(result['id_res'])
 
             if result['validation']['date_validation']:
+                result['validation']['date_res'] = datetime.strftime(result['validation']['date_validation'], Constants.cst_dt_HMS)
                 result['validation']['date_validation'] = datetime.strftime(result['validation']['date_validation'], '%Y-%m-%d')
 
             # Replace None by empty string
@@ -600,7 +602,12 @@ class ResultPrevious(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ResultPrevious ERROR missing args')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        res_prev = Result.getPreviousResult(args['id_pat'], args['ref_ana'], args['ref_var'], args['id_res'])
+        date_res = ''
+
+        if 'date_res' in args:
+            date_res = args['date_res']
+
+        res_prev = Result.getPreviousResult(args['id_pat'], args['ref_ana'], args['ref_var'], args['id_res'], date_res)
 
         if res_prev:
             if res_prev['date_valid']:
@@ -625,8 +632,6 @@ class ResultPrevious(Resource):
                     res_prev['valeur'] = _(trans)
                 else:
                     res_prev['valeur'] = ''
-
-        self.log.info(Logs.fileline() + ' : ResultPrevious DEBUG res_type=' + str(args['res_type']))
 
         self.log.info(Logs.fileline() + ' : ResultPrevious')
         return compose_ret(res_prev, Constants.cst_content_type_json, 200)

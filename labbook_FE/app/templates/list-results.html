@@ -21,11 +21,11 @@
                     <div class="form-group d-lg-flex align-items-start">
                         <div class="control-label mt-2 me-1"><span>{{ _("Date de la demande du") }}</span></div>
                         <div class="me-1">
-                            <input id="f_date_beg" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                            <input id="date_beg" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                         </div>
                         <div class="control-label ms-lg-2 mt-2 me-1"><span>{{ _("au") }}</span></div>
                         <div>
-                            <input id="f_date_end" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                            <input id="date_end" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
                         </div>
                         <div class="control-label ms-lg-3 mt-2 me-1">{{ _("Code patient") }}</div>
                         <div>					
@@ -163,54 +163,6 @@ $(document).on('select2:open', () =>
 {
 document.querySelector('.select2-search__field').focus() ;
 } ) ;
-
-function check_min_max(id_res, min, max)
-{
-let val = $( "#res_"+id_res ).val() ;
-
-    if ( (min != '' && val <= parseFloat(min-0.00000001)) || (max != '' && val >= parseFloat(max+0.00000001)) )
-    {
-        $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('d-none') ;
-    }
-    else
-    {
-        $("#limit_"+id_res).addClass('d-none') ;
-        $("#limit_"+id_res).removeClass('show') ;
-    }
-}
-
-function check_min(id_res, min)
-{
-let val = $( "#res_"+id_res ).val() ;
-
-    if ( min != '' && val <= parseFloat(min-0.00000001) )
-    {
-        $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('d-none') ;
-    }
-    else
-    {
-        $("#limit_"+id_res).addClass('d-none') ;
-        $("#limit_"+id_res).removeClass('show') ;
-    }
-}
-
-function check_max(id_res, max)
-{
-let val = $( "#res_"+id_res ).val() ;
-
-    if ( max != '' && val >= parseFloat(max+0.00000001) )
-    {
-        $("#limit_"+id_res).addClass('show') ;
-        $("#limit_"+id_res).removeClass('d-none') ;
-    }
-    else
-    {
-        $("#limit_"+id_res).addClass('d-none') ;
-        $("#limit_"+id_res).removeClass('show') ;
-    }
-}
 
 function save_res( id_rec, ref_ana )
 {
@@ -568,7 +520,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         let num_rec = fmt_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
         /* AlC DESACT 26/12/2023 */
         // let per_rec = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
-        let per_rec = per_num_rec(data_res[0].date_dos, "{{ session['lang_select'] }}" ) ;
+        let per_rec = per_num_rec(data_res[0].rec_date_receipt, "{{ session['lang_select'] }}" ) ;
         let rec_num_int = data[i].rec_num_int ;
 
             if (res_fam.length < 4) res_fam = "" ;
@@ -625,6 +577,10 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
                    if (data[i].normal_min != "" && data[i].normal_max != "")
                    val_max = " - " + val_max ;
+                   else if (val_min)
+                   val_min = "> " + val_min ;
+                   else if (val_max)
+                   val_max = "< " + val_max ;
 
                 minmax = "<span class=\"xs-text\">[" + val_min + val_max + "]</span>" ;
                 }
@@ -756,7 +712,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     {
                     console.log("DEBUG formule_unite2 not empty") ;
 
-                    conv2_val = conv_val( data[i].formule_unite2, data[i].accu2, value) ;
+                    conv2_val = conv_val( data[i].formule_unite2, res_accu2, value) ;
 
                         if ( conv2_val != "") 
                         conv2_val = conv2_val + ' ' + data[i].unit2 ;
@@ -883,8 +839,8 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
 function filter_reset()
 {
-$("#f_date_beg").val( "{{ now|date_now }}" ) ;
-$("#f_date_end").val( "{{ now|date_now }}" ) ;
+$("#date_beg").val( "{{ now|date_now }}" ) ;
+$("#date_end").val( "{{ now|date_now }}" ) ;
 
 $("#code_pat").val("") ;
 $("#f_type_ana").val(0);
@@ -897,8 +853,8 @@ $("#f_valid_res").prop('checked', false) ;
 
 function filter_result()
 {
-let date_beg  = $("#f_date_beg").val() ;
-let date_end  = $("#f_date_end").val() ;
+let date_beg  = $("#date_beg").val() ;
+let date_end  = $("#date_end").val() ;
 let type_ana  = $("#f_type_ana").val() ;
 let id_ana    = $("#id_ana").text()  ;
 let code_pat  = $("#code_pat").val() ;
@@ -912,8 +868,8 @@ let link_fam  = {{ session['user_link_fam'] or [] }}
     if ( $("#f_valid_res").is(":checked") )
     valid_res = $("#f_valid_res").val() ;
 
-let param = '{ "date_beg":"' + date_beg  + '", ' +
-            '"date_end":"' + date_end  + '", ' +
+let param = '{ "date_beg":"' + date_beg  + ' 00:00", ' +
+            '"date_end":"' + date_end  + ' 23:59", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"id_ana":' + id_ana  + ', ' +
             '"emer_ana":' + emer_ana  + ', ' +
@@ -1017,8 +973,8 @@ $(".cnx_trigger").keyup( function(event)
 
 $( document ).ready( function()
 {
-$("#f_date_beg").val( "{{ now|date_now }}" ) ;
-$("#f_date_end").val( "{{ now|date_now }}" ) ;
+$("#date_beg").val( "{{ now|date_now }}" ) ;
+$("#date_end").val( "{{ now|date_now }}" ) ;
 
 display_result( 1 ) ;
 } ) ;
