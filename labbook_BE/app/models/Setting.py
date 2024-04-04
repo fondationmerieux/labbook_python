@@ -522,7 +522,7 @@ class Setting:
 
         req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
                'from template_setting '
-               'where tpl_type=%s')
+               'where tpl_default="Y" and tpl_type=%s')
 
         cursor.execute(req, (type,))
 
@@ -865,3 +865,107 @@ class Setting:
         cursor.execute(req)
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getDHIS2List():
+        cursor = DB.cursor()
+
+        req = ('select dhs_ser, dhs_user, dhs_name, dhs_login, dhs_url, dhs_default '
+               'from dhis2_setting '
+               'order by dhs_name asc')
+
+        cursor.execute(req,)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getDHIS2Det(id_item):
+        cursor = DB.cursor()
+
+        req = ('select dhs_ser, dhs_user, dhs_name, dhs_login, dhs_pwd, dhs_url, dhs_default '
+               'from dhis2_setting '
+               'where dhs_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getDefaultDHIS2Det():
+        cursor = DB.cursor()
+
+        req = ('select dhs_ser, dhs_user, dhs_name, dhs_login, dhs_pwd, dhs_url, dhs_default '
+               'from dhis2_setting '
+               'where dhs_default="Y"')
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertDHIS2Det(**params):
+        try:
+            cursor = DB.cursor()
+
+            if params['default'] == 'Y':
+                # removes the default character on others
+                Setting.UndefaultDHIS2Det()
+
+            cursor.execute('insert into dhis2_setting '
+                           '(dhs_date, dhs_user, dhs_name, dhs_login, dhs_pwd, dhs_url, dhs_default) '
+                           'values (NOW(), %(user)s, %(name)s, %(login)s, %(pwd)s, %(url)s, %(default)s)', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateDHIS2Det(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update dhis2_setting '
+                           'set dhs_user=%(user)s, dhs_name=%(name)s, dhs_login=%(login)s, dhs_pwd=%(pwd)s, '
+                           'dhs_url=%(url)s, dhs_default=%(default)s '
+                           'where dhs_ser=%(id_item)s', params)
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteDHIS2Det(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from dhis2_setting '
+                           'where dhs_ser=%s', (id_item,))
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def UndefaultDHIS2Det():
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update dhis2_setting '
+                           'set dhs_default="N" '
+                           'where dhs_default="Y"')
+
+            Setting.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-26 15:15+0100\n"
+"POT-Creation-Date: 2024-04-04 08:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -260,20 +260,20 @@ msgstr ""
 msgid "Bon de transfert"
 msgstr ""
 
-#: services/ExportRest.py:451 translations/messages_pybabel.py:527
+#: services/ExportRest.py:771 translations/messages_pybabel.py:527
 msgid "Années"
 msgstr ""
 
-#: services/ExportRest.py:453 translations/messages_pybabel.py:521
+#: services/ExportRest.py:773 translations/messages_pybabel.py:521
 #: translations/messages_pybabel.py:529
 msgid "Mois"
 msgstr ""
 
-#: services/ExportRest.py:455 translations/messages_pybabel.py:530
+#: services/ExportRest.py:775 translations/messages_pybabel.py:530
 msgid "Semaines"
 msgstr ""
 
-#: services/ExportRest.py:457 translations/messages_pybabel.py:528
+#: services/ExportRest.py:777 translations/messages_pybabel.py:528
 msgid "Jours"
 msgstr ""
 

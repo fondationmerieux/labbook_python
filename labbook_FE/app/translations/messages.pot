@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-26 15:15+0100\n"
+"POT-Creation-Date: 2024-04-04 08:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,22 +165,23 @@ msgid "Demande de garde"
 msgstr ""
 
 #: templates/administrative-record.html:108
-#: templates/administrative-record.html:128 templates/det-new-product.html:81
-#: templates/det-patient.html:28 templates/det-patient.html:122
-#: templates/det-patient.html:164 templates/det-req-ext.html:125
-#: templates/det-req-ext.html:131 templates/det-req-ext.html:154
-#: templates/det-req-ext.html:394 templates/det-req-ext.html:653
-#: templates/det-req-ext.html:658 templates/det-req-ext.html:663
-#: templates/det-req-ext.html:771 templates/det-req-int.html:128
-#: templates/det-req-int.html:134 templates/det-req-int.html:157
-#: templates/det-req-int.html:418 templates/det-req-int.html:637
-#: templates/det-req-int.html:642 templates/det-req-int.html:647
-#: templates/det-template.html:35 templates/list-nonconformities.html:212
-#: templates/manage-pat-records.html:52 templates/manage-pat-records.html:132
-#: templates/manage-pat-records.html:178 templates/manage-pat-records.html:307
-#: templates/manage-pat-records.html:386 templates/manage-pat-records.html:432
-#: templates/non-conformity.html:633 templates/non-conformity.html:718
-#: templates/setting-analyzes.html:49 templates/setting-det-analysis.html:85
+#: templates/administrative-record.html:128 templates/det-dhis2-api.html:48
+#: templates/det-new-product.html:81 templates/det-patient.html:28
+#: templates/det-patient.html:122 templates/det-patient.html:164
+#: templates/det-req-ext.html:125 templates/det-req-ext.html:131
+#: templates/det-req-ext.html:154 templates/det-req-ext.html:394
+#: templates/det-req-ext.html:653 templates/det-req-ext.html:658
+#: templates/det-req-ext.html:663 templates/det-req-ext.html:771
+#: templates/det-req-int.html:128 templates/det-req-int.html:134
+#: templates/det-req-int.html:157 templates/det-req-int.html:418
+#: templates/det-req-int.html:637 templates/det-req-int.html:642
+#: templates/det-req-int.html:647 templates/det-template.html:35
+#: templates/list-nonconformities.html:212 templates/manage-pat-records.html:52
+#: templates/manage-pat-records.html:132 templates/manage-pat-records.html:178
+#: templates/manage-pat-records.html:307 templates/manage-pat-records.html:386
+#: templates/manage-pat-records.html:432 templates/non-conformity.html:633
+#: templates/non-conformity.html:718 templates/setting-analyzes.html:49
+#: templates/setting-det-analysis.html:85
 #: templates/setting-det-analysis.html:96
 #: templates/setting-det-analysis.html:181
 #: templates/setting-det-analysis.html:238
@@ -191,23 +192,24 @@ msgid "Oui"
 msgstr ""
 
 #: templates/administrative-record.html:110
-#: templates/administrative-record.html:134 templates/det-new-product.html:84
-#: templates/det-patient.html:31 templates/det-patient.html:125
-#: templates/det-patient.html:167 templates/det-req-ext.html:128
-#: templates/det-req-ext.html:131 templates/det-req-ext.html:157
-#: templates/det-req-ext.html:165 templates/det-req-ext.html:394
-#: templates/det-req-ext.html:655 templates/det-req-ext.html:660
-#: templates/det-req-ext.html:665 templates/det-req-ext.html:773
-#: templates/det-req-int.html:131 templates/det-req-int.html:134
-#: templates/det-req-int.html:160 templates/det-req-int.html:168
-#: templates/det-req-int.html:418 templates/det-req-int.html:639
-#: templates/det-req-int.html:644 templates/det-req-int.html:649
-#: templates/det-template.html:38 templates/list-nonconformities.html:214
-#: templates/manage-pat-records.html:55 templates/manage-pat-records.html:135
-#: templates/manage-pat-records.html:181 templates/manage-pat-records.html:310
-#: templates/manage-pat-records.html:389 templates/manage-pat-records.html:435
-#: templates/non-conformity.html:636 templates/non-conformity.html:721
-#: templates/setting-analyzes.html:50 templates/setting-det-analysis.html:88
+#: templates/administrative-record.html:134 templates/det-dhis2-api.html:51
+#: templates/det-new-product.html:84 templates/det-patient.html:31
+#: templates/det-patient.html:125 templates/det-patient.html:167
+#: templates/det-req-ext.html:128 templates/det-req-ext.html:131
+#: templates/det-req-ext.html:157 templates/det-req-ext.html:165
+#: templates/det-req-ext.html:394 templates/det-req-ext.html:655
+#: templates/det-req-ext.html:660 templates/det-req-ext.html:665
+#: templates/det-req-ext.html:773 templates/det-req-int.html:131
+#: templates/det-req-int.html:134 templates/det-req-int.html:160
+#: templates/det-req-int.html:168 templates/det-req-int.html:418
+#: templates/det-req-int.html:639 templates/det-req-int.html:644
+#: templates/det-req-int.html:649 templates/det-template.html:38
+#: templates/list-nonconformities.html:214 templates/manage-pat-records.html:55
+#: templates/manage-pat-records.html:135 templates/manage-pat-records.html:181
+#: templates/manage-pat-records.html:310 templates/manage-pat-records.html:389
+#: templates/manage-pat-records.html:435 templates/non-conformity.html:636
+#: templates/non-conformity.html:721 templates/setting-analyzes.html:50
+#: templates/setting-det-analysis.html:88
 #: templates/setting-det-analysis.html:99
 #: templates/setting-det-analysis.html:184
 #: templates/setting-det-analysis.html:241
@@ -287,22 +289,23 @@ msgstr ""
 
 #: templates/administrative-record.html:180
 #: templates/administrative-record.html:200 templates/det-analyzer.html:15
-#: templates/det-doctor.html:39 templates/det-hist-patient.html:25
-#: templates/det-list-stock.html:32 templates/det-patient.html:58
-#: templates/det-req-ext.html:216 templates/det-req-ext.html:239
-#: templates/det-req-int.html:263 templates/det-staff.html:16
-#: templates/det-supplier.html:25 templates/hist-analyzes.html:39
-#: templates/hist-analyzes.html:71 templates/hist-patients.html:34
-#: templates/hist-patients.html:92 templates/list-analyzers.html:31
-#: templates/list-doctors.html:28 templates/list-doctors.html:81
-#: templates/list-equipment.html:32 templates/list-nonconformities.html:57
-#: templates/list-products.html:31 templates/list-records.html:54
-#: templates/list-records.html:155 templates/list-staff.html:31
-#: templates/list-stock.html:19 templates/list-stock.html:78
-#: templates/list-template.html:31 templates/list-works.html:116
-#: templates/manage-pat-records.html:81 templates/manage-pat-records.html:336
-#: templates/move-stock-product.html:58 templates/setting-det-analysis.html:270
-#: templates/setting-det-user.html:104 templates/setting-dicts.html:20
+#: templates/det-dhis2-api.html:15 templates/det-doctor.html:39
+#: templates/det-hist-patient.html:25 templates/det-list-stock.html:32
+#: templates/det-patient.html:58 templates/det-req-ext.html:216
+#: templates/det-req-ext.html:239 templates/det-req-int.html:263
+#: templates/det-staff.html:16 templates/det-supplier.html:25
+#: templates/hist-analyzes.html:39 templates/hist-analyzes.html:71
+#: templates/hist-patients.html:34 templates/hist-patients.html:92
+#: templates/list-analyzers.html:31 templates/list-doctors.html:28
+#: templates/list-doctors.html:81 templates/list-equipment.html:32
+#: templates/list-nonconformities.html:57 templates/list-products.html:31
+#: templates/list-records.html:54 templates/list-records.html:155
+#: templates/list-staff.html:31 templates/list-stock.html:19
+#: templates/list-stock.html:78 templates/list-template.html:31
+#: templates/list-works.html:116 templates/manage-pat-records.html:81
+#: templates/manage-pat-records.html:336 templates/move-stock-product.html:58
+#: templates/setting-det-analysis.html:270 templates/setting-det-user.html:104
+#: templates/setting-dhis2.html:21 templates/setting-dicts.html:20
 #: templates/setting-dicts.html:64 templates/setting-functionnal-units.html:30
 #: templates/setting-link-unit-fam.html:22
 #: templates/setting-link-unit-user.html:24 templates/setting-manual.html:30
@@ -386,8 +389,8 @@ msgstr ""
 #: templates/report-today.html:59 templates/res-control-ext.html:63
 #: templates/setting-age-interval.html:29 templates/setting-analyzes.html:79
 #: templates/setting-det-analysis.html:269 templates/setting-det-dict.html:45
-#: templates/setting-dhis2.html:26 templates/setting-dicts.html:63
-#: templates/setting-epidemio.html:26
+#: templates/setting-dhis2.html:20 templates/setting-dhis2.html:53
+#: templates/setting-dicts.html:63 templates/setting-epidemio.html:26
 #: templates/setting-functionnal-units.html:29
 #: templates/setting-indicator.html:26 templates/setting-manual.html:29
 #: templates/setting-requesting-services.html:29
@@ -453,15 +456,15 @@ msgstr ""
 
 #: templates/administrative-record.html:268 templates/det-analyzer.html:67
 #: templates/det-control-ext.html:40 templates/det-control-int.html:40
-#: templates/det-doctor.html:135 templates/det-equipment.html:165
-#: templates/det-manual.html:107 templates/det-meeting.html:70
-#: templates/det-new-product.html:95 templates/det-patient.html:279
-#: templates/det-procedure.html:99 templates/det-sample.html:145
-#: templates/det-staff.html:206 templates/det-stock-product.html:96
-#: templates/det-supplier.html:92 templates/det-template.html:73
-#: templates/enter-result.html:431 templates/enter-result.html:752
-#: templates/eqp-document.html:77 templates/eqp-failure.html:76
-#: templates/eqp-maintenance-contract.html:66
+#: templates/det-dhis2-api.html:62 templates/det-doctor.html:135
+#: templates/det-equipment.html:165 templates/det-manual.html:107
+#: templates/det-meeting.html:70 templates/det-new-product.html:95
+#: templates/det-patient.html:279 templates/det-procedure.html:99
+#: templates/det-sample.html:145 templates/det-staff.html:206
+#: templates/det-stock-product.html:96 templates/det-supplier.html:92
+#: templates/det-template.html:73 templates/enter-result.html:431
+#: templates/enter-result.html:752 templates/eqp-document.html:77
+#: templates/eqp-failure.html:76 templates/eqp-maintenance-contract.html:66
 #: templates/eqp-maintenance-preventive.html:59 templates/eqp-metrology.html:59
 #: templates/list-results.html:468 templates/list-results.html:795
 #: templates/move-stock-product.html:84 templates/non-conformity.html:776
@@ -493,7 +496,7 @@ msgstr ""
 #: templates/eqp-maintenance-contract.html:38
 #: templates/eqp-maintenance-preventive.html:38 templates/eqp-metrology.html:38
 #: templates/list-laboratory.html:48 templates/list-template.html:34
-#: templates/res-control-ext.html:63 templates/setting-dhis2.html:26
+#: templates/res-control-ext.html:63 templates/setting-dhis2.html:53
 #: templates/setting-epidemio.html:26 templates/setting-indicator.html:26
 msgid "Fichier"
 msgstr ""
@@ -548,8 +551,9 @@ msgstr ""
 #: templates/setting-analyzes.html:220 templates/setting-det-analysis.html:311
 #: templates/setting-det-analysis.html:317
 #: templates/setting-det-analysis.html:638 templates/setting-det-dict.html:101
-#: templates/setting-dhis2.html:105 templates/setting-dicts.html:181
-#: templates/setting-functionnal-units.html:93 templates/setting-manual.html:79
+#: templates/setting-dhis2.html:98 templates/setting-dhis2.html:217
+#: templates/setting-dicts.html:181 templates/setting-functionnal-units.html:93
+#: templates/setting-manual.html:79
 #: templates/setting-requesting-services.html:79
 #: templates/setting-stock.html:90
 msgid "Supprimer"
@@ -570,7 +574,7 @@ msgstr ""
 #: templates/list-products.html:166 templates/list-stock.html:307
 #: templates/list-stock.html:343 templates/list-suppliers.html:182
 #: templates/list-template.html:177 templates/setting-analyzes.html:286
-#: templates/setting-dicts.html:223
+#: templates/setting-dhis2.html:151 templates/setting-dicts.html:223
 #: templates/setting-functionnal-units.html:143
 #: templates/setting-zipcity.html:145
 msgid "Erreur lors de la suppression des données"
@@ -586,7 +590,7 @@ msgstr ""
 #: templates/eqp-maintenance-preventive.html:181
 #: templates/eqp-metrology.html:181 templates/list-laboratory.html:319
 #: templates/res-control-ext.html:71 templates/res-control-ext.html:234
-#: templates/setting-dhis2.html:104 templates/setting-epidemio.html:104
+#: templates/setting-dhis2.html:216 templates/setting-epidemio.html:104
 #: templates/setting-indicator.html:104
 msgid "Télécharger"
 msgstr ""
@@ -620,12 +624,13 @@ msgstr ""
 #: templates/list-vars.html:90 templates/move-stock-product.html:161
 #: templates/pivot-table.html:151 templates/report-billing.html:225
 #: templates/report-tat.html:247 templates/report-today.html:173
-#: templates/setting-analyzes.html:248 templates/setting-dicts.html:164
-#: templates/setting-users.html:203 templates/setting-zipcity.html:93
+#: templates/setting-analyzes.html:248 templates/setting-dhis2.html:88
+#: templates/setting-dicts.html:164 templates/setting-users.html:203
+#: templates/setting-zipcity.html:93
 msgid "Aucune donnée à afficher"
 msgstr ""
 
-#: templates/administrative-record.html:603 templates/setting-dhis2.html:89
+#: templates/administrative-record.html:603 templates/setting-dhis2.html:201
 #: templates/setting-epidemio.html:89 templates/setting-indicator.html:89
 msgid "Aucun fichier déposé"
 msgstr ""
@@ -642,14 +647,15 @@ msgstr ""
 
 #: templates/administrative-record.html:682 templates/det-analyzer.html:131
 #: templates/det-control-ext.html:223 templates/det-control-int.html:208
-#: templates/det-doctor.html:208 templates/det-equipment.html:350
-#: templates/det-list-stock.html:219 templates/det-manual.html:310
-#: templates/det-meeting.html:182 templates/det-new-product.html:214
-#: templates/det-procedure.html:300 templates/det-sample.html:215
-#: templates/det-staff.html:295 templates/det-stock-product.html:252
-#: templates/det-supplier.html:160 templates/det-template.html:160
-#: templates/eqp-document.html:247 templates/eqp-document.html:257
-#: templates/eqp-failure.html:226 templates/eqp-maintenance-contract.html:174
+#: templates/det-dhis2-api.html:123 templates/det-doctor.html:208
+#: templates/det-equipment.html:350 templates/det-list-stock.html:219
+#: templates/det-manual.html:310 templates/det-meeting.html:182
+#: templates/det-new-product.html:214 templates/det-procedure.html:300
+#: templates/det-sample.html:215 templates/det-staff.html:295
+#: templates/det-stock-product.html:252 templates/det-supplier.html:160
+#: templates/det-template.html:160 templates/eqp-document.html:247
+#: templates/eqp-document.html:257 templates/eqp-failure.html:226
+#: templates/eqp-maintenance-contract.html:174
 #: templates/eqp-maintenance-preventive.html:165
 #: templates/eqp-metrology.html:165 templates/homepage.html:133
 #: templates/list-laboratory.html:304 templates/manage-pat-records.html:736
@@ -689,7 +695,7 @@ msgstr ""
 #: templates/eqp-maintenance-contract.html:255
 #: templates/eqp-maintenance-preventive.html:246
 #: templates/eqp-metrology.html:246 templates/list-laboratory.html:359
-#: templates/setting-dhis2.html:116
+#: templates/setting-dhis2.html:228
 msgid "Le fichier sera définitivement supprimé"
 msgstr ""
 
@@ -699,7 +705,7 @@ msgstr ""
 #: templates/eqp-maintenance-contract.html:274
 #: templates/eqp-maintenance-preventive.html:265
 #: templates/eqp-metrology.html:265 templates/list-laboratory.html:378
-#: templates/setting-dhis2.html:135
+#: templates/setting-dhis2.html:247
 msgid "Erreur lors de la suppression d'un fichier"
 msgstr ""
 
@@ -747,10 +753,10 @@ msgstr ""
 #: templates/list-stock.html:104 templates/list-suppliers.html:56
 #: templates/list-template.html:52 templates/list-trace-download.html:79
 #: templates/list-vars.html:53 templates/move-stock-product.html:81
-#: templates/quality-general.html:47 templates/report-dhis2.html:51
+#: templates/quality-general.html:47 templates/report-dhis2.html:52
 #: templates/setting-age-interval.html:41 templates/setting-analyzes.html:102
 #: templates/setting-backup.html:45 templates/setting-det-dict.html:59
-#: templates/setting-dhis2.html:39 templates/setting-dicts.html:82
+#: templates/setting-dhis2.html:66 templates/setting-dicts.html:82
 #: templates/setting-epidemio.html:39 templates/setting-form.html:48
 #: templates/setting-functionnal-units.html:42
 #: templates/setting-indicator.html:39 templates/setting-link-unit-fam.html:30
@@ -774,9 +780,9 @@ msgstr ""
 
 #: templates/analysis-import.html:90 templates/det-template.html:142
 #: templates/det-template.html:181 templates/dict-import.html:78
-#: templates/setting-dhis2.html:67 templates/setting-epidemio.html:67
-#: templates/setting-indicator.html:67 templates/setting-zipcity.html:192
-#: templates/user-import.html:75
+#: templates/report-dhis2.html:195 templates/setting-dhis2.html:180
+#: templates/setting-epidemio.html:67 templates/setting-indicator.html:67
+#: templates/setting-zipcity.html:192 templates/user-import.html:75
 msgid "Dépôt réussi"
 msgstr ""
 
@@ -814,7 +820,7 @@ msgstr ""
 msgid "LabBook API"
 msgstr ""
 
-#: templates/api.html:64
+#: templates/api.html:64 templates/report-dhis2.html:212
 msgid "Accès non autorisé"
 msgstr ""
 
@@ -889,19 +895,20 @@ msgstr ""
 #: templates/list-ctrl-int.html:58 templates/list-eqp-failure.html:61
 #: templates/list-eqp-maintenance.html:58
 #: templates/list-eqp-maintenance.html:113 templates/list-eqp-metrology.html:59
-#: templates/technical-validation.html:114
+#: templates/setting-dhis2.html:35 templates/technical-validation.html:114
 #: templates/technical-validation.html:132
 msgid "Ajouter"
 msgstr ""
 
 #: templates/biological-validation.html:164 templates/det-analyzer.html:63
-#: templates/det-doctor.html:131 templates/det-equipment.html:161
-#: templates/det-list-stock.html:82 templates/det-manual.html:103
-#: templates/det-meeting.html:66 templates/det-new-product.html:91
-#: templates/det-procedure.html:95 templates/det-staff.html:202
-#: templates/det-stock-product.html:93 templates/det-supplier.html:88
-#: templates/det-template.html:70 templates/eqp-document.html:73
-#: templates/eqp-failure.html:72 templates/eqp-maintenance-contract.html:62
+#: templates/det-dhis2-api.html:58 templates/det-doctor.html:131
+#: templates/det-equipment.html:161 templates/det-list-stock.html:82
+#: templates/det-manual.html:103 templates/det-meeting.html:66
+#: templates/det-new-product.html:91 templates/det-procedure.html:95
+#: templates/det-staff.html:202 templates/det-stock-product.html:93
+#: templates/det-supplier.html:88 templates/det-template.html:70
+#: templates/eqp-document.html:73 templates/eqp-failure.html:72
+#: templates/eqp-maintenance-contract.html:62
 #: templates/eqp-maintenance-preventive.html:55 templates/eqp-metrology.html:55
 #: templates/hist-stock-product.html:182 templates/non-conformity.html:773
 #: templates/res-control-ext.html:84 templates/res-control-int.html:61
@@ -1070,10 +1077,11 @@ msgstr ""
 msgid "Liste des analyseurs"
 msgstr ""
 
-#: templates/det-analyzer.html:32 templates/list-analyzers.html:32
-#: templates/list-staff.html:42 templates/login.html:31
-#: templates/setting-det-user.html:51 templates/setting-link-unit-user.html:22
-#: templates/setting-users.html:20 templates/setting-users.html:88
+#: templates/det-analyzer.html:32 templates/det-dhis2-api.html:22
+#: templates/list-analyzers.html:32 templates/list-staff.html:42
+#: templates/login.html:31 templates/setting-det-user.html:51
+#: templates/setting-link-unit-user.html:22 templates/setting-users.html:20
+#: templates/setting-users.html:88
 msgid "Identifiant"
 msgstr ""
 
@@ -1343,8 +1351,9 @@ msgstr ""
 #: templates/list-template.html:29 templates/list-trace-download.html:57
 #: templates/move-stock-product.html:57 templates/setting-age-interval.html:28
 #: templates/setting-analyzes.html:78 templates/setting-det-analysis.html:268
-#: templates/setting-det-dict.html:44 templates/setting-dicts.html:62
-#: templates/setting-functionnal-units.html:28 templates/setting-manual.html:28
+#: templates/setting-det-dict.html:44 templates/setting-dhis2.html:19
+#: templates/setting-dicts.html:62 templates/setting-functionnal-units.html:28
+#: templates/setting-manual.html:28
 #: templates/setting-requesting-services.html:28
 #: templates/setting-stock.html:38 templates/setting-users.html:85
 #: templates/setting-zipcity.html:36
@@ -1389,7 +1398,8 @@ msgstr ""
 #: templates/list-meeting.html:111 templates/list-nonconformities.html:176
 #: templates/list-procedure.html:122 templates/list-staff.html:127
 #: templates/list-suppliers.html:117 templates/list-template.html:111
-#: templates/setting-analyzes.html:211 templates/setting-dicts.html:179
+#: templates/setting-analyzes.html:211 templates/setting-dhis2.html:97
+#: templates/setting-dicts.html:179
 msgid "Editer"
 msgstr ""
 
@@ -1459,7 +1469,7 @@ msgstr ""
 #: templates/list-stock.html:503 templates/list-stock.html:545
 #: templates/list-suppliers.html:237 templates/report-activity.html:619
 #: templates/report-activity.html:671 templates/report-activity.html:719
-#: templates/report-billing.html:297 templates/report-dhis2.html:116
+#: templates/report-billing.html:297 templates/report-dhis2.html:141
 #: templates/report-epidemio.html:140 templates/report-indicator.html:140
 #: templates/report-statistic.html:595 templates/report-tat.html:413
 #: templates/report-tat.html:472 templates/report-today.html:254
@@ -1475,6 +1485,29 @@ msgstr ""
 
 #: templates/det-control-int.html:62
 msgid "Cible"
+msgstr ""
+
+#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
+msgid "Plateforme DHIS2 api"
+msgstr ""
+
+#: templates/det-dhis2-api.html:29 templates/login.html:39
+#: templates/setting-backup.html:83 templates/setting-det-user.html:58
+#: templates/setting-pwd-user.html:15
+msgid "Mot de passe"
+msgstr ""
+
+#: templates/det-dhis2-api.html:39
+msgid "Adresse plateforme dhis2 "
+msgstr ""
+
+#: templates/det-dhis2-api.html:46
+msgid "Par défaut"
+msgstr ""
+
+#: templates/det-dhis2-api.html:86 templates/det-doctor.html:169
+#: templates/det-template.html:95
+msgid "Veuillez saisir un nom."
 msgstr ""
 
 #: templates/det-doctor.html:17 templates/setting-det-user.html:48
@@ -1578,10 +1611,6 @@ msgstr ""
 #: templates/det-doctor.html:122 templates/det-staff.html:28
 #: templates/det-supplier.html:67 templates/setting-det-user.html:126
 msgid "Adresse email"
-msgstr ""
-
-#: templates/det-doctor.html:169 templates/det-template.html:95
-msgid "Veuillez saisir un nom."
 msgstr ""
 
 #: templates/det-doctor.html:215 templates/det-patient.html:495
@@ -2154,7 +2183,7 @@ msgstr ""
 #: templates/list-template.html:153 templates/setting-age-interval.html:97
 #: templates/setting-det-analysis.html:600
 #: templates/setting-det-analysis.html:742 templates/setting-det-dict.html:122
-#: templates/setting-dicts.html:205
+#: templates/setting-dhis2.html:127 templates/setting-dicts.html:205
 #: templates/setting-functionnal-units.html:119
 #: templates/setting-manual.html:95
 #: templates/setting-requesting-services.html:95
@@ -2387,8 +2416,8 @@ msgid "Veuillez choisir un fichier."
 msgstr ""
 
 #: templates/det-template.html:148 templates/det-template.html:189
-#: templates/setting-dhis2.html:74 templates/setting-epidemio.html:74
-#: templates/setting-indicator.html:74
+#: templates/report-dhis2.html:214 templates/setting-dhis2.html:187
+#: templates/setting-epidemio.html:74 templates/setting-indicator.html:74
 msgid "Une erreur est survenue lors du dépot du fichier"
 msgstr ""
 
@@ -2512,7 +2541,7 @@ msgstr ""
 msgid "Exclure ceux déjà téléchargés"
 msgstr ""
 
-#: templates/global-report.html:36 templates/report-dhis2.html:54
+#: templates/global-report.html:36 templates/report-dhis2.html:71
 #: templates/user-conn-export.html:39 templates/whonet-export.html:39
 msgid "Récupérer les données"
 msgstr ""
@@ -2521,8 +2550,8 @@ msgstr ""
 msgid "Certains rapports sont manquants"
 msgstr ""
 
-#: templates/global-report.html:89 templates/report-dhis2.html:114
-#: templates/whonet-export.html:79
+#: templates/global-report.html:89 templates/report-dhis2.html:139
+#: templates/report-dhis2.html:208 templates/whonet-export.html:79
 msgid "Aucun résultat à exporter !"
 msgstr ""
 
@@ -3246,7 +3275,7 @@ msgstr ""
 msgid "Paramétrage des modèles de documents"
 msgstr ""
 
-#: templates/list-template.html:33
+#: templates/list-template.html:33 templates/setting-dhis2.html:24
 msgid "Défaut"
 msgstr ""
 
@@ -3322,11 +3351,6 @@ msgstr ""
 
 #: templates/login.html:28
 msgid "Ouverture de session"
-msgstr ""
-
-#: templates/login.html:39 templates/setting-backup.html:83
-#: templates/setting-det-user.html:58 templates/setting-pwd-user.html:15
-msgid "Mot de passe"
 msgstr ""
 
 #: templates/macros.html:87 templates/report-statistic.html:277
@@ -4030,7 +4054,8 @@ msgstr ""
 msgid "Chargement"
 msgstr ""
 
-#: templates/pivot-table.html:100 templates/report-dhis2.html:87
+#: templates/pivot-table.html:100 templates/report-dhis2.html:112
+#: templates/report-dhis2.html:171
 msgid "Veuillez saisir des dates"
 msgstr ""
 
@@ -4196,8 +4221,24 @@ msgstr ""
 msgid "Feuille de calcul"
 msgstr ""
 
-#: templates/report-dhis2.html:81
+#: templates/report-dhis2.html:65
+msgid "Envoyer les données"
+msgstr ""
+
+#: templates/report-dhis2.html:77
+msgid "Retour d'envoi"
+msgstr ""
+
+#: templates/report-dhis2.html:106 templates/report-dhis2.html:165
 msgid "Veuillez sélectionner une feuille de calcul."
+msgstr ""
+
+#: templates/report-dhis2.html:177
+msgid "Veuillez sélectionner une plateforme de destination."
+msgstr ""
+
+#: templates/report-dhis2.html:210
+msgid "Paramétrage manquant !"
 msgstr ""
 
 #: templates/report-epidemio.html:34
@@ -4855,7 +4896,23 @@ msgstr ""
 msgid "Paramétrage de l'export DHIS2"
 msgstr ""
 
-#: templates/setting-dhis2.html:33 templates/setting-epidemio.html:33
+#: templates/setting-dhis2.html:14
+msgid "Paramétrage envoi à l'api dhis2"
+msgstr ""
+
+#: templates/setting-dhis2.html:22
+msgid "Adresse plateforme"
+msgstr ""
+
+#: templates/setting-dhis2.html:23
+msgid "login"
+msgstr ""
+
+#: templates/setting-dhis2.html:40
+msgid "Paramétrage feuille de calcul"
+msgstr ""
+
+#: templates/setting-dhis2.html:60 templates/setting-epidemio.html:33
 #: templates/setting-indicator.html:33
 msgid "Enregistrer la feuille de calcul"
 msgstr ""

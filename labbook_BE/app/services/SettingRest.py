@@ -1223,3 +1223,89 @@ class SettingManualCat(Resource):
 
         self.log.info(Logs.fileline() + ' : SettingManualCat')
         return compose_ret(l_datas, Constants.cst_content_type_json, 200)
+
+
+class SettingDHIS2List(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Setting.getDHIS2List()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE SettingDHIS2List not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingDHIS2List')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class SettingDHIS2Det(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Setting.getDHIS2Det(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ERROR SettingDHIS2Det not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingDHIS2Det')
+        return compose_ret(item, Constants.cst_content_type_json)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'name' not in args or 'login' not in args or 'pwd' not in args or \
+           'url' not in args or 'default' not in args:
+            self.log.error(Logs.fileline() + ' : SettingDHIS2Det ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            self.log.info(Logs.fileline() + ' : TRACE updateDHIS2Det')
+
+            ret = Setting.updateDHIS2Det(id_item=id_item,
+                                         user=args['id_user'],
+                                         name=args['name'],
+                                         login=args['login'],
+                                         pwd=args['pwd'],
+                                         url=args['url'],
+                                         default=args['default'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : SettingDHIS2Det ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            self.log.info(Logs.fileline() + ' : TRACE insertDHIS2Det')
+            ret = Setting.insertDHIS2Det(user=args['id_user'],
+                                         name=args['name'],
+                                         login=args['login'],
+                                         pwd=args['pwd'],
+                                         url=args['url'],
+                                         default=args['default'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : SettingDHIS2Det ERROR  insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingDHIS2Det')
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Setting.deleteDHIS2Det(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE SettingDHIS2Det delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE SettingDHIS2Det delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)

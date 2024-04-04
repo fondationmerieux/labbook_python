@@ -1,0 +1,146 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Plateforme DHIS2 api") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}">{{ _("Plateforme DHIS2 api") }}</h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mb-3 me-3">
+                    <label for="name" class="form-control-label col-lg-2 text-end mt-2 me-1">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="name" id="name" value="{{ args['dhs']['dhs_name'] }}" class="form-control form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mb-3 me-3">
+                    <label for="login" class="form-control-label col-lg-2 text-end mt-2 me-1">{{ _("Identifiant") }}</label>
+                    <div>					
+                        <input type="text" name="login" id="login" value="{{ args['dhs']['dhs_login'] }}" class="form-control form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mb-3 me-3">
+                    <label for="password" class="form-control-label col-lg-2 text-end mt-2 me-1">{{ _("Mot de passe") }}</label>
+                    <div class="form-group d-lg-flex align-items-start">
+                        <input type="password" name="password" id="password" value="{{ args['dhs']['dhs_pwd'] }}" class="form-control form-lbk">
+                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mb-3 me-3">
+                    <label for="url_dhis2" class="form-control-label col-lg-2 text-end mt-2 me-1">{{ _("Adresse plateforme dhis2 ") }}</label>
+                    <div>					
+                        <input type="text" name="url_dhis2" id="url_dhis2" value="{{ args['dhs']['dhs_url'] }}" class="form-control form-lbk" style="width: 440px;">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label class="form-label col-lg-2 text-end mt-2 me-1">{{ _("Par défaut") }}</label>
+                    <label class="form-label text-end mt-2 me-3">
+                        <input type="radio" name="dhs_default" value="Y" {% if args['dhs']['dhs_default'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                    </label>
+                    <label class="form-label text-end mt-2 me-3">
+                        <input type="radio" name="dhs_default" value="N" {% if not args['dhs']['dhs_default'] or args['dhs']['dhs_default'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                    </label>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                {% if session["user_role"] in ("A","B") %}
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+var id_item = {{ args['id_item']}} ;    
+var id_user = {{ session['user_id']|safe}} ;
+var name    = $("#name").val()      ;
+var login   = $("#login").val()     ;
+var pwd     = $("#password").val()  ;
+var url     = $("#url_dhis2").val() ;
+var dhs_default = $("input:radio[name=dhs_default]:checked").val() ;
+
+var msg = "" ;
+
+    if (name == "")
+    msg += "{{ _("Veuillez saisir un nom.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var param = '{ "id_user":' + id_user + ', ' +
+              '"name":"' + name + '", ' +
+              '"login":"' + login + '", ' +
+              '"pwd":"' + pwd + '", ' +
+              '"default":"' + dhs_default + '", ' +
+              '"url":"' + url + '"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/setting/dhis2/api/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+               $("#dial-wait").modal("hide") ;
+           
+           window.location = "{{ session['server_ext'] }}/setting-dhis2" ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+document.addEventListener('DOMContentLoaded', function () 
+{
+const passwordInput = document.getElementById('password');
+const togglePasswordButton = document.getElementById('togglePassword');
+
+togglePasswordButton.addEventListener('click', function () 
+    {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    togglePasswordButton.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+    } ) ;
+} ) ;
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

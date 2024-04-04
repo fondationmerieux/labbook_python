@@ -1870,6 +1870,17 @@ def setting_dhis2():
 
     json_data['data_dhis2'] = []
 
+    # Load list of dhis2 api
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/dhis2/api/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['dhs'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list of dhis2 api failed, err=%s , url=%s', err, url)
+
     # Load dhis2 files in dhis2 directory
     try:
         path = Constants.cst_dhis2
@@ -1882,6 +1893,39 @@ def setting_dhis2():
         log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
 
     return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : dhis2 api details
+@app.route('/det-dhis2-api/<int:id_item>')
+def det_dhis2_api(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE dhis2 api =' + str(id_item))
+
+    test_session()
+
+    session['current_page'] = 'det-dhis2-api/' + str(id_item)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['dhs'] = {}
+
+    # Load dhis2 api details
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/dhis2/api/det/' + str(id_item)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['dhs'] = req.json()
+
+            log.error(Logs.fileline() + ' : json_data = ' + str(json_data))
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests dhis2 api det failed, err=%s , url=%s', err, url)
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-dhis2-api.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : setting epidemio
@@ -3692,6 +3736,7 @@ def report_dhis2():
     session['current_page'] = 'report-dhis2'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
     json_data['data_dhis2'] = []
@@ -3707,7 +3752,18 @@ def report_dhis2():
     except Exception as err:
         log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
 
-    return render_template('report-dhis2.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    # Load list dhis2 setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/dhis2/api/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['dhs'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list dhis2 setting failed, err=%s , url=%s', err, url)
+
+    return render_template('report-dhis2.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : WHONET export

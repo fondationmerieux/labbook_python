@@ -35,8 +35,8 @@
                         <span>{{ _("Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné.") }}</span>
                     </div>
                     <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
-                        <label for="calc" class="form-label col-2 text-end mt-2 me-1"> {{ _("Feuille de calcul") }} </label>
-                       <select name="spreadsheet" id="spreadsheet" class="form-select w-50">
+                        <label for="calc" class="form-label text-end mt-2 me-1"> {{ _("Feuille de calcul") }} </label>
+                       <select name="spreadsheet" id="spreadsheet" class="form-select w-auto">
                            <option value="" selected="selected"></option>
                            <option value="LIST_OUTSOURCING.csv">{{ _("Sous-traitance") }}</option>
                            {% for filename in args['data_dhis2'] %}
@@ -47,11 +47,36 @@
                 </div>
 
                 <div class="col-12 mt-3">
-                    <div class="float-start ms-0">
-                        <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                        </div>
+                    
+                        {% if ihm['dhs']|length > 0 %}
+                        <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                                <select id="dhs_list" class="form-select me-3 w-auto" {% if ihm['dhs'] and ihm['dhs']|length < 2 %}hidden{% endif %}>
+                                    {% for dhs in ihm['dhs'] %}
+                                    <option value="{{ dhs["dhs_ser"] }}" {% if dhs["dhs_default"] == "Y" %}selected{% endif %}>{{ dhs["dhs_name"] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <input id="btn-send" type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" onclick="send_dhis2();" value="{{ _("Envoyer les données") }}">
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <input type="button" onclick="export_dhis2();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Récupérer les données") }}">
+                        </div>
                     </div>
-                    <div class="float-end me-2" style="margin-start:0px;">
-                        <input type="button" onclick="export_dhis2();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Récupérer les données") }}">
+                </div>
+
+                <div id="div_send_log" class="form-group align-items-start mt-3 d-none">
+                    <label for="send_log" class="form-label text-end mt-2 me-1">{{ _("Retour d'envoi") }}</label>
+                    <div>					
+                        <textarea id="send_log" name="send_log" rows="6" cols="80" class="form-control form-lbk"></textarea>
                     </div>
                 </div>
             </form>
@@ -114,6 +139,79 @@ var param    = '{"date_beg":"' + date_beg + '", ' +
             alert("{{ _("Aucun résultat à exporter !") }}") ;
             else
             alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function send_dhis2()
+{
+$("#div_send_log").addClass('d-none') ;
+
+var id_user  = {{ session['user_id']|safe}} ;
+var date_beg = $("#date_beg").val() ;
+var date_end = $("#date_end").val() ;
+var period   = $("input:radio[name=type_period]:checked").val() ;
+var filename = $("#spreadsheet").val() ;
+var dhs_ser  = $("#dhs_list").val() ;
+var param    = '{"date_beg":"' + date_beg + '", ' +
+                '"date_end":"' + date_end + '", ' +
+                '"period":"' + period + '", ' +
+                '"filename":"' + filename + '", ' +
+                '"dhs_ser":' + dhs_ser + ', ' +
+                '"id_user":' + id_user + '}' ;
+
+    if ( filename == "" )
+    {
+    alert("{{ _("Veuillez sélectionner une feuille de calcul.") }}") ;
+    return false ;
+    }
+
+    if ( date_beg == '' || date_end == '' || (date_beg > date_end) )
+    {
+    alert("{{ _("Veuillez saisir des dates") }}") ;
+    return false ;
+    }
+
+    if ( !(dhs_ser > 0) )
+    {
+    alert("{{ _("Veuillez sélectionner une plateforme de destination.") }}") ;
+    return false ;
+    }
+
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/export/dhis2/api",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            tempAlert("{{ _("Dépôt réussi") }}", "btn-send") ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (ret && ret.responseJSON)
+            {
+            $("#send_log").val(ret.responseJSON) ;
+            $("#div_send_log").removeClass('d-none') ;
+            }
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultat à exporter !") }}") ;
+            else if (ret.status == 405)
+            alert("{{ _("Paramétrage manquant !") }}") ;
+            else if (ret.status == 401)
+            alert("{{ _("Accès non autorisé") }}") ;
+            else if (ret.status == 500)
+            alert("{{ _("Une erreur est survenue lors du dépot du fichier") }}") ;
         }
     } ) ;
 }

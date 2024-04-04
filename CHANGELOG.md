@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - re-add formula2, unit2 and accu2 in import/export analysis repository
 
+## [3.4.4] - 2024-04-04
+### Added
+- DHIS2 API settings
+- button to send data to DHIS2 API in export DHIS2 page
+
 ## [3.4.3] - 2024-03-26
 ### Added
 - Redesigned equipment GUI

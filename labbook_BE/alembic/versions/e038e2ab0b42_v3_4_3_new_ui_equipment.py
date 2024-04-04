@@ -179,7 +179,7 @@ def upgrade():
             param['ref'] = row[2]
             try:
                 conn.execute(text("insert into eqp_document (eqd_date, eqd_user, eqd_eqp, eqd_type, eqd_ref) "
-                    "values (NOW(), :user, :eqp, 'MANU', :ref)"), param)
+                                  "values (NOW(), :user, :eqp, 'MANU', :ref)"), param)
             except Exception as err:
                 print("ERROR migration manuel_id with insert into eqp_document,\n\terr=" + str(err))
 
@@ -188,7 +188,7 @@ def upgrade():
             param['ref'] = row[3]
             try:
                 conn.execute(text("insert into eqp_document (eqd_date, eqd_user, eqd_eqp, eqd_type, eqd_ref) "
-                    "values (NOW(), :user, :eqp, 'PROC', :ref)"), param)
+                                  "values (NOW(), :user, :eqp, 'PROC', :ref)"), param)
             except Exception as err:
                 print("ERROR migration procedure_id with insert into eqp_document,\n\terr=" + str(err))
 
@@ -210,7 +210,7 @@ def upgrade():
 
         try:
             conn.execute(text("insert into eqp_preventive_maintenance (eqs_date, eqs_user, eqs_eqp, eqs_operator, eqs_comm) "
-                "values (:date, :user, :eqp, :operator, :comm)"), param)
+                              "values (:date, :user, :eqp, :operator, :comm)"), param)
         except Exception as err:
             print("ERROR migration list_comment to insert into eqp_preventive_maintenance,\n\terr=" + str(err))
 
@@ -227,7 +227,7 @@ def upgrade():
         param['eqp'] = row[1]
         try:
             conn.execute(text("update eqp_preventive_maintenance_file set id_ext = :eqs "
-                "where id_ext = :eqp"), param)
+                              "where id_ext = :eqp"), param)
         except Exception as err:
             print("ERROR migration update id_ext into eqp_preventive_maintenance_file,\n\terr=" + str(err))
 
@@ -321,7 +321,7 @@ def upgrade():
 
         try:
             conn.execute(text("update eqp_failure_file set id_ext = :eqf "
-                "where id_ext = :eqp"), param)
+                              "where id_ext = :eqp"), param)
         except Exception as err:
             print("ERROR migration update id_ext into eqp_failure_file,\n\terr=" + str(err))
 
