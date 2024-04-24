@@ -103,7 +103,7 @@ class Record:
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 ' + table_cond +
                'where ' + filter_cond +
-               'group by rec.id_data order by rec.num_dos_an desc, rec.num_dos_mois desc, rec.id_data desc ' + limit)
+               'group by rec.id_data order by rec.id_data desc ' + limit)
 
         cursor.execute(req, (Constants.cst_isodate,))
 
