@@ -41,6 +41,7 @@ ifndef LABBOOK_DEBUG
 $(error LABBOOK_DEBUG undefined)
 endif
 
+# there is no space after -p see https://dev.mysql.com/doc/refman/8.3/en/command-line-options.html
 MYSQL_CMD=mysql -u $(LABBOOK_DB_USER) -p$(LABBOOK_DB_PWD) --default-character-set="UTF8"
 POD_NAME=labbook
 POD_NETWORK=slirp4netns:allow_host_loopback=true

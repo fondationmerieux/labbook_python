@@ -36,8 +36,13 @@ kpri.*.asc
 # Dockerfile in test is built dynamically
 script/test/Dockerfile
 
-# used when running in development 
+# used when running in development
 devrun*/
 
 # build directory for httpd config files
 etc/httpd/build/
+
+# logs when running in development
+labbook_FE/logs/*
+labbook_BE/logs/*
+logs/*

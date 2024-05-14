@@ -52,7 +52,7 @@ Contents:
 Example:
 
 ~~~
-$ cat ~/.config/labbook.conf 
+$ cat ~/.config/labbook.conf
 LABBOOK_DB_USER=labbook
 LABBOOK_DB_PWD=iTpRPQfIxZWQGg
 LABBOOK_DB_NAME=SIGL
@@ -81,13 +81,17 @@ Notes:
 Just enter the password for the user specified in the `LABBOOK_USER` configuration variable.
 - Because backup.sh spawns commands in new containers for which there is no mapping of the working tree, you must rebuild the image with `make devbuild` every time you modify backup.sh.
 - After a restore, the automatic restart will not work in the development environment, you have to manually restart the application with `make devstop` and `make devrun`.
+- Depending on the rootful or rootless podman configuration on your system the database host as seen from the container varies. The examples above are from a rooful configuration. In a rootless configuration the database host as seen from the container is probably the host network address.
 
 ## Database setup
 
-### Database user
+### Database users
 
 LabBook, running from the container, connects as `LABBOOK_DB_USER` value to the database on the host.
 We must grant access to this user from the container.
+
+You also need to access the database from the host, to load a demo database for example.
+We must grant access to this user from the host either.
 
 ~~~
 # for this example
@@ -103,6 +107,12 @@ Query OK, 0 rows affected (0.008 sec)
 MariaDB [(none)]> GRANT ALL PRIVILEGES ON *.* TO myuser@'10.88.%.%';
 Query OK, 0 rows affected (0.008 sec)
 
+MariaDB [(none)]> CREATE USER myuser@localhost IDENTIFIED BY 'mypass';
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON *.* TO myuser@localhost;
+Query OK, 0 rows affected (0.008 sec)
+
 MariaDB [(none)]> FLUSH PRIVILEGES;
 Query OK, 0 rows affected (0.008 sec)
 ~~~
@@ -114,7 +124,7 @@ Clear the sql_mode parameter in your `.cnf` configuration file.
 For example for MariaDB version 10.3.17
 
 ~~~
-# in /etc/my.cnf.d/mariadb-server.cnf 
+# in /etc/my.cnf.d/mariadb-server.cnf
 ...
 [mariadb]
 sql_mode=''
@@ -155,20 +165,46 @@ The more useful are:
  Please note that you should take a look at the actual list of directories mapped into the container from the `Makefile`
  or the `make devrun` output. To reflect changes from any other file into the application you need to rebuild the image.
 
-Note1: LabBook uses a storage volume to hold various files.
+### Notes
+
+#### LabBook uses a storage volume to hold various files.
+
 The initial content of the volume is stored in the `./storage` directory of the source tree.
 In order to prevent modification of this directory it is replicated to a `DEVRUN_STORAGE` directory before mounting it into the container.
 `DEVRUN_STORAGE=./devrun_storage` by default, you can modify it by setting the `DEVRUN_STORAGE` environment variable.
 
-Note2: if the configuration file cannot be found or if a parameter is missing an error is displayed when you invoke make:
+#### Missing configuration file
+
+If the configuration file cannot be found or if a parameter is missing an error is displayed when you invoke make:
+
 ~~~
 $ make help
 Makefile:23: *** LABBOOK_DB_USER undefined.  Stop.
 ~~~
 
-Note3: `make devrun` creates the log directories ./logs if necessary
+#### Log directories
+
+`make devrun` creates the log directories `./logs` if necessary
 and mounts them into the container to facilitate access and to preserve logs across restarts.
-These 2 directories are ignored by git.
+The `logs` directories are ignored by git.
+
+#### Connecting to the database
+
+`make dbinit` connects to the database from the host, whereas the application connects from the container.
+
+`make dbtest` can be used to test the connection to the database from the host.
+
+In order to test the connection to the database from the container,
+you can open an interactive bash session into the container and invoke mysql manually like:
+
+~~~
+# subsitute LABBOOK_DB_... with their respective values
+$ podman exec -it labbook_python bash
+[root@labbook labbook_BE]# mysql -u LABBOOK_DB_USER -p LABBOOK_DB_HOST
+Enter password:
+...
+mysql>
+~~~
 
 # Documentation
 
