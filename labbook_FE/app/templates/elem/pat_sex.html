@@ -1,0 +1,10 @@
+<label class="form-label ms-md-3 me-3">{{ _("Sexe") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_sex" value="1" {% if args['pat_sex'] == 1 %} checked{% endif %} {% for attr in l_attr %}{{ attr }} {% endfor %}>&nbsp;{{ _("Masculin") }}</input>
+</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_sex" value="2" {% if args['pat_sex'] == 2 %} checked{% endif %}>&nbsp;{{ _("Féminin") }}</input>
+</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_sex" value="3" {% if args['pat_sex'] == 3 %} checked{% endif %}>&nbsp;{{ _("Inconnu") }}</input>
+</label>

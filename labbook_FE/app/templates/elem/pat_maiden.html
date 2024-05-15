@@ -1,0 +1,6 @@
+<div class="identity-group">
+<label for="pat_maiden" class="form-label ms-md-3 mt-2 me-1">{{ _("Nom de jeune fille") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <input id="pat_maiden" type="text" value="{{ args['pat_maiden'] }}" maxlength="40" class="form-control form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+</div>
+</div>

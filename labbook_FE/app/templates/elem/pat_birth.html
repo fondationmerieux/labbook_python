@@ -1,0 +1,39 @@
+<label for="pat_birth" class="form-label ms-md-3 mt-2 me-1">{{ _("Date de naissance") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <input id="pat_birth" class="form-control form-lbk" type="date" maxlength="10" size="10" value="{{ args['pat_birth'] }}" style="color: #888;" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+    <input id="date_current" type="hidden" maxlength="10" size="10" value="" name="date_current" >
+</div>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+$("#pat_birth").change(function() 
+{
+// after date change calculate age and put unit
+var age_start = $("#pat_birth").val() ;
+var age_end   = $("#date_current").val() ;
+
+// end - start returns difference in milliseconds 
+var diff = new Date(Date.parse(age_end) - Date.parse(age_start));
+
+var age = Math.abs(diff.getUTCFullYear() - 1970);
+
+    if ( age >= 1 )
+    {
+        $("#pat_age").val( age ) ;
+        $("#pat_age_unit").val("1037") ;
+    }
+    else
+    {
+    var days = diff/1000/60/60/24;
+
+        if (days >= 28)
+        {
+        $("#pat_age").val( (days / 30).toFixed(0) ) ;
+        $("#pat_age_unit").val("1036") ;
+        }
+        else
+        {
+        $("#pat_age").val( (days).toFixed(0) ) ;
+        $("#pat_age_unit").val("1034") ;
+        }
+    }
+} ) ; 
+</script>

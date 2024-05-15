@@ -1,0 +1,26 @@
+<label class="form-label mx-3">{{ _("Anonyme") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_ano" value="4" {% if args['pat_ano'] == 4 %} checked {% endif %} {% for attr in l_attr %}{{ attr }} {% endfor %}>&nbsp;{{ _("Oui") }}</input>
+</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_ano" value="5" {% if not args['pat_ano'] or args['pat_ano'] == 5 %} checked {% endif %}>&nbsp;{{ _("Non") }}</input>
+</label>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+$("input[type=radio][name=pat_ano]").change(function() 
+{
+    if (this.value == '4') 
+    {
+    // Clean and hide some input
+    $("#pat_name").val("")  ;
+    $("#pat_midname").val("") ;
+    $("#pat_maiden").val("")  ;
+    $("#pat_firstname").val("") ;
+    $(".identity-group").hide() ;
+    }
+    else if (this.value == '5') 
+    {
+    // Show some input 
+    $(".identity-group").show() ;
+    }
+} ) ;
+</script>

@@ -1,0 +1,7 @@
+<label for="pat_age_unit" class="form-label ms-md-3 mt-2 me-1">{{ _("unité") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <select name="pat_age_unit" id="pat_age_unit" class="form-select form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+        {% from "macros.html" import select_unit_age %}
+        {{ select_unit_age(ihm["pat_age_unit"], args['pat_age_unit']) }}
+    </select>
+</div>

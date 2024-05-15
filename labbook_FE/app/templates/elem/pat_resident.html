@@ -1,0 +1,7 @@
+<label class="form-label ms-md-3 mx-3">{{ _("Résident") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_resident" value="Y" {% if not args['pat_resident'] or args['pat_resident'] == 'Y' %} checked{% endif %} {% for attr in l_attr %}{{ attr }} {% endfor %}>&nbsp;{{ _("Oui") }}</input>
+</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_resident" value="N" {% if args['pat_resident'] == 'N' %} checked{% endif %}>&nbsp;{{ _("Non") }}</input>
+</label>

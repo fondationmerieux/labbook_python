@@ -1,0 +1,4 @@
+<label for="pat_address" class="form-label ms-md-3 mt-2 me-1">{{ _("Adresse") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <textarea id="pat_address" rows="4" cols="50" class="form-control form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>{{ args['pat_address'] }}</textarea>
+</div>

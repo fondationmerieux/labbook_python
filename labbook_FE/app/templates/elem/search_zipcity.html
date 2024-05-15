@@ -1,0 +1,62 @@
+<select id="search_zipcity" class="form-select form-lbk form-search"></select>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+$("#search_zipcity").select2(
+{
+    placeholder: "{{ _("Recherche de code postal ou ville") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_zipcity").text(),
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_item
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_zipcity").on("select2:select", function (e) 
+{
+let id_item = $(e.currentTarget).val();
+
+    // GET det zipcity
+    $.ajax( 
+        {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/setting/zipcity/det/" + id_item,
+        success: function(data_zipcity)
+            {
+            $("#pat_zipcode").val(data_zipcity.zic_zip) ;
+            $("#pat_city").val(data_zipcity.zic_city) ;
+            },
+        error: function(data_zipcity)
+            {
+            console.log("ERROR GET det zipcity");
+            alert("{{ _("Erreur lors de la récupération des données") }}") ;
+            }
+        } ) ;
+} ) ;
+
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+</script>

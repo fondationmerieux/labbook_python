@@ -1,0 +1,4 @@
+<label for="pat_city" class="form-label ms-md-3 mt-2 me-1">{{ _("Ville / Village") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <input id="pat_city" type="text" value="{{ args['pat_city'] }}" maxlength="40" class="form-control form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+</div>

@@ -1,0 +1,7 @@
+<label for="pat_nationality" class="form-label ms-md-3 mt-2 me-1">{{ _("Nationalité") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>					
+    <select name="pat_nationality" id="pat_nationality" class="form-select form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+        {% from 'macros.html' import select_nationality %}
+        {{ select_nationality(ihm['pat_nationality'], args['pat_nationality']) }}
+    </select>
+</div>

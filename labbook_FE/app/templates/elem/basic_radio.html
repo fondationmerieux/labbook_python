@@ -1,0 +1,6 @@
+<label class="form-label ms-md-3 me-1">{{ label }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+{% for option in l_options %}
+<label class="form-label me-3">
+    <input type="radio" name="{{ id }}" value="{{ option['value'] }}" {% if value == option['value'] %} checked{% endif %} {% for attr in l_attr %}{{ attr }} {% endfor %}>&nbsp;{{ option['label'] }}</input>
+</label>
+{% endfor %}

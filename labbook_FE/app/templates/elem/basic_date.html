@@ -1,0 +1,4 @@
+<label for="{{ id }}" class="form-label ms-md-3 mt-2 me-1">{{ label }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>					
+    <input id="{{ id }}" type="date" value="{{ value }}" class="form-control form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+</div>

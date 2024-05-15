@@ -1,0 +1,4 @@
+<label for="pat_code_lab" class="form-label ms-md-3 mt-2 me-1" style="">{{ _("Code patient interne au laboratoire") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <input id="pat_code_lab" type="text" value="{{ args['pat_code_lab'] }}" maxlength="20" class="form-control form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+</div>

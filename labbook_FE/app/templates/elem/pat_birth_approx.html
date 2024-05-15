@@ -1,0 +1,7 @@
+<label class="form-label ms-md-3 me-3">{{ _("Date de naissance approximative") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_birth_approx" value="4" {% if args['pat_birth_approx'] == 4 %}checked{% endif %} {% for attr in l_attr %}{{ attr }} {% endfor %}>&nbsp;{{ _("Oui") }}</input>
+</label>
+<label class="form-label me-3">
+    <input type="radio" name="pat_birth_approx" value="5" {% if not args['pat_birth_approx'] or args['pat_birth_approx'] == 5 %} checked{% endif %}>&nbsp;{{ _("Non") }}</input>
+</label>

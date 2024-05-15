@@ -1,0 +1,7 @@
+<label for="pat_blood_group" class="form-label ms-md-3 mt-2 me-1">{{ _("Groupe sanguin") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>					
+    <select name="pat_blood_group" id="pat_blood_group" class="form-select form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+        {% from 'macros.html' import select_blood_group %}
+        {{ select_blood_group(ihm['pat_blood_group'], args['pat_blood_group']) }}
+    </select>
+</div>

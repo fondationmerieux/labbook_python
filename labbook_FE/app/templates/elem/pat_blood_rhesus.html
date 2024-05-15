@@ -1,0 +1,7 @@
+<label for="pat_blood_rhesus" class="form-label ms-md-3 mt-2 me-1">{{ _("Rhésus") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>					
+    <select name="pat_blood_rhesus" id="pat_blood_rhesus" class="form-select form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+        {% from 'macros.html' import select_blood_rhesus %}
+        {{ select_blood_rhesus(ihm['pat_blood_rhesus'], args['pat_blood_rhesus']) }}
+    </select>
+</div>

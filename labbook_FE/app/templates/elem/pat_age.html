@@ -1,0 +1,4 @@
+<label for="pat_age" class="form-label ms-md-3 mt-2 me-1">{{ _("Age") }}{% if 'required=True' in l_attr %} *{% endif %}</label>
+<div>
+    <input name="pat_age" id="pat_age" type="text" value="{{ args['pat_age'] }}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150" {% for attr in l_attr %}{{ attr }} {% endfor %}>
+</div>
