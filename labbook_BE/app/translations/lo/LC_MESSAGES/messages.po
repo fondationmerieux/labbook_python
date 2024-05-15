@@ -1,24 +1,13 @@
-# Lao translations for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-09 15:02+0100\n"
-"PO-Revision-Date: 2021-09-03 15:19+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: lo\n"
-"Language-Team: lo <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_BE\n"
+"Language: lo\n"
 
-#: models/File.py:483
+#: models/File.py:484
 msgid "DUPLICATA"
 msgstr "ຊໍ້າກັນ"
 
@@ -34,7 +23,7 @@ msgstr "ລາຍການສັ່ງກວດ"
 msgid "Actes de prélèvements"
 msgstr "ການຖອນເງິນ"
 
-#: models/Pdf.py:137 models/Pdf.py:1248 models/Pdf.py:2549 models/Pdf.py:2573
+#: models/Pdf.py:137 models/Pdf.py:1688 models/Pdf.py:2638 models/Pdf.py:2652
 msgid "Sous-traitée"
 msgstr "ຜູ້ຖືກຈ້າງເໝົາຍ່ອຍ"
 
@@ -58,7 +47,7 @@ msgstr "ເອກະສານໝາຍເລກ"
 msgid "Facture n°"
 msgstr "ໃບແຈ້ງໜີ້ໝາຍເລກ"
 
-#: models/Pdf.py:206 models/Pdf.py:788 models/Pdf.py:2186
+#: models/Pdf.py:206 models/Pdf.py:1202 models/Pdf.py:2261
 msgid "édité le"
 msgstr "ການແກ້ໄຂ"
 
@@ -90,205 +79,205 @@ msgstr "ຕ້ອງຈ່າຍ"
 msgid "Etat de la facturation, édité le"
 msgstr "ສະຖານະຂອງການແຈ້ງໜີ້, ແກ້ໄຂວັນທີ"
 
-#: models/Pdf.py:670 models/Pdf.py:776 models/Pdf.py:2174
+#: models/Pdf.py:678 models/Pdf.py:1190 models/Pdf.py:2249
 msgid "Tél"
 msgstr "ໂທລະສັບ"
 
-#: models/Pdf.py:675 models/Pdf.py:777 models/Pdf.py:2175
+#: models/Pdf.py:683 models/Pdf.py:1191 models/Pdf.py:2250
 msgid "Fax"
 msgstr "ແຟັກ"
 
-#: models/Pdf.py:680 models/Pdf.py:778 models/Pdf.py:2176
+#: models/Pdf.py:688 models/Pdf.py:1192 models/Pdf.py:2251
 msgid "Email"
 msgstr "ອີເມລ"
 
-#: models/Pdf.py:779 models/Pdf.py:2177
+#: models/Pdf.py:1193 models/Pdf.py:2252
 msgid "Dossier"
 msgstr "ກໍລະນີ"
 
-#: models/Pdf.py:780 models/Pdf.py:2178
+#: models/Pdf.py:1194 models/Pdf.py:2253
 msgid "Code"
 msgstr "ລະຫັດ"
 
-#: models/Pdf.py:781 models/Pdf.py:2179
+#: models/Pdf.py:1195 models/Pdf.py:2254
 msgid "Né(e) le"
 msgstr "ເກີດວັນທີ"
 
-#: models/Pdf.py:782 models/Pdf.py:2180
+#: models/Pdf.py:1196 models/Pdf.py:2255
 msgid "Admis le"
 msgstr "ຮັບວັນທີ"
 
-#: models/Pdf.py:783 models/Pdf.py:2181
+#: models/Pdf.py:1197 models/Pdf.py:2256
 msgid "en"
 msgstr "ໃນ"
 
-#: models/Pdf.py:784 models/Pdf.py:2182
+#: models/Pdf.py:1198 models/Pdf.py:2257
 msgid "Lit"
 msgstr "ຕຽງ"
 
-#: models/Pdf.py:785 models/Pdf.py:2183
+#: models/Pdf.py:1199 models/Pdf.py:2258
 msgid "par"
 msgstr "ຜ່ານ"
 
-#: models/Pdf.py:786 models/Pdf.py:2184
+#: models/Pdf.py:1200 models/Pdf.py:2259
 msgid "Examen prescrit le"
 msgstr "ກຳນົດການກວດວັນທີ"
 
-#: models/Pdf.py:787 models/Pdf.py:2185
+#: models/Pdf.py:1201 models/Pdf.py:2260
 msgid "Enregistré le"
 msgstr "ລົງທະບຽນວັນທີ"
 
-#: models/Pdf.py:789 models/Pdf.py:2187
+#: models/Pdf.py:1203 models/Pdf.py:2262
 msgid "ANALYSE"
 msgstr "ວິເຄາະ"
 
-#: models/Pdf.py:790 models/Pdf.py:2188
+#: models/Pdf.py:1204 models/Pdf.py:2263
 msgid "RESULTAT"
 msgstr "ຜົນການວິເຄາະ"
 
-#: models/Pdf.py:791 models/Pdf.py:2189
+#: models/Pdf.py:1205 models/Pdf.py:2264
 msgid "Références"
-msgstr ""
+msgstr "ອ້າງອີງ"
 
-#: models/Pdf.py:792 models/Pdf.py:2190
+#: models/Pdf.py:1206 models/Pdf.py:2265
 msgid "Antériorités"
 msgstr "ບູລິມະສິດ"
 
-#: models/Pdf.py:793 models/Pdf.py:2191
+#: models/Pdf.py:1207 models/Pdf.py:2266
 msgid "Commentaire"
 msgstr "ຄຳຄິດເຫັນ"
 
-#: models/Pdf.py:794 models/Pdf.py:2192
+#: models/Pdf.py:1208 models/Pdf.py:2267
 msgid "validé par"
 msgstr "ຢືນຢັນໂດຍ"
 
-#: models/Pdf.py:827 translations/messages_pybabel.py:291
+#: models/Pdf.py:1241 translations/messages_pybabel.py:291
 msgid "Compte rendu"
 msgstr "ລາຍງານ"
 
-#: models/Pdf.py:842
+#: models/Pdf.py:1256
 msgid "COMPLET"
 msgstr "ເຕັມ"
 
-#: models/Pdf.py:851 models/Pdf.py:1300
+#: models/Pdf.py:1265 models/Pdf.py:1740
 msgid "PARTIEL"
 msgstr "ພາກສ່ວນ"
 
-#: models/Pdf.py:857
+#: models/Pdf.py:1271
 msgid "Annule et remplace le précédent"
 msgstr "ຍົກ​ເລີກ​ແລະ​ທົດ​ແທນ​ທີ່​ຜ່ານ​ມາ​"
 
-#: models/Pdf.py:895 models/Pdf.py:2257 translations/messages_pybabel.py:592
+#: models/Pdf.py:1309 models/Pdf.py:2332 translations/messages_pybabel.py:592
 msgid "Microbiologie"
-msgstr ""
+msgstr "ຈຸລິນຊີວິທະຍາ"
 
-#: models/Pdf.py:943 models/Pdf.py:2305
+#: models/Pdf.py:1368 models/Pdf.py:2385
 msgid "Renseignements cliniques"
 msgstr "ຂໍ້ມູນທາງການແພດ"
 
-#: models/Pdf.py:994 models/Pdf.py:1760 models/Pdf.py:2356
+#: models/Pdf.py:911 models/Pdf.py:1427 models/Pdf.py:2444
 #: translations/messages_pybabel.py:596
 msgid "Inconnu"
 msgstr "ບໍ່ຮູ້ຈັກ"
 
-#: models/Pdf.py:1041 models/Pdf.py:1053 models/Pdf.py:1807 models/Pdf.py:1819
-#: models/Pdf.py:1952 models/Pdf.py:2403 models/Pdf.py:2415
+#: models/Pdf.py:958 models/Pdf.py:970 models/Pdf.py:1103 models/Pdf.py:1474
+#: models/Pdf.py:1486 models/Pdf.py:2491 models/Pdf.py:2503
 msgid "ans"
 msgstr "ປີ"
 
-#: models/Pdf.py:1044 models/Pdf.py:1065 models/Pdf.py:1810 models/Pdf.py:1831
-#: models/Pdf.py:2406 models/Pdf.py:2427
+#: models/Pdf.py:961 models/Pdf.py:982 models/Pdf.py:1477 models/Pdf.py:1498
+#: models/Pdf.py:2494 models/Pdf.py:2515
 msgid "jours"
 msgstr "ມື້"
 
-#: models/Pdf.py:1048 models/Pdf.py:1057 models/Pdf.py:1814 models/Pdf.py:1823
-#: models/Pdf.py:2410 models/Pdf.py:2419
+#: models/Pdf.py:965 models/Pdf.py:974 models/Pdf.py:1481 models/Pdf.py:1490
+#: models/Pdf.py:2498 models/Pdf.py:2507
 msgid "mois"
 msgstr "ເດືອນ"
 
-#: models/Pdf.py:1061 models/Pdf.py:1827 models/Pdf.py:2423
+#: models/Pdf.py:978 models/Pdf.py:1494 models/Pdf.py:2511
 msgid "semaines"
 msgstr "ອາທິດ"
 
-#: models/Pdf.py:1069 models/Pdf.py:1835 models/Pdf.py:1955 models/Pdf.py:2431
+#: models/Pdf.py:986 models/Pdf.py:1106 models/Pdf.py:1502 models/Pdf.py:2519
 #: translations/messages_pybabel.py:597
 msgid "Masculin"
 msgstr "ຜູ້​ຊາຍ"
 
-#: models/Pdf.py:1071 models/Pdf.py:1837 models/Pdf.py:2433
+#: models/Pdf.py:988 models/Pdf.py:1504 models/Pdf.py:2521
 msgid "Feminin"
 msgstr "ເພດຍິງ"
 
-#: models/Pdf.py:1320 models/Pdf.py:1330 models/Pdf.py:1340
+#: models/Pdf.py:1760 models/Pdf.py:1770 models/Pdf.py:1780 models/Pdf.py:1790
 msgid "Annulée"
 msgstr "ຍົກເລີກແລ້ວ"
 
-#: models/Pdf.py:1453 models/Pdf.py:2560 translations/messages_pybabel.py:1477
+#: models/Pdf.py:1928 translations/messages_pybabel.py:1477
 #: translations/messages_pybabel.py:1478 translations/messages_pybabel.py:1479
 #: translations/messages_pybabel.py:1480
 msgid "Albumine"
-msgstr ""
+msgstr "Albumin"
 
-#: models/Pdf.py:1454 models/Pdf.py:2561 translations/messages_pybabel.py:90
+#: models/Pdf.py:1929 translations/messages_pybabel.py:90
 msgid "Absent"
-msgstr ""
+msgstr "ຂາດ"
 
-#: models/Pdf.py:1458 models/Pdf.py:2565 translations/messages_pybabel.py:91
+#: models/Pdf.py:1933 translations/messages_pybabel.py:91
 msgid "Présent"
-msgstr ""
+msgstr "ຢູ່"
 
-#: models/Pdf.py:1464 models/Pdf.py:2571 translations/messages_pybabel.py:313
+#: models/Pdf.py:1942 models/Pdf.py:2649 translations/messages_pybabel.py:313
 msgid "Biochimie urinaire"
-msgstr ""
+msgstr "ຊີວະເຄມີ ປັດສະວະ"
 
-#: models/Pdf.py:1465 models/Pdf.py:2572 translations/messages_pybabel.py:1348
+#: models/Pdf.py:1943 models/Pdf.py:2650 translations/messages_pybabel.py:1348
 msgid "Bandelettes urinaires"
-msgstr ""
+msgstr "ແຖບທົດສອບປັດສະວະ"
 
-#: models/Pdf.py:1572 models/Pdf.py:2649 translations/messages_pybabel.py:689
+#: models/Pdf.py:2049 models/Pdf.py:2726 translations/messages_pybabel.py:689
 msgid "Sang"
-msgstr ""
+msgstr "ເລືອດ"
 
-#: models/Pdf.py:1574 models/Pdf.py:2651 translations/messages_pybabel.py:544
+#: models/Pdf.py:2051 models/Pdf.py:2728 translations/messages_pybabel.py:544
 msgid "Fait"
-msgstr ""
+msgstr "ເຮັດແລ້ວ"
 
-#: models/Pdf.py:1579 models/Pdf.py:2656 translations/messages_pybabel.py:482
+#: models/Pdf.py:2056 models/Pdf.py:2733 translations/messages_pybabel.py:482
 msgid "Interne au labo"
-msgstr ""
+msgstr "ພາຍໃນຫ້ອງວິເຄາະ"
 
-#: models/Pdf.py:2225
+#: models/Pdf.py:2300
 msgid "Bon de transfert"
 msgstr "ໃບບິນການໂອນ"
 
-#: services/ExportRest.py:436 translations/messages_pybabel.py:527
+#: services/ExportRest.py:774 translations/messages_pybabel.py:527
 msgid "Années"
 msgstr "ປີ"
 
-#: services/ExportRest.py:438 translations/messages_pybabel.py:521
+#: services/ExportRest.py:776 translations/messages_pybabel.py:521
 #: translations/messages_pybabel.py:529
 msgid "Mois"
 msgstr "ເດືອນ"
 
-#: services/ExportRest.py:440 translations/messages_pybabel.py:530
+#: services/ExportRest.py:778 translations/messages_pybabel.py:530
 msgid "Semaines"
 msgstr "ອາທິດ"
 
-#: services/ExportRest.py:442 translations/messages_pybabel.py:528
+#: services/ExportRest.py:780 translations/messages_pybabel.py:528
 msgid "Jours"
 msgstr "ວັນ"
 
-#: services/ResultRest.py:103 services/ResultRest.py:224
+#: services/ResultRest.py:106 services/ResultRest.py:236
 msgid "validation"
 msgstr "ການຢືນຢັນ"
 
 #: translations/messages_pybabel.py:8
 msgid "abondance"
-msgstr ""
+msgstr "ຄວາມອຸດົມສົມບູນ"
 
 #: translations/messages_pybabel.py:9
 msgid "absent"
-msgstr ""
+msgstr "ຂາດ"
 
 #: translations/messages_pybabel.py:10
 msgid "aspestprelgen"
@@ -308,7 +297,7 @@ msgstr ""
 
 #: translations/messages_pybabel.py:14
 msgid "bacterie"
-msgstr ""
+msgstr "ແບກທີເຣຍ"
 
 #: translations/messages_pybabel.py:15
 msgid "bouillon"
@@ -320,15 +309,15 @@ msgstr ""
 
 #: translations/messages_pybabel.py:17
 msgid "cristaux"
-msgstr ""
+msgstr "ຄຣິສຕາລ"
 
 #: translations/messages_pybabel.py:18
 msgid "cylindre"
-msgstr ""
+msgstr "ກະບັ້ງ"
 
 #: translations/messages_pybabel.py:19
 msgid "doc_type"
-msgstr ""
+msgstr "ປະເພດເອກະສານ"
 
 #: translations/messages_pybabel.py:20
 msgid "editeur_yorn"
@@ -344,11 +333,11 @@ msgstr ""
 
 #: translations/messages_pybabel.py:23
 msgid "facturation"
-msgstr ""
+msgstr "ແຈ້ງໜີ້"
 
 #: translations/messages_pybabel.py:24
 msgid "famille_analyse"
-msgstr ""
+msgstr "ວິເຄາະແບບກຸ່ມ"
 
 #: translations/messages_pybabel.py:25
 msgid "filariose"
@@ -356,7 +345,7 @@ msgstr ""
 
 #: translations/messages_pybabel.py:26
 msgid "file_type"
-msgstr ""
+msgstr "ປະເພດຟາຍ"
 
 #: translations/messages_pybabel.py:27
 msgid "flore"
@@ -368,11 +357,11 @@ msgstr ""
 
 #: translations/messages_pybabel.py:29
 msgid "germe"
-msgstr ""
+msgstr "ເຊື້ອ"
 
 #: translations/messages_pybabel.py:30
 msgid "gram"
-msgstr ""
+msgstr "ກຼາມ"
 
 #: translations/messages_pybabel.py:31
 msgid "gram2"
@@ -408,19 +397,19 @@ msgstr ""
 
 #: translations/messages_pybabel.py:39
 msgid "microscopie_tb"
-msgstr ""
+msgstr "ກ້ອງຈຸລະທັດ_tb"
 
 #: translations/messages_pybabel.py:40
 msgid "motif_annulation"
-msgstr ""
+msgstr "ເຫດຜົນການຍົກເລີກ"
 
 #: translations/messages_pybabel.py:41
 msgid "nombre"
-msgstr ""
+msgstr "ນ້ຳເບີ"
 
 #: translations/messages_pybabel.py:42
 msgid "oui"
-msgstr ""
+msgstr "ແມ່ນແລ້ວ"
 
 #: translations/messages_pybabel.py:43
 msgid "paillasse"
@@ -1599,9 +1588,7 @@ msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positi
 msgstr ""
 
 #: translations/messages_pybabel.py:396
-msgid ""
-"bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, "
-"levures"
+msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, levures"
 msgstr ""
 
 #: translations/messages_pybabel.py:397
@@ -3232,9 +3219,7 @@ msgid "Fer sérique"
 msgstr ""
 
 #: translations/messages_pybabel.py:935
-msgid ""
-"Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, "
-"protéines)"
+msgid "Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, protéines)"
 msgstr ""
 
 #: translations/messages_pybabel.py:936
@@ -3800,9 +3785,7 @@ msgid "Temps de Thrombine (TT)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1076 translations/messages_pybabel.py:2213
-msgid ""
-"Titrage des Produits de Dégradation de la Fibrine  et/ ou du "
-"Fibrinogène(PDF)"
+msgid "Titrage des Produits de Dégradation de la Fibrine  et/ ou du Fibrinogène(PDF)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1077
@@ -3818,9 +3801,7 @@ msgid "Autres antigènes érythrocytaires"
 msgstr ""
 
 #: translations/messages_pybabel.py:1080
-msgid ""
-"Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins "
-"11hématies tests"
+msgid "Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins 11hématies tests"
 msgstr ""
 
 #: translations/messages_pybabel.py:1081 translations/messages_pybabel.py:2192
@@ -4060,9 +4041,7 @@ msgid "Identification des IgE spécifiques individuelles : Un seul allergène"
 msgstr ""
 
 #: translations/messages_pybabel.py:1138
-msgid ""
-"Identification des IgE spécifiques individuelles : Deux ou trois "
-"allergènes"
+msgid "Identification des IgE spécifiques individuelles : Deux ou trois allergènes"
 msgstr ""
 
 #: translations/messages_pybabel.py:1139 translations/messages_pybabel.py:1788
@@ -4078,9 +4057,7 @@ msgid "Dosage des IgA dans le sang, le LCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1142
-msgid ""
-"Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
+msgid "Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide amniotique)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1143 translations/messages_pybabel.py:2122
@@ -4092,9 +4069,7 @@ msgid "Recherche et titrage de l'Antigène Prostatique Spécifique (PSA)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1145 translations/messages_pybabel.py:2123
-msgid ""
-"Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA "
-"libre)"
+msgid "Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA libre)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1146
@@ -4209,9 +4184,7 @@ msgid "Examen direct des liquides d'épanchements ou de ponction"
 msgstr ""
 
 #: translations/messages_pybabel.py:1173
-msgid ""
-"Examen cytologique des liquides de ponction (numération et formule "
-"leucocytaire)"
+msgid "Examen cytologique des liquides de ponction (numération et formule leucocytaire)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1174 translations/messages_pybabel.py:2119
@@ -4231,9 +4204,7 @@ msgid "Test post-coïtal (test de Huhner)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1178 translations/messages_pybabel.py:2078
-msgid ""
-"Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou "
-"anéjaculation"
+msgid "Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou anéjaculation"
 msgstr ""
 
 #: translations/messages_pybabel.py:1179 translations/messages_pybabel.py:1686
@@ -4323,21 +4294,15 @@ msgid "Arsenic"
 msgstr ""
 
 #: translations/messages_pybabel.py:1200
-msgid ""
-"Test sérologique unitaire qualitatif de recherche des anticorps dirigés "
-"contre des antigènes du virus SARS-CoV-2"
+msgid "Test sérologique unitaire qualitatif de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1201
-msgid ""
-"Test sérologique quantitatif automatisable de recherche des anticorps "
-"dirigés contre des antigènes du virus SARS-CoV-2"
+msgid "Test sérologique quantitatif automatisable de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1202
-msgid ""
-"Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-"
-"CoV-2"
+msgid "Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-CoV-2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1203 translations/messages_pybabel.py:1545
@@ -4470,15 +4435,11 @@ msgid "Céfixime"
 msgstr ""
 
 #: translations/messages_pybabel.py:1230
-msgid ""
-"Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse "
-"Transcriptase Polymerase Chain Reaction)"
+msgid "Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse Transcriptase Polymerase Chain Reaction)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1231
-msgid ""
-"Recherche qualitative du génome du virus SARS-CoV-2 par Reverse "
-"Transcriptase Loop-mediated isothermal AMPlification"
+msgid "Recherche qualitative du génome du virus SARS-CoV-2 par Reverse Transcriptase Loop-mediated isothermal AMPlification"
 msgstr ""
 
 #: translations/messages_pybabel.py:1232 translations/messages_pybabel.py:1575
@@ -5118,9 +5079,7 @@ msgid "Diagnostic moléculaire du bacille de l'anthrax par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1387
-msgid ""
-"Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement "
-"sanguin"
+msgid "Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement sanguin"
 msgstr ""
 
 #: translations/messages_pybabel.py:1388
@@ -5148,33 +5107,23 @@ msgid "Culture liquide des mycobatéries"
 msgstr ""
 
 #: translations/messages_pybabel.py:1395
-msgid ""
-"Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-"
-"PCR"
+msgid "Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1396
-msgid ""
-"Recherche par prélèvement buccal de l'ADN viral de la maladie à virus "
-"Ebola par RT-PCR"
+msgid "Recherche par prélèvement buccal de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1397
-msgid ""
-"Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1398
-msgid ""
-"Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1399
-msgid ""
-"Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1400
@@ -5294,29 +5243,15 @@ msgid "Avec détermination des pourcentages, dosage des protéines totales"
 msgstr ""
 
 #: translations/messages_pybabel.py:1435
-msgid ""
-"Avec deux épreuves (globulaire et sérique) effectuées par deux "
-"techniciens différents avec deux lots de réactifs différents."
+msgid "Avec deux épreuves (globulaire et sérique) effectuées par deux techniciens différents avec deux lots de réactifs différents."
 msgstr ""
 
 #: translations/messages_pybabel.py:1436
-msgid ""
-"Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la "
-"viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 "
-"mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de "
-"cellules rondes, recherche d'une agglutination spontanée, numération des "
-"formes anormales en détaillant les anomalies de la tête, de la pièce "
-"intermédiaire et du flagelle en mentionnant l'index des anomalies "
-"multiples."
+msgid "Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de cellules rondes, recherche d'une agglutination spontanée, numération des formes anormales en détaillant les anomalies de la tête, de la pièce intermédiaire et du flagelle en mentionnant l'index des anomalies multiples."
 msgstr ""
 
 #: translations/messages_pybabel.py:1437
-msgid ""
-"Comprend: numération des hématies, des leucocytes et des plaquettes/ "
-"dosage de l'hémoglobine, mesure de l'hématocrite, détermination des "
-"constantes érythrocytaires et de la formule leucocytaire complète "
-"(automatique ou manuelle), comprend également un contrôle sur frottis "
-"sanguin en cas d'anomalie."
+msgid "Comprend: numération des hématies, des leucocytes et des plaquettes/ dosage de l'hémoglobine, mesure de l'hématocrite, détermination des constantes érythrocytaires et de la formule leucocytaire complète (automatique ou manuelle), comprend également un contrôle sur frottis sanguin en cas d'anomalie."
 msgstr ""
 
 #: translations/messages_pybabel.py:1438
@@ -5328,23 +5263,15 @@ msgid "Cotation pour chaque facteur."
 msgstr ""
 
 #: translations/messages_pybabel.py:1440
-msgid ""
-"En cas de réaction positive au RPR  et au TPHA, un titrage doit être "
-"pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou "
-"les techniques utilisées avec leur seuil de sensibilité."
+msgid "En cas de réaction positive au RPR  et au TPHA, un titrage doit être pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
 msgstr ""
 
 #: translations/messages_pybabel.py:1441
-msgid ""
-"La culture comprend : examen microscopique direct, isolement avec "
-"éventuellement identification complète de (s) germe(s) et antibiogramme."
+msgid "La culture comprend : examen microscopique direct, isolement avec éventuellement identification complète de (s) germe(s) et antibiogramme."
 msgstr ""
 
 #: translations/messages_pybabel.py:1442
-msgid ""
-"Le compte rendu comportera le jour du cycle, le temps écoulé après "
-"rapport sexuel, la qualité de la glaire (abondance, filance et "
-"transparence) le nombre et la mobilité des spermatozoïdes par champ."
+msgid "Le compte rendu comportera le jour du cycle, le temps écoulé après rapport sexuel, la qualité de la glaire (abondance, filance et transparence) le nombre et la mobilité des spermatozoïdes par champ."
 msgstr ""
 
 #: translations/messages_pybabel.py:1443
@@ -5352,13 +5279,7 @@ msgid "Le compte rendu doit mentionner la ou les techniques utilisées."
 msgstr ""
 
 #: translations/messages_pybabel.py:1444
-msgid ""
-"Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la "
-"technique et le nombre de copies ou d'équivalent copies par ml de plasma,"
-" - Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
+msgid "Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la technique et le nombre de copies ou d'équivalent copies par ml de plasma, - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
 msgstr ""
 
 #: translations/messages_pybabel.py:1445
@@ -5366,48 +5287,31 @@ msgid "Par prélèvement."
 msgstr ""
 
 #: translations/messages_pybabel.py:1446
-msgid ""
-"Recherche d'un antigène du SARS-CoV-2, recherche par tests non "
-"automatisable de type immunochromatographique ciblant l'antigène ... du "
-"SARS-CoV-2 (dépend du kit utilisé)"
+msgid "Recherche d'un antigène du SARS-CoV-2, recherche par tests non automatisable de type immunochromatographique ciblant l'antigène ... du SARS-CoV-2 (dépend du kit utilisé)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1447
-msgid ""
-"Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests"
-" immunochromatographiques"
+msgid "Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests immunochromatographiques"
 msgstr ""
 
 #: translations/messages_pybabel.py:1448
-msgid ""
-"Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgid "Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1449
-msgid ""
-"Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgid "Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1450
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
 msgstr ""
 
 #: translations/messages_pybabel.py:1451
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
 msgstr ""
 
 #: translations/messages_pybabel.py:1452
-msgid ""
-"Recherche et titrage éventuels des anticorps dirigés contre le SARS-"
-"CoV-2, recherche par tests automatisables de type ELISA/ELFA"
+msgid "Recherche et titrage éventuels des anticorps dirigés contre le SARS-CoV-2, recherche par tests automatisables de type ELISA/ELFA"
 msgstr ""
 
 #: translations/messages_pybabel.py:1459
@@ -6574,9 +6478,7 @@ msgid "Recherche du bacille de l'anthrax par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:2121
-msgid ""
-"Recherche et titrage de a foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
+msgid "Recherche et titrage de a foetoprotéine (dans le sérum ou liquide amniotique)"
 msgstr ""
 
 #: translations/messages_pybabel.py:2125
@@ -6832,9 +6734,7 @@ msgid "Normales : Enfant : 0.5 - 3.5 / Adultes : 1.5 - 5.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2264
-msgid ""
-"0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - "
-"60 ans: 34 - 48"
+msgid "0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - 60 ans: 34 - 48"
 msgstr ""
 
 #: translations/messages_pybabel.py:2265
@@ -6846,15 +6746,11 @@ msgid "0 CFU/100 ml"
 msgstr ""
 
 #: translations/messages_pybabel.py:2267
-msgid ""
-"1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   "
-"femme : 45 - 103   homme : 55 - 120"
+msgid "1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   femme : 45 - 103   homme : 55 - 120"
 msgstr ""
 
 #: translations/messages_pybabel.py:2269
-msgid ""
-"DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: "
-"Indeterminé"
+msgid "DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: Indeterminé"
 msgstr ""
 
 #: translations/messages_pybabel.py:2270
@@ -6886,9 +6782,7 @@ msgid "Méthode électrométrique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2277
-msgid ""
-"Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0"
-" - 17.0"
+msgid "Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0 - 17.0"
 msgstr ""
 
 #: translations/messages_pybabel.py:2278
@@ -6936,9 +6830,7 @@ msgid "prématuré : 1.10 - 8.90   < 1 an : 1.40 - 6.80   enfant: 1.80 - 6.40"
 msgstr ""
 
 #: translations/messages_pybabel.py:2289
-msgid ""
-"prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - "
-"2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
+msgid "prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - 2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
 msgstr ""
 
 #: translations/messages_pybabel.py:2290
@@ -6946,9 +6838,7 @@ msgid "Recherche de l'ADN du bacillus anthracis par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:2291
-msgid ""
-"Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: "
-"Flore de vaginose bacterienne"
+msgid "Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: Flore de vaginose bacterienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2292
@@ -6978,11 +6868,6 @@ msgstr ""
 #: translations/messages_pybabel.py:2298
 msgid "Zone thérapeutique : 0.5 à 1.5"
 msgstr ""
-
-#: translations/messages_pybabel.py:2309
-#, fuzzy
-msgid "Secrétaire avancé"
-msgstr "ເລຂານຸການຂັ້ນສູງ"
 
 #: translations/messages_pybabel.py:2312
 msgid "Gestionnaire de stock"
@@ -7556,6 +7441,15 @@ msgstr "ລາຄາຊື້"
 msgid "Nom du bailleur"
 msgstr "ຊື່ຜູ້ສະໜອງ"
 
-#~ msgid "Secretaire avancée"
-#~ msgstr ""
+#: services/QualityRest.py:1452
+msgid "Pannes"
+msgstr "ການແບ່ງແຍກ"
+
+#: services/QualityRest.py:1454
+msgid "Réparations"
+msgstr "ການສ້ອມແປງ"
+
+#: translations/messages_pybabel.py:567 translations/messages_pybabel.py:2309
+msgid "Secrétaire avancé"
+msgstr ""
 

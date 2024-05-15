@@ -1109,7 +1109,7 @@ class SettingFormList(Resource):
         if not l_items:
             self.log.error(Logs.fileline() + ' : TRACE SettingFormList not found')
 
-        # Various.useLangPDF()
+        Various.useLangPDF()
 
         for item in l_items:
             # Replace None by empty string

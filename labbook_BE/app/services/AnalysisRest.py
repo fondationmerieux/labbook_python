@@ -782,7 +782,8 @@ class AnalysisExport(Resource):
                    'ana_value_rating', 'ana_comment', 'ana_bio_product', 'ana_sample_type', 'ana_type', 'ana_active',
                    'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                    'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
-                   'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax']]
+                   'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax',
+                   'var_formula_conv', 'var_unit_conv', 'var_accu_conv']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -796,7 +797,7 @@ class AnalysisExport(Resource):
             for d in dict_data:
                 data = []
 
-                data.append('v3')
+                data.append('v4')
 
                 # ANALYSIS
                 if d['id_data']:
@@ -816,7 +817,7 @@ class AnalysisExport(Resource):
 
                 if d['nom']:
                     nom = d['nom']
-                    data.append(_(nom.strip()))
+                    data.append('"' + _(nom.strip()) + '"')
                 else:
                     data.append('')
 
@@ -992,6 +993,22 @@ class AnalysisExport(Resource):
                 else:
                     data.append('N')
 
+                # --- added in v4 ---
+                if d['formule_unite2']:
+                    data.append(d['formule_unite2'])
+                else:
+                    data.append('')
+
+                if d['unite2']:
+                    data.append(d['unite2'])
+                else:
+                    data.append('')
+
+                if d['precision2']:
+                    data.append(d['precision2'])
+                else:
+                    data.append('')
+
                 l_data.append(data)
 
         # if no result to export
@@ -1072,8 +1089,10 @@ class AnalysisImport(Resource):
         # remove headers line
         l_rows.pop(0)
 
+        version = l_rows[0][0]
+
         # check version
-        if l_rows[0][0] != 'v3':
+        if version != 'v3' and version != 'v4':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)
@@ -1084,6 +1103,11 @@ class AnalysisImport(Resource):
                      'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax']
+
+        if version == 'v4':
+            head_list.append('var_formula_conv')
+            head_list.append('var_unit_conv')
+            head_list.append('var_accu_conv')
 
         i = 0
         for head in head_line:
@@ -1164,7 +1188,15 @@ class AnalysisImport(Resource):
                     else:
                         var_show_minmax = 'N'
 
-                    # TODO re-add formula2, unit2, accu2
+                    # re-add formula2, unit2, accu2
+                    if version == 'v4' and len(row) > 38:
+                        var_formula_conv = row[36]
+                        var_unit_conv = row[37]
+                        var_accu_conv = row[38]
+                    else:
+                        var_formula_conv = ''
+                        var_unit_conv = 0
+                        var_accu_conv = 0
 
                     ret = Analysis.exist(code, test)
 
@@ -1226,9 +1258,9 @@ class AnalysisImport(Resource):
                                                                  formula=formule,
                                                                  unit=unite,
                                                                  accu=accuracy,
-                                                                 formula2='',  # formule_unite2,
-                                                                 unit2=0,      # unite2,
-                                                                 accu2=0,      # precision2,
+                                                                 formula2=var_formula_conv,
+                                                                 unit2=var_unit_conv,
+                                                                 accu2=var_accu_conv,
                                                                  test=test)
 
                                 if ret is False:
@@ -1334,7 +1366,15 @@ class AnalysisImport(Resource):
                     else:
                         var_show_minmax = 'N'
 
-                    # TODO re-add formula2, unit2, accu2
+                    # re-add formula2, unit2, accu2
+                    if version == 'v4' and len(row) > 38:
+                        var_formula_conv = row[36]
+                        var_unit_conv = row[37]
+                        var_accu_conv = row[38]
+                    else:
+                        var_formula_conv = ''
+                        var_unit_conv = 0
+                        var_accu_conv = 0
 
                     ret = Analysis.exist(code, test)
 
@@ -1423,9 +1463,9 @@ class AnalysisImport(Resource):
                                                                  formula=formule,
                                                                  unit=unite,
                                                                  accu=accuracy,
-                                                                 formula2='',  # formule_unite2,
-                                                                 unit2=0,      # unite2,
-                                                                 accu2=0,      # precision2,
+                                                                 formula2=var_formula_conv,
+                                                                 unit2=var_unit_conv,
+                                                                 accu2=var_accu_conv,
                                                                  test=test)
 
                                 if ret <= 0:

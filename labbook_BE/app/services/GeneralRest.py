@@ -133,6 +133,20 @@ class DatasetByName(Resource):
 
         if name == 'patient':
             l_items = Patient.getDataset()
+
+            for item in l_items:
+                for key, value in list(item.items()):
+                    if isinstance(item[key], datetime):
+                        self.log.error(Logs.fileline() + ' : DEBUG item[key] = ' + str(item[key]))
+                        item[key] = datetime.strftime(item[key], Constants.cst_isodate)
+
+                l_form_items = Patient.getFormItems(item['id_patient'])
+
+                for form_item in list(l_form_items):
+                    if isinstance(form_item['pfi_value'], datetime):
+                        item[str(form_item['pfi_key'])] = datetime.strftime(form_item['pfi_value'], Constants.cst_isodate)
+                    else:
+                        item[str(form_item['pfi_key'])] = str(form_item['pfi_value'])
         else:
             args = request.get_json()
 

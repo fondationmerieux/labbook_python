@@ -19,7 +19,7 @@ depends_on = None
 
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
-    print("START of migration change_few_columns_date_to_datetime revision=b7e386aa17b1")
+    print("START of migration v3_4_0_change_few_columns_date_to_datetime revision=b7e386aa17b1")
 
     # Get the current
     conn = op.get_bind()
@@ -108,7 +108,7 @@ def upgrade():
     except Exception as err:
         print("ERROR drop column heure_reception to sigl_01_deleted,\n\terr=" + str(err))
 
-    print(str(datetime.today()) + " : END of migration change_few_columns_date_to_datetime revision=b7e386aa17b1")
+    print(str(datetime.today()) + " : END of migration v3_4_0_change_few_columns_date_to_datetime revision=b7e386aa17b1")
 
 
 def downgrade():

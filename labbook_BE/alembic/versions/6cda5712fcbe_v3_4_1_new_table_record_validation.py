@@ -19,7 +19,7 @@ depends_on = None
 
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
-    print("START of migration new_table_record_validation revision=6cda5712fcbe")
+    print("START of migration v3_4_1_new_table_record_validation revision=6cda5712fcbe")
 
     # Get the current
     conn = op.get_bind()
@@ -84,7 +84,7 @@ def upgrade():
     except Exception as err:
         print("ERROR update record_validation,\n\terr=" + str(err))
 
-    print(str(datetime.today()) + " : END of migration new_table_record_validation revision=6cda5712fcbe")
+    print(str(datetime.today()) + " : END of migration v3_4_1_new_table_record_validation revision=6cda5712fcbe")
 
 
 def downgrade():

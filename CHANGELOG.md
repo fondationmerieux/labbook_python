@@ -7,7 +7,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
-- re-add formula2, unit2 and accu2 in import/export analysis repository
+
+## [3.4.5] - 2024-05-15
+### Added
+- upload customizable form patient by TOML file, see customizable_form.md
+- Numerical result converted can be add to PDF report with res.valueConv and res.unitConv (empty if no conversion formula)
+
+### Changed
+- send data to DHIS2 API, displayed return message from platform even for success
+- add var_formula_conv, var_unit_conv, var_accu_conv in import/export analysis repository, version v4
+
+### Fixed
+- rec_date conversion of API Record service
+- algorithm for dhis2, epidemio report and indicator report
+- bug with filename of WHONET export
+- a look back at the use of current_app in db.py
 
 ## [3.4.4] - 2024-04-04
 ### Added

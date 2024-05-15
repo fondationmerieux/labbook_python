@@ -21,31 +21,31 @@
                 <fieldset class="d-lg-flex flex-lg-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
                     <div class="col-12">
-                        {% if args['patient'] and args['patient']['code_patient'] %}
-                        <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_code_lab'] %}
+                        <span class="pat-num">{{ args['patient']['pat_code_lab'] }}</span>
                         {% endif %}
-                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
+                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['pat_code'] }}{% endif %}</span>
                     </div>
                     <div class="col-12 mt-2">
-                        {% if args['patient'] and args['patient']['anonyme'] != 4 %}
-                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
+                        {% if args['patient'] and args['patient']['pat_ano'] != 4 %}
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['pat_firstname'] }} {{ args['patient']['pat_name'] }}{% if args['patient']['pat_maiden'] %} {{ args['patient']['pat_maiden'] }}{% endif %}{% endif %}</span>
                         {% else %}
                         <span class="font-info">{{ _("Patient anonyme") }}.</span>
                         {% endif %}
                     </div>
                     <div class="col-12 mt-2">
                         <span>{{ _("Né(e) le") }}&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
+                        <span class="font-info">{% if args['patient'] and args['patient']['pat_birth'] %}{{ args['patient']['pat_ddn']|date_format }}{% endif %}</span>
                         <span>&nbsp;-&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}{{ _("années") }}
-                                                {% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}
-                                                {% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}
-                                                {% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['pat_age'] }}{% endif %}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['pat_age_unit'] == 1037 %}{{ _("années") }}
+                                                {% elif args['patient']['pat_age_unit'] == 1036 %}{{ _("mois") }}
+                                                {% elif args['patient']['pat_age_unit'] == 1035 %}{{ _("semaines") }}
+                                                {% elif args['patient']['pat_age_unit'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
                         <span>&nbsp;-&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
-                                                {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
-                                                {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['pat_sex'] == 1 %}{{ _("Masculin") }}
+                                                {% elif args['patient']['pat_sex'] == 2 %}{{ _("Féminin") }}
+                                                {% elif args['patient']['pat_sex'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                     </div>
                 </fieldset>
             </form>

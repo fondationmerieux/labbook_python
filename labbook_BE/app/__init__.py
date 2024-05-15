@@ -250,6 +250,7 @@ api.add_resource(PatientCombine,        '/services/patient/combine/<int:id_pat1>
 api.add_resource(PatientList,           '/services/patient/list')
 api.add_resource(PatientListExport,     '/services/patient/list/export')
 api.add_resource(PatientDet,            '/services/patient/det/<int:id_pat>')
+api.add_resource(PatientFormItem,       '/services/patient/form/item/<int:id_pat>')
 api.add_resource(PatientHistoric,       '/services/patient/historic/<int:id_pat>')
 api.add_resource(PatientSearch,         '/services/patient/search')
 api.add_resource(PdfBill,               '/services/pdf/bill/<int:id_rec>')

@@ -77,33 +77,33 @@ class Pdf:
             addr_div += ('<div style="width:475px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
                          'background-color:#FFF;float:right;">')
 
-            if pat['nom'] or pat['prenom']:
+            if pat['pat_name'] or pat['pat_firstname']:
                 pat_lname = ''
                 pat_fname = ''
 
-                if pat['nom']:
-                    pat_lname = pat['nom']
+                if pat['pat_name']:
+                    pat_lname = pat['pat_name']
 
-                if pat['nom_jf']:
-                    pat_lname += '&nbsp;' + pat['nom_jf']
+                if pat['pat_maiden']:
+                    pat_lname += '&nbsp;' + pat['pat_maiden']
 
-                if pat['prenom']:
-                    pat_fname = pat['prenom']
+                if pat['pat_firstname']:
+                    pat_fname = pat['pat_firstname']
 
                 addr_div += '<div><span class="ft_pat_ident">' + str(pat_lname) + '&nbsp;' + str(pat_fname) + '</span></div>'
 
-            if pat['adresse']:
-                addr_div += '<div><span class="ft_pat_addr">' + str(pat['adresse']) + '</span></div>'
+            if pat['pat_address']:
+                addr_div += '<div><span class="ft_pat_addr">' + str(pat['pat_address']) + '</span></div>'
 
-            if pat['cp'] or pat['ville']:
+            if pat['pat_zipcode'] or pat['pat_city']:
                 pat_zip = ''
                 pat_city = ''
 
-                if pat['cp']:
-                    pat_zip = pat['cp']
+                if pat['pat_zipcode']:
+                    pat_zip = pat['pat_zipcode']
 
-                if pat['ville']:
-                    pat_city = pat['ville']
+                if pat['pat_city']:
+                    pat_city = pat['pat_city']
 
                 addr_div += '<div><span class="ft_pat_addr">' + str(pat_zip) + '&nbsp;' + str(pat_city) + '</span></div>'
 
@@ -745,11 +745,12 @@ class Pdf:
 
         # 2 - render template with data
         try:
-            import toml
+            import tomli
 
             filepath = os.path.join(Constants.cst_template, tpl['tpl_file'])
 
-            qrc_tpl = toml.load(filepath)
+            with open(filepath, "rb") as f:
+                qrc_tpl = tomli.load(f)
 
             # tpl_version = qrc_tpl['version']
 
@@ -890,11 +891,14 @@ class Pdf:
 
                 pat = Patient.getPatient(record['id_patient'])
 
+                data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
+
                 if not pat:
                     Pdf.log.error(Logs.fileline() + ' : ERRROR getPdfSticker cant load patient details')
                     return False
 
-                data['pat']['code']         = str(pat['code'])
+                # --- Patient details for getPdfSticker
+                data['pat']['code']         = str(pat['pat_code'])
                 data['pat']['code_lab']     = ''
                 data['pat']['lastname']     = ''
                 data['pat']['firstname']    = ''
@@ -918,32 +922,32 @@ class Pdf:
                 data['pat']['blood_group']  = ''
                 data['pat']['blood_rhesus'] = ''
 
-                if pat['anonyme'] and pat['anonyme'] == 4:
+                if pat['pat_ano'] and pat['pat_ano'] == 4:
                     data['pat']['anonymous'] = 'Y'
                 else:
                     data['pat']['anonymous'] = 'N'
 
-                if pat['code_patient']:
-                    data['pat']['code_lab'] = str(pat['code_patient'])
+                if pat['pat_code_lab']:
+                    data['pat']['code_lab'] = str(pat['pat_code_lab'])
 
-                if pat['nom']:
-                    data['pat']['lastname'] = str(pat['nom'])
+                if pat['pat_name']:
+                    data['pat']['lastname'] = str(pat['pat_name'])
 
-                if pat['prenom']:
-                    data['pat']['firstname'] = str(pat['prenom'])
+                if pat['pat_firstname']:
+                    data['pat']['firstname'] = str(pat['pat_firstname'])
 
-                if pat['nom_jf']:
-                    data['pat']['maidenname'] = str(pat['nom_jf'])
+                if pat['pat_maiden']:
+                    data['pat']['maidenname'] = str(pat['pat_maiden'])
 
                 if pat['pat_midname']:
                     data['pat']['middlename'] = str(pat['pat_midname'])
 
-                if pat['ddn']:
-                    data['pat']['birth'] = datetime.strftime(pat['ddn'], Constants.cst_date_eu)
+                if pat['pat_birth']:
+                    data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
 
                     # calc age
                     today = datetime.now()
-                    born  = datetime.strptime(str(pat['ddn']), Constants.cst_isodate)
+                    born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
 
                     age = (today - born).days
 
@@ -959,56 +963,56 @@ class Pdf:
                         tmp_age = int((today - born).days / 28)
                         data['pat']['age']  = str(tmp_age)
                         data['pat']['age_unit'] = _('mois')
-                elif pat['age']:
-                    data['pat']['age'] = str(pat['age'])
+                elif pat['pat_age']:
+                    data['pat']['age'] = str(pat['pat_age'])
 
-                    if pat['unite'] == 1037:
+                    if pat['pat_age_unit'] == 1037:
                         data['pat']['age_unit'] = _('ans')
-                        age = int(pat['age']) * 365
+                        age = int(pat['pat_age']) * 365
                         data['pat']['age_days'] = str(age)
-                    elif pat['unite'] == 1036:
+                    elif pat['pat_age_unit'] == 1036:
                         data['pat']['age_unit'] = _('mois')
-                        age = int(pat['age']) * 30
+                        age = int(pat['pat_age']) * 30
                         data['pat']['age_days'] = str(age)
-                    elif pat['unite'] == 1035:
+                    elif pat['pat_age_unit'] == 1035:
                         data['pat']['age_unit'] = _('semaines')
-                        age = int(pat['age']) * 7
+                        age = int(pat['pat_age']) * 7
                         data['pat']['age_days'] = str(age)
-                    elif pat['unite'] == 1034:
+                    elif pat['pat_age_unit'] == 1034:
                         data['pat']['age_unit'] = _('jours')
-                        data['pat']['age_days'] = str(pat['age'])
+                        data['pat']['age_days'] = str(pat['pat_age'])
 
-                if pat['sexe'] == 1:
+                if pat['pat_sex'] == 1:
                     data['pat']['sex'] = _('Masculin')
-                elif pat['sexe'] == 2:
+                elif pat['pat_sex'] == 2:
                     data['pat']['sex'] = _('Feminin')
 
-                if pat['adresse']:
-                    data['pat']['addr'] = str(pat['adresse'])
+                if pat['pat_address']:
+                    data['pat']['addr'] = str(pat['pat_address'])
 
-                if pat['cp']:
-                    data['pat']['zipcode'] = str(pat['cp'])
+                if pat['pat_zipcode']:
+                    data['pat']['zipcode'] = str(pat['pat_zipcode'])
 
-                if pat['ville']:
-                    data['pat']['city'] = str(pat['ville'])
+                if pat['pat_city']:
+                    data['pat']['city'] = str(pat['pat_city'])
 
-                if pat['quartier']:
-                    data['pat']['district'] = str(pat['quartier'])
+                if pat['pat_district']:
+                    data['pat']['district'] = str(pat['pat_district'])
 
-                if pat['bp']:
-                    data['pat']['pbox'] = str(pat['bp'])
+                if pat['pat_pbox']:
+                    data['pat']['pbox'] = str(pat['pat_pbox'])
 
-                if pat['tel']:
-                    data['pat']['phone'] = str(pat['tel'])
+                if pat['pat_phone1']:
+                    data['pat']['phone'] = str(pat['pat_phone1'])
 
                 if pat['pat_phone2']:
                     data['pat']['phone2'] = str(pat['pat_phone2'])
 
-                if pat['profession']:
-                    data['pat']['profession'] = str(pat['profession'])
+                if pat['pat_profession']:
+                    data['pat']['profession'] = str(pat['pat_profession'])
 
-                if pat['pat_nation'] and pat['pat_nation'] > 0:
-                    nat = Various.getNationalityById(pat['pat_nation'])
+                if pat['pat_nationality'] and pat['pat_nationality'] > 0:
+                    nat = Various.getNationalityById(pat['pat_nationality'])
 
                     if nat:
                         Various.useLangDB()
@@ -1084,7 +1088,7 @@ class Pdf:
                 data['rec']['num_m'] = '202201010001'
                 data['rec']['rec_date'] = datetime.strftime(datetime.now(), Constants.cst_date_eu)
 
-                # --- Patient details
+                # --- Patient details TEST for getPdfSticker
                 data['pat'] = {}
 
                 data['pat']['anonymous']    = ''
@@ -1375,10 +1379,13 @@ class Pdf:
             data['rec']['date_save'] = ''
 
         # === Patient details ===
+        # for getDataReport
         data['pat'] = {}
 
         if record['id_patient'] > 0:
             pat = Patient.getPatient(record['id_patient'])
+
+            data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
         # For print test patient
         else:
             pat = {}
@@ -1407,7 +1414,7 @@ class Pdf:
             pat['pat_blood_rhesus'] = 232
 
         data['pat']['anonymous']    = ''
-        data['pat']['code']         = str(pat['code'])
+        data['pat']['code']         = str(pat['pat_code'])
         data['pat']['code_lab']     = ''
         data['pat']['lastname']     = ''
         data['pat']['firstname']    = ''
@@ -1431,32 +1438,32 @@ class Pdf:
         data['pat']['blood_group']  = ''
         data['pat']['blood_rhesus'] = ''
 
-        if pat['anonyme'] and pat['anonyme'] == 4:
+        if pat['pat_ano'] and pat['pat_ano'] == 4:
             data['pat']['anonymous'] = 'Y'
         else:
             data['pat']['anonymous'] = 'N'
 
-        if pat['code_patient']:
-            data['pat']['code_lab'] = str(pat['code_patient'])
+        if pat['pat_code_lab']:
+            data['pat']['code_lab'] = str(pat['pat_code_lab'])
 
-        if pat['nom']:
-            data['pat']['lastname'] = str(pat['nom'])
+        if pat['pat_name']:
+            data['pat']['lastname'] = str(pat['pat_name'])
 
-        if pat['prenom']:
-            data['pat']['firstname'] = str(pat['prenom'])
+        if pat['pat_firstname']:
+            data['pat']['firstname'] = str(pat['pat_firstname'])
 
-        if pat['nom_jf']:
-            data['pat']['maidenname'] = str(pat['nom_jf'])
+        if pat['pat_maiden']:
+            data['pat']['maidenname'] = str(pat['pat_maiden'])
 
         if pat['pat_midname']:
             data['pat']['middlename'] = str(pat['pat_midname'])
 
-        if pat['ddn']:
-            data['pat']['birth'] = datetime.strftime(pat['ddn'], Constants.cst_date_eu)
+        if pat['pat_birth']:
+            data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
 
             # calc age
             today = datetime.now()
-            born  = datetime.strptime(str(pat['ddn']), Constants.cst_isodate)
+            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
 
             age = (today - born).days
 
@@ -1472,56 +1479,56 @@ class Pdf:
                 tmp_age = int((today - born).days / 28)
                 data['pat']['age']  = str(tmp_age)
                 data['pat']['age_unit'] = _('mois')
-        elif pat['age']:
-            data['pat']['age'] = str(pat['age'])
+        elif pat['pat_age']:
+            data['pat']['age'] = str(pat['pat_age'])
 
-            if pat['unite'] == 1037:
+            if pat['pat_age_unit'] == 1037:
                 data['pat']['age_unit'] = _('ans')
-                age = int(pat['age']) * 365
+                age = int(pat['pat_age']) * 365
                 data['pat']['age_days'] = str(age)
-            elif pat['unite'] == 1036:
+            elif pat['pat_age_unit'] == 1036:
                 data['pat']['age_unit'] = _('mois')
-                age = int(pat['age']) * 30
+                age = int(pat['pat_age']) * 30
                 data['pat']['age_days'] = str(age)
-            elif pat['unite'] == 1035:
+            elif pat['pat_age_unit'] == 1035:
                 data['pat']['age_unit'] = _('semaines')
-                age = int(pat['age']) * 7
+                age = int(pat['pat_age']) * 7
                 data['pat']['age_days'] = str(age)
-            elif pat['unite'] == 1034:
+            elif pat['pat_age_unit'] == 1034:
                 data['pat']['age_unit'] = _('jours')
-                data['pat']['age_days'] = str(pat['age'])
+                data['pat']['age_days'] = str(pat['pat_age'])
 
-        if pat['sexe'] == 1:
+        if pat['pat_sex'] == 1:
             data['pat']['sex'] = _('Masculin')
-        elif pat['sexe'] == 2:
+        elif pat['pat_sex'] == 2:
             data['pat']['sex'] = _('Feminin')
 
-        if pat['adresse']:
-            data['pat']['addr'] = str(pat['adresse'])
+        if pat['pat_address']:
+            data['pat']['addr'] = str(pat['pat_address'])
 
-        if pat['cp']:
-            data['pat']['zipcode'] = str(pat['cp'])
+        if pat['pat_zipcode']:
+            data['pat']['zipcode'] = str(pat['pat_zipcode'])
 
-        if pat['ville']:
-            data['pat']['city'] = str(pat['ville'])
+        if pat['pat_city']:
+            data['pat']['city'] = str(pat['pat_city'])
 
-        if pat['quartier']:
-            data['pat']['district'] = str(pat['quartier'])
+        if pat['pat_district']:
+            data['pat']['district'] = str(pat['pat_district'])
 
-        if pat['bp']:
-            data['pat']['pbox'] = str(pat['bp'])
+        if pat['pat_pbox']:
+            data['pat']['pbox'] = str(pat['pat_pbox'])
 
-        if pat['tel']:
-            data['pat']['phone'] = str(pat['tel'])
+        if pat['pat_phone1']:
+            data['pat']['phone'] = str(pat['pat_phone1'])
 
         if pat['pat_phone2']:
             data['pat']['phone2'] = str(pat['pat_phone2'])
 
-        if pat['profession']:
-            data['pat']['profession'] = str(pat['profession'])
+        if pat['pat_profession']:
+            data['pat']['profession'] = str(pat['pat_profession'])
 
-        if pat['pat_nation'] and pat['pat_nation'] > 0:
-            nat = Various.getNationalityById(pat['pat_nation'])
+        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
+            nat = Various.getNationalityById(pat['pat_nationality'])
 
             if nat:
                 Various.useLangDB()
@@ -1546,7 +1553,7 @@ class Pdf:
         analysis       = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "", "ana_outsourced": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
-                          "formatting": "N"}
+                          "formatting": "N", "valueConv": "", "unitConv": ""}
 
         """
         [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME, 'ana_comm': ANALYSIS_COMMENTARY
@@ -1559,7 +1566,9 @@ class Pdf:
                                   'prev_unit': PREVIOUS_UNIT,
                                   'bold_value': BOLD_VALUE,
                                   'highlight': highlight,
-                                  'formatting': formatting}] }
+                                  'formatting': formatting,
+                                  'valueConv': RESULT_VALUE_CONVERTED,
+                                  'unitConv': UNIT_RESULT_VALUE_CONVERTED,}] }
         }]
         """
 
@@ -1679,7 +1688,7 @@ class Pdf:
                                 tmp_ana['ana_outsourced'] = _("Sous-traitée")
 
                         # init new result
-                        tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N", "highlight": "N", "formatting": "N"}
+                        tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N", "highlight": "N", "formatting": "N", "valueConv": "", "unitConv": ""}
 
                         # Start to get previous result if exist
                         prev_date = ''
@@ -1776,6 +1785,22 @@ class Pdf:
 
                                     if prev_res:
                                         prev_unit = unit['label']
+
+                            # Converted numerical value
+                            if res['unite2'] and res['formule_unite2'] and val and val != _("Annulée"):
+                                unit2 = Various.getDicoById(res['unite2'])
+
+                                if unit2:
+                                    tmp_res['uniteConv'] = unit2['label']
+
+                                if not res['precision2']:
+                                    res['precision2'] = 2
+
+                                try:
+                                    tmp_res['valueConv'] = round(eval(res['formule_unite2'].replace('$', str(val))), res['precision2'])
+                                except Exception:
+                                    Pdf.log.error(Logs.fileline() + ' : ERROR convert to formula2, valueConv=' + str(tmp_res['valueConv']))
+                                    tmp_res['valueConv'] = ''
 
                         if res['var_highlight']:
                             tmp_res['highlight'] = res['var_highlight']
@@ -1910,6 +1935,9 @@ class Pdf:
             result['comm']       = 'commentaire validation\n2eme ligne'.split('\n')
             result['bold_value'] = 'N'
             result['highlight']  = 'Y'
+            result['formatting'] = 'N'
+            result['value']      = ''
+            result['unitConv']   = ''
 
             analysis['fam_name'] = _("Biochimie urinaire")
             analysis['ana_name'] = _("Bandelettes urinaires")
@@ -2368,10 +2396,13 @@ class Pdf:
             data['rec']['date_save'] = ''
 
         # === Patient details ===
+        # for getDataOutsourced
         data['pat'] = {}
 
         if record['id_patient'] > 0:
             pat = Patient.getPatient(record['id_patient'])
+
+            data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
         # For print test patient
         else:
             pat = {}
@@ -2400,7 +2431,7 @@ class Pdf:
             pat['pat_blood_rhesus'] = 232
 
         data['pat']['anonymous']    = ''
-        data['pat']['code']         = str(pat['code'])
+        data['pat']['code']         = str(pat['pat_code'])
         data['pat']['code_lab']     = ''
         data['pat']['lastname']     = ''
         data['pat']['firstname']    = ''
@@ -2424,32 +2455,32 @@ class Pdf:
         data['pat']['blood_group']  = ''
         data['pat']['blood_rhesus'] = ''
 
-        if pat['anonyme'] and pat['anonyme'] == 4:
+        if pat['pat_ano'] and pat['pat_ano'] == 4:
             data['pat']['anonymous'] = 'Y'
         else:
             data['pat']['anonymous'] = 'N'
 
-        if pat['code_patient']:
-            data['pat']['code_lab'] = str(pat['code_patient'])
+        if pat['pat_code_lab']:
+            data['pat']['code_lab'] = str(pat['pat_code_lab'])
 
-        if pat['nom']:
-            data['pat']['lastname'] = str(pat['nom'])
+        if pat['pat_name']:
+            data['pat']['lastname'] = str(pat['pat_name'])
 
-        if pat['prenom']:
-            data['pat']['firstname'] = str(pat['prenom'])
+        if pat['pat_firstname']:
+            data['pat']['firstname'] = str(pat['pat_firstname'])
 
-        if pat['nom_jf']:
-            data['pat']['maidenname'] = str(pat['nom_jf'])
+        if pat['pat_maiden']:
+            data['pat']['maidenname'] = str(pat['pat_maiden'])
 
         if pat['pat_midname']:
             data['pat']['middlename'] = str(pat['pat_midname'])
 
-        if pat['ddn']:
-            data['pat']['birth'] = datetime.strftime(pat['ddn'], '%d/%m/%Y')
+        if pat['pat_birth']:
+            data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
 
             # calc age
             today = datetime.now()
-            born  = datetime.strptime(str(pat['ddn']), Constants.cst_isodate)
+            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
 
             age = (today - born).days
 
@@ -2465,56 +2496,56 @@ class Pdf:
                 tmp_age = int((today - born).days / 28)
                 data['pat']['age']  = str(tmp_age)
                 data['pat']['age_unit'] = _('mois')
-        elif pat['age']:
-            data['pat']['age'] = str(pat['age'])
+        elif pat['pat_age']:
+            data['pat']['age'] = str(pat['pat_age'])
 
-            if pat['unite'] == 1037:
+            if pat['pat_age_unit'] == 1037:
                 data['pat']['age_unit'] = _('ans')
-                age = int(pat['age']) * 365
+                age = int(pat['pat_age']) * 365
                 data['pat']['age_days'] = str(age)
-            elif pat['unite'] == 1036:
+            elif pat['pat_age_unit'] == 1036:
                 data['pat']['age_unit'] = _('mois')
-                age = int(pat['age']) * 30
+                age = int(pat['pat_age']) * 30
                 data['pat']['age_days'] = str(age)
-            elif pat['unite'] == 1035:
+            elif pat['pat_age_unit'] == 1035:
                 data['pat']['age_unit'] = _('semaines')
-                age = int(pat['age']) * 7
+                age = int(pat['pat_age']) * 7
                 data['pat']['age_days'] = str(age)
-            elif pat['unite'] == 1034:
+            elif pat['pat_age_unit'] == 1034:
                 data['pat']['age_unit'] = _('jours')
-                data['pat']['age_days'] = str(pat['age'])
+                data['pat']['age_days'] = str(pat['pat_age'])
 
-        if pat['sexe'] == 1:
+        if pat['pat_sex'] == 1:
             data['pat']['sex'] = _('Masculin')
-        elif pat['sexe'] == 2:
+        elif pat['pat_sex'] == 2:
             data['pat']['sex'] = _('Feminin')
 
-        if pat['adresse']:
-            data['pat']['addr'] = str(pat['adresse'])
+        if pat['pat_address']:
+            data['pat']['addr'] = str(pat['pat_address'])
 
-        if pat['cp']:
-            data['pat']['zipcode'] = str(pat['cp'])
+        if pat['pat_zipcode']:
+            data['pat']['zipcode'] = str(pat['pat_zipcode'])
 
-        if pat['ville']:
-            data['pat']['city'] = str(pat['ville'])
+        if pat['pat_city']:
+            data['pat']['city'] = str(pat['pat_city'])
 
-        if pat['quartier']:
-            data['pat']['district'] = str(pat['quartier'])
+        if pat['pat_district']:
+            data['pat']['district'] = str(pat['pat_district'])
 
-        if pat['bp']:
-            data['pat']['pbox'] = str(pat['bp'])
+        if pat['pat_pbox']:
+            data['pat']['pbox'] = str(pat['pat_pbox'])
 
-        if pat['tel']:
-            data['pat']['phone'] = str(pat['tel'])
+        if pat['pat_phone1']:
+            data['pat']['phone'] = str(pat['pat_phone1'])
 
         if pat['pat_phone2']:
             data['pat']['phone2'] = str(pat['pat_phone2'])
 
-        if pat['profession']:
-            data['pat']['profession'] = str(pat['profession'])
+        if pat['pat_profession']:
+            data['pat']['profession'] = str(pat['pat_profession'])
 
-        if pat['pat_nation'] and pat['pat_nation'] > 0:
-            nat = Various.getNationalityById(pat['pat_nation'])
+        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
+            nat = Various.getNationalityById(pat['pat_nationality'])
 
             if nat:
                 Various.useLangDB()
@@ -2707,5 +2738,31 @@ class Pdf:
             data['samples'].append(sample)
 
         # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE data : ' + str(data))
+
+        return data
+
+    @staticmethod
+    def getDataFormItem(id_pat):
+        """Build additionnal dict of data for document
+        Data from customizable patient form
+
+        Args:
+            id_pat      (int): patient serial.
+
+        Returns:
+            dict: dictionnary of data
+
+        """
+
+        data = {}
+
+        l_items = Patient.getFormItems(id_pat)
+
+        if not l_items:
+            Pdf.log.error(Logs.fileline() + ' : ' + 'getDataFormItem WARNING not found')
+
+        for item in l_items:
+            key_val = str(item['pfi_key'])
+            data[key_val] = item['pfi_value']
 
         return data

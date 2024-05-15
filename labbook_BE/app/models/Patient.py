@@ -108,16 +108,93 @@ class Patient:
     def getPatient(id_pat):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, '
-               'adresse, cp, ville, tel, pat_phone2, profession, '
-               'nom_jf, quartier, bp, ddn_approx, age, unite, '
-               'pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus '
+        req = ('select id_data, id_owner as id_user, anonyme as pat_ano, code as pat_code, code_patient as pat_code_lab, '
+               'nom as pat_name, prenom as pat_firstname, ddn as pat_birth, sexe as pat_sex, adresse as pat_address, '
+               'cp as pat_zipcode, ville as pat_city, tel as pat_phone1, pat_phone2, profession as pat_profession, '
+               'nom_jf as pat_maiden, quartier as pat_district, bp as pat_pbox, ddn_approx as pat_birth_approx, '
+               'age as pat_age, unite as pat_age_unit, '
+               'pat_midname, pat_nation as pat_nationality, pat_resident, pat_blood_group, pat_blood_rhesus '
                'from sigl_03_data '
                'where id_data=%s')
 
         cursor.execute(req, (id_pat,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getFormItems(id_pat):
+        cursor = DB.cursor()
+
+        req = ('select pfi_key, pfi_value '
+               'from patient_form_item '
+               'where pfi_pat=%s and pfi_act="Y"')
+
+        cursor.execute(req, (id_pat,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def checkFormItem(id_pat, key):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_item '
+               'from patient_form_item '
+               'where pfi_pat=%s and pfi_key=%s and pfi_act="Y"')
+
+        cursor.execute(req, (id_pat, key))
+
+        ret = cursor.fetchone()
+
+        return ret['nb_item']
+
+    @staticmethod
+    def sameFormItem(id_pat, key, value, act):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_item '
+               'from patient_form_item '
+               'where pfi_pat=%s and pfi_key=%s and pfi_value=%s and pfi_act=%s')
+
+        cursor.execute(req, (id_pat, key, value, act))
+
+        ret = cursor.fetchone()
+
+        return ret['nb_item']
+
+    @staticmethod
+    def desactFormItem(id_pat, key):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update patient_form_item '
+                   'set pfi_act="N" '
+                   'where pfi_pat=%s and pfi_key=%s and pfi_act="Y"')
+
+            cursor.execute(req, (id_pat, key))
+
+            Patient.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def insertFormItem(id_pat, key, value, id_user):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into patient_form_item '
+                           '(pfi_date, pfi_pat, pfi_act, pfi_key, pfi_value, pfi_user) '
+                           'values '
+                           '(NOW(), %s, "Y", %s, %s, %s)', (id_pat, key, value, id_user))
+
+            Patient.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
 
     @staticmethod
     def getPatientByCode(code, code_lab):

@@ -694,31 +694,31 @@ var blood_rhesus  = $("#blood_rhesus_1").val() ;
 phone1 = phone1.replaceAll(" ", "") ;
 phone2 = phone2.replaceAll(" ", "") ;
 
-var param = '{ "id_owner":' + id_owner + ', ' +
-              '"anonyme":' + anonyme  + ', ' +
-              '"code":"' + code + '", ' +
-              '"code_patient":"' + code_patient + '", ' +
-              '"nom":"' + nom + '", ' +
-              '"prenom":"' + prenom + '", ' +
-              '"ddn":"' + ddn + '", ' +
-              '"sexe":' + sexe + ', ' +
-              '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
-              '"cp":"' + cp + '", ' +
-              '"ville":"' + ville + '", ' +
-              '"tel":"' + phone1 + '", ' +
-              '"phone2":"' + phone2 + '", ' +
-              '"profession":"' + profession + '", ' +
-              '"nom_jf":"' + nom_jf + '", ' +
-              '"quartier":"' + quartier + '", ' +
-              '"bp":"' + bp + '", ' +
-              '"ddn_approx":' + ddn_approx + ', ' +
-              '"age":' + age + ', ' +
-              '"unite":' + unite + ', ' +
-              '"midname":"' + midname + '", ' +
-              '"nationality":' + nationality + ', ' +
-              '"resident":"' + resident + '", ' +
-              '"blood_group":' + blood_group + ', ' +
-              '"blood_rhesus":' + blood_rhesus + ' }' ;
+var param = '{ "id_user":' + id_owner + ', ' +
+              '"pat_ano":' + anonyme  + ', ' +
+              '"pat_code":"' + code + '", ' +
+              '"pat_code_lab":"' + code_patient + '", ' +
+              '"pat_name":"' + nom + '", ' +
+              '"pat_firstname":"' + prenom + '", ' +
+              '"pat_birth":"' + ddn + '", ' +
+              '"pat_sex":' + sexe + ', ' +
+              '"pat_address":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
+              '"pat_zipcode":"' + cp + '", ' +
+              '"pat_city":"' + ville + '", ' +
+              '"pat_phone1":"' + phone1 + '", ' +
+              '"pat_phone2":"' + phone2 + '", ' +
+              '"pat_profession":"' + profession + '", ' +
+              '"pat_maiden":"' + nom_jf + '", ' +
+              '"pat_district":"' + quartier + '", ' +
+              '"pat_pbox":"' + bp + '", ' +
+              '"pat_birth_approx":' + ddn_approx + ', ' +
+              '"pat_age":' + age + ', ' +
+              '"pat_age_unit":' + unite + ', ' +
+              '"pat_midname":"' + midname + '", ' +
+              '"pat_nationality":' + nationality + ', ' +
+              '"pat_resident":"' + resident + '", ' +
+              '"pat_blood_group":' + blood_group + ', ' +
+              '"pat_blood_rhesus":' + blood_rhesus + ' }' ;
 
     $.ajax( {
        type: "POST",
@@ -847,27 +847,27 @@ function load_data_pat( data, num )
 {
     $("#form_pat_" + num ).removeClass('d-none') ;
 
-    $("#anonyme-" + data.anonyme + "_" + num ).prop("checked", true) ;
-    $("#code_patient_" + num ).val( data.code_patient ) ;
-    $("#code_" + num ).text( data.code ) ;
-    $("#nom_" + num ).val( data.nom ) ;
-    $("#nom_jf_" + num ).val( data.nom_jf ) ;
-    $("#prenom_" + num ).val( data.prenom ) ;
-    $("#ddn_" + num ).val( data.ddn ) ;
-    $("#ddn_approx-" + data.ddn_approx + "_" + num ).prop("checked", true) ;
-    $("#sexe-" + data.sexe + "_" + num ).prop("checked", true) ;
-    $("#age_" + num ).val( data.age ) ;
-    $("#unite-" + data.unite + "_" + num ).prop("selected", true) ;
-    $("#adresse_" + num ).val( data.adresse ) ;
-    $("#bp_" + num ).val( data.bp ) ;
-    $("#quartier_" + num ).val( data.quartier ) ;
-    $("#phone1_" + num ).val( data.tel ) ;
+    $("#anonyme-" + data.pat_ano + "_" + num ).prop("checked", true) ;
+    $("#code_patient_" + num ).val( data.pat_code_lab ) ;
+    $("#code_" + num ).text( data.pat_code ) ;
+    $("#nom_" + num ).val( data.pat_name ) ;
+    $("#nom_jf_" + num ).val( data.pat_maiden ) ;
+    $("#prenom_" + num ).val( data.pat_firstname ) ;
+    $("#ddn_" + num ).val( data.pat_birth ) ;
+    $("#ddn_approx-" + data.pat_birth_approx + "_" + num ).prop("checked", true) ;
+    $("#sexe-" + data.pat_sex + "_" + num ).prop("checked", true) ;
+    $("#age_" + num ).val( data.pat_age ) ;
+    $("#unite-" + data.pat_age_unit + "_" + num ).prop("selected", true) ;
+    $("#adresse_" + num ).val( data.pat_address ) ;
+    $("#bp_" + num ).val( data.pat_pbox ) ;
+    $("#quartier_" + num ).val( data.pat_district ) ;
+    $("#phone1_" + num ).val( data.pat_phone1 ) ;
     $("#phone2_" + num ).val( data.pat_phone2 ) ;
-    $("#cp_" + num ).val( data.cp ) ;
-    $("#ville_" + num ).val( data.ville ) ;
-    $("#profession_" + num ).val( data.profession ) ;
+    $("#cp_" + num ).val( data.pat_zipcode ) ;
+    $("#ville_" + num ).val( data.pat_city ) ;
+    $("#profession_" + num ).val( data.pat_profession ) ;
     $("#midname_" + num ).val( data.pat_midname ) ;
-    $("#nationality_" + num ).val( data.pat_nation ) ;
+    $("#nationality_" + num ).val( data.pat_nationality ) ;
     $("#resident-" + data.pat_resident + "_" + num ).prop("checked", true) ; ;
     $("#blood_group_" + num ).val( data.pat_blood_group ) ;
     $("#blood_rhesus_" + num ).val( data.pat_blood_rhesus ) ;

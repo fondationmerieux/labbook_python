@@ -192,6 +192,12 @@ var param    = '{"date_beg":"' + date_beg + '", ' +
         {
             $("#dial-wait").modal("hide") ;
 
+            if (ret && ret.responseJSON)
+            {
+            $("#send_log").val(ret.responseJSON) ;
+            $("#div_send_log").removeClass('d-none') ;
+            }
+
             tempAlert("{{ _("Dépôt réussi") }}", "btn-send") ;
         },
         error: function(ret)

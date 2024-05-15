@@ -3,7 +3,7 @@
 ## Analysis repository
 List of columns and theirs types of datas
 
-version          : v3
+version          : v4 (v3 still possible)
 id_ana           : integer, 0 for a new analysis (only in add mode) else if > 0 update analysis (in update mode) or insert analysis (in add mode if this id is not already taken by another analysis)
 id_owner         : integer, 0 or id of user
 ana_code         : string, unique code per analysis, (max 7 characters)
@@ -33,11 +33,17 @@ var_max          : float
 var_comment      : string
 var_res_type     : integer, 0 or id_res_type
 var_formula      : string
-var_accu         : integer, precision is used on integer or real results
+var_accu         : integer, accuracy is used on integer or real results
 var_code         : string, unique code per variable, (max 10 characters)
 var_whonet       : Y or N
 var_qrcode       : Y or N
 var_highlight    : Y or N, allows us to highlight this result in the report
+
+add in v4
+var_formula_con  : string
+var_unit_conv    : integer, 0 or id_unit
+var_accu_conv    : integer, accuracy is used on integer or real results
+
 
 ### In the "Update analyses (with identical code)" mode
 

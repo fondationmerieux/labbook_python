@@ -33,54 +33,54 @@
                 </div>
                 <div class="row ms-3">
                     <div class="col-lg-12 mt-3">
-                        {% if args['patient'] and args['patient']['code_patient'] %}
-                        <span class="pat-num">{{ args['patient']['code_patient'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_code_lab'] %}
+                        <span class="pat-num">{{ args['patient']['pat_code_lab'] }}</span>
                         {% endif %}
-                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['code'] }}{% endif %}</span>
+                        <span class="pat-num">{% if args['patient'] %}{{ args['patient']['pat_code'] }}{% endif %}</span>
                     </div>
                     <div class="col-lg-12 mt-2">
-                        {% if args['patient'] and args['patient']['anonyme'] != 4 %}
-                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['prenom'] }} {{ args['patient']['nom'] }}{% if args['patient']['nom_jf'] %} {{ args['patient']['nom_jf'] }}{% endif %}{% endif %}</span>
+                        {% if args['patient'] and args['patient']['pat_ano'] != 4 %}
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['pat_firstname'] }} {{ args['patient']['pat_name'] }}{% if args['patient']['pat_maiden'] %} {{ args['patient']['pat_maiden'] }}{% endif %}{% endif %}</span>
                         {% else %}
                         <span class="font-info">{{ _("Patient anonyme") }}.</span>
                         {% endif %}
                     </div>
                     <div class="col-lg-12 mt-2">
                         <span>{{ _("Né(e) le") }}&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] and args['patient']['ddn'] %}{{ args['patient']['ddn']|date_format }}{% endif %}</span>
+                        <span class="font-info">{% if args['patient'] and args['patient']['pat_birth'] %}{{ args['patient']['pat_birth']|date_format }}{% endif %}</span>
                         <span>&nbsp;-&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['age'] }}{% endif %}&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['unite'] == 1037 %}{{ _("années") }}
-                                                {% elif args['patient']['unite'] == 1036 %}{{ _("mois") }}
-                                                {% elif args['patient']['unite'] == 1035 %}{{ _("semaines") }}
-                                                {% elif args['patient']['unite'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
+                        <span class="font-info">{% if args['patient'] %}{{ args['patient']['pat_age'] }}{% endif %}&nbsp;</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['pat_age_unit'] == 1037 %}{{ _("années") }}
+                                                {% elif args['patient']['pat_age_unit'] == 1036 %}{{ _("mois") }}
+                                                {% elif args['patient']['pat_age_unit'] == 1035 %}{{ _("semaines") }}
+                                                {% elif args['patient']['pat_age_unit'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
                         <span>&nbsp;-&nbsp;</span>
-                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
-                                                {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
-                                                {% elif args['patient']['sexe'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
+                        <span class="font-info">{% if args['patient'] %}{% if args['patient']['pat_sex'] == 1 %}{{ _("Masculin") }}
+                                                {% elif args['patient']['pat_sex'] == 2 %}{{ _("Féminin") }}
+                                                {% elif args['patient']['pat_sex'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
                     </div>
                     <div class="col-md-12 mt-1">
-                        {% if args['patient'] and args['patient']['adresse'] %}
-                        <span class="font-info">{{ args['patient']['adresse'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_address'] %}
+                        <span class="font-info">{{ args['patient']['pat_address'] }}</span>
                         {% endif %}
-                        {% if args['patient'] and args['patient']['quartier'] %}
-                        <span class="font-info">{{ args['patient']['quartier'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_district'] %}
+                        <span class="font-info">{{ args['patient']['pat_district'] }}</span>
                         {% endif %}
-                        {% if args['patient'] and args['patient']['bp'] %}
-                        <span class="font-info">{{ args['patient']['bp'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_pbox'] %}
+                        <span class="font-info">{{ args['patient']['pat_pbox'] }}</span>
                         {% endif %}
-                        {% if args['patient'] and args['patient']['cp'] %}
-                        <span class="font-info">{{ args['patient']['cp'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_zipcode'] %}
+                        <span class="font-info">{{ args['patient']['pat_zipcode'] }}</span>
                         {% endif %}
-                        {% if args['patient'] and args['patient']['ville'] %}
-                        <span class="font-info">{{ args['patient']['ville'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_city'] %}
+                        <span class="font-info">{{ args['patient']['pat_city'] }}</span>
                         {% endif %}
                     </div>
                     <div class="col-lg-12 mt-1">
-                        {% if args['patient'] and args['patient']['tel'] %}
-                        <span class="font-info">{{ args['patient']['tel'] }}</span>
+                        {% if args['patient'] and args['patient']['pat_phone1'] %}
+                        <span class="font-info">{{ args['patient']['pat_phone1'] }}</span>
                         {% endif %}
-                        {% if args['patient'] and args['patient']['tel'] and args['patient']['pat_phone2'] %} / {% endif %}
+                        {% if args['patient'] and args['patient']['pat_phone1'] and args['patient']['pat_phone2'] %} / {% endif %}
                         {% if args['patient'] and args['patient']['pat_phone2'] %}
                         <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
                         {% endif %}

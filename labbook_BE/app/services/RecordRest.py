@@ -614,7 +614,7 @@ class RecordDetFromExt(Resource):
 
                 date_now = datetime.now().strftime("%Y%m%d")
 
-                date_record = datetime.strptime(record['rec_date'], "%Y-%m-%d")
+                date_record = datetime.strptime(record['rec_date'], Constants.cst_dt_ext_HM)
                 date_record = date_record.strftime("%Y%m%d")
 
                 # Different day so we start a new number

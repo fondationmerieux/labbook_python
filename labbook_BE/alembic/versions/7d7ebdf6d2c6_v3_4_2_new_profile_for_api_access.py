@@ -19,7 +19,7 @@ depends_on = None
 
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
-    print("START of migration new_profile_for_api_access revision=7d7ebdf6d2c6")
+    print("START of migration v3_4_2_new_profile_for_api_access revision=7d7ebdf6d2c6")
 
     # Get the current
     conn = op.get_bind()
@@ -31,7 +31,7 @@ def upgrade():
     except Exception as err:
         print("ERROR insert into sigl_pj_role (api),\n\terr=" + str(err))
 
-    print(str(datetime.today()) + " : END of migration new_profile_for_api_access revision=7d7ebdf6d2c6")
+    print(str(datetime.today()) + " : END of migration v3_4_2_new_profile_for_api_access revision=7d7ebdf6d2c6")
 
 
 def downgrade():

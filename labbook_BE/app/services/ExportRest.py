@@ -282,7 +282,7 @@ class ExportDHIS2(Resource):
 
                             # --- check if formula or others statistic object  ---
                             # formula case
-                            if filter_row.startswith("$") or filter_row.startswith("{"):
+                            if filter_row.startswith("$") or filter_row.startswith("{") or filter_row.startswith("( "):
                                 # Parse formula for result request
                                 formula   = filter_row
 
@@ -298,6 +298,8 @@ class ExportDHIS2(Resource):
                                 req_part = ''
 
                                 req_part = Report.ParseFormula(formula, type_samp)
+
+                                self.log.error(Logs.fileline() + ' : DEBUG ExportDHIS2 req_part=%s', req_part)
 
                                 result = Report.getResultEpidemio(inner_req=req_part['inner'],
                                                                   end_req=req_part['end'],
@@ -756,7 +758,8 @@ class ExportWhonet(Resource):
                     data.append('Inconnu')
 
                 if d['ddn']:
-                    d['ddn'] = datetime.strftime(d['ddn'], '%Y-%m-%d')
+                    if isinstance(d['ddn'], datetime):
+                        d['ddn'] = datetime.strftime(d['ddn'], Constants.cst_isodate)
                     data.append(d['ddn'])
                 else:
                     data.append('')
@@ -806,7 +809,7 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['date_hosp']:
-                    d['date_hosp'] = datetime.strftime(d['date_hosp'], '%Y-%m-%d')
+                    d['date_hosp'] = datetime.strftime(d['date_hosp'], Constants.cst_isodate)
                     data.append(d['date_hosp'])
                 else:
                     data.append('')
@@ -848,7 +851,8 @@ class ExportWhonet(Resource):
                     data.append('')
 
                 if d['spec_date']:
-                    d['spec_date'] = datetime.strftime(d['spec_date'], '%Y-%m-%d')
+                    if isinstance(d['spec_date'], datetime):
+                        d['spec_date'] = datetime.strftime(d['spec_date'], Constants.cst_isodate)
                     data.append(d['spec_date'])
                 else:
                     data.append('')
@@ -895,7 +899,7 @@ class ExportWhonet(Resource):
         try:
             import csv
 
-            filename = 'whonet_' + args['date_beg'] + '_' + args['date_end'] + '.txt'
+            filename = 'whonet_' + args['date_beg'][:-6] + '_' + args['date_end'][:-6] + '.txt'
 
             with open('tmp/' + filename, mode='w', encoding='utf-8') as file:
                 writer = csv.writer(file, delimiter='\t')

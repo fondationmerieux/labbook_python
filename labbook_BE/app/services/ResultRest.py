@@ -162,10 +162,10 @@ class ResultList(Resource):
             pat = Patient.getPatient(result['id_patient'])
 
             if pat:
-                result['patient'] = pat['code']
+                result['patient'] = pat['pat_code']
 
-                if pat['code_patient']:
-                    result['patient'] += ' / ' + pat['code_patient']
+                if pat['pat_code_lab']:
+                    result['patient'] += ' / ' + pat['pat_code_lab']
             else:
                 result['patient'] = ''
 

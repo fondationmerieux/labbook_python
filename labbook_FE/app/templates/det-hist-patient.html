@@ -15,29 +15,29 @@
                     <div class="col-12">
                         <div>
                             <label class="col-3 text-end mt-2">{{ _("Code") }}</label>
-                            <span class="font-info">{{ args['patient']['code'] }}</span>
+                            <span class="font-info">{{ args['patient']['pat_code'] }}</span>
                         </div>
                         <div >
                             <label class="col-3 text-end mt-2">{{ _("Code labo.") }}</label>
-                            <span class="font-info">{{ args['patient']['code_patient'] }}</span>
+                            <span class="font-info">{{ args['patient']['pat_code_lab'] }}</span>
                         </div>
                         <div >
                             <label class="col-3 text-end mt-2">{{ _("Nom") }}</label>
-                            <span class="font-info">{{ args['patient']['nom'] }}</span>
+                            <span class="font-info">{{ args['patient']['pat_name'] }}</span>
                         </div>
                         <div >
                             <label class="col-3 text-end mt-2">{{ _("Prénom") }}</label>
-                            <span class="font-info">{{ args['patient']['prenom'] }}</span>
+                            <span class="font-info">{{ args['patient']['pat_firstname'] }}</span>
                         </div>
                         <div >
                             <label class="col-3 text-end mt-2">{{ _("Date de naissance") }}</label>
-                            <span class="font-info">{{ args['patient']['ddn'] }}</span>
+                            <span class="font-info">{{ args['patient']['pat_birth'] }}</span>
                         </div>
                         <div >
                             <label class="col-3 text-end mt-2">{{ _("Sexe") }}</label>
                             <span class="font-info">
-                                {% if args['patient']['sexe'] == 1 %}{{ _("Masculin") }}
-                                {% elif args['patient']['sexe'] == 2 %}{{ _("Féminin") }}
+                                {% if args['patient']['pat_sex'] == 1 %}{{ _("Masculin") }}
+                                {% elif args['patient']['pat_sex'] == 2 %}{{ _("Féminin") }}
                                 {% else %}{{ _("Inconnu") }}{% endif %}
                             </span>
                         </div>

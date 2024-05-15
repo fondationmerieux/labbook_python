@@ -773,6 +773,7 @@ class Setting:
 
         req = ('select fos_ser, fos_name, fos_type, fos_ref, fos_stat '
                'from form_setting '
+               'where fos_type != "PAT" '  # 10/04/2024 : Added to avoid old form setting for patient
                'order by fos_rank asc, fos_type asc, fos_name asc ')
 
         cursor.execute(req)

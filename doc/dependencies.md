@@ -12,18 +12,18 @@
 | pivot                   | 2.23.0    | MIT          | x         |         |         |
 | Popper                  | 2.11.0    | MIT          | x         |         |         |
 | select2                 | 4.0.13    | MIT          | x         |         |         |
-| Babel                   | 2.12.1    | BSD          |           | x       | x       |
+| Babel                   | 2.14.0    | BSD          |           | x       | x       |
 | Flask                   | 2.3.2     | BSD          |           | x       | x       |
-| Flask-Babel             | 3.1.0     | BSD          |           | x       | x       |
-| gunicorn                | 20.1.0    | MIT          |           | x       | x       |
+| Flask-Babel             | 4.0.0     | BSD          |           | x       | x       |
+| gunicorn                | 22.0.0    | MIT          |           | x       | x       |
 | pip                     | 23.1.2    | MIT          |           | x       | x       |
 | pipenv                  | 2023.4.29 | MIT          |           | x       | x       |
 | requests                | 2.31.0    | Apache 2.0   |           | x       | x       |
 | swagger-ui              | 4.15.5    | Apache 2.0   |           | x       |         |
-| alembic                 | 1.10.4    | MIT          |           |         | x       |
-| Flask-RESTful           | 0.3.9     | BSD          |           |         | x       |
-| hl7apy                  | 1.3.4     | MIT          |           |         | x       |
-| mysql-connector-python  | 8.0.33    | GPL 2        |           |         | x       |
+| alembic                 | 1.13.1    | MIT          |           |         | x       |
+| Flask-RESTful           | 0.3.10    | BSD          |           |         | x       |
+| hl7apy                  | 1.3.5     | MIT          |           |         | x       |
+| mysql-connector-python  | 8.0.32    | GPL 2        |           |         | x       |
 | pdfkit                  | 1.0.0     | MIT          |           |         | x       |
 | pikepdf                 | 7.2.0     | MPL 2.0      |           |         | x       |
 | Pillow                  | 9.5.0     | HPND         |           |         | x       |
@@ -31,8 +31,8 @@
 | qrcode                  | 7.4.2     | BSD          |           |         | x       |
 | relatorio               | 0.10.1    | GPL          |           |         | x       |
 | reportlab               | 3.6.13    | BSD          |           |         | x       |
-| toml                    | 0.10.2    | MIT          |           |         | x       |
-| unoserver               | 1.4.0     | MIT          |           |         | x       |
+| tomli                   | 2.0.1     | MIT          |           | x       | x       |
+| unoserver               | 2.1.0     | MIT          |           |         | x       |
 
 > Note :
 >

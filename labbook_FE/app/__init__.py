@@ -22,11 +22,12 @@ import uuid
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
 
-from flask import Flask, render_template, request, session, redirect, send_file, Response
+from flask import Flask, render_template, render_template_string, request, session, redirect, send_file, Response
 from flask_babel import Babel
 
 from app.models.Logs import Logs
 from app.models.Constants import Constants
+from app.models.Form import Form
 
 LANGUAGES = {
     'fr_FR': 'French',
@@ -1507,6 +1508,19 @@ def setting_form():
 
     json_data = {}
 
+    json_data['data_form_pat'] = []
+
+    # Load form patient files
+    try:
+        path = Constants.cst_form_pat
+
+        for filename in os.listdir(path):
+            if not os.path.isdir(os.path.join(path, filename)) and filename.startswith('form_patient_') and filename.endswith('.toml'):
+                json_data['data_form_pat'].append(filename)
+
+    except Exception as err:
+        log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
+
     # Load form setting
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/form/list'
@@ -1519,6 +1533,124 @@ def setting_form():
         log.error(Logs.fileline() + ' : requests form setting failed, err=%s , url=%s', err, url)
 
     return render_template('setting-form.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : form preview
+@app.route('/preview-form/<string:type_form>/<string:filename>')
+def preview_form(type_form='', filename=''):
+    log.info(Logs.fileline() + ' : TRACE preview_form')
+
+    test_session()
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load unit age
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/periode_unite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['pat_age_unit'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
+
+    # Load blood group
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/groupesang'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['pat_blood_group'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
+
+    # Load blood rhesus
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/posneg'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['pat_blood_rhesus'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
+
+    # Load nationality
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/nationality/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['pat_nationality'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
+
+    # Load unit age by default
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/unite_age_defaut'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            unit_age_def = req.json()
+            json_ihm['unit_age_def'] = 0
+
+            val_age_def = unit_age_def['value'].lower()
+
+            # unit_age['code'] without accent so we need to remove it from val_age_def to compare
+            if val_age_def == 'années':
+                val_age_def = 'annees'
+
+            for unit_age in json_ihm['pat_age_unit']:
+                if unit_age['code'] == val_age_def:
+                    json_data['unite'] = unit_age['id_data']
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests unite_age_defaut failed, err=%s , url=%s', err, url)
+
+    # generate a code
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/generate/code'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['pat_code'] = req.json()
+            json_data['id_pat'] = 0
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
+
+    ret_build_form = Form.build_form(type_form, filename)
+    json_data['form_html'] = ret_build_form['form_html']
+
+    page_content = ('<!DOCTYPE html>'
+                    '<html lang="{{ locale }}" {% if locale == "ar" %}dir="rtl"{% else %}dir="ltr"{% endif %}>'
+                    '<head>'
+                        '<meta charset="UTF-8">'
+                        '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+                        '<title>Preview form</title>'
+                        '<link href="{{ url_for("static", filename="vendor/bootstrap/bootstrap-icons/bootstrap-icons.css") }}" rel="stylesheet">'
+                        '<link href="{{ url_for("static", filename="vendor/bootstrap/css/bootstrap.min.css") }}" media="screen, print" rel="stylesheet" type="text/css">'
+                        '<link href="{{ url_for("labbook_css") }}?{{ rand }}" media="screen" rel="stylesheet" type="text/css">'
+                        '<script src="{{ url_for("static", filename="vendor/js/jquery-3.6.1.min.js") }}"></script>'
+                        '<link href="{{ url_for("static", filename="vendor/bootstrap/css/bootstrap-datepicker3.min.css") }}" rel="stylesheet" />'
+                        '<link href="{{ url_for("static", filename="vendor/css/select2.min.css") }}" rel="stylesheet" />'
+                        '<script type="text/javascript" src="{{ url_for("static", filename="vendor/js/select2.min.js") }}" nonce="{{ session["nonce"] }}"></script>'
+                    '</head>'
+                    '<body>'
+                        '<div id="page" class="container-fluid">'
+                            '{{ args["form_html"] | safe }}'
+                        '</div>'
+                    '</body>'
+                    '</html>')
+
+    # pre-render the page
+    page_content = render_template_string(page_content, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+    return render_template_string(page_content, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))
 
 
 # Page : list template
@@ -2555,7 +2687,7 @@ def det_patient(type_req='E', id_pat=0):
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_ihm['unit_age'] = req.json()
+            json_ihm['pat_age_unit'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
@@ -2566,7 +2698,7 @@ def det_patient(type_req='E', id_pat=0):
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_ihm['blood_group'] = req.json()
+            json_ihm['pat_blood_group'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
@@ -2577,7 +2709,7 @@ def det_patient(type_req='E', id_pat=0):
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_ihm['blood_rhesus'] = req.json()
+            json_ihm['pat_blood_rhesus'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
@@ -2588,7 +2720,7 @@ def det_patient(type_req='E', id_pat=0):
         req = requests.get(url)
 
         if req.status_code == 200:
-            json_ihm['nationality'] = req.json()
+            json_ihm['pat_nationality'] = req.json()
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
@@ -2602,6 +2734,17 @@ def det_patient(type_req='E', id_pat=0):
             if req.status_code == 200:
                 json_data = req.json()
                 json_data['id_pat'] = id_pat
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+
+        # add form items to json_data
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/form/item/' + str(id_pat)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data.update(req.json())
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
@@ -2621,7 +2764,7 @@ def det_patient(type_req='E', id_pat=0):
                 if val_age_def == 'années':
                     val_age_def = 'annees'
 
-                for unit_age in json_ihm['unit_age']:
+                for unit_age in json_ihm['pat_age_unit']:
                     if unit_age['code'] == val_age_def:
                         json_data['unite'] = unit_age['id_data']
 
@@ -2634,18 +2777,39 @@ def det_patient(type_req='E', id_pat=0):
             req = requests.get(url)
 
             if req.status_code == 200:
-                json_data['code'] = req.json()
+                json_data['pat_code'] = req.json()
                 json_data['id_pat'] = 0
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
+
+    # --- Form from file ---
+    # build filename with lang check if exist otherwise take file with lang by default
+    form_filename = 'form_patient_fr.toml'
+
+    if session['lang_select'] and session['lang_select'] != 'FR':
+        form_filename = 'form_patient_' + session['lang_select'].lower() + '.toml'
+
+        dirpath = Constants.cst_form_pat
+
+        path = os.path.join(dirpath, form_filename)
+
+        # test if not exist
+        if not (os.path.isfile(path) and path.endswith('.toml')):
+            form_filename = 'form_patient_fr.toml'
+
+    ret_build_form = Form.build_form('PAT', form_filename)
+    json_data['form_html'] = ret_build_form['form_html']
+    json_data['json_save'] = ret_build_form['json_save']
+
+    tpl_html = render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
     log.info(Logs.fileline() + ' : TRACE det-patient processing time = ' + str(dt_time_req))
 
-    return render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template_string(tpl_html, type_req=type_req, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : external request details
@@ -5561,6 +5725,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # RP => Report
     # DH => DHIS2 spreadsheet
     # EP => EPIDEMIO spreadsheet
+    # FP => Form Patient
     # IN => INDICATOR spreadsheet
     # TP => template odt
 
@@ -5660,6 +5825,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
         generated_name = filename
     elif type == 'EP':
         filepath = Constants.cst_epidemio
+        generated_name = filename
+    elif type == 'FP':
+        filepath = Constants.cst_form_pat
         generated_name = filename
     elif type == 'IN':
         filepath = Constants.cst_indicator
@@ -5960,6 +6128,44 @@ def upload_epidemio():
     return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
 
+# Route : upload a toml form
+@app.route('/upload-form/<string:type_form>', methods=['POST'])
+def upload_form(type_form):
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-form failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        if type_form == 'PAT':
+            file_start_with = 'form_patient_'
+            filepath = Constants.cst_form_pat
+        else:
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        # check if this file is a toml and start with
+        if not filename.startswith(file_start_with) and not filename.endswith('.toml'):
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        log.info(Logs.fileline() + ' upload-form Before save file')
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-form failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        log.info(Logs.fileline() + ' upload-form After save file')
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
 # Route : upload a spreadsheet for INDICATOR
 @app.route('/upload-indicator', methods=['POST'])
 def upload_indicator():
@@ -6096,10 +6302,13 @@ def delete_file(type='', filename=''):
     log.info(Logs.fileline())
 
     # DH => DHIS2 spreadsheet
+    # FP => Form Patient
     # TP => template odt
 
     if type == 'DH':
         filepath = Constants.cst_dhis2
+    if type == 'FP':
+        filepath = Constants.cst_form_pat
     elif type == 'TP':
         filepath = Constants.cst_template
 

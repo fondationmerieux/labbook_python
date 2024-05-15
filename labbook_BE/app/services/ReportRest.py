@@ -196,11 +196,11 @@ class ReportIndicator(Resource):
 
                 details['res_label'] = config.get('DISEASE_' + x, 'res_label_' + y)
 
-                # self.log.error(Logs.fileline() + ' : DEBUG-TRACE res_label=' + details['res_label'])
+                # self.log.info(Logs.fileline() + ' : DEBUG-TRACE res_label=' + details['res_label'])
 
                 formula = config.get('DISEASE_' + x, 'formula_' + y)
 
-                # self.log.error(Logs.fileline() + ' : DEBUG-TRACE formula=' + formula)
+                # self.log.info(Logs.fileline() + ' : DEBUG-TRACE formula=' + formula)
 
                 if not formula:
                     details['res_type'] = 'T'  # Title
@@ -219,13 +219,13 @@ class ReportIndicator(Resource):
                     req_part = Report.ParseFormulaV2(formula, l_id_prod)
 
                     # GET RESULT
-                    self.log.error(Logs.fileline() + ' : DEBUG-TRACE req_part=' + str(req_part))
                     result = Report.getResultIndicator(inner_req=req_part['inner'],
                                                        end_req=req_part['end'],
                                                        date_beg=args['date_beg'],
                                                        date_end=args['date_end'])
 
                     if result:
+                        self.log.info(Logs.fileline() + ' : DEBUG-TRACE result = ' + str(result))
                         details['res_value'] = result['value']
 
                     # Parse id_var for NbResult request

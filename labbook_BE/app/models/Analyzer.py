@@ -2,7 +2,7 @@
 import logging
 import mysql.connector
 import os
-import toml
+import tomli
 import hl7apy
 
 from datetime import datetime
@@ -110,7 +110,8 @@ class Analyzer:
         for filename in l_files:
             filepath = os.path.join(path, filename)
 
-            config = toml.load(filepath)
+            with open(filepath, "rb") as f:
+                config = tomli.load(f)
 
             analyzer = {}
 
@@ -174,14 +175,14 @@ class Analyzer:
 
         pat_sex = 'U'
 
-        if pat['ddn']:
-            pat_birth = datetime.strftime(pat['ddn'], "%Y%m%d%H%M%S")
+        if pat['pat_birth']:
+            pat_birth = datetime.strftime(pat['pat_birth'], "%Y%m%d%H%M%S")
         else:
             pat_birth = ''
 
-        if pat['sexe'] == 1:
+        if pat['pat_sex'] == 1:
             pat_sex = 'M'
-        elif pat['sexe'] == 2:
+        elif pat['pat_sex'] == 2:
             pat_sex = 'F'
 
         l_analyzer = Analyzer.getAnalyzerList()
@@ -224,11 +225,11 @@ class Analyzer:
                 # Patient segment
                 msg.oml_o33_patient.add_segment('PID')
                 msg.oml_o33_patient.pid.pid_1  = "1"                  # ID of this transaction
-                msg.oml_o33_patient.pid.pid_2  = pat['code']          # Patient ID
-                msg.oml_o33_patient.pid.pid_3  = pat['code_patient']  # Laboratory code for patient
+                msg.oml_o33_patient.pid.pid_2  = pat['pat_code']          # Patient ID
+                msg.oml_o33_patient.pid.pid_3  = pat['pat_code_lab']  # Laboratory code for patient
                 msg.oml_o33_patient.pid.pid_4  = str(pat['id_data'])  # Alternative ID, serial from database
-                msg.oml_o33_patient.pid.pid_5  = pat['nom'] + '^' + pat['prenom'] + '^L'  # Family name^Given name^Type. "L"egal name
-                msg.oml_o33_patient.pid.pid_6  = pat['nom_jf']        # Maiden name
+                msg.oml_o33_patient.pid.pid_5  = pat['pat_name'] + '^' + pat['pat_firstname'] + '^L'  # Family name^Given name^Type. "L"egal name
+                msg.oml_o33_patient.pid.pid_6  = pat['pat_maiden']        # Maiden name
                 msg.oml_o33_patient.pid.pid_7  = pat_birth            # Datetime of birth.
                 msg.oml_o33_patient.pid.pid_8  = pat_sex              # Sex : "F"emale, "M"ale, "O"ther, "U"nknown, "A"mbigous, "N"ot app
                 msg.oml_o33_patient.pid.pid_11 = "Street^Other^City^Zip"  # Address

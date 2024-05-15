@@ -355,6 +355,7 @@ class Report:
 
     @staticmethod
     def ParseFormula(formula, id_prod):
+        # used by export DHIS2 and Epidemio
         req = {}
 
         if formula != 'N/A':
@@ -369,22 +370,22 @@ class Report:
                             'inner join sigl_10_data as vld' + str(idx) +
                             ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-            if int(id_prod) == 0:
-                req['end'] = (' and (vld' + str(idx) + '.type_validation=252 ')
-            else:
-                req['end'] = (' and (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+            # open first parenthesis, closed at the end
+            req['end'] = (' and (')
 
             formula = ' '.join(formula.split())  # take off redundant white space
             formula = formula.replace(', ', ',')
             l_words = formula.split(' ')
 
-            # Report.log.error('l_words=' + str(l_words))
+            Report.log.info('l_words=' + str(l_words))
 
             for word in l_words:
+                Report.log.info('DEBUG word = ' + str(word))
+
                 # id_var pattern
                 if word.startswith('$_'):
-                    # Report.log.error('### id_var pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### id_var pattern ###')
+                    # Report.log.info('word = ' + word)
                     id_var = ''
 
                     idx_beg = word.find('$_')
@@ -394,17 +395,25 @@ class Report:
                         id_var = word[idx_beg:]
 
                     if id_var:
+                        if int(id_prod) == 0:
+                            req['end'] = req['end'] + (' (vld' + str(idx) + '.type_validation=252 ')
+                        else:
+                            req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
                         req['end'] = req['end'] + ' and res' + str(idx) + '.ref_variable=' + id_var + ' and res' + str(idx) + '.valeur '
+                    Report.log.info('DEBUG 01 req end = ' + str(req['end']))
+
                 # {id_var,id_var,...} pattern
                 elif word.startswith('{') and word.endswith('}'):
-                    # Report.log.error('### {id_var,id_var,...} pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### {id_var,id_var,...} pattern ###')
+                    # Report.log.info('word = ' + word)
                     l_id_var = word[1:-1].split(',')
 
-                    # Report.log.error('l_id_var=' + str(l_id_var))
+                    # Report.log.info('l_id_var=' + str(l_id_var))
 
-                    # add a  '('
-                    req['end'] = req['end'] + ' and ('
+                    if int(id_prod) == 0:
+                        req['end'] = req['end'] + (' (vld' + str(idx) + '.type_validation=252 ')
+                    else:
+                        req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
                     for id_var in l_id_var:
                         req['end'] = req['end'] + 'res' + str(idx) + '.ref_variable=' + id_var + ' or '
@@ -412,19 +421,23 @@ class Report:
                     # take of last 'or' and add a ')'
                     req['end'] = req['end'][:-3] + ') and res' + str(idx) + '.valeur '
 
+                    Report.log.info('DEBUG 02 req end = ' + str(req['end']))
+
                 # [dict_name.code] pattern
                 elif word.startswith('[') and word.endswith(']'):
-                    # Report.log.error('### [dict_name.code] pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### [dict_name.code] pattern ###')
+                    # Report.log.info('word = ' + word)
                     id_val = Report.ParseDictVar(word)
 
                     if id_val:
                         req['end'] = req['end'] + str(id_val)
 
+                    Report.log.info('DEBUG 03 req end = ' + str(req['end']))
+
                 # list of [dict_name.code] pattern
                 elif word.startswith('([') and word.endswith('])'):
-                    # Report.log.error('### list of [dict_name.code] pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### list of [dict_name.code] pattern ###')
+                    # Report.log.info('word = ' + word)
                     l_dict_var = word[1:len(word) - 1]  # take off bracket
                     l_dict_var = l_dict_var.split(',')
 
@@ -436,11 +449,13 @@ class Report:
                             req['end'] = req['end'] + str(id_val) + ','
 
                     req['end'] = req['end'][:len(req['end']) - 1] + ')'
+
+                    Report.log.info('DEBUG 04 req end = ' + str(req['end']))
                 # ON a list of analyzes codes
                 elif word.startswith('ON(') and word.endswith(')'):
-                    # Report.log.error('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
+                    # Report.log.info('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
                     l_code_ana = list(word[3:len(word) - 1].split(','))
-                    # Report.log.error('l_code_ana = ' + str(l_code_ana))
+                    # Report.log.info('l_code_ana = ' + str(l_code_ana))
                     l_cond_ana = ''
 
                     i = 0
@@ -454,11 +469,13 @@ class Report:
 
                     req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
 
+                    Report.log.info('DEBUG 05 req end = ' + str(req['end']))
+
                 # CAT filter on category like SEX and/or AGE
                 elif word.startswith('CAT(') and word.endswith(')'):
-                    Report.log.error('### list of category CAT(SEX_x,AGE_x) pattern ###')
+                    # Report.log.info('### list of category CAT(SEX_x,AGE_x) pattern ###')
                     l_cat = list(word[4:len(word) - 1].split(','))
-                    Report.log.error('l_cat = ' + str(l_cat))
+                    # Report.log.info('l_cat = ' + str(l_cat))
                     sex = 0
                     age_min = 0
                     age_max = 0
@@ -507,11 +524,24 @@ class Report:
                                     ' on pat' + str(idx) + '.id_data=rec.id_patient ')
 
                     if sex > 0:
-                        req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
+                        req['end'] = req['end'] + ') and (pat' + str(idx) + '.sexe=' + str(sex)
 
                     if age_min != 0 or age_max != 0:
-                        req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
-                                      ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
+                        req['end'] = (req['end'] + ') and (pat' + str(idx) + '.age >=' + str(age_min) +
+                                      ' and pat' + str(idx) + '.age <=' + str(age_max))
+
+                    Report.log.info('DEBUG 06 req end = ' + str(req['end']))
+
+                # opening parenthesis to frame a block
+                elif word == '(':
+                    req['end'] = req['end'] + '( '
+
+                    # Report.log.info('DEBUG 07 req end = ' + str(req['end']))
+                # closing parenthesis to frame a block
+                elif word == ')':
+                    req['end'] = req['end'] + ' )'
+
+                    Report.log.info('DEBUG 08 req end = ' + str(req['end']))
                 else:
                     if word == 'OR':
                         idx = idx + 1
@@ -528,12 +558,9 @@ class Report:
 
                         # same id_prod with OR
 
-                        if int(id_prod) == 0:
-                            req['end'] = (req['end'] + ' ' + word + ' ( vld' + str(idx) + '.type_validation=252 ')
-                        else:
-                            req['end'] = (req['end'] + ' ' + word + ' ( ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                        req['end'] = req['end'] + ') ' + word
 
-                        req['end'] = req['end'] + ') '
+                        Report.log.info('DEBUG 09 req end = ' + str(req['end']))
 
                     # add a another inner group
                     if word == 'AND':
@@ -549,22 +576,27 @@ class Report:
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-                        if int(id_prod) == 0:
-                            req['end'] = (req['end'] + ' ' + word + ' vld' + str(idx) + '.type_validation=252 ')
-                        else:
-                            req['end'] = (req['end'] + ' ' + word + ' ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                        req['end'] = req['end'] + ') ' + word
 
-                    # Report.log.error('###  ELSE ###')
-                    # Report.log.error('word = ' + word)
+                        Report.log.info('DEBUG 10 req end = ' + str(req['end']))
+
+                    # Report.log.info('###  ELSE ###')
+                    # Report.log.info('word = ' + word)
                     if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
 
-            req['end'] = req['end'] + ')'
+                        Report.log.info('DEBUG 11 req end = ' + str(req['end']))
+
+            # close first parenthesis and last parenthesis of last block
+            req['end'] = req['end'] + '))'
+
+            Report.log.info('DEBUG END req end = ' + str(req['end']))
 
         return req
 
     @staticmethod
     def ParseFormulaV2(formula, l_id_prod):
+        # used by export Indicator
         req = {}
 
         if formula != 'N/A':
@@ -581,22 +613,22 @@ class Report:
 
             id_prod = l_id_prod[idx]
 
-            if int(id_prod) == 0:
-                req['end'] = (' and (vld' + str(idx) + '.type_validation=252 ')
-            else:
-                req['end'] = (' and (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+            # open first parenthesis, closed at the end
+            req['end'] = (' and (')
 
             formula = ' '.join(formula.split())  # take off redundant white space
             formula = formula.replace(', ', ',')
             l_words = formula.split(' ')
 
-            # Report.log.error('l_words=' + str(l_words))
+            Report.log.info('l_words=' + str(l_words))
 
             for word in l_words:
+                Report.log.info('DEBUG word = ' + str(word))
+
                 # id_var pattern
                 if word.startswith('$_'):
-                    # Report.log.error('### id_var pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### id_var pattern ###')
+                    # Report.log.info('word = ' + word)
                     id_var = ''
 
                     idx_beg = word.find('$_')
@@ -606,17 +638,25 @@ class Report:
                         id_var = word[idx_beg:]
 
                     if id_var:
+                        if int(id_prod) == 0:
+                            req['end'] = req['end'] + (' (vld' + str(idx) + '.type_validation=252 ')
+                        else:
+                            req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
                         req['end'] = req['end'] + ' and res' + str(idx) + '.ref_variable=' + id_var + ' and res' + str(idx) + '.valeur '
+                    Report.log.info('DEBUG 01 req end = ' + str(req['end']))
+
                 # {id_var,id_var,...} pattern
                 elif word.startswith('{') and word.endswith('}'):
-                    # Report.log.error('### {id_var,id_var,...} pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### {id_var,id_var,...} pattern ###')
+                    # Report.log.info('word = ' + word)
                     l_id_var = word[1:-1].split(',')
 
-                    # Report.log.error('l_id_var=' + str(l_id_var))
+                    # Report.log.info('l_id_var=' + str(l_id_var))
 
-                    # add a  '('
-                    req['end'] = req['end'] + ' and ('
+                    if int(id_prod) == 0:
+                        req['end'] = req['end'] + (' (vld' + str(idx) + '.type_validation=252 ')
+                    else:
+                        req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
                     for id_var in l_id_var:
                         req['end'] = req['end'] + 'res' + str(idx) + '.ref_variable=' + id_var + ' or '
@@ -624,19 +664,23 @@ class Report:
                     # take of last 'or' and add a ')'
                     req['end'] = req['end'][:-3] + ') and res' + str(idx) + '.valeur '
 
+                    Report.log.info('DEBUG 02 req end = ' + str(req['end']))
+
                 # [dict_name.code] pattern
                 elif word.startswith('[') and word.endswith(']'):
-                    # Report.log.error('### [dict_name.code] pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### [dict_name.code] pattern ###')
+                    # Report.log.info('word = ' + word)
                     id_val = Report.ParseDictVar(word)
 
                     if id_val:
                         req['end'] = req['end'] + str(id_val)
 
+                    Report.log.info('DEBUG 03 req end = ' + str(req['end']))
+
                 # list of [dict_name.code] pattern
                 elif word.startswith('([') and word.endswith('])'):
-                    # Report.log.error('### list of [dict_name.code] pattern ###')
-                    # Report.log.error('word = ' + word)
+                    # Report.log.info('### list of [dict_name.code] pattern ###')
+                    # Report.log.info('word = ' + word)
                     l_dict_var = word[1:len(word) - 1]  # take off bracket
                     l_dict_var = l_dict_var.split(',')
 
@@ -648,11 +692,14 @@ class Report:
                             req['end'] = req['end'] + str(id_val) + ','
 
                     req['end'] = req['end'][:len(req['end']) - 1] + ')'
+
+                    Report.log.info('DEBUG 04 req end = ' + str(req['end']))
+
                 # ON a list of analyzes codes
                 elif word.startswith('ON(') and word.endswith(')'):
-                    # Report.log.error('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
+                    # Report.log.info('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
                     l_code_ana = list(word[3:len(word) - 1].split(','))
-                    # Report.log.error('l_code_ana = ' + str(l_code_ana))
+                    # Report.log.info('l_code_ana = ' + str(l_code_ana))
                     l_cond_ana = ''
 
                     i = 0
@@ -666,11 +713,13 @@ class Report:
 
                     req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
 
+                    Report.log.info('DEBUG 05 req end = ' + str(req['end']))
+
                 # CAT filter on category like SEX and/or AGE
                 elif word.startswith('CAT(') and word.endswith(')'):
-                    Report.log.error('### list of category CAT(SEX_x,AGE_x) pattern ###')
+                    # Report.log.info('### list of category CAT(SEX_x,AGE_x) pattern ###')
                     l_cat = list(word[4:len(word) - 1].split(','))
-                    Report.log.error('l_cat = ' + str(l_cat))
+                    # Report.log.info('l_cat = ' + str(l_cat))
                     sex = 0
                     age_min = 0
                     age_max = 0
@@ -719,11 +768,24 @@ class Report:
                                     ' on pat' + str(idx) + '.id_data=rec.id_patient ')
 
                     if sex > 0:
-                        req['end'] = req['end'] + ' and pat' + str(idx) + '.sexe=' + str(sex)
+                        req['end'] = req['end'] + ') and (pat' + str(idx) + '.sexe=' + str(sex)
 
                     if age_min != 0 or age_max != 0:
-                        req['end'] = (req['end'] + ' and (pat' + str(idx) + '.age >=' + str(age_min) +
-                                      ' and pat' + str(idx) + '.age <=' + str(age_max) + ')')
+                        req['end'] = (req['end'] + ') and (pat' + str(idx) + '.age >=' + str(age_min) +
+                                      ' and pat' + str(idx) + '.age <=' + str(age_max))
+
+                    Report.log.info('DEBUG 06 req end = ' + str(req['end']))
+
+                # opening parenthesis to frame a block
+                elif word.startswith('('):
+                    req['end'] = req['end'] + '( '
+
+                    Report.log.info('DEBUG 07 req end = ' + str(req['end']))
+                # closing parenthesis to frame a block
+                elif word.startswith(')'):
+                    req['end'] = req['end'] + ' )'
+
+                    Report.log.info('DEBUG 08 req end = ' + str(req['end']))
                 else:
                     if word == 'OR':
                         idx = idx + 1
@@ -738,12 +800,9 @@ class Report:
                                         'inner join sigl_10_data as vld' + str(idx) +
                                         ' on vld' + str(idx) + '.id_resultat = res' + str(idx) + '.id_data ')
 
-                        if int(id_prod) == 0:
-                            req['end'] = (req['end'] + ' ' + word + ' ( vld' + str(idx) + '.type_validation=252 ')
-                        else:
-                            req['end'] = (req['end'] + ' ' + word + ' ( ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                        req['end'] = req['end'] + ') ' + word
 
-                        req['end'] = req['end'] + ') '
+                        Report.log.info('DEBUG 09 req end = ' + str(req['end']))
 
                     # add a another inner group
                     if word == 'AND':
@@ -761,17 +820,20 @@ class Report:
 
                         id_prod = l_id_prod[idx]
 
-                        if int(id_prod) == 0:
-                            req['end'] = (req['end'] + ' ' + word + ' vld' + str(idx) + '.type_validation=252 ')
-                        else:
-                            req['end'] = (req['end'] + ' ' + word + ' ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
+                        req['end'] = req['end'] + ') ' + word
 
-                    # Report.log.error('###  ELSE ###')
-                    # Report.log.error('word = ' + word)
+                        Report.log.info('DEBUG 10 req end = ' + str(req['end']))
+
+                    # Report.log.info('###  ELSE ###')
+                    # Report.log.info('word = ' + word)
                     if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
+                        Report.log.info('DEBUG 11 req end = ' + str(req['end']))
 
-            req['end'] = req['end'] + ')'
+            # close first parenthesis and last parenthesis of last block
+            req['end'] = req['end'] + '))'
+
+            Report.log.info('DEBUG END req end = ' + str(req['end']))
 
         return req
 

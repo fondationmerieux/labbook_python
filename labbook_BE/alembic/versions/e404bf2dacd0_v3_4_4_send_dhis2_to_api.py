@@ -19,7 +19,7 @@ depends_on = None
 
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
-    print("START of migration send_dhis2_to_api revision=e404bf2dacd0")
+    print("START of migration v3_4_4_send_dhis2_to_api revision=e404bf2dacd0")
 
     # Get the current
     conn = op.get_bind()
@@ -41,7 +41,7 @@ def upgrade():
     except Exception as err:
         print("ERROR create table dhis2_setting,\n\terr=" + str(err))
 
-    print(str(datetime.today()) + " : END of migration send_dhis2_to_api revision=e404bf2dacd0")
+    print(str(datetime.today()) + " : END of migration v3_4_4_send_dhis2_to_api revision=e404bf2dacd0")
 
 
 def downgrade():

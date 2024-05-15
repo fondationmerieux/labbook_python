@@ -4,6 +4,7 @@ import mysql.connector
 import logging
 import re
 
+from flask import current_app
 from app.exception.DBException import DBException
 from app.models.Logs import Logs
 
@@ -32,18 +33,18 @@ class DB:
         try:
             if DB.cnx is None:
                 # read default_settings.py
-                file_path = '/home/apps/labbook_BE/labbook_BE/default_settings.py'
-                config_data = DB.read_config_file(file_path)
+                # file_path = '/home/apps/labbook_BE/labbook_BE/default_settings.py'
+                # desact 14/05/2024 return to use current_app : config_data = DB.read_config_file(file_path)
 
-                if config_data.get('DB_TYPE', 'MYSQL') == 'MYSQL':
+                if current_app.config['DB_TYPE'] == 'MYSQL':
                     DB.log.info(Logs.fileline() + ' : open_cnx() TRACE connect MYSQL')
-                    DB.cnx = mysql.connector.connect(user=config_data.get('DB_USER', 'root'),
-                                                     password=config_data.get('DB_PWD', 'root'),
-                                                     host=config_data.get('DB_HOST', '10.88.0.1'),
-                                                     database=config_data.get('DB_NAME', 'SIGL'))
+                    DB.cnx = mysql.connector.connect(user=current_app.config['DB_USER'],
+                                                     password=current_app.config['DB_PWD'],
+                                                     host=current_app.config['DB_HOST'],
+                                                     database=current_app.config['DB_NAME'])
                     DB.cnx.autocommit = True
                 else:
-                    DB.log.critical(Logs.fileline() + ' : open_cnx() error DB_TYPE = %s', config_data.get('DB_TYPE'))
+                    DB.log.critical(Logs.fileline() + ' : open_cnx() error DB_TYPE = %s', current_app.config['DB_TYPE'])
 
             return DB.cnx
 

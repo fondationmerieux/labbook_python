@@ -19,7 +19,7 @@ depends_on = None
 
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
-    print("START of migration new_ui_equipment revision=e038e2ab0b42")
+    print("START of migration v3_4_3_new_ui_equipment revision=e038e2ab0b42")
 
     # Get the current
     conn = op.get_bind()
@@ -365,7 +365,7 @@ def upgrade():
         except Exception as err:
             print("ERROR migration update id_ext into eqp_calibration_file,\n\terr=" + str(err))
 
-    print(str(datetime.today()) + " : END of migration new_ui_equipment revision=e038e2ab0b42")
+    print(str(datetime.today()) + " : END of migration v3_4_3_new_ui_equipment revision=e038e2ab0b42")
 
 
 def downgrade():

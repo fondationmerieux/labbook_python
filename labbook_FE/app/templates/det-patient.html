@@ -16,11 +16,14 @@
                 <span>{{ _("Demande d'analyses patient - Fiche patient") }}</span>
             </h2>
             <form autocomplete="off">
+
+                {{ args['form_html'] | safe }}
+
+                {# old form
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Identité") }}</h3>
                 </div>
                 <div class="row mt-3">
-                    {# Anonymous #}
                     <div class="col">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label class="form-label text-end mx-3">{{ _("Anonyme") }}</label>
@@ -32,7 +35,6 @@
                             </label>
                         </div>
                     </div>
-                    {# Code lab #}
                     <div class="col-md-7">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label for="code_patient" class="form-label col-md-5 text-end mt-2 me-1" style="">{{ _("Code patient interne au laboratoire") }}</label>
@@ -41,7 +43,6 @@
                             </div>
                         </div>
                     </div>
-                    {# code #}
                     <div class="col">
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <div class="pat-num" id="anon-code-ro">
@@ -53,7 +54,6 @@
 
                 <div class="row">
                     <div class="col-md">
-                        {# Name #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="nom" class="form-label col-md-4 text-end mt-2 me-1">{{ _("Nom") }}</label>
                             <div>
@@ -62,7 +62,6 @@
                         </div>
                     
                         {% if 'pat_midname' in session and session['pat_midname'] == 'Y' %}
-                        {# Second name #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="midname" class="form-label col-md-4 text-end mt-2 me-1">{{ _("Deuxième nom") }}</label>
                             <div>
@@ -72,7 +71,6 @@
                         {% endif %}
 
                         {% if 'nom_jf' in session and session['nom_jf'] == 'Y' %}
-                        {# Maiden name #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="nom_jf" class="form-label col-md-4 text-end mt-2 me-1">{{ _("Nom de jeune fille") }}</label>
                             <div>
@@ -81,7 +79,6 @@
                         </div>
                         {% endif %}
 
-                        {# Firstname #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label for="prenom" class="form-label col-md-4 text-end mt-2 me-1" style="">{{ _("Prénom(s)") }}</label>
                             <div>
@@ -89,7 +86,6 @@
                             </div>
                         </div>
 
-                        {# Sex #}
                         <div class="form-group align-items-start mt-3 identity-group">
                             <label class="form-label col-md-4 text-end me-3">{{ _("Sexe") }}</label>
                             <label class="form-label text-end me-3">
@@ -103,10 +99,9 @@
                             </label>
                         </div>
 
-                    </div>{# close first col group #}
+                    </div>
 
                     <div class="col-md">
-                        {# Birth #}
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label for="ddn" class="form-label text-end mt-2 me-1">{{ _("Date de naissance") }}</label>
                             <div>
@@ -115,7 +110,6 @@
                             </div>
                         </div>
 
-                        {# Birth approx. #}
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label class="form-label text-end me-3">{{ _("Date de naissance approximative") }}</label>
                             <label class="form-label text-end me-3">
@@ -127,13 +121,11 @@
                         </div>
 
                         <div class="form-group d-md-flex align-items-start mt-3">
-                            {# Age #}
                             <label for="age" class="form-label text-end mt-2 me-1">{{ _("ou") }}&nbsp;&nbsp;&nbsp;{{ _("Age") }}</label>
                             <div>
                                 <input name="age" id="age" type="text" value="{% if args %}{{ args['age'] }}{% else %}0{% endif %}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150">
                             </div>
 
-                            {# Age unit #}
                             <label for="unit_age" class="form-label text-end ms-md-3 mt-2 me-1">{{ _("unité") }}</label>
                             <div>					
                                 <select name="unit_age" id="unit_age" class="form-select form-lbk">
@@ -144,7 +136,6 @@
                         </div>
 
                         {% if 'pat_nationality' in session and session['pat_nationality'] == 'Y' %}
-                        {# Nationality #}
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label for="pat_nationality" class="form-label text-end mt-2 me-1">{{ _("Nationalité") }}</label>
                             <div>					
@@ -157,7 +148,6 @@
                         {% endif %}
 
                         {% if 'pat_resident' in session and session['pat_resident'] == 'Y' %}
-                        {# Resident #}
                         <div class="form-group d-md-flex align-items-start mt-3">
                             <label class="form-label text-end mx-3">{{ _("Résident") }}</label>
                             <label class="form-label text-end me-3">
@@ -171,7 +161,6 @@
 
                         <div class="form-group d-md-flex align-items-start mt-3">
                             {% if 'pat_blood_group' in session and session['pat_blood_group'] == 'Y' %}
-                            {# Blood group #}
                             <label for="blood_group" class="form-label text-end mt-2 me-1">{{ _("Groupe sanguin") }}</label>
                             <div>					
                                 <select name="pat_blood_group" id="pat_blood_group" class="form-select form-lbk">
@@ -182,7 +171,6 @@
                             {% endif %}
 
                             {% if 'pat_blood_rhesus' in session and session['pat_blood_rhesus'] == 'Y' %}
-                            {# Blood rhesus #}
                             <label for="blood_rhesus" class="form-label text-end ms-md-3 mt-2 me-1">{{ _("Rhésus") }}</label>
                             <div>					
                                 <select name="pat_blood_rhesus" id="pat_blood_rhesus" class="form-select form-lbk">
@@ -193,7 +181,7 @@
                             {% endif %}
                         </div>
 
-                    </div>{# close second col group #}
+                    </div>
                 </div>
 
                 <div class="panel-heading row">
@@ -269,6 +257,7 @@
                         </div>
                     </div>
                 </div>
+                #}
 
                 <div class="clearfix row mt-2 mb-4">
                     <div class="col-md-12">
@@ -288,121 +277,11 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var id_user = {{ session['user_id']|safe}} ;
+
 function save_pat( id_pat ) 
 {
-var id_owner      = {{ session['user_id']|safe}} ;
-var anonyme       = $("input:radio[name=anonyme]:checked").val() ;
-var code          = $("#code").text() ;
-var code_patient  = $("#code_patient").val() ;
-var nom           = $("#nom").val() ;
-var prenom        = $("#prenom").val() ;
-var ddn           = $("#ddn").val() ;
-var sex           = $("input:radio[name=sex]:checked").val() ;
-var adresse       = JSON.stringify( $.trim( $("#adresse").val() ) ) ;
-var cp            = $("#cp").val() ;
-var ville         = $("#ville").val() ;
-var phone1        = $("#phone1").val() ;
-var phone2        = $("#phone2").val() ;
-var ddn_approx    = $("input:radio[name=ddn_approx]:checked").val() ;
-var age           = $("#age").val() ;
-var unit_age      = $("#unit_age").val() ;
-
-{% if 'pat_midname' in session and session['pat_midname'] == 'Y' %}
-var midname = $("#midname").val() ;
-{% else %}
-var midname = "" ;
-{% endif %}
-
-{% if 'nom_jf' in session and session['nom_jf'] == 'Y' %}
-var nom_jf = $("#nom_jf").val() ;
-{% else %}
-var nom_jf = "" ;
-{% endif %}
-
-{% if 'pat_nationalit' in session and session['pat_nationalit'] == 'Y' %}
-var nationality = $("#pat_nationality").val() ;
-{% else %}
-var nationality = 0 ;
-{% endif %}
-
-{% if 'pat_resident' in session and session['pat_resident'] == 'Y' %}
-var resident = $("input:radio[name=pat_resident]:checked").val() ;
-{% else %}
-var resident = "Y" ;
-{% endif %}
-
-{% if 'pat_blood_group' in session and session['pat_blood_group'] == 'Y' %}
-var blood_group = $("#pat_blood_group").val() ;
-{% else %}
-var blood_group = 0 ;
-{% endif %}
-
-{% if 'pat_blood_rhesus' in session and session['pat_blood_rhesus'] == 'Y' %}
-var blood_rhesus = $("#pat_blood_rhesus").val() ;
-{% else %}
-var blood_rhesus = 0 ;
-{% endif %}
-
-{% if 'pat_profession' in session and session['pat_profession'] == 'Y' %}
-var profession = $("#pat_profession").val() ;
-{% else %}
-var profession = "" ;
-{% endif %}
-
-{% if 'pat_district' in session and session['pat_district'] == 'Y' %}
-var quartier = $("#pat_district").val() ;
-{% else %}
-var quartier = "" ;
-{% endif %}
-
-{% if 'pat_pbox' in session and session['pat_pbox'] == 'Y' %}
-var bp = $("#pat_pbox").val() ;
-{% else %}
-var bp = "" ;
-{% endif %}
-
-    // mandatory birthday or age
-    if (ddn == "" && age == "")
-    {
-    alert("{{ _("Veuillez sélectionner une date de naissance ou saisir un age") }}") ;
-    return false;
-    }
-
-    // mandatory sex
-    if ( typeof sex == "undefined" || sex == "")
-    {
-    alert("{{ _("Veuillez sélectionner un sexe") }}") ;
-    return false;
-    }
-
-phone1 = phone1.replaceAll(" ", "") ;
-phone2 = phone2.replaceAll(" ", "") ;
- 
-var param = '{ "id_owner":' + id_owner + ', ' +
-              '"anonyme":' + anonyme  + ', ' +
-              '"code":"' + code + '", ' +
-              '"code_patient":"' + code_patient + '", ' +
-              '"nom":"' + nom + '", ' +
-              '"prenom":"' + prenom + '", ' +
-              '"ddn":"' + ddn + '", ' +
-              '"sexe":' + sex + ', ' +
-              '"adresse":' + adresse + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
-              '"cp":"' + cp + '", ' +
-              '"ville":"' + ville + '", ' +
-              '"tel":"' + phone1 + '", ' +
-              '"phone2":"' + phone2 + '", ' +
-              '"profession":"' + profession + '", ' +
-              '"nom_jf":"' + nom_jf + '", ' +
-              '"quartier":"' + quartier + '", ' +
-              '"bp":"' + bp + '", ' +
-              '"ddn_approx":' + ddn_approx + ', ' +
-              '"age":' + age + ', ' +
-              '"unite":' + unit_age + ', ' +
-              '"midname":"' + midname + '", ' +
-              '"nationality":' + nationality + ', ' +
-              '"resident":"' + resident + '", ' +
-              '"blood_group":' + blood_group + ', ' +
-              '"blood_rhesus":' + blood_rhesus + ' }' ;
+{{ args['json_save'] | safe }} ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -414,7 +293,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
         url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        data: param,
+        data: JSON.stringify(param),
         success: function(data)
         {
             $("#dial-wait").modal("hide") ;
@@ -436,119 +315,6 @@ var param = '{ "id_owner":' + id_owner + ', ' +
         }
     } ) ;
 }
-
-$("input[type=radio][name=anonyme]").change(function() 
-{
-    if (this.value == '4') 
-    {
-    // Clean and hide input nom, prenom, nom_jf, sexe
-    $("#nom").val("")     ;
-    $("#midname").val("") ;
-    $("#nom_jf").val("")  ;
-    $("#prenom").val("")  ;
-    $("#unknown_sex").prop('checked', true) ;
-    $(".identity-group").hide() ;
-    }
-    else if (this.value == '5') 
-    {
-    // Show input nom, prenom, nom_jf, sexe
-    $(".identity-group").show() ;
-    $("#unknown_sex").prop('checked', true) ;
-    }
-} ) ;
-
-$("#ddn").change(function() 
-{
-// after date change calculate age and put unit
-var start = $("#ddn").val() ;
-var end   = $("#date_current").val() ;
-
-// end - start returns difference in milliseconds 
-var diff = new Date(Date.parse(end) - Date.parse(start));
-
-var age = Math.abs(diff.getUTCFullYear() - 1970);
-
-    if ( age >= 1 )
-    {
-        $("#age").val( age ) ;
-        $("#unit_age").val("1037") ;
-    }
-    else
-    {
-    var days = diff/1000/60/60/24;
-
-        if (days >= 28)
-        {
-        $("#age").val( (days / 30).toFixed(0) ) ;
-        $("#unit_age").val("1036") ;
-        }
-        else
-        {
-        $("#age").val( (days).toFixed(0) ) ;
-        $("#unit_age").val("1034") ;
-        }
-    }
-} ) ;
-
-$("#search_zipcity").select2(
-{
-    placeholder: "{{ _("Recherche de code postal ou ville") }}",
-    tags: false,
-    multiple: false,
-    tokenSeparators: [','],
-    minimumInputLength: 2,
-    ajax: {
-        url: "{{ session['server_ext'] }}/services/setting/zipcity/search",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        term: $("#search_zipcity").text(),
-        data: function (params) {
-
-            return JSON.stringify({
-                term: params.term
-            });
-        },
-        processResults: function (data) {
-            return {
-                results: $.map(data, function (item) {
-                    return {
-                        text: item.field_value,
-                        id: item.id_item
-                    }
-                })
-            };
-        }
-    }
-} ) ;
-
-$("#search_zipcity").on("select2:select", function (e) 
-{
-let id_item = $(e.currentTarget).val();
-
-    // GET det zipcity
-    $.ajax( 
-        {
-        type: "GET",
-        url: "{{ session['server_ext'] }}/services/setting/zipcity/det/" + id_item,
-        success: function(data_zipcity)
-            {
-            $("#cp").val(data_zipcity.zic_zip) ;
-            $("#ville").val(data_zipcity.zic_city) ;
-            },
-        error: function(data_zipcity)
-            {
-            console.log("ERROR GET det zipcity");
-            alert("{{ _("Erreur lors de la récupération des données") }}") ;
-            }
-        } ) ;
-} ) ;
-
-// fix bug between jquery 3.6.0 and select2
-$(document).on('select2:open', () => 
-{
-document.querySelector('.select2-search__field').focus() ;
-} ) ;
 
 function return_back()
 {

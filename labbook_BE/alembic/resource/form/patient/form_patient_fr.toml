@@ -9,60 +9,46 @@ version = 1
     [[description.form_element]]
     id = "label_identity"
     label = "Identité"
-    type = "h3"
+    type = "h6"
 
     [[description.form_element]]
     labbook_ref = "pat_ano"
-    label = "Anonyme"
     input_type = "radio"
 
     [[description.form_element]]
     labbook_ref = "pat_code_lab"
-    label = "Code patient interne au laboratoire"
     input_type = "text"
-    attr_maxlength = "20"
 
     [[description.form_element]]
     labbook_ref = "pat_code"
 
     [[description.form_element]]
     labbook_ref = "pat_name"
-    label = "Nom"
     input_type = "text"
-    attr_maxlength = "40"
 
     [[description.form_element]]
     labbook_ref = "pat_midname"
-    label = "Deuxième nom"
     input_type = "text"
-    attr_maxlength = "40"
 
     [[description.form_element]]
     labbook_ref = "pat_maiden"
-    label = "Nom de jeune fille"
     input_type = "text"
-    attr_maxlength = "40"
 
     [[description.form_element]]
     labbook_ref = "pat_firstname"
-    label = "Prénom(s)"
     input_type = "text"
-    attr_maxlength = "80"
 
     [[description.form_element]]
     labbook_ref = "pat_sex"
-    label = "Sexe"
     input_type = "radio"
+    attr_required = true
 
     [[description.form_element]]
     labbook_ref = "pat_birth"
-    label = "Date de naissance"
     input_type = "date"
-    attr_maxlength = "10"
 
     [[description.form_element]]
-    labbook_ref = "pat_approx"
-    label = "Date de naissance approximative"
+    labbook_ref = "pat_birth_approx"
     input_type = "radio"
 
     [[description.form_element]]
@@ -72,137 +58,67 @@ version = 1
 
     [[description.form_element]]
     labbook_ref = "pat_age"
-    label = "Age"
     input_type = "text"
-    attr_maxlength = "3"
-    attr_min = "0"
-    attr_max = "150"
 
     [[description.form_element]]
     labbook_ref = "pat_age_unit"
-    label = "unité"
     input_type = "select"
 
     [[description.form_element]]
     labbook_ref = "pat_nationality"
-    label = "Nationalité"
     input_type = "select"
 
     [[description.form_element]]
     labbook_ref = "pat_resident"
-    label = "Résident"
     input_type = "radio"
 
     [[description.form_element]]
     labbook_ref = "pat_blood_group"
-    label = "Groupe sanguin"
     input_type = "select"
-    name = "pat_blood_group"
 
     [[description.form_element]]
     labbook_ref = "pat_blood_rhesus"
-    label = "Rhésus"
     input_type = "select"
 
     [[description.form_element]]
     id = "label_contact_details"
     label = "Coordonnées"
-    type = "h3"
+    type = "h6"
 
     [[description.form_element]]
     labbook_ref = "pat_address"
-    label = "Adresse"
     input_type = "textarea"
-    attr_rows = "4" # describe the distance covered by the cursor
-    attr_cols = "50" # describe the distance covered by the cursor
 
     [[description.form_element]]
     labbook_ref = "pat_phone1"
-    label = "Téléphone 1"
     input_type = "text"
-    attr_maxlength = "20"
 
     [[description.form_element]]
     labbook_ref = "pat_phone2"
-    label = "Téléphone 2"
     input_type = "text"
-    attr_maxlength = "20"
 
     [[description.form_element]]
     labbook_ref = "pat_profession"
-    label = "Profession"
     input_type = "text"
-    attr_maxlength = "50"
 
     [[description.form_element]]
     labbook_ref = "search_zipcity"
 
     [[description.form_element]]
     labbook_ref = "pat_pbox"
-    label = "Boite postale"
     input_type = "text"
-    attr_maxlength = "10"
 
     [[description.form_element]]
     labbook_ref = "pat_district"
-    label = "Quartier / Secteur"
     input_type = "text"
-    attr_maxlength = "40"
 
     [[description.form_element]]
     labbook_ref = "pat_zipcode"
-    label = "Code postal"
     input_type = "text"
-    attr_maxlength = "10"
 
     [[description.form_element]]
     labbook_ref = "pat_city"
-    label = "Boite postale"
     input_type = "text"
-    attr_maxlength = "40"
-
-    # --- Example of new items ---
-
-    # TEST 01 : select choice between no answer, OK and KO
-    [[description.form_element]]
-    id = "test_01"
-    label = "Test 01"
-    input_type = "select"
-    options = [
-        { value = "", label = "" },
-        { value = "OK", label = "OK" },
-        { value = "KO", label = "KO" }
-    ]
-
-    # TEST 02 : datetime-local
-    [[description.form_element]]
-    id = "test_02"
-    label = "Test 02"
-    input_type = "datetime-local"
-
-    # TEST 03 : number between 0 and 10
-    [[description.form_element]]
-    id = "test_03"
-    label = "Test 03"
-    input_type = "number"
-    attr_min = "0"
-    attr_max = "10"
-    attr_step = "1"
-
-    # TEST 04 : required text
-    [[description.form_element]]
-    id = "test_04"
-    label = "Test 04"
-    input_type = "text"
-    attr_required = true
-
-    # TEST 05 : readonly text
-    [[description.form_element]]
-    id = "test_05"
-    label = "Test 05"
-    input_type = "text"
-    attr_default_value = "Text readonly"
-    attr_readonly = true
 
 # -----------------------------------------------------------------
 # The layout section defines how elements are placed and displayed.
@@ -244,14 +160,18 @@ version = 1
         class = "col-md"
         elements = [ 
                 { element = "pat_birth", class = "flex-md-row" },
-                { element = "pat_approx", class = "flex-md-row" },
-                { element = "label_or", class = "flex-md-row" },
-                { element = "pat_age", class = "flex-md-row" },
-                { element = "pat_age_unit", class = "flex-md-row" },
+                { element = "pat_birth_approx", class = "flex-md-row" },
+                { class = "d-md-flex", elements = [
+                    { element = "label_or", class = "flex-md-row" },
+                    { element = "pat_age", class = "flex-md-row" },
+                    { element = "pat_age_unit", class = "flex-md-row" }
+                    ] },
                 { element = "pat_nationality", class = "flex-md-row" },
                 { element = "pat_resident", class = "flex-md-row" },
-                { element = "pat_blood_group", class = "flex-md-row" },
-                { element = "pat_blood_rhesus", class = "flex-md-row" }
+                { class = 'd-md-flex', elements = [
+                    { element = "pat_blood_group", class = "flex-md-row" },
+                    { element = "pat_blood_rhesus", class = "flex-md-row" }
+                    ] }
         ]
         
     [[layout.rows]]
@@ -278,17 +198,4 @@ version = 1
                 { element = "pat_district", class = "flex-md-row" },
                 { element = "pat_zipcode", class = "flex-md-row" },
                 { element = "pat_city", class = "flex-md-row" }
-        ]
-
-    [[layout.rows]]
-    class = "row mt-3"
-
-        [[layout.rows.cols]]
-        class = ""
-        elements = [ 
-                { element = "test_01", class = "flex-md-row" },
-                { element = "test_02", class = "flex-md-row" },
-                { element = "test_03", class = "flex-md-row" },
-                { element = "test_04", class = "flex-md-row" },
-                { element = "test_05", class = "flex-md-column" }
         ]
