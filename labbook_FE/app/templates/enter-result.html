@@ -434,7 +434,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
                "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
                "<div class=\"d-lg-flex align-items-start\">" +
-               "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\" style=\"\">" +
+               "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" maxlength=\"10\" size=\"10\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
                "<label class=\"form-label text-end ms-lg-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
                "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk bg-readonly ms-1\" value=\"" + name + "\" readonly />" +
@@ -755,7 +755,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
            "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>&nbsp;" +
            "<div class=\"d-lg-flex align-items-start\">" +
-           "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"date\" maxlength=\"10\" size=\"10\" value=\"{{ now|date_now }}\" placeholder=\"\">" +
+           "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" maxlength=\"10\" size=\"10\" value=\"{{ now|datetime_now }}\" placeholder=\"\">" +
            "</div>" +
            "<label class=\"form-label text-end ms-lg-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
            "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control form-lbk bg-readonly\" value=\"" + name + "\" readonly />" +
