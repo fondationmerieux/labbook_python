@@ -316,7 +316,7 @@ class AnalysisDet(Resource):
         if 'id_ana' not in args or 'code' not in args or 'name' not in args or 'abbr' not in args or \
            'type_ana' not in args or 'type_prod' not in args or 'unit' not in args or 'value' not in args or \
            'stat' not in args or 'comment' not in args or 'product' not in args or 'list_var' not in args or \
-           'whonet' not in args:
+           'whonet' not in args or 'ana_ast' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -345,7 +345,8 @@ class AnalysisDet(Resource):
                                           stat=args['stat'],
                                           comment=args['comment'],
                                           product=args['product'],
-                                          whonet=args['whonet'])
+                                          whonet=args['whonet'],
+                                          ana_ast=args['ana_ast'])
 
             if ret is False:
                 self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update analysis')
@@ -476,7 +477,8 @@ class AnalysisDet(Resource):
                                           stat=args['stat'],
                                           comment=args['comment'],
                                           product=args['product'],
-                                          whonet=args['whonet'])
+                                          whonet=args['whonet'],
+                                          ana_ast=args['ana_ast'])
 
             if ret <= 0:
                 self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert analysis')
@@ -783,7 +785,7 @@ class AnalysisExport(Resource):
                    'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                    'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                    'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax',
-                   'var_formula_conv', 'var_unit_conv', 'var_accu_conv']]
+                   'var_formula_conv', 'var_unit_conv', 'var_accu_conv', 'ana_ast']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -1009,6 +1011,14 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
+                if d['ana_ast']:
+                    if d['ana_ast'] == 'Y':
+                        data.append('Y')
+                    else:
+                        data.append('N')
+                else:
+                    data.append('')
+
                 l_data.append(data)
 
         # if no result to export
@@ -1108,6 +1118,7 @@ class AnalysisImport(Resource):
             head_list.append('var_formula_conv')
             head_list.append('var_unit_conv')
             head_list.append('var_accu_conv')
+            head_list.append('ana_ast')
 
         i = 0
         for head in head_line:
@@ -1189,14 +1200,16 @@ class AnalysisImport(Resource):
                         var_show_minmax = 'N'
 
                     # re-add formula2, unit2, accu2
-                    if version == 'v4' and len(row) > 38:
+                    if version == 'v4' and len(row) > 39:
                         var_formula_conv = row[36]
                         var_unit_conv = row[37]
                         var_accu_conv = row[38]
+                        ana_ast = row[39]
                     else:
                         var_formula_conv = ''
                         var_unit_conv = 0
                         var_accu_conv = 0
+                        ana_ast = 'N'
 
                     ret = Analysis.exist(code, test)
 
@@ -1226,6 +1239,7 @@ class AnalysisImport(Resource):
                                                           comment=commentaire,
                                                           product=produit_biologique,
                                                           whonet=ana_whonet,
+                                                          ana_ast=ana_ast,
                                                           test=test)
 
                             if ret is False:
@@ -1367,14 +1381,16 @@ class AnalysisImport(Resource):
                         var_show_minmax = 'N'
 
                     # re-add formula2, unit2, accu2
-                    if version == 'v4' and len(row) > 38:
+                    if version == 'v4' and len(row) > 39:
                         var_formula_conv = row[36]
                         var_unit_conv = row[37]
                         var_accu_conv = row[38]
+                        ana_ast = row[39]
                     else:
                         var_formula_conv = ''
                         var_unit_conv = 0
                         var_accu_conv = 0
+                        ana_ast = 'N'
 
                     ret = Analysis.exist(code, test)
 
@@ -1422,6 +1438,7 @@ class AnalysisImport(Resource):
                                                           comment=commentaire,
                                                           product=produit_biologique,
                                                           whonet=ana_whonet,
+                                                          ana_ast=ana_ast,
                                                           id_data=id_data,
                                                           test=test)
 

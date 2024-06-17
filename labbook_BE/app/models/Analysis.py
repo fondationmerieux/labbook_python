@@ -133,7 +133,7 @@ class Analysis:
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
                'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
-               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast '
                'from sigl_05_data as ana '
                'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
                'where ana.id_data=%s')
@@ -148,7 +148,7 @@ class Analysis:
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
                'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
-               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast '
                'from sigl_05_data as ana '
                'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
                'where ana.code=%s')
@@ -177,10 +177,10 @@ class Analysis:
 
             req = ('insert into sigl_05_data' + mode_test +
                    '(' + lid_data + 'id_owner, code, nom, abbr, famille, type_prel, cote_unite, cote_valeur, commentaire, '
-                   'produit_biologique, type_analyse, actif, ana_whonet) '
+                   'produit_biologique, type_analyse, actif, ana_whonet, ana_ast) '
                    'values '
                    '(' + vid_data + '%(id_owner)s, %(code)s, %(name)s, %(abbr)s, %(type_ana)s, %(type_prod)s, %(unit)s, '
-                   '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s)')
+                   '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s, %(ana_ast)s)')
 
             cursor.execute(req, params)
 
@@ -204,7 +204,7 @@ class Analysis:
             cursor.execute('update sigl_05_data' + mode_test +
                            'set id_owner=%(id_owner)s, code=%(code)s, nom=%(name)s, abbr=%(abbr)s, actif=%(stat)s, '
                            'famille=%(type_ana)s, type_prel=%(type_prod)s, cote_unite=%(unit)s, cote_valeur=%(value)s, '
-                           'commentaire=%(comment)s, produit_biologique=%(product)s, ana_whonet=%(whonet)s '
+                           'commentaire=%(comment)s, produit_biologique=%(product)s, ana_whonet=%(whonet)s, ana_ast=%(ana_ast)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -850,7 +850,7 @@ class Analysis:
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, '
                'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
-               'ana.type_analyse, ana.actif, ana.ana_whonet, link.id_data as id_link, link.id_refanalyse, '
+               'ana.type_analyse, ana.actif, ana.ana_whonet, ana.ana_ast, link.id_data as id_link, link.id_refanalyse, '
                'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, link.var_qrcode, '
                'var.id_data as id_var, var.libelle, var.description, var.unite, var.normal_min, var.normal_max, '
                'var.commentaire as var_comm, var.type_resultat, var.unite2, var.formule_unite2, var.formule, '

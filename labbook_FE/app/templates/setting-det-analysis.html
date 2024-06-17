@@ -108,6 +108,10 @@
                             <div>					
                                 <textarea id="comment" name="comment" rows="3" cols="80" class="form-control form-lbk">{{ args['details']['commentaire'] }}</textarea>
                             </div>
+                            <label for="ana_ast" class="form-label col-2 text-end mt-1 me-1">{{ _("Antiobiogramme") }}</label>
+                            <div>
+                                <input type="checkbox" id="ana_ast" name="ana_ast" class="mt-2" value="Y" {% if args['details'] and args['details']['ana_ast'] == 'Y' %}checked{% endif %}>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -933,8 +937,12 @@ var value     = $("#value").val()     ;
 var stat      = $("input:radio[name=stat]:checked").val()   ;
 var whonet    = $("input:radio[name=whonet]:checked").val() ;
 var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
+var ana_ast   = "N" ;
 
 var product = $("#product").val() ;
+
+    if ( $("#ana_ast").is(":checked") )
+    ana_ast = $("#ana_ast").val() ;
 
 var msg = "" ;
 
@@ -1052,6 +1060,7 @@ var msg = "" ;
                           '"value":"' + value + '", ' +
                           '"stat":' + stat + ', ' +
                           '"whonet":' + whonet + ', ' +
+                          '"ana_ast":"' + ana_ast + '", ' +
                           '"comment":' + comment + ', ' +   // No quotes with stringify
                           '"product":' + product + ', ' +
                           list_var + '}' ;

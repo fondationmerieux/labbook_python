@@ -31,6 +31,12 @@ def upgrade():
     except Exception as err:
         print("ERROR add column ana_ast to sigl_05_data,\n\terr=" + str(err))
 
+    # ADD COLUMN ana_ast TEST
+    try:
+        conn.execute(text("alter table sigl_05_data_test add column ana_ast varchar(1) not null default 'N'"))
+    except Exception as err:
+        print("ERROR add column ana_ast to sigl_05_data_test,\n\terr=" + str(err))
+
     # UPDATE ana_ast for ast analyzes
     try:
         conn = op.get_bind()
