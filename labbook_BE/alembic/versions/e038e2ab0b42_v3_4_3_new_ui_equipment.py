@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_3_new_ui_equipment
 
 Revision ID: e038e2ab0b42

@@ -39,8 +39,8 @@ def upgrade():
                           'where code in ("B650","B651","B652","B653","B654","B655","B656","B657","B658","B659","B660", '
                           '"B661","B670","B671","B672","B673","B674","B675","B676","B677","B678","B679","B680","B681")'))
     except Exception as err:
-        print("ERROR update sigl_05_data set ana_ast='Y' where code in ('B650' to 'B681'),\n\terr=" + str(err)) 
-    
+        print("ERROR update sigl_05_data set ana_ast='Y' where code in ('B650' to 'B681'),\n\terr=" + str(err))
+
     print(str(datetime.today()) + " : END of migration v3_4_6_ast_report revision=e997e3d843ef")
 
 

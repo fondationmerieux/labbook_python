@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_4_send_dhis2_to_api
 
 Revision ID: e404bf2dacd0

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_4_fix_01_phase_2
 
 Revision ID: 6fee80b9f8b8

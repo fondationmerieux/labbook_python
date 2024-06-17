@@ -614,7 +614,7 @@ class RecordDetFromExt(Resource):
 
                 date_now = datetime.now().strftime("%Y%m%d")
 
-                date_record = datetime.strptime(record['rec_date'], Constants.cst_dt_ext_HM)
+                date_record = datetime.strptime(record['rec_date'][:16], Constants.cst_dt_ext_HM)
                 date_record = date_record.strftime("%Y%m%d")
 
                 # Different day so we start a new number
@@ -670,7 +670,7 @@ class RecordDetFromExt(Resource):
                 id_rec = Record.insertRecord(id_owner=user['id_data'],
                                              id_patient=id_pat,
                                              type=record['rec_type'],
-                                             rec_date_receipt=record['rec_date'],
+                                             rec_date_receipt=record['rec_date'][:16],
                                              num_dos_jour=num_dos_jour,
                                              num_dos_an=num_dos_an,
                                              med_prescripteur=id_doc,

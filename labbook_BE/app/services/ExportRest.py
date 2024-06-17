@@ -360,7 +360,7 @@ class ExportDHIS2Api(Resource):
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args or 'filename' not in args or 'id_user' not in args or \
-           'period' not in args or 'dhs_ser' not in args:
+           'period' not in args or 'dhs_ser' not in args or 'dry_run' not in args:
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -635,8 +635,13 @@ class ExportDHIS2Api(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api ERROR api setting not found version')
             return compose_ret('', Constants.cst_content_type_json, 405)
 
+        dry_run = ''
+
+        if args['dry_run'] == 'Y':
+            dry_run = '?dryRun=true'
+
         # 2 - send data
-        url   = api['dhs_url'] + str("/dataValueSets")
+        url   = api['dhs_url'] + str("/dataValueSets") + dry_run
         login = api['dhs_login']
         pwd   = api['dhs_pwd']
 
@@ -669,7 +674,7 @@ class ExportDHIS2Api(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportDHIS2Api')
-        return compose_ret('', Constants.cst_content_type_json)
+        return compose_ret(resp.text, Constants.cst_content_type_json, resp.status_code)
 
 
 class ExportWhonet(Resource):

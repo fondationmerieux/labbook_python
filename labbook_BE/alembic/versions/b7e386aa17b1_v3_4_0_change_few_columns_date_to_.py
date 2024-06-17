@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_0_change_few_columns_date_to_datetime
 
 Revision ID: b7e386aa17b1

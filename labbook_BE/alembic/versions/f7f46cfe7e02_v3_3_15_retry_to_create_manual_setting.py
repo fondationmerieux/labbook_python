@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_15_retry_to_create_manual_setting
 
 Revision ID: f7f46cfe7e02

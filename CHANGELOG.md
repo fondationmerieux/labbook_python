@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.4.6] - 2024-06-17
+### Added
+- parameter to indicate whether an analysis is of type AST
+- dry run mode for send data to DHIS2 API
+
+### Changed
+- displayed interval with seconds for TAT
+
+### Fixed
+- rec_date format with new record from API
+- formula with pattern {id_var, id_var2, ...} for DHIS2
+
 ## [3.4.5] - 2024-05-15
 ### Added
 - upload customizable form patient by TOML file, see customizable_form.md

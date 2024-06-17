@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_5_dynamic_form_patient
 
 Revision ID: ee493ffd1c9b

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_9_lab_profil_and_stock_movement
 
 Revision ID: 716a07e9a30a

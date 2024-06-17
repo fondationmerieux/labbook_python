@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_5_new_form_pat
 
 Revision ID: 352eb3c5188f

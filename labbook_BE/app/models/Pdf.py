@@ -1550,13 +1550,14 @@ class Pdf:
 
         # === ANALYZES details ===
         data['l_data'] = []
-        analysis       = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "", "ana_outsourced": ""}
+        analysis       = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "",
+                          "ana_outsourced": "", "ana_ast": "N"}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
                           "formatting": "N", "valueConv": "", "unitConv": ""}
 
         """
-        [{'analysis': {'fam_name': FAMILY_NAME, 'ana_name': ANALYSIS_NAME, 'ana_comm': ANALYSIS_COMMENTARY
+        [{'analysis': {'fam_name': FAMILY, 'ana_name': NAME, 'ana_comm': COMMENT, "ana_outsourced": Y/N, 'ana_ast': Y/N
                        'l_res': [{'label': VAR_NAME,
                                   'value': RESULT_VALUE,
                                   'unit': UNIT_RESULT_VALUE,
@@ -1643,7 +1644,8 @@ class Pdf:
                             # --- end of close previous analysis ---
 
                             # init new analysis
-                            tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "", "ana_outsourced": ""}
+                            tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "",
+                                       "ana_outsourced": "", "ana_ast": "N"}
 
                             id_req_ana_p = res['id_req_ana']
                             id_res_p     = res['id_res']
@@ -1687,8 +1689,13 @@ class Pdf:
                             if res['ana_outsourced'] == 'Y':
                                 tmp_ana['ana_outsourced'] = _("Sous-traitée")
 
+                            if res['ana_ast'] == 'Y':
+                                tmp_ana['ana_ast'] = 'Y'
+
                         # init new result
-                        tmp_res = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N", "highlight": "N", "formatting": "N", "valueConv": "", "unitConv": ""}
+                        tmp_res = {"label": "", "value": "", "unit": "", "value_ast": "", "references": "",
+                                   "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N",
+                                   "highlight": "N", "formatting": "N", "valueConv": "", "unitConv": ""}
 
                         # Start to get previous result if exist
                         prev_date = ''
@@ -1722,6 +1729,14 @@ class Pdf:
                             if res['value'] != '0':
                                 val = Various.getDicoById(res['value'])
                                 trans = val['label']
+
+                                if res['ana_ast'] == 'Y':
+                                    if trans == 'Résistant':
+                                        tmp_res['value_ast'] = 'R'
+                                    elif trans == 'Intermédiaire':
+                                        tmp_res['value_ast'] = 'I'
+                                    elif trans == 'Sensible':
+                                        tmp_res['value_ast'] = 'S'
 
                                 if trans:
                                     formatting = val['dict_formatting']
@@ -1791,7 +1806,7 @@ class Pdf:
                                 unit2 = Various.getDicoById(res['unite2'])
 
                                 if unit2:
-                                    tmp_res['uniteConv'] = unit2['label']
+                                    tmp_res['unitConv'] = unit2['label']
 
                                 if not res['precision2']:
                                     res['precision2'] = 2
@@ -1943,6 +1958,7 @@ class Pdf:
             analysis['ana_name'] = _("Bandelettes urinaires")
             analysis['ana_comm'] = "commentaire d'analyse\n2eme ligne".split('\n')
             analysis['ana_outsourced'] = ""
+            analysis['ana_ast']  = "N"
             analysis['l_res'].append(result)
             analysis['validate'] = 'BIO Bernard'
 
@@ -2594,7 +2610,7 @@ class Pdf:
                     if res['id_data'] != id_req_ana_p:
 
                         # init new analysis
-                        tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "ana_outsourced": ""}
+                        tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "ana_outsourced": "", "ana_ast": "N"}
 
                         id_req_ana_p = res['id_data']
 
@@ -2650,6 +2666,7 @@ class Pdf:
             analysis['ana_name'] = _("Bandelettes urinaires")
             analysis['ana_comm'] = "commentaire d'analyse\n2eme ligne".split('\n')
             analysis['ana_outsourced'] = _("Sous-traitée")
+            analysis['ana_ast'] = "N"
 
             data['l_data'].append(analysis)
 

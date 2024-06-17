@@ -294,9 +294,9 @@ let tat_ana_avg = '' ;
             code_pat = '' ;
 
         analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
-        tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }}' ;
-        tat_ana  = data_tat[i].tat_ana_days + '{{ _("j") }} ' + data_tat[i].tat_ana_hours + '{{ _("h") }} ' + data_tat[i].tat_ana_mins + '{{ _("min") }}' ;
-        tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }}' ;
+        tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }} ' + data_tat[i].tat_tech_secs + '{{ _("s") }}' ;
+        tat_ana  = data_tat[i].tat_ana_days + '{{ _("j") }} ' + data_tat[i].tat_ana_hours + '{{ _("h") }} ' + data_tat[i].tat_ana_mins + '{{ _("min") }} ' + data_tat[i].tat_ana_secs + '{{ _("s") }}' ;
+        tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }} ' + data_tat[i].tat_secs + '{{ _("s") }}' ;
 
         res += '<tr><td class="nav_cell">' + menu_act + '</td>' +
                '<td class="text-center">' + rec_date + '</td>' +
@@ -307,9 +307,9 @@ let tat_ana_avg = '' ;
                '<td class="text-center">' + tat_ana + '</td>' +
                '<td class="text-center">' + tat + '</td></tr>' ;
 
-        tat_tech_avg = data_tat[i].tot_tech_days + '{{ _("j") }} ' + data_tat[i].tot_tech_hours + '{{ _("h") }} ' + data_tat[i].tot_tech_mins + '{{ _("min") }}' ;
-        tat_ana_avg = data_tat[i].tot_ana_days + '{{ _("j") }} ' + data_tat[i].tot_ana_hours + '{{ _("h") }} ' + data_tat[i].tot_ana_mins + '{{ _("min") }}' ;
-        //tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }}' ;
+        tat_tech_avg = data_tat[i].tot_tech_days + '{{ _("j") }} ' + data_tat[i].tot_tech_hours + '{{ _("h") }} ' + data_tat[i].tot_tech_mins + '{{ _("min") }} ' + data_tat[i].tot_tech_secs + '{{ _("s") }}' ;
+        tat_ana_avg = data_tat[i].tot_ana_days + '{{ _("j") }} ' + data_tat[i].tot_ana_hours + '{{ _("h") }} ' + data_tat[i].tot_ana_mins + '{{ _("min") }} ' + data_tat[i].tot_ana_secs + '{{ _("s") }}' ;
+        //tat_avg = data_tat[i].tot_days + '{{ _("j") }} ' + data_tat[i].tot_hours + '{{ _("h") }} ' + data_tat[i].tot_mins + '{{ _("min") }} ' + data_tat[i].tot_secs + '{{ _("s") }}' ;
         }
     $("#tbody_tat").append(res) ;
 

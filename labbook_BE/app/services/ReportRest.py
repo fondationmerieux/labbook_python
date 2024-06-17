@@ -377,6 +377,10 @@ class ReportTAT(Resource):
         nb_tat_tech = 0
         nb_tat_ana = 0
 
+        total_tat = timedelta()
+        total_tat_tech = timedelta()
+        total_tat_ana = timedelta()
+
         for data in l_TAT:
             for key, value in list(data.items()):
                 if data[key] is None:
@@ -402,76 +406,76 @@ class ReportTAT(Resource):
                 data['rec_date'] = ''
 
             if data['rec_date_save']:
-                data['rec_date_save'] = datetime.strftime(data['rec_date_save'], Constants.cst_dt_HM)
-                date_save = datetime.strptime(data['rec_date_save'], Constants.cst_dt_HM)
+                data['rec_date_save'] = datetime.strftime(data['rec_date_save'], Constants.cst_dt_HMS)
+                date_save = datetime.strptime(data['rec_date_save'], Constants.cst_dt_HMS)
+                data['rec_date_save'] = data['rec_date_save'][:-3]
             else:
                 data['rec_date_save'] = ''
 
             if data['rec_date_vld']:
-                data['rec_date_vld'] = datetime.strftime(data['rec_date_vld'], Constants.cst_dt_HM)
-                date_vld = datetime.strptime(data['rec_date_vld'], Constants.cst_dt_HM)
+                data['rec_date_vld'] = datetime.strftime(data['rec_date_vld'], Constants.cst_dt_HMS)
+                date_vld = datetime.strptime(data['rec_date_vld'], Constants.cst_dt_HMS)
+                data['rec_date_vld'] = data['rec_date_vld'][:-3]
             else:
                 data['rec_date_vld'] = ''
-
-            total_tat = timedelta()
-            total_tat_tech = timedelta()
-            total_tat_ana = timedelta()
 
             # TAT Record calculation
             if date_save and date_vld:
                 diff_date = date_vld - date_save
                 data['tat_days']  = diff_date.days
                 data['tat_hours'], remain = divmod(diff_date.seconds, 3600)
-                data['tat_mins'], sec = divmod(remain, 60)
+                data['tat_mins'], data['tat_secs'] = divmod(remain, 60)
 
                 nb_tat += 1
 
-                total_tat = total_tat + diff_date / nb_tat
+                total_tat = ((total_tat * (nb_tat - 1)) + diff_date) / nb_tat
 
             if total_tat:
                 data['tot_days']  = total_tat.days
                 data['tot_hours'], remain = divmod(total_tat.seconds, 3600)
-                data['tot_mins'], sec = divmod(remain, 60)
+                data['tot_mins'], data['tat_secs'] = divmod(remain, 60)
 
             # TAT technical validation calculation
             if date_save and date_vld_tech:
                 diff_date = date_vld_tech - date_save
                 data['tat_tech_days']  = diff_date.days
                 data['tat_tech_hours'], remain = divmod(diff_date.seconds, 3600)
-                data['tat_tech_mins'], sec = divmod(remain, 60)
+                data['tat_tech_mins'], data['tat_tech_secs'] = divmod(remain, 60)
 
                 nb_tat_tech += 1
 
-                total_tat_tech = total_tat_tech + diff_date / nb_tat_tech
+                total_tat_tech = ((total_tat_tech * (nb_tat_tech - 1)) + diff_date) / nb_tat_tech
 
             if total_tat_tech:
                 data['tot_tech_days']  = total_tat_tech.days
                 data['tot_tech_hours'], remain = divmod(total_tat_tech.seconds, 3600)
-                data['tot_tech_mins'], sec = divmod(remain, 60)
+                data['tot_tech_mins'], data['tot_tech_secs'] = divmod(remain, 60)
             else:
                 data['tot_tech_days']  = 0
                 data['tot_tech_hours'] = 0
                 data['tot_tech_mins']  = 0
+                data['tot_tech_secs']  = 0
 
             # TAT Analysis calculation
             if date_save and date_vld_ana:
                 diff_date = date_vld_ana - date_save
                 data['tat_ana_days']  = diff_date.days
                 data['tat_ana_hours'], remain = divmod(diff_date.seconds, 3600)
-                data['tat_ana_mins'], sec = divmod(remain, 60)
+                data['tat_ana_mins'], data['tat_ana_secs'] = divmod(remain, 60)
 
                 nb_tat_ana += 1
 
-                total_tat_ana = total_tat_ana + diff_date / nb_tat_ana
+                total_tat_ana = ((total_tat_ana * (nb_tat_ana - 1)) + diff_date) / nb_tat_ana
 
             if total_tat_ana:
                 data['tot_ana_days']  = total_tat_ana.days
                 data['tot_ana_hours'], remain = divmod(total_tat_ana.seconds, 3600)
-                data['tot_ana_mins'], sec = divmod(remain, 60)
+                data['tot_ana_mins'], data['tot_ana_secs'] = divmod(remain, 60)
             else:
                 data['tot_ana_days']  = 0
                 data['tot_ana_hours'] = 0
                 data['tot_ana_mins']  = 0
+                data['tot_ana_secs']  = 0
 
         self.log.info(Logs.fileline() + ' : TRACE ReportTAT')
         return compose_ret(l_TAT, Constants.cst_content_type_json)

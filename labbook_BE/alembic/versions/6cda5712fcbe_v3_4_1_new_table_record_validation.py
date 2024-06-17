@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_1_new_table_record_validation
 
 Revision ID: 6cda5712fcbe

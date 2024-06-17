@@ -360,7 +360,7 @@ class Result:
             # Note 1 : var.type_resultat=265 to get result of type labeled
             # Note 2 : res.valeur != 1013 to avoid unspecified result
             req = ('select req.ref_analyse as id_ref_ana, req.id_data as id_req_ana, rec.id_data as id_rec, rec.rec_modified, '
-                   'ref.nom as ana_name, ref.commentaire as ana_comm, fam.label as ana_fam, res.id_data as id_res, '
+                   'ref.nom as ana_name, ref.ana_ast, ref.commentaire as ana_comm, fam.label as ana_fam, res.id_data as id_res, '
                    'res.valeur as value, var.*, rec.num_dos_mois as rec_num_month, rec.num_dos_an as rec_num_year, '
                    'rec.rec_date_receipt, rec.date_prescription as prescr_date, rec.statut as rec_stat, '
                    'req.req_outsourced as ana_outsourced, req.id_owner as id_owner, rec.id_patient as id_pat, '

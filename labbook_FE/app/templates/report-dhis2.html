@@ -63,6 +63,8 @@
                             </div>
                             <div>
                                 <input id="btn-send" type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" onclick="send_dhis2();" value="{{ _("Envoyer les données") }}">
+                                <label for="dry_run" class="form-label align-self-center text-lg-end ms-2 me-1">{{ _("Tester") }}</label>
+                                <input type="checkbox" id="dry_run" name="dry_run" value="Y">
                             </div>
                         </div>
                         {% endif %}
@@ -146,6 +148,7 @@ var param    = '{"date_beg":"' + date_beg + '", ' +
 function send_dhis2()
 {
 $("#div_send_log").addClass('d-none') ;
+$("#send_log").val("") ;
 
 var id_user  = {{ session['user_id']|safe}} ;
 var date_beg = $("#date_beg").val() ;
@@ -153,12 +156,18 @@ var date_end = $("#date_end").val() ;
 var period   = $("input:radio[name=type_period]:checked").val() ;
 var filename = $("#spreadsheet").val() ;
 var dhs_ser  = $("#dhs_list").val() ;
+var dry_run  = "N" ; 
+
+    if ( $("#dry_run").is(":checked") )
+    dry_run = $("#dry_run").val() ;
+
 var param    = '{"date_beg":"' + date_beg + '", ' +
                 '"date_end":"' + date_end + '", ' +
                 '"period":"' + period + '", ' +
                 '"filename":"' + filename + '", ' +
                 '"dhs_ser":' + dhs_ser + ', ' +
-                '"id_user":' + id_user + '}' ;
+                '"id_user":' + id_user + ', ' +
+                '"dry_run":"' + dry_run + '"}' ;
 
     if ( filename == "" )
     {
@@ -192,11 +201,8 @@ var param    = '{"date_beg":"' + date_beg + '", ' +
         {
             $("#dial-wait").modal("hide") ;
 
-            if (ret && ret.responseJSON)
-            {
-            $("#send_log").val(ret.responseJSON) ;
+            $("#send_log").val(ret) ;
             $("#div_send_log").removeClass('d-none') ;
-            }
 
             tempAlert("{{ _("Dépôt réussi") }}", "btn-send") ;
         },

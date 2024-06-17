@@ -415,7 +415,13 @@ class Report:
                     else:
                         req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
+                    first_id_var = False
+
                     for id_var in l_id_var:
+                        if not first_id_var:
+                            req['end'] = req['end'] + 'and ('
+                            first_id_var = True
+
                         req['end'] = req['end'] + 'res' + str(idx) + '.ref_variable=' + id_var + ' or '
 
                     # take of last 'or' and add a ')'
@@ -658,7 +664,13 @@ class Report:
                     else:
                         req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
 
+                    first_id_var = False
+
                     for id_var in l_id_var:
+                        if not first_id_var:
+                            req['end'] = req['end'] + 'and ('
+                            first_id_var = True
+
                         req['end'] = req['end'] + 'res' + str(idx) + '.ref_variable=' + id_var + ' or '
 
                     # take of last 'or' and add a ')'

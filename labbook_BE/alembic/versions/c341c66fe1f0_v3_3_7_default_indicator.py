@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_7_default_indicator
 
 Revision ID: c341c66fe1f0

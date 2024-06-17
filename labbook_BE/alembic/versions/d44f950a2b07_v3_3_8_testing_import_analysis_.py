@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_8_testing_import_analysis_repository
 
 Revision ID: d44f950a2b07

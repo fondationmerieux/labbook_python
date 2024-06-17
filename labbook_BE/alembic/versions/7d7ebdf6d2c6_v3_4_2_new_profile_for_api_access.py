@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_4_2_new_profile_for_api_access
 
 Revision ID: 7d7ebdf6d2c6

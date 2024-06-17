@@ -12,13 +12,13 @@
 | pivot                   | 2.23.0    | MIT          | x         |         |         |
 | Popper                  | 2.11.0    | MIT          | x         |         |         |
 | select2                 | 4.0.13    | MIT          | x         |         |         |
-| Babel                   | 2.14.0    | BSD          |           | x       | x       |
-| Flask                   | 2.3.2     | BSD          |           | x       | x       |
+| Babel                   | 2.15.0    | BSD          |           | x       | x       |
+| Flask                   | 3.0.3     | BSD          |           | x       | x       |
 | Flask-Babel             | 4.0.0     | BSD          |           | x       | x       |
 | gunicorn                | 22.0.0    | MIT          |           | x       | x       |
-| pip                     | 23.1.2    | MIT          |           | x       | x       |
-| pipenv                  | 2023.4.29 | MIT          |           | x       | x       |
-| requests                | 2.31.0    | Apache 2.0   |           | x       | x       |
+| pip                     | 24.0.0    | MIT          |           | x       | x       |
+| pipenv                  | 2023.12.1 | MIT          |           | x       | x       |
+| requests                | 2.32.0    | Apache 2.0   |           | x       | x       |
 | swagger-ui              | 4.15.5    | Apache 2.0   |           | x       |         |
 | alembic                 | 1.13.1    | MIT          |           |         | x       |
 | Flask-RESTful           | 0.3.10    | BSD          |           |         | x       |

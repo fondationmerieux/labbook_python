@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-15 10:41+0200\n"
+"POT-Creation-Date: 2024-06-17 09:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -782,7 +782,7 @@ msgstr ""
 
 #: templates/analysis-import.html:90 templates/det-template.html:142
 #: templates/det-template.html:181 templates/dict-import.html:78
-#: templates/report-dhis2.html:201 templates/setting-dhis2.html:180
+#: templates/report-dhis2.html:207 templates/setting-dhis2.html:180
 #: templates/setting-epidemio.html:67 templates/setting-form.html:133
 #: templates/setting-indicator.html:67 templates/setting-zipcity.html:192
 #: templates/user-import.html:75
@@ -823,7 +823,7 @@ msgstr ""
 msgid "LabBook API"
 msgstr ""
 
-#: templates/api.html:64 templates/report-dhis2.html:218
+#: templates/api.html:64 templates/report-dhis2.html:224
 msgid "Accès non autorisé"
 msgstr ""
 
@@ -1472,7 +1472,7 @@ msgstr ""
 #: templates/list-stock.html:503 templates/list-stock.html:545
 #: templates/list-suppliers.html:237 templates/report-activity.html:619
 #: templates/report-activity.html:671 templates/report-activity.html:719
-#: templates/report-billing.html:297 templates/report-dhis2.html:141
+#: templates/report-billing.html:297 templates/report-dhis2.html:143
 #: templates/report-epidemio.html:140 templates/report-indicator.html:140
 #: templates/report-statistic.html:595 templates/report-tat.html:413
 #: templates/report-tat.html:472 templates/report-today.html:254
@@ -2315,7 +2315,7 @@ msgid "Veuillez choisir un fichier."
 msgstr ""
 
 #: templates/det-template.html:148 templates/det-template.html:189
-#: templates/report-dhis2.html:220 templates/setting-dhis2.html:187
+#: templates/report-dhis2.html:226 templates/setting-dhis2.html:187
 #: templates/setting-epidemio.html:74 templates/setting-form.html:140
 #: templates/setting-indicator.html:74
 msgid "Une erreur est survenue lors du dépot du fichier"
@@ -2441,7 +2441,7 @@ msgstr ""
 msgid "Exclure ceux déjà téléchargés"
 msgstr ""
 
-#: templates/global-report.html:36 templates/report-dhis2.html:71
+#: templates/global-report.html:36 templates/report-dhis2.html:73
 #: templates/user-conn-export.html:39 templates/whonet-export.html:39
 msgid "Récupérer les données"
 msgstr ""
@@ -2450,8 +2450,8 @@ msgstr ""
 msgid "Certains rapports sont manquants"
 msgstr ""
 
-#: templates/global-report.html:89 templates/report-dhis2.html:139
-#: templates/report-dhis2.html:214 templates/whonet-export.html:79
+#: templates/global-report.html:89 templates/report-dhis2.html:141
+#: templates/report-dhis2.html:220 templates/whonet-export.html:79
 msgid "Aucun résultat à exporter !"
 msgstr ""
 
@@ -3188,7 +3188,7 @@ msgstr ""
 msgid "Ajouter un modèle"
 msgstr ""
 
-#: templates/list-template.html:114
+#: templates/list-template.html:114 templates/report-dhis2.html:66
 msgid "Tester"
 msgstr ""
 
@@ -4044,8 +4044,8 @@ msgstr ""
 msgid "Chargement"
 msgstr ""
 
-#: templates/pivot-table.html:100 templates/report-dhis2.html:112
-#: templates/report-dhis2.html:171
+#: templates/pivot-table.html:100 templates/report-dhis2.html:114
+#: templates/report-dhis2.html:180
 msgid "Veuillez saisir des dates"
 msgstr ""
 
@@ -4215,19 +4215,19 @@ msgstr ""
 msgid "Envoyer les données"
 msgstr ""
 
-#: templates/report-dhis2.html:77
+#: templates/report-dhis2.html:79
 msgid "Retour d'envoi"
 msgstr ""
 
-#: templates/report-dhis2.html:106 templates/report-dhis2.html:165
+#: templates/report-dhis2.html:108 templates/report-dhis2.html:174
 msgid "Veuillez sélectionner une feuille de calcul."
 msgstr ""
 
-#: templates/report-dhis2.html:177
+#: templates/report-dhis2.html:186
 msgid "Veuillez sélectionner une plateforme de destination."
 msgstr ""
 
-#: templates/report-dhis2.html:216
+#: templates/report-dhis2.html:222
 msgid "Paramétrage manquant !"
 msgstr ""
 
@@ -4361,6 +4361,12 @@ msgstr ""
 #: templates/report-tat.html:364 templates/report-tat.html:365
 #: templates/report-tat.html:366 templates/report-tat.html:370
 msgid "min"
+msgstr ""
+
+#: templates/report-tat.html:297 templates/report-tat.html:298
+#: templates/report-tat.html:299 templates/report-tat.html:310
+#: templates/report-tat.html:311 templates/report-tat.html:312
+msgid "s"
 msgstr ""
 
 #: templates/report-today.html:68 templates/setting-analyzes.html:83

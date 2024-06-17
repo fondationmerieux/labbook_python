@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """dev_connect_01
 
 Revision ID: d4b6851a4a5c

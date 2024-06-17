@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_12_uncommented_stock_movement
 
 Revision ID: cea1c6149ba8

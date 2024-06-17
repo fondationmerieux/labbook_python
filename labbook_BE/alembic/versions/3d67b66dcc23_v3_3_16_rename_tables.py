@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """v3_3_16_rename_tables
 
 Revision ID: 3d67b66dcc23
