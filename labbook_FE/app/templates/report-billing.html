@@ -165,8 +165,14 @@ let id_user  = $("#search_user").val() ;
     if (id_user <= 0)
     id_user = 0 ;
 
-let param = '{ "date_beg":"' + date_beg  + ' 00:00", ' +
-            '"date_end":"' + date_end  + ' 23:59", ' +
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
             '"id_user":' + id_user + '}' ;
 
     // popup wait

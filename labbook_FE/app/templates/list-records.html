@@ -205,14 +205,20 @@ let link_fam  = {{ session['user_link_fam'] or [] }}
     if ( $("#f_emer").is(":checked") )
     emer = $("#f_emer").val() ;
 
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
 let param = '{ "num_rec":"' + num_rec + '", ' +
             '"type_rec":"' + type_rec  + '", ' +
             '"stat_rec":' + stat_rec  + ', ' +
             '"lastname":"' + lastname  + '", ' +
             '"firstname":"' + firstname  + '", ' +
             '"code":"' + code  + '", ' +
-            '"date_beg":"' + date_beg  + ' 00:00", ' +
-            '"date_end":"' + date_end  + ' 23:59", ' +
+            '"date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"emer":' + emer + ', ' +
             '"link_fam": [' + link_fam + ']}' ;

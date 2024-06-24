@@ -116,3 +116,10 @@
         <option value="{{ analyzer['filename'] }}" {% if id_selected and id_selected == analyzer['filename'] %}selected{% endif %}>{{ analyzer['display'] }}</option>
     {% endfor %}
 {%- endmacro %}
+
+{% macro select_civility(l_civility, id_civility) -%}
+    <option selected value="0"></option>
+    {% for civility in l_civility %}
+        <option value="{{ civility['id_data'] }}" {% if id_selected and id_selected == civility['id_data'] %}selected{% endif %}>{{ civility['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}

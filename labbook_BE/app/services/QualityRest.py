@@ -3031,7 +3031,8 @@ class StockSupplyMove(Resource):
             # change only location
             if prev_prs_ser == next_prs_ser:
                 ret = Quality.updateStockSupplyLocal(prs_ser=prev_prs_ser,
-                                                     prs_nb_pack=supply['prs_nb_pack'],
+                                                     # DESACT 24/06/2024 supposed to be a bug
+                                                     # prs_nb_pack=supply['prs_nb_pack'],
                                                      prs_prl=supply['prs_prl'])
 
                 if ret is False:

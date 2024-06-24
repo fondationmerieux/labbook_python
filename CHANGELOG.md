@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.4.7] - 2024-06-24
+### Changed
+- patient age required
+
+### Fixed
+- old patient variables names for banner
+- added the latest translations
+- searches with a date field
+- testing document templates
+- activity report with age in days, weeks or months
+- calculation for TAT report
+- list of civilties from database in pages setting-det-user, det-staff and det-doctor
+- bug after moving stock without changing the quantity
+
 ## [3.4.6] - 2024-06-17
 ### Added
 - parameter to indicate whether an analysis is of type AST

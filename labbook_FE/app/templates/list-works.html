@@ -172,12 +172,18 @@ let link_fam = {{ session['user_link_fam'] or [] }}
     if ( $("#f_emer").is(":checked") )
     emer = $("#f_emer").val() ;
 
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
 let param = '{ "num_rec": "", ' +
             '"stat_work": "{{ ihm["stat_work"] }}", ' +
             '"stat_rec": 0, ' +
             '"patient": "", ' +
-            '"date_beg":"' + date_beg  + ' 00:00", ' +
-            '"date_end":"' + date_end  + ' 23:59", ' +
+            '"date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
             '"type_ana":' + type_ana  + ', ' +
             '"code_pat":"' + code_pat  + '", ' +
             '"emer":' + emer + ', ' +

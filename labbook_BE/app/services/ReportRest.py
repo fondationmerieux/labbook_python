@@ -302,6 +302,14 @@ class ReportActivity(Resource):
             else:
                 stat_age['analysis'] = ''
 
+            # converted age in years
+            if stat_age['unite'] == 1034:
+                stat_age['age'] = int(stat_age['age'] // 365)
+            elif stat_age['unite'] == 1035:
+                stat_age['age'] = int(stat_age['age'] // 52)
+            elif stat_age['unite'] == 1036:
+                stat_age['age'] = int(stat_age['age'] // 12)
+
         self.log.info(Logs.fileline() + ' : TRACE ReportActivity')
         return compose_ret(stat, Constants.cst_content_type_json)
 
@@ -437,7 +445,7 @@ class ReportTAT(Resource):
 
             # TAT technical validation calculation
             if date_save and date_vld_tech:
-                diff_date = date_vld_tech - date_save
+                diff_date = date_save - date_vld_tech
                 data['tat_tech_days']  = diff_date.days
                 data['tat_tech_hours'], remain = divmod(diff_date.seconds, 3600)
                 data['tat_tech_mins'], data['tat_tech_secs'] = divmod(remain, 60)
@@ -458,7 +466,7 @@ class ReportTAT(Resource):
 
             # TAT Analysis calculation
             if date_save and date_vld_ana:
-                diff_date = date_vld_ana - date_save
+                diff_date = date_save - date_vld_ana
                 data['tat_ana_days']  = diff_date.days
                 data['tat_ana_hours'], remain = divmod(diff_date.seconds, 3600)
                 data['tat_ana_mins'], data['tat_ana_secs'] = divmod(remain, 60)

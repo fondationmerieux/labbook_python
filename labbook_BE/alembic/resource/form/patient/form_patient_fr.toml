@@ -59,10 +59,12 @@ version = 1
     [[description.form_element]]
     labbook_ref = "pat_age"
     input_type = "text"
+    attr_required = true
 
     [[description.form_element]]
     labbook_ref = "pat_age_unit"
     input_type = "select"
+    attr_required = true
 
     [[description.form_element]]
     labbook_ref = "pat_nationality"

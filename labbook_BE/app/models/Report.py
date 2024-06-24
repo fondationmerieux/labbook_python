@@ -159,13 +159,13 @@ class Report:
         if type_ana > 0:
             cond = ' and ana.famille= ' + str(type_ana) + ' '
 
-        req = ('select ana.nom as analysis, ana.code as code, pat.sexe as sex, pat.age, count(*) as nb_ana '
+        req = ('select ana.nom as analysis, ana.code as code, pat.sexe as sex, pat.age, pat.unite, count(*) as nb_ana '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse and ana.cote_unite != "PB" '
                'where (rec.rec_date_receipt between %s and %s) and rec.statut=256 ' + cond +
-               'group by ana.id_data, pat.age, pat.sexe order by ana.nom asc')
+               'group by ana.id_data, pat.unite, pat.age, pat.sexe order by ana.nom asc')
 
         cursor.execute(req, (date_beg, date_end,))
 
@@ -400,7 +400,7 @@ class Report:
                         else:
                             req['end'] = req['end'] + (' (ref' + str(idx) + '.type_prel=' + str(id_prod) + ' and vld' + str(idx) + '.type_validation=252 ')
                         req['end'] = req['end'] + ' and res' + str(idx) + '.ref_variable=' + id_var + ' and res' + str(idx) + '.valeur '
-                    Report.log.info('DEBUG 01 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern $_x req end = ' + str(req['end']))
 
                 # {id_var,id_var,...} pattern
                 elif word.startswith('{') and word.endswith('}'):
@@ -427,7 +427,7 @@ class Report:
                     # take of last 'or' and add a ')'
                     req['end'] = req['end'][:-3] + ') and res' + str(idx) + '.valeur '
 
-                    Report.log.info('DEBUG 02 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern {} req end = ' + str(req['end']))
 
                 # [dict_name.code] pattern
                 elif word.startswith('[') and word.endswith(']'):
@@ -438,7 +438,7 @@ class Report:
                     if id_val:
                         req['end'] = req['end'] + str(id_val)
 
-                    Report.log.info('DEBUG 03 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern [] req end = ' + str(req['end']))
 
                 # list of [dict_name.code] pattern
                 elif word.startswith('([') and word.endswith('])'):
@@ -456,7 +456,7 @@ class Report:
 
                     req['end'] = req['end'][:len(req['end']) - 1] + ')'
 
-                    Report.log.info('DEBUG 04 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern ([]) req end = ' + str(req['end']))
                 # ON a list of analyzes codes
                 elif word.startswith('ON(') and word.endswith(')'):
                     # Report.log.info('### list of analyzes codes ON(Bxxx,Bxxx) pattern ###')
@@ -475,7 +475,7 @@ class Report:
 
                     req['end'] = req['end'] + ' and ref' + str(idx) + '.code IN (' + l_cond_ana + ')'
 
-                    Report.log.info('DEBUG 05 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern ON() req end = ' + str(req['end']))
 
                 # CAT filter on category like SEX and/or AGE
                 elif word.startswith('CAT(') and word.endswith(')'):
@@ -536,18 +536,18 @@ class Report:
                         req['end'] = (req['end'] + ') and (pat' + str(idx) + '.age >=' + str(age_min) +
                                       ' and pat' + str(idx) + '.age <=' + str(age_max))
 
-                    Report.log.info('DEBUG 06 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern CAT() req end = ' + str(req['end']))
 
                 # opening parenthesis to frame a block
                 elif word == '(':
                     req['end'] = req['end'] + '( '
 
-                    # Report.log.info('DEBUG 07 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern ( req end = ' + str(req['end']))
                 # closing parenthesis to frame a block
                 elif word == ')':
                     req['end'] = req['end'] + ' )'
 
-                    Report.log.info('DEBUG 08 req end = ' + str(req['end']))
+                    Report.log.info('DEBUG pattern ) req end = ' + str(req['end']))
                 else:
                     if word == 'OR':
                         idx = idx + 1
@@ -566,7 +566,7 @@ class Report:
 
                         req['end'] = req['end'] + ') ' + word
 
-                        Report.log.info('DEBUG 09 req end = ' + str(req['end']))
+                        Report.log.info('DEBUG pattern OR req end = ' + str(req['end']))
 
                     # add a another inner group
                     if word == 'AND':
@@ -584,14 +584,14 @@ class Report:
 
                         req['end'] = req['end'] + ') ' + word
 
-                        Report.log.info('DEBUG 10 req end = ' + str(req['end']))
+                        Report.log.info('DEBUG pattern AND req end = ' + str(req['end']))
 
                     # Report.log.info('###  ELSE ###')
                     # Report.log.info('word = ' + word)
                     if word != 'AND' and word != 'OR':
                         req['end'] = req['end'] + ' ' + word + ' '
 
-                        Report.log.info('DEBUG 11 req end = ' + str(req['end']))
+                        Report.log.info('DEBUG pattern other req end = ' + str(req['end']))
 
             # close first parenthesis and last parenthesis of last block
             req['end'] = req['end'] + '))'

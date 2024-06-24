@@ -116,8 +116,14 @@ let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
 let service_int = {% if ihm['req_services'] %} $("#service_int").val() ; {% else %}"" ;{% endif %}
 
-let param = '{ "date_beg":"' + date_beg  + ' 00:00", ' +
-            '"date_end":"' + date_end  + ' 23:59", ' +
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+            '"date_end":"' + date_end  + '", ' +
             '"service_int":"' + service_int + '"}' ;
 
     // popup wait

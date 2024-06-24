@@ -845,6 +845,17 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
 
+    # Load civility
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/titre_civilite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['civility'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests civility list failed, err=%s , url=%s', err, url)
+
     # Load sections
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
@@ -2624,6 +2635,17 @@ def det_doctor(id_doctor=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests speciality list failed, err=%s , url=%s', err, url)
 
+    # Load civility
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/titre_civilite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['civility'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests civility list failed, err=%s , url=%s', err, url)
+
     if id_doctor > 0:
         # Load doctor details
         try:
@@ -4323,6 +4345,17 @@ def det_staff(user_id=0, ctx='', role_type=''):
     # the return page after saving
     if ctx:
         json_ihm['return_page'] = ctx
+
+    # Load civility
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/titre_civilite'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['civility'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests civility list failed, err=%s , url=%s', err, url)
 
     # Load sections
     try:

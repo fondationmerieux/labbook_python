@@ -84,10 +84,16 @@ function filter_data()
 {
 let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
-let type_ana = $("#type_ana").val()   ;
+let type_ana = $("#type_ana").val() ;
 
-let param = '{ "date_beg":"' + date_beg  + ' 00:00", ' +
-              '"date_end":"' + date_end  + ' 23:59", ' +
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+              '"date_end":"' + date_end  + '", ' +
               '"type_ana":' + type_ana + '}' ;
 
     // popup wait
@@ -481,7 +487,7 @@ let val_T_I = {} ;
     
         if (data_interval[i].ais_lower_bound == "")
         {
-        head_name = '{{ _("Moins de") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+        head_name = '<= ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
 
         csv_head_age += "< " + data_interval[i].ais_upper_bound + " H;" + 
                         "< " + data_interval[i].ais_upper_bound + " F;" +

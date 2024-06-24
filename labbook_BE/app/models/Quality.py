@@ -1286,7 +1286,8 @@ class Quality:
             cursor = DB.cursor()
 
             cursor.execute('update product_supply '
-                           'set prs_prl=%(prs_prl)s, prs_nb_pack=%(prs_nb_pack)s '
+                           'set prs_prl=%(prs_prl)s '
+                           # DESACT 24/06/2024 supposed to be a bug , prs_nb_pack=%(prs_nb_pack)s
                            'where prs_ser=%(prs_ser)s', params)
 
             Quality.log.info(Logs.fileline())

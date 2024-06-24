@@ -52,7 +52,14 @@ function export_whonet()
 {
 var date_beg = $("#date_beg").val() ;
 var date_end = $("#date_end").val() ;
-var param    = '{"date_beg":"' + date_beg + ' 00:00", "date_end":"' + date_end + ' 23:59"}' ;
+
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
+var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

@@ -5248,53 +5248,53 @@ msgstr "Précision 2"
 
 #: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
 msgid "Plateforme DHIS2 api"
-msgstr ""
+msgstr "Plateforme DHIS2 api"
 
 #: templates/det-dhis2-api.html:39
 msgid "Adresse plateforme dhis2 "
-msgstr ""
+msgstr "Adiresy plateforme dhis2 "
 
 #: templates/det-dhis2-api.html:46
 msgid "Par défaut"
-msgstr ""
+msgstr "Par défaut"
 
 #: templates/report-dhis2.html:65
 msgid "Envoyer les données"
-msgstr ""
+msgstr "Mandefa ireo données"
 
 #: templates/report-dhis2.html:77
 msgid "Retour d'envoi"
-msgstr ""
+msgstr "Retour d'envoi"
 
 #: templates/report-dhis2.html:177
 msgid "Veuillez sélectionner une plateforme de destination."
-msgstr ""
+msgstr "Misafidiana plateforme de destination."
 
 #: templates/report-dhis2.html:216
 msgid "Paramétrage manquant !"
-msgstr ""
+msgstr "Paramétrage tsy ampy !"
 
 #: templates/setting-dhis2.html:14
 msgid "Paramétrage envoi à l'api dhis2"
-msgstr ""
+msgstr "Paramétrage envoi à l'api dhis2"
 
 #: templates/setting-dhis2.html:22
 msgid "Adresse plateforme"
-msgstr ""
+msgstr "Adiresy plateforme"
 
 #: templates/setting-dhis2.html:23
 msgid "login"
-msgstr ""
+msgstr "login"
 
 #: templates/setting-dhis2.html:40
 msgid "Paramétrage feuille de calcul"
-msgstr ""
+msgstr "Paramétrage feuille de calcul"
 
 #: templates/setting-form.html:36
 msgid "Enregistrer le formulaire"
-msgstr ""
+msgstr "Tehirizina ny formulaire"
 
 #: templates/setting-form.html:171
 msgid "Aperçu"
-msgstr ""
+msgstr "Aperçu"
 

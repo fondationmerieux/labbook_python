@@ -34,6 +34,8 @@ Note : The semicolon is the field separator
 
 the operators =, !=, <, >, IN, AND, OR ... must be preceded and followed by at least one space.
 
+Note : Don't forget parentheses to define AND or OR blocks, and remember to put a space before or after them.
+
 keyword OR : be careful with this keyword process time could be long.
 
 $_IDVARIABLE : Identifier of an analysis variable, see the details of an analysis using this variable from the analysis repository
