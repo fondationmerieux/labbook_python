@@ -19,9 +19,9 @@
                             <div>
                                 <input id="date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}" placeholder="" style="color: #888;">
                             </div>
-                            <label for="f_date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
+                            <label for="date_end" class="form-label text-end ms-1 mt-2 me-1">{{ _("au") }}</label>
                             <div>					
-                                <input id="f_date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
+                                <input id="date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                             </div>
                         </div>
                         <div class="col-12 my-2">
@@ -97,6 +97,12 @@ function filter_data()
 {
 let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
+
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
 
 let param = '{ "date_beg":"' + date_beg  + '", ' +
             '"date_end":"' + date_end  + '"}' ;

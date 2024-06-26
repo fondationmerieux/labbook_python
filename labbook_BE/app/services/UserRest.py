@@ -447,7 +447,7 @@ class UserConnExport(Resource):
             self.log.error(Logs.fileline() + ' : UserConnExport ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        dict_data = User.getUserConnections(args['date_beg'], args['date_end'])
+        dict_data = User.getUserConnections(args['date_beg'] + ' 00:00', args['date_end'] + ' 23:59')
 
         if dict_data:
             for d in dict_data:

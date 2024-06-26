@@ -430,9 +430,17 @@ class ReportTAT(Resource):
             # TAT Record calculation
             if date_save and date_vld:
                 diff_date = date_vld - date_save
-                data['tat_days']  = diff_date.days
-                data['tat_hours'], remain = divmod(diff_date.seconds, 3600)
-                data['tat_mins'], data['tat_secs'] = divmod(remain, 60)
+
+                if diff_date.total_seconds() >= 0:
+                    data['tat_days']  = diff_date.days
+                    data['tat_hours'], remain = divmod(diff_date.seconds, 3600)
+                    data['tat_mins'], data['tat_secs'] = divmod(remain, 60)
+                else:
+                    diff_date = timedelta()
+                    data['tat_days']  = 0
+                    data['tat_hours'] = 0
+                    data['tat_mins']  = 0
+                    data['tat_secs']  = 0
 
                 nb_tat += 1
 
@@ -442,13 +450,26 @@ class ReportTAT(Resource):
                 data['tot_days']  = total_tat.days
                 data['tot_hours'], remain = divmod(total_tat.seconds, 3600)
                 data['tot_mins'], data['tat_secs'] = divmod(remain, 60)
+            else:
+                data['tot_days']  = 0
+                data['tot_hours'] = 0
+                data['tot_mins']  = 0
+                data['tot_secs']  = 0
 
             # TAT technical validation calculation
             if date_save and date_vld_tech:
-                diff_date = date_save - date_vld_tech
-                data['tat_tech_days']  = diff_date.days
-                data['tat_tech_hours'], remain = divmod(diff_date.seconds, 3600)
-                data['tat_tech_mins'], data['tat_tech_secs'] = divmod(remain, 60)
+                diff_date = date_vld_tech - date_save
+
+                if diff_date.total_seconds() >= 0:
+                    data['tat_tech_days']  = diff_date.days
+                    data['tat_tech_hours'], remain = divmod(diff_date.seconds, 3600)
+                    data['tat_tech_mins'], data['tat_tech_secs'] = divmod(remain, 60)
+                else:
+                    diff_date = timedelta()
+                    data['tat_tech_days']  = 0
+                    data['tat_tech_hours'] = 0
+                    data['tat_tech_mins']  = 0
+                    data['tat_tech_secs']  = 0
 
                 nb_tat_tech += 1
 
@@ -466,10 +487,18 @@ class ReportTAT(Resource):
 
             # TAT Analysis calculation
             if date_save and date_vld_ana:
-                diff_date = date_save - date_vld_ana
-                data['tat_ana_days']  = diff_date.days
-                data['tat_ana_hours'], remain = divmod(diff_date.seconds, 3600)
-                data['tat_ana_mins'], data['tat_ana_secs'] = divmod(remain, 60)
+                diff_date = date_vld_ana - date_save
+
+                if diff_date.total_seconds() >= 0:
+                    data['tat_ana_days']  = diff_date.days
+                    data['tat_ana_hours'], remain = divmod(diff_date.seconds, 3600)
+                    data['tat_ana_mins'], data['tat_ana_secs'] = divmod(remain, 60)
+                else:
+                    diff_date = timedelta()
+                    data['tat_ana_days']  = 0
+                    data['tat_ana_hours'] = 0
+                    data['tat_ana_mins']  = 0
+                    data['tat_ana_secs']  = 0
 
                 nb_tat_ana += 1
 

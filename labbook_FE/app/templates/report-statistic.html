@@ -289,7 +289,7 @@ let tr_6 = '<tr><td class="text-start font-info">{{ _("Total") }}</td>' ;
     let head_name = '' ;
     
         if (data_interval[i].ais_lower_bound == "")
-        head_name = '{{ _("Moins de") }} ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
+        head_name = '<= ' + data_interval[i].ais_upper_bound + ' {{ _("ans") }}' ;
         else if (data_interval[i].ais_upper_bound == "")
         head_name = '{{ _("Plus de") }} ' + data_interval[i].ais_lower_bound + ' {{ _("ans") }}' ;
         else

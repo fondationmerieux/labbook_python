@@ -163,6 +163,12 @@ let res = ''
 let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
 
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
     // Previous page
     if ( num_page == -1000 && p_cur > 1 )
     p_cur = p_cur - 1 ;

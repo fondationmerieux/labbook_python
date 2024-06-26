@@ -82,6 +82,8 @@ function filter_data()
 let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
 
+{# date converted to datetime in python front-end #}
+
 window.location = "{{ session['server_ext'] }}/report-indicator/" + date_beg +"/"+ date_end; 
 }
 

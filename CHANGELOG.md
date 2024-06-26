@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.4.8] - 2024-06-26
+### Fixed
+- start and end dates for pages : det-hist-analysis, global-report, hist-analyzes, hist-stock-product, user-conn-export, report-activity
+- calculation for TAT report when validation technical is in the same minute of record save
+- stock moved
+- default unit_age for patient form
+
 ## [3.4.7] - 2024-06-24
 ### Changed
 - patient age required

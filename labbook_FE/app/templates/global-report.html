@@ -56,6 +56,12 @@ var exclu = "N" ;
 
 var filename = "global-reports_" + date_beg + "_" + date_end + ".pdf" ;
 
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ; 
+
 var param = '{"filename": "' + filename + '", "exclu":"' + exclu + '", "date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
 
     // popup wait

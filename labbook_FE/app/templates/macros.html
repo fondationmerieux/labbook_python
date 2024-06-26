@@ -1,68 +1,68 @@
 {% macro select_discount_bill(l_discount_bill) -%}
-    <option selected value="0"></option>
+    <option value="0"></option>
     {% for discount_bill in l_discount_bill %}
         <option value="{{ discount_bill['id_data'] }}">{{ discount_bill['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_prd_type(l_prd_type, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for prd_type in l_prd_type %}
         <option value="{{ prd_type['id_data'] }}" {% if id_selected and id_selected == prd_type['id_data'] %}selected{% endif %}>{{ prd_type['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_prd_conserv(l_prd_conserv, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for prd_conserv in l_prd_conserv %}
         <option value="{{ prd_conserv['id_data'] }}" {% if id_selected and id_selected == prd_conserv['id_data'] %}selected{% endif %}>{{ prd_conserv['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_prl_local(l_prl_local, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for prl_local in l_prl_local %}
         <option value="{{ prl_local['prl_ser'] }}" {% if id_selected and id_selected == prl_local['prl_ser'] %}selected{% endif %}>{{ prl_local['prl_name'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_type_ana(l_type_ana, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for type_ana in l_type_ana %}
         <option value="{{ type_ana['id_data'] }}" {% if id_selected and id_selected == type_ana['id_data'] %}selected{% endif %}>{{ type_ana['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_section(l_section, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for section in l_section %}
         <option value="{{ section['id_data'] }}" {% if id_selected and id_selected == section['id_data'] %}selected{% endif %}>{{ section['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_unit_age(l_unit_age, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for unit_age in l_unit_age %}
         <option value="{{ unit_age['id_data'] }}" {% if id_selected and id_selected == unit_age['id_data'] %}selected{% endif %}>{{ unit_age['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_nationality(l_nationality, id_selected) -%}
-    <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}>{{ _("Inconnu") }}</option>
     {% for nationality in l_nationality %}
     <option value="{{ nationality['nat_ser'] }}" {% if id_selected and id_selected == nationality['nat_ser'] %}selected{% endif %}>{{ nationality['nat_name'] }} ({{ nationality['nat_code'] }})</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_blood_group(l_blood_group, id_selected) -%}
-    <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}>{{ _("Inconnu") }}</option>
     {% for blood_group in l_blood_group %}
         <option value="{{ blood_group['id_data'] }}" {% if id_selected and id_selected == blood_group['id_data'] %}selected{% endif %}>{{ blood_group['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_blood_rhesus(l_blood_rhesus, id_selected) -%}
-    <option value="0" {% if not id_selected or id_selected == 0 %} selected {% endif %}>{{ _("Inconnu") }}</option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}>{{ _("Inconnu") }}</option>
     {% for blood_rhesus in l_blood_rhesus %}
         <option value="{{ blood_rhesus['id_data'] }}" {% if id_selected and id_selected == blood_rhesus['id_data'] %}selected{% endif %}>{{ blood_rhesus['label'] }}</option>
     {% endfor %}
@@ -104,21 +104,21 @@
 {%- endmacro %}
 
 {% macro select_manualCat(l_manualCat, id_selected) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for manualCat in l_manualCat %}
         <option value="{{ manualCat['mas_ser'] }}" {% if id_selected and id_selected == manualCat['mas_ser'] %}selected{% endif %}>{{ manualCat['mas_name'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_analyzer(l_analyzers, id_selected) -%}
-    <option value=""></option>
+    <option value="" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for analyzer in l_analyzers %}
         <option value="{{ analyzer['filename'] }}" {% if id_selected and id_selected == analyzer['filename'] %}selected{% endif %}>{{ analyzer['display'] }}</option>
     {% endfor %}
 {%- endmacro %}
 
 {% macro select_civility(l_civility, id_civility) -%}
-    <option selected value="0"></option>
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for civility in l_civility %}
         <option value="{{ civility['id_data'] }}" {% if id_selected and id_selected == civility['id_data'] %}selected{% endif %}>{{ civility['label'] }}</option>
     {% endfor %}

@@ -103,6 +103,8 @@ var param    = '{"date_beg":"' + date_beg + '", ' +
                 '"filename":"' + filename + '", ' +
                 '"id_user":' + id_user + '}' ;
 
+{# date convert to datetime when list of period are constructed #}
+
     if ( filename == "" )
     {
     alert("{{ _("Veuillez sélectionner une feuille de calcul.") }}") ;

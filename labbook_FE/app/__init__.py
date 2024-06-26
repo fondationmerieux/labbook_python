@@ -1617,7 +1617,7 @@ def preview_form(type_form='', filename=''):
 
             for unit_age in json_ihm['pat_age_unit']:
                 if unit_age['code'] == val_age_def:
-                    json_data['unite'] = unit_age['id_data']
+                    json_data['def_age_unit'] = unit_age['id_data']
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests unite_age_defaut failed, err=%s , url=%s', err, url)
@@ -2788,7 +2788,7 @@ def det_patient(type_req='E', id_pat=0):
 
                 for unit_age in json_ihm['pat_age_unit']:
                     if unit_age['code'] == val_age_def:
-                        json_data['unite'] = unit_age['id_data']
+                        json_data['def_age_unit'] = unit_age['id_data']
 
         except requests.exceptions.RequestException as err:
             log.error(Logs.fileline() + ' : requests unite_age_defaut failed, err=%s , url=%s', err, url)
@@ -3695,8 +3695,8 @@ def report_activity():
         json_data['date_beg'] = date_beg
         json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg,
-                   'date_end': date_end,
+        payload = {'date_beg': date_beg + " 00:00",
+                   'date_end': date_end + " 23:59",
                    'type_ana': 0}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/activity'
@@ -5487,7 +5487,7 @@ def hist_stock_product(prd_ser=0, prl_ser=0):
             json_data['date_beg'] = date_beg
             json_data['date_end'] = date_end
 
-            payload = {'date_beg': date_beg, 'date_end': date_end}
+            payload = {'date_beg': date_beg + ' 00:00', 'date_end': date_end + ' 23:59'}
 
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/history/' + str(prd_ser) + '/' + str(prl_ser)
             req = requests.post(url, json=payload)

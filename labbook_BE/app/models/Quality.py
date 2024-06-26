@@ -1281,6 +1281,19 @@ class Quality:
         return cursor.fetchall()
 
     @staticmethod
+    def getStockSupply(prs_ser):
+        cursor = DB.cursor()
+
+        req = ('select prs_ser, prs_date, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num, '
+               'prs_buy_price, prs_user, prs_empty, prs_cancel, prs_user_cancel, prs_lessor, prs_prl '
+               'from product_supply '
+               'where prs_ser=%s')
+
+        cursor.execute(req, (prs_ser,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def updateStockSupplyLocal(**params):
         try:
             cursor = DB.cursor()

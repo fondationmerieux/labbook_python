@@ -3038,6 +3038,34 @@ class StockSupplyMove(Resource):
                 if ret is False:
                     self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateSupplyLocal')
                     return compose_ret('', Constants.cst_content_type_json, 500)
+
+                prev_sup = Quality.getStockSupply(prev_prs_ser)
+
+                nb_prev_use = Quality.getNbStockUse(prev_prs_ser)
+
+                if nb_prev_use and nb_prev_use['nb_pack']:
+                    nb_prev_use = nb_prev_use['nb_pack']
+                else:
+                    nb_prev_use = 0
+
+                if supply['prs_nb_pack'] != (prev_sup['prs_nb_pack'] - nb_prev_use):
+                    diff_use = (prev_sup['prs_nb_pack'] - nb_prev_use) - supply['prs_nb_pack']
+                    prev_sup['prs_nb_pack'] = prev_sup['prs_nb_pack'] - diff_use
+
+                    ret = Quality.updateStockSupply(prs_ser=prev_prs_ser,
+                                                    prs_user=prev_sup['prs_user'],
+                                                    prs_prd=prev_sup['prs_prd'],
+                                                    prs_nb_pack=prev_sup['prs_nb_pack'],
+                                                    prs_receipt_date=prev_sup['prs_receipt_date'],
+                                                    prs_expir_date=prev_sup['prs_expir_date'],
+                                                    prs_prl=prev_sup['prs_prl'],
+                                                    prs_batch_num=prev_sup['prs_batch_num'],
+                                                    prs_buy_price=prev_sup['prs_buy_price'],
+                                                    prs_lessor=prev_sup['prs_lessor'])
+
+                    if ret is False:
+                        self.log.error(Logs.alert() + ' : StockSupplyMove ERROR updateStockSupply')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
             else:
                 # insert new supply
                 ret = Quality.insertStockSupplySplit(prs_user=args['id_user'],
