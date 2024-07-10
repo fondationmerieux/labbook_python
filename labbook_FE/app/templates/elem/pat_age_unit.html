@@ -2,6 +2,6 @@
 <div>
     <select name="pat_age_unit" id="pat_age_unit" class="form-select form-lbk" {% for attr in l_attr %}{{ attr }} {% endfor %}>
         {% from "macros.html" import select_unit_age %}
-        {{ select_unit_age(ihm["pat_age_unit"], args['def_age_unit']) }}
+        {{ select_unit_age(ihm["pat_age_unit"], args.get('pat_age_unit', args['def_age_unit'])) }}
     </select>
 </div>

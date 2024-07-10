@@ -53,13 +53,16 @@ function export_whonet()
 var date_beg = $("#date_beg").val() ;
 var date_end = $("#date_end").val() ;
 
+let str_beg = date_beg ;
+let str_end = date_end ;
+
     if (date_beg)
     date_beg += ' 00:00' ;
 
     if (date_end)
     date_end += ' 23:59' ;
 
-var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
+var param = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -76,7 +79,7 @@ var param    = '{"date_beg":"' + date_beg + '", "date_end":"' + date_end + '"}' 
         {
             $("#dial-wait").modal("hide") ;
 
-        download_file( "PY", "whonet_" + date_beg + "_" + date_end + ".txt", "GEN", 0 ) ;
+        download_file( "PY", "whonet_" + str_beg + "_" + str_end + ".txt", "GEN", 0 ) ;
         },
         error: function(ret)
         {

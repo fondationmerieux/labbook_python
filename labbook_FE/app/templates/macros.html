@@ -41,7 +41,7 @@
 {%- endmacro %}
 
 {% macro select_unit_age(l_unit_age, id_selected) -%}
-    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
+    <option value="" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for unit_age in l_unit_age %}
         <option value="{{ unit_age['id_data'] }}" {% if id_selected and id_selected == unit_age['id_data'] %}selected{% endif %}>{{ unit_age['label'] }}</option>
     {% endfor %}

@@ -213,8 +213,14 @@ let total_remain = 0 ;
 
 function export_data()
 {
-let date_beg = $("#f_date_beg").val() ;
-let date_end = $("#f_date_end").val() ;
+let date_beg = $("#date_beg").val() ;
+let date_end = $("#date_end").val() ;
+
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
 
 let param = '{ "date_beg":"' + date_beg  + '", ' +
               '"date_end":"' + date_end  + '"}' ;
