@@ -41,10 +41,10 @@ class UserAccess(Resource):
         ret = User.checkUserAccess(login, pwd_db)
 
         if ret is True:
-            self.log.info(Logs.fileline() + ' : TRACE UserAccess authorized role=' + str(user['role_type']) + ' | login=' + str(login))
+            self.log.info(Logs.fileline() + ' : UserAccess authorized role=' + str(user['role_type']) + ' | login=' + str(login))
             return compose_ret(user['role_type'], Constants.cst_content_type_json)
         elif ret is False:
-            self.log.info(Logs.fileline() + ' : TRACE UserAccess not authorized ' + str(login))
+            self.log.info(Logs.fileline() + ' : UserAccess not authorized ' + str(login))
             return compose_ret('', Constants.cst_content_type_json, 401)
         else:
             self.log.error(Logs.fileline() + ' : UserAccess ERROR checkUserAccess')

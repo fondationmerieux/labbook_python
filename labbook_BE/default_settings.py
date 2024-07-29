@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-APP_VERSION = '3.4.9'
+APP_VERSION = '3.4.10'
 
 # ######################################
 #  Database parameters

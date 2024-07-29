@@ -66,19 +66,38 @@ let login = $("#login").val() ;
 let pwd   = $("#password").val() ;
 
 var param = '{ "login":"' + login + '", "pwd":"' + pwd + '"}' ;
+var param_login = '{ "login":"' + login + '"}' ;
 
     $.ajax( 
     {
         type: "POST",
         url: "{{ session['server_ext'] }}/services/user/access",
-        dataType: 'json',
+        dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: param,
         success: function(ret_ws)
         {
         $("#auth_msg").addClass("d-none");
         console.log("SUCCESS post login") ;
-        window.location.href = "{{ session['server_ext'] }}/homepage/" + login ;
+
+            $.ajax( 
+            {
+                type: "POST",
+                url: "{{ session['server_ext'] }}/confirm-access",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: param_login,
+                success: function(response) 
+                {
+                    console.log("Session updated successfully:", response);
+                    if (response.redirect_url)
+                    window.location.href = response.redirect_url;
+                },
+                error: function(xhr, status, error) 
+                {
+                    console.error("Error updating session:", status, error);
+                }
+            } ) ;
         },
         error: function(ret_ws)
         {

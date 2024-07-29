@@ -22,7 +22,7 @@ import uuid
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
 
-from flask import Flask, render_template, render_template_string, request, session, redirect, send_file, Response
+from flask import Flask, render_template, render_template_string, request, session, redirect, send_file, Response, url_for, jsonify
 from flask_babel import Babel
 
 from app.models.Logs import Logs
@@ -386,8 +386,12 @@ def get_software_settings():
 
 
 def test_session():
-    if 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K'):
-        return redirect(session['server_ext'] + '/disconnect')
+    if 'login_ok' not in session or 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K'):
+        log.error(Logs.fileline() + ' : DEBUG test_session KO')
+        return False
+    else:
+        log.error(Logs.fileline() + ' : DEBUG test_session OK')
+        return True
 
 
 @app.template_filter('date_format')
@@ -444,6 +448,17 @@ def index():
             get_init_var()
 
         return redirect(session['server_ext'] + '/' + session['current_page'])
+
+
+@app.route('/confirm-access', methods=['POST'])
+def confirm_access():
+    args = request.get_json()
+    session['login_ok'] = args['login']
+    session.modified = True
+
+    url = url_for('homepage', login=str(session['login_ok']), _external=True)
+
+    return jsonify({'redirect_url': url})
 
 
 # Page : labbook_BE not ready
@@ -557,7 +572,10 @@ def homepage(login=''):
     get_user_data(login)
     get_software_settings()
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook homepage => disconnect')
+        session.clear()
+        return index()
 
     if 'user_locale' in session and ('lang_chosen' not in session or not session['lang_chosen']):
         if session['user_locale'] == 34:
@@ -768,7 +786,10 @@ def homepage(login=''):
 def setting_users():
     log.info(Logs.fileline() + ' : TRACE setting users')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting users => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-users'
     session.modified = True
@@ -808,7 +829,10 @@ def setting_users():
 def setting_det_user(user_id=0, ctx='', role_type=''):
     log.info(Logs.fileline() + ' : TRACE setting det user=' + str(user_id))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det user => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-det-user/' + str(user_id)
     session.modified = True
@@ -889,7 +913,10 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
 def user_conn_export():
     log.info(Logs.fileline() + ' : TRACE user-conn-export')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook user-conn-export => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'user-conn-export'
     session.modified = True
@@ -902,7 +929,10 @@ def user_conn_export():
 def user_import():
     log.info(Logs.fileline() + ' : TRACE user-import')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook user-import => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'user-import'
     session.modified = True
@@ -916,7 +946,10 @@ def user_import():
 def setting_pwd_user(user_id=0, ctx=''):
     log.info(Logs.fileline() + ' : TRACE setting pwd user')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook pwd user => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-pwd-user/' + str(user_id)
     session.modified = True
@@ -938,7 +971,10 @@ def setting_pwd_user(user_id=0, ctx=''):
 def dict_import():
     log.info(Logs.fileline() + ' : TRACE dict import')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook dict import => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'dict-import'
     session.modified = True
@@ -954,7 +990,10 @@ def dict_import():
 def setting_dicts():
     log.info(Logs.fileline() + ' : TRACE setting dict')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting dict => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-dicts'
     session.modified = True
@@ -982,7 +1021,10 @@ def setting_dicts():
 def setting_det_dict(dict_name='', id_dict=0):
     log.info(Logs.fileline() + ' : TRACE setting det dict=' + str(dict_name) + ', id_dict=' + str(id_dict))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det dict => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-det-dict/' + str(dict_name)
 
@@ -1046,7 +1088,10 @@ def setting_det_dict(dict_name='', id_dict=0):
 def setting_analyzes():
     log.info(Logs.fileline() + ' : TRACE setting analyzes')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting analyzes => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-analyzes'
     session.modified = True
@@ -1095,7 +1140,10 @@ def setting_analyzes():
 def list_analyzers():
     log.info(Logs.fileline() + ' : TRACE setting analyzers')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting analyzers => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-analyzers'
     session.modified = True
@@ -1121,7 +1169,10 @@ def list_analyzers():
 def det_analyzer(id_analyzer=0):
     log.info(Logs.fileline() + ' : TRACE setting det analyzer=' + str(id_analyzer))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det analyzer => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-analyzer/' + str(id_analyzer)
     session.modified = True
@@ -1164,7 +1215,10 @@ def det_analyzer(id_analyzer=0):
 def list_vars():
     log.info(Logs.fileline() + ' : TRACE list vars')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list vars => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-vars'
     session.modified = True
@@ -1190,7 +1244,10 @@ def list_vars():
 def analysis_import():
     log.info(Logs.fileline() + ' : TRACE import analysis')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook import analysis => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'analysis-import'
     session.modified = True
@@ -1206,7 +1263,10 @@ def analysis_import():
 def setting_det_analysis(analysis_id=0):
     log.info(Logs.fileline() + ' : TRACE setting det analysis=' + str(analysis_id))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det analysis => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-det-analysis/' + str(analysis_id)
     session.modified = True
@@ -1294,7 +1354,10 @@ def setting_det_analysis(analysis_id=0):
 def manage_pat_records():
     log.info(Logs.fileline() + ' : TRACE manage patient records')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook patient records => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'manage-pat-records'
     session.modified = True
@@ -1354,7 +1417,10 @@ def manage_pat_records():
 def setting_preferences():
     log.info(Logs.fileline() + ' : TRACE setting preferences')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting preferences => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-pref'
     session.modified = True
@@ -1379,7 +1445,10 @@ def setting_preferences():
 def setting_backup():
     log.info(Logs.fileline() + ' : TRACE setting backup')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting backup => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-backup'
     session.modified = True
@@ -1441,7 +1510,10 @@ def setting_backup():
 def setting_zipcity():
     log.info(Logs.fileline() + ' : TRACE setting zipcity')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting zipcity => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-zipcity'
     session.modified = True
@@ -1468,7 +1540,10 @@ def setting_zipcity():
 def setting_stock():
     log.info(Logs.fileline() + ' : TRACE setting stock')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting stock => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-stock'
     session.modified = True
@@ -1512,7 +1587,10 @@ def setting_stock():
 def setting_form():
     log.info(Logs.fileline() + ' : TRACE setting form')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting form => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-form'
     session.modified = True
@@ -1551,7 +1629,10 @@ def setting_form():
 def preview_form(type_form='', filename=''):
     log.info(Logs.fileline() + ' : TRACE preview_form')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook preview form => disconnect')
+        session.clear()
+        return index()
 
     json_ihm  = {}
     json_data = {}
@@ -1669,7 +1750,10 @@ def preview_form(type_form='', filename=''):
 def list_template():
     log.info(Logs.fileline() + ' : TRACE list template')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list template => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-template'
     session.modified = True
@@ -1694,7 +1778,10 @@ def list_template():
 def det_template(id_tpl=0):
     log.info(Logs.fileline() + ' : TRACE setting template det=' + str(id_tpl))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook template det => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-template/' + str(id_tpl)
     session.modified = True
@@ -1725,7 +1812,10 @@ def det_template(id_tpl=0):
 def setting_report():
     log.info(Logs.fileline() + ' : TRACE setting report')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting report => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-report'
     session.modified = True
@@ -1751,7 +1841,10 @@ def setting_report():
 def setting_rec_num():
     log.info(Logs.fileline() + ' : TRACE setting record number')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting rec num => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-rec-num'
     session.modified = True
@@ -1777,7 +1870,10 @@ def setting_rec_num():
 def setting_logo():
     log.info(Logs.fileline() + ' : TRACE setting logo')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting logo => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-logo'
     session.modified = True
@@ -1790,7 +1886,10 @@ def setting_logo():
 def setting_age_interval():
     log.info(Logs.fileline() + ' : TRACE setting age interval')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting age interval => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-age-interval'
     session.modified = True
@@ -1823,7 +1922,10 @@ def setting_age_interval():
 def setting_requesting_services():
     log.info(Logs.fileline() + ' : TRACE setting requesting services')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting requesting services => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-requesting-services'
     session.modified = True
@@ -1856,7 +1958,10 @@ def setting_requesting_services():
 def setting_functionnal_units():
     log.info(Logs.fileline() + ' : TRACE setting functionnal units')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting functionnal units => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-functionnal-units'
     session.modified = True
@@ -1893,7 +1998,10 @@ def setting_functionnal_units():
 def setting_manual():
     log.info(Logs.fileline() + ' : TRACE setting manual')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting manual => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-manual'
     session.modified = True
@@ -1926,7 +2034,10 @@ def setting_manual():
 def setting_link_unit_user(id_unit):
     log.info(Logs.fileline() + ' : TRACE setting link unit user')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting link user => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-link-unit-user'
     session.modified = True
@@ -1965,7 +2076,10 @@ def setting_link_unit_user(id_unit):
 def setting_link_unit_fam(id_unit):
     log.info(Logs.fileline() + ' : TRACE setting link unit fam')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting link unit => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-link-unit-fam'
     session.modified = True
@@ -2004,7 +2118,10 @@ def setting_link_unit_fam(id_unit):
 def setting_dhis2():
     log.info(Logs.fileline() + ' : TRACE setting dhis2')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting dhis2 => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-dhis2'
     session.modified = True
@@ -2043,7 +2160,10 @@ def setting_dhis2():
 def det_dhis2_api(id_item=0):
     log.info(Logs.fileline() + ' : TRACE dhis2 api =' + str(id_item))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook dhis2 api => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-dhis2-api/' + str(id_item)
     session.modified = True
@@ -2076,7 +2196,10 @@ def det_dhis2_api(id_item=0):
 def setting_epidemio():
     log.info(Logs.fileline() + ' : TRACE setting epidemio')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting epidemio => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-epidemio'
     session.modified = True
@@ -2104,7 +2227,10 @@ def setting_epidemio():
 def setting_indicator():
     log.info(Logs.fileline() + ' : TRACE setting indicator')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting indicator => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'setting-indicator'
     session.modified = True
@@ -2136,7 +2262,10 @@ def setting_indicator():
 def list_results():
     log.info(Logs.fileline() + ' : TRACE list-results')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list results => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-results'
     session.modified = True
@@ -2193,7 +2322,10 @@ def list_results():
 def enter_result(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : id_rec = ' + str(id_rec))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook enter result => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'enter-result/' + str(id_rec)
     session.modified = True
@@ -2336,7 +2468,10 @@ def enter_result(id_rec=0, anchor=''):
 def list_records():
     log.info(Logs.fileline() + ' : TRACE list-records')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list records => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-records'
     session.modified = True
@@ -2388,7 +2523,10 @@ def list_records():
 def list_works(user_role='', emer=''):
     log.info(Logs.fileline() + ' : TRACE list-works user_role=' + str(user_role))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list works => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-works/' + str(user_role)
     session.modified = True
@@ -2456,7 +2594,10 @@ def list_works(user_role='', emer=''):
 def global_report():
     log.info(Logs.fileline() + ' : TRACE global-report')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook global report => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'global-report'
     session.modified = True
@@ -2471,7 +2612,10 @@ def global_report():
 def list_samples():
     log.info(Logs.fileline() + ' : TRACE list-samples')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list samples => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-samples'
     session.modified = True
@@ -2504,7 +2648,10 @@ def list_samples():
 def det_sample(id_prod=0):
     log.info(Logs.fileline() + ' : TRACE det sample=' + str(id_prod))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det sample => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-sample/' + str(id_prod)
     session.modified = True
@@ -2590,7 +2737,10 @@ def det_sample(id_prod=0):
 def list_doctors():
     log.info(Logs.fileline() + ' : TRACE list doctors')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list doctors => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-doctors'
     session.modified = True
@@ -2616,7 +2766,10 @@ def list_doctors():
 def det_doctor(id_doctor=0):
     log.info(Logs.fileline() + ' : TRACE setting det doctor=' + str(id_doctor))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det doctor => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-doctor/' + str(id_doctor)
     session.modified = True
@@ -2668,7 +2821,10 @@ def det_doctor(id_doctor=0):
 def new_req_ext():
     log.info(Logs.fileline() + ' : TRACE new-req-ext')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook new-req-ext => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'new-req-ext'
     session.modified = True
@@ -2681,7 +2837,10 @@ def new_req_ext():
 def new_req_int():
     log.info(Logs.fileline() + ' : TRACE new-req-int')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook new-req-int => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'new-req-int'
     session.modified = True
@@ -2694,7 +2853,10 @@ def new_req_int():
 def det_patient(type_req='E', id_pat=0):
     log.info(Logs.fileline() + ' : TRACE det-patient id_pat = ' + str(id_pat))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det patient => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-patient/' + type_req + '/' + str(id_pat)
     session.modified = True
@@ -2839,7 +3001,10 @@ def det_patient(type_req='E', id_pat=0):
 def det_req_ext(entry='Y', ref=0):
     log.info(Logs.fileline() + ' : TRACE det-req-ext ref = ' + str(ref))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det-req-ext => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-req-ext/' + str(entry) + '/' + str(ref)
     session.modified = True
@@ -2949,7 +3114,10 @@ def det_req_ext(entry='Y', ref=0):
 def det_req_int(entry='Y', ref=0):
     log.info(Logs.fileline() + ' : TRACE det-req-int ref = ' + str(ref))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det-req-int => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-req-int/' + str(entry) + '/' + str(ref)
     session.modified = True
@@ -3064,7 +3232,10 @@ def det_req_int(entry='Y', ref=0):
 def administrative_record(type_req='E', id_rec=0):
     log.info(Logs.fileline() + ' : TRACE administrative-record id_rec = ' + str(id_rec))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook administrative record => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'administrative-record/' + str(type_req) + '/' + str(id_rec)
     session.modified = True
@@ -3205,7 +3376,10 @@ def administrative_record(type_req='E', id_rec=0):
 def technical_validation(id_rec=0, anchor=''):
     log.info(Logs.fileline() + ' : TRACE technical-validation id_rec = ' + str(id_rec))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook technical validation => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'technical-validation/' + str(id_rec)
     session.modified = True
@@ -3401,7 +3575,10 @@ def technical_validation(id_rec=0, anchor=''):
 def biological_validation(mode='', id_rec=0):
     log.info(Logs.fileline() + ' : TRACE biological-validation id_rec = ' + str(id_rec))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook biological validation => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'biological-validation/' + str(id_rec)
     session.modified = True
@@ -3653,7 +3830,10 @@ def biological_validation(mode='', id_rec=0):
 def report_activity():
     log.info(Logs.fileline() + ' : TRACE report activity')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report activity => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-activity'
     session.modified = True
@@ -3717,7 +3897,10 @@ def report_activity():
 def report_epidemio(date_beg='', date_end=''):
     log.info(Logs.fileline() + ' : TRACE report epidemio')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report epidemio => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-epidemio'
     session.modified = True
@@ -3760,7 +3943,10 @@ def report_epidemio(date_beg='', date_end=''):
 def report_indicator(date_beg='', date_end=''):
     log.info(Logs.fileline() + ' : TRACE report indicator')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report indicator => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-indicator'
     session.modified = True
@@ -3802,7 +3988,10 @@ def report_indicator(date_beg='', date_end=''):
 def pivot_table():
     log.info(Logs.fileline() + ' : TRACE pivot table')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook pivot table => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'pivot-table'
     session.modified = True
@@ -3827,7 +4016,10 @@ def pivot_table():
 def report_statistic():
     log.info(Logs.fileline() + ' : TRACE report statistic')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report statistic => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-statistic'
     session.modified = True
@@ -3890,7 +4082,10 @@ def report_statistic():
 def report_tat():
     log.info(Logs.fileline() + ' : TRACE report tat')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report tat => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-tat'
     session.modified = True
@@ -3917,7 +4112,10 @@ def report_tat():
 def report_dhis2():
     log.info(Logs.fileline() + ' : TRACE report dhis2')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report dhis2 => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-dhis2'
     session.modified = True
@@ -3957,7 +4155,10 @@ def report_dhis2():
 def whonet_export():
     log.info(Logs.fileline() + ' : TRACE whonet-export')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook whonet export => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'whonet-export'
     session.modified = True
@@ -3970,7 +4171,10 @@ def whonet_export():
 def hist_patients():
     log.info(Logs.fileline() + ' : TRACE hist patients')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook hist patients => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'hist-patients'
     session.modified = True
@@ -4008,7 +4212,10 @@ def hist_patients():
 def det_hist_patient(id_pat=0):
     log.info(Logs.fileline() + ' : TRACE det hist patient')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det hist patient => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-hist-patient/' + str(id_pat)
     session.modified = True
@@ -4034,7 +4241,10 @@ def det_hist_patient(id_pat=0):
 def hist_analyzes():
     log.info(Logs.fileline() + ' : TRACE hist analyzes')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook hist analyzes => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'hist-analyzes'
     session.modified = True
@@ -4083,7 +4293,10 @@ def hist_analyzes():
 def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
     log.info(Logs.fileline() + ' : TRACE det hist analysis')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det hist analysis => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-hist-analysis/' + str(id_ana) + '/' + date_beg + '/' + date_end
     session.modified = True
@@ -4114,7 +4327,10 @@ def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
 def report_today():
     log.info(Logs.fileline() + ' : TRACE report today')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report today => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-today'
     session.modified = True
@@ -4150,7 +4366,10 @@ def report_today():
 def report_billing():
     log.info(Logs.fileline() + ' : TRACE report billing')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report billing => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'report-billing'
     session.modified = True
@@ -4191,7 +4410,10 @@ def report_billing():
 def quality_general():
     log.info(Logs.fileline() + ' : TRACE quality-general')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook quality general => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'quality-general'
     session.modified = True
@@ -4261,7 +4483,10 @@ def quality_general():
 def list_laboratory():
     log.info(Logs.fileline() + ' : TRACE list laboratory')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list laboratory => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-laboratory'
     session.modified = True
@@ -4307,7 +4532,10 @@ def list_laboratory():
 def list_staff():
     log.info(Logs.fileline() + ' : TRACE list staff')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list staff => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-staff'
     session.modified = True
@@ -4334,7 +4562,10 @@ def list_staff():
 def det_staff(user_id=0, ctx='', role_type=''):
     log.info(Logs.fileline() + ' : TRACE det staff=' + str(user_id))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det staff => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-staff/' + str(user_id)
     session.modified = True
@@ -4436,7 +4667,10 @@ def det_staff(user_id=0, ctx='', role_type=''):
 def list_equipment():
     log.info(Logs.fileline() + ' : TRACE list equipment')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list equipment => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-equipment'
     session.modified = True
@@ -4461,7 +4695,10 @@ def list_equipment():
 def det_equipment(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE det equipment=' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det equipment => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-equipment/' + str(id_eqp)
     session.modified = True
@@ -4526,7 +4763,10 @@ def det_equipment(id_eqp=0):
 def eqp_document(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE eqp document=' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook eqp document => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'eqp-document/' + str(id_eqp)
     session.modified = True
@@ -4577,7 +4817,10 @@ def eqp_document(id_eqp=0):
 def list_eqp_failure(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE list eqp failure' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list eqp failure => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-eqp-failure/' + str(id_eqp)
     session.modified = True
@@ -4615,7 +4858,10 @@ def list_eqp_failure(id_eqp=0):
 def eqp_failure(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE eqp failure=' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook eqp failure => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'eqp-failure/' + str(id_eqp)
     session.modified = True
@@ -4644,7 +4890,10 @@ def eqp_failure(id_eqp=0):
 def list_eqp_metrology(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE list eqp metrology' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list eqp metrology => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-eqp-metrology/' + str(id_eqp)
     session.modified = True
@@ -4682,7 +4931,10 @@ def list_eqp_metrology(id_eqp=0):
 def eqp_metrology(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE eqp metrology=' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook eqp metrology => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'eqp-metrology/' + str(id_eqp)
     session.modified = True
@@ -4711,7 +4963,10 @@ def eqp_metrology(id_eqp=0):
 def list_eqp_maintenance(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE list eqp maintenance' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list eqp maintenance => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-eqp-maintenance/' + str(id_eqp)
     session.modified = True
@@ -4761,7 +5016,10 @@ def list_eqp_maintenance(id_eqp=0):
 def eqp_maintenance_preventive(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE eqp preventive maintenance=' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook eqp preventive maintenance => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'eqp-maintenance-preventive/' + str(id_eqp)
     session.modified = True
@@ -4790,7 +5048,10 @@ def eqp_maintenance_preventive(id_eqp=0):
 def eqp_maintenance_contract(id_eqp=0):
     log.info(Logs.fileline() + ' : TRACE eqp maintenance contract=' + str(id_eqp))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook eqp maintenance contract => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'eqp-maintenance-contract/' + str(id_eqp)
     session.modified = True
@@ -4819,7 +5080,10 @@ def eqp_maintenance_contract(id_eqp=0):
 def list_suppliers():
     log.info(Logs.fileline() + ' : TRACE list suppliers')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list suppliers => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-suppliers'
     session.modified = True
@@ -4845,7 +5109,10 @@ def list_suppliers():
 def det_supplier(id_supplier=0):
     log.info(Logs.fileline() + ' : TRACE setting det supplier=' + str(id_supplier))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det supplier => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-supplier/' + str(id_supplier)
     session.modified = True
@@ -4874,7 +5141,10 @@ def det_supplier(id_supplier=0):
 def list_manuals():
     log.info(Logs.fileline() + ' : TRACE list manuals')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list manuals => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-manuals'
     session.modified = True
@@ -4911,7 +5181,10 @@ def list_manuals():
 def det_manual(id_manual=0):
     log.info(Logs.fileline() + ' : TRACE setting det manual=' + str(id_manual))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det manual => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-manual/' + str(id_manual)
     session.modified = True
@@ -4976,7 +5249,10 @@ def det_manual(id_manual=0):
 def list_procedure():
     log.info(Logs.fileline() + ' : TRACE list procedure')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list procedure => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-procedure'
     session.modified = True
@@ -5001,7 +5277,10 @@ def list_procedure():
 def det_procedure(id_procedure=0):
     log.info(Logs.fileline() + ' : TRACE setting det procedure=' + str(id_procedure))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det procedure => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-procedure/' + str(id_procedure)
     session.modified = True
@@ -5055,7 +5334,10 @@ def det_procedure(id_procedure=0):
 def list_trace_download(type_trace=''):
     log.info(Logs.fileline() + ' : TRACE list trace download')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list trace download => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-trace-download/' + str(type_trace)
     session.modified = True
@@ -5094,7 +5376,10 @@ def list_trace_download(type_trace=''):
 def list_ctrl_int():
     log.info(Logs.fileline() + ' : TRACE internal control list')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook internal control list => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-ctrl-int'
     session.modified = True
@@ -5119,7 +5404,10 @@ def list_ctrl_int():
 def det_control_int(id_ctrl=0):
     log.info(Logs.fileline() + ' : TRACE internal control det=' + str(id_ctrl))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook internal control det => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-control-int/' + str(id_ctrl)
     session.modified = True
@@ -5162,7 +5450,10 @@ def det_control_int(id_ctrl=0):
 def res_control_int(ctq_ser, type_val='', cti_ser=0):
     log.info(Logs.fileline() + ' : TRACE internal control res=' + str(cti_ser))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook internal control res => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'res-control-int/' + str(ctq_ser) + '/' + type_val + '/' + str(cti_ser)
     session.modified = True
@@ -5195,7 +5486,10 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
 def list_ctrl_ext():
     log.info(Logs.fileline() + ' : TRACE external control list')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook external control list => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-ctrl-ext'
     session.modified = True
@@ -5220,7 +5514,10 @@ def list_ctrl_ext():
 def det_control_ext(id_ctrl=0):
     log.info(Logs.fileline() + ' : TRACE external control det=' + str(id_ctrl))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook external control det => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-control-ext/' + str(id_ctrl)
     session.modified = True
@@ -5263,7 +5560,10 @@ def det_control_ext(id_ctrl=0):
 def res_control_ext(ctq_ser, type_val='', cte_ser=0):
     log.info(Logs.fileline() + ' : TRACE external control res=' + str(cte_ser))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook external control res => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'res-control-ext/' + str(ctq_ser) + '/' + type_val + '/' + str(cte_ser)
     session.modified = True
@@ -5307,7 +5607,10 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
 def list_stock():
     log.info(Logs.fileline() + ' : TRACE list stock')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list stock => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-stock'
     session.modified = True
@@ -5367,7 +5670,10 @@ def list_stock():
 def move_stock_product():
     log.info(Logs.fileline() + ' : TRACE setting move stock product')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting move stock => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'move-stock-product'
     session.modified = True
@@ -5405,7 +5711,10 @@ def move_stock_product():
 def list_products():
     log.info(Logs.fileline() + ' : TRACE list products')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list products => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-products'
     session.modified = True
@@ -5431,7 +5740,10 @@ def list_products():
 def det_list_stock(prd_ser=0, prl_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting det list stock=' + str(prd_ser) + ' local=' + str(prl_ser))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det list stock => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-list-stock/' + str(prd_ser) + '/' + str(prl_ser)
     session.modified = True
@@ -5464,7 +5776,10 @@ def det_list_stock(prd_ser=0, prl_ser=0):
 def hist_stock_product(prd_ser=0, prl_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting hist stock product=' + str(prd_ser) + ' local=' + str(prl_ser))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook hist stock product => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'hist-stock-product/' + str(prd_ser) + '/' + str(prl_ser)
     session.modified = True
@@ -5509,7 +5824,10 @@ def hist_stock_product(prd_ser=0, prl_ser=0):
 def det_new_product(prd_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting det new product=' + str(prd_ser))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det new product => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-new-product/' + str(prd_ser)
     session.modified = True
@@ -5563,7 +5881,10 @@ def det_new_product(prd_ser=0):
 def det_stock_product(prs_ser=0):
     log.info(Logs.fileline() + ' : TRACE setting det stock product=' + str(prs_ser))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det stock product => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-stock-product/' + str(prs_ser)
     session.modified = True
@@ -5606,7 +5927,10 @@ def det_stock_product(prs_ser=0):
 def list_nonconformities():
     log.info(Logs.fileline() + ' : TRACE list nonconformities')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list nonconformities => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-nonconformities'
     session.modified = True
@@ -5642,7 +5966,10 @@ def list_nonconformities():
 def non_conformity(id_det=0):
     log.info(Logs.fileline() + ' : TRACE non-conformity')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook non-conformity => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'non-conformity/' + str(id_det)
     session.modified = True
@@ -5672,7 +5999,10 @@ def non_conformity(id_det=0):
 def list_meeting():
     log.info(Logs.fileline() + ' : TRACE list meeting')
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list meeting => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'list-meeting'
     session.modified = True
@@ -5697,7 +6027,10 @@ def list_meeting():
 def det_meeting(id_meeting=0):
     log.info(Logs.fileline() + ' : TRACE setting det meeting=' + str(id_meeting))
 
-    test_session()
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det meeting => disconnect')
+        session.clear()
+        return index()
 
     session['current_page'] = 'det-meeting/' + str(id_meeting)
     session.modified = True
