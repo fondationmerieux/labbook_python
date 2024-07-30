@@ -8,6 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.3.17] - 2024-07-30
+### Fixed
+- security fix
+- Daily billing report when more than 50 bills
+
+## [3.3.16] - 2024-04-24
+### Fixed
+- order of list record
+
 ## [3.3.15] - 2023-10-06
 ### Fixed
 - rebuild ISO and retry to create manual_setting table by Alembic

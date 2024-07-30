@@ -258,7 +258,7 @@ class Pdf:
 
         bill_div += ('<span>' + _("ETAT DE LA FACTURATION DU") + ' ' + str(date_beg) + ' ' + _("AU") + ' ' +
                      str(date_end) + '</span>'
-                     '<div style="width:980px;height:600px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
+                     '<div style="width:980px;height:1200px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
                      'margin-top:20px;background-color:#FFF;">'
                      '<table style="width:100%"><thead>'
                      '<th style="text-align:left;">' + _("N° dossier") + '</th>'
@@ -268,7 +268,20 @@ class Pdf:
                      '<th>' + _("A payer") + '</th></thead>'
                      '<tr><td colspan="5"></td></tr>')
 
+        # start to 8 for the first page with headers
+        idx_line = 8
+
         for data in l_datas:
+            idx_line += 1
+
+            # Next page
+            if idx_line > 58:
+                bill_div += ('<tr><td colspan="5">&nbsp;</td></tr>'
+                             '<tr><td colspan="5">&nbsp;</td></tr>'
+                             '<tr><td colspan="5">&nbsp;</td></tr>'
+                             '<tr><td colspan="5">&nbsp;</td></tr>')
+                idx_line = 0
+
             bill_div += ('<tr><td style="text-align:left;">' + data['rec_num'] + '</td>'
                          '<td style="text-align:left;">' + data['receipt_num'] + '</td>'
                          '<td style="text-align:left;">' + data['bill_num'] + '</td>'

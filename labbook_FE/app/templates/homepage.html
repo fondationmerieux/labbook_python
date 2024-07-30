@@ -1,3 +1,4 @@
+{% if session and 'login_ok' in session and session['login_ok'] == session['login'] %}
 {% extends "skeleton.html" %}
 
 {% block head %}
@@ -175,3 +176,9 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
 } ) ;
 </script>
 {% endblock %}
+{% else %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+console.log("DEBUG login matching KO");
+window.location = "{{ session['server_ext'] }}/disconnect" ;
+</script>
+{% endif %}
