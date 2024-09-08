@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.4.11] - 2024-09-09
+### Fixed
+- API and Lab profile was blocked
+- Incorrect billing calculation with reduction if an analysis is deleted via the administrative record  
+
 ## [3.4.10] - 2024-07-29
 ### Fixed
 - security fix

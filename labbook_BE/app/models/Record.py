@@ -313,15 +313,36 @@ class Record:
             return False
 
     @staticmethod
-    def removeRecordBill(id_rec, diff_price, diff_remain):
+    def removeRecordBill(id_rec, diff_price):
         try:
             cursor = DB.cursor()
 
+            # take discounts into account when recalculating
+            rec = Record.getRecord(id_rec)
+
+            if not rec:
+                Record.log.error(Logs.fileline() + ' : ' + 'getRecord ERROR not found with id = ' + str(id_rec))
+                return False
+
+            price     = rec['prix'] - diff_price
+            remain    = rec['a_payer']
+            discount  = rec['remise_pourcent']
+            insurance = rec['assu_pourcent']
+
+            if discount > 0 and insurance > 0:
+                remain = (price - (price * discount / 100)) * (100 - insurance) / 100
+            elif discount > 0:
+                remain = price - (price * discount / 100)
+            elif insurance > 0:
+                remain = price - (price * insurance / 100)
+            else:
+                remain = price
+
             req = ('update sigl_02_data '
-                   'set prix = prix - %s, a_payer = a_payer - %s '
+                   'set prix = %s, a_payer = %s '
                    'where id_data=%s')
 
-            cursor.execute(req, (diff_price, diff_remain, id_rec,))
+            cursor.execute(req, (price, remain, id_rec,))
 
             Record.log.info(Logs.fileline() + ' : removeRecordBill id_rec=' + str(id_rec))
 

@@ -386,11 +386,11 @@ def get_software_settings():
 
 
 def test_session():
-    if 'login_ok' not in session or 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K'):
-        log.error(Logs.fileline() + ' : DEBUG test_session KO')
+    if 'login_ok' not in session or 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K', 'L', 'API'):
+        log.info(Logs.fileline() + ' : DEBUG test_session KO')
         return False
     else:
-        log.error(Logs.fileline() + ' : DEBUG test_session OK')
+        log.info(Logs.fileline() + ' : DEBUG test_session OK')
         return True
 
 

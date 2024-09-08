@@ -758,7 +758,7 @@ class AnalysisReq(Resource):
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         if args['price'] > 0:
-            ret = Record.removeRecordBill(args['id_rec'], args['price'], args['price'])
+            ret = Record.removeRecordBill(args['id_rec'], args['price'])
 
             if not ret:
                 self.log.error(Logs.fileline() + ' : TRACE AnalysisReq removeRecordBill ERROR')
