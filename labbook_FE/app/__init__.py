@@ -6067,6 +6067,93 @@ def det_meeting(id_meeting=0):
     return render_template('det-meeting.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
+# Page : list messages
+@app.route('/list-messages')
+def list_messages():
+    log.info(Logs.fileline() + ' : TRACE list messages')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list messages => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-messages'
+    session.modified = True
+
+    json_data = {}
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/message/list/' + str(session['user_id'])
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+            log.info(Logs.fileline() + ' : TRACE DEBUG list messages : ' + str(json_data))
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests messages list failed, err=%s , url=%s', err, url)
+
+    return render_template('list-messages.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : details message
+@app.route('/det-message/<int:id_message>')
+def det_message(id_message=0):
+    log.info(Logs.fileline() + ' : TRACE setting det message=' + str(id_message))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det message => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-message/' + str(id_message)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['message'] = []
+
+    if id_message > 0:
+        # update to read status
+        try:
+            log.info(Logs.fileline() + ' : DEBUG read status FE')
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/message/read/' + str(id_message)
+            req = requests.post(url)
+
+            if req.status_code != 200:
+                log.error(Logs.fileline() + ' : requests Message read failed status_code=%s', str(req.status_code))
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Message read failed, err=%s , url=%s', err, url)
+
+        # Load message files
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/MSG/' + str(id_message)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['data_MSG'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests Message files failed, err=%s , url=%s', err, url)
+
+        # Load message details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/message/det/' + str(id_message)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['message'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests message det failed, err=%s , url=%s', err, url)
+
+    json_data['id_message'] = id_message
+
+    return render_template('det-message.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
 # --------------------
 # --- Various page ---
 # --------------------

@@ -2063,3 +2063,100 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getMessageList(id_user):
+        cursor = DB.cursor()
+
+        req = ('select ime_ser, ime_date, ime_sender, ime_receiver, ime_subject, ime_body, ime_is_read, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as sender, '
+               'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as receiver '
+               'from internal_messaging '
+               'left join sigl_user_data as u1 on u1.id_data=ime_sender '
+               'left join sigl_user_data as u2 on u2.id_data=ime_receiver '
+               'where (ime_sender = %s and ime_sender_del = "N") or '
+               '(ime_receiver = %s and ime_receiver_del = "N") '
+               'order by ime_date desc ')
+
+        cursor.execute(req, (id_user, id_user))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getMessage(id_item):
+        cursor = DB.cursor()
+
+        req = ('select ime_ser, ime_date, ime_sender, ime_subject, ime_body, ime_is_read, '
+               'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as sender, '
+               'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as receiver '
+               'from internal_messaging '
+               'left join sigl_user_data as u1 on u1.id_data=ime_sender '
+               'left join sigl_user_data as u2 on u2.id_data=ime_receiver '
+               'where ime_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertMessage(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into internal_messaging '
+                           '(ime_date, ime_sender, ime_receiver, ime_subject, ime_body) '
+                           'values '
+                           '(NOW(), %(id_user)s, %(receiver)s, %(title)s, %(message)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def deleteMessage(id_item, id_user):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update internal_messaging set '
+                           'ime_sender_del = CASE '
+                           'when ime_sender = %s then "Y" else ime_sender_del END, '
+                           'ime_receiver_del = CASE '
+                           'when ime_receiver = %s then "Y" else ime_receiver_del END '
+                           'where ime_ser=%s', (id_user, id_user, id_item))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def messageRead(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update internal_messaging set ime_is_read="Y" '
+                           'where ime_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def countMessageUnread(id_user):
+        cursor = DB.cursor()
+
+        req = ('select count(*) as nb_msg '
+               'from internal_messaging '
+               'where ime_is_read="N" and ime_receiver_del="N" and ime_receiver=%s')
+
+        cursor.execute(req, (id_user,))
+
+        return cursor.fetchone()

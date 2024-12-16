@@ -4,11 +4,16 @@ max-height : 350px;
 overflow-y : auto;
 }
 
+html, body {
+width      : auto;
+height     : auto;
+max-height : 100%;
+margin     : 0;
+}
 
 body
 {
 padding     : 0;
-margin      : 0;
 background  : #FFF;
 font-style  : normal;
 font-family : Arial, Helvetica, sans-serif;
@@ -43,19 +48,24 @@ font-size : 0.688rem;
 
 #page
 {
-padding   : 0;
-width     : 100%;
-max-width : 100%;
+padding    : 0;
+width      : 100%;
+max-width  : auto !important;
+max-height : 100%;
 }
 
 #page-header
 {
-position    : fixed;
-height      : 75px;
-background  : #F7F7F7;
-width       : 100%;
-z-index     : 10;
-line-height : 26px;
+position        : fixed !important;
+top             : 0;
+width           : 100%;
+height          : 75px;
+display         : flex;
+align-items     : center;
+padding         : 0;
+background      : #f7f7f7;
+position        : relative;
+z-index         : 10;
 }
 
 .inner
@@ -65,22 +75,23 @@ margin : 0 30px;
 
 #logo
 {
+display             : inline-block;
 background-color    : transparent;
-background-repeat   : no-repeat;
-background-image    : url({{ url_for('static', filename='img/logo.png') }}) ;
-background-position : center left;
-position            : absolute;
+align-items         : center;
+justify-content     : center;
 height              : 75px;
-width               : 194px;
-text-indent         : -10000px;
+margin-top          : 3px;
+margin-left         : 20px;
+margin-right        : 20px;
+padding-top         : 0.6rem;
 }
 
-#logo a
+#logo img
 {
-height      : 60px;
-width       : 150px;
+height      : auto;
+max-width   : 100%;
+margin      : 0 auto;
 display     : block;
-text-indent : -999999px;
 }
 
 #content-login
@@ -96,10 +107,12 @@ height              : 100vh;
 
 #content
 {
-padding-top    : 114px;
+padding-top    : 7rem;
 padding-bottom : 32px;
 background     : #FFF;
-min-height     : 520px;
+min-height     : auto;
+height         : auto;
+flex-grow      : 1;
 }
 
 #auth_std
@@ -147,11 +160,24 @@ width       : 100%;
 line-height : 26px;
 font-size   : 0.75rem;
 text-align  : center;
+padding     : 0;
+margin-top  : auto;
 }
 
 #country-sel
 {
-z-index : 3;
+z-index     : 3;
+position    : relative;
+margin-left : auto;
+width       : auto;
+display     : block;
+}
+
+html[dir="rtl"] #country-sel 
+{
+margin-left  : 0;
+margin-right : auto;
+width        : auto;
 }
 
 #country-sel .btn 
@@ -160,6 +186,15 @@ line-height  : 21px;
 padding      : 0;
 margin-right : 0;
 color        : #FFF;
+}
+
+html[dir="rtl"] #country-sel .btn 
+{
+margin-left  : 0;
+margin-right : 0;
+display      : block;
+width        : auto;
+text-align   : left;
 }
 
 header #country-sel .dropdown-toggle
@@ -172,10 +207,37 @@ header #country-sel .dropdown-menu
 background : #71B330;
 }
 
+#country-sel .dropdown-menu 
+{
+position      : absolute;
+top           : 100%;
+left          : auto;
+right         : 0;
+z-index       : 1050;
+background    : #71B330;
+border-radius : 4px;
+padding       : 5px 0;
+margin        : 0;
+min-width     : 150px;
+max-width     : 95vw;
+overflow      : hidden;
+}
+
+html[dir="rtl"] #country-sel .dropdown-menu 
+{
+left          : 0;
+right         : auto;
+}
+
 header #country-sel .dropdown-item
 {
 background : #71B330;
 color      : #FFF;
+}
+
+#country-sel .dropdown 
+{
+position : relative;
 }
 
 .dropdown-bgcolor-menu
@@ -286,91 +348,172 @@ color            : #FFF;
 
 #user-info 
 {
-margin  : 0;
-padding : 0;
+display      : flex;
+align-items  : center;
+margin-left  : auto;
+margin-right : 0;
+}
+
+html[dir="rtl"] #user-info 
+{
+display      : flex;
+align-items  : center;
+margin-left  : 0;
+margin-right : auto;
 }
 
 #user-info .name 
 { 
-position : absolute; 
-right    : 160px; 
-top      : 21px; 
 color    : #777; 
 }
 
-.role
+.dropdown 
 {
-position : absolute;
-right    : 0px;
-top      : 21px;
-width    : 150px;
-height   : 26px;
+position: relative;
 }
 
-.role-A
+.role 
 {
-background-image  : url({{ url_for('static', filename='img/admin-profile.png') }});
-background-repeat : no-repeat;
+display     : flex;
+align-items : center;
+position    : relative;
 }
 
-.role-B
+.role-text 
 {
-background-image  : url({{ url_for('static', filename='img/bio-profile.png') }});
-background-repeat : no-repeat;
+margin-left : 10px;
+font-size   : 0.9rem;
+color       : #333;
 }
 
-.role-T
+.role ul 
+{
+display          : none;
+margin           : 0;
+padding          : 0;
+list-style-type  : none;
+position         : absolute;
+right            : 0;
+top              : 26px;
+padding-top      : 1px;
+border-bottom    : 1px solid #FFF;
+background-color : rgba(0, 0, 0, 0.8);
+z-index          : 10;
+}
+
+.role:hover ul 
+{
+display: block;
+}
+
+.role-img-A
+{
+width               : 100px;
+height              : 26px;
+background-image    : url({{ url_for('static', filename='img/admin-profile.png') }});
+background-repeat   : no-repeat;
+background-position : center;
+display             : inline-block;
+}
+
+.role-img-B
+{
+width               : 100px;
+height              : 26px;
+background-image    : url({{ url_for('static', filename='img/bio-profile.png') }});
+background-repeat   : no-repeat;
+background-position : center;
+display             : inline-block;
+}
+
+.role-img-T
 {
 background-image  : url({{ url_for('static', filename='img/tech-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-TA
+.role-img-TA
 {
 background-image  : url({{ url_for('static', filename='img/tech-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-TQ
+.role-img-TQ
 {
 background-image  : url({{ url_for('static', filename='img/tech-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-S
+.role-img-S
 {
 background-image  : url({{ url_for('static', filename='img/sec-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-SA
+.role-img-SA
 {
 background-image  : url({{ url_for('static', filename='img/sec-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-Q
+.role-img-Q
 {
 background-image  : url({{ url_for('static', filename='img/qua-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-P
+.role-img-P
 {
 background-image  : url({{ url_for('static', filename='img/pre-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-K
+.role-img-K
 {
 background-image  : url({{ url_for('static', filename='img/sto-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
-.role-L
+.role-img-L
 {
 background-image  : url({{ url_for('static', filename='img/lab-profile.png') }});
 background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
 }
 
 .btn-A
@@ -503,25 +646,6 @@ color            : #FFF;
 {
 background-color : #436B1C ;
 color            : #FFF;
-}
-
-.role ul 
-{
-display          : none;
-margin           : 0;
-padding          : 0;
-list-style-type  : none;
-position         : absolute;
-right            : 0;
-top              : 26px;
-padding-top      : 1px;
-border-bottom    : 1px solid #FFF;
-background-color : rgba(0,0,0,0);
-}
-
-.role:hover ul
-{
-display : block;
 }
 
 .role-A a 
@@ -689,16 +813,18 @@ color           : #FFF !important;
 text-decoration : none !important; 
 }
 
-header .navbar-menu
+header .navbar-menu 
 {
-position   : absolute;
-left       : 194px;
-top        : 5px;
-margin     : 0;
-padding    : 0;
+display   : flex; 
+flex-wrap  : wrap;
+gap        : 15px;
+margin     : 0; 
+padding    : 0; 
 background : #F7F7F7;
 border     : none;
 min-height : 26px;
+list-style : none;
+z-index    : 5;
 }
 
 .nav-cust-cont
@@ -992,8 +1118,6 @@ color            : #FFF !important;
 .module 
 {
 border-bottom  : 1px solid #EEE;
-padding-bottom : 30px; 
-margin-bottom  : 26px;
 position       : relative;
 }
 
@@ -1006,6 +1130,23 @@ width          : 130px;
 border         : none;
 margin         : 10px;
 text-align     : center;
+}
+
+.icon-messaging a 
+{
+margin-top      : 0.5rem;
+margin-left     : 2rem;
+margin-bottom   : 0.5rem; 
+display         : flex;
+align-items     : center;
+font-size       : 2.5rem;
+color           : grey;
+text-decoration : none;
+}
+
+.icon-messaging a:hover 
+{
+color : #0056b3;
 }
 
 .module .admin-crea-profil 
@@ -1414,7 +1555,7 @@ display : flex;
 
 .menu-choice-desktop
 {
-overflow  : auto ;
+overflow   : auto ;
 max-height : 92vh ;
 }
 
@@ -1423,7 +1564,6 @@ max-height : 92vh ;
     body
     {
     padding     : 0;
-    margin      : 0;
     background  : #FFF;
     font-style  : normal;
     font-family : Arial, Helvetica, sans-serif;
@@ -1433,48 +1573,139 @@ max-height : 92vh ;
     margin      : auto;
     }
 
-    #logo
+    #logo img 
     {
-    background-color    : transparent;
-    background-repeat   : no-repeat;
-    background-image    : url({{ url_for('static', filename='img/logo_small.png') }}) ;
-    background-position : center left;
-    position            : absolute;
-    height              : 75px;
-    width               : 52px;
-    text-indent         : -10000px;
+    content   : url({{ url_for('static', filename='img/logo_small.png') }});
+    max-width : 50px;
+    height    : auto;
+    margin    : 0;
+    }
+
+    #logo 
+    {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    height          : 75px;
+    padding         : 0;
+    margin          : 0;
+    }
+
+    #user-info 
+    {
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    margin-top     : 10px;
+    margin-left    : 1rem;
+    margin-right   : 1rem;
+    min-width      : 5rem;
+    min-height     : 2rem;
     }
 
     #user-info .name 
+    {
+    font-size  : 0.9rem;
+    color      : #777;
+    text-align : center;
+    }
+
+    .module .list-group-item 
+    {
+    padding        : 110px 0 0;
+    }
+
+    .module .icon-module
     { 
-    display        : block;
-    position       : absolute; 
-    left           : 210px; 
-    top            : 15px; 
-    color          : #777;
-    vertical-align : bottom; 
+    background-size: 80%;
     }
 
-    .role
+    .page-title 
     {
-    position : relative;
-    right    : auto;
-    left     : 120px;
-    top      : 30px;
-    width    : 190px;
-    height   : 26px;
+    max-width   : 100%;
+    width       : 95%;
+    height      : auto;
+    line-height : 1.2rem;
+    font-size   : 1rem;
+    text-align  : center;
     }
 
-    header .navbar-menu
+    .navbar 
     {
-    position   : absolute;
-    left       : 43px;
-    top        : 25px;
-    margin     : 0;
-    padding    : 0;
-    background : #F7F7F7;
-    border     : none;
-    min-height : 26px; 
+    position    : relative;
+    z-index     : 1;
+    }
+
+    .navbar-toggler 
+    {
+    margin           : 10px auto;
+    padding          : 8px 12px;
+    background-color : lightgray;
+    border           : none;
+    border-radius    : 4px;
+    }
+
+    .navbar-collapse 
+    {
+    position: absolute;
+    top         : 75px;
+    left        : 0;
+    right       : 0;
+    background  : #f7f7f7;
+    z-index     : 999;
+    max-height  : 80vh;
+    overflow-y  : auto;
+    }
+
+    .navbar-nav 
+    {
+    display        : flex;
+    flex-direction : column;
+    padding-left   : 0;
+    margin         : 0;
+    width          : 100%;
+    }
+
+    .nav-link 
+    {
+    font-size   : 0.9rem;
+    color       : #333;
+    padding     : 10px 20px;
+    text-align  : center;
+    }
+
+    .dropdown-menu 
+    {
+    position    : static;
+    width       : 100%;
+    padding     : 0;
+    margin      : 0;
+    }
+
+    .dropdown-item 
+    {
+    padding     : 10px;
+    color       : #fff;
+    text-align  : center;
+    }
+
+    .dropdown-item:hover 
+    {
+    background  : #436B1C;
+    color       : #fff;
+    }
+
+    .role 
+    {
+    position     : relative;
+    margin-left  : auto;
+    margin-right : 0;
+    top          : 0;
+    min-width    : 5rem;
+    width        : fit-content;
+    min-height   : 2rem;
+    height       : auto;
+    text-align   : right;
     }
 
     .btn_menu_mobile
@@ -1484,12 +1715,13 @@ max-height : 92vh ;
 
     #menu-mobile
     {
-    display : flex;
+    display : block !important;
+    width   : 100%;
     }
 
     #menu-desktop
     {
-    display : none;
+    display : none !important;
     }
 
     nav .non-conformite
@@ -1536,6 +1768,19 @@ max-height : 92vh ;
     .inner
     {
     margin : 0px 5px 0px;
+    }
+
+    #country-sel .dropdown-toggle {
+        padding: 5px 15px;
+        background-color: #71B330;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    #country-sel .btn 
+    {
+    margin-left  : auto;
+    margin-right : auto;
     }
 
     .page-title
@@ -1658,8 +1903,28 @@ max-height : 92vh ;
 
     #navbarMenu
     {
-    overflow  : auto ;
+    overflow   : auto ;
     max-height : 95vh ;
+    min-width  : fit-content;
+    width      : 100%;
+    max-width  : 100%;
+    box-sizing : border-box;
+    }
+
+    .icon-messaging a 
+    {
+    margin-top    : 0.5rem;
+    margin-left   : 0.5rem;
+    margin-right  : 0.5rem
+    margin-bottom : 0rem;
+    }
+
+    .icon-messaging a 
+    {
+    display: inline-block;
+    font-size: 2.0rem;
+    color: gray;
+    text-decoration: none;
     }
 }
 
@@ -1668,58 +1933,139 @@ max-height : 92vh ;
     body
     {
     padding     : 0;
-    margin      : 0;
     background  : #FFF;
     font-style  : normal;
     font-family : Arial, Helvetica, sans-serif;
     font-size   : 0.75rem;
     color       : #666;
-    //display     : flex;
+    display     : flex;
     margin      : auto;
     }
 
-    #logo
+    #logo img 
     {
-    background-color    : transparent;
-    background-repeat   : no-repeat;
-    background-image    : url({{ url_for('static', filename='img/logo_small.png') }}) ;
-    background-position : center left;
-    position            : absolute;
-    height              : 75px;
-    width               : 52px;
-    text-indent         : -10000px;
+    content   : url({{ url_for('static', filename='img/logo_small.png') }});
+    max-width : 50px;
+    height    : auto;
+    margin    : 0;
+    }
+
+    #logo 
+    {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    height          : 75px;
+    padding         : 0;
+    margin          : 0;
+    }
+
+    #user-info 
+    {
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    margin-top     : 10px;
+    margin-left    : 1rem;
+    margin-right   : 1rem;
+    min-width      : 5rem;
+    min-height     : 2rem;
     }
 
     #user-info .name 
-    { 
-    display        : block;
-    position       : absolute; 
-    left           : 210px; 
-    top            : 15px; 
-    color          : #777;
-    vertical-align : bottom; 
+    {
+    font-size  : 0.9rem;
+    color      : #777;
+    text-align : center;
+    }
+
+    .page-title 
+    {
+    max-width   : 100%;
+    width       : 95%;
+    height      : auto;
+    line-height : 1.2rem;
+    font-size   : 1rem;
+    text-align  : center;
+    }
+
+    .navbar 
+    {
+    position    : relative;
+    z-index     : 1;
+    }
+
+    .navbar-toggler 
+    {
+    margin           : 10px auto;
+    padding          : 8px 12px;
+    background-color : lightgray;
+    border           : none;
+    border-radius    : 4px;
+    }
+
+    .navbar-collapse 
+    {
+    position: absolute;
+    top         : 75px;
+    left        : 0;
+    right       : 0;
+    background  : #f7f7f7;
+    z-index     : 999;
+    max-height  : 80vh;
+    overflow-y  : auto;
+    }
+
+    .navbar-nav 
+    {
+    display        : flex;
+    flex-direction : column;
+    padding-left   : 0;
+    margin         : 0;
+    width          : 100%;
+    }
+
+    .nav-link 
+    {
+    display     : block;
+    font-size   : 0.9rem;
+    color       : #333;
+    padding     : 10px 20px;
+    text-align  : center;
+    }
+
+    .dropdown-menu 
+    {
+    position    : static;
+    width       : 100%;
+    padding     : 0;
+    margin      : 0;
+    }
+
+    .dropdown-item 
+    {
+    padding     : 10px;
+    color       : #fff;
+    text-align  : center;
+    }
+
+    .dropdown-item:hover 
+    {
+    background  : #436B1C;
+    color       : #fff;
     }
 
     .role
     {
-    position : relative;
-    right    : auto;
-    left     : 120px;
-    top      : 30px;
-    width    : 190px;
-    height   : 26px;
-    }
-
-    header .navbar-menu
-    {
-    position   : absolute;
-    left       : 43px;
-    top        : 25px;
-    margin     : 0;
-    padding    : 0;
-    background : #F7F7F7;
-    border     : none;
-    min-height : 26px; 
+    position     : relative;
+    margin-left  : auto;
+    margin-right : 0;
+    top          : 0;
+    min-width    : 5rem;
+    width        : fit-content;
+    min-height   : 2rem;
+    height       : auto;
+    text-align   : right;
     }
 
     .btn_menu_mobile
@@ -1781,6 +2127,29 @@ max-height : 92vh ;
     .inner
     {
     margin : 0px 5px 0px;
+    }
+
+    #country-sel .dropdown-toggle {
+        padding: 5px 15px;
+        background-color: #71B330;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    #country-sel .btn 
+    {
+    margin-left  : auto;
+    margin-right : auto;
+    }
+
+    .module .list-group-item 
+    {
+    padding        : 80px 0 0;
+    }
+
+    .module .icon-module
+    { 
+    background-size: 60%;
     }
 
     .page-title
@@ -1905,5 +2274,9 @@ max-height : 92vh ;
     {
     overflow  : auto ;
     max-height : 95vh ;
+    min-width  : fit-content;
+    width      : 100%;
+    max-width  : 100%;
+    box-sizing : border-box;
     }
 }

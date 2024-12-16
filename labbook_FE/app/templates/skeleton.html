@@ -24,30 +24,38 @@
 {% block body %}
 {% block tag_body %}<body onLoad="init_timeOut('{{ session['server_ext'] }}', {{ session['auto_logout'] }});" onmousemove="reboot_timeOut({{ session['auto_logout'] }});">{% endblock %}
     <div id="page" class="container-fluid">
+
         {% block header %}
         <header id="page-header">
-            {% include 'menu-country.html' %}
-            <div class="inner">
-                <div id="logo">
-                    <h1>
-                        <a href="{{ session['server_ext'] }}/homepage">{{ _("LabBook") }}</a>
-                    </h1>
-                </div>
-                <div id="user-info">
-                    <div id="header_name" class="name" {% if locale == 'ar' %}style="left:150px;right:auto;"{% endif %}></div>
-                    <div class="dropdown role role-{{ session['user_role']|safe }}">
-                        <button class="btn" type="button" id="dropdownRole" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownRole">
-                            <li><a class="dropdown-item" href="{{ session['server_ext'] }}/disconnect">{{ _('Déconnexion') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ session['server_ext'] }}/det-staff/homepage/{{ session['user_id'] }}">{{ _('Editer utilisateur') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pwd-user/homepage/{{ session['user_id'] }}">{{ _('Editer mot de passe') }}</a></li>
-                        </ul>
-                    </div>
-                </div>
-                {% include 'menu.html' %} 
+            <a href="{{ session['server_ext'] }}/homepage" id="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="{{ _("LabBook") }}">
+            </a>
+
+            {% include 'menu.html' %}
+
+            <div class="icon-messaging text-center">
+                <a href="{{ session['server_ext'] }}/list-messages">
+                    <i class="bi bi-envelope me-1"></i>
+                    <span id="nb_msg_unread" class="fs-4 fw-bold text-danger"></span>
+                </a>
             </div>
+
+            <div id="user-info">
+                <div id="header_name" class="name"></div>
+                <div class="dropdown role role-img-{{ session['user_role']|safe }} role-{{ session['user_role']|safe }}">
+                    <button class="btn" type="button" id="dropdownRole" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownRole">
+                        <li><a class="dropdown-item" href="{{ session['server_ext'] }}/disconnect">{{ _('Déconnexion') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ session['server_ext'] }}/det-staff/homepage/{{ session['user_id'] }}">{{ _('Editer utilisateur') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pwd-user/homepage/{{ session['user_id'] }}">{{ _('Editer mot de passe') }}</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {% include 'menu-country.html' %}
         </header><!-- close header -->
         {% endblock %}
+
         {% block content %}
         <div id="content"></div>
         {% endblock %}
@@ -113,9 +121,29 @@ function download_file( type, filename, type_ref, ref)
     }
 }
 
+function nb_msg_unread()
+{
+    $.ajax( 
+    {
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/quality/message/unread/{{ session['user_id']|safe}}",
+        success: function(ret)
+        {
+            if (ret == 0) $("#nb_msg_unread").text("");
+            else $("#nb_msg_unread").text(ret);
+        },
+        error: function(ret)
+        {
+        console.log("ERROR GET nb msg unread") ;
+        }
+    } ) ;
+}
+
 $( document ).ready( function()
 {
-    load_username() ;
+load_username() ;
+nb_msg_unread() ;
+setInterval(nb_msg_unread, 30000);
 } ) ;
 </script>
 {% block add_script %}

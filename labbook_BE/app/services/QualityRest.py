@@ -3692,3 +3692,128 @@ class TraceList(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE TraceList')
         return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class MessageList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_user):
+        l_items = Quality.getMessageList(id_user)
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE MessageList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+            if item['ime_date']:
+                item['ime_date'] = datetime.strftime(item['ime_date'], '%Y-%m-%d %H:%M')
+
+            # search last id_file for each manual
+            l_files = File.getFileDocList("MSG", item['ime_ser'])
+
+            if l_files and l_files[0]['id_data']:
+                item['id_file'] = l_files[0]['id_data']
+            else:
+                item['id_file'] = 0
+
+            if l_files and l_files[0]['name']:
+                item['filename'] = l_files[0]['name']
+            else:
+                item['filename'] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE MessageList')
+        return compose_ret(l_items, Constants.cst_content_type_json)
+
+
+class MessageDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getMessage(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'MessageDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        if item['ime_date']:
+            item['ime_date'] = datetime.strftime(item['ime_date'], '%Y-%m-%d %H:%M')
+
+        self.log.info(Logs.fileline() + ' : MessageDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'id_item' not in args or 'receiver' not in args or 'title' not in args or \
+           'message' not in args:
+            self.log.error(Logs.fileline() + ' : MessageDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.insertMessage(id_user=args['id_user'],
+                                    receiver=args['receiver'],
+                                    title=args['title'],
+                                    message=args['message'])
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : MessageDet ERROR  insert')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE MessageDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+
+class MessageDel(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item, id_user):
+        ret = Quality.deleteMessage(id_item, id_user)
+
+        if ret <= 0:
+            self.log.error(Logs.alert() + ' : MessageDel ERROR delete')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE MessageDel id_item=' + str(id_item) + ' | id_user=' + str(id_user))
+        return compose_ret(id_item, Constants.cst_content_type_json)
+
+
+class MessageRead(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        ret = Quality.messageRead(id_item)
+
+        if ret is True:
+            self.log.error(Logs.alert() + ' : MessageRead ERROR read')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE MessageRead id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class MessageUnread(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_user):
+        res = Quality.countMessageUnread(id_user)
+
+        if not res:
+            self.log.error(Logs.fileline() + ' : TRACE MessageUnread not found')
+            nb_msg = 0
+        else:
+            nb_msg = res['nb_msg']
+
+        self.log.info(Logs.fileline() + ' : TRACE MessageUnread nb_msg=' + str(nb_msg))
+        return compose_ret(nb_msg, Constants.cst_content_type_json)

@@ -69,6 +69,9 @@ class File:
         # EXTERNAL CONTROL
         elif type_ref == 'CTRL':
             tablename = 'ctrl_ext_res_report_file'  # 'sigl_controle_externe_ctrl_resultat_cr__file_data'
+        # MESSAGES
+        elif type_ref == 'MSG':
+            tablename = 'internal_messaging_file'
         else:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
@@ -167,6 +170,9 @@ class File:
             # EXTERNAL CONTROL
             elif params['type_ref'] == 'CTRL':
                 tablename = 'ctrl_ext_res_report_file'  # 'sigl_controle_externe_ctrl_resultat_cr__file_data'
+            # MESSAGES
+            elif params['type_ref'] == 'MSG':
+                tablename = 'internal_messaging_file'
             else:
                 return 0
 
@@ -235,6 +241,9 @@ class File:
             # EXTERNAL CONTROL
             elif type_ref == 'CTRL':
                 tablename = 'ctrl_ext_res_report_file'  # 'sigl_controle_externe_ctrl_resultat_cr__file_data'
+            # MESSAGES
+            elif type_ref == 'MSG':
+                tablename = 'internal_messaging_file'
             else:
                 File.log.error(Logs.fileline() + ' : ERROR deleteFileDoc type_ref=' + str(type_ref))
                 return False

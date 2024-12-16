@@ -219,8 +219,6 @@ let oblig_ok = true ;
 
 param_list_answer += ' ] }' ;
 
-//console.log("DEBUG save_res param_list_answer = " + JSON.stringify(param_list_answer)) ;
-
     if (!oblig_ok)
     {
     alert("{{ _("Certains résultats obligatoires ne sont pas saisis") }}") ;
@@ -710,8 +708,6 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     // Convert formula
                     if (data[i].formule_unite2 != "")
                     {
-                    console.log("DEBUG formule_unite2 not empty") ;
-
                     conv2_val = conv_val( data[i].formule_unite2, res_accu2, value) ;
 
                         if ( conv2_val != "") 

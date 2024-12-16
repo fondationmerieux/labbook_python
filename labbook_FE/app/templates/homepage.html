@@ -16,16 +16,16 @@
             {% if session['user_role'] == 'A' %}
             <div class="module">
                 <div class="links">
-                    <a href="{{ session['server_ext'] }}/setting-pref" class="list-group-item admin-preferences">{{ _("Préférences") }}</a>
-                    <a href="{{ session['server_ext'] }}/setting-users" class="list-group-item admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
-                    <!--<a href="#" class="list-group-item admin-gest-role">{{ _("Gestion des rôles") }}</a>-->
-                    <a href="{{ session['server_ext'] }}/setting-analyzes" class="list-group-item admin-referentiel">{{ _("Référentiel des analyses") }}</a>
-                    <a href="{{ session['server_ext'] }}/setting-dicts" class="list-group-item admin-conf-cr">{{ _("Dictionnaires") }}</a>
-                    <a href="{{ session['server_ext'] }}/setting-backup" class="list-group-item admin-num-doss">{{ _("Gestion des sauvegardes") }}</a>
-                    <a href="{{ session['server_ext'] }}/list-analyzers" class="list-group-item admin-connect">{{ _("Configuration des analyseurs") }}</a>
-                    <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item admin-gest-fact-{{ session['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
+                    <a href="{{ session['server_ext'] }}/setting-pref" class="list-group-item icon-module admin-preferences">{{ _("Préférences") }}</a>
+                    <a href="{{ session['server_ext'] }}/setting-users" class="list-group-item icon-module admin-crea-profil">{{ _("Gestion des utilisateurs") }}</a>
+                    <!--<a href="#" class="list-group-item icon-module admin-gest-role">{{ _("Gestion des rôles") }}</a>-->
+                    <a href="{{ session['server_ext'] }}/setting-analyzes" class="list-group-item icon-module admin-referentiel">{{ _("Référentiel des analyses") }}</a>
+                    <a href="{{ session['server_ext'] }}/setting-dicts" class="list-group-item icon-module admin-conf-cr">{{ _("Dictionnaires") }}</a>
+                    <a href="{{ session['server_ext'] }}/setting-backup" class="list-group-item icon-module admin-num-doss">{{ _("Gestion des sauvegardes") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-analyzers" class="list-group-item icon-module admin-connect">{{ _("Configuration des analyseurs") }}</a>
+                    <a href="#" id="pref_bill" onclick="change_pref('facturation');" class="list-group-item icon-module admin-gest-fact-{{ session['pref_bill'] }}">{{ _("Gestion de la Facturation") }}</a>
 
-                    <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ session['pref_quality'] }});" class="list-group-item admin-qualite-{{ session['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
+                    <a href="#" id="pref_quality" onclick="change_pref('qualite', {{ session['pref_quality'] }});" class="list-group-item icon-module admin-qualite-{{ session['pref_quality'] }}">{{ _("Management de la Qualité") }}</a>
                 </div>
                 {% if args['stat_backup'] == 'OK' %}
                 <div class="text-end"><i class="fs-4 bi bi-database-check text-success me-1" title="{{ _("Dernière sauvegarde OK") }}"></i> <small>{{ args['date_backup'] }}</small></div>
@@ -38,27 +38,27 @@
                 <div class="links {% if args['nb_emer'] > 0 %}mw-100 mx-5{% endif %}">
                     {% if session['user_role'] in ('B','T','TA','TQ') and args['nb_emer'] > 0 %}
                         {% if session['user_role'] == 'B' %}
-                    <a href="{{ session['server_ext'] }}/list-works/B/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-works/B/E" class="list-group-item icon-module emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                         {% else %}
-                    <a href="{{ session['server_ext'] }}/list-works/T/E" class="list-group-item emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-works/T/E" class="list-group-item icon-module emergency" title="{{ _("Analyses urgentes") }} : {{ args['nb_emer'] }}">{{ _("Urgences") }}</a>
                         {% endif %}
                     {% endif %}
                     {% if session['user_role'] in ('B','T','TA','TQ','S','SA') %}
-                    <a href="{{ session['server_ext'] }}/list-records" class="list-group-item {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] in ('T','TA','TQ') %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-records" class="list-group-item icon-module {% if session['user_role'] == 'B' %}f-list-bio{% elif session['user_role'] in ('T','TA','TQ') %}f-list-tec{% else %}f-list-sec{% endif %}">{{ _("Liste des dossiers") }}</a>
                     {% endif %}
                     {% if session['user_role'] == 'B' %}
-                    <a href="{{ session['server_ext'] }}/list-works/B" class="list-group-item b-list-bio">{{ _("Liste de travail biologiste") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-works/B" class="list-group-item icon-module b-list-bio">{{ _("Liste de travail biologiste") }}</a>
                     {% endif %}
                     {% if session['user_role'] in ('T','TA','TQ') %}
-                    <a href="{{ session['server_ext'] }}/list-works/T" class="list-group-item t-list-tec">{{ _("Liste de travail technicien") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-works/T" class="list-group-item icon-module t-list-tec">{{ _("Liste de travail technicien") }}</a>
                     {% endif %}
                     {% if session['user_role'] in ('B','T','TA','TQ') %}
-                    <a href="{{ session['server_ext'] }}/list-samples" class="list-group-item {% if session['user_role'] == 'B' %}prel-bio{% else %}prel-tec{% endif %}">{{ _("Etat des prélèvements en cours") }}</a>
-                    <a href="{{ session['server_ext'] }}/list-results" class="list-group-item {% if session['user_role'] == 'B' %}res-bio{% else %}res-tec{% endif %}">{{ _("Saisie des résultats") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-samples" class="list-group-item icon-module {% if session['user_role'] == 'B' %}prel-bio{% else %}prel-tec{% endif %}">{{ _("Etat des prélèvements en cours") }}</a>
+                    <a href="{{ session['server_ext'] }}/list-results" class="list-group-item icon-module {% if session['user_role'] == 'B' %}res-bio{% else %}res-tec{% endif %}">{{ _("Saisie des résultats") }}</a>
                     {% endif %}
                     {% if session['user_role'] in ('S','SA') %}
-                    <a href="{{ session['server_ext'] }}/new-req-ext" class="list-group-item new-dos-ext-sec">{{ _("Nouvelle demande externe") }}</a>
-                    <a href="{{ session['server_ext'] }}/new-req-int" class="list-group-item new-dos-int-sec">{{ _("Nouvelle demande hospitalisé") }}</a>
+                    <a href="{{ session['server_ext'] }}/new-req-ext" class="list-group-item icon-module new-dos-ext-sec">{{ _("Nouvelle demande externe") }}</a>
+                    <a href="{{ session['server_ext'] }}/new-req-int" class="list-group-item icon-module new-dos-int-sec">{{ _("Nouvelle demande hospitalisé") }}</a>
                     {% endif %}
                 </div>
                 {% if args['stat_backup'] == 'OK' %}

@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.5.0] - 2024-12-16
+### Added
+- internal messaging, quick access with envelope icon
+- refresh every 30sec the number of unread messages
+
+### Changed
+- css redesign of header banner
+
+### Fixed
+- user-info block displayed when language is read from right to left
+
 ## [3.4.11] - 2024-09-09
 ### Fixed
 - API and Lab profile was blocked
@@ -272,7 +283,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - filter of list of record and list of work pages with pofil in functionnal unit
 - delete a pathological product in a record
 - refresh bill price and remain after del an analysis in an administrative record
-- some buttons of non-conformity ihm were disabled
+- some buttons of non-conformity GUI were disabled
 - the expiration date of a product was badly managed if it was not mandatory
 - problem with update of stock setting 
 

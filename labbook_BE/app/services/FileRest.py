@@ -35,7 +35,7 @@ class FileDoc(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, type_ref, ref):
-        # ref= id_file
+        # ref = id_file
         filedata = File.getFileData(ref)
 
         if not filedata:

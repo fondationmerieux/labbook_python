@@ -2,14 +2,14 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Procédures") }}</title>
+    <title>{{ _("Messages") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Procédures") }}</span></h2>
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Messages") }}</span></h2>
             <div>
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>
@@ -22,22 +22,16 @@
                 <span><a class="link" id="last_item" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
             </div>
 
-            <form class="row justify-content-center mt-3" id="proc-list">
+            <form class="row justify-content-center mt-3" id="msg-list">
                 <table id="table_items" class="table table-striped table-hover table-responsive col-lg-12 table-lbk tablesorter">
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
                             <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start cursor-act">{{ _("Date") }}</th>
+                            <th class="text-start cursor-act">{{ _("Contact") }}</th>
                             <th class="text-start cursor-act">{{ _("Titre") }}</th>
-                            <th class="text-start cursor-act">{{ _("Référence") }}</th>
-                            <th class="text-start cursor-act">{{ _("Rédacteur") }}</th>
-                            <th class="text-start cursor-act">{{ _("Vérificateur") }}</th>
-                            <th class="text-start cursor-act">{{ _("Approbateur") }}</th>
-                            <th class="text-start cursor-act">{{ _("Date de création") }}</th>
-                            <th class="text-start cursor-act">{{ _("Date d'application") }}</th>
-                            <th class="text-start cursor-act">{{ _("Date modification") }}</th>
-                            <th class="text-start cursor-act">{{ _("Section") }}</th>
-                            <th class="text-start">{{ _("Procédure") }}</th>
+                            <th class="text-start">{{ _("Document") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -58,15 +52,7 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] in ('A','Q','L') %}
-                    <input type="button" onclick="list_trace('PROC');" id="btn_trace" value="{{ _("Tableau consultation") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
-                    {% endif %}
-                    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
-                    <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
-                    {% endif %}
-                    {% if session['user_role'] in ('A','B','Q','TQ') %}
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter une procédure") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                    {% endif %}
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Envoyer un message") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
 
@@ -77,6 +63,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var id_user    = {{ session['user_id']|safe}} ;
 var data_items = {{ args|safe or [] }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
@@ -102,7 +89,7 @@ let res = "" ;
 
 {% if not args %}
 res = "<tr>" +
-      "<td colspan=\"11\">" +
+      "<td colspan=\"5\">" +
       "<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>" ;
 {% else %}
 let data_len = data_items.length ;
@@ -114,39 +101,48 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-procedure/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" ;
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-message/" + data_items[i].ime_ser + "\">{{ _("Lire") }}</a>" ;
 
-        {% if session['user_role'] in ('A','B','Q','TQ') %}
-        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>" ;
-        {% endif %}
+        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].ime_ser + ", " + id_user + ")\">{{ _("Supprimer") }}</a>" ;
         
     menu_act += "</div></ul></nav>" ;
-    {% else %}
-    let menu_act = "" ;
-    {% endif %}
 
     if ( data_items[i].id_file > 0)
-    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + data_items[i].filename + "', 'PROC', " + data_items[i].id_file + ");\"><span class=\"bi bi-download\"></span></a>" ;
+    link_doc = "<a href=\"#\" onclick=\"download_file('JF', '" + data_items[i].filename + "', 'MSG', " + data_items[i].id_file + ");\"><span class=\"bi bi-download\"></span></a>" ;
     else
-    link_manual = "" ;
+    link_doc = "" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
+    tr_style = "" ;
+    contact  = "" ;
+
+    // SENT
+    if ( data_items[i].ime_sender == id_user )
+    {
+    contact = "{{ _("Envoyé à") }} " + data_items[i].receiver ;
+
+        if ( data_items[i].ime_is_read == "Y" )
+        contact += ' <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>' ;
+    }
+    // RECEIVED
+    else if ( data_items[i].ime_receiver == id_user)
+    {
+    contact = "{{ _("Reçu de") }} " + data_items[i].sender ;
+
+        if ( data_items[i].ime_is_read == "N" )
+        tr_style = "class=\"fw-bolder\"" ;
+    }
+    else contact = "{{ _("Inconnu") }}" ;
+
+    res += "<tr " + tr_style + "><td hidden><div>" + data_items[i].id_data + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].title + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].reference + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].writer + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].auditor + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].approver + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].date_insert + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].date_apply + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].date_update + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].section + "</div></td>" +
-           "<td><div class=\"text-start\">" + link_manual + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + data_items[i].ime_date + "</div></td>" +
+           "<td><div class=\"text-start\">" + contact + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].ime_subject + "</div></td>" +
+           "<td><div class=\"text-start\">" + link_doc + "</div></td></tr>" ;
     }
 {% endif %}
 
@@ -171,11 +167,8 @@ var id_user = {{ session['user_id']|safe}} ;
 
         $.ajax( 
         {
-            type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/quality/procedure/det/" + id_item,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/quality/message/del/" + id_item + "/" + id_user,
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -195,14 +188,10 @@ var id_user = {{ session['user_id']|safe}} ;
 
 function add_item()
 {
-window.location.href = "{{ session['server_ext'] }}/det-procedure/0";
+window.location.href = "{{ session['server_ext'] }}/det-message/0";
 }
 
-function list_trace(type_trace)
-{
-window.location.href = "{{ session['server_ext'] }}/list-trace-download/" + type_trace ;
-}
-
+{#
 function export_data()
 {
 var param = '{}' ;
@@ -249,6 +238,7 @@ var param = '{}' ;
         }
     } ) ;
 }
+#}
 
 function return_home()
 {
