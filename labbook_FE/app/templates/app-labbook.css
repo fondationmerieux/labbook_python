@@ -240,6 +240,14 @@ color      : #FFF;
 position : relative;
 }
 
+#country-sel .dropdown-toggle 
+{
+padding          : 5px 10px;
+background-color : #71B330;
+color            : #fff;
+border-radius    : 4px;
+}
+
 .dropdown-bgcolor-menu
 {
 background : #71B330 !important;
@@ -1771,7 +1779,7 @@ max-height : 92vh ;
     }
 
     #country-sel .dropdown-toggle {
-        padding: 5px 15px;
+        padding: 5px 5px;
         background-color: #71B330;
         color: #fff;
         border-radius: 4px;
@@ -2130,10 +2138,10 @@ max-height : 92vh ;
     }
 
     #country-sel .dropdown-toggle {
-        padding: 5px 15px;
-        background-color: #71B330;
-        color: #fff;
-        border-radius: 4px;
+    padding          : 5px 5px;
+    background-color : #71B330;
+    color            : #fff;
+    border-radius    : 4px;
     }
 
     #country-sel .btn 

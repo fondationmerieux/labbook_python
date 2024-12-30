@@ -154,7 +154,25 @@ class User:
             return False
 
     @staticmethod
-    def getUserRoleList(type=''):
+    def getUserRightsList(id_user=0, role_type=''):
+        # TODO traiter le cas id_user > 0
+
+        cursor = DB.cursor()
+
+        req = ('select prr_ser, prr_label, prr_type, prp_granted '
+               'from profile_permissions '
+               'inner join profile_rights on prr_ser = prp_prr '
+               'inner join profile_role on pro_ser = prp_pro '
+               'inner join sigl_pj_role on id_role = pro_role '
+               'where type=%s '
+               'order by prr_rank asc')
+
+        cursor.execute(req, (role_type,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getUserRoleList(type='', l_exclude=[]):
         cursor = DB.cursor()
 
         cond = ' order by label '
@@ -162,11 +180,69 @@ class User:
         if type:
             cond = ' where type="' + str(type) + '"' + cond
 
-        req = ('select id_role, name, label, type from sigl_pj_role' + cond)
+        if l_exclude:
+            if not type:
+                cond = ' where type not in ('
+            else:
+                cond =  cond + ' and type not in ('
+
+            for exclude in l_exclude:
+                cond += '"' + str(exclude) + '",'
+
+            # inversed string then replace last , by ) then re-inversed string
+            cond = cond[::-1].replace(',', ')', 1)[::-1]
+
+        req = ('select pro_ser, pro_role as id_role, name, pro_label as label, type '
+               'from profile_role '
+               'inner join sigl_pj_role on id_role=pro_role ' + cond)
 
         cursor.execute(req)
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getUserRole(role_type):
+        cursor = DB.cursor()
+
+        req = ('select id_role, name, label, type '
+               'from sigl_pj_role '
+               'where type=%s')
+
+        cursor.execute(req, (role_type,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertProfileRole(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into profile_role '
+                           '(pro_date, pro_by_user, pro_role, pro_label) '
+                           'values (NOW(), %(by_user)s, %(role)s, %(label)s)', params)
+
+            User.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def insertProfilePermission(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into profile_permissions '
+                           '(prp_date, prp_by_user, prp_pro, prp_prr, prp_granted) '
+                           'values (NOW(), %(by_user)s, %(pro)s, %(prr)s, %(granted)s)', params)
+
+            User.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
 
     @staticmethod
     def getUserIdentList():
@@ -355,5 +431,18 @@ class User:
                'where status="' + Constants.cst_user_active + '"')
 
         cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def countProfileByRole(pro_ser):
+        cursor = DB.cursor()
+
+        # Number of profiles
+        req = ('select count(*) as nb_profile '
+               'from sigl_user_data '
+               'where status="' + Constants.cst_user_active + '" and role_pro=%s')
+
+        cursor.execute(req, (pro_ser,))
 
         return cursor.fetchone()

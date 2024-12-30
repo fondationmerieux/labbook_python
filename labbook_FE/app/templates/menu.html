@@ -111,6 +111,9 @@
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
                             </li>
                             {% endif %}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-roles-and-rights">{{ _("Gestion des rôles et droits") }}</a>
+                            </li>
                             {% if session['user_role'] not in ('Q','K') %}
                             <li>
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
@@ -336,6 +339,7 @@
                     {% if session['user_role'] not in ('Q','K') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-pref">{{ _("Préférences") }}</a>
                     {% endif %}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-roles-and-rights">{{ _("Gestion des rôles et droits") }}</a>
                     {% if session['user_role'] not in ('Q','K') %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-users">{{ _("Gestion des utilisateurs") }}</a>
                     {% endif %}

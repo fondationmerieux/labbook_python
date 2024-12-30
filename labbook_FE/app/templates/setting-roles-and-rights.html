@@ -1,0 +1,179 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Liste des rôles") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des rôles") }}</span></h2>
+
+            <div class="list_users_info" id="listing_dos_total_info">
+                <span class="list_users_label" id="list_users_total_label">{{ _("Nombre total de lignes") }} :</span>
+                <span class="list_users_total" id="list_users_total">{% if not args %}0{% endif %}</span>
+            </div>
+            <div>
+                <span><a class="link" id="first_user" onclick="display_role(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_user" onclick="display_role(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_user" onclick="display_role(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_user" onclick="display_role(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <form class="row justify-content-center mt-3" id="users-list">
+                <table id="table_users" class="table table-striped table-hover col-lg-12 table-lbk tablesorter">
+                    <thead>
+                        <tr>
+                            <th hidden>{{ _("serial") }}</th>
+                            <th class="text-start">{{ _("Action") }}</th>
+                            <th class="text-start cursor-act">{{ _("Libéllé") }}</th>
+                            <th class="text-start cursor-act">{{ _("Rôle de base") }}</th>
+                            <th class="text-start cursor-act">{{ _("Nombre de profil") }}</th>
+                    </thead>
+                    <tbody id="tbody_users">
+                    </tbody>
+                </table>
+            </form>
+
+            <div>
+                <span><a class="link" id="first_user" onclick="display_role(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_user" onclick="display_role(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_user" onclick="display_role(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_user" onclick="display_role(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+
+            <div class="clearfix mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    {% if session['user_role'] in ('A') %}
+                    <input type="button" onclick="add_role();" id="btn_add" value="{{ _("Ajouter un rôle") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+var data_roles = {{ args|safe or [] }} ;
+var p_step     = 20 ;
+var p_cur      = 1 ;
+var p_max      = Math.ceil( data_roles.length / p_step ) ;
+
+function display_role( num_page )
+{
+let res = ''
+
+    // Previous page
+    if ( num_page == -1000 && p_cur > 1 )
+    p_cur = p_cur - 1 ;
+    // Next page
+    else if ( num_page == 1000 && p_cur < p_max )
+    p_cur = p_cur + 1 ;
+    // First or Last page
+    else if ( num_page > -1000 && num_page < 1000 )
+    p_cur = num_page ;
+    else
+    return false;
+
+    $("#tbody_users").empty() ;
+
+{% if not args %}
+res = '<tr>' +
+      '<td colspan="4">' +
+      '<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>' ;
+{% else %}
+let data_len = data_roles.length ;
+let i_start  = (p_cur -1) * p_step ;
+let i_stop   = Math.min( data_len, p_cur * p_step ) ;
+let tr_class = '' ;
+
+$("#list_users_total").html( data_len ) ;
+
+    for( i = i_start; i < i_stop; i++ )
+    {
+    let menu_act = "" ;
+
+        if (data_roles[i].type != "API" && data_roles[i].type != "Z")
+        {
+        menu_act = '<nav class="">' +
+                   '<ul class="navbar-nav">' +
+                   '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
+                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-role/' + data_roles[i].id_role + '" style="pointer-events: none">{{ _("Editer") }}</a>';
+
+        menu_act += '</div></ul></nav>' ;
+        }
+
+    res += '<tr><td hidden><div>' + data_roles[i].id_data + '</div></td>' +
+           '<td><div>' + menu_act + '</div></td>' +
+           '<td><div class="text-start">' + data_roles[i].label + '</div></td>' +
+           '<td><div class="text-start">' + data_roles[i].role_based + '</div></td>' +
+           '<td><div class="text-start">' + data_roles[i].nb_profile + '</div></td></tr>' ;
+    }
+{% endif %}
+
+    $("#tbody_users").append(res) ;
+    $("#num_page_t").text( p_cur ) ;
+    $("#num_page_b").text( p_cur ) ;
+
+    $("#table_users").tablesorter() ;  // sort only data on screen
+}
+
+function change_status(id_user, stat)
+{
+var id_owner = {{ session['user_id']|safe}} ;
+
+    if ( window.confirm("{{ _("Veuillez confirmer la modification de statut") }}") )
+    {
+    var param = '{ "id_owner":' + id_owner + ', ' +
+                  '"id_user":' + id_user + ', ' +
+                  '"status":"' + stat + '"}' ;
+
+        $.ajax( 
+        {
+            type: "POST",
+            url: "{{ session['server_ext'] }}/services/user/status",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            success: function(ret)
+            {
+            location.reload() ;
+            },
+            error: function(ret)
+            {
+            console.log("ERROR POST user status") ;
+            alert("{{ _("Erreur lors du changement de statut") }}") ;
+            }
+        } ) ;
+    }
+    else
+    return false ; 
+}
+
+function add_role()
+{
+window.location.href = "{{ session['server_ext'] }}/setting-det-role/0";
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage";
+}
+
+$( document ).ready( function()
+{
+display_role( 1 ) ;
+} ) ;
+</script>
+{% endblock %}

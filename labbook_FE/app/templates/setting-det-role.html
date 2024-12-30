@@ -1,0 +1,150 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Rôle") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rôle") }}</span></h2>
+            <form autocomplete="off">
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Rôle") }}</h3>
+                </div>
+                <div class="form-group d-lg-flex align-items-start mt-3 mt-3">
+                    <label for="role" class="form-label col-3 text-end mt-2 me-1">{{ _("Rôle de base") }} *</label>
+                    <div>					
+                        <select id="role" name="role" class="form-select" onchange="role_choice(this);" {{ 'disabled' if session['user_role'] != 'A' }}>
+                            {% from 'macros.html' import select_user_role %}
+                            {{ select_user_role(ihm['user_role'], args['role_type']) }}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de ce rôle") }} *</label>
+                    <div>					
+                        <input type="text" name="role_label" id="role_label" value="{{ args['role_label'] }}" class="form-control form-lbk">			
+                    </div>
+                </div>
+
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Droits") }}</h3>
+                    <table class="table table-lbk" id="table_rights">
+                        <thead class="table-light">
+                            <tr>
+                                <th>{{ _( "Libéllé" ) }}</th>
+                                <th>{{ _( "Activer" ) }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body_rights_res">
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+            
+            <div class="clearfix my-2">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_role();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_role()
+{
+var id_user    = {{ args['user_id']|safe }} ;
+var id_role    = {{ args['role_id']|safe }} ; 
+var role_type  = $("#role").val() ;
+var role_label = $("#role_label").val() ;
+
+var msg = "" ;
+
+    if (role_type == "" || role_type == null)
+    msg += "{{ _("Veuillez choisir un rôle.") }}\n" ;
+
+    if (role_label == "" || role_label == null)
+    msg += "{{ _("Veuillez saisir un nom.") }}\n" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }
+
+var l_rights = [] ;
+
+    $('input[type="radio"]:checked').each(function() {
+        let id = $(this).attr('id') ;
+        let value = $(this).val() ;
+
+        let match = id.match(/right_([YN])_(\d+)/) ;
+
+        l_rights.push({
+                prr_ser: match[2],
+                prp_granted: match[1]
+            });
+    });
+
+var param = '{ "id_user":' + id_user + ', ' +
+              '"role_type":"' + role_type + '", ' +
+              '"role_label":"' + role_label + '", ' +
+              '"l_rights":' + JSON.stringify(l_rights) + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/user/role/det/" + id_role,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           window.location = "{{ session['server_ext'] }}/setting-roles-and-rights" ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST user role det") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function role_choice( elem )
+{
+let role_type = $(elem).val() ;
+
+var url = "{{ session['server_ext'] }}/setting-det-role/table-rights" ;
+var param = {   
+    id_user: 0,
+    role_type: role_type
+    } ;
+
+console.log("DEUBG url = " + url + " | param = " + JSON.stringify(param));
+
+    // load table of rights
+    $.get( url, param,
+    function( data )
+    {
+        if ( data != null && data.trim() != '')
+        {
+            $( "#body_rights_res" ).html( data ) ;
+        } 
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+</script>
+{% endblock %}

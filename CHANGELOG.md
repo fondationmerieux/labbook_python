@@ -8,10 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.5.0] - 2024-12-16
+## [3.5.0] - 2024-12-30
 ### Added
 - internal messaging, quick access with envelope icon
 - refresh every 30sec the number of unread messages
+- create profiles derived from the basic ones
+- change role rights (not finished)
 
 ### Changed
 - css redesign of header banner

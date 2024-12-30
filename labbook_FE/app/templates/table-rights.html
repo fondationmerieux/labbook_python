@@ -1,0 +1,42 @@
+{% set state = {'previous_type': None} %}
+{% for right in l_rights %}
+    {% if loop.first or state.previous_type != right['prr_type'] %}
+    <tr>
+        <td colspan="2" class="fw-bold text-center text-white bg-secondary">
+            {% if right['prr_type'] == 'ADMIN' %} {{ _("Administration") }}
+            {% elif right['prr_type'] == 'API' %} {{ _("API") }}
+            {% elif right['prr_type'] == 'CTRLEXT' %} {{ _("Contrôle qualité externe") }}
+            {% elif right['prr_type'] == 'CTRLINT' %} {{ _("Contrôle qualité interne") }}
+            {% elif right['prr_type'] == 'DOCTOR' %} {{ _("Prescripteurs") }}
+            {% elif right['prr_type'] == 'EQP' %} {{ _("Equipements") }}
+            {% elif right['prr_type'] == 'GEN' %} {{ _("Général") }}
+            {% elif right['prr_type'] == 'LAB' %} {{ _("Laboratoire") }}
+            {% elif right['prr_type'] == 'MANUAL' %} {{ _("Manuels") }}
+            {% elif right['prr_type'] == 'MEETING' %} {{ _("Réunion du laboratoire") }}
+            {% elif right['prr_type'] == 'NONCONF' %} {{ _("Modules des non-conformités") }}
+            {% elif right['prr_type'] == 'PROCEDURE' %} {{ _("Procédures") }}
+            {% elif right['prr_type'] == 'RECORD' %} {{ _("Dossiers") }}
+            {% elif right['prr_type'] == 'REPORT' %} {{ _("Rapports") }}
+            {% elif right['prr_type'] == 'SETTING' %} {{ _("Paramétrages") }}
+            {% elif right['prr_type'] == 'STAFF' %} {{ _("Personnels") }}
+            {% elif right['prr_type'] == 'STOCK' %} {{ _("Gestion des stocks") }}
+            {% elif right['prr_type'] == 'SUPPLIER' %} {{ _("Fournisseurs") }}
+            {% endif %}    
+        </td>
+    </tr>
+    {% set updated = state.update({'previous_type': right['prr_type']}) %}
+    {% endif %}
+    <tr>
+        <td>
+            {{ right['prr_label'] }}
+        </td>
+        <td>
+           <label class="form-label text-end mt-1 me-3">
+                <input type="radio" id="right_Y_{{ right['prr_ser'] }}" name="right_{{ right['prr_ser'] }}" value="Y" {% if right['prp_granted'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+            </label>
+            <label class="form-label text-end mt-1 me-3">
+                <input type="radio" id="right_N_{{ right['prr_ser'] }}" name="right_{{ right['prr_ser'] }}" value="N" {% if right['prp_granted'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+            </label> 
+        </td>
+    </tr>
+{% endfor %}

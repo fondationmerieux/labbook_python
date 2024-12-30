@@ -33,16 +33,15 @@
 
             {% include 'menu.html' %}
 
-            <div class="icon-messaging text-center">
-                <a href="{{ session['server_ext'] }}/list-messages">
-                    <i class="bi bi-envelope me-1"></i>
-                    <span id="nb_msg_unread" class="fs-4 fw-bold text-danger"></span>
-                </a>
-            </div>
-
             <div id="user-info">
-                <div id="header_name" class="name"></div>
-                <div class="dropdown role role-img-{{ session['user_role']|safe }} role-{{ session['user_role']|safe }}">
+                <div class="icon-messaging text-center me-1">
+                    <a href="{{ session['server_ext'] }}/list-messages">
+                        <i class="bi bi-envelope me-1"></i>
+                        <span id="nb_msg_unread" class="fs-4 fw-bold text-danger"></span>
+                    </a>
+                </div>
+                <div id="header_name" class="name me-1"></div>
+                <div class="dropdown role role-img-{{ session['user_role']|safe }} role-{{ session['user_role']|safe }} me-1">
                     <button class="btn" type="button" id="dropdownRole" data-bs-toggle="dropdown" aria-expanded="false"></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownRole">
                         <li><a class="dropdown-item" href="{{ session['server_ext'] }}/disconnect">{{ _('Déconnexion') }}</a></li>

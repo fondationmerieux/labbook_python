@@ -179,7 +179,6 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
 {% endblock %}
 {% else %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-console.log("DEBUG login matching KO");
 window.location = "{{ session['server_ext'] }}/disconnect" ;
 </script>
 {% endif %}

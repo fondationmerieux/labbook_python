@@ -337,7 +337,7 @@ def get_user_data(login):
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
         return False
 
-    # Get analyzes famylies linked functionnal unit for this user onfly for all secretary, technician and biologist
+    # Get analyzes families linked functionnal unit for this user onfly for all secretary, technician and biologist
     if session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'T' or \
        session['user_role'] == 'TA' or session['user_role'] == 'S' or session['user_role'] == 'SA':
         try:
@@ -782,6 +782,110 @@ def homepage(login=''):
 # --------------------
 
 # Page : users list
+@app.route('/setting-roles-and-rights')
+def setting_roles_and_rights():
+    log.info(Logs.fileline() + ' : TRACE setting roles-and-rights')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting roles-and-rights => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'setting-roles-and-rights'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load list roles
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
+        req = requests.post(url, json={})
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests role list failed, err=%s , url=%s', err, url)
+
+    return render_template('setting-roles-and-rights.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : details user
+@app.route('/setting-det-role/<int:role_id>')
+def setting_det_role(role_id=0):
+    log.info(Logs.fileline() + ' : TRACE setting det user=' + str(role_id))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det role => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'setting-det-role/' + str(role_id)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load list of user role
+    try:
+        payload = {'exclude': ["API", "Z"]}
+
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_ihm['user_role'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+
+    user_id = 0  # TODO DEBUG
+
+    if user_id > 0:
+        # Load user details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/det/' + str(user_id)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+
+    json_data['user_id'] = user_id
+    json_data['role_id'] = role_id
+
+    return render_template('setting-det-role.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# table of rights
+@app.route('/setting-det-role/table-rights')
+def table_rights():
+    log.info(Logs.fileline() + ' : DEBUG: route /setting-det-role/table-rights')
+    id_user   = request.args.get('id_user', default=0, type=int)
+    role_type = request.args.get('role_type', default='', type=str)
+
+    l_rights = {}
+
+    payload = {'id_user': id_user,
+               'role_type': role_type}
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/rights/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            l_rights = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user list rights failed, err=%s , url=%s', err, url)
+
+    return render_template('table-rights.html', l_rights=l_rights)
+
+
+# Page : users list
 @app.route('/setting-users')
 def setting_users():
     log.info(Logs.fileline() + ' : TRACE setting users')
@@ -800,7 +904,7 @@ def setting_users():
     # Load list of user role
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
-        req = requests.get(url)
+        req = requests.post(url, json={})
 
         if req.status_code == 200:
             json_ihm['user_role'] = req.json()
@@ -849,7 +953,7 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
         # Load list of one user role type
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list/Z'
-            req = requests.get(url)
+            req = requests.post(url, json={})
 
             if req.status_code == 200:
                 json_ihm['user_role']  = req.json()
@@ -860,8 +964,10 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
     else:
         # Load list of user role
         try:
+            payload = {'exclude': ["Z"]}
+
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
-            req = requests.get(url)
+            req = requests.post(url, json=payload)
 
             if req.status_code == 200:
                 json_ihm['user_role'] = req.json()
