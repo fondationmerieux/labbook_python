@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Maintenance préventive") }}{% if args['det_eqp'] %} : {{ args['det_eqp']['name'] }}{% endif %}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Maintenance préventive") }}{% if args['det_eqp'] %} : {{ args['det_eqp']['name'] }}{% endif %}</span></h2>
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_prevent" class="form-label col-3 text-end mt-2 me-1">{{ _("Date") }}</label>
@@ -54,7 +54,7 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if session["user_role"] in ("A","B","Q","TQ") %}
+                {% if has_permission("EQP_108") %}
                 <div class="float-end">
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
@@ -179,7 +179,7 @@ let type    = 'JF' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    {% if session['user_role'] in ('A','B','TQ','Q') %}
+    {% if has_permission("EQP_111") %}
     tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
     {% endif %}
     tmp_tr += '</tr>' ;

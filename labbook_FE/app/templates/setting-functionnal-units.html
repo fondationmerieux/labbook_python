@@ -9,7 +9,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage des unités fonctionnelles") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Paramétrage des unités fonctionnelles") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-name row mt-3">
                     <div class="col-lg-12">
@@ -81,7 +81,7 @@ let obj = data ;
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav mt-2\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
-                   "<div class=\"dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}\" style=\"padding:0;\">" ;
+                   "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
 
         if ( obj.fun_ser > 0 )
         {

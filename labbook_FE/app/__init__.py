@@ -326,20 +326,39 @@ def get_user_data(login):
 
             session['user_id']        = json['id_data']
             session['user_role']      = json['role_type']
+            session['user_id_role']   = json['role_pro']
             session['user_name']      = json['username']
             session['user_firstname'] = json['firstname']
             session['user_lastname']  = json['lastname']
             session['user_locale']    = json['locale']
             session['user_side_account'] = json['side_account']
+            session['color_1']        = json['pro_color_1']
+            session['color_2']        = json['pro_color_2']
+            session['text_color']     = json['pro_text_color']
             session.modified = True
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
         return False
 
-    # Get analyzes families linked functionnal unit for this user onfly for all secretary, technician and biologist
-    if session['user_role'] == 'B' or session['user_role'] == 'TQ' or session['user_role'] == 'T' or \
-       session['user_role'] == 'TA' or session['user_role'] == 'S' or session['user_role'] == 'SA':
+    # get all rights for this user
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/rights/list/' + str(session['user_id'])
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            session['l_user_rights'] = req.json()
+            session.modified = True
+        else:
+            session['l_user_rights'] = []
+            session.modified = True
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list of user rights failed, err=%s , url=%s', err, url)
+        return False
+
+    # Get analyzes families linked functionnal unit for this user only for all secretary, technician and biologist
+    if session['user_role'] not in ('API', 'Z'):
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/link/user/' + str(session['user_id'])
             req = requests.get(url)
@@ -386,11 +405,11 @@ def get_software_settings():
 
 
 def test_session():
-    if 'login_ok' not in session or 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K', 'L', 'API'):
-        log.info(Logs.fileline() + ' : DEBUG test_session KO')
+    if 'login_ok' not in session or 'user_role' not in session or session['user_role'] not in ('A', 'B', 'T', 'TA', 'TQ', 'S', 'SA', 'P', 'Q', 'K', 'L', 'API', 'SP'):
+        log.info(Logs.fileline() + ' : TRACE test_session KO, perhaps user_role not allowed')
         return False
     else:
-        log.info(Logs.fileline() + ' : DEBUG test_session OK')
+        log.info(Logs.fileline() + ' : TRACE test_session OK')
         return True
 
 
@@ -420,6 +439,97 @@ def date_now(date_now):
 @app.template_filter('datetime_now')
 def datetime_now(datetime_now):
     return datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M")
+
+
+def custom_style():
+    background_color = session.get('color_1', '#333333')  # Default background color
+    text_color = session.get('text_color', '#FFFFFF')     # Default text color
+    hover_color = session.get('color_2', '#111111')       # Default hover background color
+
+    background_color = background_color.strip('#')  # Remove leading #
+    text_color = text_color.strip('#')
+    hover_color = hover_color.strip('#')
+
+    styles = f'''
+    <style>
+         /* style introduced by jinja2 with database role colors */
+         .page-title-color
+         {{
+             background-color : #{background_color} !important;
+             color            : #{text_color} !important;
+         }}
+
+        .menu-act-drop
+        {{
+             background-color : #{background_color} !important;
+             color            : #{text_color} !important;
+        }}
+
+        .menu-act-item:hover
+        {{
+             background-color : #{hover_color} !important;
+             color            : #{text_color} !important;
+        }}
+
+        .nav-style a
+        {{
+             background-color : #{background_color} !important;
+             color            : #{text_color} !important;
+             border           : 0;
+        }}
+
+        .nav-style a:hover
+        {{
+             background-color : #{hover_color} !important;
+             color            : #{text_color} !important;
+        }}
+    </style>
+    '''
+
+    return styles
+
+
+app.jinja_env.globals.update(custom_style=custom_style)
+
+
+def has_permission(prr_tag):
+    """
+    Checks if a user has a specific permission.
+
+    Args:
+        prr_tag (str): The tag identifier of the permission (prr_type_prr_ser).
+        prp_granted (str): The expected state of the permission ('Y' for granted, 'N' for not granted).
+
+    Returns:
+        bool: True if the user has the specified permission with the expected state, otherwise False.
+    """
+    l_user_rights = session.get('l_user_rights', [])
+    return any(right['prr_tag'] == prr_tag and right['prp_granted'] == 'Y' for right in l_user_rights)
+
+
+def has_permission_by_ser(prr_sers):
+    """
+    Checks if the user has a specific permission by prr_ser.
+
+    Args:
+        prr_sers (int or list): A single prr_ser or a list of prr_ser to check.
+        prp_granted (str): The expected permission state ('Y' for granted, 'N' for not granted).
+
+    Returns:
+        bool: True if the user has any matching permission with the expected state, otherwise False.
+    """
+    l_user_rights = session.get('l_user_rights', [])
+
+    # Ensure prr_sers is iterable (convert single int to list)
+    if isinstance(prr_sers, int):
+        prr_sers = [prr_sers]
+
+    # Check if any permission matches
+    return any(right['prr_ser'] in prr_sers and right['prp_granted'] == 'Y' for right in l_user_rights)
+
+
+app.jinja_env.globals.update(has_permission=has_permission)
+app.jinja_env.globals.update(has_permission_by_ser=has_permission_by_ser)
 
 
 # ######################################
@@ -628,6 +738,29 @@ def homepage(login=''):
     except Exception:
         log.error(Logs.fileline() + ' : cant read ' + path)
 
+    # difference between now and last_backup_ok
+    try:
+        import pathlib
+
+        f = pathlib.Path(Constants.cst_io + 'last_backup_ok')
+
+        if f.exists():
+            last_mod_time = datetime.fromtimestamp(f.stat().st_mtime)
+            current_time = datetime.now()
+            time_difference = current_time - last_mod_time
+
+            json_data['last_backup_ok'] = {
+                'date_backup_ok': last_mod_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'is_older_than_24h': time_difference > timedelta(hours=24)
+            }
+        else:
+            json_data['last_backup_ok'] = {
+                'date_backup_ok': 'undefined',
+                'is_older_than_24h': False
+            }
+    except Exception as err:
+        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok , err=%s', err)
+
     # Load pref_quality
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/qualite'
@@ -683,6 +816,13 @@ def homepage(login=''):
         session.modified = True
 
         return redirect(session['server_ext'] + '/' + session['current_page'])
+    # Sampler homepage
+    elif session['user_role'] == 'SP':
+        session['current_page'] = 'list-samples'
+        session.modified = True
+
+        return redirect(session['server_ext'] + '/' + session['current_page'])
+
     # Stock manager homepage
     elif session['user_role'] == 'K':
         session['current_page'] = 'list-stock'
@@ -808,13 +948,15 @@ def setting_roles_and_rights():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests role list failed, err=%s , url=%s', err, url)
 
+    log.info(Logs.fileline() + ' : TRACE Labbook setting roles-and-rights json_data = ' + str(json_data))
+
     return render_template('setting-roles-and-rights.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
-# Page : details user
+# Page : role details
 @app.route('/setting-det-role/<int:role_id>')
 def setting_det_role(role_id=0):
-    log.info(Logs.fileline() + ' : TRACE setting det user=' + str(role_id))
+    log.info(Logs.fileline() + ' : TRACE setting det role=' + str(role_id))
 
     if not test_session():
         log.info(Logs.fileline() + ' : TRACE Labbook setting det role => disconnect')
@@ -829,7 +971,7 @@ def setting_det_role(role_id=0):
 
     # Load list of user role
     try:
-        payload = {'exclude': ["API", "Z"]}
+        payload = {'exclude': ["API", "TA", "TQ", "SA", "Z"], 'genuine': 'Y'}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
         req = requests.post(url, json=payload)
@@ -840,21 +982,20 @@ def setting_det_role(role_id=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
 
-    user_id = 0  # TODO DEBUG
-
-    if user_id > 0:
+    if role_id > 0:
         # Load user details
         try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/det/' + str(user_id)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/det/' + str(role_id)
             req = requests.get(url)
 
             if req.status_code == 200:
                 json_data = req.json()
 
         except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+            log.error(Logs.fileline() + ' : requests user role det failed, err=%s , url=%s', err, url)
 
-    json_data['user_id'] = user_id
+    json_data['by_user'] = session['user_id']
+    json_data['user_id'] = 0
     json_data['role_id'] = role_id
 
     return render_template('setting-det-role.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
@@ -862,15 +1003,18 @@ def setting_det_role(role_id=0):
 
 # table of rights
 @app.route('/setting-det-role/table-rights')
-def table_rights():
-    log.info(Logs.fileline() + ' : DEBUG: route /setting-det-role/table-rights')
-    id_user   = request.args.get('id_user', default=0, type=int)
+def role_table_rights():
+    log.info(Logs.fileline() + ' : TRACE /setting-det-role/table-rights')
     role_type = request.args.get('role_type', default='', type=str)
+    role_id   = request.args.get('role_id', default=0, type=int)
 
     l_rights = {}
 
-    payload = {'id_user': id_user,
-               'role_type': role_type}
+    payload = {'id_user': 0,
+               'role_type': role_type,
+               'role_id': role_id}
+
+    # log.info(Logs.fileline() + ' : DEBUG payload = ' + str(payload))
 
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/rights/list'
@@ -881,6 +1025,84 @@ def table_rights():
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests user list rights failed, err=%s , url=%s', err, url)
+
+    # log.info(Logs.fileline() + ' : DEBUG l_rights = ' + str(l_rights))
+
+    return render_template('table-rights.html', l_rights=l_rights)
+
+
+# Page : user rights
+@app.route('/setting-user-rights/<int:id_user>')
+def setting_user_rights(id_user=0):
+    log.info(Logs.fileline() + ' : TRACE setting user rights user=' + str(id_user))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting user rights => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'setting-user-rights/' + str(id_user)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load list of user role
+    try:
+        payload = {'exclude': ["API", "Z"], 'genuine': 'N'}
+
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            json_ihm['user_role'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+
+    if id_user > 0:
+        # Load role for this user
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/role/user/' + str(id_user)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests user role det failed, err=%s , url=%s', err, url)
+
+    json_data['by_user'] = session['user_id']
+    json_data['id_user'] = id_user
+
+    return render_template('setting-user-rights.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# table of rights
+@app.route('/setting-user-rights/table-rights')
+def user_table_rights():
+    log.info(Logs.fileline() + ' : TRACE /setting-user-rights/table-rights')
+    id_user  = request.args.get('id_user', default=0, type=int)
+
+    l_rights = {}
+
+    payload = {'id_user': id_user,
+               'role_type': '',
+               'role_id': 0}
+
+    # log.info(Logs.fileline() + ' : DEBUG payload = ' + str(payload))
+
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/rights/list'
+        req = requests.post(url, json=payload)
+
+        if req.status_code == 200:
+            l_rights = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user list rights failed, err=%s , url=%s', err, url)
+
+    # log.info(Logs.fileline() + ' : DEBUG l_rights = ' + str(l_rights))
 
     return render_template('table-rights.html', l_rights=l_rights)
 
@@ -2666,13 +2888,13 @@ def list_works(user_role='', emer=''):
                    'emer': emer,
                    'link_fam': session['user_link_fam']}
 
-        if user_role == 'B':
+        if user_role == 'B' or has_permission('RECORD_5'):
             # We looking for emergency record in more record status
             if emer == 4:
                 payload['stat_work'] = '(181,182,253,254,255)'
             else:
                 payload['stat_work'] = '(254,255)'
-        elif user_role == 'T':
+        elif user_role == 'T' or has_permission('RECORD_8'):
             payload['stat_work'] = '(181,182,253)'
 
         json_ihm['stat_work'] = payload['stat_work']
@@ -3468,6 +3690,17 @@ def administrative_record(type_req='E', id_rec=0):
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list template STI failed, err=%s , url=%s', err, url)
 
+    # Load list template INV
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/INV'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['tpl_invoice'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list template INV failed, err=%s , url=%s', err, url)
+
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
@@ -3596,7 +3829,8 @@ def technical_validation(id_rec=0, anchor=''):
                         if res['validation'] and 'date_res' in res['validation']:
                             date_res = res['validation']['date_res']
 
-                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat'], 'date_res': date_res}
+                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'],
+                                   'id_res': res['id_res'], 'res_type': res['type_resultat'], 'date_res': date_res}
 
                         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/previous'
                         req = requests.post(url, json=payload)
@@ -3847,7 +4081,8 @@ def biological_validation(mode='', id_rec=0):
                         if res['validation'] and 'date_res' in res['validation']:
                             date_res = res['validation']['date_res']
 
-                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'], 'id_res': res['id_res'], 'res_type': res['type_resultat'], 'date_res': date_res}
+                        payload = {'id_pat': res['id_pat'], 'ref_ana': res['ref_ana'], 'ref_var': res['id_data'],
+                                   'id_res': res['id_res'], 'res_type': res['type_resultat'], 'date_res': date_res}
 
                         url = session['server_int'] + '/' + session['redirect_name'] + '/services/result/previous'
                         req = requests.post(url, json=payload)
@@ -3856,8 +4091,8 @@ def biological_validation(mode='', id_rec=0):
                             prev = req.json()
 
                             if prev:
-                                res['prev_val']  = prev['valeur']
-                                res['prev_date'] = prev['date_valid']
+                                res['prev_val'] = prev['valeur'] if prev['valeur'] is not None else ''
+                                res['prev_date'] = prev['date_valid'] if prev['date_valid'] is not None else ''
 
                     except requests.exceptions.RequestException as err:
                         log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)

@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rapport sur le délai de rendu du résultat") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Rapport sur le délai de rendu du résultat") }}</span></h2>
             <p>{{ _("Le calcul du délai de rendu des résultats est basé sur la date d’enregistrement du dossier et les dates de validation des analyses du dossier") }}</p>
             <form autocomplete="off">
                 <fieldset class="border mx-1 p-2">
@@ -261,7 +261,7 @@ let tat_ana_avg = '' ;
         let menu_act = '<nav>' +
                        '<ul class="navbar-nav">' +
                        '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
-                       '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
+                       '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' +
                        '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_tat[i].rec_type + '/' + data_tat[i].rec_id + '">{{ _("Dossier administratif") }}</a>' ;
 
         menu_act += '</div></li></ul></nav>' ;

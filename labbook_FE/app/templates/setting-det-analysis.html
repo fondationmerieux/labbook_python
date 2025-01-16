@@ -11,7 +11,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Analyse") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Analyse") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Analyse") }}</h3>
@@ -93,10 +93,10 @@
                         <div class="form-group d-lg-flex align-items-start mt-3">
                             <label class="form-label col-6 text-end mt-2 me-3">{{ _("Export whonet") }}</label>
                             <label class="form-label text-end mt-2 me-3">
-                                <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
+                                <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>
                             <label class="form-label text-end mt-2 me-3">
-                                <input type="radio" name="whonet" value="5" {% if not args['details'] or args['details']['ana_whonet'] == 5 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %}>&nbsp;{{ _("Non") }}</input>
+                                <input type="radio" name="whonet" value="5" {% if not args['details'] or args['details']['ana_whonet'] == 5 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Non") }}</input>
                             </label>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                         </div>
                         <label for="var_code" class="form-label col-2 text-end mt-2 me-1">{{ _("Code var.") }}</label>
                         <div>					
-                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" {% if session['user_role'] != 'A' %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
+                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" {% if has_permission("SETTING_47") %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
                         </div>
                         <label for="var_id" class="form-label col-1 text-end mt-2 me-1">{{ _("Id") }}</label>
                         <div>					
@@ -246,10 +246,10 @@
                         </label>
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Export whonet") }}</label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" id="var_whonet_4" name="var_whonet" value="4" {% if args['var'] and args['var'][0]['var_whonet'] == 4 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
+                            <input type="radio" id="var_whonet_4" name="var_whonet" value="4" {% if args['var'] and args['var'][0]['var_whonet'] == 4 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
                         </label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if session['user_role'] != 'A' %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
+                            <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
                     </div>
                     <div class="col-12 form-group d-lg-flex align-items-start mt-3">

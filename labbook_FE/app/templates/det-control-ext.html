@@ -11,7 +11,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Contrôle externe") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Contrôle externe") }}</span></h2>
             <div class="form-group d-lg-flex align-items-start mt-3">
                 <label class="form-label col-3 text-end mx-3">{{ _("Type") }}</label>
                 <label class="form-label text-end me-3">
@@ -35,7 +35,7 @@
                     <input type="hidden" id="id_eqp" value="{{ args['control']['ctq_eqp'] }}">
                 </div>
             </div>
-            {% if session['user_role'] in ('A','B','Q','TQ') %}
+            {% if has_permission("CTRLEXT_158") %}
             <div class="col-12 text-end my-2">
                 <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
             </div>
@@ -83,10 +83,10 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
+                    {% if has_permission("CTRLEXT_162") %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
                     {% endif %}
-                    {% if session['user_role'] in ('A','B','Q','TQ') %}
+                    {% if has_permission("CTRLEXT_161") %}
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
@@ -137,11 +137,11 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    {% if session['user_role'] in ('A','B','Q','TQ','L') %}
+    {% if has_permission("CTRLEXT_159") %}
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
-                   "<div class=\"dropdown-menu menu-act-drop nav-{{ session["user_role"]|safe }}\" style=\"padding:0;\">" +
+                   "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/res-control-ext/" + data_items[i].cte_ctq + "/" + data_items[i].cte_type + "/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>";   
         
     menu_act += "</div></ul></nav>" ;

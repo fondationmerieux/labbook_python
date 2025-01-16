@@ -9,9 +9,10 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+            <h2 class="page-title page-title-color">
                 <span>{{ _("Dossier administratif") }}</span><span id="info_pat_title"></span>
             </h2>
+            {% if has_permission("RECORD_18") %}
             <form autocomplete="off">
                 
                 <div class="d-lg-flex align-items-start ms-3">
@@ -280,7 +281,7 @@
                                 <div>
                                     <div>
                                         <div class="uploadHTML5 d-inline-block pe-2">
-                                            {% if session['user_role'] != 'P' %}
+                                            {% if has_permission("RECORD_19") %}
                                             <input name="file" type="file" class="mb-1"/>
                                             {% endif %}
                                         </div>
@@ -294,7 +295,7 @@
                                 </table>
                             </div>
                         </div>
-                        {% if session['user_role'] != 'P' %}
+                        {% if has_permission("RECORD_19") %}
                         <input type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file({{ args['record']['id_data'] }});">
                         {% endif %}
                     </div>
@@ -305,8 +306,9 @@
                         <div class="float-start">
                             <input type="button" onclick="return_home();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Quitter') }}">
                         </div>
-                        {% if session['user_role'] != 'P' %}
+                        
                         <div class="float-end form-inline">
+                            {% if has_permission("RECORD_20") %}
                             {% if ihm['tpl_outsourced'] %}
                             <select id="tpl_outsourced" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_outsourced'] and ihm['tpl_outsourced']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_outsourced'] %}
@@ -315,20 +317,32 @@
                             </select>
                             <input type="button" onclick="print_outsourced({{ args['record']['id_data'] }});" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _('Bon de transfert') }}" id="btn_outsourced">
                             {% endif %}
-                            {% if session['pref_bill'] == '1' %}
-                            <input type="button" onclick="print_bill({{ args['record']['id_data'] }});" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _('Imprimer la facture') }}">
+                            {% if session['pref_bill'] == '1' and has_permission("RECORD_22") %}
+                                {% if ihm['tpl_invoice'] %}
+                            <select id="tpl_invoice" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_invoice'] and ihm['tpl_invoice']|length < 2 %}hidden{% endif %}>
+                                {% for tpl in ihm['tpl_invoice'] %}
+                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                {% endfor %}
+                            </select>
+                                {% endif %}
+                            <input type="button" onclick="print_invoice({{ args['record']['id_data'] }});" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _('Imprimer la facture') }}">
                             {% endif %}
+                            {% if has_permission("RECORD_21") %}
                             <select id="tpl_sticker" class="form-select mx-3" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_sticker'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
                             </select>
                             <input type="button" onclick="print_sticker();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Code barre') }}">
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </form>
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
             
         </div>
     </div>
@@ -483,7 +497,7 @@ let i_max = obj.length - 1 ;
             menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
             else
             {
-            {% if session['user_role'] == 'B' %}
+            {% if has_permission("RECORD_23") %}
             menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
             menu_act += ' - <a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
             {% else %}
@@ -493,7 +507,7 @@ let i_max = obj.length - 1 ;
 
             let tpl = '' ;
 
-            {% if session['user_role'] not in ('P','S') %}
+            {% if has_permission("RECORD_24") %}
             // reedit only for last report version
             if ( i == i_max )
             {
@@ -537,7 +551,7 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'REC\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    {% if session['user_role'] not in ('P','S') %}
+    {% if has_permission("RECORD_25") %}
     tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a>' ;
     {% endif %}
     tmp_tr += '</div></td></tr>' ;
@@ -774,26 +788,32 @@ let filename = "outsourced_" + num_rec ;
     } ) ;
 }
 
-function print_bill( id_rec )
+function print_invoice( id_rec )
 {
     $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
+let template = $("#tpl_invoice").val() ;
+let filename = "invoice_" + num_rec ;
+
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/pdf/bill/" + id_rec,
+        url: "{{ session['server_ext'] }}/services/pdf/invoice/" + id_rec + "/" + template + "/" + filename,
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
 
-        download_file( "PY", "facture_" + num_rec + ".pdf", "GEN", 0 ) ;
+            if (ret == 0)
+            download_file( "PY", filename + ".pdf", "GEN", 0 ) ;
+            else
+            alert("{{ _("Erreur lors de la génération du PDF") }}") ;
         },
         error: function(ret)
         {
             $("#dial-wait").modal("hide") ;
 
-        console.log("ERROR GET pdf bill");
+        console.log("ERROR GET pdf invoice");
         alert("{{ _("Erreur lors de la génération du PDF") }}") ;
         }
     } ) ;
@@ -862,6 +882,7 @@ function return_home()
 window.location.href = "{{ session['server_ext'] }}/homepage";
 }
 
+{% if has_permission("RECORD_18") %}
 $( document ).ready( function()
 {
 num_rec_y = {{ args['record']['num_dos_an'] }} ;
@@ -886,6 +907,7 @@ info_pat_title() ;
     }
 
 } ) ;
+{% endif %}
 </script>
 {% endblock %}
 

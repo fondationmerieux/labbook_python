@@ -28,202 +28,6 @@ class Pdf:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getPdfBill(id_rec):
-        """Build a PDF bill
-
-        This function is call by administrative record template
-
-        Args:
-            id_rec (int): record serial.
-
-        Returns:
-            bool: True for success, False otherwise.
-
-        """
-
-        path = Constants.cst_path_tmp
-
-        # Get format header
-        pdfpref = Pdf.getPdfPref()
-
-        full_header = True
-
-        if pdfpref and pdfpref['entete'] == 1069:
-            full_header = False
-
-        # Get record details
-        record = Record.getRecord(id_rec)
-
-        if not record:
-            return False
-
-        num_rec     = record['num_rec']
-        bill_num    = record['num_fact']
-        receipt_num = record['num_quittance']
-
-        Various.useLangPDF()
-
-        if receipt_num:
-            receipt_num = '<div><span class="ft_bill_rec">' + _("N° quittance") + ' : ' + str(receipt_num) + '</span></div>'
-        else:
-            receipt_num = ''
-
-        # Get Patient details
-        pat = Patient.getPatient(record['id_patient'])
-
-        addr_div = ''
-
-        if pat:
-            addr_div += ('<div style="width:475px;border:2px solid dimgrey;border-radius:10px;padding:10px;'
-                         'background-color:#FFF;float:right;">')
-
-            if pat['pat_name'] or pat['pat_firstname']:
-                pat_lname = ''
-                pat_fname = ''
-
-                if pat['pat_name']:
-                    pat_lname = pat['pat_name']
-
-                if pat['pat_maiden']:
-                    pat_lname += '&nbsp;' + pat['pat_maiden']
-
-                if pat['pat_firstname']:
-                    pat_fname = pat['pat_firstname']
-
-                addr_div += '<div><span class="ft_pat_ident">' + str(pat_lname) + '&nbsp;' + str(pat_fname) + '</span></div>'
-
-            if pat['pat_address']:
-                addr_div += '<div><span class="ft_pat_addr">' + str(pat['pat_address']) + '</span></div>'
-
-            if pat['pat_zipcode'] or pat['pat_city']:
-                pat_zip = ''
-                pat_city = ''
-
-                if pat['pat_zipcode']:
-                    pat_zip = pat['pat_zipcode']
-
-                if pat['pat_city']:
-                    pat_city = pat['pat_city']
-
-                addr_div += '<div><span class="ft_pat_addr">' + str(pat_zip) + '&nbsp;' + str(pat_city) + '</span></div>'
-
-            addr_div += '</div>'
-
-        l_ana = Analysis.getAnalysisReq(id_rec, 'A')
-
-        bill_div = ''
-        ana_div  = ''
-        samp_div = ''
-
-        if l_ana:
-            bill_div += ('<div style="width:980px;height:1000px;border:2px solid dimgrey;border-radius:10px;'
-                         'padding:10px;margin-top:20px;background-color:#FFF;">')
-
-            label01 = _("Analyses demandées")
-            label02 = _("Actes de prélèvements")
-
-            Various.useLangDB()
-
-            # LOOP ANALYZES
-            for ana in l_ana:
-                # Requested analysis
-                if ana['cote_unite'] is None or ana['cote_unite'] != 'PB':
-                    if not ana_div:
-                        ana_div += '<div><span class="ft_bill_det_tit">' + label01 + '</span></div>'
-
-                    trans  = ''
-                    trans2 = ''
-
-                    label_out = _("Sous-traitée")
-
-                    if ana['nom']:
-                        trans = ana['nom'].strip()
-
-                    if ana['outsourced'] == 'Y':
-                        trans2 = ' <i>[' + label_out + ']</i>'
-
-                    ana_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
-                                'text-align:left;">' + str(ana['code']) + '</span>'
-                                '<span class="ft_bill_det" style="width:750px;display:inline-block;">' +
-                                str(_(trans)) + str(trans2) + '</span>'
-                                '<span class="ft_bill_det" style="width:120px;display:inline-block;'
-                                'text-align:right;">' + str(ana['prix']) + '</span></div>')
-
-                # Requested samples
-                if ana['cote_unite'] == 'PB':
-                    if not samp_div:
-                        samp_div += '<div><span class="ft_bill_det_tit">' + label02 + '</span></div>'
-
-                    # No display of samples without price
-                    if ana['prix'] > 0:
-                        trans  = ''
-                        trans2 = ''
-
-                        if ana['code']:
-                            trans = ana['code'].strip()
-
-                        if ana['nom']:
-                            trans2 = ana['nom'].strip()
-
-                        trans3 = ana['prix']
-                        samp_div += ('<div><span class="ft_bill_det" style="width:90px;display:inline-block;'
-                                     'text-align:left;">' + str(trans) + '</span>'
-                                     '<span class="ft_bill_det" style="width:750px;display:inline-block;">' +
-                                     str(_(trans2)) + '</span>'
-                                     '<span class="ft_bill_det" style="width:120px;display:inline-block;'
-                                     'text-align:right;">' + str(trans3) + '</span></div>')
-
-            Various.useLangPDF()
-
-            if ana_div:
-                bill_div += ana_div + '<br />'
-
-            if samp_div:
-                bill_div += samp_div + '<br />'
-
-            # bill_price and bill_remain
-            bill_div += ('<div><span class="ft_bill_det_tit" style="width:100px;display:inline-block;text-align:left;">' +
-                         _("Total") + '</span>'
-                         '<span class="ft_bill_det_tot" style="width:870px;display:inline-block;text-align:right;"">' +
-                         str(record['prix']) + '</span></div>'
-                         '<div><span class="ft_bill_det_tit" style="width:160px;display:inline-block;text-align:left;">' +
-                         _("Total à payer") + '</span>'
-                         '<span class="ft_bill_det_tot" style="width:810px;display:inline-block;text-align:right;">' +
-                         str(record['a_payer']) + '</span></div></div>')
-
-        page_header = Pdf.getPdfHeader(full_header)
-
-        page_body = ('<div style="width:1000px;">'
-                     '<div style="width:475px;padding:10px;background-color:#FFF;float:left;">'
-                     '<div><span class="ft_bill_num">' + _("FACTURE") + ' : ' + str(bill_num) + '</span></div>'
-                     '<div><span class="ft_bill_rec">' + _("N° dossier") + ' : ' + str(num_rec) + '</span>'
-                     '</div>' + receipt_num + '</div>' + addr_div + '<div style="clear:both;"></div>' + bill_div + '</div>')
-
-        date_now = datetime.strftime(datetime.now(), Constants.cst_dt_long)
-
-        page_footer = ('<div style="width:1000px;margin-top:5px;background-color:#FFF;">'
-                       '<div><span class="ft_footer" style="width:900px;display:inline-block;text-align:left;">' +
-                       _("Facture n°") + str(bill_num) + ', ' + _("édité le") + ' ' + str(date_now) + '</span>'
-                       '<span class="ft_footer" style="width:90px;display:inline-block;text-align:right;">' +
-                       _("Page") + ' 1/1</span></div></div></div>')
-
-        filename = 'facture_' + num_rec + '.pdf'
-
-        form_cont = page_header + page_body + page_footer
-
-        options = {'--encoding': 'utf-8',
-                   'page-size': 'A4',
-                   'margin-top': '12.00mm',
-                   'margin-right': '0.00mm',
-                   'margin-bottom': '0.00mm',
-                   'margin-left': '0.00mm',
-                   'no-outline': None}
-
-        pdfkit.from_string(form_cont, path + filename, options=options)
-
-        return True
-
-    @staticmethod
     def getPdfBillList(l_datas, date_beg, date_end):
         """Build a PDF bill list
 
@@ -2162,7 +1966,7 @@ class Pdf:
     def buildPdf(type, template, filename, data):
         """Build a PDF from a template with data
 
-        This function is call by getPdfSticker() and getPdfOutsourced()
+        This function is call by getPdfSticker(), getPdfOutsourced() and getPdfInvoice()
 
         Args:
             type     (string): type of template.
@@ -2183,10 +1987,12 @@ class Pdf:
             debug_filename_data = Constants.cst_filedata_sticker
         elif type == 'OUT':
             debug_filename_data = Constants.cst_filedata_outsourced
+        elif type == 'INV':
+            debug_filename_data = Constants.cst_filedata_invoice
 
         # write odt with data and template
         try:
-            Pdf.log.error(Logs.fileline() + ' : buildPdf data = ' + str(data))
+            Pdf.log.error(Logs.fileline() + ' : type = ' + str(type) + ' | buildPdf data = ' + str(data))
 
             # write data sticker in a file for debugging or testing
             path_debug = os.path.join(Constants.cst_template, debug_filename_data)
@@ -2766,7 +2572,7 @@ class Pdf:
 
             data['samples'].append(sample)
 
-        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE data : ' + str(data))
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE outsourced data : ' + str(data))
 
         return data
 
@@ -2788,10 +2594,472 @@ class Pdf:
         l_items = Patient.getFormItems(id_pat)
 
         if not l_items:
-            Pdf.log.error(Logs.fileline() + ' : ' + 'getDataFormItem WARNING not found')
+            Pdf.log.warning(Logs.fileline() + ' : ' + 'getDataFormItem WARNING not found')
 
         for item in l_items:
             key_val = str(item['pfi_key'])
             data[key_val] = item['pfi_value']
+
+        return data
+
+    @staticmethod
+    def getPdfInvoice(id_rec, template, filename):
+        """Initiates a PDF Invoice
+
+        This function is call by administrative record
+
+        Args:
+            id_rec      (int): record serial.
+            template (string): template filename.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        # 1 - get data
+        datas = Pdf.getDataInvoice(id_rec)
+
+        # 2 - run data with template
+        # 3 - convert odt to PDF
+        Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE Invoice datas : ' + str(datas))
+
+        ret = Pdf.buildPdf('INV', template, filename, datas)
+
+        if not ret:
+            Pdf.log.error(Logs.fileline() + ' : getPdfInvoice ERROR buildPdf')
+            return False
+
+        Pdf.log.error(Logs.fileline() + ' : getPdfInvoice')
+        return True
+
+    @staticmethod
+    def getDataInvoice(id_rec):
+        """Build dict of data for Invoice document
+
+        This function is call by getPdfInvoice
+
+        Args:
+            id_rec      (int): record serial.
+
+        Returns:
+            dict: dictionnary of data
+
+        """
+
+        Various.useLangPDF()
+
+        data = {}  # dictionnary of data for build Invoice document
+
+        # === Logo details ===
+        filepath = os.path.join(Constants.cst_resource, 'logo.png')
+
+        data['logo'] = (open(filepath, 'rb'), 'image/png')
+
+        # === Label details ===
+        data['label'] = {}
+
+        data['label']['phone']      = str(_("Tél"))
+        data['label']['fax']        = str(_("Fax"))
+        data['label']['email']      = str(_("Email"))
+        data['label']['record']     = str(_("Dossier"))
+        data['label']['code']       = str(_("Code"))
+        data['label']['born']       = str(_("Né(e) le"))
+        data['label']['admit']      = str(_("Admis le"))
+        data['label']['at']         = str(_("en"))
+        data['label']['bed']        = str(_("Lit"))
+        data['label']['by']         = str(_("par"))
+        data['label']['exam_presc'] = str(_("Examen prescrit le"))
+        data['label']['save']       = str(_("Enregistré le"))
+        data['label']['edit']       = str(_("édité le"))
+        data['label']['analyzes']   = str(_("ANALYSE"))
+        data['label']['results']    = str(_("RESULTAT"))
+        data['label']['references'] = str(_("Références"))
+        data['label']['previous']   = str(_("Antériorités"))
+        data['label']['comm']       = str(_("Commentaire"))
+        data['label']['validate']   = str(_("validé par"))
+        data['label']['total']      = str(_("Total"))
+        data['label']['total_remain'] = str(_("Total à payer"))
+        data['label']['analyzes_requested'] = str(_("Analyses demandées"))
+        data['label']['discount']   = str(_("Remise sur la facturation"))
+        data['label']['percent_discount'] = str(_("Pourcentage de la remise"))
+        data['label']['percent_insurance'] = str(_("Pourcentage assurance maladie / mutuelle"))
+
+        # === Laboratory details ===
+        data['lab'] = {}
+
+        name  = Various.getDefaultValue('entete_1')
+        line2 = Various.getDefaultValue('entete_2')
+        line3 = Various.getDefaultValue('entete_3')
+        addr  = Various.getDefaultValue('entete_adr')
+        phone = Various.getDefaultValue('entete_tel')
+        fax   = Various.getDefaultValue('entete_fax')
+        email = Various.getDefaultValue('entete_email')
+
+        data['lab']['name']  = str(name['value'])
+        data['lab']['head2'] = str(line2['value'])
+        data['lab']['head3'] = str(line3['value'])
+        data['lab']['addr']  = str(addr['value'])
+        data['lab']['phone'] = ''
+        data['lab']['fax']   = ''
+        data['lab']['email'] = ''
+
+        if phone['value']:
+            data['lab']['phone'] = str(phone['value'])
+
+        if fax['value']:
+            data['lab']['fax'] = str(fax['value'])
+
+        if email['value']:
+            data['lab']['email'] = str(email['value'])
+
+        # === Invoice details ===
+        data['invoice'] = {}
+
+        data['invoice']['title'] = _("Facture")
+
+        data['invoice']['date_now'] = datetime.strftime(datetime.now(), Constants.cst_date_eu)
+        data['invoice']['time_now'] = datetime.strftime(datetime.now(), Constants.cst_time_HM)
+
+        # === Record details ===
+        data['rec'] = {}
+
+        if id_rec > 0:
+            record = Record.getRecord(id_rec)
+        # For print test record
+        else:
+            Various.useLangDB()
+            record = {}
+            record['rec_date_receipt']  = datetime.now()
+            record['num_rec']           = '2022000001'
+            record['num_dos_an']        = '2022000001'
+            record['num_dos_mois']      = '2022010001'
+            record['num_dos_jour']      = '202201010001'
+            record['type']              = 184
+            record['date_hosp']         = datetime.now()
+            record['service_interne']   = _("Microbiologie")
+            record['num_lit']           = 'BED_NUM_123'
+            record['rec_hosp_num']      = 'HOSP_NUM_123'
+            record['date_prescription'] = datetime.now()
+            record['prescriber']        = 'Damien DOC'
+            record['rc']                = 'commentaire dossier\n2eme ligne'
+            record['id_patient']        = 0
+            record['rec_custody']       = 'Y'
+            record['rec_num_int']       = 'rec-num-int-123'
+            record['rec_date_vld']      = datetime.now()
+            record['rec_date_save']     = datetime.now()
+            record['num_fact']          = '0000000123'
+            record['remise']            = _("Personnel hospitalier")
+            record['remise_pourcent']   = '12.5'
+            record['assu_pourcent']     = '20'
+            record['prix']              = '3500.00'
+            record['a_payer']           = '2450.00'
+
+            Various.useLangPDF()
+
+        data['rec']['rec_date'] = datetime.strftime(record['rec_date_receipt'], Constants.cst_date_eu)
+
+        data['rec']['num']   = str(record['num_rec'])
+        data['rec']['num_y'] = str(record['num_dos_an'])
+        data['rec']['num_m'] = str(record['num_dos_mois'])
+        data['rec']['num_d'] = str(record['num_dos_jour'])
+        data['rec']['num_int'] = str(record['rec_num_int'])
+
+        data['rec']['hosp']         = 'N'
+        data['rec']['hosp_date']    = ''
+        data['rec']['hosp_service'] = ''
+        data['rec']['hosp_bed']     = ''
+
+        data['rec']['presc_date'] = ''
+        data['rec']['presc_name'] = ''
+
+        data['rec']['custody'] = 'N'
+
+        if 'type' in record and record['type'] == 184:
+            data['rec']['hosp'] = 'Y'
+            data['rec']['custody'] = str(record['rec_custody'])
+
+            if record['date_hosp']:
+                data['rec']['hosp_date'] = datetime.strftime(record['date_hosp'], Constants.cst_date_eu)
+
+            if record['service_interne']:
+                data['rec']['hosp_service'] = str(record['service_interne'])
+
+            if record['num_lit']:
+                data['rec']['hosp_bed'] = str(record['num_lit'])
+
+            if record['rec_hosp_num']:
+                data['rec']['rec_hosp_num'] = str(record['rec_hosp_num'])
+
+        if record['date_prescription']:
+            data['rec']['presc_date'] = datetime.strftime(record['date_prescription'], Constants.cst_date_eu)
+
+        if record['prescriber']:
+            data['rec']['presc_name'] = str(record['prescriber'])
+
+        # get or create num_fact
+        if record['num_fact']:
+            data['rec']['invoice_num'] = str(record['num_fact'])
+        else:
+            ret = Record.generateBillNumber(id_rec)
+
+            if not ret:
+                self.log.error(Logs.fileline() + ' : PdfBill bill number failed id_rec=%s', str(id_rec))
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            det_record = Record.getRecord(id_rec)
+
+            if det_record['num_fact']:
+                data['rec']['invoice_num'] = str(det_record['num_fact'])
+
+        if record['remise']:
+            Various.useLangPDF()
+            trans = record['remise']
+            data['rec']['type_discount'] = _(trans)
+        else:
+            data['rec']['type_discount'] = ''
+
+        if record['remise_pourcent']:
+            data['rec']['percent_discount'] = str(record['remise_pourcent'])
+        else:
+            data['rec']['percent_discount'] = ''
+
+        if record['assu_pourcent']:
+            data['rec']['percent_insurance'] = str(record['assu_pourcent'])
+        else:
+            data['rec']['percent_insurance'] = ''
+
+        if record['prix']:
+            data['rec']['invoice_total'] = str(record['prix'])
+        else:
+            data['rec']['invoice_total'] = '0.00'
+
+        if record['a_payer']:
+            data['rec']['invoice_remain'] = str(record['a_payer'])
+        else:
+            data['rec']['invoice_remain'] = '0.00'
+
+        # === Patient details ===
+        # for getDataOutsourced
+        data['pat'] = {}
+
+        if record['id_patient'] > 0:
+            pat = Patient.getPatient(record['id_patient'])
+
+            data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
+        # For print test patient
+        else:
+            pat = {}
+            pat['pat_ano']       = 'N'
+            pat['pat_code']      = 'Z1X2Y3'
+            pat['pat_code_lab']  = 'PAT123'
+            pat['pat_name']      = 'PATIENT'
+            pat['pat_firstname'] = 'Pauline'
+            pat['pat_maiden']    = 'PERRIERS'
+            pat['pat_midname']   = 'Monica'
+            pat['pat_birth']     = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
+            pat['pat_age']       = 42
+            pat['pat_age_unit']  = '1037'
+            pat['pat_sex']       = '2'
+            pat['pat_address']   = '3 rue du Paradis'
+            pat['pat_zipcode']   = '12345'
+            pat['pat_city']      = 'Testville'
+            pat['pat_district']  = ''
+            pat['pat_pbox']      = 'BP 123'
+            pat['pat_phone1']    = '0607080910'
+            pat['pat_phone2']    = '0700000002'
+            pat['pat_profession']   = 'Architecte'
+            pat['pat_nationality']  = 49
+            pat['pat_resident']     = 'Y'
+            pat['pat_blood_group']  = 904
+            pat['pat_blood_rhesus'] = 232
+
+        data['pat']['anonymous']    = ''
+        data['pat']['code']         = str(pat['pat_code'])
+        data['pat']['code_lab']     = ''
+        data['pat']['lastname']     = ''
+        data['pat']['firstname']    = ''
+        data['pat']['maidenname']   = ''
+        data['pat']['middlename']   = ''
+        data['pat']['birth']        = ''
+        data['pat']['age']          = ''
+        data['pat']['age_unit']     = ''
+        data['pat']['age_days']     = ''
+        data['pat']['sex']          = _('Inconnu')
+        data['pat']['addr']         = ''
+        data['pat']['zipcode']      = ''
+        data['pat']['city']         = ''
+        data['pat']['district']     = ''
+        data['pat']['pbox']         = ''
+        data['pat']['phone']        = ''
+        data['pat']['phone2']       = ''
+        data['pat']['profession']   = ''
+        data['pat']['nationality']  = ''
+        data['pat']['resident']     = str(pat['pat_resident'])
+        data['pat']['blood_group']  = ''
+        data['pat']['blood_rhesus'] = ''
+
+        if pat['pat_ano'] and pat['pat_ano'] == 4:
+            data['pat']['anonymous'] = 'Y'
+        else:
+            data['pat']['anonymous'] = 'N'
+
+        if pat['pat_code_lab']:
+            data['pat']['code_lab'] = str(pat['pat_code_lab'])
+
+        if pat['pat_name']:
+            data['pat']['lastname'] = str(pat['pat_name'])
+
+        if pat['pat_firstname']:
+            data['pat']['firstname'] = str(pat['pat_firstname'])
+
+        if pat['pat_maiden']:
+            data['pat']['maidenname'] = str(pat['pat_maiden'])
+
+        if pat['pat_midname']:
+            data['pat']['middlename'] = str(pat['pat_midname'])
+
+        if pat['pat_birth']:
+            data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
+
+            # calc age
+            today = datetime.now()
+            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
+
+            age = (today - born).days
+
+            data['pat']['age_days'] = str(age)
+
+            if age >= 365:
+                data['pat']['age']  = str(today.year - born.year)
+                data['pat']['age_unit'] = _('ans')
+            elif age > 0 and age <= 31:
+                data['pat']['age']  = str((today - born).days)
+                data['pat']['age_unit'] = _('jours')
+            elif today.month - born.month > 0:
+                tmp_age = int((today - born).days / 28)
+                data['pat']['age']  = str(tmp_age)
+                data['pat']['age_unit'] = _('mois')
+        elif pat['pat_age']:
+            data['pat']['age'] = str(pat['pat_age'])
+
+            if pat['pat_age_unit'] == 1037:
+                data['pat']['age_unit'] = _('ans')
+                age = int(pat['pat_age']) * 365
+                data['pat']['age_days'] = str(age)
+            elif pat['pat_age_unit'] == 1036:
+                data['pat']['age_unit'] = _('mois')
+                age = int(pat['pat_age']) * 30
+                data['pat']['age_days'] = str(age)
+            elif pat['pat_age_unit'] == 1035:
+                data['pat']['age_unit'] = _('semaines')
+                age = int(pat['pat_age']) * 7
+                data['pat']['age_days'] = str(age)
+            elif pat['pat_age_unit'] == 1034:
+                data['pat']['age_unit'] = _('jours')
+                data['pat']['age_days'] = str(pat['pat_age'])
+
+        if pat['pat_sex'] == 1:
+            data['pat']['sex'] = _('Masculin')
+        elif pat['pat_sex'] == 2:
+            data['pat']['sex'] = _('Feminin')
+
+        if pat['pat_address']:
+            data['pat']['addr'] = str(pat['pat_address'])
+
+        if pat['pat_zipcode']:
+            data['pat']['zipcode'] = str(pat['pat_zipcode'])
+
+        if pat['pat_city']:
+            data['pat']['city'] = str(pat['pat_city'])
+
+        if pat['pat_district']:
+            data['pat']['district'] = str(pat['pat_district'])
+
+        if pat['pat_pbox']:
+            data['pat']['pbox'] = str(pat['pat_pbox'])
+
+        if pat['pat_phone1']:
+            data['pat']['phone'] = str(pat['pat_phone1'])
+
+        if pat['pat_phone2']:
+            data['pat']['phone2'] = str(pat['pat_phone2'])
+
+        if pat['pat_profession']:
+            data['pat']['profession'] = str(pat['pat_profession'])
+
+        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
+            nat = Various.getNationalityById(pat['pat_nationality'])
+
+            if nat:
+                Various.useLangDB()
+                trans = nat['nat_name'].strip()
+                data['pat']['nationality'] = _(trans)
+                Various.useLangPDF()
+
+        if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
+            data['pat']['blood_group'] = 'A'
+        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
+            data['pat']['blood_group'] = 'AB'
+        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
+            data['pat']['blood_group'] = 'O'
+
+        if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
+            data['pat']['blood_rhesus'] = '+'
+        elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
+            data['pat']['blood_rhesus'] = '-'
+
+        # === ANALYZES details ===
+        data['l_data'] = []
+        analysis       = {"ana_name": "", "ana_code": "", "ana_outsourced": "", "ana_price": '0.00'}
+
+        if id_rec > 0:
+            # GET all analysis for a record
+            list_ana = Analysis.getAnalysisInvoice(id_rec, 'Y')
+
+            for ana in list_ana:
+                tmp_ana = {"ana_name": "", "ana_code": "", "ana_outsourced": "", "ana_price": '0.00'}
+
+                # ==== ANALYSIS NAME ====
+                if ana['ana_name']:
+                    Various.useLangDB()
+                    trans = ana['ana_name'].strip()
+
+                    if trans:
+                        tmp_ana['ana_name'] = _(trans)
+                    else:
+                        tmp_ana['ana_name'] = ''
+
+                    Various.useLangPDF()
+
+                if ana['ana_code']:
+                    tmp_ana['ana_code'] = ana['ana_code']
+                else:
+                    tmp_ana['ana_code'] = ''
+
+                if ana['outsourced'] == 'Y':
+                    tmp_ana['ana_outsourced'] = _("Sous-traitée")
+
+                if ana['ana_price']:
+                    tmp_ana['ana_price'] = str(ana['ana_price'])
+                else:
+                    tmp_ana['ana_price'] = '0.00'
+
+                data['l_data'].append(tmp_ana)
+
+        # For print test analysis
+        else:
+            Various.useLangDB()
+
+            analysis['ana_name'] = _("Détermination du groupe sanguin ABO et Rhésus standard (D)")
+            analysis['ana_code'] = "B157"
+            analysis['ana_outsourced'] = _("Sous-traitée")
+            analysis['ana_price'] = "3500.00"
+
+            data['l_data'].append(analysis)
+
+            Various.useLangPDF()
+
+        # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE invoice data : ' + str(data))
 
         return data

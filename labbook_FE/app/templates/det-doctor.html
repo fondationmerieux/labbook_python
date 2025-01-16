@@ -11,7 +11,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Prescripteur") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Prescripteur") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
@@ -126,7 +126,7 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if session['user_role'] not in ('L') %}
+                {% if has_permission("DOCTOR_87") %}
                 <div class="float-end">
                     <input type="button" onclick="save_doctor();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>

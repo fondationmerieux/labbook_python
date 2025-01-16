@@ -1,0 +1,107 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Droits de cet utilisateur") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Droits de cet utilisateur") }}</span></h2>
+            <form autocomplete="off">
+
+                <div class="panel-heading row">
+                    <h3 class="panel-title">{{ _("Droits") }}</h3>
+                    <table class="table table-lbk" id="table_rights">
+                        <thead class="table-light">
+                            <tr>
+                                <th>{{ _( "Libéllé" ) }}</th>
+                                <th>{{ _( "Activer" ) }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body_rights_res">
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+            
+            <div class="clearfix my-2">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_rights();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+var by_user = {{ args['by_user']|safe }} ;
+var id_user = {{ args['id_user']|safe }} ;
+
+function save_rights()
+{
+var l_rights = [] ;
+
+    $('input[type="radio"]:checked').each(function() {
+        let id = $(this).attr('id') ;
+        let value = $(this).val() ;
+
+        let match = id.match(/right_([YN])_([a-z]+)_(\d+)/) ;
+
+        l_rights.push({
+                src: match[2],
+                prp_ser: match[3],
+                prp_granted: match[1]
+            });
+    });
+
+var param = '{ "by_user":' + by_user + ', ' +
+              '"id_user":' + id_user + ', ' +
+              '"l_rights":' + JSON.stringify(l_rights) + '}' ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/user/rights/" + id_user,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           window.location = "{{ session['server_ext'] }}/setting-users" ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST user rights") ;
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.history.back() ;
+}
+
+$( document ).ready( function()
+{
+var url = "{{ session['server_ext'] }}/setting-user-rights/table-rights" ;
+var param = { id_user: id_user } ;
+
+    $.get( url, param,
+    function( data )
+    {
+        if ( data != null && data.trim() != '')
+        {
+            $( "#body_rights_res" ).html( data ) ;
+        } 
+    } ) ;
+} ) ;
+</script>
+{% endblock %}

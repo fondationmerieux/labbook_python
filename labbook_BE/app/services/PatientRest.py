@@ -136,6 +136,24 @@ class PatientCode(Resource):
         return compose_ret(code, Constants.cst_content_type_json)
 
 
+class PatientCodeLab(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, pat_code_lab):
+        ret = Patient.codeLab_exist(pat_code_lab)
+
+        if ret and ret == -1:
+            self.log.error(Logs.fileline() + ' : ' + 'PatientCodeLab ERROR sql')
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        if ret:
+            self.log.error(Logs.fileline() + ' : ' + 'PatientCodeLab WARNING code already exist')
+            return compose_ret(1, Constants.cst_content_type_json, 200)
+        else:
+            self.log.info(Logs.fileline() + ' : PatientCodeLab code ok :' + str(pat_code_lab))
+            return compose_ret(0, Constants.cst_content_type_json, 200)
+
+
 class PatientCombine(Resource):
     log = logging.getLogger('log_services')
 

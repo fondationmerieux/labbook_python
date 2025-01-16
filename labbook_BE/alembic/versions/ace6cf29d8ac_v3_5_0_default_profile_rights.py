@@ -2211,7 +2211,7 @@ def upgrade():
                           "(select pro_ser from profile_role inner join sigl_pj_role on id_role=pro_role "
                           "where type=role_type limit 1)"))
     except Exception as err:
-        print("ERROR update sigl_user_data set role_pro with pro_ser,\n\terr=" + str(err)) 
+        print("ERROR update sigl_user_data set role_pro with pro_ser,\n\terr=" + str(err))
 
     print(str(datetime.today()) + " : END of migration v3_5_0_default_profile_rights revision=ace6cf29d8ac")
 

@@ -168,7 +168,7 @@ margin-top  : auto;
 {
 z-index     : 3;
 position    : relative;
-margin-left : auto;
+//margin-left : auto;
 width       : auto;
 display     : block;
 }
@@ -176,7 +176,7 @@ display     : block;
 html[dir="rtl"] #country-sel 
 {
 margin-left  : 0;
-margin-right : auto;
+//margin-right : auto;
 width        : auto;
 }
 
@@ -275,83 +275,6 @@ text-align       : center;
 z-index          : 9;
 font-size        : 1rem;
 font-weight      : bold;
-}
-
-/* title for admin profil */
-.page-title-A
-{
-background-color : #FC0;
-color            : #FFF;
-}
-
-/* title for biologist profil */
-.page-title-B
-{
-background-color : #8330E2;
-color            : #FFF;
-}
-
-/* title for technician profil */
-.page-title-T
-{
-background-color : #00ADEE;
-color            : #FFF;
-}
-
-/* title for advanced technician profil */
-.page-title-TA
-{
-background-color : #00ADEE;
-color            : #FFF;
-}
-
-/* title for quality technician profil */
-.page-title-TQ
-{
-background-color : #00ADEE;
-color            : #FFF;
-}
-
-/* title for secretary profil */
-.page-title-S
-{
-background-color : #F08739;
-color            : #FFF;
-}
-
-/* title for advanced secretary profil */
-.page-title-SA
-{
-background-color : #F08739;
-color            : #FFF;
-}
-
-/* title for qualitician profil */
-.page-title-Q
-{
-background-color : #E23176;
-color            : #FFF;
-}
-
-/* title for prescriber profil */
-.page-title-P
-{
-background-color : #996633;
-color            : #FFF;
-}
-
-/* title for stock manager profil */
-.page-title-K
-{
-background-color : #452ED1;
-color            : #FFF;
-}
-
-/* title for laboratory profil */
-.page-title-L
-{
-background-color : #BB2688;
-color            : #FFF;
 }
 
 #user-info 
@@ -484,6 +407,16 @@ background-position : center;
 display             : inline-block;
 }
 
+.role-img-SP
+{
+background-image  : url({{ url_for('static', filename='img/prel-profile.png') }});
+background-repeat : no-repeat;
+width               : 100px;
+height              : 26px;
+background-position : center;
+display             : inline-block;
+}
+
 .role-img-Q
 {
 background-image  : url({{ url_for('static', filename='img/qua-profile.png') }});
@@ -605,6 +538,18 @@ color            : #FFF;
 .btn-SA:hover
 {
 background-color : #436B1C ;
+color            : #FFF;
+}
+
+.btn-SP
+{
+background-color : #66994F ;
+color            : #FFF;
+}
+
+.btn-SP:hover
+{
+background-color : #3D5B2F ;
 color            : #FFF;
 }
 
@@ -757,6 +702,21 @@ color      : #FFF !important;
 .role-SA a:hover 
 {
 background      : #D36818 !important;
+color           : #FFF !important;
+text-decoration : none !important; 
+}
+
+.role-SP a 
+{
+display    : block;
+background : #66994F !important;
+padding    : 0px 10px;
+color      : #FFF !important; 
+}
+
+.role-SP a:hover 
+{
+background      : #3D5B2F !important;
 color           : #FFF !important;
 text-decoration : none !important; 
 }
@@ -980,149 +940,6 @@ nav .non-conformite:hover
 background : url({{ url_for('static', filename='img/non-conformite-over.png') }}) center center no-repeat;
 }
 
-.nav-A a
-{
-background-color : #FC0;
-color            : #FFF;
-border           : 0;
-}
-
-.nav-A a:hover
-{
-background-color : #E89400 !important;
-color            : #FFF !important;
-}
-
-.nav-B a
-{
-background-color : #8330E2 !important;
-color            : #FFF !important;
-border           : 0;
-}
-
-.nav-B a:hover
-{
-background-color : #42159B !important;
-color            : #FFF !important;
-}
-
-.nav-T a
-{
-background-color : #00ADEE !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-T a:hover
-{
-background-color : #0486A4 !important;
-color            : #FFF !important;
-}
-
-.nav-TA a
-{
-background-color : #00ADEE !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-TA a:hover
-{
-background-color : #0486A4 !important;
-color            : #FFF !important;
-}
-
-.nav-TQ a
-{
-background-color : #00ADEE !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-TQ a:hover
-{
-background-color : #0486A4 !important;
-color            : #FFF !important;
-}
-
-.nav-S a
-{
-background-color : #F08739 !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-S a:hover
-{
-background-color : #DD7512 !important;
-color            : #FFF !important;
-}
-
-.nav-SA a
-{
-background-color : #F08739 !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-SA a:hover
-{
-background-color : #DD7512 !important;
-color            : #FFF !important;
-}
-
-.nav-Q a
-{
-background-color : #E23176 !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-Q a:hover
-{
-background-color : #AB2759 !important;
-color            : #FFF !important;
-}
-
-.nav-P a
-{
-background-color : #996633 !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-P a:hover
-{
-background-color : #623201 !important;
-color            : #FFF !important;
-}
-
-.nav-K a
-{
-background-color : #452ED1 !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-K a:hover
-{
-background-color : #292EBE !important;
-color            : #FFF !important;
-}
-
-.nav-L a
-{
-background-color : #BB2688 !important;
-color            : #FFF; !important
-border           : 0;
-}
-
-.nav-L a:hover
-{
-background-color : #A52396 !important;
-color            : #FFF !important;
-}
-
 .module 
 {
 border-bottom  : 1px solid #EEE;
@@ -1155,6 +972,11 @@ text-decoration : none;
 .icon-messaging a:hover 
 {
 color : #0056b3;
+}
+
+.module .admin-gest-role 
+{ 
+background : transparent url({{ url_for('static', filename='img/admin-gestion-role.png') }}) center top no-repeat;
 }
 
 .module .admin-crea-profil 
@@ -1360,18 +1182,6 @@ color         : black;
 padding       : 3px !important;
 padding-left  : 30px !important;
 padding-right : 30px !important;
-}
-
-.menu-act-drop
-{
-background-color : #F08739 !important;
-color            : white !important;
-}
-
-.menu-act-item:hover
-{
-background-color : #DD6512 !important;
-color            : white !important;
 }
 
 .rec-num

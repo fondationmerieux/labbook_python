@@ -340,6 +340,25 @@ class Patient:
         return code
 
     @staticmethod
+    def codeLab_exist(code):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select count(*) as nb_code '
+                           'from sigl_03_data '
+                           'where code_patient=%s', (code,))
+
+            ret = cursor.fetchone()
+
+            if ret and ret['nb_code'] == 0:
+                return False
+            else:
+                return True
+        except mysql.connector.Error as e:
+            Patient.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return -1
+
+    @staticmethod
     def getPatientHistoric(id_pat):
         cursor = DB.cursor()
 

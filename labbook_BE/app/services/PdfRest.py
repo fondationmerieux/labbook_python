@@ -13,34 +13,6 @@ from app.models.Record import *
 from app.models.Report import *
 
 
-class PdfBill(Resource):
-    log = logging.getLogger('log_services')
-
-    def get(self, id_rec):
-        # if any bill number in DB then insert a new one
-        record = Record.getRecord(id_rec)
-
-        if not record:
-            self.log.error(Logs.fileline() + ' : PdfBill get record failed id_rec=%s', str(id_rec))
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        if not record['num_fact']:
-            ret = Record.generateBillNumber(id_rec)
-
-            if not ret:
-                self.log.error(Logs.fileline() + ' : PdfBill bill number failed id_rec=%s', str(id_rec))
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-        ret = Pdf.getPdfBill(id_rec)
-
-        if not ret:
-            self.log.error(Logs.fileline() + ' : PdfBill failed id_rec=%s', str(id_rec))
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        self.log.info(Logs.fileline() + ' : TRACE PdfBill')
-        return compose_ret('', Constants.cst_content_type_json)
-
-
 class PdfBillList(Resource):
     log = logging.getLogger('log_services')
 
@@ -70,6 +42,26 @@ class PdfBillList(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE PdfBillList')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class PdfInvoice(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec, template, filename):
+        tpl = Setting.getTemplateByFile(template)
+
+        if not tpl:
+            self.log.error(Logs.fileline() + ' : PdfInvoice template not found, template=%s', str(template))
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        ret = Pdf.getPdfInvoice(id_rec, template, filename)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfInvoice failed id_rec=%s', str(id_rec))
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfInvoice')
+        return compose_ret(0, Constants.cst_content_type_json)
 
 
 class PdfReport(Resource):
@@ -221,6 +213,8 @@ class PdfTemplate(Resource):
             ret = Pdf.getPdfSticker(0, 'REC', tpl['tpl_file'])
         elif tpl['tpl_type'] == 'OUT':
             ret = Pdf.getPdfOutsourced(0, tpl['tpl_file'], 'test_template')
+        elif tpl['tpl_type'] == 'INV':
+            ret = Pdf.getPdfInvoice(0, tpl['tpl_file'], 'test_template')
         else:
             self.log.error(Logs.fileline() + ' : PdfTemplate failed unknow type=%s', str(tpl['tpl_type']))
             return compose_ret(-1, Constants.cst_content_type_json, 500)

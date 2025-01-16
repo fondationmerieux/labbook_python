@@ -12,12 +12,15 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+            <h2 class="page-title page-title-color">
                 <span>{{ _("Demande d'analyses patient - Fiche patient") }}</span>
             </h2>
             <form autocomplete="off">
 
                 {{ args['form_html'] | safe }}
+                
+                {# copy of pat_code_lab #}
+                <input type="hidden" name="pat_code_lab_ori" id="pat_code_lab_ori" value="">
 
                 <div class="clearfix row mt-2 mb-4">
                     <div class="col-md-12">
@@ -40,6 +43,41 @@
 var id_user = {{ session['user_id']|safe}} ;
 
 function save_pat( id_pat ) 
+{
+    // we process the uniqueness of pat_code_lab if it is present on the form
+    if ( $('#pat_code_lab').length ) 
+    {
+    var code_lab = $('#pat_code_lab').val() ;
+    var code_lab_ori = $('#pat_code_lab_ori').val() ;
+
+        $.ajax( 
+        {
+            type: "GET",
+            url: "{{ session['server_ext'] }}/services/patient/search/code/lab/" + code_lab,
+            success: function(ret)
+            {
+                if ( ret > 0 && (id_pat == 0 || (id_pat > 0 && code_lab_ori != code_lab)))
+                {
+                alert("{{ _("Code patient interne au laboratoire existe déjà") }}") ;
+                return false ;
+                }
+                else
+                {
+                save_form( id_pat ) ;
+                }
+            },
+            error: function(ret)
+            {
+            console.log("ERROR GET patient code lab") ;
+            alert("{{ _("Une erreur est survenue lors de la vérification du code") }}") ;
+            }
+        } ) ;
+    }
+    else
+    save_form( id_pat ) ;
+}
+
+function save_form( id_pat )
 {
 {{ args['json_save'] | safe }} ;
 
@@ -88,6 +126,11 @@ $( document ).ready( function()
     {% if args['anonyme'] == 4 %}
     $(".identity-group").hide() ;
     {% endif %}
+
+    if ( $('#pat_code_lab').length ) 
+    {
+    $('#pat_code_lab_ori').val( $('#pat_code_lab').val() ) ;
+    }
 } ) ;
 </script>
 {% endblock %}

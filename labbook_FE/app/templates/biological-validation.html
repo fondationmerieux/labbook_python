@@ -12,9 +12,10 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+            <h2 class="page-title page-title-color">
                 <span>{{ _("Validation biologique") }}</span><span id="info_pat_title"></span>
             </h2>
+            {% if has_permission("RECORD_6") %}
             <form autocomplete="off">
                 <div class="d-lg-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :</span> 
@@ -167,7 +168,7 @@
                 </div>
             </div>
 
-            {% if args['list_res'] %}
+            {% if has_permission("RECORD_17") and args['list_res'] %}
             <form id="form-new-analyses">
                 <div class="mt-3">
                     <fieldset class="d-lg-flex flex-lg-wrap border px-3 py-2">
@@ -186,7 +187,7 @@
             </form>
             {% endif %}
 
-            {% if ihm['mode'] == 'G' %}
+            {% if ihm['mode'] == 'G' and has_permission("RECORD_7") %}
             <div class="float-start clearfix mt-3 mb-5">
                 <button type="button" onclick="print_grp_rec();" id="print-grp-rec" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><span>{{ _("Compte rendu groupé") }}</span></button>
             </div>
@@ -200,6 +201,10 @@
                 <span>{{ _("Fin de la liste des dossiers") }}</span>
             </div>
                 {% endif %}
+            {% endif %}
+
+            {% else %}
+            {% include 'no-rights.html' %} 
             {% endif %}
 
         </div>
@@ -981,6 +986,7 @@ function next_record()
 
 {% include 'js/display_histo.js' %}
 
+{% if has_permission("RECORD_6") %}
 $( document ).ready( function()
 {
 data_res = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
@@ -1014,5 +1020,6 @@ info_pat_title() ;
     else
     $("#print-grp-rec").prop("disabled", true) ;
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

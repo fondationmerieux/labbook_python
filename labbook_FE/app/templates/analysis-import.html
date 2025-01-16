@@ -10,7 +10,8 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Import d'analyses") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Import d'analyses") }}</span></h2>
+            {% if has_permission("SETTING_43") %}
             <form>
                 <div class="row">
                     <div class="col-12 my-3">
@@ -22,17 +23,13 @@
                                 <div>
                                     <div>
                                         <div class="uploadHTML5 d-inline-block pe-2">
-                                            {% if session['user_role'] != 'P' %}
                                             <input id="btn-upload" name="file" type="file" class="mb-1"/>
-                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {% if session['user_role'] != 'P' %}
                         <input type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }} mt-3" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
-                        {% endif %}
                     </div>                    
                     <div class="col-12 my-3">
                         <div class="form-group">
@@ -57,6 +54,9 @@
                     </div>
                 </div>
             </form>
+            {% else %}
+                {% include 'no-rights.html' %} 
+            {% endif %}
         </div>
     </div>
 
@@ -200,9 +200,11 @@ function return_back()
 window.location.href = "{{ session['server_ext'] }}/setting-analyzes" ;
 }
 
+{% if has_permission("SETTING_43") %}
 $( document ).ready( function()
 {
     check_stat_db() ;
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

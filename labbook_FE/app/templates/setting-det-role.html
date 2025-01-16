@@ -9,7 +9,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Rôle") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Rôle") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rôle") }}</h3>
@@ -17,7 +17,7 @@
                 <div class="form-group d-lg-flex align-items-start mt-3 mt-3">
                     <label for="role" class="form-label col-3 text-end mt-2 me-1">{{ _("Rôle de base") }} *</label>
                     <div>					
-                        <select id="role" name="role" class="form-select" onchange="role_choice(this);" {{ 'disabled' if session['user_role'] != 'A' }}>
+                        <select id="role" name="role" class="form-select" onchange="role_choice(this);" {{ 'disabled' if args and args['role_id'] > 0 }}>
                             {% from 'macros.html' import select_user_role %}
                             {{ select_user_role(ihm['user_role'], args['role_type']) }}
                         </select>
@@ -27,7 +27,28 @@
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="lastname" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de ce rôle") }} *</label>
                     <div>					
-                        <input type="text" name="role_label" id="role_label" value="{{ args['role_label'] }}" class="form-control form-lbk">			
+                        <input type="text" name="role_label" id="role_label" value="{{ args['pro_label'] }}" class="form-control form-lbk">			
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="role_color_1" class="form-label col-3 text-end mt-2 me-1">{{ _("Couleur principale") }}</label>
+                    <div>					
+                        <input type="color" name="role_color_1" id="role_color_1" value="{{ args['pro_color_1'] if args['pro_color_1'] else '#333333' }}" class="form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="role_color_2" class="form-label col-3 text-end mt-2 me-1">{{ _("Couleur de survol") }}</label>
+                    <div>					
+                        <input type="color" name="role_color_2" id="role_color_2" value="{{ args['pro_color_2'] if args['pro_color_2'] else '#222222' }}" class="form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="role_text_color" class="form-label col-3 text-end mt-2 me-1">{{ _("Couleur texte") }}</label>
+                    <div>					
+                        <input type="color" name="role_text_color" id="role_text_color" value="{{ args['pro_text_color'] if args['pro_text_color'] else '#FFFFFF' }}" class="form-lbk">
                     </div>
                 </div>
 
@@ -51,7 +72,9 @@
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
+                    {% if args and (not args['pro_ser'] or args['pro_genuine'] == "N") %}
                     <input type="button" onclick="save_role();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -61,12 +84,16 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var by_user = {{ args['by_user']|safe }} ;
+var id_role = {{ args['role_id']|safe }} ;
+
 function save_role()
 {
-var id_user    = {{ args['user_id']|safe }} ;
-var id_role    = {{ args['role_id']|safe }} ; 
 var role_type  = $("#role").val() ;
 var role_label = $("#role_label").val() ;
+var role_color_1 = $("#role_color_1").val() ;
+var role_color_2 = $("#role_color_2").val() ;
+var role_text_color = $("#role_text_color").val() ;
 
 var msg = "" ;
 
@@ -88,17 +115,22 @@ var l_rights = [] ;
         let id = $(this).attr('id') ;
         let value = $(this).val() ;
 
-        let match = id.match(/right_([YN])_(\d+)/) ;
+        let match = id.match(/right_([YN])_([a-z]+)_(\d+)/) ;
 
         l_rights.push({
-                prr_ser: match[2],
+                src: match[2],
+                prp_ser: match[3],
                 prp_granted: match[1]
             });
     });
 
-var param = '{ "id_user":' + id_user + ', ' +
+var param = '{ "by_user":' + by_user + ', ' +
+              '"id_user":0, ' +
               '"role_type":"' + role_type + '", ' +
               '"role_label":"' + role_label + '", ' +
+              '"role_color_1":"' + role_color_1 + '", ' +
+              '"role_color_2":"' + role_color_2 + '", ' +
+              '"role_text_color":"' + role_text_color + '", ' +
               '"l_rights":' + JSON.stringify(l_rights) + '}' ;
 
     $.ajax( {
@@ -121,21 +153,44 @@ var param = '{ "id_user":' + id_user + ', ' +
 
 function role_choice( elem )
 {
-let role_type = $(elem).val() ;
+let val = $(elem).val() ;
+
+let parts = val.split('_');
+let role_type = parts[0];
+let role_pro  = parts[1];
 
 var url = "{{ session['server_ext'] }}/setting-det-role/table-rights" ;
 var param = {   
-    id_user: 0,
-    role_type: role_type
+    role_type: role_type,
+    role_id: id_role
     } ;
 
-console.log("DEUBG url = " + url + " | param = " + JSON.stringify(param));
+    $.ajax( {
+       type: "GET",
+       url: "{{ session['server_ext'] }}/services/user/role/det/" + role_pro,
+       success: function(data)
+           {
+                if ( data != null )
+                {
+                    $( "#role_color_1" ).val(data.pro_color_1) ;
+                    $( "#role_color_2" ).val(data.pro_color_2) ;
+                    $( "#role_text_color" ).val(data.pro_text_color) ;
+                }
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST user role det") ;
+           alert("{{ _("Une erreur est survenue lors de la récupération des données") }}") ;
+           }
+    } ) ;
 
     // load table of rights
     $.get( url, param,
     function( data )
     {
-        if ( data != null && data.trim() != '')
+        console.log("DEBUG role table-rights data : " + JSON.stringify(data));
+
+        if ( data != null )
         {
             $( "#body_rights_res" ).html( data ) ;
         } 
@@ -146,5 +201,32 @@ function cancel()
 {
 window.history.back() ;
 }
+
+$( document ).ready( function()
+{
+{% if args['pro_ser'] %}
+// load table of rights
+let role_type = "B" ;
+
+var url = "{{ session['server_ext'] }}/setting-det-role/table-rights" ;
+var param = {   
+    role_type: role_type,
+    role_id: id_role
+    } ;
+
+//console.log("DEBUG param for table rights : " + JSON.stringify(param));
+
+    $.get( url, param,
+    function( data )
+    {
+        console.log("DEBUG data : " + JSON.stringify(data));
+
+        if ( data != null && data.trim() != '')
+        {
+            $( "#body_rights_res" ).html( data ) ;
+        } 
+    } ) ;
+{% endif %}
+} ) ;
 </script>
 {% endblock %}

@@ -10,7 +10,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Import de dictionnaire") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Import de dictionnaire") }}</span></h2>
             <form>
                 <div class="row">
                     <div class="col-12 my-3">
@@ -22,7 +22,7 @@
                                 <div>
                                     <div>
                                         <div class="uploadHTML5 d-inline-block pe-3">
-                                            {% if session['user_role'] != 'P' %}
+                                            {% if has_permission("SETTING_53") %}
                                             <input id="btn-upload" name="file" type="file" class="mb-1"/>
                                             {% endif %}
                                         </div>
@@ -30,7 +30,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% if session['user_role'] != 'P' %}
+                        {% if has_permission("SETTING_53") %}
                         <input type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }} mt-3" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
                         {% endif %}
                     </div>                    
@@ -40,9 +40,11 @@
                     <div class="float-start ms-0">
                         <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                     </div>
+                    {% if has_permission("SETTING_53") %}
                     <div class="float-end me-2" style="margin-start:0px;">
                         <input type="button" id="import-dict" onclick="import_dict();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Import de dictionnaire") }}" disabled>
                     </div>
+                    {% endif %}
                 </div>
             </form>
         </div>

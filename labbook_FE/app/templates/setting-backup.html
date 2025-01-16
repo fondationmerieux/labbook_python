@@ -9,7 +9,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Paramétrage de la sauvegarde") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Paramétrage de la sauvegarde") }}</span></h2>
             <form autocomplete="off" class="row mt-3">
                 <div class="col-lg-6 text-center">
                     <input type="button" onclick="run_time();" id="btn-run_savetime" value="{{ _("MODIFIER HEURE SAUVEGARDE") }}" class="col-6 mt-3 btn btn-lbk btn-{{ session['user_role']|safe }}">

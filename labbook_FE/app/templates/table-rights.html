@@ -26,16 +26,24 @@
     </tr>
     {% set updated = state.update({'previous_type': right['prr_type']}) %}
     {% endif %}
-    <tr>
+    <tr class="{% if right['src'] == 'usp' %}bg-info text-dark{% endif %}">
         <td>
             {{ right['prr_label'] }}
         </td>
         <td>
            <label class="form-label text-end mt-1 me-3">
-                <input type="radio" id="right_Y_{{ right['prr_ser'] }}" name="right_{{ right['prr_ser'] }}" value="Y" {% if right['prp_granted'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
+                <input type="radio" 
+                       id="right_Y_{{ right['src'] }}_{{ right['prp_ser'] }}" 
+                       name="right_{{ right['src'] }}_{{ right['prp_ser'] }}" 
+                       value="Y" 
+                       {% if right['prp_granted'] == 'Y' %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
             </label>
             <label class="form-label text-end mt-1 me-3">
-                <input type="radio" id="right_N_{{ right['prr_ser'] }}" name="right_{{ right['prr_ser'] }}" value="N" {% if right['prp_granted'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
+                <input type="radio" 
+                       id="right_N_{{ right['src'] }}_{{ right['prp_ser'] }}" 
+                       name="right_{{ right['src'] }}_{{ right['prp_ser'] }}" 
+                       value="N" 
+                       {% if right['prp_granted'] == 'N' %} checked="checked" {% endif %}>&nbsp;{{ _("Non") }}</input>
             </label> 
         </td>
     </tr>

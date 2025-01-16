@@ -105,7 +105,7 @@ class UserDet(Resource):
            'title' not in args or 'initial' not in args or 'birth' not in args or 'phone' not in args or \
            'arrived' not in args or 'position' not in args or 'section' not in args or 'last_eval' not in args or \
            'address' not in args or 'cv' not in args or 'diploma' not in args or 'training' not in args or \
-           'comment' not in args or 'id_pres' not in args or 'role_type' not in args:
+           'comment' not in args or 'id_pres' not in args or 'role_type' not in args or 'role_pro' not in args:
             self.log.error(Logs.fileline() + ' : UserDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -125,6 +125,7 @@ class UserDet(Resource):
             # update sigl_user_data
             ret = User.updateUser(id_data=id_user,
                                   role_type=args['role_type'],
+                                  role_pro=args['role_pro'],
                                   username=args['login'],
                                   cps_id=args['cps'],
                                   rpps=args['rpps'],
@@ -193,7 +194,8 @@ class UserDet(Resource):
                                   deval=args['last_eval'],
                                   side_account=args['id_pres'],
                                   commentaire=args['comment'],
-                                  origin=args['id_owner'])
+                                  origin=args['id_owner'],
+                                  role_pro=args['role_pro'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : UserDet ERROR insert user')
@@ -213,7 +215,7 @@ class UserStaffDet(Resource):
            'title' not in args or 'initial' not in args or 'birth' not in args or 'phone' not in args or \
            'arrived' not in args or 'position' not in args or 'section' not in args or 'last_eval' not in args or \
            'address' not in args or 'cv' not in args or 'diploma' not in args or 'training' not in args or \
-           'comment' not in args:
+           'comment' not in args or 'role_type' not in args or 'role_pro' not in args:
             self.log.error(Logs.fileline() + ' : UserStaffDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -250,7 +252,8 @@ class UserStaffDet(Resource):
                                   section=args['section'],
                                   deval=args['last_eval'],
                                   side_account=user['side_account'],
-                                  commentaire=args['comment'])
+                                  commentaire=args['comment'],
+                                  role_pro=user['role_pro'])
 
             if ret is False:
                 self.log.info(Logs.fileline() + ' : TRACE UserStaffDet ERROR update user')
@@ -299,32 +302,6 @@ class UserList(Resource):
         return compose_ret(l_users, Constants.cst_content_type_json)
 
 
-class UserRightsList(Resource):
-    log = logging.getLogger('log_services')
-
-    def post(self):
-        args = request.get_json()
-
-        l_rights = User.getUserRightsList(args['id_user'], args['role_type'])
-
-        if not l_rights:
-            self.log.error(Logs.fileline() + ' : TRACE UserRightsList not found')
-            return compose_ret('', Constants.cst_content_type_json, 500)
-
-        Various.useLangDB()
-
-        for right in l_rights:
-            # Replace None by empty string
-            for key, value in list(right.items()):
-                if right[key] is None:
-                    right[key] = ''
-                elif key == 'prr_label' and right[key]:
-                    right[key] = _(right[key].strip())
-
-        self.log.info(Logs.fileline() + ' : TRACE UserRightsList')
-        return compose_ret(l_rights, Constants.cst_content_type_json)
-
-
 class UserRoleList(Resource):
     log = logging.getLogger('log_services')
 
@@ -332,11 +309,15 @@ class UserRoleList(Resource):
         args = request.get_json()
 
         l_exclude = []
+        genuine   = "N"
 
         if 'exclude' in args:
             l_exclude = args['exclude']
 
-        l_roles = User.getUserRoleList(type, l_exclude)
+        if 'genuine' in args:
+            genuine = args['genuine']
+
+        l_roles = User.getUserRoleList(type, l_exclude, genuine)
 
         if not l_roles:
             self.log.error(Logs.fileline() + ' : TRACE UserRoleList not found')
@@ -368,82 +349,45 @@ class UserRoleList(Resource):
 class UserRoleDet(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, id_user):
-        """ TODO
-        user = User.getUserDetails(id_user)
+    def get(self, pro_ser):
+        role = User.getRoleDetails(pro_ser)
 
-        if not user:
-            self.log.error(Logs.fileline() + ' : TRACE UserRoleDet no user')
+        if not role:
+            self.log.error(Logs.fileline() + ' : TRACE UserRoleDet no role')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
-        if user['birth']:
-            user['birth'] = datetime.strftime(user['birth'], '%Y-%m-%d')
-
-        if user['arrived']:
-            user['arrived'] = datetime.strftime(user['arrived'], '%Y-%m-%d')
-
-        if user['last_eval']:
-            user['last_eval'] = datetime.strftime(user['last_eval'], '%Y-%m-%d')
-
-        # Replace None by empty string
-        for key, value in list(user.items()):
-            if user[key] is None:
-                user[key] = ''
-        """
-
         self.log.info(Logs.fileline() + ' : TRACE UserRoleDet')
-        return compose_ret(user, Constants.cst_content_type_json)
+        return compose_ret(role, Constants.cst_content_type_json)
 
-    def post(self, id_role):
+    def post(self, pro_ser):
         args = request.get_json()
 
-        if 'id_user' not in args or 'role_type' not in args or 'role_label' not in args or 'l_rights' not in args:
+        if 'by_user' not in args or 'id_user' not in args or 'role_type' not in args or 'role_label' not in args or \
+           'role_color_1' not in args or 'role_color_2' not in args or 'role_text_color' not in args or \
+           'l_rights' not in args:
             self.log.error(Logs.fileline() + ' : UserRoleDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # update user
-        if id_role > 0:
-            """ TODO
-            if 'stat' not in args:
-                self.log.error(Logs.fileline() + ' : UserRoleDet ERROR args missing')
-                return compose_ret('', Constants.cst_content_type_json, 400)
+        if pro_ser > 0:
+            # update profile_role
+            ret = User.updateProfileRole(by_user=args['by_user'],
+                                         pro=pro_ser,
+                                         label=args['role_label'],
+                                         color_1=args['role_color_1'],
+                                         color_2=args['role_color_2'],
+                                         text_color=args['role_text_color'])
 
-            # get login by id_user
-            user = User.getUserDetails(id_user)
+            # update profile_permissions
+            for right in args['l_rights']:
+                ret_perm = User.updateProfilePermission(by_user=args['by_user'],
+                                                        pro=pro_ser,
+                                                        prp=right['prp_ser'],
+                                                        granted=right['prp_granted'])
 
-            if not user:
-                self.log.error(Logs.fileline() + ' : TRACE UserRoleDet no user')
-                return compose_ret('', Constants.cst_content_type_json, 500)
-
-            # update sigl_user_data
-            ret = User.updateUser(id_data=id_user,
-                                  role_type=args['role_type'],
-                                  username=args['login'],
-                                  cps_id=args['cps'],
-                                  rpps=args['rpps'],
-                                  status=args['stat'],
-                                  firstname=args['firstname'],
-                                  lastname=args['lastname'],
-                                  locale=args['lang'],
-                                  email=args['email'],
-                                  titre=args['title'],
-                                  initiale=args['initial'],
-                                  ddn=args['birth'],
-                                  adresse=args['address'],
-                                  tel=args['phone'],
-                                  darrive=args['arrived'],
-                                  position=args['position'],
-                                  cv=args['cv'],
-                                  diplome=args['diploma'],
-                                  formation=args['training'],
-                                  section=args['section'],
-                                  deval=args['last_eval'],
-                                  side_account=args['id_pres'],
-                                  commentaire=args['comment'])
-
-            if ret is False:
-                self.log.info(Logs.fileline() + ' : TRACE UserRoleDet ERROR update user')"""
-            return compose_ret('', Constants.cst_content_type_json, 500)
+                if ret_perm is False:
+                    self.log.info(Logs.fileline() + ' : UserRoleDet ERROR update profilePermissions')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
 
         # insert new user
         else:
@@ -454,9 +398,12 @@ class UserRoleDet(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             # insert profile_role
-            ret = User.insertProfileRole(by_user=args['id_user'],
+            ret = User.insertProfileRole(by_user=args['by_user'],
                                          role=role['id_role'],
-                                         label=args['role_label'])
+                                         label=args['role_label'],
+                                         color_1=args['role_color_1'],
+                                         color_2=args['role_color_2'],
+                                         text_color=args['role_text_color'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : UserRoleDet ERROR insert user')
@@ -464,17 +411,47 @@ class UserRoleDet(Resource):
 
             # insert profile_permissions
             for right in args['l_rights']:
-                ret_perm = User.insertProfilePermission(by_user=args['id_user'],
+                ret_perm = User.insertProfilePermission(by_user=args['by_user'],
                                                         pro=ret,
-                                                        prr=right['prr_ser'],
+                                                        prp=right['prp_ser'],
                                                         granted=right['prp_granted'])
 
                 if ret_perm <= 0:
                     self.log.error(Logs.alert() + ' : UserRoleDet ERROR insert profilePermissions')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
-        self.log.info(Logs.fileline() + ' : TRACE UserRoleDet id_user=' + str(id_role))
+        self.log.info(Logs.fileline() + ' : TRACE UserRoleDet pro_ser=' + str(pro_ser))
         return compose_ret(ret, Constants.cst_content_type_json)
+
+    def delete(self, pro_ser):
+        args = request.get_json()
+
+        if 'id_user' not in args:
+            self.log.error(Logs.fileline() + ' : UserRoleDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = User.deleteRoleDet(pro_ser, args['id_user'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE UserRoleDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE UserRoleDet delete pro_ser=' + str(pro_ser))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class UserRoleByUser(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_user):
+        role = User.getRoleDetByUser(id_user)
+
+        if not role:
+            self.log.error(Logs.fileline() + ' : TRACE UserRoleByUser no role')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE UserRoleByUser')
+        return compose_ret(role, Constants.cst_content_type_json)
 
 
 class UserIdentList(Resource):
@@ -517,18 +494,102 @@ class UserSearch(Resource):
         return compose_ret(l_users, Constants.cst_content_type_json)
 
 
+class UserRightsList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_user):
+        l_rights = User.getUserListOfRights(id_user)
+
+        if not l_rights:
+            self.log.error(Logs.fileline() + ' : TRACE UserRightsList getUserListOfRights not found')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE UserRightsList')
+        return compose_ret(l_rights, Constants.cst_content_type_json)
+
+    def post(self):
+        args = request.get_json()
+
+        l_rights = User.getUserRightsList(args['id_user'], args['role_type'], args['role_id'])
+
+        # self.log.info(Logs.fileline() + ' : DEBUG UserRightsList l_rights=' + str(l_rights))
+
+        if not l_rights:
+            self.log.error(Logs.fileline() + ' : TRACE UserRightsList not found')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        Various.useLangDB()
+
+        for right in l_rights:
+            # Replace None by empty string
+            for key, value in list(right.items()):
+                if right[key] is None:
+                    right[key] = ''
+                elif key == 'prr_label' and right[key]:
+                    right[key] = _(right[key].strip())
+
+        self.log.info(Logs.fileline() + ' : TRACE UserRightsList')
+        return compose_ret(l_rights, Constants.cst_content_type_json)
+
+
 class UserRights(Resource):
     log = logging.getLogger('log_services')
 
-    def get(self, role):
-        rights = User.getRightsByRole(role)
+    def post(self, id_user):
+        args = request.get_json()
 
-        if not rights:
-            self.log.error(Logs.fileline() + ' : TRACE UserRights')
-            return compose_ret('', Constants.cst_content_type_json, 500)
+        if 'by_user' not in args or 'id_user' not in args or 'l_rights' not in args:
+            self.log.error(Logs.fileline() + ' : UserRights ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # update user
+        if id_user > 0:
+            # user permissions
+            for right in args['l_rights']:
+                same_granted = User.sameGranted(right['prp_ser'], right['prp_granted'])
+
+                if right['src'] == 'prp' and same_granted is False:
+                    # insert user permission
+                    ret_perm = User.insertUserPermission(by_user=args['by_user'],
+                                                         user=args['id_user'],
+                                                         prp=right['prp_ser'],
+                                                         granted=right['prp_granted'])
+
+                    if ret_perm <= 0:
+                        self.log.info(Logs.fileline() + ' : UserRights ERROR insert userPermissions')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
+
+                # already user permission
+                if right['src'] == 'usp':
+                    # self.log.info(Logs.fileline() + ' : UserRights DEBUG usp right=' + str(right['prp_ser']) + ' user=' + str(args['id_user']) + ' granted=' + str(right['prp_granted']))
+
+                    # different from same right of role
+                    if same_granted is False:
+                        # update user permission
+                        ret_perm = User.updateUserPermission(by_user=args['by_user'],
+                                                             user=args['id_user'],
+                                                             prp=right['prp_ser'],
+                                                             granted=right['prp_granted'])
+
+                        if ret_perm is False:
+                            self.log.info(Logs.fileline() + ' : UserRights ERROR update userPermissions')
+                            return compose_ret('', Constants.cst_content_type_json, 500)
+
+                    # same granted with same right of role, we remove user permission
+                    elif same_granted is True:
+                        # remove user permission
+                        ret_perm = User.deleteUserPermission(user=args['id_user'],
+                                                             prp=right['prp_ser'])
+
+                        if ret_perm is False:
+                            self.log.info(Logs.fileline() + ' : UserRights ERROR update userPermissions')
+                            return compose_ret('', Constants.cst_content_type_json, 500)
+                    else:
+                        self.log.info(Logs.fileline() + ' : UserRights ERROR sameRight userPermissions')
+                        return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE UserRights')
-        return compose_ret(rights, Constants.cst_content_type_json)
+        return compose_ret('', Constants.cst_content_type_json)
 
 
 class UserPassword(Resource):
@@ -895,6 +956,7 @@ class UserImport(Resource):
                 comment      = row[22]
                 side_account = row[23]
                 role_type    = row[24]
+                role_pro     = row[25]
 
                 # status convert
                 if status and status == 'A':
@@ -948,7 +1010,10 @@ class UserImport(Resource):
                                                   darrive=darrived,
                                                   deval=deval,
                                                   section=section,
-                                                  commentaire=comment)
+                                                  commentaire=comment,
+                                                  side_account=side_account,
+                                                  role_type=role_type,
+                                                  role_pro=role_pro)
 
                     if not ret:
                         self.log.error(Logs.alert() + ' : UserImport ERROR update user username=' + str(username))
@@ -982,7 +1047,8 @@ class UserImport(Resource):
                                           section=section,
                                           side_account=side_account,
                                           commentaire=comment,
-                                          origin=id_user)
+                                          origin=id_user,
+                                          role_pro=role_pro)
 
                     if ret <= 0:
                         self.log.error(Logs.alert() + ' : UserImport ERROR insert user')

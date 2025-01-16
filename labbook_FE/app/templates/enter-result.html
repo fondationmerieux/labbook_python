@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+            <h2 class="page-title page-title-color">
                 <span>{{ _("Saisie de résultats") }}</span><span id="info_pat_title"></span>
             </h2>
             <form id="benchsheet" autocomplete="off">
@@ -85,13 +85,13 @@
                 <div id="no_result" class="error mt-3">{{ _("Aucune analyse") }}</div>
                 <div id="list_result" class="mt-3"></div>
             </form>
-            {% if session['user_role'] == 'A' %}
+            {% if has_permission("RECORD_16") %}
             <div class="float-end mt-3 mb-3">
                 <input type="button" onclick="download_report();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Feuille de paillasse') }}">
             </div>
             {% endif %}
 
-            {% if args['list_res'] and session['user_role'] != 'P' %}
+            {% if has_permission("RECORD_17") and args['list_res'] %}
             <form autocomplete="off">
                 <div class="mt-3">
                     <fieldset class="d-md-flex flex-wrap border px-md-3 py-2">
@@ -427,10 +427,13 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         {
         // close the form and table
         res += "</tbody></table>" +
-               "<div class=\"form-group d-lg-flex align-items-start mt-1\" style=\"vld-block;\">" +
-               "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " me-2 mb-1\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
+               "<div class=\"form-group d-lg-flex align-items-start mt-1\" style=\"vld-block;\">" ;
 
-        {% if session['user_role'] in ('B','T','TA','TQ') %}
+        {% if has_permission("RECORD_15") %}
+        res += "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " me-2 mb-1\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
+        {% endif %}
+
+        {% if has_permission("RECORD_9") %}
         res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
                "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
                "<div class=\"d-lg-flex align-items-start\">" +
@@ -748,10 +751,13 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     {
     // close the form and table
     res += "</tbody></table>" +
-           "<div class=\"form-group d-lg-flex align-items-start mt-1\" style=\"vld-block;\">" +
-           "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} mb-1 btn_save_" + id_rec +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
+           "<div class=\"form-group d-lg-flex align-items-start mt-1\" style=\"vld-block;\">" ;
 
-    {% if session['user_role'] in ('B','T','TA','TQ') %}
+    {% if has_permission("RECORD_15") %}
+    res += "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} mb-1 btn_save_" + id_rec +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
+    {% endif %}
+
+    {% if has_permission("RECORD_9") %}
     res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
            "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>&nbsp;" +
            "<div class=\"d-lg-flex align-items-start\">" +

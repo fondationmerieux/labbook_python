@@ -273,6 +273,33 @@ class Analysis:
         return cursor.fetchall()
 
     @staticmethod
+    def getAnalysisInvoice(id_rec, type_ana):
+        cursor = DB.cursor()
+
+        # Only analysis
+        if type_ana == 'Y':
+            cond = ' and (cote_unite is NULL or cote_unite != "PB")'
+        # Only samples
+        elif type_ana == 'N':
+            cond = ' and cote_unite="PB"'
+        # Everything
+        else:
+            cond = ''
+
+        req = ('select req_ana.id_data as id_data, req_ana.id_dos as id_rec, '
+               'req_ana.prix as ana_price, req_ana.req_outsourced as outsourced, '
+               'ref_ana.code as ana_code, ref_ana.nom as ana_name, '
+               'ifnull(ref_ana.type_prel, 0) as type_samp, '
+               'ifnull(ref_ana.produit_biologique, 0) as id_samp_act '
+               'from sigl_04_data as req_ana '
+               'left join sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '
+               'where req_ana.id_dos=%s' + cond)
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getAnalysisOutsourced(id_rec, type_ana):
         cursor = DB.cursor()
 

@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+            <h2 class="page-title page-title-color">
                 <span>{{ _("Validation technique") }}</span><span id="info_pat_title"></span>
             </h2>
             <form autocomplete="off">
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            {% if args['list_res'] %}
+            {% if has_permission("RECORD_17") and args['list_res'] %}
             <form autocomplete="off">
                 <div class="mt-3">
                     <fieldset class="d-lg-flex flex-lg-wrap border px-3 py-2">
@@ -739,7 +739,7 @@ let id_ana = $(e.currentTarget).val() ;
 
 list_id_ana.push( id_ana ) ;
 
-$("#div_add_analysis").show() ;
+    $("#div_add_analysis").show() ;
 
     // GET det analysis
     $.ajax( 

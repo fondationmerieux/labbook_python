@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}">
+            <h2 class="page-title page-title-color">
                 <span>{{ _("Demande d'analyses patient externe") }}</span>
             </h2>
             <form autocomplete="off">
@@ -1198,303 +1198,325 @@ var stat          = 181 ;
 var rec_custody   = $("input[type='radio'][name='rec_custody']:checked").val() ;
 var rec_num_int   = $("#rec_num_int").val() ;
 
-    if (id_med == null || id_med == "")
-    id_med = 0 ;
-
-    if (parcel == null)
-    parcel = 5 ;
-    else if (parcel == 4 && parcel_date == "")
+    {# First check if rec_num_int already exist or not #}
+    $.ajax( 
     {
-    alert( "{{ _("Veuillez sélectionner une date et heure de réception du colis") }}" ) ;
-    return false ;
-    }
-
-    if (data_analysis.length < 1)
-    {
-    alert( "{{ _("Veuillez sélectionner au moins une analyse") }}" ) ;
-    return false ;
-    }
-
-    if (per_discount == "")
-    per_discount = 0 ;
-
-    if (per_insurance == "")
-    per_insurance = 0 ;
-
-    // date_record required
-    if (date_record == "")
-    {
-    alert( "{{ _("Veuillez sélectionner une date de réception du dossier") }}" ) ;
-    return false ;
-    }
-
-    // date_prescr required
-    if (date_prescr == "")
-    {
-    alert( "{{ _("Veuillez sélectionner une date de prescription") }}" ) ;
-    return false ;
-    }
-
-    // type and status required
-    for( i in data_products )
-    {
-        /* USELESS 15/02/2022
-        if (data_products[i].code == "")
+        type: "GET",
+        url: "{{ session['server_ext'] }}/services/record/search/num/int/" + rec_num_int,
+        success: function(ret)
         {
-        alert( "{{ _("Veuillez renseigner le code de prélèvement") }}" ) ;
-        return false ;
-        }
-        */
-
-        if (data_products[i].type == 0)
-        {
-        alert( "{{ _("Veuillez renseigner le type du produit") }}" ) ;
-        return false ;
-        }
-
-        if (data_products[i].stat == 0)
-        {
-        alert( "{{ _("Veuillez renseigner le statut du produit") }}" ) ;
-        return false ;
-        }
-
-        /* ISSUE 1 17/10/2020
-        if (data_products[i].dateReceipt == "")
-        {
-        alert( "{{ _("Veuillez renseigner toutes les dates de réception") }}" ) ;
-        return false ;
-        }
-
-        if (data_products[i].sampler == "")
-        {
-        alert( "{{ _("Veuillez renseigner toutes les identités des préleveurs") }}" ) ;
-        return false ;
-        }
-        */
-    }
-
-    if ( $.isEmptyObject(data_products) )
-    alert( "{{ _("Avertissement : Ce dossier n'est associé à aucun prélèvement") }}" ) ;
-
-    // confirm if user wants validate this record
-    if ( window.confirm("{{ _("Merci de confirmer la création et validation de ce dossier") }}") )
-    {
-    var param = '{ "id_owner":' + id_user + ', ' +
-                  '"id_patient":' + id_patient  + ', ' +
-                  '"type":' + type + ', ' +
-                  '"date_record":"' + date_record + '", ' +
-                  '"id_med":' + id_med + ', ' +
-                  '"date_prescr":"' + date_prescr + '", ' +
-                  '"parcel_id":"' + parcel_id + '", ' +
-                  '"parcel_date":"' + parcel_date + '", ' +
-                  '"comm":' + comm + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
-                  '"parcel":' + parcel + ', ' +
-                  '"price":' + price + ', ' +
-                  '"discount":' + discount + ', ' +
-                  '"percent_discount":' + per_discount + ', ' +
-                  '"percent_insurance":' + per_insurance + ', ' +
-                  '"bill_remain":' + bill_remain + ', ' +
-                  '"receipt_num":"' + receipt_num + '", ' +
-                  '"bill_num":"' + bill_num + '", ' +
-                  '"date_hosp":"' + date_hosp + '", ' +
-                  '"service_int":"", ' +
-                  '"bed_num":0, ' +
-                  '"rec_hosp_num":"", ' +
-                  '"stat":' + stat + ', ' +
-                  '"rec_custody":"' + rec_custody + '", ' +
-                  '"rec_num_int":"' + rec_num_int + '", ' +
-                  '"rec_modified":"N"}' ;
-
-        // popup wait
-        $("#dial-wait").off('shown.bs.modal') ;
-        $("#dial-wait").modal("show") ;
-
-        // Send record information
-        $.ajax( 
-        {
-            // CREATE Record
-            type: "POST",
-            url: "{{ session['server_ext'] }}/services/record/det/0",
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret_rec)
+            if ( ret > 0 )
             {
-            var id_rec = ret_rec.id_rec ;
-
-            var param_list_ana = '{ "list_ana":[';
-
-                // Add analysis
-                for( i in data_analysis )
-                {
-                    if (data_analysis[i] != null)
-                    {
-                        if (i > 0 && param_list_ana.slice(-1) != "[" )
-                        param_list_ana += ', ' ;
-
-                    var param_ana = '{ "id_owner":' + id_user + ', ' +
-                                      '"id_rec":' + id_rec  + ', ' +
-                                      '"id_ana":' + data_analysis[i].id_data + ', ' +
-                                      '"price":' + data_analysis[i].price + ', ' +
-                                      '"paid": 5, ' +
-                                      '"emer":' + data_analysis[i].emer + ', ' +
-                                      '"req":' + data_analysis[i].req + ', ' +
-                                      '"outsourced":"' + data_analysis[i].outsourced + '"}' ;
-
-                    param_list_ana += param_ana ;
-                    }
-                }
-
-                // Add samples
-                for( i in data_samples )
-                {
-                    if (data_samples[i] != null)
-                    {
-                    param_list_ana += ', ' ;
-
-                    var param_samp = '{ "id_owner":' + id_user + ', ' +
-                                       '"id_rec":' + id_rec  + ', ' +
-                                       '"id_ana":' + data_samples[i].id_data + ', ' +
-                                       '"price":' + data_samples[i].price + ', ' +
-                                       '"paid": 5, ' +
-                                       '"emer": 5, ' +
-                                       '"req":' + data_samples[i].req + ', ' +
-                                       '"outsourced":"' + data_samples[i].outsourced + '"}' ;
-
-                    param_list_ana += param_samp ;
-                    }
-                }
-
-            param_list_ana += ' ] }';
-
-                // Send analysis information
-                $.ajax( 
-                {
-                    // INSERT ANALYSIS REQUESTED
-                    type: "POST",
-                    url: "{{ session['server_ext'] }}/services/analysis/list/req",
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
-                    data: param_list_ana,
-                    success: function(ret_ana)
-                    {
-                    var param_list_prod = '{ "list_prod":[ ';
-
-                        for( i in data_products )
-                        {
-                            if (data_products[i] != null)
-                            {
-                                if (i > 0)
-                                param_list_prod += ', ' ;
-
-                            var param_prod = '{ "id_owner":' + id_user + ', ' +
-                                               '"code":"' + data_products[i].code + '", ' +
-                                               '"date_samp":"' + data_products[i].dateSamp + '", ' +
-                                               '"type_samp":"' + data_products[i].type + '", ' +
-                                               '"ana":' + data_products[i].ana + ', ' +
-                                               '"stat":' + data_products[i].stat + ', ' +
-                                               '"id_rec":' + id_rec + ', ' +
-                                               '"sampler":"' + data_products[i].sampler + '", ' +
-                                               '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
-                                               '"time_receipt":"", ' +
-                                               '"comm":"' + data_products[i].comm + '", ' +
-                                               '"locat_samp":"", ' +
-                                               '"locat_samp_more":"", ' +
-                                               '"location":""}' ;
-
-                            param_list_prod += param_prod ;
-                            }
-                        }
-
-                    param_list_prod += ' ] }';
-
-                        // Send product information
-                        $.ajax( 
-                        {
-                            // INSERT SAMPLES REQUESTED
-                            type: "POST",
-                            url: "{{ session['server_ext'] }}/services/product/list/req",
-                            dataType: 'json',
-                            contentType: "application/json; charset=utf-8",
-                            data: param_list_prod,
-                            success: function(ret_prod)
-                            {
-                            let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
-
-                                // create in DB list of results to enter and corresponding validation
-                                $.ajax(
-                                {
-                                    type : "POST",
-                                    url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
-                                    dataType: 'json',
-                                    contentType: "application/json; charset=utf-8",
-                                    data: param_res,
-                                    success : function(response)
-                                    {
-                                    let param_stat = '{ "stat":182 }' ; 
-
-                                        // update record stat 181 to 182
-                                        $.ajax(
-                                        {
-                                            type : 'POST',
-                                            url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
-                                            dataType: 'json',
-                                            contentType: "application/json; charset=utf-8",
-                                            data: param_stat,
-                                            success : function(response)
-                                            {
-                                                $("#dial-wait").modal("hide") ;
-
-                                            // Redirection to adminsitrative page
-                                            window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + id_rec ;
-                                            },
-                                            error: function(response)
-                                            {
-                                                $("#dial-wait").modal("hide") ;
-
-                                            console.log("ERROR record stat") ;
-                                            alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
-                                            }
-                                        } ) ;
-                                    },
-                                    error: function(response)
-                                    {
-                                        $("#dial-wait").modal("hide") ;
-
-                                    console.log("ERROR result create") ;
-                                    alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
-                                    }
-                                } ) ;
-                            },
-                            error: function(ret_prod)
-                            {
-                                $("#dial-wait").modal("hide") ;
-
-                            console.log("ERROR product list req") ;
-                            alert("{{ _("Une erreur est survenue lors de l'enregistrement des prélèvements") }}") ;
-                            } 
-                        } ) ;
-                    },
-                    error: function(ret_ana)
-                    {
-                        $("#dial-wait").modal("hide") ;
-
-                    console.log("ERROR analysis list req") ;
-                    alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
-                    } 
-                } ) ;
-            },
-            error: function(ret_rec)
-            {
-                $("#dial-wait").modal("hide") ;
-
-            console.log("ERROR record det") ;
-            alert("{{ _("Une erreur est survenue lors de l'enregistrement du dossier") }}") ;
+            alert("{{ _("Numéro de dossier interne au laboratoire existe déjà") }}") ;
+            return false ;
             }
-        } ) ;
-    }
-    else
-    return false;
+            else
+            {
+                if (id_med == null || id_med == "")
+                id_med = 0 ;
+
+                if (parcel == null)
+                parcel = 5 ;
+                else if (parcel == 4 && parcel_date == "")
+                {
+                alert( "{{ _("Veuillez sélectionner une date et heure de réception du colis") }}" ) ;
+                return false ;
+                }
+
+                if (data_analysis.length < 1)
+                {
+                alert( "{{ _("Veuillez sélectionner au moins une analyse") }}" ) ;
+                return false ;
+                }
+
+                if (per_discount == "")
+                per_discount = 0 ;
+
+                if (per_insurance == "")
+                per_insurance = 0 ;
+
+                // date_record required
+                if (date_record == "")
+                {
+                alert( "{{ _("Veuillez sélectionner une date de réception du dossier") }}" ) ;
+                return false ;
+                }
+
+                // date_prescr required
+                if (date_prescr == "")
+                {
+                alert( "{{ _("Veuillez sélectionner une date de prescription") }}" ) ;
+                return false ;
+                }
+
+                // type and status required
+                for( i in data_products )
+                {
+                    /* USELESS 15/02/2022
+                    if (data_products[i].code == "")
+                    {
+                    alert( "{{ _("Veuillez renseigner le code de prélèvement") }}" ) ;
+                    return false ;
+                    }
+                    */
+
+                    if (data_products[i].type == 0)
+                    {
+                    alert( "{{ _("Veuillez renseigner le type du produit") }}" ) ;
+                    return false ;
+                    }
+
+                    if (data_products[i].stat == 0)
+                    {
+                    alert( "{{ _("Veuillez renseigner le statut du produit") }}" ) ;
+                    return false ;
+                    }
+
+                    /* ISSUE 1 17/10/2020
+                    if (data_products[i].dateReceipt == "")
+                    {
+                    alert( "{{ _("Veuillez renseigner toutes les dates de réception") }}" ) ;
+                    return false ;
+                    }
+
+                    if (data_products[i].sampler == "")
+                    {
+                    alert( "{{ _("Veuillez renseigner toutes les identités des préleveurs") }}" ) ;
+                    return false ;
+                    }
+                    */
+                }
+
+                if ( $.isEmptyObject(data_products) )
+                alert( "{{ _("Avertissement : Ce dossier n'est associé à aucun prélèvement") }}" ) ;
+
+                // confirm if user wants validate this record
+                if ( window.confirm("{{ _("Merci de confirmer la création et validation de ce dossier") }}") )
+                {
+                var param = '{ "id_owner":' + id_user + ', ' +
+                              '"id_patient":' + id_patient  + ', ' +
+                              '"type":' + type + ', ' +
+                              '"date_record":"' + date_record + '", ' +
+                              '"id_med":' + id_med + ', ' +
+                              '"date_prescr":"' + date_prescr + '", ' +
+                              '"parcel_id":"' + parcel_id + '", ' +
+                              '"parcel_date":"' + parcel_date + '", ' +
+                              '"comm":' + comm + ', ' + // NO QUOTE DUE TO STRINGIFY PROCESS
+                              '"parcel":' + parcel + ', ' +
+                              '"price":' + price + ', ' +
+                              '"discount":' + discount + ', ' +
+                              '"percent_discount":' + per_discount + ', ' +
+                              '"percent_insurance":' + per_insurance + ', ' +
+                              '"bill_remain":' + bill_remain + ', ' +
+                              '"receipt_num":"' + receipt_num + '", ' +
+                              '"bill_num":"' + bill_num + '", ' +
+                              '"date_hosp":"' + date_hosp + '", ' +
+                              '"service_int":"", ' +
+                              '"bed_num":0, ' +
+                              '"rec_hosp_num":"", ' +
+                              '"stat":' + stat + ', ' +
+                              '"rec_custody":"' + rec_custody + '", ' +
+                              '"rec_num_int":"' + rec_num_int + '", ' +
+                              '"rec_modified":"N"}' ;
+
+                    // popup wait
+                    $("#dial-wait").off('shown.bs.modal') ;
+                    $("#dial-wait").modal("show") ;
+
+                    // Send record information
+                    $.ajax( 
+                    {
+                        // CREATE Record
+                        type: "POST",
+                        url: "{{ session['server_ext'] }}/services/record/det/0",
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        data: param,
+                        success: function(ret_rec)
+                        {
+                        var id_rec = ret_rec.id_rec ;
+
+                        var param_list_ana = '{ "list_ana":[';
+
+                            // Add analysis
+                            for( i in data_analysis )
+                            {
+                                if (data_analysis[i] != null)
+                                {
+                                    if (i > 0 && param_list_ana.slice(-1) != "[" )
+                                    param_list_ana += ', ' ;
+
+                                var param_ana = '{ "id_owner":' + id_user + ', ' +
+                                                  '"id_rec":' + id_rec  + ', ' +
+                                                  '"id_ana":' + data_analysis[i].id_data + ', ' +
+                                                  '"price":' + data_analysis[i].price + ', ' +
+                                                  '"paid": 5, ' +
+                                                  '"emer":' + data_analysis[i].emer + ', ' +
+                                                  '"req":' + data_analysis[i].req + ', ' +
+                                                  '"outsourced":"' + data_analysis[i].outsourced + '"}' ;
+
+                                param_list_ana += param_ana ;
+                                }
+                            }
+
+                            // Add samples
+                            for( i in data_samples )
+                            {
+                                if (data_samples[i] != null)
+                                {
+                                param_list_ana += ', ' ;
+
+                                var param_samp = '{ "id_owner":' + id_user + ', ' +
+                                                   '"id_rec":' + id_rec  + ', ' +
+                                                   '"id_ana":' + data_samples[i].id_data + ', ' +
+                                                   '"price":' + data_samples[i].price + ', ' +
+                                                   '"paid": 5, ' +
+                                                   '"emer": 5, ' +
+                                                   '"req":' + data_samples[i].req + ', ' +
+                                                   '"outsourced":"' + data_samples[i].outsourced + '"}' ;
+
+                                param_list_ana += param_samp ;
+                                }
+                            }
+
+                        param_list_ana += ' ] }';
+
+                            // Send analysis information
+                            $.ajax( 
+                            {
+                                // INSERT ANALYSIS REQUESTED
+                                type: "POST",
+                                url: "{{ session['server_ext'] }}/services/analysis/list/req",
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: param_list_ana,
+                                success: function(ret_ana)
+                                {
+                                var param_list_prod = '{ "list_prod":[ ';
+
+                                    for( i in data_products )
+                                    {
+                                        if (data_products[i] != null)
+                                        {
+                                            if (i > 0)
+                                            param_list_prod += ', ' ;
+
+                                        var param_prod = '{ "id_owner":' + id_user + ', ' +
+                                                           '"code":"' + data_products[i].code + '", ' +
+                                                           '"date_samp":"' + data_products[i].dateSamp + '", ' +
+                                                           '"type_samp":"' + data_products[i].type + '", ' +
+                                                           '"ana":' + data_products[i].ana + ', ' +
+                                                           '"stat":' + data_products[i].stat + ', ' +
+                                                           '"id_rec":' + id_rec + ', ' +
+                                                           '"sampler":"' + data_products[i].sampler + '", ' +
+                                                           '"date_receipt":"' + data_products[i].dateReceipt + '", ' +
+                                                           '"time_receipt":"", ' +
+                                                           '"comm":"' + data_products[i].comm + '", ' +
+                                                           '"locat_samp":"", ' +
+                                                           '"locat_samp_more":"", ' +
+                                                           '"location":""}' ;
+
+                                        param_list_prod += param_prod ;
+                                        }
+                                    }
+
+                                param_list_prod += ' ] }';
+
+                                    // Send product information
+                                    $.ajax( 
+                                    {
+                                        // INSERT SAMPLES REQUESTED
+                                        type: "POST",
+                                        url: "{{ session['server_ext'] }}/services/product/list/req",
+                                        dataType: 'json',
+                                        contentType: "application/json; charset=utf-8",
+                                        data: param_list_prod,
+                                        success: function(ret_prod)
+                                        {
+                                        let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
+
+                                            // create in DB list of results to enter and corresponding validation
+                                            $.ajax(
+                                            {
+                                                type : "POST",
+                                                url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
+                                                dataType: 'json',
+                                                contentType: "application/json; charset=utf-8",
+                                                data: param_res,
+                                                success : function(response)
+                                                {
+                                                let param_stat = '{ "stat":182 }' ; 
+
+                                                    // update record stat 181 to 182
+                                                    $.ajax(
+                                                    {
+                                                        type : 'POST',
+                                                        url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
+                                                        dataType: 'json',
+                                                        contentType: "application/json; charset=utf-8",
+                                                        data: param_stat,
+                                                        success : function(response)
+                                                        {
+                                                            $("#dial-wait").modal("hide") ;
+
+                                                        // Redirection to adminsitrative page
+                                                        window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + id_rec ;
+                                                        },
+                                                        error: function(response)
+                                                        {
+                                                            $("#dial-wait").modal("hide") ;
+
+                                                        console.log("ERROR record stat") ;
+                                                        alert("{{ _("Une erreur est survenue lors du changement de statut du dossier") }}") ;
+                                                        }
+                                                    } ) ;
+                                                },
+                                                error: function(response)
+                                                {
+                                                    $("#dial-wait").modal("hide") ;
+
+                                                console.log("ERROR result create") ;
+                                                alert("{{ _("Une erreur est survenue lors de la création des résultats") }}") ;
+                                                }
+                                            } ) ;
+                                        },
+                                        error: function(ret_prod)
+                                        {
+                                            $("#dial-wait").modal("hide") ;
+
+                                        console.log("ERROR product list req") ;
+                                        alert("{{ _("Une erreur est survenue lors de l'enregistrement des prélèvements") }}") ;
+                                        } 
+                                    } ) ;
+                                },
+                                error: function(ret_ana)
+                                {
+                                    $("#dial-wait").modal("hide") ;
+
+                                console.log("ERROR analysis list req") ;
+                                alert("{{ _("Une erreur est survenue lors de l'enregistrement des analyses") }}") ;
+                                } 
+                            } ) ;
+                        },
+                        error: function(ret_rec)
+                        {
+                            $("#dial-wait").modal("hide") ;
+
+                        console.log("ERROR record det") ;
+                        alert("{{ _("Une erreur est survenue lors de l'enregistrement du dossier") }}") ;
+                        }
+                    } ) ;
+                }
+                else
+                return false;
+            }
+        },
+        error: function(ret)
+        {
+        console.log("ERROR SEARCH rec num int") ;
+        alert("{{ _("Une erreur est survenue lors de la vérification du code") }}") ;
+        }
+    } ) ;
 }
 {% endif %}
 

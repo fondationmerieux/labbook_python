@@ -1334,3 +1334,21 @@ class RecordValid(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE RecordValid')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class RecordNumInt(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, rec_num_int):
+        ret = Record.rec_num_int_exist(rec_num_int)
+
+        if ret and ret == -1:
+            self.log.error(Logs.fileline() + ' : ' + 'RecordNumInt ERROR sql')
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        if ret:
+            self.log.error(Logs.fileline() + ' : ' + 'RecordNumInt WARNING code already exist')
+            return compose_ret(1, Constants.cst_content_type_json, 200)
+        else:
+            self.log.info(Logs.fileline() + ' : RecordNumInt code ok :' + str(rec_num_int))
+            return compose_ret(0, Constants.cst_content_type_json, 200)

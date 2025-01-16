@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Documentation de l'équipement") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Documentation de l'équipement") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_manual" class="form-label col-3 text-end mt-2 me-1">{{ _("Manuel") }}</label>
@@ -72,7 +72,7 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if session["user_role"] in ("A","B","Q","TQ") %}
+                {% if has_permission("EQP_102") %} 
                 <div class="float-end">
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>

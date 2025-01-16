@@ -9,7 +9,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des dictionnaires (choix de réponses)") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Liste des dictionnaires (choix de réponses)") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
@@ -175,7 +175,7 @@ $("#list_dicts_total").html( data_len ) ;
     let menu_act = "<nav class=\"\">" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
-                   "<div class=\"dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}\" style=\"padding:0;\">" +
+                   "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-det-dict/" + data_dicts[i].key + "\">{{ _("Editer") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"export_dict('" + data_dicts[i].key + "')\">{{ _("Exporter le dictionnaire") }}</a>" +
                    "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_dict('" + data_dicts[i].key + "');\">{{ _("Supprimer") }}</a>";

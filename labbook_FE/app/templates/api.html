@@ -28,7 +28,7 @@
     </style>
 </head>
 
-{% if debug == 1 or session['user_role'] in ('A','API') %}
+{% if debug == 1 or has_permission("API_2") %}
 <body>
     <div id="swagger-ui"></div>
     

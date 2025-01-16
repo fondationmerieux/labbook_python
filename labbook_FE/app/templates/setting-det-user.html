@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Utilisateur") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Utilisateur") }}</span></h2>
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Droits utilisateur") }}</h3>
@@ -27,7 +27,7 @@
                         {% else %}
                         <select id="role" name="role" class="form-select" onchange="role_choice(this);" {{ 'disabled' if session['user_role'] != 'A' }}>
                             {% from 'macros.html' import select_user_role %}
-                            {{ select_user_role(ihm['user_role'], args['role_type']) }}
+                            {{ select_user_role(ihm['user_role'], args['role_type'], args['role_pro']) }}
                         </select>
                         {% endif %}
                     </div>
@@ -288,7 +288,10 @@ var cv        = JSON.stringify( $.trim( $("#cv").val() ) )       ;
 var diploma   = JSON.stringify( $.trim( $("#diploma").val() ) )  ;
 var training  = JSON.stringify( $.trim( $("#training").val() ) ) ;
 var comment   = JSON.stringify( $.trim( $("#comment").val() ) )  ;
-var role_type = $("#role").val()   ;
+var val_role  = $("#role").val() ;
+var parts     = val_role.split('_') ;
+var role_type = parts[0] ;
+var role_pro  = parts[1] ;
 var id_pres   = $("#search_doctor").val() ;
 
 var msg = "" ;
@@ -363,6 +366,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
               '"training":' + training + ', ' + // No quotes with stringify
               '"comment":' + comment + ', ' +   // No quotes with stringify
               '"role_type":"' + role_type + '", ' + 
+              '"role_pro":' + role_pro + ', ' +
               '"id_pres":' + id_pres + '}' ;
 
     $.ajax( {
@@ -391,7 +395,11 @@ function role_choice( elem )
 {
 let val = $(elem).val() ;
 
-    if ( val == 'P' )
+let parts = val.split('_');
+role_type = parts[0];
+role_pro  = parts[1];
+
+    if ( role_type == 'P' )
     {
     $("#search_account").removeClass('d-none') ;
     $("#search_account").addClass('d-lg-flex') ;
@@ -404,7 +412,7 @@ let val = $(elem).val() ;
     $("#div_pwd").addClass('d-lg-flex') ;
     $("#div_pwd2").addClass('d-lg-flex') ;
     }
-    else if ( val == 'Z' )
+    else if ( role_type == 'Z' )
     {
     $("#div_login").addClass('d-none') ;
     $("#div_pwd").addClass('d-none') ;

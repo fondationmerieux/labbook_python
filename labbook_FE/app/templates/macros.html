@@ -68,10 +68,10 @@
     {% endfor %}
 {%- endmacro %}
 
-{% macro select_user_role(l_user_role, type_selected) -%}
+{% macro select_user_role(l_user_role, type_selected, role_selected='') -%}
     <option value="" {% if not type_selected or type_selected == '' %} selected {% endif %}></option>
     {% for user_role in l_user_role %}
-        <option value="{{ user_role['type'] }}" {% if type_selected and type_selected == user_role['type'] %}selected{% endif %}>{{ user_role['label'] }}</option>
+        <option value="{{ user_role['type'] }}_{{ user_role['pro_ser'] }}" {% if (role_selected and role_selected == user_role['pro_ser']) or (not role_selected and type_selected and type_selected == user_role['type']) %}selected{% endif %}>{{ user_role['label'] }}</option>
     {% endfor %}
 {%- endmacro %}
 

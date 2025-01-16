@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.5.1] - 2025-01-16
+### Added
+- alert if the last OK save is more than 24 hours old, for administrator and biologist profiles
+- we process the uniqueness of the internal patient code if it is present on the form
+- we process the uniqueness of the laboratory's internal record number prior to registration
+- record invoicing using a document template
+- change role rights (finished) with custom colors (page title and menu color)
+- change rights of a specific user
+- new sampling profile
+
 ## [3.5.0] - 2024-12-30
 ### Added
 - internal messaging, quick access with envelope icon

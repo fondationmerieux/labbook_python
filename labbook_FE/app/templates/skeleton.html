@@ -18,6 +18,9 @@
     {# <script src="{{ url_for('static', filename='vendor/js/jquery.dataTables.min.js') }}"></script> #}
     <script src="{{ url_for('static', filename='js/app-labbook.js') }}?1" nonce="{{ session['nonce'] }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {# bring custom style build with some data from DB #}
+    {{ custom_style()|safe }}
     {% endblock %}
 </head>
 
@@ -36,7 +39,7 @@
             <div id="user-info">
                 <div class="icon-messaging text-center me-1">
                     <a href="{{ session['server_ext'] }}/list-messages">
-                        <i class="bi bi-envelope me-1"></i>
+                        <i class="bi bi-chat me-1"></i>
                         <span id="nb_msg_unread" class="fs-4 fw-bold text-danger"></span>
                     </a>
                 </div>

@@ -1,0 +1,10 @@
+<p>{{ _("Vous n'avez pas les droits pour accéder à cette page") }}</p>
+<div class="float-start ms-0">
+    <input type="button" onclick="return_no_rights();" id="btn_return" value="{{ _("Quitter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+</div>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function return_no_rights()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage";
+}
+</script>

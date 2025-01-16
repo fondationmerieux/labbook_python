@@ -31,7 +31,7 @@
 | qrcode                  | 7.4.2     | BSD          |           |         | x       |
 | relatorio               | 0.10.1    | GPL          |           |         | x       |
 | reportlab               | 3.6.13    | BSD          |           |         | x       |
-| tomli                   | 2.0.1     | MIT          |           | x       | x       |
+| tomli                   | 2.2.1     | MIT          |           | x       | x       |
 | unoserver               | 2.2.1     | MIT          |           |         | x       |
 
 > Note :

@@ -56,6 +56,7 @@ class Constants:
     cst_filedata_report     = 'data_template_report'
     cst_filedata_sticker    = 'data_template_sticker'
     cst_filedata_outsourced = 'data_template_outsourced'
+    cst_filedata_invoice    = 'data_template_invoice'
 
     # HL7 Constants
     cst_stat_init    = 'IN'

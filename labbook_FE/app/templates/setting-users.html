@@ -9,7 +9,8 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Liste des utilisateurs") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Liste des utilisateurs") }}</span></h2>
+            {% if has_permission("SETTING_39") %}
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rechercher") }}</h3>
@@ -112,16 +113,20 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] in ('A') %}
+                    {% if has_permission("SETTING_40") %}
                     <input type="button" onclick="import_users();" id="btn_import" value="{{ _("Importer des utilisateurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                     {% endif %}
                     <input type="button" onclick="export_users();" id="btn_export" value="{{ _("Export des utilisateurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     <input type="button" onclick="export_conn();" id="btn_conn" value="{{ _("Export des connexions") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                    {% if session['user_role'] in ('A') %}
+                    {% if has_permission("SETTING_41") %}
                     <input type="button" onclick="add_user();" id="btn_add" value="{{ _("Ajouter un utilisateur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
 
         </div>
     </div>
@@ -140,13 +145,17 @@ function filter_users()
 let login     = $("#login").val()  ;
 let firstname = $("#firstname").val() ;
 let lastname  = $("#lastname").val()  ;
-let role      = $("#role").val() ;
+let val_role  = $("#role").val() ;
+let parts     = val_role.split('_') ;
+let role_type = parts[0] ?? '' ;
+let role_pro  = parts[1] ?? '' ;
 let stat      = $("#status").val() ;
 
 let param = '{ "login":"' + login + '", ' +
             '"firstname":"' + firstname  + '", ' +
             '"lastname":"' + lastname  + '", ' +
-            '"role":"' + role  + '", ' +
+            '"role_type":"' + role_type  + '", ' +
+            '"role_pro":"' + role_pro  + '", ' +
             '"status":"' + stat + '"}' ;
 
     // popup wait
@@ -214,9 +223,11 @@ $("#list_users_total").html( data_len ) ;
     let menu_act = '<nav class="">' +
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
-                   '<div class="dropdown-menu menu-act-drop nav-{{ session['user_role']|safe }}" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
+                   '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' +
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' ;
+
+        if ( data_users[i].role_type != 'Z' )
+        menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
 
         if ( data_users[i].stat != 'A' )
         {          
@@ -226,6 +237,9 @@ $("#list_users_total").html( data_len ) ;
         {
         menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'D\');">{{ _("Désactiver utilisateur") }}</a>';
         }
+
+        if ( data_users[i].role_type != 'API' && data_users[i].role_type != 'Z' )        
+        menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-user-rights/' + data_users[i].id_data + '">{{ _("Editer droits") }}</a>' ;
         
     menu_act += '</div></ul></nav>' ;
 
@@ -242,7 +256,7 @@ $("#list_users_total").html( data_len ) ;
            '<td><div class="text-start">' + data_users[i].lastname + '</div></td>' +
            '<td><div class="text-start">' + user_stat + '</div></td>' +
            '<td><div class="text-start">' + data_users[i].date_create + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].role + '</div></td>' +
+           '<td><div class="text-start">' + data_users[i].pro_label + '</div></td>' +
            '<td><div class="text-start">' + data_users[i].section + '</div></td>' +
            '<td><div class="text-start">' + data_users[i].origin + '</div></td></tr>' ;
     }
@@ -361,9 +375,11 @@ $(".cnx_trigger").keyup( function(event)
     }
 } ) ;
 
+{% if has_permission("SETTING_39") %}
 $( document ).ready( function()
 {
 display_user( 1 ) ;
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

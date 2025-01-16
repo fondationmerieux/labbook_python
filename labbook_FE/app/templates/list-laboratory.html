@@ -9,7 +9,8 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Laboratoire") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Laboratoire") }}</span></h2>
+            {% if has_permission("LAB_78") %}
             <form>
                 <div class="panel-name row mt-3">
                     <div class="col-6">
@@ -21,7 +22,7 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        {% if session['user_role'] in ('A','B','Q','TQ') %}
+                        {% if has_permission("LAB_79") %}
                         <input type="button" onclick="add_value();" id="btn_add" value="{{ _("Ajouter une valeur") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 float-end">
                         {% endif %}
                     </div>
@@ -37,7 +38,7 @@
                             <div>
                                 <div>
                                     <div class="uploadHTML5 d-inline-block pe-3">
-                                        {% if session['user_role'] in ('A','B','Q','TQ') %}
+                                        {% if has_permission("LAB_80") %}
                                         <input name="file" type="file" class="mb-1"/>
                                         {% endif %}
                                     </div>
@@ -52,7 +53,7 @@
                         </div>
                     </div>
                     <div>
-                        {% if session['user_role'] in ('A','B','Q','TQ') %}
+                        {% if has_permission("LAB_80") %}
                         <input type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _("Enregistrer le document") }}" onclick="upload_file();">
                         {% endif %}
                     </div>
@@ -83,11 +84,15 @@
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if session['user_role'] in ('A','B','Q','TQ') %}
+                    {% if has_permission("LAB_79") %}
                     <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
 
         </div>
     </div>
@@ -122,7 +127,7 @@ let obj = data ;
     {
     let tmp_tr = "<tr style=\"\">" ;
 
-    {% if session['user_role'] in ('A','B','Q','TQ') %}
+    {% if has_permission("LAB_81") %}
     let btn = "<input type=\"button\" onclick=\"del_value(" + obj.id_ihm + ");load_data();\" value=\"" + "{{ _("Supprimer") }}" + "\">" ;
     {% else %}
     let btn = "" ;
@@ -317,7 +322,7 @@ let obj = data ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    {% if session['user_role'] in ('A','B','Q','TQ') %}
+    {% if has_permission("LAB_81") %}
     tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a>' ;
     {% endif %}
     tmp_tr += '</div></td></tr>' ;
@@ -388,6 +393,7 @@ function cancel()
 window.location.href = "{{ session['server_ext'] }}/homepage" ;
 }
 
+{% if has_permission("LAB_78") %}
 $( document ).ready( function()
 {
 {% if args['dict_name'] %}
@@ -398,5 +404,6 @@ $("#name").addClass("bg-readonly") ;
 add_value() ;
 {% endif %}
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

@@ -12,7 +12,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-{{ session['user_role']|safe }}"><span>{{ _("Equipement") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Equipement") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de l'équipement") }}</label>
@@ -160,7 +160,7 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if session["user_role"] in ("A","B","Q","TQ") %}
+                {% if has_permission("EQP_97") %}
                 <div class="float-end">
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
@@ -383,7 +383,7 @@ let type    = 'JF' ;
     
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    {% if session['user_role'] in ('A','B','TQ','Q') %}
+    {% if has_permission("EQP_101") %}
     tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
 
         if (type_ref == 'EQPH')
@@ -527,43 +527,6 @@ function delete_file( type_ref, id_file )
     }
     else
     return false ;
-}
-
-function del_comm(lic_ser)
-{
-var id_owner = {{ session['user_id']|safe}} ;
-
-{% if session['user_role'] in ('A','B','TQ','Q') %}
-var param = '{ "id_owner":' + id_owner + '}' ;
-
-    if ( window.confirm("{{ _("Veuillez confirmer la suppression") }}") )
-    {
-        $("#dial-wait").off('shown.bs.modal') ;
-        $("#dial-wait").modal("show") ;
-
-        $.ajax(
-        {
-            type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/quality/list/comment/" + lic_ser,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            success: function(ret)
-            {
-            $("#dial-wait").modal("hide") ;
-            location.reload() ;
-            },
-            error: function(ret)
-            {
-            console.log("ERROR DELETE list comment") ;
-            $("#dial-wait").modal("hide") ;
-            alert("{{ _("Erreur lors de la suppression des données") }}") ;
-            }
-        } ) ;
-    }
-    else
-    return false ;
-{% endif %}
 }
 
 function cancel()

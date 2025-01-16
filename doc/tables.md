@@ -89,5 +89,11 @@
 | analyzer\_lab28                                | ANALYZER	 | hl7 message to and from analyzer         |
 | analyzer\_setting                              | SETTINGS	 | settings for analyzer connection         |
 | lab\_chart\_file                               | FILE  	 | chart file of laboratory                 |
+| profile\_rights                                | USER  	 | list of rights                           |
+| profile\_permissions                           | USER  	 | permission for a right                   |
+| profile\_role                                  | USER  	 | define a role                            |
+| user\_permissions                              | USER  	 | custom permission for a user             |
+| internal\_messaging                            | MESSAGE  	 | internal message between users           |
+| internal\_messaging\_file                      | FILE  	 | file associated of an internal message   |
 
-87 tables used
+94 tables used

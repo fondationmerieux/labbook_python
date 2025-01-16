@@ -599,3 +599,22 @@ class Record:
         except mysql.connector.Error as e:
             Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def rec_num_int_exist(rec_num_int):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select count(*) as nb_code '
+                           'from sigl_02_data '
+                           'where rec_num_int=%s', (rec_num_int,))
+
+            ret = cursor.fetchone()
+
+            if ret and ret['nb_code'] == 0:
+                return False
+            else:
+                return True
+        except mysql.connector.Error as e:
+            Record.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return -1
