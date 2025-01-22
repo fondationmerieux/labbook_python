@@ -26,6 +26,16 @@
                         <div>					
                             <input id="date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}" placeholder="" style="color: #888;">
                         </div>
+
+                        <label for="service_int" class="form-label text-end ms-3 mt-2 me-1">{{ _("Service demandeur") }}</label>
+                        {% if ihm['req_services'] %}
+                        <select id="service_int" class="form-select w-auto">
+                            {% from 'macros.html' import select_req_services %}
+                            {{ select_req_services(ihm['req_services']) }}
+                        </select>
+                        {% else%}
+                        <input id="service_int" type="text" value="" maxlength="50" class="form-control form-lbk" style="">
+                        {% endif %}
                     </div>
 
                     <div class="ms-3">
@@ -95,6 +105,7 @@
             </div>
             <div class="float-end mt-3 mb-5">
                 <input type="button" onclick="export_data();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Export des données') }}">
+                <input type="button" onclick="download_report();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le rapport') }}">
             </div> 
 
         </div><!-- close main -->
@@ -113,6 +124,7 @@ function filter_data()
 {
 let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
+let service_int = {% if ihm['req_services'] %} $("#service_int").val() ; {% else %}"" ;{% endif %}
 
     if (date_beg)
     date_beg += ' 00:00' ;
@@ -121,7 +133,8 @@ let date_end = $("#date_end").val() ;
     date_end += ' 23:59' ;
 
 let param = '{ "date_beg":"' + date_beg  + '", ' +
-            '"date_end":"' + date_end  + '"}' ;
+            '"date_end":"' + date_end  + '", ' +
+            '"service_int":"' + service_int + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -215,6 +228,7 @@ function export_data()
 {
 let date_beg = $("#date_beg").val() ;
 let date_end = $("#date_end").val() ;
+let service_int = {% if ihm['req_services'] %} $("#service_int").val(){% else %}""{% endif %} ;
 
     if (date_beg)
     date_beg += ' 00:00' ;
@@ -223,7 +237,8 @@ let date_end = $("#date_end").val() ;
     date_end += ' 23:59' ;
 
 let param = '{ "date_beg":"' + date_beg  + '", ' +
-              '"date_end":"' + date_end  + '"}' ;
+              '"date_end":"' + date_end  + '", ' +
+              '"service_int":"' + service_int + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -253,6 +268,66 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
         today = today.getFullYear() + '' + month + '' + day ;
 
         let filename = "report_today_" + today + ".csv" ;
+
+        download_file( "PY", filename, "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+
+            if (ret.status == 404)
+            alert("{{ _("Aucun résultats à exporter !") }}") ;
+            else
+            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+
+function download_report()
+{
+let date_beg = $("#date_beg").val() ;
+let date_end = $("#date_end").val() ;
+let service_int = $("#service_int").val() ;
+
+    if (date_beg)
+    date_beg += ' 00:00' ;
+
+    if (date_end)
+    date_end += ' 23:59' ;
+
+let param = '{ "date_beg":"' + date_beg  + '", ' +
+              '"date_end":"' + date_end  + '", ' +
+              '"filename": "today", ' +
+              '"service_int":"' + service_int + '"}' ;
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( 
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/today",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        success: function(ret)
+        {
+            $("#dial-wait").modal("hide") ;
+        
+        let today = new Date();
+
+        let month = today.getMonth() + 1 ;
+
+        if (month < 10) month = '0' + month ;
+
+        let day = today.getDate() ;
+
+        if (day < 10) day = '0' + day ;
+
+        today = today.getFullYear() + '' + month + '' + day ;
+
+        let filename = "today_" + today + ".pdf" ;
 
         download_file( "PY", filename, "GEN", 0 ) ;
         },

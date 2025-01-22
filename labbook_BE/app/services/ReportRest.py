@@ -558,11 +558,11 @@ class ReportToday(Resource):
     def post(self):
         args = request.get_json()
 
-        if 'date_beg' not in args or 'date_end' not in args:
+        if 'date_beg' not in args or 'date_end' not in args or 'service_int' not in args:
             self.log.error(Logs.fileline() + ' : ReportToday ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        l_datas = Report.getTodayList(args['date_beg'], args['date_end'])
+        l_datas = Report.getTodayList(args['date_beg'], args['date_end'], args['service_int'])
 
         if not l_datas:
             self.log.error(Logs.fileline() + ' : TRACE list today record not found')
@@ -600,11 +600,11 @@ class ReportTodayExport(Resource):
 
         l_data = [['id_rec', 'rec_date', 'rec_num', 'family', 'analysis', 'vld_type']]
 
-        if 'date_beg' not in args or 'date_end' not in args:
+        if 'date_beg' not in args or 'date_end' not in args or 'service_int' not in args:
             self.log.error(Logs.fileline() + ' : ReportTodayExport ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        dict_data = Report.getTodayList(args['date_beg'], args['date_end'])
+        dict_data = Report.getTodayList(args['date_beg'], args['date_end'], args['service_int'])
 
         Various.useLangDB()
 

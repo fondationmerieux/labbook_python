@@ -21,6 +21,7 @@ import uuid
 
 from logging.handlers import WatchedFileHandler
 from datetime import datetime, date, timedelta
+from urllib.parse import quote
 
 from flask import Flask, render_template, render_template_string, request, session, redirect, send_file, Response, url_for, jsonify
 from flask_babel import Babel
@@ -4676,7 +4677,19 @@ def report_today():
     session['current_page'] = 'report-today'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
+
+    # load requesting services setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['req_services'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests requesting services setting failed, err=%s , url=%s', err, url)
 
     try:
         date_end = date.today()
@@ -4688,7 +4701,7 @@ def report_today():
         json_data['date_beg'] = date_beg
         json_data['date_end'] = date_end
 
-        payload = {'date_beg': date_beg + " 00:00", 'date_end': date_end + " 23:59"}
+        payload = {'date_beg': date_beg + " 00:00", 'date_end': date_end + " 23:59", 'service_int': ""}
 
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/report/today'
         req = requests.post(url, json=payload)
@@ -4699,7 +4712,7 @@ def report_today():
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests today list failed, err=%s , url=%s', err, url)
 
-    return render_template('report-today.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template('report-today.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : report billing
@@ -6639,11 +6652,13 @@ def download_file(type='', filename='', type_ref='', ref=''):
         log.error(Logs.fileline() + ' : ERROR download-file, %s doesnt exist or size < 0', path)
         return redirect(session['server_ext'] + '/' + session['current_page'])
 
-    ret_file = send_file(path, as_attachment=True, download_name=filename)
-    ret_file.headers["x-suggested-filename"] = filename
+    encoded_filename = quote(filename)
+
+    ret_file = send_file(path, as_attachment=True, download_name=encoded_filename)
+    ret_file.headers["x-suggested-filename"] = encoded_filename
     ret_file.headers["Cache-Control"] = 'no-store, must-revalidate'
     ret_file.headers["Expires"] = '0'
-    ret_file.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    ret_file.headers["Content-Disposition"] = f'attachment; filename="{encoded_filename}"'
     ret_file.headers["Content-Length"] = str(os.stat(path).st_size)
 
     return ret_file

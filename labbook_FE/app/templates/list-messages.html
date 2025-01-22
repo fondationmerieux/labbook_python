@@ -140,11 +140,11 @@ $("#list_items_total").html( data_len ) ;
     tr_onclick = "onclick=\"window.location.href='{{ session['server_ext'] }}/det-message/" + data_items[i].ime_ser + "';\" style=\"cursor: pointer;\" " ;
 
     res += "<tr " + tr_onclick + tr_style + "><td hidden><div>" + data_items[i].id_data + "</div></td>" +
-           "<td><div>" + menu_act + "</div></td>" +
+           "<td onclick=\"event.stopPropagation();\"><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].ime_date + "</div></td>" +
            "<td><div class=\"text-start\">" + contact + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].ime_subject + "</div></td>" +
-           "<td><div class=\"text-start\">" + link_doc + "</div></td></tr>" ;
+           "<td onclick=\"event.stopPropagation();\"><div class=\"text-start\">" + link_doc + "</div></td></tr>" ;
     }
 {% endif %}
 

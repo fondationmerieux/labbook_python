@@ -265,6 +265,7 @@ api.add_resource(PdfReport,             '/services/pdf/report/<int:id_rec>/<stri
 api.add_resource(PdfReportGeneric,      '/services/pdf/report/generic')
 api.add_resource(PdfReportGrouped,      '/services/pdf/report/grouped')
 api.add_resource(PdfReportGlobal,       '/services/pdf/report/global')
+api.add_resource(PdfReportToday,        '/services/pdf/report/today')
 api.add_resource(PdfSticker,            '/services/pdf/sticker/<string:template>')
 api.add_resource(PdfTemplate,           '/services/pdf/template/test/<int:id_item>')
 api.add_resource(PdfOutsourced,         '/services/pdf/outsourced/<int:id_rec>/<string:template>/<string:filename>')

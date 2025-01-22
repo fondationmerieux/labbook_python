@@ -179,8 +179,6 @@ class User:
 
         req = ''
 
-        User.log.info(Logs.fileline() + ' DEBUG id_user = ' + str(id_user))
-
         if id_user > 0:
             # specific profile_permissions for a user replace by user_permissions if exist
             req = ('select case when usp_prp is not null then "usp" else "prp" end as src, '
@@ -354,7 +352,9 @@ class User:
 
             cursor.execute('insert into profile_permissions '
                            '(prp_date, prp_by_user, prp_pro, prp_prr, prp_granted) '
-                           'values (NOW(), %(by_user)s, %(pro)s, %(prr)s, %(granted)s)', params)
+                           'select NOW(), %(by_user)s, %(pro)s, derived_table.prp_prr, %(granted)s '
+                           'from (select prp_prr from profile_permissions where prp_ser = %(prp)s) '
+                           'as derived_table', params)
 
             User.log.info(Logs.fileline())
 

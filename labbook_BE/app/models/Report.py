@@ -259,7 +259,7 @@ class Report:
         req = ('select dict.label as product, count(*) as nb_prod '
                'from sigl_01_data as prod '
                'inner join sigl_dico_data as dict on dict.id_data = prod.type_prel '
-               'where (prod.samp_date between %s and %s) '
+               'where (prod.samp_date between %s and %s) and statut=8 '
                'group by product order by product asc')
 
         cursor.execute(req, (date_beg, date_end,))
@@ -326,8 +326,13 @@ class Report:
         return cursor.fetchall()
 
     @staticmethod
-    def getTodayList(date_beg, date_end):
+    def getTodayList(date_beg, date_end, service_int):
         cursor = DB.cursor()
+
+        cond = ''
+
+        if service_int:
+            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
 
         req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.rec_date_receipt as rec_date, ref.nom as analysis, dict_fam.label as family, '
                'if(param_num_rec.periode=1070, if(param_num_rec.format=1072,substring(rec.num_dos_mois from 7), '
@@ -342,7 +347,7 @@ class Report:
                'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
                'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
                'left join sigl_dico_data as dict_fam on dict_fam.id_data=ref.famille '
-               'where (rec.rec_date_receipt between %s and %s) '
+               'where (rec.rec_date_receipt between %s and %s) ' + cond +
                'group by req.id_data order by rec.id_data asc limit 7000')
 
         cursor.execute(req, (date_beg, date_end,))

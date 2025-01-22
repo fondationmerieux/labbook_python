@@ -16,7 +16,9 @@
             <div class="inner">
                 <div id="logo">
                     <h1>
-                        <a href="{{ session['server_ext'] }}/">{{ _("LabBook") }}</a>
+                        <a href="{{ session['server_ext'] }}/">
+                            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="{{ _("LabBook") }}">
+                        </a>
                     </h1>
                 </div>
             </div>

@@ -89,7 +89,10 @@ var id_role = {{ args['role_id']|safe }} ;
 
 function save_role()
 {
-var role_type  = $("#role").val() ;
+var role = $("#role").val() ;
+let parts = role.split('_');
+let role_type = parts[0];
+let role_pro  = parts[1];
 var role_label = $("#role_label").val() ;
 var role_color_1 = $("#role_color_1").val() ;
 var role_color_2 = $("#role_color_2").val() ;

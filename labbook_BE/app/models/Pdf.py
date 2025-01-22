@@ -186,6 +186,79 @@ class Pdf:
         return True
 
     @staticmethod
+    def getPdfReportToday(l_data, date_beg, date_end, service_int, filename):
+        """Build a Today PDF Report
+
+        This function is call by report today,
+
+        Args:
+            l_data        (json): Today datas.
+            date_beg  (datetime): Start date of the period.
+            date_end  (datetime): End date of the period.
+            service_int (string): label of internal service.
+            filename    (string): filename.
+
+        Returns:
+            bool: True for success, False otherwise.
+
+        """
+
+        Various.useLangPDF()
+
+        html_part = '<p>' + str(date_beg) + ' - ' + str(date_end) + '&nbsp;&nbsp;&nbsp;' + str(service_int) + '</p>'
+        html_part += ('<table class="table table-striped table-hover col-lg-12 table-lbk"><thead><tr>'
+                      '<th class="text-start"><span>' + _("Date") + '</span></th>'
+                      '<th class="text-start"><span>' + _("N° dossier") + '</span></th>'
+                      '<th class="text-start"><span>' + _("Famille") + '</span></th>'
+                      '<th class="text-start"><span>' + _("Analyse") + '</span></th>'
+                      '<th class="text-start"><span>' + _("Validation") + '</span></th></tr></thead>'
+                      '<tbody id="tbody_today" style="">')
+
+        for data in l_data:
+            html_part += ('<tr><td><div class="text-start">' + str(data['rec_date']) + '</div></td>'
+                          '<td><div class="text-start">' + str( data['rec_num']) + '</div></td>'
+                          '<td><div class="text-start">' + str(data['family']) + '</div></td>'
+                          '<td><div class="text-start">' + str(data['analysis']) + '</div></td>'
+                          '<td><div class="text-start">' + str(data['vld_type']) + '</div></td></tr>')
+
+        html_part += '</tbody></table>'
+
+        path = Constants.cst_path_tmp
+
+        date_now = datetime.now()
+        today    = date_now.strftime(Constants.cst_date_ymd)
+
+        filename = filename + '_' + today + '.pdf'
+
+        # Get format header
+        pdfpref = Pdf.getPdfPref()
+
+        full_header = True
+
+        if pdfpref and pdfpref['entete'] == 1069:
+            full_header = False
+
+        page_header = Pdf.getPdfHeader(full_header)
+
+        page_body = ('<div style="width:1000px;">' + html_part + '</div>')
+
+        page_footer = '</div>'
+
+        form_cont = page_header + page_body + page_footer
+
+        options = {'--encoding': 'utf-8',
+                   'page-size': 'A4',
+                   'margin-top': '12mm',
+                   'margin-right': '0mm',
+                   'margin-bottom': '0mm',
+                   'margin-left': '0mm',
+                   'no-outline': None}
+
+        pdfkit.from_string(form_cont, path + filename, options=options)
+
+        return True
+
+    @staticmethod
     def getPdfReportGrouped(filename, l_id_rec):
         """Build a Grouped PDF Report
 

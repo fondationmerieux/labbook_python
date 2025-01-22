@@ -245,3 +245,29 @@ class PdfOutsourced(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE PdfOutsourced')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class PdfReportToday(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        if 'date_beg' not in args or 'date_end' not in args or 'service_int' not in args or 'filename' not in args:
+            self.log.error(Logs.fileline() + ' : PdfReportToday ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        l_data = Report.getTodayList(args['date_beg'], args['date_end'], args['service_int'])
+
+        # if no result to write
+        if not l_data:
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        ret = Pdf.getPdfReportToday(l_data, args['date_beg'], args['date_end'], args['service_int'], args['filename'])
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : PdfReportToday getPdfReportToday failed')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE PdfReportToday')
+        return compose_ret('', Constants.cst_content_type_json)

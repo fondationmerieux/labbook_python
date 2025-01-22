@@ -8,6 +8,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.5.2] - 2025-01-22
+### Added
+- filter today report by requesting service
+- pdf report for today report
+
+### Changed
+- when a record is created, the sample collenction date is set to the current date
+- statistical report sample list filter by status Done
+
+### Fixed
+- labBook logo on login and contributors pages
+- add a new role
+- if internal laboratory record number is empty when the record is created
+- downloading files with special characters in their names
+
 ## [3.5.1] - 2025-01-16
 ### Added
 - alert if the last OK save is more than 24 hours old, for administrator and biologist profiles
