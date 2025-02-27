@@ -36,11 +36,16 @@
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="lab28" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse LAB-28") }}</label>
+                    <label for="connect" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse LabBook Connect") }}</label>
                     <div>					
-                        <input type="text" name="lab28" id="lab28" value="{{ args['analyzer']['ans_lab28'] }}" class="form-control form-lbk">			
+                        <input type="text" name="connect" id="connect" value="{{ args['analyzer']['ans_connect'] }}" class="form-control form-lbk">			
                     </div>
+                    <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1" onclick="testLabBookConnect();">
+                        {{ _("Tester") }}
+                    </button>
                 </div>
+
+                <div id="test_result" class="mt-2"></div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="mapping" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse transcodage") }}</label>
@@ -75,20 +80,61 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+function testLabBookConnect() 
+{
+var connect_url = $("#connect").val() ;
+var analyzer_id = $("#id").val() ;
+
+    if (connect_url.trim() === "" || analyzer_id.trim() === "") 
+    {
+    alert("{{ _('Veuillez saisir une adresse LabBook Connect et un identifiant.') }}") ;
+    return ;
+    }
+
+var test_url = connect_url + "/connect/is_analyzer_loaded/" + analyzer_id ;
+    
+    $("#test_result").html('<span style="color: blue;">{{ _("Test en cours") }}</span>') ;
+
+    $.ajax( {
+        url: test_url,
+        type: "GET",
+        dataType: "json",
+        success: function(response) 
+        {
+            if (response.status === "OK") 
+            {
+                $("#test_result").html("<span style='color: green;'>{{ _('L\'analyseur est chargé.')|escape }}</span>");
+            }
+            else if (response.status === "ERR") 
+            {
+                $("#test_result").html('<span style="color: red;">{{ _("Erreur : ") }}' + response.message + '</span>');
+            }
+            else
+            {
+                $("#test_result").html('<span style="color: red;">{{ _("Réponse inattendue du serveur.") }}</span>') ;
+            }
+        },
+        error: function(xhr) 
+        {
+            $("#test_result").html('<span style="color: red;">{{ _("Erreur lors de la requête :") }} ' + xhr.status + ' ' + xhr.statusText + '</span>') ;
+        }
+    } ) ;
+}
+
 function save_item()
 {
 var id_user     = {{ session['user_id']|safe}} ;
 var id_item     = {{ args['id_analyzer']|safe }} ;
 var name        = $("#name").val()     ;
 var key         = $("#id").val()       ;
-var lab28       = $("#lab28").val()    ;
+var connect     = $("#connect").val()  ;
 var mapping     = $("#mapping").val()  ;
 var rank        = $("#rank").val()     ;
 var filename    = $("#analyzer").val() ;
 
 var msg = "" ;
 
-    if (name == "" || key == "" || lab28 == "" || mapping == "")
+    if (name == "" || key == "" || connect == "" || mapping == "")
     msg += "{{ _("Veuillez saisir un nom, un identifiant unique et leurs adresses.") }}\n" ;
 
     if (filename == "")
@@ -103,7 +149,7 @@ var msg = "" ;
 var param = '{ "id_user":' + id_user + ', ' +
               '"name":"' + name + '", ' +
               '"key":"' + key + '", ' +
-              '"lab28":"' + lab28 + '", ' +
+              '"connect":"' + connect + '", ' +
               '"mapping":"' + mapping + '", ' +
               '"rank":' + rank + ', ' +
               '"filename":"' + filename + '"}' ;

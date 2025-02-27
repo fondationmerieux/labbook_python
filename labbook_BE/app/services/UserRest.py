@@ -561,8 +561,6 @@ class UserRights(Resource):
 
                 # already user permission
                 if right['src'] == 'usp':
-                    # self.log.info(Logs.fileline() + ' : UserRights DEBUG usp right=' + str(right['prp_ser']) + ' user=' + str(args['id_user']) + ' granted=' + str(right['prp_granted']))
-
                     # different from same right of role
                     if same_granted is False:
                         # update user permission

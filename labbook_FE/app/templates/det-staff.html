@@ -184,6 +184,27 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="SIGN" class="form-label col-3 text-end mt-2 me-1">{{ _("Signature") }} (png)</label>
+                    <div class="text-start upload-container">
+                        <div>
+                            <div>
+                                <div class="uploadHTML5 d-inline-block pe-3">
+                                    <input id="SIGN" name="file" type="file" class="mb-1" accept="image/png"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <table class=table-responsive">
+                            <thead>
+                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                            </thead>
+                            <tbody id="tbody_file_SIGN"></tbody>
+                        </table>
+                    </div>
+                </div>
                     
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
@@ -214,6 +235,7 @@ var data_USCV = {% if args['data_USCV'] %}{{ args['data_USCV']|safe }}{% else %}
 var data_USDI = {% if args['data_USDI'] %}{{ args['data_USDI']|safe }}{% else %}[]{% endif %} ;
 var data_USTR = {% if args['data_USTR'] %}{{ args['data_USTR']|safe }}{% else %}[]{% endif %} ;
 var data_USEV = {% if args['data_USEV'] %}{{ args['data_USEV']|safe }}{% else %}[]{% endif %} ;
+var data_SIGN = {% if args['data_SIGN'] %}{{ args['data_SIGN']|safe }}{% else %}[]{% endif %} ;
 
 function save_user()
 {
@@ -235,9 +257,13 @@ var cv        = JSON.stringify( $.trim( $("#cv").val() ) )       ;
 var diploma   = JSON.stringify( $.trim( $("#diploma").val() ) )  ;
 var training  = JSON.stringify( $.trim( $("#training").val() ) ) ;
 var comment   = JSON.stringify( $.trim( $("#comment").val() ) )  ;
+var role_type = "{{ args['user_det']['role_type'] if args['user_det']['role_type'] }}" ;
+var role_pro  = {{ args['user_det']['role_pro'] if args['user_det']['role_pro'] else 0 }} ;
 
 var param = '{ "id_owner":' + id_owner + ', ' +
               '"id_user":' + id_user + ', ' +
+              '"role_type":"' + role_type + '", ' +
+              '"role_pro":' + role_pro + ', ' +
               '"lastname":"' + lastname + '", ' +
               '"firstname":"' + firstname + '", ' +
               '"email":"' + email + '", ' +
@@ -271,6 +297,7 @@ var param = '{ "id_owner":' + id_owner + ', ' +
            .then( upload_file("USDI", id_user) )
            .then( upload_file("USTR", id_user) )
            .then( upload_file("USEV", id_user) )
+           .then( upload_file("SIGN", id_user) )
            .then( function()
                {
                $("#dial-wait").modal("hide") ;
@@ -318,6 +345,11 @@ $("#tbody_file_USEV").empty() ;
     for( i in data_USEV )
     {
     load_file( data_USEV[i], "USEV" ) ;
+    }
+
+    for( i in data_SIGN )
+    {
+    load_file( data_SIGN[i], "SIGN" ) ;
     }
 }
 

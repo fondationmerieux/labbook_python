@@ -117,9 +117,44 @@
     {% endfor %}
 {%- endmacro %}
 
-{% macro select_civility(l_civility, id_civility) -%}
+{% macro select_civility(l_civility, id_selected) -%}
     <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
     {% for civility in l_civility %}
         <option value="{{ civility['id_data'] }}" {% if id_selected and id_selected == civility['id_data'] %}selected{% endif %}>{{ civility['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_storage_room(l_room, id_selected) -%}
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
+    {% for room in l_room %}
+        <option value="{{ room['id'] }}" {% if id_selected and id_selected == room['id'] %}selected{% endif %}>{{ room['abbrev'] }} - {{ room['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_storage_chamber(l_chamber, id_selected) -%}
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
+    {% for chamber in l_chamber %}
+        <option value="{{ chamber['id'] }}" {% if id_selected and id_selected == chamber['id'] %}selected{% endif %}>{{ chamber['abbrev'] }} - {{ chamber['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_storage_compartment(l_compartment, id_selected) -%}
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
+    {% for compartment in l_compartment %}
+        <option value="{{ compartment['id'] }}" {% if id_selected and id_selected == compartment['id'] %}selected{% endif %}>{{ compartment['abbrev'] }} - {{ compartment['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_storage_box(l_box, id_selected) -%}
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
+    {% for box in l_box %}
+        <option value="{{ box['id'] }}" {% if id_selected and id_selected == box['id'] %}selected{% endif %}>{{ box['label'] }}</option>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro select_pathogen(l_pathogen, id_selected) -%}
+    <option value="0" {% if not id_selected or id_selected == 0 %}selected{% endif %}></option>
+    {% for pathogen in l_pathogen %}
+        <option value="{{ pathogen['id_data'] }}" {% if id_selected and id_selected == pathogen['id_data'] %}selected{% endif %}>{{ pathogen['label'][:255] }}</option>
     {% endfor %}
 {%- endmacro %}

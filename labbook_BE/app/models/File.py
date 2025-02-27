@@ -72,6 +72,9 @@ class File:
         # MESSAGES
         elif type_ref == 'MSG':
             tablename = 'internal_messaging_file'
+        # SIGNATURE
+        elif type_ref == 'SIGN':
+            tablename = 'user_signature_file'
         else:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
@@ -95,6 +98,19 @@ class File:
                'where id_data=%s')
 
         cursor.execute(req, (id_file,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getUserSignature(id_user):
+        cursor = DB.cursor()
+
+        req = ('select f.id_data, f.original_name, f.generated_name, f.id_storage, f.path '
+               'from sigl_file_data as f '
+               'inner join user_signature_file as sign on sign.id_file=f.id_data '
+               'where sign.id_ext=%s order by id_data desc limit 1')
+
+        cursor.execute(req, (id_user,))
 
         return cursor.fetchone()
 
@@ -173,6 +189,9 @@ class File:
             # MESSAGES
             elif params['type_ref'] == 'MSG':
                 tablename = 'internal_messaging_file'
+            # SIGNATURE
+            elif params['type_ref'] == 'SIGN':
+                tablename = 'user_signature_file'
             else:
                 return 0
 
@@ -244,6 +263,9 @@ class File:
             # MESSAGES
             elif type_ref == 'MSG':
                 tablename = 'internal_messaging_file'
+            # SIGNATURE
+            elif type_ref == 'SIGN':
+                tablename = 'user_signature_file'
             else:
                 File.log.error(Logs.fileline() + ' : ERROR deleteFileDoc type_ref=' + str(type_ref))
                 return False

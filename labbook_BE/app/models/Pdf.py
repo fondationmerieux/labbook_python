@@ -1072,6 +1072,7 @@ class Pdf:
         filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
         data['logo'] = (open(filepath, 'rb'), 'image/png')
+        data['signature'] = ""  # filled further when you know the validator
 
         # === Label details ===
         data['label'] = {}
@@ -1526,6 +1527,22 @@ class Pdf:
 
                                     tmp_ana['validate'] = str(user)
 
+                                    # processing signature of validator
+                                    Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE TRAITEMENT SIGNATURE')
+
+                                    ret_sign = File.getUserSignature(res_valid_p['utilisateur'])
+
+                                    if ret_sign:
+                                        filesign = os.path.join(Constants.cst_upload, ret_sign['path'])
+                                        filesign = os.path.join(filesign, ret_sign['generated_name'])
+
+                                        Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE filesign = ' + str(filesign))
+
+                                        data['signature'] = (open(filesign, 'rb'), 'image/png')
+                                    else:
+                                        Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE no ret_sign')
+                                        data['signature'] = ""
+
                                 # Add previous analysis to list of data
                                 data['l_data'].append(tmp_ana)
                                 # Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE tmp_ana = ' + str(tmp_ana))
@@ -1804,6 +1821,22 @@ class Pdf:
                             user += ret_user['lastname'] + ' ' + ret_user['firstname']
                         else:
                             user += ret_user['username']
+
+                        # processing signature of validator
+                        Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE TRAITEMENT SIGNATURE')
+
+                        ret_sign = File.getUserSignature(id_user)
+
+                        if ret_sign:
+                            filesign = os.path.join(Constants.cst_upload, ret_sign['path'])
+                            filesign = os.path.join(filesign, ret_sign['generated_name'])
+
+                            Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE filesign = ' + str(filesign))
+
+                            data['signature'] = (open(filesign, 'rb'), 'image/png')
+                        else:
+                            Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE no ret_sign')
+                            data['signature'] = ""
 
                         id_user_p = id_user
 
@@ -3084,14 +3117,14 @@ class Pdf:
 
         # === ANALYZES details ===
         data['l_data'] = []
-        analysis       = {"ana_name": "", "ana_code": "", "ana_outsourced": "", "ana_price": '0.00'}
+        analysis       = {"ana_name": "", "ana_code": "", "ana_loinc": "", "ana_outsourced": "", "ana_price": '0.00'}
 
         if id_rec > 0:
             # GET all analysis for a record
             list_ana = Analysis.getAnalysisInvoice(id_rec, 'Y')
 
             for ana in list_ana:
-                tmp_ana = {"ana_name": "", "ana_code": "", "ana_outsourced": "", "ana_price": '0.00'}
+                tmp_ana = {"ana_name": "", "ana_code": "", "ana_loinc": "", "ana_outsourced": "", "ana_price": '0.00'}
 
                 # ==== ANALYSIS NAME ====
                 if ana['ana_name']:
@@ -3110,6 +3143,11 @@ class Pdf:
                 else:
                     tmp_ana['ana_code'] = ''
 
+                if ana['ana_loinc']:
+                    tmp_ana['ana_loinc'] = ana['ana_loinc']
+                else:
+                    tmp_ana['ana_loinc'] = ''
+
                 if ana['outsourced'] == 'Y':
                     tmp_ana['ana_outsourced'] = _("Sous-traitée")
 
@@ -3126,6 +3164,7 @@ class Pdf:
 
             analysis['ana_name'] = _("Détermination du groupe sanguin ABO et Rhésus standard (D)")
             analysis['ana_code'] = "B157"
+            analysis['ana_loinc'] = "93923-1"
             analysis['ana_outsourced'] = _("Sous-traitée")
             analysis['ana_price'] = "3500.00"
 

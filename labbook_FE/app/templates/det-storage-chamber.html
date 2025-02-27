@@ -1,0 +1,104 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Détails enceinte") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Détails enceinte") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sch_name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de l'enceinte") }} *</label>
+                    <div>
+                        <input id="sch_name" type="text" value="{{ args['chamber']['sch_name'] }}" maxlength="100" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sch_abbrev" class="form-label col-3 text-end mt-2 me-1">{{ _("Abréviation du nom") }}</label>
+                    <div>
+                        <input id="sch_abbrev" type="text" value="{{ args['chamber']['sch_abbrev'] }}" maxlength="10" class="form-control form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sch_label" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }} *</label>
+                    <div>
+                        <input id="sch_label" type="text" value="{{ args['chamber']['sch_label'] }}" maxlength="10" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sch_label" class="form-label col-3 text-end mt-2 me-1">{{ _("Pièce associée") }} *</label>
+                    <div>
+                        <select id="sch_room" name="sch_room" class="form-select">
+                            {% from 'macros.html' import select_storage_room %}
+                            {{ select_storage_room(ihm['l_rooms']['data'], args['chamber']['sch_room']) }}
+                        </select>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+let name  = document.getElementById("sch_name").value.trim();
+let label = document.getElementById("sch_label").value.trim();
+let room  = document.getElementById("sch_room").value;
+
+    if (name === "" || label === "") 
+    {
+        alert("{{ _("Le nom et l'identifiant sont obligatoires.") }}");
+        return false;
+    }
+
+    if (room <= 0) 
+    {
+        alert("{{ _("L'association à une pièce est obligatoire.") }}");
+        return false;
+    }
+
+    let chamberData = {
+        sch_user: {{ session['user_id']|safe}},
+        sch_name: document.getElementById("sch_name").value,
+        sch_abbrev: document.getElementById("sch_abbrev").value,
+        sch_label: document.getElementById("sch_label").value,
+        sch_room: document.getElementById("sch_room").value
+    };
+    
+    fetch("{{ session['server_ext'] }}/services/quality/storage/chamber/det/" + {{ args['id_item']|safe}}, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(chamberData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = "{{ session['server_ext'] }}/list-storage-chamber";
+    })
+    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-chamber";
+}
+</script>
+{% endblock %}

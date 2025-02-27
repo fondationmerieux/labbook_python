@@ -1,0 +1,85 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Détails pièce") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Détails pièce") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sro_name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de la pièce") }} *</label>
+                    <div>
+                        <input id="sro_name" type="text" value="{{ args['room']['sro_name'] }}" maxlength="100" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sro_abbrev" class="form-label col-3 text-end mt-2 me-1">{{ _("Abréviation du nom") }}</label>
+                    <div>
+                        <input id="sro_abbrev" type="text" value="{{ args['room']['sro_abbrev'] }}" maxlength="10" class="form-control form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sro_label" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }} *</label>
+                    <div>
+                        <input id="sro_label" type="text" value="{{ args['room']['sro_label'] }}" maxlength="10" class="form-control form-lbk" required>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+let name = document.getElementById("sro_name").value.trim();
+let label = document.getElementById("sro_label").value.trim();
+
+    if (name === "" || label === "") {
+        alert("{{ _("Le nom et l'identifiant sont obligatoires.") }}");
+        return false;
+    }
+
+    let roomData = {
+        sro_user: {{ session['user_id']|safe}},
+        sro_name: document.getElementById("sro_name").value,
+        sro_abbrev: document.getElementById("sro_abbrev").value,
+        sro_label: document.getElementById("sro_label").value
+    };
+    
+    fetch("{{ session['server_ext'] }}/services/quality/storage/room/det/" + {{ args['id_item']|safe}}, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(roomData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = "{{ session['server_ext'] }}/list-storage-room";
+    })
+    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-room";
+}
+</script>
+{% endblock %}

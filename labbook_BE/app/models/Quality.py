@@ -1482,6 +1482,423 @@ class Quality:
         return cursor.fetchone()
 
     @staticmethod
+    def getStorageList(args):
+        cursor = DB.cursor()
+
+        if args:
+            if 'in_stock' in args:
+                in_stock = args['in_stock']
+        else:
+            in_stock = 'Y'
+
+        req = ('select sal_ser, sbo_ser, sbo_label, sco_ser, sco_label, sch_ser, sch_label, sro_ser, sro_label, '
+               'sbo_coordinates, sal_coordinates, sal_pathogen, sal_in_stock, '
+               'ifnull(pat.code, "") as pat_code, ifnull(pat.code_patient, "") as pat_code_lab, '
+               'ifnull(pat.nom, "") as pat_name, ifnull(pat.prenom, "") as pat_firstname, '
+               'ifnull(samp.type_prel, sal_type) as type, ifnull(samp.id_dos, 0) as id_rec, '
+               'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as rec_num_long, rec.type as rec_type, '
+               'rec.rec_num_int, rec.date_prescription as rec_date_prescr, ifnull(samp_id_ana, 0) as id_ana, '
+               'ana.code as ana_code, ana.ana_loinc, ana.nom as ana_name '
+               'FROM storage_aliquot '
+               'inner join storage_box sbo on sal_box = sbo_ser '
+               'inner join storage_compartment on sbo_compartment = sco_ser '
+               'inner join storage_chamber on sco_chamber = sch_ser '
+               'inner join storage_room on sch_room = sro_ser '
+               'inner join sigl_03_data pat on sal_patient = pat.id_data '
+               'left join sigl_01_data samp on sal_sample = samp.id_data '
+               'left join sigl_02_data rec on samp.id_dos = rec.id_data '
+               'left join sigl_05_data ana on samp.samp_id_ana = ana.id_data '
+               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
+               'where sal_in_stock=%s')
+
+        cursor.execute(req, (in_stock,))
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStorageRoomList():
+        cursor = DB.cursor()
+
+        req = ('select sro_ser as id, sro_name as name, sro_abbrev as abbrev, '
+               'sro_label AS label, count(sch_ser) as nb_chamber '
+               'from storage_room '
+               'left join storage_chamber on sro_ser = sch_room '
+               'group by sro_ser, sro_name, sro_abbrev, sro_label '
+               'order by sro_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStorageRoom(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sro_ser, sro_user, sro_name, sro_abbrev, sro_label '
+               'from storage_room '
+               'where sro_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertStorageRoom(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into storage_room '
+                           '(sro_date, sro_user, sro_name, sro_abbrev, sro_label) '
+                           'values '
+                           '(NOW(), %(user)s, %(name)s, %(abbrev)s, %(label)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStorageRoom(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update storage_room '
+                           'set sro_user=%(user)s, sro_name=%(name)s, sro_abbrev=%(abbrev)s, sro_label=%(label)s '
+                           'where sro_ser=%(id_item)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteStorageRoom(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from storage_room '
+                           'where sro_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getStorageChamberList():
+        cursor = DB.cursor()
+
+        req = ('select sch_ser as id, sch_name as name, sch_abbrev as abbrev, '
+               'sch_label as label, count(sco_ser) as nb_compartment, sro_abbrev as room_abbrev, sro_label as room_label '
+               'from storage_chamber '
+               'inner join storage_room on sro_ser = sch_room '
+               'left join storage_compartment on sco_chamber = sch_ser '
+               'group by sch_ser, sch_name, sch_abbrev, sch_label, sro_abbrev, sro_label '
+               'order by sch_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStorageChamber(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sch_ser, sch_user, sch_room, sch_name, sch_abbrev, sch_label '
+               'from storage_chamber '
+               'where sch_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertStorageChamber(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into storage_chamber '
+                           '(sch_date, sch_user, sch_name, sch_abbrev, sch_label, sch_room) '
+                           'values '
+                           '(NOW(), %(user)s, %(name)s, %(abbrev)s, %(label)s, %(room)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStorageChamber(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update storage_chamber '
+                           'set sch_user=%(user)s, sch_name=%(name)s, sch_abbrev=%(abbrev)s, sch_label=%(label)s, '
+                           'sch_room=%(room)s '
+                           'where sch_ser=%(id_item)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteStorageChamber(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from storage_chamber '
+                           'where sch_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getStorageCompList():
+        cursor = DB.cursor()
+
+        req = ('select sco_ser as id, sco_name as name, sco_abbrev as abbrev, sco_dim_x as dim_x, sco_dim_y as dim_y, '
+               'sco_dim_z as dim_z, sco_label as label, count(sbo_ser) as nb_box, sch_abbrev as chamber_abbrev, '
+               'sch_label as chamber_label '
+               'from storage_compartment '
+               'inner join storage_chamber on sch_ser = sco_chamber '
+               'left join storage_box on sbo_compartment = sco_ser '
+               'group by sco_ser, sco_name, sco_abbrev, sco_label, sch_abbrev, sch_label '
+               'order by sco_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStorageComp(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sco_ser, sco_user, sco_chamber, sco_name, sco_abbrev, sco_label, sco_dim_x, sco_dim_y, sco_dim_z '
+               'from storage_compartment '
+               'where sco_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertStorageComp(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into storage_compartment '
+                           '(sco_date, sco_user, sco_name, sco_abbrev, sco_label, sco_chamber, '
+                           'sco_dim_x, sco_dim_y, sco_dim_z) '
+                           'values '
+                           '(NOW(), %(user)s, %(name)s, %(abbrev)s, %(label)s, %(chamber)s, '
+                           '%(dim_x)s, %(dim_y)s, %(dim_z)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStorageComp(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update storage_compartment '
+                           'set sco_user=%(user)s, sco_name=%(name)s, sco_abbrev=%(abbrev)s, sco_label=%(label)s, '
+                           'sco_chamber=%(chamber)s, sco_dim_x=%(dim_x)s, sco_dim_y=%(dim_y)s, sco_dim_z=%(dim_z)s '
+                           'where sco_ser=%(id_item)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteStorageComp(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from storage_compartment '
+                           'where sco_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getStorageBoxList():
+        cursor = DB.cursor()
+
+        req = ('select sbo_ser as id, sbo_name as name, sbo_coordinates as coord, sbo_dim_x as dim_x, sbo_dim_y as dim_y, '
+               'sbo_label as label, count(sal_ser) as nb_box, sco_abbrev as compartment_abbrev, '
+               'sco_label as compartment_label, sbo_full as full '
+               'from storage_box '
+               'inner join storage_compartment on sco_ser = sbo_compartment '
+               'left join storage_aliquot on sal_box = sbo_ser '
+               'group by sbo_ser, sbo_name, sbo_coordinates, sbo_label, sbo_label '
+               'order by sbo_name asc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getStorageBox(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sbo_ser, sbo_user, sbo_compartment, sbo_name, sbo_coordinates, sbo_label, sbo_dim_x, sbo_dim_y, '
+               'sbo_full '
+               'from storage_box '
+               'where sbo_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertStorageBox(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into storage_box '
+                           '(sbo_date, sbo_user, sbo_name, sbo_label, sbo_compartment, '
+                           'sbo_dim_x, sbo_dim_y, sbo_coordinates, sbo_full) '
+                           'values '
+                           '(NOW(), %(user)s, %(name)s, %(label)s, %(compartment)s, '
+                           '%(dim_x)s, %(dim_y)s, %(coordinates)s, %(full)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStorageBox(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update storage_box '
+                           'set sbo_user=%(user)s, sbo_name=%(name)s, sbo_label=%(label)s, sbo_dim_x=%(dim_x)s, '
+                           'sbo_dim_y=%(dim_y)s, sbo_compartment=%(compartment)s, sbo_coordinates=%(coordinates)s, '
+                           'sbo_full=%(full)s '
+                           'where sbo_ser=%(id_item)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteStorageBox(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from storage_box '
+                           'where sbo_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def getStorageAliquot(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sal_ser, sal_user, sal_sample, sal_patient, sal_pathogen, sal_box, sal_coordinates, sal_in_stock, '
+               'ifnull(pat.code, "") as pat_code, ifnull(pat.code_patient, "") as pat_code_lab, '
+               'ifnull(pat.nom, "") as pat_name, ifnull(pat.prenom, "") as pat_firstname, '
+               'ifnull(samp.type_prel, sal_type) as type, ifnull(samp.id_dos, 0) as id_rec '
+               'from storage_aliquot '
+               'LEFT JOIN sigl_03_data pat ON sal_patient = pat.id_data '
+               'LEFT JOIN sigl_01_data samp ON sal_sample = samp.id_data '
+               'where sal_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertStorageAliquot(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into storage_aliquot '
+                           '(sal_date, sal_user, sal_sample, sal_patient, sal_type, sal_pathogen, sal_box, '
+                           'sal_coordinates, sal_in_stock) '
+                           'values '
+                           '(NOW(), %(user)s, %(sample)s, %(patient)s, %(type)s, '
+                           '%(pathogen)s, %(box)s, %(coordinates)s, %(in_stock)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updateStorageAliquot(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update storage_aliquot '
+                           'set sal_user=%(user)s, sal_sample=%(sample)s, sal_patient=%(patient)s, '
+                           'sal_pathogen=%(pathogen)s, sal_box=%(box)s, sal_coordinates=%(coordinates)s, '
+                           'sal_in_stock=%(in_stock)s, sal_type=%(type)s '
+                           'where sal_ser=%(id_item)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deleteStorageAliquot(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from storage_aliquot '
+                           'where sal_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getSupplierList():
         cursor = DB.cursor()
 
@@ -1496,6 +1913,47 @@ class Quality:
         cursor.execute(req, (Constants.cst_dt_HMS_SQL, Constants.cst_dt_HMS_SQL,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def destockStorageAliquot(id_item, id_user, reason, external, location, destock_date):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute("""
+                INSERT INTO sample_destock (sad_date, sad_user, sad_aliquot, sad_reason, sad_external, sad_location, sad_destock_date)
+                VALUES (now(), %s, %s, %s, %s, %s, %s)
+            """, (id_user, id_item, reason, external, location, destock_date))
+
+            cursor.execute("UPDATE storage_aliquot SET sal_in_stock = 'N' WHERE sal_ser = %s", (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def restockStorageAliquot(id_item, id_user):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute("UPDATE storage_aliquot SET sal_in_stock = 'Y' WHERE sal_ser = %s", (id_item,))
+
+            cursor.execute("""
+                UPDATE sample_destock
+                SET sad_restock_date = now(), sad_restock_user = %s
+                WHERE sad_aliquot = %s
+                ORDER BY sad_ser DESC
+                LIMIT 1
+            """, (id_user, id_item))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def getSupplierSearch(text):

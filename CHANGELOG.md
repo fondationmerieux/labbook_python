@@ -7,6 +7,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
+- print stickers for storage aliquot
+
+## [3.5.3] - 2025-02-27
+### Added
+- upload signature by details of staff
+- ability to apply the signature of the last validator in the result document template
+- aliquot storage (with 5 new rigths for roles)
+- pathogen dictionary with 578 entries (bacteria, virus, parasite, fungi)
+- LOINC code for 271 analysis
+
+### Changed
+- v5 of export and import of analysis repository with ana_loinc
+
+### Fixed
+- save details of staff
 
 ## [3.5.2] - 2025-01-22
 ### Added
@@ -14,7 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - pdf report for today report
 
 ### Changed
-- when a record is created, the sample collenction date is set to the current date
+- when a record is created, the sample collection date is set to the current date
 - statistical report sample list filter by status Done
 
 ### Fixed

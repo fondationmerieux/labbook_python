@@ -496,6 +496,11 @@ paths:
                         exemple: "B001"
                         default: ""
                         required: true
+                      ana_loinc:
+                        type: string
+                        description: analysis LOINC code
+                        exemple: "14933-6"
+                        default: ""
                       ana_emer:
                         type: string
                         description: emergency analysis states, Yes / No.

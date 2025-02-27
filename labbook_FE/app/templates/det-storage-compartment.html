@@ -1,0 +1,137 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Détails compartiment") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Détails compartiment") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom du compartiment") }} *</label>
+                    <div>
+                        <input id="sco_name" type="text" value="{{ args['compartment']['sco_name'] }}" maxlength="100" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_abbrev" class="form-label col-3 text-end mt-2 me-1">{{ _("Abréviation du nom") }}</label>
+                    <div>
+                        <input id="sco_abbrev" type="text" value="{{ args['compartment']['sco_abbrev'] }}" maxlength="10" class="form-control form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_label" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }} *</label>
+                    <div>
+                        <input id="sco_label" type="text" value="{{ args['compartment']['sco_label'] }}" maxlength="10" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_dim_x" class="form-label col-3 text-end mt-2 me-1">{{ _("Largeur") }} *</label>
+                    <div>
+                        <input id="sco_dim_x" type="number" value="{{ args['compartment']['sco_dim_x'] }}" min="0" step="1" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_dim_y" class="form-label col-3 text-end mt-2 me-1">{{ _("Profondeur") }} *</label>
+                    <div>
+                        <input id="sco_dim_y" type="number" value="{{ args['compartment']['sco_dim_y'] }}" min="0" step="1" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_dim_z" class="form-label col-3 text-end mt-2 me-1">{{ _("Hauteur") }} *</label>
+                    <div>
+                        <input id="sco_dim_z" type="number" value="{{ args['compartment']['sco_dim_z'] }}" min="0" step="1" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sco_chamber" class="form-label col-3 text-end mt-2 me-1">{{ _("Enceinte associée") }} *</label>
+                    <div>
+                        <select id="sco_chamber" name="sco_chamber" class="form-select">
+                            {% from 'macros.html' import select_storage_chamber %}
+                            {{ select_storage_chamber(ihm['l_chambers']['data'], args['compartment']['sco_chamber']) }}
+                        </select>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+let name  = document.getElementById("sco_name").value.trim();
+let label = document.getElementById("sco_label").value.trim();
+let dim_x = document.getElementById("sco_dim_x").value;
+let dim_y = document.getElementById("sco_dim_y").value;
+let dim_z = document.getElementById("sco_dim_z").value;
+let chamber = document.getElementById("sco_chamber").value;
+
+    if (name === "" || label === "") 
+    {
+        alert("{{ _("Le nom et l'identifiant sont obligatoires.") }}");
+        return false;
+    }
+
+    if (dim_x <= 0 || dim_y <= 0 || dim_z <= 0) 
+    {
+        alert("{{ _("Les dimensions doivent être positives.") }}");
+        return false;
+    }
+
+    if (chamber <= 0) 
+    {
+        alert("{{ _("L'association à une enceinte est obligatoire.") }}");
+        return false;
+    }
+
+    let compartmentData = {
+        sco_user: {{ session['user_id']|safe}},
+        sco_name: name,
+        sco_abbrev: document.getElementById("sco_abbrev").value,
+        sco_label: label,
+        sco_dim_x: dim_x,
+        sco_dim_y: dim_y,
+        sco_dim_z: dim_z,
+        sco_chamber: chamber
+    };
+    
+    fetch("{{ session['server_ext'] }}/services/quality/storage/compartment/det/" + {{ args['id_item']|safe}}, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(compartmentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = "{{ session['server_ext'] }}/list-storage-compartment";
+    })
+    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-compartment";
+}
+</script>
+{% endblock %}

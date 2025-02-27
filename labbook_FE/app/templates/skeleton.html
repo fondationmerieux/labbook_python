@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    {# <link href="{{ url_for('static', filename='vendor/css/jquery.dataTables.min.css') }}" media="screen, print" rel="stylesheet" type="text/css"> #}
+    <link href="{{ url_for('static', filename='vendor/css/datatables.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" media="screen, print" rel="stylesheet" type="text/css">
     <link href="{{ url_for('labbook_css') }}?{{ rand }}" media="screen" rel="stylesheet" type="text/css">
 
@@ -14,8 +14,7 @@
     <script src="{{ url_for('static', filename='vendor/js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/js/jquery.tablesorter.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    {# TODO 01/04/2022 TEST with big database before to used it #}
-    {# <script src="{{ url_for('static', filename='vendor/js/jquery.dataTables.min.js') }}"></script> #}
+    <script src="{{ url_for('static', filename='vendor/js/datatables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app-labbook.js') }}?1" nonce="{{ session['nonce'] }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 

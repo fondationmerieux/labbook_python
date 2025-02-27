@@ -1377,6 +1377,13 @@ overflow   : auto ;
 max-height : 92vh ;
 }
 
+.aliquot-separator 
+{
+border  : 3px solid #007bff;
+margin  : 20px 0;
+opacity : 1;
+}
+
 @media all and (max-width: 767px)
 {
     body

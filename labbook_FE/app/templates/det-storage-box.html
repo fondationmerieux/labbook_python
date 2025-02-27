@@ -1,0 +1,139 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Détails boîte") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Détails boîte") }}</span></h2>
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de la boîte") }} *</label>
+                    <div>
+                        <input id="sbo_name" type="text" value="{{ args['box']['sbo_name'] }}" maxlength="100" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_label" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }} *</label>
+                    <div>
+                        <input id="sbo_label" type="text" value="{{ args['box']['sbo_label'] }}" maxlength="10" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_coordinates" class="form-label col-3 text-end mt-2 me-1">{{ _("Coordonnées") }}</label>
+                    <div>
+                        <input id="sbo_coordinates" type="text" value="{{ args['box']['sbo_coordinates'] }}" maxlength="10" class="form-control form-lbk">
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_dim_x" class="form-label col-3 text-end mt-2 me-1">{{ _("Largeur") }} *</label>
+                    <div>
+                        <input id="sbo_dim_x" type="number" value="{{ args['box']['sbo_dim_x'] }}" min="0" step="1" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_dim_y" class="form-label col-3 text-end mt-2 me-1">{{ _("Profondeur") }} *</label>
+                    <div>
+                        <input id="sbo_dim_y" type="number" value="{{ args['box']['sbo_dim_y'] }}" min="0" step="1" class="form-control form-lbk" required>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_full" class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte pleine") }}</label>
+                    <div class="form-check">
+                        <input id="sbo_full" type="checkbox" class="form-check-input" {% if args['box']['sbo_full'] == 'Y' %}checked{% endif %}>
+                    </div>
+                </div>
+                
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="sbo_compartment" class="form-label col-3 text-end mt-2 me-1">{{ _("Compartiment associé") }} *</label>
+                    <div>
+                        <select id="sbo_compartment" name="sbo_compartment" class="form-select">
+                            {% from 'macros.html' import select_storage_compartment %}
+                            {{ select_storage_compartment(ihm['l_compartments']['data'], args['box']['sbo_compartment']) }}
+                        </select>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+let name  = document.getElementById("sbo_name").value.trim();
+let label = document.getElementById("sbo_label").value.trim();
+let coord = document.getElementById("sbo_coordinates").value.trim();
+let dim_x = document.getElementById("sbo_dim_x").value;
+let dim_y = document.getElementById("sbo_dim_y").value;
+let full  = document.getElementById("sbo_full").checked ? "Y" : "N";
+let compartment = document.getElementById("sbo_compartment").value;
+
+    if (name === "" || label === "") 
+    {
+        alert("{{ _("Le nom et l'identifiant sont obligatoires.") }}");
+        return false;
+    }
+
+    if (dim_x <= 0 || dim_y <= 0) 
+    {
+        alert("{{ _("Les dimensions doivent être positives.") }}");
+        return false;
+    }
+
+    if (compartment <= 0) 
+    {
+        alert("{{ _("L'association à un compartiment est obligatoire.") }}");
+        return false;
+    }
+
+    let boxData = {
+        sbo_user: {{ session['user_id']|safe}},
+        sbo_name: name,
+        sbo_label: label,
+        sbo_coordinates: coord,
+        sbo_dim_x: dim_x,
+        sbo_dim_y: dim_y,
+        sbo_full: full,
+        sbo_compartment: compartment
+    };
+    
+    fetch("{{ session['server_ext'] }}/services/quality/storage/box/det/" + {{ args['id_item']|safe}}, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(boxData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = "{{ session['server_ext'] }}/list-storage-box";
+    })
+    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-box";
+}
+</script>
+{% endblock %}

@@ -1,0 +1,329 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
+    <title>{{ _("Détails aliquot") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Détails boîte") }}</span></h2>
+            
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="search_patient" class="form-label col-3 text-end mt-2 me-1">{{ _("Patient") }} *</label>
+                    <div>
+                        <select id="search_patient" class="form-select form-lbk form-search"></select>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-1">
+                    <span id="identity_patient" class="offset-md-3">
+                        {% if args and args['aliquot'] %}{{ args['aliquot']['pat_name']}} {{ args['aliquot']['pat_firstname']}}{% endif %}
+                    </span>
+                    <input type="number" id="id_pat" value="{{ args['id_pat'] }}" hidden />
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">					
+                    <label for="sal_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Produit pathologique") }} *</label>
+                    <div>
+                        <select name="sal_type" id="sal_type" class="form-select cnx_trigger">
+                            <option value="0"></option>
+                            {% for product in ihm['products'] %}
+                            <option value="{{ product['id_data'] }}" {% if args and args['aliquot']['type'] == product['id_data'] %}selected{% endif %}>{{ product['label'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <div id="aliquots_container">
+                <form autocomplete="off">
+                    <div class="aliquot_form">
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="sal_pathogen" class="form-label col-3 text-end mt-2 me-1">{{ _("Pathogène") }}</label>
+                            <div>
+                                <select name="sal_pathogen[]" class="form-select pathogen">
+                                    {% from 'macros.html' import select_pathogen %}
+                                    {{ select_pathogen(ihm['l_pathogen'], args['aliquot']['sal_pathogen']) }}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="sal_coordinates" class="form-label col-3 text-end mt-2 me-1">{{ _("Coordonnées") }} *</label>
+                            <div>
+                                <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates">
+                            </div>
+                        </div>
+
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="sal_in_stock" class="form-label col-3 text-end mt-2 me-1">{{ _("Présent en stock") }}</label>
+                            <div class="form-check">
+                                <input name="sal_in_stock[]" type="checkbox" class="form-check-input in_stock" {% if args['aliquot'].get('sal_in_stock', 'Y') == 'Y' %}checked{% endif %}>
+                            </div>
+                        </div>
+
+                        <div class="form-group d-lg-flex align-items-start mt-3">
+                            <label for="sal_box" class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte associée") }} *</label>
+                            <div>
+                                <select name="sal_box[]" class="form-select box">
+                                    {% from 'macros.html' import select_storage_box %}
+                                    {{ select_storage_box(ihm['l_box']['data'], args['aliquot']['sal_box']) }}
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger remove_aliquot d-none">{{ _("Supprimer") }}</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="my-2 d-flex justify-content-between align-items-center">
+                <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                {% if args['id_item'] == 0 %}
+                <button type="button" id="add_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
+                {% endif %}
+                <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+var id_samp = {{ args['id_samp'] }} ;
+
+$("#search_patient").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/patient/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_patient").text(),
+        data: function (params) {
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                // data need id key if not no focus selection displayed
+                results: data
+            } ;
+        }
+    },
+    templateResult: formatRepo
+} ) ;
+
+function formatRepo(repo)
+{
+    if (repo.loading)
+    return repo.text ;
+
+var ident = "" ;
+
+    if (repo.prenom)
+    ident += repo.prenom + " " ;
+
+    if (repo.nom)
+    ident += repo.nom ;
+
+var code = "" ;
+
+    if (repo.code)
+    code += "[" + repo.code + "]" ;
+
+    if (repo.code_patient)
+    code += " / " + repo.code_patient ;
+
+var info = "" ;
+
+    if (repo.ddn)
+    info += repo.ddn + " " ; // TODO change format date ?
+
+    if (repo.age && repo.age_unit)
+    {
+        if (repo.ddn)
+        info += " / " ;
+
+    info += repo.age + " " + repo.age_unit + " " ;
+    }
+
+    if (repo.pat_phone1)
+    {
+        if (repo.age || repo.ddn)
+        info += " / " ;
+
+    info += repo.pat_phone1 ;
+    }
+
+    if (repo.pat_phone2)
+    {
+        if (repo.pat_phone1)
+        info += " / " ;
+
+    info += repo.pat_phone2 ;
+    }
+
+var display = $(
+    "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'><b>" + ident + " " + code + "</b></div>" +
+            "<div class='select2-result-repository__description'>" + info + "</div>" +
+        "</div>" +
+    "</div>") ;
+
+return display ;
+}
+
+$("#search_patient").on("select2:select", function (e) 
+{
+let id_select = $(e.currentTarget).val();
+
+let data_search = $("#search_patient").select2('data') ;
+
+$("#identity_patient").text( data_search[0].nom + " " + data_search[0].prenom ) ;
+$("#id_pat").val( id_select ) ;
+
+$("#search_patient").empty() ;
+} ) ;
+
+// fix bug between jquery 3.6.0 and select2
+$(document).on('select2:open', () => 
+{
+document.querySelector('.select2-search__field').focus() ;
+} ) ;
+
+{% if args['id_item'] == 0 %}
+document.getElementById("add_aliquot").addEventListener("click", function ()
+{
+    let container = document.getElementById("aliquots_container");
+    let firstAliquot = container.querySelector(".aliquot_form");
+    
+    // Clone first aliquot
+    let newAliquot = firstAliquot.cloneNode(true);
+
+    // Empty values in cloned fields
+    newAliquot.querySelector(".pathogen").value = firstAliquot.querySelector(".pathogen").value;
+    newAliquot.querySelector(".coordinates").value = "";
+    newAliquot.querySelector(".in_stock").checked = true;
+    newAliquot.querySelector(".box").value = firstAliquot.querySelector(".box").value;
+
+    // Add a button to remove this form
+    let removeButton = newAliquot.querySelector(".remove_aliquot");
+    removeButton.classList.remove("d-none");
+
+    removeButton.addEventListener("click", function () {
+        this.parentElement.remove();
+        checkRemoveButtons();
+    });
+
+    container.appendChild(newAliquot);
+    checkRemoveButtons();
+});
+{% endif %}
+
+document.querySelectorAll(".remove_aliquot").forEach(button => {
+    button.addEventListener("click", function () {
+        this.parentElement.remove();
+    });
+});
+
+function checkRemoveButtons() {
+    let aliquots = document.querySelectorAll(".aliquot_form");
+    let removeButtons = document.querySelectorAll(".remove_aliquot");
+
+    if (aliquots.length > 1) {
+        removeButtons.forEach(btn => btn.classList.remove("d-none"));
+    } else {
+        removeButtons.forEach(btn => btn.classList.add("d-none"));
+    }
+}
+
+function save_item()
+{
+let id_pat = document.getElementById("id_pat").value;
+let type   = document.getElementById("sal_type").value;
+
+    if (!id_pat || id_pat == "0") 
+    {
+        alert("{{ _("Un patient doit être sélectionné.") }}");
+        return false;
+    }
+
+    if (type == "0") 
+    {
+        alert("{{ _("Le produit pathologique est obligatoire.") }}");
+        return false;
+    }
+
+let aliquots = [];
+
+    document.querySelectorAll(".aliquot_form").forEach(form => 
+    {
+        let pathogen = form.querySelector(".pathogen").value;
+        let coord = form.querySelector(".coordinates").value.trim();
+        let in_stock = form.querySelector(".in_stock").checked ? "Y" : "N";
+        let box = form.querySelector(".box").value;
+
+        if (!box || box == "0") {
+            alert("{{ _("L'association à une boîte est obligatoire.") }}");
+            return false;
+        }
+
+        let aliquotData = {
+            sal_user: {{ session['user_id']|safe }},
+            sal_type: type,
+            sal_sample: {{ args['id_samp'] }},
+            sal_patient: id_pat,
+            sal_pathogen: pathogen,
+            sal_coordinates: coord,
+            sal_in_stock: in_stock,
+            sal_box: box
+        };
+
+        aliquots.push(aliquotData) ;
+    } ) ;
+
+    fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/" + {{ args['id_item']|safe}}, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aliquots: aliquots })
+    })
+    .then(response => {
+        if (response.status === 200 || response.status === 204) {
+            window.location.href = "{{ session['server_ext'] }}/list-aliquot";
+            return;
+        }
+        return response.json().catch(() => ({}));
+    })
+    .then(data => {
+        if (data && data.error) {
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}");
+        }
+    })
+    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-aliquot";
+}
+
+$( document ).ready( function()
+{
+checkRemoveButtons() ;
+} ) ;
+</script>
+{% endblock %}

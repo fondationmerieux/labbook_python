@@ -110,6 +110,64 @@
             </form>
             {% endif %}
 
+            <!-- Modal add aliquot -->
+            <div class="modal fade" id="aliquotModal" tabindex="-1" aria-labelledby="aliquotModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="aliquotModalLabel">{{ _("Ajouter un aliquot") }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div id="aliquotList">
+                                <div class="aliquot_form">
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ _("Pathogène") }}</label>
+                                        <select class="form-select pathogen">
+                                            {% from 'macros.html' import select_pathogen %}
+                                            {{ select_pathogen(ihm['l_pathogen'], 0) }}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ _("Coordonnées") }} *</label>
+                                        <input type="text" class="form-control coordinates">
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input in_stock" checked>
+                                        <label class="form-check-label">{{ _("Présent en stock") }}</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ _("Boîte associée") }} *</label>
+                                        <select class="form-select box">
+                                            {% from 'macros.html' import select_storage_box %}
+                                            {{ select_storage_box(ihm['l_box']['data'], 0) }}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                            <button type="button" id="more_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
+                            <button type="button" class="btn btn-success" onclick="saveAliquot()">{{ _("Enregistrer") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ _("Enregistrement réussi") }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
       </div>
     </div>
 </div><!-- close content -->
@@ -125,6 +183,8 @@ var num_dos      = 0  ;
 var num_rec      = "" ;
 var per_rec      = "" ;
 var rec_stat     = 0  ;
+var cur_id_samp  = 0  ;
+var cur_samp_type= 0  ;
 
 function save_res( id_rec, ref_ana )
 {
@@ -478,13 +538,23 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         {
         let res_name = data[i].nom ;
         let res_fam  = " [" + data[i].famille + "]" ;
+        let id_samp  = data[i].id_samp ;
+        let samp_type= data[i].samp_type ;
+        let btn_aliquot = "" ;
+
+            {% if has_permission("ALIQUOT_170") %}
+            if ( id_samp > 0 && samp_type > 0 )
+            {
+            btn_aliquot = "<button type=\"button\" class=\"btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 mb-1\" onclick=\"add_aliquot(" + id_samp + "," + samp_type + ")\"><i class=\"bi bi-box-seam-fill me-2\"></i> {{ _("Ajouter un aliquot") }}</button>" ;
+            }
+            {% endif %}
 
             if (res_fam.length < 4) res_fam = "" ;
 
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + btn_aliquot + 
                "<table class=\"table table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }
@@ -1072,6 +1142,112 @@ info = " - {% if args['patient']['pat_code_lab'] %}{{ args['patient']['pat_code_
     $("#info_pat_title").text(info) ;
 {% endif %}
 }
+
+function add_aliquot(id_samp, samp_type)
+{
+cur_id_samp = id_samp;
+cur_samp_type = samp_type;
+
+let firstForm = document.querySelector(".aliquot_form");
+
+    if (firstForm) 
+    {
+        firstForm.querySelector(".pathogen").value = "";
+        firstForm.querySelector(".coordinates").value = "";
+        firstForm.querySelector(".in_stock").checked = true; 
+        firstForm.querySelector(".box").value = "0";
+    }
+
+document.querySelectorAll(".aliquot_form:not(:first-child), .aliquot-separator").forEach(elem => elem.remove());
+
+let aliquotModal = new bootstrap.Modal(document.getElementById('aliquotModal'));
+aliquotModal.show();
+}
+
+function saveAliquot() 
+{
+let aliquots = [];
+
+    document.querySelectorAll(".aliquot_form").forEach(form => 
+    {
+        let pathogen = form.querySelector(".pathogen").value;  
+        let coord = form.querySelector(".coordinates").value;  
+        let in_stock = form.querySelector(".in_stock").checked ? "Y" : "N";  
+        let box = form.querySelector(".box").value;
+
+        if (!box || box == "0") {
+            alert("{{ _("L'association à une boîte est obligatoire.") }}");
+            return false;
+        }
+
+        let aliquotData = {
+            sal_user: {{ session['user_id']|safe }},
+            sal_type: cur_samp_type,
+            sal_sample: cur_id_samp,
+            sal_patient: {{ args['patient']['id_data']}},
+            sal_pathogen: pathogen,
+            sal_coordinates: coord,
+            sal_in_stock: in_stock,
+            sal_box: box
+        };
+
+        aliquots.push(aliquotData) ;
+    } ) ;
+
+    fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/0", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aliquots: aliquots })
+    })
+    .then(response => {
+        if (response.status === 200 || response.status === 204) {
+            return;
+        }
+        return response.json().catch(() => ({}));
+    })
+    .then(data => {
+        if (data && data.error) 
+        {
+            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}");
+        }
+        else
+        {
+        let modal = bootstrap.Modal.getInstance(document.getElementById('aliquotModal'));
+            modal.hide();
+
+            setTimeout(() => {
+                let toast = new bootstrap.Toast(document.getElementById('toastSuccess'));
+                toast.show();
+            }, 500);
+        }
+    })
+    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+document.getElementById("more_aliquot").addEventListener("click", function() 
+{
+    let newAliquot = document.querySelector(".aliquot_form").cloneNode(true);
+
+    let separator = document.createElement("hr");
+    separator.classList.add("aliquot-separator");
+
+    let removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "btn btn-danger btn-sm remove-aliquot";
+    removeButton.innerHTML = "<i class='bi bi-trash'></i> {{ _('Supprimer') }}";
+    removeButton.style.marginTop = "10px";
+
+    removeButton.addEventListener("click", function() {
+        separator.remove();
+        newAliquot.remove();
+    });
+
+    newAliquot.appendChild(removeButton);
+
+    let aliquotList = document.getElementById("aliquotList");
+    aliquotList.appendChild(separator);
+    aliquotList.appendChild(newAliquot);
+});
 
 {% include 'js/display_histo.js' %}
 

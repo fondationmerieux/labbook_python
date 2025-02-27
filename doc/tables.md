@@ -95,5 +95,13 @@
 | user\_permissions                              | USER  	 | custom permission for a user             |
 | internal\_messaging                            | MESSAGE  	 | internal message between users           |
 | internal\_messaging\_file                      | FILE  	 | file associated of an internal message   |
+| user\_signature\_file                          | FILE          | file associated of an user               |
+| storage\_room                                  | ALIQUOT       | describe storage room                    |
+| storage\_chamber                               | ALIQUOT       | describe storage chamber                 |
+| storage\_compartment                           | ALIQUOT       | describe storage compartment             |
+| storage\_box                                   | ALIQUOT       | describe storage box                     |
+| storage\_aliquot                               | ALIQUOT       | describe storage aliquot                 |
+| sample\_destock                                | ALIQUOT       | describe destocked aliquot               |
 
-94 tables used
+
+101 tables used

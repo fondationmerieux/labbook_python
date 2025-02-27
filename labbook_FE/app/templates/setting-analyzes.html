@@ -229,11 +229,16 @@ let res = ""
             if ( data_analyzes[i].id_prod != "" && data_analyzes[i].id_prod > 0 )
             product = "PB" + data_analyzes[i].id_prod + " : " + data_analyzes[i].product ;
             else
-            product = "" ; 
+            product = "" ;
+
+        let ana_code = data_analyzes[i].code ;
+
+            if (data_analyzes[i].ana_loinc != "")
+            ana_code += "<br />" + data_analyzes[i].ana_loinc;
 
         res += "<tr><td hidden><div>" + data_analyzes[i].id_data + "</div></td>" +
                "<td><div>" + menu_act + "</div></td>" +
-               "<td><div class=\"text-start\">" + data_analyzes[i].code + "</div></td>" +
+               "<td><div class=\"text-start\">" + ana_code + "</div></td>" +
                "<td><div class=\"text-start\">" + data_analyzes[i].name + "</div></td>" +
                "<td><div class=\"text-start\">" + data_analyzes[i].abbr + "</div></td>" +
                "<td><div class=\"text-start\">" + data_analyzes[i].type_ana + "</div></td>" +

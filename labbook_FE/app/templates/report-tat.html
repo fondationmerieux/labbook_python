@@ -299,7 +299,12 @@ let tat_ana_avg = '' ;
             else
             code_pat = '' ;
 
-        analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
+        ana_code = data_tat[i].ana_code ;
+
+            if (data_tat[i].ana_loinc != "")
+            ana_code += " / " + data_tat[i].ana_loinc ;
+
+        analysis = ana_code + ' ' + data_tat[i].ana_name ;
         tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }} ' + data_tat[i].tat_tech_secs + '{{ _("s") }}' ;
         tat_ana  = data_tat[i].tat_ana_days + '{{ _("j") }} ' + data_tat[i].tat_ana_hours + '{{ _("h") }} ' + data_tat[i].tat_ana_mins + '{{ _("min") }} ' + data_tat[i].tat_ana_secs + '{{ _("s") }}' ;
         tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }} ' + data_tat[i].tat_secs + '{{ _("s") }}' ;
@@ -366,7 +371,12 @@ let data_len = data_tat.length ;
         if (code_pat == ' | ')
         code_pat = '' ;
 
-    analysis = data_tat[i].ana_code + ' ' + data_tat[i].ana_name ;
+    ana_code = data_tat[i].ana_code ;
+
+        if (data_tat[i].ana_loinc != "")
+        ana_code += " / " + data_tat[i].ana_loinc ;
+
+    analysis = ana_code + ' ' + data_tat[i].ana_name ;
     tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }}' ;
     tat_ana  = data_tat[i].tat_ana_days + '{{ _("j") }} ' + data_tat[i].tat_ana_hours + '{{ _("h") }} ' + data_tat[i].tat_ana_mins + '{{ _("min") }}' ;
     tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }}' ;

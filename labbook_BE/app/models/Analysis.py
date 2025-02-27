@@ -21,7 +21,8 @@ class Analysis:
         Args:
             text (string): words of research.
             type (string): 'A' for search only analysis or 'P' for search only pathological product.
-            status  (int): 4 for Eanbled or 5 for disabled
+            status  (int): 4 for Eanbled or 5 for disabled.
+            link_fam (list): List of families to filter by.
 
         Returns:
             dict: dictionnary of data.
@@ -32,55 +33,62 @@ class Analysis:
 
         l_words = text.split(' ')
 
-        cond  = 'ana.actif = 4'
-        trans = ''
+        # Base condition
+        cond = 'ana.actif = 4' if status == 4 else 'ana.actif = 5'
 
-        if status == 5:
-            cond  = 'ana.actif = 5'
-
-        # only in analysis without sample analysis
+        # Filter by type
         if type == "A":
-            cond += ' and (ana.cote_unite != "PB" or ana.cote_unite is NULL)'
-        # only in sample analysis
+            cond += ' AND (ana.cote_unite != "PB" OR ana.cote_unite IS NULL)'
         elif type == "P":
-            cond += ' and ana.cote_unite = "PB"'
+            cond += ' AND ana.cote_unite = "PB"'
 
-        if session['lang_db'] == 'fr_FR':
+        # Search conditions
+        conditions = []
+
+        if session.get('lang_db') == 'fr_FR':
             for word in l_words:
-                cond = (cond +
-                        ' and (ana.code like "' + word + '%" or '
-                        'ana.nom like "%' + word + '%" or '
-                        'ana.abbr like "%' + word + '%") ')
+                conditions.append(
+                    f'(ana.code LIKE "{word}%" OR '
+                    f'ana.nom LIKE "%{word}%" OR '
+                    f'ana.abbr LIKE "%{word}%" OR '
+                    f'ana.ana_loinc LIKE "%{word}%")'
+                )
         else:
-            trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
-                     'tr.tra_type="ana_name" and tr.tra_ref=ana.id_data ')
+            trans = (
+                f'LEFT JOIN translations AS tr ON tr.tra_lang="{session["lang_db"]}" '
+                'AND tr.tra_type="ana_name" AND tr.tra_ref=ana.id_data '
+            )
 
             for word in l_words:
-                cond = (cond +
-                        ' and (ana.code like "' + word + '%" or '
-                        'tr.tra_text like "%' + word + '%" or '
-                        'ana.abbr like "%' + word + '%") ')
+                conditions.append(
+                    f'(ana.code LIKE "{word}%" OR '
+                    f'tr.tra_text LIKE "%{word}%" OR '
+                    f'ana.abbr LIKE "%{word}%" OR '
+                    f'ana.ana_loinc LIKE "%{word}%")'
+                )
 
-        # Functionnal unit link with analyzes families
+        # Ajouter la condition de recherche si elle existe
+        if conditions:
+            cond += " AND (" + " OR ".join(conditions) + ")"
+
+        # Filtrer par familles fonctionnelles si nécessaire
         if link_fam:
+            link_fam_str = ", ".join(map(str, link_fam))
+            cond += f' AND ana.famille IN ({link_fam_str})'
 
-            cond_link_fam = ''
-            # prepare list for sql
-            for id_fam in list(link_fam):
-                if not cond_link_fam:
-                    cond_link_fam = '('
-
-                cond_link_fam = cond_link_fam + str(id_fam) + ','
-
-            if cond_link_fam:
-                cond_link_fam = cond_link_fam[:-1] + ')'
-                cond += ' and ana.famille in ' + cond_link_fam + ' '
-
-        req = ('select ana.id_data as id, CONCAT(ana.code, " ", COALESCE(ana.abbr, "")) as code, '
-               'ana.nom as name,  COALESCE(dict.label, "") as label '
-               'from sigl_05_data as ana '
-               'left join sigl_dico_data as dict on dict.id_data=ana.famille ' + trans +
-               'where ' + cond + ' order by nom asc limit 1000')
+        # Requête SQL optimisée
+        req = (
+            'SELECT ana.id_data AS id, '
+            'CONCAT(ana.code, '
+            'IF(ana.ana_loinc IS NOT NULL AND ana.ana_loinc != "", CONCAT(" / ", ana.ana_loinc), ""), '
+            'IF(ana.abbr IS NOT NULL AND ana.abbr != "", CONCAT(" ", ana.abbr), "")) AS code, '
+            'ana.nom AS name, COALESCE(dict.label, "") AS label '
+            'FROM sigl_05_data AS ana '
+            'LEFT JOIN sigl_dico_data AS dict ON dict.id_data = ana.famille '
+            f'{trans if session.get("lang_db") != "fr_FR" else ""} '
+            f'WHERE {cond} '
+            'ORDER BY ana.nom ASC LIMIT 1000'
+        )
 
         # Analysis.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
 
@@ -133,7 +141,7 @@ class Analysis:
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
                'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
-               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast, ana.ana_loinc '
                'from sigl_05_data as ana '
                'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
                'where ana.id_data=%s')
@@ -148,7 +156,7 @@ class Analysis:
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
                'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
-               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast, ana.ana_loinc '
                'from sigl_05_data as ana '
                'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
                'where ana.code=%s')
@@ -177,10 +185,10 @@ class Analysis:
 
             req = ('insert into sigl_05_data' + mode_test +
                    '(' + lid_data + 'id_owner, code, nom, abbr, famille, type_prel, cote_unite, cote_valeur, commentaire, '
-                   'produit_biologique, type_analyse, actif, ana_whonet, ana_ast) '
+                   'produit_biologique, type_analyse, actif, ana_whonet, ana_ast, ana_loinc) '
                    'values '
                    '(' + vid_data + '%(id_owner)s, %(code)s, %(name)s, %(abbr)s, %(type_ana)s, %(type_prod)s, %(unit)s, '
-                   '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s, %(ana_ast)s)')
+                   '%(value)s, %(comment)s, %(product)s, 170, %(stat)s, %(whonet)s, %(ana_ast)s, %(ana_loinc)s)')
 
             cursor.execute(req, params)
 
@@ -204,7 +212,8 @@ class Analysis:
             cursor.execute('update sigl_05_data' + mode_test +
                            'set id_owner=%(id_owner)s, code=%(code)s, nom=%(name)s, abbr=%(abbr)s, actif=%(stat)s, '
                            'famille=%(type_ana)s, type_prel=%(type_prod)s, cote_unite=%(unit)s, cote_valeur=%(value)s, '
-                           'commentaire=%(comment)s, produit_biologique=%(product)s, ana_whonet=%(whonet)s, ana_ast=%(ana_ast)s '
+                           'commentaire=%(comment)s, produit_biologique=%(product)s, ana_whonet=%(whonet)s, '
+                           'ana_ast=%(ana_ast)s, ana_loinc=%(ana_loinc)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -263,7 +272,7 @@ class Analysis:
                'req_ana.demande as demande, req_ana.req_outsourced as outsourced, ref_ana.code as code, ref_ana.nom as nom, '
                'ref_ana.cote_unite as cote_unite, ref_ana.cote_valeur as cote_valeur, '
                'ifnull(ref_ana.type_prel, 0) as type_samp, '
-               'ifnull(ref_ana.produit_biologique, 0) as id_samp_act '
+               'ifnull(ref_ana.produit_biologique, 0) as id_samp_act, ref_ana.ana_loinc as ana_loinc '
                'from sigl_04_data as req_ana '
                'left join sigl_05_data as ref_ana on ref_ana.id_data=ref_analyse '
                'where id_dos=%s' + cond)
@@ -288,7 +297,7 @@ class Analysis:
 
         req = ('select req_ana.id_data as id_data, req_ana.id_dos as id_rec, '
                'req_ana.prix as ana_price, req_ana.req_outsourced as outsourced, '
-               'ref_ana.code as ana_code, ref_ana.nom as ana_name, '
+               'ref_ana.code as ana_code, ref_ana.nom as ana_name, ref_ana.ana_loinc as ana_loinc, '
                'ifnull(ref_ana.type_prel, 0) as type_samp, '
                'ifnull(ref_ana.produit_biologique, 0) as id_samp_act '
                'from sigl_04_data as req_ana '
@@ -313,7 +322,7 @@ class Analysis:
         else:
             cond = ''
 
-        req = ('select req_ana.id_data as id_data, req_ana.id_dos as id_rec, '
+        req = ('select req_ana.id_data as id_data, req_ana.id_dos as id_rec, ref_ana.ana_loinc as ana_loinc, '
                'req_ana.ref_analyse as ref_analyse, req_ana.urgent as urgent, req_ana.demande as demande, '
                'req_ana.req_outsourced as outsourced, ref_ana.code as code, ref_ana.nom as ana_name, '
                'ref_ana.commentaire as ana_comm, d1.label as ana_fam, '
@@ -703,15 +712,15 @@ class Analysis:
 
             if session and session['lang_db'] == 'fr_FR':
                 if 'name' in args and args['name']:
-                    filter_cond += (' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
-                                    args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
+                    filter_cond += (' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] +
+                                    '%" or ana.ana_loinc LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
             else:
                 if 'name' in args and args['name']:
                     trans = ('left join translations as tr on tr.tra_lang="' + str(session['lang_db']) + '" and '
                              'tr.tra_type="ana_name" and tr.tra_ref=ana.id_data ')
 
-                    filter_cond += (' and (tr.tra_text LIKE "%' + args['name'] + '%" or ana.code LIKE "%' +
-                                    args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
+                    filter_cond += (' and (tr.tra_text LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] +
+                                    '%" or ana.ana_loinc LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
 
             if 'type_ana' in args and args['type_ana'] > 0:
                 filter_cond += ' and ana.famille=' + str(args['type_ana']) + ' '
@@ -719,7 +728,7 @@ class Analysis:
             if 'type_prod' in args and args['type_prod'] > 0:
                 filter_cond += ' and ana.type_prel=' + str(args['type_prod']) + ' '
 
-        req = ('select ana.id_data, ana.code, ana.nom as name, ana.abbr, ana.actif as stat, '
+        req = ('select ana.id_data, ana.code, ana.ana_loinc, ana.nom as name, ana.abbr, ana.actif as stat, '
                'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '
                'from sigl_05_data as ana '
                'left join sigl_dico_data as dico on dico.id_data=ana.famille '
@@ -749,12 +758,16 @@ class Analysis:
             filter_cond += ' and (ref.nom LIKE "%' + args['name'] + '%" or ref.abbr LIKE "%' + args['name'] + '%") '
 
         if 'code' in args and args['code']:
-            filter_cond += ' and (ref.code LIKE "%' + args['code'] + '%" or ref.abbr LIKE "%' + args['code'] + '%") '
+            filter_cond += (
+                f' and (ref.code LIKE "%{args["code"]}%") '
+                f'or (ref.abbr LIKE "%{args["code"]}%") '
+                f'or (ref.ana_loinc LIKE "%{args["code"]}%") '
+            )
 
         if 'type_ana' in args and args['type_ana'] > 0:
             filter_cond += ' and ref.famille=' + str(args['type_ana']) + ' '
 
-        req = ('select ref.id_data, ref.code, dict.label as fam_name, ref.nom as name '
+        req = ('select ref.id_data, ref.code, ref.ana_loinc, dict.label as fam_name, ref.nom as name '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos = rec.id_data '
                'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse and ref.cote_unite != "PB" '
@@ -875,7 +888,7 @@ class Analysis:
     def getAnalysisExport():
         cursor = DB.cursor()
 
-        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, '
+        req = ('select ana.id_data, ana.id_owner, ana.code, ana.ana_loinc, ana.nom, ana.abbr, ana.famille, '
                'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
                'ana.type_analyse, ana.actif, ana.ana_whonet, ana.ana_ast, link.id_data as id_link, link.id_refanalyse, '
                'link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, link.var_qrcode, '
@@ -906,7 +919,7 @@ class Analysis:
                'req.ref_analyse as id_analysis, req.prix as ana_price, req.urgent as ana_emergency, '
                'req.req_outsourced as ana_outsourced, ana.code as analysis_code, ana.nom as analysis_name, '
                'd_fam.label as analysis_family, date_format(pat.ddn, %s) as birth, pat.nom as pat_name, '
-               'pat.prenom as pat_firstname, pat.age, d_sex.label as sex, '
+               'pat.prenom as pat_firstname, pat.age, d_sex.label as sex, ana.ana_loinc as analysis_code_loinc, '
                'd_age_unit.label as age_unit, pat.tel as phone1, pat.pat_phone2 as phone2 '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '

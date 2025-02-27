@@ -51,7 +51,7 @@ class AnalyzerDet(Resource):
         args = request.get_json()
 
         if 'id_user' not in args or 'rank' not in args or 'name' not in args or 'key' not in args or \
-           'lab28' not in args or 'mapping' not in args or 'filename' not in args:
+           'connect' not in args or 'mapping' not in args or 'filename' not in args:
             self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -64,7 +64,7 @@ class AnalyzerDet(Resource):
                                              rank=args['rank'],
                                              name=args['name'],
                                              id=args['key'],
-                                             lab28=args['lab28'],
+                                             connect=args['connect'],
                                              mapping=args['mapping'],
                                              filename=args['filename'])
 
@@ -79,7 +79,7 @@ class AnalyzerDet(Resource):
                                              rank=args['rank'],
                                              name=args['name'],
                                              id=args['key'],
-                                             lab28=args['lab28'],
+                                             connect=args['connect'],
                                              mapping=args['mapping'],
                                              filename=args['filename'])
 

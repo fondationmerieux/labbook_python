@@ -63,9 +63,12 @@ class Result:
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.rec_date_receipt, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec.rec_modified, '
                'req.id_owner as id_owner, var_pos.position as position, var_pos.num_var as num_var, '
-               'var_pos.obligatoire as oblig, req.req_outsourced as outsourced, rec.rec_num_int '
+               'var_pos.obligatoire as oblig, req.req_outsourced as outsourced, rec.rec_num_int, '
+               'ifnull(samp.id_data, 0) as id_samp, samp.type_prel as samp_type, ifnull(pat.id_data, 0) as id_pat '
                'from sigl_04_data as req '
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'left join sigl_01_data as samp on samp.id_dos = req.id_dos and samp_id_ana = req.ref_analyse '
+               'left join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
                'left join sigl_dico_data as fam on fam.id_data = ref.famille '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
@@ -108,16 +111,18 @@ class Result:
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.rec_date_receipt, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec_modified, '
                'req.id_owner as id_owner, rec.id_patient as id_pat, req.req_outsourced as outsourced, '
-               'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig, rec.rec_num_int '
+               'var_pos.position as position, var_pos.num_var as num_var, var_pos.obligatoire as oblig, rec.rec_num_int, '
+               'ifnull(samp.id_data, 0) as id_samp, samp.type_prel as samp_type '
                'from sigl_04_data as req '
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'left join sigl_01_data as samp on samp.id_dos = req.id_dos and samp_id_ana = req.ref_analyse '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
                'left join sigl_dico_data as fam on fam.id_data = ref.famille '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
                'and ref.id_data = var_pos.id_refanalyse '
-               'where id_dos=%s ' + cond +
+               'where req.id_dos=%s ' + cond +
                'order by nom asc, id_ana asc, position asc')
 
         cursor.execute(req, (id_rec,))

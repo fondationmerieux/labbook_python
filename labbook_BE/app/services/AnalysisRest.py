@@ -336,6 +336,7 @@ class AnalysisDet(Resource):
             ret = Analysis.updateAnalysis(id_data=id_ana,
                                           id_owner=args['id_owner'],
                                           code=args['code'],
+                                          ana_loinc=args['ana_loinc'],
                                           name=args['name'],
                                           abbr=args['abbr'],
                                           type_ana=args['type_ana'],
@@ -468,6 +469,7 @@ class AnalysisDet(Resource):
             # insert analysis
             ret = Analysis.insertAnalysis(id_owner=args['id_owner'],
                                           code=args['code'],
+                                          ana_loinc=args['ana_loinc'],
                                           name=args['name'],
                                           abbr=args['abbr'],
                                           type_ana=args['type_ana'],
@@ -785,7 +787,7 @@ class AnalysisExport(Resource):
                    'ana_whonet', 'id_link', 'link_ana_ref', 'link_var_ref', 'link_pos', 'link_num_var', 'link_oblig',
                    'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                    'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax',
-                   'var_formula_conv', 'var_unit_conv', 'var_accu_conv', 'ana_ast']]
+                   'var_formula_conv', 'var_unit_conv', 'var_accu_conv', 'ana_ast', 'ana_loinc']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -799,7 +801,7 @@ class AnalysisExport(Resource):
             for d in dict_data:
                 data = []
 
-                data.append('v4')
+                data.append('v5')
 
                 # ANALYSIS
                 if d['id_data']:
@@ -1019,6 +1021,12 @@ class AnalysisExport(Resource):
                 else:
                     data.append('')
 
+                # --- added in v5 ---
+                if d['ana_loinc']:
+                    data.append(d['ana_loinc'])
+                else:
+                    data.append('')
+
                 l_data.append(data)
 
         # if no result to export
@@ -1102,7 +1110,7 @@ class AnalysisImport(Resource):
         version = l_rows[0][0]
 
         # check version
-        if version != 'v3' and version != 'v4':
+        if version != 'v3' and version != 'v4' and version != 'v5':
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)
@@ -1114,11 +1122,14 @@ class AnalysisImport(Resource):
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax']
 
-        if version == 'v4':
+        if version == 'v4' or version == 'v5':
             head_list.append('var_formula_conv')
             head_list.append('var_unit_conv')
             head_list.append('var_accu_conv')
             head_list.append('ana_ast')
+
+        if version == 'v5':
+            head_list.append('ana_loinc')
 
         i = 0
         for head in head_line:
@@ -1200,7 +1211,7 @@ class AnalysisImport(Resource):
                         var_show_minmax = 'N'
 
                     # re-add formula2, unit2, accu2
-                    if version == 'v4' and len(row) > 39:
+                    if (version == 'v4' or version == 'v5') and len(row) > 39:
                         var_formula_conv = row[36]
                         var_unit_conv = row[37]
                         var_accu_conv = row[38]
@@ -1210,6 +1221,11 @@ class AnalysisImport(Resource):
                         var_unit_conv = 0
                         var_accu_conv = 0
                         ana_ast = 'N'
+
+                    if version == 'v5' and len(row) > 40:
+                        ana_loinc = row[40]
+                    else:
+                        ana_loinc = ''
 
                     ret = Analysis.exist(code, test)
 
@@ -1229,6 +1245,7 @@ class AnalysisImport(Resource):
                             ret = Analysis.updateAnalysis(id_data=id_ana,
                                                           id_owner=id_owner,
                                                           code=code,
+                                                          ana_loinc=ana_loinc,
                                                           name=nom,
                                                           abbr=abbr,
                                                           type_ana=famille,
@@ -1381,7 +1398,7 @@ class AnalysisImport(Resource):
                         var_show_minmax = 'N'
 
                     # re-add formula2, unit2, accu2
-                    if version == 'v4' and len(row) > 39:
+                    if (version == 'v4' or version == 'v5') and len(row) > 39:
                         var_formula_conv = row[36]
                         var_unit_conv = row[37]
                         var_accu_conv = row[38]
@@ -1391,6 +1408,11 @@ class AnalysisImport(Resource):
                         var_unit_conv = 0
                         var_accu_conv = 0
                         ana_ast = 'N'
+
+                    if version == 'v5' and len(row) > 40:
+                        ana_loinc = row[40]
+                    else:
+                        ana_loinc = ''
 
                     ret = Analysis.exist(code, test)
 
@@ -1428,6 +1450,7 @@ class AnalysisImport(Resource):
                             # insert analysis
                             ret = Analysis.insertAnalysis(id_owner=id_owner,
                                                           code=code,
+                                                          ana_loinc=ana_loinc,
                                                           name=nom,
                                                           abbr=abbr,
                                                           type_ana=famille,

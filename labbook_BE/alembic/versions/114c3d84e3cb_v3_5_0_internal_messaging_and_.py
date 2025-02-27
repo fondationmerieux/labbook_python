@@ -42,7 +42,7 @@ def upgrade():
     except Exception as err:
         print("ERROR create table internal_messaging,\n\terr=" + str(err))
 
-    # Create table for internal messaging_file
+    # Create table for internal_messaging_file
     try:
         conn.execute(text("create table internal_messaging_file("
                           "id_data INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, "
@@ -54,7 +54,7 @@ def upgrade():
                           "id_file INT UNSIGNED DEFAULT NULL )"
                           "character set=utf8"))
     except Exception as err:
-        print("ERROR create table internal_messaging,\n\terr=" + str(err))
+        print("ERROR create table internal_messaging_file,\n\terr=" + str(err))
 
     print(str(datetime.today()) + " : END of migration v3_5_0_internal_messaging_and_personalized_profile revision=114c3d84e3cb")
 

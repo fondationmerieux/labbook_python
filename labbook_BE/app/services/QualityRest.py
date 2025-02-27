@@ -3425,6 +3425,515 @@ class StockLocalList(Resource):
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
+class StorageList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_storages = Quality.getStorageList(args)
+
+        if not l_storages:
+            self.log.error(Logs.fileline() + ' : TRACE StorageList not found')
+
+        for storage in l_storages:
+            # Replace None by empty string
+            for key, value in list(storage.items()):
+                if storage[key] is None:
+                    storage[key] = ''
+                elif key == 'type':
+                    res = Various.getDicoById(storage[key])
+                    if res:
+                        storage[key + "_label"] = res['label']
+                elif key == 'sal_pathogen':
+                    res = Various.getDicoById(storage[key])
+                    if res:
+                        storage[key + "_label"] = res['label']
+                elif key == 'rec_date_prescr':
+                    if storage[key]:
+                        storage[key] = datetime.strftime(storage[key], '%Y-%m-%d %H:%M')
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageList')
+        return compose_ret({"data": l_storages}, Constants.cst_content_type_json)
+
+
+class StorageRoomList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Quality.getStorageRoomList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE StorageRoomList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageRoomList')
+        return compose_ret({"data": l_items}, Constants.cst_content_type_json)
+
+
+class StorageRoomDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getStorageRoom(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'StorageRoomDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : StorageRoomDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'sro_user' not in args or 'sro_name' not in args or 'sro_abbrev' not in args or 'sro_label' not in args:
+            self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateStorageRoom(id_item=id_item,
+                                            user=args['sro_user'],
+                                            name=args['sro_name'],
+                                            abbrev=args['sro_abbrev'],
+                                            label=args['sro_label'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : StorageRoomDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            ret = Quality.insertStorageRoom(user=args['sro_user'],
+                                            name=args['sro_name'],
+                                            abbrev=args['sro_abbrev'],
+                                            label=args['sro_label'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : StorageRoomDet ERROR insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageRoomDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteStorageRoom(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StorageRoomDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageRoomDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StorageChamberList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Quality.getStorageChamberList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE StorageChamberList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageChamberList')
+        return compose_ret({"data": l_items}, Constants.cst_content_type_json)
+
+
+class StorageChamberDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getStorageChamber(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'StorageChamberDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : StorageChamberDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'sch_user' not in args or 'sch_name' not in args or 'sch_abbrev' not in args or 'sch_label' not in args or \
+           'sch_room' not in args:
+            self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateStorageChamber(id_item=id_item,
+                                               user=args['sch_user'],
+                                               name=args['sch_name'],
+                                               abbrev=args['sch_abbrev'],
+                                               label=args['sch_label'],
+                                               room=args['sch_room'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : StorageChamberDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            ret = Quality.insertStorageChamber(user=args['sch_user'],
+                                               name=args['sch_name'],
+                                               abbrev=args['sch_abbrev'],
+                                               label=args['sch_label'],
+                                               room=args['sch_room'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : StorageChamberDet ERROR insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageChamberDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteStorageChamber(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StorageChamberDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageChamberDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StorageCompList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Quality.getStorageCompList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE StorageCompList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageCompList')
+        return compose_ret({"data": l_items}, Constants.cst_content_type_json)
+
+
+class StorageCompDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getStorageComp(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'StorageCompDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : StorageCompDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'sco_user' not in args or 'sco_name' not in args or 'sco_abbrev' not in args or 'sco_label' not in args or \
+           'sco_chamber' not in args or 'sco_dim_x' not in args or 'sco_dim_y' not in args or 'sco_dim_z' not in args:
+            self.log.error(Logs.fileline() + ' : StorageCompDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateStorageComp(id_item=id_item,
+                                            user=args['sco_user'],
+                                            name=args['sco_name'],
+                                            abbrev=args['sco_abbrev'],
+                                            label=args['sco_label'],
+                                            dim_x=args['sco_dim_x'],
+                                            dim_y=args['sco_dim_y'],
+                                            dim_z=args['sco_dim_z'],
+                                            chamber=args['sco_chamber'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : StorageCompDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            ret = Quality.insertStorageComp(user=args['sco_user'],
+                                            name=args['sco_name'],
+                                            abbrev=args['sco_abbrev'],
+                                            label=args['sco_label'],
+                                            dim_x=args['sco_dim_x'],
+                                            dim_y=args['sco_dim_y'],
+                                            dim_z=args['sco_dim_z'],
+                                            chamber=args['sco_chamber'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : StorageCompDet ERROR insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageCompDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteStorageComp(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StorageCompDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageCompDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StorageBoxList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_items = Quality.getStorageBoxList()
+
+        if not l_items:
+            self.log.error(Logs.fileline() + ' : TRACE StorageBoxList not found')
+
+        for item in l_items:
+            # Replace None by empty string
+            for key, value in list(item.items()):
+                if item[key] is None:
+                    item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageBoxList')
+        return compose_ret({"data": l_items}, Constants.cst_content_type_json)
+
+
+class StorageBoxDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getStorageBox(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'StorageBoxDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : StorageBoxDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'sbo_user' not in args or 'sbo_name' not in args or 'sbo_label' not in args or 'sbo_compartment' not in args or \
+           'sbo_dim_x' not in args or 'sbo_dim_y' not in args or 'sbo_coordinates' not in args or 'sbo_full' not in args:
+            self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            ret = Quality.updateStorageBox(id_item=id_item,
+                                            user=args['sbo_user'],
+                                            name=args['sbo_name'],
+                                            label=args['sbo_label'],
+                                            coordinates=args['sbo_coordinates'],
+                                            dim_x=args['sbo_dim_x'],
+                                            dim_y=args['sbo_dim_y'],
+                                            full=args['sbo_full'],
+                                            compartment=args['sbo_compartment'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : StorageBoxDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            ret = Quality.insertStorageBox(user=args['sbo_user'],
+                                            name=args['sbo_name'],
+                                            label=args['sbo_label'],
+                                            coordinates=args['sbo_coordinates'],
+                                            dim_x=args['sbo_dim_x'],
+                                            dim_y=args['sbo_dim_y'],
+                                            full=args['sbo_full'],
+                                            compartment=args['sbo_compartment'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : StorageBoxDet ERROR insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageBoxDet id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteStorageBox(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StorageBoxDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageBoxDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StorageAliquotDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getStorageAliquot(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'StorageAliquotDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : StorageAliquotDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'aliquots' not in args:
+            self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        for aliquot in args['aliquots']:
+            if 'sal_user' not in aliquot or 'sal_sample' not in aliquot or 'sal_patient' not in aliquot or \
+               'sal_box' not in aliquot or 'sal_type' not in aliquot or 'sal_pathogen' not in aliquot or \
+               'sal_coordinates' not in aliquot or 'sal_in_stock' not in aliquot:
+                self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR aliquot missing')
+                return compose_ret('', Constants.cst_content_type_json, 400)
+
+            # Update item
+            if id_item > 0:
+                ret = Quality.updateStorageAliquot(id_item=id_item,
+                                                   user=aliquot['sal_user'],
+                                                   sample=aliquot['sal_sample'],
+                                                   patient=aliquot['sal_patient'],
+                                                   coordinates=aliquot['sal_coordinates'],
+                                                   type=aliquot['sal_type'],
+                                                   pathogen=aliquot['sal_pathogen'],
+                                                   in_stock=aliquot['sal_in_stock'],
+                                                   box=aliquot['sal_box'])
+
+                if ret is False:
+                    self.log.error(Logs.alert() + ' : StorageAliquotDet ERROR update')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # Insert new item
+            else:
+                ret = Quality.insertStorageAliquot(user=aliquot['sal_user'],
+                                                   sample=aliquot['sal_sample'],
+                                                   patient=aliquot['sal_patient'],
+                                                   coordinates=aliquot['sal_coordinates'],
+                                                   type=aliquot['sal_type'],
+                                                   pathogen=aliquot['sal_pathogen'],
+                                                   in_stock=aliquot['sal_in_stock'],
+                                                   box=aliquot['sal_box'])
+
+                if ret <= 0:
+                    self.log.error(Logs.alert() + ' : StorageAliquotDet ERROR insert')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+            self.log.info(Logs.fileline() + ' : TRACE StorageAliquotDet id_item=' + str(ret))
+        return compose_ret('', Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deleteStorageAliquot(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE StorageAliquotDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE StorageAliquotDet delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class StorageAliquotDestock(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'in_stock' not in args or 'reason' not in args or 'external' not in args or \
+           'location' not in args or 'destock_date' not in args:
+            self.log.error(Logs.fileline() + ' : StorageAliquotDestock ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.destockStorageAliquot(id_item=id_item,
+                                            id_user=args['id_user'],
+                                            reason=args['reason'],
+                                            external=args['external'],
+                                            location=args['location'],
+                                            destock_date=args['destock_date'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : StorageAliquotDestock ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : StorageAliquotDestock id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json, 200)
+
+
+class StorageAliquotRestock(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'in_stock' not in args:
+            self.log.error(Logs.fileline() + ' : StorageAliquotDestock ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Quality.restockStorageAliquot(id_item=id_item,
+                                            id_user=args['id_user'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : StorageAliquotDestock ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : StorageAliquotDestock id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json, 200)
+
+
 class SupplierList(Resource):
     log = logging.getLogger('log_services')
 

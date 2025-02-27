@@ -1,0 +1,165 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Stockage d'échantillon") }} - {{ _("Liste compartiments") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Stockage d'échantillon") }} - {{ _("Liste compartiments") }}</span></h2>
+            {% if has_permission("ALIQUOT_169") %}
+            <table id="compartmentsTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>{{ _("Action") }}</th>
+                        <th hidden>{{ _("id") }}</th>
+                        <th>{{ _("Nom") }}</th>
+                        <th>{{ _("Abbréviation") }}</th>
+                        <th>{{ _("Identifiant") }}</th>
+                        <th>{{ _("Enceinte associée") }}</th>
+                        <th>{{ _("Dimensions l,p,h") }}</th>
+                        <th>{{ _("Nb. boîte") }}</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="clearfix mt-2 mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                {% if has_permission("ALIQUOT_170") %}
+                <div class="float-end d-lg-flex align-items-end">
+                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter compartiment") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+                {% endif %}
+            </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function loadItemsTable()
+{
+    $('#compartmentsTable').DataTable().destroy();
+    $('#compartmentsTable').DataTable({
+        "pageLength": 25,
+        "language": {
+            "lengthMenu": "{{ _("Afficher _MENU_ entrées") }}",
+            "zeroRecords": "{{ _("Aucun enregistrement trouvé") }}",
+            "info": "{{ _("Affichage de _START_ à _END_ sur _TOTAL_ entrées") }}",
+            "infoEmpty": "{{ _("Aucune entrée disponible") }}",
+            "infoFiltered": "{{ _("(filtré de _MAX_ entrées au total)") }}",
+            "search": "{{ _("Rechercher") }}:",
+            "paginate": {
+                "first": "{{ _("Premier") }}",
+                "last": "{{ _("Dernier") }}",
+                "next": "{{ _("Suivant") }}",
+                "previous": "{{ _("Précédent") }}"
+            }
+        },
+        "ajax": "{{ session['server_ext'] }}/services/quality/storage/compartment/list",
+        "columns": [
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    let editAction = `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-storage-compartment/${row.id}">{{ _("Éditer") }}</a>`;
+                    let deleteAction = row.nb_compartment == 0 
+                        ? `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.id}); return false;">{{ _("Supprimer") }}</a>`
+                        : ''; // display delete only if not associated with a box 
+
+                    return `
+                        <nav class="">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <div class="dropdown-menu menu-act-drop nav-style">
+                                        {% if has_permission("ALIQUOT_171") %}
+                                        ${editAction}
+                                        {% endif %}
+                                        {% if has_permission("ALIQUOT_173") %}
+                                        ${deleteAction}
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    `;
+                }
+            },
+            { "data": "id", "visible": false },
+            { "data": "name" },
+            { "data": "abbrev" },
+            { "data": "label" },
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    return `${row.chamber_abbrev} - ${row.chamber_label}`;
+                }
+            },
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    return `${row.dim_x},${row.dim_y},${row.dim_z}`;
+                }
+            },
+            { "data": "nb_box" }
+        ]
+    });
+}
+
+function deleteItem(compartmentId) 
+{
+    if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
+    {
+        fetch(`{{ session['server_ext'] }}/services/quality/storage/compartment/det/${compartmentId}`, 
+        {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => 
+        {
+            if (response.status === 200 || response.status === 204) 
+            {
+            loadItemsTable();
+            return;
+            }
+            else
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        });
+    }
+}
+
+function add_item()
+{
+window.location.href = "{{ session['server_ext'] }}/det-storage-compartment/0";
+}
+
+function return_back()
+{
+window.location.href = "{{ session['server_ext'] }}/list-aliquot";
+}
+
+{% if has_permission("ALIQUOT_169") %}
+$(document).ready(function() 
+{
+loadItemsTable() ;
+} ) ;
+{% endif %}
+</script>
+{% endblock %}

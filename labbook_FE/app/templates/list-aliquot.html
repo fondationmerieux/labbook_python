@@ -1,0 +1,400 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Gestion des échantillons") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Gestion des échantillons") }}</span></h2>
+
+            {% if has_permission("ALIQUOT_169") %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="showDestocked" onchange="loadItemsTable();">
+                <label class="form-check-label" for="showDestocked">
+                    {{ _("Déstockés") }}
+                </label>
+            </div>
+
+            <table id="aliquotTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>{{ _("Action") }}</th>
+                        <th hidden>{{ _("ID") }}</th>
+                        <th>{{ _("Type") }}</th>
+                        <th>{{ _("Pathogène") }}</th>
+                        <th>{{ _("Patient") }}</th>
+                        <th>{{ _("Dossier") }}</th>
+                        <th>{{ _("Analyse") }}</th>
+                        <th>{{ _("Coordonées") }}</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="clearfix mt-2 mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end d-lg-flex align-items-end">
+                    <div class="dropdown">
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3 dropdown-toggle" type="button" id="btn_stocks" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Stockages") }}</button>
+                            <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="dropdownStock">
+                                <li><a class="dropdown-item dropdown-color-link" href="#" onclick="list_room();">{{ _("Liste pièces") }}</a></li>
+                                <li><a class="dropdown-item dropdown-color-link" href="#" onclick="list_chamber();">{{ _("Liste enceintes") }}</a></li>
+                                <li><a class="dropdown-item dropdown-color-link" href="#" onclick="list_compartment();">{{ _("Liste compartiments") }}</a></li>
+                                <li><a class="dropdown-item dropdown-color-link" href="#" onclick="list_box();">{{ _("Liste boîtes") }}</a></li>
+                            </ul>
+                    </div>
+                    <div>
+                        {% if has_permission("ALIQUOT_170") %}
+                        <input type="button" onclick="add_aliquot();" id="add_aliquot" value="{{ _("Ajouter un aliquot") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal DESTOCK -->
+            <div class="modal fade" id="destockModal" tabindex="-1" aria-labelledby="destockModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="destockModalLabel">{{ _("Déstocker un aliquot") }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="destockForm">
+                                <input type="hidden" id="destockItemId">
+
+                                <div class="mb-3">
+                                    <label for="destockReason" class="form-label">{{ _("Raison") }}</label>
+                                    <textarea class="form-control" id="destockReason" rows="3" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="destockLocation" class="form-label">{{ _("Localisation") }}</label>
+                                    <input type="text" class="form-control" id="destockLocation" maxlength="255">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="destockDate" class="form-label">{{ _("Date du déstockage") }}</label>
+                                    <input type="datetime-local" class="form-control" id="destockDate">
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="externalDestock">
+                                    <label class="form-check-label" for="externalDestock">
+                                        {{ _("Déstockage externe ?") }}
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                            <button type="button" class="btn btn-primary" onclick="confirmDestock();">{{ _("Confirmer") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+
+function loadItemsTable() 
+{
+let showDestocked = document.getElementById("showDestocked").checked;
+let in_stock = showDestocked ? "N" : "Y";
+
+    $('#aliquotTable').DataTable().destroy();
+    $('#aliquotTable').DataTable({
+        "pageLength": 25,
+        "language": {
+            "lengthMenu": "{{ _("Afficher _MENU_ entrées") }}",
+            "zeroRecords": "{{ _("Aucun enregistrement trouvé") }}",
+            "info": "{{ _("Affichage de _START_ à _END_ sur _TOTAL_ entrées") }}",
+            "infoEmpty": "{{ _("Aucune entrée disponible") }}",
+            "infoFiltered": "{{ _("(filtré de _MAX_ entrées au total)") }}",
+            "search": "{{ _("Rechercher") }}:",
+            "paginate": {
+                "first": "{{ _("Premier") }}",
+                "last": "{{ _("Dernier") }}",
+                "next": "{{ _("Suivant") }}",
+                "previous": "{{ _("Précédent") }}"
+            }
+        },
+        "ajax": {
+        "url": "{{ session['server_ext'] }}/services/quality/storage/list",
+        "type": "POST",
+        "contentType": "application/json",
+        "data": function(d) {
+                return JSON.stringify({ "in_stock": in_stock });
+            }
+        },
+        "columns": [
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    let actionLabel = row.sal_in_stock === "Y" ? "{{ _('Déstocker') }}" : "{{ _('Restocker') }}";
+                    let actionFunction = row.sal_in_stock === "Y" ? `destock_item(${row.sal_ser})` : `restock_item(${row.sal_ser})`;
+                    
+                    let menu = `
+                        <nav class="nav-item dropdown">
+                            <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                            <div class="dropdown-menu nav-style menu-act-drop">
+                    `;
+
+                    {% if has_permission("RECORD_18") %}
+                    if (row.id_rec && row.rec_num_long) {
+                        menu += `
+                            <a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/${row.rec_type}/${row.id_rec}">
+                                {{ _("Dossier administratif") }}
+                            </a>
+                        `;
+                    }
+                    {% endif %}
+
+                    {% if has_permission("ALIQUOT_171") %}
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-aliquot/${row.sal_ser}">{{ _("Éditer") }}</a>`;
+                    {% endif %}
+
+                    {% if has_permission("ALIQUOT_172") %}
+                    menu += `<a class="dropdown-item menu-act-item" href="#" onclick="${actionFunction}; return false;">${actionLabel}</a>`;
+                    {% endif %}
+
+                    {% if has_permission("ALIQUOT_173") %}
+                    menu += `<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.sal_ser}); return false;">{{ _("Supprimer") }}</a>`;
+                    {% endif %}
+
+                    menu += `
+                            </div>
+                        </nav>
+                    `;
+
+                    return menu;
+                }
+            },
+            { "data": "sal_ser", "visible": false },
+            { "data": "type_label" },
+            { "data": "sal_pathogen_label" },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    let patientInfo = `${row.pat_name} ${row.pat_firstname}`;
+                    let patientCode = row.pat_code ? `${row.pat_code}` : "";
+                    let patientCodeLab = row.pat_code_lab ? ` / ${row.pat_code_lab}` : "";
+
+                    return `${patientInfo}<br>${patientCode}${patientCodeLab}`;
+                }
+            },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    let recordNumLong = row.rec_num_long ? row.rec_num_long : "";
+                    let recordNumInt = row.rec_num_int ? `<br>${row.rec_num_int}` : "";
+                    let recordDatePrescr = row.rec_date_prescr ? `<br>${row.rec_date_prescr}` : "";
+
+                    return `${recordNumLong}${recordNumInt}${recordDatePrescr}`;
+                }
+            },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    let analysisCode = row.ana_code ? `${row.ana_code}` : "";
+                    let loincCode = row.ana_loinc ? ` / ${row.ana_loinc}` : "";
+                    let analysisName = row.ana_name ? `<br>${row.ana_name}` : "";
+
+                    return `${analysisCode}${loincCode}${analysisName}`;
+                }
+            },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    let storagePath = `
+                        <a href="{{ session['server_ext'] }}/det-storage-room/${row.sro_ser}" class="text-decoration-none">${row.sro_label}</a> 
+                        &gt; 
+                        <a href="{{ session['server_ext'] }}/det-storage-chamber/${row.sch_ser}" class="text-decoration-none">${row.sch_label}</a> 
+                        &gt; 
+                        <a href="{{ session['server_ext'] }}/det-storage-compartment/${row.sco_ser}" class="text-decoration-none">${row.sco_label}</a> 
+                        &gt; 
+                        <a href="{{ session['server_ext'] }}/det-storage-box/${row.sbo_ser}" class="text-decoration-none">
+                        ${row.sbo_label} <br> <strong>[ ${row.sbo_coordinates} ]</strong>
+                        </a> 
+                        &gt; 
+                        <a href="{{ session['server_ext'] }}/det-aliquot/${row.sal_ser}" class="text-decoration-none">
+                            <strong>[ ${row.sal_coordinates} ]</strong>
+                        </a>
+                    `;
+
+                    return storagePath;
+                }
+            }
+        ]
+    } ) ;
+}
+
+function destock_item(id_item) 
+{
+document.getElementById("destockItemId").value = id_item;
+document.getElementById("destockReason").value = "";
+document.getElementById("destockLocation").value = "";
+document.getElementById("destockDate").value = "{{ now|datetime_now }}";
+document.getElementById("externalDestock").checked = false;
+
+var destockModal = new bootstrap.Modal(document.getElementById("destockModal"));
+destockModal.show();
+}
+
+function confirmDestock() {
+let id_item = document.getElementById("destockItemId").value;
+let reason = document.getElementById("destockReason").value;
+let location = document.getElementById("destockLocation").value;
+let date = document.getElementById("destockDate").value;
+let external = document.getElementById("externalDestock").checked ? "Y" : "N";
+
+    if (!reason.trim()) {
+        alert("{{ _('Veuillez indiquer une raison de déstockage.') }}");
+        return;
+    }
+
+    fetch(`{{ session['server_ext'] }}/services/quality/storage/aliquot/destock/${id_item}`, 
+    {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            "id_user": {{ session['user_id']|safe}},
+            "in_stock": "Y", 
+            "reason": reason,
+            "location": location,
+            "destock_date": date,
+            "external": external
+        })
+    })
+    .then(response => 
+    {
+        if (response.status === 200 || response.status === 204) {
+            var destockModal = bootstrap.Modal.getInstance(document.getElementById("destockModal"));
+            destockModal.hide();
+            loadItemsTable();
+        } else {
+            alert("{{ _('Une erreur s\'est produite.') }}");
+        }
+    })
+    .catch(error => {
+        console.error("Erreur :", error);
+        alert("{{ _('Une erreur s\'est produite.') }}");
+    });
+}
+
+function restock_item(id_item)
+{
+    if ("{{ _('Êtes-vous sûr de vouloir restocker ?') }}")
+    {
+        fetch(`{{ session['server_ext'] }}/services/quality/storage/aliquot/restock/${id_item}`, 
+        {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "id_user": {{ session['user_id']|safe}},
+                "in_stock": "N"
+            })
+        })
+        .then(response => 
+        {
+            if (response.status === 200 || response.status === 204) 
+            {
+            loadItemsTable();
+            return;
+            }
+            else
+            alert("{{ _("Une erreur s'est produite.") }}");
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert("{{ _("Une erreur s'est produite.") }}");
+        });
+    }
+}
+
+function delete_item(id_item)
+{
+    if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
+    {
+        fetch(`{{ session['server_ext'] }}/services/quality/storage/aliquot/det/${id_item}`, 
+        {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => 
+        {
+            if (response.status === 200 || response.status === 204) 
+            {
+            loadItemsTable();
+            return;
+            }
+            else
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        });
+    }
+}
+
+function list_room()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-room";
+}
+
+function list_chamber()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-chamber";
+}
+
+function list_compartment()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-compartment";
+}
+
+function list_box()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-box";
+}
+
+function add_aliquot()
+{
+window.location.href = "{{ session['server_ext'] }}/det-aliquot/0" ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage" ;
+}
+
+{% if has_permission("ALIQUOT_169") %}
+$(document).ready(function() 
+{
+loadItemsTable() ;
+} ) ;
+{% endif %}
+</script>
+{% endblock %}

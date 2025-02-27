@@ -295,6 +295,11 @@
                             <a class="dropdown-item" href="{{ session['server_ext'] }}/list-stock">{{ _("Gestion des stocks") }}</a>
                         </li>
                         {% endif %}
+                        {% if has_permission("ALIQUOT_169") %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/list-aliquot">{{ _("Gestion des échantillons") }}</a>
+                        </li>
+                        {% endif %}
                         {% if has_permission("NONCONF_143") %}
                         <li><hr class="dropdown-divider"></li> 
                         <li>
@@ -537,6 +542,9 @@
                     {% endif %}
                     {% if has_permission("STOCK_133") %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/list-stock">{{ _("Gestion des stocks") }}</a>
+                    {% endif %}
+                    {% if has_permission("ALIQUOT_169") %}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/list-aliquot">{{ _("Gestion des échantillons") }}</a>
                     {% endif %}
                     {% if has_permission("NONCONF_143") %}
                     <div class="dropdown-divider nav-cust-divider"></div>

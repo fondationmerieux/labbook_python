@@ -44,10 +44,11 @@ var id_user = {{ session['user_id']|safe}} ;
 
 function save_pat( id_pat ) 
 {
+var code_lab = $('#pat_code_lab').val() ;
+
     // we process the uniqueness of pat_code_lab if it is present on the form
-    if ( $('#pat_code_lab').length ) 
+    if ( code_lab && $('#pat_code_lab').val().trim() !== '' ) 
     {
-    var code_lab = $('#pat_code_lab').val() ;
     var code_lab_ori = $('#pat_code_lab_ori').val() ;
 
         $.ajax( 

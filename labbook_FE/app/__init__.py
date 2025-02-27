@@ -2603,6 +2603,29 @@ def list_results():
     json_data = {}
 
     dt_start_req = datetime.now()
+
+    # List pathogen
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/pathogène'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_pathogen'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list pathogen failed, err=%s , url=%s', err, url)
+
+    # List storage box
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_box'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+
     # Load analysis type
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
@@ -2670,6 +2693,40 @@ def enter_result(id_rec=0, anchor=''):
         json_ihm['anchor'] = '#' + anchor
 
     dt_start_req = datetime.now()
+
+    # Load products
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['products'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+
+    # List pathogen
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/pathogène'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_pathogen'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list pathogen failed, err=%s , url=%s', err, url)
+
+    # List storage box
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_box'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+
     # Load list results
     try:
         payload = {'link_fam': session['user_link_fam']}
@@ -4912,8 +4969,7 @@ def list_staff():
 # Page : details staff
 @app.route('/det-staff/<int:user_id>')
 @app.route('/det-staff/<string:ctx>/<int:user_id>')
-@app.route('/det-staff/<string:ctx>/<int:user_id>/<string:role_type>')
-def det_staff(user_id=0, ctx='', role_type=''):
+def det_staff(user_id=0, ctx=''):
     log.info(Logs.fileline() + ' : TRACE det staff=' + str(user_id))
 
     if not test_session():
@@ -4996,6 +5052,17 @@ def det_staff(user_id=0, ctx='', role_type=''):
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests User Evaluation files failed, err=%s , url=%s', err, url)
+
+    # Load User signature files
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/SIGN/' + str(user_id)
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['data_SIGN'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests User signature files failed, err=%s , url=%s', err, url)
 
     if user_id > 0:
         # Load user details
@@ -6276,6 +6343,332 @@ def det_stock_product(prs_ser=0):
     return render_template('det-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
+# Page : list-aliquot
+@app.route('/list-aliquot')
+def list_aliquot():
+    log.info(Logs.fileline() + ' : TRACE setting list-aliquot')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list-aliquot => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-aliquot'
+    session.modified = True
+
+    json_data = {}
+
+    # TODO
+
+    return render_template('list-aliquot.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list storage room
+@app.route('/list-storage-room')
+def list_storage_room():
+    log.info(Logs.fileline() + ' : TRACE setting list-storage-room')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting list-storage-room => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-storage-room'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('list-storage-room.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : add storage room
+@app.route('/det-storage-room/<int:id_item>')
+def det_storage_room(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE setting det-storage-room' + str(id_item))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det-storage-room => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-storage-room/' + str(id_item)
+    session.modified = True
+
+    json_data = {}
+
+    if id_item > 0:
+        # Load storage room details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/room/det/' + str(id_item)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['room'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests storage room det failed, err=%s , url=%s', err, url)
+    else:
+        json_data['room'] = {}
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-storage-room.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list storage
+@app.route('/list-storage-chamber')
+def list_storage_chamber():
+    log.info(Logs.fileline() + ' : TRACE setting list-storage-chamber')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting list-storage-chamber => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-storage-chamber'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('list-storage-chamber.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : add storage chamber
+@app.route('/det-storage-chamber/<int:id_item>')
+def det_storage_chamber(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE setting det-storage-chamber' + str(id_item))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det-storage-chamber => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-storage-chamber/' + str(id_item)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # List storage room
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/room/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_rooms'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list storage room failed, err=%s , url=%s', err, url)
+
+    if id_item > 0:
+        # Load storage chamber details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/chamber/det/' + str(id_item)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['chamber'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests storage chamber det failed, err=%s , url=%s', err, url)
+    else:
+        json_data['chamber'] = {}
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-storage-chamber.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list storage compartment
+@app.route('/list-storage-compartment')
+def list_storage_compartment():
+    log.info(Logs.fileline() + ' : TRACE setting list-storage-compartment')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting list-storage-compartment => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-storage-compartment'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('list-storage-compartment.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : add storage compartment
+@app.route('/det-storage-compartment/<int:id_item>')
+def det_storage_compartment(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE setting det-storage-compartment' + str(id_item))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det-storage-compartment => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-storage-compartment/' + str(id_item)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # List storage chamber
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/chamber/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_chambers'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list storage chamber failed, err=%s , url=%s', err, url)
+
+    if id_item > 0:
+        # Load storage compartment details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/compartment/det/' + str(id_item)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['compartment'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests storage compartment det failed, err=%s , url=%s', err, url)
+    else:
+        json_data['compartment'] = {}
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-storage-compartment.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : list storage box
+@app.route('/list-storage-box')
+def list_storage_box():
+    log.info(Logs.fileline() + ' : TRACE setting list-storage-box')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting list-storage-box => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-storage-box'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('list-storage-box.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : add storage box
+@app.route('/det-storage-box/<int:id_item>')
+def det_storage_box(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE setting det-storage-box' + str(id_item))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det-storage-box => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-storage-box/' + str(id_item)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # List storage compartment
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/compartment/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_compartments'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list storage compartment failed, err=%s , url=%s', err, url)
+
+    if id_item > 0:
+        # Load storage box details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/det/' + str(id_item)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['box'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests storage box det failed, err=%s , url=%s', err, url)
+    else:
+        json_data['box'] = {}
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-storage-box.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : aliquot details
+@app.route('/det-aliquot/<int:id_item>')
+def det_aliquot(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE setting det-aliquot' + str(id_item))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting det-aliquot => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-aliquot/' + str(id_item)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['id_pat']  = 0
+    json_data['id_samp'] = 0
+
+    # List pathogen
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/pathogène'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_pathogen'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list pathogen failed, err=%s , url=%s', err, url)
+
+    # List storage box
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/list'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['l_box'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+
+    if id_item > 0:
+        # Load aliquot details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/aliquot/det/' + str(id_item)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['aliquot'] = req.json()
+                json_data['id_pat']  = json_data['aliquot']['sal_patient']
+                json_data['id_samp'] = json_data['aliquot']['sal_sample']
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests aliquot det failed, err=%s , url=%s', err, url)
+    else:
+        json_data['aliquot'] = {}
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-aliquot.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
 # Page : list nonconformities
 @app.route('/list-nonconformities')
 def list_nonconformities():
@@ -6442,7 +6835,6 @@ def list_messages():
 
         if req.status_code == 200:
             json_data = req.json()
-            log.info(Logs.fileline() + ' : TRACE DEBUG list messages : ' + str(json_data))
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests messages list failed, err=%s , url=%s', err, url)
@@ -6471,7 +6863,6 @@ def det_message(id_message=0):
     if id_message > 0:
         # update to read status
         try:
-            log.info(Logs.fileline() + ' : DEBUG read status FE')
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/message/read/' + str(id_message)
             req = requests.post(url)
 
