@@ -34,7 +34,7 @@ def upgrade():
                           "sys_last_mod_date DATETIME DEFAULT NULL, "
                           "sys_last_mod_user INT UNSIGNED DEFAULT NULL, "
                           "id_ext INT UNSIGNED DEFAULT NULL, "
-                          "id_file INT UNSIGNED DEFAULT NULL )"
+                          "id_file INT UNSIGNED DEFAULT NULL ) "
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table user_signature_file,\n\terr=" + str(err))
@@ -67,8 +67,8 @@ def upgrade():
                           "sch_room int unsigned NOT NULL, "
                           "sch_name varchar(100) NOT NULL, "
                           "sch_abbrev varchar(10) NOT NULL, "
-                          "sch_label varchar(10) NOT NULL "
-                          "FOREIGN KEY (sch_room) REFERENCES storage_room(sro_ser) ) "
+                          "sch_label varchar(10) NOT NULL, "
+                          "INDEX(sch_room)) "
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table storage_chamber,\n\terr=" + str(err))
@@ -86,7 +86,7 @@ def upgrade():
                           "sco_dim_x INT NOT NULL, "
                           "sco_dim_y INT NOT NULL, "
                           "sco_dim_z INT NOT NULL, "
-                          "FOREIGN KEY (sco_chamber) REFERENCES storage_chamber(sch_ser) ) "
+                          "INDEX(sco_chamber)) "
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table storage_compartment,\n\terr=" + str(err))
@@ -104,7 +104,7 @@ def upgrade():
                           "sbo_dim_x INT NOT NULL, "
                           "sbo_dim_y INT NOT NULL, "
                           "sbo_full VARCHAR(1) NOT NULL DEFAULT 'N', "
-                          "FOREIGN KEY (sbo_compartment) REFERENCES storage_compartment(sco_ser) ) "
+                          "INDEX(sbo_compartment)) "
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table storage_box,\n\terr=" + str(err))
@@ -124,8 +124,7 @@ def upgrade():
                           "sal_box INT UNSIGNED NOT NULL, "
                           "sal_coordinates VARCHAR(10) NOT NULL, "
                           "sal_in_stock VARCHAR(1) NOT NULL DEFAULT 'Y', "
-                          "FOREIGN KEY (sal_patient) REFERENCES sigl_03_data(id_data), "
-                          "FOREIGN KEY (sal_box) REFERENCES storage_box(sbo_ser) ) "
+                          "INDEX(sal_patient), INDEX(sal_patient), INDEX(sal_box)) "
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table storage_aliquot,\n\terr=" + str(err))
@@ -142,8 +141,8 @@ def upgrade():
                           "sad_location varchar(255) default '', "
                           "sad_destock_date datetime, "
                           "sad_restock_date datetime, "
-                          "sad_restock_user int unsigned, "
-                          "FOREIGN KEY (sad_aliquot) REFERENCES sample_aliquot(sal_ser) ) "
+                          "sad_restock_user int unsigned,"
+                          "INDEX(sad_aliquot)) "
                           "character set=utf8"))
     except Exception as err:
         print("ERROR create table sample_destock,\n\terr=" + str(err))
