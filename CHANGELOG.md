@@ -9,13 +9,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - print stickers for storage aliquot
 
-## [3.5.3] - 2025-02-27
+## [3.5.3] - 2025-02-28
 ### Added
 - upload signature by details of staff
 - ability to apply the signature of the last validator in the result document template
 - aliquot storage (with 5 new rigths for roles)
 - pathogen dictionary with 578 entries (bacteria, virus, parasite, fungi)
 - LOINC code for 271 analysis
+- list of transactions with analyzers
 
 ### Changed
 - v5 of export and import of analysis repository with ana_loinc

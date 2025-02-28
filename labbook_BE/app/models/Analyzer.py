@@ -12,6 +12,7 @@ from hl7apy.parser import parse_message
 from app.models.Constants import *
 from app.models.DB import DB
 from app.models.Logs import Logs
+from app.models.Analysis import Analysis
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
@@ -132,17 +133,20 @@ class Analyzer:
         return ret
 
     @staticmethod
-    def listTaskLab28(stat):
+    def listTask(stat, tot=''):
         cursor = DB.cursor()
 
-        cond = ' anl_stat = "' + stat + '"'
+        cond = ' anm_stat = "' + stat + '"'
 
         if not stat:
-            cond = ' anl_stat != NULL'
+            cond = ' anm_stat != NULL'
 
-        req = ('select anl_ser, anl_date, anl_date_upd, anl_id_samp, anl_stat, anl_OML_O33, anl_ORL_O34, anl_ans '
-               'from analyzer_lab28 '
-               'where ' + cond + ' order by anl_date')
+        if tot:
+            cond += ' and anm_tot="' + str(tot) + '"'
+
+        req = ('select anm_ser, anm_date, anm_date_upd, anm_id_samp, anm_stat, anm_msg_sent, anm_msg_recv, anm_ans, anm_tot '
+               'from analyzer_msg '
+               'where ' + cond + ' order by anm_date')
 
         cursor.execute(req)
 
@@ -176,6 +180,18 @@ class Analyzer:
         else:
             type_samp = "UNKNOWN"
 
+        # get analysis details
+        ana = Analysis.getAnalysis(samp['samp_id_ana'])
+
+        if not ana:
+            Analyzer.log.error(Logs.fileline() + ' ERROR buildLab28 getAnalysis for samp_id_ana=' + str(samp['samp_id_ana']))
+
+        ana_name = ana['nom']
+        ana_code = ana['code']
+
+        if ana['ana_loinc']:
+            ana_code = ana['ana_loinc']
+
         # get record details
         rec = Record.getRecord(id_rec)
 
@@ -206,7 +222,7 @@ class Analyzer:
 
         for analyzer in l_analyzer:
             # Save OML33 task for one analyzer
-            ret = Analyzer.insertLab28(ans_ser=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, OML_O33='', )
+            ret = Analyzer.insertLab28(ans_ser=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, msg='', tot='LAB-28')
 
             if not ret:
                 Analyzer.log.error(Logs.fileline() + ' ERROR insertLab28 for id_analyzer=' + str(analyzer['ans_ser']) + 'and id_samp=' + str(id_samp))
@@ -263,11 +279,8 @@ class Analyzer:
                 # Add group
                 specimen_group = msg.add_group("OML_O33_SPECIMEN")
 
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Groupe ajouté -> OML_O33_SPECIMEN ({len(msg.children)} enfants dans msg)")
-
                 # Specimen segment
                 spm_segment = specimen_group.add_segment('SPM')
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Segment ajouté -> SPM ({len(specimen_group.children)} enfants dans SPECIMEN)")
                 spm_segment.spm_1 = "1"
                 spm_segment.spm_2 = str(id_samp)
                 spm_segment.spm_4 = f"{id_samp}^{type_samp}^LBK"
@@ -281,11 +294,9 @@ class Analyzer:
 
                 # Add group
                 order_group = specimen_group.add_group("OML_O33_ORDER")
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Groupe ajouté -> OML_O33_ORDER ({len(specimen_group.children)} enfants dans SPECIMEN)")
 
                 # Order segment
                 orc_segment = order_group.add_segment('ORC')
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Segment ajouté -> ORC ({len(order_group.children)} enfants dans ORDER)")
                 orc_segment.orc_1 = "NW"          # order control code : NW (new order), CA (cancel)
                 orc_segment.orc_2 = str(id_task)  # Placer order number. One order by OML^O33 so same number of msh_10
 
@@ -299,7 +310,6 @@ class Analyzer:
 
                 # Timing quantity segment
                 tq1_segment = timing_group.add_segment('TQ1')
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Groupe ajouté -> OML_O33_TIMING ({len(order_group.children)} enfants dans ORDER)")
                 tq1_segment.tq1_1 = "1"
                 tq1_segment.tq1_9 = "R"  # priority : "R"outine, "S"tat with highest priority.
                 # TODO emergency ?
@@ -312,24 +322,18 @@ class Analyzer:
 
                 # Add group
                 observation_request_group = order_group.add_group("OML_O33_OBSERVATION_REQUEST")
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Groupe ajouté -> OML_O33_OBSERVATION_REQUEST ({len(order_group.children)} enfants dans ORDER)")
 
                 # Observation request segment
                 obr_segment = observation_request_group.add_segment('OBR')
                 obr_segment.obr_1  = "1"             # ID OBR
                 obr_segment.obr_2  = f"{id_task}_1"  # Place order number. Same ad orc_2
-                obr_segment.obr_4  = "B157^Blood Group Analysis"  # Code and Name of observation aka name of test.
-                # TODO code^ana_name
+                obr_segment.obr_4  = f"{ana_code}^{ana_name}"  # Code and Name of observation aka name of test.
 
                 try:
                     obr_segment.validate()
                     Analyzer.log.info(Logs.fileline() + ' DEBUG OBR Validated')
                 except Exception as e:
                     Analyzer.log.error(Logs.fileline() + ' ERROR e : ' + str(e))
-
-                Analyzer.log.info(Logs.fileline() + " INFO : Vérification détaillée des groupes et segments dans le message HL7 :")
-                Analyzer.log_hl7_structure(msg)
-                Analyzer.log.info(Logs.fileline() + f" DEBUG : Nombre de segments dans msg.children = {len(msg.children)}")
 
                 # Convertir le message en une chaîne
                 hl7_string = msg.to_er7()
@@ -339,7 +343,7 @@ class Analyzer:
                 Analyzer.log.info(Logs.fileline() + ' DEBUG buildLab28 hl7_string=\n' + str_hl7_string.replace('\r', '\n'))
 
                 # update task lab28 with hl7 message
-                ret = Analyzer.updateLab28_OML_O33(id_task=id_task, stat=Constants.cst_stat_pending, OML_O33=str(hl7_string))
+                ret = Analyzer.updateLab28_OML_O33(id_task=id_task, stat=Constants.cst_stat_pending, msg=str(hl7_string))
 
                 if not ret:
                     Analyzer.log.error(Logs.fileline() + ' ERROR updateLab28 for id_task=' + str(id_task))
@@ -348,30 +352,13 @@ class Analyzer:
         return True
 
     @staticmethod
-    def log_hl7_structure(msg, level=0):
-        """
-        Fonction récursive pour afficher la structure du message HL7 avec indentation.
-        :param msg: Objet Message HL7apy
-        :param level: Niveau d'indentation (0 = racine)
-        """
-        indent = "  " * level  # Définir l'indentation selon le niveau
-        for child in msg.children:
-            Analyzer.log.info(Logs.fileline() + f"{indent}INFO : Groupe/Segment détecté -> {child.name}")
-            if hasattr(child, "to_er7"):  # Vérifier si le segment peut être affiché
-                Analyzer.log.info(Logs.fileline() + f"{indent}  └── Valeur ER7 : {child.to_er7()}")
-
-            # Vérifier s'il a des enfants et les afficher avec un niveau supplémentaire
-            if hasattr(child, "children"):
-                Analyzer.log_hl7_structure(child, level + 1)  # Appel récursif pour les sous-niveaux
-
-    @staticmethod
     def insertLab28(**params):
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into analyzer_lab28 '
-                           '(anl_date, anl_id_samp, anl_stat, anl_OML_O33, anl_ans) '
-                            'values (NOW(), %(id_samp)s, %(stat)s, %(OML_O33)s, %(ans_ser)s)', params)
+            cursor.execute('insert into analyzer_msg '
+                           '(anm_date, anm_id_samp, anm_stat, anm_msg_sent, anm_ans, anm_tot) '
+                            'values (NOW(), %(id_samp)s, %(stat)s, %(msg)s, %(ans_ser)s, %(tot)s)', params)
 
             Analyzer.log.info(Logs.fileline())
 
@@ -387,10 +374,10 @@ class Analyzer:
 
             Analyzer.log.info(Logs.fileline() + ' : DEBUG params=' + str(params))
 
-            params["OML_O33"] = params["OML_O33"].replace("\r", "\\r")
+            params["msg"] = params["msg"].replace("\r", "\\r")
 
-            req = ('update analyzer_lab28 set anl_date_upd=NOW(), anl_stat=%(stat)s, anl_OML_O33=%(OML_O33)s '
-                   'where anl_ser=%(id_task)s')
+            req = ('update analyzer_msg set anm_date_upd=NOW(), anm_stat=%(stat)s, anm_msg_sent=%(msg)s '
+                   'where anm_ser=%(id_task)s')
 
             cursor.execute(req, params)
 
@@ -406,8 +393,8 @@ class Analyzer:
         try:
             cursor = DB.cursor()
 
-            req = ('update analyzer_lab28 set anl_date_upd=NOW(), anl_stat=%(stat)s, anl_ORL_O34=%(ORL_O34)s '
-                   'where anl_ser=%(id_task)s')
+            req = ('update analyzer_msg set anm_date_upd=NOW(), anm_stat=%(stat)s, anm_msg_recv=%(ORL_O34)s '
+                   'where anm_ser=%(id_task)s')
 
             cursor.execute(req, params)
 
@@ -425,6 +412,24 @@ class Analyzer:
 
         Analyzer.log.info(Logs.fileline() + ' : DEBUG hl7_msg received = ' + str(hl7_msg))
 
-        Result.updateResultDemo()
+        # Result.updateResultDemo()
 
         return True
+
+    @staticmethod
+    def getAnalyzerMsgList(args):
+        cursor = DB.cursor()
+
+        if args:
+            # TODO
+            Analyzer.log.info(Logs.fileline() + ' : DEBUG TODO args getAnalyzerMsgList')
+
+        req = ('select anm_ser, anm_date, anm_date_upd, anm_id_samp, anm_stat, anm_msg_sent, anm_msg_recv, anm_ans, '
+               'ifnull(ans_name, "") as analyzer_name, ifnull(ans_id, "") as analyzer_id '
+               'from analyzer_msg '
+               'left join analyzer_setting on anm_ans=ans_ser '
+               'order by anm_date desc')
+
+        cursor.execute(req,)
+
+        return cursor.fetchall()

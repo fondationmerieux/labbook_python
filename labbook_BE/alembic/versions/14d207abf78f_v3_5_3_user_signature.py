@@ -1107,6 +1107,40 @@ def upgrade():
     except Exception as err:
             print("ERROR update sigl_05_data set ana_loinc,\n\terr=" + str(err))
 
+    # rename table analyzer_lab28 to analyzer_msg
+    try:
+        conn.execute(text("alter table analyzer_lab28 rename to analyzer_msg"))
+    except Exception as err:
+        print("ERROR rename analyzer_lab28 to analyzer_msg,\n\terr=" + str(err))
+
+    # rename column from analyzer_lab28
+    try:
+        conn.execute(text('''
+                          alter table analyzer_msg 
+                          RENAME COLUMN anl_ser TO anm_ser,
+                          RENAME COLUMN anl_date TO anm_date,
+                          RENAME COLUMN anl_date_upd TO anm_date_upd,
+                          RENAME COLUMN anl_id_samp TO anm_id_samp,
+                          RENAME COLUMN anl_stat TO anm_stat,
+                          RENAME COLUMN anl_OML_O33 TO anm_msg_sent,
+                          RENAME COLUMN anl_ORL_O34 TO anm_msg_recv,
+                          RENAME COLUMN anl_ans TO anm_ans
+                          '''))
+    except Exception as err:
+        print("ERROR rename column from analyzer_lab28,\n\terr=" + str(err))
+
+    # ADD COLUMN for anm_tot in analyzer_msg for type of transaction
+    try:
+        conn.execute(text("ALTER TABLE analyzer_msg ADD COLUMN anm_tot VARCHAR(20) NOT NULL DEFAULT ''"))
+    except Exception as err:
+        print("ERROR add column anm_tot to analyzer_msg,\n\terr=" + str(err))
+
+    # ADD index on anm_tot
+    try:
+        conn.execute(text("CREATE INDEX idx_anm_tot ON analyzer_msg(anm_tot)"))
+    except Exception as err:
+        print("ERROR add index anm_tot to analyzer_msg,\n\terr=" + str(err))
+
     print(str(datetime.today()) + " : END of migration V3_5_3_user_signature revision=14d207abf78f")
 
 

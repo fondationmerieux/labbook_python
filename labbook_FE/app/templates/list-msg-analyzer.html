@@ -2,24 +2,23 @@
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Stockage d'échantillon") }} - {{ _("Liste pièces") }}</title>
+    <title>{{ _("Liste messages analyseurs") }}</title>
 {% endblock %}
 
 {% block content %}
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Stockage d'échantillon") }} - {{ _("Liste pièces") }}</span></h2>
-            {% if has_permission("ALIQUOT_169") %}
-            <table id="roomsTable" class="display table table-striped" style="width:100%">
+            <h2 class="page-title page-title-color"><span>{{ _("Liste messages analyseurs") }}</span></h2>
+            <table id="itemsTable" class="display table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>{{ _("Action") }}</th>
                         <th hidden>{{ _("id") }}</th>
-                        <th>{{ _("Nom") }}</th>
-                        <th>{{ _("Abbréviation") }}</th>
-                        <th>{{ _("Identifiant") }}</th>
-                        <th>{{ _("Nb. enceinte") }}</th>
+                        <th>{{ _("Analyseur") }}</th>
+                        <th>{{ _("Date d'envoi") }}</th>
+                        <th>{{ _("Message envoyé") }}</th>
+                        <th>{{ _("Message reçu") }}</th>
                     </tr>
                 </thead>
             </table>
@@ -28,16 +27,7 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if has_permission("ALIQUOT_170") %}
-                <div class="float-end d-lg-flex align-items-end">
-                    <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter pièce") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                </div>
-                {% endif %}
             </div>
-
-            {% else %}
-            {% include 'no-rights.html' %} 
-            {% endif %}
 
         </div>
     </div>
@@ -48,8 +38,8 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 function loadItemsTable()
 {
-    $('#roomsTable').DataTable().destroy();
-    $('#roomsTable').DataTable({
+    $('#itemsTable').DataTable().destroy();
+    $('#itemsTable').DataTable({
         "pageLength": 25,
         "language": {
             "lengthMenu": "{{ _("Afficher _MENU_ entrées") }}",
@@ -65,15 +55,19 @@ function loadItemsTable()
                 "previous": "{{ _("Précédent") }}"
             }
         },
-        "ajax": "{{ session['server_ext'] }}/services/quality/storage/room/list",
+        "ajax": {
+            "url": "{{ session['server_ext'] }}/services/device/analyzer/message/list",
+            "type": "POST",
+            "contentType": "application/json",
+            "data": function(d) {
+                return JSON.stringify({});
+            }
+        },
         "columns": [
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    let editAction = `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-storage-room/${row.id}">{{ _("Éditer") }}</a>`;
-                    let deleteAction = row.nb_chamber == 0 
-                        ? `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.id}); return false;">{{ _("Supprimer") }}</a>`
-                        : ''; // display delete only if not associated with a chamber 
+                    let deleteAction = `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.id}); return false;">{{ _("Supprimer") }}</a>`;
 
                     return `
                         <nav class="">
@@ -81,9 +75,6 @@ function loadItemsTable()
                                 <li class="nav-item dropdown">
                                     <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                                     <div class="dropdown-menu menu-act-drop nav-style">
-                                        {% if has_permission("ALIQUOT_171") %}
-                                        ${editAction}
-                                        {% endif %}
                                         {% if has_permission("ALIQUOT_173") %}
                                         ${deleteAction}
                                         {% endif %}
@@ -94,11 +85,32 @@ function loadItemsTable()
                     `;
                 }
             },
-            { "data": "id", "visible": false },
-            { "data": "name" },
-            { "data": "abbrev" },
-            { "data": "label" },
-            { "data": "nb_chamber" }
+            { "data": "anm_ser", "visible": false }, 
+            {
+                "data": null,  
+                "render": function(data, type, row) {
+                    let displayText = row.analyzer_name;
+                    if (row.analyzer_id) {
+                        displayText += `<br><small>ID: ${row.analyzer_id}</small>`;
+                    }
+                    return displayText;
+                }
+            },
+            { "data": "anm_date", "defaultContent": "" },
+            {
+                "data": "anm_msg_sent",
+                "defaultContent": "-",
+                "render": function(data, type, row) {
+                    return `<textarea class="form-control" rows="3" readonly style="width: 100%; resize: vertical;">${data || ''}</textarea>`;
+                }
+            },
+            {
+                "data": "anm_msg_recv",
+                "defaultContent": "-",
+                "render": function(data, type, row) {
+                    return `<textarea class="form-control" rows="3" readonly style="width: 100%; resize: vertical;">${data || ''}</textarea>`;
+                }
+            }
         ]
     });
 }
@@ -107,7 +119,7 @@ function deleteItem(id_item)
 {
     if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
     {
-        fetch(`{{ session['server_ext'] }}/services/quality/storage/room/det/${id_item}`, 
+        fetch(`{{ session['server_ext'] }}/services/device/analyzer/message/det/${id_item}`, 
         {
             method: 'DELETE',
             headers: {
@@ -131,14 +143,9 @@ function deleteItem(id_item)
     }
 }
 
-function add_item()
-{
-window.location.href = "{{ session['server_ext'] }}/det-storage-room/0";
-}
-
 function return_back()
 {
-window.location.href = "{{ session['server_ext'] }}/list-aliquot";
+window.location.href = "{{ session['server_ext'] }}/list-analyzers";
 }
 
 $(document).ready(function() 

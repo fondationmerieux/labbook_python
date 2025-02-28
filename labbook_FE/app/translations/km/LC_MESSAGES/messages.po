@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Labbook_FE\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-27 11:55+0100\n"
+"POT-Creation-Date: 2025-02-28 11:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
@@ -385,10 +385,11 @@ msgstr "របាយការណ៍"
 #: templates/list-equipment.html:31 templates/list-laboratory.html:49
 #: templates/list-laboratory.html:71 templates/list-manuals.html:58
 #: templates/list-meeting.html:31 templates/list-messages.html:30
-#: templates/list-nonconformities.html:56 templates/list-procedure.html:31
-#: templates/list-products.html:31 templates/list-records.html:135
-#: templates/list-staff.html:31 templates/list-stock.html:78
-#: templates/list-storage-box.html:17 templates/list-storage-chamber.html:17
+#: templates/list-msg-analyzer.html:16 templates/list-nonconformities.html:56
+#: templates/list-procedure.html:31 templates/list-products.html:31
+#: templates/list-records.html:135 templates/list-staff.html:31
+#: templates/list-stock.html:78 templates/list-storage-box.html:17
+#: templates/list-storage-chamber.html:17
 #: templates/list-storage-compartment.html:17
 #: templates/list-storage-room.html:17 templates/list-suppliers.html:31
 #: templates/list-template.html:31 templates/list-works.html:99
@@ -553,16 +554,16 @@ msgstr "លេខបារកូដ"
 #: templates/eqp-maintenance-contract.html:192
 #: templates/eqp-maintenance-preventive.html:183
 #: templates/eqp-metrology.html:183 templates/list-aliquot.html:176
-#: templates/list-analyzers.html:119 templates/list-doctors.html:224
+#: templates/list-analyzers.html:120 templates/list-doctors.html:224
 #: templates/list-eqp-failure.html:120 templates/list-eqp-maintenance.html:176
 #: templates/list-eqp-maintenance.html:241
 #: templates/list-eqp-metrology.html:118 templates/list-equipment.html:142
 #: templates/list-laboratory.html:131 templates/list-laboratory.html:326
 #: templates/list-manuals.html:194 templates/list-meeting.html:123
-#: templates/list-messages.html:110 templates/list-nonconformities.html:191
-#: templates/list-procedure.html:132 templates/list-records.html:313
-#: templates/list-results.html:1136 templates/list-storage-box.html:78
-#: templates/list-storage-chamber.html:76
+#: templates/list-messages.html:110 templates/list-msg-analyzer.html:70
+#: templates/list-nonconformities.html:191 templates/list-procedure.html:132
+#: templates/list-records.html:313 templates/list-results.html:1136
+#: templates/list-storage-box.html:78 templates/list-storage-chamber.html:76
 #: templates/list-storage-compartment.html:77
 #: templates/list-storage-room.html:75 templates/list-suppliers.html:127
 #: templates/list-template.html:125 templates/list-works.html:285
@@ -583,7 +584,7 @@ msgstr "លុបចោល"
 msgid "Veuillez confirmer la suppression"
 msgstr "សូមបញ្ជាក់ការលុប"
 
-#: templates/administrative-record.html:442 templates/list-analyzers.html:172
+#: templates/administrative-record.html:442 templates/list-analyzers.html:178
 #: templates/list-doctors.html:284 templates/list-eqp-failure.html:183
 #: templates/list-eqp-maintenance.html:298
 #: templates/list-eqp-maintenance.html:334
@@ -631,7 +632,7 @@ msgstr "កែសម្រួលឡើងវិញ"
 #: templates/det-control-int.html:128 templates/det-hist-analysis.html:92
 #: templates/det-hist-patient.html:128 templates/det-list-stock.html:124
 #: templates/hist-analyzes.html:194 templates/hist-patients.html:204
-#: templates/hist-stock-product.html:164 templates/list-analyzers.html:98
+#: templates/hist-stock-product.html:164 templates/list-analyzers.html:99
 #: templates/list-ctrl-ext.html:101 templates/list-ctrl-int.html:101
 #: templates/list-doctors.html:204 templates/list-eqp-failure.html:104
 #: templates/list-eqp-maintenance.html:160
@@ -779,10 +780,11 @@ msgstr "បន្ថែមការវិភាគថ្មី (កូដដែ�
 #: templates/list-eqp-maintenance.html:107 templates/list-eqp-metrology.html:53
 #: templates/list-equipment.html:56 templates/list-laboratory.html:84
 #: templates/list-manuals.html:86 templates/list-meeting.html:53
-#: templates/list-messages.html:52 templates/list-nonconformities.html:81
-#: templates/list-procedure.html:59 templates/list-products.html:56
-#: templates/list-staff.html:67 templates/list-stock.html:105
-#: templates/list-storage-box.html:32 templates/list-storage-chamber.html:30
+#: templates/list-messages.html:52 templates/list-msg-analyzer.html:28
+#: templates/list-nonconformities.html:81 templates/list-procedure.html:59
+#: templates/list-products.html:56 templates/list-staff.html:67
+#: templates/list-stock.html:105 templates/list-storage-box.html:32
+#: templates/list-storage-chamber.html:30
 #: templates/list-storage-compartment.html:31
 #: templates/list-storage-room.html:29 templates/list-suppliers.html:57
 #: templates/list-template.html:53 templates/list-trace-download.html:79
@@ -927,7 +929,7 @@ msgstr "មូលហេតុ "
 #: templates/biological-validation.html:164
 #: templates/biological-validation.html:182 templates/det-control-ext.html:90
 #: templates/det-control-int.html:89 templates/enter-result.html:105
-#: templates/list-analyzers.html:56 templates/list-ctrl-ext.html:59
+#: templates/list-analyzers.html:57 templates/list-ctrl-ext.html:59
 #: templates/list-ctrl-int.html:59 templates/list-eqp-failure.html:62
 #: templates/list-eqp-maintenance.html:59
 #: templates/list-eqp-maintenance.html:114 templates/list-eqp-metrology.html:60
@@ -1192,6 +1194,7 @@ msgid "L'association à une boîte est obligatoire."
 msgstr ""
 
 #: templates/det-analyzer.html:5 templates/det-analyzer.html:12
+#: templates/list-msg-analyzer.html:18
 msgid "Analyseur"
 msgstr "អ្នកវិភាគ"
 
@@ -1344,7 +1347,8 @@ msgstr "ចំនួនខ្សែសរុប"
 #: templates/list-equipment.html:47 templates/list-manuals.html:46
 #: templates/list-manuals.html:77 templates/list-meeting.html:19
 #: templates/list-meeting.html:44 templates/list-messages.html:18
-#: templates/list-messages.html:43 templates/list-nonconformities.html:44
+#: templates/list-messages.html:43 templates/list-msg-analyzer.html:52
+#: templates/list-nonconformities.html:44
 #: templates/list-nonconformities.html:72 templates/list-procedure.html:19
 #: templates/list-procedure.html:50 templates/list-products.html:19
 #: templates/list-products.html:47 templates/list-records.html:122
@@ -1392,7 +1396,8 @@ msgstr "ដំបូង"
 #: templates/list-equipment.html:48 templates/list-manuals.html:47
 #: templates/list-manuals.html:78 templates/list-meeting.html:20
 #: templates/list-meeting.html:45 templates/list-messages.html:19
-#: templates/list-messages.html:44 templates/list-nonconformities.html:45
+#: templates/list-messages.html:44 templates/list-msg-analyzer.html:55
+#: templates/list-nonconformities.html:45
 #: templates/list-nonconformities.html:73 templates/list-procedure.html:20
 #: templates/list-procedure.html:51 templates/list-products.html:20
 #: templates/list-products.html:48 templates/list-records.html:123
@@ -1440,7 +1445,8 @@ msgstr "ពីមុន"
 #: templates/list-equipment.html:50 templates/list-manuals.html:49
 #: templates/list-manuals.html:80 templates/list-meeting.html:22
 #: templates/list-meeting.html:47 templates/list-messages.html:21
-#: templates/list-messages.html:46 templates/list-nonconformities.html:47
+#: templates/list-messages.html:46 templates/list-msg-analyzer.html:54
+#: templates/list-nonconformities.html:47
 #: templates/list-nonconformities.html:75 templates/list-procedure.html:22
 #: templates/list-procedure.html:53 templates/list-products.html:22
 #: templates/list-products.html:50 templates/list-records.html:125
@@ -1488,7 +1494,8 @@ msgstr "បន្ទាប់"
 #: templates/list-equipment.html:51 templates/list-manuals.html:50
 #: templates/list-manuals.html:81 templates/list-meeting.html:23
 #: templates/list-meeting.html:48 templates/list-messages.html:22
-#: templates/list-messages.html:47 templates/list-nonconformities.html:48
+#: templates/list-messages.html:47 templates/list-msg-analyzer.html:53
+#: templates/list-nonconformities.html:48
 #: templates/list-nonconformities.html:76 templates/list-procedure.html:23
 #: templates/list-procedure.html:54 templates/list-products.html:23
 #: templates/list-products.html:51 templates/list-records.html:126
@@ -1573,7 +1580,7 @@ msgid "Export des données"
 msgstr "បញ្ចេញទិន្នន័យ"
 
 #: templates/det-control-ext.html:145 templates/det-control-int.html:144
-#: templates/list-analyzers.html:115 templates/list-ctrl-ext.html:117
+#: templates/list-analyzers.html:116 templates/list-ctrl-ext.html:117
 #: templates/list-ctrl-int.html:117 templates/list-doctors.html:220
 #: templates/list-equipment.html:122 templates/list-manuals.html:190
 #: templates/list-meeting.html:119 templates/list-nonconformities.html:187
@@ -2273,7 +2280,7 @@ msgstr "កំហុសក្នុងកំឡុងពេលនៃការស
 
 #: templates/det-req-ext.html:697 templates/det-req-ext.html:804
 #: templates/det-req-ext.html:881 templates/det-req-int.html:681
-#: templates/det-req-int.html:780 templates/list-analyzers.html:148
+#: templates/det-req-int.html:780 templates/list-analyzers.html:154
 #: templates/list-doctors.html:260 templates/list-eqp-failure.html:159
 #: templates/list-eqp-maintenance.html:274
 #: templates/list-eqp-maintenance.html:310
@@ -2768,7 +2775,8 @@ msgstr "បញ្ជីវិភាគ"
 #: templates/hist-stock-product.html:17 templates/hist-stock-product.html:30
 #: templates/list-aliquot.html:128 templates/list-doctors.html:16
 #: templates/list-doctors.html:57 templates/list-manuals.html:16
-#: templates/list-manuals.html:35 templates/list-nonconformities.html:16
+#: templates/list-manuals.html:35 templates/list-msg-analyzer.html:50
+#: templates/list-nonconformities.html:16
 #: templates/list-nonconformities.html:33 templates/list-records.html:18
 #: templates/list-records.html:104 templates/list-results.html:21
 #: templates/list-results.html:65 templates/list-stock.html:16
@@ -3020,7 +3028,8 @@ msgstr "ព័ត៌មានទំនាក់ទំនង"
 msgid "Stockages"
 msgstr ""
 
-#: templates/list-aliquot.html:45
+#: templates/list-aliquot.html:45 templates/list-storage-room.html:5
+#: templates/list-storage-room.html:12
 #, fuzzy
 msgid "Liste pièces"
 msgstr "បញ្ជីអ្នកជម្ងឺ"
@@ -3038,8 +3047,7 @@ msgid "Liste compartiments"
 msgstr "បញ្ជីអ្នកជម្ងឺ"
 
 #: templates/list-aliquot.html:48 templates/list-storage-box.html:5
-#: templates/list-storage-box.html:12 templates/list-storage-room.html:5
-#: templates/list-storage-room.html:12
+#: templates/list-storage-box.html:12
 #, fuzzy
 msgid "Liste boîtes"
 msgstr "បញ្ជីអ្នកជម្ងឺ"
@@ -3067,38 +3075,38 @@ msgstr ""
 msgid "Confirmer"
 msgstr "អនុលោមតាម"
 
-#: templates/list-aliquot.html:123 templates/list-storage-box.html:58
-#: templates/list-storage-chamber.html:56
+#: templates/list-aliquot.html:123 templates/list-msg-analyzer.html:45
+#: templates/list-storage-box.html:58 templates/list-storage-chamber.html:56
 #: templates/list-storage-compartment.html:57
 #: templates/list-storage-room.html:55
 #, fuzzy
 msgid "Afficher _MENU_ entrées"
 msgstr "បង្ហាញយោបល់"
 
-#: templates/list-aliquot.html:124 templates/list-storage-box.html:59
-#: templates/list-storage-chamber.html:57
+#: templates/list-aliquot.html:124 templates/list-msg-analyzer.html:46
+#: templates/list-storage-box.html:59 templates/list-storage-chamber.html:57
 #: templates/list-storage-compartment.html:58
 #: templates/list-storage-room.html:56
 #, fuzzy
 msgid "Aucun enregistrement trouvé"
 msgstr "ការចុះបញី្ចទទួលបានជោគជ័យ"
 
-#: templates/list-aliquot.html:125 templates/list-storage-box.html:60
-#: templates/list-storage-chamber.html:58
+#: templates/list-aliquot.html:125 templates/list-msg-analyzer.html:47
+#: templates/list-storage-box.html:60 templates/list-storage-chamber.html:58
 #: templates/list-storage-compartment.html:59
 #: templates/list-storage-room.html:57
 msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
 msgstr ""
 
-#: templates/list-aliquot.html:126 templates/list-storage-box.html:61
-#: templates/list-storage-chamber.html:59
+#: templates/list-aliquot.html:126 templates/list-msg-analyzer.html:48
+#: templates/list-storage-box.html:61 templates/list-storage-chamber.html:59
 #: templates/list-storage-compartment.html:60
 #: templates/list-storage-room.html:58
 msgid "Aucune entrée disponible"
 msgstr ""
 
-#: templates/list-aliquot.html:127 templates/list-storage-box.html:62
-#: templates/list-storage-chamber.html:60
+#: templates/list-aliquot.html:127 templates/list-msg-analyzer.html:49
+#: templates/list-storage-box.html:62 templates/list-storage-chamber.html:60
 #: templates/list-storage-compartment.html:61
 #: templates/list-storage-room.html:59
 msgid "(filtré de _MAX_ entrées au total)"
@@ -3137,8 +3145,8 @@ msgstr "កំហុសមួយបានកើតឡើង"
 msgid "Êtes-vous sûr de vouloir restocker ?"
 msgstr "តើអ្នកប្រាកដថាចង់លុបលទ្ធផលនេះទេ?"
 
-#: templates/list-aliquot.html:337 templates/list-storage-box.html:124
-#: templates/list-storage-chamber.html:115
+#: templates/list-aliquot.html:337 templates/list-msg-analyzer.html:120
+#: templates/list-storage-box.html:124 templates/list-storage-chamber.html:115
 #: templates/list-storage-compartment.html:122
 #: templates/list-storage-room.html:108
 #, fuzzy
@@ -3146,6 +3154,7 @@ msgid "Êtes-vous sûr de vouloir supprimer ?"
 msgstr "តើអ្នកប្រាកដថាចង់លុបលទ្ធផលនេះទេ?"
 
 #: templates/list-aliquot.html:354 templates/list-aliquot.html:358
+#: templates/list-msg-analyzer.html:137 templates/list-msg-analyzer.html:141
 #: templates/list-storage-box.html:141 templates/list-storage-box.html:145
 #: templates/list-storage-chamber.html:132
 #: templates/list-storage-chamber.html:136
@@ -3164,6 +3173,11 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលប
 #: templates/setting-stock.html:41
 msgid "Position"
 msgstr "តួនាទី"
+
+#: templates/list-analyzers.html:55
+#, fuzzy
+msgid "Transactions"
+msgstr "ការបណ្តុះបណ្តាល"
 
 #: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
 msgid "Liste des contrôles externes"
@@ -3355,6 +3369,31 @@ msgstr ""
 #, fuzzy
 msgid "Reçu de"
 msgstr "កម្រិតនៃ"
+
+#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
+#, fuzzy
+msgid "Liste messages analyseurs"
+msgstr "បញ្ជីអ្នកវិភាគ"
+
+#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
+#: templates/list-storage-chamber.html:18
+#: templates/list-storage-compartment.html:18
+#: templates/list-storage-room.html:18
+msgid "id"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:19
+msgid "Date d'envoi"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:20
+msgid "Message envoyé"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:21
+#, fuzzy
+msgid "Message reçu"
+msgstr "ការប្រើប្រាស់"
 
 #: templates/list-nonconformities.html:5 templates/list-nonconformities.html:12
 msgid "Liste des non-conformités"
@@ -3650,12 +3689,6 @@ msgstr "មិនមានស្តុកសម្រាប់នាំចេញ
 msgid "Stockage d'échantillon"
 msgstr "ការដឹកជញ្ជូនវត្ថុវិភាគ"
 
-#: templates/list-storage-box.html:18 templates/list-storage-chamber.html:18
-#: templates/list-storage-compartment.html:18
-#: templates/list-storage-room.html:18
-msgid "id"
-msgstr ""
-
 #: templates/list-storage-box.html:23
 msgid "Dimensions l,p"
 msgstr ""
@@ -3668,7 +3701,7 @@ msgstr ""
 msgid "Pleine"
 msgstr ""
 
-#: templates/list-storage-box.html:36 templates/list-storage-room.html:33
+#: templates/list-storage-box.html:36
 #, fuzzy
 msgid "Ajouter boîte"
 msgstr "បន្ថែមគំរូ"
@@ -3705,6 +3738,11 @@ msgstr "អ្នកជំងឺថ្មី"
 #: templates/list-storage-room.html:22
 msgid "Nb. enceinte"
 msgstr ""
+
+#: templates/list-storage-room.html:33
+#, fuzzy
+msgid "Ajouter pièce"
+msgstr "បន្ថែមផ្នែក"
 
 #: templates/list-suppliers.html:5 templates/list-suppliers.html:12
 msgid "Liste des fournisseurs"
@@ -6023,3 +6061,4 @@ msgstr "ដំណើរការកំពុងបន្ត"
 #: templates/popup/popup_wait.html:12
 msgid "Veuillez patienter"
 msgstr "សូមរង់ចាំ"
+

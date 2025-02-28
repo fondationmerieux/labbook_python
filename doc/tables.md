@@ -86,7 +86,7 @@
 | eqp\_failure                                   | EQUIPMENT     | link equipment with failure and repair   |
 | eqp\_metrology                                 | EQUIPMENT     | link equipment with metrology and calib. |
 | patient\_form\_item                            | PATIENT	 | patient data for dynamical fields        |
-| analyzer\_lab28                                | ANALYZER	 | hl7 message to and from analyzer         |
+| analyzer\_msg                                  | ANALYZER	 | hl7 message to and from analyzer         |
 | analyzer\_setting                              | SETTINGS	 | settings for analyzer connection         |
 | lab\_chart\_file                               | FILE  	 | chart file of laboratory                 |
 | profile\_rights                                | USER  	 | list of rights                           |

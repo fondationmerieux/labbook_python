@@ -150,3 +150,28 @@ class AnalyzerLab29(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE AnalyzerLab29')
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class AnalyzerMsgList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        args = request.get_json()
+
+        l_msg = Analyzer.getAnalyzerMsgList(args)
+
+        if not l_msg:
+            self.log.error(Logs.fileline() + ' : TRACE AnalyzerMsgList not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        for msg in l_msg:
+            # Replace None by empty string
+            for key, value in list(msg.items()):
+                if msg[key] is None:
+                    msg[key] = ''
+                elif key == 'anm_date' or key == 'anm_date_upd':
+                    if msg[key]:
+                        msg[key] = datetime.strftime(msg[key], Constants.cst_dt_HM)
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalyzerMsgList')
+        return compose_ret({"data": l_msg}, Constants.cst_content_type_json)

@@ -52,6 +52,7 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
+                    <input type="button" onclick="transactions();" id="btn_trans" value="{{ _("Transactions") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% if has_permission("SETTING_49") %}
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
@@ -134,6 +135,11 @@ $("#list_items_total").html( data_len ) ;
     $("#num_page_b").text( p_cur ) ;
 
     $("#table_items").tablesorter() ;  // sort only data on screen 
+}
+
+function transactions()
+{
+window.location.href = "{{ session['server_ext'] }}/list-msg-analyzer";
 }
 
 function add_item()

@@ -36,7 +36,6 @@ def analyzer(test=False, verbose=False):
     Logs.log_script("cst_path_log = " + Constants.cst_path_log)
 
     with app.app_context():
-        # voir un auto unlock si le programme tombe
         # check if a lock file exist
         if check_lock_file(lock_file_path):
             Logs.log_script("debug lock exists")
@@ -44,23 +43,19 @@ def analyzer(test=False, verbose=False):
             Logs.log_script("debug lock doesnt exist")
             create_lock_file(lock_file_path)
 
-        # TEST DEBUG TODO REMOVE
-        message_hl7 = "\x0BMSH|^~\\&|LIS|HOSPITAL|COBAS|LAB|20250217120000||QBP^Q11|54321|P|2.5.1\rQPD|IHE_LAB_QUERY|Q11|123456\r\x1C\x0D"
-
         try:
-            Logs.log_script("Corps du script")
             # get list of pending LAB28 tasks
-            l_tasks = Analyzer.listTaskLab28('PD')
+            l_tasks = Analyzer.listTask('PD', 'LAB-28')
 
             while l_tasks:
                 for task in l_tasks:
-                    Logs.log_script('OML_O33 : ' + task['anl_OML_O33'])
-                    OML_O33 = task['anl_OML_O33']
+                    Logs.log_script('OML_O33 : ' + task['anm_msg_sent'])
+                    OML_O33 = task['anm_msg_sent']
 
-                    analyzer_setting = Analyzer.getAnalyzerDet(task['anl_ans'])
+                    analyzer_setting = Analyzer.getAnalyzerDet(task['anm_ans'])
 
                     if not analyzer_setting:
-                        Logs.log_script('analyzer_setting causes an error, ans_ser = ' + str(task['anl_ans']))
+                        Logs.log_script('analyzer_setting causes an error, ans_ser = ' + str(task['anm_ans']))
                         return False
 
                     Logs.log_script('DEBUG analyzer_setting = \n' + str(analyzer_setting))
@@ -73,8 +68,6 @@ def analyzer(test=False, verbose=False):
                     Logs.log_script('DEBUG url_lab28 = \n' + str(url_lab28))
 
                     OML_O33_formatted = OML_O33.replace("\n", "\r")
-
-                    OML_O33_formatted = message_hl7
 
                     Logs.log_script('DEBUG OML_O33 formatted for sending = \n' + OML_O33_formatted.replace('\r', '\n'))
 
@@ -89,13 +82,13 @@ def analyzer(test=False, verbose=False):
                         Logs.log_script('ORL_O34 received : ' + str(ORL_O34))
 
                         # update status
-                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anl_ser'], stat='CO', ORL_O34=ORL_O34)
+                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat='CO', ORL_O34=ORL_O34)
 
                 # if l_tasks is empty we reload before exit this script
                 l_tasks = Analyzer.listTaskLab28('PD')
 
         except Exception as e:
-            Logs.log_script("Corps du script en erreur e : " + str(e))
+            Logs.log_script("Error script : " + str(e))
 
         dt_stop_script = datetime.now()
         dt_time_script = dt_stop_script - dt_start_script
