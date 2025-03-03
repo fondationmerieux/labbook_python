@@ -12,6 +12,7 @@ import fcntl
 import signal
 import hl7apy
 import requests
+import re
 
 from datetime import datetime
 
@@ -32,15 +33,15 @@ def analyzer(test=False, verbose=False):
 
     date_now  = datetime.now()
 
-    Logs.log_script("BEGIN script today=" +str(date_now))
-    Logs.log_script("cst_path_log = " + Constants.cst_path_log)
+    Logs.log_script(Logs.fileline() + " : BEGIN script today=" +str(date_now))
+    Logs.log_script(Logs.fileline() + " : cst_path_log = " + Constants.cst_path_log)
 
     with app.app_context():
         # check if a lock file exist
         if check_lock_file(lock_file_path):
-            Logs.log_script("debug lock exists")
+            Logs.log_script(Logs.fileline() + " : debug lock exists")
         else:
-            Logs.log_script("debug lock doesnt exist")
+            Logs.log_script(Logs.fileline() + " : debug lock doesnt exist")
             create_lock_file(lock_file_path)
 
         try:
@@ -67,12 +68,14 @@ def analyzer(test=False, verbose=False):
                     Logs.log_script('DEBUG OML_O33 sent = \n' + str(OML_O33))
                     Logs.log_script('DEBUG url_lab28 = \n' + str(url_lab28))
 
-                    OML_O33_formatted = OML_O33.replace("\n", "\r")
+                    OML_O33_formatted = OML_O33.replace("\\r", "\r")
 
-                    Logs.log_script('DEBUG OML_O33 formatted for sending = \n' + OML_O33_formatted.replace('\r', '\n'))
+                    Logs.log_script('DEBUG OML_O33 formatted for sending = \n' + repr(OML_O33_formatted))
+
+                    OML_O33_bytes = OML_O33_formatted.encode("utf-8", errors="replace")
 
                     # send OML33 to Connect
-                    req = requests.post(url_lab28 , data=OML_O33_formatted, headers={"Content-Type": "application/hl7-v2"})
+                    req = requests.post(url_lab28 , data=OML_O33_bytes, headers={"Content-Type": "application/hl7-v2"})
 
                     Logs.log_script('req.status_code : ' + str(req.status_code))
 
@@ -81,14 +84,22 @@ def analyzer(test=False, verbose=False):
                         ORL_O34 = req.text
                         Logs.log_script('ORL_O34 received : ' + str(ORL_O34))
 
+                        # Extract MSA-1 (ORL^O34 general status) 
+                        msa_match = re.search(r'MSA\|([A-Z]{2})\|', ORL_O34)
+                        msa_status = msa_match.group(1) if msa_match else "UN"
+
                         # update status
-                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat='CO', ORL_O34=ORL_O34)
+                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=msa_status, ORL_O34=ORL_O34)
+                    else:
+                        # update status
+                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat='WC', ORL_O34='')
+
 
                 # if l_tasks is empty we reload before exit this script
-                l_tasks = Analyzer.listTaskLab28('PD')
+                l_tasks = Analyzer.listTask('PD')
 
         except Exception as e:
-            Logs.log_script("Error script : " + str(e))
+            Logs.log_script(Logs.fileline() + " : Error script : " + str(e))
 
         dt_stop_script = datetime.now()
         dt_time_script = dt_stop_script - dt_start_script
@@ -118,20 +129,20 @@ def create_lock_file(file_path):
         # Try to create lock file
         with open(file_path, 'w+') as file:
             fcntl.flock(file, fcntl.LOCK_EX)
-            Logs.log_script("lock file created")
+            Logs.log_script(Logs.fileline() + " : lock file created")
             # Définir le gestionnaire de signal pour le signal SIGTERM
             signal.signal(signal.SIGTERM, handle_signal)
     except IOError as e:
-        Logs.log_script("create_lock err : ", e)
+        Logs.log_script(Logs.fileline() + " : create_lock err : ", e)
 
 
 def remove_lock_file(file_path):
     try:
         # delete lock file if exists
         os.remove(file_path)
-        Logs.log_script("lock file removed")
+        Logs.log_script(Logs.fileline() + " : lock file removed")
     except Exception as e:
-        Logs.log_script("remove_lock err : " + str(e))
+        Logs.log_script(Logs.fileline() + " : remove_lock err : " + str(e))
 
 
 def handle_signal(signum, frame):

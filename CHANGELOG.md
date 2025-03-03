@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - print stickers for storage aliquot
 
+## [3.5.4] - 2025-03-03
+### Added
+- colummn status in list of transactions table
+
+### Fixed
+- script to send message to LabBook Connect
+
 ## [3.5.3] - 2025-02-28
 ### Added
 - upload signature by details of staff

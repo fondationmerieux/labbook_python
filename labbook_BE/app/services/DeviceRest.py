@@ -175,3 +175,17 @@ class AnalyzerMsgList(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE AnalyzerMsgList')
         return compose_ret({"data": l_msg}, Constants.cst_content_type_json)
+
+
+class AnalyzerMsgDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def delete(self, id_msg):
+        ret = Analyzer.deleteMsgAnalyzer(id_msg)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE AnalyzerMsgDet delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE AnalyzerMsgDet delete id_msg=' + str(id_msg))
+        return compose_ret('', Constants.cst_content_type_json)

@@ -425,7 +425,7 @@ class Analyzer:
             Analyzer.log.info(Logs.fileline() + ' : DEBUG TODO args getAnalyzerMsgList')
 
         req = ('select anm_ser, anm_date, anm_date_upd, anm_id_samp, anm_stat, anm_msg_sent, anm_msg_recv, anm_ans, '
-               'ifnull(ans_name, "") as analyzer_name, ifnull(ans_id, "") as analyzer_id '
+               'ifnull(ans_name, "") as analyzer_name, ifnull(ans_id, "") as analyzer_id, anm_tot '
                'from analyzer_msg '
                'left join analyzer_setting on anm_ans=ans_ser '
                'order by anm_date desc')
@@ -433,3 +433,18 @@ class Analyzer:
         cursor.execute(req,)
 
         return cursor.fetchall()
+
+    @staticmethod
+    def deleteMsgAnalyzer(id_msg):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from analyzer_msg '
+                           'where anm_ser=%s', (id_msg,))
+
+            Analyzer.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analyzer.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

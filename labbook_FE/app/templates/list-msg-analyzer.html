@@ -17,6 +17,7 @@
                         <th hidden>{{ _("id") }}</th>
                         <th>{{ _("Analyseur") }}</th>
                         <th>{{ _("Date d'envoi") }}</th>
+                        <th>{{ _("Statut") }}</th>
                         <th>{{ _("Message envoyé") }}</th>
                         <th>{{ _("Message reçu") }}</th>
                     </tr>
@@ -67,7 +68,7 @@ function loadItemsTable()
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    let deleteAction = `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.id}); return false;">{{ _("Supprimer") }}</a>`;
+                    let deleteAction = `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.anm_ser}); return false;">{{ _("Supprimer") }}</a>`;
 
                     return `
                         <nav class="">
@@ -85,7 +86,7 @@ function loadItemsTable()
                     `;
                 }
             },
-            { "data": "anm_ser", "visible": false }, 
+            {   "data": "anm_ser", "visible": false }, 
             {
                 "data": null,  
                 "render": function(data, type, row) {
@@ -96,7 +97,36 @@ function loadItemsTable()
                     return displayText;
                 }
             },
-            { "data": "anm_date", "defaultContent": "" },
+            {   "data": "anm_date", "defaultContent": "" },
+            {   "data": "anm_stat",
+                "defaultContent": "-",
+                "render": function(data, type, row) {
+                    let statusText = "";
+                    switch (data) {
+                        case "PD":
+                            statusText = "<span class='badge bg-info'>{{ _('En cours d\'envoi') }}</span>";
+                            break;
+                        case "WC":
+                            statusText = "<span class='badge bg-danger'>{{ _('Connexion échouée') }}</span>";
+                            break;
+                        case "AA":
+                            statusText = "<span class='badge bg-success'>{{ _('Message accepté sans erreur') }}</span>";
+                            break;
+                        case "AE":
+                            statusText = "<span class='badge bg-danger'>{{ _('Erreur dans la requête') }}</span>";
+                            break;
+                        case "AR":
+                            statusText = "<span class='badge bg-dark'>{{ _('Rejet complet de la commande') }}</span>";
+                            break;
+                        default:
+                            statusText = "<span class='badge bg-secondary'>{{ _('Inconnu') }}</span>";
+                    }
+
+                    let anmTotText = row.anm_tot ? `<strong>${row.anm_tot}</strong><br>` : "";
+
+                    return anmTotText + statusText;
+                }
+            },
             {
                 "data": "anm_msg_sent",
                 "defaultContent": "-",

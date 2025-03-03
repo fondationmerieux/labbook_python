@@ -30,4 +30,4 @@ class Logs:
     def log_script(message):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         line_number = Logs.fileline()
-        print(f"{timestamp} : line {line_number} : {message}")
+        print(f"{timestamp} : {message}")
