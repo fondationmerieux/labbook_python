@@ -30,6 +30,7 @@
             <div class="clearfix mt-2 mb-5">
                 <div class="float-start ms-0">
                     <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    <input type="button" onclick="go_to_list_compartment();" id="btn_compartment" value="{{ _("Liste compartiments") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
                 </div>
                 {% if has_permission("ALIQUOT_170") %}
                 <div class="float-end d-lg-flex align-items-end">
@@ -150,6 +151,11 @@ function deleteItem(boxId)
 function add_item()
 {
 window.location.href = "{{ session['server_ext'] }}/det-storage-box/0";
+}
+
+function go_to_list_compartment()
+{
+window.location.href = "{{ session['server_ext'] }}/list-storage-compartment";
 }
 
 function return_back()

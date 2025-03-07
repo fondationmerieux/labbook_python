@@ -99,7 +99,7 @@ def upgrade():
                           "sbo_user int unsigned, "
                           "sbo_compartment INT UNSIGNED NOT NULL, "
                           "sbo_name VARCHAR(100) NOT NULL, "
-                          "sbo_label VARCHAR(10) NOT NULL," 
+                          "sbo_label VARCHAR(10) NOT NULL,"
                           "sbo_coordinates VARCHAR(10) NOT NULL, "
                           "sbo_dim_x INT NOT NULL, "
                           "sbo_dim_y INT NOT NULL, "
@@ -120,7 +120,7 @@ def upgrade():
                           "sal_sample INT UNSIGNED NOT NULL, "
                           "sal_patient INT UNSIGNED NOT NULL, "
                           "sal_type int unsigned NOT NULL, "
-                          "sal_pathogen INT UNSIGNED NOT NULL," 
+                          "sal_pathogen INT UNSIGNED NOT NULL,"
                           "sal_box INT UNSIGNED NOT NULL, "
                           "sal_coordinates VARCHAR(10) NOT NULL, "
                           "sal_in_stock VARCHAR(1) NOT NULL DEFAULT 'Y', "
@@ -137,7 +137,7 @@ def upgrade():
                           "sad_user int unsigned, "
                           "sad_aliquot INT UNSIGNED NOT NULL, "
                           "sad_reason TEXT NOT NULL, "
-                          "sad_external varchar(1) default 'N'," 
+                          "sad_external varchar(1) default 'N',"
                           "sad_location varchar(255) default '', "
                           "sad_destock_date datetime, "
                           "sad_restock_date datetime, "
@@ -603,7 +603,7 @@ def upgrade():
                           "(0, 'pathogène', 'Deltavirus ', 'Deltavirus', 446, 'virus_247'),"
                           "(0, 'pathogène', 'Deltavirus (Virus de l''hépatite delta)', 'Deltavirus_2', 447, 'virus_248')"))
     except Exception as err:
-            print("ERROR insert 248 virus pathogen dictionary,\n\terr=" + str(err))
+        print("ERROR insert 248 virus pathogen dictionary,\n\terr=" + str(err))
 
     # insert 91 parasite pathogen dictionary
     try:
@@ -752,13 +752,13 @@ def upgrade():
     # Insert profile rights
     try:
         conn.execute(text('''
-                          insert into profile_rights (prr_ser, prr_date, prr_by_user, prr_rank, prr_type, prr_label, prr_tag) 
-                          values 
-                          (169, NOW(), 0, 28000,"ALIQUOT","Gestion des échantillons", "ALIQUOT_169"), 
-                          (170, NOW(), 0, 28020,"ALIQUOT","Ajouter un élement", "ALIQUOT_170"), 
-                          (171, NOW(), 0, 28040,"ALIQUOT","Editer un élement", "ALIQUOT_171"), 
-                          (172, NOW(), 0, 28050,"ALIQUOT","Déstocker un élement", "ALIQUOT_172"), 
-                          (173, NOW(), 0, 28060,"ALIQUOT","Supprimer un élément", "ALIQUOT_173") 
+                          insert into profile_rights (prr_ser, prr_date, prr_by_user, prr_rank, prr_type, prr_label, prr_tag)
+                          values
+                          (169, NOW(), 0, 28000,"ALIQUOT","Gestion des échantillons", "ALIQUOT_169"),
+                          (170, NOW(), 0, 28020,"ALIQUOT","Ajouter un élement", "ALIQUOT_170"),
+                          (171, NOW(), 0, 28040,"ALIQUOT","Editer un élement", "ALIQUOT_171"),
+                          (172, NOW(), 0, 28050,"ALIQUOT","Déstocker un élement", "ALIQUOT_172"),
+                          (173, NOW(), 0, 28060,"ALIQUOT","Supprimer un élément", "ALIQUOT_173")
                           '''))
     except Exception as err:
         print("ERROR insert default profile_rights,\n\terr=" + str(err))
@@ -1105,7 +1105,7 @@ def upgrade():
                           END
                           '''))
     except Exception as err:
-            print("ERROR update sigl_05_data set ana_loinc,\n\terr=" + str(err))
+        print("ERROR update sigl_05_data set ana_loinc,\n\terr=" + str(err))
 
     # rename table analyzer_lab28 to analyzer_msg
     try:
@@ -1116,7 +1116,7 @@ def upgrade():
     # rename column from analyzer_lab28
     try:
         conn.execute(text('''
-                          alter table analyzer_msg 
+                          alter table analyzer_msg
                           RENAME COLUMN anl_ser TO anm_ser,
                           RENAME COLUMN anl_date TO anm_date,
                           RENAME COLUMN anl_date_upd TO anm_date_upd,

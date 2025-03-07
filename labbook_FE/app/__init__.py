@@ -1493,6 +1493,52 @@ def list_analyzers():
     return render_template('list-analyzers.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
+# Page : details analyzer
+@app.route('/det-analyzer/<int:id_analyzer>')
+def det_analyzer(id_analyzer=0):
+    log.info(Logs.fileline() + ' : TRACE setting det analyzer=' + str(id_analyzer))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det analyzer => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-analyzer/' + str(id_analyzer)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['analyzer'] = []
+
+    # Load list of analyzers
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/file'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_ihm['analyzers'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list of analyzers files failed, err=%s , url=%s', err, url)
+
+    if id_analyzer > 0:
+        # Load analyzer details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/det/' + str(id_analyzer)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['analyzer'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests analyzer det failed, err=%s , url=%s', err, url)
+
+    json_data['id_analyzer'] = id_analyzer
+
+    return render_template('det-analyzer.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
 # Page : list msg analyzer
 @app.route('/list-msg-analyzer')
 def list_msg_analyzer():

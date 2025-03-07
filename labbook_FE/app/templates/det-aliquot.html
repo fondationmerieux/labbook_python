@@ -11,13 +11,16 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Détails boîte") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Détails aliquot") }}</span></h2>
             
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_patient" class="form-label col-3 text-end mt-2 me-1">{{ _("Patient") }} *</label>
                     <div>
                         <select id="search_patient" class="form-select form-lbk form-search"></select>
+                        {% if not args or not args['aliquot'] or args['aliquot']['sal_patient'] <= 0 %}
+                        <button type="button" onclick="new_patient();" id="btn_patient" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-plus"></i></button>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -29,7 +32,7 @@
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">					
-                    <label for="sal_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Produit pathologique") }} *</label>
+                    <label for="sal_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Nature") }} *</label>
                     <div>
                         <select name="sal_type" id="sal_type" class="form-select cnx_trigger">
                             <option value="0"></option>
@@ -46,18 +49,24 @@
                     <div class="aliquot_form">
                         <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="sal_pathogen" class="form-label col-3 text-end mt-2 me-1">{{ _("Pathogène") }}</label>
-                            <div>
+                            <div class="d-flex align-items-center">
                                 <select name="sal_pathogen[]" class="form-select pathogen">
                                     {% from 'macros.html' import select_pathogen %}
                                     {{ select_pathogen(ihm['l_pathogen'], args['aliquot']['sal_pathogen']) }}
                                 </select>
+                                {% if has_permission("SETTING_52") %}
+                                {% if not args or not args['aliquot'] or args['aliquot']['sal_pathogen'] <= 0 %}
+                                <button type="button" onclick="new_pathogen();" id="btn_pathogen" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-plus"></i></button>
+                                {% endif %}
+                                {% endif %}
                             </div>
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="sal_coordinates" class="form-label col-3 text-end mt-2 me-1">{{ _("Coordonnées") }} *</label>
                             <div>
-                                <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates">
+                                <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates" pattern="^[A-Za-z]{1}[0-9]+$">
+                                <small id="sal_coordinates_error" class="text-danger" style="display:none;">"{{ _("Le format attendu est une lettre suivie d'un nombre") }}"</small>
                             </div>
                         </div>
 
@@ -71,10 +80,16 @@
                         <div class="form-group d-lg-flex align-items-start mt-3">
                             <label for="sal_box" class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte associée") }} *</label>
                             <div>
-                                <select name="sal_box[]" class="form-select box">
+                                <select name="sal_box[]" class="form-select box" onchange="get_box_coord(event);">
                                     {% from 'macros.html' import select_storage_box %}
                                     {{ select_storage_box(ihm['l_box']['data'], args['aliquot']['sal_box']) }}
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group d-lg-flex align-items-start mt-2">
+                            <label class="form-label col-3 text-end me-1">{{ _("Stockage boîte") }} :</label>
+                            <div>
+                                <span class="box_coord align-middle"></span>
                             </div>
                         </div>
                         <button type="button" class="btn btn-danger remove_aliquot d-none">{{ _("Supprimer") }}</button>
@@ -84,10 +99,12 @@
             
             <div class="my-2 d-flex justify-content-between align-items-center">
                 <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
-                {% if args['id_item'] == 0 %}
-                <button type="button" id="add_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
-                {% endif %}
-                <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                <div class="ms-auto">
+                    {% if args['id_item'] == 0 %}
+                    <button type="button" id="add_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
+                    {% endif %}
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
             </div>
         </div>
     </div>
@@ -219,6 +236,12 @@ document.getElementById("add_aliquot").addEventListener("click", function ()
     newAliquot.querySelector(".coordinates").value = "";
     newAliquot.querySelector(".in_stock").checked = true;
     newAliquot.querySelector(".box").value = firstAliquot.querySelector(".box").value;
+    newAliquot.querySelector(".box_coord").textContent = "";
+
+    let coordInput = newAliquot.querySelector(".coordinates");
+    coordInput.addEventListener("input", function() {
+        validateCoordinates(this);
+    });
 
     // Add a button to remove this form
     let removeButton = newAliquot.querySelector(".remove_aliquot");
@@ -236,7 +259,11 @@ document.getElementById("add_aliquot").addEventListener("click", function ()
 
 document.querySelectorAll(".remove_aliquot").forEach(button => {
     button.addEventListener("click", function () {
-        this.parentElement.remove();
+        let aliquots = document.querySelectorAll(".aliquot_form");
+        if (aliquots.length > 1) {
+            this.parentElement.remove();
+            checkRemoveButtons();
+        }
     });
 });
 
@@ -244,11 +271,13 @@ function checkRemoveButtons() {
     let aliquots = document.querySelectorAll(".aliquot_form");
     let removeButtons = document.querySelectorAll(".remove_aliquot");
 
-    if (aliquots.length > 1) {
-        removeButtons.forEach(btn => btn.classList.remove("d-none"));
-    } else {
-        removeButtons.forEach(btn => btn.classList.add("d-none"));
-    }
+    removeButtons.forEach((btn, index) => {
+        if (index === 0) {
+            btn.classList.add("d-none");
+        } else {
+            btn.classList.remove("d-none");
+        }
+    });
 }
 
 function save_item()
@@ -314,6 +343,67 @@ let aliquots = [];
         }
     })
     .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
+}
+
+function get_box_coord(event)
+{
+let boxSelect = event.target;
+let boxId = boxSelect.value;
+
+let aliquotForm = boxSelect.closest(".aliquot_form");
+let boxCoordSpan = aliquotForm.querySelector(".box_coord");
+
+    if (boxId) {
+        let url = `{{ session['server_ext'] }}/services/quality/storage/box/coord/${boxId}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.sro_label && data.sch_label && data.sco_label && data.sbo_label && data.sbo_coordinates) {
+                    let coordText = `${data.sro_label} > ${data.sch_label} > ${data.sco_label} > ${data.sbo_label} [${data.sbo_coordinates}]`;
+                    
+                    if (data.sbo_full === "Y") {
+                        coordText += " ({{ _('Pleine') }})";
+                    }
+
+                    boxCoordSpan.textContent = coordText;
+                }
+            })
+            .catch(() => {
+                boxCoordSpan.textContent = "{{ _("Erreur lors de la récupération") }}";
+            });
+    } else {
+        boxCoordSpan.textContent = "";
+    }
+}
+
+function validateCoordinates(input) {
+    let pattern = /^[A-Za-z]{1}[0-9]+$/;
+    let errorMessage = input.nextElementSibling; // L'élément <small> juste après l'input
+
+    if (!pattern.test(input.value.trim())) {
+        input.classList.add("is-invalid");
+        errorMessage.style.display = "block";
+    } else {
+        input.classList.remove("is-invalid");
+        errorMessage.style.display = "none";
+    }
+}
+
+document.querySelectorAll(".coordinates").forEach(input => {
+    input.addEventListener("input", function() {
+        validateCoordinates(this);
+    });
+});
+
+function new_patient()
+{
+window.open("{{ session['server_ext'] }}/det-patient/0", "_blank") ;
+}
+
+function new_pathogen()
+{
+window.open("{{ session['server_ext'] }}/setting-det-dict/pathogène", "_blank") ;
 }
 
 function cancel()

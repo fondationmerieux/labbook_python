@@ -448,3 +448,39 @@ class Analyzer:
         except mysql.connector.Error as e:
             Analyzer.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def generate_ack_response(original_message, ack_code, error_message=""):
+        """
+        Generates an HL7 ACK^R22 response message.
+
+        :param original_message: The received HL7 message (OUL^R22) or None if parsing failed.
+        :param ack_code: "AA" (Accepted), "AE" (Error), "AR" (Rejected)
+        :param error_message: Optional error description.
+        :return: An HL7 ACK^R22 response.
+        """
+        ack = Message("ACK")
+
+        # Ensure original_message is an HL7 message object
+        if not isinstance(original_message, Message):
+            Analyzer.log.error(Logs.fileline() + " : ERROR original_message is not a valid HL7 object")
+            original_message = None  # Set to None to avoid further issues
+
+        ack.msh.msh_3 = "LabBook"  # Sending application
+        ack.msh.msh_4 = "Lab"  # Sending facility
+        ack.msh.msh_5 = getattr(original_message.msh, "msh_3", "UNKNOWN").value if original_message else "UNKNOWN"
+        ack.msh.msh_6 = getattr(original_message.msh, "msh_4", "UNKNOWN").value if original_message else "UNKNOWN"
+        ack.msh.msh_7 = getattr(original_message.msh, "msh_7", "UNKNOWN").value if original_message else "UNKNOWN"
+        ack.msh.msh_9 = "ACK^R22"  # Message type
+        ack.msh.msh_10 = getattr(original_message.msh, "msh_10", "UNKNOWN").value if original_message else "UNKNOWN"
+        ack.msh.msh_11 = "P"  # Processing ID
+        ack.msh.msh_12 = "2.5.1"  # HL7 version
+
+        # Message acknowledgment
+        ack.msa.msa_1 = ack_code  # AA = Accepted, AE = Error, AR = Rejected
+        ack.msa.msa_2 = original_message.msh.msh_10.value if original_message else "UNKNOWN"
+
+        if error_message:
+            ack.msa.msa_3 = error_message  # Optional error text
+
+        return ack.to_er7()

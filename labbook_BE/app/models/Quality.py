@@ -1485,33 +1485,40 @@ class Quality:
     def getStorageList(args):
         cursor = DB.cursor()
 
-        if args:
-            if 'in_stock' in args:
-                in_stock = args['in_stock']
-        else:
-            in_stock = 'Y'
+        in_stock = args.get('in_stock', 'Y') if args else 'Y'
 
-        req = ('select sal_ser, sbo_ser, sbo_label, sco_ser, sco_label, sch_ser, sch_label, sro_ser, sro_label, '
-               'sbo_coordinates, sal_coordinates, sal_pathogen, sal_in_stock, '
-               'ifnull(pat.code, "") as pat_code, ifnull(pat.code_patient, "") as pat_code_lab, '
-               'ifnull(pat.nom, "") as pat_name, ifnull(pat.prenom, "") as pat_firstname, '
-               'ifnull(samp.type_prel, sal_type) as type, ifnull(samp.id_dos, 0) as id_rec, '
-               'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as rec_num_long, rec.type as rec_type, '
-               'rec.rec_num_int, rec.date_prescription as rec_date_prescr, ifnull(samp_id_ana, 0) as id_ana, '
-               'ana.code as ana_code, ana.ana_loinc, ana.nom as ana_name '
+        req = ('SELECT sal_ser, sbo_ser, sbo_label, sco_ser, sco_label, sch_ser, sch_label, sro_ser, sro_label, '
+               'sbo_coordinates, sal_coordinates, sal_pathogen, sal_in_stock, sal_date, '
+               'IFNULL(pat.code, "") AS pat_code, IFNULL(pat.code_patient, "") AS pat_code_lab, '
+               'IFNULL(pat.nom, "") AS pat_name, IFNULL(pat.prenom, "") AS pat_firstname, '
+               'IFNULL(samp.type_prel, sal_type) AS type, IFNULL(samp.id_dos, 0) AS id_rec, '
+               'IF(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) AS rec_num_long, rec.type AS rec_type, '
+               'rec.rec_num_int, rec.date_prescription AS rec_date_prescr, IFNULL(samp_id_ana, 0) AS id_ana, '
+               'ana.code AS ana_code, ana.ana_loinc, ana.nom AS ana_name, '
+
+               # Add column only if in_stock = 'N'
+               'CASE WHEN %s = "N" THEN sad_reason ELSE NULL END AS sad_reason, '
+               'CASE WHEN %s = "N" THEN sad_external ELSE NULL END AS sad_external, '
+               'CASE WHEN %s = "N" THEN sad_location ELSE NULL END AS sad_location, '
+               'CASE WHEN %s = "N" THEN sad_destock_date ELSE NULL END AS sad_destock_date '
+
                'FROM storage_aliquot '
-               'inner join storage_box sbo on sal_box = sbo_ser '
-               'inner join storage_compartment on sbo_compartment = sco_ser '
-               'inner join storage_chamber on sco_chamber = sch_ser '
-               'inner join storage_room on sch_room = sro_ser '
-               'inner join sigl_03_data pat on sal_patient = pat.id_data '
-               'left join sigl_01_data samp on sal_sample = samp.id_data '
-               'left join sigl_02_data rec on samp.id_dos = rec.id_data '
-               'left join sigl_05_data ana on samp.samp_id_ana = ana.id_data '
-               'left join sigl_param_num_dos_data as param_num_rec on param_num_rec.id_data=1 '
-               'where sal_in_stock=%s')
+               'INNER JOIN storage_box sbo ON sal_box = sbo_ser '
+               'INNER JOIN storage_compartment ON sbo_compartment = sco_ser '
+               'INNER JOIN storage_chamber ON sco_chamber = sch_ser '
+               'INNER JOIN storage_room ON sch_room = sro_ser '
+               'INNER JOIN sigl_03_data pat ON sal_patient = pat.id_data '
+               'LEFT JOIN sigl_01_data samp ON sal_sample = samp.id_data '
+               'LEFT JOIN sigl_02_data rec ON samp.id_dos = rec.id_data '
+               'LEFT JOIN sigl_05_data ana ON samp.samp_id_ana = ana.id_data '
+               'LEFT JOIN sigl_param_num_dos_data AS param_num_rec ON param_num_rec.id_data=1 '
 
-        cursor.execute(req, (in_stock,))
+               'LEFT JOIN sample_destock ON sad_aliquot = sal_ser AND %s = "N" '
+
+               'WHERE sal_in_stock=%s')
+
+        # Exécution de la requête
+        cursor.execute(req, (in_stock, in_stock, in_stock, in_stock, in_stock, in_stock))
 
         return cursor.fetchall()
 
@@ -1828,6 +1835,21 @@ class Quality:
         except mysql.connector.Error as e:
             Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+    @staticmethod
+    def getStorageBoxCoord(id_item):
+        cursor = DB.cursor()
+
+        req = ('select sro_label, sch_label, sco_label, sbo_coordinates, sbo_label, sbo_full '
+               'from storage_box '
+               'inner join storage_compartment on sco_ser=sbo_compartment '
+               'inner join storage_chamber on sch_ser=sco_chamber '
+               'inner join storage_room on sro_ser=sch_room '
+               'where sbo_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
 
     @staticmethod
     def getStorageAliquot(id_item):

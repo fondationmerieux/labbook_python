@@ -365,6 +365,7 @@ api.add_resource(StorageCompList,       '/services/quality/storage/compartment/l
 api.add_resource(StorageCompDet,        '/services/quality/storage/compartment/det/<int:id_item>')
 api.add_resource(StorageBoxList,        '/services/quality/storage/box/list')
 api.add_resource(StorageBoxDet,         '/services/quality/storage/box/det/<int:id_item>')
+api.add_resource(StorageBoxCoord,       '/services/quality/storage/box/coord/<int:id_item>')
 api.add_resource(StorageAliquotDet,     '/services/quality/storage/aliquot/det/<int:id_item>')
 api.add_resource(StorageAliquotDestock, '/services/quality/storage/aliquot/destock/<int:id_item>')
 api.add_resource(StorageAliquotRestock, '/services/quality/storage/aliquot/restock/<int:id_item>')

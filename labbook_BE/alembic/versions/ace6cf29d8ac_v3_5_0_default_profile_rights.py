@@ -772,7 +772,7 @@ def upgrade():
                           '(NOW(), 0, 4, 165,"N"),'
                           '(NOW(), 0, 4, 166,"N"),'
                           '(NOW(), 0, 4, 167,"N"),'
-                          '(NOW(), 0, 4, 168,"N")'                          
+                          '(NOW(), 0, 4, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role stocK manager,\n\terr=" + str(err))
@@ -948,7 +948,7 @@ def upgrade():
                           '(NOW(), 0, 5, 165,"Y"),'
                           '(NOW(), 0, 5, 166,"N"),'
                           '(NOW(), 0, 5, 167,"N"),'
-                          '(NOW(), 0, 5, 168,"N")'                          
+                          '(NOW(), 0, 5, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Laboratory,\n\terr=" + str(err))
@@ -1124,7 +1124,7 @@ def upgrade():
                           '(NOW(), 0, 6, 165,"N"),'
                           '(NOW(), 0, 6, 166,"N"),'
                           '(NOW(), 0, 6, 167,"N"),'
-                          '(NOW(), 0, 6, 168,"N")'                          
+                          '(NOW(), 0, 6, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Prescriber,\n\terr=" + str(err))
@@ -1300,7 +1300,7 @@ def upgrade():
                           '(NOW(), 0, 7, 165,"Y"),'
                           '(NOW(), 0, 7, 166,"Y"),'
                           '(NOW(), 0, 7, 167,"Y"),'
-                          '(NOW(), 0, 7, 168,"Y")'                          
+                          '(NOW(), 0, 7, 168,"Y")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Qualitician,\n\terr=" + str(err))
@@ -1476,7 +1476,7 @@ def upgrade():
                           '(NOW(), 0, 8, 165,"N"),'
                           '(NOW(), 0, 8, 166,"N"),'
                           '(NOW(), 0, 8, 167,"N"),'
-                          '(NOW(), 0, 8, 168,"N")'                          
+                          '(NOW(), 0, 8, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Secretary,\n\terr=" + str(err))
@@ -1652,7 +1652,7 @@ def upgrade():
                           '(NOW(), 0, 9, 165,"N"),'
                           '(NOW(), 0, 9, 166,"N"),'
                           '(NOW(), 0, 9, 167,"N"),'
-                          '(NOW(), 0, 9, 168,"N")'                          
+                          '(NOW(), 0, 9, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Secretary Advanced,\n\terr=" + str(err))
@@ -1828,7 +1828,7 @@ def upgrade():
                           '(NOW(), 0, 10, 165,"N"),'
                           '(NOW(), 0, 10, 166,"N"),'
                           '(NOW(), 0, 10, 167,"N"),'
-                          '(NOW(), 0, 10, 168,"N")'                          
+                          '(NOW(), 0, 10, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Technician,\n\terr=" + str(err))
@@ -2004,7 +2004,7 @@ def upgrade():
                           '(NOW(), 0, 11, 165,"N"),'
                           '(NOW(), 0, 11, 166,"N"),'
                           '(NOW(), 0, 11, 167,"N"),'
-                          '(NOW(), 0, 11, 168,"N")'      
+                          '(NOW(), 0, 11, 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Technician Advanced,\n\terr=" + str(err))
@@ -2180,11 +2180,11 @@ def upgrade():
                           '(NOW(), 0, 12, 165,"Y"),'
                           '(NOW(), 0, 12, 166,"Y"),'
                           '(NOW(), 0, 12, 167,"Y"),'
-                          '(NOW(), 0, 12, 168,"Y")'                          
+                          '(NOW(), 0, 12, 168,"Y")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Technician Qualitician,\n\terr=" + str(err))
-    
+ 
     # Create table for list of custom permissions for users
     try:
         conn.execute(text("create table user_permissions("

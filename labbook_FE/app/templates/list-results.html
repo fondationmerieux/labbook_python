@@ -106,10 +106,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Boîte associée") }} *</label>
-                                        <select class="form-select box">
+                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);">
                                             {% from 'macros.html' import select_storage_box %}
                                             {{ select_storage_box(ihm['l_box']['data'], 0) }}
                                         </select>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-check-label">{{ _("Stockage boîte") }} : </label>
+                                        <span class="box_coord"></span>
                                     </div>
                                 </div>
                             </div>
@@ -117,8 +121,9 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
-                            <button type="button" id="more_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
-                            <button type="button" class="btn btn-success" onclick="saveAliquot()">{{ _("Enregistrer") }}</button>
+                            <div class="ms-auto">
+                                <button type="button" id="more_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
+                                <button type="button" class="btn btn-success" onclick="saveAliquot()">{{ _("Enregistrer") }}</button>
                         </div>
                     </div>
                 </div>
@@ -504,6 +509,9 @@ let res       = "" ;
 let id_rec_p  = 0  ;
 let ref_ana_p = 0  ;
 let id_res_p  = 0  ;
+let id_samp_p = 0  ;
+let samp_type_p = "" ;
+let id_pat_p  = 0  ;
 let id_rec    = 0  ;
 
 let disp_valid = "d-none" ;
@@ -521,9 +529,13 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
     for( i in data )
     {
-    id_rec      = data[i].id_dos  ;
-    let ref_ana = data[i].ref_ana ;
-    let id_res  = data[i].id_res  ;
+    id_rec          = data[i].id_dos  ;
+    let ref_ana     = data[i].ref_ana ;
+    let id_res      = data[i].id_res  ;
+    let id_samp     = data[i].id_samp ;
+    let samp_type   = data[i].samp_type ;
+    let id_pat      = data[i].id_pat ;
+    let btn_aliquot = "" ;
 
         // close the previous form
         if ( ( ref_ana_p != 0 && ref_ana != ref_ana_p ) || ( id_rec_p != 0 && id_rec != id_rec_p ) )
@@ -565,8 +577,15 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         }
         #}
 
+        {% if has_permission("ALIQUOT_170") %}
+        if ( id_samp_p > 0 && samp_type_p > 0 && id_pat_p > 0 )
+        {
+        btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3 mt-1\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + id_pat_p + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
+        }
+        {% endif %}
+
         res += "</select>" +
-               "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" value=\"{{ _("Valider") }}\" class=\"btn btn-lbk btn-{{ session['user_role']|safe }} ms-lg-3 mt-1\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+               "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" value=\"{{ _("Valider") }}\" class=\"btn btn-lbk btn-{{ session['user_role']|safe }} ms-lg-3 mt-1\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" + btn_aliquot +
                "</span>" ;
         {% endif %}
 
@@ -591,24 +610,13 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         // let per_rec = per_num_rec( num_dos, {{ session['record_format'] }}, {{ session['record_period'] }} ) ;
         let per_rec = per_num_rec(data_res[0].rec_date_receipt, "{{ session['lang_select'] }}" ) ;
         let rec_num_int = data[i].rec_num_int ;
-        let id_samp  = data[i].id_samp ;
-        let samp_type= data[i].samp_type ;
-        let id_pat  = data[i].id_pat ;
-        let btn_aliquot = "" ;
-
-            {% if has_permission("ALIQUOT_170") %}
-            if ( id_samp > 0 && samp_type > 0 && id_pat > 0 )
-            {
-            btn_aliquot = "<button type=\"button\" class=\"btn btn-lbk btn-{{ session['user_role']|safe }} ms-2 mb-1\" onclick=\"add_aliquot(" + id_samp + "," + samp_type + "," + id_pat + ")\"><i class=\"bi bi-box-seam-fill me-2\"></i> {{ _("Ajouter un aliquot") }}</button>" ;
-            }
-            {% endif %}
 
             if (res_fam.length < 4) res_fam = "" ;
 
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + data[i].patient + btn_aliquot + 
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + data[i].patient +
                "<table class=\"table table-responsive table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }
@@ -862,6 +870,9 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     id_rec_p  = id_rec  ;
     ref_ana_p = ref_ana ;
     id_res_p  = id_res  ;
+    id_samp_p = id_samp ;
+    samp_type_p = samp_type ;
+    id_pat_p  = id_pat  ;
     }
 
     // close last form
@@ -904,8 +915,15 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     }
     #}
 
+        {% if has_permission("ALIQUOT_170") %}
+        if ( id_samp_p > 0 && samp_type_p > 0 && id_pat_p > 0 )
+        {
+        btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3 mt-1\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + id_pat_p + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
+        }
+        {% endif %}
+
     res += "</select>" +
-           "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} ms-lg-3 mt-1\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" +
+           "<button name=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec_p +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} ms-lg-3 mt-1\" onclick=\"save_valid(" + id_rec_p +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" + btn_aliquot +         
            "</span>" ;
     {% endif %}
 
@@ -1054,7 +1072,8 @@ let firstForm = document.querySelector(".aliquot_form");
         firstForm.querySelector(".pathogen").value = "";
         firstForm.querySelector(".coordinates").value = "";
         firstForm.querySelector(".in_stock").checked = true; 
-        firstForm.querySelector(".box").value = "0";
+        firstForm.querySelector(".box").selectedIndex = 0;
+        firstForm.querySelector(".box_coord").textContent = "";
     }
 
 document.querySelectorAll(".aliquot_form:not(:first-child), .aliquot-separator").forEach(elem => elem.remove());
@@ -1141,12 +1160,49 @@ document.getElementById("more_aliquot").addEventListener("click", function()
         newAliquot.remove();
     });
 
+    let newBoxCoord = newAliquot.querySelector(".box_coord");
+    if (newBoxCoord) {
+        newBoxCoord.textContent = "";
+    }
+
     newAliquot.appendChild(removeButton);
 
     let aliquotList = document.getElementById("aliquotList");
     aliquotList.appendChild(separator);
     aliquotList.appendChild(newAliquot);
 });
+
+function get_box_coord(event) 
+{
+let boxSelect = event.target;
+let boxId = boxSelect.value;
+
+let aliquotForm = boxSelect.closest(".aliquot_form");
+let boxCoordSpan = aliquotForm.querySelector(".box_coord");
+
+    if (boxId) {
+        let url = `{{ session['server_ext'] }}/services/quality/storage/box/coord/${boxId}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.sro_label && data.sch_label && data.sco_label && data.sbo_label && data.sbo_coordinates) {
+                    let coordText = `${data.sro_label} > ${data.sch_label} > ${data.sco_label} > ${data.sbo_label} [${data.sbo_coordinates}]`;
+                    
+                    if (data.sbo_full === "Y") {
+                        coordText += " ({{ _('Pleine') }})";
+                    }
+
+                    boxCoordSpan.textContent = coordText;
+                }
+            })
+            .catch(() => {
+                boxCoordSpan.textContent = "{{ _("Erreur lors de la récupération") }}";
+            });
+    } else {
+        boxCoordSpan.textContent = "";
+    }
+}
 
 {% include 'js/display_histo.js' %}
 

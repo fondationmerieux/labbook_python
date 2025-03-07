@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - print stickers for storage aliquot
 
+## [3.5.5] - 2025-03-04
+### Changed
+- display box full coordinates storage in modal form for stocking an aliquot
+- aliquot storage button display if result saved
+- list of aliquot display more details
+
 ## [3.5.4] - 2025-03-03
 ### Added
 - colummn status in list of transactions table

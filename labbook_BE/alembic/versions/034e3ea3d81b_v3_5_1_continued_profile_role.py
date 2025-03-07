@@ -345,7 +345,7 @@ def upgrade():
                           '(NOW(), 0, (select max(pro_ser) from profile_role), 165,"N"),'
                           '(NOW(), 0, (select max(pro_ser) from profile_role), 166,"N"),'
                           '(NOW(), 0, (select max(pro_ser) from profile_role), 167,"N"),'
-                          '(NOW(), 0, (select max(pro_ser) from profile_role), 168,"N")'               
+                          '(NOW(), 0, (select max(pro_ser) from profile_role), 168,"N")'
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Sampler,\n\terr=" + str(err))

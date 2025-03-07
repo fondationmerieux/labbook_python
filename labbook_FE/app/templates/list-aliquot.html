@@ -184,9 +184,36 @@ let in_stock = showDestocked ? "N" : "Y";
                     return menu;
                 }
             },
-            { "data": "sal_ser", "visible": false },
-            { "data": "type_label" },
-            { "data": "sal_pathogen_label" },
+            {   "data": "sal_ser", "visible": false },
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    let typeLabel = row.type_label ? row.type_label : "";
+
+                    if (row.sal_in_stock === "Y" && row.sal_date) {
+                        typeLabel += `<br><span><small>{{ _("Stocké le") }} ${row.sal_date}</small></span>`;
+                    }
+
+                    if (row.sal_in_stock === "N") {
+                        typeLabel += `<br><span class="text-danger"><strong>{{ _("Déstocké le") }} ${row.sad_destock_date}</strong></span>`;
+
+                        if (row.sad_reason) {
+                            typeLabel += `<br><span class="text-muted">${row.sad_reason}</span>`;
+                        }
+
+                        if (row.sad_location) {
+                            typeLabel += `<br><span class="text-muted">${row.sad_location}</span>`;
+                        }
+
+                        if (row.sad_external === "Y") {
+                            typeLabel += ` <span class="badge bg-warning text-dark">{{ _("Externalisé") }}</span>`;
+                        }
+                    }
+
+                    return typeLabel;
+                }
+            },
+            {   "data": "sal_pathogen_label" },
             { 
                 "data": null,
                 "render": function(data, type, row) {

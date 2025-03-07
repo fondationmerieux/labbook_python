@@ -33,7 +33,7 @@ def analyzer(test=False, verbose=False):
 
     date_now  = datetime.now()
 
-    Logs.log_script(Logs.fileline() + " : BEGIN script today=" +str(date_now))
+    Logs.log_script(Logs.fileline() + " : BEGIN script today=" + str(date_now))
     Logs.log_script(Logs.fileline() + " : cst_path_log = " + Constants.cst_path_log)
 
     with app.app_context():
@@ -75,7 +75,7 @@ def analyzer(test=False, verbose=False):
                     OML_O33_bytes = OML_O33_formatted.encode("utf-8", errors="replace")
 
                     # send OML33 to Connect
-                    req = requests.post(url_lab28 , data=OML_O33_bytes, headers={"Content-Type": "application/hl7-v2"})
+                    req = requests.post(url_lab28, data=OML_O33_bytes, headers={"Content-Type": "application/hl7-v2"})
 
                     Logs.log_script('req.status_code : ' + str(req.status_code))
 
@@ -84,7 +84,7 @@ def analyzer(test=False, verbose=False):
                         ORL_O34 = req.text
                         Logs.log_script('ORL_O34 received : ' + str(ORL_O34))
 
-                        # Extract MSA-1 (ORL^O34 general status) 
+                        # Extract MSA-1 (ORL^O34 general status)
                         msa_match = re.search(r'MSA\|([A-Z]{2})\|', ORL_O34)
                         msa_status = msa_match.group(1) if msa_match else "UN"
 
@@ -93,7 +93,6 @@ def analyzer(test=False, verbose=False):
                     else:
                         # update status
                         ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat='WC', ORL_O34='')
-
 
                 # if l_tasks is empty we reload before exit this script
                 l_tasks = Analyzer.listTask('PD')
@@ -105,7 +104,7 @@ def analyzer(test=False, verbose=False):
         dt_time_script = dt_stop_script - dt_start_script
 
         remove_lock_file(lock_file_path)
-        print ("END script")
+        print("END script")
 
     return ret_sc
 
@@ -123,6 +122,7 @@ def check_lock_file(file_path):
         # Si le fichier est verrouillé, une IOError sera levée
         Logs.log_script(f"Le fichier {file_path} est verrouillé par un autre processus.")
         return True
+
 
 def create_lock_file(file_path):
     try:
@@ -191,4 +191,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -3452,6 +3452,12 @@ class StorageList(Resource):
                 elif key == 'rec_date_prescr':
                     if storage[key]:
                         storage[key] = datetime.strftime(storage[key], '%Y-%m-%d %H:%M')
+                elif key == 'sal_date':
+                    if storage[key]:
+                        storage[key] = datetime.strftime(storage[key], '%Y-%m-%d %H:%M')
+                elif key == 'sad_destock_date':
+                    if storage[key]:
+                        storage[key] = datetime.strftime(storage[key], '%Y-%m-%d %H:%M')
 
         self.log.info(Logs.fileline() + ' : TRACE StorageList')
         return compose_ret({"data": l_storages}, Constants.cst_content_type_json)
@@ -3808,6 +3814,25 @@ class StorageBoxDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE StorageBoxDet delete id_item=' + str(id_item))
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class StorageBoxCoord(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getStorageBoxCoord(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'StorageBoxCoord ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : StorageBoxCoord id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
 
 
 class StorageAliquotDet(Resource):
