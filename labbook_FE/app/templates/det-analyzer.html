@@ -10,6 +10,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Analyseur") }}</span></h2>
+            {% if (has_permission("SETTING_49") and args['id_analyzer'] == 0) or (has_permission("SETTING_50") and args['id_analyzer'] > 0) %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
@@ -73,6 +74,9 @@
                 </div>
                 {% endif %}
             </div>
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
         </div>
     </div>
 </div>

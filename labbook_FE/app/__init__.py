@@ -354,6 +354,8 @@ def get_user_data(login):
             session['l_user_rights'] = []
             session.modified = True
 
+        log.info(Logs.fileline() + ' : DEBUG l_user_rights = ' + str(session['l_user_rights']))
+
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list of user rights failed, err=%s , url=%s', err, url)
         return False

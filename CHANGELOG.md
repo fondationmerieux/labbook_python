@@ -9,6 +9,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - print stickers for storage aliquot
 
+## [3.5.6] - 2025-03-12
+### Added
+- more control on some pages for edition versus add an item
+
+### Changed
+- list of box and compartment display max capacity in table
+
+### Fixed
+- details patient from det-aliquot page
+- api page access for API profile
+- display of path when box is selected when aliquot is added
+- fix some permissions for profile
+
 ## [3.5.5] - 2025-03-04
 ### Changed
 - display box full coordinates storage in modal form for stocking an aliquot

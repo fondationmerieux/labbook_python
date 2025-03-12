@@ -10,6 +10,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Rôle") }}</span></h2>
+            {% if has_permission("ADMIN_1") %}
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rôle") }}</h3>
@@ -77,6 +78,10 @@
                     {% endif %}
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
         </div>
     </div>
 </div><!-- close content -->
@@ -205,6 +210,7 @@ function cancel()
 window.history.back() ;
 }
 
+{% if has_permission("ADMIN_1") %}
 $( document ).ready( function()
 {
 {% if args['pro_ser'] %}
@@ -231,5 +237,6 @@ var param = {
     } ) ;
 {% endif %}
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

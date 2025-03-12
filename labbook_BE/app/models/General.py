@@ -7,20 +7,19 @@ def compose_ret(ret, type=Constants.cst_content_type_plain, http_code=200, ensur
     from flask import make_response
 
     if type == Constants.cst_content_type_json:
-        if not ensure_ascii:
-            resp = make_response(json.dumps(ret, ensure_ascii=False), http_code)
-        else:
-            resp = make_response(json.dumps(ret), http_code)
+        resp = make_response(json.dumps(ret, ensure_ascii=ensure_ascii), http_code)
     else:
         resp = make_response(ret, http_code)
 
+    # Définition correcte du Content-Type en fonction du type demandé
     if type == Constants.cst_content_type_json:
         resp.headers['Content-type'] = 'application/json; charset=utf-8'
+    elif type == Constants.cst_content_type_hl7:
+        resp.headers['Content-type'] = 'application/hl7-v2'
     else:
         resp.headers['Content-type'] = 'text/plain; charset=utf-8'
 
     resp.headers['Access-Control-Allow-Origin'] = '*'
-
     return resp
 
 

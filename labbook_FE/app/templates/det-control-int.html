@@ -12,6 +12,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Contrôle interne") }}</span></h2>
+            {% if (has_permission("CTRLINT_152") and args['id_ctrl'] == 0) or (has_permission("CTRLINT_153") and args['id_ctrl'] > 0) %}
             <div class="form-group d-lg-flex align-items-start mt-3">
                 <label class="form-label col-3 text-end mx-3">{{ _("Type") }}</label>
                 <label class="form-label text-end me-3">
@@ -90,6 +91,10 @@
                     {% endif %}
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
 
         </div>
     </div>

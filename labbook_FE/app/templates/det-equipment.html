@@ -13,6 +13,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Equipement") }}</span></h2>
+            {% if (has_permission("EQP_97") and args['id_eqp'] == 0) or (has_permission("EQP_98") and args['id_eqp'] > 0) %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom de l'équipement") }}</label>
@@ -166,6 +167,10 @@
                 </div>
                 {% endif %}
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
         </div>
     </div>
 </div><!-- close content -->
@@ -534,9 +539,11 @@ function cancel()
 window.history.back() ;
 }
 
+{% if (has_permission("EQP_97") and args['id_eqp'] == 0) or (has_permission("EQP_98") and args['id_eqp'] > 0) %}
 $( document ).ready( function()
 {
 load_data() ;
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

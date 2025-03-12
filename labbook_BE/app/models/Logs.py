@@ -29,5 +29,4 @@ class Logs:
     @staticmethod
     def log_script(message):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        line_number = Logs.fileline()
         print(f"{timestamp} : {message}")

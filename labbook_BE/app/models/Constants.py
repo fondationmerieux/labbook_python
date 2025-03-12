@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 class Constants:
-    cst_content_type_plain = 1
-    cst_content_type_json  = 2
+    cst_content_type_plain = "text/plain"
+    cst_content_type_json  = "application/json"
+    cst_content_type_hl7   = "application/hl7-v2"
 
     cst_isodate    = '%Y-%m-%d'
     cst_dt_ext_HM  = '%Y-%m-%dT%H:%M'
@@ -59,5 +60,9 @@ class Constants:
     cst_filedata_invoice    = 'data_template_invoice'
 
     # HL7 Constants
-    cst_stat_init    = 'IN'
-    cst_stat_pending = 'PD'
+    cst_stat_init      = 'IN'
+    cst_stat_pending   = 'PD'
+    cst_stat_wrong_cnx = 'WC'
+    cst_stat_accepted  = 'AA'
+    cst_stat_error     = 'AE'
+    cst_stat_rejected  = 'AR'

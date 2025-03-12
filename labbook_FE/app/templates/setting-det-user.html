@@ -13,6 +13,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Utilisateur") }}</span></h2>
+            {% if has_permission("SETTING_41") or args['user_id'] == session['user_id'] %}
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Droits utilisateur") }}</h3>
@@ -222,6 +223,10 @@
                     <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
         </div>
     </div>
 </div><!-- close content -->

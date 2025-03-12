@@ -12,6 +12,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Prescripteur") }}</span></h2>
+            {% if (has_permission("DOCTOR_87") and args['id_doctor'] == 0) or (has_permission("DOCTOR_88") and args['id_doctor'] > 0) %}
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Accès") }}</h3>
@@ -132,6 +133,10 @@
                 </div>
                 {% endif %}
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
         </div>
     </div>
 </div><!-- close content -->

@@ -114,8 +114,21 @@ function loadItemsTable()
                     return `${row.dim_x},${row.dim_y}`;
                 }
             },
-            { "data": "nb_box" },
-            { "data": "full" }
+            {
+                "data": null,
+                "className": "text-end",
+                "render": function(data, type, row) {
+                    let maxCapacity = row.dim_x * row.dim_y;
+                    return `${row.nb_box} / ${maxCapacity}`;
+                }
+            },
+            {
+                "data": "full",
+                "className": "text-end",
+                "render": function(data, type, row) {
+                    return data === "Y" ? "{{ _('Oui') }}" : "{{ _('Non') }}";
+                }
+            }
         ]
     });
 }

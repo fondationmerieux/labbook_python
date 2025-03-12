@@ -1186,9 +1186,13 @@ let boxCoordSpan = aliquotForm.querySelector(".box_coord");
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                if (data.sro_label && data.sch_label && data.sco_label && data.sbo_label && data.sbo_coordinates) {
-                    let coordText = `${data.sro_label} > ${data.sch_label} > ${data.sco_label} > ${data.sbo_label} [${data.sbo_coordinates}]`;
+                if (data.sbo_label) {
+                    let coordText = `${data.sro_label || ''} > ${data.sch_label || ''} > ${data.sco_label || ''} > ${data.sbo_label}`;
                     
+                    if (data.sbo_coordinates) {
+                        coordText += ` [${data.sbo_coordinates}]`;
+                    } 
+
                     if (data.sbo_full === "Y") {
                         coordText += " ({{ _('Pleine') }})";
                     }

@@ -101,8 +101,10 @@ function save_form( id_pat )
 
         {% if type_req == 'E' %}
         window.location.href = "{{ session['server_ext'] }}/det-req-ext/Y/" + id_pat ;
-        {% else %}
+        {% elif type_req == 'I' %}
         window.location.href = "{{ session['server_ext'] }}/det-req-int/Y/" + id_pat ;
+        {% else %}
+        window.location.href = "{{ session['server_ext'] }}/homepage" ;
         {% endif %}
         },
         error: function(data)

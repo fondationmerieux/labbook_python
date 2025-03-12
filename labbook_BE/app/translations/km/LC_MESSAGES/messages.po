@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Labbook_BE\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-27 14:34+0100\n"
+"POT-Creation-Date: 2025-03-11 14:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: km\n"
@@ -8311,3 +8311,4 @@ msgstr "បញ្ជាក់ដោយជីវសាស្រ្ត"
 #, fuzzy
 msgid "Validation technique"
 msgstr "បញ្ជាក់ដោយបច្ចេកទេស"
+

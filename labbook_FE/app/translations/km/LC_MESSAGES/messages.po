@@ -1,18 +1,11 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  Labbook_FE\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-28 11:11+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: km\n"
-"Language-Team: km <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: km\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:108
@@ -660,9 +653,7 @@ msgid "Aucun fichier déposé"
 msgstr "គ្មានឯកសារផ្ទុកឡើងទេ"
 
 #: templates/administrative-record.html:643
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
 msgstr "តើអ្នកចង់កែសម្រួលរបាយការណ៍ឡើងវិញទេ? (ពាក្យបោះបង់និងជំនួសនឹងបង្ហាញនៅទីនោះ)"
 
 #: templates/administrative-record.html:662 templates/pivot-table.html:161
@@ -839,9 +830,7 @@ msgid "Traitement réussi"
 msgstr "ដំណើរការទទួលជោគជ័យ"
 
 #: templates/analysis-import.html:150 templates/dict-import.html:123
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
 msgstr "មានកំហុសក្នុងការដំណើរការទិន្នន័យផ្ទុកទំព័រឡើងវិញរហូតដល់អ្នកដឹងពីស្ថានភាព"
 
 #: templates/analysis-import.html:187 templates/dict-import.html:155
@@ -849,9 +838,7 @@ msgid "Aucun statut"
 msgstr "គ្មានឋានៈ"
 
 #: templates/analysis-import.html:193 templates/dict-import.html:161
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពនៃឃ្លាំងទិន្នន័យ"
 
 #: templates/api.html:3
@@ -1005,9 +992,7 @@ msgstr "កំហុសមួយបានកើតឡើងខណៈពេលក
 
 #: templates/biological-validation.html:418
 #: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
 msgstr "តើអ្នកពិតជាចង់រំសាយលទ្ធផលនេះទេ?\\n សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។"
 
 #: templates/biological-validation.html:459
@@ -1077,38 +1062,9 @@ msgstr "ការប្រុងប្រយ័ត្ន អ្នកនឹង�
 msgid "Contributeurs"
 msgstr "អ្នកផ្ដល់ ឬអ្នកចូលរួម"
 
-#: templates/contributors.html:20 templates/initialization.html:3
-#: templates/initialization.html:19 templates/login.html:3
-#: templates/login.html:20 templates/skeleton.html:33
-msgid "LabBook"
-msgstr "សៀវភៅមន្ទីពិសោធន៏"
-
 #: templates/contributors.html:32
 msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
 msgstr "LabBook គឺជាកម្មវិធីគ្រប់គ្រងមន្ទីរពិសោធន៍ដែលបើកទូលាយ។"
-
-#: templates/contributors.html:33
-msgid ""
-"LabBook est co-financé par l'Agence Française de Développement (AFD) et "
-"la Fondation Mérieux."
-msgstr ""
-"LabBook ត្រូវបានសហហិរញ្ញប្បទានដោយទីភ្នាក់ងារអភិវឌ្ឍន៍បារាំង (AFD) "
-"និងមូលនិធិ Mérieux ។"
-
-#: templates/contributors.html:34
-msgid ""
-"Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé "
-"(OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le "
-"projet est financé par la Banque allemande de développement (KFW) et "
-"contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance "
-"épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO."
-msgstr ""
-"គម្រោង PROALAB មានមូលដ្ឋាននៅអង្គការសុខភាពអាហ្វ្រិកខាងលិច (WAHO) "
-"និងជាផ្នែកមួយនៃផែនការយុទ្ធសាស្ត្រមន្ទីរពិសោធន៍ WAHO ។ "
-"គម្រោងនេះត្រូវបានផ្តល់មូលនិធិដោយធនាគារអភិវឌ្ឍន៍អាឡឺម៉ង់ (KFW) "
-"និងរួមចំណែកដល់ LabBook ចាប់តាំងពីឆ្នាំ 2024 "
-"ដើម្បីកែលម្អបណ្តាញតាមដានរោគរាតត្បាត និងប្រព័ន្ធមន្ទីរពិសោធន៍នៅក្នុងតំបន់ "
-"ECOWAS ។"
 
 #: templates/contributors.html:35
 msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
@@ -1125,147 +1081,6 @@ msgstr "កម្មវិធីនេះឋិតនៅក្រោមអជ្
 #: templates/contributors.html:61
 msgid "Version : "
 msgstr "ជំនាន់៖"
-
-#: templates/det-aliquot.html:7
-#, fuzzy
-msgid "Détails aliquot"
-msgstr "ព​ត៌​មាន​លម្អិត​នៃ​ផលិតផល"
-
-#: templates/det-aliquot.html:14 templates/det-storage-box.html:5
-#: templates/det-storage-box.html:12
-#, fuzzy
-msgid "Détails boîte"
-msgstr "ព​ត៌​មាន​លម្អិត​នៃ​ផលិតផល"
-
-#: templates/det-aliquot.html:18 templates/list-aliquot.html:29
-#: templates/list-results.html:611 templates/list-samples.html:44
-#: templates/pivot-table.html:30 templates/report-tat.html:74
-#: templates/report-tat.html:335
-msgid "Patient"
-msgstr "អ្នកជំងឺ"
-
-#: templates/det-aliquot.html:32 templates/det-sample.html:79
-msgid "Produit pathologique"
-msgstr "ផលិតផលរោគសាស្ត្រ"
-
-#: templates/det-aliquot.html:48 templates/enter-result.html:126
-#: templates/list-aliquot.html:28 templates/list-results.html:93
-msgid "Pathogène"
-msgstr ""
-
-#: templates/det-aliquot.html:58 templates/det-storage-box.html:29
-#: templates/enter-result.html:133 templates/list-results.html:100
-#: templates/list-storage-box.html:21 templates/manage-pat-records.html:230
-#: templates/manage-pat-records.html:484
-msgid "Coordonnées"
-msgstr "ព័ត៌មានទំនាក់ទំនង"
-
-#: templates/det-aliquot.html:65 templates/enter-result.html:138
-#: templates/list-results.html:105
-msgid "Présent en stock"
-msgstr ""
-
-#: templates/det-aliquot.html:72 templates/enter-result.html:141
-#: templates/list-results.html:108
-#, fuzzy
-msgid "Boîte associée"
-msgstr "ការវិភាគតេស្តពាក់ព័ន្ធ"
-
-#: templates/det-aliquot.html:88 templates/enter-result.html:118
-#: templates/enter-result.html:153 templates/enter-result.html:548
-#: templates/list-aliquot.html:53 templates/list-results.html:85
-#: templates/list-results.html:120 templates/list-results.html:602
-#, fuzzy
-msgid "Ajouter un aliquot"
-msgstr "បន្ថែម​តម្លៃ"
-
-#: templates/det-aliquot.html:261
-msgid "Un patient doit être sélectionné."
-msgstr ""
-
-#: templates/det-aliquot.html:267
-#, fuzzy
-msgid "Le produit pathologique est obligatoire."
-msgstr "ផលិតផលរោគសាស្ត្រ"
-
-#: templates/det-aliquot.html:281 templates/enter-result.html:1179
-#: templates/list-results.html:1078
-msgid "L'association à une boîte est obligatoire."
-msgstr ""
-
-#: templates/det-analyzer.html:5 templates/det-analyzer.html:12
-#: templates/list-msg-analyzer.html:18
-msgid "Analyseur"
-msgstr "អ្នកវិភាគ"
-
-#: templates/det-analyzer.html:22 templates/list-analyzers.html:5
-#: templates/list-analyzers.html:12
-msgid "Liste des analyseurs"
-msgstr "បញ្ជីអ្នកវិភាគ"
-
-#: templates/det-analyzer.html:32 templates/det-dhis2-api.html:22
-#: templates/det-storage-box.html:22 templates/det-storage-chamber.html:29
-#: templates/det-storage-compartment.html:29 templates/det-storage-room.html:29
-#: templates/list-analyzers.html:33 templates/list-staff.html:43
-#: templates/list-storage-box.html:20 templates/list-storage-chamber.html:21
-#: templates/list-storage-compartment.html:21
-#: templates/list-storage-room.html:21 templates/login.html:33
-#: templates/setting-det-user.html:51 templates/setting-link-unit-user.html:22
-#: templates/setting-users.html:21 templates/setting-users.html:89
-msgid "Identifiant"
-msgstr "ឈ្មោះ​អ្នកប្រើប្រាស់ "
-
-#: templates/det-analyzer.html:39
-msgid "adresse LabBook Connect"
-msgstr ""
-
-#: templates/det-analyzer.html:44 templates/list-template.html:121
-#: templates/report-dhis2.html:66
-msgid "Tester"
-msgstr "សាកល្បង"
-
-#: templates/det-analyzer.html:51
-msgid "adresse transcodage"
-msgstr "អាសយដ្ឋាន transcodage"
-
-#: templates/det-analyzer.html:58
-msgid "position"
-msgstr "ទីតាំង"
-
-#: templates/det-analyzer.html:90
-#, fuzzy
-msgid "Veuillez saisir une adresse LabBook Connect et un identifiant."
-msgstr "សូមបញ្ចូលឈ្មោះអ្នកប្រើ!"
-
-#: templates/det-analyzer.html:96
-#, fuzzy
-msgid "Test en cours"
-msgstr "ដំណើរការកំពុងបន្ត"
-
-#: templates/det-analyzer.html:106
-msgid "L'analyseur est chargé."
-msgstr ""
-
-#: templates/det-analyzer.html:110
-msgid "Erreur : "
-msgstr ""
-
-#: templates/det-analyzer.html:114
-msgid "Réponse inattendue du serveur."
-msgstr ""
-
-#: templates/det-analyzer.html:119
-#, fuzzy
-msgid "Erreur lors de la requête :"
-msgstr "មាន​បញ្ហា​ពេល​បង្កើត PDF"
-
-#: templates/det-analyzer.html:138
-msgid "Veuillez saisir un nom, un identifiant unique et leurs adresses."
-msgstr "សូមបញ្ចូលឈ្មោះ លេខសម្គាល់តែមួយគត់ និងអាសយដ្ឋានរបស់ពួកគេ។"
-
-#: templates/det-analyzer.html:141
-msgid "Veuillez sélectionner un analyzer dans la liste."
-msgstr "សូមជ្រើសរើសអ្នកវិភាគពីបញ្ជី។"
 
 #: templates/det-control-ext.html:5 templates/det-control-ext.html:14
 msgid "Contrôle externe"
@@ -1677,29 +1492,6 @@ msgstr "ការត្រួតពិនិត្យខាងក្នុង"
 msgid "Cible"
 msgstr "គោលដៅ"
 
-#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
-msgid "Plateforme DHIS2 api"
-msgstr ""
-
-#: templates/det-dhis2-api.html:29 templates/login.html:41
-#: templates/setting-backup.html:83 templates/setting-det-user.html:58
-#: templates/setting-pwd-user.html:15
-msgid "Mot de passe"
-msgstr "ពាក្យសម្ងាត់"
-
-#: templates/det-dhis2-api.html:39
-msgid "Adresse plateforme dhis2 "
-msgstr ""
-
-#: templates/det-dhis2-api.html:46
-msgid "Par défaut"
-msgstr ""
-
-#: templates/det-dhis2-api.html:86 templates/det-doctor.html:165
-#: templates/det-template.html:96 templates/setting-det-role.html:107
-msgid "Veuillez saisir un nom."
-msgstr "សូមបញ្ចូលឈ្មោះ។"
-
 #: templates/det-doctor.html:17 templates/setting-det-user.html:48
 msgid "Accès"
 msgstr "ការចូលប្រើ"
@@ -1746,12 +1538,6 @@ msgstr "សេវាកម្ម"
 msgid "Adresse"
 msgstr "អាសយដ្ឋាន"
 
-#: templates/det-doctor.html:76 templates/elem/pat_zipcode.html:1
-#: templates/list-doctors.html:88 templates/manage-pat-records.html:259
-#: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
-msgid "Code postal"
-msgstr "លេខ​កូដ​ប្រៃ​ស​ណី​យ"
-
 #: templates/det-doctor.html:83 templates/list-doctors.html:49
 #: templates/list-doctors.html:89 templates/setting-zipcity.html:38
 msgid "Ville"
@@ -1779,15 +1565,10 @@ msgstr "ទូរសារ"
 msgid "Adresse email"
 msgstr "អាស័យដ្ឋានអ៊ីម៉ែល"
 
-#: templates/det-doctor.html:211 templates/elem/search_zipcity.html:5
-#: templates/manage-pat-records.html:947
-msgid "Recherche de code postal ou ville"
-msgstr "ស្វែងរកលេខកូដប្រៃសណីយ៍ឬទីក្រុង"
-
-#: templates/det-doctor.html:258 templates/elem/search_zipcity.html:52
-#: templates/manage-pat-records.html:994
-msgid "Erreur lors de la récupération des données"
-msgstr "កំហុសពេលទាញយកទិន្នន័យ"
+#: templates/det-dhis2-api.html:86 templates/det-doctor.html:165
+#: templates/det-template.html:96 templates/setting-det-role.html:107
+msgid "Veuillez saisir un nom."
+msgstr "សូមបញ្ចូលឈ្មោះ។"
 
 #: templates/det-equipment.html:18
 msgid "Nom de l'équipement"
@@ -1837,6 +1618,32 @@ msgstr "លេខសារពើភ័ណ្ឌ"
 msgid "Responsable"
 msgstr "បុគ្គលដែលត្រូវទទួលខុសត្រូវ"
 
+#: templates/det-manual.html:5 templates/det-manual.html:15
+#: templates/eqp-document.html:18 templates/list-manuals.html:68
+msgid "Manuel"
+msgstr "ហត្ថកម្ម"
+
+#: templates/det-procedure.html:5 templates/det-procedure.html:15
+#: templates/eqp-document.html:41 templates/list-procedure.html:41
+msgid "Procédure"
+msgstr "នីតិវិធី"
+
+#: templates/list-eqp-failure.html:12
+msgid "Liste des pannes et réparations"
+msgstr "បញ្ជីនៃការខូច និង ការជួសជុល"
+
+#: templates/hist-stock-product.html:61 templates/list-eqp-failure.html:34
+#: templates/list-eqp-maintenance.html:35 templates/list-trace-download.html:24
+#: templates/list-trace-download.html:61 templates/setting-det-user.html:5
+#: templates/setting-det-user.html:15
+msgid "Utilisateur"
+msgstr "អ្នក​ប្រើ"
+
+#: templates/eqp-maintenance-preventive.html:5
+#: templates/eqp-maintenance-preventive.html:15
+msgid "Maintenance préventive"
+msgstr "ការថែទាំការពារ"
+
 #: templates/det-equipment.html:98 templates/det-template.html:28
 msgid "Facture"
 msgstr "វិក័យប័ត្រ"
@@ -1858,11 +1665,6 @@ msgstr "កាលបរិច្ឆេទនៃកំរៃជើងសារ"
 msgid "Date de retrait du laboratoire"
 msgstr "កាលបរិច្ឆេទនៃការដកចេញពីមន្ទីរពិសោធន៍"
 
-#: templates/det-equipment.html:145 templates/det-supplier.html:79
-#: templates/list-suppliers.html:39
-msgid "Critique"
-msgstr "ការរិះគន់"
-
 #: templates/det-equipment.html:151 templates/det-staff.html:210
 #: templates/eqp-document.html:64 templates/eqp-failure.html:63
 #: templates/eqp-maintenance-contract.html:53
@@ -1875,10 +1677,6 @@ msgstr "យោបល់"
 #: templates/det-equipment.html:294
 msgid "Veuillez saisir un nom d'équipement."
 msgstr "សូមបញ្ចូលឈ្មោះឧបករណ៍។"
-
-#: templates/det-equipment.html:390
-msgid "Voir"
-msgstr "សូមមើល"
 
 #: templates/det-hist-analysis.html:5 templates/det-hist-analysis.html:12
 msgid "Historique d'une analyse"
@@ -2016,11 +1814,6 @@ msgstr "ចង្អុលបង្ហាញបរិមាណដែលបាន
 msgid "Aucun prescripteur à exporter !"
 msgstr "គ្មានអ្នកចេញវេជ្ជបញ្ជានាំចេញទេ!"
 
-#: templates/det-manual.html:5 templates/det-manual.html:15
-#: templates/eqp-document.html:18 templates/list-manuals.html:68
-msgid "Manuel"
-msgstr "ហត្ថកម្ម"
-
 #: templates/det-manual.html:18 templates/det-procedure.html:18
 #: templates/list-manuals.html:61 templates/list-procedure.html:33
 msgid "Référence"
@@ -2093,41 +1886,6 @@ msgstr "អ្នករៀបចំ"
 msgid "Veuillez saisir une date de réunion."
 msgstr "សូមបញ្ចូលកាលបរិច្ឆេទប្រជុំ។"
 
-#: templates/det-message.html:5 templates/det-message.html:14
-#: templates/det-message.html:36
-#, fuzzy
-msgid "Message"
-msgstr "ការប្រើប្រាស់"
-
-#: templates/det-message.html:18
-#, fuzzy
-msgid "Destinataire"
-msgstr "ទិសដៅ"
-
-#: templates/det-message.html:23 templates/det-supplier.html:22
-#: templates/list-messages.html:32
-msgid "Contact"
-msgstr "ទំនាក់ទំនង"
-
-#: templates/det-message.html:65
-msgid "Envoyer"
-msgstr ""
-
-#: templates/det-message.html:132
-#, fuzzy
-msgid "Veuillez saisir un utilisateur."
-msgstr "សូមបញ្ចូលស្ថានភាព។"
-
-#: templates/det-message.html:135
-#, fuzzy
-msgid "Veuillez saisir un titre."
-msgstr "សូមបញ្ចូលស្ថានភាព។"
-
-#: templates/det-message.html:138
-#, fuzzy
-msgid "Veuillez saisir un message."
-msgstr "សូមបញ្ចូលពាក្យសម្ងាត់!"
-
 #: templates/det-new-product.html:5 templates/det-new-product.html:14
 msgid "Détails produit"
 msgstr "ព​ត៌​មាន​លម្អិត​នៃ​ផលិតផល"
@@ -2177,24 +1935,122 @@ msgstr "ពត៌មានលំអិតរបស់អ្នកជំងឺ"
 msgid "Demande d'analyses patient - Fiche patient"
 msgstr "ការស្នើរសុំវិភាគរបស់អ្នកជំងឺ - ទំរង់របស់អ្នកជំងឺ "
 
-#: templates/det-patient.html:62
-#, fuzzy
-msgid "Code patient interne au laboratoire existe déjà"
+#: templates/elem/pat_ano.html:1 templates/js/pat_ident.js:15
+#: templates/manage-pat-records.html:50 templates/manage-pat-records.html:305
+msgid "Anonyme"
+msgstr "អនាមិក"
+
+#: templates/elem/pat_code_lab.html:1
+msgid "Code patient interne au laboratoire"
 msgstr "លេខកូដរបស់អ្នកជំងឺក្នុងនៃមន្ទីរពិសោធន៍"
 
-#: templates/det-patient.html:73 templates/det-req-ext.html:1204
-#: templates/det-req-int.html:1082 templates/setting-det-analysis.html:1095
-msgid "Une erreur est survenue lors de la vérification du code"
-msgstr "កំហុសមួយបានកើតឡើងខណៈពេលផ្ទៀងផ្ទាត់លេខកូដ"
+#: templates/elem/pat_midname.html:2 templates/manage-pat-records.html:91
+#: templates/manage-pat-records.html:346
+msgid "Deuxième nom"
+msgstr "ឈ្មោះ​ទីពីរ"
+
+#: templates/elem/pat_maiden.html:2 templates/manage-pat-records.html:101
+#: templates/manage-pat-records.html:356
+msgid "Nom de jeune fille"
+msgstr "ឈ្មោះដើម"
+
+#: templates/elem/pat_firstname.html:2 templates/manage-pat-records.html:111
+#: templates/manage-pat-records.html:366
+msgid "Prénom(s)"
+msgstr "នាមខ្លួន"
+
+#: templates/elem/pat_birth_approx.html:1 templates/manage-pat-records.html:130
+#: templates/manage-pat-records.html:384
+msgid "Date de naissance approximative"
+msgstr "កាលបរិច្ឆេទត្រឹមត្រូវនៃថ្ងៃ ខែ ឆ្នាំកំណើត"
+
+#: templates/list-results.html:46 templates/manage-pat-records.html:141
+#: templates/manage-pat-records.html:395 templates/report-tat.html:50
+msgid "ou"
+msgstr "ឬ"
+
+#: templates/elem/pat_age.html:1 templates/manage-pat-records.html:146
+#: templates/manage-pat-records.html:400
+msgid "Age"
+msgstr "អាយុ"
+
+#: templates/elem/pat_age_unit.html:1 templates/manage-pat-records.html:154
+#: templates/manage-pat-records.html:408
+msgid "unité"
+msgstr "ឯកតា"
+
+#: templates/elem/pat_nationality.html:1 templates/manage-pat-records.html:169
+#: templates/manage-pat-records.html:423
+msgid "Nationalité"
+msgstr "សញ្ជាតិ"
+
+#: templates/elem/pat_resident.html:1 templates/manage-pat-records.html:176
+#: templates/manage-pat-records.html:430
+msgid "Résident"
+msgstr "អ្នកស្រុក"
+
+#: templates/elem/pat_blood_group.html:1 templates/manage-pat-records.html:207
+#: templates/manage-pat-records.html:461
+msgid "Groupe sanguin"
+msgstr "ក្រុមឈាម"
+
+#: templates/elem/pat_blood_rhesus.html:1 templates/manage-pat-records.html:216
+#: templates/manage-pat-records.html:470
+msgid "Rhésus"
+msgstr "Rhesus"
+
+#: templates/det-aliquot.html:58 templates/det-storage-box.html:29
+#: templates/enter-result.html:133 templates/list-results.html:100
+#: templates/list-storage-box.html:21 templates/manage-pat-records.html:230
+#: templates/manage-pat-records.html:484
+msgid "Coordonnées"
+msgstr "ព័ត៌មានទំនាក់ទំនង"
+
+#: templates/elem/pat_phone1.html:1 templates/elem/pat_phone2.html:1
+#: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
+#: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
+msgid "Téléphone"
+msgstr "ទូរស័ព្ទ"
+
+#: templates/elem/pat_profession.html:1 templates/manage-pat-records.html:285
+#: templates/manage-pat-records.html:535
+msgid "Profession"
+msgstr "វិជ្ជាជីវៈ"
+
+#: templates/elem/pat_pbox.html:1 templates/manage-pat-records.html:243
+#: templates/manage-pat-records.html:497
+msgid "Boite postale"
+msgstr "ប្រអប់​សំបុត្រ"
+
+#: templates/elem/pat_district.html:1 templates/manage-pat-records.html:249
+#: templates/manage-pat-records.html:503
+msgid "Quartier / Secteur"
+msgstr "តំបន់ជិតខាង / ផ្នែក"
+
+#: templates/det-doctor.html:76 templates/elem/pat_zipcode.html:1
+#: templates/list-doctors.html:88 templates/manage-pat-records.html:259
+#: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
+msgid "Code postal"
+msgstr "លេខ​កូដ​ប្រៃ​ស​ណី​យ"
+
+#: templates/elem/pat_city.html:1 templates/manage-pat-records.html:265
+#: templates/manage-pat-records.html:515
+msgid "Ville / Village"
+msgstr "ភូមិ​ / ទីក្រុង"
 
 #: templates/det-patient.html:113
 msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលកែប្រែ / បន្ថែមអ្នកជំងឺ"
 
-#: templates/det-procedure.html:5 templates/det-procedure.html:15
-#: templates/eqp-document.html:41 templates/list-procedure.html:41
-msgid "Procédure"
-msgstr "នីតិវិធី"
+#: templates/det-doctor.html:211 templates/elem/search_zipcity.html:5
+#: templates/manage-pat-records.html:947
+msgid "Recherche de code postal ou ville"
+msgstr "ស្វែងរកលេខកូដប្រៃសណីយ៍ឬទីក្រុង"
+
+#: templates/det-doctor.html:258 templates/elem/search_zipcity.html:52
+#: templates/manage-pat-records.html:994
+msgid "Erreur lors de la récupération des données"
+msgstr "កំហុសពេលទាញយកទិន្នន័យ"
 
 #: templates/det-req-ext.html:5 templates/det-req-int.html:5
 msgid "Details demande d'analyses"
@@ -2241,23 +2097,6 @@ msgstr "ផលិតផលរោគសាស្ត្រ"
 msgid "Ajouter un prélèvement"
 msgstr "បន្ថែមវត្ថុវិភាគ"
 
-#: templates/det-req-ext.html:325 templates/det-req-int.html:351
-msgid "Date prélèvement"
-msgstr "កាលបរិច្ឆេទប្រមូលសំណាក"
-
-#: templates/det-req-ext.html:326 templates/det-req-int.html:352
-msgid "Produit pathologiques"
-msgstr "ផលិតផលរោគសាស្ត្រ"
-
-#: templates/det-req-ext.html:328 templates/det-req-int.html:354
-#: templates/det-sample.html:102
-msgid "Préleveur"
-msgstr "អ្នកប្រមូលវត្ថុវិភាគ"
-
-#: templates/det-req-ext.html:331 templates/det-req-int.html:357
-msgid "Date réception"
-msgstr "កាលបរិច្ឆេទបង្កាន់ដៃ"
-
 #: templates/det-req-ext.html:332 templates/det-req-int.html:358
 #: templates/det-sample.html:56 templates/list-records.html:71
 #: templates/list-records.html:138 templates/list-works.html:102
@@ -2265,6 +2104,15 @@ msgstr "កាលបរិច្ឆេទបង្កាន់ដៃ"
 #: templates/setting-users.html:52 templates/setting-users.html:92
 msgid "Statut"
 msgstr "ស្ថានភាព"
+
+#: templates/det-req-ext.html:331 templates/det-req-int.html:357
+msgid "Date réception"
+msgstr "កាលបរិច្ឆេទបង្កាន់ដៃ"
+
+#: templates/det-req-ext.html:328 templates/det-req-int.html:354
+#: templates/det-sample.html:102
+msgid "Préleveur"
+msgstr "អ្នកប្រមូលវត្ថុវិភាគ"
 
 #: templates/det-req-ext.html:565
 msgid "Erreur lors la récupération des prélèvements"
@@ -2300,15 +2148,6 @@ msgstr "កំហុសក្នុងកំឡុងពេលនៃការស
 #: templates/setting-zipcity.html:121
 msgid "Merci de confirmer la suppression"
 msgstr "សូមបញ្ជាក់ការលុបចោល"
-
-#: templates/det-req-ext.html:1193 templates/det-req-int.html:1071
-#, fuzzy
-msgid "Numéro de dossier interne au laboratoire existe déjà"
-msgstr "លេខឯកសារផ្ទៃក្នុងមន្ទីរពិសោធន៍"
-
-#: templates/det-req-ext.html:1242 templates/det-req-int.html:1123
-msgid "Veuillez sélectionner une date et heure de réception du colis"
-msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទ និងពេលវេលាដើម្បីទទួលបានកញ្ចប់"
 
 #: templates/det-req-ext.html:1248 templates/det-req-int.html:1129
 msgid "Veuillez sélectionner au moins une analyse"
@@ -2378,9 +2217,9 @@ msgstr "ស្នើសុំតេសន្ត៏វិភាគ សំរា�
 msgid "Code prélèvement"
 msgstr "លេខកូដឥណពន្ធផ្ទាល់"
 
-#: templates/det-sample.html:73
-msgid "Analyse associée"
-msgstr "ការវិភាគតេស្តពាក់ព័ន្ធ"
+#: templates/det-aliquot.html:32 templates/det-sample.html:79
+msgid "Produit pathologique"
+msgstr "ផលិតផលរោគសាស្ត្រ"
 
 #: templates/det-sample.html:90
 msgid "Localisation prélèvement"
@@ -2444,11 +2283,6 @@ msgstr "ផ្នែកការងារ"
 msgid "Dernière évaluation des compétences"
 msgstr "ការវាយតម្លៃចុងក្រោយនៃជំនាញសមត្ថភាព"
 
-#: templates/det-staff.html:189
-#, fuzzy
-msgid "Signature"
-msgstr "វិក័យប័ត្រ"
-
 #: templates/det-stock-product.html:5 templates/det-stock-product.html:16
 #: templates/list-stock.html:121
 msgid "Approvisionner un produit"
@@ -2486,105 +2320,14 @@ msgstr "សូមបញ្ចូលចំនួនមួយនៃកញ្ចប
 msgid "Veuillez saisir une date d'expiration."
 msgstr "សូមបញ្ចូលកាលបរិច្ឆេទផុតកំណត់។"
 
-#: templates/det-storage-box.html:15
-#, fuzzy
-msgid "Nom de la boîte"
-msgstr "លេខកូដមន្ទីរពិសោធន៍"
-
-#: templates/det-storage-box.html:36 templates/det-storage-compartment.html:36
-#, fuzzy
-msgid "Largeur"
-msgstr "ទាញយក"
-
-#: templates/det-storage-box.html:43 templates/det-storage-compartment.html:43
-#, fuzzy
-msgid "Profondeur"
-msgstr "សាស្រ្តាចារ្យ"
-
-#: templates/det-storage-box.html:50
-msgid "Boîte pleine"
-msgstr ""
-
-#: templates/det-storage-box.html:58 templates/list-storage-box.html:22
-msgid "Compartiment associé"
-msgstr ""
-
-#: templates/det-storage-box.html:95 templates/det-storage-chamber.html:69
-#: templates/det-storage-compartment.html:93 templates/det-storage-room.html:57
-msgid "Le nom et l'identifiant sont obligatoires."
-msgstr ""
-
-#: templates/det-storage-box.html:101 templates/det-storage-compartment.html:99
-msgid "Les dimensions doivent être positives."
-msgstr ""
-
-#: templates/det-storage-box.html:107
-msgid "L'association à un compartiment est obligatoire."
-msgstr ""
-
-#: templates/det-storage-chamber.html:5 templates/det-storage-chamber.html:12
-#, fuzzy
-msgid "Détails enceinte"
-msgstr "ពត៌មានលំអិតរបស់អ្នកជំងឺ"
-
-#: templates/det-storage-chamber.html:15
-#, fuzzy
-msgid "Nom de l'enceinte"
-msgstr "ឈ្មោះដើម"
-
-#: templates/det-storage-chamber.html:22
-#: templates/det-storage-compartment.html:22 templates/det-storage-room.html:22
-#, fuzzy
-msgid "Abréviation du nom"
-msgstr "អក្សរកាត់"
-
-#: templates/det-storage-chamber.html:36 templates/list-storage-chamber.html:22
-#, fuzzy
-msgid "Pièce associée"
-msgstr "ការវិភាគតេស្តពាក់ព័ន្ធ"
-
-#: templates/det-storage-chamber.html:75
-msgid "L'association à une pièce est obligatoire."
-msgstr ""
-
-#: templates/det-storage-compartment.html:5
-#: templates/det-storage-compartment.html:12
-#, fuzzy
-msgid "Détails compartiment"
-msgstr "ពត៌មានលំអិតរបស់អ្នកជំងឺ"
-
-#: templates/det-storage-compartment.html:15
-#, fuzzy
-msgid "Nom du compartiment"
-msgstr "ចំនួនអ្នកជំងឺ"
-
-#: templates/det-storage-compartment.html:50
-#, fuzzy
-msgid "Hauteur"
-msgstr "អ្នកនិពន្ធ"
-
-#: templates/det-storage-compartment.html:57
-#: templates/list-storage-compartment.html:22
-#, fuzzy
-msgid "Enceinte associée"
-msgstr "វេជ្ជបញ្ជារង"
-
-#: templates/det-storage-compartment.html:105
-msgid "L'association à une enceinte est obligatoire."
-msgstr ""
-
-#: templates/det-storage-room.html:5 templates/det-storage-room.html:12
-#, fuzzy
-msgid "Détails pièce"
-msgstr "ពត៌មានលំអិតរបស់អ្នកជំងឺ"
-
-#: templates/det-storage-room.html:15
-msgid "Nom de la pièce"
-msgstr ""
-
 #: templates/det-supplier.html:15
 msgid "Nom fournisseur"
 msgstr "អ្នកផ្តល់ឈ្មោះ"
+
+#: templates/det-message.html:23 templates/det-supplier.html:22
+#: templates/list-messages.html:32
+msgid "Contact"
+msgstr "ទំនាក់ទំនង"
 
 #: templates/det-supplier.html:125
 msgid "Veuillez saisir un fournisseur."
@@ -2673,61 +2416,6 @@ msgstr "អ្នកបច្ចេកទេស"
 #: templates/list-results.html:701 templates/technical-validation.html:595
 msgid "ANNULE"
 msgstr "បានរំសាយ"
-
-#: templates/eqp-document.html:5 templates/eqp-document.html:15
-msgid "Documentation de l'équipement"
-msgstr "ឯកសារឧបករណ៍"
-
-#: templates/eqp-document.html:31 templates/eqp-document.html:54
-msgid "Téléchargement"
-msgstr "ទាញយក"
-
-#: templates/eqp-document.html:137 templates/eqp-document.html:182
-msgid "Possible après enregistrement"
-msgstr "អាចធ្វើទៅបានបន្ទាប់ពីការចុះឈ្មោះ"
-
-#: templates/eqp-failure.html:5 templates/eqp-failure.html:15
-msgid "Panne et réparation"
-msgstr "ការបំបែកនិងជួសជុល"
-
-#: templates/eqp-failure.html:28 templates/list-eqp-failure.html:129
-msgid "Panne"
-msgstr "បំបែក​បាក់បែក"
-
-#: templates/eqp-failure.html:29 templates/list-eqp-failure.html:130
-msgid "Réparation"
-msgstr "ជួសជុល"
-
-#: templates/eqp-failure.html:186 templates/eqp-maintenance-contract.html:135
-#: templates/eqp-maintenance-preventive.html:127
-#: templates/eqp-metrology.html:127
-msgid "Veuillez sélectionner une date"
-msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទ"
-
-#: templates/eqp-maintenance-contract.html:5
-#: templates/eqp-maintenance-contract.html:15
-msgid "Maintenance"
-msgstr ""
-"\n"
-"ថែទាំ"
-
-#: templates/eqp-maintenance-contract.html:46
-#: templates/list-eqp-maintenance.html:87
-msgid "Renouvellement"
-msgstr "ការបន្ត"
-
-#: templates/eqp-maintenance-preventive.html:5
-#: templates/eqp-maintenance-preventive.html:15
-msgid "Maintenance préventive"
-msgstr "ការថែទាំការពារ"
-
-#: templates/eqp-maintenance-preventive.html:25
-msgid "Intervenant"
-msgstr "វាគ្មិន"
-
-#: templates/eqp-metrology.html:5 templates/eqp-metrology.html:15
-msgid "Métrologie et étalonnage"
-msgstr "មាត្រវិទ្យា និងការក្រិតតាមខ្នាត"
 
 #: templates/global-report.html:5 templates/global-report.html:13
 #: templates/menu.html:32 templates/menu.html:357
@@ -2844,13 +2532,6 @@ msgstr "ការផ្គត់ផ្គង់ និង ប្រវត្ត�
 msgid "E/S"
 msgstr "ធាតុចូល / ធាតុចេញ (input/Output)"
 
-#: templates/hist-stock-product.html:61 templates/list-eqp-failure.html:34
-#: templates/list-eqp-maintenance.html:35 templates/list-trace-download.html:24
-#: templates/list-trace-download.html:61 templates/setting-det-user.html:5
-#: templates/setting-det-user.html:15
-msgid "Utilisateur"
-msgstr "អ្នក​ប្រើ"
-
 #: templates/hist-stock-product.html:62
 msgid "Date action"
 msgstr "កាលបរិច្ឆេទនៃ សកម្មភាព"
@@ -2879,13 +2560,13 @@ msgstr "គេហទំព័រ"
 msgid "Préférences"
 msgstr "ការអនុគ្រោះ"
 
-#: templates/homepage.html:23
-msgid "Gestion des rôles"
-msgstr "ការគ្រប់គ្រងតួនាទី"
-
 #: templates/homepage.html:26 templates/menu.html:143 templates/menu.html:442
 msgid "Gestion des utilisateurs"
 msgstr "ការគ្រប់គ្រងអ្នកប្រើប្រាស់"
+
+#: templates/homepage.html:23
+msgid "Gestion des rôles"
+msgstr "ការគ្រប់គ្រងតួនាទី"
 
 #: templates/homepage.html:29 templates/menu.html:149 templates/menu.html:446
 #: templates/setting-analyzes.html:5 templates/setting-analyzes.html:12
@@ -2899,10 +2580,6 @@ msgstr "វចនានុក្រម"
 #: templates/homepage.html:35
 msgid "Gestion des sauvegardes"
 msgstr "ការគ្រប់គ្រងបម្រុងទុក"
-
-#: templates/homepage.html:38 templates/menu.html:154 templates/menu.html:449
-msgid "Configuration des analyseurs"
-msgstr "ការកំណត់រចនាសម្ព័ន្ធអ្នកវិភាគ"
 
 #: templates/homepage.html:41
 msgid "Gestion de la Facturation"
@@ -2991,193 +2668,20 @@ msgstr "ជិវៈវិទូ"
 msgid "Technique"
 msgstr "បច្ចេកទេស"
 
-#: templates/homepage.html:189
-msgid "La dernière sauvegarde OK date de plus de 24 heures."
-msgstr ""
-
 #: templates/homepage.html:207
 msgid "Une alerte est présente dans la gestion de stock"
 msgstr "ការដាស់តឿនមានវត្តមាននៅក្នុងការគ្រប់គ្រងស្តុក"
+
+#: templates/contributors.html:20 templates/initialization.html:3
+#: templates/initialization.html:19 templates/login.html:3
+#: templates/login.html:20 templates/skeleton.html:33
+msgid "LabBook"
+msgstr "សៀវភៅមន្ទីពិសោធន៏"
 
 #: templates/initialization.html:32 templates/login.html:56
 #: templates/skeleton.html:66
 msgid "Version"
 msgstr "ជំនាន់"
-
-#: templates/list-aliquot.html:5 templates/list-aliquot.html:12
-#: templates/menu.html:300 templates/menu.html:547
-#: templates/table-rights.html:24
-#, fuzzy
-msgid "Gestion des échantillons"
-msgstr "ការគ្រប់គ្រងកាកសំណល់"
-
-#: templates/list-aliquot.html:18
-msgid "Déstockés"
-msgstr ""
-
-#: templates/list-aliquot.html:26
-msgid "ID"
-msgstr ""
-
-#: templates/list-aliquot.html:32
-#, fuzzy
-msgid "Coordonées"
-msgstr "ព័ត៌មានទំនាក់ទំនង"
-
-#: templates/list-aliquot.html:43
-msgid "Stockages"
-msgstr ""
-
-#: templates/list-aliquot.html:45 templates/list-storage-room.html:5
-#: templates/list-storage-room.html:12
-#, fuzzy
-msgid "Liste pièces"
-msgstr "បញ្ជីអ្នកជម្ងឺ"
-
-#: templates/list-aliquot.html:46 templates/list-storage-chamber.html:5
-#: templates/list-storage-chamber.html:12
-#, fuzzy
-msgid "Liste enceintes"
-msgstr "បញ្ជីអ្នកជម្ងឺ"
-
-#: templates/list-aliquot.html:47 templates/list-storage-compartment.html:5
-#: templates/list-storage-compartment.html:12
-#, fuzzy
-msgid "Liste compartiments"
-msgstr "បញ្ជីអ្នកជម្ងឺ"
-
-#: templates/list-aliquot.html:48 templates/list-storage-box.html:5
-#: templates/list-storage-box.html:12
-#, fuzzy
-msgid "Liste boîtes"
-msgstr "បញ្ជីអ្នកជម្ងឺ"
-
-#: templates/list-aliquot.html:64
-msgid "Déstocker un aliquot"
-msgstr ""
-
-#: templates/list-aliquot.html:72
-#, fuzzy
-msgid "Raison"
-msgstr "ភាពជាក់លាក់ "
-
-#: templates/list-aliquot.html:82
-#, fuzzy
-msgid "Date du déstockage"
-msgstr "ការកំណត់បញ្ជីសារពើភ័ណ្ឌ"
-
-#: templates/list-aliquot.html:89
-msgid "Déstockage externe ?"
-msgstr ""
-
-#: templates/list-aliquot.html:96
-#, fuzzy
-msgid "Confirmer"
-msgstr "អនុលោមតាម"
-
-#: templates/list-aliquot.html:123 templates/list-msg-analyzer.html:45
-#: templates/list-storage-box.html:58 templates/list-storage-chamber.html:56
-#: templates/list-storage-compartment.html:57
-#: templates/list-storage-room.html:55
-#, fuzzy
-msgid "Afficher _MENU_ entrées"
-msgstr "បង្ហាញយោបល់"
-
-#: templates/list-aliquot.html:124 templates/list-msg-analyzer.html:46
-#: templates/list-storage-box.html:59 templates/list-storage-chamber.html:57
-#: templates/list-storage-compartment.html:58
-#: templates/list-storage-room.html:56
-#, fuzzy
-msgid "Aucun enregistrement trouvé"
-msgstr "ការចុះបញី្ចទទួលបានជោគជ័យ"
-
-#: templates/list-aliquot.html:125 templates/list-msg-analyzer.html:47
-#: templates/list-storage-box.html:60 templates/list-storage-chamber.html:58
-#: templates/list-storage-compartment.html:59
-#: templates/list-storage-room.html:57
-msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
-msgstr ""
-
-#: templates/list-aliquot.html:126 templates/list-msg-analyzer.html:48
-#: templates/list-storage-box.html:61 templates/list-storage-chamber.html:59
-#: templates/list-storage-compartment.html:60
-#: templates/list-storage-room.html:58
-msgid "Aucune entrée disponible"
-msgstr ""
-
-#: templates/list-aliquot.html:127 templates/list-msg-analyzer.html:49
-#: templates/list-storage-box.html:62 templates/list-storage-chamber.html:60
-#: templates/list-storage-compartment.html:61
-#: templates/list-storage-room.html:59
-msgid "(filtré de _MAX_ entrées au total)"
-msgstr ""
-
-#: templates/list-aliquot.html:148
-msgid "Déstocker"
-msgstr ""
-
-#: templates/list-aliquot.html:148
-#, fuzzy
-msgid "Restocker"
-msgstr "សាកល្បង"
-
-#: templates/list-aliquot.html:168 templates/list-storage-box.html:76
-#: templates/list-storage-chamber.html:74
-#: templates/list-storage-compartment.html:75
-#: templates/list-storage-room.html:73
-#, fuzzy
-msgid "Éditer"
-msgstr "កែសម្រួល"
-
-#: templates/list-aliquot.html:266
-#, fuzzy
-msgid "Veuillez indiquer une raison de déstockage."
-msgstr "សូមបញ្ចូលពេលវេលាបម្រុងទុកទិន្នន័យ! "
-
-#: templates/list-aliquot.html:293 templates/list-aliquot.html:298
-#: templates/list-aliquot.html:326 templates/list-aliquot.html:330
-#, fuzzy
-msgid "Une erreur s'est produite."
-msgstr "កំហុសមួយបានកើតឡើង"
-
-#: templates/list-aliquot.html:304
-#, fuzzy
-msgid "Êtes-vous sûr de vouloir restocker ?"
-msgstr "តើអ្នកប្រាកដថាចង់លុបលទ្ធផលនេះទេ?"
-
-#: templates/list-aliquot.html:337 templates/list-msg-analyzer.html:120
-#: templates/list-storage-box.html:124 templates/list-storage-chamber.html:115
-#: templates/list-storage-compartment.html:122
-#: templates/list-storage-room.html:108
-#, fuzzy
-msgid "Êtes-vous sûr de vouloir supprimer ?"
-msgstr "តើអ្នកប្រាកដថាចង់លុបលទ្ធផលនេះទេ?"
-
-#: templates/list-aliquot.html:354 templates/list-aliquot.html:358
-#: templates/list-msg-analyzer.html:137 templates/list-msg-analyzer.html:141
-#: templates/list-storage-box.html:141 templates/list-storage-box.html:145
-#: templates/list-storage-chamber.html:132
-#: templates/list-storage-chamber.html:136
-#: templates/list-storage-compartment.html:139
-#: templates/list-storage-compartment.html:143
-#: templates/list-storage-room.html:125 templates/list-storage-room.html:129
-#, fuzzy
-msgid "Une erreur s'est produite lors de la suppression."
-msgstr "កំហុសមួយបានកើតឡើងខណៈពេលបញ្ចូលគ្នា"
-
-#: templates/list-analyzers.html:34 templates/list-laboratory.html:75
-#: templates/list-staff.html:40 templates/setting-age-interval.html:32
-#: templates/setting-det-analysis.html:277 templates/setting-det-dict.html:49
-#: templates/setting-functionnal-units.html:33 templates/setting-manual.html:31
-#: templates/setting-requesting-services.html:31
-#: templates/setting-stock.html:41
-msgid "Position"
-msgstr "តួនាទី"
-
-#: templates/list-analyzers.html:55
-#, fuzzy
-msgid "Transactions"
-msgstr "ការបណ្តុះបណ្តាល"
 
 #: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
 msgid "Liste des contrôles externes"
@@ -3220,37 +2724,6 @@ msgstr "អ៊ីមែល"
 msgid "Ajouter un prescripteur"
 msgstr "បន្ថែមអ្នកចេញវេជ្ជបញ្ជា"
 
-#: templates/list-eqp-failure.html:5
-msgid "Liste des pannes et réparations d'équipements"
-msgstr "បញ្ជីនៃការខូចខាត និងជួសជុលឧបករណ៍"
-
-#: templates/list-eqp-failure.html:12
-msgid "Liste des pannes et réparations"
-msgstr "បញ្ជីនៃការខូច និង ការជួសជុល"
-
-#: templates/list-eqp-failure.html:37 templates/list-eqp-maintenance.html:37
-#: templates/list-eqp-maintenance.html:89 templates/list-eqp-metrology.html:35
-#: templates/list-equipment.html:126 templates/list-messages.html:34
-#: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-msgid "Document"
-msgstr "ឯកសារ"
-
-#: templates/list-eqp-maintenance.html:5 templates/list-eqp-maintenance.html:12
-msgid "Liste des maintenances"
-msgstr "បញ្ជីថែទាំ"
-
-#: templates/list-eqp-maintenance.html:15
-msgid "Liste des maintenances préventives"
-msgstr "បញ្ជីនៃការថែទាំបង្ការ"
-
-#: templates/list-eqp-maintenance.html:66
-msgid "Liste des contrats de maintenances"
-msgstr "បញ្ជីកិច្ចសន្យាថែទាំ"
-
-#: templates/list-eqp-metrology.html:5 templates/list-eqp-metrology.html:12
-msgid "Liste des métrologies et étalonnages"
-msgstr "បញ្ជីនៃម៉ែត្រនិងក្រិត"
-
 #: templates/list-equipment.html:5 templates/list-equipment.html:12
 msgid "Liste des équipements"
 msgstr "បញ្ជីឧបករណ៍"
@@ -3262,18 +2735,6 @@ msgstr "អ្នកផលិត"
 #: templates/list-equipment.html:63
 msgid "Ajouter un équipement"
 msgstr "បន្ថែមឧបករណ៍មួយ"
-
-#: templates/list-equipment.html:130
-msgid "Maintenances"
-msgstr "ថែទាំ"
-
-#: templates/list-equipment.html:134
-msgid "Pannes et réparations"
-msgstr "ការបែកបាក់និងការជួសជុល"
-
-#: templates/list-equipment.html:138
-msgid "Métrologie"
-msgstr "មាត្រវិទ្យា"
 
 #: templates/list-laboratory.html:5 templates/list-laboratory.html:12
 #: templates/menu.html:259 templates/menu.html:522
@@ -3306,6 +2767,15 @@ msgstr "ស្លាកសញ្ញា"
 #: templates/list-laboratory.html:74 templates/setting-det-dict.html:48
 msgid "Libellé court"
 msgstr "ស្លាកសញ្ញាពាក្យកាត់"
+
+#: templates/list-analyzers.html:34 templates/list-laboratory.html:75
+#: templates/list-staff.html:40 templates/setting-age-interval.html:32
+#: templates/setting-det-analysis.html:277 templates/setting-det-dict.html:49
+#: templates/setting-functionnal-units.html:33 templates/setting-manual.html:31
+#: templates/setting-requesting-services.html:31
+#: templates/setting-stock.html:41
+msgid "Position"
+msgstr "តួនាទី"
 
 #: templates/list-laboratory.html:88
 msgid "Enregistrer les valeurs"
@@ -3346,54 +2816,6 @@ msgstr "បញ្ជីនៃការប្រជុំ"
 #: templates/list-meeting.html:60
 msgid "Ajouter une réunion"
 msgstr "បន្ថែមការប្រជុំ"
-
-#: templates/list-messages.html:5 templates/list-messages.html:12
-#, fuzzy
-msgid "Messages"
-msgstr "ការប្រើប្រាស់"
-
-#: templates/list-messages.html:55
-msgid "Envoyer un message"
-msgstr ""
-
-#: templates/list-messages.html:108
-#, fuzzy
-msgid "Lire"
-msgstr "ចំណងជើង"
-
-#: templates/list-messages.html:125
-msgid "Envoyé à"
-msgstr ""
-
-#: templates/list-messages.html:133
-#, fuzzy
-msgid "Reçu de"
-msgstr "កម្រិតនៃ"
-
-#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
-#, fuzzy
-msgid "Liste messages analyseurs"
-msgstr "បញ្ជីអ្នកវិភាគ"
-
-#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
-#: templates/list-storage-chamber.html:18
-#: templates/list-storage-compartment.html:18
-#: templates/list-storage-room.html:18
-msgid "id"
-msgstr ""
-
-#: templates/list-msg-analyzer.html:19
-msgid "Date d'envoi"
-msgstr ""
-
-#: templates/list-msg-analyzer.html:20
-msgid "Message envoyé"
-msgstr ""
-
-#: templates/list-msg-analyzer.html:21
-#, fuzzy
-msgid "Message reçu"
-msgstr "ការប្រើប្រាស់"
 
 #: templates/list-nonconformities.html:5 templates/list-nonconformities.html:12
 msgid "Liste des non-conformités"
@@ -3521,10 +2943,9 @@ msgstr "វាយតំលៃតាមជីវៈសាស្រ្ត"
 msgid "Urgent uniquement"
 msgstr "បន្ទាន់តែប៉ុណ្ណោះ"
 
-#: templates/list-records.html:147 templates/report-tat.html:72
-#: templates/report-tat.html:335
-msgid "Réception dossier"
-msgstr "ទទួលឯកសារ"
+#: templates/list-works.html:111
+msgid "Création dossier"
+msgstr "ការបង្កើតឯកសារ"
 
 #: templates/list-records.html:150 templates/list-results.html:31
 #: templates/list-works.html:58 templates/list-works.html:114
@@ -3549,11 +2970,6 @@ msgstr "កំហុសក្នុងការលុបឯកសារ"
 msgid "Date de la demande du"
 msgstr "កាលបរិច្ឆេទស្នើសុំពី"
 
-#: templates/list-results.html:46 templates/manage-pat-records.html:141
-#: templates/manage-pat-records.html:395 templates/report-tat.html:50
-msgid "ou"
-msgstr "ឬ"
-
 #: templates/list-results.html:59
 msgid "Afficher uniquement les analyses prioritaires"
 msgstr "បង្ហាញតែកាលវិភាគដែលអាទិភាពប៉ុណ្ណោះ"
@@ -3565,6 +2981,13 @@ msgstr "លាក់លទ្ធផលដែលមានសុពលភាពរ
 #: templates/list-results.html:64 templates/report-tat.html:62
 msgid "Réinitialiser"
 msgstr "កំណត់ឡើងវិញ"
+
+#: templates/det-aliquot.html:18 templates/list-aliquot.html:29
+#: templates/list-results.html:611 templates/list-samples.html:44
+#: templates/pivot-table.html:30 templates/report-tat.html:74
+#: templates/report-tat.html:335
+msgid "Patient"
+msgstr "អ្នកជំងឺ"
 
 #: templates/list-results.html:990
 msgid "Une erreur est survenue lors de la récupération des résultats"
@@ -3601,6 +3024,18 @@ msgstr "កាលបរិច្ឆេទមកដល់"
 #: templates/list-staff.html:42
 msgid "Date éval."
 msgstr "កាលបរិច្ឆេទវាយតំលៃ"
+
+#: templates/det-analyzer.html:32 templates/det-dhis2-api.html:22
+#: templates/det-storage-box.html:22 templates/det-storage-chamber.html:29
+#: templates/det-storage-compartment.html:29 templates/det-storage-room.html:29
+#: templates/list-analyzers.html:33 templates/list-staff.html:43
+#: templates/list-storage-box.html:20 templates/list-storage-chamber.html:21
+#: templates/list-storage-compartment.html:21
+#: templates/list-storage-room.html:21 templates/login.html:33
+#: templates/setting-det-user.html:51 templates/setting-link-unit-user.html:22
+#: templates/setting-users.html:21 templates/setting-users.html:89
+msgid "Identifiant"
+msgstr "ឈ្មោះ​អ្នកប្រើប្រាស់ "
 
 #: templates/list-staff.html:47
 msgid "Formations"
@@ -3680,70 +3115,6 @@ msgstr "សូមបញ្ជាក់ការបិទដំណើរការ
 msgid "Aucun stock à exporter !"
 msgstr "មិនមានស្តុកសម្រាប់នាំចេញទេ!"
 
-#: templates/list-storage-box.html:5 templates/list-storage-box.html:12
-#: templates/list-storage-chamber.html:5 templates/list-storage-chamber.html:12
-#: templates/list-storage-compartment.html:5
-#: templates/list-storage-compartment.html:12
-#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
-#, fuzzy
-msgid "Stockage d'échantillon"
-msgstr "ការដឹកជញ្ជូនវត្ថុវិភាគ"
-
-#: templates/list-storage-box.html:23
-msgid "Dimensions l,p"
-msgstr ""
-
-#: templates/list-storage-box.html:24
-msgid "Nb. aliquot"
-msgstr ""
-
-#: templates/list-storage-box.html:25
-msgid "Pleine"
-msgstr ""
-
-#: templates/list-storage-box.html:36
-#, fuzzy
-msgid "Ajouter boîte"
-msgstr "បន្ថែមគំរូ"
-
-#: templates/list-storage-chamber.html:20
-#: templates/list-storage-compartment.html:20
-#: templates/list-storage-room.html:20
-#, fuzzy
-msgid "Abbréviation"
-msgstr "អក្សរកាត់"
-
-#: templates/list-storage-chamber.html:23
-msgid "Nb. compartiment"
-msgstr ""
-
-#: templates/list-storage-chamber.html:34
-#, fuzzy
-msgid "Ajouter enceinte"
-msgstr "បានបន្ថែមឯកតាមួយ"
-
-#: templates/list-storage-compartment.html:23
-msgid "Dimensions l,p,h"
-msgstr ""
-
-#: templates/list-storage-compartment.html:24
-msgid "Nb. boîte"
-msgstr ""
-
-#: templates/list-storage-compartment.html:35
-#, fuzzy
-msgid "Ajouter compartiment"
-msgstr "អ្នកជំងឺថ្មី"
-
-#: templates/list-storage-room.html:22
-msgid "Nb. enceinte"
-msgstr ""
-
-#: templates/list-storage-room.html:33
-#, fuzzy
-msgid "Ajouter pièce"
-msgstr "បន្ថែមផ្នែក"
-
 #: templates/list-suppliers.html:5 templates/list-suppliers.html:12
 msgid "Liste des fournisseurs"
 msgstr "បញ្ជីអ្នកផ្គត់ផ្គង់"
@@ -3776,17 +3147,25 @@ msgstr "កំហុស"
 msgid "Ajouter un modèle"
 msgstr "បន្ថែមគំរូ"
 
+#: templates/det-analyzer.html:44 templates/list-template.html:121
+#: templates/report-dhis2.html:66
+msgid "Tester"
+msgstr "សាកល្បង"
+
 #: templates/list-trace-download.html:5 templates/list-trace-download.html:12
 msgid "Liste des téléchargements éffectués"
 msgstr "បញ្ជីនៃការទាញយកត្រូវបានអនុវត្ត"
 
+#: templates/list-eqp-failure.html:37 templates/list-eqp-maintenance.html:37
+#: templates/list-eqp-maintenance.html:89 templates/list-eqp-metrology.html:35
+#: templates/list-equipment.html:126 templates/list-messages.html:34
+#: templates/list-trace-download.html:19 templates/list-trace-download.html:59
+msgid "Document"
+msgstr "ឯកសារ"
+
 #: templates/list-trace-download.html:58
 msgid "Dernier accès"
 msgstr "ការចូលប្រើចុងក្រោយ"
-
-#: templates/list-trace-download.html:60
-msgid "Dépôt"
-msgstr "ដាក់ប្រាក់"
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3822,10 +3201,6 @@ msgstr "កាលបរិច្ឆេទឯកសារធំជាង"
 msgid "Date dossier inférieure à"
 msgstr "កាលបរិច្ឆេទឯកសារតិចជាង"
 
-#: templates/list-works.html:111
-msgid "Création dossier"
-msgstr "ការបង្កើតឯកសារ"
-
 #: templates/list-works.html:141
 msgid "Validation groupée"
 msgstr "សុពលភាពក្រុម"
@@ -3841,6 +3216,12 @@ msgstr "ឈ្មោះអ្នកប្រើឬពាក្យសម្ងា
 #: templates/login.html:30
 msgid "Ouverture de session"
 msgstr "ចូល"
+
+#: templates/det-dhis2-api.html:29 templates/login.html:41
+#: templates/setting-backup.html:83 templates/setting-det-user.html:58
+#: templates/setting-pwd-user.html:15
+msgid "Mot de passe"
+msgstr "ពាក្យសម្ងាត់"
 
 #: templates/macros.html:87 templates/report-statistic.html:283
 msgid "Externe"
@@ -3880,90 +3261,9 @@ msgstr "លុបចោល"
 msgid "Identité patient"
 msgstr "អត្តសញ្ញាណអ្នកជម្ងឺ"
 
-#: templates/elem/pat_ano.html:1 templates/js/pat_ident.js:15
-#: templates/manage-pat-records.html:50 templates/manage-pat-records.html:305
-msgid "Anonyme"
-msgstr "អនាមិក"
-
 #: templates/manage-pat-records.html:63 templates/manage-pat-records.html:318
 msgid "Code laboratoire"
 msgstr "លេខកូដមន្ទីរពិសោធន៍"
-
-#: templates/elem/pat_midname.html:2 templates/manage-pat-records.html:91
-#: templates/manage-pat-records.html:346
-msgid "Deuxième nom"
-msgstr "ឈ្មោះ​ទីពីរ"
-
-#: templates/elem/pat_maiden.html:2 templates/manage-pat-records.html:101
-#: templates/manage-pat-records.html:356
-msgid "Nom de jeune fille"
-msgstr "ឈ្មោះដើម"
-
-#: templates/elem/pat_firstname.html:2 templates/manage-pat-records.html:111
-#: templates/manage-pat-records.html:366
-msgid "Prénom(s)"
-msgstr "នាមខ្លួន"
-
-#: templates/elem/pat_birth_approx.html:1 templates/manage-pat-records.html:130
-#: templates/manage-pat-records.html:384
-msgid "Date de naissance approximative"
-msgstr "កាលបរិច្ឆេទត្រឹមត្រូវនៃថ្ងៃ ខែ ឆ្នាំកំណើត"
-
-#: templates/elem/pat_age.html:1 templates/manage-pat-records.html:146
-#: templates/manage-pat-records.html:400
-msgid "Age"
-msgstr "អាយុ"
-
-#: templates/elem/pat_age_unit.html:1 templates/manage-pat-records.html:154
-#: templates/manage-pat-records.html:408
-msgid "unité"
-msgstr "ឯកតា"
-
-#: templates/elem/pat_nationality.html:1 templates/manage-pat-records.html:169
-#: templates/manage-pat-records.html:423
-msgid "Nationalité"
-msgstr "សញ្ជាតិ"
-
-#: templates/elem/pat_resident.html:1 templates/manage-pat-records.html:176
-#: templates/manage-pat-records.html:430
-msgid "Résident"
-msgstr "អ្នកស្រុក"
-
-#: templates/elem/pat_blood_group.html:1 templates/manage-pat-records.html:207
-#: templates/manage-pat-records.html:461
-msgid "Groupe sanguin"
-msgstr "ក្រុមឈាម"
-
-#: templates/elem/pat_blood_rhesus.html:1 templates/manage-pat-records.html:216
-#: templates/manage-pat-records.html:470
-msgid "Rhésus"
-msgstr "Rhesus"
-
-#: templates/elem/pat_pbox.html:1 templates/manage-pat-records.html:243
-#: templates/manage-pat-records.html:497
-msgid "Boite postale"
-msgstr "ប្រអប់​សំបុត្រ"
-
-#: templates/elem/pat_district.html:1 templates/manage-pat-records.html:249
-#: templates/manage-pat-records.html:503
-msgid "Quartier / Secteur"
-msgstr "តំបន់ជិតខាង / ផ្នែក"
-
-#: templates/elem/pat_city.html:1 templates/manage-pat-records.html:265
-#: templates/manage-pat-records.html:515
-msgid "Ville / Village"
-msgstr "ភូមិ​ / ទីក្រុង"
-
-#: templates/elem/pat_phone1.html:1 templates/elem/pat_phone2.html:1
-#: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
-#: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
-msgid "Téléphone"
-msgstr "ទូរស័ព្ទ"
-
-#: templates/elem/pat_profession.html:1 templates/manage-pat-records.html:285
-#: templates/manage-pat-records.html:535
-msgid "Profession"
-msgstr "វិជ្ជាជីវៈ"
 
 #: templates/manage-pat-records.html:293
 msgid "Modifier la fiche patient"
@@ -3978,9 +3278,7 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "សូមជ្រើសរើសថ្ងៃខែឆ្នាំកំណើតឬបញ្ចូលអាយុ"
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
 msgstr "អ្នកត្រូវជ្រើសរើសកំណត់ត្រាអ្នកជំងឺពីរផ្សេងគ្នាដើម្បីអនុវត្តការបញ្ចូលចូលគ្នា។"
 
 #: templates/manage-pat-records.html:906
@@ -3992,13 +3290,8 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "ឯកសារអ្នកជំងឺដែលបាត់ត្រូវអនុវត្តការរួមបញ្ចូលឯកសារ។"
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
-msgstr ""
-"កំណត់ត្រារបស់អ្នកជម្ងឺដែលត្រូវលុបចោលនឹងត្រូវបានភ្ជាប់ទៅនឹងអ្នកជម្ងឺ៊/អ្នកជំងឺដាក់ត្រូវរក្សាទុក"
-" សូមបញ្ជាក់ការបញ្ចូលគ្នានេះ(សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "កំណត់ត្រារបស់អ្នកជម្ងឺដែលត្រូវលុបចោលនឹងត្រូវបានភ្ជាប់ទៅនឹងអ្នកជម្ងឺ៊/អ្នកជំងឺដាក់ត្រូវរក្សាទុក សូមបញ្ជាក់ការបញ្ចូលគ្នានេះ(សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -4069,11 +3362,6 @@ msgstr "របាយការណ៍សូចនាករ"
 msgid "Rapport statistique"
 msgstr "របាយការណ៍ស្ថិតិ"
 
-#: templates/menu.html:86 templates/report-tat.html:5
-#: templates/report-tat.html:15
-msgid "Rapport sur le délai de rendu du résultat"
-msgstr "រាយការណ៍អំពីពេលវេលាចែកចាយលទ្ធផល"
-
 #: templates/menu.html:91 templates/menu.html:402 templates/pivot-table.html:5
 #: templates/pivot-table.html:18
 msgid "Tableau croisé dynamique"
@@ -4106,11 +3394,6 @@ msgstr "ស្ថានភាពវិក័យប័ត្រប្រចាំ
 #: templates/table-rights.html:20
 msgid "Paramétrages"
 msgstr "ការកំណត់"
-
-#: templates/menu.html:138 templates/menu.html:439
-#, fuzzy
-msgid "Gestion des rôles et droits"
-msgstr "ការគ្រប់គ្រងតួនាទី"
 
 #: templates/menu.html:165 templates/menu.html:456
 msgid "Configuration des sauvegardes"
@@ -4235,10 +3518,6 @@ msgstr "ប្រជុំផ្នែកមន្ទីរពិសោធន៍
 msgid "Non conformité"
 msgstr "ភាពមិនប្រក្រតី"
 
-#: templates/menu.html:399
-msgid "Rapport sur le temps de rendu du résultat"
-msgstr "រាយការណ៍អំពីពេលវេលាបង្ហាញលទ្ធផល"
-
 #: templates/move-stock-product.html:60
 msgid "Nombre de paquet"
 msgstr "ចំនួនកញ្ចប់"
@@ -4262,10 +3541,6 @@ msgstr "ស្វែងរកអ្នកជំងឺដែលយើង "
 #: templates/new-req-ext.html:34 templates/new-req-int.html:33
 msgid "Nouveau patient"
 msgstr "អ្នកជំងឺថ្មី"
-
-#: templates/no-rights.html:1
-msgid "Vous n'avez pas les droits pour accéder à cette page"
-msgstr ""
 
 #: templates/non-conformity.html:5 templates/non-conformity.html:15
 msgid "Non-conformité"
@@ -4478,9 +3753,7 @@ msgid "Réactifs et consommables"
 msgstr "ប្រតិករនិងសម្ភារៈប្រើប្រាស់"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
 msgstr "វិក័យបត្ររបស់ប្រតិករ​និងសម្ភារៈប្រើប្រាស់មិនឆ្លើយតបទៅនឹងការស្នើសុំទេ"
 
 #: templates/non-conformity.html:444
@@ -4792,44 +4065,20 @@ msgid "Mensuelle"
 msgstr "ប្រចាំខែ"
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
-msgstr ""
-"សម្រាប់បញ្ជីប្រចាំសប្តាហ៍ ថ្ងៃច័ន្ទ និងថ្ងៃអាទិត្យ គួរតែជាការចាប់ផ្តើម "
-"និង ការបញ្ចប់នៃរយៈពេលនេះរៀងៗខ្លួន។"
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
+msgstr "សម្រាប់បញ្ជីប្រចាំសប្តាហ៍ ថ្ងៃច័ន្ទ និងថ្ងៃអាទិត្យ គួរតែជាការចាប់ផ្តើម និង ការបញ្ចប់នៃរយៈពេលនេះរៀងៗខ្លួន។"
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
-"សម្រាប់បញ្ជីប្រចាំខែ កាលបរិច្ឆេទចាប់ផ្តើមគួរតែជាថ្ងៃទី១នៃខែ "
-"ហើយកាលបរិច្ឆេទបញ្ចប់គួរតែជាថ្ងៃចុងក្រោយនៃខែដែលបានជ្រើសរើស។"
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgstr "សម្រាប់បញ្ជីប្រចាំខែ កាលបរិច្ឆេទចាប់ផ្តើមគួរតែជាថ្ងៃទី១នៃខែ ហើយកាលបរិច្ឆេទបញ្ចប់គួរតែជាថ្ងៃចុងក្រោយនៃខែដែលបានជ្រើសរើស។"
 
 #: templates/report-dhis2.html:38
 msgid "Feuille de calcul"
 msgstr "សន្លឹកកិច្ចការ"
 
-#: templates/report-dhis2.html:65
-msgid "Envoyer les données"
-msgstr ""
-
-#: templates/report-dhis2.html:79
-msgid "Retour d'envoi"
-msgstr ""
-
 #: templates/report-dhis2.html:110 templates/report-dhis2.html:176
 msgid "Veuillez sélectionner une feuille de calcul."
 msgstr "សូមជ្រើសរើសសន្លឹកកិច្ចការ"
-
-#: templates/report-dhis2.html:188
-msgid "Veuillez sélectionner une plateforme de destination."
-msgstr ""
-
-#: templates/report-dhis2.html:224
-msgid "Paramétrage manquant !"
-msgstr ""
 
 #: templates/report-epidemio.html:34
 msgid "Epidémiologie"
@@ -4907,69 +4156,6 @@ msgstr "ចំនួននៃការស្កេនឆ្មាំ"
 #: templates/report-statistic.html:547
 msgid "Nombre d'analyses"
 msgstr "ចំនួននៃការវិភាគ"
-
-#: templates/report-tat.html:16
-msgid ""
-"Le calcul du délai de rendu des résultats est basé sur la date "
-"d’enregistrement du dossier et les dates de validation des analyses du "
-"dossier"
-msgstr ""
-"ការគណនានៃពេលវេលាផ្តល់លទ្ធផលគឺផ្អែកលើកាលបរិច្ឆេទនៃការចុះឈ្មោះឯកសារ "
-"និងកាលបរិច្ឆេទនៃសុពលភាពនៃការវិភាគឯកសារ"
-
-#: templates/report-tat.html:76 templates/report-tat.html:335
-msgid "Délai de validation technique des résultats"
-msgstr "ពេលវេលាកំណត់សម្រាប់សុពលភាពបច្ចេកទេសនៃលទ្ធផល"
-
-#: templates/report-tat.html:77 templates/report-tat.html:335
-msgid "Délai de rendu des résultats"
-msgstr "ពេលវេលាចែកចាយលទ្ធផល"
-
-#: templates/report-tat.html:78 templates/report-tat.html:335
-msgid "Délai de rendu du dossier"
-msgstr "ថ្ងៃផុតកំណត់នៃការបញ្ជូនឯកសារ"
-
-#: templates/report-tat.html:82
-msgid "Moyenne des délais de validation technique du résultat"
-msgstr "ពេលវេលាជាមធ្យមសម្រាប់សុពលភាពបច្ចេកទេសនៃលទ្ធផល"
-
-#: templates/report-tat.html:83
-msgid "Moyenne des délais de rendu du résultat"
-msgstr "ពេលវេលាបង្ហាញលទ្ធផលជាមធ្យម"
-
-#: templates/report-tat.html:87
-msgid "Export"
-msgstr "នាំចេញ"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "j"
-msgstr "j"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "h"
-msgstr "h"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "min"
-msgstr "នាទី"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-msgid "s"
-msgstr ""
 
 #: templates/report-today.html:78 templates/setting-analyzes.html:83
 msgid "Famille"
@@ -5100,9 +4286,7 @@ msgid "Désactivé"
 msgstr "បានធ្វើឱ្យអសកម្ម"
 
 #: templates/setting-analyzes.html:267
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
 msgstr "សូមបញ្ជាក់ពីការលុបនៃការវិភាគនេះ!សូមបញ្ជាក់ថាសារណាមួយដែលទាក់ទងនឹងការវិភាគនេះនឹងមានកំហុស!"
 
 #: templates/setting-analyzes.html:368
@@ -5187,13 +4371,8 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "សូមបញ្ជាក់ពីការផ្លាស់ប្តូរពេលវេលាបម្រុងទុកទិន្នន័យប្រចាំថ្ងៃ។"
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
-msgstr ""
-"មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ "
-"សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "មានកូនសោររួចហើយដោយបង្កើតកូនសោឡើងវិញការបម្រុងទុកចាស់នឹងមិនអាចរកឃើញវិញទេ។​ សូមបញ្ជាក់ពីការបង្កើតកូនសោថ្មី?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -5237,22 +4416,15 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "សូមបញ្ជាក់ពីការចាប់ផ្តើមនៃការស្តារឡើងវិញជាបន្ទាន់!"
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
-msgstr ""
-"មានកំហុសកើតឡើងក្នុងកំឡុងពេលស្តារ "
-"សូមទាក់ទងអ្នកគ្រប់គ្រងរបស់អ្នកដើម្បីផ្ទៀងផ្ទាត់ដោយដៃថាការស្តារឡើងវិញបានបញ្ចប់។"
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "មានកំហុសកើតឡើងក្នុងកំឡុងពេលស្តារ សូមទាក់ទងអ្នកគ្រប់គ្រងរបស់អ្នកដើម្បីផ្ទៀងផ្ទាត់ដោយដៃថាការស្តារឡើងវិញបានបញ្ចប់។"
 
 #: templates/setting-backup.html:604
 msgid "Délai d'attente dépassé"
 msgstr "លើសពីរយៈពេលរង់ចាំ"
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
 msgstr "ការស្តារឡើងវិញរួចរាល់ កម្មវិធីLabBook នឹងចាប់ផ្តើមសេវាកម្មកម្មវិធីឡើងវិញ"
 
 #: templates/setting-backup.html:767
@@ -5260,30 +4432,20 @@ msgid "Redémarrage activé"
 msgstr "បានបើកដំណើរការឡើងវិញ"
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"សេវាកម្មបានចាប់ផ្តើមឡើងវិញឬមានកំហុសកើតឡើងខណៈពេលកំពុងស្នើសុំចាប់ផ្តើមឡើងវិញ\\nplease"
-" ផ្ទុកទំព័រឡើងវិញ"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "សេវាកម្មបានចាប់ផ្តើមឡើងវិញឬមានកំហុសកើតឡើងខណៈពេលកំពុងស្នើសុំចាប់ផ្តើមឡើងវិញ\\nplease ផ្ទុកទំព័រឡើងវិញ"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
 msgstr "បានរក្សាទុកដោយជោគជ័យ"
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពបច្ចុប្បន្ន, ស្ថានភាពមិនដឹង "
 
 #: templates/setting-backup.html:819
 msgid "Une erreur est survenue lors de la vérification de l'état en cours"
 msgstr "កំហុសមួយបានកើតឡើងខណៈពេលពិនិត្យមើលស្ថានភាពបច្ចុប្បន្ន"
-
-#: templates/setting-det-analysis.html:26
-msgid "LOINC"
-msgstr ""
 
 #: templates/setting-det-analysis.html:69
 msgid "Unité de cotation"
@@ -5297,11 +4459,6 @@ msgstr "តម្លៃដែលបានកំណត់ "
 #: templates/setting-det-analysis.html:245
 msgid "Export whonet"
 msgstr "ការនាំចេញ Whonet"
-
-#: templates/setting-det-analysis.html:109
-#, fuzzy
-msgid "Antiobiogramme"
-msgstr "រចនាសម្ព័ន្ធ​អង្គភាព"
 
 #: templates/setting-det-analysis.html:121
 msgid "Variables"
@@ -5319,10 +4476,6 @@ msgstr "បង្កើតអថេរថ្មី"
 msgid "Par défaut sera l'ID de la variable"
 msgstr "លំនាំដើមនឹងខ្លាយទៅជាលេខសម្គាល់អថេរ"
 
-#: templates/setting-det-analysis.html:156
-msgid "Détails de ce dictionnaire"
-msgstr "ព័ត៌មានលម្អិតនៃវចនានុក្រម"
-
 #: templates/setting-det-analysis.html:158 templates/setting-det-dict.html:21
 #: templates/setting-dicts.html:65
 msgid "Description"
@@ -5335,10 +4488,6 @@ msgstr "តម្លៃធម្មតាអប្បបរមា"
 #: templates/setting-det-analysis.html:169
 msgid "Valeur normale max."
 msgstr "អតិបរិមាតម្លៃធម្មតា"
-
-#: templates/setting-det-analysis.html:176
-msgid "Affichage min./max."
-msgstr "ប្រាក់ឧបត្ថម្ភ អប្បបរមា/អតិបរមា"
 
 #: templates/setting-det-analysis.html:181
 msgid "Souligner"
@@ -5356,18 +4505,6 @@ msgstr "ឯកតា"
 #: templates/setting-det-analysis.html:204
 msgid "Précision"
 msgstr "ភាពជាក់លាក់ "
-
-#: templates/setting-det-analysis.html:209
-msgid "Formule de conversion unité 2"
-msgstr "រូបមន្តបំប្លែងឯកតាទី 2"
-
-#: templates/setting-det-analysis.html:213
-msgid "Unité 2"
-msgstr "ឯកតា ២"
-
-#: templates/setting-det-analysis.html:222
-msgid "Précision 2"
-msgstr "ភាពជាក់លាក់ 2"
 
 #: templates/setting-det-analysis.html:227
 msgid "Num. var pour la formule"
@@ -5433,6 +4570,11 @@ msgstr "សូមជ្រើសរើសឬកំណត់យ៉ាងហោច
 msgid "Ce code existe déjà"
 msgstr "លេខកូដនេះមានរួចហើយ"
 
+#: templates/det-patient.html:73 templates/det-req-ext.html:1204
+#: templates/det-req-int.html:1082 templates/setting-det-analysis.html:1095
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "កំហុសមួយបានកើតឡើងខណៈពេលផ្ទៀងផ្ទាត់លេខកូដ"
+
 #: templates/setting-det-dict.html:5 templates/setting-det-dict.html:12
 msgid "Dictionnaire"
 msgstr "វចនានុក្រម"
@@ -5441,54 +4583,16 @@ msgstr "វចនានុក្រម"
 msgid "Mise en forme"
 msgstr "ការកំណត់ទ្រង់ទ្រាយ"
 
+#: templates/setting-det-user.html:18
+msgid "Droits utilisateur"
+msgstr "សិទ្ធិអ្នកប្រើប្រាស់"
+
 #: templates/setting-det-role.html:5 templates/setting-det-role.html:12
 #: templates/setting-det-role.html:15 templates/setting-det-user.html:21
 #: templates/setting-link-unit-user.html:25 templates/setting-users.html:43
 #: templates/setting-users.html:94
 msgid "Rôle"
 msgstr "តួនាទី"
-
-#: templates/setting-det-role.html:18
-#: templates/setting-roles-and-rights.html:34
-msgid "Rôle de base"
-msgstr ""
-
-#: templates/setting-det-role.html:28
-#, fuzzy
-msgid "Nom de ce rôle"
-msgstr "ឈ្មោះដើម"
-
-#: templates/setting-det-role.html:35
-msgid "Couleur principale"
-msgstr ""
-
-#: templates/setting-det-role.html:42
-msgid "Couleur de survol"
-msgstr ""
-
-#: templates/setting-det-role.html:49
-msgid "Couleur texte"
-msgstr ""
-
-#: templates/setting-det-role.html:56 templates/setting-user-rights.html:16
-#, fuzzy
-msgid "Droits"
-msgstr "ផលិតផល"
-
-#: templates/setting-det-role.html:60
-#: templates/setting-roles-and-rights.html:33
-#: templates/setting-user-rights.html:20
-#, fuzzy
-msgid "Libéllé"
-msgstr "ស្លាកសញ្ញា"
-
-#: templates/setting-det-role.html:104 templates/setting-det-user.html:332
-msgid "Veuillez choisir un rôle."
-msgstr "សូមជ្រើសរើសតួនាទី!"
-
-#: templates/setting-det-user.html:18
-msgid "Droits utilisateur"
-msgstr "សិទ្ធិអ្នកប្រើប្រាស់"
 
 #: templates/setting-det-user.html:25
 msgid "Administrateur"
@@ -5538,25 +4642,13 @@ msgstr "សូមបញ្ជាក់ពាក្យសម្ងាត់រប
 msgid "Veuillez choisir une langue."
 msgstr "សូមជ្រើសរើសភាសា!"
 
+#: templates/setting-det-role.html:104 templates/setting-det-user.html:332
+msgid "Veuillez choisir un rôle."
+msgstr "សូមជ្រើសរើសតួនាទី!"
+
 #: templates/setting-dhis2.html:5 templates/setting-dhis2.html:12
 msgid "Paramétrage de l'export DHIS2"
 msgstr "ការកំណត់រចនាសម្ព័ន្ធនាំចេញ DHIS2"
-
-#: templates/setting-dhis2.html:15
-msgid "Paramétrage envoi à l'api dhis2"
-msgstr ""
-
-#: templates/setting-dhis2.html:23
-msgid "Adresse plateforme"
-msgstr ""
-
-#: templates/setting-dhis2.html:24
-msgid "login"
-msgstr ""
-
-#: templates/setting-dhis2.html:41
-msgid "Paramétrage feuille de calcul"
-msgstr ""
 
 #: templates/setting-dhis2.html:61 templates/setting-epidemio.html:33
 #: templates/setting-indicator.html:33
@@ -5583,22 +4675,13 @@ msgstr "ការកំណត់របាយការណ៍អេពីដេម
 msgid "Paramétrage de formulaires"
 msgstr "ការកំណត់រចនាសម្ព័ន្ធទម្រង់"
 
+#: templates/setting-form.html:41
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
+msgstr "ការកែប្រែត្រូវបានរក្សាទុកភ្លាមៗសម្រាប់ការផ្លាស់ប្តូរដែលត្រូវយកមកពិចារណា អ្នកត្រូវតែត្រលប់ទៅទំព័រដើម ឬភ្ជាប់ឡើងវិញ"
+
 #: templates/setting-form.html:15
 msgid "Formulaire patient"
 msgstr "ទម្រង់អ្នកជំងឺ"
-
-#: templates/setting-form.html:36
-msgid "Enregistrer le formulaire"
-msgstr ""
-
-#: templates/setting-form.html:41
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
-msgstr ""
-"ការកែប្រែត្រូវបានរក្សាទុកភ្លាមៗសម្រាប់ការផ្លាស់ប្តូរដែលត្រូវយកមកពិចារណា "
-"អ្នកត្រូវតែត្រលប់ទៅទំព័រដើម ឬភ្ជាប់ឡើងវិញ"
 
 #: templates/setting-form.html:48
 msgid "Formulaire produit"
@@ -5607,10 +4690,6 @@ msgstr "ទម្រង់ផលិតផល"
 #: templates/setting-form.html:52
 msgid "Formulaire approvisionnement"
 msgstr "ទម្រង់នៃការផ្គត់ផ្គង់"
-
-#: templates/setting-form.html:171
-msgid "Aperçu"
-msgstr ""
 
 #: templates/setting-functionnal-units.html:5
 #: templates/setting-functionnal-units.html:12
@@ -5860,27 +4939,6 @@ msgstr "បន្ថែមផ្នែក"
 msgid "Services demandeurs"
 msgstr "សេវាកម្មស្នើសុំ"
 
-#: templates/setting-roles-and-rights.html:5
-#: templates/setting-roles-and-rights.html:12
-#, fuzzy
-msgid "Liste des rôles"
-msgstr "បញ្ជីអថេរ"
-
-#: templates/setting-roles-and-rights.html:35
-#, fuzzy
-msgid "Nombre de profil"
-msgstr "ចំនួនអ្នកជំងឺ"
-
-#: templates/setting-roles-and-rights.html:56
-#, fuzzy
-msgid "Ajouter un rôle"
-msgstr "បន្ថែមគំរូ"
-
-#: templates/setting-roles-and-rights.html:119
-#, fuzzy
-msgid "Consulter"
-msgstr "រំសាយ"
-
 #: templates/setting-stock.html:5 templates/setting-stock.html:12
 msgid "Paramétrage du stockage"
 msgstr "ការកំណត់បញ្ជីសារពើភ័ណ្ឌ"
@@ -5900,11 +4958,6 @@ msgstr "បន្ថែមទីតាំង"
 #: templates/setting-stock.html:42
 msgid "Usage"
 msgstr "ការប្រើប្រាស់"
-
-#: templates/setting-user-rights.html:5 templates/setting-user-rights.html:12
-#, fuzzy
-msgid "Droits de cet utilisateur"
-msgstr "សិទ្ធិអ្នកប្រើប្រាស់"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"
@@ -5946,11 +4999,6 @@ msgstr "ធ្វើឱ្យអ្នកប្រើប្រាស់សកម
 msgid "Désactiver utilisateur"
 msgstr "ធ្វើឱ្យអ្នកប្រើអសកម្ម"
 
-#: templates/setting-users.html:242
-#, fuzzy
-msgid "Editer droits"
-msgstr "បញ្ជីផលិតផល"
-
 #: templates/setting-users.html:276
 msgid "Veuillez confirmer la modification de statut"
 msgstr "សូមបញ្ជាក់ពីការផ្លាស់ប្តូរស្ថានភាព"
@@ -5983,25 +5031,6 @@ msgstr "កំហុសពេលនាំចូលទិន្នន័យចូ
 msgid "Déconnexion"
 msgstr "ចាកចេញ"
 
-#: templates/table-rights.html:6
-#, fuzzy
-msgid "Administration"
-msgstr "រដ្ឋបាល"
-
-#: templates/table-rights.html:7
-msgid "API"
-msgstr ""
-
-#: templates/table-rights.html:16
-#, fuzzy
-msgid "Modules des non-conformités"
-msgstr "ម៉ូឌុលភាពមិនប្រក្រតី"
-
-#: templates/table-rights.html:18
-#, fuzzy
-msgid "Dossiers"
-msgstr "កត់ត្រា"
-
 #: templates/technical-validation.html:605
 msgid "Non rempli"
 msgstr "មិនពេញលេញ"
@@ -6025,10 +5054,6 @@ msgstr "មានកំហុសអំឡុងពេលដំណើរការ
 #: templates/whonet-export.html:18
 msgid "Date de validation du"
 msgstr "កាលបរិច្ឆេទកំណត់សុពលភាពនៃ"
-
-#: templates/elem/pat_code_lab.html:1
-msgid "Code patient interne au laboratoire"
-msgstr "លេខកូដរបស់អ្នកជំងឺក្នុងនៃមន្ទីរពិសោធន៍"
 
 #: templates/js/display_histo.js:7
 msgid "Création du dossier"
@@ -6061,4 +5086,879 @@ msgstr "ដំណើរការកំពុងបន្ត"
 #: templates/popup/popup_wait.html:12
 msgid "Veuillez patienter"
 msgstr "សូមរង់ចាំ"
+
+#: templates/det-analyzer.html:5 templates/det-analyzer.html:12
+#: templates/list-msg-analyzer.html:18
+msgid "Analyseur"
+msgstr "អ្នកវិភាគ"
+
+#: templates/det-analyzer.html:22 templates/list-analyzers.html:5
+#: templates/list-analyzers.html:12
+msgid "Liste des analyseurs"
+msgstr "បញ្ជីអ្នកវិភាគ"
+
+#: templates/det-analyzer.html:51
+msgid "adresse transcodage"
+msgstr "អាសយដ្ឋាន transcodage"
+
+#: templates/det-analyzer.html:58
+msgid "position"
+msgstr "ទីតាំង"
+
+#: templates/det-analyzer.html:138
+msgid "Veuillez saisir un nom, un identifiant unique et leurs adresses."
+msgstr "សូមបញ្ចូលឈ្មោះ លេខសម្គាល់តែមួយគត់ និងអាសយដ្ឋានរបស់ពួកគេ។"
+
+#: templates/det-analyzer.html:141
+msgid "Veuillez sélectionner un analyzer dans la liste."
+msgstr "សូមជ្រើសរើសអ្នកវិភាគពីបញ្ជី។"
+
+#: templates/det-req-ext.html:325 templates/det-req-int.html:351
+msgid "Date prélèvement"
+msgstr "កាលបរិច្ឆេទប្រមូលសំណាក"
+
+#: templates/det-req-ext.html:326 templates/det-req-int.html:352
+msgid "Produit pathologiques"
+msgstr "ផលិតផលរោគសាស្ត្រ"
+
+#: templates/det-req-ext.html:1242 templates/det-req-int.html:1123
+msgid "Veuillez sélectionner une date et heure de réception du colis"
+msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទ និងពេលវេលាដើម្បីទទួលបានកញ្ចប់"
+
+#: templates/det-sample.html:73
+msgid "Analyse associée"
+msgstr "ការវិភាគតេស្តពាក់ព័ន្ធ"
+
+#: templates/det-equipment.html:145 templates/det-supplier.html:79
+#: templates/list-suppliers.html:39
+msgid "Critique"
+msgstr "ការរិះគន់"
+
+#: templates/homepage.html:38 templates/menu.html:154 templates/menu.html:449
+msgid "Configuration des analyseurs"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធអ្នកវិភាគ"
+
+#: templates/list-records.html:147 templates/report-tat.html:72
+#: templates/report-tat.html:335
+msgid "Réception dossier"
+msgstr "ទទួលឯកសារ"
+
+#: templates/setting-det-analysis.html:156
+msgid "Détails de ce dictionnaire"
+msgstr "ព័ត៌មានលម្អិតនៃវចនានុក្រម"
+
+#: templates/setting-det-analysis.html:176
+msgid "Affichage min./max."
+msgstr "ប្រាក់ឧបត្ថម្ភ អប្បបរមា/អតិបរមា"
+
+#: templates/contributors.html:33
+msgid "LabBook est co-financé par l'Agence Française de Développement (AFD) et la Fondation Mérieux."
+msgstr "LabBook ត្រូវបានសហហិរញ្ញប្បទានដោយទីភ្នាក់ងារអភិវឌ្ឍន៍បារាំង (AFD) និងមូលនិធិ Mérieux ។"
+
+#: templates/contributors.html:34
+msgid "Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé (OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le projet est financé par la Banque allemande de développement (KFW) et contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO."
+msgstr "គម្រោង PROALAB មានមូលដ្ឋាននៅអង្គការសុខភាពអាហ្វ្រិកខាងលិច (WAHO) និងជាផ្នែកមួយនៃផែនការយុទ្ធសាស្ត្រមន្ទីរពិសោធន៍ WAHO ។ គម្រោងនេះត្រូវបានផ្តល់មូលនិធិដោយធនាគារអភិវឌ្ឍន៍អាឡឺម៉ង់ (KFW) និងរួមចំណែកដល់ LabBook ចាប់តាំងពីឆ្នាំ 2024 ដើម្បីកែលម្អបណ្តាញតាមដានរោគរាតត្បាត និងប្រព័ន្ធមន្ទីរពិសោធន៍នៅក្នុងតំបន់ ECOWAS ។"
+
+#: templates/det-equipment.html:390
+msgid "Voir"
+msgstr "សូមមើល"
+
+#: templates/eqp-document.html:5 templates/eqp-document.html:15
+msgid "Documentation de l'équipement"
+msgstr "ឯកសារឧបករណ៍"
+
+#: templates/eqp-document.html:31 templates/eqp-document.html:54
+msgid "Téléchargement"
+msgstr "ទាញយក"
+
+#: templates/eqp-document.html:137 templates/eqp-document.html:182
+msgid "Possible après enregistrement"
+msgstr "អាចធ្វើទៅបានបន្ទាប់ពីការចុះឈ្មោះ"
+
+#: templates/eqp-failure.html:5 templates/eqp-failure.html:15
+msgid "Panne et réparation"
+msgstr "ការបំបែកនិងជួសជុល"
+
+#: templates/eqp-failure.html:28 templates/list-eqp-failure.html:129
+msgid "Panne"
+msgstr "បំបែក​បាក់បែក"
+
+#: templates/eqp-failure.html:29 templates/list-eqp-failure.html:130
+msgid "Réparation"
+msgstr "ជួសជុល"
+
+#: templates/eqp-failure.html:186 templates/eqp-maintenance-contract.html:135
+#: templates/eqp-maintenance-preventive.html:127
+#: templates/eqp-metrology.html:127
+msgid "Veuillez sélectionner une date"
+msgstr "សូមជ្រើសរើសកាលបរិច្ឆេទ"
+
+#: templates/eqp-maintenance-contract.html:5
+#: templates/eqp-maintenance-contract.html:15
+msgid "Maintenance"
+msgstr "\n"
+"ថែទាំ"
+
+#: templates/eqp-maintenance-contract.html:46
+#: templates/list-eqp-maintenance.html:87
+msgid "Renouvellement"
+msgstr "ការបន្ត"
+
+#: templates/eqp-maintenance-preventive.html:25
+msgid "Intervenant"
+msgstr "វាគ្មិន"
+
+#: templates/eqp-metrology.html:5 templates/eqp-metrology.html:15
+msgid "Métrologie et étalonnage"
+msgstr "មាត្រវិទ្យា និងការក្រិតតាមខ្នាត"
+
+#: templates/list-eqp-failure.html:5
+msgid "Liste des pannes et réparations d'équipements"
+msgstr "បញ្ជីនៃការខូចខាត និងជួសជុលឧបករណ៍"
+
+#: templates/list-eqp-maintenance.html:5 templates/list-eqp-maintenance.html:12
+msgid "Liste des maintenances"
+msgstr "បញ្ជីថែទាំ"
+
+#: templates/list-eqp-maintenance.html:15
+msgid "Liste des maintenances préventives"
+msgstr "បញ្ជីនៃការថែទាំបង្ការ"
+
+#: templates/list-eqp-maintenance.html:66
+msgid "Liste des contrats de maintenances"
+msgstr "បញ្ជីកិច្ចសន្យាថែទាំ"
+
+#: templates/list-eqp-metrology.html:5 templates/list-eqp-metrology.html:12
+msgid "Liste des métrologies et étalonnages"
+msgstr "បញ្ជីនៃម៉ែត្រនិងក្រិត"
+
+#: templates/list-equipment.html:130
+msgid "Maintenances"
+msgstr "ថែទាំ"
+
+#: templates/list-equipment.html:134
+msgid "Pannes et réparations"
+msgstr "ការបែកបាក់និងការជួសជុល"
+
+#: templates/list-equipment.html:138
+msgid "Métrologie"
+msgstr "មាត្រវិទ្យា"
+
+#: templates/list-trace-download.html:60
+msgid "Dépôt"
+msgstr "ដាក់ប្រាក់"
+
+#: templates/menu.html:86 templates/report-tat.html:5
+#: templates/report-tat.html:15
+msgid "Rapport sur le délai de rendu du résultat"
+msgstr "រាយការណ៍អំពីពេលវេលាចែកចាយលទ្ធផល"
+
+#: templates/menu.html:399
+msgid "Rapport sur le temps de rendu du résultat"
+msgstr "រាយការណ៍អំពីពេលវេលាបង្ហាញលទ្ធផល"
+
+#: templates/report-tat.html:16
+msgid "Le calcul du délai de rendu des résultats est basé sur la date d’enregistrement du dossier et les dates de validation des analyses du dossier"
+msgstr "ការគណនានៃពេលវេលាផ្តល់លទ្ធផលគឺផ្អែកលើកាលបរិច្ឆេទនៃការចុះឈ្មោះឯកសារ និងកាលបរិច្ឆេទនៃសុពលភាពនៃការវិភាគឯកសារ"
+
+#: templates/report-tat.html:76 templates/report-tat.html:335
+msgid "Délai de validation technique des résultats"
+msgstr "ពេលវេលាកំណត់សម្រាប់សុពលភាពបច្ចេកទេសនៃលទ្ធផល"
+
+#: templates/report-tat.html:77 templates/report-tat.html:335
+msgid "Délai de rendu des résultats"
+msgstr "ពេលវេលាចែកចាយលទ្ធផល"
+
+#: templates/report-tat.html:78 templates/report-tat.html:335
+msgid "Délai de rendu du dossier"
+msgstr "ថ្ងៃផុតកំណត់នៃការបញ្ជូនឯកសារ"
+
+#: templates/report-tat.html:82
+msgid "Moyenne des délais de validation technique du résultat"
+msgstr "ពេលវេលាជាមធ្យមសម្រាប់សុពលភាពបច្ចេកទេសនៃលទ្ធផល"
+
+#: templates/report-tat.html:83
+msgid "Moyenne des délais de rendu du résultat"
+msgstr "ពេលវេលាបង្ហាញលទ្ធផលជាមធ្យម"
+
+#: templates/report-tat.html:87
+msgid "Export"
+msgstr "នាំចេញ"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "j"
+msgstr "j"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "h"
+msgstr "h"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "min"
+msgstr "នាទី"
+
+#: templates/setting-det-analysis.html:209
+msgid "Formule de conversion unité 2"
+msgstr "រូបមន្តបំប្លែងឯកតាទី 2"
+
+#: templates/setting-det-analysis.html:213
+msgid "Unité 2"
+msgstr "ឯកតា ២"
+
+#: templates/setting-det-analysis.html:222
+msgid "Précision 2"
+msgstr "ភាពជាក់លាក់ 2"
+
+#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
+msgid "Plateforme DHIS2 api"
+msgstr "វេទិកា API DHIS2"
+
+#: templates/det-dhis2-api.html:39
+msgid "Adresse plateforme dhis2 "
+msgstr "អាសយដ្ឋានវេទិកា dhis2"
+
+#: templates/det-dhis2-api.html:46
+msgid "Par défaut"
+msgstr "តាម​លំនាំដើម"
+
+#: templates/report-dhis2.html:65
+msgid "Envoyer les données"
+msgstr "ផ្ញើទិន្នន័យ"
+
+#: templates/report-dhis2.html:79
+msgid "Retour d'envoi"
+msgstr "ការដឹកជញ្ជូនត្រឡប់មកវិញ"
+
+#: templates/report-dhis2.html:188
+msgid "Veuillez sélectionner une plateforme de destination."
+msgstr "សូមជ្រើសរើសវេទិកាគោលដៅ"
+
+#: templates/report-dhis2.html:224
+msgid "Paramétrage manquant !"
+msgstr "បាត់ការកំណត់!"
+
+#: templates/setting-dhis2.html:15
+msgid "Paramétrage envoi à l'api dhis2"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធផ្ញើទៅ dhis2 API"
+
+#: templates/setting-dhis2.html:23
+msgid "Adresse plateforme"
+msgstr "អាសយដ្ឋានវេទិកា"
+
+#: templates/setting-dhis2.html:24
+msgid "login"
+msgstr "ចូល"
+
+#: templates/setting-dhis2.html:41
+msgid "Paramétrage feuille de calcul"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធសៀវភៅបញ្ជី"
+
+#: templates/setting-form.html:36
+msgid "Enregistrer le formulaire"
+msgstr "រក្សាទុកទម្រង់"
+
+#: templates/setting-form.html:171
+msgid "Aperçu"
+msgstr "មើលជាមុន"
+
+#: templates/det-aliquot.html:7
+msgid "Détails aliquot"
+msgstr ""
+
+#: templates/det-aliquot.html:14 templates/det-storage-box.html:5
+#: templates/det-storage-box.html:12
+msgid "Détails boîte"
+msgstr ""
+
+#: templates/det-aliquot.html:48 templates/enter-result.html:126
+#: templates/list-aliquot.html:28 templates/list-results.html:93
+msgid "Pathogène"
+msgstr ""
+
+#: templates/det-aliquot.html:65 templates/enter-result.html:138
+#: templates/list-results.html:105
+msgid "Présent en stock"
+msgstr ""
+
+#: templates/det-aliquot.html:72 templates/enter-result.html:141
+#: templates/list-results.html:108
+msgid "Boîte associée"
+msgstr ""
+
+#: templates/det-aliquot.html:88 templates/enter-result.html:118
+#: templates/enter-result.html:153 templates/enter-result.html:548
+#: templates/list-aliquot.html:53 templates/list-results.html:85
+#: templates/list-results.html:120 templates/list-results.html:602
+msgid "Ajouter un aliquot"
+msgstr ""
+
+#: templates/det-aliquot.html:261
+msgid "Un patient doit être sélectionné."
+msgstr ""
+
+#: templates/det-aliquot.html:267
+msgid "Le produit pathologique est obligatoire."
+msgstr ""
+
+#: templates/det-aliquot.html:281 templates/enter-result.html:1179
+#: templates/list-results.html:1078
+msgid "L'association à une boîte est obligatoire."
+msgstr ""
+
+#: templates/det-analyzer.html:39
+msgid "adresse LabBook Connect"
+msgstr ""
+
+#: templates/det-analyzer.html:90
+msgid "Veuillez saisir une adresse LabBook Connect et un identifiant."
+msgstr ""
+
+#: templates/det-analyzer.html:96
+msgid "Test en cours"
+msgstr ""
+
+#: templates/det-analyzer.html:106
+msgid "L'analyseur est chargé."
+msgstr ""
+
+#: templates/det-analyzer.html:110
+msgid "Erreur : "
+msgstr ""
+
+#: templates/det-analyzer.html:114
+msgid "Réponse inattendue du serveur."
+msgstr ""
+
+#: templates/det-analyzer.html:119
+msgid "Erreur lors de la requête :"
+msgstr ""
+
+#: templates/det-message.html:5 templates/det-message.html:14
+#: templates/det-message.html:36
+msgid "Message"
+msgstr ""
+
+#: templates/det-message.html:18
+msgid "Destinataire"
+msgstr ""
+
+#: templates/det-message.html:65
+msgid "Envoyer"
+msgstr ""
+
+#: templates/det-message.html:132
+msgid "Veuillez saisir un utilisateur."
+msgstr ""
+
+#: templates/det-message.html:135
+msgid "Veuillez saisir un titre."
+msgstr ""
+
+#: templates/det-message.html:138
+msgid "Veuillez saisir un message."
+msgstr ""
+
+#: templates/det-patient.html:62
+msgid "Code patient interne au laboratoire existe déjà"
+msgstr ""
+
+#: templates/det-req-ext.html:1193 templates/det-req-int.html:1071
+msgid "Numéro de dossier interne au laboratoire existe déjà"
+msgstr ""
+
+#: templates/det-staff.html:189
+msgid "Signature"
+msgstr ""
+
+#: templates/det-storage-box.html:15
+msgid "Nom de la boîte"
+msgstr ""
+
+#: templates/det-storage-box.html:36 templates/det-storage-compartment.html:36
+msgid "Largeur"
+msgstr ""
+
+#: templates/det-storage-box.html:43 templates/det-storage-compartment.html:43
+msgid "Profondeur"
+msgstr ""
+
+#: templates/det-storage-box.html:50
+msgid "Boîte pleine"
+msgstr ""
+
+#: templates/det-storage-box.html:58 templates/list-storage-box.html:22
+msgid "Compartiment associé"
+msgstr ""
+
+#: templates/det-storage-box.html:95 templates/det-storage-chamber.html:69
+#: templates/det-storage-compartment.html:93 templates/det-storage-room.html:57
+msgid "Le nom et l'identifiant sont obligatoires."
+msgstr ""
+
+#: templates/det-storage-box.html:101 templates/det-storage-compartment.html:99
+msgid "Les dimensions doivent être positives."
+msgstr ""
+
+#: templates/det-storage-box.html:107
+msgid "L'association à un compartiment est obligatoire."
+msgstr ""
+
+#: templates/det-storage-chamber.html:5 templates/det-storage-chamber.html:12
+msgid "Détails enceinte"
+msgstr ""
+
+#: templates/det-storage-chamber.html:15
+msgid "Nom de l'enceinte"
+msgstr ""
+
+#: templates/det-storage-chamber.html:22
+#: templates/det-storage-compartment.html:22 templates/det-storage-room.html:22
+msgid "Abréviation du nom"
+msgstr ""
+
+#: templates/det-storage-chamber.html:36 templates/list-storage-chamber.html:22
+msgid "Pièce associée"
+msgstr ""
+
+#: templates/det-storage-chamber.html:75
+msgid "L'association à une pièce est obligatoire."
+msgstr ""
+
+#: templates/det-storage-compartment.html:5
+#: templates/det-storage-compartment.html:12
+msgid "Détails compartiment"
+msgstr ""
+
+#: templates/det-storage-compartment.html:15
+msgid "Nom du compartiment"
+msgstr ""
+
+#: templates/det-storage-compartment.html:50
+msgid "Hauteur"
+msgstr ""
+
+#: templates/det-storage-compartment.html:57
+#: templates/list-storage-compartment.html:22
+msgid "Enceinte associée"
+msgstr ""
+
+#: templates/det-storage-compartment.html:105
+msgid "L'association à une enceinte est obligatoire."
+msgstr ""
+
+#: templates/det-storage-room.html:5 templates/det-storage-room.html:12
+msgid "Détails pièce"
+msgstr ""
+
+#: templates/det-storage-room.html:15
+msgid "Nom de la pièce"
+msgstr ""
+
+#: templates/homepage.html:189
+msgid "La dernière sauvegarde OK date de plus de 24 heures."
+msgstr ""
+
+#: templates/list-aliquot.html:5 templates/list-aliquot.html:12
+#: templates/menu.html:300 templates/menu.html:547
+#: templates/table-rights.html:24
+msgid "Gestion des échantillons"
+msgstr ""
+
+#: templates/list-aliquot.html:18
+msgid "Déstockés"
+msgstr ""
+
+#: templates/list-aliquot.html:26
+msgid "ID"
+msgstr ""
+
+#: templates/list-aliquot.html:43
+msgid "Stockages"
+msgstr ""
+
+#: templates/list-aliquot.html:45 templates/list-storage-room.html:5
+#: templates/list-storage-room.html:12
+msgid "Liste pièces"
+msgstr ""
+
+#: templates/list-aliquot.html:46 templates/list-storage-chamber.html:5
+#: templates/list-storage-chamber.html:12
+msgid "Liste enceintes"
+msgstr ""
+
+#: templates/list-aliquot.html:47 templates/list-storage-compartment.html:5
+#: templates/list-storage-compartment.html:12
+msgid "Liste compartiments"
+msgstr ""
+
+#: templates/list-aliquot.html:48 templates/list-storage-box.html:5
+#: templates/list-storage-box.html:12
+msgid "Liste boîtes"
+msgstr ""
+
+#: templates/list-aliquot.html:64
+msgid "Déstocker un aliquot"
+msgstr ""
+
+#: templates/list-aliquot.html:72
+msgid "Raison"
+msgstr ""
+
+#: templates/list-aliquot.html:82
+msgid "Date du déstockage"
+msgstr ""
+
+#: templates/list-aliquot.html:89
+msgid "Déstockage externe ?"
+msgstr ""
+
+#: templates/list-aliquot.html:96
+msgid "Confirmer"
+msgstr ""
+
+#: templates/list-aliquot.html:123 templates/list-msg-analyzer.html:45
+#: templates/list-storage-box.html:58 templates/list-storage-chamber.html:56
+#: templates/list-storage-compartment.html:57
+#: templates/list-storage-room.html:55
+msgid "Afficher _MENU_ entrées"
+msgstr ""
+
+#: templates/list-aliquot.html:124 templates/list-msg-analyzer.html:46
+#: templates/list-storage-box.html:59 templates/list-storage-chamber.html:57
+#: templates/list-storage-compartment.html:58
+#: templates/list-storage-room.html:56
+msgid "Aucun enregistrement trouvé"
+msgstr ""
+
+#: templates/list-aliquot.html:125 templates/list-msg-analyzer.html:47
+#: templates/list-storage-box.html:60 templates/list-storage-chamber.html:58
+#: templates/list-storage-compartment.html:59
+#: templates/list-storage-room.html:57
+msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
+msgstr ""
+
+#: templates/list-aliquot.html:126 templates/list-msg-analyzer.html:48
+#: templates/list-storage-box.html:61 templates/list-storage-chamber.html:59
+#: templates/list-storage-compartment.html:60
+#: templates/list-storage-room.html:58
+msgid "Aucune entrée disponible"
+msgstr ""
+
+#: templates/list-aliquot.html:127 templates/list-msg-analyzer.html:49
+#: templates/list-storage-box.html:62 templates/list-storage-chamber.html:60
+#: templates/list-storage-compartment.html:61
+#: templates/list-storage-room.html:59
+msgid "(filtré de _MAX_ entrées au total)"
+msgstr ""
+
+#: templates/list-aliquot.html:148
+msgid "Déstocker"
+msgstr ""
+
+#: templates/list-aliquot.html:148
+msgid "Restocker"
+msgstr ""
+
+#: templates/list-aliquot.html:168 templates/list-storage-box.html:76
+#: templates/list-storage-chamber.html:74
+#: templates/list-storage-compartment.html:75
+#: templates/list-storage-room.html:73
+msgid "Éditer"
+msgstr ""
+
+#: templates/list-aliquot.html:266
+msgid "Veuillez indiquer une raison de déstockage."
+msgstr ""
+
+#: templates/list-aliquot.html:293 templates/list-aliquot.html:298
+#: templates/list-aliquot.html:326 templates/list-aliquot.html:330
+msgid "Une erreur s'est produite."
+msgstr ""
+
+#: templates/list-aliquot.html:304
+msgid "Êtes-vous sûr de vouloir restocker ?"
+msgstr ""
+
+#: templates/list-aliquot.html:337 templates/list-msg-analyzer.html:120
+#: templates/list-storage-box.html:124 templates/list-storage-chamber.html:115
+#: templates/list-storage-compartment.html:122
+#: templates/list-storage-room.html:108
+msgid "Êtes-vous sûr de vouloir supprimer ?"
+msgstr ""
+
+#: templates/list-aliquot.html:354 templates/list-aliquot.html:358
+#: templates/list-msg-analyzer.html:137 templates/list-msg-analyzer.html:141
+#: templates/list-storage-box.html:141 templates/list-storage-box.html:145
+#: templates/list-storage-chamber.html:132
+#: templates/list-storage-chamber.html:136
+#: templates/list-storage-compartment.html:139
+#: templates/list-storage-compartment.html:143
+#: templates/list-storage-room.html:125 templates/list-storage-room.html:129
+msgid "Une erreur s'est produite lors de la suppression."
+msgstr ""
+
+#: templates/list-messages.html:5 templates/list-messages.html:12
+msgid "Messages"
+msgstr ""
+
+#: templates/list-messages.html:55
+msgid "Envoyer un message"
+msgstr ""
+
+#: templates/list-messages.html:108
+msgid "Lire"
+msgstr ""
+
+#: templates/list-messages.html:125
+msgid "Envoyé à"
+msgstr ""
+
+#: templates/list-messages.html:133
+msgid "Reçu de"
+msgstr ""
+
+#: templates/list-storage-box.html:5 templates/list-storage-box.html:12
+#: templates/list-storage-chamber.html:5 templates/list-storage-chamber.html:12
+#: templates/list-storage-compartment.html:5
+#: templates/list-storage-compartment.html:12
+#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
+msgid "Stockage d'échantillon"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
+#: templates/list-storage-chamber.html:18
+#: templates/list-storage-compartment.html:18
+#: templates/list-storage-room.html:18
+msgid "id"
+msgstr ""
+
+#: templates/list-storage-box.html:23
+msgid "Dimensions l,p"
+msgstr ""
+
+#: templates/list-storage-box.html:24
+msgid "Nb. aliquot"
+msgstr ""
+
+#: templates/list-storage-box.html:25
+msgid "Pleine"
+msgstr ""
+
+#: templates/list-storage-box.html:36
+msgid "Ajouter boîte"
+msgstr ""
+
+#: templates/list-storage-chamber.html:20
+#: templates/list-storage-compartment.html:20
+#: templates/list-storage-room.html:20
+msgid "Abbréviation"
+msgstr ""
+
+#: templates/list-storage-chamber.html:23
+msgid "Nb. compartiment"
+msgstr ""
+
+#: templates/list-storage-chamber.html:34
+msgid "Ajouter enceinte"
+msgstr ""
+
+#: templates/list-storage-compartment.html:23
+msgid "Dimensions l,p,h"
+msgstr ""
+
+#: templates/list-storage-compartment.html:24
+msgid "Nb. boîte"
+msgstr ""
+
+#: templates/list-storage-compartment.html:35
+msgid "Ajouter compartiment"
+msgstr ""
+
+#: templates/list-storage-room.html:22
+msgid "Nb. enceinte"
+msgstr ""
+
+#: templates/menu.html:138 templates/menu.html:439
+msgid "Gestion des rôles et droits"
+msgstr ""
+
+#: templates/no-rights.html:1
+msgid "Vous n'avez pas les droits pour accéder à cette page"
+msgstr ""
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+msgid "s"
+msgstr ""
+
+#: templates/setting-det-analysis.html:26
+msgid "LOINC"
+msgstr ""
+
+#: templates/setting-det-analysis.html:109
+msgid "Antiobiogramme"
+msgstr ""
+
+#: templates/setting-det-role.html:18
+#: templates/setting-roles-and-rights.html:34
+msgid "Rôle de base"
+msgstr ""
+
+#: templates/setting-det-role.html:28
+msgid "Nom de ce rôle"
+msgstr ""
+
+#: templates/setting-det-role.html:35
+msgid "Couleur principale"
+msgstr ""
+
+#: templates/setting-det-role.html:42
+msgid "Couleur de survol"
+msgstr ""
+
+#: templates/setting-det-role.html:49
+msgid "Couleur texte"
+msgstr ""
+
+#: templates/setting-det-role.html:56 templates/setting-user-rights.html:16
+msgid "Droits"
+msgstr ""
+
+#: templates/setting-det-role.html:60
+#: templates/setting-roles-and-rights.html:33
+#: templates/setting-user-rights.html:20
+msgid "Libéllé"
+msgstr ""
+
+#: templates/setting-roles-and-rights.html:5
+#: templates/setting-roles-and-rights.html:12
+msgid "Liste des rôles"
+msgstr ""
+
+#: templates/setting-roles-and-rights.html:35
+msgid "Nombre de profil"
+msgstr ""
+
+#: templates/setting-roles-and-rights.html:56
+msgid "Ajouter un rôle"
+msgstr ""
+
+#: templates/setting-roles-and-rights.html:119
+msgid "Consulter"
+msgstr ""
+
+#: templates/setting-user-rights.html:5 templates/setting-user-rights.html:12
+msgid "Droits de cet utilisateur"
+msgstr ""
+
+#: templates/setting-users.html:242
+msgid "Editer droits"
+msgstr ""
+
+#: templates/table-rights.html:6
+msgid "Administration"
+msgstr ""
+
+#: templates/table-rights.html:7
+msgid "API"
+msgstr ""
+
+#: templates/table-rights.html:16
+msgid "Modules des non-conformités"
+msgstr ""
+
+#: templates/table-rights.html:18
+msgid "Dossiers"
+msgstr ""
+
+#: templates/list-analyzers.html:55
+msgid "Transactions"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
+msgid "Liste messages analyseurs"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:19
+msgid "Date d'envoi"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:20
+msgid "Message envoyé"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:21
+msgid "Message reçu"
+msgstr ""
+
+#: templates/list-storage-room.html:33
+msgid "Ajouter pièce"
+msgstr ""
+
+#: templates/det-aliquot.html:35
+msgid "Nature"
+msgstr ""
+
+#: templates/det-aliquot.html:69
+msgid "Le format attendu est une lettre suivie d'un nombre"
+msgstr ""
+
+#: templates/det-aliquot.html:90 templates/enter-result.html:148
+#: templates/list-results.html:115
+msgid "Stockage boîte"
+msgstr ""
+
+#: templates/det-aliquot.html:382 templates/enter-result.html:1302
+#: templates/list-results.html:1204
+msgid "Erreur lors de la récupération"
+msgstr ""
+
+#: templates/list-aliquot.html:194
+msgid "Stocké le"
+msgstr ""
+
+#: templates/list-aliquot.html:198
+msgid "Déstocké le"
+msgstr ""
+
+#: templates/list-aliquot.html:209
+msgid "Externalisé"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:107
+msgid "En cours d'envoi"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:110
+msgid "Connexion échouée"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:113
+msgid "Message accepté sans erreur"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:116
+msgid "Erreur dans la requête"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:119
+msgid "Rejet complet de la commande"
+msgstr ""
+
+#: templates/list-aliquot.html:32
+msgid "Coordonées"
+msgstr ""
 

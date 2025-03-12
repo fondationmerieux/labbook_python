@@ -12,7 +12,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Détails aliquot") }}</span></h2>
-            
+            {% if (has_permission("ALIQUOT_170") and args['id_item'] == 0) or (has_permission("ALIQUOT_171") and args['id_item'] > 0) %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="search_patient" class="form-label col-3 text-end mt-2 me-1">{{ _("Patient") }} *</label>
@@ -106,6 +106,11 @@
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+
         </div>
     </div>
 </div>
@@ -359,9 +364,13 @@ let boxCoordSpan = aliquotForm.querySelector(".box_coord");
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                if (data.sro_label && data.sch_label && data.sco_label && data.sbo_label && data.sbo_coordinates) {
-                    let coordText = `${data.sro_label} > ${data.sch_label} > ${data.sco_label} > ${data.sbo_label} [${data.sbo_coordinates}]`;
+                if (data.sbo_label) {
+                    let coordText = `${data.sro_label || ''} > ${data.sch_label || ''} > ${data.sco_label || ''} > ${data.sbo_label}`;
                     
+                    if (data.sbo_coordinates) {
+                        coordText += ` [${data.sbo_coordinates}]`;
+                    } 
+
                     if (data.sbo_full === "Y") {
                         coordText += " ({{ _('Pleine') }})";
                     }
@@ -398,7 +407,7 @@ document.querySelectorAll(".coordinates").forEach(input => {
 
 function new_patient()
 {
-window.open("{{ session['server_ext'] }}/det-patient/0", "_blank") ;
+window.open("{{ session['server_ext'] }}/det-patient/N/0", "_blank") ;
 }
 
 function new_pathogen()

@@ -1,18 +1,11 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  Labbook_FE\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-28 11:11+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: mg\n"
-"Language-Team: mg <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: mg\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:108
@@ -660,9 +653,7 @@ msgid "Aucun fichier déposé"
 msgstr "Tsy misy fichier"
 
 #: templates/administrative-record.html:643
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
 msgstr "Te-hanitsy ny tatitra ve ianao ? (hiseho eo ny teny Nanafoana sy Nanolo)"
 
 #: templates/administrative-record.html:662 templates/pivot-table.html:161
@@ -839,21 +830,15 @@ msgid "Traitement réussi"
 msgstr "Nety ny fikarakarana"
 
 #: templates/analysis-import.html:150 templates/dict-import.html:123
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
-msgstr ""
-"Olana teo amin'ny fikirakirana ny données, havaozy ny pejy "
-"mandrapivoakan'ny statut'ny"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
+msgstr "Olana teo amin'ny fikirakirana ny données, havaozy ny pejy mandrapivoakan'ny statut'ny"
 
 #: templates/analysis-import.html:187 templates/dict-import.html:155
 msgid "Aucun statut"
 msgstr "Tsy misy statut"
 
 #: templates/analysis-import.html:193 templates/dict-import.html:161
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr "Nisy olana teo am-panamarinana ny statut an'ireo données"
 
 #: templates/api.html:3
@@ -1007,12 +992,8 @@ msgstr "Nisy olana teo am-pamerenana izay efa voasoratra"
 
 #: templates/biological-validation.html:418
 #: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
-msgstr ""
-"Tena te-hanafoana ity valiny ity ve ianao ? \\nTsy mety hiverenana "
-"intsony ity."
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "Tena te-hanafoana ity valiny ity ve ianao ? \\nTsy mety hiverenana intsony ity."
 
 #: templates/biological-validation.html:459
 #: templates/technical-validation.html:350
@@ -1081,38 +1062,9 @@ msgstr "Tandremo fa hiala tsy manao fanamarinana ianao."
 msgid "Contributeurs"
 msgstr "Mpiara-miasa"
 
-#: templates/contributors.html:20 templates/initialization.html:3
-#: templates/initialization.html:19 templates/login.html:3
-#: templates/login.html:20 templates/skeleton.html:33
-msgid "LabBook"
-msgstr "LabBook"
-
 #: templates/contributors.html:32
 msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
 msgstr "LabBook dia rindrambaiko fitantanana laboratoara tsy vidiana."
-
-#: templates/contributors.html:33
-msgid ""
-"LabBook est co-financé par l'Agence Française de Développement (AFD) et "
-"la Fondation Mérieux."
-msgstr ""
-"Ny LabBook dia miara-miasa amin'ny Agence Française de Développement "
-"(AFD) sy ny Fondation Mérieux."
-
-#: templates/contributors.html:34
-msgid ""
-"Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé "
-"(OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le "
-"projet est financé par la Banque allemande de développement (KFW) et "
-"contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance "
-"épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO."
-msgstr ""
-"Ny tetikasa PROALAB dia miorina ao amin'ny Organisation Ouest Africaine "
-"de la Santé (OOAS) ary ao anatin'ny drafitra stratejikan'ireo "
-"laboratoires an'ny OOAS. Ny tetikasa dia vatsian'ny Banque allemande de "
-"développement (KFW) ary mandray anjara amin'ny LabBook nanomboka tamin'ny"
-" 2024 mba hanatsarana ny tambajotra fanaraha-maso ny areti-mifindra sy ny"
-" rafitry ny laboratoire ao amin'ny faritra CEDEAO."
 
 #: templates/contributors.html:35
 msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
@@ -1129,147 +1081,6 @@ msgstr "Ny fahazoan-dàlana GNU no mifehy ny rindrambaiko."
 #: templates/contributors.html:61
 msgid "Version : "
 msgstr "Version :"
-
-#: templates/det-aliquot.html:7
-#, fuzzy
-msgid "Détails aliquot"
-msgstr "Antsipirian'ny vokatra"
-
-#: templates/det-aliquot.html:14 templates/det-storage-box.html:5
-#: templates/det-storage-box.html:12
-#, fuzzy
-msgid "Détails boîte"
-msgstr "Antsipirian'ny vokatra"
-
-#: templates/det-aliquot.html:18 templates/list-aliquot.html:29
-#: templates/list-results.html:611 templates/list-samples.html:44
-#: templates/pivot-table.html:30 templates/report-tat.html:74
-#: templates/report-tat.html:335
-msgid "Patient"
-msgstr "Marary"
-
-#: templates/det-aliquot.html:32 templates/det-sample.html:79
-msgid "Produit pathologique"
-msgstr "Vokatra pathologique"
-
-#: templates/det-aliquot.html:48 templates/enter-result.html:126
-#: templates/list-aliquot.html:28 templates/list-results.html:93
-msgid "Pathogène"
-msgstr ""
-
-#: templates/det-aliquot.html:58 templates/det-storage-box.html:29
-#: templates/enter-result.html:133 templates/list-results.html:100
-#: templates/list-storage-box.html:21 templates/manage-pat-records.html:230
-#: templates/manage-pat-records.html:484
-msgid "Coordonnées"
-msgstr "Contact"
-
-#: templates/det-aliquot.html:65 templates/enter-result.html:138
-#: templates/list-results.html:105
-msgid "Présent en stock"
-msgstr ""
-
-#: templates/det-aliquot.html:72 templates/enter-result.html:141
-#: templates/list-results.html:108
-#, fuzzy
-msgid "Boîte associée"
-msgstr "Analyse mifandray"
-
-#: templates/det-aliquot.html:88 templates/enter-result.html:118
-#: templates/enter-result.html:153 templates/enter-result.html:548
-#: templates/list-aliquot.html:53 templates/list-results.html:85
-#: templates/list-results.html:120 templates/list-results.html:602
-#, fuzzy
-msgid "Ajouter un aliquot"
-msgstr "Manampy valeur"
-
-#: templates/det-aliquot.html:261
-msgid "Un patient doit être sélectionné."
-msgstr ""
-
-#: templates/det-aliquot.html:267
-#, fuzzy
-msgid "Le produit pathologique est obligatoire."
-msgstr "Produit pathologiques"
-
-#: templates/det-aliquot.html:281 templates/enter-result.html:1179
-#: templates/list-results.html:1078
-msgid "L'association à une boîte est obligatoire."
-msgstr ""
-
-#: templates/det-analyzer.html:5 templates/det-analyzer.html:12
-#: templates/list-msg-analyzer.html:18
-msgid "Analyseur"
-msgstr "Analyseur"
-
-#: templates/det-analyzer.html:22 templates/list-analyzers.html:5
-#: templates/list-analyzers.html:12
-msgid "Liste des analyseurs"
-msgstr "Lisitr'ireo analyseur"
-
-#: templates/det-analyzer.html:32 templates/det-dhis2-api.html:22
-#: templates/det-storage-box.html:22 templates/det-storage-chamber.html:29
-#: templates/det-storage-compartment.html:29 templates/det-storage-room.html:29
-#: templates/list-analyzers.html:33 templates/list-staff.html:43
-#: templates/list-storage-box.html:20 templates/list-storage-chamber.html:21
-#: templates/list-storage-compartment.html:21
-#: templates/list-storage-room.html:21 templates/login.html:33
-#: templates/setting-det-user.html:51 templates/setting-link-unit-user.html:22
-#: templates/setting-users.html:21 templates/setting-users.html:89
-msgid "Identifiant"
-msgstr "Identifiant"
-
-#: templates/det-analyzer.html:39
-msgid "adresse LabBook Connect"
-msgstr ""
-
-#: templates/det-analyzer.html:44 templates/list-template.html:121
-#: templates/report-dhis2.html:66
-msgid "Tester"
-msgstr "Hanandrana"
-
-#: templates/det-analyzer.html:51
-msgid "adresse transcodage"
-msgstr "adiresy transcodage"
-
-#: templates/det-analyzer.html:58
-msgid "position"
-msgstr "toerana"
-
-#: templates/det-analyzer.html:90
-#, fuzzy
-msgid "Veuillez saisir une adresse LabBook Connect et un identifiant."
-msgstr "Mampidira identifiant."
-
-#: templates/det-analyzer.html:96
-#, fuzzy
-msgid "Test en cours"
-msgstr "Dingana eo an-dalana"
-
-#: templates/det-analyzer.html:106
-msgid "L'analyseur est chargé."
-msgstr ""
-
-#: templates/det-analyzer.html:110
-msgid "Erreur : "
-msgstr ""
-
-#: templates/det-analyzer.html:114
-msgid "Réponse inattendue du serveur."
-msgstr ""
-
-#: templates/det-analyzer.html:119
-#, fuzzy
-msgid "Erreur lors de la requête :"
-msgstr "Olana teo am-pamoahana ny PDF"
-
-#: templates/det-analyzer.html:138
-msgid "Veuillez saisir un nom, un identifiant unique et leurs adresses."
-msgstr "Ampidiro azafady anarana, ID tokana ary ny adiresiny."
-
-#: templates/det-analyzer.html:141
-msgid "Veuillez sélectionner un analyzer dans la liste."
-msgstr "Misafidiana analyseur iray anaty lisitra"
 
 #: templates/det-control-ext.html:5 templates/det-control-ext.html:14
 msgid "Contrôle externe"
@@ -1681,29 +1492,6 @@ msgstr "Fizahana anatiny"
 msgid "Cible"
 msgstr "Cible"
 
-#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
-msgid "Plateforme DHIS2 api"
-msgstr "Plateforme DHIS2 api"
-
-#: templates/det-dhis2-api.html:29 templates/login.html:41
-#: templates/setting-backup.html:83 templates/setting-det-user.html:58
-#: templates/setting-pwd-user.html:15
-msgid "Mot de passe"
-msgstr "Teny miafina"
-
-#: templates/det-dhis2-api.html:39
-msgid "Adresse plateforme dhis2 "
-msgstr "Adiresy plateforme dhis2 "
-
-#: templates/det-dhis2-api.html:46
-msgid "Par défaut"
-msgstr "Par défaut"
-
-#: templates/det-dhis2-api.html:86 templates/det-doctor.html:165
-#: templates/det-template.html:96 templates/setting-det-role.html:107
-msgid "Veuillez saisir un nom."
-msgstr "Ampidiro anarana azafady."
-
 #: templates/det-doctor.html:17 templates/setting-det-user.html:48
 msgid "Accès"
 msgstr "Fidirana"
@@ -1750,12 +1538,6 @@ msgstr "Service"
 msgid "Adresse"
 msgstr "Adiresy"
 
-#: templates/det-doctor.html:76 templates/elem/pat_zipcode.html:1
-#: templates/list-doctors.html:88 templates/manage-pat-records.html:259
-#: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
-msgid "Code postal"
-msgstr "Kaody postaly"
-
 #: templates/det-doctor.html:83 templates/list-doctors.html:49
 #: templates/list-doctors.html:89 templates/setting-zipcity.html:38
 msgid "Ville"
@@ -1783,15 +1565,10 @@ msgstr "Fax"
 msgid "Adresse email"
 msgstr "Adiresy mailaka"
 
-#: templates/det-doctor.html:211 templates/elem/search_zipcity.html:5
-#: templates/manage-pat-records.html:947
-msgid "Recherche de code postal ou ville"
-msgstr "Fikarohana kaody postaly na tanàna"
-
-#: templates/det-doctor.html:258 templates/elem/search_zipcity.html:52
-#: templates/manage-pat-records.html:994
-msgid "Erreur lors de la récupération des données"
-msgstr "Olana teo am-pamerenana ireo données"
+#: templates/det-dhis2-api.html:86 templates/det-doctor.html:165
+#: templates/det-template.html:96 templates/setting-det-role.html:107
+msgid "Veuillez saisir un nom."
+msgstr "Ampidiro anarana azafady."
 
 #: templates/det-equipment.html:18
 msgid "Nom de l'équipement"
@@ -1841,6 +1618,32 @@ msgstr "Laharana anaty lisitra"
 msgid "Responsable"
 msgstr "Tompon'andraikitra"
 
+#: templates/det-manual.html:5 templates/det-manual.html:15
+#: templates/eqp-document.html:18 templates/list-manuals.html:68
+msgid "Manuel"
+msgstr "Fitarihana"
+
+#: templates/det-procedure.html:5 templates/det-procedure.html:15
+#: templates/eqp-document.html:41 templates/list-procedure.html:41
+msgid "Procédure"
+msgstr "Procédure"
+
+#: templates/list-eqp-failure.html:12
+msgid "Liste des pannes et réparations"
+msgstr "Lisitry ny simba sy ny fanamboarana"
+
+#: templates/hist-stock-product.html:61 templates/list-eqp-failure.html:34
+#: templates/list-eqp-maintenance.html:35 templates/list-trace-download.html:24
+#: templates/list-trace-download.html:61 templates/setting-det-user.html:5
+#: templates/setting-det-user.html:15
+msgid "Utilisateur"
+msgstr "Mpampiasa"
+
+#: templates/eqp-maintenance-preventive.html:5
+#: templates/eqp-maintenance-preventive.html:15
+msgid "Maintenance préventive"
+msgstr "Fikolokoloana"
+
 #: templates/det-equipment.html:98 templates/det-template.html:28
 msgid "Facture"
 msgstr "Faktiora"
@@ -1862,11 +1665,6 @@ msgstr "Daty nanombohana"
 msgid "Date de retrait du laboratoire"
 msgstr "Daty nialana teo amin'ny laboratoara"
 
-#: templates/det-equipment.html:145 templates/det-supplier.html:79
-#: templates/list-suppliers.html:39
-msgid "Critique"
-msgstr "Critique"
-
 #: templates/det-equipment.html:151 templates/det-staff.html:210
 #: templates/eqp-document.html:64 templates/eqp-failure.html:63
 #: templates/eqp-maintenance-contract.html:53
@@ -1879,10 +1677,6 @@ msgstr "Fanehoan-kevitra"
 #: templates/det-equipment.html:294
 msgid "Veuillez saisir un nom d'équipement."
 msgstr "Ampidiro ny anaran'ny fitaovana azafady."
-
-#: templates/det-equipment.html:390
-msgid "Voir"
-msgstr "Mijery"
 
 #: templates/det-hist-analysis.html:5 templates/det-hist-analysis.html:12
 msgid "Historique d'une analyse"
@@ -2020,11 +1814,6 @@ msgstr "Lazao ny habetsaky ny nampiasana"
 msgid "Aucun prescripteur à exporter !"
 msgstr "Tsy misy prescripteur ho exporter-na !"
 
-#: templates/det-manual.html:5 templates/det-manual.html:15
-#: templates/eqp-document.html:18 templates/list-manuals.html:68
-msgid "Manuel"
-msgstr "Fitarihana"
-
 #: templates/det-manual.html:18 templates/det-procedure.html:18
 #: templates/list-manuals.html:61 templates/list-procedure.html:33
 msgid "Référence"
@@ -2097,41 +1886,6 @@ msgstr "Mpikarakara"
 msgid "Veuillez saisir une date de réunion."
 msgstr "Ampidiro ny datin'ny fivoriana."
 
-#: templates/det-message.html:5 templates/det-message.html:14
-#: templates/det-message.html:36
-#, fuzzy
-msgid "Message"
-msgstr "Fampiasana"
-
-#: templates/det-message.html:18
-#, fuzzy
-msgid "Destinataire"
-msgstr "Destination"
-
-#: templates/det-message.html:23 templates/det-supplier.html:22
-#: templates/list-messages.html:32
-msgid "Contact"
-msgstr "Contact"
-
-#: templates/det-message.html:65
-msgid "Envoyer"
-msgstr ""
-
-#: templates/det-message.html:132
-#, fuzzy
-msgid "Veuillez saisir un utilisateur."
-msgstr "Mampidira statut azafady."
-
-#: templates/det-message.html:135
-#, fuzzy
-msgid "Veuillez saisir un titre."
-msgstr "Mampidira statut azafady."
-
-#: templates/det-message.html:138
-#, fuzzy
-msgid "Veuillez saisir un message."
-msgstr "Mampidira teny miafina azafady."
-
 #: templates/det-new-product.html:5 templates/det-new-product.html:14
 msgid "Détails produit"
 msgstr "Antsipirian'ny vokatra"
@@ -2181,24 +1935,122 @@ msgstr "Antsipirian'ny marary"
 msgid "Demande d'analyses patient - Fiche patient"
 msgstr "Fangatahana fitiliana ny marary - Taratasin'ny marary"
 
-#: templates/det-patient.html:62
-#, fuzzy
-msgid "Code patient interne au laboratoire existe déjà"
+#: templates/elem/pat_ano.html:1 templates/js/pat_ident.js:15
+#: templates/manage-pat-records.html:50 templates/manage-pat-records.html:305
+msgid "Anonyme"
+msgstr "Anonyme"
+
+#: templates/elem/pat_code_lab.html:1
+msgid "Code patient interne au laboratoire"
 msgstr "Kaody anatin'ny marary ao amin'ny laboratoara"
 
-#: templates/det-patient.html:73 templates/det-req-ext.html:1204
-#: templates/det-req-int.html:1082 templates/setting-det-analysis.html:1095
-msgid "Une erreur est survenue lors de la vérification du code"
-msgstr "Nisy olana teo am-panamarinana ilay kaody"
+#: templates/elem/pat_midname.html:2 templates/manage-pat-records.html:91
+#: templates/manage-pat-records.html:346
+msgid "Deuxième nom"
+msgstr "Anarana faharoa"
+
+#: templates/elem/pat_maiden.html:2 templates/manage-pat-records.html:101
+#: templates/manage-pat-records.html:356
+msgid "Nom de jeune fille"
+msgstr "Anaran'ny tovovavy"
+
+#: templates/elem/pat_firstname.html:2 templates/manage-pat-records.html:111
+#: templates/manage-pat-records.html:366
+msgid "Prénom(s)"
+msgstr "Fanampin'anarana"
+
+#: templates/elem/pat_birth_approx.html:1 templates/manage-pat-records.html:130
+#: templates/manage-pat-records.html:384
+msgid "Date de naissance approximative"
+msgstr "Daty manakaiky ny nahaterahana"
+
+#: templates/list-results.html:46 templates/manage-pat-records.html:141
+#: templates/manage-pat-records.html:395 templates/report-tat.html:50
+msgid "ou"
+msgstr "na"
+
+#: templates/elem/pat_age.html:1 templates/manage-pat-records.html:146
+#: templates/manage-pat-records.html:400
+msgid "Age"
+msgstr "Taona"
+
+#: templates/elem/pat_age_unit.html:1 templates/manage-pat-records.html:154
+#: templates/manage-pat-records.html:408
+msgid "unité"
+msgstr "unité"
+
+#: templates/elem/pat_nationality.html:1 templates/manage-pat-records.html:169
+#: templates/manage-pat-records.html:423
+msgid "Nationalité"
+msgstr "Nationalité"
+
+#: templates/elem/pat_resident.html:1 templates/manage-pat-records.html:176
+#: templates/manage-pat-records.html:430
+msgid "Résident"
+msgstr "Monina"
+
+#: templates/elem/pat_blood_group.html:1 templates/manage-pat-records.html:207
+#: templates/manage-pat-records.html:461
+msgid "Groupe sanguin"
+msgstr "Sokajin-dra"
+
+#: templates/elem/pat_blood_rhesus.html:1 templates/manage-pat-records.html:216
+#: templates/manage-pat-records.html:470
+msgid "Rhésus"
+msgstr "Rhésus"
+
+#: templates/det-aliquot.html:58 templates/det-storage-box.html:29
+#: templates/enter-result.html:133 templates/list-results.html:100
+#: templates/list-storage-box.html:21 templates/manage-pat-records.html:230
+#: templates/manage-pat-records.html:484
+msgid "Coordonnées"
+msgstr "Contact"
+
+#: templates/elem/pat_phone1.html:1 templates/elem/pat_phone2.html:1
+#: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
+#: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
+msgid "Téléphone"
+msgstr "Finday"
+
+#: templates/elem/pat_profession.html:1 templates/manage-pat-records.html:285
+#: templates/manage-pat-records.html:535
+msgid "Profession"
+msgstr "Asa"
+
+#: templates/elem/pat_pbox.html:1 templates/manage-pat-records.html:243
+#: templates/manage-pat-records.html:497
+msgid "Boite postale"
+msgstr "Boite postale"
+
+#: templates/elem/pat_district.html:1 templates/manage-pat-records.html:249
+#: templates/manage-pat-records.html:503
+msgid "Quartier / Secteur"
+msgstr "Quartier / Secteur"
+
+#: templates/det-doctor.html:76 templates/elem/pat_zipcode.html:1
+#: templates/list-doctors.html:88 templates/manage-pat-records.html:259
+#: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
+msgid "Code postal"
+msgstr "Kaody postaly"
+
+#: templates/elem/pat_city.html:1 templates/manage-pat-records.html:265
+#: templates/manage-pat-records.html:515
+msgid "Ville / Village"
+msgstr "Renivohitra"
 
 #: templates/det-patient.html:113
 msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
 msgstr "Nisy olana teo am-panovana/nanampy marary"
 
-#: templates/det-procedure.html:5 templates/det-procedure.html:15
-#: templates/eqp-document.html:41 templates/list-procedure.html:41
-msgid "Procédure"
-msgstr "Procédure"
+#: templates/det-doctor.html:211 templates/elem/search_zipcity.html:5
+#: templates/manage-pat-records.html:947
+msgid "Recherche de code postal ou ville"
+msgstr "Fikarohana kaody postaly na tanàna"
+
+#: templates/det-doctor.html:258 templates/elem/search_zipcity.html:52
+#: templates/manage-pat-records.html:994
+msgid "Erreur lors de la récupération des données"
+msgstr "Olana teo am-pamerenana ireo données"
 
 #: templates/det-req-ext.html:5 templates/det-req-int.html:5
 msgid "Details demande d'analyses"
@@ -2245,23 +2097,6 @@ msgstr "Vokatra pathologiques"
 msgid "Ajouter un prélèvement"
 msgstr "Manampy singa"
 
-#: templates/det-req-ext.html:325 templates/det-req-int.html:351
-msgid "Date prélèvement"
-msgstr "Daty prélèvement"
-
-#: templates/det-req-ext.html:326 templates/det-req-int.html:352
-msgid "Produit pathologiques"
-msgstr "Produit pathologiques"
-
-#: templates/det-req-ext.html:328 templates/det-req-int.html:354
-#: templates/det-sample.html:102
-msgid "Préleveur"
-msgstr "Préleveur"
-
-#: templates/det-req-ext.html:331 templates/det-req-int.html:357
-msgid "Date réception"
-msgstr "Daty nandraisana"
-
 #: templates/det-req-ext.html:332 templates/det-req-int.html:358
 #: templates/det-sample.html:56 templates/list-records.html:71
 #: templates/list-records.html:138 templates/list-works.html:102
@@ -2269,6 +2104,15 @@ msgstr "Daty nandraisana"
 #: templates/setting-users.html:52 templates/setting-users.html:92
 msgid "Statut"
 msgstr "Statut"
+
+#: templates/det-req-ext.html:331 templates/det-req-int.html:357
+msgid "Date réception"
+msgstr "Daty nandraisana"
+
+#: templates/det-req-ext.html:328 templates/det-req-int.html:354
+#: templates/det-sample.html:102
+msgid "Préleveur"
+msgstr "Préleveur"
 
 #: templates/det-req-ext.html:565
 msgid "Erreur lors la récupération des prélèvements"
@@ -2305,15 +2149,6 @@ msgstr "Olana teo am-pangalana ireo fitiliana"
 msgid "Merci de confirmer la suppression"
 msgstr "Azafady mba hamafiso raha te hamafa"
 
-#: templates/det-req-ext.html:1193 templates/det-req-int.html:1071
-#, fuzzy
-msgid "Numéro de dossier interne au laboratoire existe déjà"
-msgstr "Laharana anatiny ho an'ny laboratoara"
-
-#: templates/det-req-ext.html:1242 templates/det-req-int.html:1123
-msgid "Veuillez sélectionner une date et heure de réception du colis"
-msgstr "Misafidiana daty sy ora nandraisana ilay fonosana"
-
 #: templates/det-req-ext.html:1248 templates/det-req-int.html:1129
 msgid "Veuillez sélectionner au moins une analyse"
 msgstr "Misafidiana farafahakeliny fitiliana iray azafady"
@@ -2348,9 +2183,7 @@ msgstr "Fenoy azafady ny momban'ny préleveurs rehetra"
 
 #: templates/det-req-ext.html:1311 templates/det-req-int.html:1195
 msgid "Avertissement : Ce dossier n'est associé à aucun prélèvement"
-msgstr ""
-"Fampitandremana: Ity rakitra ity dia tsy misy ifandraisany amin'ny "
-"santionany"
+msgstr "Fampitandremana: Ity rakitra ity dia tsy misy ifandraisany amin'ny santionany"
 
 #: templates/det-req-ext.html:1314 templates/det-req-int.html:1198
 msgid "Merci de confirmer la création et validation de ce dossier"
@@ -2384,9 +2217,9 @@ msgstr "Fangatahana fitiliana marary avy amin'ny hopitaly"
 msgid "Code prélèvement"
 msgstr "Kaodin'ny singa"
 
-#: templates/det-sample.html:73
-msgid "Analyse associée"
-msgstr "Analyse mifandray"
+#: templates/det-aliquot.html:32 templates/det-sample.html:79
+msgid "Produit pathologique"
+msgstr "Vokatra pathologique"
 
 #: templates/det-sample.html:90
 msgid "Localisation prélèvement"
@@ -2450,11 +2283,6 @@ msgstr "Fizarana asa"
 msgid "Dernière évaluation des compétences"
 msgstr "Fitsarana natao farany momba ny fahaiza-manao"
 
-#: templates/det-staff.html:189
-#, fuzzy
-msgid "Signature"
-msgstr "Faktiora"
-
 #: templates/det-stock-product.html:5 templates/det-stock-product.html:16
 #: templates/list-stock.html:121
 msgid "Approvisionner un produit"
@@ -2492,105 +2320,14 @@ msgstr "Misafidiana isan'ny fonosana mihoatra ny 0 azafady."
 msgid "Veuillez saisir une date d'expiration."
 msgstr "Ampidiro ny daty fahalaniana."
 
-#: templates/det-storage-box.html:15
-#, fuzzy
-msgid "Nom de la boîte"
-msgstr "Kaody laboratoara"
-
-#: templates/det-storage-box.html:36 templates/det-storage-compartment.html:36
-#, fuzzy
-msgid "Largeur"
-msgstr "Halaina"
-
-#: templates/det-storage-box.html:43 templates/det-storage-compartment.html:43
-#, fuzzy
-msgid "Profondeur"
-msgstr "Professeur"
-
-#: templates/det-storage-box.html:50
-msgid "Boîte pleine"
-msgstr ""
-
-#: templates/det-storage-box.html:58 templates/list-storage-box.html:22
-msgid "Compartiment associé"
-msgstr ""
-
-#: templates/det-storage-box.html:95 templates/det-storage-chamber.html:69
-#: templates/det-storage-compartment.html:93 templates/det-storage-room.html:57
-msgid "Le nom et l'identifiant sont obligatoires."
-msgstr ""
-
-#: templates/det-storage-box.html:101 templates/det-storage-compartment.html:99
-msgid "Les dimensions doivent être positives."
-msgstr ""
-
-#: templates/det-storage-box.html:107
-msgid "L'association à un compartiment est obligatoire."
-msgstr ""
-
-#: templates/det-storage-chamber.html:5 templates/det-storage-chamber.html:12
-#, fuzzy
-msgid "Détails enceinte"
-msgstr "Antsipirian'ny marary"
-
-#: templates/det-storage-chamber.html:15
-#, fuzzy
-msgid "Nom de l'enceinte"
-msgstr "Anaran'ny tovovavy"
-
-#: templates/det-storage-chamber.html:22
-#: templates/det-storage-compartment.html:22 templates/det-storage-room.html:22
-#, fuzzy
-msgid "Abréviation du nom"
-msgstr "Fanafohezana"
-
-#: templates/det-storage-chamber.html:36 templates/list-storage-chamber.html:22
-#, fuzzy
-msgid "Pièce associée"
-msgstr "Analyse mifandray"
-
-#: templates/det-storage-chamber.html:75
-msgid "L'association à une pièce est obligatoire."
-msgstr ""
-
-#: templates/det-storage-compartment.html:5
-#: templates/det-storage-compartment.html:12
-#, fuzzy
-msgid "Détails compartiment"
-msgstr "Antsipirian'ny marary"
-
-#: templates/det-storage-compartment.html:15
-#, fuzzy
-msgid "Nom du compartiment"
-msgstr "Isan'ny marary"
-
-#: templates/det-storage-compartment.html:50
-#, fuzzy
-msgid "Hauteur"
-msgstr "Mpanoratra"
-
-#: templates/det-storage-compartment.html:57
-#: templates/list-storage-compartment.html:22
-#, fuzzy
-msgid "Enceinte associée"
-msgstr "Prescripteur mifandray"
-
-#: templates/det-storage-compartment.html:105
-msgid "L'association à une enceinte est obligatoire."
-msgstr ""
-
-#: templates/det-storage-room.html:5 templates/det-storage-room.html:12
-#, fuzzy
-msgid "Détails pièce"
-msgstr "Antsipirian'ny marary"
-
-#: templates/det-storage-room.html:15
-msgid "Nom de la pièce"
-msgstr ""
-
 #: templates/det-supplier.html:15
 msgid "Nom fournisseur"
 msgstr "Anaran'ny mpamatsy"
+
+#: templates/det-message.html:23 templates/det-supplier.html:22
+#: templates/list-messages.html:32
+msgid "Contact"
+msgstr "Contact"
 
 #: templates/det-supplier.html:125
 msgid "Veuillez saisir un fournisseur."
@@ -2679,59 +2416,6 @@ msgstr "Technicien"
 #: templates/list-results.html:701 templates/technical-validation.html:595
 msgid "ANNULE"
 msgstr "FOANANA"
-
-#: templates/eqp-document.html:5 templates/eqp-document.html:15
-msgid "Documentation de l'équipement"
-msgstr "Taratasy momba ny fitaovana"
-
-#: templates/eqp-document.html:31 templates/eqp-document.html:54
-msgid "Téléchargement"
-msgstr "Téléchargement"
-
-#: templates/eqp-document.html:137 templates/eqp-document.html:182
-msgid "Possible après enregistrement"
-msgstr "Azo atao aorian'ny fisoratana anarana"
-
-#: templates/eqp-failure.html:5 templates/eqp-failure.html:15
-msgid "Panne et réparation"
-msgstr "Fahasimbana sy fanamboarana"
-
-#: templates/eqp-failure.html:28 templates/list-eqp-failure.html:129
-msgid "Panne"
-msgstr "Fahasimbana"
-
-#: templates/eqp-failure.html:29 templates/list-eqp-failure.html:130
-msgid "Réparation"
-msgstr "Fanamboarana"
-
-#: templates/eqp-failure.html:186 templates/eqp-maintenance-contract.html:135
-#: templates/eqp-maintenance-preventive.html:127
-#: templates/eqp-metrology.html:127
-msgid "Veuillez sélectionner une date"
-msgstr "Misafidiana daty"
-
-#: templates/eqp-maintenance-contract.html:5
-#: templates/eqp-maintenance-contract.html:15
-msgid "Maintenance"
-msgstr "Fikarakarana"
-
-#: templates/eqp-maintenance-contract.html:46
-#: templates/list-eqp-maintenance.html:87
-msgid "Renouvellement"
-msgstr "Fanavaozana"
-
-#: templates/eqp-maintenance-preventive.html:5
-#: templates/eqp-maintenance-preventive.html:15
-msgid "Maintenance préventive"
-msgstr "Fikolokoloana"
-
-#: templates/eqp-maintenance-preventive.html:25
-msgid "Intervenant"
-msgstr "Intervenant"
-
-#: templates/eqp-metrology.html:5 templates/eqp-metrology.html:15
-msgid "Métrologie et étalonnage"
-msgstr "Métrologie et étalonnage"
 
 #: templates/global-report.html:5 templates/global-report.html:13
 #: templates/menu.html:32 templates/menu.html:357
@@ -2848,13 +2532,6 @@ msgstr "Tantaran'ny famatsiana sy ny fampiasana an'ity vokatra ity"
 msgid "E/S"
 msgstr "E/S"
 
-#: templates/hist-stock-product.html:61 templates/list-eqp-failure.html:34
-#: templates/list-eqp-maintenance.html:35 templates/list-trace-download.html:24
-#: templates/list-trace-download.html:61 templates/setting-det-user.html:5
-#: templates/setting-det-user.html:15
-msgid "Utilisateur"
-msgstr "Mpampiasa"
-
 #: templates/hist-stock-product.html:62
 msgid "Date action"
 msgstr "Daty nanaovana"
@@ -2883,13 +2560,13 @@ msgstr "Accueil"
 msgid "Préférences"
 msgstr "Préférences"
 
-#: templates/homepage.html:23
-msgid "Gestion des rôles"
-msgstr "Fitantanana ireo andraikitra"
-
 #: templates/homepage.html:26 templates/menu.html:143 templates/menu.html:442
 msgid "Gestion des utilisateurs"
 msgstr "Fitantanana ireo mpampiasa"
+
+#: templates/homepage.html:23
+msgid "Gestion des rôles"
+msgstr "Fitantanana ireo andraikitra"
 
 #: templates/homepage.html:29 templates/menu.html:149 templates/menu.html:446
 #: templates/setting-analyzes.html:5 templates/setting-analyzes.html:12
@@ -2903,10 +2580,6 @@ msgstr "Rakibolana"
 #: templates/homepage.html:35
 msgid "Gestion des sauvegardes"
 msgstr "Fitantanana ny fitahirizana"
-
-#: templates/homepage.html:38 templates/menu.html:154 templates/menu.html:449
-msgid "Configuration des analyseurs"
-msgstr "Fanamboarana ireo analyseurs"
 
 #: templates/homepage.html:41
 msgid "Gestion de la Facturation"
@@ -2995,193 +2668,20 @@ msgstr "Biolojika"
 msgid "Technique"
 msgstr "Teknika"
 
-#: templates/homepage.html:189
-msgid "La dernière sauvegarde OK date de plus de 24 heures."
-msgstr ""
-
 #: templates/homepage.html:207
 msgid "Une alerte est présente dans la gestion de stock"
 msgstr "Misy fanairana mahakasika ny fitantanana ny tahiry"
+
+#: templates/contributors.html:20 templates/initialization.html:3
+#: templates/initialization.html:19 templates/login.html:3
+#: templates/login.html:20 templates/skeleton.html:33
+msgid "LabBook"
+msgstr "LabBook"
 
 #: templates/initialization.html:32 templates/login.html:56
 #: templates/skeleton.html:66
 msgid "Version"
 msgstr "Version"
-
-#: templates/list-aliquot.html:5 templates/list-aliquot.html:12
-#: templates/menu.html:300 templates/menu.html:547
-#: templates/table-rights.html:24
-#, fuzzy
-msgid "Gestion des échantillons"
-msgstr "Fitantanana ny fako"
-
-#: templates/list-aliquot.html:18
-msgid "Déstockés"
-msgstr ""
-
-#: templates/list-aliquot.html:26
-msgid "ID"
-msgstr ""
-
-#: templates/list-aliquot.html:32
-#, fuzzy
-msgid "Coordonées"
-msgstr "Contact"
-
-#: templates/list-aliquot.html:43
-msgid "Stockages"
-msgstr ""
-
-#: templates/list-aliquot.html:45 templates/list-storage-room.html:5
-#: templates/list-storage-room.html:12
-#, fuzzy
-msgid "Liste pièces"
-msgstr "Lisitry ny marary"
-
-#: templates/list-aliquot.html:46 templates/list-storage-chamber.html:5
-#: templates/list-storage-chamber.html:12
-#, fuzzy
-msgid "Liste enceintes"
-msgstr "Lisitry ny marary"
-
-#: templates/list-aliquot.html:47 templates/list-storage-compartment.html:5
-#: templates/list-storage-compartment.html:12
-#, fuzzy
-msgid "Liste compartiments"
-msgstr "Lisitry ny marary"
-
-#: templates/list-aliquot.html:48 templates/list-storage-box.html:5
-#: templates/list-storage-box.html:12
-#, fuzzy
-msgid "Liste boîtes"
-msgstr "Lisitry ny marary"
-
-#: templates/list-aliquot.html:64
-msgid "Déstocker un aliquot"
-msgstr ""
-
-#: templates/list-aliquot.html:72
-#, fuzzy
-msgid "Raison"
-msgstr "Précision"
-
-#: templates/list-aliquot.html:82
-#, fuzzy
-msgid "Date du déstockage"
-msgstr "Paramétrage du stockage"
-
-#: templates/list-aliquot.html:89
-msgid "Déstockage externe ?"
-msgstr ""
-
-#: templates/list-aliquot.html:96
-#, fuzzy
-msgid "Confirmer"
-msgstr "Mifanaraka tsara"
-
-#: templates/list-aliquot.html:123 templates/list-msg-analyzer.html:45
-#: templates/list-storage-box.html:58 templates/list-storage-chamber.html:56
-#: templates/list-storage-compartment.html:57
-#: templates/list-storage-room.html:55
-#, fuzzy
-msgid "Afficher _MENU_ entrées"
-msgstr "Aseho ny antotan-kevitra"
-
-#: templates/list-aliquot.html:124 templates/list-msg-analyzer.html:46
-#: templates/list-storage-box.html:59 templates/list-storage-chamber.html:57
-#: templates/list-storage-compartment.html:58
-#: templates/list-storage-room.html:56
-#, fuzzy
-msgid "Aucun enregistrement trouvé"
-msgstr "Vita ny fitahirizana"
-
-#: templates/list-aliquot.html:125 templates/list-msg-analyzer.html:47
-#: templates/list-storage-box.html:60 templates/list-storage-chamber.html:58
-#: templates/list-storage-compartment.html:59
-#: templates/list-storage-room.html:57
-msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
-msgstr ""
-
-#: templates/list-aliquot.html:126 templates/list-msg-analyzer.html:48
-#: templates/list-storage-box.html:61 templates/list-storage-chamber.html:59
-#: templates/list-storage-compartment.html:60
-#: templates/list-storage-room.html:58
-msgid "Aucune entrée disponible"
-msgstr ""
-
-#: templates/list-aliquot.html:127 templates/list-msg-analyzer.html:49
-#: templates/list-storage-box.html:62 templates/list-storage-chamber.html:60
-#: templates/list-storage-compartment.html:61
-#: templates/list-storage-room.html:59
-msgid "(filtré de _MAX_ entrées au total)"
-msgstr ""
-
-#: templates/list-aliquot.html:148
-msgid "Déstocker"
-msgstr ""
-
-#: templates/list-aliquot.html:148
-#, fuzzy
-msgid "Restocker"
-msgstr "Hanandrana"
-
-#: templates/list-aliquot.html:168 templates/list-storage-box.html:76
-#: templates/list-storage-chamber.html:74
-#: templates/list-storage-compartment.html:75
-#: templates/list-storage-room.html:73
-#, fuzzy
-msgid "Éditer"
-msgstr "Manova"
-
-#: templates/list-aliquot.html:266
-#, fuzzy
-msgid "Veuillez indiquer une raison de déstockage."
-msgstr "Mampidira ora ny fitahirizana."
-
-#: templates/list-aliquot.html:293 templates/list-aliquot.html:298
-#: templates/list-aliquot.html:326 templates/list-aliquot.html:330
-#, fuzzy
-msgid "Une erreur s'est produite."
-msgstr "Nisy olana nitranga"
-
-#: templates/list-aliquot.html:304
-#, fuzzy
-msgid "Êtes-vous sûr de vouloir restocker ?"
-msgstr "Tena te hamafa an'ity valiny ity ve ianao ?"
-
-#: templates/list-aliquot.html:337 templates/list-msg-analyzer.html:120
-#: templates/list-storage-box.html:124 templates/list-storage-chamber.html:115
-#: templates/list-storage-compartment.html:122
-#: templates/list-storage-room.html:108
-#, fuzzy
-msgid "Êtes-vous sûr de vouloir supprimer ?"
-msgstr "Tena te hamafa an'ity valiny ity ve ianao ?"
-
-#: templates/list-aliquot.html:354 templates/list-aliquot.html:358
-#: templates/list-msg-analyzer.html:137 templates/list-msg-analyzer.html:141
-#: templates/list-storage-box.html:141 templates/list-storage-box.html:145
-#: templates/list-storage-chamber.html:132
-#: templates/list-storage-chamber.html:136
-#: templates/list-storage-compartment.html:139
-#: templates/list-storage-compartment.html:143
-#: templates/list-storage-room.html:125 templates/list-storage-room.html:129
-#, fuzzy
-msgid "Une erreur s'est produite lors de la suppression."
-msgstr "Nisy olana teo am-pifandraisana"
-
-#: templates/list-analyzers.html:34 templates/list-laboratory.html:75
-#: templates/list-staff.html:40 templates/setting-age-interval.html:32
-#: templates/setting-det-analysis.html:277 templates/setting-det-dict.html:49
-#: templates/setting-functionnal-units.html:33 templates/setting-manual.html:31
-#: templates/setting-requesting-services.html:31
-#: templates/setting-stock.html:41
-msgid "Position"
-msgstr "Toerana"
-
-#: templates/list-analyzers.html:55
-#, fuzzy
-msgid "Transactions"
-msgstr "Fampiofanana"
 
 #: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
 msgid "Liste des contrôles externes"
@@ -3224,37 +2724,6 @@ msgstr "Mailaka"
 msgid "Ajouter un prescripteur"
 msgstr "Manampy prescripteur"
 
-#: templates/list-eqp-failure.html:5
-msgid "Liste des pannes et réparations d'équipements"
-msgstr "Lisitr'ireo fahasimbana sy ireo fanamboarana fitaovana"
-
-#: templates/list-eqp-failure.html:12
-msgid "Liste des pannes et réparations"
-msgstr "Lisitry ny simba sy ny fanamboarana"
-
-#: templates/list-eqp-failure.html:37 templates/list-eqp-maintenance.html:37
-#: templates/list-eqp-maintenance.html:89 templates/list-eqp-metrology.html:35
-#: templates/list-equipment.html:126 templates/list-messages.html:34
-#: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-msgid "Document"
-msgstr "Document"
-
-#: templates/list-eqp-maintenance.html:5 templates/list-eqp-maintenance.html:12
-msgid "Liste des maintenances"
-msgstr "Lisitr'ireo fikarakarana"
-
-#: templates/list-eqp-maintenance.html:15
-msgid "Liste des maintenances préventives"
-msgstr "Lisitr'ireo fikojakojana fisorohana"
-
-#: templates/list-eqp-maintenance.html:66
-msgid "Liste des contrats de maintenances"
-msgstr "Lisitr'ireo fifanarahana fikojakojana"
-
-#: templates/list-eqp-metrology.html:5 templates/list-eqp-metrology.html:12
-msgid "Liste des métrologies et étalonnages"
-msgstr "Lisitr'ireo métrologies sy étalonnages"
-
 #: templates/list-equipment.html:5 templates/list-equipment.html:12
 msgid "Liste des équipements"
 msgstr "Lisitry ny fitaovana"
@@ -3266,18 +2735,6 @@ msgstr "Mpanamboatra"
 #: templates/list-equipment.html:63
 msgid "Ajouter un équipement"
 msgstr "Manampy fitaovana"
-
-#: templates/list-equipment.html:130
-msgid "Maintenances"
-msgstr "Fikarakarana"
-
-#: templates/list-equipment.html:134
-msgid "Pannes et réparations"
-msgstr "Fahasimbana sy fanamboarana"
-
-#: templates/list-equipment.html:138
-msgid "Métrologie"
-msgstr "Métrologie"
 
 #: templates/list-laboratory.html:5 templates/list-laboratory.html:12
 #: templates/menu.html:259 templates/menu.html:522
@@ -3310,6 +2767,15 @@ msgstr "Libellé"
 #: templates/list-laboratory.html:74 templates/setting-det-dict.html:48
 msgid "Libellé court"
 msgstr "Teny fohy"
+
+#: templates/list-analyzers.html:34 templates/list-laboratory.html:75
+#: templates/list-staff.html:40 templates/setting-age-interval.html:32
+#: templates/setting-det-analysis.html:277 templates/setting-det-dict.html:49
+#: templates/setting-functionnal-units.html:33 templates/setting-manual.html:31
+#: templates/setting-requesting-services.html:31
+#: templates/setting-stock.html:41
+msgid "Position"
+msgstr "Toerana"
 
 #: templates/list-laboratory.html:88
 msgid "Enregistrer les valeurs"
@@ -3350,55 +2816,6 @@ msgstr "Lisitry ny fivoriana"
 #: templates/list-meeting.html:60
 msgid "Ajouter une réunion"
 msgstr "Manampy fivoriana"
-
-#: templates/list-messages.html:5 templates/list-messages.html:12
-#, fuzzy
-msgid "Messages"
-msgstr "Fampiasana"
-
-#: templates/list-messages.html:55
-msgid "Envoyer un message"
-msgstr ""
-
-#: templates/list-messages.html:108
-#, fuzzy
-msgid "Lire"
-msgstr "Lohateny"
-
-#: templates/list-messages.html:125
-msgid "Envoyé à"
-msgstr ""
-
-#: templates/list-messages.html:133
-#, fuzzy
-msgid "Reçu de"
-msgstr "Fetran'ny"
-
-#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
-#, fuzzy
-msgid "Liste messages analyseurs"
-msgstr "Lisitr'ireo analyseur"
-
-#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
-#: templates/list-storage-chamber.html:18
-#: templates/list-storage-compartment.html:18
-#: templates/list-storage-room.html:18
-msgid "id"
-msgstr ""
-
-#: templates/list-msg-analyzer.html:19
-#, fuzzy
-msgid "Date d'envoi"
-msgstr "Retour d'envoi"
-
-#: templates/list-msg-analyzer.html:20
-msgid "Message envoyé"
-msgstr ""
-
-#: templates/list-msg-analyzer.html:21
-#, fuzzy
-msgid "Message reçu"
-msgstr "Fampiasana"
 
 #: templates/list-nonconformities.html:5 templates/list-nonconformities.html:12
 msgid "Liste des non-conformités"
@@ -3526,10 +2943,9 @@ msgstr "Voamarina biolojika"
 msgid "Urgent uniquement"
 msgstr "Maika ihany"
 
-#: templates/list-records.html:147 templates/report-tat.html:72
-#: templates/report-tat.html:335
-msgid "Réception dossier"
-msgstr "Fandraisana dossier"
+#: templates/list-works.html:111
+msgid "Création dossier"
+msgstr "Famoronana dossier"
 
 #: templates/list-records.html:150 templates/list-results.html:31
 #: templates/list-works.html:58 templates/list-works.html:114
@@ -3554,11 +2970,6 @@ msgstr "Olana teo am-pamafana ny dossier"
 msgid "Date de la demande du"
 msgstr "Daty fangatahana ny"
 
-#: templates/list-results.html:46 templates/manage-pat-records.html:141
-#: templates/manage-pat-records.html:395 templates/report-tat.html:50
-msgid "ou"
-msgstr "na"
-
 #: templates/list-results.html:59
 msgid "Afficher uniquement les analyses prioritaires"
 msgstr "Ireo fitiliana laharapamehana ihany no asehoy"
@@ -3570,6 +2981,13 @@ msgstr "Afeno ny valiny efa voamarina"
 #: templates/list-results.html:64 templates/report-tat.html:62
 msgid "Réinitialiser"
 msgstr "Réinitialiser"
+
+#: templates/det-aliquot.html:18 templates/list-aliquot.html:29
+#: templates/list-results.html:611 templates/list-samples.html:44
+#: templates/pivot-table.html:30 templates/report-tat.html:74
+#: templates/report-tat.html:335
+msgid "Patient"
+msgstr "Marary"
 
 #: templates/list-results.html:990
 msgid "Une erreur est survenue lors de la récupération des résultats"
@@ -3606,6 +3024,18 @@ msgstr "Daty nahatongavana"
 #: templates/list-staff.html:42
 msgid "Date éval."
 msgstr "Daty éval."
+
+#: templates/det-analyzer.html:32 templates/det-dhis2-api.html:22
+#: templates/det-storage-box.html:22 templates/det-storage-chamber.html:29
+#: templates/det-storage-compartment.html:29 templates/det-storage-room.html:29
+#: templates/list-analyzers.html:33 templates/list-staff.html:43
+#: templates/list-storage-box.html:20 templates/list-storage-chamber.html:21
+#: templates/list-storage-compartment.html:21
+#: templates/list-storage-room.html:21 templates/login.html:33
+#: templates/setting-det-user.html:51 templates/setting-link-unit-user.html:22
+#: templates/setting-users.html:21 templates/setting-users.html:89
+msgid "Identifiant"
+msgstr "Identifiant"
 
 #: templates/list-staff.html:47
 msgid "Formations"
@@ -3685,70 +3115,6 @@ msgstr "Hamafiso ny fanajanonana ity andalana ity"
 msgid "Aucun stock à exporter !"
 msgstr "Tsy misy tahiry aondrana!"
 
-#: templates/list-storage-box.html:5 templates/list-storage-box.html:12
-#: templates/list-storage-chamber.html:5 templates/list-storage-chamber.html:12
-#: templates/list-storage-compartment.html:5
-#: templates/list-storage-compartment.html:12
-#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
-#, fuzzy
-msgid "Stockage d'échantillon"
-msgstr "Fitaterana ny santionany"
-
-#: templates/list-storage-box.html:23
-msgid "Dimensions l,p"
-msgstr ""
-
-#: templates/list-storage-box.html:24
-msgid "Nb. aliquot"
-msgstr ""
-
-#: templates/list-storage-box.html:25
-msgid "Pleine"
-msgstr ""
-
-#: templates/list-storage-box.html:36
-#, fuzzy
-msgid "Ajouter boîte"
-msgstr "Hampiditra modely"
-
-#: templates/list-storage-chamber.html:20
-#: templates/list-storage-compartment.html:20
-#: templates/list-storage-room.html:20
-#, fuzzy
-msgid "Abbréviation"
-msgstr "Fanafohezana"
-
-#: templates/list-storage-chamber.html:23
-msgid "Nb. compartiment"
-msgstr ""
-
-#: templates/list-storage-chamber.html:34
-#, fuzzy
-msgid "Ajouter enceinte"
-msgstr "Manampy vondrona"
-
-#: templates/list-storage-compartment.html:23
-msgid "Dimensions l,p,h"
-msgstr ""
-
-#: templates/list-storage-compartment.html:24
-msgid "Nb. boîte"
-msgstr ""
-
-#: templates/list-storage-compartment.html:35
-#, fuzzy
-msgid "Ajouter compartiment"
-msgstr "Marary vaovao"
-
-#: templates/list-storage-room.html:22
-msgid "Nb. enceinte"
-msgstr ""
-
-#: templates/list-storage-room.html:33
-#, fuzzy
-msgid "Ajouter pièce"
-msgstr "Hapiditra service"
-
 #: templates/list-suppliers.html:5 templates/list-suppliers.html:12
 msgid "Liste des fournisseurs"
 msgstr "Lisitry ny mpamatsy"
@@ -3781,17 +3147,25 @@ msgstr "Défaut"
 msgid "Ajouter un modèle"
 msgstr "Hampiditra modely"
 
+#: templates/det-analyzer.html:44 templates/list-template.html:121
+#: templates/report-dhis2.html:66
+msgid "Tester"
+msgstr "Hanandrana"
+
 #: templates/list-trace-download.html:5 templates/list-trace-download.html:12
 msgid "Liste des téléchargements éffectués"
 msgstr "Lisitry ny telechargement vita"
 
+#: templates/list-eqp-failure.html:37 templates/list-eqp-maintenance.html:37
+#: templates/list-eqp-maintenance.html:89 templates/list-eqp-metrology.html:35
+#: templates/list-equipment.html:126 templates/list-messages.html:34
+#: templates/list-trace-download.html:19 templates/list-trace-download.html:59
+msgid "Document"
+msgstr "Document"
+
 #: templates/list-trace-download.html:58
 msgid "Dernier accès"
 msgstr "Fidirana farany"
-
-#: templates/list-trace-download.html:60
-msgid "Dépôt"
-msgstr "Dépôt"
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3827,10 +3201,6 @@ msgstr "Daty dossier mihoatran'ny"
 msgid "Date dossier inférieure à"
 msgstr "Daty dossier latsaky ny"
 
-#: templates/list-works.html:111
-msgid "Création dossier"
-msgstr "Famoronana dossier"
-
 #: templates/list-works.html:141
 msgid "Validation groupée"
 msgstr "Fanamarinana miaraka"
@@ -3846,6 +3216,12 @@ msgstr "Identifiant na teny miafina diso."
 #: templates/login.html:30
 msgid "Ouverture de session"
 msgstr "Hiditra"
+
+#: templates/det-dhis2-api.html:29 templates/login.html:41
+#: templates/setting-backup.html:83 templates/setting-det-user.html:58
+#: templates/setting-pwd-user.html:15
+msgid "Mot de passe"
+msgstr "Teny miafina"
 
 #: templates/macros.html:87 templates/report-statistic.html:283
 msgid "Externe"
@@ -3885,90 +3261,9 @@ msgstr "FAFANA"
 msgid "Identité patient"
 msgstr "Famantarana ny marary"
 
-#: templates/elem/pat_ano.html:1 templates/js/pat_ident.js:15
-#: templates/manage-pat-records.html:50 templates/manage-pat-records.html:305
-msgid "Anonyme"
-msgstr "Anonyme"
-
 #: templates/manage-pat-records.html:63 templates/manage-pat-records.html:318
 msgid "Code laboratoire"
 msgstr "Kaody laboratoara"
-
-#: templates/elem/pat_midname.html:2 templates/manage-pat-records.html:91
-#: templates/manage-pat-records.html:346
-msgid "Deuxième nom"
-msgstr "Anarana faharoa"
-
-#: templates/elem/pat_maiden.html:2 templates/manage-pat-records.html:101
-#: templates/manage-pat-records.html:356
-msgid "Nom de jeune fille"
-msgstr "Anaran'ny tovovavy"
-
-#: templates/elem/pat_firstname.html:2 templates/manage-pat-records.html:111
-#: templates/manage-pat-records.html:366
-msgid "Prénom(s)"
-msgstr "Fanampin'anarana"
-
-#: templates/elem/pat_birth_approx.html:1 templates/manage-pat-records.html:130
-#: templates/manage-pat-records.html:384
-msgid "Date de naissance approximative"
-msgstr "Daty manakaiky ny nahaterahana"
-
-#: templates/elem/pat_age.html:1 templates/manage-pat-records.html:146
-#: templates/manage-pat-records.html:400
-msgid "Age"
-msgstr "Taona"
-
-#: templates/elem/pat_age_unit.html:1 templates/manage-pat-records.html:154
-#: templates/manage-pat-records.html:408
-msgid "unité"
-msgstr "unité"
-
-#: templates/elem/pat_nationality.html:1 templates/manage-pat-records.html:169
-#: templates/manage-pat-records.html:423
-msgid "Nationalité"
-msgstr "Nationalité"
-
-#: templates/elem/pat_resident.html:1 templates/manage-pat-records.html:176
-#: templates/manage-pat-records.html:430
-msgid "Résident"
-msgstr "Monina"
-
-#: templates/elem/pat_blood_group.html:1 templates/manage-pat-records.html:207
-#: templates/manage-pat-records.html:461
-msgid "Groupe sanguin"
-msgstr "Sokajin-dra"
-
-#: templates/elem/pat_blood_rhesus.html:1 templates/manage-pat-records.html:216
-#: templates/manage-pat-records.html:470
-msgid "Rhésus"
-msgstr "Rhésus"
-
-#: templates/elem/pat_pbox.html:1 templates/manage-pat-records.html:243
-#: templates/manage-pat-records.html:497
-msgid "Boite postale"
-msgstr "Boite postale"
-
-#: templates/elem/pat_district.html:1 templates/manage-pat-records.html:249
-#: templates/manage-pat-records.html:503
-msgid "Quartier / Secteur"
-msgstr "Quartier / Secteur"
-
-#: templates/elem/pat_city.html:1 templates/manage-pat-records.html:265
-#: templates/manage-pat-records.html:515
-msgid "Ville / Village"
-msgstr "Renivohitra"
-
-#: templates/elem/pat_phone1.html:1 templates/elem/pat_phone2.html:1
-#: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
-#: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
-msgid "Téléphone"
-msgstr "Finday"
-
-#: templates/elem/pat_profession.html:1 templates/manage-pat-records.html:285
-#: templates/manage-pat-records.html:535
-msgid "Profession"
-msgstr "Asa"
 
 #: templates/manage-pat-records.html:293
 msgid "Modifier la fiche patient"
@@ -3983,9 +3278,7 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "Misafidiana azafady daty nahaterahana na ny taonanao"
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
 msgstr "Tsy maintsy misafidy marary 2 samihafa ianao hanaovana ny fanakambanana."
 
 #: templates/manage-pat-records.html:906
@@ -3997,14 +3290,8 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "Misy taratasin'ny marary tsy ampy hanaovana ny fanambarana ny dossier."
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
-msgstr ""
-"Ireo dossier ny marary HOFAFANA no horaketina\\n amin'ny marary "
-"HOTEHIRIZINA.\\nTena hanambatra ve ianao ?\\n(Hetsika tsy azo hiverenana "
-"intsony)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "Ireo dossier ny marary HOFAFANA no horaketina\\n amin'ny marary HOTEHIRIZINA.\\nTena hanambatra ve ianao ?\\n(Hetsika tsy azo hiverenana intsony)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -4075,11 +3362,6 @@ msgstr "Tatitrin'ny famantarana"
 msgid "Rapport statistique"
 msgstr "Tatitra momba ny statistika"
 
-#: templates/menu.html:86 templates/report-tat.html:5
-#: templates/report-tat.html:15
-msgid "Rapport sur le délai de rendu du résultat"
-msgstr "Tatitra momba ny faharetan'ny fanaterana ny valin'ny fitiliana"
-
 #: templates/menu.html:91 templates/menu.html:402 templates/pivot-table.html:5
 #: templates/pivot-table.html:18
 msgid "Tableau croisé dynamique"
@@ -4112,11 +3394,6 @@ msgstr "Momba ny faktiora isan'andro"
 #: templates/table-rights.html:20
 msgid "Paramétrages"
 msgstr "Fanamboarana"
-
-#: templates/menu.html:138 templates/menu.html:439
-#, fuzzy
-msgid "Gestion des rôles et droits"
-msgstr "Fitantanana ireo andraikitra"
 
 #: templates/menu.html:165 templates/menu.html:456
 msgid "Configuration des sauvegardes"
@@ -4241,10 +3518,6 @@ msgstr "Fivorian'ny laboratoara"
 msgid "Non conformité"
 msgstr "Tsy fanarahana"
 
-#: templates/menu.html:399
-msgid "Rapport sur le temps de rendu du résultat"
-msgstr "Tatitra momba ny fotoana fanaterana ny valin'ny fitiliana"
-
 #: templates/move-stock-product.html:60
 msgid "Nombre de paquet"
 msgstr "Isan'ny paquet"
@@ -4268,10 +3541,6 @@ msgstr "Mitady marary"
 #: templates/new-req-ext.html:34 templates/new-req-int.html:33
 msgid "Nouveau patient"
 msgstr "Marary vaovao"
-
-#: templates/no-rights.html:1
-msgid "Vous n'avez pas les droits pour accéder à cette page"
-msgstr ""
 
 #: templates/non-conformity.html:5 templates/non-conformity.html:15
 msgid "Non-conformité"
@@ -4484,12 +3753,8 @@ msgid "Réactifs et consommables"
 msgstr "Réactifs et consommables"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
-msgstr ""
-"Fandraisana ireo reactifs sy/na consommables tsy mifanaraka amin'ny "
-"nafarana"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
+msgstr "Fandraisana ireo reactifs sy/na consommables tsy mifanaraka amin'ny nafarana"
 
 #: templates/non-conformity.html:444
 msgid "Délai livraison"
@@ -4800,45 +4065,20 @@ msgid "Mensuelle"
 msgstr "Isam-bolana"
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
-msgstr ""
-"Ho an'ny takelaka isan-kerinandro, ny Alatsinainy sy Alahady dia tokony "
-"ho ny vanim-potoana manomboka sy mifarana."
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
+msgstr "Ho an'ny takelaka isan-kerinandro, ny Alatsinainy sy Alahady dia tokony ho ny vanim-potoana manomboka sy mifarana."
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
-"Ho an'ny takelaka isam-bolana, ny datin'ny fanombohana dia tokony ho ny "
-"voalohany amin'ny volana ary ny daty farany dia ny andro farany amin'ny "
-"volana"
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgstr "Ho an'ny takelaka isam-bolana, ny datin'ny fanombohana dia tokony ho ny voalohany amin'ny volana ary ny daty farany dia ny andro farany amin'ny volana"
 
 #: templates/report-dhis2.html:38
 msgid "Feuille de calcul"
 msgstr "Feuille de calcul"
 
-#: templates/report-dhis2.html:65
-msgid "Envoyer les données"
-msgstr "Mandefa ireo données"
-
-#: templates/report-dhis2.html:79
-msgid "Retour d'envoi"
-msgstr "Retour d'envoi"
-
 #: templates/report-dhis2.html:110 templates/report-dhis2.html:176
 msgid "Veuillez sélectionner une feuille de calcul."
 msgstr "Safidio azafady ny takelaka."
-
-#: templates/report-dhis2.html:188
-msgid "Veuillez sélectionner une plateforme de destination."
-msgstr "Misafidiana plateforme de destination."
-
-#: templates/report-dhis2.html:224
-msgid "Paramétrage manquant !"
-msgstr "Paramétrage tsy ampy !"
 
 #: templates/report-epidemio.html:34
 msgid "Epidémiologie"
@@ -4916,72 +4156,6 @@ msgstr "Isan'ny fitiliana garde"
 #: templates/report-statistic.html:547
 msgid "Nombre d'analyses"
 msgstr "Isan'ny fitiliana"
-
-#: templates/report-tat.html:16
-msgid ""
-"Le calcul du délai de rendu des résultats est basé sur la date "
-"d’enregistrement du dossier et les dates de validation des analyses du "
-"dossier"
-msgstr ""
-"Ny fikajiana ny faharetan'ny fanaterana ny valin'ny fitiliana dia "
-"mifototra amin'ny datin'ny fisoratana anarana sy ireo datin'ny "
-"fanamarinana ny dossier"
-
-#: templates/report-tat.html:76 templates/report-tat.html:335
-msgid "Délai de validation technique des résultats"
-msgstr "Ny faharetan'ny fanamarinana ara-teknikan'ireo valin'ny fitiliana"
-
-#: templates/report-tat.html:77 templates/report-tat.html:335
-msgid "Délai de rendu des résultats"
-msgstr "Ny faharetan'ny fanaterana ireo valin'ny fitiliana"
-
-#: templates/report-tat.html:78 templates/report-tat.html:335
-msgid "Délai de rendu du dossier"
-msgstr "Ny faharetan'ny fanaterana ny dossier"
-
-#: templates/report-tat.html:82
-msgid "Moyenne des délais de validation technique du résultat"
-msgstr ""
-"Fotoana faharetana antonony hanaovana fanamarinana ara-teknika ny "
-"valin'ny fitiliana"
-
-#: templates/report-tat.html:83
-msgid "Moyenne des délais de rendu du résultat"
-msgstr "Fotoana faharetana antonony ny fanaterana ny valin'ny fitiliana"
-
-#: templates/report-tat.html:87
-msgid "Export"
-msgstr "Export"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "j"
-msgstr "j"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "h"
-msgstr "h"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "min"
-msgstr "min"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-msgid "s"
-msgstr ""
 
 #: templates/report-today.html:78 templates/setting-analyzes.html:83
 msgid "Famille"
@@ -5112,12 +4286,8 @@ msgid "Désactivé"
 msgstr "Vonoina"
 
 #: templates/setting-analyzes.html:267
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr ""
-"Azafady mba hamafiso ny famafana an'ity fitiliana ity\\nTandremo fa ireo "
-"dossiers mifandraika amin'ity fitiliana ity dia hisy olana"
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "Azafady mba hamafiso ny famafana an'ity fitiliana ity\\nTandremo fa ireo dossiers mifandraika amin'ity fitiliana ity dia hisy olana"
 
 #: templates/setting-analyzes.html:368
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
@@ -5201,13 +4371,8 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "Azafady mba hamafiso ny fanovana ny ora fitahirizan isan'andro."
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
-msgstr ""
-"Efa misy ny clé ao, raha hamerina hamoaka vaovao, tsy ho azo intsony ireo"
-" backups taloha\\nManamafy ny famoronana clé vaovao ianao?"
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "Efa misy ny clé ao, raha hamerina hamoaka vaovao, tsy ho azo intsony ireo backups taloha\\nManamafy ny famoronana clé vaovao ianao?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -5251,22 +4416,15 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "Azafady mba hamafiso ny fanombohan'ny famerenana izao."
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
-msgstr ""
-"Nisy olana nandritra ny famerenana amin'ny laoniny, azafady mifandraisa "
-"amin'ny admin mba hanamariny raha vita izany."
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "Nisy olana nandritra ny famerenana amin'ny laoniny, azafady mifandraisa amin'ny admin mba hanamariny raha vita izany."
 
 #: templates/setting-backup.html:604
 msgid "Délai d'attente dépassé"
 msgstr "Nihoatra ny fe-potoana fiandrasana"
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
 msgstr "Vita ny famerenana amin'ny laoniny, hamerina handefa ireo service LabBook"
 
 #: templates/setting-backup.html:767
@@ -5274,33 +4432,20 @@ msgid "Redémarrage activé"
 msgstr "Vita ny famelomana indray"
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"Naverina novelomina ireo sevice na nisy tsy fetezana teo am-pangatahna ny"
-" famerenanana\\n azafady avereno ahodina ny pejy"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "Naverina novelomina ireo sevice na nisy tsy fetezana teo am-pangatahna ny famerenanana\\n azafady avereno ahodina ny pejy"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
 msgstr "Vita soa ny tahiry"
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
-msgstr ""
-"Nisy olana teo am-panamarinana ny zava-misy ankehitriny, tsy fantatra ny "
-"statut"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
+msgstr "Nisy olana teo am-panamarinana ny zava-misy ankehitriny, tsy fantatra ny statut"
 
 #: templates/setting-backup.html:819
 msgid "Une erreur est survenue lors de la vérification de l'état en cours"
 msgstr "Nisy olana teo am-panamarinana ny zava-misy ankehitriny"
-
-#: templates/setting-det-analysis.html:26
-#, fuzzy
-msgid "LOINC"
-msgstr "login"
 
 #: templates/setting-det-analysis.html:69
 msgid "Unité de cotation"
@@ -5314,11 +4459,6 @@ msgstr "Valeur de cotation"
 #: templates/setting-det-analysis.html:245
 msgid "Export whonet"
 msgstr "Famoahana Whonet"
-
-#: templates/setting-det-analysis.html:109
-#, fuzzy
-msgid "Antiobiogramme"
-msgstr "Organigramme"
 
 #: templates/setting-det-analysis.html:121
 msgid "Variables"
@@ -5336,10 +4476,6 @@ msgstr "Hamorona variable vaovao"
 msgid "Par défaut sera l'ID de la variable"
 msgstr "Par défaut ny ID an'ny variable"
 
-#: templates/setting-det-analysis.html:156
-msgid "Détails de ce dictionnaire"
-msgstr "Ny antsipirian'ny rakibolana"
-
 #: templates/setting-det-analysis.html:158 templates/setting-det-dict.html:21
 #: templates/setting-dicts.html:65
 msgid "Description"
@@ -5352,10 +4488,6 @@ msgstr "Valeur normale min."
 #: templates/setting-det-analysis.html:169
 msgid "Valeur normale max."
 msgstr "Valeur normale max."
-
-#: templates/setting-det-analysis.html:176
-msgid "Affichage min./max."
-msgstr "Affichage min./max."
 
 #: templates/setting-det-analysis.html:181
 msgid "Souligner"
@@ -5373,18 +4505,6 @@ msgstr "Unité"
 #: templates/setting-det-analysis.html:204
 msgid "Précision"
 msgstr "Précision"
-
-#: templates/setting-det-analysis.html:209
-msgid "Formule de conversion unité 2"
-msgstr "Formule de conversion unité 2"
-
-#: templates/setting-det-analysis.html:213
-msgid "Unité 2"
-msgstr "Unité 2"
-
-#: templates/setting-det-analysis.html:222
-msgid "Précision 2"
-msgstr "Précision 2"
 
 #: templates/setting-det-analysis.html:227
 msgid "Num. var pour la formule"
@@ -5450,6 +4570,11 @@ msgstr "Misafidiana na mampidira farafahakeliny variable iray."
 msgid "Ce code existe déjà"
 msgstr "Efa misy io kaody io"
 
+#: templates/det-patient.html:73 templates/det-req-ext.html:1204
+#: templates/det-req-int.html:1082 templates/setting-det-analysis.html:1095
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "Nisy olana teo am-panamarinana ilay kaody"
+
 #: templates/setting-det-dict.html:5 templates/setting-det-dict.html:12
 msgid "Dictionnaire"
 msgstr "Diksionera"
@@ -5458,54 +4583,16 @@ msgstr "Diksionera"
 msgid "Mise en forme"
 msgstr "Mise en forme"
 
+#: templates/setting-det-user.html:18
+msgid "Droits utilisateur"
+msgstr "Zon'ny mpampiasa"
+
 #: templates/setting-det-role.html:5 templates/setting-det-role.html:12
 #: templates/setting-det-role.html:15 templates/setting-det-user.html:21
 #: templates/setting-link-unit-user.html:25 templates/setting-users.html:43
 #: templates/setting-users.html:94
 msgid "Rôle"
 msgstr "Andraikitra"
-
-#: templates/setting-det-role.html:18
-#: templates/setting-roles-and-rights.html:34
-msgid "Rôle de base"
-msgstr ""
-
-#: templates/setting-det-role.html:28
-#, fuzzy
-msgid "Nom de ce rôle"
-msgstr "Anaran'ny tovovavy"
-
-#: templates/setting-det-role.html:35
-msgid "Couleur principale"
-msgstr ""
-
-#: templates/setting-det-role.html:42
-msgid "Couleur de survol"
-msgstr ""
-
-#: templates/setting-det-role.html:49
-msgid "Couleur texte"
-msgstr ""
-
-#: templates/setting-det-role.html:56 templates/setting-user-rights.html:16
-#, fuzzy
-msgid "Droits"
-msgstr "Vokatra"
-
-#: templates/setting-det-role.html:60
-#: templates/setting-roles-and-rights.html:33
-#: templates/setting-user-rights.html:20
-#, fuzzy
-msgid "Libéllé"
-msgstr "Libellé"
-
-#: templates/setting-det-role.html:104 templates/setting-det-user.html:332
-msgid "Veuillez choisir un rôle."
-msgstr "Misafidiana andraikitra iray azafady."
-
-#: templates/setting-det-user.html:18
-msgid "Droits utilisateur"
-msgstr "Zon'ny mpampiasa"
 
 #: templates/setting-det-user.html:25
 msgid "Administrateur"
@@ -5555,25 +4642,13 @@ msgstr "Azafady mba hamafiso ny teny miafinao."
 msgid "Veuillez choisir une langue."
 msgstr "Misafidiana fiteny azafady."
 
+#: templates/setting-det-role.html:104 templates/setting-det-user.html:332
+msgid "Veuillez choisir un rôle."
+msgstr "Misafidiana andraikitra iray azafady."
+
 #: templates/setting-dhis2.html:5 templates/setting-dhis2.html:12
 msgid "Paramétrage de l'export DHIS2"
 msgstr "Fikirakirana ny famoahana DHIS2"
-
-#: templates/setting-dhis2.html:15
-msgid "Paramétrage envoi à l'api dhis2"
-msgstr "Paramétrage envoi à l'api dhis2"
-
-#: templates/setting-dhis2.html:23
-msgid "Adresse plateforme"
-msgstr "Adiresy plateforme"
-
-#: templates/setting-dhis2.html:24
-msgid "login"
-msgstr "login"
-
-#: templates/setting-dhis2.html:41
-msgid "Paramétrage feuille de calcul"
-msgstr "Paramétrage feuille de calcul"
 
 #: templates/setting-dhis2.html:61 templates/setting-epidemio.html:33
 #: templates/setting-indicator.html:33
@@ -5600,22 +4675,13 @@ msgstr "Fanamboarana ny tatitra ara-epidemiolojika"
 msgid "Paramétrage de formulaires"
 msgstr "Paramétrage de formulaires"
 
+#: templates/setting-form.html:41
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
+msgstr "Ny fanovana dia voatahiry avy hatrany ho an'ny fanovana ho raisina, tsy maintsy miverina amin'ny pejy fandraisana ianao na mifandray indray"
+
 #: templates/setting-form.html:15
 msgid "Formulaire patient"
 msgstr "Formulaire patient"
-
-#: templates/setting-form.html:36
-msgid "Enregistrer le formulaire"
-msgstr "Tehirizina ny formulaire"
-
-#: templates/setting-form.html:41
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
-msgstr ""
-"Ny fanovana dia voatahiry avy hatrany ho an'ny fanovana ho raisina, tsy "
-"maintsy miverina amin'ny pejy fandraisana ianao na mifandray indray"
 
 #: templates/setting-form.html:48
 msgid "Formulaire produit"
@@ -5624,10 +4690,6 @@ msgstr "Formulaire produit"
 #: templates/setting-form.html:52
 msgid "Formulaire approvisionnement"
 msgstr "Formulaire approvisionnement"
-
-#: templates/setting-form.html:171
-msgid "Aperçu"
-msgstr "Aperçu"
 
 #: templates/setting-functionnal-units.html:5
 #: templates/setting-functionnal-units.html:12
@@ -5877,27 +4939,6 @@ msgstr "Hapiditra service"
 msgid "Services demandeurs"
 msgstr "Services demandeurs"
 
-#: templates/setting-roles-and-rights.html:5
-#: templates/setting-roles-and-rights.html:12
-#, fuzzy
-msgid "Liste des rôles"
-msgstr "Lisitr'ireo variables"
-
-#: templates/setting-roles-and-rights.html:35
-#, fuzzy
-msgid "Nombre de profil"
-msgstr "Isan'ny marary"
-
-#: templates/setting-roles-and-rights.html:56
-#, fuzzy
-msgid "Ajouter un rôle"
-msgstr "Hampiditra modely"
-
-#: templates/setting-roles-and-rights.html:119
-#, fuzzy
-msgid "Consulter"
-msgstr "Hanafoana"
-
 #: templates/setting-stock.html:5 templates/setting-stock.html:12
 msgid "Paramétrage du stockage"
 msgstr "Paramétrage du stockage"
@@ -5917,11 +4958,6 @@ msgstr "Mampiditra fitoerana"
 #: templates/setting-stock.html:42
 msgid "Usage"
 msgstr "Fampiasana"
-
-#: templates/setting-user-rights.html:5 templates/setting-user-rights.html:12
-#, fuzzy
-msgid "Droits de cet utilisateur"
-msgstr "Zon'ny mpampiasa"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"
@@ -5963,11 +4999,6 @@ msgstr "Ampandehano ny mpampiasa"
 msgid "Désactiver utilisateur"
 msgstr "Esory ny mpampiasa"
 
-#: templates/setting-users.html:242
-#, fuzzy
-msgid "Editer droits"
-msgstr "Lisitry ny vokatra"
-
 #: templates/setting-users.html:276
 msgid "Veuillez confirmer la modification de statut"
 msgstr "Hamafiso azafady ny fanovana ny statut"
@@ -6000,25 +5031,6 @@ msgstr "Olana teo amin'ny import ireo données"
 msgid "Déconnexion"
 msgstr "Miala"
 
-#: templates/table-rights.html:6
-#, fuzzy
-msgid "Administration"
-msgstr "Administratif"
-
-#: templates/table-rights.html:7
-msgid "API"
-msgstr ""
-
-#: templates/table-rights.html:16
-#, fuzzy
-msgid "Modules des non-conformités"
-msgstr "Module momba ny tsy mifanaraka"
-
-#: templates/table-rights.html:18
-#, fuzzy
-msgid "Dossiers"
-msgstr "Tahiry"
-
 #: templates/technical-validation.html:605
 msgid "Non rempli"
 msgstr "Tsy feno"
@@ -6042,10 +5054,6 @@ msgstr "Olana teo am-pikirakirana ireo données"
 #: templates/whonet-export.html:18
 msgid "Date de validation du"
 msgstr "Daty fanamarinana ny"
-
-#: templates/elem/pat_code_lab.html:1
-msgid "Code patient interne au laboratoire"
-msgstr "Kaody anatin'ny marary ao amin'ny laboratoara"
 
 #: templates/js/display_histo.js:7
 msgid "Création du dossier"
@@ -6078,4 +5086,878 @@ msgstr "Dingana eo an-dalana"
 #: templates/popup/popup_wait.html:12
 msgid "Veuillez patienter"
 msgstr "Mahandrasa azafady"
+
+#: templates/det-analyzer.html:5 templates/det-analyzer.html:12
+#: templates/list-msg-analyzer.html:18
+msgid "Analyseur"
+msgstr "Analyseur"
+
+#: templates/det-analyzer.html:22 templates/list-analyzers.html:5
+#: templates/list-analyzers.html:12
+msgid "Liste des analyseurs"
+msgstr "Lisitr'ireo analyseur"
+
+#: templates/det-analyzer.html:51
+msgid "adresse transcodage"
+msgstr "adiresy transcodage"
+
+#: templates/det-analyzer.html:58
+msgid "position"
+msgstr "toerana"
+
+#: templates/det-analyzer.html:138
+msgid "Veuillez saisir un nom, un identifiant unique et leurs adresses."
+msgstr "Ampidiro azafady anarana, ID tokana ary ny adiresiny."
+
+#: templates/det-analyzer.html:141
+msgid "Veuillez sélectionner un analyzer dans la liste."
+msgstr "Misafidiana analyseur iray anaty lisitra"
+
+#: templates/det-req-ext.html:325 templates/det-req-int.html:351
+msgid "Date prélèvement"
+msgstr "Daty prélèvement"
+
+#: templates/det-req-ext.html:326 templates/det-req-int.html:352
+msgid "Produit pathologiques"
+msgstr "Produit pathologiques"
+
+#: templates/det-req-ext.html:1242 templates/det-req-int.html:1123
+msgid "Veuillez sélectionner une date et heure de réception du colis"
+msgstr "Misafidiana daty sy ora nandraisana ilay fonosana"
+
+#: templates/det-sample.html:73
+msgid "Analyse associée"
+msgstr "Analyse mifandray"
+
+#: templates/det-equipment.html:145 templates/det-supplier.html:79
+#: templates/list-suppliers.html:39
+msgid "Critique"
+msgstr "Critique"
+
+#: templates/homepage.html:38 templates/menu.html:154 templates/menu.html:449
+msgid "Configuration des analyseurs"
+msgstr "Fanamboarana ireo analyseurs"
+
+#: templates/list-records.html:147 templates/report-tat.html:72
+#: templates/report-tat.html:335
+msgid "Réception dossier"
+msgstr "Fandraisana dossier"
+
+#: templates/setting-det-analysis.html:156
+msgid "Détails de ce dictionnaire"
+msgstr "Ny antsipirian'ny rakibolana"
+
+#: templates/setting-det-analysis.html:176
+msgid "Affichage min./max."
+msgstr "Affichage min./max."
+
+#: templates/contributors.html:33
+msgid "LabBook est co-financé par l'Agence Française de Développement (AFD) et la Fondation Mérieux."
+msgstr "Ny LabBook dia miara-miasa amin'ny Agence Française de Développement (AFD) sy ny Fondation Mérieux."
+
+#: templates/contributors.html:34
+msgid "Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé (OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le projet est financé par la Banque allemande de développement (KFW) et contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO."
+msgstr "Ny tetikasa PROALAB dia miorina ao amin'ny Organisation Ouest Africaine de la Santé (OOAS) ary ao anatin'ny drafitra stratejikan'ireo laboratoires an'ny OOAS. Ny tetikasa dia vatsian'ny Banque allemande de développement (KFW) ary mandray anjara amin'ny LabBook nanomboka tamin'ny 2024 mba hanatsarana ny tambajotra fanaraha-maso ny areti-mifindra sy ny rafitry ny laboratoire ao amin'ny faritra CEDEAO."
+
+#: templates/det-equipment.html:390
+msgid "Voir"
+msgstr "Mijery"
+
+#: templates/eqp-document.html:5 templates/eqp-document.html:15
+msgid "Documentation de l'équipement"
+msgstr "Taratasy momba ny fitaovana"
+
+#: templates/eqp-document.html:31 templates/eqp-document.html:54
+msgid "Téléchargement"
+msgstr "Téléchargement"
+
+#: templates/eqp-document.html:137 templates/eqp-document.html:182
+msgid "Possible après enregistrement"
+msgstr "Azo atao aorian'ny fisoratana anarana"
+
+#: templates/eqp-failure.html:5 templates/eqp-failure.html:15
+msgid "Panne et réparation"
+msgstr "Fahasimbana sy fanamboarana"
+
+#: templates/eqp-failure.html:28 templates/list-eqp-failure.html:129
+msgid "Panne"
+msgstr "Fahasimbana"
+
+#: templates/eqp-failure.html:29 templates/list-eqp-failure.html:130
+msgid "Réparation"
+msgstr "Fanamboarana"
+
+#: templates/eqp-failure.html:186 templates/eqp-maintenance-contract.html:135
+#: templates/eqp-maintenance-preventive.html:127
+#: templates/eqp-metrology.html:127
+msgid "Veuillez sélectionner une date"
+msgstr "Misafidiana daty"
+
+#: templates/eqp-maintenance-contract.html:5
+#: templates/eqp-maintenance-contract.html:15
+msgid "Maintenance"
+msgstr "Fikarakarana"
+
+#: templates/eqp-maintenance-contract.html:46
+#: templates/list-eqp-maintenance.html:87
+msgid "Renouvellement"
+msgstr "Fanavaozana"
+
+#: templates/eqp-maintenance-preventive.html:25
+msgid "Intervenant"
+msgstr "Intervenant"
+
+#: templates/eqp-metrology.html:5 templates/eqp-metrology.html:15
+msgid "Métrologie et étalonnage"
+msgstr "Métrologie et étalonnage"
+
+#: templates/list-eqp-failure.html:5
+msgid "Liste des pannes et réparations d'équipements"
+msgstr "Lisitr'ireo fahasimbana sy ireo fanamboarana fitaovana"
+
+#: templates/list-eqp-maintenance.html:5 templates/list-eqp-maintenance.html:12
+msgid "Liste des maintenances"
+msgstr "Lisitr'ireo fikarakarana"
+
+#: templates/list-eqp-maintenance.html:15
+msgid "Liste des maintenances préventives"
+msgstr "Lisitr'ireo fikojakojana fisorohana"
+
+#: templates/list-eqp-maintenance.html:66
+msgid "Liste des contrats de maintenances"
+msgstr "Lisitr'ireo fifanarahana fikojakojana"
+
+#: templates/list-eqp-metrology.html:5 templates/list-eqp-metrology.html:12
+msgid "Liste des métrologies et étalonnages"
+msgstr "Lisitr'ireo métrologies sy étalonnages"
+
+#: templates/list-equipment.html:130
+msgid "Maintenances"
+msgstr "Fikarakarana"
+
+#: templates/list-equipment.html:134
+msgid "Pannes et réparations"
+msgstr "Fahasimbana sy fanamboarana"
+
+#: templates/list-equipment.html:138
+msgid "Métrologie"
+msgstr "Métrologie"
+
+#: templates/list-trace-download.html:60
+msgid "Dépôt"
+msgstr "Dépôt"
+
+#: templates/menu.html:86 templates/report-tat.html:5
+#: templates/report-tat.html:15
+msgid "Rapport sur le délai de rendu du résultat"
+msgstr "Tatitra momba ny faharetan'ny fanaterana ny valin'ny fitiliana"
+
+#: templates/menu.html:399
+msgid "Rapport sur le temps de rendu du résultat"
+msgstr "Tatitra momba ny fotoana fanaterana ny valin'ny fitiliana"
+
+#: templates/report-tat.html:16
+msgid "Le calcul du délai de rendu des résultats est basé sur la date d’enregistrement du dossier et les dates de validation des analyses du dossier"
+msgstr "Ny fikajiana ny faharetan'ny fanaterana ny valin'ny fitiliana dia mifototra amin'ny datin'ny fisoratana anarana sy ireo datin'ny fanamarinana ny dossier"
+
+#: templates/report-tat.html:76 templates/report-tat.html:335
+msgid "Délai de validation technique des résultats"
+msgstr "Ny faharetan'ny fanamarinana ara-teknikan'ireo valin'ny fitiliana"
+
+#: templates/report-tat.html:77 templates/report-tat.html:335
+msgid "Délai de rendu des résultats"
+msgstr "Ny faharetan'ny fanaterana ireo valin'ny fitiliana"
+
+#: templates/report-tat.html:78 templates/report-tat.html:335
+msgid "Délai de rendu du dossier"
+msgstr "Ny faharetan'ny fanaterana ny dossier"
+
+#: templates/report-tat.html:82
+msgid "Moyenne des délais de validation technique du résultat"
+msgstr "Fotoana faharetana antonony hanaovana fanamarinana ara-teknika ny valin'ny fitiliana"
+
+#: templates/report-tat.html:83
+msgid "Moyenne des délais de rendu du résultat"
+msgstr "Fotoana faharetana antonony ny fanaterana ny valin'ny fitiliana"
+
+#: templates/report-tat.html:87
+msgid "Export"
+msgstr "Export"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "j"
+msgstr "j"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "h"
+msgstr "h"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "min"
+msgstr "min"
+
+#: templates/setting-det-analysis.html:209
+msgid "Formule de conversion unité 2"
+msgstr "Formule de conversion unité 2"
+
+#: templates/setting-det-analysis.html:213
+msgid "Unité 2"
+msgstr "Unité 2"
+
+#: templates/setting-det-analysis.html:222
+msgid "Précision 2"
+msgstr "Précision 2"
+
+#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
+msgid "Plateforme DHIS2 api"
+msgstr "Plateforme DHIS2 api"
+
+#: templates/det-dhis2-api.html:39
+msgid "Adresse plateforme dhis2 "
+msgstr "Adiresy plateforme dhis2 "
+
+#: templates/det-dhis2-api.html:46
+msgid "Par défaut"
+msgstr "Par défaut"
+
+#: templates/report-dhis2.html:65
+msgid "Envoyer les données"
+msgstr "Mandefa ireo données"
+
+#: templates/report-dhis2.html:79
+msgid "Retour d'envoi"
+msgstr "Retour d'envoi"
+
+#: templates/report-dhis2.html:188
+msgid "Veuillez sélectionner une plateforme de destination."
+msgstr "Misafidiana plateforme de destination."
+
+#: templates/report-dhis2.html:224
+msgid "Paramétrage manquant !"
+msgstr "Paramétrage tsy ampy !"
+
+#: templates/setting-dhis2.html:15
+msgid "Paramétrage envoi à l'api dhis2"
+msgstr "Paramétrage envoi à l'api dhis2"
+
+#: templates/setting-dhis2.html:23
+msgid "Adresse plateforme"
+msgstr "Adiresy plateforme"
+
+#: templates/setting-dhis2.html:24
+msgid "login"
+msgstr "login"
+
+#: templates/setting-dhis2.html:41
+msgid "Paramétrage feuille de calcul"
+msgstr "Paramétrage feuille de calcul"
+
+#: templates/setting-form.html:36
+msgid "Enregistrer le formulaire"
+msgstr "Tehirizina ny formulaire"
+
+#: templates/setting-form.html:171
+msgid "Aperçu"
+msgstr "Aperçu"
+
+#: templates/det-aliquot.html:7
+msgid "Détails aliquot"
+msgstr "Tsipiriany aliquot"
+
+#: templates/det-aliquot.html:14 templates/det-storage-box.html:5
+#: templates/det-storage-box.html:12
+msgid "Détails boîte"
+msgstr "Tsipiriany boite"
+
+#: templates/det-aliquot.html:48 templates/enter-result.html:126
+#: templates/list-aliquot.html:28 templates/list-results.html:93
+msgid "Pathogène"
+msgstr "Pathogene"
+
+#: templates/det-aliquot.html:65 templates/enter-result.html:138
+#: templates/list-results.html:105
+msgid "Présent en stock"
+msgstr "Misy ao amin'ny stock"
+
+#: templates/det-aliquot.html:72 templates/enter-result.html:141
+#: templates/list-results.html:108
+msgid "Boîte associée"
+msgstr "Boite mifandray"
+
+#: templates/det-aliquot.html:88 templates/enter-result.html:118
+#: templates/enter-result.html:153 templates/enter-result.html:548
+#: templates/list-aliquot.html:53 templates/list-results.html:85
+#: templates/list-results.html:120 templates/list-results.html:602
+msgid "Ajouter un aliquot"
+msgstr "Hampiditra aliquot"
+
+#: templates/det-aliquot.html:261
+msgid "Un patient doit être sélectionné."
+msgstr "Mila marary iray safidiana"
+
+#: templates/det-aliquot.html:267
+msgid "Le produit pathologique est obligatoire."
+msgstr "Tsy maintsy fenoina ny vokatra pathologique"
+
+#: templates/det-aliquot.html:281 templates/enter-result.html:1179
+#: templates/list-results.html:1078
+msgid "L'association à une boîte est obligatoire."
+msgstr "Ilaina ny fampifandraisana amin'ny boite"
+
+#: templates/det-analyzer.html:39
+msgid "adresse LabBook Connect"
+msgstr "Adiresy LabBook Connect"
+
+#: templates/det-analyzer.html:90
+msgid "Veuillez saisir une adresse LabBook Connect et un identifiant."
+msgstr "Hampidiro ny adiresy LabBook Connet sy ny identifiant."
+
+#: templates/det-analyzer.html:96
+msgid "Test en cours"
+msgstr "Mis handrana mandeha"
+
+#: templates/det-analyzer.html:106
+msgid "L'analyseur est chargé."
+msgstr "Vonona ny analyseur"
+
+#: templates/det-analyzer.html:110
+msgid "Erreur : "
+msgstr "Fahadisoana"
+
+#: templates/det-analyzer.html:114
+msgid "Réponse inattendue du serveur."
+msgstr "Valin'ny serveur tsy nampoizina"
+
+#: templates/det-analyzer.html:119
+msgid "Erreur lors de la requête :"
+msgstr "Hadisoana nandritra ny fangatahana :"
+
+#: templates/det-message.html:5 templates/det-message.html:14
+#: templates/det-message.html:36
+msgid "Message"
+msgstr "Hafatra"
+
+#: templates/det-message.html:18
+msgid "Destinataire"
+msgstr "Mpandray"
+
+#: templates/det-message.html:65
+msgid "Envoyer"
+msgstr "Alefa"
+
+#: templates/det-message.html:132
+msgid "Veuillez saisir un utilisateur."
+msgstr "Mampidira utilisateur"
+
+#: templates/det-message.html:135
+msgid "Veuillez saisir un titre."
+msgstr "Manorata lohateny."
+
+#: templates/det-message.html:138
+msgid "Veuillez saisir un message."
+msgstr "Manorata hafatra."
+
+#: templates/det-patient.html:62
+msgid "Code patient interne au laboratoire existe déjà"
+msgstr "Kaody marary anatiny ao amin'ny laboratoara efa misy "
+
+#: templates/det-req-ext.html:1193 templates/det-req-int.html:1071
+msgid "Numéro de dossier interne au laboratoire existe déjà"
+msgstr "Laharan'ny dossier anatiny ao amin'ny laboratoara efa misy"
+
+#: templates/det-staff.html:189
+msgid "Signature"
+msgstr "Sonia"
+
+#: templates/det-storage-box.html:15
+msgid "Nom de la boîte"
+msgstr "Anaran'ny boite"
+
+#: templates/det-storage-box.html:36 templates/det-storage-compartment.html:36
+msgid "Largeur"
+msgstr "Sakany"
+
+#: templates/det-storage-box.html:43 templates/det-storage-compartment.html:43
+msgid "Profondeur"
+msgstr "Halaliny"
+
+#: templates/det-storage-box.html:50
+msgid "Boîte pleine"
+msgstr "Boite feno"
+
+#: templates/det-storage-box.html:58 templates/list-storage-box.html:22
+msgid "Compartiment associé"
+msgstr "Efitra mifandray"
+
+#: templates/det-storage-box.html:95 templates/det-storage-chamber.html:69
+#: templates/det-storage-compartment.html:93 templates/det-storage-room.html:57
+msgid "Le nom et l'identifiant sont obligatoires."
+msgstr "Ilaina ny anarana sy ny identifiant"
+
+#: templates/det-storage-box.html:101 templates/det-storage-compartment.html:99
+msgid "Les dimensions doivent être positives."
+msgstr "Tokony ho positives ireo refy"
+
+#: templates/det-storage-box.html:107
+msgid "L'association à un compartiment est obligatoire."
+msgstr "Ilaina ny fampifandraisana amin'ny efitrano"
+
+#: templates/det-storage-chamber.html:5 templates/det-storage-chamber.html:12
+msgid "Détails enceinte"
+msgstr "Tsipirian'ny faritra"
+
+#: templates/det-storage-chamber.html:15
+msgid "Nom de l'enceinte"
+msgstr "Anaran'ny faritra"
+
+#: templates/det-storage-chamber.html:22
+#: templates/det-storage-compartment.html:22 templates/det-storage-room.html:22
+msgid "Abréviation du nom"
+msgstr "Fanafohezana anarana"
+
+#: templates/det-storage-chamber.html:36 templates/list-storage-chamber.html:22
+msgid "Pièce associée"
+msgstr "Piece mifandray"
+
+#: templates/det-storage-chamber.html:75
+msgid "L'association à une pièce est obligatoire."
+msgstr "Ilaina ny fampifandraisana amin'ny piece"
+
+#: templates/det-storage-compartment.html:5
+#: templates/det-storage-compartment.html:12
+msgid "Détails compartiment"
+msgstr "Tsipirian'ny efitrano"
+
+#: templates/det-storage-compartment.html:15
+msgid "Nom du compartiment"
+msgstr "Anaran'ny efitrano"
+
+#: templates/det-storage-compartment.html:50
+msgid "Hauteur"
+msgstr "Hahavony"
+
+#: templates/det-storage-compartment.html:57
+#: templates/list-storage-compartment.html:22
+msgid "Enceinte associée"
+msgstr "Faritra mifandray"
+
+#: templates/det-storage-compartment.html:105
+msgid "L'association à une enceinte est obligatoire."
+msgstr "Ilaina ny fampifandraisana amin'ny faritra"
+
+#: templates/det-storage-room.html:5 templates/det-storage-room.html:12
+msgid "Détails pièce"
+msgstr "Ny antsipirian'ny piece"
+
+#: templates/det-storage-room.html:15
+msgid "Nom de la pièce"
+msgstr "Anaran'ny piece"
+
+#: templates/homepage.html:189
+msgid "La dernière sauvegarde OK date de plus de 24 heures."
+msgstr "Ny fitehirizana nety farany dia efa mihoatran'ny 24 ora"
+
+#: templates/list-aliquot.html:5 templates/list-aliquot.html:12
+#: templates/menu.html:300 templates/menu.html:547
+#: templates/table-rights.html:24
+msgid "Gestion des échantillons"
+msgstr "Fitantanana ny singa"
+
+#: templates/list-aliquot.html:18
+msgid "Déstockés"
+msgstr "Manala stock"
+
+#: templates/list-aliquot.html:26
+msgid "ID"
+msgstr "ID"
+
+#: templates/list-aliquot.html:43
+msgid "Stockages"
+msgstr "Stockages"
+
+#: templates/list-aliquot.html:45 templates/list-storage-room.html:5
+#: templates/list-storage-room.html:12
+msgid "Liste pièces"
+msgstr "Lisitry ny pieces"
+
+#: templates/list-aliquot.html:46 templates/list-storage-chamber.html:5
+#: templates/list-storage-chamber.html:12
+msgid "Liste enceintes"
+msgstr "Lisitry ny faritra"
+
+#: templates/list-aliquot.html:47 templates/list-storage-compartment.html:5
+#: templates/list-storage-compartment.html:12
+msgid "Liste compartiments"
+msgstr "Lisitry ny efitra"
+
+#: templates/list-aliquot.html:48 templates/list-storage-box.html:5
+#: templates/list-storage-box.html:12
+msgid "Liste boîtes"
+msgstr "Lisitry ny boite"
+
+#: templates/list-aliquot.html:64
+msgid "Déstocker un aliquot"
+msgstr "Manala stock aliquot"
+
+#: templates/list-aliquot.html:72
+msgid "Raison"
+msgstr "Antony"
+
+#: templates/list-aliquot.html:82
+msgid "Date du déstockage"
+msgstr "Date nanala stock"
+
+#: templates/list-aliquot.html:89
+msgid "Déstockage externe ?"
+msgstr "Manala stock ivelany ?"
+
+#: templates/list-aliquot.html:96
+msgid "Confirmer"
+msgstr "Manamafy"
+
+#: templates/list-aliquot.html:123 templates/list-msg-analyzer.html:45
+#: templates/list-storage-box.html:58 templates/list-storage-chamber.html:56
+#: templates/list-storage-compartment.html:57
+#: templates/list-storage-room.html:55
+msgid "Afficher _MENU_ entrées"
+msgstr "Aseho _MENU_entrées"
+
+#: templates/list-aliquot.html:124 templates/list-msg-analyzer.html:46
+#: templates/list-storage-box.html:59 templates/list-storage-chamber.html:57
+#: templates/list-storage-compartment.html:58
+#: templates/list-storage-room.html:56
+msgid "Aucun enregistrement trouvé"
+msgstr "Tsy misy tahiry hita"
+
+#: templates/list-aliquot.html:125 templates/list-msg-analyzer.html:47
+#: templates/list-storage-box.html:60 templates/list-storage-chamber.html:58
+#: templates/list-storage-compartment.html:59
+#: templates/list-storage-room.html:57
+msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
+msgstr "Fampisehoana ny _START_ à _END_ eo amin'ny _TOTAL_ entrées"
+
+#: templates/list-aliquot.html:126 templates/list-msg-analyzer.html:48
+#: templates/list-storage-box.html:61 templates/list-storage-chamber.html:59
+#: templates/list-storage-compartment.html:60
+#: templates/list-storage-room.html:58
+msgid "Aucune entrée disponible"
+msgstr "Tsy misy fidirana azo"
+
+#: templates/list-aliquot.html:127 templates/list-msg-analyzer.html:49
+#: templates/list-storage-box.html:62 templates/list-storage-chamber.html:60
+#: templates/list-storage-compartment.html:61
+#: templates/list-storage-room.html:59
+msgid "(filtré de _MAX_ entrées au total)"
+msgstr "(Sivana ny _MAX_ fitambaran'ny niditra)"
+
+#: templates/list-aliquot.html:148
+msgid "Déstocker"
+msgstr "Manala stock"
+
+#: templates/list-aliquot.html:148
+msgid "Restocker"
+msgstr "Mampiditra stock"
+
+#: templates/list-aliquot.html:168 templates/list-storage-box.html:76
+#: templates/list-storage-chamber.html:74
+#: templates/list-storage-compartment.html:75
+#: templates/list-storage-room.html:73
+msgid "Éditer"
+msgstr "Hanova"
+
+#: templates/list-aliquot.html:266
+msgid "Veuillez indiquer une raison de déstockage."
+msgstr "Mampidira antony hanalana stock."
+
+#: templates/list-aliquot.html:293 templates/list-aliquot.html:298
+#: templates/list-aliquot.html:326 templates/list-aliquot.html:330
+msgid "Une erreur s'est produite."
+msgstr "Misy olana nitranga."
+
+#: templates/list-aliquot.html:304
+msgid "Êtes-vous sûr de vouloir restocker ?"
+msgstr "Tena vonona ny hanala stock ve ianao ?"
+
+#: templates/list-aliquot.html:337 templates/list-msg-analyzer.html:120
+#: templates/list-storage-box.html:124 templates/list-storage-chamber.html:115
+#: templates/list-storage-compartment.html:122
+#: templates/list-storage-room.html:108
+msgid "Êtes-vous sûr de vouloir supprimer ?"
+msgstr "Tena vonona ny hamafa ve ianao ?"
+
+#: templates/list-aliquot.html:354 templates/list-aliquot.html:358
+#: templates/list-msg-analyzer.html:137 templates/list-msg-analyzer.html:141
+#: templates/list-storage-box.html:141 templates/list-storage-box.html:145
+#: templates/list-storage-chamber.html:132
+#: templates/list-storage-chamber.html:136
+#: templates/list-storage-compartment.html:139
+#: templates/list-storage-compartment.html:143
+#: templates/list-storage-room.html:125 templates/list-storage-room.html:129
+msgid "Une erreur s'est produite lors de la suppression."
+msgstr "Nisy olana nitranga teo am-pamafana"
+
+#: templates/list-messages.html:5 templates/list-messages.html:12
+msgid "Messages"
+msgstr "Hafatra"
+
+#: templates/list-messages.html:55
+msgid "Envoyer un message"
+msgstr "Handefa hafatra"
+
+#: templates/list-messages.html:108
+msgid "Lire"
+msgstr "Hamaky"
+
+#: templates/list-messages.html:125
+msgid "Envoyé à"
+msgstr "Halefa amin'i"
+
+#: templates/list-messages.html:133
+msgid "Reçu de"
+msgstr "Voaray avy amin'i"
+
+#: templates/list-storage-box.html:5 templates/list-storage-box.html:12
+#: templates/list-storage-chamber.html:5 templates/list-storage-chamber.html:12
+#: templates/list-storage-compartment.html:5
+#: templates/list-storage-compartment.html:12
+#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
+msgid "Stockage d'échantillon"
+msgstr "Fitehirizana singa"
+
+#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
+#: templates/list-storage-chamber.html:18
+#: templates/list-storage-compartment.html:18
+#: templates/list-storage-room.html:18
+msgid "id"
+msgstr "id"
+
+#: templates/list-storage-box.html:23
+msgid "Dimensions l,p"
+msgstr "Refy l,p"
+
+#: templates/list-storage-box.html:24
+msgid "Nb. aliquot"
+msgstr "Nb. aliquot"
+
+#: templates/list-storage-box.html:25
+msgid "Pleine"
+msgstr "Feno"
+
+#: templates/list-storage-box.html:36
+msgid "Ajouter boîte"
+msgstr "Manampy boite"
+
+#: templates/list-storage-chamber.html:20
+#: templates/list-storage-compartment.html:20
+#: templates/list-storage-room.html:20
+msgid "Abbréviation"
+msgstr "Fanafohezana"
+
+#: templates/list-storage-chamber.html:23
+msgid "Nb. compartiment"
+msgstr "Nb. efitrefitra"
+
+#: templates/list-storage-chamber.html:34
+msgid "Ajouter enceinte"
+msgstr "Manampy faritra"
+
+#: templates/list-storage-compartment.html:23
+msgid "Dimensions l,p,h"
+msgstr "Refy l,p,h"
+
+#: templates/list-storage-compartment.html:24
+msgid "Nb. boîte"
+msgstr "Nb. boite"
+
+#: templates/list-storage-compartment.html:35
+msgid "Ajouter compartiment"
+msgstr "Manampy efitrefitra"
+
+#: templates/list-storage-room.html:22
+msgid "Nb. enceinte"
+msgstr "Nb. faritra"
+
+#: templates/menu.html:138 templates/menu.html:439
+msgid "Gestion des rôles et droits"
+msgstr "Fitantanana ny andraikitra sy ny zo"
+
+#: templates/no-rights.html:1
+msgid "Vous n'avez pas les droits pour accéder à cette page"
+msgstr "Tsy manana zo hiditra amin'io pejy io ianao"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+msgid "s"
+msgstr "s"
+
+#: templates/setting-det-analysis.html:26
+msgid "LOINC"
+msgstr "LOINC"
+
+#: templates/setting-det-analysis.html:109
+msgid "Antiobiogramme"
+msgstr "Antibiogramme"
+
+#: templates/setting-det-role.html:18
+#: templates/setting-roles-and-rights.html:34
+msgid "Rôle de base"
+msgstr "Andraikitra fototra"
+
+#: templates/setting-det-role.html:28
+msgid "Nom de ce rôle"
+msgstr "Anaran'ito andraikitra ito"
+
+#: templates/setting-det-role.html:35
+msgid "Couleur principale"
+msgstr "Loko fototra"
+
+#: templates/setting-det-role.html:42
+msgid "Couleur de survol"
+msgstr "Loko survol"
+
+#: templates/setting-det-role.html:49
+msgid "Couleur texte"
+msgstr "Loko soratra"
+
+#: templates/setting-det-role.html:56 templates/setting-user-rights.html:16
+msgid "Droits"
+msgstr "Zo"
+
+#: templates/setting-det-role.html:60
+#: templates/setting-roles-and-rights.html:33
+#: templates/setting-user-rights.html:20
+msgid "Libéllé"
+msgstr "Fehezanteny"
+
+#: templates/setting-roles-and-rights.html:5
+#: templates/setting-roles-and-rights.html:12
+msgid "Liste des rôles"
+msgstr "Lisitr'ireo andraikitra"
+
+#: templates/setting-roles-and-rights.html:35
+msgid "Nombre de profil"
+msgstr "Isan'ny profil"
+
+#: templates/setting-roles-and-rights.html:56
+msgid "Ajouter un rôle"
+msgstr "Hanampy andraikitra"
+
+#: templates/setting-roles-and-rights.html:119
+msgid "Consulter"
+msgstr "Hijery"
+
+#: templates/setting-user-rights.html:5 templates/setting-user-rights.html:12
+msgid "Droits de cet utilisateur"
+msgstr "Zo an'ito utilisateur ito"
+
+#: templates/setting-users.html:242
+msgid "Editer droits"
+msgstr "Hanova zo"
+
+#: templates/table-rights.html:6
+msgid "Administration"
+msgstr "Administration"
+
+#: templates/table-rights.html:7
+msgid "API"
+msgstr "API"
+
+#: templates/table-rights.html:16
+msgid "Modules des non-conformités"
+msgstr "Modules an'ireo tsy mifanaraka"
+
+#: templates/table-rights.html:18
+msgid "Dossiers"
+msgstr "Dossiers"
+
+#: templates/list-analyzers.html:55
+msgid "Transactions"
+msgstr "Transactions"
+
+#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
+msgid "Liste messages analyseurs"
+msgstr "Lisitr'ireo hafatry ny analyseurs"
+
+#: templates/list-msg-analyzer.html:19
+msgid "Date d'envoi"
+msgstr "Daty nandefasana"
+
+#: templates/list-msg-analyzer.html:20
+msgid "Message envoyé"
+msgstr "Hafatra nalefa"
+
+#: templates/list-msg-analyzer.html:21
+msgid "Message reçu"
+msgstr "Hafatra voaray"
+
+#: templates/list-storage-room.html:33
+msgid "Ajouter pièce"
+msgstr "Manampy piece"
+
+#: templates/det-aliquot.html:35
+msgid "Nature"
+msgstr ""
+
+#: templates/det-aliquot.html:69
+msgid "Le format attendu est une lettre suivie d'un nombre"
+msgstr ""
+
+#: templates/det-aliquot.html:90 templates/enter-result.html:148
+#: templates/list-results.html:115
+msgid "Stockage boîte"
+msgstr ""
+
+#: templates/det-aliquot.html:382 templates/enter-result.html:1302
+#: templates/list-results.html:1204
+msgid "Erreur lors de la récupération"
+msgstr ""
+
+#: templates/list-aliquot.html:194
+msgid "Stocké le"
+msgstr ""
+
+#: templates/list-aliquot.html:198
+msgid "Déstocké le"
+msgstr ""
+
+#: templates/list-aliquot.html:209
+msgid "Externalisé"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:107
+msgid "En cours d'envoi"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:110
+msgid "Connexion échouée"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:113
+msgid "Message accepté sans erreur"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:116
+msgid "Erreur dans la requête"
+msgstr ""
+
+#: templates/list-msg-analyzer.html:119
+msgid "Rejet complet de la commande"
+msgstr ""
+
+#: templates/list-aliquot.html:32
+msgid "Coordonées"
+msgstr ""
 

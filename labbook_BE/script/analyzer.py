@@ -1,16 +1,13 @@
-#! /home/www/amicare/venv/bin python
 # -*- coding:utf-8 -*-
 # from analyzer.sh
 """ Request LAB28 to analyzers """
 
 import sys
 import getopt
-import logging
 import locale
 import os
 import fcntl
 import signal
-import hl7apy
 import requests
 import re
 
@@ -29,15 +26,13 @@ lock_file_path = "analyzer.lock"
 def analyzer(test=False, verbose=False):
     ret_sc = True
 
-    dt_start_script = datetime.now()
-
     date_now  = datetime.now()
 
     Logs.log_script(Logs.fileline() + " : BEGIN script today=" + str(date_now))
     Logs.log_script(Logs.fileline() + " : cst_path_log = " + Constants.cst_path_log)
 
     with app.app_context():
-        # check if a lock file exist
+        # Check if a lock file exist
         if check_lock_file(lock_file_path):
             Logs.log_script(Logs.fileline() + " : debug lock exists")
         else:
@@ -92,16 +87,15 @@ def analyzer(test=False, verbose=False):
                         ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=msa_status, ORL_O34=ORL_O34)
                     else:
                         # update status
-                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat='WC', ORL_O34='')
+                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=Constants.cst_stat_wrong_cnx, ORL_O34='')
 
                 # if l_tasks is empty we reload before exit this script
                 l_tasks = Analyzer.listTask('PD')
 
         except Exception as e:
-            Logs.log_script(Logs.fileline() + " : Error script : " + str(e))
-
-        dt_stop_script = datetime.now()
-        dt_time_script = dt_stop_script - dt_start_script
+            Logs.log_script(f"Script error: {e}")
+            remove_lock_file(lock_file_path)  # Ensure the lock file is deleted even on failure
+            sys.exit(1)  # Exit the script to prevent further execution
 
         remove_lock_file(lock_file_path)
         print("END script")
@@ -110,18 +104,19 @@ def analyzer(test=False, verbose=False):
 
 
 def check_lock_file(file_path):
+    """ Checks if the lock file exists and is in use """
+    if not os.path.exists(file_path):
+        return False  # The file does not exist, so no lock is active
+
     try:
-        # Ouvre le fichier en mode écriture et crée un verrou partagé (LOCK_SH | LOCK_NB)
-        with open(file_path, 'w') as file:
-            fcntl.flock(file, fcntl.LOCK_SH | fcntl.LOCK_NB)
-            # Si le verrou est obtenu avec succès, le fichier n'est pas verrouillé par un autre processus
-            Logs.log_script(f"Le fichier {file_path} n'est pas verrouillé.")
-            fcntl.flock(file, fcntl.LOCK_UN)
+        with open(file_path, 'r') as file:
+            fcntl.flock(file, fcntl.LOCK_SH | fcntl.LOCK_NB)  # Attempt to get a shared lock
+            fcntl.flock(file, fcntl.LOCK_UN)  # Release the lock immediately
+            Logs.log_script(f"The file {file_path} is not locked.")
             return False
-    except IOError as e:
-        # Si le fichier est verrouillé, une IOError sera levée
-        Logs.log_script(f"Le fichier {file_path} est verrouillé par un autre processus.")
-        return True
+    except IOError:
+        Logs.log_script(f"The file {file_path} is locked by another process.")
+        return True  # Lock is active
 
 
 def create_lock_file(file_path):
@@ -137,18 +132,25 @@ def create_lock_file(file_path):
 
 
 def remove_lock_file(file_path):
+    """ Removes the lock file only if it is not locked """
+    if not os.path.exists(file_path):
+        Logs.log_script(Logs.fileline() + f" : Lock file {file_path} does not exist.")
+        return
+
     try:
-        # delete lock file if exists
-        os.remove(file_path)
-        Logs.log_script(Logs.fileline() + " : lock file removed")
+        with open(file_path, 'r') as file:
+            fcntl.flock(file, fcntl.LOCK_UN)  # Ensure the lock is released before deletion
+
+        os.remove(file_path)  # Now it is safe to remove
+        Logs.log_script(Logs.fileline() + f" : Lock file {file_path} removed successfully.")
     except Exception as e:
-        Logs.log_script(Logs.fileline() + " : remove_lock err : " + str(e))
+        Logs.log_script(Logs.fileline() + f" : Error removing lock file {file_path}: {e}")
 
 
 def handle_signal(signum, frame):
-    # Ce gestionnaire de signal est appelé lorsqu'un signal SIGTERM est reçu
-    Logs.log_script(f"Signal {signum} reçu. Libération du verrou.")
-    remove_lock()
+    """ Handles termination signals to clean up the lock file """
+    Logs.log_script(f"Signal {signum} received. Releasing lock.")
+    remove_lock_file(lock_file_path)
     sys.exit(1)
 
 
@@ -180,7 +182,7 @@ def main():
         elif opt in ("-v", "--verbose"):
             verbose = True
         else:
-            usage()
+            use()
             sys.exit(2)
 
     if analyzer(test, verbose):

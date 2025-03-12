@@ -25,11 +25,33 @@
         margin:0;
         background: #fafafa;
       }
+
+      .logout-button 
+      {
+        display: inline-block;
+        margin: 5px;
+        padding: 10px 20px;
+        background-color: #d9534f;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .logout-button:hover 
+      {
+        background-color: #c9302c;
+      }
     </style>
 </head>
 
 {% if debug == 1 or has_permission("API_2") %}
 <body>
+    <button class="logout-button" onclick="window.location.href='/sigl/disconnect'">
+        {{ _("Déconnexion") }}
+    </button>
     <div id="swagger-ui"></div>
     
     <script src="{{ url_for('static', filename='vendor/swagger-ui/swagger-ui-bundle.js') }}" charset="UTF-8"> </script>
@@ -62,6 +84,7 @@
 {% else %}
 <body>
     <div>{{ _("Accès non autorisé") }}</div>
+    <meta http-equiv="refresh" content="3;url=/sigl/disconnect">
 <body>
 {% endif %}
 </html>

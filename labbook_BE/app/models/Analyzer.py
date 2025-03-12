@@ -48,6 +48,18 @@ class Analyzer:
         return cursor.fetchone()
 
     @staticmethod
+    def getAnalyzerDetById(id_analyzer):
+        cursor = DB.cursor()
+
+        req = ('select ans_ser, ans_user, ans_name, ans_id, ans_connect, ans_mapping, ans_filename '
+               'from analyzer_setting '
+               'where ans_id=%s')
+
+        cursor.execute(req, (id_analyzer,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertAnalyzerDet(**params):
         try:
             cursor = DB.cursor()
@@ -222,10 +234,10 @@ class Analyzer:
 
         for analyzer in l_analyzer:
             # Save OML33 task for one analyzer
-            ret = Analyzer.insertLab28(ans_ser=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, msg='', tot='LAB-28')
+            ret = Analyzer.insertLabTransactions(ans_ser=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, sent='', recv='', tot='LAB-28')
 
             if not ret:
-                Analyzer.log.error(Logs.fileline() + ' ERROR insertLab28 for id_analyzer=' + str(analyzer['ans_ser']) + 'and id_samp=' + str(id_samp))
+                Analyzer.log.error(Logs.fileline() + ' ERROR insertLabTransactions LAB-28 for id_analyzer=' + str(analyzer['ans_ser']) + 'and id_samp=' + str(id_samp))
 
             else:
                 id_task = ret
@@ -244,7 +256,7 @@ class Analyzer:
                 msg.msh.msh_10 = str(id_task)       # Message control ID, sending back by receiving system
                 msg.msh.msh_11 = "P"                # Processing ID, "D"ebugging, "P"roduction, "T"raining.
                 msg.msh.msh_12 = "2.5.1"            # HL7 version
-                msg.msh.msh_18 = "UTF-8"            # Character set
+                msg.msh.msh_18 = "UNICODE UTF-8"    # Character set
                 msg.msh.msh_21 = "LAB-28^IHE"       # Message profile identifier
 
                 try:
@@ -352,13 +364,13 @@ class Analyzer:
         return True
 
     @staticmethod
-    def insertLab28(**params):
+    def insertLabTransactions(**params):
         try:
             cursor = DB.cursor()
 
             cursor.execute('insert into analyzer_msg '
-                           '(anm_date, anm_id_samp, anm_stat, anm_msg_sent, anm_ans, anm_tot) '
-                            'values (NOW(), %(id_samp)s, %(stat)s, %(msg)s, %(ans_ser)s, %(tot)s)', params)
+                           '(anm_date, anm_id_samp, anm_stat, anm_msg_sent, anm_msg_recv, anm_ans, anm_tot) '
+                            'values (NOW(), %(id_samp)s, %(stat)s, %(sent)s, %(recv)s, %(ans_ser)s, %(tot)s)', params)
 
             Analyzer.log.info(Logs.fileline())
 
@@ -366,6 +378,27 @@ class Analyzer:
         except mysql.connector.Error as e:
             Analyzer.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return 0
+
+    @staticmethod
+    def updateLab27_ACK(**params):
+        try:
+            cursor = DB.cursor()
+
+            Analyzer.log.info(Logs.fileline() + ' : DEBUG params=' + str(params))
+
+            params["msg"] = params["msg"].replace("\r", "\\r")
+
+            req = ('update analyzer_msg set anm_date_upd=NOW(), anm_stat=%(stat)s, anm_msg_sent=%(msg)s '
+                   'where anm_ser=%(id_task)s')
+
+            cursor.execute(req, params)
+
+            Analyzer.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analyzer.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
 
     @staticmethod
     def updateLab28_OML_O33(**params):
@@ -394,6 +427,28 @@ class Analyzer:
             cursor = DB.cursor()
 
             req = ('update analyzer_msg set anm_date_upd=NOW(), anm_stat=%(stat)s, anm_msg_recv=%(ORL_O34)s '
+                   'where anm_ser=%(id_task)s')
+
+            cursor.execute(req, params)
+
+            Analyzer.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analyzer.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def updateLab29_ACK(**params):
+        try:
+            cursor = DB.cursor()
+
+            Analyzer.log.info(Logs.fileline() + ' : DEBUG params=' + str(params))
+
+            params["msg"] = params["msg"].replace("\r", "\\r")
+
+            req = ('update analyzer_msg set anm_date_upd=NOW(), anm_id_samp=%(id_samp)s, anm_stat=%(stat)s, '
+                   'anm_msg_sent=%(msg)s '
                    'where anm_ser=%(id_task)s')
 
             cursor.execute(req, params)
@@ -452,35 +507,71 @@ class Analyzer:
     @staticmethod
     def generate_ack_response(original_message, ack_code, error_message=""):
         """
-        Generates an HL7 ACK^R22 response message.
+        Generates a correctly formatted HL7 ACK response message according to HL7 2.5.1 specifications.
 
         :param original_message: The received HL7 message (OUL^R22) or None if parsing failed.
-        :param ack_code: "AA" (Accepted), "AE" (Error), "AR" (Rejected)
+        :param ack_code: "AA" (Accepted), "AE" (Error), "AR" (Rejected).
         :param error_message: Optional error description.
-        :return: An HL7 ACK^R22 response.
+        :return: A correctly formatted HL7 ACK response message.
         """
-        ack = Message("ACK")
-
-        # Ensure original_message is an HL7 message object
         if not isinstance(original_message, Message):
-            Analyzer.log.error(Logs.fileline() + " : ERROR original_message is not a valid HL7 object")
-            original_message = None  # Set to None to avoid further issues
+            Analyzer.log.error(Logs.fileline() + " : ERROR - original_message is not a valid HL7 object.")
+            original_message = None
 
-        ack.msh.msh_3 = "LabBook"  # Sending application
-        ack.msh.msh_4 = "Lab"  # Sending facility
-        ack.msh.msh_5 = getattr(original_message.msh, "msh_3", "UNKNOWN").value if original_message else "UNKNOWN"
-        ack.msh.msh_6 = getattr(original_message.msh, "msh_4", "UNKNOWN").value if original_message else "UNKNOWN"
-        ack.msh.msh_7 = getattr(original_message.msh, "msh_7", "UNKNOWN").value if original_message else "UNKNOWN"
-        ack.msh.msh_9 = "ACK^R22"  # Message type
-        ack.msh.msh_10 = getattr(original_message.msh, "msh_10", "UNKNOWN").value if original_message else "UNKNOWN"
-        ack.msh.msh_11 = "P"  # Processing ID
-        ack.msh.msh_12 = "2.5.1"  # HL7 version
+        message_control_id = original_message.msh.msh_10.value if original_message else str(int(datetime.now().timestamp()))
+        receiving_application = original_message.msh.msh_3.value if original_message else "UNKNOWN"
+        receiving_facility = original_message.msh.msh_4.value if original_message else "UNKNOWN"
 
-        # Message acknowledgment
-        ack.msa.msa_1 = ack_code  # AA = Accepted, AE = Error, AR = Rejected
-        ack.msa.msa_2 = original_message.msh.msh_10.value if original_message else "UNKNOWN"
+        sending_application = "LabBook"
+        sending_facility = "Lab"
 
-        if error_message:
-            ack.msa.msa_3 = error_message  # Optional error text
+        # Extract MSH-9-2 (Trigger Event) from the original message
+        trigger_event = original_message.msh.msh_9.value.split("^")[1] if original_message and "^" in original_message.msh.msh_9.value else "R22"
 
-        return ack.to_er7()
+        # Build the ACK message
+        ack = Message("ACK", version="2.5.1")
+
+        # Build the MSH segment
+        ack.msh.msh_1 = "|"
+        ack.msh.msh_2 = "^~\\&"
+        ack.msh.msh_3 = sending_application
+        ack.msh.msh_4 = sending_facility
+        ack.msh.msh_5 = receiving_application
+        ack.msh.msh_6 = receiving_facility
+        ack.msh.msh_7 = datetime.now().strftime("%Y%m%d%H%M%S")
+        ack.msh.msh_9 = f"ACK^{trigger_event}^ACK"  # Compliant with HL7 2.5.1 documentation
+        ack.msh.msh_10 = message_control_id
+        ack.msh.msh_11 = "P"
+        ack.msh.msh_12 = "2.5.1"
+        ack.msh.msh_18 = "UNICODE UTF-8"
+        ack.msh.msh_21 = "LAB-29^IHE"
+
+        # Add the MSA segment (Message Acknowledgment)
+        msa_segment = ack.add_segment("MSA")
+        msa_segment.msa_1 = ack_code
+        msa_segment.msa_2 = message_control_id
+        msa_segment.msa_3 = error_message if error_message else "Message processed successfully"
+
+        # If there is an error, include the ERR segment as per HL7 2.5.1 recommendations
+        if ack_code in ["AE", "AR"]:
+            err_segment = ack.add_segment("ERR")
+            err_segment.err_1 = "0"  # Error location (can be adjusted)
+            err_segment.err_2 = "400"  # Application Error Code (example)
+            err_segment.err_3 = "E"  # Error severity
+            err_segment.err_4 = error_message if error_message else "Unknown error"
+
+        try:
+            ack.msh.validate()
+            ack.msa.validate()
+            Analyzer.log.info(Logs.fileline() + ' DEBUG - ACK Validated.')
+        except Exception as e:
+            Analyzer.log.error(Logs.fileline() + ' ERROR - Validation failed: ' + str(e))
+
+        # Correctly format the ER7 message with explicit segment separators (`\r`)
+        ack_message = f"{ack.msh.to_er7()}\r{ack.msa.to_er7()}\r"
+
+        # Log the generated ACK message
+        Analyzer.log.info(f"Generated HL7 ACK: {ack_message.replace(chr(13), '[CR]')}")
+
+        return ack_message
+

@@ -29,7 +29,7 @@
                         <th>{{ _("Patient") }}</th>
                         <th>{{ _("Dossier") }}</th>
                         <th>{{ _("Analyse") }}</th>
-                        <th>{{ _("Coordonées") }}</th>
+                        <th>{{ _("Coordonnées") }}</th>
                     </tr>
                 </thead>
             </table>
@@ -213,7 +213,12 @@ let in_stock = showDestocked ? "N" : "Y";
                     return typeLabel;
                 }
             },
-            {   "data": "sal_pathogen_label" },
+            {
+                "data": "sal_pathogen_label",
+                "render": function(data, type, row) {
+                    return data ? data : "-"; // Affiche "-" si la valeur est vide ou null
+                }
+            },
             { 
                 "data": null,
                 "render": function(data, type, row) {

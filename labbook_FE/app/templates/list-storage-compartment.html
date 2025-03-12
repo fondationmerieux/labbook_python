@@ -114,7 +114,14 @@ function loadItemsTable()
                     return `${row.dim_x},${row.dim_y},${row.dim_z}`;
                 }
             },
-            { "data": "nb_box" }
+            {
+                "data": null,
+                "className": "text-end",
+                "render": function(data, type, row) {
+                    let maxCapacity = row.dim_x * row.dim_y * row.dim_z;
+                    return `${row.nb_box} / ${maxCapacity}`;
+                }
+            }
         ]
     });
 }
