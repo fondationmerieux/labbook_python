@@ -6,7 +6,9 @@ COPY storage /storage
 # copy some resource
 COPY labbook_BE/alembic/resource /storage/resource
 
-RUN mkdir -p /storage/resource/connect
+RUN mkdir -p /storage/resource/connect/analyzer/mapping
+RUN mkdir -p /storage/resource/connect/analyzer/plugin
+RUN mkdir -p /storage/resource/connect/analyzer/setting
 
 COPY vendor/*.rpm /tmp
 
