@@ -1094,8 +1094,11 @@ class AnalysisImport(Resource):
         path = Constants.cst_path_tmp
 
         with open(os.path.join(path, filename), 'r', encoding='utf-8') as csv_file:
-            csv_reader = reader(csv_file, delimiter=';')
+            csv_reader = reader(csv_file, delimiter=';', quotechar='"')
             l_rows = list(csv_reader)
+
+        # clean double quotes
+        l_rows = [[col.strip('"') if col else col for col in row] for row in l_rows]
 
         if not l_rows or len(l_rows) < 2:
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR file empty')
@@ -1110,8 +1113,8 @@ class AnalysisImport(Resource):
         version = l_rows[0][0]
 
         # check version
-        if version != 'v3' and version != 'v4' and version != 'v5':
-            self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version')
+        if version not in ('v3','v4','v5'):
+            self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version : ' + str(version))
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)
 

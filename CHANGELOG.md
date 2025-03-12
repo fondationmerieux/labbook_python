@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - api page access for API profile
 - display of path when box is selected when aliquot is added
 - fix some permissions for profile
+- import of analysis repository (v5)
 
 ## [3.5.5] - 2025-03-04
 ### Changed

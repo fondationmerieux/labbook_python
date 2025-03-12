@@ -6,6 +6,8 @@ COPY storage /storage
 # copy some resource
 COPY labbook_BE/alembic/resource /storage/resource
 
+RUN mkdir -p /storage/resource/connect
+
 COPY vendor/*.rpm /tmp
 
 # EPEL repository is needed for sshpass

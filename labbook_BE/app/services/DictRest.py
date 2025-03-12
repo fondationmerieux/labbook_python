@@ -329,8 +329,11 @@ class DictImport(Resource):
         path = Constants.cst_path_tmp
 
         with open(os.path.join(path, filename), 'r', encoding='utf-8') as csv_file:
-            csv_reader = reader(csv_file, delimiter=';')
+            csv_reader = reader(csv_file, delimiter=';', quotechar='"')
             l_rows = list(csv_reader)
+
+        # clean double quotes
+        l_rows = [[col.strip('"') if col else col for col in row] for row in l_rows]
 
         if not l_rows or len(l_rows) < 2:
             self.log.error(Logs.fileline() + ' : TRACE DictImport ERROR file empty')
