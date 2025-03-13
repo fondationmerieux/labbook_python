@@ -98,10 +98,13 @@ function loadItemsTable()
                 }
             },
             {   "data": "anm_date", "defaultContent": "" },
-            {   "data": "anm_stat",
+            {
+                "data": "anm_stat",
                 "defaultContent": "-",
                 "render": function(data, type, row) {
                     let statusText = "";
+                    let directionText = "";
+
                     switch (data) {
                         case "PD":
                             statusText = "<span class='badge bg-info'>{{ _('En cours d\'envoi') }}</span>";
@@ -121,10 +124,16 @@ function loadItemsTable()
                         default:
                             statusText = "<span class='badge bg-secondary'>{{ _('Inconnu') }}</span>";
                     }
-
-                    let anmTotText = row.anm_tot ? `<strong>${row.anm_tot}</strong><br>` : "";
-
-                    return anmTotText + statusText;
+            
+                    if (row.anm_tot.includes("LAB-28")) {
+                        directionText = ' {{ _("LabBook") }} <i class="bi bi-arrow-right"></i> {{ _("Analyseur") }}';
+                    } else if (row.anm_tot.includes("LAB-27") || row.anm_tot.includes("LAB-29")) {
+                        directionText = ' {{ _("Analyseur") }} <i class="bi bi-arrow-right"></i> {{ _("LabBook") }}';
+                    }
+            
+                    let anmTotText = row.anm_tot ? `<strong>${row.anm_tot}</strong> ${directionText}` : "";
+            
+                    return `${anmTotText}<br />${statusText}`;
                 }
             },
             {
