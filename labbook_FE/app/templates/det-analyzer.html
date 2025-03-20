@@ -15,7 +15,7 @@
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
-                        <input type="text" name="name" id="name" value="{{ args['analyzer']['ans_name'] }}" class="form-control form-lbk">			
+                        <input type="text" name="name" id="name" value="{{ args['analyzer']['ans_name'] }}" class="form-control form-lbk">	
                     </div>
                 </div>
                 
@@ -31,27 +31,20 @@
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="id" class="form-label col-3 text-end mt-2 me-1">{{ _("Identifiant") }}</label>
-                    <div>					
+                    <div >					
                         <input type="text" name="id" id="id" value="{{ args['analyzer']['ans_id'] }}" class="form-control form-lbk">			
                     </div>
+                    <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2" onclick="testLabBookConnect();">
+                            {{ _("Tester") }}
+                        </button>
+                        <div id="test_result" class="ms-2 mt-2"></div>
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="connect" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse LabBook Connect") }}</label>
-                    <div>					
-                        <input type="text" name="connect" id="connect" value="{{ args['analyzer']['ans_connect'] }}" class="form-control form-lbk">			
-                    </div>
-                    <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1" onclick="testLabBookConnect();">
-                        {{ _("Tester") }}
-                    </button>
-                </div>
-
-                <div id="test_result" class="mt-2"></div>
-
-                <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="mapping" class="form-label col-3 text-end mt-2 me-1">{{ _("adresse transcodage") }}</label>
-                    <div>					
-                        <input type="text" name="mapping" id="mapping" value="{{ args['analyzer']['ans_mapping'] }}" class="form-control form-lbk">			
+                    <label for="batch" class="form-label col-3 text-end mt-2 me-1">{{ _("Batch") }}</label>
+                    <div>
+                        <input type="checkbox" name="batch" id="batch" class="form-check-input" 
+                               {% if not args or args['analyzer']['ans_batch'] == 'Y' %}checked{% endif %}>
                     </div>
                 </div>
 
@@ -61,7 +54,7 @@
                         <input type="number" name="rank" id="rank" min="0" step="1" value="{% if args['analyzer']['ans_rank'] %}{{args['analyzer']['ans_rank']}}{% else %}0{% endif %}" class="form-control form-lbk">			
                     </div>
                 </div>
-                
+
             </form>
             
             <div class="my-2 clearfix">
@@ -86,7 +79,7 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 function testLabBookConnect() 
 {
-var connect_url = $("#connect").val() ;
+var connect_url = "{{ args['connect']['cos_url'] }}" ;
 var analyzer_id = $("#id").val() ;
 
     if (connect_url.trim() === "" || analyzer_id.trim() === "") 
@@ -131,18 +124,17 @@ var id_user     = {{ session['user_id']|safe}} ;
 var id_item     = {{ args['id_analyzer']|safe }} ;
 var name        = $("#name").val()     ;
 var key         = $("#id").val()       ;
-var connect     = $("#connect").val()  ;
-var mapping     = $("#mapping").val()  ;
 var rank        = $("#rank").val()     ;
 var filename    = $("#analyzer").val() ;
+var batch       = $("#batch").is(":checked") ? "Y" : "N";
 
 var msg = "" ;
 
-    if (name == "" || key == "" || connect == "" || mapping == "")
+    if (name == "" || key == "" )
     msg += "{{ _("Veuillez saisir un nom, un identifiant unique et leurs adresses.") }}\n" ;
 
     if (filename == "")
-    msg += "{{ _("Veuillez sélectionner un analyzer dans la liste.") }}" ;
+    msg += "{{ _("Veuillez sélectionner un analyseur dans la liste.") }}" ;
 
     if (msg != "")
     {
@@ -150,13 +142,14 @@ var msg = "" ;
     return false ;
     }  
 
-var param = '{ "id_user":' + id_user + ', ' +
-              '"name":"' + name + '", ' +
-              '"key":"' + key + '", ' +
-              '"connect":"' + connect + '", ' +
-              '"mapping":"' + mapping + '", ' +
-              '"rank":' + rank + ', ' +
-              '"filename":"' + filename + '"}' ;
+var param = JSON.stringify({
+                            "id_user": id_user,
+                            "name": name,
+                            "key": key,
+                            "rank": rank,
+                            "filename": filename,
+                            "batch": batch
+                        });
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

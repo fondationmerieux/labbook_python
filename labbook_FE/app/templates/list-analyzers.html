@@ -31,6 +31,7 @@
                             <th class="text-start">{{ _("Action") }}</th>
                             <th class="text-start cursor-act">{{ _("Nom") }}</th>
                             <th class="text-start cursor-act">{{ _("Identifiant") }}</th>
+                            <th class="text-start cursor-act">{{ _("Batch") }}</th>
                             <th class="text-start cursor-act">{{ _("Position") }}</th>
                         </tr>
                     </thead>
@@ -52,6 +53,7 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
+                    <input type="button" onclick="to_connect();" id="btn_connect" value="{{ _("Connect") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     <input type="button" onclick="transactions();" id="btn_trans" value="{{ _("Transactions") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% if has_permission("SETTING_49") %}
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
@@ -126,6 +128,7 @@ $("#list_items_total").html( data_len ) ;
            "<td><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].ans_name + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].ans_id + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].ans_batch + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].ans_rank + "</div></td></tr>" ;
     }
 {% endif %}
@@ -135,6 +138,11 @@ $("#list_items_total").html( data_len ) ;
     $("#num_page_b").text( p_cur ) ;
 
     $("#table_items").tablesorter() ;  // sort only data on screen 
+}
+
+function to_connect()
+{
+window.location.href = "{{ session['server_ext'] }}/connect-management";
 }
 
 function transactions()

@@ -413,8 +413,8 @@ let id_var = $(e.currentTarget).val();
                 tmp_struct_var.type_res   = replaceUndefined(data_var.type_res, 0) ;
                 tmp_struct_var.min        = replaceUndefined(data_var.min, "") ;
                 tmp_struct_var.max        = replaceUndefined(data_var.max, "") ;
-                tmp_struct_var.var_show_minmax = "N" ;
-                tmp_struct_var.var_highlight = "N" ;
+                tmp_struct_var.var_show_minmax = data_var.var_show_minmax ;
+                tmp_struct_var.var_highlight = data_var.var_highlight ;
                 tmp_struct_var.formula    = replaceUndefined(data_var.formula, "") ;
                 tmp_struct_var.unit       = replaceUndefined(data_var.unit, 0) ;
                 tmp_struct_var.accu       = replaceUndefined(data_var.accu, 0) ;
@@ -443,7 +443,7 @@ let id_var = $(e.currentTarget).val();
         error: function(data_var)
             {
             console.log("ERROR GET det variable");
-            alert("{{ _("Erreur lors la récupération des données") }}") ;
+            alert("{{ _("Erreur lors de la récupération des données") }}") ;
             }
     } ) ;
 
@@ -903,7 +903,6 @@ let id_elem = elem.id ;
             }
         }
     }
-
     else if ( id_elem == "var_highlight_Y" || id_elem == "var_highlight_N" )
     {
         for( i in data_vars )

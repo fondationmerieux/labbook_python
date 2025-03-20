@@ -18,6 +18,36 @@ from app.models.Logs import Logs
 from app.models.Various import Various
 
 
+class ConnectSetting(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        setting = Analyzer.getConnectSetting()
+
+        if not setting:
+            self.log.error(Logs.alert() + ' : ConnectSetting ERROR get')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ConnectSetting')
+        return compose_ret(setting, Constants.cst_content_type_json)
+
+    def post(self):
+        args = request.get_json()
+
+        if 'id_user' not in args or 'url' not in args:
+            self.log.error(Logs.fileline() + ' : ConnectSetting ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        ret = Analyzer.updateConnectSetting(id_user=args['id_user'], url=args['url'])
+
+        if ret is False:
+            self.log.error(Logs.alert() + ' : ConnectSetting ERROR update')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE ConnectSetting')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
 class AnalyzerList(Resource):
     log = logging.getLogger('log_services')
 

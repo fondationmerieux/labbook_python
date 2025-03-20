@@ -1,22 +1,48 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  Labbook_BE\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 14:38+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: en_us\n"
-"Language-Team: en_us <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_BE\n"
+"Language: en-us\n"
 
 #: models/File.py:515
 msgid "DUPLICATA"
 msgstr "DUPLICATE"
+
+#: models/Pdf.py:69
+msgid "N° quittance"
+msgstr "Receipt number"
+
+#: models/Pdf.py:2789
+msgid "Analyses demandées"
+msgstr "Requested analyzes"
+
+#: models/Pdf.py:1596 models/Pdf.py:2578 models/Pdf.py:2592 models/Pdf.py:3152
+#: models/Pdf.py:3168
+msgid "Sous-traitée"
+msgstr "Subcontract"
+
+#: models/Pdf.py:100 models/Pdf.py:2787
+msgid "Total"
+msgstr "Total"
+
+#: models/Pdf.py:2788
+msgid "Total à payer"
+msgstr "Total to pay"
+
+#: models/Pdf.py:68 models/Pdf.py:211
+msgid "N° dossier"
+msgstr "Record number"
+
+#: models/Pdf.py:1092 models/Pdf.py:2201 models/Pdf.py:2780
+msgid "édité le"
+msgstr "edited on"
+
+#: models/Pdf.py:116
+msgid "Page"
+msgstr "Page"
 
 #: models/Pdf.py:63
 msgid "ETAT DE LA FACTURATION DU"
@@ -25,14 +51,6 @@ msgstr "STATUS OF INVOICING FROM"
 #: models/Pdf.py:63
 msgid "AU"
 msgstr "TO"
-
-#: models/Pdf.py:68 models/Pdf.py:211
-msgid "N° dossier"
-msgstr "Record number"
-
-#: models/Pdf.py:69
-msgid "N° quittance"
-msgstr "Receipt number"
 
 #: models/Pdf.py:70
 msgid "N° facture"
@@ -46,36 +64,9 @@ msgstr "Price"
 msgid "A payer"
 msgstr "To pay"
 
-#: models/Pdf.py:100 models/Pdf.py:2787
-msgid "Total"
-msgstr "Total"
-
 #: models/Pdf.py:114
 msgid "Etat de la facturation, édité le"
 msgstr "Billing status, edited on"
-
-#: models/Pdf.py:116
-msgid "Page"
-msgstr "Page"
-
-#: models/Pdf.py:210
-#, fuzzy
-msgid "Date"
-msgstr "latex"
-
-#: models/Pdf.py:212
-#, fuzzy
-msgid "Famille"
-msgstr "weak"
-
-#: models/Pdf.py:213 translations/messages_pybabel.py:305
-msgid "Analyse"
-msgstr "Analysis"
-
-#: models/Pdf.py:214
-#, fuzzy
-msgid "Validation"
-msgstr "validation"
 
 #: models/Pdf.py:567 models/Pdf.py:1080 models/Pdf.py:2189 models/Pdf.py:2768
 msgid "Tél"
@@ -88,40 +79,6 @@ msgstr "Fax"
 #: models/Pdf.py:577 models/Pdf.py:1082 models/Pdf.py:2191 models/Pdf.py:2770
 msgid "Email"
 msgstr "Email"
-
-#: models/Pdf.py:800 models/Pdf.py:1317 models/Pdf.py:2384 models/Pdf.py:2994
-#: translations/messages_pybabel.py:597
-msgid "Inconnu"
-msgstr "Unknown"
-
-#: models/Pdf.py:847 models/Pdf.py:859 models/Pdf.py:992 models/Pdf.py:1364
-#: models/Pdf.py:1376 models/Pdf.py:2431 models/Pdf.py:2443 models/Pdf.py:3041
-#: models/Pdf.py:3053
-msgid "ans"
-msgstr "years"
-
-#: models/Pdf.py:850 models/Pdf.py:871 models/Pdf.py:1367 models/Pdf.py:1388
-#: models/Pdf.py:2434 models/Pdf.py:2455 models/Pdf.py:3044 models/Pdf.py:3065
-msgid "jours"
-msgstr "days"
-
-#: models/Pdf.py:854 models/Pdf.py:863 models/Pdf.py:1371 models/Pdf.py:1380
-#: models/Pdf.py:2438 models/Pdf.py:2447 models/Pdf.py:3048 models/Pdf.py:3057
-msgid "mois"
-msgstr "months"
-
-#: models/Pdf.py:867 models/Pdf.py:1384 models/Pdf.py:2451 models/Pdf.py:3061
-msgid "semaines"
-msgstr "weeks"
-
-#: models/Pdf.py:875 models/Pdf.py:995 models/Pdf.py:1392 models/Pdf.py:2459
-#: models/Pdf.py:3069 translations/messages_pybabel.py:598
-msgid "Masculin"
-msgstr "Male"
-
-#: models/Pdf.py:877 models/Pdf.py:1394 models/Pdf.py:2461 models/Pdf.py:3071
-msgid "Feminin"
-msgstr "Female"
 
 #: models/Pdf.py:1083 models/Pdf.py:2192 models/Pdf.py:2771
 msgid "Dossier"
@@ -158,10 +115,6 @@ msgstr "Analysis prescribed on"
 #: models/Pdf.py:1091 models/Pdf.py:2200 models/Pdf.py:2779
 msgid "Enregistré le"
 msgstr "Registered on"
-
-#: models/Pdf.py:1092 models/Pdf.py:2201 models/Pdf.py:2780
-msgid "édité le"
-msgstr "edited on"
 
 #: models/Pdf.py:1093 models/Pdf.py:2202 models/Pdf.py:2781
 msgid "ANALYSE"
@@ -212,10 +165,39 @@ msgstr "Microbiology"
 msgid "Renseignements cliniques"
 msgstr "Clinical information"
 
-#: models/Pdf.py:1596 models/Pdf.py:2578 models/Pdf.py:2592 models/Pdf.py:3152
-#: models/Pdf.py:3168
-msgid "Sous-traitée"
-msgstr "Subcontract"
+#: models/Pdf.py:800 models/Pdf.py:1317 models/Pdf.py:2384 models/Pdf.py:2994
+#: translations/messages_pybabel.py:597
+msgid "Inconnu"
+msgstr "Unknown"
+
+#: models/Pdf.py:847 models/Pdf.py:859 models/Pdf.py:992 models/Pdf.py:1364
+#: models/Pdf.py:1376 models/Pdf.py:2431 models/Pdf.py:2443 models/Pdf.py:3041
+#: models/Pdf.py:3053
+msgid "ans"
+msgstr "years"
+
+#: models/Pdf.py:850 models/Pdf.py:871 models/Pdf.py:1367 models/Pdf.py:1388
+#: models/Pdf.py:2434 models/Pdf.py:2455 models/Pdf.py:3044 models/Pdf.py:3065
+msgid "jours"
+msgstr "days"
+
+#: models/Pdf.py:854 models/Pdf.py:863 models/Pdf.py:1371 models/Pdf.py:1380
+#: models/Pdf.py:2438 models/Pdf.py:2447 models/Pdf.py:3048 models/Pdf.py:3057
+msgid "mois"
+msgstr "months"
+
+#: models/Pdf.py:867 models/Pdf.py:1384 models/Pdf.py:2451 models/Pdf.py:3061
+msgid "semaines"
+msgstr "weeks"
+
+#: models/Pdf.py:875 models/Pdf.py:995 models/Pdf.py:1392 models/Pdf.py:2459
+#: models/Pdf.py:3069 translations/messages_pybabel.py:598
+msgid "Masculin"
+msgstr "Male"
+
+#: models/Pdf.py:877 models/Pdf.py:1394 models/Pdf.py:2461 models/Pdf.py:3071
+msgid "Feminin"
+msgstr "Female"
 
 #: models/Pdf.py:1681 models/Pdf.py:1691 models/Pdf.py:1701 models/Pdf.py:1711
 msgid "Annulée"
@@ -241,7 +223,7 @@ msgstr "Urinary biochemistry"
 
 #: models/Pdf.py:1880 models/Pdf.py:2590 translations/messages_pybabel.py:1349
 msgid "Bandelettes urinaires"
-msgstr "Urinary Strips"
+msgstr "Urine Dipstick Test"
 
 #: models/Pdf.py:1987 models/Pdf.py:2667 translations/messages_pybabel.py:690
 msgid "Sang"
@@ -258,39 +240,6 @@ msgstr "Lab Internal"
 #: models/Pdf.py:2240
 msgid "Bon de transfert"
 msgstr "Transfer voucher"
-
-#: models/Pdf.py:2788
-msgid "Total à payer"
-msgstr "Total to pay"
-
-#: models/Pdf.py:2789
-msgid "Analyses demandées"
-msgstr "Requested analyzes"
-
-#: models/Pdf.py:2790
-#, fuzzy
-msgid "Remise sur la facturation"
-msgstr "billing_discount"
-
-#: models/Pdf.py:2791
-msgid "Pourcentage de la remise"
-msgstr ""
-
-#: models/Pdf.py:2792
-msgid "Pourcentage assurance maladie / mutuelle"
-msgstr ""
-
-#: models/Pdf.py:2825 translations/messages_pybabel.py:293
-msgid "Facture"
-msgstr "Invoice"
-
-#: models/Pdf.py:2858 translations/messages_pybabel.py:577
-msgid "Personnel hospitalier"
-msgstr "Hospital staff"
-
-#: models/Pdf.py:3165 translations/messages_pybabel.py:1078
-msgid "Détermination du groupe sanguin ABO et Rhésus standard (D)"
-msgstr "Determination of blood group ABO and Standard Rhesus (D)"
 
 #: services/ExportRest.py:779 translations/messages_pybabel.py:528
 msgid "Années"
@@ -309,14 +258,6 @@ msgstr "Weeks"
 msgid "Jours"
 msgstr "Days"
 
-#: services/QualityRest.py:1452
-msgid "Pannes"
-msgstr "Breakdowns"
-
-#: services/QualityRest.py:1454
-msgid "Réparations"
-msgstr "Repairs"
-
 #: services/ResultRest.py:106 services/ResultRest.py:236
 msgid "validation"
 msgstr "validation"
@@ -327,19 +268,19 @@ msgstr "abundance"
 
 #: translations/messages_pybabel.py:9
 msgid "absent"
-msgstr "absent"
+msgstr "missing"
 
 #: translations/messages_pybabel.py:10
 msgid "aspestprelgen"
-msgstr "the asbestos effect"
+msgstr "aspestprelgen"
 
 #: translations/messages_pybabel.py:11
 msgid "aspestselles"
-msgstr "aspestselles"
+msgstr "aspeststools"
 
 #: translations/messages_pybabel.py:12
 msgid "aspprelur"
-msgstr "it is broken"
+msgstr "aspflow"
 
 #: translations/messages_pybabel.py:13
 msgid "baar"
@@ -351,11 +292,11 @@ msgstr "bacteria"
 
 #: translations/messages_pybabel.py:15
 msgid "bouillon"
-msgstr "bouillon"
+msgstr "broth"
 
 #: translations/messages_pybabel.py:16
 msgid "court_long"
-msgstr "court_long"
+msgstr "short_long"
 
 #: translations/messages_pybabel.py:17
 msgid "cristaux"
@@ -371,23 +312,23 @@ msgstr "doc_type"
 
 #: translations/messages_pybabel.py:20
 msgid "editeur_yorn"
-msgstr "editor_yorn"
+msgstr "publisher_yorn"
 
 #: translations/messages_pybabel.py:21
 msgid "équi_desequi"
-msgstr "equi_desequi"
+msgstr "balanced"
 
 #: translations/messages_pybabel.py:22
 msgid "especepalu"
-msgstr "special"
+msgstr "malaria_species"
 
 #: translations/messages_pybabel.py:23
 msgid "facturation"
-msgstr "billing"
+msgstr "invoice"
 
 #: translations/messages_pybabel.py:24
 msgid "famille_analyse"
-msgstr "family_analysis"
+msgstr "analysis_family"
 
 #: translations/messages_pybabel.py:25
 msgid "filariose"
@@ -403,11 +344,11 @@ msgstr "flora"
 
 #: translations/messages_pybabel.py:28
 msgid "formlevure"
-msgstr "yeast clock"
+msgstr "yeast_form"
 
 #: translations/messages_pybabel.py:29
 msgid "germe"
-msgstr "stretching"
+msgstr "germ"
 
 #: translations/messages_pybabel.py:30
 msgid "gram"
@@ -419,11 +360,11 @@ msgstr "gram2"
 
 #: translations/messages_pybabel.py:32
 msgid "groupesang"
-msgstr "groupesang"
+msgstr "blood_group"
 
 #: translations/messages_pybabel.py:33
 msgid "impact_patient"
-msgstr "impact_patient"
+msgstr "patient_impact"
 
 #: translations/messages_pybabel.py:34
 msgid "latex"
@@ -439,31 +380,31 @@ msgstr "yeast"
 
 #: translations/messages_pybabel.py:37
 msgid "levurelcr"
-msgstr "yeastlcr"
+msgstr "yeast_lcr"
 
 #: translations/messages_pybabel.py:38
 msgid "lieu_prel"
-msgstr "place_prel"
+msgstr "sampling_site"
 
 #: translations/messages_pybabel.py:39
 msgid "microscopie_tb"
-msgstr "microscopy_tb"
+msgstr "tb_microscopy"
 
 #: translations/messages_pybabel.py:40
 msgid "motif_annulation"
-msgstr "reason_cancellation"
+msgstr "cancel_reason"
 
 #: translations/messages_pybabel.py:41
 msgid "nombre"
-msgstr "name"
+msgstr "number"
 
 #: translations/messages_pybabel.py:42
 msgid "oui"
-msgstr "Yes"
+msgstr "yes"
 
 #: translations/messages_pybabel.py:43
 msgid "paillasse"
-msgstr "benchtop"
+msgstr "bench"
 
 #: translations/messages_pybabel.py:44
 msgid "parasite"
@@ -471,15 +412,15 @@ msgstr "parasite"
 
 #: translations/messages_pybabel.py:45
 msgid "periode_ctrl"
-msgstr "periode_ctrl"
+msgstr "ctrl_period"
 
 #: translations/messages_pybabel.py:46
 msgid "periode_unite"
-msgstr "period_unit"
+msgstr "unit_period"
 
 #: translations/messages_pybabel.py:47
 msgid "per_num_dos"
-msgstr "per_num_two"
+msgstr "rec_num_period"
 
 #: translations/messages_pybabel.py:48
 msgid "pheno"
@@ -487,7 +428,7 @@ msgstr "pheno"
 
 #: translations/messages_pybabel.py:49
 msgid "posneg"
-msgstr "snow"
+msgstr "posneg"
 
 #: translations/messages_pybabel.py:50
 msgid "posnegind"
@@ -495,11 +436,11 @@ msgstr "posnegind"
 
 #: translations/messages_pybabel.py:51
 msgid "Prelv_sanitR"
-msgstr "Prelv_sanitR"
+msgstr "sanitary_samp"
 
 #: translations/messages_pybabel.py:52
 msgid "prel_statut"
-msgstr "prel_statut"
+msgstr "status_samp"
 
 #: translations/messages_pybabel.py:53
 msgid "product_conserv"
@@ -515,15 +456,15 @@ msgstr "profile"
 
 #: translations/messages_pybabel.py:56
 msgid "profil_bis"
-msgstr "profile_to"
+msgstr "profile_bis"
 
 #: translations/messages_pybabel.py:57
 msgid "remise_facturation"
-msgstr "billing_discount"
+msgstr "discount_bill"
 
 #: translations/messages_pybabel.py:58
 msgid "resist_sensible"
-msgstr "resist_sensible"
+msgstr "resist_sensitive"
 
 #: translations/messages_pybabel.py:59
 msgid "res_cult"
@@ -539,15 +480,15 @@ msgstr "sex"
 
 #: translations/messages_pybabel.py:62
 msgid "shisto"
-msgstr "shisto"
+msgstr "schistosoma"
 
 #: translations/messages_pybabel.py:63
 msgid "shisto2"
-msgstr "shisto2"
+msgstr "schistosoma2"
 
 #: translations/messages_pybabel.py:64
 msgid "specialite"
-msgstr "specialite"
+msgstr "speciality"
 
 #: translations/messages_pybabel.py:65
 msgid "statut_analyse"
@@ -555,31 +496,31 @@ msgstr "analysis_status"
 
 #: translations/messages_pybabel.py:66
 msgid "statut_dossier"
-msgstr "file_status"
+msgstr "record_status"
 
 #: translations/messages_pybabel.py:67
 msgid "techpcr"
-msgstr "techpcr"
+msgstr "pcr_tech"
 
 #: translations/messages_pybabel.py:68
 msgid "titre_civilite"
-msgstr "civil_title"
+msgstr "title_civility"
 
 #: translations/messages_pybabel.py:69
 msgid "type_analyse"
-msgstr "type_analyse"
+msgstr "analysis_type"
 
 #: translations/messages_pybabel.py:70
 msgid "type_cq"
-msgstr "type_cq"
+msgstr "quality_type"
 
 #: translations/messages_pybabel.py:71
 msgid "type_cr"
-msgstr "type_cr"
+msgstr "report_type"
 
 #: translations/messages_pybabel.py:72
 msgid "type_dossier"
-msgstr "folder_type"
+msgstr "record_type"
 
 #: translations/messages_pybabel.py:73
 msgid "type_i_iv"
@@ -587,27 +528,27 @@ msgstr "type_i_iv"
 
 #: translations/messages_pybabel.py:74
 msgid "type_prel"
-msgstr "type_transl"
+msgstr "sample_type"
 
 #: translations/messages_pybabel.py:75
 msgid "type_resultat"
-msgstr "type_result"
+msgstr "result_type"
 
 #: translations/messages_pybabel.py:76
 msgid "type_reu"
-msgstr "type_reu"
+msgstr "meeting_type"
 
 #: translations/messages_pybabel.py:77
 msgid "type_validation"
-msgstr "type_validation"
+msgstr "validation_type"
 
 #: translations/messages_pybabel.py:78
 msgid "unite_valeur"
-msgstr "value_unit"
+msgstr "value_type"
 
 #: translations/messages_pybabel.py:79
 msgid "urine"
-msgstr "urine"
+msgstr "pee"
 
 #: translations/messages_pybabel.py:80
 msgid "vih"
@@ -617,17 +558,13 @@ msgstr "hiv"
 msgid "yorn"
 msgstr "yorn"
 
-#: translations/messages_pybabel.py:82
-msgid "pathogène"
-msgstr ""
-
 #: translations/messages_pybabel.py:87
 msgid "Abondante"
 msgstr "Profuse"
 
 #: translations/messages_pybabel.py:88
 msgid "Pauvre"
-msgstr "Wretch"
+msgstr "Poor"
 
 #: translations/messages_pybabel.py:89
 msgid "Peu adondante"
@@ -663,7 +600,7 @@ msgstr "Closing leucorrhea"
 
 #: translations/messages_pybabel.py:99
 msgid "Leucorrhées cailloboteuses abondantes"
-msgstr "Abundant clot leucorrhea"
+msgstr "Clotting leucorrhoea"
 
 #: translations/messages_pybabel.py:100
 msgid "Leucorrhées d'odeur fétide"
@@ -699,11 +636,11 @@ msgstr "Hard"
 
 #: translations/messages_pybabel.py:108
 msgid "Glaireuses"
-msgstr "Glarous"
+msgstr "Muddy"
 
 #: translations/messages_pybabel.py:109
 msgid "Glairo-sanguinolentes"
-msgstr "Glario-sanguineous"
+msgstr "Bloody"
 
 #: translations/messages_pybabel.py:110
 msgid "Liquides"
@@ -711,7 +648,7 @@ msgstr "Fluids"
 
 #: translations/messages_pybabel.py:111
 msgid "Liquides sanguinolentes"
-msgstr "sanguineous fluid"
+msgstr "Bloody liquid"
 
 #: translations/messages_pybabel.py:112
 msgid "molles"
@@ -739,11 +676,11 @@ msgstr "greenish"
 
 #: translations/messages_pybabel.py:118
 msgid "Absence d'écoulement"
-msgstr "Absence of flow"
+msgstr "Absence of discharge"
 
 #: translations/messages_pybabel.py:119
 msgid "Ecoulement incolore"
-msgstr "Colorless flow"
+msgstr "Colorless discharge"
 
 #: translations/messages_pybabel.py:120
 msgid "Ecoulement purulent"
@@ -751,7 +688,7 @@ msgstr "Purulent discharge"
 
 #: translations/messages_pybabel.py:121
 msgid "Ecoulement sanglant"
-msgstr "Bloody flow"
+msgstr "Bloody discharge"
 
 #: translations/messages_pybabel.py:123
 msgid "+"
@@ -781,7 +718,7 @@ msgstr "O"
 
 #: translations/messages_pybabel.py:129
 msgid "Absence de germe pathogène"
-msgstr "Absence of pathogenic germ"
+msgstr "Absence of pathogenic bacteria"
 
 #: translations/messages_pybabel.py:130 translations/messages_pybabel.py:339
 msgid "Absente"
@@ -848,11 +785,11 @@ msgstr "Escherichia coli O157 H7"
 
 #: translations/messages_pybabel.py:146
 msgid "Flore de type cutane"
-msgstr "Dermal type flora"
+msgstr "Skin flora"
 
 #: translations/messages_pybabel.py:147
 msgid "Flore de type vaginal"
-msgstr "Vaginal type flora"
+msgstr "Vaginal flora"
 
 #: translations/messages_pybabel.py:148
 msgid "Flore oropharynge"
@@ -1200,7 +1137,7 @@ msgstr "bicalcium phosphate (many)"
 
 #: translations/messages_pybabel.py:234
 msgid "phosphate bicalcique (quelques)"
-msgstr "bicalcium phosphate (some)"
+msgstr "bicalcium phosphate (few)"
 
 #: translations/messages_pybabel.py:235
 msgid "phosphate bicalcique (rares)"
@@ -1216,7 +1153,7 @@ msgstr "amorphous phosphates (many)"
 
 #: translations/messages_pybabel.py:238
 msgid "phosphates amorphes (quelques)"
-msgstr "amorphous phosphates (some)"
+msgstr "amorphous phosphates (few)"
 
 #: translations/messages_pybabel.py:239
 msgid "phosphates amorphes (rares)"
@@ -1248,7 +1185,7 @@ msgstr "sulfonamides (many)"
 
 #: translations/messages_pybabel.py:246
 msgid "sulfamides (quelques)"
-msgstr "sulfonamides (some)"
+msgstr "sulfonamides (few)"
 
 #: translations/messages_pybabel.py:247
 msgid "sulfamides (rares)"
@@ -1280,7 +1217,7 @@ msgstr "urates (many)"
 
 #: translations/messages_pybabel.py:254
 msgid "urates (quelques)"
-msgstr "urates (some)"
+msgstr "urates (few)"
 
 #: translations/messages_pybabel.py:255
 msgid "urates (rares)"
@@ -1344,7 +1281,7 @@ msgstr "grainy (many)"
 
 #: translations/messages_pybabel.py:271
 msgid "granuleux (quelques)"
-msgstr "grainy (some)"
+msgstr "grainy (few)"
 
 #: translations/messages_pybabel.py:272
 msgid "granuleux (rares)"
@@ -1356,19 +1293,19 @@ msgstr "grainy (many)"
 
 #: translations/messages_pybabel.py:274
 msgid "hématiques (nombreux)"
-msgstr "Hematics (many)"
+msgstr "Red blood cell (many)"
 
 #: translations/messages_pybabel.py:275
 msgid "hématiques (quelques)"
-msgstr "hematic (some)"
+msgstr "Red blood cell (few)"
 
 #: translations/messages_pybabel.py:276
 msgid "hématiques (rares)"
-msgstr "hematic (rare)"
+msgstr "Red blood cell (rare)"
 
 #: translations/messages_pybabel.py:277
 msgid "hématiques (très nombreux)"
-msgstr "hematic (numerous)"
+msgstr "Red blood cell (numerous)"
 
 #: translations/messages_pybabel.py:278
 msgid "hyalins (nombreux)"
@@ -1426,6 +1363,10 @@ msgstr "semi-grainy (very many)"
 msgid "Code bar"
 msgstr "Bar code"
 
+#: models/Pdf.py:2825 translations/messages_pybabel.py:293
+msgid "Facture"
+msgstr "Invoice"
+
 #: translations/messages_pybabel.py:294 translations/messages_pybabel.py:527
 #: translations/messages_pybabel.py:832
 msgid "Non"
@@ -1450,11 +1391,11 @@ msgstr "Other plasmodia"
 
 #: translations/messages_pybabel.py:299
 msgid "Knowlesi"
-msgstr "Knowlesi"
+msgstr "P. knowlesi"
 
 #: translations/messages_pybabel.py:300
 msgid "Malariae"
-msgstr "Malariae"
+msgstr "P. malariae"
 
 #: translations/messages_pybabel.py:301 translations/messages_pybabel.py:357
 #: translations/messages_pybabel.py:502 translations/messages_pybabel.py:515
@@ -1463,7 +1404,7 @@ msgstr "None"
 
 #: translations/messages_pybabel.py:302
 msgid "Ovalé"
-msgstr "Oval"
+msgstr "P. Ovalae"
 
 #: translations/messages_pybabel.py:303
 msgid "Pl. falciparum"
@@ -1471,7 +1412,11 @@ msgstr "Pl. falciparum"
 
 #: translations/messages_pybabel.py:304
 msgid "Vivax"
-msgstr "Vivax"
+msgstr "P. vivax"
+
+#: models/Pdf.py:213 translations/messages_pybabel.py:305
+msgid "Analyse"
+msgstr "Analysis"
 
 #: translations/messages_pybabel.py:306 translations/messages_pybabel.py:594
 msgid "Prélèvement"
@@ -1619,7 +1564,7 @@ msgstr "Shigella Boydii"
 
 #: translations/messages_pybabel.py:393
 msgid "absence de germe visible"
-msgstr "absence of visible germ"
+msgstr "absence of visible bacteria"
 
 #: translations/messages_pybabel.py:394
 msgid "bacilles à Gram négatif"
@@ -1634,9 +1579,7 @@ msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positi
 msgstr "Gram-negative bacilli, Gram-positive bacilli, Gram-positive cocci"
 
 #: translations/messages_pybabel.py:397
-msgid ""
-"bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, "
-"levures"
+msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, levures"
 msgstr "Gram-negative bacilli, Gram-positive bacilli, Gram-positive cocci, yeasts"
 
 #: translations/messages_pybabel.py:398
@@ -1689,7 +1632,7 @@ msgstr "Gram positive cocci in chains"
 
 #: translations/messages_pybabel.py:410
 msgid "Cocci gram positif en chainettes, Cocci gram positif en amas"
-msgstr "Gram positive cocci in chains, Cocci gram positive in clusters"
+msgstr "Gram positive cocci in chains, Gram positive cocci in clusters"
 
 #: translations/messages_pybabel.py:411
 msgid "diplocoque Gram négatif"
@@ -1721,7 +1664,7 @@ msgstr " Mobilincus sp"
 
 #: translations/messages_pybabel.py:418
 msgid "Absence de germe"
-msgstr "Absence of germ"
+msgstr "Absence of bacteria"
 
 #: translations/messages_pybabel.py:419 translations/messages_pybabel.py:497
 #: translations/messages_pybabel.py:575 translations/messages_pybabel.py:672
@@ -1731,19 +1674,19 @@ msgstr "Other"
 
 #: translations/messages_pybabel.py:420
 msgid "Bacilles à Gram -"
-msgstr "Gram Bacilli -"
+msgstr "Gram - Bacilli"
 
 #: translations/messages_pybabel.py:421
 msgid "Cocci à Gram +"
-msgstr "Gram Cocci +"
+msgstr "Gram + Cocci"
 
 #: translations/messages_pybabel.py:422
 msgid "Diplocoque Gram négatif extra cellulaire"
-msgstr "Extra cellular gram-negative diplococcus"
+msgstr "Extracellular gram-negative diplococci"
 
 #: translations/messages_pybabel.py:423
 msgid "Diplocoque Gram négatif intra cellulaire"
-msgstr "Intra cellular Gram-negative diplococcus"
+msgstr "Intracellular Gram-negative diplococci"
 
 #: translations/messages_pybabel.py:424
 msgid "Diplocoque Gram négatif intra et extra cellulaire"
@@ -1784,7 +1727,7 @@ msgstr "Yeast"
 
 #: translations/messages_pybabel.py:434 translations/messages_pybabel.py:843
 msgid "A"
-msgstr "HATH"
+msgstr "A"
 
 #: translations/messages_pybabel.py:435
 msgid "AB"
@@ -1840,7 +1783,7 @@ msgstr "N. Meningitidis Y"
 
 #: translations/messages_pybabel.py:451
 msgid "Non faite"
-msgstr "Not made"
+msgstr "Not done"
 
 #: translations/messages_pybabel.py:452
 msgid "Polyagglutination"
@@ -1848,7 +1791,7 @@ msgstr "Polyagglutination"
 
 #: translations/messages_pybabel.py:454
 msgid "Streptocoque B"
-msgstr "Streptococcus B"
+msgstr "Streptococcus Group B"
 
 #: translations/messages_pybabel.py:455
 msgid "chyleux"
@@ -1856,7 +1799,7 @@ msgstr "Chylous"
 
 #: translations/messages_pybabel.py:456
 msgid "Citrin"
-msgstr "Lemon"
+msgstr "Straw"
 
 #: translations/messages_pybabel.py:457
 msgid "Clair"
@@ -1864,7 +1807,7 @@ msgstr "Clear"
 
 #: translations/messages_pybabel.py:458
 msgid "Hématique"
-msgstr "Hematics"
+msgstr "Bloody"
 
 #: translations/messages_pybabel.py:459
 msgid "Hématique surnageant citrin"
@@ -1872,7 +1815,7 @@ msgstr "Haematic citrus supernatant"
 
 #: translations/messages_pybabel.py:460
 msgid "Hématique surnageant clair"
-msgstr "Haematic clear supernatant"
+msgstr "Bloody clear supernatant"
 
 #: translations/messages_pybabel.py:461
 msgid "Hialin"
@@ -1936,7 +1879,7 @@ msgstr "numerous, filamentated"
 
 #: translations/messages_pybabel.py:477
 msgid "Absence de levures"
-msgstr "Absence of yeasts"
+msgstr "No yeast cells seen"
 
 #: translations/messages_pybabel.py:480 translations/messages_pybabel.py:1706
 #: translations/messages_pybabel.py:1707
@@ -2194,15 +2137,11 @@ msgstr "Prescriber"
 
 #: translations/messages_pybabel.py:566 translations/messages_pybabel.py:2311
 msgid "Qualiticien"
-msgstr "Qualitician"
+msgstr "Qualitician Officer"
 
 #: translations/messages_pybabel.py:567 translations/messages_pybabel.py:2307
 msgid "Secrétaire"
 msgstr "Secretary"
-
-#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2310
-msgid "Secrétaire avancé"
-msgstr "Advanced secretary"
 
 #: translations/messages_pybabel.py:569 translations/messages_pybabel.py:2306
 msgid "Technicien"
@@ -2210,11 +2149,11 @@ msgstr "Technician"
 
 #: translations/messages_pybabel.py:570 translations/messages_pybabel.py:2308
 msgid "Technicien avancé"
-msgstr "Advanced technician"
+msgstr "Higher technician"
 
 #: translations/messages_pybabel.py:571 translations/messages_pybabel.py:2309
 msgid "Technicien qualiticien"
-msgstr "Qualitician technician"
+msgstr "Quality technician"
 
 #: translations/messages_pybabel.py:572
 msgid "Bactério"
@@ -2227,6 +2166,10 @@ msgstr "Macro"
 #: translations/messages_pybabel.py:576
 msgid "Exonération"
 msgstr "Exemption"
+
+#: models/Pdf.py:2858 translations/messages_pybabel.py:577
+msgid "Personnel hospitalier"
+msgstr "Hospital staff"
 
 #: translations/messages_pybabel.py:578
 msgid "négative"
@@ -2270,7 +2213,7 @@ msgstr "Resistant"
 
 #: translations/messages_pybabel.py:589
 msgid "Sensible"
-msgstr "Responsive"
+msgstr "Sensitive"
 
 #: translations/messages_pybabel.py:590
 msgid "Administration"
@@ -2286,7 +2229,7 @@ msgstr "S. haematobium"
 
 #: translations/messages_pybabel.py:602
 msgid "S.mansoni"
-msgstr "Mansoni"
+msgstr "S. mansoni"
 
 #: translations/messages_pybabel.py:603
 msgid "Allergologue"
@@ -2302,7 +2245,7 @@ msgstr "Andrologist"
 
 #: translations/messages_pybabel.py:606
 msgid "Anesthésiste"
-msgstr "Anesthesiologist"
+msgstr "Anesthetist"
 
 #: translations/messages_pybabel.py:607
 msgid "Cancérologue"
@@ -2480,7 +2423,7 @@ msgstr "latex"
 
 #: translations/messages_pybabel.py:651
 msgid "meningocoque/Pneumocoque/Haemophilus influenzae typeb"
-msgstr "Meningococcal/Pneumocock/Haemophilus influenzae typeb"
+msgstr "Meningococcal/Pneumococcus/Haemophilus influenzae type b"
 
 #: translations/messages_pybabel.py:652
 msgid "Microscopie"
@@ -2592,47 +2535,47 @@ msgstr "Cerebrospinal fluid"
 
 #: translations/messages_pybabel.py:680
 msgid "Liquide de ponction alvéolaire"
-msgstr "Alveolar puncture liquid"
+msgstr "Alveolar lavage"
 
 #: translations/messages_pybabel.py:681
 msgid "Liquide de ponction articulaire"
-msgstr "Joint puncture fluid"
+msgstr "Joint fluid"
 
 #: translations/messages_pybabel.py:682
 msgid "Liquide de ponction ascite"
-msgstr "Ascites puncture liquid"
+msgstr "Ascitic liquid"
 
 #: translations/messages_pybabel.py:683
 msgid "Liquide de ponction bronchique"
-msgstr "Bronchial puncture fluid"
+msgstr "Bronchial washing"
 
 #: translations/messages_pybabel.py:684
 msgid "Liquide de ponction pleural"
-msgstr "Pleural puncture fluid"
+msgstr "Pleural fluid"
 
 #: translations/messages_pybabel.py:685 translations/messages_pybabel.py:1421
 msgid "Prélèvement génital"
-msgstr "Genital sampling"
+msgstr "Genital swab"
 
 #: translations/messages_pybabel.py:686
 msgid "Prélèvement gorge"
-msgstr "Throat sampling"
+msgstr "Throat swab"
 
 #: translations/messages_pybabel.py:687 translations/messages_pybabel.py:1422
 msgid "Prélèvement pus"
-msgstr "Sampling pus"
+msgstr "Pus"
 
 #: translations/messages_pybabel.py:688
 msgid "Prélèvement urétral"
-msgstr "Urethral sampling"
+msgstr "Urethral swab/discharge"
 
 #: translations/messages_pybabel.py:689
 msgid "Prélèvement vaginal"
-msgstr "Vaginal sampling"
+msgstr "Vaginal swab/discharge"
 
 #: translations/messages_pybabel.py:691
 msgid "Selles"
-msgstr "Saddles"
+msgstr "Stool"
 
 #: translations/messages_pybabel.py:692 translations/messages_pybabel.py:752
 msgid "Urine"
@@ -2693,11 +2636,11 @@ msgstr "Integer"
 
 #: translations/messages_pybabel.py:711
 msgid "équi/desequilibrée"
-msgstr "equival/unbalanced"
+msgstr "balanced/unbalanced"
 
 #: translations/messages_pybabel.py:712 translations/messages_pybabel.py:713
 msgid "Espece palu"
-msgstr "Palu species"
+msgstr "Malaria species"
 
 #: translations/messages_pybabel.py:714 translations/messages_pybabel.py:715
 #: translations/messages_pybabel.py:1317
@@ -2714,7 +2657,7 @@ msgstr "Yeast form"
 
 #: translations/messages_pybabel.py:719
 msgid "Germe"
-msgstr "Sprout"
+msgstr "Bacteria"
 
 #: translations/messages_pybabel.py:720
 msgid "Gram"
@@ -2779,7 +2722,7 @@ msgstr "Real"
 
 #: translations/messages_pybabel.py:742 translations/messages_pybabel.py:743
 msgid "Résistant / Sensible"
-msgstr "Resistant/Sensi"
+msgstr "Resistant/Sensitive"
 
 #: translations/messages_pybabel.py:744
 msgid "Résistant/Sensible/Non applicable"
@@ -2787,7 +2730,7 @@ msgstr "Resistant/Sensitive/Not applicable"
 
 #: translations/messages_pybabel.py:745 translations/messages_pybabel.py:746
 msgid "Résultat culture"
-msgstr "Cultivation result"
+msgstr "Culture result"
 
 #: translations/messages_pybabel.py:747 translations/messages_pybabel.py:748
 msgid "Shisto"
@@ -2903,7 +2846,7 @@ msgstr "mg/l"
 
 #: translations/messages_pybabel.py:778 translations/messages_pybabel.py:864
 msgid "mille/mm3"
-msgstr "mile/mm3"
+msgstr "thousand/mm3"
 
 #: translations/messages_pybabel.py:779 translations/messages_pybabel.py:780
 #: translations/messages_pybabel.py:865 translations/messages_pybabel.py:866
@@ -2948,7 +2891,7 @@ msgstr "nmol/l"
 
 #: translations/messages_pybabel.py:790 translations/messages_pybabel.py:876
 msgid "parasites/µl"
-msgstr "pests/µl"
+msgstr "parasites/µl"
 
 #: translations/messages_pybabel.py:791 translations/messages_pybabel.py:877
 msgid "pg"
@@ -3056,7 +2999,7 @@ msgstr "dark yellow urine, clear"
 
 #: translations/messages_pybabel.py:817
 msgid "urines jaune foncées, troubles"
-msgstr "dark yellow urine, disturbances"
+msgstr "dark yellow urine, turbid"
 
 #: translations/messages_pybabel.py:818
 msgid "urines jaune foncées, troubles avec un dépôt blanchâtre"
@@ -3064,7 +3007,7 @@ msgstr "dark yellow urine, disorders with whitish deposition"
 
 #: translations/messages_pybabel.py:819
 msgid "urines jaune foncées, troubles legèrement"
-msgstr "dark yellow urine, slightly disturbed"
+msgstr "dark yellow urine, slightly turbid"
 
 #: translations/messages_pybabel.py:820
 msgid "urines jaune pailles, limpides avec suspension"
@@ -3072,7 +3015,7 @@ msgstr "Straw yellow urine, clear with suspension"
 
 #: translations/messages_pybabel.py:821
 msgid "urines légèrement troubles"
-msgstr "urine slightly disturbed"
+msgstr "urine slightly turbid"
 
 #: translations/messages_pybabel.py:822
 msgid "urines purulentes"
@@ -3267,9 +3210,7 @@ msgid "Fer sérique"
 msgstr "Serum Iron"
 
 #: translations/messages_pybabel.py:936
-msgid ""
-"Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, "
-"protéines)"
+msgid "Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, protéines)"
 msgstr "Full Ionogram (includes at least Na, K, Cl, Bicarbonates, Proteins)"
 
 #: translations/messages_pybabel.py:937
@@ -3286,7 +3227,7 @@ msgstr "Lithium"
 
 #: translations/messages_pybabel.py:940 translations/messages_pybabel.py:1948
 msgid "Magnésium plasmatique"
-msgstr "Plasma magnesium"
+msgstr "Serum magnesium"
 
 #: translations/messages_pybabel.py:941 translations/messages_pybabel.py:1947
 msgid "Magnésium érythrocytaire"
@@ -3356,7 +3297,7 @@ msgstr "Albumin by immunological method"
 
 #: translations/messages_pybabel.py:957
 msgid "Electrophorèse de l'Hémoglobine sans tracé"
-msgstr "Electrophoresis of Hemoglobin without tracing"
+msgstr "Hemoglobin electrophoresis"
 
 #: translations/messages_pybabel.py:958
 msgid "Electrophorèse de l'Hémoglobine avec quantification par densitométrie"
@@ -3376,7 +3317,7 @@ msgstr "Glycated hemoglobin (Hb A1c)"
 
 #: translations/messages_pybabel.py:962
 msgid "Hémoglobine F : dosage par HPLC"
-msgstr "Hemoglobin F: dosage by HPLC"
+msgstr "Hemoglobin F: measurement by HPLC"
 
 #: translations/messages_pybabel.py:963
 msgid "Hémoglobine S : test de solubilité"
@@ -3389,7 +3330,7 @@ msgstr "Myoglobin"
 #: translations/messages_pybabel.py:965 translations/messages_pybabel.py:2050
 #: translations/messages_pybabel.py:2051
 msgid "Protéines de Bences Jones (recherche)"
-msgstr "Bences Jones Proteins (research)"
+msgstr "Bences Jones Proteins (Determination)"
 
 #: translations/messages_pybabel.py:966 translations/messages_pybabel.py:2052
 msgid "Protéines de Bences Jones par électrophorèse"
@@ -3413,7 +3354,7 @@ msgstr "Protein C Quantitative Reactive by Spectrophotometry"
 
 #: translations/messages_pybabel.py:971
 msgid "Troponine  semi-quantitative par test rapide"
-msgstr "Semi-quantitative Troponin by Rapid Test"
+msgstr "Troponin Rapid Test: Semi-quantitative"
 
 #: translations/messages_pybabel.py:972
 msgid "Troponine par méthode immunologique"
@@ -3441,11 +3382,11 @@ msgstr "5′-Nucleotidase"
 
 #: translations/messages_pybabel.py:978
 msgid "Gamma glutamyl transférase (Gamma GT)"
-msgstr "Gamma Glutamyl Transferase (Gamma GT)"
+msgstr "Gamma-Glutamyltransferase (Gamma GT)"
 
 #: translations/messages_pybabel.py:979
 msgid "Glucose -6-Phosphate Déshydrogénase"
-msgstr "Glucose -6-Phosphate Dehydrogenase"
+msgstr "Glucose-6-phosphate dehydrogenase"
 
 #: translations/messages_pybabel.py:980 translations/messages_pybabel.py:1908
 msgid "Lactate Déshydrogénase (LDH)"
@@ -3453,7 +3394,7 @@ msgstr "Lactate Dehydrogenase (LDH)"
 
 #: translations/messages_pybabel.py:981
 msgid "Phosphatases Alcalines (PAL)"
-msgstr "Alkaline Phosphatases (PAL)"
+msgstr "Alkaline Phosphatases (ALP)"
 
 #: translations/messages_pybabel.py:982 translations/messages_pybabel.py:2007
 msgid "Phosphatases Acides"
@@ -3469,7 +3410,7 @@ msgstr "Transaminases (ALAT)"
 
 #: translations/messages_pybabel.py:985
 msgid "Transaminases (ALAT/TGP ASAT/TGO)"
-msgstr "Transaminases (ALAT/TGP ASAT/TGO)"
+msgstr "Transaminases (ALAT/GPT ASAT/GOT)"
 
 #: translations/messages_pybabel.py:986 translations/messages_pybabel.py:1931
 msgid "Lipase"
@@ -3477,7 +3418,7 @@ msgstr "Lipase"
 
 #: translations/messages_pybabel.py:987 translations/messages_pybabel.py:1539
 msgid "Béta HCG dosage"
-msgstr "Beta HCG Dosing"
+msgstr "Beta-hCG testing"
 
 #: translations/messages_pybabel.py:988 translations/messages_pybabel.py:1692
 msgid "Cortisol"
@@ -3545,7 +3486,7 @@ msgstr "TSH Ultrasensitive"
 
 #: translations/messages_pybabel.py:1004 translations/messages_pybabel.py:2234
 msgid "TSH (Hormone ThyreoStimulante)"
-msgstr "TSH (Thyreostimulating Hormone)"
+msgstr "TSH (Thyroid-stimulating hormone)"
 
 #: translations/messages_pybabel.py:1005 translations/messages_pybabel.py:1459
 msgid "Acétone"
@@ -3553,7 +3494,7 @@ msgstr "Acetone"
 
 #: translations/messages_pybabel.py:1006
 msgid "Acide urique (uricurie)"
-msgstr "Uric acid (uricuria)"
+msgstr "Uric acid (uricemia)"
 
 #: translations/messages_pybabel.py:1007 translations/messages_pybabel.py:2005
 msgid "pH urinaire"
@@ -3569,7 +3510,7 @@ msgstr "Biliary pigments (research)"
 
 #: translations/messages_pybabel.py:1010 translations/messages_pybabel.py:2103
 msgid "Recherche de sang (hématies et/ou hémoglobine)"
-msgstr "Blood research (blood cells and/or hemoglobin)"
+msgstr "Investigation of Blood (blood cells and/or hemoglobin)"
 
 #: translations/messages_pybabel.py:1011 translations/messages_pybabel.py:2145
 #: translations/messages_pybabel.py:2146
@@ -3615,15 +3556,15 @@ msgstr "Proteins (research)"
 
 #: translations/messages_pybabel.py:1022
 msgid "Electrophorèse des protéines urinaires"
-msgstr "Electrophoresis of urinary proteins"
+msgstr "Urine protein electrophoresis"
 
 #: translations/messages_pybabel.py:1023
 msgid "Microalbumine (dosage à l'exclusion des bandelettes)"
-msgstr "Microalbumin (dosage excluding strips)"
+msgstr "Microalbumin (testing excluding strips)"
 
 #: translations/messages_pybabel.py:1024
 msgid "Protéinurie (24h)"
-msgstr "Proteinuria (24h)"
+msgstr "24-Urine Protein Test"
 
 #: translations/messages_pybabel.py:1025 translations/messages_pybabel.py:2035
 msgid "Porphyrines (recherche)"
@@ -3640,7 +3581,7 @@ msgstr "Pregnancy test"
 
 #: translations/messages_pybabel.py:1028 translations/messages_pybabel.py:1484
 msgid "Alpha 1-4 glucosidase séminale"
-msgstr "Alpha 1-4 seminal glucosidase"
+msgstr "Seminal alpha-1,4-glucosidase"
 
 #: translations/messages_pybabel.py:1029 translations/messages_pybabel.py:1556
 msgid "Carnitine libre séminale"
@@ -3652,7 +3593,7 @@ msgstr "Seminal Citrate"
 
 #: translations/messages_pybabel.py:1031
 msgid "Electrophorèse des protéines du LCR"
-msgstr "Electrophoresis of CSF Protein"
+msgstr "CSF Protein electrophoresis"
 
 #: translations/messages_pybabel.py:1032 translations/messages_pybabel.py:1825
 msgid "Fructose séminal"
@@ -3668,7 +3609,7 @@ msgstr "Rivalta"
 
 #: translations/messages_pybabel.py:1035 translations/messages_pybabel.py:1626
 msgid "Clairance de l'acide urique"
-msgstr "Urea acid clearance"
+msgstr "Uric acid clearance"
 
 #: translations/messages_pybabel.py:1036 translations/messages_pybabel.py:1627
 msgid "Clairance de l'urée"
@@ -3688,7 +3629,7 @@ msgstr "Simplified OGTT: 2 assays"
 
 #: translations/messages_pybabel.py:1040
 msgid "Epreuve à l'insuline : dosage du glucose"
-msgstr "Insulin test: glucose dosage"
+msgstr "Insulin test: glucose test"
 
 #: translations/messages_pybabel.py:1041
 msgid "Epreuve au glucagon : dosage du glucose et de l'insulinémie"
@@ -3696,23 +3637,23 @@ msgstr "Glucagon test: determination of glucose and insulin"
 
 #: translations/messages_pybabel.py:1042
 msgid "Test au LH- RH : (4 temps) : dosage de FSH et LH"
-msgstr "LH- RH test: (4 stroke): dosage of FSH and LH"
+msgstr "LH-RH test: (4 times): test for FSH and LH"
 
 #: translations/messages_pybabel.py:1043 translations/messages_pybabel.py:2184
 msgid "Test à HCG : dosage de la testostérone"
-msgstr "HCG test: testosterone dosage"
+msgstr "hCG test: testosterone measurement"
 
 #: translations/messages_pybabel.py:1044 translations/messages_pybabel.py:2183
 msgid "Test à HCG : dosage de l'estradiol"
-msgstr "HCG test: estradiol dosage"
+msgstr "hCG test: estradiol measurement"
 
 #: translations/messages_pybabel.py:1045 translations/messages_pybabel.py:2185
 msgid "Test à la déxaméthasone : dosage du cortisol"
-msgstr "Decamethasone test: cortisol determination"
+msgstr "Dexamethasone test: cortisol determination"
 
 #: translations/messages_pybabel.py:1046
 msgid "Test au TRH (4 temps) : dosage de prolactine et TSH"
-msgstr "TRH test (4-stroke): prolactin and TSH dosage"
+msgstr "TRH test (4-times): prolactin and TSH measurement"
 
 #: translations/messages_pybabel.py:1047
 msgid "Adénogramme"
@@ -3732,7 +3673,7 @@ msgstr "Hemoglobin (spectrophotometer assay)"
 
 #: translations/messages_pybabel.py:1051
 msgid "Mesure de la vitesse de sédimentation (VS)"
-msgstr "Measurement of sedimentation rate (VS)"
+msgstr "Erythrocyte sedimentation rate (ESR)"
 
 #: translations/messages_pybabel.py:1052
 msgid "Mesure de la résistance globulaire"
@@ -3748,11 +3689,11 @@ msgstr "Myelogram: cytochemical study (peroxidases, Esterases, Perls, and PAL)"
 
 #: translations/messages_pybabel.py:1055
 msgid "Hémogramme (Numération Formule Sanguine)"
-msgstr "Blood count (blood formula count)"
+msgstr "Full Blood Count (Complete Blood Count)"
 
 #: translations/messages_pybabel.py:1056
 msgid "NFS   VS"
-msgstr "NFS VS"
+msgstr "Blood Count Sedimentation Rate"
 
 #: translations/messages_pybabel.py:1057
 msgid "Numération des lymphocytes CD4, CD8"
@@ -3760,7 +3701,7 @@ msgstr "CD4, CD8 lymphocyte count"
 
 #: translations/messages_pybabel.py:1058 translations/messages_pybabel.py:1981
 msgid "Numération blanche (méthode manuelle)"
-msgstr "White numeration (Manual method)"
+msgstr "White Blood Cell count (Manual method)"
 
 #: translations/messages_pybabel.py:1059
 msgid "Numération des réticulocytes (méthode manuelle)"
@@ -3772,7 +3713,7 @@ msgstr "Platelet count"
 
 #: translations/messages_pybabel.py:1061
 msgid "Recherche d'anomalies morphologiques des hématies"
-msgstr "Research of morphological abnormalities of blood cells"
+msgstr "Red Blood Cell morphology: Thin smear microscopy"
 
 #: translations/messages_pybabel.py:1062 translations/messages_pybabel.py:2078
 msgid "Recherche d'hématies foetales"
@@ -3780,27 +3721,27 @@ msgstr "Search for fetal hematitis"
 
 #: translations/messages_pybabel.py:1063 translations/messages_pybabel.py:2084
 msgid "Recherche de corps de Heinz"
-msgstr "Heinz Body Search"
+msgstr "Heinz Body Stain"
 
 #: translations/messages_pybabel.py:1064
 msgid "Test de falciformation des hématies = Test d'EMMEL"
-msgstr "Blood sickle test = EMMEL test"
+msgstr "Sickle test (Emmel test)"
 
 #: translations/messages_pybabel.py:1065 translations/messages_pybabel.py:2100
 msgid "Recherche de polynucléaires éosinophiles dans le mucus nasal"
-msgstr "Research of Eosinophils Polynuclear in Nasal Mucus"
+msgstr "Search of Eosinophils in Nasal Mucus"
 
 #: translations/messages_pybabel.py:1066 translations/messages_pybabel.py:2101
 msgid "Recherche de polynucléaires éosinophiles dans les crachats"
-msgstr "Research of eosinophils polynuclear in the sputum"
+msgstr "Search of eosinophils in the sputum"
 
 #: translations/messages_pybabel.py:1067
 msgid "D Dimères par technique agglutination de particules de latex"
-msgstr "D Dimers using latex particle agglutination"
+msgstr "D-Dimer assay: Qualitative using latex particle agglutination"
 
 #: translations/messages_pybabel.py:1068
 msgid "D Dimères par technique ELISA"
-msgstr "D Dimers by ELISA technique"
+msgstr "D-Dimer assay: Quantitative by ELISA technique"
 
 #: translations/messages_pybabel.py:1069
 msgid "Dosage du fibrinogène (préciser la technique sur le compte rendu)"
@@ -3820,7 +3761,7 @@ msgstr "Heparinemia"
 
 #: translations/messages_pybabel.py:1073
 msgid "Taux de prothrombine + INR (Temps de Quick)"
-msgstr "Prothrombin + INR (prothrombin time)"
+msgstr "Prothrombin time test + INR"
 
 #: translations/messages_pybabel.py:1074
 msgid "Temps de saignement (test d'Ivy 3 points)"
@@ -3828,17 +3769,19 @@ msgstr "Bleeding time (Ivy 3-point test)"
 
 #: translations/messages_pybabel.py:1075
 msgid "Temps de Céphaline   Activateurs (TCA / TCK)"
-msgstr "Cephalin Time Activators (TCA/TCK)"
+msgstr "activated partial thromboplastin time (aPTT or APTT)"
 
 #: translations/messages_pybabel.py:1076 translations/messages_pybabel.py:2179
 msgid "Temps de Thrombine (TT)"
 msgstr "Thrombin Time (TT)"
 
 #: translations/messages_pybabel.py:1077 translations/messages_pybabel.py:2214
-msgid ""
-"Titrage des Produits de Dégradation de la Fibrine  et/ ou du "
-"Fibrinogène(PDF)"
-msgstr "Titration of Fibrin and/or Fibrinogen Degradation Products (PDF)"
+msgid "Titrage des Produits de Dégradation de la Fibrine  et/ ou du Fibrinogène(PDF)"
+msgstr "Titration of Fibrin and/or Fibrinogen Degradation Products (FDP)"
+
+#: models/Pdf.py:3165 translations/messages_pybabel.py:1078
+msgid "Détermination du groupe sanguin ABO et Rhésus standard (D)"
+msgstr "ABO Blood grouping and Rhesus (D) typing"
 
 #: translations/messages_pybabel.py:1079
 msgid "Phénotypage Rhésus et Kell"
@@ -3849,12 +3792,8 @@ msgid "Autres antigènes érythrocytaires"
 msgstr "Other erythrocyte antigens"
 
 #: translations/messages_pybabel.py:1081
-msgid ""
-"Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins "
-"11hématies tests"
-msgstr ""
-"Search for Irregular Agglutinins (SIA) by a panel of at least 11 test "
-"areas"
+msgid "Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins 11hématies tests"
+msgstr "Irregular Antibody Screening by a panel of at least 11 test areas"
 
 #: translations/messages_pybabel.py:1082 translations/messages_pybabel.py:2193
 msgid "Test de Coombs direct"
@@ -3914,7 +3853,7 @@ msgstr "Salmonellosis: (Widal serodiagnosis, agglutination)"
 
 #: translations/messages_pybabel.py:1096
 msgid "RPR / VDRL qualitatif (Syphilis)"
-msgstr "RPR/Qualitative VDRL (Syphilis)"
+msgstr "RPR/VDRL (Qualitative test for Syphilis)"
 
 #: translations/messages_pybabel.py:1097 translations/messages_pybabel.py:2220
 msgid "TPHA  (Syphilis)"
@@ -3923,7 +3862,7 @@ msgstr "TPHA (Syphilis)"
 #: translations/messages_pybabel.py:1098 translations/messages_pybabel.py:1827
 #: translations/messages_pybabel.py:1828
 msgid "FTA Absorbens IgG (Syphilis)"
-msgstr "FTA Absorbens IgG (Syphilis)"
+msgstr "Fluorescent treponemal antibody absorption (FTA-ABS) test IgG (Syphilis)"
 
 #: translations/messages_pybabel.py:1099 translations/messages_pybabel.py:2116
 #: translations/messages_pybabel.py:2117
@@ -3932,11 +3871,11 @@ msgstr "Search for IgM (Syphilis)"
 
 #: translations/messages_pybabel.py:1100 translations/messages_pybabel.py:2118
 msgid "Recherche directe de chlamydiae par technique immunologique"
-msgstr "Direct research of chlamydia by immunological technique"
+msgstr "Detection of chlamydia by immunological technique"
 
 #: translations/messages_pybabel.py:1101 translations/messages_pybabel.py:2081
 msgid "Recherche d'une toxine bactérienne par technique immunologique"
-msgstr "Investigating a bacterial toxin by immunological technique"
+msgstr "Detection of a bacterial toxin by immunological technique"
 
 #: translations/messages_pybabel.py:1102 translations/messages_pybabel.py:1520
 msgid "Aspergillose (dépistage)"
@@ -3944,11 +3883,11 @@ msgstr "Aspergillosis (screening)"
 
 #: translations/messages_pybabel.py:1103
 msgid "Candidose (recherche sérologique par au moins deux techniques)"
-msgstr "Candidiasis (serological research by at least two techniques)"
+msgstr "Candidiasis (serological detection by at least two techniques)"
 
 #: translations/messages_pybabel.py:1104
 msgid "Cryptococcose (recherche d'antigènes solubles de Cryptococcus néoformans)"
-msgstr "Cryptococcosis (research for soluble antigens of Cryptococcus neoformans)"
+msgstr "Cryptococcosis (detection of soluble antigens of Cryptococcus neoformans)"
 
 #: translations/messages_pybabel.py:1105 translations/messages_pybabel.py:1724
 #: translations/messages_pybabel.py:1725
@@ -3985,31 +3924,31 @@ msgstr "Detection and titration of IgA (Toxoplasmosis)"
 
 #: translations/messages_pybabel.py:1113 translations/messages_pybabel.py:2076
 msgid "Recherche AgHBs (Hépatite B par test rapide)"
-msgstr "HBsAg research (Hepatitis B by rapid test)"
+msgstr "HBsAg RDT (Rapid test for HBsAg)"
 
 #: translations/messages_pybabel.py:1114 translations/messages_pybabel.py:2071
 msgid "Recherche Ac anti HBs (Hépatite B par test rapide)"
-msgstr "Ac Anti HBs research (Hepatitis B by Rapid Test)"
+msgstr "Detection of HBV-surface antigen antibody (anti-HBsAb)  (Hepatitis B by Rapid Test)"
 
 #: translations/messages_pybabel.py:1115 translations/messages_pybabel.py:2073
 msgid "Recherche Ag HBe (Hépatite B par test rapide)"
-msgstr "Ag HbE research (Hepatitis B by Rapid Test)"
+msgstr "Detection of HBV E antigen (HBeAg) (Hepatitis B by Rapid Test)"
 
 #: translations/messages_pybabel.py:1116 translations/messages_pybabel.py:2066
 msgid "Recherche Ac anti HBc (Hépatite B par test rapide)"
-msgstr "Ac Anti HBc research (Hepatitis B by Rapid Test)"
+msgstr "Detection of HBV C antibody (anti-HBcAb) (Hepatitis B by Rapid Test)"
 
 #: translations/messages_pybabel.py:1117 translations/messages_pybabel.py:2070
 msgid "Recherche Ac anti HBs (Hépatite B par automate d'immunoanalyse)"
-msgstr "Ac anti HBs research (Hepatitis B by Immunoanalysis Automata)"
+msgstr "Detection of HBV-surface antigen antibody (anti-HBsAb) (Hepatitis B by Immunoanalysis Automated)"
 
 #: translations/messages_pybabel.py:1118 translations/messages_pybabel.py:2072
 msgid "Recherche Ag HBe (Hépatite B par automate d'immunoanalyse)"
-msgstr "Ag HBee research (Hepatitis B by Immunoanalysis Automata)"
+msgstr "Detection of HBV E antigen (HBeAg) (Hepatitis B by Immunoanalysis Automated)"
 
 #: translations/messages_pybabel.py:1119 translations/messages_pybabel.py:2065
 msgid "Recherche Ac anti HBc (Hépatite B par automate d'immunoanalyse)"
-msgstr "Ac Anti HBc research (Hepatitis B by Immunoanalysis Automata)"
+msgstr "Detection of HBV C antibody (anti-HBcAb) (Hepatitis B by Immunoanalysis Automated)"
 
 #: translations/messages_pybabel.py:1120 translations/messages_pybabel.py:2068
 #: translations/messages_pybabel.py:2069
@@ -4033,7 +3972,7 @@ msgstr "Hepatitis C (by rapid test)"
 #: translations/messages_pybabel.py:1124 translations/messages_pybabel.py:2108
 #: translations/messages_pybabel.py:2109
 msgid "Recherche des Ac anti VHC (par automate d'immunoanalyse)"
-msgstr "Research for HCV Ac (by ImmunoAssay Automata)"
+msgstr "Detection of HCV Ac (by ImmunoAssay Automated)"
 
 #: translations/messages_pybabel.py:1125 translations/messages_pybabel.py:2190
 msgid "Test de confirmation Hépatite C"
@@ -4046,15 +3985,15 @@ msgstr "Hepatitis C RNA by PCR"
 
 #: translations/messages_pybabel.py:1127
 msgid "Recherche des Ac anti-VIH (test rapide)"
-msgstr "Research for HIV Acts (Rapid Test)"
+msgstr "Detection of HIV antibody (Rapid Test)"
 
 #: translations/messages_pybabel.py:1128 translations/messages_pybabel.py:2110
 msgid "Recherche des Ac anti-VIH (par automate d'immunoanalyse)"
-msgstr "Research for HIV Acts (by Immunoanalysis Automata)"
+msgstr "Detection of HIV Antibody (by Immunoanalysis Automated)"
 
 #: translations/messages_pybabel.py:1129
 msgid "Recherche et titrage de l'antigène P24"
-msgstr "Research and titration of the P24 antigen"
+msgstr "Detection and titration of the P24 antigen"
 
 #: translations/messages_pybabel.py:1130
 msgid "Diagnostic du VIH (Western Blot) (test de confirmation)"
@@ -4070,7 +4009,7 @@ msgstr "Herpes simplex virus type 1 (IgG or IgM)"
 
 #: translations/messages_pybabel.py:1133 translations/messages_pybabel.py:1886
 msgid "Herpes virus simplex type II (IgG ou IgM)"
-msgstr "Herpes simplex virus type II (IgG or IgM)"
+msgstr "Herpes simplex virus type 2 (IgG or IgM)"
 
 #: translations/messages_pybabel.py:1134
 msgid "Rotavirus et Adénovirus"
@@ -4090,17 +4029,15 @@ msgstr "Determination of total immunoglobulin (IgE)"
 
 #: translations/messages_pybabel.py:1138
 msgid "Identification des IgE spécifiques individuelles : Un seul allergène"
-msgstr "Identification of individual IgE specific: single allergen"
+msgstr "Identification of serum-specific IgE (sIgE): single allergen"
 
 #: translations/messages_pybabel.py:1139
-msgid ""
-"Identification des IgE spécifiques individuelles : Deux ou trois "
-"allergènes"
-msgstr "Identification of individual IgE specific: two or three allergens"
+msgid "Identification des IgE spécifiques individuelles : Deux ou trois allergènes"
+msgstr "Identification of serum-specific IgE (sIgE): two or three allergens"
 
 #: translations/messages_pybabel.py:1140 translations/messages_pybabel.py:1789
 msgid "Dosage des IgG dans le sang, le LCR"
-msgstr "Dosage of IgG in the blood, CSF"
+msgstr "Determination of IgG in the blood, CSF"
 
 #: translations/messages_pybabel.py:1141 translations/messages_pybabel.py:1790
 msgid "Dosage des IgM dans le sang, le LCR"
@@ -4111,28 +4048,24 @@ msgid "Dosage des IgA dans le sang, le LCR"
 msgstr "Determination of IgA in the blood, CSF"
 
 #: translations/messages_pybabel.py:1143
-msgid ""
-"Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
-msgstr "Research and titration of alpha fetoprotein (in serum or amniotic fluid)"
+msgid "Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide amniotique)"
+msgstr "Detection and titration of alpha fetoprotein (in serum or amniotic fluid)"
 
 #: translations/messages_pybabel.py:1144 translations/messages_pybabel.py:2123
 msgid "Recherche et titrage de l'Antigène CarcinoEmbryonnaire (ACE)"
-msgstr "Research and titration of CarcinoEmbryonic Antigen (ACE)"
+msgstr "Research and titration of Embryonic Carcino Antigen (CEA)"
 
 #: translations/messages_pybabel.py:1145 translations/messages_pybabel.py:2125
 msgid "Recherche et titrage de l'Antigène Prostatique Spécifique (PSA)"
-msgstr "Research and titration of Prostatic Specific Antigen (PSA)"
+msgstr "Detection and titration of Prostatic Specific Antigen (PSA)"
 
 #: translations/messages_pybabel.py:1146 translations/messages_pybabel.py:2124
-msgid ""
-"Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA "
-"libre)"
-msgstr "Research and titration of the Free Prostatic Specific Antigen (Free PSA)"
+msgid "Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA libre)"
+msgstr "Detection and titration of the Free Prostatic Specific Antigen (Free PSA)"
 
 #: translations/messages_pybabel.py:1147
 msgid "Recherche et titrage de 2 microglobuline (dans le sérum ou urine)"
-msgstr "Research and titration of 2 microglobulin (in serum or urine)"
+msgstr "Detection and titration of beta-2 microglobulin (in serum or urine)"
 
 #: translations/messages_pybabel.py:1148
 msgid "Examen parasitologique des selles"
@@ -4140,58 +4073,58 @@ msgstr "Parasitological examination of stool"
 
 #: translations/messages_pybabel.py:1149 translations/messages_pybabel.py:2085
 msgid "Recherche de cryptosporidies par coloration élective"
-msgstr "Research ​for cryptosporidia by elective staining"
+msgstr "Detection of cryptosporidia by elective staining"
 
 #: translations/messages_pybabel.py:1150 translations/messages_pybabel.py:2086
 msgid "Recherche de cryptosporidies par immunofluorescence"
-msgstr "Research ​for cryptosporidia by immunofluorescence"
+msgstr "Detection of cryptosporidia by immunofluorescence"
 
 #: translations/messages_pybabel.py:1151 translations/messages_pybabel.py:2096
 msgid "Recherche de microsporidies dans les selles par coloration élective"
-msgstr "Research ​for microsporidia in the stool by elective staining"
+msgstr "Detection of microsporidia in the stool by elective staining"
 
 #: translations/messages_pybabel.py:1152 translations/messages_pybabel.py:2098
 #: translations/messages_pybabel.py:2099
 msgid "Recherche de pneumocystis carinii dans le liquide bronchoalvéolaire"
-msgstr "Research ​for pneumocystis carinii in bronchoalveolar fluid"
+msgstr "Detection of pneumocystis carinii in bronchoalveolar fluid"
 
 #: translations/messages_pybabel.py:1153
 msgid "Recherche de plasmodium (goutte épaisse et frottis mince)"
-msgstr "Research for plasmodium (thick drop and thin smear)"
+msgstr "Detection of malaria parasites (thick drop and thin smear)"
 
 #: translations/messages_pybabel.py:1154
 msgid "Recherche de microfilaires sanguicoles (frottis mince)"
-msgstr "Research for blood microfilarias (thin smear)"
+msgstr "Detection of blood microfilaria (thin smear)"
 
 #: translations/messages_pybabel.py:1155
 msgid "Recherche de microfilaires dans une biopsie cutanée (SNIP)"
-msgstr "Microfilarial research in a skin biopsy (SNIP)"
+msgstr "Detection of microfilaria in a skin biopsy (skin snip)"
 
 #: translations/messages_pybabel.py:1156 translations/messages_pybabel.py:2091
 #: translations/messages_pybabel.py:2092
 msgid "Recherche de levures dans le LCR"
-msgstr "Searching for yeast in the CSF"
+msgstr "Detection of yeast in CSF"
 
 #: translations/messages_pybabel.py:1157 translations/messages_pybabel.py:2090
 msgid "Recherche de leishmanies dans une sérosité cutanée"
-msgstr "Search for leishmania in skin serosity"
+msgstr "Diagnosis of cutaneous leishmaniasis from skin sores"
 
 #: translations/messages_pybabel.py:1158
 msgid "Recherche de trypanosomes dans le sang"
-msgstr "Trypanosomes in the blood"
+msgstr "Detection of trypanosomes in the blood"
 
 #: translations/messages_pybabel.py:1159 translations/messages_pybabel.py:2114
 #: translations/messages_pybabel.py:2115
 msgid "Recherche des champignons dans les prélèvements de peau et phanères"
-msgstr "Searching for fungi in skin samples and appaneres"
+msgstr "Detection of fungal elements in skin samples and appaneres"
 
 #: translations/messages_pybabel.py:1160 translations/messages_pybabel.py:1714
 msgid "Culture des levures"
-msgstr "Yeast cultivation"
+msgstr "Yeast culture"
 
 #: translations/messages_pybabel.py:1161
 msgid "Culot urinaire : examen direct (état frais, cytologie   coloration)"
-msgstr "Urinary base: direct examination (fresh state, coloring cytology)"
+msgstr "Urine analysis: microscopy, culture and sensitivity (fresh state, coloring cytology)"
 
 #: translations/messages_pybabel.py:1162
 msgid "Examen cytobactériologique des urines (uroculture)"
@@ -4199,7 +4132,7 @@ msgstr "Cytobacteriological examination of urine (uroculture)"
 
 #: translations/messages_pybabel.py:1163
 msgid "Examen direct du prélèvement vaginal/cervico-vaginal"
-msgstr "Direct examination of vaginal/cervico-vaginal sampling"
+msgstr "Examination of vaginal/cervico-vaginal swab"
 
 #: translations/messages_pybabel.py:1164
 msgid "Examen cytobactériologique du prélèvement vaginal/cervico-vaginal"
@@ -4207,7 +4140,7 @@ msgstr "Cytobacteriological examination of vaginal/cervico-vaginal sampling"
 
 #: translations/messages_pybabel.py:1165
 msgid "Examen direct du prélèvement urétral"
-msgstr "Direct examination of urethral sampling"
+msgstr "Examination of urethral swab"
 
 #: translations/messages_pybabel.py:1166
 msgid "Examen cytobactériologique du prélèvement urétral"
@@ -4215,7 +4148,7 @@ msgstr "Cytobacteriological examination of urethral sampling"
 
 #: translations/messages_pybabel.py:1167
 msgid "Examen cytobactériologique du sperme (spermoculture)"
-msgstr "Cytobacteriological examination of sperm (spermoculture)"
+msgstr "Semen analysis"
 
 #: translations/messages_pybabel.py:1168
 msgid "Examen direct du LCR"
@@ -4231,29 +4164,27 @@ msgstr "Blood culture"
 
 #: translations/messages_pybabel.py:1171
 msgid "Examen cytobactériologique des selles (coproculture)"
-msgstr "Cytobacteriological examination of stool (co-proculture)"
+msgstr "Examination of stools"
 
 #: translations/messages_pybabel.py:1172
 msgid "Examen cytobactériologique des liquides d'épanchements ou de ponction"
-msgstr "Cytobacteriological examination of effluents or puncture fluids"
+msgstr "Examination of effluents or puncture fluids"
 
 #: translations/messages_pybabel.py:1173
 msgid "Examen direct des liquides d'épanchements ou de ponction"
 msgstr "Direct examination of effluents or puncture fluids"
 
 #: translations/messages_pybabel.py:1174
-msgid ""
-"Examen cytologique des liquides de ponction (numération et formule "
-"leucocytaire)"
+msgid "Examen cytologique des liquides de ponction (numération et formule leucocytaire)"
 msgstr "Cytological examination of puncture fluids (count and leukocyte formula)"
 
 #: translations/messages_pybabel.py:1175 translations/messages_pybabel.py:2120
 msgid "Recherche et identification de campylobacter"
-msgstr "Search and identification of campylobacter"
+msgstr "Isolation and identification of campylobacter"
 
 #: translations/messages_pybabel.py:1176 translations/messages_pybabel.py:2121
 msgid "Recherche et identification des germes anaérobies"
-msgstr "Search and identification of anaerobic germs"
+msgstr "Isolation and identification of anaerobic bacteria"
 
 #: translations/messages_pybabel.py:1177 translations/messages_pybabel.py:2159
 msgid "Spermogramme et spermocytogramme:"
@@ -4264,12 +4195,8 @@ msgid "Test post-coïtal (test de Huhner)"
 msgstr "Postcoital Test (Huhner Test)"
 
 #: translations/messages_pybabel.py:1179 translations/messages_pybabel.py:2079
-msgid ""
-"Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou "
-"anéjaculation"
-msgstr ""
-"Search for retrograde ejaculation in case of severe hypospermia or "
-"anejaculation"
+msgid "Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou anéjaculation"
+msgstr "Diagnosis of retrograde ejaculation in case of severe hypospermia or anejaculation"
 
 #: translations/messages_pybabel.py:1180 translations/messages_pybabel.py:1687
 msgid "Coloration des spermatozoïdes au bleu d'aniline"
@@ -4277,11 +4204,11 @@ msgstr "Sperm staining with aniline blue"
 
 #: translations/messages_pybabel.py:1181 translations/messages_pybabel.py:2080
 msgid "Recherche d'une immunisation antispermatozoïdes"
-msgstr "Searching for antisperm immunization"
+msgstr "Detection of antisperm antibody"
 
 #: translations/messages_pybabel.py:1182 translations/messages_pybabel.py:1472
 msgid "Acide salicylique (dosage)"
-msgstr "Salicylic acid (dosage)"
+msgstr "Salicylic acid (measurement)"
 
 #: translations/messages_pybabel.py:1183 translations/messages_pybabel.py:1482
 msgid "Alcool (éthanol ou méthanol)"
@@ -4305,7 +4232,7 @@ msgstr "Barbiturates (research)"
 
 #: translations/messages_pybabel.py:1188 translations/messages_pybabel.py:1536
 msgid "Barbituriques (dosage)"
-msgstr "Barbiturates (dosage)"
+msgstr "Barbiturates (measurement)"
 
 #: translations/messages_pybabel.py:1189 translations/messages_pybabel.py:1538
 msgid "Benzodiazépines (recherche)"
@@ -4334,15 +4261,15 @@ msgstr "Carbon monoxide"
 
 #: translations/messages_pybabel.py:1195 translations/messages_pybabel.py:1996
 msgid "Parcétamol (dosage)"
-msgstr "Parcetamol (dosage)"
+msgstr "Parcetamol (measurement)"
 
 #: translations/messages_pybabel.py:1196
 msgid "Plomb par Spectrophotométrie d'absorption atomique"
-msgstr "Lead by atomic absorption spectrophotometry"
+msgstr "Determination of Lead by atomic absorption spectrophotometry"
 
 #: translations/messages_pybabel.py:1197 translations/messages_pybabel.py:2059
 msgid "Quinidine (dosage)"
-msgstr "Quinidine (dosage)"
+msgstr "Quinidine (measurement)"
 
 #: translations/messages_pybabel.py:1198 translations/messages_pybabel.py:1289
 #: translations/messages_pybabel.py:2134 translations/messages_pybabel.py:2135
@@ -4358,25 +4285,15 @@ msgid "Arsenic"
 msgstr "Arsenic"
 
 #: translations/messages_pybabel.py:1201
-msgid ""
-"Test sérologique unitaire qualitatif de recherche des anticorps dirigés "
-"contre des antigènes du virus SARS-CoV-2"
-msgstr ""
-"Qualitative unit serological test for antibodies to SARS-CoV-2 virus "
-"antigens"
+msgid "Test sérologique unitaire qualitatif de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
+msgstr "Test for antibodies to SARS-CoV-2 virus antigens: Qualitative"
 
 #: translations/messages_pybabel.py:1202
-msgid ""
-"Test sérologique quantitatif automatisable de recherche des anticorps "
-"dirigés contre des antigènes du virus SARS-CoV-2"
-msgstr ""
-"Automated quantitative serological test for antibodies to SARS-CoV-2 "
-"virus antigens"
+msgid "Test sérologique quantitatif automatisable de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
+msgstr "Automated quantitative serological test for antibodies to SARS-CoV-2 virus antigens"
 
 #: translations/messages_pybabel.py:1203
-msgid ""
-"Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-"
-"CoV-2"
+msgid "Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-CoV-2"
 msgstr "SARS-CoV-2 Virus protein rapid detection test (RDT)"
 
 #: translations/messages_pybabel.py:1204 translations/messages_pybabel.py:1546
@@ -4509,20 +4426,12 @@ msgid "Céfixime"
 msgstr "Cefixime"
 
 #: translations/messages_pybabel.py:1231
-msgid ""
-"Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse "
-"Transcriptase Polymerase Chain Reaction)"
-msgstr ""
-"Quantitative research of the SARS-CoV-2 virus genome by RT-PCR (Reverse "
-"transcriptase polymerase chain reaction)"
+msgid "Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse Transcriptase Polymerase Chain Reaction)"
+msgstr "Quantitative research of the SARS-CoV-2 virus genome by RT-PCR (Reverse transcriptase polymerase chain reaction)"
 
 #: translations/messages_pybabel.py:1232
-msgid ""
-"Recherche qualitative du génome du virus SARS-CoV-2 par Reverse "
-"Transcriptase Loop-mediated isothermal AMPlification"
-msgstr ""
-"Qualitative research of the SARS-CoV-2 virus genome by Reverse "
-"transcriptase loop-mediated isothermal amplification"
+msgid "Recherche qualitative du génome du virus SARS-CoV-2 par Reverse Transcriptase Loop-mediated isothermal AMPlification"
+msgstr "Qualitative research of the SARS-CoV-2 virus genome by Reverse transcriptase loop-mediated isothermal amplification"
 
 #: translations/messages_pybabel.py:1233 translations/messages_pybabel.py:1576
 #: translations/messages_pybabel.py:1577
@@ -4758,7 +4667,7 @@ msgstr "Ofloxacin"
 #: translations/messages_pybabel.py:1280 translations/messages_pybabel.py:1985
 #: translations/messages_pybabel.py:1986
 msgid "Optochine"
-msgstr "Optochina"
+msgstr "Optochin"
 
 #: translations/messages_pybabel.py:1281 translations/messages_pybabel.py:1987
 msgid "Oxacilline"
@@ -4878,11 +4787,11 @@ msgstr "Antibiogram"
 
 #: translations/messages_pybabel.py:1306
 msgid "Examen cytobactériologique des crachats (Ziehl Neelsen)"
-msgstr "Cytobacteriological examination of sputum (Ziehl Neelsen)"
+msgstr "Examination of sputum (Ziehl Neelsen)"
 
 #: translations/messages_pybabel.py:1307
 msgid "Examen parasitologique des urines"
-msgstr "Parasitological examination of urine"
+msgstr "Microscopic examination of urine"
 
 #: translations/messages_pybabel.py:1308 translations/messages_pybabel.py:1902
 #: translations/messages_pybabel.py:1903
@@ -5029,11 +4938,11 @@ msgstr "potassium by flame photometry"
 
 #: translations/messages_pybabel.py:1344
 msgid "Recherche de Cryptococcus neoformans"
-msgstr "Research for Cryptococcus neoformans"
+msgstr "Detection of Cryptococcus neoformans"
 
 #: translations/messages_pybabel.py:1345
 msgid "Recherche de Trypanosomes dans le LCR"
-msgstr "Research for Trypanosomes in CSF"
+msgstr "Detection of Trypanosomes in CSF"
 
 #: translations/messages_pybabel.py:1346
 msgid "Antibiogramme enterobacteries"
@@ -5086,7 +4995,7 @@ msgstr "ATB Pneumococcus"
 
 #: translations/messages_pybabel.py:1369
 msgid "ATB BGN non fermentaires"
-msgstr "Non-fermental BGN ATB"
+msgstr "Non-fermenting Gram-negative Bacilli ATB"
 
 #: translations/messages_pybabel.py:1370
 msgid "ATB Staphylococcus sp"
@@ -5098,15 +5007,15 @@ msgstr "Proteins puncture liquid"
 
 #: translations/messages_pybabel.py:1372
 msgid "Examen cytobactériologique de prélèvement auriculaire"
-msgstr "Cytobacteriological examination of atrial sampling"
+msgstr "Examination of atrial sampling"
 
 #: translations/messages_pybabel.py:1373
 msgid "Examen cytobactériologique de prélèvement occulaire"
-msgstr "Cytobacteriological examination of eye sampling"
+msgstr "Examination of eye swab"
 
 #: translations/messages_pybabel.py:1374
 msgid "Examen cytobactériologique de prélèvement de gorge"
-msgstr "Cytobacteriological examination of throat sampling"
+msgstr "Examination of throat swab"
 
 #: translations/messages_pybabel.py:1375
 msgid "Depistage syphilis"
@@ -5114,7 +5023,7 @@ msgstr "Syphilis screening"
 
 #: translations/messages_pybabel.py:1376
 msgid "Examen cytobactériologique des crachats"
-msgstr "Cytobacteriological examination of sputum"
+msgstr "Examination of sputum"
 
 #: translations/messages_pybabel.py:1377 translations/messages_pybabel.py:2104
 msgid "Recherche de schizocytes"
@@ -5134,7 +5043,7 @@ msgstr "Cytobacteriological examination of pus"
 
 #: translations/messages_pybabel.py:1381
 msgid "Examen cytobactériologique de liquide de drainage"
-msgstr "Cytobacteriological examination of drainage fluid"
+msgstr "Examination of drainage fluid"
 
 #: translations/messages_pybabel.py:1382
 msgid "Examen bacteriologique d'aspiration tracheale"
@@ -5161,9 +5070,7 @@ msgid "Diagnostic moléculaire du bacille de l'anthrax par PCR"
 msgstr "Molecular diagnosis of anthrax bacillus by PCR"
 
 #: translations/messages_pybabel.py:1388
-msgid ""
-"Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement "
-"sanguin"
+msgid "Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement sanguin"
 msgstr "Detection of Dengue Virus RNA by RT-PCR on blood sampling"
 
 #: translations/messages_pybabel.py:1389
@@ -5191,34 +5098,24 @@ msgid "Culture liquide des mycobatéries"
 msgstr "Liquid culture of mycobacteria"
 
 #: translations/messages_pybabel.py:1396
-msgid ""
-"Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-"
-"PCR"
-msgstr "Blood testing for Viral DNA of Ebola virus disease by RT-PCR"
+msgid "Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-PCR"
+msgstr "Blood testing for Ebola Viral DNA by RT-PCR (Ebola Virus Disease diagnosis)"
 
 #: translations/messages_pybabel.py:1397
-msgid ""
-"Recherche par prélèvement buccal de l'ADN viral de la maladie à virus "
-"Ebola par RT-PCR"
-msgstr "Oral sampling of Ebola virus disease viral DNA using RT-PCR"
+msgid "Recherche par prélèvement buccal de l'ADN viral de la maladie à virus Ebola par RT-PCR"
+msgstr "Oral sampling for detection of Ebola Viral DNA using RT-PCR  (Ebola Virus Disease diagnosis)"
 
 #: translations/messages_pybabel.py:1398
-msgid ""
-"Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
-msgstr "Urine testing for viral DNA of Ebola virus disease by RT-PCR"
+msgid "Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par RT-PCR"
+msgstr "Urine testing for viral DNA of Ebola by RT-PCR (Ebola Virus Disease diagnosis)"
 
 #: translations/messages_pybabel.py:1399
-msgid ""
-"Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
-msgstr "Semen testing for viral DNA of Ebola virus disease by RT-PCR"
+msgid "Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par RT-PCR"
+msgstr "Semen testing for viral DNA of Ebola by RT-PCR (Ebola Virus Disease diagnosis)"
 
 #: translations/messages_pybabel.py:1400
-msgid ""
-"Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
-msgstr "Stool testing for Viral DNA of Ebola Virus Disease by RT-PCR"
+msgid "Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par RT-PCR"
+msgstr "Stool testing for Viral DNA of Ebola Virus by RT-PCR (Ebola Virus Disease diagnosis)"
 
 #: translations/messages_pybabel.py:1401
 msgid "Test de diagnostic rapide de la maladie à virus Ebola par Oraquick"
@@ -5226,11 +5123,11 @@ msgstr "Ebola Virus Disease Rapid Diagnostic Test by Oraquick"
 
 #: translations/messages_pybabel.py:1402
 msgid "Genexpert MTBRIf"
-msgstr "Genexpert MTBrif"
+msgstr "GeneXpert MTB/RIF Assay"
 
 #: translations/messages_pybabel.py:1403
 msgid "Line Probe Assay 1ère ligne tuberculose"
-msgstr "Line probe assay 1st line tuberculosis"
+msgstr "Line probe assay (1st line drug resistance tuberculosis)"
 
 #: translations/messages_pybabel.py:1404
 msgid "num formule reticu"
@@ -5298,7 +5195,7 @@ msgstr "Sperm sampling"
 
 #: translations/messages_pybabel.py:1420
 msgid "Autres prélèvements"
-msgstr "Other levies"
+msgstr "Other samplings"
 
 #: translations/messages_pybabel.py:1423
 msgid "Prélèvement d'urines"
@@ -5306,7 +5203,7 @@ msgstr "Urine sampling"
 
 #: translations/messages_pybabel.py:1424
 msgid "Prélèvement de selles"
-msgstr "Saddle collection"
+msgstr "Stool collection"
 
 #: translations/messages_pybabel.py:1425
 msgid "Prélèvement de liquide de ponction"
@@ -5337,42 +5234,16 @@ msgid "Avec détermination des pourcentages, dosage des protéines totales"
 msgstr "Determination of percentages and total protein"
 
 #: translations/messages_pybabel.py:1436
-msgid ""
-"Avec deux épreuves (globulaire et sérique) effectuées par deux "
-"techniciens différents avec deux lots de réactifs différents."
-msgstr ""
-"With two tests (globular and serum) performed by two different "
-"technicians with two different reagent batches."
+msgid "Avec deux épreuves (globulaire et sérique) effectuées par deux techniciens différents avec deux lots de réactifs différents."
+msgstr "With two tests (globular and serum) performed by two different technicians with two different reagent batches."
 
 #: translations/messages_pybabel.py:1437
-msgid ""
-"Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la "
-"viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 "
-"mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de "
-"cellules rondes, recherche d'une agglutination spontanée, numération des "
-"formes anormales en détaillant les anomalies de la tête, de la pièce "
-"intermédiaire et du flagelle en mentionnant l'index des anomalies "
-"multiples."
-msgstr ""
-"Including measurement of ejaculate volume, pH, estimation of sperm "
-"viscosity, 30-minute estimation of sperm mobility, 2h, 4h after "
-"ejaculation, sperm count, round cell research, search for spontaneous "
-"agglutination, form count abnormal by detailing the abnormalities of the "
-"head, intermediate piece and flagellum by mentioning the index of "
-"multiple abnormalities."
+msgid "Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de cellules rondes, recherche d'une agglutination spontanée, numération des formes anormales en détaillant les anomalies de la tête, de la pièce intermédiaire et du flagelle en mentionnant l'index des anomalies multiples."
+msgstr "Including measurement of ejaculate volume, pH, estimation of sperm viscosity, 30-minute estimation of sperm mobility, 2h, 4h after ejaculation, sperm count, round cell research, search for spontaneous agglutination, form count abnormal by detailing the abnormalities of the head, intermediate piece and flagellum by mentioning the index of multiple abnormalities."
 
 #: translations/messages_pybabel.py:1438
-msgid ""
-"Comprend: numération des hématies, des leucocytes et des plaquettes/ "
-"dosage de l'hémoglobine, mesure de l'hématocrite, détermination des "
-"constantes érythrocytaires et de la formule leucocytaire complète "
-"(automatique ou manuelle), comprend également un contrôle sur frottis "
-"sanguin en cas d'anomalie."
-msgstr ""
-"Includes: blood cell count, leukocytes and platelets/hemoglobin assay, "
-"hematocrit measurement, determination of erythrocyte constants and "
-"complete WBC count (automatic or manual), also includes blood smear check"
-" in case of abnormality"
+msgid "Comprend: numération des hématies, des leucocytes et des plaquettes/ dosage de l'hémoglobine, mesure de l'hématocrite, détermination des constantes érythrocytaires et de la formule leucocytaire complète (automatique ou manuelle), comprend également un contrôle sur frottis sanguin en cas d'anomalie."
+msgstr "Includes: blood cell count, leukocytes and platelets/hemoglobin assay, hematocrit measurement, determination of erythrocyte constants and complete WBC count (automatic or manual), also includes blood smear check in case of abnormality"
 
 #: translations/messages_pybabel.py:1439
 msgid "Cotation pour chaque acte."
@@ -5383,116 +5254,56 @@ msgid "Cotation pour chaque facteur."
 msgstr "Rating for each factor."
 
 #: translations/messages_pybabel.py:1441
-msgid ""
-"En cas de réaction positive au RPR  et au TPHA, un titrage doit être "
-"pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou "
-"les techniques utilisées avec leur seuil de sensibilité."
-msgstr ""
-"In the event of a positive reaction to RPR and TPHA, titration shall be "
-"performed. - Research and possible titration of antibodies, specify the "
-"technique(s) used along with their sensitivity threshold."
+msgid "En cas de réaction positive au RPR  et au TPHA, un titrage doit être pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
+msgstr "In the event of a positive reaction to RPR and TPHA, titration shall be performed. - Research and possible titration of antibodies, specify the technique(s) used along with their sensitivity threshold."
 
 #: translations/messages_pybabel.py:1442
-msgid ""
-"La culture comprend : examen microscopique direct, isolement avec "
-"éventuellement identification complète de (s) germe(s) et antibiogramme."
-msgstr ""
-"The culture includes: direct microscopic examination, isolation with "
-"possibly complete identification of germ(s), and antibiogram."
+msgid "La culture comprend : examen microscopique direct, isolement avec éventuellement identification complète de (s) germe(s) et antibiogramme."
+msgstr "The culture includes: direct microscopic examination, isolation with possibly complete identification of germ(s), and antibiogram."
 
 #: translations/messages_pybabel.py:1443
-msgid ""
-"Le compte rendu comportera le jour du cycle, le temps écoulé après "
-"rapport sexuel, la qualité de la glaire (abondance, filance et "
-"transparence) le nombre et la mobilité des spermatozoïdes par champ."
-msgstr ""
-"The report will include the day of the cycle, the time elapsed after "
-"sexual intercourse, the quality of the mucus (abundance, filance and "
-"transparency), the number, and mobility of sperm per field."
+msgid "Le compte rendu comportera le jour du cycle, le temps écoulé après rapport sexuel, la qualité de la glaire (abondance, filance et transparence) le nombre et la mobilité des spermatozoïdes par champ."
+msgstr "The report will include the day of the cycle, the time elapsed after sexual intercourse, the quality of the mucus (abundance, filance and transparency), the number, and mobility of sperm per field."
 
 #: translations/messages_pybabel.py:1444
 msgid "Le compte rendu doit mentionner la ou les techniques utilisées."
 msgstr "The record should include the technique(s) used."
 
 #: translations/messages_pybabel.py:1445
-msgid ""
-"Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la "
-"technique et le nombre de copies ou d'équivalent copies par ml de plasma,"
-" - Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
-msgstr ""
-"The report should specify the reagent used, the threshold value of the "
-"technique and the number of copies or equivalent copies per ml of plasma,"
-" - Research and possible titration of antibodies, specify the "
-"technique(s) used along with their sensitivity threshold. A confirmatory "
-"method is required when screening tests are positive or discordant. Only "
-"one confirmatory method can be listed."
+msgid "Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la technique et le nombre de copies ou d'équivalent copies par ml de plasma, - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
+msgstr "The report should specify the reagent used, the threshold value of the technique and the number of copies or equivalent copies per ml of plasma, - Research and possible titration of antibodies, specify the technique(s) used along with their sensitivity threshold. A confirmatory method is required when screening tests are positive or discordant. Only one confirmatory method can be listed."
 
 #: translations/messages_pybabel.py:1446
 msgid "Par prélèvement."
 msgstr "By sampling."
 
 #: translations/messages_pybabel.py:1447
-msgid ""
-"Recherche d'un antigène du SARS-CoV-2, recherche par tests non "
-"automatisable de type immunochromatographique ciblant l'antigène ... du "
-"SARS-CoV-2 (dépend du kit utilisé)"
-msgstr ""
-"SARS-CoV-2 antigen research, research by non-automatable "
-"immunochromatographic type tests targeting... of SARS-CoV-2 antigen "
-"(depends on the kit used)"
+msgid "Recherche d'un antigène du SARS-CoV-2, recherche par tests non automatisable de type immunochromatographique ciblant l'antigène ... du SARS-CoV-2 (dépend du kit utilisé)"
+msgstr "SARS-CoV-2 antigen research, research by non-automatable immunochromatographic type tests targeting... of SARS-CoV-2 antigen (depends on the kit used)"
 
 #: translations/messages_pybabel.py:1448
-msgid ""
-"Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests"
-" immunochromatographiques"
+msgid "Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests immunochromatographiques"
 msgstr "Research of antibodies to SARS-CoV-2, immunochromatographic testing"
 
 #: translations/messages_pybabel.py:1449
-msgid ""
-"Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
-msgstr ""
-"Research of the SARS-CoV-2 genome by RT-PCR, the primers used for this "
-"test target genes... and... of the SARS COV2 genome"
+msgid "Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgstr "Research of the SARS-CoV-2 genome by RT-PCR, the primers used for this test target genes... and... of the SARS COV2 genome"
 
 #: translations/messages_pybabel.py:1450
-msgid ""
-"Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
-msgstr ""
-"Research of the SARS-CoV-2 genome by RT-LAMP, the primers used for this "
-"test target genes... and... of the SARS COV2 genome"
+msgid "Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgstr "Research of the SARS-CoV-2 genome by RT-LAMP, the primers used for this test target genes... and... of the SARS COV2 genome"
 
 #: translations/messages_pybabel.py:1451
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité."
-msgstr ""
-"Research and possible titration of antibodies, specify the technique(s) "
-"used along with their sensitivity threshold. "
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
+msgstr "Research and possible titration of antibodies, specify the technique(s) used along with their sensitivity threshold. "
 
 #: translations/messages_pybabel.py:1452
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
-msgstr ""
-"Research and possible titration of antibodies, specify the technique(s) "
-"used along with their sensitivity threshold. A confirmatory method is "
-"required when screening tests are positive or discordant. Only one "
-"confirmatory method can be listed."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
+msgstr "Research and possible titration of antibodies, specify the technique(s) used along with their sensitivity threshold. A confirmatory method is required when screening tests are positive or discordant. Only one confirmatory method can be listed."
 
 #: translations/messages_pybabel.py:1453
-msgid ""
-"Recherche et titrage éventuels des anticorps dirigés contre le SARS-"
-"CoV-2, recherche par tests automatisables de type ELISA/ELFA"
-msgstr ""
-"Possible search and titration of antibodies to SARS-CoV-2, search through"
-" automated ELISA/ELFA tests"
+msgid "Recherche et titrage éventuels des anticorps dirigés contre le SARS-CoV-2, recherche par tests automatisables de type ELISA/ELFA"
+msgstr "Possible search and titration of antibodies to SARS-CoV-2, search through automated ELISA/ELFA tests"
 
 #: translations/messages_pybabel.py:1460
 msgid "Acetone"
@@ -5552,7 +5363,7 @@ msgstr "Antistreptokinase (ASK)"
 
 #: translations/messages_pybabel.py:1505
 msgid "Antistreptolysine O (ASLO)"
-msgstr "Antistreptolysin O (ASLO)"
+msgstr "Antistreptolysin O Titre (ASOT)"
 
 #: translations/messages_pybabel.py:1506
 msgid "AO"
@@ -5572,7 +5383,7 @@ msgstr "Cervix appearance"
 
 #: translations/messages_pybabel.py:1511
 msgid "Aspect du LCR"
-msgstr "Aspect of CSF"
+msgstr "CSF appearance"
 
 #: translations/messages_pybabel.py:1512
 msgid "Aspect du liquide"
@@ -5580,11 +5391,11 @@ msgstr "Liquid appearance"
 
 #: translations/messages_pybabel.py:1513 translations/messages_pybabel.py:1514
 msgid "Aspect du prélèvement urétral"
-msgstr "Aspect of the urethral sampling"
+msgstr "urethral swab"
 
 #: translations/messages_pybabel.py:1515
 msgid "Aspect du prélèvement vaginal"
-msgstr "Aspect of vaginal sampling"
+msgstr "vaginal swab"
 
 #: translations/messages_pybabel.py:1516
 msgid "Aspect du pus"
@@ -5616,7 +5427,7 @@ msgstr "Other cells"
 
 #: translations/messages_pybabel.py:1530
 msgid "B-lactamase"
-msgstr "B-Lactamase"
+msgstr "Beta-Lactamase"
 
 #: translations/messages_pybabel.py:1531
 msgid "BAAR"
@@ -5640,7 +5451,7 @@ msgstr "Beta-globulin"
 
 #: translations/messages_pybabel.py:1542
 msgid "BGN incurvés"
-msgstr "Curved BGN"
+msgstr "Curved gram negative bacteria"
 
 #: translations/messages_pybabel.py:1543
 msgid "BH"
@@ -5748,7 +5559,7 @@ msgstr "CMI Aztreonam"
 
 #: translations/messages_pybabel.py:1640
 msgid "CMI B-lactamase"
-msgstr "CMI B-Lactamase"
+msgstr "CMI Beta-Lactamase"
 
 #: translations/messages_pybabel.py:1641
 msgid "CMI Céfalotine"
@@ -5924,7 +5735,7 @@ msgstr "Concentration (CCMH)"
 
 #: translations/messages_pybabel.py:1691
 msgid "Concentration corpusculaire moyen (CCMH)"
-msgstr "Mean corpuscular concentration (CCMH)"
+msgstr "Mean Cell Volume (MCV)"
 
 #: translations/messages_pybabel.py:1696
 msgid "Créatine PhosphoKinase (CPK)"
@@ -5984,7 +5795,7 @@ msgstr "Optical density"
 
 #: translations/messages_pybabel.py:1723
 msgid "Densité parasitaire"
-msgstr "Parasitic density"
+msgstr "Parasite density"
 
 #: translations/messages_pybabel.py:1726
 msgid "Dépistage de la syphilis (SD Bioline)"
@@ -6208,7 +6019,7 @@ msgstr "species"
 
 #: translations/messages_pybabel.py:1806
 msgid "espèce trypano"
-msgstr "trypano species"
+msgstr "Trypanosome species"
 
 #: translations/messages_pybabel.py:1810
 msgid "Examen direct"
@@ -6244,11 +6055,11 @@ msgstr "Gentamicin (strongly charged)"
 
 #: translations/messages_pybabel.py:1834
 msgid "Germe identifié"
-msgstr "Identified germ"
+msgstr "Identified bacterium"
 
 #: translations/messages_pybabel.py:1835
 msgid "Germe identifié (bactérie)"
-msgstr "Identified germ (bacterium)"
+msgstr "Identified bacterium"
 
 #: translations/messages_pybabel.py:1836
 msgid "Giardia"
@@ -6296,11 +6107,11 @@ msgstr "Glucose -6-Phosphate Dehydrogenase (G6PD)"
 
 #: translations/messages_pybabel.py:1854
 msgid "Goutte épaisse"
-msgstr "Thick drop"
+msgstr "Thick film"
 
 #: translations/messages_pybabel.py:1855
 msgid "Goutte épaisse - Frottis mince"
-msgstr "Thick drop - thin smear"
+msgstr "Thick film - thin smear"
 
 #: translations/messages_pybabel.py:1858 translations/messages_pybabel.py:1859
 #: translations/messages_pybabel.py:1860 translations/messages_pybabel.py:1861
@@ -6431,7 +6242,7 @@ msgstr "Lymphocytes"
 
 #: translations/messages_pybabel.py:1953
 msgid "Methode de diffusion de disque"
-msgstr "Disc broadcast method"
+msgstr "Disc diffusion method"
 
 #: translations/messages_pybabel.py:1956
 msgid "Microalbumine"
@@ -6472,15 +6283,15 @@ msgstr "Pinworms"
 
 #: translations/messages_pybabel.py:1992
 msgid "P.basophiles"
-msgstr "P. Basophils"
+msgstr "Basophils"
 
 #: translations/messages_pybabel.py:1993
 msgid "P.eosinophiles"
-msgstr "P. Eosinophils"
+msgstr "Eosinophils"
 
 #: translations/messages_pybabel.py:1994
 msgid "P.neutrophiles"
-msgstr "P.Neutrophils"
+msgstr "Neutrophils"
 
 #: translations/messages_pybabel.py:1995
 msgid "Parasites"
@@ -6631,15 +6442,15 @@ msgstr "Plasmodium research"
 
 #: translations/messages_pybabel.py:2102
 msgid "Recherche de Rotavirus"
-msgstr "Rotavirus research"
+msgstr "Detection of Rotavirus"
 
 #: translations/messages_pybabel.py:2105 translations/messages_pybabel.py:2106
 msgid "Recherche de trypanosomes"
-msgstr "Trypanosomes research"
+msgstr "Detection of Trypanosomes"
 
 #: translations/messages_pybabel.py:2107
 msgid "Recherche des Ac Anti SARS-CoV-2 (COVID 19)"
-msgstr "Research for Ac Anti SARS-CoV-2 (COVID 19)"
+msgstr "Detection of Ac Anti SARS-CoV-2 (COVID 19)"
 
 #: translations/messages_pybabel.py:2111
 msgid "Recherche des Ac anti-VIH (Test Elisa)"
@@ -6655,13 +6466,11 @@ msgstr "Research for Ac IgG and IgM anti rabies"
 
 #: translations/messages_pybabel.py:2119
 msgid "Recherche du bacille de l'anthrax par PCR"
-msgstr "Research for anthrax bacillus by PCR"
+msgstr "Detection of anthrax bacillus by PCR"
 
 #: translations/messages_pybabel.py:2122
-msgid ""
-"Recherche et titrage de a foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
-msgstr "Research and titration of fetoprotein (in serum or amniotic fluid)"
+msgid "Recherche et titrage de a foetoprotéine (dans le sérum ou liquide amniotique)"
+msgstr "Detection and titration of fetoprotein (in serum or amniotic fluid)"
 
 #: translations/messages_pybabel.py:2126
 msgid "Recherche et titrage de ß2 microglobuline (dans le sérum ou urine)"
@@ -6725,7 +6534,7 @@ msgstr "nugent score"
 
 #: translations/messages_pybabel.py:2144
 msgid "Selles KAOP"
-msgstr "KAOP stool"
+msgstr "Stools microscopy"
 
 #: translations/messages_pybabel.py:2147
 msgid "Sérodiagnostic de Widal"
@@ -6761,11 +6570,11 @@ msgstr "Rate"
 
 #: translations/messages_pybabel.py:2167
 msgid "Taux de prothrombine"
-msgstr "Prothrombin"
+msgstr "Estimation of Prothrombin"
 
 #: translations/messages_pybabel.py:2168
 msgid "Taux de réticulocyte"
-msgstr "Reticulocyte rate"
+msgstr "Estimation of Reticulocytes"
 
 #: translations/messages_pybabel.py:2169
 msgid "TB GX"
@@ -6785,7 +6594,7 @@ msgstr "Bleeding time"
 
 #: translations/messages_pybabel.py:2180 translations/messages_pybabel.py:2181
 msgid "Teneur corpusculaire moyen (TCMH)"
-msgstr "Mean corpuscular content (CMHT)"
+msgstr "Mean Cell Volume (MCV)"
 
 #: translations/messages_pybabel.py:2182
 msgid "Tenia"
@@ -6916,12 +6725,8 @@ msgid "Normales : Enfant : 0.5 - 3.5 / Adultes : 1.5 - 5.5"
 msgstr "Normal: Child: 0.5 - 3.5/Adults: 1.5 - 5.5"
 
 #: translations/messages_pybabel.py:2265
-msgid ""
-"0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - "
-"60 ans: 34 - 48"
-msgstr ""
-"0 - 4 days: 28 -44 4d - 14 years: 38 - 54 14 - 18 years: 32 - 45 18 - 60 "
-"years: 34 - 48"
+msgid "0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - 60 ans: 34 - 48"
+msgstr "0 - 4 days: 28 -44 4d - 14 years: 38 - 54 14 - 18 years: 32 - 45 18 - 60 years: 34 - 48"
 
 #: translations/messages_pybabel.py:2266
 msgid "0 CFU pour 100 ml dans 95%. des échantillons d'eaux traitées"
@@ -6932,20 +6737,12 @@ msgid "0 CFU/100 ml"
 msgstr "0 CFU/100 ml"
 
 #: translations/messages_pybabel.py:2268
-msgid ""
-"1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   "
-"femme : 45 - 103   homme : 55 - 120"
-msgstr ""
-"1 - 4 years: 18 - 35 4 - 13 years: 31 - 68 13 - 17 years: 37 - 88 female:"
-" 45 - 103 male: 55 - 120"
+msgid "1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   femme : 45 - 103   homme : 55 - 120"
+msgstr "1 - 4 years: 18 - 35 4 - 13 years: 31 - 68 13 - 17 years: 37 - 88 female: 45 - 103 male: 55 - 120"
 
 #: translations/messages_pybabel.py:2270
-msgid ""
-"DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: "
-"Indeterminé"
-msgstr ""
-"DO > VOC: Positive DO < VOC: VOC negative -0.010 < DO < VOC + 0.010: "
-"Undetermined"
+msgid "DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: Indeterminé"
+msgstr "DO > VOC: Positive DO < VOC: VOC negative -0.010 < DO < VOC + 0.010: Undetermined"
 
 #: translations/messages_pybabel.py:2271
 msgid "Dosage à l'exclusion des bandelettes"
@@ -6976,9 +6773,7 @@ msgid "Méthode électrométrique"
 msgstr "Electrometric method"
 
 #: translations/messages_pybabel.py:2278
-msgid ""
-"Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0"
-" - 17.0"
+msgid "Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0 - 17.0"
 msgstr "Normal: 3 to 10 years: 12.0 - 14.5/Female: 12.5 - 15.5/Male: 14.0 - 17.0"
 
 #: translations/messages_pybabel.py:2279
@@ -7026,25 +6821,16 @@ msgid "prématuré : 1.10 - 8.90   < 1 an : 1.40 - 6.80   enfant: 1.80 - 6.40"
 msgstr "premature: 1.10 - 8.90 < 1 year: 1.40 - 6.80 child: 1.80 - 6.40"
 
 #: translations/messages_pybabel.py:2290
-msgid ""
-"prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - "
-"2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
-msgstr ""
-"premature: 1.55 - 2.75 days - 10 days: 1.90 - 2.60 10 d - 24 months: 2.25"
-" - 2.75 24 months - 12 years: 2.20 - 2.70 12 years - 18 years: 2.10 - "
-"2.55"
+msgid "prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - 2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
+msgstr "premature: 1.55 - 2.75 days - 10 days: 1.90 - 2.60 10 d - 24 months: 2.25 - 2.75 24 months - 12 years: 2.20 - 2.70 12 years - 18 years: 2.10 - 2.55"
 
 #: translations/messages_pybabel.py:2291
 msgid "Recherche de l'ADN du bacillus anthracis par PCR"
 msgstr "DNA research for bacillus anthracis by PCR"
 
 #: translations/messages_pybabel.py:2292
-msgid ""
-"Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: "
-"Flore de vaginose bacterienne"
-msgstr ""
-"Score 0-3: Normal flora Score 4-6: Intermediate flora Score >= 7: "
-"Bacterial vaginosis flora"
+msgid "Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: Flore de vaginose bacterienne"
+msgstr "Score 0-3: Normal flora Score 4-6: Intermediate flora Score >= 7: Bacterial vaginosis flora"
 
 #: translations/messages_pybabel.py:2293
 msgid "Technique : agglutination de particules de latex"
@@ -7078,16 +6864,6 @@ msgstr "Therapeutic area: 0.5 to 1.5"
 msgid "Gestionnaire de stock"
 msgstr "Stock manager"
 
-#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
-#, fuzzy
-msgid "Laboratoire"
-msgstr "profuse"
-
-#: translations/messages_pybabel.py:2315
-#, fuzzy
-msgid "Préleveur"
-msgstr "yeast"
-
 #: translations/messages_pybabel.py:2320
 msgid "Algérienne"
 msgstr "Algerian"
@@ -7106,7 +6882,7 @@ msgstr "Angolan"
 
 #: translations/messages_pybabel.py:2324
 msgid "Argentine"
-msgstr "Argentine"
+msgstr "Argentinean"
 
 #: translations/messages_pybabel.py:2325
 msgid "Arménienne"
@@ -7122,11 +6898,11 @@ msgstr "Austrian"
 
 #: translations/messages_pybabel.py:2328
 msgid "Bahamienne"
-msgstr "Your Bahamas"
+msgstr "Bahamian"
 
 #: translations/messages_pybabel.py:2329
 msgid "Bangladaise"
-msgstr "Bangladaise"
+msgstr "Bangladeshi"
 
 #: translations/messages_pybabel.py:2330
 msgid "Barbadienne"
@@ -7134,7 +6910,7 @@ msgstr "Barbadian"
 
 #: translations/messages_pybabel.py:2331
 msgid "Belge"
-msgstr "Document"
+msgstr "Belgian"
 
 #: translations/messages_pybabel.py:2332
 msgid "Beninoise"
@@ -7142,7 +6918,7 @@ msgstr "Beninese"
 
 #: translations/messages_pybabel.py:2333
 msgid "Bermudienne"
-msgstr "Bermudienne"
+msgstr "Bermudian"
 
 #: translations/messages_pybabel.py:2334
 msgid "Bolivienne"
@@ -7262,7 +7038,7 @@ msgstr "Gambian"
 
 #: translations/messages_pybabel.py:2363
 msgid "Gambonaise"
-msgstr "Gambonaise"
+msgstr "Gambonian"
 
 #: translations/messages_pybabel.py:2364
 msgid "Ghanéenne"
@@ -7366,11 +7142,11 @@ msgstr "Liberian"
 
 #: translations/messages_pybabel.py:2389
 msgid "Lituanne"
-msgstr "Lithuania"
+msgstr "Lithuanian"
 
 #: translations/messages_pybabel.py:2390
 msgid "Luxembourgeoise"
-msgstr "Luxembourgish"
+msgstr "Luxembourgian"
 
 #: translations/messages_pybabel.py:2391
 msgid "Macédoinienne"
@@ -7414,7 +7190,7 @@ msgstr "Mongolian"
 
 #: translations/messages_pybabel.py:2401
 msgid "Mozambicaine"
-msgstr "Mozambique"
+msgstr "Mozambican"
 
 #: translations/messages_pybabel.py:2402
 msgid "Namibienne"
@@ -7422,11 +7198,11 @@ msgstr "Namibian"
 
 #: translations/messages_pybabel.py:2403
 msgid "Nicaraguayenne"
-msgstr "Nicaraguayenne"
+msgstr "Nicaraguan"
 
 #: translations/messages_pybabel.py:2404
 msgid "Nigérienne"
-msgstr "Nigerien"
+msgstr "Nigerian"
 
 #: translations/messages_pybabel.py:2405
 msgid "Norvégienne"
@@ -7454,15 +7230,15 @@ msgstr "Panamanian"
 
 #: translations/messages_pybabel.py:2411
 msgid "Papouasienne"
-msgstr "Papua"
+msgstr "Papuan"
 
 #: translations/messages_pybabel.py:2412
 msgid "Paraguayenne"
-msgstr "Paraguayenne"
+msgstr "Paraguayan"
 
 #: translations/messages_pybabel.py:2413
 msgid "Philippine"
-msgstr "Philippine"
+msgstr "Filipino"
 
 #: translations/messages_pybabel.py:2414
 msgid "Polonaise"
@@ -7470,7 +7246,7 @@ msgstr "Polish"
 
 #: translations/messages_pybabel.py:2415
 msgid "Portugaise"
-msgstr "Portugese"
+msgstr "Portuguese"
 
 #: translations/messages_pybabel.py:2416
 msgid "Péruvienne"
@@ -7490,23 +7266,23 @@ msgstr "Rwandan"
 
 #: translations/messages_pybabel.py:2420
 msgid "Salvadorienne"
-msgstr "Salvadorienne"
+msgstr "Salvadorian"
 
 #: translations/messages_pybabel.py:2421
 msgid "Saoudienne"
-msgstr "Saudi"
+msgstr "Saudi Arabian"
 
 #: translations/messages_pybabel.py:2422
 msgid "Serbe"
-msgstr "serbia"
+msgstr "Serbian"
 
 #: translations/messages_pybabel.py:2423
 msgid "Sierra-Léonaise"
-msgstr "Sierra-Léonaise"
+msgstr "Sierra-Leonese"
 
 #: translations/messages_pybabel.py:2424
 msgid "Singapourienne"
-msgstr "Sierra-Léonaise"
+msgstr "Singaporean"
 
 #: translations/messages_pybabel.py:2425
 msgid "Slovaque"
@@ -7530,11 +7306,11 @@ msgstr "South African"
 
 #: translations/messages_pybabel.py:2430
 msgid "Sud-Coréenne "
-msgstr "South Korean "
+msgstr "South Korean"
 
 #: translations/messages_pybabel.py:2431
 msgid "Suisse"
-msgstr "Suisse"
+msgstr "Swiss"
 
 #: translations/messages_pybabel.py:2432
 msgid "Suédoise"
@@ -7542,7 +7318,7 @@ msgstr "Swedish"
 
 #: translations/messages_pybabel.py:2433
 msgid "Swazie"
-msgstr "Swaziland"
+msgstr "Swazi"
 
 #: translations/messages_pybabel.py:2434
 msgid "Syrienne"
@@ -7554,7 +7330,7 @@ msgstr "Senegalese"
 
 #: translations/messages_pybabel.py:2436
 msgid "Taiwanaise"
-msgstr "Taiwanaise"
+msgstr "Taiwanese"
 
 #: translations/messages_pybabel.py:2437
 msgid "Tanzanienne"
@@ -7630,7 +7406,7 @@ msgstr "Profession"
 
 #: translations/messages_pybabel.py:2461
 msgid "Boite postale"
-msgstr "Mail box"
+msgstr "Zip code"
 
 #: translations/messages_pybabel.py:2462
 msgid "Quartier / Secteur"
@@ -7656,723 +7432,739 @@ msgstr "Purchase price"
 msgid "Nom du bailleur"
 msgstr "Name of funder"
 
+#: services/QualityRest.py:1452
+msgid "Pannes"
+msgstr "Breakdowns"
+
+#: services/QualityRest.py:1454
+msgid "Réparations"
+msgstr "Repairs"
+
+#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2310
+msgid "Secrétaire avancé"
+msgstr "Advanced secretary"
+
+#: models/Pdf.py:210
+msgid "Date"
+msgstr "Date"
+
+#: models/Pdf.py:212
+msgid "Famille"
+msgstr "Family"
+
+#: models/Pdf.py:214
+msgid "Validation"
+msgstr "Validation"
+
+#: models/Pdf.py:2790
+msgid "Remise sur la facturation"
+msgstr "Discount on billing"
+
+#: models/Pdf.py:2791
+msgid "Pourcentage de la remise"
+msgstr "Discount percentage"
+
+#: models/Pdf.py:2792
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "Health insurance / mutual percentage"
+
+#: translations/messages_pybabel.py:82
+msgid "pathogène"
+msgstr "Pathogen"
+
+#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
+msgid "Laboratoire"
+msgstr "Laboratory"
+
+#: translations/messages_pybabel.py:2315
+msgid "Préleveur"
+msgstr "Sampler"
+
 #: translations/messages_pybabel.py:2472
 msgid "Accéder à la page d'api"
-msgstr ""
+msgstr "Access API page"
 
 #: translations/messages_pybabel.py:2473
 msgid "Activer ou désactiver une analyse"
-msgstr ""
+msgstr "Enable or disable an analysis"
 
 #: translations/messages_pybabel.py:2474
-#, fuzzy
 msgid "Ajouter de nouvelles analyses"
-msgstr "Search for abnormal cells"
+msgstr "Add new analyses"
 
 #: translations/messages_pybabel.py:2475
 msgid "Ajouter un analyseur"
-msgstr ""
+msgstr "Add an analyser"
 
 #: translations/messages_pybabel.py:2476
 msgid "Ajouter un contrôle externe"
-msgstr ""
+msgstr "Add external control"
 
 #: translations/messages_pybabel.py:2477
 msgid "Ajouter un contrôle interne"
-msgstr ""
+msgstr "Add internal control"
 
 #: translations/messages_pybabel.py:2478
 msgid "Ajouter un élément"
-msgstr ""
+msgstr "Add an item"
 
 #: translations/messages_pybabel.py:2479
 msgid "Ajouter un équipement"
-msgstr ""
+msgstr "Add equipment"
 
 #: translations/messages_pybabel.py:2480
-#, fuzzy
 msgid "Ajouter un fournisseur"
-msgstr "Supplier reference"
+msgstr "Add supplier"
 
 #: translations/messages_pybabel.py:2481
 msgid "Ajouter un laboratoire"
-msgstr ""
+msgstr "Add laboratory"
 
 #: translations/messages_pybabel.py:2482
 msgid "Ajouter un manuel"
-msgstr ""
+msgstr "Add manual"
 
 #: translations/messages_pybabel.py:2483
 msgid "Ajouter un modèle de document"
-msgstr ""
+msgstr "Add document template"
 
 #: translations/messages_pybabel.py:2484
 msgid "Ajouter un personnel"
-msgstr ""
+msgstr "Add staff"
 
 #: translations/messages_pybabel.py:2485
-#, fuzzy
 msgid "Ajouter un prescripteur"
-msgstr "Analysis prescribed on"
+msgstr "Add prescriber"
 
 #: translations/messages_pybabel.py:2486
 msgid "Ajouter un produit"
-msgstr ""
+msgstr "Add product"
 
 #: translations/messages_pybabel.py:2487
 msgid "Ajouter un résultat du contrôle externe"
-msgstr ""
+msgstr "Add external control result"
 
 #: translations/messages_pybabel.py:2488
 msgid "Ajouter un résultat du contrôle interne"
-msgstr ""
+msgstr "Add internal control result"
 
 #: translations/messages_pybabel.py:2489
 msgid "Ajouter un utilisateur"
-msgstr ""
+msgstr "Add user"
 
 #: translations/messages_pybabel.py:2490
 msgid "Ajouter une maintenance"
-msgstr ""
+msgstr "Add maintenance"
 
 #: translations/messages_pybabel.py:2491
 msgid "Ajouter une maintenance préventive"
-msgstr ""
+msgstr "Add preventive maintenance"
 
 #: translations/messages_pybabel.py:2492
 msgid "Ajouter une métrologie ou étalonnage"
-msgstr ""
+msgstr "Add metrology or calibration"
 
 #: translations/messages_pybabel.py:2493
 msgid "Ajouter une non-conformité"
-msgstr ""
+msgstr "Add non-conformity"
 
 #: translations/messages_pybabel.py:2494
 msgid "Ajouter une panne ou une réparation"
-msgstr ""
+msgstr "Add breakdown or repair"
 
 #: translations/messages_pybabel.py:2495
 msgid "Ajouter une plateforme DHIS2 api"
-msgstr ""
+msgstr "Add DHIS2 API platform"
 
 #: translations/messages_pybabel.py:2496
 msgid "Ajouter une procédure"
-msgstr ""
+msgstr "Add procedure"
 
 #: translations/messages_pybabel.py:2497
 msgid "Ajouter une réunion"
-msgstr ""
+msgstr "Add meeting"
 
 #: translations/messages_pybabel.py:2498
-#, fuzzy
 msgid "Annulation de stock"
-msgstr "Stock manager"
+msgstr "Stock cancellation"
 
 #: translations/messages_pybabel.py:2499
 msgid "Catalogue des produits"
-msgstr ""
+msgstr "Product catalog"
 
 #: translations/messages_pybabel.py:2500
 msgid "Clôture de la non-conformité"
-msgstr ""
+msgstr "Closure of non-conformity"
 
 #: translations/messages_pybabel.py:2501
 msgid "Configuration DHIS2"
-msgstr ""
+msgstr "DHIS2 configuration"
 
 #: translations/messages_pybabel.py:2502
 msgid "Configuration Epidemio"
-msgstr ""
+msgstr "Epidemiological configuration"
 
 #: translations/messages_pybabel.py:2503
 msgid "Configuration de formulaires"
-msgstr ""
+msgstr "Form configuration"
 
 #: translations/messages_pybabel.py:2504
 msgid "Configuration des analyseurs"
-msgstr ""
+msgstr "Analyser configuration"
 
 #: translations/messages_pybabel.py:2505
 msgid "Configuration des codes postaux"
-msgstr ""
+msgstr "Zip code configuration"
 
 #: translations/messages_pybabel.py:2506
 msgid "Configuration des comptes rendus"
-msgstr ""
+msgstr "Report configuration"
 
 #: translations/messages_pybabel.py:2507
 msgid "Configuration des intervalles d'âge"
-msgstr ""
+msgstr "Age interval configuration"
 
 #: translations/messages_pybabel.py:2508
-#, fuzzy
 msgid "Configuration des manuels"
-msgstr "Platelet count"
+msgstr "Manual configuration"
 
 #: translations/messages_pybabel.py:2509
 msgid "Configuration des modèles de documents"
-msgstr ""
+msgstr "Document template configuration"
 
 #: translations/messages_pybabel.py:2510
 msgid "Configuration des numéros de dossier"
-msgstr ""
+msgstr "File number configuration"
 
 #: translations/messages_pybabel.py:2511
-#, fuzzy
 msgid "Configuration des sauvegardes"
-msgstr "Platelet count"
+msgstr "Backup configuration"
 
 #: translations/messages_pybabel.py:2512
 msgid "Configuration des services demandeurs"
-msgstr ""
+msgstr "Requesting service configuration"
 
 #: translations/messages_pybabel.py:2513
 msgid "Configuration des unités fonctionnelles"
-msgstr ""
+msgstr "Functional unit configuration"
 
 #: translations/messages_pybabel.py:2514
 msgid "Configuration du logo"
-msgstr ""
+msgstr "Logo configuration"
 
 #: translations/messages_pybabel.py:2515
 msgid "Configuration du rapport d'indicateurs"
-msgstr ""
+msgstr "Indicator report configuration"
 
 #: translations/messages_pybabel.py:2516
 msgid "Configuration du stockage"
-msgstr ""
+msgstr "Storage configuration"
 
 #: translations/messages_pybabel.py:2517
-#, fuzzy
 msgid "Contrôle qualité externe"
 msgstr "External quality control"
 
 #: translations/messages_pybabel.py:2518
-#, fuzzy
 msgid "Contrôle qualité interne"
 msgstr "Internal quality control"
 
 #: translations/messages_pybabel.py:2519
 msgid "Déstocker un élément"
-msgstr ""
+msgstr "Remove an item from stock"
 
 #: translations/messages_pybabel.py:2520
 msgid "Dictionnaires"
-msgstr ""
+msgstr "Dictionaries"
 
 #: translations/messages_pybabel.py:2521
-#, fuzzy
 msgid "Dossier administratif"
-msgstr "Administrative"
+msgstr "Administrative file"
 
 #: translations/messages_pybabel.py:2522
 msgid "Éditer les droits de profils"
-msgstr ""
+msgstr "Edit profile rights"
 
 #: translations/messages_pybabel.py:2523
 msgid "Éditer un analyseur"
-msgstr ""
+msgstr "Edit analyser"
 
 #: translations/messages_pybabel.py:2524
 msgid "Éditer un contrôle externe"
-msgstr ""
+msgstr "Edit external control"
 
 #: translations/messages_pybabel.py:2525
-#, fuzzy
 msgid "Éditer un contrôle interne"
-msgstr "Internal medicine"
+msgstr "Edit internal control"
 
 #: translations/messages_pybabel.py:2526
 msgid "Éditer un élément"
-msgstr ""
+msgstr "Edit item"
 
 #: translations/messages_pybabel.py:2527
 msgid "Éditer un équipement"
-msgstr ""
+msgstr "Edit equipment"
 
 #: translations/messages_pybabel.py:2528
-#, fuzzy
 msgid "Éditer un fournisseur"
-msgstr "Supplier reference"
+msgstr "Edit supplier"
 
 #: translations/messages_pybabel.py:2529
 msgid "Éditer un manuel"
-msgstr ""
+msgstr "Edit manual"
 
 #: translations/messages_pybabel.py:2530
 msgid "Éditer un modèle de document"
-msgstr ""
+msgstr "Edit document template"
 
 #: translations/messages_pybabel.py:2531
 msgid "Éditer un personnel"
-msgstr ""
+msgstr "Edit staff"
 
 #: translations/messages_pybabel.py:2532
-#, fuzzy
 msgid "Éditer un prescripteur"
-msgstr "Prescriber"
+msgstr "Edit prescriber"
 
 #: translations/messages_pybabel.py:2533
 msgid "Éditer un produit"
-msgstr ""
+msgstr "Edit product"
 
 #: translations/messages_pybabel.py:2534
 msgid "Éditer une non-conformité"
-msgstr ""
+msgstr "Edit non-conformity"
 
 #: translations/messages_pybabel.py:2535
 msgid "Éditer une plateforme DHIS2 api"
-msgstr ""
+msgstr "Edit DHIS2 API platform"
 
 #: translations/messages_pybabel.py:2536
 msgid "Éditer une procédure"
-msgstr ""
+msgstr "Edit procedure"
 
 #: translations/messages_pybabel.py:2537
 msgid "Éditer une réunion"
-msgstr ""
+msgstr "Edit meeting"
 
 #: translations/messages_pybabel.py:2538
 msgid "Enlever une ligne de stock vide"
-msgstr ""
+msgstr "Remove empty stock line"
 
 #: translations/messages_pybabel.py:2539
 msgid "Enregistrer un résultat"
-msgstr ""
+msgstr "Record a result"
 
 #: translations/messages_pybabel.py:2540
 msgid "Équipement – Métrologie"
-msgstr ""
+msgstr "Equipment – Metrology"
 
 #: translations/messages_pybabel.py:2541
 msgid "Équipement – Panne et réparation"
-msgstr ""
+msgstr "Equipment – Breakdown and repair"
 
 #: translations/messages_pybabel.py:2542
 msgid "Équipement – Document"
-msgstr ""
+msgstr "Equipment – Document"
 
 #: translations/messages_pybabel.py:2543
 msgid "Équipement – Maintenance"
-msgstr ""
+msgstr "Equipment – Maintenance"
 
 #: translations/messages_pybabel.py:2544
 msgid "Équipements"
-msgstr ""
+msgstr "Equipment"
 
 #: translations/messages_pybabel.py:2545
-#, fuzzy
 msgid "État de la facturation journalière"
-msgstr "Billing status, edited on"
+msgstr "Daily billing status"
 
 #: translations/messages_pybabel.py:2546
-#, fuzzy
 msgid "État des prélèvements en cours"
-msgstr "Debit acts"
+msgstr "Current sampling status"
 
 #: translations/messages_pybabel.py:2547
 msgid "Export DHIS2"
-msgstr ""
+msgstr "DHIS2 export"
 
 #: translations/messages_pybabel.py:2548
 msgid "Export WHONET"
-msgstr ""
+msgstr "WHONET export"
 
 #: translations/messages_pybabel.py:2549
 msgid "Export des contrôles externes"
-msgstr ""
+msgstr "External control export"
 
 #: translations/messages_pybabel.py:2550
 msgid "Export des contrôles internes"
-msgstr ""
+msgstr "Internal control export"
 
 #: translations/messages_pybabel.py:2551
 msgid "Export des équipements"
-msgstr ""
+msgstr "Equipment export"
 
 #: translations/messages_pybabel.py:2552
-#, fuzzy
 msgid "Export des fournisseurs"
-msgstr "Supplier reference"
+msgstr "Supplier export"
 
 #: translations/messages_pybabel.py:2553
 msgid "Export des maintenances"
-msgstr ""
+msgstr "Maintenance export"
 
 #: translations/messages_pybabel.py:2554
 msgid "Export des maintenances préventives"
-msgstr ""
+msgstr "Preventive maintenance export"
 
 #: translations/messages_pybabel.py:2555
 msgid "Export des manuels"
-msgstr ""
+msgstr "Manual export"
 
 #: translations/messages_pybabel.py:2556
 msgid "Export des non-conformités"
-msgstr ""
+msgstr "Non-conformity export"
 
 #: translations/messages_pybabel.py:2557
 msgid "Export des pannes et réparations"
-msgstr ""
+msgstr "Breakdown and repair export"
 
 #: translations/messages_pybabel.py:2558
 msgid "Export des personnels"
-msgstr ""
+msgstr "Staff export"
 
 #: translations/messages_pybabel.py:2559
-#, fuzzy
 msgid "Export des prescripteurs"
-msgstr "Prescriber"
+msgstr "Prescriber export"
 
 #: translations/messages_pybabel.py:2560
 msgid "Export des procédures"
-msgstr ""
+msgstr "Procedure export"
 
 #: translations/messages_pybabel.py:2561
 msgid "Export des produits"
-msgstr ""
+msgstr "Product export"
 
 #: translations/messages_pybabel.py:2562
 msgid "Export des résultats de contrôles externes"
-msgstr ""
+msgstr "External control result export"
 
 #: translations/messages_pybabel.py:2563
 msgid "Export des résultats de contrôles internes"
-msgstr ""
+msgstr "Internal control result export"
 
 #: translations/messages_pybabel.py:2564
 msgid "Export des réunions"
-msgstr ""
+msgstr "Meeting export"
 
 #: translations/messages_pybabel.py:2565
-#, fuzzy
 msgid "Fournisseurs"
-msgstr "Supplier reference"
+msgstr "Suppliers"
 
 #: translations/messages_pybabel.py:2566
-#, fuzzy
 msgid "Général"
-msgstr "General practitioner"
+msgstr "General"
 
 #: translations/messages_pybabel.py:2567
 msgid "Gestion des échantillons"
-msgstr ""
+msgstr "Sample management"
 
 #: translations/messages_pybabel.py:2568
-#, fuzzy
 msgid "Gestion des stocks"
-msgstr "Stock manager"
+msgstr "Stock management"
 
 #: translations/messages_pybabel.py:2569
 msgid "Gestion des utilisateurs"
-msgstr ""
+msgstr "User management"
 
 #: translations/messages_pybabel.py:2570
 msgid "Gestion dossier patient"
-msgstr ""
+msgstr "Patient file management"
 
 #: translations/messages_pybabel.py:2571
 msgid "Historique d'analyse"
-msgstr ""
+msgstr "Analysis history"
 
 #: translations/messages_pybabel.py:2572
 msgid "Historique de ce produit"
-msgstr ""
+msgstr "Product history"
 
 #: translations/messages_pybabel.py:2573
 msgid "Historique patient"
-msgstr ""
+msgstr "Patient history"
 
 #: translations/messages_pybabel.py:2574
-#, fuzzy
 msgid "Import de dictionnaire"
-msgstr "Executive meeting"
+msgstr "Dictionary import"
 
 #: translations/messages_pybabel.py:2575
-#, fuzzy
 msgid "Importer des utilisateurs"
-msgstr "Form of yeast"
+msgstr "Import users"
 
 #: translations/messages_pybabel.py:2576
 msgid "Importer le référentiel"
-msgstr ""
+msgstr "Import reference"
 
 #: translations/messages_pybabel.py:2577
 msgid "Indiquer quantité utilisée"
-msgstr ""
+msgstr "Indicate quantity used"
 
 #: translations/messages_pybabel.py:2579
 msgid "Liste de travail biologique"
-msgstr ""
+msgstr "Biological work list"
 
 #: translations/messages_pybabel.py:2580
 msgid "Liste de travail technique"
-msgstr ""
+msgstr "Technical work list"
 
 #: translations/messages_pybabel.py:2581
-#, fuzzy
 msgid "Liste des dossiers"
-msgstr "Pregnancy test"
+msgstr "File list"
 
 #: translations/messages_pybabel.py:2582
-#, fuzzy
 msgid "Manuels"
-msgstr "weeks"
+msgstr "Manuals"
 
 #: translations/messages_pybabel.py:2583
 msgid "Mise en place d'une action correctrice"
-msgstr ""
+msgstr "Implementation of corrective action"
 
 #: translations/messages_pybabel.py:2584
 msgid "Modification code var d'une analyse"
-msgstr ""
+msgstr "Modification of analysis code"
 
 #: translations/messages_pybabel.py:2585
 msgid "Modules non-conformités"
-msgstr ""
+msgstr "Non-conformity modules"
 
 #: translations/messages_pybabel.py:2586
 msgid "Nouvelle demande externe"
-msgstr ""
+msgstr "New external request"
 
 #: translations/messages_pybabel.py:2587
 msgid "Nouvelle demande hospitalisé"
-msgstr ""
+msgstr "New hospitalized request"
 
 #: translations/messages_pybabel.py:2588
 msgid "Paramétrer l'export WHONET sur une analyse"
-msgstr ""
+msgstr "Configure WHONET export for an analysis"
 
 #: translations/messages_pybabel.py:2589
 msgid "Personnels"
-msgstr ""
+msgstr "Staff"
 
 #: translations/messages_pybabel.py:2590
-#, fuzzy
 msgid "Préférences"
-msgstr "References"
+msgstr "Preferences"
 
 #: translations/messages_pybabel.py:2591
-#, fuzzy
 msgid "Prescripteurs"
-msgstr "Prescriber"
+msgstr "Prescribers"
 
 #: translations/messages_pybabel.py:2592
 msgid "Procédures"
-msgstr ""
+msgstr "Procedures"
 
 #: translations/messages_pybabel.py:2593
 msgid "Rapport activité"
-msgstr ""
+msgstr "Activity report"
 
 #: translations/messages_pybabel.py:2594
 msgid "Rapport de fin de journée"
-msgstr ""
+msgstr "End-of-day report"
 
 #: translations/messages_pybabel.py:2595
 msgid "Rapport épidémiologique"
-msgstr ""
+msgstr "Epidemiological report"
 
 #: translations/messages_pybabel.py:2596
 msgid "Rapport global"
-msgstr ""
+msgstr "Global report"
 
 #: translations/messages_pybabel.py:2597
 msgid "Rapport indicateurs"
-msgstr ""
+msgstr "Indicator report"
 
 #: translations/messages_pybabel.py:2598
 msgid "Rapport statistique"
-msgstr ""
+msgstr "Statistical report"
 
 #: translations/messages_pybabel.py:2599
 msgid "Rapport sur le temps de rendu du résultat"
-msgstr ""
+msgstr "Report on result delivery time"
 
 #: translations/messages_pybabel.py:2600
 msgid "Re-télécharger un rapport"
-msgstr ""
+msgstr "Re-download a report"
 
 #: translations/messages_pybabel.py:2601
 msgid "Rééditer un rapport"
-msgstr ""
+msgstr "Re-edit a report"
 
 #: translations/messages_pybabel.py:2602
 msgid "Référentiel des analyses"
-msgstr ""
+msgstr "Analysis reference"
 
 #: translations/messages_pybabel.py:2603
 msgid "Réunion du laboratoire"
-msgstr ""
+msgstr "Laboratory meeting"
 
 #: translations/messages_pybabel.py:2604
 msgid "Saisie des résultats"
-msgstr ""
+msgstr "Result entry"
 
 #: translations/messages_pybabel.py:2605
-#, fuzzy
 msgid "Statut des analyses"
-msgstr "analysis_status"
+msgstr "Analysis status"
 
 #: translations/messages_pybabel.py:2606
 msgid "Suivi de la non-conformité"
-msgstr ""
+msgstr "Non-conformity follow-up"
 
 #: translations/messages_pybabel.py:2607
 msgid "Supprimer fichier équipement"
-msgstr ""
+msgstr "Delete equipment file"
 
 #: translations/messages_pybabel.py:2608
 msgid "Supprimer fichier maintenance"
-msgstr ""
+msgstr "Delete maintenance file"
 
 #: translations/messages_pybabel.py:2609
 msgid "Supprimer fichier maintenance préventive"
-msgstr ""
+msgstr "Delete preventive maintenance file"
 
 #: translations/messages_pybabel.py:2610
 msgid "Supprimer fichier manuel"
-msgstr ""
+msgstr "Delete manual file"
 
 #: translations/messages_pybabel.py:2611
 msgid "Supprimer fichier métrologie ou étalonnage"
-msgstr ""
+msgstr "Delete metrology or calibration file"
 
 #: translations/messages_pybabel.py:2612
 msgid "Supprimer fichier panne ou réparation"
-msgstr ""
+msgstr "Delete breakdown or repair file"
 
 #: translations/messages_pybabel.py:2613
 msgid "Supprimer fichier procédure"
-msgstr ""
+msgstr "Delete procedure file"
 
 #: translations/messages_pybabel.py:2614
 msgid "Supprimer fichier réunion"
-msgstr ""
+msgstr "Delete meeting file"
 
 #: translations/messages_pybabel.py:2615
 msgid "Supprimer un analyseur"
-msgstr ""
+msgstr "Delete analyser"
 
 #: translations/messages_pybabel.py:2616
 msgid "Supprimer un dossier"
-msgstr ""
+msgstr "Delete file"
 
 #: translations/messages_pybabel.py:2617
 msgid "Supprimer un élément"
-msgstr ""
+msgstr "Delete item"
 
 #: translations/messages_pybabel.py:2618
 msgid "Supprimer un équipement"
-msgstr ""
+msgstr "Delete equipment"
 
 #: translations/messages_pybabel.py:2619
-#, fuzzy
 msgid "Supprimer un fournisseur"
-msgstr "Supplier reference"
+msgstr "Delete supplier"
 
 #: translations/messages_pybabel.py:2620
 msgid "Supprimer un laboratoire"
-msgstr ""
+msgstr "Delete laboratory"
 
 #: translations/messages_pybabel.py:2621
 msgid "Supprimer un manuel"
-msgstr ""
+msgstr "Delete manual"
 
 #: translations/messages_pybabel.py:2622
 msgid "Supprimer un modèle de document"
-msgstr ""
+msgstr "Delete document template"
 
 #: translations/messages_pybabel.py:2623
-#, fuzzy
 msgid "Supprimer un prescripteur"
-msgstr "Neighborhood / Sector"
+msgstr "Delete prescriber"
 
 #: translations/messages_pybabel.py:2624
 msgid "Supprimer un produit"
-msgstr ""
+msgstr "Delete product"
 
 #: translations/messages_pybabel.py:2625
 msgid "Supprimer une maintenance"
-msgstr ""
+msgstr "Delete maintenance"
 
 #: translations/messages_pybabel.py:2626
 msgid "Supprimer une maintenance préventive"
-msgstr ""
+msgstr "Delete preventive maintenance"
 
 #: translations/messages_pybabel.py:2627
 msgid "Supprimer une non-conformité"
-msgstr ""
+msgstr "Delete non-conformity"
 
 #: translations/messages_pybabel.py:2628
 msgid "Supprimer une panne ou réparation"
-msgstr ""
+msgstr "Delete breakdown or repair"
 
 #: translations/messages_pybabel.py:2629
 msgid "Supprimer une pièce jointe au dossier"
-msgstr ""
+msgstr "Delete attached file from the file"
 
 #: translations/messages_pybabel.py:2630
 msgid "Supprimer une plateforme DHIS2 api"
-msgstr ""
+msgstr "Delete DHIS2 API platform"
 
 #: translations/messages_pybabel.py:2631
 msgid "Supprimer une procédure"
-msgstr ""
+msgstr "Delete procedure"
 
 #: translations/messages_pybabel.py:2632
 msgid "Supprimer une réunion"
-msgstr ""
+msgstr "Delete meeting"
 
 #: translations/messages_pybabel.py:2633
 msgid "Tableau consultation des procédures"
-msgstr ""
+msgstr "Procedure consultation table"
 
 #: translations/messages_pybabel.py:2634
 msgid "Tableau croisé dynamique"
-msgstr ""
+msgstr "Pivot table"
 
 #: translations/messages_pybabel.py:2635
 msgid "Télécharger étiquette dossier"
-msgstr ""
+msgstr "Download file label"
 
 #: translations/messages_pybabel.py:2636
 msgid "Télécharger la facture"
-msgstr ""
+msgstr "Download invoice"
 
 #: translations/messages_pybabel.py:2637
-#, fuzzy
 msgid "Télécharger le bon de transfert"
-msgstr "Transfer voucher"
+msgstr "Download transfer slip"
 
 #: translations/messages_pybabel.py:2638
 msgid "Télécharger un organigramme"
-msgstr ""
+msgstr "Download organizational chart"
 
 #: translations/messages_pybabel.py:2639
 msgid "Télécharger une feuille de paillasse"
-msgstr ""
+msgstr "Download workbench sheet"
 
 #: translations/messages_pybabel.py:2640
 msgid "Télécharger une pièce jointe au dossier"
-msgstr ""
+msgstr "Download attached file from the file"
 
 #: translations/messages_pybabel.py:2641
 msgid "Tester un modèle de document"
-msgstr ""
+msgstr "Test document template"
 
 #: translations/messages_pybabel.py:2642
-#, fuzzy
 msgid "Validation biologique"
-msgstr "Biologically validated"
+msgstr "Biological validation"
 
 #: translations/messages_pybabel.py:2643
-#, fuzzy
 msgid "Validation biologique groupée"
-msgstr "Biologically validated"
+msgstr "Grouped biological validation"
 
 #: translations/messages_pybabel.py:2644
-#, fuzzy
 msgid "Validation technique"
-msgstr "Technically validated"
+msgstr "Technical validation"
 

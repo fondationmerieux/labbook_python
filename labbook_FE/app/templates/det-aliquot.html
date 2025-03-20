@@ -293,16 +293,17 @@ let type   = document.getElementById("sal_type").value;
     if (!id_pat || id_pat == "0") 
     {
         alert("{{ _("Un patient doit être sélectionné.") }}");
-        return false;
+        return;
     }
 
     if (type == "0") 
     {
         alert("{{ _("Le produit pathologique est obligatoire.") }}");
-        return false;
+        return;
     }
 
 let aliquots = [];
+let hasError = false;
 
     document.querySelectorAll(".aliquot_form").forEach(form => 
     {
@@ -311,9 +312,23 @@ let aliquots = [];
         let in_stock = form.querySelector(".in_stock").checked ? "Y" : "N";
         let box = form.querySelector(".box").value;
 
-        if (!box || box == "0") {
+        if (!box || box == "0") 
+        {
             alert("{{ _("L'association à une boîte est obligatoire.") }}");
-            return false;
+            hasError = true;
+            return;
+        }
+
+        if (!coord) 
+        {
+            alert("{{ _("Les coordonnées sont obligatoires.") }}");
+            hasError = true;
+            return;
+        }
+
+        if (hasError) 
+        {
+            return;
         }
 
         let aliquotData = {
@@ -329,6 +344,11 @@ let aliquots = [];
 
         aliquots.push(aliquotData) ;
     } ) ;
+
+    if (hasError) 
+    {
+        return;
+    }
 
     fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/" + {{ args['id_item']|safe}}, {
         method: "POST",

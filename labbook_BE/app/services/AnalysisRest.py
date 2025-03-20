@@ -499,6 +499,8 @@ class AnalysisDet(Resource):
                                                      type_res=var['var_type_res'],
                                                      var_min=var['var_min'],
                                                      var_max=var['var_max'],
+                                                     var_show_minmax=var['var_show_minmax'],
+                                                     var_highlight=var['var_highlight'],
                                                      comment=var['var_comment'],
                                                      formula=var['var_formula'],
                                                      unit=var['var_unit'],
@@ -1113,7 +1115,7 @@ class AnalysisImport(Resource):
         version = l_rows[0][0]
 
         # check version
-        if version not in ('v3','v4','v5'):
+        if version not in ('v3', 'v4', 'v5'):
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version : ' + str(version))
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             return compose_ret('', Constants.cst_content_type_json, 409)

@@ -2,7 +2,6 @@
 import os
 import logging
 import tomli
-import json
 
 from app.models.Constants import Constants
 from app.models.Logs import Logs
@@ -15,7 +14,6 @@ class Form:
     html_var = ''
     json_var = {}
 
-
     @staticmethod
     def build_form(type_form, filename, lang='fr'):
         dirpath = Constants.cst_form_pat
@@ -24,7 +22,7 @@ class Form:
 
         Form.html_content = ''
         Form.html_var = ''
-        Form.json_var = { 'id_user' : 'id_user' }
+        Form.json_var = { 'id_user': 'id_user'}
 
         l_obj_html = {}
 
@@ -58,7 +56,7 @@ class Form:
 
                                 if attr_name == "required":
                                     required = True
-                                
+
                                 l_attr.append(attr_pair)
 
                     l_obj_html[elem['labbook_ref']] = Form.build_labbook_elem(elem['labbook_ref'], l_attr)
@@ -91,7 +89,7 @@ class Form:
 
                                     if attr_name == "required":
                                         required = True
-                                    
+
                                     l_attr.append(attr_pair)
 
                         # Form.log.info(Logs.fileline() + ' : DEBUG l_attr = ' + str(l_attr))
@@ -136,9 +134,9 @@ class Form:
         elem = ''
 
         if type in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-            elem = '<' + type + ' id="' + str(id) + '" class="fw-bold">' + str(label) + '</' +type + '>'
+            elem = '<' + type + ' id="' + str(id) + '" class="fw-bold">' + str(label) + '</' + type + '>'
         else:
-            elem = '<' + type + ' id="' + str(id) + '" class="mt-2">' + str(label) + '</' +type + '>'
+            elem = '<' + type + ' id="' + str(id) + '" class="mt-2">' + str(label) + '</' + type + '>'
 
         return elem
 
@@ -147,9 +145,9 @@ class Form:
         elem = ''
 
         if id in ('pat_ano', 'pat_code_lab', 'pat_code', 'pat_name', 'pat_midname', 'pat_maiden', 'pat_firstname',
-           'pat_sex', 'pat_birth','pat_birth_approx', 'pat_age', 'pat_age_unit', 'pat_nationality', 'pat_resident',
-           'pat_blood_group', 'pat_blood_rhesus', 'pat_address', 'pat_phone1', 'pat_phone2', 'pat_profession',
-           'search_zipcity', 'pat_pbox', 'pat_district', 'pat_zipcode', 'pat_city')  :
+                  'pat_sex', 'pat_birth', 'pat_birth_approx', 'pat_age', 'pat_age_unit', 'pat_nationality', 'pat_resident',
+                  'pat_blood_group', 'pat_blood_rhesus', 'pat_address', 'pat_phone1', 'pat_phone2', 'pat_profession',
+                  'search_zipcity', 'pat_pbox', 'pat_district', 'pat_zipcode', 'pat_city'):
             elem = '{% include "elem/' + id + '.html" %}'
 
         if l_attr:
@@ -236,7 +234,7 @@ class Form:
     def build_js_data(id, type, required):
         if type in ('text', 'number', 'date', 'datetime-local', 'select'):
             Form.html_var += 'var ' + str(id) + ' = $("#' + str(id) + '").val() ;\n'
-            
+
             if id in ('pat_phone1', 'pat_phone2'):
                 Form.html_var += str(id) + ' = ' + str(id) + '.replaceAll(" ", "") ;\n'
         elif type in ('radio'):

@@ -1515,7 +1515,7 @@ class Quality:
 
                'LEFT JOIN sample_destock ON sad_aliquot = sal_ser AND %s = "N" '
 
-               'WHERE sal_in_stock=%s')
+               'WHERE sal_in_stock=%s order by sal_date desc')
 
         # Exécution de la requête
         cursor.execute(req, (in_stock, in_stock, in_stock, in_stock, in_stock, in_stock))
@@ -2002,7 +2002,7 @@ class Quality:
 
         req = ('select id_data ,id_owner, fournisseur_nom as supplier, contact_nom as lastname, '
                'contact_prenom as firstname, contact_fonction as funct, contact_tel as phone, '
-               'contact_email as email, fournisseur_adresse as address, supp_critical '
+               'contact_email as email, fournisseur_adresse as address, supp_critical, '
                'contact_mobile as mobile, contact_fax as fax, commentaire as comment '
                'from sigl_fournisseurs_data '
                'where id_data=%s')

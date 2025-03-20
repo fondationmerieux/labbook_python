@@ -1,23 +1,51 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  Labbook_BE\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 14:38+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ar\n"
-"Language-Team: ar <LL@li.org>\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
-"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_BE\n"
+"Language: ar\n"
 
+#. A word for the record PDF
 #: models/File.py:515
 msgid "DUPLICATA"
 msgstr "نسخة مكررة"
+
+#. A word for the record PDF
+#: models/Pdf.py:69
+msgid "N° quittance"
+msgstr "رقم إيصال"
+
+#. A word for the record PDF
+#: models/Pdf.py:2789
+msgid "Analyses demandées"
+msgstr "التحليلات المطلوبة"
+
+#: models/Pdf.py:1596 models/Pdf.py:2578 models/Pdf.py:2592 models/Pdf.py:3152
+#: models/Pdf.py:3168
+msgid "Sous-traitée"
+msgstr "نسخة مكررة"
+
+#: models/Pdf.py:100 models/Pdf.py:2787
+msgid "Total"
+msgstr "مجموع"
+
+#: models/Pdf.py:2788
+msgid "Total à payer"
+msgstr "مجموع للدفع"
+
+#: models/Pdf.py:68 models/Pdf.py:211
+msgid "N° dossier"
+msgstr "رقم الملف"
+
+#: models/Pdf.py:1092 models/Pdf.py:2201 models/Pdf.py:2780
+msgid "édité le"
+msgstr "تحريره"
+
+#: models/Pdf.py:116
+msgid "Page"
+msgstr "صفحة"
 
 #: models/Pdf.py:63
 msgid "ETAT DE LA FACTURATION DU"
@@ -26,14 +54,6 @@ msgstr "حالة الفواتير من"
 #: models/Pdf.py:63
 msgid "AU"
 msgstr "إلى"
-
-#: models/Pdf.py:68 models/Pdf.py:211
-msgid "N° dossier"
-msgstr "رقم الملف"
-
-#: models/Pdf.py:69
-msgid "N° quittance"
-msgstr "رقم إيصال"
 
 #: models/Pdf.py:70
 msgid "N° facture"
@@ -47,33 +67,9 @@ msgstr "سعر"
 msgid "A payer"
 msgstr "للدفع"
 
-#: models/Pdf.py:100 models/Pdf.py:2787
-msgid "Total"
-msgstr "مجموع"
-
 #: models/Pdf.py:114
 msgid "Etat de la facturation, édité le"
 msgstr "حالة الفواتير ، منشورة على"
-
-#: models/Pdf.py:116
-msgid "Page"
-msgstr "صفحة"
-
-#: models/Pdf.py:210
-msgid "Date"
-msgstr ""
-
-#: models/Pdf.py:212
-msgid "Famille"
-msgstr ""
-
-#: models/Pdf.py:213 translations/messages_pybabel.py:305
-msgid "Analyse"
-msgstr ""
-
-#: models/Pdf.py:214
-msgid "Validation"
-msgstr ""
 
 #: models/Pdf.py:567 models/Pdf.py:1080 models/Pdf.py:2189 models/Pdf.py:2768
 msgid "Tél"
@@ -87,44 +83,11 @@ msgstr "فاكس"
 msgid "Email"
 msgstr "بريد الالكتروني"
 
-#: models/Pdf.py:800 models/Pdf.py:1317 models/Pdf.py:2384 models/Pdf.py:2994
-#: translations/messages_pybabel.py:597
-msgid "Inconnu"
-msgstr "مجهول"
-
-#: models/Pdf.py:847 models/Pdf.py:859 models/Pdf.py:992 models/Pdf.py:1364
-#: models/Pdf.py:1376 models/Pdf.py:2431 models/Pdf.py:2443 models/Pdf.py:3041
-#: models/Pdf.py:3053
-msgid "ans"
-msgstr "أعوام"
-
-#: models/Pdf.py:850 models/Pdf.py:871 models/Pdf.py:1367 models/Pdf.py:1388
-#: models/Pdf.py:2434 models/Pdf.py:2455 models/Pdf.py:3044 models/Pdf.py:3065
-msgid "jours"
-msgstr "أيام"
-
-#: models/Pdf.py:854 models/Pdf.py:863 models/Pdf.py:1371 models/Pdf.py:1380
-#: models/Pdf.py:2438 models/Pdf.py:2447 models/Pdf.py:3048 models/Pdf.py:3057
-msgid "mois"
-msgstr "شهر"
-
-#: models/Pdf.py:867 models/Pdf.py:1384 models/Pdf.py:2451 models/Pdf.py:3061
-msgid "semaines"
-msgstr "أسابيع"
-
-#: models/Pdf.py:875 models/Pdf.py:995 models/Pdf.py:1392 models/Pdf.py:2459
-#: models/Pdf.py:3069 translations/messages_pybabel.py:598
-msgid "Masculin"
-msgstr "ذكر"
-
-#: models/Pdf.py:877 models/Pdf.py:1394 models/Pdf.py:2461 models/Pdf.py:3071
-msgid "Feminin"
-msgstr "المؤنث"
-
 #: models/Pdf.py:1083 models/Pdf.py:2192 models/Pdf.py:2771
 msgid "Dossier"
 msgstr "قضية"
 
+#. A word for the record PDF
 #: models/Pdf.py:1084 models/Pdf.py:2193 models/Pdf.py:2772
 msgid "Code"
 msgstr " رمز "
@@ -156,10 +119,6 @@ msgstr "الفحص الموصوف"
 #: models/Pdf.py:1091 models/Pdf.py:2200 models/Pdf.py:2779
 msgid "Enregistré le"
 msgstr "مسجلة على"
-
-#: models/Pdf.py:1092 models/Pdf.py:2201 models/Pdf.py:2780
-msgid "édité le"
-msgstr "تحريره"
 
 #: models/Pdf.py:1093 models/Pdf.py:2202 models/Pdf.py:2781
 msgid "ANALYSE"
@@ -197,6 +156,7 @@ msgstr "ممتلىء"
 msgid "PARTIEL"
 msgstr "جزئي"
 
+#. A word for the record PDF
 #: models/Pdf.py:1161
 msgid "Annule et remplace le précédent"
 msgstr "إلغاء واستبدال السابق"
@@ -210,11 +170,44 @@ msgstr ""
 msgid "Renseignements cliniques"
 msgstr "المعلومات الطبيه"
 
-#: models/Pdf.py:1596 models/Pdf.py:2578 models/Pdf.py:2592 models/Pdf.py:3152
-#: models/Pdf.py:3168
-msgid "Sous-traitée"
-msgstr "نسخة مكررة"
+#: models/Pdf.py:800 models/Pdf.py:1317 models/Pdf.py:2384 models/Pdf.py:2994
+#: translations/messages_pybabel.py:597
+msgid "Inconnu"
+msgstr "مجهول"
 
+#. A word for the record PDF
+#: models/Pdf.py:847 models/Pdf.py:859 models/Pdf.py:992 models/Pdf.py:1364
+#: models/Pdf.py:1376 models/Pdf.py:2431 models/Pdf.py:2443 models/Pdf.py:3041
+#: models/Pdf.py:3053
+msgid "ans"
+msgstr "أعوام"
+
+#. A word for the record PDF
+#: models/Pdf.py:850 models/Pdf.py:871 models/Pdf.py:1367 models/Pdf.py:1388
+#: models/Pdf.py:2434 models/Pdf.py:2455 models/Pdf.py:3044 models/Pdf.py:3065
+msgid "jours"
+msgstr "أيام"
+
+#: models/Pdf.py:854 models/Pdf.py:863 models/Pdf.py:1371 models/Pdf.py:1380
+#: models/Pdf.py:2438 models/Pdf.py:2447 models/Pdf.py:3048 models/Pdf.py:3057
+msgid "mois"
+msgstr "شهر"
+
+#. A word for the record PDF
+#: models/Pdf.py:867 models/Pdf.py:1384 models/Pdf.py:2451 models/Pdf.py:3061
+msgid "semaines"
+msgstr "أسابيع"
+
+#: models/Pdf.py:875 models/Pdf.py:995 models/Pdf.py:1392 models/Pdf.py:2459
+#: models/Pdf.py:3069 translations/messages_pybabel.py:598
+msgid "Masculin"
+msgstr "ذكر"
+
+#: models/Pdf.py:877 models/Pdf.py:1394 models/Pdf.py:2461 models/Pdf.py:3071
+msgid "Feminin"
+msgstr "المؤنث"
+
+#. A word for the record PDF
 #: models/Pdf.py:1681 models/Pdf.py:1691 models/Pdf.py:1701 models/Pdf.py:1711
 msgid "Annulée"
 msgstr "إلغاء"
@@ -257,38 +250,6 @@ msgstr ""
 msgid "Bon de transfert"
 msgstr "قسيمة تحويل"
 
-#: models/Pdf.py:2788
-msgid "Total à payer"
-msgstr "مجموع للدفع"
-
-#: models/Pdf.py:2789
-msgid "Analyses demandées"
-msgstr "التحليلات المطلوبة"
-
-#: models/Pdf.py:2790
-msgid "Remise sur la facturation"
-msgstr ""
-
-#: models/Pdf.py:2791
-msgid "Pourcentage de la remise"
-msgstr ""
-
-#: models/Pdf.py:2792
-msgid "Pourcentage assurance maladie / mutuelle"
-msgstr ""
-
-#: models/Pdf.py:2825 translations/messages_pybabel.py:293
-msgid "Facture"
-msgstr ""
-
-#: models/Pdf.py:2858 translations/messages_pybabel.py:577
-msgid "Personnel hospitalier"
-msgstr ""
-
-#: models/Pdf.py:3165 translations/messages_pybabel.py:1078
-msgid "Détermination du groupe sanguin ABO et Rhésus standard (D)"
-msgstr ""
-
 #: services/ExportRest.py:779 translations/messages_pybabel.py:528
 msgid "Années"
 msgstr "سنوات"
@@ -298,21 +259,15 @@ msgstr "سنوات"
 msgid "Mois"
 msgstr "شهر"
 
+#. A word for the WHONET export
 #: services/ExportRest.py:783 translations/messages_pybabel.py:531
 msgid "Semaines"
 msgstr "أسابيع"
 
+#. A word for the WHONET export
 #: services/ExportRest.py:785 translations/messages_pybabel.py:529
 msgid "Jours"
 msgstr "أيام"
-
-#: services/QualityRest.py:1452
-msgid "Pannes"
-msgstr "الأعطال"
-
-#: services/QualityRest.py:1454
-msgid "Réparations"
-msgstr "الإصلاحات"
 
 #: services/ResultRest.py:106 services/ResultRest.py:236
 msgid "validation"
@@ -612,10 +567,6 @@ msgstr ""
 
 #: translations/messages_pybabel.py:81
 msgid "yorn"
-msgstr ""
-
-#: translations/messages_pybabel.py:82
-msgid "pathogène"
 msgstr ""
 
 #: translations/messages_pybabel.py:87
@@ -1423,6 +1374,10 @@ msgstr ""
 msgid "Code bar"
 msgstr ""
 
+#: models/Pdf.py:2825 translations/messages_pybabel.py:293
+msgid "Facture"
+msgstr ""
+
 #: translations/messages_pybabel.py:294 translations/messages_pybabel.py:527
 #: translations/messages_pybabel.py:832
 msgid "Non"
@@ -1468,6 +1423,10 @@ msgstr ""
 
 #: translations/messages_pybabel.py:304
 msgid "Vivax"
+msgstr ""
+
+#: models/Pdf.py:213 translations/messages_pybabel.py:305
+msgid "Analyse"
 msgstr ""
 
 #: translations/messages_pybabel.py:306 translations/messages_pybabel.py:594
@@ -1631,9 +1590,7 @@ msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positi
 msgstr ""
 
 #: translations/messages_pybabel.py:397
-msgid ""
-"bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, "
-"levures"
+msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, levures"
 msgstr ""
 
 #: translations/messages_pybabel.py:398
@@ -2197,10 +2154,6 @@ msgstr "الجودة"
 msgid "Secrétaire"
 msgstr "سكرتير"
 
-#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2310
-msgid "Secrétaire avancé"
-msgstr ""
-
 #: translations/messages_pybabel.py:569 translations/messages_pybabel.py:2306
 msgid "Technicien"
 msgstr "تقني"
@@ -2223,6 +2176,10 @@ msgstr ""
 
 #: translations/messages_pybabel.py:576
 msgid "Exonération"
+msgstr ""
+
+#: models/Pdf.py:2858 translations/messages_pybabel.py:577
+msgid "Personnel hospitalier"
 msgstr ""
 
 #: translations/messages_pybabel.py:578
@@ -3264,9 +3221,7 @@ msgid "Fer sérique"
 msgstr ""
 
 #: translations/messages_pybabel.py:936
-msgid ""
-"Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, "
-"protéines)"
+msgid "Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, protéines)"
 msgstr ""
 
 #: translations/messages_pybabel.py:937
@@ -3832,9 +3787,11 @@ msgid "Temps de Thrombine (TT)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1077 translations/messages_pybabel.py:2214
-msgid ""
-"Titrage des Produits de Dégradation de la Fibrine  et/ ou du "
-"Fibrinogène(PDF)"
+msgid "Titrage des Produits de Dégradation de la Fibrine  et/ ou du Fibrinogène(PDF)"
+msgstr ""
+
+#: models/Pdf.py:3165 translations/messages_pybabel.py:1078
+msgid "Détermination du groupe sanguin ABO et Rhésus standard (D)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1079
@@ -3846,9 +3803,7 @@ msgid "Autres antigènes érythrocytaires"
 msgstr ""
 
 #: translations/messages_pybabel.py:1081
-msgid ""
-"Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins "
-"11hématies tests"
+msgid "Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins 11hématies tests"
 msgstr ""
 
 #: translations/messages_pybabel.py:1082 translations/messages_pybabel.py:2193
@@ -4088,9 +4043,7 @@ msgid "Identification des IgE spécifiques individuelles : Un seul allergène"
 msgstr ""
 
 #: translations/messages_pybabel.py:1139
-msgid ""
-"Identification des IgE spécifiques individuelles : Deux ou trois "
-"allergènes"
+msgid "Identification des IgE spécifiques individuelles : Deux ou trois allergènes"
 msgstr ""
 
 #: translations/messages_pybabel.py:1140 translations/messages_pybabel.py:1789
@@ -4106,9 +4059,7 @@ msgid "Dosage des IgA dans le sang, le LCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1143
-msgid ""
-"Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
+msgid "Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide amniotique)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1144 translations/messages_pybabel.py:2123
@@ -4120,9 +4071,7 @@ msgid "Recherche et titrage de l'Antigène Prostatique Spécifique (PSA)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1146 translations/messages_pybabel.py:2124
-msgid ""
-"Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA "
-"libre)"
+msgid "Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA libre)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1147
@@ -4237,9 +4186,7 @@ msgid "Examen direct des liquides d'épanchements ou de ponction"
 msgstr ""
 
 #: translations/messages_pybabel.py:1174
-msgid ""
-"Examen cytologique des liquides de ponction (numération et formule "
-"leucocytaire)"
+msgid "Examen cytologique des liquides de ponction (numération et formule leucocytaire)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1175 translations/messages_pybabel.py:2120
@@ -4259,9 +4206,7 @@ msgid "Test post-coïtal (test de Huhner)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1179 translations/messages_pybabel.py:2079
-msgid ""
-"Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou "
-"anéjaculation"
+msgid "Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou anéjaculation"
 msgstr ""
 
 #: translations/messages_pybabel.py:1180 translations/messages_pybabel.py:1687
@@ -4351,21 +4296,15 @@ msgid "Arsenic"
 msgstr ""
 
 #: translations/messages_pybabel.py:1201
-msgid ""
-"Test sérologique unitaire qualitatif de recherche des anticorps dirigés "
-"contre des antigènes du virus SARS-CoV-2"
+msgid "Test sérologique unitaire qualitatif de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1202
-msgid ""
-"Test sérologique quantitatif automatisable de recherche des anticorps "
-"dirigés contre des antigènes du virus SARS-CoV-2"
+msgid "Test sérologique quantitatif automatisable de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1203
-msgid ""
-"Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-"
-"CoV-2"
+msgid "Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-CoV-2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1204 translations/messages_pybabel.py:1546
@@ -4498,15 +4437,11 @@ msgid "Céfixime"
 msgstr ""
 
 #: translations/messages_pybabel.py:1231
-msgid ""
-"Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse "
-"Transcriptase Polymerase Chain Reaction)"
+msgid "Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse Transcriptase Polymerase Chain Reaction)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1232
-msgid ""
-"Recherche qualitative du génome du virus SARS-CoV-2 par Reverse "
-"Transcriptase Loop-mediated isothermal AMPlification"
+msgid "Recherche qualitative du génome du virus SARS-CoV-2 par Reverse Transcriptase Loop-mediated isothermal AMPlification"
 msgstr ""
 
 #: translations/messages_pybabel.py:1233 translations/messages_pybabel.py:1576
@@ -5146,9 +5081,7 @@ msgid "Diagnostic moléculaire du bacille de l'anthrax par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1388
-msgid ""
-"Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement "
-"sanguin"
+msgid "Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement sanguin"
 msgstr ""
 
 #: translations/messages_pybabel.py:1389
@@ -5176,33 +5109,23 @@ msgid "Culture liquide des mycobatéries"
 msgstr ""
 
 #: translations/messages_pybabel.py:1396
-msgid ""
-"Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-"
-"PCR"
+msgid "Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1397
-msgid ""
-"Recherche par prélèvement buccal de l'ADN viral de la maladie à virus "
-"Ebola par RT-PCR"
+msgid "Recherche par prélèvement buccal de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1398
-msgid ""
-"Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1399
-msgid ""
-"Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1400
-msgid ""
-"Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1401
@@ -5322,29 +5245,15 @@ msgid "Avec détermination des pourcentages, dosage des protéines totales"
 msgstr ""
 
 #: translations/messages_pybabel.py:1436
-msgid ""
-"Avec deux épreuves (globulaire et sérique) effectuées par deux "
-"techniciens différents avec deux lots de réactifs différents."
+msgid "Avec deux épreuves (globulaire et sérique) effectuées par deux techniciens différents avec deux lots de réactifs différents."
 msgstr ""
 
 #: translations/messages_pybabel.py:1437
-msgid ""
-"Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la "
-"viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 "
-"mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de "
-"cellules rondes, recherche d'une agglutination spontanée, numération des "
-"formes anormales en détaillant les anomalies de la tête, de la pièce "
-"intermédiaire et du flagelle en mentionnant l'index des anomalies "
-"multiples."
+msgid "Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de cellules rondes, recherche d'une agglutination spontanée, numération des formes anormales en détaillant les anomalies de la tête, de la pièce intermédiaire et du flagelle en mentionnant l'index des anomalies multiples."
 msgstr ""
 
 #: translations/messages_pybabel.py:1438
-msgid ""
-"Comprend: numération des hématies, des leucocytes et des plaquettes/ "
-"dosage de l'hémoglobine, mesure de l'hématocrite, détermination des "
-"constantes érythrocytaires et de la formule leucocytaire complète "
-"(automatique ou manuelle), comprend également un contrôle sur frottis "
-"sanguin en cas d'anomalie."
+msgid "Comprend: numération des hématies, des leucocytes et des plaquettes/ dosage de l'hémoglobine, mesure de l'hématocrite, détermination des constantes érythrocytaires et de la formule leucocytaire complète (automatique ou manuelle), comprend également un contrôle sur frottis sanguin en cas d'anomalie."
 msgstr ""
 
 #: translations/messages_pybabel.py:1439
@@ -5356,23 +5265,15 @@ msgid "Cotation pour chaque facteur."
 msgstr ""
 
 #: translations/messages_pybabel.py:1441
-msgid ""
-"En cas de réaction positive au RPR  et au TPHA, un titrage doit être "
-"pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou "
-"les techniques utilisées avec leur seuil de sensibilité."
+msgid "En cas de réaction positive au RPR  et au TPHA, un titrage doit être pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
 msgstr ""
 
 #: translations/messages_pybabel.py:1442
-msgid ""
-"La culture comprend : examen microscopique direct, isolement avec "
-"éventuellement identification complète de (s) germe(s) et antibiogramme."
+msgid "La culture comprend : examen microscopique direct, isolement avec éventuellement identification complète de (s) germe(s) et antibiogramme."
 msgstr ""
 
 #: translations/messages_pybabel.py:1443
-msgid ""
-"Le compte rendu comportera le jour du cycle, le temps écoulé après "
-"rapport sexuel, la qualité de la glaire (abondance, filance et "
-"transparence) le nombre et la mobilité des spermatozoïdes par champ."
+msgid "Le compte rendu comportera le jour du cycle, le temps écoulé après rapport sexuel, la qualité de la glaire (abondance, filance et transparence) le nombre et la mobilité des spermatozoïdes par champ."
 msgstr ""
 
 #: translations/messages_pybabel.py:1444
@@ -5380,13 +5281,7 @@ msgid "Le compte rendu doit mentionner la ou les techniques utilisées."
 msgstr ""
 
 #: translations/messages_pybabel.py:1445
-msgid ""
-"Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la "
-"technique et le nombre de copies ou d'équivalent copies par ml de plasma,"
-" - Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
+msgid "Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la technique et le nombre de copies ou d'équivalent copies par ml de plasma, - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
 msgstr ""
 
 #: translations/messages_pybabel.py:1446
@@ -5394,48 +5289,31 @@ msgid "Par prélèvement."
 msgstr ""
 
 #: translations/messages_pybabel.py:1447
-msgid ""
-"Recherche d'un antigène du SARS-CoV-2, recherche par tests non "
-"automatisable de type immunochromatographique ciblant l'antigène ... du "
-"SARS-CoV-2 (dépend du kit utilisé)"
+msgid "Recherche d'un antigène du SARS-CoV-2, recherche par tests non automatisable de type immunochromatographique ciblant l'antigène ... du SARS-CoV-2 (dépend du kit utilisé)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1448
-msgid ""
-"Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests"
-" immunochromatographiques"
+msgid "Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests immunochromatographiques"
 msgstr ""
 
 #: translations/messages_pybabel.py:1449
-msgid ""
-"Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgid "Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1450
-msgid ""
-"Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgid "Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1451
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
 msgstr ""
 
 #: translations/messages_pybabel.py:1452
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
 msgstr ""
 
 #: translations/messages_pybabel.py:1453
-msgid ""
-"Recherche et titrage éventuels des anticorps dirigés contre le SARS-"
-"CoV-2, recherche par tests automatisables de type ELISA/ELFA"
+msgid "Recherche et titrage éventuels des anticorps dirigés contre le SARS-CoV-2, recherche par tests automatisables de type ELISA/ELFA"
 msgstr ""
 
 #: translations/messages_pybabel.py:1460
@@ -6602,9 +6480,7 @@ msgid "Recherche du bacille de l'anthrax par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:2122
-msgid ""
-"Recherche et titrage de a foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
+msgid "Recherche et titrage de a foetoprotéine (dans le sérum ou liquide amniotique)"
 msgstr ""
 
 #: translations/messages_pybabel.py:2126
@@ -6860,9 +6736,7 @@ msgid "Normales : Enfant : 0.5 - 3.5 / Adultes : 1.5 - 5.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2265
-msgid ""
-"0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - "
-"60 ans: 34 - 48"
+msgid "0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - 60 ans: 34 - 48"
 msgstr ""
 
 #: translations/messages_pybabel.py:2266
@@ -6874,15 +6748,11 @@ msgid "0 CFU/100 ml"
 msgstr ""
 
 #: translations/messages_pybabel.py:2268
-msgid ""
-"1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   "
-"femme : 45 - 103   homme : 55 - 120"
+msgid "1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   femme : 45 - 103   homme : 55 - 120"
 msgstr ""
 
 #: translations/messages_pybabel.py:2270
-msgid ""
-"DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: "
-"Indeterminé"
+msgid "DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: Indeterminé"
 msgstr ""
 
 #: translations/messages_pybabel.py:2271
@@ -6914,9 +6784,7 @@ msgid "Méthode électrométrique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2278
-msgid ""
-"Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0"
-" - 17.0"
+msgid "Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0 - 17.0"
 msgstr ""
 
 #: translations/messages_pybabel.py:2279
@@ -6964,9 +6832,7 @@ msgid "prématuré : 1.10 - 8.90   < 1 an : 1.40 - 6.80   enfant: 1.80 - 6.40"
 msgstr ""
 
 #: translations/messages_pybabel.py:2290
-msgid ""
-"prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - "
-"2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
+msgid "prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - 2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
 msgstr ""
 
 #: translations/messages_pybabel.py:2291
@@ -6974,9 +6840,7 @@ msgid "Recherche de l'ADN du bacillus anthracis par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:2292
-msgid ""
-"Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: "
-"Flore de vaginose bacterienne"
+msgid "Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: Flore de vaginose bacterienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2293
@@ -7009,535 +6873,527 @@ msgstr ""
 
 #: translations/messages_pybabel.py:2313
 msgid "Gestionnaire de stock"
-msgstr ""
-
-#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
-msgid "Laboratoire"
-msgstr ""
-
-#: translations/messages_pybabel.py:2315
-msgid "Préleveur"
-msgstr ""
+msgstr "مسير المخزن"
 
 #: translations/messages_pybabel.py:2320
 msgid "Algérienne"
-msgstr ""
+msgstr "جزائرية"
 
 #: translations/messages_pybabel.py:2321
 msgid "Allemande"
-msgstr ""
+msgstr "ألمانية"
 
 #: translations/messages_pybabel.py:2322
 msgid "Américaine"
-msgstr ""
+msgstr "أمريكية"
 
 #: translations/messages_pybabel.py:2323
 msgid "Angolaise"
-msgstr ""
+msgstr "أنغولية"
 
 #: translations/messages_pybabel.py:2324
 msgid "Argentine"
-msgstr ""
+msgstr "أرجنتينية"
 
 #: translations/messages_pybabel.py:2325
 msgid "Arménienne"
-msgstr ""
+msgstr "أرمينية"
 
 #: translations/messages_pybabel.py:2326
 msgid "Australienne"
-msgstr ""
+msgstr "أسترالية"
 
 #: translations/messages_pybabel.py:2327
 msgid "Autrichienne"
-msgstr ""
+msgstr "نمساوية"
 
 #: translations/messages_pybabel.py:2328
 msgid "Bahamienne"
-msgstr ""
+msgstr "بهامية"
 
 #: translations/messages_pybabel.py:2329
 msgid "Bangladaise"
-msgstr ""
+msgstr "بنغلاديشية"
 
 #: translations/messages_pybabel.py:2330
 msgid "Barbadienne"
-msgstr ""
+msgstr "باربادوسية"
 
 #: translations/messages_pybabel.py:2331
 msgid "Belge"
-msgstr ""
+msgstr "بلجيكية"
 
 #: translations/messages_pybabel.py:2332
 msgid "Beninoise"
-msgstr ""
+msgstr "بنينية"
 
 #: translations/messages_pybabel.py:2333
 msgid "Bermudienne"
-msgstr ""
+msgstr "برمودية"
 
 #: translations/messages_pybabel.py:2334
 msgid "Bolivienne"
-msgstr ""
+msgstr "بوليفية"
 
 #: translations/messages_pybabel.py:2335
 msgid "Bosnienne"
-msgstr ""
+msgstr "بوسنية"
 
 #: translations/messages_pybabel.py:2336
 msgid "Britannique"
-msgstr ""
+msgstr "بريطانية"
 
 #: translations/messages_pybabel.py:2337
 msgid "Brésilienne"
-msgstr ""
+msgstr "برازيلية"
 
 #: translations/messages_pybabel.py:2338
 msgid "Bulgare"
-msgstr ""
+msgstr "بلغارية"
 
 #: translations/messages_pybabel.py:2339
 msgid "Burkinabe"
-msgstr ""
+msgstr "بوركينابية"
 
 #: translations/messages_pybabel.py:2340
 msgid "Cambodgienne"
-msgstr ""
+msgstr "كمبودية"
 
 #: translations/messages_pybabel.py:2341
 msgid "Camerounaise"
-msgstr ""
+msgstr "كاميرونية"
 
 #: translations/messages_pybabel.py:2342
 msgid "Canadienne"
-msgstr ""
+msgstr "كندية"
 
 #: translations/messages_pybabel.py:2343
 msgid "Chilienne"
-msgstr ""
+msgstr "تشيلية"
 
 #: translations/messages_pybabel.py:2344
 msgid "Chinoise"
-msgstr ""
+msgstr "صينية"
 
 #: translations/messages_pybabel.py:2345
 msgid "Chypriote"
-msgstr ""
+msgstr "قبرصية"
 
 #: translations/messages_pybabel.py:2346
 msgid "Colombienne"
-msgstr ""
+msgstr "كولومبية"
 
 #: translations/messages_pybabel.py:2347
 msgid "Congolaise"
-msgstr ""
+msgstr "كونغولية"
 
 #: translations/messages_pybabel.py:2348
 msgid "Costaricaine"
-msgstr ""
+msgstr "كوستاريكية"
 
 #: translations/messages_pybabel.py:2349
 msgid "Croate"
-msgstr ""
+msgstr "كرواتية"
 
 #: translations/messages_pybabel.py:2350
 msgid "Cubaine"
-msgstr ""
+msgstr "كوبية"
 
 #: translations/messages_pybabel.py:2351
 msgid "Danoise"
-msgstr ""
+msgstr "دنماركية"
 
 #: translations/messages_pybabel.py:2352
 msgid "Djiboutienne"
-msgstr ""
+msgstr "جيبوتية"
 
 #: translations/messages_pybabel.py:2353
 msgid "Dominiquaise"
-msgstr ""
+msgstr "دومينيكية"
 
 #: translations/messages_pybabel.py:2354
 msgid "Egyptienne"
-msgstr ""
+msgstr "مصرية"
 
 #: translations/messages_pybabel.py:2355
 msgid "Equatorienne"
-msgstr ""
+msgstr "إكوادورية"
 
 #: translations/messages_pybabel.py:2356
 msgid "Espagnole"
-msgstr ""
+msgstr "إسبانية"
 
 #: translations/messages_pybabel.py:2357
 msgid "Estonienne"
-msgstr ""
+msgstr "إستونية"
 
 #: translations/messages_pybabel.py:2358
 msgid "Ethiopienne"
-msgstr ""
+msgstr "إثيوبية"
 
 #: translations/messages_pybabel.py:2359
 msgid "Fidjienne"
-msgstr ""
+msgstr "فيجية"
 
 #: translations/messages_pybabel.py:2360
 msgid "Finlandaise"
-msgstr ""
+msgstr "فنلندية"
 
 #: translations/messages_pybabel.py:2361
 msgid "Française"
-msgstr ""
+msgstr "فرنسية"
 
 #: translations/messages_pybabel.py:2362
 msgid "Gambienne"
-msgstr ""
+msgstr "غامبية"
 
 #: translations/messages_pybabel.py:2363
 msgid "Gambonaise"
-msgstr ""
+msgstr "غابونية"
 
 #: translations/messages_pybabel.py:2364
 msgid "Ghanéenne"
-msgstr ""
+msgstr "غانية"
 
 #: translations/messages_pybabel.py:2365
 msgid "Grecque"
-msgstr ""
+msgstr "يونانية"
 
 #: translations/messages_pybabel.py:2366
 msgid "Grenadienne"
-msgstr ""
+msgstr "غرينادية"
 
 #: translations/messages_pybabel.py:2367
 msgid "Guatémaltèque"
-msgstr ""
+msgstr "غواتيمالية"
 
 #: translations/messages_pybabel.py:2368
 msgid "Guinéenne"
-msgstr ""
+msgstr "غينية"
 
 #: translations/messages_pybabel.py:2369
 msgid "Guyanaise"
-msgstr ""
+msgstr "غيانية"
 
 #: translations/messages_pybabel.py:2370
 msgid "Haïtienne"
-msgstr ""
+msgstr "هايتية"
 
 #: translations/messages_pybabel.py:2371
 msgid "Hondurienne"
-msgstr ""
+msgstr "هندوراسية"
 
 #: translations/messages_pybabel.py:2372
 msgid "Hongroise"
-msgstr ""
+msgstr "مجرية"
 
 #: translations/messages_pybabel.py:2373
 msgid "Indienne"
-msgstr ""
+msgstr "هندية"
 
 #: translations/messages_pybabel.py:2374
 msgid "Indonésienne"
-msgstr ""
+msgstr "إندونيسية"
 
 #: translations/messages_pybabel.py:2375
 msgid "Irakienne"
-msgstr ""
+msgstr "عراقية"
 
 #: translations/messages_pybabel.py:2376
 msgid "Iranienne"
-msgstr ""
+msgstr "إيرانية"
 
 #: translations/messages_pybabel.py:2377
 msgid "Irlandaise"
-msgstr ""
+msgstr "أيرلندية"
 
 #: translations/messages_pybabel.py:2378
 msgid "Islandaise"
-msgstr ""
+msgstr "آيسلندية"
 
 #: translations/messages_pybabel.py:2379
 msgid "Israélienne"
-msgstr ""
+msgstr "إسرائيلية"
 
 #: translations/messages_pybabel.py:2380
 msgid "Italienne"
-msgstr ""
+msgstr "إيطالية"
 
 #: translations/messages_pybabel.py:2381
 msgid "Ivoirienne"
-msgstr ""
+msgstr "إيفوارية"
 
 #: translations/messages_pybabel.py:2382
 msgid "Jamaicaine"
-msgstr ""
+msgstr "جامايكية"
 
 #: translations/messages_pybabel.py:2383
 msgid "Japonaise"
-msgstr ""
+msgstr "يابانية"
 
 #: translations/messages_pybabel.py:2384
 msgid "Kenyane"
-msgstr ""
+msgstr "كينية"
 
 #: translations/messages_pybabel.py:2385
 msgid "Lettone"
-msgstr ""
+msgstr "لاتفية"
 
 #: translations/messages_pybabel.py:2386
 msgid "Libanaise"
-msgstr ""
+msgstr "لبنانية"
 
 #: translations/messages_pybabel.py:2387
 msgid "Libyenne"
-msgstr ""
+msgstr "ليبية"
 
 #: translations/messages_pybabel.py:2388
 msgid "Libérienne"
-msgstr ""
+msgstr "ليبيرية"
 
 #: translations/messages_pybabel.py:2389
 msgid "Lituanne"
-msgstr ""
+msgstr "ليتوانية"
 
 #: translations/messages_pybabel.py:2390
 msgid "Luxembourgeoise"
-msgstr ""
+msgstr "لوكسمبورغية"
 
 #: translations/messages_pybabel.py:2391
 msgid "Macédoinienne"
-msgstr ""
+msgstr "مقدونية"
 
 #: translations/messages_pybabel.py:2392
 msgid "Malaisienne"
-msgstr ""
+msgstr "ماليزية"
 
 #: translations/messages_pybabel.py:2393
 msgid "Malawite"
-msgstr ""
+msgstr "مالاوية"
 
 #: translations/messages_pybabel.py:2394
 msgid "Malgache"
-msgstr ""
+msgstr "مدغشقرية"
 
 #: translations/messages_pybabel.py:2395
 msgid "Malienne"
-msgstr ""
+msgstr "مالية"
 
 #: translations/messages_pybabel.py:2396
 msgid "Marocaine"
-msgstr ""
+msgstr "مغربية"
 
 #: translations/messages_pybabel.py:2397
 msgid "Mauricienne"
-msgstr ""
+msgstr "موريشية"
 
 #: translations/messages_pybabel.py:2398
 msgid "Mauritanienne"
-msgstr ""
+msgstr "موريتانية"
 
 #: translations/messages_pybabel.py:2399
 msgid "Mexicaine"
-msgstr ""
+msgstr "مكسيكية"
 
 #: translations/messages_pybabel.py:2400
 msgid "Mongole"
-msgstr ""
+msgstr "منغولية"
 
 #: translations/messages_pybabel.py:2401
 msgid "Mozambicaine"
-msgstr ""
+msgstr "موزمبيقية"
 
 #: translations/messages_pybabel.py:2402
 msgid "Namibienne"
-msgstr ""
+msgstr "ناميبية"
 
 #: translations/messages_pybabel.py:2403
 msgid "Nicaraguayenne"
-msgstr ""
+msgstr "نيكاراغوية"
 
 #: translations/messages_pybabel.py:2404
 msgid "Nigérienne"
-msgstr ""
+msgstr "نيجيرية"
 
 #: translations/messages_pybabel.py:2405
 msgid "Norvégienne"
-msgstr ""
+msgstr "نرويجية"
 
 #: translations/messages_pybabel.py:2406
 msgid "Néerlandaise"
-msgstr ""
+msgstr "هولندية"
 
 #: translations/messages_pybabel.py:2407
 msgid "Néo-Zélandaise"
-msgstr ""
+msgstr "نيوزيلندية"
 
 #: translations/messages_pybabel.py:2408
 msgid "Ougandaise"
-msgstr ""
+msgstr "أوغندية"
 
 #: translations/messages_pybabel.py:2409
 msgid "Pakistanaise"
-msgstr ""
+msgstr "باكستانية"
 
 #: translations/messages_pybabel.py:2410
 msgid "Panaméenne"
-msgstr ""
+msgstr "بنمية"
 
 #: translations/messages_pybabel.py:2411
 msgid "Papouasienne"
-msgstr ""
+msgstr "بابوا غينيا الجديدة"
 
 #: translations/messages_pybabel.py:2412
 msgid "Paraguayenne"
-msgstr ""
+msgstr "باراغوانية"
 
 #: translations/messages_pybabel.py:2413
 msgid "Philippine"
-msgstr ""
+msgstr "فلبينية"
 
 #: translations/messages_pybabel.py:2414
 msgid "Polonaise"
-msgstr ""
+msgstr "بولندية"
 
 #: translations/messages_pybabel.py:2415
 msgid "Portugaise"
-msgstr ""
+msgstr "برتغالية"
 
 #: translations/messages_pybabel.py:2416
 msgid "Péruvienne"
-msgstr ""
+msgstr "بيروفية"
 
 #: translations/messages_pybabel.py:2417
 msgid "Roumaine"
-msgstr ""
+msgstr "رومانية"
 
 #: translations/messages_pybabel.py:2418
 msgid "Russe"
-msgstr ""
+msgstr "روسية"
 
 #: translations/messages_pybabel.py:2419
 msgid "Rwandaise"
-msgstr ""
+msgstr "روانديّة"
 
 #: translations/messages_pybabel.py:2420
 msgid "Salvadorienne"
-msgstr ""
+msgstr "سلفادورية"
 
 #: translations/messages_pybabel.py:2421
 msgid "Saoudienne"
-msgstr ""
+msgstr "سعودية"
 
 #: translations/messages_pybabel.py:2422
 msgid "Serbe"
-msgstr ""
+msgstr "صربية"
 
 #: translations/messages_pybabel.py:2423
 msgid "Sierra-Léonaise"
-msgstr ""
+msgstr "سيراليونية"
 
 #: translations/messages_pybabel.py:2424
 msgid "Singapourienne"
-msgstr ""
+msgstr "سنغافورية"
 
 #: translations/messages_pybabel.py:2425
 msgid "Slovaque"
-msgstr ""
+msgstr "سلوفاكية"
 
 #: translations/messages_pybabel.py:2426
 msgid "Slovène"
-msgstr ""
+msgstr "سلوفينية"
 
 #: translations/messages_pybabel.py:2427
 msgid "Somalienne"
-msgstr ""
+msgstr "صومالية"
 
 #: translations/messages_pybabel.py:2428
 msgid "Soudanaise"
-msgstr ""
+msgstr "سودانية"
 
 #: translations/messages_pybabel.py:2429
 msgid "Sud-Africaine"
-msgstr ""
+msgstr "جنوب أفريقية"
 
 #: translations/messages_pybabel.py:2430
 msgid "Sud-Coréenne "
-msgstr ""
+msgstr "كورية جنوبية"
 
 #: translations/messages_pybabel.py:2431
 msgid "Suisse"
-msgstr ""
+msgstr "سويسرية"
 
 #: translations/messages_pybabel.py:2432
 msgid "Suédoise"
-msgstr ""
+msgstr "سويدية"
 
 #: translations/messages_pybabel.py:2433
 msgid "Swazie"
-msgstr ""
+msgstr "سوازيلاندية"
 
 #: translations/messages_pybabel.py:2434
 msgid "Syrienne"
-msgstr ""
+msgstr "سورية"
 
 #: translations/messages_pybabel.py:2435
 msgid "Sénégalaise"
-msgstr ""
+msgstr "سنغالية"
 
 #: translations/messages_pybabel.py:2436
 msgid "Taiwanaise"
-msgstr ""
+msgstr "تايوانية"
 
 #: translations/messages_pybabel.py:2437
 msgid "Tanzanienne"
-msgstr ""
+msgstr "تنزانية"
 
 #: translations/messages_pybabel.py:2438
 msgid "Tchadienne"
-msgstr ""
+msgstr "تشادية"
 
 #: translations/messages_pybabel.py:2439
 msgid "Tchèque"
-msgstr ""
+msgstr "تشيكية"
 
 #: translations/messages_pybabel.py:2440
 msgid "Thaïlandaise"
-msgstr ""
+msgstr "تايلاندية"
 
 #: translations/messages_pybabel.py:2441
 msgid "Togolaise"
-msgstr ""
+msgstr "طوغولية"
 
 #: translations/messages_pybabel.py:2442
 msgid "Tunisienne"
-msgstr ""
+msgstr "تونسية"
 
 #: translations/messages_pybabel.py:2443
 msgid "Turque"
-msgstr ""
+msgstr "تركية"
 
 #: translations/messages_pybabel.py:2444
 msgid "Ukrainienne"
-msgstr ""
+msgstr "أوكرانية"
 
 #: translations/messages_pybabel.py:2445
 msgid "Uruguayenne"
-msgstr ""
+msgstr "أوروغوانية"
 
 #: translations/messages_pybabel.py:2446
 msgid "Vietnamienne"
-msgstr ""
+msgstr "فيتنامية"
 
 #: translations/messages_pybabel.py:2447
 msgid "Vénézuelienne"
-msgstr ""
+msgstr "فنزويلية"
 
 #: translations/messages_pybabel.py:2448
 msgid "Zambienne"
-msgstr ""
+msgstr "زامبية"
 
 #: translations/messages_pybabel.py:2449
 msgid "Zimbabwéenne"
-msgstr ""
+msgstr "زيمبابوية"
 
 #: translations/messages_pybabel.py:2454
 msgid "Deuxième nom"
@@ -7545,7 +7401,7 @@ msgstr "الاسم الثاني"
 
 #: translations/messages_pybabel.py:2455
 msgid "Nom de jeune fille"
-msgstr "الشهرة قبل الزواج"
+msgstr "اللقب قبل الزواج"
 
 #: translations/messages_pybabel.py:2456
 msgid "Nationalité"
@@ -7565,11 +7421,11 @@ msgstr "صندوق البريد"
 
 #: translations/messages_pybabel.py:2462
 msgid "Quartier / Secteur"
-msgstr "الحي / المقاطعة"
+msgstr "حي / مقاطعة"
 
 #: translations/messages_pybabel.py:2463
 msgid "Réference fournisseur"
-msgstr "مراجع المُورِّد"
+msgstr "مرجع المُورِّد"
 
 #: translations/messages_pybabel.py:2464
 msgid "Localisation"
@@ -7577,7 +7433,7 @@ msgstr "موقع"
 
 #: translations/messages_pybabel.py:2465
 msgid "Numéro de lot"
-msgstr "رقم التصنيع "
+msgstr "رقم الدفعة الإنتاجية "
 
 #: translations/messages_pybabel.py:2466
 msgid "Prix d'achat"
@@ -7585,693 +7441,741 @@ msgstr "سعر الشراء"
 
 #: translations/messages_pybabel.py:2467
 msgid "Nom du bailleur"
-msgstr "اسم الممول"
+msgstr " اسم المؤجر"
+
+#: services/QualityRest.py:1452
+msgid "Pannes"
+msgstr "أعطال"
+
+#: services/QualityRest.py:1454
+msgid "Réparations"
+msgstr " إصلاحات"
+
+#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2310
+msgid "Secrétaire avancé"
+msgstr "سكرتير متقدم"
+
+#: models/Pdf.py:210
+msgid "Date"
+msgstr "تاريخ"
+
+#: models/Pdf.py:212
+msgid "Famille"
+msgstr "عائلة"
+
+#: models/Pdf.py:214
+msgid "Validation"
+msgstr "تحقق"
+
+#: models/Pdf.py:2790
+msgid "Remise sur la facturation"
+msgstr "خصم على الفواتير"
+
+#: models/Pdf.py:2791
+msgid "Pourcentage de la remise"
+msgstr "نسبة الخصم"
+
+#: models/Pdf.py:2792
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "نسبة التأمين عن المرض/التعاضدي"
+
+#: translations/messages_pybabel.py:82
+msgid "pathogène"
+msgstr "مسبب للأمراض"
+
+#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
+msgid "Laboratoire"
+msgstr "مختبر"
+
+#: translations/messages_pybabel.py:2315
+msgid "Préleveur"
+msgstr "من يأخذ العينة"
 
 #: translations/messages_pybabel.py:2472
 msgid "Accéder à la page d'api"
-msgstr ""
+msgstr "الدخول إلى صفحة API"
 
 #: translations/messages_pybabel.py:2473
 msgid "Activer ou désactiver une analyse"
-msgstr ""
+msgstr "تفعيل أو تعطيل تحليل"
 
 #: translations/messages_pybabel.py:2474
 msgid "Ajouter de nouvelles analyses"
-msgstr ""
+msgstr "إضافة تحليلات جديدة"
 
 #: translations/messages_pybabel.py:2475
 msgid "Ajouter un analyseur"
-msgstr ""
+msgstr "إضافة جهاز تحليل"
 
 #: translations/messages_pybabel.py:2476
 msgid "Ajouter un contrôle externe"
-msgstr ""
+msgstr "إضافة مراقبة خارجية"
 
 #: translations/messages_pybabel.py:2477
 msgid "Ajouter un contrôle interne"
-msgstr ""
+msgstr "إضافة مراقبة داخلية"
 
 #: translations/messages_pybabel.py:2478
 msgid "Ajouter un élément"
-msgstr ""
+msgstr "إضافة عنصر"
 
 #: translations/messages_pybabel.py:2479
 msgid "Ajouter un équipement"
-msgstr ""
+msgstr "إضافة جهاز"
 
 #: translations/messages_pybabel.py:2480
 msgid "Ajouter un fournisseur"
-msgstr ""
+msgstr "إضافة مورد"
 
 #: translations/messages_pybabel.py:2481
 msgid "Ajouter un laboratoire"
-msgstr ""
+msgstr "إضافة مختبر"
 
 #: translations/messages_pybabel.py:2482
 msgid "Ajouter un manuel"
-msgstr ""
+msgstr "إضافة دليل"
 
 #: translations/messages_pybabel.py:2483
 msgid "Ajouter un modèle de document"
-msgstr ""
+msgstr "إضافة نموذج وثيقة"
 
 #: translations/messages_pybabel.py:2484
 msgid "Ajouter un personnel"
-msgstr ""
+msgstr "إضافة موظف"
 
 #: translations/messages_pybabel.py:2485
 msgid "Ajouter un prescripteur"
-msgstr ""
+msgstr "إضافة الآمر بالوصفة الدوائية"
 
 #: translations/messages_pybabel.py:2486
 msgid "Ajouter un produit"
-msgstr ""
+msgstr "إضافة منتج"
 
 #: translations/messages_pybabel.py:2487
 msgid "Ajouter un résultat du contrôle externe"
-msgstr ""
+msgstr "إضافة نتيجة المراقبة الخارجية"
 
 #: translations/messages_pybabel.py:2488
 msgid "Ajouter un résultat du contrôle interne"
-msgstr ""
+msgstr "إضافة نتيجة المراقبة الداخلية"
 
 #: translations/messages_pybabel.py:2489
 msgid "Ajouter un utilisateur"
-msgstr ""
+msgstr "إضافة مستخدم"
 
 #: translations/messages_pybabel.py:2490
 msgid "Ajouter une maintenance"
-msgstr ""
+msgstr "إضافة صيانة"
 
 #: translations/messages_pybabel.py:2491
 msgid "Ajouter une maintenance préventive"
-msgstr ""
+msgstr "إضافة صيانة وقائية"
 
 #: translations/messages_pybabel.py:2492
 msgid "Ajouter une métrologie ou étalonnage"
-msgstr ""
+msgstr "إضافة مقاييس أو معايرة"
 
 #: translations/messages_pybabel.py:2493
 msgid "Ajouter une non-conformité"
-msgstr ""
+msgstr "إضافة عدم مطابقة"
 
 #: translations/messages_pybabel.py:2494
 msgid "Ajouter une panne ou une réparation"
-msgstr ""
+msgstr "إضافة عطل أو إصلاح"
 
 #: translations/messages_pybabel.py:2495
 msgid "Ajouter une plateforme DHIS2 api"
-msgstr ""
+msgstr "إضافة منصة DHIS2 API"
 
 #: translations/messages_pybabel.py:2496
 msgid "Ajouter une procédure"
-msgstr ""
+msgstr "إضافة إجراء"
 
 #: translations/messages_pybabel.py:2497
 msgid "Ajouter une réunion"
-msgstr ""
+msgstr "إضافة اجتماع"
 
 #: translations/messages_pybabel.py:2498
 msgid "Annulation de stock"
-msgstr ""
+msgstr "إلغاء المخزون"
 
 #: translations/messages_pybabel.py:2499
 msgid "Catalogue des produits"
-msgstr ""
+msgstr "فهرس المنتجات"
 
 #: translations/messages_pybabel.py:2500
 msgid "Clôture de la non-conformité"
-msgstr ""
+msgstr "إغلاق عدم المطابقة"
 
 #: translations/messages_pybabel.py:2501
 msgid "Configuration DHIS2"
-msgstr ""
+msgstr "إعدادات DHIS2"
 
 #: translations/messages_pybabel.py:2502
 msgid "Configuration Epidemio"
-msgstr ""
+msgstr "إعدادات الوبائية"
 
 #: translations/messages_pybabel.py:2503
 msgid "Configuration de formulaires"
-msgstr ""
+msgstr "إعدادات النماذج"
 
 #: translations/messages_pybabel.py:2504
 msgid "Configuration des analyseurs"
-msgstr ""
+msgstr "إعدادات أجهزة التحليل"
 
 #: translations/messages_pybabel.py:2505
 msgid "Configuration des codes postaux"
-msgstr ""
+msgstr "إعدادات الرموز البريدية"
 
 #: translations/messages_pybabel.py:2506
 msgid "Configuration des comptes rendus"
-msgstr ""
+msgstr "إعدادات التقارير"
 
 #: translations/messages_pybabel.py:2507
 msgid "Configuration des intervalles d'âge"
-msgstr ""
+msgstr "إعدادات الفترات العمرية"
 
 #: translations/messages_pybabel.py:2508
 msgid "Configuration des manuels"
-msgstr ""
+msgstr "إعدادات الدلائل"
 
 #: translations/messages_pybabel.py:2509
 msgid "Configuration des modèles de documents"
-msgstr ""
+msgstr "إعدادات نماذج الوثائق"
 
 #: translations/messages_pybabel.py:2510
 msgid "Configuration des numéros de dossier"
-msgstr ""
+msgstr "إعدادات أرقام الملفات"
 
 #: translations/messages_pybabel.py:2511
 msgid "Configuration des sauvegardes"
-msgstr ""
+msgstr "إعدادات النسخ الاحتياطية"
 
 #: translations/messages_pybabel.py:2512
 msgid "Configuration des services demandeurs"
-msgstr ""
+msgstr "إعدادات خدمات الطلب"
 
 #: translations/messages_pybabel.py:2513
 msgid "Configuration des unités fonctionnelles"
-msgstr ""
+msgstr "إعدادات الوحدات الوظيفية"
 
 #: translations/messages_pybabel.py:2514
 msgid "Configuration du logo"
-msgstr ""
+msgstr "إعدادات الشعار"
 
 #: translations/messages_pybabel.py:2515
 msgid "Configuration du rapport d'indicateurs"
-msgstr ""
+msgstr "إعدادات تقرير المؤشرات"
 
 #: translations/messages_pybabel.py:2516
 msgid "Configuration du stockage"
-msgstr ""
+msgstr "إعدادات التخزين"
 
 #: translations/messages_pybabel.py:2517
 msgid "Contrôle qualité externe"
-msgstr ""
+msgstr "مراقبة الجودة الخارجية"
 
 #: translations/messages_pybabel.py:2518
 msgid "Contrôle qualité interne"
-msgstr ""
+msgstr "مراقبة الجودة الداخلية"
 
 #: translations/messages_pybabel.py:2519
 msgid "Déstocker un élément"
-msgstr ""
+msgstr "إخراج عنصر من المخزون"
 
 #: translations/messages_pybabel.py:2520
 msgid "Dictionnaires"
-msgstr ""
+msgstr "قواميس"
 
 #: translations/messages_pybabel.py:2521
 msgid "Dossier administratif"
-msgstr ""
+msgstr "ملف إداري"
 
 #: translations/messages_pybabel.py:2522
 msgid "Éditer les droits de profils"
-msgstr ""
+msgstr "تعديل صلاحيات الملفات الشخصية"
 
 #: translations/messages_pybabel.py:2523
 msgid "Éditer un analyseur"
-msgstr ""
+msgstr "تعديل جهاز التحليل"
 
 #: translations/messages_pybabel.py:2524
 msgid "Éditer un contrôle externe"
-msgstr ""
+msgstr "تعديل المراقبة الخارجية"
 
 #: translations/messages_pybabel.py:2525
 msgid "Éditer un contrôle interne"
-msgstr ""
+msgstr "تعديل المراقبة الداخلية"
 
 #: translations/messages_pybabel.py:2526
 msgid "Éditer un élément"
-msgstr ""
+msgstr "تعديل عنصر"
 
 #: translations/messages_pybabel.py:2527
 msgid "Éditer un équipement"
-msgstr ""
+msgstr "تعديل جهاز"
 
 #: translations/messages_pybabel.py:2528
 msgid "Éditer un fournisseur"
-msgstr ""
+msgstr "تعديل مورد"
 
 #: translations/messages_pybabel.py:2529
 msgid "Éditer un manuel"
-msgstr ""
+msgstr "تعديل دليل"
 
 #: translations/messages_pybabel.py:2530
 msgid "Éditer un modèle de document"
-msgstr ""
+msgstr "تعديل نموذج الوثيقة"
 
 #: translations/messages_pybabel.py:2531
 msgid "Éditer un personnel"
-msgstr ""
+msgstr "تعديل موظف"
 
 #: translations/messages_pybabel.py:2532
 msgid "Éditer un prescripteur"
-msgstr ""
+msgstr "تعديل الآمر بالوصفة الدوائية  "
 
 #: translations/messages_pybabel.py:2533
 msgid "Éditer un produit"
-msgstr ""
+msgstr "تعديل منتج"
 
 #: translations/messages_pybabel.py:2534
 msgid "Éditer une non-conformité"
-msgstr ""
+msgstr "تعديل عدم مطابقة"
 
 #: translations/messages_pybabel.py:2535
 msgid "Éditer une plateforme DHIS2 api"
-msgstr ""
+msgstr "تعديل منصة DHIS2 API"
 
 #: translations/messages_pybabel.py:2536
 msgid "Éditer une procédure"
-msgstr ""
+msgstr "تعديل إجراء"
 
 #: translations/messages_pybabel.py:2537
 msgid "Éditer une réunion"
-msgstr ""
+msgstr "تعديل اجتماع"
 
 #: translations/messages_pybabel.py:2538
 msgid "Enlever une ligne de stock vide"
-msgstr ""
+msgstr "إزالة سطر فارغ من المخزون"
 
 #: translations/messages_pybabel.py:2539
 msgid "Enregistrer un résultat"
-msgstr ""
+msgstr "تسجيل نتيجة"
 
 #: translations/messages_pybabel.py:2540
 msgid "Équipement – Métrologie"
-msgstr ""
+msgstr " جهازـ مقاييس"
 
 #: translations/messages_pybabel.py:2541
 msgid "Équipement – Panne et réparation"
-msgstr ""
+msgstr "جهاز - عطل وإصلاح"
 
 #: translations/messages_pybabel.py:2542
 msgid "Équipement – Document"
-msgstr ""
+msgstr "جهاز - وثيقة"
 
 #: translations/messages_pybabel.py:2543
 msgid "Équipement – Maintenance"
-msgstr ""
+msgstr "جهاز - صيانة"
 
 #: translations/messages_pybabel.py:2544
 msgid "Équipements"
-msgstr ""
+msgstr "أجهزة"
 
 #: translations/messages_pybabel.py:2545
 msgid "État de la facturation journalière"
-msgstr ""
+msgstr "حالة الفواتير اليومية"
 
 #: translations/messages_pybabel.py:2546
 msgid "État des prélèvements en cours"
-msgstr ""
+msgstr "حالة أخذ العينات الجارية"
 
 #: translations/messages_pybabel.py:2547
 msgid "Export DHIS2"
-msgstr ""
+msgstr "تصدير DHIS2"
 
 #: translations/messages_pybabel.py:2548
 msgid "Export WHONET"
-msgstr ""
+msgstr "تصدير WHONET"
 
 #: translations/messages_pybabel.py:2549
 msgid "Export des contrôles externes"
-msgstr ""
+msgstr "تصدير المراقبات الخارجية"
 
 #: translations/messages_pybabel.py:2550
 msgid "Export des contrôles internes"
-msgstr ""
+msgstr "تصدير المراقبات الداخلية"
 
 #: translations/messages_pybabel.py:2551
 msgid "Export des équipements"
-msgstr ""
+msgstr "تصدير الأجهزة"
 
 #: translations/messages_pybabel.py:2552
 msgid "Export des fournisseurs"
-msgstr ""
+msgstr "تصدير الموردين"
 
 #: translations/messages_pybabel.py:2553
 msgid "Export des maintenances"
-msgstr ""
+msgstr "تصدير الصيانة"
 
 #: translations/messages_pybabel.py:2554
 msgid "Export des maintenances préventives"
-msgstr ""
+msgstr "تصدير الصيانة الوقائية"
 
 #: translations/messages_pybabel.py:2555
 msgid "Export des manuels"
-msgstr ""
+msgstr "تصدير الدلائل"
 
 #: translations/messages_pybabel.py:2556
 msgid "Export des non-conformités"
-msgstr ""
+msgstr "تصدير عدم المطابقة"
 
 #: translations/messages_pybabel.py:2557
 msgid "Export des pannes et réparations"
-msgstr ""
+msgstr "تصدير الأعطال والإصلاحات"
 
 #: translations/messages_pybabel.py:2558
 msgid "Export des personnels"
-msgstr ""
+msgstr "تصدير الموظفين"
 
 #: translations/messages_pybabel.py:2559
 msgid "Export des prescripteurs"
-msgstr ""
+msgstr "تصدير الآمر بالوصفة الدوائية "
 
 #: translations/messages_pybabel.py:2560
 msgid "Export des procédures"
-msgstr ""
+msgstr "تصدير الإجراءات"
 
 #: translations/messages_pybabel.py:2561
 msgid "Export des produits"
-msgstr ""
+msgstr "تصدير المنتجات"
 
 #: translations/messages_pybabel.py:2562
 msgid "Export des résultats de contrôles externes"
-msgstr ""
+msgstr "تصدير نتائج المراقبات الخارجية"
 
 #: translations/messages_pybabel.py:2563
 msgid "Export des résultats de contrôles internes"
-msgstr ""
+msgstr "تصدير نتائج المراقبات الداخلية"
 
 #: translations/messages_pybabel.py:2564
 msgid "Export des réunions"
-msgstr ""
+msgstr "تصدير الاجتماعات"
 
 #: translations/messages_pybabel.py:2565
 msgid "Fournisseurs"
-msgstr ""
+msgstr "موردين"
 
 #: translations/messages_pybabel.py:2566
 msgid "Général"
-msgstr ""
+msgstr "عام"
 
 #: translations/messages_pybabel.py:2567
 msgid "Gestion des échantillons"
-msgstr ""
+msgstr "إدارة العينات"
 
 #: translations/messages_pybabel.py:2568
 msgid "Gestion des stocks"
-msgstr ""
+msgstr "إدارة المخزون"
 
 #: translations/messages_pybabel.py:2569
 msgid "Gestion des utilisateurs"
-msgstr ""
+msgstr "إدارة المستخدمين"
 
 #: translations/messages_pybabel.py:2570
 msgid "Gestion dossier patient"
-msgstr ""
+msgstr "إدارة ملف المريض"
 
 #: translations/messages_pybabel.py:2571
 msgid "Historique d'analyse"
-msgstr ""
+msgstr "سجل التحليل"
 
 #: translations/messages_pybabel.py:2572
 msgid "Historique de ce produit"
-msgstr ""
+msgstr "سجل هذا المنتج"
 
 #: translations/messages_pybabel.py:2573
 msgid "Historique patient"
-msgstr ""
+msgstr "سجل المريض"
 
 #: translations/messages_pybabel.py:2574
 msgid "Import de dictionnaire"
-msgstr ""
+msgstr "استيراد قاموس"
 
 #: translations/messages_pybabel.py:2575
 msgid "Importer des utilisateurs"
-msgstr ""
+msgstr "استيراد مستخدمين"
 
 #: translations/messages_pybabel.py:2576
 msgid "Importer le référentiel"
-msgstr ""
+msgstr "استيراد المرجع"
 
 #: translations/messages_pybabel.py:2577
 msgid "Indiquer quantité utilisée"
-msgstr ""
+msgstr "إظهار الكمية المستخدمة"
 
 #: translations/messages_pybabel.py:2579
 msgid "Liste de travail biologique"
-msgstr ""
+msgstr "قائمة العمل البيولوجي"
 
 #: translations/messages_pybabel.py:2580
 msgid "Liste de travail technique"
-msgstr ""
+msgstr "قائمة العمل الفني"
 
 #: translations/messages_pybabel.py:2581
 msgid "Liste des dossiers"
-msgstr ""
+msgstr "قائمة الملفات"
 
 #: translations/messages_pybabel.py:2582
 msgid "Manuels"
-msgstr ""
+msgstr "دلائل"
 
 #: translations/messages_pybabel.py:2583
 msgid "Mise en place d'une action correctrice"
-msgstr ""
+msgstr "وضع إجراء تصحيحي"
 
 #: translations/messages_pybabel.py:2584
 msgid "Modification code var d'une analyse"
-msgstr ""
+msgstr "تعديل رمز متغير للتحليل"
 
 #: translations/messages_pybabel.py:2585
 msgid "Modules non-conformités"
-msgstr ""
+msgstr "وحدات عدم المطابقة"
 
 #: translations/messages_pybabel.py:2586
 msgid "Nouvelle demande externe"
-msgstr ""
+msgstr "طلب خارجي جديد"
 
 #: translations/messages_pybabel.py:2587
 msgid "Nouvelle demande hospitalisé"
-msgstr ""
+msgstr "طلب استشفاء جديد"
 
 #: translations/messages_pybabel.py:2588
 msgid "Paramétrer l'export WHONET sur une analyse"
-msgstr ""
+msgstr "ضبط تصدير WHONET على تحليل"
 
 #: translations/messages_pybabel.py:2589
 msgid "Personnels"
-msgstr ""
+msgstr "موظفون"
 
 #: translations/messages_pybabel.py:2590
 msgid "Préférences"
-msgstr ""
+msgstr "تفضيلات"
 
 #: translations/messages_pybabel.py:2591
 msgid "Prescripteurs"
-msgstr ""
+msgstr "آمرون بالوصفة الدوائية"
 
 #: translations/messages_pybabel.py:2592
 msgid "Procédures"
-msgstr ""
+msgstr "إجراءات"
 
 #: translations/messages_pybabel.py:2593
 msgid "Rapport activité"
-msgstr ""
+msgstr "تقرير النشاط"
 
 #: translations/messages_pybabel.py:2594
 msgid "Rapport de fin de journée"
-msgstr ""
+msgstr "تقرير نهاية اليوم"
 
 #: translations/messages_pybabel.py:2595
 msgid "Rapport épidémiologique"
-msgstr ""
+msgstr "تقرير وبائي"
 
 #: translations/messages_pybabel.py:2596
 msgid "Rapport global"
-msgstr ""
+msgstr "تقرير شامل"
 
 #: translations/messages_pybabel.py:2597
 msgid "Rapport indicateurs"
-msgstr ""
+msgstr "تقرير المؤشرات"
 
 #: translations/messages_pybabel.py:2598
 msgid "Rapport statistique"
-msgstr ""
+msgstr "تقرير إحصائي"
 
 #: translations/messages_pybabel.py:2599
 msgid "Rapport sur le temps de rendu du résultat"
-msgstr ""
+msgstr "تقرير عن وقت إصدار النتيجة"
 
 #: translations/messages_pybabel.py:2600
 msgid "Re-télécharger un rapport"
-msgstr ""
+msgstr "إعادة تحميل التقرير"
 
 #: translations/messages_pybabel.py:2601
 msgid "Rééditer un rapport"
-msgstr ""
+msgstr "إعادة تحرير تقرير"
 
 #: translations/messages_pybabel.py:2602
 msgid "Référentiel des analyses"
-msgstr ""
+msgstr "مرجع التحليلات"
 
 #: translations/messages_pybabel.py:2603
 msgid "Réunion du laboratoire"
-msgstr ""
+msgstr "اجتماع المختبر"
 
 #: translations/messages_pybabel.py:2604
 msgid "Saisie des résultats"
-msgstr ""
+msgstr "إدخال النتائج"
 
 #: translations/messages_pybabel.py:2605
 msgid "Statut des analyses"
-msgstr ""
+msgstr "حالة التحليلات"
 
 #: translations/messages_pybabel.py:2606
 msgid "Suivi de la non-conformité"
-msgstr ""
+msgstr "متابعة عدم المطابقة"
 
 #: translations/messages_pybabel.py:2607
 msgid "Supprimer fichier équipement"
-msgstr ""
+msgstr "حذف ملف جهاز"
 
 #: translations/messages_pybabel.py:2608
 msgid "Supprimer fichier maintenance"
-msgstr ""
+msgstr "حذف ملف صيانة"
 
 #: translations/messages_pybabel.py:2609
 msgid "Supprimer fichier maintenance préventive"
-msgstr ""
+msgstr "حذف ملف صيانة وقائية"
 
 #: translations/messages_pybabel.py:2610
 msgid "Supprimer fichier manuel"
-msgstr ""
+msgstr "حذف ملف دليل"
 
 #: translations/messages_pybabel.py:2611
 msgid "Supprimer fichier métrologie ou étalonnage"
-msgstr ""
+msgstr "حذف ملف مقاييس أو معايرة"
 
 #: translations/messages_pybabel.py:2612
 msgid "Supprimer fichier panne ou réparation"
-msgstr ""
+msgstr "حذف ملف عطل أو إصلاح"
 
 #: translations/messages_pybabel.py:2613
 msgid "Supprimer fichier procédure"
-msgstr ""
+msgstr "حذف ملف إجراء"
 
 #: translations/messages_pybabel.py:2614
 msgid "Supprimer fichier réunion"
-msgstr ""
+msgstr "حذف ملف اجتماع"
 
 #: translations/messages_pybabel.py:2615
 msgid "Supprimer un analyseur"
-msgstr ""
+msgstr "حذف جهاز تحليل"
 
 #: translations/messages_pybabel.py:2616
 msgid "Supprimer un dossier"
-msgstr ""
+msgstr "حذف ملف"
 
 #: translations/messages_pybabel.py:2617
 msgid "Supprimer un élément"
-msgstr ""
+msgstr "حذف عنصر"
 
 #: translations/messages_pybabel.py:2618
 msgid "Supprimer un équipement"
-msgstr ""
+msgstr "حذف جهاز"
 
 #: translations/messages_pybabel.py:2619
 msgid "Supprimer un fournisseur"
-msgstr ""
+msgstr "حذف مورد"
 
 #: translations/messages_pybabel.py:2620
 msgid "Supprimer un laboratoire"
-msgstr ""
+msgstr "حذف مختبر"
 
 #: translations/messages_pybabel.py:2621
 msgid "Supprimer un manuel"
-msgstr ""
+msgstr "حذف دليل"
 
 #: translations/messages_pybabel.py:2622
 msgid "Supprimer un modèle de document"
-msgstr ""
+msgstr "حذف نموذج وثيقة"
 
 #: translations/messages_pybabel.py:2623
 msgid "Supprimer un prescripteur"
-msgstr ""
+msgstr "حذف آمر بالوصفة الدوائية"
 
 #: translations/messages_pybabel.py:2624
 msgid "Supprimer un produit"
-msgstr ""
+msgstr "حذف منتج"
 
 #: translations/messages_pybabel.py:2625
 msgid "Supprimer une maintenance"
-msgstr ""
+msgstr "حذف صيانة"
 
 #: translations/messages_pybabel.py:2626
 msgid "Supprimer une maintenance préventive"
-msgstr ""
+msgstr "حذف صيانة وقائية"
 
 #: translations/messages_pybabel.py:2627
 msgid "Supprimer une non-conformité"
-msgstr ""
+msgstr "حذف عدم مطابقة"
 
 #: translations/messages_pybabel.py:2628
 msgid "Supprimer une panne ou réparation"
-msgstr ""
+msgstr "حذف عطل أو إصلاح"
 
 #: translations/messages_pybabel.py:2629
 msgid "Supprimer une pièce jointe au dossier"
-msgstr ""
+msgstr "حذف مرفق من الملف"
 
 #: translations/messages_pybabel.py:2630
 msgid "Supprimer une plateforme DHIS2 api"
-msgstr ""
+msgstr "حذف منصة DHIS2 API"
 
 #: translations/messages_pybabel.py:2631
 msgid "Supprimer une procédure"
-msgstr ""
+msgstr "حذف إجراء"
 
 #: translations/messages_pybabel.py:2632
 msgid "Supprimer une réunion"
-msgstr ""
+msgstr "حذف اجتماع"
 
 #: translations/messages_pybabel.py:2633
 msgid "Tableau consultation des procédures"
-msgstr ""
+msgstr "جدول استشارة الإجراءات"
 
 #: translations/messages_pybabel.py:2634
 msgid "Tableau croisé dynamique"
-msgstr ""
+msgstr "جدول محوري"
 
 #: translations/messages_pybabel.py:2635
 msgid "Télécharger étiquette dossier"
-msgstr ""
+msgstr "تحميل ملصق الملف"
 
 #: translations/messages_pybabel.py:2636
 msgid "Télécharger la facture"
-msgstr ""
+msgstr "تحميل الفاتورة"
 
 #: translations/messages_pybabel.py:2637
 msgid "Télécharger le bon de transfert"
-msgstr ""
+msgstr "تحميل قسيمة التحويل"
 
 #: translations/messages_pybabel.py:2638
 msgid "Télécharger un organigramme"
-msgstr ""
+msgstr "تحميل مخطط تنظيمي"
 
 #: translations/messages_pybabel.py:2639
 msgid "Télécharger une feuille de paillasse"
-msgstr ""
+msgstr "تحميل ورقة منصة العمل"
 
 #: translations/messages_pybabel.py:2640
 msgid "Télécharger une pièce jointe au dossier"
-msgstr ""
+msgstr "تحميل مرفق من الملف"
 
 #: translations/messages_pybabel.py:2641
 msgid "Tester un modèle de document"
-msgstr ""
+msgstr "اختبار نموذج من وثيقة"
 
 #: translations/messages_pybabel.py:2642
 msgid "Validation biologique"
-msgstr ""
+msgstr "تحقق بيولوجي"
 
 #: translations/messages_pybabel.py:2643
 msgid "Validation biologique groupée"
-msgstr ""
+msgstr "تحقق بيولوجي مجمّع"
 
 #: translations/messages_pybabel.py:2644
 msgid "Validation technique"
-msgstr ""
+msgstr "تحقق تقني"
 

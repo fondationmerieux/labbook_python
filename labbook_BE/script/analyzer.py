@@ -40,12 +40,20 @@ def analyzer(test=False, verbose=False):
             create_lock_file(lock_file_path)
 
         try:
+            connect_setting = Analyzer.getConnectSetting()
+
+            if not connect_setting:
+                Logs.log_script('ERROR : Obtaining the Connect settings has caused an error')
+                return False
+            else:
+                Logs.log_script('DEBUG connect_setting = \n' + str(connect_setting))
+
             # get list of pending LAB28 tasks
             l_tasks = Analyzer.listTask('PD', 'LAB-28')
 
             while l_tasks:
                 for task in l_tasks:
-                    Logs.log_script('OML_O33 : ' + task['anm_msg_sent'])
+                    Logs.log_script(f"Task {task['anm_ser']} - OML_O33 : {task['anm_msg_sent']}")
                     OML_O33 = task['anm_msg_sent']
 
                     analyzer_setting = Analyzer.getAnalyzerDet(task['anm_ans'])
@@ -56,9 +64,14 @@ def analyzer(test=False, verbose=False):
 
                     Logs.log_script('DEBUG analyzer_setting = \n' + str(analyzer_setting))
 
+                    # Dont go further if not batch mode
+                    if analyzer_setting['ans_batch'] == 'N':
+                        Logs.log_script(f"INFO: Task {task['anm_ser']} - Skipping analyzer {analyzer_setting['ans_id']} because ans_batch is 'N'")
+                        continue
+
                     id_analyzer = analyzer_setting['ans_id']
 
-                    url_lab28 = analyzer_setting['ans_connect'] + "/connect/lab28/" + str(id_analyzer)
+                    url_lab28 = connect_setting['cos_url'] + "/connect/lab28/" + str(id_analyzer)
 
                     Logs.log_script('DEBUG OML_O33 sent = \n' + str(OML_O33))
                     Logs.log_script('DEBUG url_lab28 = \n' + str(url_lab28))

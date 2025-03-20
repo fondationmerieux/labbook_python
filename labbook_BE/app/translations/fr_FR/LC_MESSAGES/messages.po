@@ -7591,7 +7591,7 @@ msgid "Nom du bailleur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2472
-msgid "Accéder à la page d'api"
+msgid "Accéder à la page d'API"
 msgstr ""
 
 #: translations/messages_pybabel.py:2473
@@ -7683,7 +7683,7 @@ msgid "Ajouter une panne ou une réparation"
 msgstr ""
 
 #: translations/messages_pybabel.py:2495
-msgid "Ajouter une plateforme DHIS2 api"
+msgid "Ajouter une plateforme DHIS2 API"
 msgstr ""
 
 #: translations/messages_pybabel.py:2496
@@ -7843,7 +7843,7 @@ msgid "Éditer une non-conformité"
 msgstr ""
 
 #: translations/messages_pybabel.py:2535
-msgid "Éditer une plateforme DHIS2 api"
+msgid "Éditer une plateforme DHIS2 API"
 msgstr ""
 
 #: translations/messages_pybabel.py:2536
@@ -8219,7 +8219,7 @@ msgid "Supprimer une pièce jointe au dossier"
 msgstr ""
 
 #: translations/messages_pybabel.py:2630
-msgid "Supprimer une plateforme DHIS2 api"
+msgid "Supprimer une plateforme DHIS2 API"
 msgstr ""
 
 #: translations/messages_pybabel.py:2631

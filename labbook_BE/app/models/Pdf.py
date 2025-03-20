@@ -1983,12 +1983,12 @@ class Pdf:
         else:
             Various.useLangDB()
 
-            sample['date']         = "01/12/2022"
+            sample['date']         = datetime.strptime('2025-12-02', Constants.cst_isodate)
             sample['type']         = str(_("Sang"))
             sample['qty']          = str(1)
             sample['stat']         = str(_("Fait"))
             sample['sampler']      = "Martin Prel"
-            sample['date_receipt'] = "03/12/2022"
+            sample['date_receipt'] = "03/12/2025"
             sample['time_receipt'] = "09:45"
             sample['comm']         = "Commentaire".split('\n')
             sample['location']     = str(_("Interne au labo"))

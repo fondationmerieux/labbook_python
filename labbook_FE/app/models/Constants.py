@@ -20,3 +20,7 @@ class Constants:
     cst_resource  = '/storage/resource/'
     cst_upload    = '/storage/upload/'
     cst_path_tmp  = '/home/apps/labbook_BE/labbook_BE/tmp/'
+
+    cst_connect_mapping = '/storage/resource/connect/analyzer/mapping'
+    cst_connect_plugin  = '/storage/resource/connect/analyzer/plugin'
+    cst_connect_setting = '/storage/resource/connect/analyzer/setting'

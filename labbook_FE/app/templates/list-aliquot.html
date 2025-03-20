@@ -119,6 +119,7 @@ let in_stock = showDestocked ? "N" : "Y";
     $('#aliquotTable').DataTable().destroy();
     $('#aliquotTable').DataTable({
         "pageLength": 25,
+        "order": [[1, "desc"]],
         "language": {
             "lengthMenu": "{{ _("Afficher _MENU_ entrées") }}",
             "zeroRecords": "{{ _("Aucun enregistrement trouvé") }}",

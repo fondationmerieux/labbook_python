@@ -2184,7 +2184,7 @@ def upgrade():
                           ))
     except Exception as err:
         print("ERROR insert default profile_role Technician Qualitician,\n\terr=" + str(err))
- 
+
     # Create table for list of custom permissions for users
     try:
         conn.execute(text("create table user_permissions("

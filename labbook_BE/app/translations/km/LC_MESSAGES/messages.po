@@ -1,22 +1,48 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  Labbook_BE\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 14:38+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: km\n"
-"Language-Team: km <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_BE\n"
+"Language: km\n"
 
 #: models/File.py:515
 msgid "DUPLICATA"
 msgstr "ស្ទួន"
+
+#: models/Pdf.py:69
+msgid "N° quittance"
+msgstr "លេខបង្កាន់ដៃ"
+
+#: models/Pdf.py:2789
+msgid "Analyses demandées"
+msgstr "ការវិភាគដែលបានស្នើសុំ"
+
+#: models/Pdf.py:1596 models/Pdf.py:2578 models/Pdf.py:2592 models/Pdf.py:3152
+#: models/Pdf.py:3168
+msgid "Sous-traitée"
+msgstr "បានប្រើប្រាស់សេវាវិភាគខាងក្រៅ"
+
+#: models/Pdf.py:100 models/Pdf.py:2787
+msgid "Total"
+msgstr "សរុប"
+
+#: models/Pdf.py:2788
+msgid "Total à payer"
+msgstr "សរុបដែលត្រូវបង់"
+
+#: models/Pdf.py:68 models/Pdf.py:211
+msgid "N° dossier"
+msgstr "លេខឯកសារ"
+
+#: models/Pdf.py:1092 models/Pdf.py:2201 models/Pdf.py:2780
+msgid "édité le"
+msgstr "កែសម្រួលវា"
+
+#: models/Pdf.py:116
+msgid "Page"
+msgstr "ទំព័រ"
 
 #: models/Pdf.py:63
 msgid "ETAT DE LA FACTURATION DU"
@@ -25,14 +51,6 @@ msgstr "ស្ថានភាពនៃការធ្វើវិក្កយប
 #: models/Pdf.py:63
 msgid "AU"
 msgstr "ទៅកាន់"
-
-#: models/Pdf.py:68 models/Pdf.py:211
-msgid "N° dossier"
-msgstr "លេខឯកសារ"
-
-#: models/Pdf.py:69
-msgid "N° quittance"
-msgstr "លេខបង្កាន់ដៃ"
 
 #: models/Pdf.py:70
 msgid "N° facture"
@@ -46,36 +64,9 @@ msgstr "តម្លៃ"
 msgid "A payer"
 msgstr "បង់ថ្លៃ"
 
-#: models/Pdf.py:100 models/Pdf.py:2787
-msgid "Total"
-msgstr "សរុប"
-
 #: models/Pdf.py:114
 msgid "Etat de la facturation, édité le"
 msgstr "ស្ថានភាពចេញវិក្កយបត្រ, បានកែសម្រួលទៅលើ"
-
-#: models/Pdf.py:116
-msgid "Page"
-msgstr "ទំព័រ"
-
-#: models/Pdf.py:210
-#, fuzzy
-msgid "Date"
-msgstr "ជ័រ"
-
-#: models/Pdf.py:212
-#, fuzzy
-msgid "Famille"
-msgstr "ខ្សោយ"
-
-#: models/Pdf.py:213 translations/messages_pybabel.py:305
-msgid "Analyse"
-msgstr "ការវិភាគ"
-
-#: models/Pdf.py:214
-#, fuzzy
-msgid "Validation"
-msgstr "សុពលភាព"
 
 #: models/Pdf.py:567 models/Pdf.py:1080 models/Pdf.py:2189 models/Pdf.py:2768
 msgid "Tél"
@@ -88,40 +79,6 @@ msgstr "ទូរសារ"
 #: models/Pdf.py:577 models/Pdf.py:1082 models/Pdf.py:2191 models/Pdf.py:2770
 msgid "Email"
 msgstr "អ៊ីមែល"
-
-#: models/Pdf.py:800 models/Pdf.py:1317 models/Pdf.py:2384 models/Pdf.py:2994
-#: translations/messages_pybabel.py:597
-msgid "Inconnu"
-msgstr "មិនស្គាល់"
-
-#: models/Pdf.py:847 models/Pdf.py:859 models/Pdf.py:992 models/Pdf.py:1364
-#: models/Pdf.py:1376 models/Pdf.py:2431 models/Pdf.py:2443 models/Pdf.py:3041
-#: models/Pdf.py:3053
-msgid "ans"
-msgstr "ឆ្នាំ"
-
-#: models/Pdf.py:850 models/Pdf.py:871 models/Pdf.py:1367 models/Pdf.py:1388
-#: models/Pdf.py:2434 models/Pdf.py:2455 models/Pdf.py:3044 models/Pdf.py:3065
-msgid "jours"
-msgstr "ថ្ងៃ"
-
-#: models/Pdf.py:854 models/Pdf.py:863 models/Pdf.py:1371 models/Pdf.py:1380
-#: models/Pdf.py:2438 models/Pdf.py:2447 models/Pdf.py:3048 models/Pdf.py:3057
-msgid "mois"
-msgstr "ខែ"
-
-#: models/Pdf.py:867 models/Pdf.py:1384 models/Pdf.py:2451 models/Pdf.py:3061
-msgid "semaines"
-msgstr "សប្តាហ៍"
-
-#: models/Pdf.py:875 models/Pdf.py:995 models/Pdf.py:1392 models/Pdf.py:2459
-#: models/Pdf.py:3069 translations/messages_pybabel.py:598
-msgid "Masculin"
-msgstr "ប្រុស"
-
-#: models/Pdf.py:877 models/Pdf.py:1394 models/Pdf.py:2461 models/Pdf.py:3071
-msgid "Feminin"
-msgstr "ស្រី"
 
 #: models/Pdf.py:1083 models/Pdf.py:2192 models/Pdf.py:2771
 msgid "Dossier"
@@ -158,10 +115,6 @@ msgstr "ការពិនិត្យត្រូវបានកំណត់ន
 #: models/Pdf.py:1091 models/Pdf.py:2200 models/Pdf.py:2779
 msgid "Enregistré le"
 msgstr "បានចុះឈ្មោះនៅ"
-
-#: models/Pdf.py:1092 models/Pdf.py:2201 models/Pdf.py:2780
-msgid "édité le"
-msgstr "កែសម្រួលវា"
 
 #: models/Pdf.py:1093 models/Pdf.py:2202 models/Pdf.py:2781
 msgid "ANALYSE"
@@ -212,10 +165,39 @@ msgstr "មីក្រូជីវវិទ្យា"
 msgid "Renseignements cliniques"
 msgstr "ព័ត៌មានគ្លីនិក"
 
-#: models/Pdf.py:1596 models/Pdf.py:2578 models/Pdf.py:2592 models/Pdf.py:3152
-#: models/Pdf.py:3168
-msgid "Sous-traitée"
-msgstr "បានប្រើប្រាស់សេវាវិភាគខាងក្រៅ"
+#: models/Pdf.py:800 models/Pdf.py:1317 models/Pdf.py:2384 models/Pdf.py:2994
+#: translations/messages_pybabel.py:597
+msgid "Inconnu"
+msgstr "មិនស្គាល់"
+
+#: models/Pdf.py:847 models/Pdf.py:859 models/Pdf.py:992 models/Pdf.py:1364
+#: models/Pdf.py:1376 models/Pdf.py:2431 models/Pdf.py:2443 models/Pdf.py:3041
+#: models/Pdf.py:3053
+msgid "ans"
+msgstr "ឆ្នាំ"
+
+#: models/Pdf.py:850 models/Pdf.py:871 models/Pdf.py:1367 models/Pdf.py:1388
+#: models/Pdf.py:2434 models/Pdf.py:2455 models/Pdf.py:3044 models/Pdf.py:3065
+msgid "jours"
+msgstr "ថ្ងៃ"
+
+#: models/Pdf.py:854 models/Pdf.py:863 models/Pdf.py:1371 models/Pdf.py:1380
+#: models/Pdf.py:2438 models/Pdf.py:2447 models/Pdf.py:3048 models/Pdf.py:3057
+msgid "mois"
+msgstr "ខែ"
+
+#: models/Pdf.py:867 models/Pdf.py:1384 models/Pdf.py:2451 models/Pdf.py:3061
+msgid "semaines"
+msgstr "សប្តាហ៍"
+
+#: models/Pdf.py:875 models/Pdf.py:995 models/Pdf.py:1392 models/Pdf.py:2459
+#: models/Pdf.py:3069 translations/messages_pybabel.py:598
+msgid "Masculin"
+msgstr "ប្រុស"
+
+#: models/Pdf.py:877 models/Pdf.py:1394 models/Pdf.py:2461 models/Pdf.py:3071
+msgid "Feminin"
+msgstr "ស្រី"
 
 #: models/Pdf.py:1681 models/Pdf.py:1691 models/Pdf.py:1701 models/Pdf.py:1711
 msgid "Annulée"
@@ -259,39 +241,6 @@ msgstr "អ្នកហាត់ការមន្ទីរពិសោធន៍
 msgid "Bon de transfert"
 msgstr "ប័ណ្ណផ្ទេរប្រាក់"
 
-#: models/Pdf.py:2788
-msgid "Total à payer"
-msgstr "សរុបដែលត្រូវបង់"
-
-#: models/Pdf.py:2789
-msgid "Analyses demandées"
-msgstr "ការវិភាគដែលបានស្នើសុំ"
-
-#: models/Pdf.py:2790
-#, fuzzy
-msgid "Remise sur la facturation"
-msgstr "ការបញ្ចុះតម្លៃ_វិក័យប័ត្រ"
-
-#: models/Pdf.py:2791
-msgid "Pourcentage de la remise"
-msgstr ""
-
-#: models/Pdf.py:2792
-msgid "Pourcentage assurance maladie / mutuelle"
-msgstr ""
-
-#: models/Pdf.py:2825 translations/messages_pybabel.py:293
-msgid "Facture"
-msgstr "កត្តា"
-
-#: models/Pdf.py:2858 translations/messages_pybabel.py:577
-msgid "Personnel hospitalier"
-msgstr "បុគ្គលិកមន្ទីរពេទ្យ"
-
-#: models/Pdf.py:3165 translations/messages_pybabel.py:1078
-msgid "Détermination du groupe sanguin ABO et Rhésus standard (D)"
-msgstr ""
-
 #: services/ExportRest.py:779 translations/messages_pybabel.py:528
 msgid "Années"
 msgstr "ឆ្នាំ"
@@ -308,14 +257,6 @@ msgstr "សប្តាហ៍"
 #: services/ExportRest.py:785 translations/messages_pybabel.py:529
 msgid "Jours"
 msgstr "ថ្ងៃ"
-
-#: services/QualityRest.py:1452
-msgid "Pannes"
-msgstr "ការបំបែក"
-
-#: services/QualityRest.py:1454
-msgid "Réparations"
-msgstr "ជួសជុល"
 
 #: services/ResultRest.py:106 services/ResultRest.py:236
 msgid "validation"
@@ -617,10 +558,6 @@ msgstr "មេរោគអេដស៍"
 msgid "yorn"
 msgstr "yorn"
 
-#: translations/messages_pybabel.py:82
-msgid "pathogène"
-msgstr ""
-
 #: translations/messages_pybabel.py:87
 msgid "Abondante"
 msgstr "សម្បូរបែប"
@@ -723,11 +660,12 @@ msgstr "ចំណី"
 
 #: translations/messages_pybabel.py:114
 msgid "Pâteuses"
-msgstr "ម៉ាស៊ីនធ្វើនំ"
+msgstr "សារធាតុរាវពីដំបៅ"
 
 #: translations/messages_pybabel.py:115
 msgid "Pâteuses sanguinolentes"
-msgstr "Bloody pasties"
+msgstr "\n"
+"សារធាតុរាវពីដំបៅលាយឈាម"
 
 #: translations/messages_pybabel.py:116
 msgid "Semi-liquides"
@@ -954,8 +892,7 @@ msgstr "Proteus vulgaris"
 
 #: translations/messages_pybabel.py:172 translations/messages_pybabel.py:368
 msgid "Providencia stuartii"
-msgstr ""
-"\n"
+msgstr "\n"
 "Providencia stuartii"
 
 #: translations/messages_pybabel.py:173
@@ -1428,6 +1365,10 @@ msgstr "ពាក់កណ្តាលគ្រាប់ (ច្រើនណា�
 msgid "Code bar"
 msgstr "បាកូដ"
 
+#: models/Pdf.py:2825 translations/messages_pybabel.py:293
+msgid "Facture"
+msgstr "កត្តា"
+
 #: translations/messages_pybabel.py:294 translations/messages_pybabel.py:527
 #: translations/messages_pybabel.py:832
 msgid "Non"
@@ -1474,6 +1415,10 @@ msgstr "Pl. falciparum"
 #: translations/messages_pybabel.py:304
 msgid "Vivax"
 msgstr "Vivax"
+
+#: models/Pdf.py:213 translations/messages_pybabel.py:305
+msgid "Analyse"
+msgstr "ការវិភាគ"
 
 #: translations/messages_pybabel.py:306 translations/messages_pybabel.py:594
 msgid "Prélèvement"
@@ -1636,12 +1581,8 @@ msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positi
 msgstr "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif"
 
 #: translations/messages_pybabel.py:397
-msgid ""
-"bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, "
-"levures"
-msgstr ""
-"bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, "
-"levures"
+msgid "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, levures"
+msgstr "bacilles à Gram négatif, bacilles à Gram positif, cocci à Gram positif, levures"
 
 #: translations/messages_pybabel.py:398
 msgid "bacilles à Gram négatif, bacilles à Gram positif, levures"
@@ -2204,10 +2145,6 @@ msgstr "អ្នកជំនាញផ្នែកគុណភាព"
 msgid "Secrétaire"
 msgstr "លេខាធិការ"
 
-#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2310
-msgid "Secrétaire avancé"
-msgstr ""
-
 #: translations/messages_pybabel.py:569 translations/messages_pybabel.py:2306
 msgid "Technicien"
 msgstr "អ្នកបច្ចេកទេស"
@@ -2231,6 +2168,10 @@ msgstr "Macro"
 #: translations/messages_pybabel.py:576
 msgid "Exonération"
 msgstr "ការលើកលែង"
+
+#: models/Pdf.py:2858 translations/messages_pybabel.py:577
+msgid "Personnel hospitalier"
+msgstr "បុគ្គលិកមន្ទីរពេទ្យ"
 
 #: translations/messages_pybabel.py:578
 msgid "négative"
@@ -3271,12 +3212,8 @@ msgid "Fer sérique"
 msgstr "ជាតិដែក"
 
 #: translations/messages_pybabel.py:936
-msgid ""
-"Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, "
-"protéines)"
-msgstr ""
-"អ៊ីយ៉ូណូក្រាមពេញលេញ (រួមបញ្ចូលយ៉ាងហោចណាស់ Na, K, Cl, Bicarbonates, "
-"ប្រូតេអ៊ីន)"
+msgid "Ionogramme complet (comprend au minimum Na, K, Cl, Bicarbonates, protéines)"
+msgstr "អ៊ីយ៉ូណូក្រាមពេញលេញ (រួមបញ្ចូលយ៉ាងហោចណាស់ Na, K, Cl, Bicarbonates, ប្រូតេអ៊ីន)"
 
 #: translations/messages_pybabel.py:937
 msgid "Ionogramme étendu (complet   Ca   Phosphates)"
@@ -3706,1192 +3643,1172 @@ msgstr "ការធ្វើតេស្ត LH-RH: (4 ជំហាន): កម�
 
 #: translations/messages_pybabel.py:1043 translations/messages_pybabel.py:2184
 msgid "Test à HCG : dosage de la testostérone"
-msgstr ""
+msgstr "តេស្ត HCG៖ កំរិតតេស្តូស្តេរ៉ូន"
 
 #: translations/messages_pybabel.py:1044 translations/messages_pybabel.py:2183
 msgid "Test à HCG : dosage de l'estradiol"
-msgstr ""
+msgstr "ការធ្វើតេស្ត HCG: កម្រិតថ្នាំ estradiol"
 
 #: translations/messages_pybabel.py:1045 translations/messages_pybabel.py:2185
 msgid "Test à la déxaméthasone : dosage du cortisol"
-msgstr ""
+msgstr "ការធ្វើតេស្ត Dexamethasone: កម្រិតថ្នាំ cortisol"
 
 #: translations/messages_pybabel.py:1046
 msgid "Test au TRH (4 temps) : dosage de prolactine et TSH"
-msgstr ""
+msgstr "ការធ្វើតេស្ត TRH (4 ដង): កម្រិតថ្នាំ prolactin និង TSH"
 
 #: translations/messages_pybabel.py:1047
 msgid "Adénogramme"
-msgstr ""
+msgstr "Adenogram"
 
 #: translations/messages_pybabel.py:1048
 msgid "Immunophénotypage des cellules malignes"
-msgstr ""
+msgstr "Immunophenotyping នៃកោសិកាកាច"
 
 #: translations/messages_pybabel.py:1049 translations/messages_pybabel.py:1871
 msgid "Hématocrite (taux)"
-msgstr ""
+msgstr "Hematocrit (អត្រា)"
 
 #: translations/messages_pybabel.py:1050 translations/messages_pybabel.py:1873
 msgid "Hémoglobine (dosage par spectrophotomètre)"
-msgstr ""
+msgstr "អេម៉ូក្លូប៊ីន (ការវិភាគដោយ spectrophotometer)"
 
 #: translations/messages_pybabel.py:1051
 msgid "Mesure de la vitesse de sédimentation (VS)"
-msgstr ""
+msgstr "ការវាស់ស្ទង់អត្រា sedimentation (ESR)"
 
 #: translations/messages_pybabel.py:1052
 msgid "Mesure de la résistance globulaire"
-msgstr ""
+msgstr "ការវាស់វែងភាពធន់នឹងកោសិកាឈាមក្រហម"
 
 #: translations/messages_pybabel.py:1053
 msgid "Myélogramme: étude cytologique"
-msgstr ""
+msgstr "ការវិភាគខួរឆ្អឹង: ការសិក្សាកោសិការ"
 
 #: translations/messages_pybabel.py:1054
 msgid "Myélogramme: étude cytochimique (peroxydases, Estérases, Perls et PAL)"
-msgstr ""
+msgstr "ការវិភាគខួរឆ្អឹង: ការសិក្សា cytochemical (peroxidases, esterases, Perls និង PAL)"
 
 #: translations/messages_pybabel.py:1055
 msgid "Hémogramme (Numération Formule Sanguine)"
-msgstr ""
+msgstr "អេម៉ូក្រាម (ចំនួនកោសិការឈាម)"
 
 #: translations/messages_pybabel.py:1056
 msgid "NFS   VS"
-msgstr ""
+msgstr "NFS   VS"
 
 #: translations/messages_pybabel.py:1057
 msgid "Numération des lymphocytes CD4, CD8"
-msgstr ""
+msgstr "Numération des lymphocytes CD4, CD8"
 
 #: translations/messages_pybabel.py:1058 translations/messages_pybabel.py:1981
 msgid "Numération blanche (méthode manuelle)"
-msgstr ""
+msgstr "CD4, CD8 ចំនួនកោសិការ lymphocyte"
 
 #: translations/messages_pybabel.py:1059
 msgid "Numération des réticulocytes (méthode manuelle)"
-msgstr ""
+msgstr "ចំនួន Reticulocyte (វិធីសាស្រ្តដោយដៃ)"
 
 #: translations/messages_pybabel.py:1060 translations/messages_pybabel.py:1982
 msgid "Numération des plaquettes"
-msgstr ""
+msgstr "ចំនួនប្លាកែត"
 
 #: translations/messages_pybabel.py:1061
 msgid "Recherche d'anomalies morphologiques des hématies"
-msgstr ""
+msgstr "ស្វែងរកភាពមិនធម្មតារូបរាងនៃកោសិកាឈាមក្រហម"
 
 #: translations/messages_pybabel.py:1062 translations/messages_pybabel.py:2078
 msgid "Recherche d'hématies foetales"
-msgstr ""
+msgstr "ការធ្វើតេស្តរកគ្រាប់ឈាមក្រហមរបស់ទារក"
 
 #: translations/messages_pybabel.py:1063 translations/messages_pybabel.py:2084
 msgid "Recherche de corps de Heinz"
-msgstr ""
+msgstr "ស្វែងរកHeinz's body"
 
 #: translations/messages_pybabel.py:1064
 msgid "Test de falciformation des hématies = Test d'EMMEL"
-msgstr ""
+msgstr "ការធ្វើតេស្តកោសិកាឈាមក្រហម = ការធ្វើតេស្ត EMMEL"
 
 #: translations/messages_pybabel.py:1065 translations/messages_pybabel.py:2100
 msgid "Recherche de polynucléaires éosinophiles dans le mucus nasal"
-msgstr ""
+msgstr "ការធ្វើតេស្តរក eosinophils នៅក្នុងទឹករំអិលច្រមុះ"
 
 #: translations/messages_pybabel.py:1066 translations/messages_pybabel.py:2101
 msgid "Recherche de polynucléaires éosinophiles dans les crachats"
-msgstr ""
+msgstr "ការធ្វើតេស្តរក eosinophils នៅក្នុងកំហាក"
 
 #: translations/messages_pybabel.py:1067
 msgid "D Dimères par technique agglutination de particules de latex"
-msgstr ""
+msgstr "D-dimer ដោយបច្ចេក​ទេស​កំណកភាគល្អិត​ជ័រ"
 
 #: translations/messages_pybabel.py:1068
 msgid "D Dimères par technique ELISA"
-msgstr ""
+msgstr "D-dimer ដោយបច្ចេក​ទេស ​ELISA"
 
 #: translations/messages_pybabel.py:1069
 msgid "Dosage du fibrinogène (préciser la technique sur le compte rendu)"
-msgstr ""
+msgstr "កម្រិត Fibrinogen (បញ្ជាក់បច្ចេកទេសក្នុងរបាយការណ៍)"
 
 #: translations/messages_pybabel.py:1070
 msgid "Dosage des facteurs de la coagulation"
-msgstr ""
+msgstr "កម្រិតនៃកត្តាកំណកឈាម"
 
 #: translations/messages_pybabel.py:1071 translations/messages_pybabel.py:1787
 msgid "Dosage des D dimères: (préciser la technique sur le compte rendu)"
-msgstr ""
+msgstr "កំរិត D dimers៖ (បញ្ជាក់បច្ចេកទេសក្នុងរបាយការណ៍)"
 
 #: translations/messages_pybabel.py:1072 translations/messages_pybabel.py:1878
 msgid "Héparinémie"
-msgstr ""
+msgstr "វត្តមាន heparin ក្នុងឈាម"
 
 #: translations/messages_pybabel.py:1073
 msgid "Taux de prothrombine + INR (Temps de Quick)"
-msgstr ""
+msgstr "កម្រិត Prothrombin + INR (ពេលវេលា Prothrombin)"
 
 #: translations/messages_pybabel.py:1074
 msgid "Temps de saignement (test d'Ivy 3 points)"
-msgstr ""
+msgstr "ពេលវេលាហូរឈាម (ការធ្វើតេស្ត Ivy 3 ចំណុច)"
 
 #: translations/messages_pybabel.py:1075
 msgid "Temps de Céphaline   Activateurs (TCA / TCK)"
-msgstr ""
+msgstr "Cephalin Time Activators (TCA/TCK)"
 
 #: translations/messages_pybabel.py:1076 translations/messages_pybabel.py:2179
 msgid "Temps de Thrombine (TT)"
-msgstr ""
+msgstr "ពេលវេលា Thrombin (TT)"
 
 #: translations/messages_pybabel.py:1077 translations/messages_pybabel.py:2214
-msgid ""
-"Titrage des Produits de Dégradation de la Fibrine  et/ ou du "
-"Fibrinogène(PDF)"
-msgstr ""
+msgid "Titrage des Produits de Dégradation de la Fibrine  et/ ou du Fibrinogène(PDF)"
+msgstr "Titration នៃ Fibrin និង/ឬ Fibrinogen Degradation Products (PDF)"
+
+#: models/Pdf.py:3165 translations/messages_pybabel.py:1078
+msgid "Détermination du groupe sanguin ABO et Rhésus standard (D)"
+msgstr "ការ​កំណត់​ក្រុមឈាម ABO និង Rhésus (D)"
 
 #: translations/messages_pybabel.py:1079
 msgid "Phénotypage Rhésus et Kell"
-msgstr ""
+msgstr "Rhesus និង Kell phenotyping"
 
 #: translations/messages_pybabel.py:1080
 msgid "Autres antigènes érythrocytaires"
-msgstr ""
+msgstr "អង់ទីស្យែនកោសិការឈាមក្រហមផ្សេងទៀត។"
 
 #: translations/messages_pybabel.py:1081
-msgid ""
-"Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins "
-"11hématies tests"
-msgstr ""
+msgid "Recherche d'Agglutinines Irrégulières (RAI) par un panel d'au moins 11hématies tests"
+msgstr "ការរកឃើញនៃ Agglutinins មិនទៀងទាត់ (RAI) ដោយការធ្វើតេស្តកោសិកាឈាមក្រហមយ៉ាងហោចណាស់ 11 តេស្ត"
 
 #: translations/messages_pybabel.py:1082 translations/messages_pybabel.py:2193
 msgid "Test de Coombs direct"
-msgstr ""
+msgstr "ការធ្វើតេស្ត Direct Coombs"
 
 #: translations/messages_pybabel.py:1083
 msgid "Test de Coombs indirect"
-msgstr ""
+msgstr "ការធ្វើតេស្ត Coombs ដោយប្រយោល"
 
 #: translations/messages_pybabel.py:1084 translations/messages_pybabel.py:2187
 msgid "Test de compatibilité"
-msgstr ""
+msgstr "ការធ្វើតេស្តភាពត្រូវគ្នា"
 
 #: translations/messages_pybabel.py:1085 translations/messages_pybabel.py:1811
 msgid "Facteur rhumatoïde (test au latex)"
-msgstr ""
+msgstr "តេស្ត Rhumatoïde Factor (តេស្ត ឬ ជ័រ)"
 
 #: translations/messages_pybabel.py:1086
 msgid "Antistreptolysine O"
-msgstr ""
+msgstr "តេស្ត Antistreptolysine O"
 
 #: translations/messages_pybabel.py:1087
 msgid "Antistreptokinase"
-msgstr ""
+msgstr "តេស្ត  Antistreptokinase"
 
 #: translations/messages_pybabel.py:1088 translations/messages_pybabel.py:1549
 msgid "Borrelioses (IFI ou EIA)"
-msgstr ""
+msgstr "Borrelioses (IFI ឬ EIA)"
 
 #: translations/messages_pybabel.py:1089 translations/messages_pybabel.py:1550
 msgid "Brucelloses (IFI ou EIA)"
-msgstr ""
+msgstr "Brucelloses (IFI ou EIA)"
 
 #: translations/messages_pybabel.py:1090
 msgid "Chlamydiae trachomatis (IgG et IgM et/ou IgA)"
-msgstr ""
+msgstr "Chlamydiae trachomatis (IgG et IgM et/ou IgA)"
 
 #: translations/messages_pybabel.py:1091 translations/messages_pybabel.py:1613
 msgid "Chlamydiae trachomatis par PCR"
-msgstr ""
+msgstr "Chlamydiae trachomatis (IgG និង IgM et/ou IgA)"
 
 #: translations/messages_pybabel.py:1092 translations/messages_pybabel.py:1857
 msgid "Hélicobacter pylori (EIA)"
-msgstr ""
+msgstr "Hélicobacter pylori (EIA)"
 
 #: translations/messages_pybabel.py:1093
 msgid "Mycoplasmes génitaux par EIA"
-msgstr ""
+msgstr "Mycoplasmes génitaux par EIA"
 
 #: translations/messages_pybabel.py:1094 translations/messages_pybabel.py:1968
 msgid "Mycoplasma pneumoniae (IgG par EIA)"
-msgstr ""
+msgstr "Mycoplasma pneumoniae (IgG par EIA)"
 
 #: translations/messages_pybabel.py:1095
 msgid "Salmonelloses : (sérodiagnostic de Widal, agglutination)"
-msgstr ""
+msgstr "Salmonelloses: (Widal sérodiagnostic, agglutination)"
 
 #: translations/messages_pybabel.py:1096
 msgid "RPR / VDRL qualitatif (Syphilis)"
-msgstr ""
+msgstr "RPR / VDRL qualitive (រោគស្វាយ)"
 
 #: translations/messages_pybabel.py:1097 translations/messages_pybabel.py:2220
 msgid "TPHA  (Syphilis)"
-msgstr ""
+msgstr "TPHA (រោគស្វាយ)"
 
 #: translations/messages_pybabel.py:1098 translations/messages_pybabel.py:1827
 #: translations/messages_pybabel.py:1828
 msgid "FTA Absorbens IgG (Syphilis)"
-msgstr ""
+msgstr "FTA Absorbens IgG (រោគស្វាយ)"
 
 #: translations/messages_pybabel.py:1099 translations/messages_pybabel.py:2116
 #: translations/messages_pybabel.py:2117
 msgid "Recherche des IgM (Syphilis)"
-msgstr ""
+msgstr "ការធ្វើតេស្ត IgM (រោគស្វាយ)"
 
 #: translations/messages_pybabel.py:1100 translations/messages_pybabel.py:2118
 msgid "Recherche directe de chlamydiae par technique immunologique"
-msgstr ""
+msgstr "ការធ្វើតេស្តដោយផ្ទាល់ជំងឺ Chlamydia ដោយបច្ចេកទេសសេរ៉ូសាស្ត្រ"
 
 #: translations/messages_pybabel.py:1101 translations/messages_pybabel.py:2081
 msgid "Recherche d'une toxine bactérienne par technique immunologique"
-msgstr ""
+msgstr "ការធ្វើតេស្តជាតិពុលបាក់តេរីដោយបច្ចេកទេសសេរ៉ូសាស្ត្រ"
 
 #: translations/messages_pybabel.py:1102 translations/messages_pybabel.py:1520
 msgid "Aspergillose (dépistage)"
-msgstr ""
+msgstr "Aspergillosis (ការពិនិត្យ)"
 
 #: translations/messages_pybabel.py:1103
 msgid "Candidose (recherche sérologique par au moins deux techniques)"
-msgstr ""
+msgstr "Candidiasis (ការធ្វើតេស្តសេរ៉ូសាស្ត្រដោយប្រើបច្ចេកទេសយ៉ាងហោចណាស់ពីរ)"
 
 #: translations/messages_pybabel.py:1104
 msgid "Cryptococcose (recherche d'antigènes solubles de Cryptococcus néoformans)"
-msgstr ""
+msgstr "Cryptococcosis (ស្វែងរកអង់ទីស្យែន Cryptococcus neoformans រលាយ)"
 
 #: translations/messages_pybabel.py:1105 translations/messages_pybabel.py:1724
 #: translations/messages_pybabel.py:1725
 msgid "Dépistage Cysticercose  (EIA ou IFI)"
-msgstr ""
+msgstr "ការពិនិត្យ Cysticercosis (EIA ឬ IFI)"
 
 #: translations/messages_pybabel.py:1106 translations/messages_pybabel.py:2188
 msgid "Test de confirmation Cysticercose (IE)"
-msgstr ""
+msgstr "ការធ្វើតេស្តបញ្ជាក់ Cysticercosis (IE)"
 
 #: translations/messages_pybabel.py:1107 translations/messages_pybabel.py:1727
 msgid "Dépistage Filariose (EIA ou IFI)"
-msgstr ""
+msgstr "ការពិនិត្យ Filariasis (EIA ឬ IFI)"
 
 #: translations/messages_pybabel.py:1108 translations/messages_pybabel.py:2189
 msgid "Test de confirmation Filariose par IE"
-msgstr ""
+msgstr "ការធ្វើតេស្តបញ្ជាក់ Filariasis ដោយ IE"
 
 #: translations/messages_pybabel.py:1109 translations/messages_pybabel.py:1728
 msgid "Dépistage Leishmaniose viscérale (EIA ou IFI)"
-msgstr ""
+msgstr "ការពិនិត្យជំងឺ Leishmaniasis Visceral (EIA ឬ IFI)"
 
 #: translations/messages_pybabel.py:1110 translations/messages_pybabel.py:2191
 msgid "Test de confirmation Leishmaniose viscérale par IE"
-msgstr ""
+msgstr "ការធ្វើតេស្តបញ្ជាក់ Visceral Leishmaniasis ដោយ IE"
 
 #: translations/messages_pybabel.py:1111
 msgid "Paludisme (test sérologique rapide)"
-msgstr ""
+msgstr "ជំងឺគ្រុនចាញ់ (ការធ្វើតេស្តសេរ៉ូសាស្ត្ររហ័ស)"
 
 #: translations/messages_pybabel.py:1112 translations/messages_pybabel.py:1734
 msgid "Détection et titrage des IgA (Toxoplasmose)"
-msgstr ""
+msgstr "ការរក និង ការកំណត់ titration នៃ IgA (Toxoplasmosis)"
 
 #: translations/messages_pybabel.py:1113 translations/messages_pybabel.py:2076
 msgid "Recherche AgHBs (Hépatite B par test rapide)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីស្យែន HBsAg (ជំងឺរលាកថ្លើមប្រភេទ B ដោយការធ្វើតេស្តរហ័ស)"
 
 #: translations/messages_pybabel.py:1114 translations/messages_pybabel.py:2071
 msgid "Recherche Ac anti HBs (Hépatite B par test rapide)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីករប្រឆាំងនឹង HBs (ជំងឺរលាកថ្លើមប្រភេទ B ដោយការធ្វើតេស្តរហ័ស)"
 
 #: translations/messages_pybabel.py:1115 translations/messages_pybabel.py:2073
 msgid "Recherche Ag HBe (Hépatite B par test rapide)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីស្យែន HBe (ជំងឺរលាកថ្លើមប្រភេទ B ដោយការធ្វើតេស្តរហ័ស)"
 
 #: translations/messages_pybabel.py:1116 translations/messages_pybabel.py:2066
 msgid "Recherche Ac anti HBc (Hépatite B par test rapide)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីករ​ HBc (ជំងឺរលាកថ្លើមប្រភេទ B ដោយការធ្វើតេស្តរហ័ស)"
 
 #: translations/messages_pybabel.py:1117 translations/messages_pybabel.py:2070
 msgid "Recherche Ac anti HBs (Hépatite B par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីករ​ HBc  (ជំងឺរលាកថ្លើមប្រភេទ B ដោយម៉ាស៊ីន immunoanalysis)"
 
 #: translations/messages_pybabel.py:1118 translations/messages_pybabel.py:2072
 msgid "Recherche Ag HBe (Hépatite B par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីស្យែនHBs (ជំងឺរលាកថ្លើមប្រភេទ B ដោយម៉ាស៊ីន immunoanalysis)"
 
 #: translations/messages_pybabel.py:1119 translations/messages_pybabel.py:2065
 msgid "Recherche Ac anti HBc (Hépatite B par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីករ​ HBc​ (ជំងឺរលាកថ្លើមប្រភេទ B ដោយម៉ាស៊ីន immunoanalysis)"
 
 #: translations/messages_pybabel.py:1120 translations/messages_pybabel.py:2068
 #: translations/messages_pybabel.py:2069
 msgid "Recherche Ac anti HBc IgM (Hépatite B par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវអង់ទីករ HBc IgM Ab (ជំងឺរលាកថ្លើមប្រភេទ B ដោយម៉ាស៊ីន immunoanalysis)"
 
 #: translations/messages_pybabel.py:1121 translations/messages_pybabel.py:2196
 msgid "Test de neutralisation de l'hépatite B"
-msgstr ""
+msgstr "ការធ្វើតេស្ត neutralisation ជំងឺរលាកថ្លើមប្រភេទ B"
 
 #: translations/messages_pybabel.py:1122 translations/messages_pybabel.py:1879
 #: translations/messages_pybabel.py:1880
 msgid "Hépatite B ADN par PCR"
-msgstr ""
+msgstr "DNA មេរោគជំងឺរលាកថ្លើមប្រភេទ B ដោយ PCR"
 
 #: translations/messages_pybabel.py:1123 translations/messages_pybabel.py:1881
 #: translations/messages_pybabel.py:1882
 msgid "Hépatite C (par test rapide)"
-msgstr ""
+msgstr "ជំងឺរលាកថ្លើមប្រភេទ C (ដោយការធ្វើតេស្តរហ័ស)"
 
 #: translations/messages_pybabel.py:1124 translations/messages_pybabel.py:2108
 #: translations/messages_pybabel.py:2109
 msgid "Recherche des Ac anti VHC (par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការធ្វើតេស្តរកអង់ទីករមេរោគអេដស៍ Ab (ដោយម៉ាស៊ីន immunoanalysis)"
 
 #: translations/messages_pybabel.py:1125 translations/messages_pybabel.py:2190
 msgid "Test de confirmation Hépatite C"
-msgstr ""
+msgstr "ការធ្វើតេស្តបញ្ជាក់ជំងឺរលាកថ្លើមប្រភេទ C"
 
 #: translations/messages_pybabel.py:1126 translations/messages_pybabel.py:1883
 #: translations/messages_pybabel.py:1884
 msgid "Hépatite C ARN par PCR"
-msgstr ""
+msgstr "RNA ជំងឺរលាកថ្លើមប្រភេទ C ដោយ PCR"
 
 #: translations/messages_pybabel.py:1127
 msgid "Recherche des Ac anti-VIH (test rapide)"
-msgstr ""
+msgstr "ការធ្វើតេស្តរកអង់ទីករមេរោគអេដស៍ (តេស្តរហ័ស)"
 
 #: translations/messages_pybabel.py:1128 translations/messages_pybabel.py:2110
 msgid "Recherche des Ac anti-VIH (par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការធ្វើតេស្តរកអង់ទីករមេរោគអេដស៍ (ដោយម៉ាស៊ីន immunoanalysis)"
 
 #: translations/messages_pybabel.py:1129
 msgid "Recherche et titrage de l'antigène P24"
-msgstr ""
+msgstr "ការរកអង់ទីករ P24 និងការ titration"
 
 #: translations/messages_pybabel.py:1130
 msgid "Diagnostic du VIH (Western Blot) (test de confirmation)"
-msgstr ""
+msgstr "ការធ្វើរោគវិនិច្ឆ័យមេរោគអេដស៍ (West Blot) (ការធ្វើតេស្តបញ្ជាក់)"
 
 #: translations/messages_pybabel.py:1131 translations/messages_pybabel.py:1951
 msgid "Mesure de la charge virale ARN VIH-1"
-msgstr ""
+msgstr "ការវាប់RNAមេរោគអេដស៍-1"
 
 #: translations/messages_pybabel.py:1132 translations/messages_pybabel.py:1885
 msgid "Herpes virus simplex type 1 (IgG ou IgM)"
-msgstr ""
+msgstr "វីរុស Herpes simplex ប្រភេទ 1 (IgG ឬ IgM)"
 
 #: translations/messages_pybabel.py:1133 translations/messages_pybabel.py:1886
 msgid "Herpes virus simplex type II (IgG ou IgM)"
-msgstr ""
+msgstr "វីរុស Herpes simplex ប្រភេទ II (IgG ឬ IgM)"
 
 #: translations/messages_pybabel.py:1134
 msgid "Rotavirus et Adénovirus"
-msgstr ""
+msgstr "មេរោគ Rotavirus និង Adenovirus"
 
 #: translations/messages_pybabel.py:1135
 msgid "Rubéole (IgG et IgM)"
-msgstr ""
+msgstr "អង់ទីករ Rubella (IgG និង IgM)"
 
 #: translations/messages_pybabel.py:1136
 msgid "Virus respiratoire Syncitial (IgM/IgG)"
-msgstr ""
+msgstr "អង់ទីករ Respiratory syncytial virus (IgM/IgG)"
 
 #: translations/messages_pybabel.py:1137 translations/messages_pybabel.py:1791
 msgid "Dosage des immunoglobulines (IgE) totales"
-msgstr ""
+msgstr "ការវិភាគនៃសារធាតុ immunoglobulins សរុប (IgE)"
 
 #: translations/messages_pybabel.py:1138
 msgid "Identification des IgE spécifiques individuelles : Un seul allergène"
-msgstr ""
+msgstr "ការកំណត់អត្តសញ្ញាណ IgE ជាក់លាក់បុគ្គល៖ អាឡែរហ្សីតែមួយ"
 
 #: translations/messages_pybabel.py:1139
-msgid ""
-"Identification des IgE spécifiques individuelles : Deux ou trois "
-"allergènes"
-msgstr ""
+msgid "Identification des IgE spécifiques individuelles : Deux ou trois allergènes"
+msgstr "ការកំណត់អត្តសញ្ញាណ IgE ជាក់លាក់បុគ្គល៖ អាឡែរហ្សីពីរឬបី"
 
 #: translations/messages_pybabel.py:1140 translations/messages_pybabel.py:1789
 msgid "Dosage des IgG dans le sang, le LCR"
-msgstr ""
+msgstr "កំរិតប្រើ IgG ក្នុងឈាម CSF"
 
 #: translations/messages_pybabel.py:1141 translations/messages_pybabel.py:1790
 msgid "Dosage des IgM dans le sang, le LCR"
-msgstr ""
+msgstr "កំរិតប្រើ IgM ក្នុងឈាម CSF"
 
 #: translations/messages_pybabel.py:1142 translations/messages_pybabel.py:1788
 msgid "Dosage des IgA dans le sang, le LCR"
-msgstr ""
+msgstr "កំរិតប្រើ IgA ក្នុងឈាម CSF"
 
 #: translations/messages_pybabel.py:1143
-msgid ""
-"Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
-msgstr ""
+msgid "Recherche et titrage de l'alpha foetoprotéine (dans le sérum ou liquide amniotique)"
+msgstr "ការស្រាវជ្រាវ និងការធ្វើ titrationនៃអាល់ហ្វា fetoprotein (ក្នុងសេរ៉ូម ឬសារធាតុរាវ amniotic)"
 
 #: translations/messages_pybabel.py:1144 translations/messages_pybabel.py:2123
 msgid "Recherche et titrage de l'Antigène CarcinoEmbryonnaire (ACE)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវ និងការធ្វើ titration នៃសារធាតុ CarcinoEmbryonic Antigen (CEA)"
 
 #: translations/messages_pybabel.py:1145 translations/messages_pybabel.py:2125
 msgid "Recherche et titrage de l'Antigène Prostatique Spécifique (PSA)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវ និងការធ្វើtitrationនៃ Prostate Specific Antigen (PSA)"
 
 #: translations/messages_pybabel.py:1146 translations/messages_pybabel.py:2124
-msgid ""
-"Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA "
-"libre)"
-msgstr ""
+msgid "Recherche et titrage de l'Antigène Prostatique Spécifique  libre (PSA libre)"
+msgstr "ការស្រាវជ្រាវ និងការធ្វើ titration នៃប្រូស្តាតជាក់លាក់ Antigen ដោយឥតគិតថ្លៃ (PSA ឥតគិតថ្លៃ)"
 
 #: translations/messages_pybabel.py:1147
 msgid "Recherche et titrage de 2 microglobuline (dans le sérum ou urine)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវ និងការធ្វើ titrationនៃ 2 microglobulins (ក្នុងសេរ៉ូម ឬទឹកនោម)"
 
 #: translations/messages_pybabel.py:1148
 msgid "Examen parasitologique des selles"
-msgstr ""
+msgstr "ការពិនិត្យប៉ារ៉ាស៊ីតនៃលាមក"
 
 #: translations/messages_pybabel.py:1149 translations/messages_pybabel.py:2085
 msgid "Recherche de cryptosporidies par coloration élective"
-msgstr ""
+msgstr "ស្វែងរក cryptosporidia ដោយការបំពាក់ពណ៌"
 
 #: translations/messages_pybabel.py:1150 translations/messages_pybabel.py:2086
 msgid "Recherche de cryptosporidies par immunofluorescence"
-msgstr ""
+msgstr "ស្វែងរក cryptosporidia ដោយ immunofluorescence"
 
 #: translations/messages_pybabel.py:1151 translations/messages_pybabel.py:2096
 msgid "Recherche de microsporidies dans les selles par coloration élective"
-msgstr ""
+msgstr "ការធ្វើតេស្តសម្រាប់ microsporidia នៅក្នុងលាមកដោយការបំពាក់ពណ៌"
 
 #: translations/messages_pybabel.py:1152 translations/messages_pybabel.py:2098
 #: translations/messages_pybabel.py:2099
 msgid "Recherche de pneumocystis carinii dans le liquide bronchoalvéolaire"
-msgstr ""
+msgstr "ការធ្វើតេស្តសម្រាប់ pneumocystis carinii នៅក្នុងសារធាតុរាវ bronchoalveolar"
 
 #: translations/messages_pybabel.py:1153
 msgid "Recherche de plasmodium (goutte épaisse et frottis mince)"
-msgstr ""
+msgstr "ការធ្វើតេស្ត Plasmodium (ភ្នាស់ឈាមក្រាស់ និងភ្នាស់ឈាមស្តើង)"
 
 #: translations/messages_pybabel.py:1154
 msgid "Recherche de microfilaires sanguicoles (frottis mince)"
-msgstr ""
+msgstr "ការធ្វើតេស្តរកមីក្រូហ្វីលៀក្នុងឈាម(ភ្នាស់ឈាមស្តើង)"
 
 #: translations/messages_pybabel.py:1155
 msgid "Recherche de microfilaires dans une biopsie cutanée (SNIP)"
-msgstr ""
+msgstr "ការរកឃើញ microfilariae នៅក្នុង skin biopsy (SNIP)"
 
 #: translations/messages_pybabel.py:1156 translations/messages_pybabel.py:2091
 #: translations/messages_pybabel.py:2092
 msgid "Recherche de levures dans le LCR"
-msgstr ""
+msgstr "ការធ្វើតេស្តមេរោគផ្សិតនៅក្នុង CSF"
 
 #: translations/messages_pybabel.py:1157 translations/messages_pybabel.py:2090
 msgid "Recherche de leishmanies dans une sérosité cutanée"
-msgstr ""
+msgstr "ការធ្វើតេស្តសម្រាប់ leishmania នៅក្នុងភាពធ្ងន់ធ្ងរនៃស្បែក"
 
 #: translations/messages_pybabel.py:1158
 msgid "Recherche de trypanosomes dans le sang"
-msgstr ""
+msgstr "ការធ្វើតេស្តរក trypanosomes ក្នុងឈាម"
 
 #: translations/messages_pybabel.py:1159 translations/messages_pybabel.py:2114
 #: translations/messages_pybabel.py:2115
 msgid "Recherche des champignons dans les prélèvements de peau et phanères"
-msgstr ""
+msgstr "ការធ្វើតេស្តរកមេរោគផ្សិតនៅក្នុងស្បែក និងឧបសម្ព័ន្ធ"
 
 #: translations/messages_pybabel.py:1160 translations/messages_pybabel.py:1714
 msgid "Culture des levures"
-msgstr ""
+msgstr "ការបណ្ដុះមេរោគផ្សិត"
 
 #: translations/messages_pybabel.py:1161
 msgid "Culot urinaire : examen direct (état frais, cytologie   coloration)"
-msgstr ""
+msgstr "កករទឹកនោម៖ ការពិនិត្យដោយផ្ទាល់ (សភាពស្រស់ ការបំពាក់ពណ៌កោសិការ)"
 
 #: translations/messages_pybabel.py:1162
 msgid "Examen cytobactériologique des urines (uroculture)"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃទឹកនោម (ការបណ្ដុះទឹកនោម)"
 
 #: translations/messages_pybabel.py:1163
 msgid "Examen direct du prélèvement vaginal/cervico-vaginal"
-msgstr ""
+msgstr "ការពិនិត្យដោយផ្ទាល់នៃវត្ថុវិភាគទ្វារមាស / មាត់ស្បូន - ទ្វារមាស"
 
 #: translations/messages_pybabel.py:1164
 msgid "Examen cytobactériologique du prélèvement vaginal/cervico-vaginal"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃវត្ថុវិភាគទ្វារមាស / មាត់ស្បូន - ទ្វារមាស"
 
 #: translations/messages_pybabel.py:1165
 msgid "Examen direct du prélèvement urétral"
-msgstr ""
+msgstr "ការពិនិត្យដោយផ្ទាល់នៃ swab បង្ហួរនោម"
 
 #: translations/messages_pybabel.py:1166
 msgid "Examen cytobactériologique du prélèvement urétral"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃវត្ថុវិភាគបង្ហួរនោម"
 
 #: translations/messages_pybabel.py:1167
 msgid "Examen cytobactériologique du sperme (spermoculture)"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃទឹកកាម (ការបណ្ដុះទឹកកាម)"
 
 #: translations/messages_pybabel.py:1168
 msgid "Examen direct du LCR"
-msgstr ""
+msgstr "ការពិនិត្យ CSF ដោយផ្ទាល់"
 
 #: translations/messages_pybabel.py:1169
 msgid "Examen cytobactériologique du LCR"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃ CSF"
 
 #: translations/messages_pybabel.py:1170
 msgid "Hémoculture"
-msgstr ""
+msgstr "ការបណ្ដុះមេរោគក្នុងឈាម"
 
 #: translations/messages_pybabel.py:1171
 msgid "Examen cytobactériologique des selles (coproculture)"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃលាមក (ការបណ្ដុះលាមក)"
 
 #: translations/messages_pybabel.py:1172
 msgid "Examen cytobactériologique des liquides d'épanchements ou de ponction"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃសារធាតុរាវ effusion ឬ puncture"
 
 #: translations/messages_pybabel.py:1173
 msgid "Examen direct des liquides d'épanchements ou de ponction"
-msgstr ""
+msgstr "ការពិនិត្យដោយផ្ទាល់នៃសារធាតុរាវ effusion ឬ puncture"
 
 #: translations/messages_pybabel.py:1174
-msgid ""
-"Examen cytologique des liquides de ponction (numération et formule "
-"leucocytaire)"
-msgstr ""
+msgid "Examen cytologique des liquides de ponction (numération et formule leucocytaire)"
+msgstr "ការពិនិត្យ cytological នៃសារធាតុរាវ puncture (ចំនួន និង ភាគរយ leukocyte)"
 
 #: translations/messages_pybabel.py:1175 translations/messages_pybabel.py:2120
 msgid "Recherche et identification de campylobacter"
-msgstr ""
+msgstr "ស្វែងរក និងកំណត់អត្តសញ្ញាណ campylobacter"
 
 #: translations/messages_pybabel.py:1176 translations/messages_pybabel.py:2121
 msgid "Recherche et identification des germes anaérobies"
-msgstr ""
+msgstr "ការស្រាវជ្រាវ និងកំណត់អត្តសញ្ញាណមេរោគ anaerobic"
 
 #: translations/messages_pybabel.py:1177 translations/messages_pybabel.py:2159
 msgid "Spermogramme et spermocytogramme:"
-msgstr ""
+msgstr "ការរាប៉មេជីវិតឈ្មោល និង​ ការរាប៉កោសិការ និងមេជីវិតឈ្មោល"
 
 #: translations/messages_pybabel.py:1178
 msgid "Test post-coïtal (test de Huhner)"
-msgstr ""
+msgstr "ការធ្វើតេស្តក្រោយ Coital (ការធ្វើតេស្ត Huhner)"
 
 #: translations/messages_pybabel.py:1179 translations/messages_pybabel.py:2079
-msgid ""
-"Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou "
-"anéjaculation"
-msgstr ""
+msgid "Recherche d'une éjaculation rétrograde en cas d'hypospermie sévère ou anéjaculation"
+msgstr "ការធ្វើតេស្តសម្រាប់ការបញ្ចេញទឹកកាមថយក្រោយ ក្នុងករណីមាន hyperspermia ធ្ងន់ធ្ងរ ឬការមិនបញ្ចេញទឹកកាម"
 
 #: translations/messages_pybabel.py:1180 translations/messages_pybabel.py:1687
 msgid "Coloration des spermatozoïdes au bleu d'aniline"
-msgstr ""
+msgstr "ការបំពាក់ពណ៍មេជីវិតឈ្មោលជាមួយ aniline blue"
 
 #: translations/messages_pybabel.py:1181 translations/messages_pybabel.py:2080
 msgid "Recherche d'une immunisation antispermatozoïdes"
-msgstr ""
+msgstr "ការស្វែងរកភាពស៊ាំប្រឆាំងទៅនឹងស្ពែម៉ាតូសូអ៊ីត"
 
 #: translations/messages_pybabel.py:1182 translations/messages_pybabel.py:1472
 msgid "Acide salicylique (dosage)"
-msgstr ""
+msgstr "អាស៊ីត salicylic (កម្រិត)"
 
 #: translations/messages_pybabel.py:1183 translations/messages_pybabel.py:1482
 msgid "Alcool (éthanol ou méthanol)"
-msgstr ""
+msgstr "អាល់កុល (អេតាណុល ឬ មេតាណុល)"
 
 #: translations/messages_pybabel.py:1184 translations/messages_pybabel.py:1496
 msgid "Amphétamine (dosage)"
-msgstr ""
+msgstr "អំហ្វេតាមីន (កម្រិតថ្នាំ)"
 
 #: translations/messages_pybabel.py:1185 translations/messages_pybabel.py:1487
 msgid "Aluminium"
-msgstr ""
+msgstr "អាលុយមីញ៉ូម"
 
 #: translations/messages_pybabel.py:1186 translations/messages_pybabel.py:1503
 msgid "Antidépresseurs tricycliques (recherche)"
-msgstr ""
+msgstr "ថ្នាំប្រឆាំងនឹងជំងឺធ្លាក់ទឹកចិត្ត Tricyclic (ការស្រាវជ្រាវ)"
 
 #: translations/messages_pybabel.py:1187 translations/messages_pybabel.py:1537
 msgid "Barbituriques (recherche)"
-msgstr ""
+msgstr "Barbiturates (ស្វែងរក)"
 
 #: translations/messages_pybabel.py:1188 translations/messages_pybabel.py:1536
 msgid "Barbituriques (dosage)"
-msgstr ""
+msgstr "Barbiturates  (កម្រិតថ្នាំ)"
 
 #: translations/messages_pybabel.py:1189 translations/messages_pybabel.py:1538
 msgid "Benzodiazépines (recherche)"
-msgstr ""
+msgstr "ថ្នាំ benzodiazepines (ការស្រាវជ្រាវ)"
 
 #: translations/messages_pybabel.py:1190 translations/messages_pybabel.py:1780
 msgid "Diazépam et son métabolite (dosage)"
-msgstr ""
+msgstr "Diazepam និងសារធាតុរបស់វា (កម្រិតថ្នាំ)"
 
 #: translations/messages_pybabel.py:1191 translations/messages_pybabel.py:1781
 msgid "Digoxine (dosage)"
-msgstr ""
+msgstr "Digoxin (កម្រិតថ្នាំ)"
 
 #: translations/messages_pybabel.py:1192 translations/messages_pybabel.py:1904
 #: translations/messages_pybabel.py:1905
 msgid "Isoniazide (INH)"
-msgstr ""
+msgstr "Isoniazide (INH)"
 
 #: translations/messages_pybabel.py:1193 translations/messages_pybabel.py:1952
 msgid "Mesure des concentrations plasmatiques des Antrétroviraux"
-msgstr ""
+msgstr "ការវាស់វែងកំហាប់ថ្នាំប្រឆាំងមេរោគអេដស៍ក្នុងប្លាស្មា"
 
 #: translations/messages_pybabel.py:1194 translations/messages_pybabel.py:1988
 msgid "Oxyde de carbone"
-msgstr ""
+msgstr "កាបូនម៉ូណូអុកស៊ីត"
 
 #: translations/messages_pybabel.py:1195 translations/messages_pybabel.py:1996
 msgid "Parcétamol (dosage)"
-msgstr ""
+msgstr "ប៉ារ៉ាសេតាមុល (កម្រិតថ្នាំ)"
 
 #: translations/messages_pybabel.py:1196
 msgid "Plomb par Spectrophotométrie d'absorption atomique"
-msgstr ""
+msgstr "ដឹកនាំដោយ Atomic Absorption Spectrophotometry"
 
 #: translations/messages_pybabel.py:1197 translations/messages_pybabel.py:2059
 msgid "Quinidine (dosage)"
-msgstr ""
+msgstr "ថ្នាំ Quinidine (កម្រិតថ្នាំ)"
 
 #: translations/messages_pybabel.py:1198 translations/messages_pybabel.py:1289
 #: translations/messages_pybabel.py:2134 translations/messages_pybabel.py:2135
 msgid "Rifampicine"
-msgstr ""
+msgstr "ថ្នាំ Rifampicin"
 
 #: translations/messages_pybabel.py:1199 translations/messages_pybabel.py:2202
 msgid "Théophylline"
-msgstr ""
+msgstr "ថ្នាំ  Theophylline"
 
 #: translations/messages_pybabel.py:1200 translations/messages_pybabel.py:1507
 msgid "Arsenic"
-msgstr ""
+msgstr "អាសេនិច"
 
 #: translations/messages_pybabel.py:1201
-msgid ""
-"Test sérologique unitaire qualitatif de recherche des anticorps dirigés "
-"contre des antigènes du virus SARS-CoV-2"
-msgstr ""
+msgid "Test sérologique unitaire qualitatif de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
+msgstr "ការធ្វើតេស្ត serological គុណភាពសម្រាប់អង្គបដិប្រាណដែលប្រឆាំងនឹងអង់ទីហ្សែននៃវីរុស SARS-CoV-2"
 
 #: translations/messages_pybabel.py:1202
-msgid ""
-"Test sérologique quantitatif automatisable de recherche des anticorps "
-"dirigés contre des antigènes du virus SARS-CoV-2"
-msgstr ""
+msgid "Test sérologique quantitatif automatisable de recherche des anticorps dirigés contre des antigènes du virus SARS-CoV-2"
+msgstr "ការធ្វើតេស្ត serological បរិមាណដោយស្វ័យប្រវត្តិសម្រាប់អង្គបដិប្រាណដែលប្រឆាំងនឹងអង់ទីហ្សែននៃវីរុស SARS-CoV-2"
 
 #: translations/messages_pybabel.py:1203
-msgid ""
-"Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-"
-"CoV-2"
-msgstr ""
+msgid "Test de Détection Rapide (TDR) de recherche de protéines du virus SARS-CoV-2"
+msgstr "ការធ្វើតេស្តររហ័ស (RDT) សម្រាប់ប្រូតេអ៊ីនមេរោគ SARS-CoV-2"
 
 #: translations/messages_pybabel.py:1204 translations/messages_pybabel.py:1546
 msgid "Bilirubine libre"
-msgstr ""
+msgstr "ប៊ីលីរុយប៊ីនដោយសេរី"
 
 #: translations/messages_pybabel.py:1205 translations/messages_pybabel.py:1545
 msgid "Bilirubine directe (conjuguée)"
-msgstr ""
+msgstr "ប៊ីលីរុយប៊ីនផ្ទាល់ (រួមបញ្ចូលគ្នា)"
 
 #: translations/messages_pybabel.py:1206
 msgid "Bilan lipidique (cholestérol Total HDL LDL Trigly)"
-msgstr ""
+msgstr "ការវាយតម្លៃជាតិខ្លាញ់ (កូលេស្តេរ៉ុល HDL សរុប LDL ទ្រីគ្លីសេរីត)"
 
 #: translations/messages_pybabel.py:1207 translations/messages_pybabel.py:1732
 msgid "Détection des IgG (Toxoplasmose)"
-msgstr ""
+msgstr "ការរកឃើញ IgG (Toxoplasmosis)"
 
 #: translations/messages_pybabel.py:1208 translations/messages_pybabel.py:2074
 #: translations/messages_pybabel.py:2075
 msgid "Recherche AgHBs (Hépatite B par automate d'immunoanalyse)"
-msgstr ""
+msgstr "ការស្រាវជ្រាវ HBsAg (ជំងឺរលាកថ្លើមប្រភេទ B ដោយម៉ាស៊ីនស្វ័យប្រវត្តិ)"
 
 #: translations/messages_pybabel.py:1209 translations/messages_pybabel.py:1462
 #: translations/messages_pybabel.py:1463
 msgid "Acide fusidique"
-msgstr ""
+msgstr "អាស៊ីត Fusidic"
 
 #: translations/messages_pybabel.py:1210 translations/messages_pybabel.py:1464
 #: translations/messages_pybabel.py:1465
 msgid "Acide nalidixique"
-msgstr ""
+msgstr "អាស៊ីត Nalidixic"
 
 #: translations/messages_pybabel.py:1211 translations/messages_pybabel.py:1466
 #: translations/messages_pybabel.py:1467
 msgid "Acide oxolinique"
-msgstr ""
+msgstr "អាស៊ីត Oxolinic"
 
 #: translations/messages_pybabel.py:1212 translations/messages_pybabel.py:1468
 #: translations/messages_pybabel.py:1469
 msgid "Acide pipémidique"
-msgstr ""
+msgstr "អាស៊ីត Pipemidic"
 
 #: translations/messages_pybabel.py:1213 translations/messages_pybabel.py:1470
 #: translations/messages_pybabel.py:1471
 msgid "Acide piromidique"
-msgstr ""
+msgstr "អាស៊ីត Piromic"
 
 #: translations/messages_pybabel.py:1214 translations/messages_pybabel.py:1489
 #: translations/messages_pybabel.py:1490
 msgid "Amikacine"
-msgstr ""
+msgstr "ថ្នាំអាមីកាស៊ីន"
 
 #: translations/messages_pybabel.py:1215 translations/messages_pybabel.py:1492
 msgid "Amoxicilline"
-msgstr ""
+msgstr "អាម៉ុកស៊ីលីន"
 
 #: translations/messages_pybabel.py:1216 translations/messages_pybabel.py:1494
 #: translations/messages_pybabel.py:1495
 msgid "Amoxicilline/ac. Clavulanique"
-msgstr ""
+msgstr "អាម៉ុកស៊ីលីន / អាម៉ុកស៊ីលីន.Clavulanic"
 
 #: translations/messages_pybabel.py:1217 translations/messages_pybabel.py:1497
 #: translations/messages_pybabel.py:1498
 msgid "Ampicilline"
-msgstr ""
+msgstr "អាំពីស៊ីលីន"
 
 #: translations/messages_pybabel.py:1218 translations/messages_pybabel.py:1499
 #: translations/messages_pybabel.py:1500
 msgid "Ampicilline/sulbactam"
-msgstr ""
+msgstr "អាំពីស៊ីលីន / ស៊ុលបាតាម"
 
 #: translations/messages_pybabel.py:1219 translations/messages_pybabel.py:1526
 #: translations/messages_pybabel.py:1527
 msgid "Azithromycine"
-msgstr ""
+msgstr "អាហ្សីត្រូម៉ីស៊ីន"
 
 #: translations/messages_pybabel.py:1220 translations/messages_pybabel.py:1528
 #: translations/messages_pybabel.py:1529
 msgid "Aztréonam"
-msgstr ""
+msgstr "អាហ្សត្រេអូណាម"
 
 #: translations/messages_pybabel.py:1221 translations/messages_pybabel.py:1533
 #: translations/messages_pybabel.py:1534
 msgid "Bacitracine"
-msgstr ""
+msgstr "បាស៊ីត្រាស៊ីន"
 
 #: translations/messages_pybabel.py:1222 translations/messages_pybabel.py:1558
 #: translations/messages_pybabel.py:1559
 msgid "Céfaclor"
-msgstr ""
+msgstr "សេហ្វាក្លរ"
 
 #: translations/messages_pybabel.py:1223 translations/messages_pybabel.py:1560
 #: translations/messages_pybabel.py:1561
 msgid "Céfadroxil"
-msgstr ""
+msgstr "ថ្នាំ Cefadroxil"
 
 #: translations/messages_pybabel.py:1224 translations/messages_pybabel.py:1562
 #: translations/messages_pybabel.py:1563
 msgid "Céfalexine"
-msgstr ""
+msgstr "ថ្នាំ Cefalexin"
 
 #: translations/messages_pybabel.py:1225
 msgid "Céfalotine"
-msgstr ""
+msgstr "សេហ្វាឡូទីន"
 
 #: translations/messages_pybabel.py:1226 translations/messages_pybabel.py:1566
 #: translations/messages_pybabel.py:1567
 msgid "Céfamandole"
-msgstr ""
+msgstr "សេហ្វាម៉ាដូល"
 
 #: translations/messages_pybabel.py:1227 translations/messages_pybabel.py:1568
 #: translations/messages_pybabel.py:1569
 msgid "Céfatrizine"
-msgstr ""
+msgstr "ថ្នាំ​ Céfatrizine"
 
 #: translations/messages_pybabel.py:1228 translations/messages_pybabel.py:1570
 #: translations/messages_pybabel.py:1571
 msgid "Céfazoline"
-msgstr ""
+msgstr "ថ្នាំ​ Céfazoline"
 
 #: translations/messages_pybabel.py:1229 translations/messages_pybabel.py:1572
 #: translations/messages_pybabel.py:1573
 msgid "Céfépime"
-msgstr ""
+msgstr "ថ្នាំ​ Céfépime"
 
 #: translations/messages_pybabel.py:1230 translations/messages_pybabel.py:1574
 #: translations/messages_pybabel.py:1575
 msgid "Céfixime"
-msgstr ""
+msgstr "ថ្នាំ​ Céfixime"
 
 #: translations/messages_pybabel.py:1231
-msgid ""
-"Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse "
-"Transcriptase Polymerase Chain Reaction)"
-msgstr ""
+msgid "Recherche quantitative du génome du virus SARS-CoV-2 par RT-PCR (Reverse Transcriptase Polymerase Chain Reaction)"
+msgstr "ការស្រាវជ្រាវបរិមាណនៃហ្សែនមេរោគ SARS-CoV-2 ដោយ RT-PCR (Reverse Transcriptase Polymerase Chain Reaction)"
 
 #: translations/messages_pybabel.py:1232
-msgid ""
-"Recherche qualitative du génome du virus SARS-CoV-2 par Reverse "
-"Transcriptase Loop-mediated isothermal AMPlification"
-msgstr ""
+msgid "Recherche qualitative du génome du virus SARS-CoV-2 par Reverse Transcriptase Loop-mediated isothermal AMPlification"
+msgstr "ស្វែងរកវត្តមាននៃហ្សែនមេរោគ SARS-CoV-2 ដោយ Reverse Transcriptase Loop-mediated isothermal AMPlification"
 
 #: translations/messages_pybabel.py:1233 translations/messages_pybabel.py:1576
 #: translations/messages_pybabel.py:1577
 msgid "Céfopérazone"
-msgstr ""
+msgstr "ថ្នាំ Cefoperazone"
 
 #: translations/messages_pybabel.py:1234 translations/messages_pybabel.py:1578
 #: translations/messages_pybabel.py:1579
 msgid "Céfotaxime"
-msgstr ""
+msgstr "ថ្នាំ Céfotaxime"
 
 #: translations/messages_pybabel.py:1235 translations/messages_pybabel.py:1580
 #: translations/messages_pybabel.py:1581
 msgid "Céfotétan"
-msgstr ""
+msgstr "ថ្នាំ Céfotétan"
 
 #: translations/messages_pybabel.py:1236 translations/messages_pybabel.py:1582
 #: translations/messages_pybabel.py:1583
 msgid "Céfotiam"
-msgstr ""
+msgstr "ថ្នាំ Céfotiam"
 
 #: translations/messages_pybabel.py:1237 translations/messages_pybabel.py:1584
 #: translations/messages_pybabel.py:1585
 msgid "Céfotiam-héxétil"
-msgstr ""
+msgstr "ថ្នាំ Céfotiam-héxétil"
 
 #: translations/messages_pybabel.py:1238 translations/messages_pybabel.py:1586
 #: translations/messages_pybabel.py:1587
 msgid "Céfoxitine"
-msgstr ""
+msgstr "ថ្នាំ Céfoxitine"
 
 #: translations/messages_pybabel.py:1239 translations/messages_pybabel.py:1588
 #: translations/messages_pybabel.py:1589
 msgid "Cefpirome"
-msgstr ""
+msgstr "ថ្នាំ Cefpirome"
 
 #: translations/messages_pybabel.py:1240 translations/messages_pybabel.py:1590
 #: translations/messages_pybabel.py:1591
 msgid "Cefpodoxime-proxétil"
-msgstr ""
+msgstr "ថ្នាំ Cefpodoxime-proxétil"
 
 #: translations/messages_pybabel.py:1241 translations/messages_pybabel.py:1592
 #: translations/messages_pybabel.py:1593
 msgid "Céfradine"
-msgstr ""
+msgstr "ថ្នាំ Céfradine"
 
 #: translations/messages_pybabel.py:1242 translations/messages_pybabel.py:1594
 #: translations/messages_pybabel.py:1595
 msgid "Cefsulodine"
-msgstr ""
+msgstr "ថ្នាំ Cefsulodine"
 
 #: translations/messages_pybabel.py:1243 translations/messages_pybabel.py:1596
 #: translations/messages_pybabel.py:1597
 msgid "Ceftazidime"
-msgstr ""
+msgstr "ថ្នាំ Ceftazidime"
 
 #: translations/messages_pybabel.py:1244 translations/messages_pybabel.py:1598
 #: translations/messages_pybabel.py:1599
 msgid "Ceftizoxime"
-msgstr ""
+msgstr "ថ្នាំ Ceftizoxime"
 
 #: translations/messages_pybabel.py:1245 translations/messages_pybabel.py:1600
 #: translations/messages_pybabel.py:1601
 msgid "Ceftriaxone"
-msgstr ""
+msgstr "ថ្នាំ Ceftriaxone"
 
 #: translations/messages_pybabel.py:1246 translations/messages_pybabel.py:1602
 #: translations/messages_pybabel.py:1603
 msgid "Céfuroxime"
-msgstr ""
+msgstr "ថ្នាំ Céfuroxime"
 
 #: translations/messages_pybabel.py:1247 translations/messages_pybabel.py:1604
 #: translations/messages_pybabel.py:1605
 msgid "Céfuroxime-axétil"
-msgstr ""
+msgstr "ថ្នាំ Céfuroxime-axétil"
 
 #: translations/messages_pybabel.py:1248 translations/messages_pybabel.py:1614
 msgid "Chloramphénicol"
-msgstr ""
+msgstr "ថ្នាំ Chloramphénicol"
 
 #: translations/messages_pybabel.py:1249 translations/messages_pybabel.py:1624
 msgid "Ciprofloxacine"
-msgstr ""
+msgstr "ថ្នាំ Ciprofloxacine"
 
 #: translations/messages_pybabel.py:1250 translations/messages_pybabel.py:1629
 #: translations/messages_pybabel.py:1630
 msgid "Clindamycine"
-msgstr ""
+msgstr "ថ្នាំ Clindamycine"
 
 #: translations/messages_pybabel.py:1251 translations/messages_pybabel.py:1681
 #: translations/messages_pybabel.py:1682
 msgid "Colistine"
-msgstr ""
+msgstr "ថ្នាំ Colistine"
 
 #: translations/messages_pybabel.py:1252 translations/messages_pybabel.py:1693
 #: translations/messages_pybabel.py:1694 translations/messages_pybabel.py:1695
 msgid "Cotrimoxazole"
-msgstr ""
+msgstr "ថ្នាំ Cotrimoxazole"
 
 #: translations/messages_pybabel.py:1253 translations/messages_pybabel.py:1783
 #: translations/messages_pybabel.py:1784
 msgid "Dirithromycine"
-msgstr ""
+msgstr "ថ្នាំ Dirithromycine"
 
 #: translations/messages_pybabel.py:1254 translations/messages_pybabel.py:1785
 #: translations/messages_pybabel.py:1786
 msgid "Doripénème (H)"
-msgstr ""
+msgstr "ថ្នាំ Doripénème (H)"
 
 #: translations/messages_pybabel.py:1255 translations/messages_pybabel.py:1793
 #: translations/messages_pybabel.py:1794
 msgid "Doxycycline"
-msgstr ""
+msgstr "ថ្នាំ Doxycycline"
 
 #: translations/messages_pybabel.py:1256 translations/messages_pybabel.py:1796
 #: translations/messages_pybabel.py:1797
 msgid "Enoxacine"
-msgstr ""
+msgstr "ថ្នាំ Enoxacine"
 
 #: translations/messages_pybabel.py:1257 translations/messages_pybabel.py:1798
 #: translations/messages_pybabel.py:1799
 msgid "Ertapénème"
-msgstr ""
+msgstr "ថ្នាំ Ertapénème"
 
 #: translations/messages_pybabel.py:1258 translations/messages_pybabel.py:1800
 #: translations/messages_pybabel.py:1801
 msgid "Erythromycine"
-msgstr ""
+msgstr "ថ្នាំ Erythromycine"
 
 #: translations/messages_pybabel.py:1259 translations/messages_pybabel.py:1817
 #: translations/messages_pybabel.py:1818
 msgid "Fluméquine"
-msgstr ""
+msgstr "ថ្នាំ Fluméquine"
 
 #: translations/messages_pybabel.py:1260 translations/messages_pybabel.py:1822
 #: translations/messages_pybabel.py:1823
 msgid "Fosfomycine"
-msgstr ""
+msgstr "ថ្នាំ Fosfomycine"
 
 #: translations/messages_pybabel.py:1261 translations/messages_pybabel.py:1831
 #: translations/messages_pybabel.py:1832
 msgid "Gentamicine"
-msgstr ""
+msgstr "ថ្នាំ Gentamicine"
 
 #: translations/messages_pybabel.py:1262 translations/messages_pybabel.py:1893
 #: translations/messages_pybabel.py:1894
 msgid "Imipénème"
-msgstr ""
+msgstr "ថ្នាំ Imipénème"
 
 #: translations/messages_pybabel.py:1263 translations/messages_pybabel.py:1900
 #: translations/messages_pybabel.py:1901
 msgid "Isépamicine"
-msgstr ""
+msgstr "ថ្នាំ Isépamicine"
 
 #: translations/messages_pybabel.py:1264 translations/messages_pybabel.py:1906
 #: translations/messages_pybabel.py:1907
 msgid "kanamycine"
-msgstr ""
+msgstr "ថ្នាំ kanamycine"
 
 #: translations/messages_pybabel.py:1265 translations/messages_pybabel.py:1909
 #: translations/messages_pybabel.py:1910
 msgid "Latamoxef"
-msgstr ""
+msgstr "ថ្នាំ Latamoxef"
 
 #: translations/messages_pybabel.py:1266 translations/messages_pybabel.py:1922
 msgid "Lévofloxacine"
-msgstr ""
+msgstr "ថ្នាំ Lévofloxacine"
 
 #: translations/messages_pybabel.py:1267 translations/messages_pybabel.py:1928
 msgid "Lincomycine"
-msgstr ""
+msgstr "ថ្នាំ Lincomycine"
 
 #: translations/messages_pybabel.py:1268 translations/messages_pybabel.py:1929
 #: translations/messages_pybabel.py:1930
 msgid "Linézolide"
-msgstr ""
+msgstr "ថ្នាំ Linézolide"
 
 #: translations/messages_pybabel.py:1269 translations/messages_pybabel.py:1935
 #: translations/messages_pybabel.py:1936
 msgid "Loméfloxacine"
-msgstr ""
+msgstr "ថ្នាំ Loméfloxacine"
 
 #: translations/messages_pybabel.py:1270 translations/messages_pybabel.py:1937
 #: translations/messages_pybabel.py:1938
 msgid "Loracarbef"
-msgstr ""
+msgstr "ថ្នាំ Loracarbef"
 
 #: translations/messages_pybabel.py:1271 translations/messages_pybabel.py:1949
 #: translations/messages_pybabel.py:1950
 msgid "Méropénème"
-msgstr ""
+msgstr "ថ្នាំ Méropénème"
 
 #: translations/messages_pybabel.py:1272 translations/messages_pybabel.py:1954
 #: translations/messages_pybabel.py:1955
 msgid "Metronidazole"
-msgstr ""
+msgstr "ថ្នាំ Metronidazole"
 
 #: translations/messages_pybabel.py:1273 translations/messages_pybabel.py:1958
 #: translations/messages_pybabel.py:1959
 msgid "Minocycline"
-msgstr ""
+msgstr "ថ្នាំ Minocycline"
 
 #: translations/messages_pybabel.py:1274 translations/messages_pybabel.py:1964
 #: translations/messages_pybabel.py:1965
 msgid "Moxifloxacine"
-msgstr ""
+msgstr "ថ្នាំ Moxifloxacine"
 
 #: translations/messages_pybabel.py:1275 translations/messages_pybabel.py:1966
 #: translations/messages_pybabel.py:1967
 msgid "Mupirocine"
-msgstr ""
+msgstr "ថ្នាំ Mupirocine"
 
 #: translations/messages_pybabel.py:1276 translations/messages_pybabel.py:1970
 #: translations/messages_pybabel.py:1971
 msgid "Nétilmicine"
-msgstr ""
+msgstr "ថ្នាំ Nétilmicine"
 
 #: translations/messages_pybabel.py:1277 translations/messages_pybabel.py:1972
 #: translations/messages_pybabel.py:1973
 msgid "Nitroxoline"
-msgstr ""
+msgstr "ថ្នាំ Nitroxoline"
 
 #: translations/messages_pybabel.py:1278 translations/messages_pybabel.py:1977
 #: translations/messages_pybabel.py:1978
 msgid "Norfloxacine"
-msgstr ""
+msgstr "ថ្នាំ Norfloxacine"
 
 #: translations/messages_pybabel.py:1279 translations/messages_pybabel.py:1983
 #: translations/messages_pybabel.py:1984
 msgid "Ofloxacine"
-msgstr ""
+msgstr "ថ្នាំ Ofloxacine"
 
 #: translations/messages_pybabel.py:1280 translations/messages_pybabel.py:1985
 #: translations/messages_pybabel.py:1986
 msgid "Optochine"
-msgstr ""
+msgstr "ថ្នាំ Optochine"
 
 #: translations/messages_pybabel.py:1281 translations/messages_pybabel.py:1987
 msgid "Oxacilline"
-msgstr ""
+msgstr "ថ្នាំ Oxacilline"
 
 #: translations/messages_pybabel.py:1282 translations/messages_pybabel.py:1989
 #: translations/messages_pybabel.py:1990
 msgid "Oxytétracycline"
-msgstr ""
+msgstr "ថ្នាំ Oxytétracycline"
 
 #: translations/messages_pybabel.py:1283 translations/messages_pybabel.py:1998
 #: translations/messages_pybabel.py:1999
 msgid "Péfloxacine"
-msgstr ""
+msgstr "ថ្នាំ Péfloxacine"
 
 #: translations/messages_pybabel.py:1284 translations/messages_pybabel.py:2001
 #: translations/messages_pybabel.py:2002
 msgid "Pénicilline"
-msgstr ""
+msgstr "ប៉េនីស៊ីលីន"
 
 #: translations/messages_pybabel.py:1285 translations/messages_pybabel.py:2013
 #: translations/messages_pybabel.py:2014
 msgid "Pipéracilline"
-msgstr ""
+msgstr "ថ្នាំ Piperacillin"
 
 #: translations/messages_pybabel.py:1286 translations/messages_pybabel.py:2015
 #: translations/messages_pybabel.py:2016
 msgid "Pipéracilline/tazobactam"
-msgstr ""
+msgstr "ថ្នាំ​ Piperacillin / tazobactam"
 
 #: translations/messages_pybabel.py:1287 translations/messages_pybabel.py:2043
 #: translations/messages_pybabel.py:2044
 msgid "Pristinamycine"
-msgstr ""
+msgstr "ថ្នាំ Pristinamycin"
 
 #: translations/messages_pybabel.py:1288 translations/messages_pybabel.py:2060
 #: translations/messages_pybabel.py:2061
 msgid "Quinupristine-dalfopristine"
-msgstr ""
+msgstr "ថ្នាំ Quinupristine-dalfopristine"
 
 #: translations/messages_pybabel.py:1290 translations/messages_pybabel.py:2155
 #: translations/messages_pybabel.py:2156
 msgid "Sparfloxacine"
-msgstr ""
+msgstr "ថ្នាំ Sparfloxacine"
 
 #: translations/messages_pybabel.py:1291 translations/messages_pybabel.py:2157
 #: translations/messages_pybabel.py:2158
 msgid "Spectinomycine"
-msgstr ""
+msgstr "ថ្នាំ Spectinomycin"
 
 #: translations/messages_pybabel.py:1292 translations/messages_pybabel.py:2160
 msgid "Spiramycine"
-msgstr ""
+msgstr "ថ្នាំ Spiramycin"
 
 #: translations/messages_pybabel.py:1293 translations/messages_pybabel.py:2162
 #: translations/messages_pybabel.py:2163
 msgid "Streptomycine"
-msgstr ""
+msgstr "ថ្នាំ Streptomycin"
 
 #: translations/messages_pybabel.py:1294 translations/messages_pybabel.py:2164
 #: translations/messages_pybabel.py:2165
 msgid "Sulbactam"
-msgstr ""
+msgstr "ថ្នាំ Sulbactam"
 
 #: translations/messages_pybabel.py:1295 translations/messages_pybabel.py:2174
 #: translations/messages_pybabel.py:2175
 msgid "Teicoplanine"
-msgstr ""
+msgstr "ថ្នាំ Teicoplanin"
 
 #: translations/messages_pybabel.py:1296 translations/messages_pybabel.py:2176
 #: translations/messages_pybabel.py:2177
 msgid "Télithromycine"
-msgstr ""
+msgstr "ថ្នាំ Telithromycin"
 
 #: translations/messages_pybabel.py:1297 translations/messages_pybabel.py:2199
 #: translations/messages_pybabel.py:2200
 msgid "Tétracycline"
-msgstr ""
+msgstr "តេត្រាស៊ីគ្លីន"
 
 #: translations/messages_pybabel.py:1298 translations/messages_pybabel.py:2205
 #: translations/messages_pybabel.py:2206
 msgid "Ticarcilline"
-msgstr ""
+msgstr "ថ្នាំ Ticarcillin"
 
 #: translations/messages_pybabel.py:1299 translations/messages_pybabel.py:2207
 #: translations/messages_pybabel.py:2208
 msgid "Ticarcilline/ac. Clavulanique"
-msgstr ""
+msgstr "ថ្នាំ Ticarcillin/ac. Clavulanic"
 
 #: translations/messages_pybabel.py:1300 translations/messages_pybabel.py:2209
 #: translations/messages_pybabel.py:2210
 msgid "Tigécycline"
-msgstr ""
+msgstr "ថ្នាំ Tigecyclin"
 
 #: translations/messages_pybabel.py:1301 translations/messages_pybabel.py:2218
 #: translations/messages_pybabel.py:2219
 msgid "Tobramycine"
-msgstr ""
+msgstr "ថ្នាំ Tobramycin"
 
 #: translations/messages_pybabel.py:1302 translations/messages_pybabel.py:2228
 #: translations/messages_pybabel.py:2229
 msgid "Triméthoprime"
-msgstr ""
+msgstr "ទ្រីមេតូព្រីម"
 
 #: translations/messages_pybabel.py:1303 translations/messages_pybabel.py:2230
 #: translations/messages_pybabel.py:2231
 msgid "Triméthoprime/sulfaméthoxazole"
-msgstr ""
+msgstr "ថ្នាំ Trimethoprim / sulfamethoxazole"
 
 #: translations/messages_pybabel.py:1304
 msgid "Vancomycine"
-msgstr ""
+msgstr "ថ្នាំ Vancomycin"
 
 #: translations/messages_pybabel.py:1305
 msgid "Antibiogramme"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម"
 
 #: translations/messages_pybabel.py:1306
 msgid "Examen cytobactériologique des crachats (Ziehl Neelsen)"
-msgstr ""
+msgstr "ការពិនិត្យ cytobacteriological នៃ កំហាក (Ziehl Neelsen)"
 
 #: translations/messages_pybabel.py:1307
 msgid "Examen parasitologique des urines"
-msgstr ""
+msgstr "ការពិនិត្យប៉ារ៉ាស៊ីតក្នុងទឹកនោម"
 
 #: translations/messages_pybabel.py:1308 translations/messages_pybabel.py:1902
 #: translations/messages_pybabel.py:1903
 msgid "Isionazide"
-msgstr ""
+msgstr "ថ្នាំ Isionazid"
 
 #: translations/messages_pybabel.py:1309 translations/messages_pybabel.py:1808
 #: translations/messages_pybabel.py:1809
 msgid "Ethambutol"
-msgstr ""
+msgstr "ថ្នាំ Ethambutol"
 
 #: translations/messages_pybabel.py:1310 translations/messages_pybabel.py:2056
 #: translations/messages_pybabel.py:2057
 msgid "Pyrazinamide"
-msgstr ""
+msgstr "ថ្នាំ Pyrazinamid"
 
 #: translations/messages_pybabel.py:1311
 msgid "Fièvre jaune"
@@ -4951,47 +4868,47 @@ msgstr ""
 
 #: translations/messages_pybabel.py:1326
 msgid "Antibiogramme Salmonella spp [DISK]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Salmonella spp [DISK]"
 
 #: translations/messages_pybabel.py:1327
 msgid "Antibiogramme Shigella spp [DISK]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Shigella spp [DISK]"
 
 #: translations/messages_pybabel.py:1328
 msgid "Antibiogramme Klebsiella spp. [DISK]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Klebsiella spp. [ឌីស]"
 
 #: translations/messages_pybabel.py:1329
 msgid "Antibiogramme Enterobacter spp. [DISK]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Enterobacter spp [ឌីស]"
 
 #: translations/messages_pybabel.py:1330
 msgid "Antibiogramme Vibrio cholerae spp. [DISK]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Vibrio cholerae spp [ឌីស]"
 
 #: translations/messages_pybabel.py:1331
 msgid "Antibiogramme Méningocoques [CMI]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Meningococcal [MIC]"
 
 #: translations/messages_pybabel.py:1332
 msgid "Antibiogramme Staphylococcus aureus [CMI]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Staphylococcus aureus [MIC]"
 
 #: translations/messages_pybabel.py:1333
 msgid "Antibiogramme Pneumocoques [CMI]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាមជំងឺរលាកសួត [MIC]"
 
 #: translations/messages_pybabel.py:1334
 msgid "Antibiogramme Haemophilus influenzae [CMI]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Haemophilus influenzae [MIC]"
 
 #: translations/messages_pybabel.py:1335
 msgid "Antibiogramme Pseudomonas [CMI]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Pseudomonas [MIC]"
 
 #: translations/messages_pybabel.py:1336
 msgid "Antibiogramme Acinetobacter [CMI]"
-msgstr ""
+msgstr "អង់ទីប៊ីយ៉ូក្រាម Pseudomonas [MIC]"
 
 #: translations/messages_pybabel.py:1337
 msgid "Antibiogramme Escherichia coli [CMI]"
@@ -5155,9 +5072,7 @@ msgid "Diagnostic moléculaire du bacille de l'anthrax par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1388
-msgid ""
-"Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement "
-"sanguin"
+msgid "Détection de l'ARN du virus de la Dengue par RT-PCR sur prélèvement sanguin"
 msgstr ""
 
 #: translations/messages_pybabel.py:1389
@@ -5185,33 +5100,23 @@ msgid "Culture liquide des mycobatéries"
 msgstr ""
 
 #: translations/messages_pybabel.py:1396
-msgid ""
-"Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-"
-"PCR"
+msgid "Recherche dans le sang de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1397
-msgid ""
-"Recherche par prélèvement buccal de l'ADN viral de la maladie à virus "
-"Ebola par RT-PCR"
+msgid "Recherche par prélèvement buccal de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1398
-msgid ""
-"Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans les urines de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1399
-msgid ""
-"Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans le sperme de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1400
-msgid ""
-"Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par "
-"RT-PCR"
+msgid "Recherche dans les selles de l'ADN viral de la maladie à virus Ebola par RT-PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:1401
@@ -5331,29 +5236,15 @@ msgid "Avec détermination des pourcentages, dosage des protéines totales"
 msgstr ""
 
 #: translations/messages_pybabel.py:1436
-msgid ""
-"Avec deux épreuves (globulaire et sérique) effectuées par deux "
-"techniciens différents avec deux lots de réactifs différents."
+msgid "Avec deux épreuves (globulaire et sérique) effectuées par deux techniciens différents avec deux lots de réactifs différents."
 msgstr ""
 
 #: translations/messages_pybabel.py:1437
-msgid ""
-"Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la "
-"viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 "
-"mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de "
-"cellules rondes, recherche d'une agglutination spontanée, numération des "
-"formes anormales en détaillant les anomalies de la tête, de la pièce "
-"intermédiaire et du flagelle en mentionnant l'index des anomalies "
-"multiples."
+msgid "Comprenant la mesure du volume de l'éjaculat, le pH, l'estimation de la viscosité du sperme, l'estimation de la mobilité des spermatozoïdes 30 mn, 2h,4h après éjaculation, numération des spermatozoïdes, recherche de cellules rondes, recherche d'une agglutination spontanée, numération des formes anormales en détaillant les anomalies de la tête, de la pièce intermédiaire et du flagelle en mentionnant l'index des anomalies multiples."
 msgstr ""
 
 #: translations/messages_pybabel.py:1438
-msgid ""
-"Comprend: numération des hématies, des leucocytes et des plaquettes/ "
-"dosage de l'hémoglobine, mesure de l'hématocrite, détermination des "
-"constantes érythrocytaires et de la formule leucocytaire complète "
-"(automatique ou manuelle), comprend également un contrôle sur frottis "
-"sanguin en cas d'anomalie."
+msgid "Comprend: numération des hématies, des leucocytes et des plaquettes/ dosage de l'hémoglobine, mesure de l'hématocrite, détermination des constantes érythrocytaires et de la formule leucocytaire complète (automatique ou manuelle), comprend également un contrôle sur frottis sanguin en cas d'anomalie."
 msgstr ""
 
 #: translations/messages_pybabel.py:1439
@@ -5365,23 +5256,15 @@ msgid "Cotation pour chaque facteur."
 msgstr ""
 
 #: translations/messages_pybabel.py:1441
-msgid ""
-"En cas de réaction positive au RPR  et au TPHA, un titrage doit être "
-"pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou "
-"les techniques utilisées avec leur seuil de sensibilité."
+msgid "En cas de réaction positive au RPR  et au TPHA, un titrage doit être pratiqué. - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
 msgstr ""
 
 #: translations/messages_pybabel.py:1442
-msgid ""
-"La culture comprend : examen microscopique direct, isolement avec "
-"éventuellement identification complète de (s) germe(s) et antibiogramme."
+msgid "La culture comprend : examen microscopique direct, isolement avec éventuellement identification complète de (s) germe(s) et antibiogramme."
 msgstr ""
 
 #: translations/messages_pybabel.py:1443
-msgid ""
-"Le compte rendu comportera le jour du cycle, le temps écoulé après "
-"rapport sexuel, la qualité de la glaire (abondance, filance et "
-"transparence) le nombre et la mobilité des spermatozoïdes par champ."
+msgid "Le compte rendu comportera le jour du cycle, le temps écoulé après rapport sexuel, la qualité de la glaire (abondance, filance et transparence) le nombre et la mobilité des spermatozoïdes par champ."
 msgstr ""
 
 #: translations/messages_pybabel.py:1444
@@ -5389,13 +5272,7 @@ msgid "Le compte rendu doit mentionner la ou les techniques utilisées."
 msgstr ""
 
 #: translations/messages_pybabel.py:1445
-msgid ""
-"Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la "
-"technique et le nombre de copies ou d'équivalent copies par ml de plasma,"
-" - Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
+msgid "Le compte rendu doit préciser le réactif utilisé, la valeur seuil de la technique et le nombre de copies ou d'équivalent copies par ml de plasma, - Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
 msgstr ""
 
 #: translations/messages_pybabel.py:1446
@@ -5403,48 +5280,31 @@ msgid "Par prélèvement."
 msgstr ""
 
 #: translations/messages_pybabel.py:1447
-msgid ""
-"Recherche d'un antigène du SARS-CoV-2, recherche par tests non "
-"automatisable de type immunochromatographique ciblant l'antigène ... du "
-"SARS-CoV-2 (dépend du kit utilisé)"
+msgid "Recherche d'un antigène du SARS-CoV-2, recherche par tests non automatisable de type immunochromatographique ciblant l'antigène ... du SARS-CoV-2 (dépend du kit utilisé)"
 msgstr ""
 
 #: translations/messages_pybabel.py:1448
-msgid ""
-"Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests"
-" immunochromatographiques"
+msgid "Recherche des anticorps dirigés contre le SARS-CoV-2, recherche par tests immunochromatographiques"
 msgstr ""
 
 #: translations/messages_pybabel.py:1449
-msgid ""
-"Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgid "Recherche du génome du SARS COV 2 par RT-PCR, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1450
-msgid ""
-"Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour "
-"ce test ciblent les gènes ... et ... du génome du SARS COV2"
+msgid "Recherche du génome du SARS-CoV-2 par RT-LAMP, les amorces utilisés pour ce test ciblent les gènes ... et ... du génome du SARS COV2"
 msgstr ""
 
 #: translations/messages_pybabel.py:1451
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité."
 msgstr ""
 
 #: translations/messages_pybabel.py:1452
-msgid ""
-"Recherche et titrage éventuel des anticorps, préciser la ou les "
-"techniques utilisées avec leur seuil de sensibilité. Une technique de "
-"confirmation s'impose quand les tests de dépistage sont positifs ou "
-"discordants. Une seule technique de confirmation peut être cotée."
+msgid "Recherche et titrage éventuel des anticorps, préciser la ou les techniques utilisées avec leur seuil de sensibilité. Une technique de confirmation s'impose quand les tests de dépistage sont positifs ou discordants. Une seule technique de confirmation peut être cotée."
 msgstr ""
 
 #: translations/messages_pybabel.py:1453
-msgid ""
-"Recherche et titrage éventuels des anticorps dirigés contre le SARS-"
-"CoV-2, recherche par tests automatisables de type ELISA/ELFA"
+msgid "Recherche et titrage éventuels des anticorps dirigés contre le SARS-CoV-2, recherche par tests automatisables de type ELISA/ELFA"
 msgstr ""
 
 #: translations/messages_pybabel.py:1460
@@ -6611,9 +6471,7 @@ msgid "Recherche du bacille de l'anthrax par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:2122
-msgid ""
-"Recherche et titrage de a foetoprotéine (dans le sérum ou liquide "
-"amniotique)"
+msgid "Recherche et titrage de a foetoprotéine (dans le sérum ou liquide amniotique)"
 msgstr ""
 
 #: translations/messages_pybabel.py:2126
@@ -6869,9 +6727,7 @@ msgid "Normales : Enfant : 0.5 - 3.5 / Adultes : 1.5 - 5.5"
 msgstr ""
 
 #: translations/messages_pybabel.py:2265
-msgid ""
-"0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - "
-"60 ans: 34 - 48"
+msgid "0 - 4 jours: 28 -44   4j - 14 ans: 38 - 54   14 - 18 ans: 32 - 45   18 - 60 ans: 34 - 48"
 msgstr ""
 
 #: translations/messages_pybabel.py:2266
@@ -6883,15 +6739,11 @@ msgid "0 CFU/100 ml"
 msgstr ""
 
 #: translations/messages_pybabel.py:2268
-msgid ""
-"1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   "
-"femme : 45 - 103   homme : 55 - 120"
+msgid "1 - 4 ans : 18 - 35   4 - 13 ans : 31 - 68   13 - 17 ans : 37 - 88   femme : 45 - 103   homme : 55 - 120"
 msgstr ""
 
 #: translations/messages_pybabel.py:2270
-msgid ""
-"DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: "
-"Indeterminé"
+msgid "DO > COV  : Positif DO < COV  : Négatif COV -0.010 < DO < COV + 0.010: Indeterminé"
 msgstr ""
 
 #: translations/messages_pybabel.py:2271
@@ -6923,9 +6775,7 @@ msgid "Méthode électrométrique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2278
-msgid ""
-"Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0"
-" - 17.0"
+msgid "Normales : 3 à 10 ans : 12.0 - 14.5 /  Femme : 12.5 - 15.5 / Homme : 14.0 - 17.0"
 msgstr ""
 
 #: translations/messages_pybabel.py:2279
@@ -6973,9 +6823,7 @@ msgid "prématuré : 1.10 - 8.90   < 1 an : 1.40 - 6.80   enfant: 1.80 - 6.40"
 msgstr ""
 
 #: translations/messages_pybabel.py:2290
-msgid ""
-"prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - "
-"2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
+msgid "prématuré: 1.55 - 2.75   J0 - 10j: 1.90 - 2.60   10 j - 24 mois: 2.25 - 2.75   24 mois - 12 ans: 2.20 - 2.70   12 ans - 18 ans : 2.10 - 2.55"
 msgstr ""
 
 #: translations/messages_pybabel.py:2291
@@ -6983,9 +6831,7 @@ msgid "Recherche de l'ADN du bacillus anthracis par PCR"
 msgstr ""
 
 #: translations/messages_pybabel.py:2292
-msgid ""
-"Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: "
-"Flore de vaginose bacterienne"
+msgid "Score 0-3: Flore normale   Score 4-6: Flore intermediaire   Score >= 7: Flore de vaginose bacterienne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2293
@@ -7018,537 +6864,527 @@ msgstr ""
 
 #: translations/messages_pybabel.py:2313
 msgid "Gestionnaire de stock"
-msgstr ""
-
-#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
-#, fuzzy
-msgid "Laboratoire"
-msgstr "បរិបូណ៌"
-
-#: translations/messages_pybabel.py:2315
-#, fuzzy
-msgid "Préleveur"
-msgstr "ផ្សិតសរសៃ"
+msgstr "អ្នកគ្រប់គ្រងភាគហ៊ុន"
 
 #: translations/messages_pybabel.py:2320
 msgid "Algérienne"
-msgstr ""
+msgstr "អាល់ហ្សេរី"
 
 #: translations/messages_pybabel.py:2321
 msgid "Allemande"
-msgstr ""
+msgstr "អាឡឺម៉ង់"
 
 #: translations/messages_pybabel.py:2322
 msgid "Américaine"
-msgstr ""
+msgstr "ជនជាតិអាមេរិក"
 
 #: translations/messages_pybabel.py:2323
 msgid "Angolaise"
-msgstr ""
+msgstr "អង់ហ្គោឡា"
 
 #: translations/messages_pybabel.py:2324
 msgid "Argentine"
-msgstr ""
+msgstr "អាហ្សង់ទីន"
 
 #: translations/messages_pybabel.py:2325
 msgid "Arménienne"
-msgstr ""
+msgstr "អាមេនី"
 
 #: translations/messages_pybabel.py:2326
 msgid "Australienne"
-msgstr ""
+msgstr "អូស្ត្រាលី"
 
 #: translations/messages_pybabel.py:2327
 msgid "Autrichienne"
-msgstr ""
+msgstr "អូទ្រីស"
 
 #: translations/messages_pybabel.py:2328
 msgid "Bahamienne"
-msgstr ""
+msgstr "បាហាំៀ"
 
 #: translations/messages_pybabel.py:2329
 msgid "Bangladaise"
-msgstr ""
+msgstr "បង់ក្លាដែស"
 
 #: translations/messages_pybabel.py:2330
 msgid "Barbadienne"
-msgstr ""
+msgstr "បាបាដៀន"
 
 #: translations/messages_pybabel.py:2331
 msgid "Belge"
-msgstr ""
+msgstr "បែលហ្ស៊ិក"
 
 #: translations/messages_pybabel.py:2332
 msgid "Beninoise"
-msgstr ""
+msgstr "បេនីន"
 
 #: translations/messages_pybabel.py:2333
 msgid "Bermudienne"
-msgstr ""
+msgstr "ប៊ឺមូឌៀ"
 
 #: translations/messages_pybabel.py:2334
 msgid "Bolivienne"
-msgstr ""
+msgstr "បូលីវី"
 
 #: translations/messages_pybabel.py:2335
 msgid "Bosnienne"
-msgstr ""
+msgstr "បូស្នៀ"
 
 #: translations/messages_pybabel.py:2336
 msgid "Britannique"
-msgstr ""
+msgstr "ជនជាតិអង់គ្លេស"
 
 #: translations/messages_pybabel.py:2337
 msgid "Brésilienne"
-msgstr ""
+msgstr "ប្រេស៊ីល"
 
 #: translations/messages_pybabel.py:2338
 msgid "Bulgare"
-msgstr ""
+msgstr "ប៊ុលហ្គារី"
 
 #: translations/messages_pybabel.py:2339
 msgid "Burkinabe"
-msgstr ""
+msgstr "ប៊ឺគីណាបេ"
 
 #: translations/messages_pybabel.py:2340
 msgid "Cambodgienne"
-msgstr ""
+msgstr "កម្ពុជា។"
 
 #: translations/messages_pybabel.py:2341
 msgid "Camerounaise"
-msgstr ""
+msgstr "កាមេរូន"
 
 #: translations/messages_pybabel.py:2342
 msgid "Canadienne"
-msgstr ""
+msgstr "ជនជាតិកាណាដា"
 
 #: translations/messages_pybabel.py:2343
 msgid "Chilienne"
-msgstr ""
+msgstr "ឈីលី"
 
 #: translations/messages_pybabel.py:2344
 msgid "Chinoise"
-msgstr ""
+msgstr "ចិន"
 
 #: translations/messages_pybabel.py:2345
 msgid "Chypriote"
-msgstr ""
+msgstr "ស៊ីប"
 
 #: translations/messages_pybabel.py:2346
 msgid "Colombienne"
-msgstr ""
+msgstr "កូឡុំប៊ី"
 
 #: translations/messages_pybabel.py:2347
 msgid "Congolaise"
-msgstr ""
+msgstr "កុងហ្គោ"
 
 #: translations/messages_pybabel.py:2348
 msgid "Costaricaine"
-msgstr ""
+msgstr "កូស្តារីកា"
 
 #: translations/messages_pybabel.py:2349
 msgid "Croate"
-msgstr ""
+msgstr "ក្រូអាត"
 
 #: translations/messages_pybabel.py:2350
 msgid "Cubaine"
-msgstr ""
+msgstr "គុយបា"
 
 #: translations/messages_pybabel.py:2351
 msgid "Danoise"
-msgstr ""
+msgstr "ដាណឺម៉ាក"
 
 #: translations/messages_pybabel.py:2352
 msgid "Djiboutienne"
-msgstr ""
+msgstr "ជីប៊ូតៀន"
 
 #: translations/messages_pybabel.py:2353
 msgid "Dominiquaise"
-msgstr ""
+msgstr "ដូមីនីកែន"
 
 #: translations/messages_pybabel.py:2354
 msgid "Egyptienne"
-msgstr ""
+msgstr "ជនជាតិអេហ្ស៊ីប"
 
 #: translations/messages_pybabel.py:2355
 msgid "Equatorienne"
-msgstr ""
+msgstr "អេក្វាឌ័រ"
 
 #: translations/messages_pybabel.py:2356
 msgid "Espagnole"
-msgstr ""
+msgstr "ភាសាអេស្ប៉ាញ"
 
 #: translations/messages_pybabel.py:2357
 msgid "Estonienne"
-msgstr ""
+msgstr "អេស្តូនី"
 
 #: translations/messages_pybabel.py:2358
 msgid "Ethiopienne"
-msgstr ""
+msgstr "អេត្យូពី"
 
 #: translations/messages_pybabel.py:2359
 msgid "Fidjienne"
-msgstr ""
+msgstr "ហ្វីជី"
 
 #: translations/messages_pybabel.py:2360
 msgid "Finlandaise"
-msgstr ""
+msgstr "ហ្វាំងឡង់"
 
 #: translations/messages_pybabel.py:2361
 msgid "Française"
-msgstr ""
+msgstr "បារាំង"
 
 #: translations/messages_pybabel.py:2362
 msgid "Gambienne"
-msgstr ""
+msgstr "ហ្គាំប៊ី"
 
 #: translations/messages_pybabel.py:2363
 msgid "Gambonaise"
-msgstr ""
+msgstr "ហ្គាំបូនីស"
 
 #: translations/messages_pybabel.py:2364
 msgid "Ghanéenne"
-msgstr ""
+msgstr "ហ្គាណា"
 
 #: translations/messages_pybabel.py:2365
 msgid "Grecque"
-msgstr ""
+msgstr "ក្រិក"
 
 #: translations/messages_pybabel.py:2366
 msgid "Grenadienne"
-msgstr ""
+msgstr "ហ្គ្រេណាឌីន"
 
 #: translations/messages_pybabel.py:2367
 msgid "Guatémaltèque"
-msgstr ""
+msgstr "ហ្គាតេម៉ាឡា"
 
 #: translations/messages_pybabel.py:2368
 msgid "Guinéenne"
-msgstr ""
+msgstr "ហ្គីណេ"
 
 #: translations/messages_pybabel.py:2369
 msgid "Guyanaise"
-msgstr ""
+msgstr "ហ្គីយ៉ានីស"
 
 #: translations/messages_pybabel.py:2370
 msgid "Haïtienne"
-msgstr ""
+msgstr "ហៃទី"
 
 #: translations/messages_pybabel.py:2371
 msgid "Hondurienne"
-msgstr ""
+msgstr "ហុងឌូរ៉ាន់"
 
 #: translations/messages_pybabel.py:2372
 msgid "Hongroise"
-msgstr ""
+msgstr "ហុងគ្រី"
 
 #: translations/messages_pybabel.py:2373
 msgid "Indienne"
-msgstr ""
+msgstr "ឥណ្ឌា"
 
 #: translations/messages_pybabel.py:2374
 msgid "Indonésienne"
-msgstr ""
+msgstr "ឥណ្ឌូនេស៊ី"
 
 #: translations/messages_pybabel.py:2375
 msgid "Irakienne"
-msgstr ""
+msgstr "អ៊ីរ៉ាក់"
 
 #: translations/messages_pybabel.py:2376
 msgid "Iranienne"
-msgstr ""
+msgstr "អ៊ីរ៉ង់"
 
 #: translations/messages_pybabel.py:2377
 msgid "Irlandaise"
-msgstr ""
+msgstr "អៀរឡង់"
 
 #: translations/messages_pybabel.py:2378
 msgid "Islandaise"
-msgstr ""
+msgstr "អ៊ីស្លង់"
 
 #: translations/messages_pybabel.py:2379
 msgid "Israélienne"
-msgstr ""
+msgstr "អ៊ីស្រាអែល"
 
 #: translations/messages_pybabel.py:2380
 msgid "Italienne"
-msgstr ""
+msgstr "អ៊ីតាលី"
 
 #: translations/messages_pybabel.py:2381
 msgid "Ivoirienne"
-msgstr ""
+msgstr "កូតឌីវ័រ"
 
 #: translations/messages_pybabel.py:2382
 msgid "Jamaicaine"
-msgstr ""
+msgstr "ហ្សាម៉ាអ៊ីក"
 
 #: translations/messages_pybabel.py:2383
 msgid "Japonaise"
-msgstr ""
+msgstr "ជប៉ុន"
 
 #: translations/messages_pybabel.py:2384
 msgid "Kenyane"
-msgstr ""
+msgstr "កេនយ៉ា"
 
 #: translations/messages_pybabel.py:2385
 msgid "Lettone"
-msgstr ""
+msgstr "ឡាតវី"
 
 #: translations/messages_pybabel.py:2386
 msgid "Libanaise"
-msgstr ""
+msgstr "លីបង់"
 
 #: translations/messages_pybabel.py:2387
 msgid "Libyenne"
-msgstr ""
+msgstr "លីប៊ី"
 
 #: translations/messages_pybabel.py:2388
 msgid "Libérienne"
-msgstr ""
+msgstr "លីបេរីយ៉ា"
 
 #: translations/messages_pybabel.py:2389
 msgid "Lituanne"
-msgstr ""
+msgstr "លីទុយអានី"
 
 #: translations/messages_pybabel.py:2390
 msgid "Luxembourgeoise"
-msgstr ""
+msgstr "លុចសំបួរ"
 
 #: translations/messages_pybabel.py:2391
 msgid "Macédoinienne"
-msgstr ""
+msgstr "ម៉ាសេដូនៀ"
 
 #: translations/messages_pybabel.py:2392
 msgid "Malaisienne"
-msgstr ""
+msgstr "ម៉ាឡេស៊ី"
 
 #: translations/messages_pybabel.py:2393
 msgid "Malawite"
-msgstr ""
+msgstr "ម៉ាឡាវី"
 
 #: translations/messages_pybabel.py:2394
 msgid "Malgache"
-msgstr ""
+msgstr "ម៉ាឡាហ្គាស៊ី"
 
 #: translations/messages_pybabel.py:2395
 msgid "Malienne"
-msgstr ""
+msgstr "ម៉ាលៀន"
 
 #: translations/messages_pybabel.py:2396
 msgid "Marocaine"
-msgstr ""
+msgstr "ម៉ារ៉ុក"
 
 #: translations/messages_pybabel.py:2397
 msgid "Mauricienne"
-msgstr ""
+msgstr "ម៉ូរីស"
 
 #: translations/messages_pybabel.py:2398
 msgid "Mauritanienne"
-msgstr ""
+msgstr "ម៉ូរីតានី"
 
 #: translations/messages_pybabel.py:2399
 msgid "Mexicaine"
-msgstr ""
+msgstr "ម៉ិកស៊ិក"
 
 #: translations/messages_pybabel.py:2400
 msgid "Mongole"
-msgstr ""
+msgstr "ម៉ុងហ្គោលី"
 
 #: translations/messages_pybabel.py:2401
 msgid "Mozambicaine"
-msgstr ""
+msgstr "ម៉ូសំប៊ិក"
 
 #: translations/messages_pybabel.py:2402
 msgid "Namibienne"
-msgstr ""
+msgstr "ណាមីប៊ី"
 
 #: translations/messages_pybabel.py:2403
 msgid "Nicaraguayenne"
-msgstr ""
+msgstr "នីការ៉ាហ្គា"
 
 #: translations/messages_pybabel.py:2404
 msgid "Nigérienne"
-msgstr ""
+msgstr "នីហ្សេរីយ៉ា"
 
 #: translations/messages_pybabel.py:2405
 msgid "Norvégienne"
-msgstr ""
+msgstr "ន័រវេស"
 
 #: translations/messages_pybabel.py:2406
 msgid "Néerlandaise"
-msgstr ""
+msgstr "ហូឡង់"
 
 #: translations/messages_pybabel.py:2407
 msgid "Néo-Zélandaise"
-msgstr ""
+msgstr "នូវែលសេឡង់"
 
 #: translations/messages_pybabel.py:2408
 msgid "Ougandaise"
-msgstr ""
+msgstr "អ៊ូហ្គង់ដា"
 
 #: translations/messages_pybabel.py:2409
 msgid "Pakistanaise"
-msgstr ""
+msgstr "ប៉ាគីស្ថាន"
 
 #: translations/messages_pybabel.py:2410
 msgid "Panaméenne"
-msgstr ""
+msgstr "ប៉ាណាម៉ានី"
 
 #: translations/messages_pybabel.py:2411
 msgid "Papouasienne"
-msgstr ""
+msgstr "ប៉ាពួញូហ្គីណេ"
 
 #: translations/messages_pybabel.py:2412
 msgid "Paraguayenne"
-msgstr ""
+msgstr "ប៉ារ៉ាហ្គាយ"
 
 #: translations/messages_pybabel.py:2413
 msgid "Philippine"
-msgstr ""
+msgstr "ហ្វីលីពីន"
 
 #: translations/messages_pybabel.py:2414
 msgid "Polonaise"
-msgstr ""
+msgstr "ប៉ូឡូញ"
 
 #: translations/messages_pybabel.py:2415
 msgid "Portugaise"
-msgstr ""
+msgstr "ព័រទុយហ្គាល់"
 
 #: translations/messages_pybabel.py:2416
 msgid "Péruvienne"
-msgstr ""
+msgstr "ប៉េរូ"
 
 #: translations/messages_pybabel.py:2417
 msgid "Roumaine"
-msgstr ""
+msgstr "រ៉ូម៉ានី"
 
 #: translations/messages_pybabel.py:2418
 msgid "Russe"
-msgstr ""
+msgstr "រុស្សី"
 
 #: translations/messages_pybabel.py:2419
 msgid "Rwandaise"
-msgstr ""
+msgstr "រវ៉ាន់ដា"
 
 #: translations/messages_pybabel.py:2420
 msgid "Salvadorienne"
-msgstr ""
+msgstr "ទីក្រុង Salvadoran"
 
 #: translations/messages_pybabel.py:2421
 msgid "Saoudienne"
-msgstr ""
+msgstr "អារ៉ាប៊ីសាអូឌីត"
 
 #: translations/messages_pybabel.py:2422
 msgid "Serbe"
-msgstr ""
+msgstr "ស៊ែប៊ី"
 
 #: translations/messages_pybabel.py:2423
 msgid "Sierra-Léonaise"
-msgstr ""
+msgstr "សៀរ៉ាឡេអូន"
 
 #: translations/messages_pybabel.py:2424
 msgid "Singapourienne"
-msgstr ""
+msgstr "សិង្ហបុរី"
 
 #: translations/messages_pybabel.py:2425
 msgid "Slovaque"
-msgstr ""
+msgstr "ស្លូវ៉ាគី"
 
 #: translations/messages_pybabel.py:2426
 msgid "Slovène"
-msgstr ""
+msgstr "ស្លូវេនី"
 
 #: translations/messages_pybabel.py:2427
 msgid "Somalienne"
-msgstr ""
+msgstr "សូម៉ាលី"
 
 #: translations/messages_pybabel.py:2428
 msgid "Soudanaise"
-msgstr ""
+msgstr "ស៊ូដង់"
 
 #: translations/messages_pybabel.py:2429
 msgid "Sud-Africaine"
-msgstr ""
+msgstr "អាហ្វ្រិកខាងត្បូង"
 
 #: translations/messages_pybabel.py:2430
 msgid "Sud-Coréenne "
-msgstr ""
+msgstr "កូរ៉េខាងត្បូង"
 
 #: translations/messages_pybabel.py:2431
 msgid "Suisse"
-msgstr ""
+msgstr "ស្វីស"
 
 #: translations/messages_pybabel.py:2432
 msgid "Suédoise"
-msgstr ""
+msgstr "ស៊ុយអែត"
 
 #: translations/messages_pybabel.py:2433
 msgid "Swazie"
-msgstr ""
+msgstr "ស្វាស៊ីឡង់"
 
 #: translations/messages_pybabel.py:2434
 msgid "Syrienne"
-msgstr ""
+msgstr "ស៊ីរី"
 
 #: translations/messages_pybabel.py:2435
 msgid "Sénégalaise"
-msgstr ""
+msgstr "សេណេហ្គាល់"
 
 #: translations/messages_pybabel.py:2436
 msgid "Taiwanaise"
-msgstr ""
+msgstr "តៃវ៉ាន់"
 
 #: translations/messages_pybabel.py:2437
 msgid "Tanzanienne"
-msgstr ""
+msgstr "តង់ហ្សានី"
 
 #: translations/messages_pybabel.py:2438
 msgid "Tchadienne"
-msgstr ""
+msgstr "ឆាដៀន"
 
 #: translations/messages_pybabel.py:2439
 msgid "Tchèque"
-msgstr ""
+msgstr "ឆេក"
 
 #: translations/messages_pybabel.py:2440
 msgid "Thaïlandaise"
-msgstr ""
+msgstr "ថៃ"
 
 #: translations/messages_pybabel.py:2441
 msgid "Togolaise"
-msgstr ""
+msgstr "តូហ្គោលី"
 
 #: translations/messages_pybabel.py:2442
 msgid "Tunisienne"
-msgstr ""
+msgstr "ទុយនីស៊ី"
 
 #: translations/messages_pybabel.py:2443
 msgid "Turque"
-msgstr ""
+msgstr "ទួរគី"
 
 #: translations/messages_pybabel.py:2444
 msgid "Ukrainienne"
-msgstr ""
+msgstr "អ៊ុយក្រែន"
 
 #: translations/messages_pybabel.py:2445
 msgid "Uruguayenne"
-msgstr ""
+msgstr "អ៊ុយរូហ្គាយ"
 
 #: translations/messages_pybabel.py:2446
 msgid "Vietnamienne"
-msgstr ""
+msgstr "វៀតណាម"
 
 #: translations/messages_pybabel.py:2447
 msgid "Vénézuelienne"
-msgstr ""
+msgstr "វេណេស៊ុយអេឡា"
 
 #: translations/messages_pybabel.py:2448
 msgid "Zambienne"
-msgstr ""
+msgstr "ហ្សំប៊ី"
 
 #: translations/messages_pybabel.py:2449
 msgid "Zimbabwéenne"
-msgstr ""
+msgstr "ហ្ស៊ីមបាវេ"
 
 #: translations/messages_pybabel.py:2454
 msgid "Deuxième nom"
@@ -7598,717 +7434,739 @@ msgstr "តម្លៃទិញ"
 msgid "Nom du bailleur"
 msgstr "ឈ្មោះអ្នកផ្តល់មូលនិធិ"
 
+#: services/QualityRest.py:1452
+msgid "Pannes"
+msgstr "ការបំបែក"
+
+#: services/QualityRest.py:1454
+msgid "Réparations"
+msgstr "ជួសជុល"
+
+#: translations/messages_pybabel.py:568 translations/messages_pybabel.py:2310
+msgid "Secrétaire avancé"
+msgstr "លេខាធិការជាន់ខ្ពស់"
+
+#: models/Pdf.py:210
+msgid "Date"
+msgstr "កាលបរិច្ឆេទ"
+
+#: models/Pdf.py:212
+msgid "Famille"
+msgstr "គ្រួសារ"
+
+#: models/Pdf.py:214
+msgid "Validation"
+msgstr "សុពលភាព"
+
+#: models/Pdf.py:2790
+msgid "Remise sur la facturation"
+msgstr "ការបញ្ចុះតម្លៃលើវិក្កយបត្រ"
+
+#: models/Pdf.py:2791
+msgid "Pourcentage de la remise"
+msgstr "ភាគរយបញ្ចុះតម្លៃ"
+
+#: models/Pdf.py:2792
+msgid "Pourcentage assurance maladie / mutuelle"
+msgstr "ការធានារ៉ាប់រងសុខភាព / ភាគរយនៃការធានារ៉ាប់រងទៅវិញទៅមក"
+
+#: translations/messages_pybabel.py:82
+msgid "pathogène"
+msgstr "ធាតុបង្កជំងឺ"
+
+#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
+msgid "Laboratoire"
+msgstr "មន្ទីរពិសោធន៍"
+
+#: translations/messages_pybabel.py:2315
+msgid "Préleveur"
+msgstr "អ្នកប្រមូលគំរូ"
+
 #: translations/messages_pybabel.py:2472
 msgid "Accéder à la page d'api"
-msgstr ""
+msgstr "ចូលទៅកាន់ទំព័រ API"
 
 #: translations/messages_pybabel.py:2473
 msgid "Activer ou désactiver une analyse"
-msgstr ""
+msgstr "បើក ឬបិទការវិភាគ"
 
 #: translations/messages_pybabel.py:2474
 msgid "Ajouter de nouvelles analyses"
-msgstr ""
+msgstr "បន្ថែមការវិភាគថ្មី។"
 
 #: translations/messages_pybabel.py:2475
 msgid "Ajouter un analyseur"
-msgstr ""
+msgstr "បន្ថែមឧបករណ៍វិភាគ"
 
 #: translations/messages_pybabel.py:2476
 msgid "Ajouter un contrôle externe"
-msgstr ""
+msgstr "បន្ថែមការគ្រប់គ្រងខាងក្រៅ"
 
 #: translations/messages_pybabel.py:2477
 msgid "Ajouter un contrôle interne"
-msgstr ""
+msgstr "បន្ថែមការគ្រប់គ្រងខាងក្នុង"
 
 #: translations/messages_pybabel.py:2478
 msgid "Ajouter un élément"
-msgstr ""
+msgstr "បន្ថែមធាតុមួយ។"
 
 #: translations/messages_pybabel.py:2479
 msgid "Ajouter un équipement"
-msgstr ""
+msgstr "បន្ថែមឧបករណ៍"
 
 #: translations/messages_pybabel.py:2480
-#, fuzzy
 msgid "Ajouter un fournisseur"
-msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+msgstr "បន្ថែមអ្នកផ្គត់ផ្គង់"
 
 #: translations/messages_pybabel.py:2481
 msgid "Ajouter un laboratoire"
-msgstr ""
+msgstr "បន្ថែមមន្ទីរពិសោធន៍"
 
 #: translations/messages_pybabel.py:2482
 msgid "Ajouter un manuel"
-msgstr ""
+msgstr "បន្ថែមសៀវភៅណែនាំ"
 
 #: translations/messages_pybabel.py:2483
 msgid "Ajouter un modèle de document"
-msgstr ""
+msgstr "បន្ថែមគំរូឯកសារ"
 
 #: translations/messages_pybabel.py:2484
 msgid "Ajouter un personnel"
-msgstr ""
+msgstr "បន្ថែមបុគ្គលិក"
 
 #: translations/messages_pybabel.py:2485
-#, fuzzy
 msgid "Ajouter un prescripteur"
-msgstr "ការពិនិត្យត្រូវបានកំណត់នៅ"
+msgstr "បន្ថែមអ្នកចេញវេជ្ជបញ្ជា"
 
 #: translations/messages_pybabel.py:2486
 msgid "Ajouter un produit"
-msgstr ""
+msgstr "បន្ថែមផលិតផល"
 
 #: translations/messages_pybabel.py:2487
 msgid "Ajouter un résultat du contrôle externe"
-msgstr ""
+msgstr "បន្ថែមលទ្ធផលត្រួតពិនិត្យខាងក្រៅ"
 
 #: translations/messages_pybabel.py:2488
 msgid "Ajouter un résultat du contrôle interne"
-msgstr ""
+msgstr "បន្ថែមលទ្ធផលត្រួតពិនិត្យផ្ទៃក្នុង"
 
 #: translations/messages_pybabel.py:2489
 msgid "Ajouter un utilisateur"
-msgstr ""
+msgstr "បន្ថែមអ្នកប្រើប្រាស់"
 
 #: translations/messages_pybabel.py:2490
 msgid "Ajouter une maintenance"
-msgstr ""
+msgstr "បន្ថែមការថែទាំ"
 
 #: translations/messages_pybabel.py:2491
 msgid "Ajouter une maintenance préventive"
-msgstr ""
+msgstr "បន្ថែមការថែទាំបង្ការ"
 
 #: translations/messages_pybabel.py:2492
 msgid "Ajouter une métrologie ou étalonnage"
-msgstr ""
+msgstr "បន្ថែមការវាស់ស្ទង់ ឬការក្រិតតាមខ្នាត"
 
 #: translations/messages_pybabel.py:2493
 msgid "Ajouter une non-conformité"
-msgstr ""
+msgstr "បន្ថែមការមិនអនុលោម"
 
 #: translations/messages_pybabel.py:2494
 msgid "Ajouter une panne ou une réparation"
-msgstr ""
+msgstr "បន្ថែមការបំបែកឬជួសជុល"
 
 #: translations/messages_pybabel.py:2495
 msgid "Ajouter une plateforme DHIS2 api"
-msgstr ""
+msgstr "បន្ថែមវេទិកា API DHIS2"
 
 #: translations/messages_pybabel.py:2496
 msgid "Ajouter une procédure"
-msgstr ""
+msgstr "បន្ថែមនីតិវិធី"
 
 #: translations/messages_pybabel.py:2497
 msgid "Ajouter une réunion"
-msgstr ""
+msgstr "បន្ថែមការប្រជុំ"
 
 #: translations/messages_pybabel.py:2498
 msgid "Annulation de stock"
-msgstr ""
+msgstr "ការលុបចោលភាគហ៊ុន"
 
 #: translations/messages_pybabel.py:2499
 msgid "Catalogue des produits"
-msgstr ""
+msgstr "កាតាឡុកផលិតផល"
 
 #: translations/messages_pybabel.py:2500
 msgid "Clôture de la non-conformité"
-msgstr ""
+msgstr "ការបិទការមិនអនុលោម"
 
 #: translations/messages_pybabel.py:2501
 msgid "Configuration DHIS2"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធ DHIS2"
 
 #: translations/messages_pybabel.py:2502
 msgid "Configuration Epidemio"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធអេពីដេមីអូ"
 
 #: translations/messages_pybabel.py:2503
 msgid "Configuration de formulaires"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធ"
 
 #: translations/messages_pybabel.py:2504
 msgid "Configuration des analyseurs"
-msgstr ""
+msgstr "កំណត់រចនាសម្ព័ន្ធឧបករណ៍វិភាគ"
 
 #: translations/messages_pybabel.py:2505
 msgid "Configuration des codes postaux"
-msgstr ""
+msgstr "ការដំឡើងលេខកូដប្រៃសណីយ៍"
 
 #: translations/messages_pybabel.py:2506
 msgid "Configuration des comptes rendus"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធរបាយការណ៍"
 
 #: translations/messages_pybabel.py:2507
 msgid "Configuration des intervalles d'âge"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធចន្លោះអាយុ"
 
 #: translations/messages_pybabel.py:2508
 msgid "Configuration des manuels"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធសៀវភៅណែនាំ"
 
 #: translations/messages_pybabel.py:2509
 msgid "Configuration des modèles de documents"
-msgstr ""
+msgstr "កំណត់រចនាសម្ព័ន្ធគំរូឯកសារ"
 
 #: translations/messages_pybabel.py:2510
 msgid "Configuration des numéros de dossier"
-msgstr ""
+msgstr "ការកំណត់លេខករណី"
 
 #: translations/messages_pybabel.py:2511
 msgid "Configuration des sauvegardes"
-msgstr ""
+msgstr "កំណត់រចនាសម្ព័ន្ធការបម្រុងទុក"
 
 #: translations/messages_pybabel.py:2512
 msgid "Configuration des services demandeurs"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធនៃការស្នើសុំសេវាកម្ម"
 
 #: translations/messages_pybabel.py:2513
 msgid "Configuration des unités fonctionnelles"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធនៃអង្គភាពមុខងារ"
 
 #: translations/messages_pybabel.py:2514
 msgid "Configuration du logo"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធនិមិត្តសញ្ញា"
 
 #: translations/messages_pybabel.py:2515
 msgid "Configuration du rapport d'indicateurs"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធរបាយការណ៍សូចនាករ"
 
 #: translations/messages_pybabel.py:2516
 msgid "Configuration du stockage"
-msgstr ""
+msgstr "ការកំណត់រចនាសម្ព័ន្ធផ្ទុក"
 
 #: translations/messages_pybabel.py:2517
-#, fuzzy
 msgid "Contrôle qualité externe"
 msgstr "ការត្រួតពិនិត្យគុណភាពខាងក្រៅ"
 
 #: translations/messages_pybabel.py:2518
-#, fuzzy
 msgid "Contrôle qualité interne"
 msgstr "ការត្រួតពិនិត្យគុណភាពផ្ទៃក្នុង"
 
 #: translations/messages_pybabel.py:2519
 msgid "Déstocker un élément"
-msgstr ""
+msgstr "ស្តុកទុកវត្ថុមួយ។"
 
 #: translations/messages_pybabel.py:2520
 msgid "Dictionnaires"
-msgstr ""
+msgstr "វចនានុក្រម"
 
 #: translations/messages_pybabel.py:2521
-#, fuzzy
 msgid "Dossier administratif"
-msgstr "រដ្ឋបាល"
+msgstr "ឯកសាររដ្ឋបាល"
 
 #: translations/messages_pybabel.py:2522
 msgid "Éditer les droits de profils"
-msgstr ""
+msgstr "កែសម្រួលសិទ្ធិទម្រង់"
 
 #: translations/messages_pybabel.py:2523
 msgid "Éditer un analyseur"
-msgstr ""
+msgstr "កែសម្រួលអ្នកវិភាគ"
 
 #: translations/messages_pybabel.py:2524
 msgid "Éditer un contrôle externe"
-msgstr ""
+msgstr "កែសម្រួលការគ្រប់គ្រងខាងក្រៅ"
 
 #: translations/messages_pybabel.py:2525
-#, fuzzy
 msgid "Éditer un contrôle interne"
-msgstr "វេជ្ជសាស្ត្រផ្នែកក្នុង"
+msgstr "កែសម្រួលការគ្រប់គ្រងខាងក្នុង"
 
 #: translations/messages_pybabel.py:2526
 msgid "Éditer un élément"
-msgstr ""
+msgstr "កែសម្រួលធាតុមួយ។"
 
 #: translations/messages_pybabel.py:2527
 msgid "Éditer un équipement"
-msgstr ""
+msgstr "កែសម្រួលឧបករណ៍"
 
 #: translations/messages_pybabel.py:2528
-#, fuzzy
 msgid "Éditer un fournisseur"
-msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+msgstr "កែសម្រួលអ្នកផ្គត់ផ្គង់"
 
 #: translations/messages_pybabel.py:2529
 msgid "Éditer un manuel"
-msgstr ""
+msgstr "កែសម្រួលសៀវភៅដៃ"
 
 #: translations/messages_pybabel.py:2530
 msgid "Éditer un modèle de document"
-msgstr ""
+msgstr "កែទម្រង់ឯកសារ"
 
 #: translations/messages_pybabel.py:2531
 msgid "Éditer un personnel"
-msgstr ""
+msgstr "កែសម្រួលបុគ្គលិក"
 
 #: translations/messages_pybabel.py:2532
-#, fuzzy
 msgid "Éditer un prescripteur"
-msgstr "អ្នកចេញវេជ្ជបញ្ជា"
+msgstr "កែសម្រួលអ្នកចេញវេជ្ជបញ្ជា"
 
 #: translations/messages_pybabel.py:2533
 msgid "Éditer un produit"
-msgstr ""
+msgstr "កែសម្រួលផលិតផល"
 
 #: translations/messages_pybabel.py:2534
 msgid "Éditer une non-conformité"
-msgstr ""
+msgstr "កែសម្រួលការមិនអនុលោម"
 
 #: translations/messages_pybabel.py:2535
 msgid "Éditer une plateforme DHIS2 api"
-msgstr ""
+msgstr "កែសម្រួលវេទិកា DHIS2 API"
 
 #: translations/messages_pybabel.py:2536
 msgid "Éditer une procédure"
-msgstr ""
+msgstr "កែសម្រួលនីតិវិធីមួយ។"
 
 #: translations/messages_pybabel.py:2537
 msgid "Éditer une réunion"
-msgstr ""
+msgstr "កែសម្រួលការប្រជុំ"
 
 #: translations/messages_pybabel.py:2538
 msgid "Enlever une ligne de stock vide"
-msgstr ""
+msgstr "យកបន្ទាត់ស្តុកទទេចេញ"
 
 #: translations/messages_pybabel.py:2539
 msgid "Enregistrer un résultat"
-msgstr ""
+msgstr "រក្សាទុកលទ្ធផល"
 
 #: translations/messages_pybabel.py:2540
 msgid "Équipement – Métrologie"
-msgstr ""
+msgstr "បរិក្ខារ - មេត្រូ"
 
 #: translations/messages_pybabel.py:2541
 msgid "Équipement – Panne et réparation"
-msgstr ""
+msgstr "ឧបករណ៍ - ការបំបែកនិងជួសជុល"
 
 #: translations/messages_pybabel.py:2542
 msgid "Équipement – Document"
-msgstr ""
+msgstr "ឧបករណ៍ - ឯកសារ"
 
 #: translations/messages_pybabel.py:2543
 msgid "Équipement – Maintenance"
-msgstr ""
+msgstr "ឧបករណ៍ - ថែទាំ"
 
 #: translations/messages_pybabel.py:2544
 msgid "Équipements"
-msgstr ""
+msgstr "បរិក្ខារ"
 
 #: translations/messages_pybabel.py:2545
-#, fuzzy
 msgid "État de la facturation journalière"
-msgstr "ស្ថានភាពចេញវិក្កយបត្រ, បានកែសម្រួលទៅលើ"
+msgstr "ស្ថានភាពវិក័យប័ត្រប្រចាំថ្ងៃ"
 
 #: translations/messages_pybabel.py:2546
-#, fuzzy
 msgid "État des prélèvements en cours"
-msgstr "សកម្មភាពឥណពន្ធ"
+msgstr "ស្ថានភាពនៃការប្រមូលបច្ចុប្បន្ន"
 
 #: translations/messages_pybabel.py:2547
 msgid "Export DHIS2"
-msgstr ""
+msgstr "ការនាំចេញ DHIS2"
 
 #: translations/messages_pybabel.py:2548
 msgid "Export WHONET"
-msgstr ""
+msgstr "នាំចេញ WHONET"
 
 #: translations/messages_pybabel.py:2549
 msgid "Export des contrôles externes"
-msgstr ""
+msgstr "ការនាំចេញការត្រួតពិនិត្យខាងក្រៅ"
 
 #: translations/messages_pybabel.py:2550
 msgid "Export des contrôles internes"
-msgstr ""
+msgstr "ការនាំចេញការត្រួតពិនិត្យផ្ទៃក្នុង"
 
 #: translations/messages_pybabel.py:2551
 msgid "Export des équipements"
-msgstr ""
+msgstr "ការនាំចេញឧបករណ៍"
 
 #: translations/messages_pybabel.py:2552
-#, fuzzy
 msgid "Export des fournisseurs"
-msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+msgstr "ការនាំចេញអ្នកផ្គត់ផ្គង់"
 
 #: translations/messages_pybabel.py:2553
 msgid "Export des maintenances"
-msgstr ""
+msgstr "ការនាំចេញការថែទាំ"
 
 #: translations/messages_pybabel.py:2554
 msgid "Export des maintenances préventives"
-msgstr ""
+msgstr "ការនាំចេញនៃការថែទាំបង្ការ"
 
 #: translations/messages_pybabel.py:2555
 msgid "Export des manuels"
-msgstr ""
+msgstr "ការនាំចេញសៀវភៅណែនាំ"
 
 #: translations/messages_pybabel.py:2556
 msgid "Export des non-conformités"
-msgstr ""
+msgstr "ការនាំចេញការមិនអនុលោម"
 
 #: translations/messages_pybabel.py:2557
 msgid "Export des pannes et réparations"
-msgstr ""
+msgstr "ការនាំចេញការបែកបាក់និងការជួសជុល"
 
 #: translations/messages_pybabel.py:2558
 msgid "Export des personnels"
-msgstr ""
+msgstr "ការនាំចេញបុគ្គលិក"
 
 #: translations/messages_pybabel.py:2559
-#, fuzzy
 msgid "Export des prescripteurs"
-msgstr "អ្នកចេញវេជ្ជបញ្ជា"
+msgstr "ការនាំចេញអ្នកចេញវេជ្ជបញ្ជា"
 
 #: translations/messages_pybabel.py:2560
 msgid "Export des procédures"
-msgstr ""
+msgstr "នីតិវិធីនាំចេញ"
 
 #: translations/messages_pybabel.py:2561
 msgid "Export des produits"
-msgstr ""
+msgstr "ការនាំចេញផលិតផល"
 
 #: translations/messages_pybabel.py:2562
 msgid "Export des résultats de contrôles externes"
-msgstr ""
+msgstr "ការនាំចេញលទ្ធផលត្រួតពិនិត្យខាងក្រៅ"
 
 #: translations/messages_pybabel.py:2563
 msgid "Export des résultats de contrôles internes"
-msgstr ""
+msgstr "ការនាំចេញលទ្ធផលត្រួតពិនិត្យផ្ទៃក្នុង"
 
 #: translations/messages_pybabel.py:2564
 msgid "Export des réunions"
-msgstr ""
+msgstr "នាំចេញការប្រជុំ"
 
 #: translations/messages_pybabel.py:2565
-#, fuzzy
 msgid "Fournisseurs"
-msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+msgstr "អ្នកផ្គត់ផ្គង់"
 
 #: translations/messages_pybabel.py:2566
-#, fuzzy
 msgid "Général"
-msgstr "គ្រូពេទ្យឯកទេសទូទៅ"
+msgstr "ទូទៅ"
 
 #: translations/messages_pybabel.py:2567
 msgid "Gestion des échantillons"
-msgstr ""
+msgstr "ការគ្រប់គ្រងគំរូ"
 
 #: translations/messages_pybabel.py:2568
 msgid "Gestion des stocks"
-msgstr ""
+msgstr "ការគ្រប់គ្រងសារពើភ័ណ្ឌ"
 
 #: translations/messages_pybabel.py:2569
 msgid "Gestion des utilisateurs"
-msgstr ""
+msgstr "ការគ្រប់គ្រងអ្នកប្រើប្រាស់"
 
 #: translations/messages_pybabel.py:2570
 msgid "Gestion dossier patient"
-msgstr ""
+msgstr "ការគ្រប់គ្រងឯកសារអ្នកជំងឺ"
 
 #: translations/messages_pybabel.py:2571
 msgid "Historique d'analyse"
-msgstr ""
+msgstr "ប្រវត្តិការវិភាគ"
 
 #: translations/messages_pybabel.py:2572
 msgid "Historique de ce produit"
-msgstr ""
+msgstr "ប្រវត្តិនៃផលិតផលនេះ។"
 
 #: translations/messages_pybabel.py:2573
 msgid "Historique patient"
-msgstr ""
+msgstr "ប្រវត្តិអ្នកជំងឺ"
 
 #: translations/messages_pybabel.py:2574
-#, fuzzy
 msgid "Import de dictionnaire"
-msgstr "កិច្ចប្រជុំការគ្រប់គ្រង"
+msgstr "ការនាំចូលវចនានុក្រម"
 
 #: translations/messages_pybabel.py:2575
 msgid "Importer des utilisateurs"
-msgstr ""
+msgstr "នាំចូលអ្នកប្រើប្រាស់"
 
 #: translations/messages_pybabel.py:2576
 msgid "Importer le référentiel"
-msgstr ""
+msgstr "នាំចូលឃ្លាំង"
 
 #: translations/messages_pybabel.py:2577
 msgid "Indiquer quantité utilisée"
-msgstr ""
+msgstr "ចង្អុលបង្ហាញបរិមាណដែលបានប្រើ"
 
 #: translations/messages_pybabel.py:2579
 msgid "Liste de travail biologique"
-msgstr ""
+msgstr "បញ្ជីការងារជីវសាស្រ្ត"
 
 #: translations/messages_pybabel.py:2580
 msgid "Liste de travail technique"
-msgstr ""
+msgstr "បញ្ជីការងារបច្ចេកទេស"
 
 #: translations/messages_pybabel.py:2581
-#, fuzzy
 msgid "Liste des dossiers"
-msgstr "តេស្តមានផ្ទៃពោះ"
+msgstr "បញ្ជីឯកសារ"
 
 #: translations/messages_pybabel.py:2582
-#, fuzzy
 msgid "Manuels"
-msgstr "សប្តាហ៍"
+msgstr "សៀវភៅណែនាំ"
 
 #: translations/messages_pybabel.py:2583
 msgid "Mise en place d'une action correctrice"
-msgstr ""
+msgstr "ការអនុវត្តសកម្មភាពកែតម្រូវ"
 
 #: translations/messages_pybabel.py:2584
 msgid "Modification code var d'une analyse"
-msgstr ""
+msgstr "ការកែប្រែកូដ var នៃការវិភាគ"
 
 #: translations/messages_pybabel.py:2585
 msgid "Modules non-conformités"
-msgstr ""
+msgstr "ម៉ូឌុលមិនអនុលោមតាម"
 
 #: translations/messages_pybabel.py:2586
 msgid "Nouvelle demande externe"
-msgstr ""
+msgstr "សំណើខាងក្រៅថ្មី។"
 
 #: translations/messages_pybabel.py:2587
 msgid "Nouvelle demande hospitalisé"
-msgstr ""
+msgstr "ពាក្យសុំចូលមន្ទីរពេទ្យថ្មី។"
 
 #: translations/messages_pybabel.py:2588
 msgid "Paramétrer l'export WHONET sur une analyse"
-msgstr ""
+msgstr "កំណត់រចនាសម្ព័ន្ធការនាំចេញ WHONET នៅលើការវិភាគមួយ។"
 
 #: translations/messages_pybabel.py:2589
 msgid "Personnels"
-msgstr ""
+msgstr "បុគ្គលិក"
 
 #: translations/messages_pybabel.py:2590
-#, fuzzy
 msgid "Préférences"
-msgstr "ឯកសារយោង"
+msgstr "ចំណូលចិត្ត"
 
 #: translations/messages_pybabel.py:2591
-#, fuzzy
 msgid "Prescripteurs"
 msgstr "អ្នកចេញវេជ្ជបញ្ជា"
 
 #: translations/messages_pybabel.py:2592
 msgid "Procédures"
-msgstr ""
+msgstr "នីតិវិធី"
 
 #: translations/messages_pybabel.py:2593
 msgid "Rapport activité"
-msgstr ""
+msgstr "របាយការណ៍សកម្មភាព"
 
 #: translations/messages_pybabel.py:2594
 msgid "Rapport de fin de journée"
-msgstr ""
+msgstr "របាយការណ៍ចុងថ្ងៃ"
 
 #: translations/messages_pybabel.py:2595
 msgid "Rapport épidémiologique"
-msgstr ""
+msgstr "របាយការណ៍រោគរាតត្បាត"
 
 #: translations/messages_pybabel.py:2596
 msgid "Rapport global"
-msgstr ""
+msgstr "របាយការណ៍សកល"
 
 #: translations/messages_pybabel.py:2597
 msgid "Rapport indicateurs"
-msgstr ""
+msgstr "របាយការណ៍សូចនាករ"
 
 #: translations/messages_pybabel.py:2598
 msgid "Rapport statistique"
-msgstr ""
+msgstr "របាយការណ៍ស្ថិតិ"
 
 #: translations/messages_pybabel.py:2599
 msgid "Rapport sur le temps de rendu du résultat"
-msgstr ""
+msgstr "រាយការណ៍អំពីពេលវេលាបង្ហាញលទ្ធផល"
 
 #: translations/messages_pybabel.py:2600
 msgid "Re-télécharger un rapport"
-msgstr ""
+msgstr "ទាញយករបាយការណ៍ឡើងវិញ"
 
 #: translations/messages_pybabel.py:2601
 msgid "Rééditer un rapport"
-msgstr ""
+msgstr "ចេញរបាយការណ៍ឡើងវិញ"
 
 #: translations/messages_pybabel.py:2602
 msgid "Référentiel des analyses"
-msgstr ""
+msgstr "ឃ្លាំងវិភាគ"
 
 #: translations/messages_pybabel.py:2603
 msgid "Réunion du laboratoire"
-msgstr ""
+msgstr "ការប្រជុំមន្ទីរពិសោធន៍"
 
 #: translations/messages_pybabel.py:2604
 msgid "Saisie des résultats"
-msgstr ""
+msgstr "ការបញ្ចូលលទ្ធផល"
 
 #: translations/messages_pybabel.py:2605
-#, fuzzy
 msgid "Statut des analyses"
-msgstr "ស្ថានភាព_ការវិភាគ"
+msgstr "ស្ថានភាពនៃការវិភាគ"
 
 #: translations/messages_pybabel.py:2606
 msgid "Suivi de la non-conformité"
-msgstr ""
+msgstr "ការត្រួតពិនិត្យការមិនអនុលោម"
 
 #: translations/messages_pybabel.py:2607
 msgid "Supprimer fichier équipement"
-msgstr ""
+msgstr "លុបឯកសារឧបករណ៍"
 
 #: translations/messages_pybabel.py:2608
 msgid "Supprimer fichier maintenance"
-msgstr ""
+msgstr "លុបឯកសារថែទាំ"
 
 #: translations/messages_pybabel.py:2609
 msgid "Supprimer fichier maintenance préventive"
-msgstr ""
+msgstr "លុបឯកសារថែទាំបង្ការ"
 
 #: translations/messages_pybabel.py:2610
 msgid "Supprimer fichier manuel"
-msgstr ""
+msgstr "លុបឯកសារដោយដៃ"
 
 #: translations/messages_pybabel.py:2611
 msgid "Supprimer fichier métrologie ou étalonnage"
-msgstr ""
+msgstr "លុប​ឯកសារ​ម៉ែត្រ​ឬ​ក្រិត"
 
 #: translations/messages_pybabel.py:2612
 msgid "Supprimer fichier panne ou réparation"
-msgstr ""
+msgstr "លុបឯកសារបរាជ័យ ឬជួសជុល"
 
 #: translations/messages_pybabel.py:2613
 msgid "Supprimer fichier procédure"
-msgstr ""
+msgstr "លុបនីតិវិធីឯកសារ"
 
 #: translations/messages_pybabel.py:2614
 msgid "Supprimer fichier réunion"
-msgstr ""
+msgstr "លុបឯកសារប្រជុំ"
 
 #: translations/messages_pybabel.py:2615
 msgid "Supprimer un analyseur"
-msgstr ""
+msgstr "លុបឧបករណ៍វិភាគ"
 
 #: translations/messages_pybabel.py:2616
 msgid "Supprimer un dossier"
-msgstr ""
+msgstr "លុបថតឯកសារ"
 
 #: translations/messages_pybabel.py:2617
 msgid "Supprimer un élément"
-msgstr ""
+msgstr "លុបធាតុមួយ។"
 
 #: translations/messages_pybabel.py:2618
 msgid "Supprimer un équipement"
-msgstr ""
+msgstr "លុបឧបករណ៍"
 
 #: translations/messages_pybabel.py:2619
-#, fuzzy
 msgid "Supprimer un fournisseur"
-msgstr "យោងលើអ្នកផ្គត់ផ្គង់"
+msgstr "លុបអ្នកផ្គត់ផ្គង់"
 
 #: translations/messages_pybabel.py:2620
 msgid "Supprimer un laboratoire"
-msgstr ""
+msgstr "លុបមន្ទីរពិសោធន៍"
 
 #: translations/messages_pybabel.py:2621
 msgid "Supprimer un manuel"
-msgstr ""
+msgstr "លុបសៀវភៅដៃ"
 
 #: translations/messages_pybabel.py:2622
 msgid "Supprimer un modèle de document"
-msgstr ""
+msgstr "លុបគំរូឯកសារ"
 
 #: translations/messages_pybabel.py:2623
-#, fuzzy
 msgid "Supprimer un prescripteur"
-msgstr "តំបន់ជិតខាង / ផ្នែក"
+msgstr "លុបអ្នកចេញវេជ្ជបញ្ជា"
 
 #: translations/messages_pybabel.py:2624
 msgid "Supprimer un produit"
-msgstr ""
+msgstr "លុបផលិតផល"
 
 #: translations/messages_pybabel.py:2625
 msgid "Supprimer une maintenance"
-msgstr ""
+msgstr "លុបការថែទាំ"
 
 #: translations/messages_pybabel.py:2626
 msgid "Supprimer une maintenance préventive"
-msgstr ""
+msgstr "លុបការថែទាំបង្ការ"
 
 #: translations/messages_pybabel.py:2627
 msgid "Supprimer une non-conformité"
-msgstr ""
+msgstr "ដកការមិនអនុលោមតាម"
 
 #: translations/messages_pybabel.py:2628
 msgid "Supprimer une panne ou réparation"
-msgstr ""
+msgstr "លុបកំហុសឬជួសជុល"
 
 #: translations/messages_pybabel.py:2629
 msgid "Supprimer une pièce jointe au dossier"
-msgstr ""
+msgstr "លុបឯកសារភ្ជាប់ចេញពីឯកសារ"
 
 #: translations/messages_pybabel.py:2630
 msgid "Supprimer une plateforme DHIS2 api"
-msgstr ""
+msgstr "លុបវេទិកា DHIS2 API"
 
 #: translations/messages_pybabel.py:2631
 msgid "Supprimer une procédure"
-msgstr ""
+msgstr "លុបនីតិវិធីមួយ។"
 
 #: translations/messages_pybabel.py:2632
 msgid "Supprimer une réunion"
-msgstr ""
+msgstr "លុបការប្រជុំ"
 
 #: translations/messages_pybabel.py:2633
 msgid "Tableau consultation des procédures"
-msgstr ""
+msgstr "តារាងពិគ្រោះអំពីនីតិវិធី"
 
 #: translations/messages_pybabel.py:2634
 msgid "Tableau croisé dynamique"
-msgstr ""
+msgstr "តារាង Pivot"
 
 #: translations/messages_pybabel.py:2635
 msgid "Télécharger étiquette dossier"
-msgstr ""
+msgstr "ទាញយកស្លាកថតឯកសារ"
 
 #: translations/messages_pybabel.py:2636
 msgid "Télécharger la facture"
-msgstr ""
+msgstr "ទាញយកវិក្កយបត្រ"
 
 #: translations/messages_pybabel.py:2637
-#, fuzzy
 msgid "Télécharger le bon de transfert"
-msgstr "ប័ណ្ណផ្ទេរប្រាក់"
+msgstr "ទាញយកប័ណ្ណផ្ទេរប្រាក់"
 
 #: translations/messages_pybabel.py:2638
 msgid "Télécharger un organigramme"
-msgstr ""
+msgstr "ទាញយកតារាងអង្គការ"
 
 #: translations/messages_pybabel.py:2639
 msgid "Télécharger une feuille de paillasse"
-msgstr ""
+msgstr "ទាញយកសន្លឹកតុ"
 
 #: translations/messages_pybabel.py:2640
 msgid "Télécharger une pièce jointe au dossier"
-msgstr ""
+msgstr "ផ្ទុកឯកសារភ្ជាប់ទៅឯកសារ"
 
 #: translations/messages_pybabel.py:2641
 msgid "Tester un modèle de document"
-msgstr ""
+msgstr "សាកល្បងគំរូឯកសារ"
 
 #: translations/messages_pybabel.py:2642
-#, fuzzy
 msgid "Validation biologique"
-msgstr "បញ្ជាក់ដោយជីវសាស្រ្ត"
+msgstr "សុពលភាពជីវសាស្រ្ត"
 
 #: translations/messages_pybabel.py:2643
-#, fuzzy
 msgid "Validation biologique groupée"
-msgstr "បញ្ជាក់ដោយជីវសាស្រ្ត"
+msgstr "ការបញ្ជាក់ជីវសាស្រ្តជាក្រុម"
 
 #: translations/messages_pybabel.py:2644
-#, fuzzy
 msgid "Validation technique"
-msgstr "បញ្ជាក់ដោយបច្ចេកទេស"
+msgstr "សុពលភាពបច្ចេកទេស"
 

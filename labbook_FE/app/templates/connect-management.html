@@ -1,0 +1,262 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Connect") }}</title>
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Connect") }}</span></h2>
+            {% if has_permission("SETTING_48") %}
+            <!-- Sumup of Connect -->
+            <div class="card p-3 mb-4">
+                <h4>{{ _("Informations sur Connect") }}</h4>
+                <ul>
+                    <li><strong>{{ _("Version") }} :</strong> <span id="connect-version">{{ args['version'] }}</span></li>
+                    <li><strong>{{ _("Plugins chargés") }} :</strong> <span id="plugin-list">{{ args['analyzers_loaded'] }}</span></li>
+                </ul>
+
+                <!-- Input field for LabBook Connect URL -->
+                <div class="mb-3">
+                    <label for="labbook-url" class="form-label">{{ _("URL du serveur LabBook Connect") }}</label>
+                    <input type="text" id="labbook-url" class="form-control" value="{{ args['cos_url'] }}">
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3" onclick="saveLabBookUrl()">{{ _("Enregistrer") }}</button>
+                    <button class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3" onclick="testLabBookUrl()">{{ _("Tester") }}</button>
+                </div>
+            </div>
+
+            <form>
+                <div class="row">
+                    <!-- Upload plugin .jar -->
+                    <div class="col-md-4">
+                        <h5>{{ _("Importer un plugin") }}</h5>
+                        <div class="form-group">
+                            <input id="upload-plugin" type="file" class="form-control mb-2" accept=".jar"/>
+                        </div>
+                        <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}"" onclick="uploadFile('plugin')">{{ _("Envoyer") }}</button>
+                    </div>
+
+                    <!-- Upload setting file -->
+                    <div class="col-md-4">
+                        <h5>{{ _("Importer un fichier de configuration") }}</h5>
+                        <div class="form-group">
+                            <input id="upload-setting" type="file" class="form-control mb-2"/>
+                        </div>
+                        <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}"" onclick="uploadFile('setting')">{{ _("Envoyer") }}</button>
+                    </div>
+
+                    <!-- Upload Mapping (no extension) -->
+                    <div class="col-md-4">
+                        <h5>{{ _("Importer un fichier de mapping") }}</h5>
+                        <div class="form-group">
+                            <input id="upload-mapping" type="file" class="form-control mb-2"/>
+                        </div>
+                        <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}"" onclick="uploadFile('mapping')">{{ _("Envoyer") }}</button>
+                    </div>
+                </div>
+
+                <div class="col-12 clearfix mt-3">
+                    <div class="float-start ms-0">
+                        <input type="button" onclick="return_back();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    </div>
+                    <div class="float-end me-0">
+                        <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3" onclick="reloadPlugins()">{{ _("Recharger les plugins") }}</button>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+                {% include 'no-rights.html' %} 
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Toast for notification -->
+    <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+        <div id="uploadToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ _("Dépôt réussi") }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+/**
+ * Uploads a file based on the specified type.
+ * @param {string} type - The type of file to upload (plugin, setting, mapping).
+ */
+function uploadFile(type) {
+let inputId = type === 'plugin' ? 'upload-plugin' : type === 'setting' ? 'upload-setting' : 'upload-mapping';
+let fileInput = document.getElementById(inputId);
+
+    if (!fileInput.files.length) {
+        alert("{{ _('Veuillez sélectionner un fichier') }}");
+        return;
+    }
+
+let file = fileInput.files[0] ;
+let formData = new FormData() ;
+formData.append('file', file) ;
+
+let url = "{{ session['server_ext'] }}/upload-connect/" + type;
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) 
+        {
+            showToast("Fichier uploadé avec succès", "success");
+            console.log("Upload success:", data);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
+        else 
+        {
+            showToast("Erreur lors de l'upload : " + (data.error || "Erreur inconnue"), "error");
+            console.error("Upload error:", data);
+        }
+    })
+    .catch(error => {
+        console.error("Error during upload:", error);
+        alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}");
+    } ) ;
+}
+
+/**
+ * Reloads the plugins by making a request to Connect.
+ */
+function reloadPlugins() 
+{
+console.log("Reloading plugins function triggered...");
+    let baseUrl = document.getElementById("labbook-url").value.trim();
+
+    // Ensure the URL is not empty
+    if (!baseUrl) {
+        alert("{{ _("Veuillez saisir une URL.") }}");
+        return;
+    }
+
+    let urlInput = baseUrl + "/connect/load_analyzers";
+
+    fetch(urlInput, { method: 'GET' })
+    .then(response => {
+        // If HTTP response is successful
+        if (response.ok) {
+            showToast("{{ _("Plugins rechargés avec succès") }}", "success");
+        } else {
+            console.log("Response ko"); // Debugging log
+            throw new Error("HTTP error " + response.status);
+        }
+    })
+    .catch(error => {
+        console.error("Error while reloading plugins:", error);
+        showToast("{{ _("Erreur lors du rechargement des plugins") }}", "danger");
+    });
+}
+
+/**
+ * Saves the LabBook Connect URL by sending it to the webservice.
+ */
+function saveLabBookUrl() {
+    let urlInput = document.getElementById("labbook-url").value.trim();
+    if (!urlInput) {
+        alert("{{ _("Veuillez saisir une URL.") }}");
+        return;
+    }
+
+    fetch("{{ session['server_ext'] }}/services/connect/setting", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_user:{{ session['user_id']|safe}} , url: urlInput })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast("{{ _("URL enregistrée avec succès") }}", "success");
+    })
+    .catch(error => {
+        console.error("Error saving LabBook URL:", error);
+        showToast("{{ _("Erreur lors de l'enregistrement de l'URL") }}", "danger");
+    });
+}
+
+/**
+ * Tests the LabBook Connect URL entered by the user.
+ */
+function testLabBookUrl() {
+    let baseUrl = document.getElementById("labbook-url").value.trim();
+    if (!baseUrl) {
+        alert("{{ _("Veuillez saisir une URL.") }}");
+        return;
+    }
+
+    let urlInput = baseUrl + "/connect/test";
+
+    fetch(urlInput, { method: 'GET' })
+    .then(response => {
+        if (response.ok) {
+            showToast("{{ _("Connexion réussie à LabBook Connect") }}", "success");
+        } else {
+            showToast("{{ _("Échec de la connexion à LabBook Connect") }}", "warning");
+        }
+    })
+    .catch(error => {
+        console.error("Error testing LabBook URL:", error);
+        showToast("{{ _("Impossible de joindre le serveur LabBook Connect") }}", "danger");
+    });
+}
+
+/**
+ * Displays a Bootstrap toast notification.
+ * @param {string} message - The message to display.
+ * @param {string} type - The Bootstrap alert type (success, warning, danger).
+ */
+function showToast(message, type = "success") 
+{
+    let toastEl = document.getElementById('uploadToast');
+
+    if (!toastEl) {
+        console.error("Toast element not found!");
+        return;
+    }
+
+    let toastBody = toastEl.querySelector('.toast-body');
+    toastBody.textContent = message;
+
+    // Remove previous Bootstrap color classes
+    toastEl.classList.remove('bg-success', 'bg-warning', 'bg-danger');
+    toastEl.classList.add('bg-' + type);
+
+    let toast = new bootstrap.Toast(toastEl, { delay: 2000 });
+    toast.show();
+}
+
+function return_back()
+{
+window.location.href = "{{ session['server_ext'] }}/list-analyzers" ;
+}
+
+$( document ).ready( function()
+{
+    let toastEl = document.getElementById('uploadToast');
+    if (toastEl) {
+        let toastInstance = new bootstrap.Toast(toastEl, { autohide: false });
+    }
+} ) ;
+</script>
+{% endblock %}

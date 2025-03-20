@@ -220,7 +220,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'A' 
+                          WHERE r.type = 'A'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('API_2')
                           '''))
@@ -235,7 +235,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'B' 
+                          WHERE r.type = 'B'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('SETTING_60', 'SETTING_61', 'SETTING_62', 'SETTING_63')
                           '''))
@@ -250,7 +250,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'Y'
-                          WHERE r.type = 'B' 
+                          WHERE r.type = 'B'
                           AND pp.prp_granted = 'N'
                           AND prr.prr_tag IN ('PROCEDURE_127')
                           '''))
@@ -265,7 +265,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'TA' 
+                          WHERE r.type = 'TA'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('SETTING_71')
                           '''))
@@ -280,7 +280,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'Y'
-                          WHERE r.type = 'TQ' 
+                          WHERE r.type = 'TQ'
                           AND pp.prp_granted = 'N'
                           AND prr.prr_tag IN ('STOCK_139')
                           '''))
@@ -295,7 +295,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'K' 
+                          WHERE r.type = 'K'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('DOCTOR_87', 'DOCTOR_88', 'DOCTOR_89', 'DOCTOR_90')
                           '''))
@@ -310,7 +310,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'Q' 
+                          WHERE r.type = 'Q'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('SETTING_60', 'SETTING_61', 'SETTING_62', 'SETTING_63')
                           '''))
@@ -325,7 +325,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'P' 
+                          WHERE r.type = 'P'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('RECORD_15')
                           '''))
@@ -340,7 +340,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'Y'
-                          WHERE r.type = 'P' 
+                          WHERE r.type = 'P'
                           AND pp.prp_granted = 'N'
                           AND prr.prr_tag IN ('NONCONF_143', 'NONCONF_144', 'NONCONF_145', 'NONCONF_146')
                           '''))
@@ -355,7 +355,7 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type = 'L' 
+                          WHERE r.type = 'L'
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('EQP_114')
                           '''))
@@ -370,13 +370,12 @@ def upgrade():
                           JOIN sigl_pj_role r ON pr.pro_role = r.id_role
                           JOIN profile_rights prr ON pp.prp_prr = prr.prr_ser
                           SET pp.prp_granted = 'N'
-                          WHERE r.type in ('A', 'SP', 'SA', 'S', 'K', 'P', 'L') 
+                          WHERE r.type in ('A', 'SP', 'SA', 'S', 'K', 'P', 'L')
                           AND pp.prp_granted = 'Y'
                           AND prr.prr_tag IN ('ALIQUOT_169', 'ALIQUOT_170', 'ALIQUOT_171', 'ALIQUOT_172', 'ALIQUOT_173')
                           '''))
     except Exception as err:
         print("ERROR update aliquot Y to N profile_permissions set prp_granted,\n\terr=" + str(err))
-    
 
     print(str(datetime.today()) + " : END of migration V3_5_6_fix_role_rigths revision=745df49ffe70")
 

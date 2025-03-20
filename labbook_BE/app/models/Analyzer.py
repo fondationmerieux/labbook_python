@@ -24,10 +24,37 @@ class Analyzer:
     log = logging.getLogger('log_db')
 
     @staticmethod
+    def getConnectSetting():
+        cursor = DB.cursor()
+
+        req = ('select cos_by_user, cos_url '
+               'from connect_setting')
+
+        cursor.execute(req)
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def updateConnectSetting(**params):
+        try:
+            cursor = DB.cursor()
+
+            req = ('update connect_setting set cos_by_user=%(id_user)s, cos_url=%(url)s')
+
+            cursor.execute(req, params)
+
+            Analyzer.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Analyzer.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
     def getAnalyzerList():
         cursor = DB.cursor()
 
-        req = ('select ans_ser, ans_rank, ans_name, ans_id '
+        req = ('select ans_ser, ans_rank, ans_name, ans_id, ans_batch '
                'from analyzer_setting '
                'order by ans_rank')
 
@@ -39,7 +66,7 @@ class Analyzer:
     def getAnalyzerDet(id_analyzer):
         cursor = DB.cursor()
 
-        req = ('select ans_ser, ans_user, ans_name, ans_id, ans_connect, ans_mapping, ans_filename '
+        req = ('select ans_ser, ans_user, ans_name, ans_id, ans_filename, ans_batch '
                'from analyzer_setting '
                'where ans_ser=%s')
 
@@ -51,7 +78,7 @@ class Analyzer:
     def getAnalyzerDetById(id_analyzer):
         cursor = DB.cursor()
 
-        req = ('select ans_ser, ans_user, ans_name, ans_id, ans_connect, ans_mapping, ans_filename '
+        req = ('select ans_ser, ans_user, ans_name, ans_id, ans_filename, ans_batch '
                'from analyzer_setting '
                'where ans_id=%s')
 
@@ -65,9 +92,8 @@ class Analyzer:
             cursor = DB.cursor()
 
             cursor.execute('insert into analyzer_setting '
-                           '(ans_date, ans_user, ans_rank, ans_name, ans_id, ans_connect, ans_mapping, ans_filename) '
-                            'values (NOW(), %(id_user)s, %(rank)s, %(name)s, %(id)s, %(connect)s, %(mapping)s, '
-                            '%(filename)s)', params)
+                           '(ans_date, ans_user, ans_rank, ans_name, ans_id, ans_filename, ans_batch) '
+                            'values (NOW(), %(id_user)s, %(rank)s, %(name)s, %(id)s, %(filename)s, %(batch)s)', params)
 
             Analyzer.log.info(Logs.fileline())
 
@@ -82,7 +108,7 @@ class Analyzer:
             cursor = DB.cursor()
 
             req = ('update analyzer_setting set ans_user=%(id_user)s, ans_rank=%(rank)s, ans_name=%(name)s, '
-                   'ans_id=%(id)s, ans_connect=%(connect)s, ans_mapping=%(mapping)s, ans_filename=%(filename)s '
+                   'ans_id=%(id)s, ans_filename=%(filename)s, ans_batch=%(batch)s '
                    'where ans_ser=%(id_analyzer)s')
 
             cursor.execute(req, params)
@@ -233,6 +259,11 @@ class Analyzer:
         l_analyzer = Analyzer.getAnalyzerList()
 
         for analyzer in l_analyzer:
+            # Check ans_batch before proceeding
+            if analyzer['ans_batch'] == 'N':
+                Analyzer.log.info(f"INFO: Skipping analyzer {analyzer['ans_ser']} because ans_batch is 'N'")
+                continue
+
             # Save OML33 task for one analyzer
             ret = Analyzer.insertLabTransactions(ans_ser=analyzer['ans_ser'], id_samp=id_samp, stat=Constants.cst_stat_init, sent='', recv='', tot='LAB-28')
 
@@ -574,4 +605,3 @@ class Analyzer:
         Analyzer.log.info(f"Generated HL7 ACK: {ack_message.replace(chr(13), '[CR]')}")
 
         return ack_message
-

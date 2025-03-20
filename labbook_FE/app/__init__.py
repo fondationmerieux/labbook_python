@@ -1513,6 +1513,17 @@ def det_analyzer(id_analyzer=0):
 
     json_data['analyzer'] = []
 
+    # Load Connect setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/connect/setting'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data['connect'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests get connect setting failed, err=%s , url=%s', err, url)
+
     # Load list of analyzers
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/file'
@@ -1558,6 +1569,60 @@ def list_msg_analyzer():
     json_data = {}
 
     return render_template('list-msg-analyzer.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : Connect management
+@app.route('/connect-management')
+def connect_management():
+    log.info(Logs.fileline() + ' : TRACE connect management')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook connect-management => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'connect-management'
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load Connect setting
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/connect/setting'
+        req = requests.get(url)
+
+        if req.status_code == 200:
+            json_data = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests get connect setting failed, err=%s , url=%s', err, url)
+
+    # Load Connect version
+    if json_data and json_data['cos_url']:
+        try:
+            url = json_data['cos_url'] + '/connect/test'
+            req = requests.get(url)
+            json_data['version'] = req.text
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests get version connect failed, err=%s , url=%s', err, url)
+    else:
+        json_data['version'] = ''
+
+    # Load Connect analyzers loaded
+    if json_data and json_data['cos_url']:
+        try:
+            url = json_data['cos_url'] + '/connect/list_analyzers_loaded'
+            req = requests.get(url)
+            json_data['analyzers_loaded'] = req.text.replace("\n", ",").rstrip(",")
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests get version connect failed, err=%s , url=%s', err, url)
+    else:
+        json_data['analyzers_loaded'] = ''
+
+    return render_template('connect-management.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : variables list
@@ -7522,6 +7587,46 @@ def upload_zipcity():
         except Exception as err:
             log.error(Logs.fileline() + ' : upload-zipcity failed to save file, err=%s', err)
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload a file for Connect
+@app.route('/upload-connect/<string:type>', methods=['POST'])
+def upload_connect(type=''):
+    log.info(Logs.fileline() + ' upload-connect type = %s', type)
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-connect failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        if type == 'plugin':
+            filepath = Constants.cst_connect_plugin
+            # check if this file is a odt
+            if not filename.endswith('.jar'):
+                return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+        elif type == 'setting':
+            filepath = Constants.cst_connect_setting
+        elif type == 'mapping':
+            filepath = Constants.cst_connect_mapping
+        else:
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        log.info(Logs.fileline() + ' upload-connect Before save file')
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-connect failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        log.info(Logs.fileline() + ' upload-connect After save file')
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
