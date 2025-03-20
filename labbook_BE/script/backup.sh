@@ -1258,7 +1258,7 @@ fn_progbackup() {
     fi
 
     cat > "$cron_file" <<%
-$minute_i $hour_i * * * $podman_cmd run --rm --tz=local -v $map_media -v $map_storage $image $my_absolute_path -e $env_file backupauto
+$minute_i $hour_i * * * $podman_cmd run --rm --tz=local -v $map_media -v $map_storage $image $my_absolute_path -E $env_file backupauto
 %
 
     [[ $test_mode -eq 0 ]] && {
@@ -2281,6 +2281,7 @@ status_filename=""
 status_async=0
 log_file=""
 settings_file=""
+keep_settings_file=0
 arg_dir=""
 cmd=""
 root_dir=""
@@ -2298,7 +2299,7 @@ test_mode=0
 media_param_file=""
 podman_cmd="sudo podman"
 
-while getopts "hvi:o:e:d:V:R:a:p:s:u:Um:w:P:T" option; do
+while getopts "hvi:o:e:E:d:V:R:a:p:s:u:Um:w:P:T" option; do
     case "$option" in
         h)
             usage
@@ -2318,6 +2319,12 @@ while getopts "hvi:o:e:d:V:R:a:p:s:u:Um:w:P:T" option; do
 
         e)
             settings_file="$OPTARG"
+            keep_settings_file=0
+            ;;
+
+        E)
+            settings_file="$OPTARG"
+            keep_settings_file=1
             ;;
 
         s)
@@ -2385,11 +2392,14 @@ cmd="$1"
     # shellcheck disable=SC1090
     source "$settings_file"
 
-    if [[ $verbose -eq 1 ]]; then
-        log_message "Keeping settings file=$settings_file in verbose mode"
-    else
-        rm -f "$settings_file"
-    fi
+    # we may keep the settings file if the command runs multiple times like automatic backup
+    [[ $keep_settings_file -eq 1 ]] || {
+        if [[ $verbose -eq 1 ]]; then
+            log_message "Keeping settings file=$settings_file in verbose mode"
+        else
+            rm -f "$settings_file"
+        fi
+    }
 }
 
 # Initialize log file

@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - print stickers for storage aliquot
 
+## [3.5.7] - 2025-03-20
+### Fixed
+- preserve settings file for automatic backups
+
 ## [3.5.6] - 2025-03-12
 ### Added
 - more control on some pages for edition versus add an item
