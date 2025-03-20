@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [3.5.7] - 2025-03-20
 ### Fixed
 - preserve settings file for automatic backups
+- remove fixed image name from automatic backup crontab command
 
 ## [3.5.6] - 2025-03-12
 ### Added

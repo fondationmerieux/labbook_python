@@ -104,6 +104,7 @@ usage()
     echo "  copydir           Copy files from INPUT_DIR to OUTPUT_DIR"
     echo "  testvalinfile     Display media parameter. Used for testing"
     echo "  testmksettings    Create settings file. Used for testing"
+    echo "  testprogbackup    Create crontab file. Used for testing"
     echo
     echo "Options:"
     echo "  -h                Display this help and exit"
@@ -1195,7 +1196,6 @@ fn_progbackup() {
     local minute_c=""
     local minute_i=0
     local status=0
-    local image=""
     local my_absolute_path=""
     local env_file=""
     local env_media_dir=""
@@ -1226,13 +1226,6 @@ fn_progbackup() {
 
     [[ $verbose -eq 1 ]] && echo_message "Creating cron file in $cron_file"
 
-    image=$(fn_get_my_image "$user" "$host")
-
-    [[ -n "$image" ]] || {
-        log_message "cannot get my image name with $user@$host"
-        return 1
-    }
-
     my_absolute_path="$test_path"
 
     [[ -n "$my_absolute_path" ]] || my_absolute_path="$SCRIPT_ABSOLUTE_DIR/backup.sh"
@@ -1258,8 +1251,13 @@ fn_progbackup() {
     fi
 
     cat > "$cron_file" <<%
-$minute_i $hour_i * * * $podman_cmd run --rm --tz=local -v $map_media -v $map_storage $image $my_absolute_path -E $env_file backupauto
+$minute_i $hour_i * * * export LABBOOK_IMAGE=\$(sudo podman ps --format '{{.Image}}' | grep 'labbook-python' | head -1) ; $podman_cmd run --rm --tz=local -v $map_media -v $map_storage \${LABBOOK_IMAGE} $my_absolute_path -E $env_file backupauto
 %
+
+    [[ $verbose -eq 1 ]] && {
+        log_message "Generated crontab in $cron_file"
+        cat "$cron_file"
+    }
 
     [[ $test_mode -eq 0 ]] && {
         [[ $verbose -eq 1 ]] && echo_message "Installing cron file for $user@$host"
@@ -2967,6 +2965,12 @@ case "$cmd" in
         fn_make_settings "$test_path" 1
         exit_status=$?
         log_message "fn_make_settings $test_path 1 status=$exit_status"
+        ;;
+
+    testprogbackup)
+        fn_progbackup "12:34" "my_user" "my_host"
+        exit_status=$?
+        log_message "fn_progbackup status=$exit_status"
         ;;
 
     *)
