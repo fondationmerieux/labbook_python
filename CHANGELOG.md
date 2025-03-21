@@ -10,11 +10,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - print stickers for storage aliquot
 
 ## [3.5.7] - 2025-03-20
-<<<<<<< HEAD
-### Fixed
-- preserve settings file for automatic backups
-- remove fixed image name from automatic backup crontab command
-=======
 ### Added
 - manual laboratory biosecurity guidance
 - setting for connect
@@ -29,7 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - permissions on few profile role
 - order list of aliquot
 - save aliquot only without error
->>>>>>> 485e008 (pre-release 3.5.7)
+- preserve settings file for automatic backups
+- remove fixed image name from automatic backup crontab command
 
 ## [3.5.6] - 2025-03-12
 ### Added
