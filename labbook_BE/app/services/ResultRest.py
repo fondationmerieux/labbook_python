@@ -9,6 +9,7 @@ from flask_restful import Resource
 from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Analysis import Analysis
+from app.models.Analyzer import Analyzer
 from app.models.Constants import Constants
 from app.models.Dict import Dict
 from app.models.File import File
@@ -260,6 +261,19 @@ class ResultRecord(Resource):
             for key, value in list(result.items()):
                 if result[key] is None:
                     result[key] = ''
+
+            # get result from analyzer with id_samp
+            if result['id_samp']:
+                result['l_res_analyzer'] = Analyzer.getAnalyzerResultsBySample(result['id_samp'])
+
+                for res in result['l_res_analyzer']:
+                    # Replace None by empty string
+                    for key, value in list(res.items()):
+                        if res[key] is None:
+                            res[key] = ''
+
+                    if isinstance(res.get('anr_date'), datetime):
+                        res['anr_date'] = res['anr_date'].strftime(Constants.cst_dt_HM)
 
         self.log.info(Logs.fileline() + ' : ResultRecord id_rec=' + str(id_rec))
         return compose_ret(l_results, Constants.cst_content_type_json, 200)

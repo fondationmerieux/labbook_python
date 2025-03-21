@@ -355,7 +355,36 @@ class AnalyzerLab29(Resource):
             # update transaction in DB
             ret = Analyzer.updateLab29_ACK(id_task=id_msg, id_samp=specimen_id, stat=ack_status, msg=msg_ack)
 
-            # TODO save result matching with specimen_id
+            has_obx = any(segment.name == "OBX" for segment in hl7_msg.children)
+
+            # save result matching with specimen_id
+            if has_obx:
+                obx_segments = [s for s in hl7_msg.children if s.name == "OBX"]
+
+                for obx in obx_segments:
+                    try:
+                        obs_id = obx.obx_3.value if hasattr(obx, "obx_3") else "UNKNOWN"
+                        obs_value = obx.obx_5.value if hasattr(obx, "obx_5") else ""
+                        obs_unit = obx.obx_6.value if hasattr(obx, "obx_6") else ""
+                        obs_status = obx.obx_11.value if hasattr(obx, "obx_11") else ""
+
+                        # Filter only final results
+                        if obs_status == "F":
+                            # save results
+                            ret = Analyzer.insertAnalyzerResult(ans_ser=analyzer['ans_ser'],
+                                                                code=obs_id,
+                                                                samp=specimen_id,
+                                                                value=obs_value,
+                                                                unit=obs_unit)
+                            if not ret:
+                                self.log.warning(Logs.fileline() + f" : INSERT FAILED for {obs_id} (sample={specimen_id}, analyzer={id_analyzer})")
+                            else:
+                                self.log.info(Logs.fileline() + f' : SAVED result: {obs_id} = {obs_value} {obs_unit}')
+                        else:
+                            self.log.info(Logs.fileline() + f' : SKIPPED non-final result: {obs_id} (status={obs_status})')
+
+                    except Exception as e:
+                        self.log.error(Logs.fileline() + f' : ERROR while parsing OBX: {str(e)}')
 
             # Return HL7 ACK^R22 as a response
             return compose_ret(msg_ack, Constants.cst_content_type_hl7)

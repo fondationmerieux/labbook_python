@@ -9,10 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 - print stickers for storage aliquot
 
-## [3.5.7] - 2025-03-20
+## [3.5.7] - 2025-03-21
 ### Added
 - manual laboratory biosecurity guidance
 - setting for connect
+- previous result received from analyzer in enter-result page (not yet in list-result page)
 
 ### Changed
 - update some manuals

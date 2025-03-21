@@ -605,3 +605,38 @@ class Analyzer:
         Analyzer.log.info(f"Generated HL7 ACK: {ack_message.replace(chr(13), '[CR]')}")
 
         return ack_message
+
+    @staticmethod
+    def insertAnalyzerResult(ans_ser, code, samp, value, unit):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('''
+                           INSERT INTO analyzer_result (anr_date, anr_ans, anr_code, anr_samp, anr_value, anr_unit)
+                           VALUES (NOW(), %s, %s, %s, %s, %s)
+                           ''', (ans_ser, code, samp, value, unit))
+            Analyzer.log.info(Logs.fileline() + f" : INSERT analyzer_result OK ({code}={value} {unit})")
+            return True
+        except mysql.connector.Error as e:
+            Analyzer.log.error(Logs.fileline() + " : ERROR insertAnalyzerResult = " + str(e))
+            return False
+
+    @staticmethod
+    def getAnalyzerResultsBySample(id_samp):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('''
+                           SELECT anr_ser, anr_date, anr_ans, anr_code, anr_samp, anr_value, anr_unit
+                           FROM analyzer_result
+                           WHERE anr_samp = %s
+                           ORDER BY anr_date DESC
+                           ''', (id_samp,))
+
+            results = cursor.fetchall()
+            Analyzer.log.info(Logs.fileline() + f" : getAnalyzerResultsBySample({id_samp}) => {len(results)} result(s) found")
+            return results
+
+        except mysql.connector.Error as e:
+            Analyzer.log.error(Logs.fileline() + f" : ERROR getAnalyzerResultsBySample({id_samp}) => {str(e)}")
+            return []

@@ -557,10 +557,24 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
             if (res_fam.length < 4) res_fam = "" ;
 
+        let res_analyzer = "";
+
+            if (data[i].l_res_analyzer && data[i].l_res_analyzer.length > 0)
+            {
+            let tooltip = "";
+
+                for (let r of data[i].l_res_analyzer) 
+                {
+                    tooltip += r.anr_code + " : " + r.anr_value + " " + r.anr_unit + " (" + r.anr_date + ")\n";
+                }
+            
+                res_analyzer += "<span class=\"ms-2 analyzer-info-icon\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + tooltip + "\"><i class=\"bi bi-info-circle text-primary\"></i></span>";
+            }
+
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + 
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + res_analyzer +
                "<table class=\"table table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }

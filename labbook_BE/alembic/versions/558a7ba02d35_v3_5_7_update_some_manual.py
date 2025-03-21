@@ -568,6 +568,23 @@ def upgrade():
     except Exception as err:
         print("ERROR while adding column ans_batch:\n\terr=" + str(err))
 
+    # Create table for connect_setting
+    try:
+        conn.execute(text('''
+                          create table analyzer_result(
+                          anr_ser int not NULL AUTO_INCREMENT,
+                          anr_date DATETIME,
+                          anr_ans int default 0,
+                          anr_code varchar(100) NOT NULL,
+                          anr_samp int default 0,
+                          anr_value varchar(120),
+                          anr_unit varchar(50),
+                          PRIMARY KEY (anr_ser), INDEX(anr_ans), INDEX(anr_samp))
+                          character set=utf8
+                          '''))
+    except Exception as err:
+        print("ERROR create table analyzer_result,\n\terr=" + str(err))
+
     print(str(datetime.today()) + " : END of migration v3_5_7_update_some_manual revision=558a7ba02d35")
 
 
