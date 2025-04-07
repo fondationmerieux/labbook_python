@@ -189,11 +189,11 @@ class LiteSetupLoad(Resource):
             "table": "ana_link",
             "columns": [
                 {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
-                {"name": "id_refanalyse", "type": "INTEGER"},
-                {"name": "id_refvariable", "type": "INTEGER"},
+                {"name": "analysis_id", "type": "INTEGER"},
+                {"name": "variable_id", "type": "INTEGER"},
                 {"name": "position", "type": "INTEGER"},
-                {"name": "num_var", "type": "INTEGER"},
-                {"name": "obligatoire", "type": "INTEGER"},
+                {"name": "var_number", "type": "INTEGER"},
+                {"name": "required", "type": "INTEGER"},
                 {"name": "var_whonet", "type": "INTEGER"},
                 {"name": "var_qrcode", "type": "TEXT"}
             ]
@@ -223,25 +223,25 @@ class LiteSetupLoad(Resource):
             "table": "ana_var",
             "columns": [
                 {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
-                {"name": "libelle", "type": "TEXT"},
+                {"name": "label", "type": "TEXT"},
                 {"name": "description", "type": "TEXT"},
-                {"name": "unite", "type": "INTEGER"},
+                {"name": "unit", "type": "INTEGER"},
                 {"name": "normal_min", "type": "TEXT"},
                 {"name": "normal_max", "type": "TEXT"},
-                {"name": "commentaire", "type": "TEXT"},
-                {"name": "type_resultat", "type": "INTEGER"},
-                {"name": "unite2", "type": "INTEGER"},
-                {"name": "formule_unite2", "type": "TEXT"},
-                {"name": "formule", "type": "TEXT"},
+                {"name": "comment", "type": "TEXT"},
+                {"name": "result_type", "type": "INTEGER"},
+                {"name": "unit2", "type": "INTEGER"},
+                {"name": "formula_unit2", "type": "TEXT"},
+                {"name": "formula", "type": "TEXT"},
                 {"name": "accuracy", "type": "INTEGER"},
-                {"name": "precision2", "type": "INTEGER"},
-                {"name": "code_var", "type": "TEXT"},
+                {"name": "accuracy2", "type": "INTEGER"},
+                {"name": "var_code", "type": "TEXT"},
                 {"name": "var_highlight", "type": "TEXT"},
                 {"name": "var_show_minmax", "type": "TEXT"}
             ]
         }
 
-        var_ids = list({l["id_refvariable"] for l in setup["ana_link"]})
+        var_ids = list({l["variable_id"] for l in setup["ana_link"]})
         setup["ana_var"] = Lite.getLiteVAnalysisVarByIds(var_ids)
 
         # 3 - recover dictionary sigl_dico_data
@@ -327,15 +327,15 @@ class LiteSetupLoad(Resource):
             "columns": [
                 {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
                 {"name": "samp_date", "type": "DATETIME"},
-                {"name": "type_prel", "type": "INTEGER"},
-                {"name": "statut", "type": "INTEGER"},
-                {"name": "id_dos", "type": "INTEGER"},
-                {"name": "preleveur", "type": "TEXT"},
+                {"name": "sample_type", "type": "INTEGER"},
+                {"name": "statu", "type": "INTEGER"},
+                {"name": "record_id", "type": "INTEGER"},
+                {"name": "sampler", "type": "TEXT"},
                 {"name": "samp_receipt_date", "type": "DATETIME"},
-                {"name": "commentaire", "type": "TEXT"},
-                {"name": "lieu_prel", "type": "INTEGER"},
-                {"name": "lieu_prel_plus", "type": "TEXT"},
-                {"name": "localisation", "type": "TEXT"},
+                {"name": "comment", "type": "TEXT"},
+                {"name": "location_id", "type": "INTEGER"},
+                {"name": "location_plus", "type": "TEXT"},
+                {"name": "localization", "type": "TEXT"},
                 {"name": "code", "type": "TEXT"},
                 {"name": "samp_id_ana", "type": "INTEGER"}
             ]

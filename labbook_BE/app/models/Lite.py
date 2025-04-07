@@ -184,8 +184,8 @@ class Lite:
         try:
             placeholders = ','.join(['%s'] * len(ana_ids))
             req = f"""
-                  SELECT id_data, id_refanalyse, id_refvariable, position,
-                  num_var, obligatoire, var_whonet, var_qrcode
+                  SELECT id_data, id_refanalyse as `analysis_id`, id_refvariable as `variable_id`, position,
+                  num_var as `var_number`, obligatoire as `required`, var_whonet, var_qrcode
                   FROM sigl_05_07_data
                   WHERE id_refanalyse IN ({placeholders})
                   """
@@ -204,9 +204,9 @@ class Lite:
         try:
             placeholders = ','.join(['%s'] * len(variable_ids))
             req = f"""
-                  SELECT id_data, libelle, description, unite, normal_min, normal_max,
-                  commentaire, type_resultat, unite2, formule_unite2,
-                  formule, accuracy, precision2, code_var,
+                  SELECT id_data, libelle as `label`, description, unite as `unit`, normal_min, normal_max,
+                  commentaire as `comment`, type_resultat as `result_type`, unite2 as `unit2`, formule_unite2 as `formula_unit2`,
+                  formule as `formula`, accuracy, precision2 as `accuracy2`, code_var as `var_code`,
                   var_highlight, var_show_minmax
                   FROM sigl_07_data
                   WHERE id_data IN ({placeholders})
@@ -226,10 +226,10 @@ class Lite:
         try:
             placeholders = ','.join(['%s'] * len(ids))
             req = f"""
-                  SELECT id_data, code, nom, abbr, famille,
-                  cote_unite, cote_valeur, commentaire,
-                  produit_biologique, type_prel, type_analyse,
-                  actif, ana_whonet, ana_ast, ana_loinc
+                  SELECT id_data, code, nom as `name`, abbr, famille as `family`,
+                  cote_unite as `rating_unit`, cote_valeur as `rating_value`, commentaire as `comment`,
+                  produit_biologique as `bio_product`, type_prel as `sample_type`, type_analyse as `analysis_type`,
+                  actif as `active`, ana_whonet, ana_ast, ana_loinc
                   FROM sigl_05_data
                   WHERE id_data IN ({placeholders})
                   """
