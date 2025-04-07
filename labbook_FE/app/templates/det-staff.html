@@ -218,7 +218,7 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if has_permission("STAFF_83") %}
+                {% if has_permission("STAFF_83") or args['user_id'] == session['user_id'] %}
                 <div class="float-end">
                     <input type="button" onclick="save_user();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>

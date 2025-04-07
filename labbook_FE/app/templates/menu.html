@@ -160,11 +160,16 @@
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-dicts">{{ _("Dictionnaires") }}</a>
                             </li>
                             {% endif %}
-                            {% if has_permission("SETTING_54") %}
+                            {% if has_permission("SETTING_??") %}
                             <li>
                                  <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-backup">{{ _("Configuration des sauvegardes") }}</a>
                             </li>
                             {% endif %}
+                            {# TODO has_permission("SETTING_54") #}
+                            <li>
+                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/list-printer">{{ _("Configuration des imprimantes") }}</a>
+                            </li>
+                            {# TODO endif #}
                             {% if has_permission("SETTING_55") %}
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -241,6 +246,11 @@
                                 <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-indicator">{{ _("Configuration du rapport d'indicateurs") }}</a>
                             </li>
                             {% endif %}
+                            {# TODO has_permission("SETTING_??") #}
+                            <li>
+                                <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-lite">{{ _("Configuration LabBook Lite") }}</a>
+                            </li>
+                            {# TODO endif #}
                     </ul>
                     {% endif %}
 
@@ -455,6 +465,9 @@
                     {% if has_permission("SETTING_54") %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-backup">{{ _("Configuration des sauvegardes") }}</a>
                     {% endif %}
+                    {# TODO has_permission("SETTING_??") #}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/list-printer">{{ _("Configuration des imprimantes") }}</a>
+                    {# TODO endif #}
                     {% if has_permission("SETTING_55") %}
                     <div class="dropdown-divider nav-cust-divider"></div>
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-logo">{{ _("Configuration du logo") }}</a>
@@ -501,6 +514,9 @@
                     {% if has_permission("SETTING_76") %}
                     <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-indicator">{{ _("Configuration du rapport d'indicateurs") }}</a>
                     {% endif %}
+                    {# TODO has_permission("SETTING_??") #}
+                    <a class="dropdown-item" href="{{ session['server_ext'] }}/setting-lite">{{ _("Configuration LabBook Lite") }}</a>
+                    {# TODO endif #}
                   </div>
                 </li>
                 <span class="nav-btn-txt">{{ _("Paramétrages") }}</span>

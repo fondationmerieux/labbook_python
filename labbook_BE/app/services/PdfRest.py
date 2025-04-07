@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 import gettext
+import os
 
 from flask import request
 from flask_restful import Resource
@@ -270,4 +271,21 @@ class PdfReportToday(Resource):
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportToday')
+        return compose_ret('', Constants.cst_content_type_json)
+
+
+class PrintByScript(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self, script_name):
+        args = request.get_json()
+
+        # TODO get args for script
+
+        cmd = ('sh ' + Constants.cst_printer + '/' + script_name + ' > ' + Constants.cst_io + 'print.out 2>&1 &')
+
+        self.log.error(Logs.fileline() + ' : PrintByScript cmd=' + cmd)
+        ret = os.system(cmd)
+
+        self.log.info(Logs.fileline() + ' : TRACE PrintByScript')
         return compose_ret('', Constants.cst_content_type_json)

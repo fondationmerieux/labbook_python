@@ -15,6 +15,7 @@
             <h2 class="page-title page-title-color">
                 <span>{{ _("Validation technique") }}</span><span id="info_pat_title"></span>
             </h2>
+            {% if has_permission("RECORD_9") %}
             <form autocomplete="off">
                 <div class="d-lg-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :</span> 
@@ -135,6 +136,10 @@
                     </fieldset>
                 </div>
             </form>
+            {% endif %}
+
+            {% else %}
+            {% include 'no-rights.html' %} 
             {% endif %}
 
         </div>
@@ -792,6 +797,7 @@ info = " - {% if args['patient']['pat_code_lab'] %}{{ args['patient']['pat_code_
 
 {% include 'js/display_histo.js' %}
 
+{% if has_permission("RECORD_9") %}
 $( document ).ready( function()
 {
 data_res = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
@@ -822,5 +828,6 @@ info_pat_title() ;
     }, 400);
     {% endif %}
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

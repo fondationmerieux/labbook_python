@@ -2640,3 +2640,75 @@ class Quality:
         cursor.execute(req, (id_user,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getPrinterList():
+        cursor = DB.cursor()
+
+        req = ('select prt_ser, prt_name, prt_script, prt_default, prt_rank '
+               'from printer_setting '
+               'order by prt_rank asc, prt_date desc')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getPrinter(id_item):
+        cursor = DB.cursor()
+
+        req = ('select prt_ser, prt_name, prt_script, prt_default, prt_rank '
+               'from printer_setting '
+               'where prt_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def insertPrinter(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('insert into printer_setting '
+                           '(prt_date, prt_name, prt_script, prt_default, prt_rank) '
+                           'values '
+                           '(NOW(), %(name)s, %(script)s, %(default)s, %(rank)s)', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return cursor.lastrowid
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return 0
+
+    @staticmethod
+    def updatePrinter(**params):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('update printer_setting '
+                           'set prt_name=%(name)s , prt_script=%(script)s, prt_default=%(default)s, prt_rank=%(rank)s '
+                           'where prt_ser=%(id_item)s', params)
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False
+
+    @staticmethod
+    def deletePrinter(id_item):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('delete from printer_setting '
+                           'where prt_ser=%s', (id_item,))
+
+            Quality.log.info(Logs.fileline())
+
+            return True
+        except mysql.connector.Error as e:
+            Quality.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return False

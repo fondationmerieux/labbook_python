@@ -2668,6 +2668,71 @@ def setting_indicator():
     return render_template('setting-indicator.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
+# Page : setting-lite
+@app.route('/setting-lite')
+def setting_lite():
+    log.info(Logs.fileline() + ' : TRACE setting-lite')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook setting-lite => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'setting-lite'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('setting-lite.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : details setting Lite
+@app.route('/det-lite/<int:id_item>')
+def det_lite(id_item=0):
+    log.info(Logs.fileline() + ' : TRACE setting det lite=' + str(id_item))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det lite => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-lite/' + str(id_item)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_ihm['l_users'] = []
+    json_data['item'] = []
+
+    # Load list users
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/lite/list'
+        req = requests.get(url, json={})
+
+        if req.status_code == 200:
+            json_ihm['l_users'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
+
+    if id_item > 0:
+        # Load printer details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/lite/setup/det/' + str(id_item)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['item'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests lite setup det failed, err=%s , url=%s', err, url)
+
+    json_data['id_item'] = id_item
+
+    return render_template('det-lite.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
 # ---------------------------
 # --- Administrative page ---
 # ---------------------------
@@ -6429,6 +6494,59 @@ def det_stock_product(prs_ser=0):
     return render_template('det-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
+# Page : list-printer
+@app.route('/list-printer')
+def list_printer():
+    log.info(Logs.fileline() + ' : TRACE setting list-printer')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook list-printer => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'list-printer'
+    session.modified = True
+
+    json_data = {}
+
+    return render_template('list-printer.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : details printer
+@app.route('/det-printer/<int:id_printer>')
+def det_printer(id_printer=0):
+    log.info(Logs.fileline() + ' : TRACE setting det printer=' + str(id_printer))
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook det printer => disconnect')
+        session.clear()
+        return index()
+
+    session['current_page'] = 'det-printer/' + str(id_printer)
+    session.modified = True
+
+    json_ihm  = {}
+    json_data = {}
+
+    json_data['printer'] = []
+
+    if id_printer > 0:
+        # Load printer details
+        try:
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/printer/det/' + str(id_printer)
+            req = requests.get(url)
+
+            if req.status_code == 200:
+                json_data['printer'] = req.json()
+
+        except requests.exceptions.RequestException as err:
+            log.error(Logs.fileline() + ' : requests printer det failed, err=%s , url=%s', err, url)
+
+    json_data['id_printer'] = id_printer
+
+    return render_template('det-printer.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
 # Page : list-aliquot
 @app.route('/list-aliquot')
 def list_aliquot():
@@ -6443,8 +6561,6 @@ def list_aliquot():
     session.modified = True
 
     json_data = {}
-
-    # TODO
 
     return render_template('list-aliquot.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6744,6 +6860,17 @@ def det_aliquot(id_item=0):
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+
+    # List printer
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/printer/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_ihm['l_printer'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list printer failed, err=%s , url=%s', err, url)
 
     if id_item > 0:
         # Load aliquot details
@@ -7627,6 +7754,38 @@ def upload_connect(type=''):
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         log.info(Logs.fileline() + ' upload-connect After save file')
+
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+
+# Route : upload file for printer
+@app.route('/upload-printer', methods=['POST'])
+def upload_printer():
+    log.info(Logs.fileline())
+    if request.method == 'POST':
+        try:
+            f = request.files['file']
+
+            filename = f.filename
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-printer failed to get file from request, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+        filepath = Constants.cst_printer
+
+        log.info(Logs.fileline())
+
+        # check if this file is a csv
+        if not filename.endswith('.sh'):
+            return json.dumps({'success': False}), 415, {'ContentType': 'application/json'}
+
+        try:
+            f.save(os.path.join(filepath, filename))
+        except Exception as err:
+            log.error(Logs.fileline() + ' : upload-printer failed to save file, err=%s', err)
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 

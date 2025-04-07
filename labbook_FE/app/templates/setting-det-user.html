@@ -13,7 +13,8 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Utilisateur") }}</span></h2>
-            {% if has_permission("SETTING_41") or args['user_id'] == session['user_id'] %}
+            {% if has_permission("SETTING_41") or args['user_id'] == session['user_id'] or 
+                  (ihm['return_page'] and has_permission("STAFF_83")) %}
             <form autocomplete="off">
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Droits utilisateur") }}</h3>

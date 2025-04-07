@@ -1,0 +1,214 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Définir une configuration LabBook Lite") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Définir une configuration LabBook Lite") }}</span></h2>
+            {# TODO if (has_permission("SETTING_49") and args['id_analyzer'] == 0) or (has_permission("SETTING_50") and args['id_analyzer'] > 0) #}
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="lite_name" class="form-label col-2 text-end mt-2 me-1">{{ _("Nom") }} *</label>
+                    <div>
+                        <input type="text" name="lite_name" id="lite_name" value="{{ args['item']['lite_name'] }}" class="form-control form-lbk">
+                    </div>
+                </div>
+            
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="lite_login" class="form-label col-2 text-end mt-2 me-1">{{ _("Identifiant") }} *</label>
+                    <div>
+                        <input type="text" name="lite_login" id="lite_login" value="{{ args['item']['lite_login'] }}" class="form-control form-lbk">
+                    </div>
+                </div>
+            
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="lite_pwd" class="form-label col-2 text-end mt-2 me-1">{{ _("Mot de passe") }} *</label>
+                    <div class="input-group" style="max-width: 250px;">
+                        <input type="password" name="lite_pwd" id="lite_pwd" class="form-control form-lbk">
+                        <button class="btn btn-sm" type="button" onclick="togglePassword()" tabindex="-1">
+                            <i id="eye-icon" class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-4">
+                    <label class="form-label col-2 text-end mt-2">{{ _("Utilisateurs associés") }}</label>
+                    <div class="col-9 d-flex">
+                        <div class="me-2">
+                            <label class="form-label">{{ _("Possibles") }}</label>
+                            <select id="user-available" multiple size="10" class="form-select form-lbk" style="min-width: 220px;">
+                            {% for user in ihm['l_users'] %}
+                                {% if user.id_data not in args['item']['lite_users'] %}
+                                <option value="{{ user.id_data }}" data-role="{{ user.role_type }}">
+                                    {{ user.firstname }} {{ user.lastname }} ({{ user.pro_label }})
+                                </option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center mx-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary mb-2" onclick="moveSelected('#user-available', '#user-selected')">&gt;</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSelected('#user-selected', '#user-available')">&lt;</button>
+                        </div>
+                        <div>
+                            <label class="form-label">{{ _("Sélectionnés") }} *</label>
+                            <select id="user-selected" name="lite_users" multiple size="10" class="form-select form-lbk" style="min-width: 220px;">
+                            {% for user in ihm['l_users'] %}
+                                {% if user.id_data in args['item']['lite_users'] %}
+                                <option value="{{ user.id_data }}" data-role="{{ user.role_type }}">
+                                    {{ user.firstname }} {{ user.lastname }} ({{ user.pro_label }})
+                                </option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                {# TODO if has_permission("SETTING_??") #} 
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+                {# TODO endif #}
+            </div>
+
+            {#
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+            #}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+    console.log("DEBUG args={{args}}");
+
+function save_item()
+{
+var id_item = {{ args['id_item']|safe }} ;
+var name    = $("#lite_name").val()   ;
+var login   = $("#lite_login").val()   ;
+var pwd     = $("#lite_pwd").val() ;
+
+var msg = "" ;
+
+    if (name == "" )
+    msg += "{{ _("Veuillez saisir un nom.") }}\n" ;
+
+    if (login == "")
+    msg += "{{ _("Veuillez saisir un identifiant.") }}\n";
+
+    if (pwd == "")
+    msg += "{{ _("Veuillez saisir un mot de passe.") }}\n";
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }  
+
+let hasAdmin = false;
+let hasAgent = false;
+
+    $("#user-selected option").each(function () 
+    {
+        const role = $(this).data("role");
+        if (role === "A") hasAdmin = true;
+        if (role === "AGT") hasAgent = true;
+    });
+
+    if (!hasAdmin || !hasAgent) {
+        alert("{{ _('Sélectionner au moins un administrateur et un agent') }}");
+        return false;
+    }
+
+var selectedUsers = getSelectedUsers('#user-selected');
+
+var param = JSON.stringify({
+                            "name": name,
+                            "login": login,
+                            "pwd": pwd,
+                            "users": selectedUsers
+                        });
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/lite/setup/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           window.location = "{{ session['server_ext'] }}/setting-lite" ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function togglePassword() 
+{
+    const input = document.getElementById("lite_pwd");
+    const icon = document.getElementById("eye-icon");
+
+    if (input.type === "password") 
+    {
+        input.type = "text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    } 
+    else
+    {
+        input.type = "password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    }
+}
+
+function moveSelected(fromSelector, toSelector) 
+{
+    const selected = $(fromSelector + ' option:selected');
+    selected.each(function () {
+        $(this).remove().appendTo(toSelector);
+    });
+}
+
+function getSelectedUsers(selector) 
+{
+    const ids = [];
+    $(selector + ' option').each(function () {
+        ids.push($(this).val());
+    });
+    return ids;
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/setting-lite";
+}
+</script>
+{% endblock %}

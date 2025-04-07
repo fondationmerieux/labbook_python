@@ -44,16 +44,10 @@
                                                 <span>{{ _("Patient") }}</span>
                                             </th>
                                             <th class="text-center">
-                                                <span>{{ _("Sang") }}</span>
+                                                <span>{{ _("Analyse") }}</span>
                                             </th>
                                             <th class="text-center">
-                                                <span>{{ _("Selles") }}</span>
-                                            </th>
-                                            <th class="text-center">
-                                                <span>{{ _("Urine") }}</span>
-                                            </th>
-                                            <th class="text-center">
-                                                <span>{{ _("Autre") }}</span>
+                                                <span>{{ _("Prélèvement") }}</span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -114,30 +108,21 @@ let tr_class = '' ;
 
 $("#listing_prod_total").html( data_len ) ;
 
-    for( i = i_start; i < i_stop; i++ )
+    for (let i = i_start; i < i_stop; i++) 
     {
-    let lastname   = "" ;
-    let maidenname = "" ;
-    let firstname  = "" ;
+    const sample = data_samples[i];
 
-        if (lastname != "" || lastname != null)
-        lastname = data_samples[i].lastname ;
+    const lastname   = sample.lastname || '';
+    const maidenname = sample.maidenname || '';
+    const firstname  = sample.firstname || '';
 
-        if (maidenname != "" || maidenname != null)
-        maidenname = data_samples[i].maidenname ;
-
-        if (firstname != "" || firstname != null)
-        firstname = data_samples[i].firstname ;
-
-    res += '<tr><td hidden><div>' + data_samples[i].id_rec + '</div></td>' +
-           '<td><div class="text-center"><span class="rec-num">' + data_samples[i].rec_num + '</span></div></td>' +
-           '<td><div class="text-center">' + data_samples[i].rec_date + '</div></td>' +
+    res += '<tr><td hidden><div>' + sample.id_rec + '</div></td>' +
+           '<td><div class="text-center"><span class="rec-num">' + sample.rec_num + '</span></div></td>' +
+           '<td><div class="text-center">' + sample.rec_date + '</div></td>' +
            '<td><div class="text-center">' + pat_ident(lastname, maidenname, firstname) + '</div></td>' +
-           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_blood, data_samples[i].stat_blood) + '</div></td>' +
-           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_stool, data_samples[i].stat_stool) + '</div></td>' +
-           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_urine, data_samples[i].stat_urine) + '</div></td>' +
-           '<td><div class="text-center">' + status_samp(data_samples[i].id_prod_other, data_samples[i].stat_other) + '</div></td></tr>' ;
-    }
+           '<td><div class="text-center">' + sample.analysis_name + '</div></td>' +
+           '<td><div class="text-center">' + status_samp(sample.id_prod, sample.statut, sample.type_prel_label) + '</div></td></tr>' ;
+}
 {% endif %}
 
     $("#tbody_samples").append(res) ;

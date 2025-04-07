@@ -33,6 +33,7 @@
 | reportlab               | 3.6.13    | BSD          |           |         | x       |
 | tomli                   | 2.2.1     | MIT          |           | x       | x       |
 | unoserver               | 2.2.1     | MIT          |           |         | x       |
+| bcrypt                  | 4.3.0     | Apache 2.0   |           |         | x       |
 
 > Note :
 >

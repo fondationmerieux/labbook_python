@@ -7,7 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use code_var instead of id_data for sigl_07_data (variable of analysis)
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
-- print stickers for storage aliquot
+
+## [3.5.8] - 2025-04-07
+### Added
+- mechanism for launching an aliquot label printing script (TODO deciding which values to send)
+- new directory /storage/resource/printer for printing script
+- setting for LabBook Lite
+- new profile role : agent for LabBook Lite only
+- in analysis repository possible to check wich analysis to use with LabBook Lite
+- translated label for simple item in form patient
+
+### Changed
+- list of samples page
+- v3 export users columns role_type and role_pro
+
+### Fixed
+- delete an old manual
+- add personnal access
 
 ## [3.5.7] - 2025-03-21
 ### Added

@@ -131,7 +131,10 @@ class Form:
 
     @staticmethod
     def build_simple_elem(type, id, label):
+        from flask_babel import gettext as _
+
         elem = ''
+        label = _(label)
 
         if type in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
             elem = '<' + type + ' id="' + str(id) + '" class="fw-bold">' + str(label) + '</' + type + '>'
@@ -147,7 +150,7 @@ class Form:
         if id in ('pat_ano', 'pat_code_lab', 'pat_code', 'pat_name', 'pat_midname', 'pat_maiden', 'pat_firstname',
                   'pat_sex', 'pat_birth', 'pat_birth_approx', 'pat_age', 'pat_age_unit', 'pat_nationality', 'pat_resident',
                   'pat_blood_group', 'pat_blood_rhesus', 'pat_address', 'pat_phone1', 'pat_phone2', 'pat_profession',
-                  'search_zipcity', 'pat_pbox', 'pat_district', 'pat_zipcode', 'pat_city'):
+                  'search_zipcity', 'pat_pbox', 'pat_district', 'pat_zipcode', 'pat_city', 'pat_email'):
             elem = '{% include "elem/' + id + '.html" %}'
 
         if l_attr:

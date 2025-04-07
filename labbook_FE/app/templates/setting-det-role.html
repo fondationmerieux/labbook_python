@@ -12,6 +12,9 @@
             <h2 class="page-title page-title-color"><span>{{ _("Rôle") }}</span></h2>
             {% if has_permission("ADMIN_1") %}
             <form autocomplete="off">
+                {# copy of pat_code_lab #}
+                <input type="hidden" name="role_label_ori" id="role_label_ori" value="">
+
                 <div class="panel-heading row">
                     <h3 class="panel-title">{{ _("Rôle") }}</h3>
                 </div>
@@ -141,22 +144,56 @@ var param = '{ "by_user":' + by_user + ', ' +
               '"role_text_color":"' + role_text_color + '", ' +
               '"l_rights":' + JSON.stringify(l_rights) + '}' ;
 
-    $.ajax( {
-       type: "POST",
-       url: "{{ session['server_ext'] }}/services/user/role/det/" + id_role,
-       dataType: 'json',
-       contentType: "application/json; charset=utf-8",
-       data: param,
-       success: function(data)
-           {
-           window.location = "{{ session['server_ext'] }}/setting-roles-and-rights" ;
-           },
-       error: function(data)
-           {
-           console.log("ERROR POST user role det") ;
-           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
-           }
-    } ) ;
+    // we process the uniqueness of role_label if it is present on the form
+    if ( role_label && $("#role_label").val().trim() !== '' ) 
+    {
+    var role_label_ori = $('#role_label_ori').val() ;
+
+        // popup wait
+        $("#dial-wait").off('shown.bs.modal') ;
+        $("#dial-wait").modal("show") ;
+
+        $.ajax( {
+            type: "GET",
+            url: "{{ session['server_ext'] }}/services/user/role/exist/" + role_label,
+            success: function(ret)
+            {
+                if ( ret > 0 && (id_role == 0 || (id_role > 0 && role_label_ori != role_label)))
+                {
+                $("#dial-wait").modal("hide") ;
+                alert("{{ _("Ce rôle existe déjà") }}") ;
+                return false ;
+                }
+                else
+                {
+                    $.ajax( {
+                       type: "POST",
+                       url: "{{ session['server_ext'] }}/services/user/role/det/" + id_role,
+                       dataType: 'json',
+                       contentType: "application/json; charset=utf-8",
+                       data: param,
+                       success: function(data)
+                           {
+                           $("#dial-wait").modal("hide") ;
+                           window.location = "{{ session['server_ext'] }}/setting-roles-and-rights" ;
+                           },
+                       error: function(data)
+                           {
+                           $("#dial-wait").modal("hide") ;
+                           console.log("ERROR POST user role det") ;
+                           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+                           }
+                    } ) ;
+                }
+            },
+            error: function(ret)
+            {
+            $("#dial-wait").modal("hide") ;
+            console.log("ERROR GET patient code lab") ;
+            alert("{{ _("Une erreur est survenue lors de la vérification du code") }}") ;
+            }
+        } ) ;
+    }
 }
 
 function role_choice( elem )
@@ -222,6 +259,11 @@ var param = {
     role_type: role_type,
     role_id: id_role
     } ;
+
+    if ( $('#role_label').length ) 
+    {
+    $('#role_label_ori').val( $('#role_label_lab').val() ) ;
+    }
 
 //console.log("DEBUG param for table rights : " + JSON.stringify(param));
 

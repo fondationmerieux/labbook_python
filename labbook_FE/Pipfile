@@ -13,6 +13,7 @@ Flask-Babel = "~=4.0.0"
 requests = "~=2.32.3"
 urllib3 = "~=2.3.0"
 tomli = "~=2.2.1"
+pip-audit = "~=2.8.0"
 
 [dev-packages]
 

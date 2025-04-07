@@ -2,8 +2,10 @@
 import logging
 import mysql.connector
 
+from datetime import datetime
 from app.models.Constants import Constants
 from app.models.DB import DB
+from app.models.General import *
 from app.models.Logs import Logs
 
 
@@ -16,6 +18,7 @@ class Record:
 
         table_cond  = ''
         filter_cond = 'length(rec.num_dos_an) = 10 '
+        params = [Constants.cst_dt_HM_SQL]
 
         if not args:
             limit = 'LIMIT 1000'
@@ -23,11 +26,12 @@ class Record:
             limit = 'LIMIT 4000'
             # filter conditions
             if 'num_rec' in args and args['num_rec']:
-                filter_cond += (' and (rec.num_dos_an LIKE "%' + args['num_rec'] + '%" or rec.num_dos_mois LIKE "%' +
-                                args['num_rec'] + '%" or rec.rec_num_int LIKE "%' + args['num_rec'] + '%") ')
+                filter_cond += (' and (rec.num_dos_an LIKE %s or rec.num_dos_mois LIKE %s or rec.rec_num_int LIKE %s) ')
+                params.extend(['%' + args['num_rec'] + '%'] * 3)  # Adding num_rec value for all 3 LIKE conditions
 
             if 'stat_work' in args and args['stat_work']:
-                filter_cond += ' and rec.statut IN ' + str(args['stat_work']) + ' '
+                filter_cond += ' and rec.statut IN (%s) '
+                params.append(str(args['stat_work']).strip('[]'))  # Convert list to string for SQL
 
             if 'type_rec' in args and args['type_rec']:
                 if args['type_rec'] == 'C':
@@ -38,32 +42,42 @@ class Record:
                     filter_cond += ' and rec.type=184 '
 
             if 'stat_rec' in args and args['stat_rec'] > 0:
-                filter_cond += ' and rec.statut=' + str(args['stat_rec']) + ' '
+                filter_cond += ' and rec.statut=%s '
+                params.append(str(args['stat_rec']))
 
             if 'lastname' in args and args['lastname']:
-                filter_cond += ' and pat.nom LIKE "' + args['lastname'] + '%" '
+                filter_cond += ' and pat.nom LIKE %s '
+                params.append(args['lastname'] + '%')
 
             if 'firstname' in args and args['firstname']:
-                filter_cond += ' and pat.prenom LIKE "' + args['firstname'] + '%" '
+                filter_cond += ' and pat.prenom LIKE %s '
+                params.append(args['firstname'] + '%')
 
             if 'code' in args and args['code']:
-                filter_cond += ' and (pat.code LIKE "%' + args['code'] + '%" or pat.code_patient LIKE "%' + args['code'] + '%") '
+                filter_cond += ' and (pat.code LIKE %s or pat.code_patient LIKE %s) '
+                params.extend(['%' + args['code'] + '%'] * 2)
 
             if 'date_beg' in args and args['date_beg']:
-                filter_cond += ' and rec.rec_date_receipt >= "' + args['date_beg'] + '" '
+                date_beg = parse_date_safe(args['date_beg']).strftime("%Y-%m-%d %H:%M:%S")
+                filter_cond += ' and rec.rec_date_receipt >= %s '
+                params.append(date_beg)
 
             if 'date_end' in args and args['date_end']:
-                filter_cond += ' and rec.rec_date_receipt <= "' + args['date_end'] + '" '
+                date_end = parse_date_safe(args['date_end']).strftime("%Y-%m-%d %H:%M:%S")
+                filter_cond += ' and rec.rec_date_receipt <= %s '
+                params.append(date_end)
 
             # Analysis family
             if 'type_ana' in args and args['type_ana'] > 0:
                 table_cond += (' inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ' +
                                'left join sigl_dico_data as fam on fam.id_data = ref.famille ')
-                filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
+                filter_cond += ' and fam.id_data=%s '
+                params.append(str(args['type_ana']))
 
             # Code patient
             if 'code_pat' in args and args['code_pat']:
-                filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
+                filter_cond += ' and (pat.code_patient like %s) '
+                params.append('%' + str(args['code_pat']) + '%')
 
             # 4 in base for yes
             if 'emer' in args and args['emer'] == 4:
@@ -89,7 +103,8 @@ class Record:
 
         # Prescriber list
         if id_pres > 0:
-            filter_cond += ' and rec.med_prescripteur=' + str(id_pres) + ' '
+            filter_cond += ' and rec.med_prescripteur=%s '
+            params.append(str(id_pres))
 
         # struct : stat, urgent, num_dos, id_data, rec_date_receipt, code, nom, prenom, id_pat
         req = ('select rec.statut as stat, rec.type as type_rec, rec.rec_num_int, '
@@ -105,7 +120,7 @@ class Record:
                'where ' + filter_cond +
                'group by rec.id_data order by rec.id_data desc ' + limit)
 
-        cursor.execute(req, (Constants.cst_dt_HM_SQL,))
+        cursor.execute(req, params)
 
         l_rec = cursor.fetchall()
 

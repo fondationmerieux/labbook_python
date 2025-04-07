@@ -15,6 +15,7 @@ class Patient:
         cursor = DB.cursor()
 
         filter_cond = ' code is not NULL '
+        params = []
 
         if not args:
             limit = 'LIMIT 100000'
@@ -26,22 +27,29 @@ class Patient:
 
             # filter conditions
             if 'code' in args and args['code']:
-                filter_cond += ' and code LIKE "%' + args['code'] + '%" '
-
+                filter_cond += ' and code LIKE %s '
+                params.append('%' + args['code'] + '%')
+    
             if 'code_lab' in args and args['code_lab']:
-                filter_cond += ' and code_patient LIKE "%' + args['code_lab'] + '%" '
-
+                filter_cond += ' and code_patient LIKE %s '
+                params.append('%' + args['code_lab'] + '%')
+    
             if 'lastname' in args and args['lastname']:
-                filter_cond += ' and nom LIKE "%' + args['lastname'] + '%" '
-
+                filter_cond += ' and nom LIKE %s '
+                params.append('%' + args['lastname'] + '%')
+    
             if 'firstname' in args and args['firstname']:
-                filter_cond += ' and prenom LIKE "%' + args['firstname'] + '%" '
-
+                filter_cond += ' and prenom LIKE %s '
+                params.append('%' + args['firstname'] + '%')
+    
             if 'phone' in args and args['phone']:
-                filter_cond += ' and (tel like "' + args['phone'] + '%" or pat_phone2 like "' + args['phone'] + '%") '
+                filter_cond += ' and (tel LIKE %s or pat_phone2 LIKE %s) '
+                params.append(args['phone'] + '%')
+                params.append(args['phone'] + '%')
 
             if 'sex' in args and args['sex']:
-                filter_cond += ' and sexe="' + args['sex'] + '" '
+                filter_cond += ' and sexe = %s '
+                params.append(args['sex'])
 
         req = ('select id_data, id_owner, code, code_patient as code_lab, nom as lastname, prenom as firstname, '
                'date_format(ddn, %s) as birth, sexe as sex '
@@ -49,7 +57,9 @@ class Patient:
                'where ' + filter_cond +
                'order by lastname asc, firstname asc ' + limit)
 
-        cursor.execute(req, (Constants.cst_isodate,))
+        params.append(Constants.cst_isodate)
+
+        cursor.execute(req, params)
 
         return cursor.fetchall()
 

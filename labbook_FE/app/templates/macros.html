@@ -158,3 +158,10 @@
         <option value="{{ pathogen['id_data'] }}" {% if id_selected and id_selected == pathogen['id_data'] %}selected{% endif %}>{{ pathogen['label'][:255] }}</option>
     {% endfor %}
 {%- endmacro %}
+
+{% macro select_printer(l_printer) -%}
+    <option value="0"></option>
+    {% for printer in l_printer['data'] %}
+        <option value="{{ printer['prt_script'] }}" {% if printer['prt_default'] == "Y" %}selected{% endif %}>{{ printer['prt_name'] }}</option>
+    {% endfor %}
+{%- endmacro %}

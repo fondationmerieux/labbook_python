@@ -1,0 +1,253 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Liste des imprimantes") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Liste des imprimantes") }}</span></h2>
+
+            {# TODO has_permission("???") #}
+            <h6>{{ _("Importer un script d'impression") }}</h6>
+            <div class="row mb-3 align-items-center">
+                <div class="col">
+                    <label for="upload-printer" class="form-label">{{ _("Fichier") }}</label>
+                    <input class="form-control" type="file" id="upload-printer" accept=".sh" required>
+                </div>
+                <div class="col-auto mt-4">
+                    <button type="button" onclick="uploadPrinterScript()" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                        {{ _("Envoyer") }}
+                    </button>
+                </div>
+            </div>
+
+            <br />
+
+            <table id="printerTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>{{ _("Action") }}</th>
+                        <th hidden>{{ _("ID") }}</th>
+                        <th>{{ _("Nom") }}</th>
+                        <th>{{ _("Script") }}</th>
+                        <th>{{ _("Par défaut") }}</th>                        
+                        <th>{{ _("Position") }}</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="clearfix mt-2 mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end d-lg-flex align-items-end">
+                    <div>
+                        {# TODO has_permission("???") #}
+                        <input type="button" onclick="add_printer();" id="add_printer" value="{{ _("Ajouter une imprimante") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                        {# endif #}
+                    </div>
+                </div>
+            </div>
+
+            {#
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+            #}
+
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+        <div id="printerToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+             aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="printerToastBody">
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+
+function loadItemsTable() 
+{
+    $('#printerTable').DataTable().destroy();
+    $('#printerTable').DataTable({
+        "pageLength": 25,
+        "language": {
+            "lengthMenu": "{{ _("Afficher _MENU_ entrées") }}",
+            "zeroRecords": "{{ _("Aucun enregistrement trouvé") }}",
+            "info": "{{ _("Affichage de _START_ à _END_ sur _TOTAL_ entrées") }}",
+            "infoEmpty": "{{ _("Aucune entrée disponible") }}",
+            "infoFiltered": "{{ _("(filtré de _MAX_ entrées au total)") }}",
+            "search": "{{ _("Rechercher") }}:",
+            "paginate": {
+                "first": "{{ _("Premier") }}",
+                "last": "{{ _("Dernier") }}",
+                "next": "{{ _("Suivant") }}",
+                "previous": "{{ _("Précédent") }}"
+            }
+        },
+        "ajax": {
+        "url": "{{ session['server_ext'] }}/services/quality/printer/list",
+        "type": "POST",
+        "contentType": "application/json"
+        },
+        "columns": [
+            {
+                "data": null,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    let menu = `
+                        <nav class="nav-item dropdown">
+                            <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                            <div class="dropdown-menu nav-style menu-act-drop">`;
+        
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-printer/${row.prt_ser}">{{ _("Éditer") }}</a>`;
+
+                    menu += `
+                        <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.prt_ser}); return false;">
+                            {{ _("Supprimer") }}
+                        </a>`;
+        
+                    menu += `</div></nav>`;
+        
+                    return menu;
+                }
+            },
+            { "data": "prt_ser", "visible": false },
+            { "data": "prt_name" },
+            { "data": "prt_script" },
+            {
+                "data": "prt_default",
+                "render": function (data, type, row) {
+                    if (data === "Y") {
+                        return `<i class="bi bi-check-lg text-success"></i>`;
+                    } else {
+                        return "";
+                    }
+                },
+                "className": "text-center"
+            },
+            { "data": "prt_rank" }
+        ]
+    } ) ;
+}
+
+function delete_item(id_item)
+{
+    if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
+    {
+        fetch(`{{ session['server_ext'] }}/services/quality/printer/det/${id_item}`, 
+        {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => 
+        {
+            if (response.status === 200 || response.status === 204) 
+            {
+            loadItemsTable();
+            return;
+            }
+            else
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        });
+    }
+}
+
+/**
+ * Uploads a printer script via /upload-printer route.
+ */
+function uploadPrinterScript() 
+{
+let fileInput = document.getElementById("upload-printer");
+
+    if (!fileInput.files.length) {
+        alert("{{ _('Veuillez sélectionner un fichier') }}");
+        return;
+    }
+
+    let file = fileInput.files[0];
+    let formData = new FormData();
+    formData.append('file', file);
+
+    let url = "{{ session['server_ext'] }}/upload-printer";
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showPrinterToast("{{ _('Fichier uploadé avec succès') }}", "success");
+            console.log("Upload success:", data);
+            fileInput.value = "";
+            loadItemsTable(); // Optionally refresh table
+        } else {
+            showPrinterToast("{{ _('Erreur lors de l\'upload') }} : " + (data.error || "Erreur inconnue"), "error");
+            console.error("Upload error:", data);
+        }
+    })
+    .catch(error => {
+        console.error("Error during upload:", error);
+        alert("{{ _('Une erreur est survenue lors du dépôt du fichier') }}");
+    });
+}
+
+/**
+ * Show a Bootstrap toast for upload result
+ * @param {string} message - Message to display
+ * @param {"success"|"error"} type - Type of message (color)
+ */
+function showPrinterToast(message, type) {
+    let toastEl = document.getElementById('printerToast');
+    let toastBody = document.getElementById('printerToastBody');
+
+    // Set message
+    toastBody.textContent = message;
+
+    // Set color based on type
+    toastEl.classList.remove('bg-success', 'bg-danger');
+    toastEl.classList.add(type === 'success' ? 'bg-success' : 'bg-danger');
+
+    // Show toast
+    let toast = new bootstrap.Toast(toastEl);
+    toast.show();
+}
+
+function add_printer()
+{
+window.location.href = "{{ session['server_ext'] }}/det-printer/0" ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage" ;
+}
+
+{# TODO if has_permission("???") #}
+$(document).ready(function() 
+{
+loadItemsTable() ;
+} ) ;
+{# TODO endif #}
+</script>
+{% endblock %}

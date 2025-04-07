@@ -1,0 +1,118 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Imprimante") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Imprimante") }}</span></h2>
+            {# TODO if (has_permission("SETTING_49") and args['id_analyzer'] == 0) or (has_permission("SETTING_50") and args['id_analyzer'] > 0) #}
+            <form autocomplete="off">
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
+                    <div>					
+                        <input type="text" name="name" id="name" value="{{ args['printer']['prt_name'] }}" class="form-control form-lbk">	
+                    </div>
+                </div>
+                
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="script" class="form-label col-3 text-end mt-2 me-1">{{ _("Script") }}</label>
+                    <div>					
+                        <input type="text" name="script" id="script" value="{{ args['printer']['prt_script'] }}" class="form-control form-lbk">	
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="rank" class="form-label col-3 text-end mt-2 me-1">{{ _("position") }}</label>
+                    <div>					
+                        <input type="number" name="rank" id="rank" min="0" step="1" value="{% if args['printer']['prt_rank'] %}{{args['printer']['prt_rank']}}{% else %}0{% endif %}" class="form-control form-lbk">			
+                    </div>
+                </div>
+
+            </form>
+            
+            <div class="my-2 clearfix">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                {# TODO if has_permission("SETTING_??") #} 
+                <div class="float-end">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                </div>
+                {# TODO endif #}
+            </div>
+
+            {#
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+            #}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function save_item()
+{
+var id_item = {{ args['id_printer']|safe }} ;
+var name    = $("#name").val()   ;
+var rank    = $("#rank").val()   ;
+var script  = $("#script").val() ;
+
+var msg = "" ;
+
+    if (name == "" )
+    msg += "{{ _("Veuillez saisir un nom.") }}\n" ;
+
+    if (script == "")
+    msg += "{{ _("Veuillez saisir le nom complet du script.") }}" ;
+
+    if (msg != "")
+    {
+    alert( msg ) ;
+    return false ;
+    }  
+
+var param = JSON.stringify({
+                            "name": name,
+                            "script": script,
+                            "rank": rank
+                        });
+
+    // popup wait
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax( {
+       type: "POST",
+       url: "{{ session['server_ext'] }}/services/quality/printer/det/" + id_item,
+       dataType: 'json',
+       contentType: "application/json; charset=utf-8",
+       data: param,
+       success: function(data)
+           {
+           window.location = document.referrer ;
+           },
+       error: function(data)
+           {
+           console.log("ERROR POST item det") ;
+
+               $("#dial-wait").modal("hide") ;
+
+           alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
+           }
+    } ) ;
+}
+
+function cancel()
+{
+window.location.href = "{{ session['server_ext'] }}/list-printer";
+}
+</script>
+{% endblock %}

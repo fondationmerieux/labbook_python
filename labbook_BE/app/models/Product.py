@@ -43,6 +43,58 @@ class Product:
             limit = 'LIMIT 15000'
 
             if 'link_fam' in args and args['link_fam']:
+                cond_link_fam = ','.join(str(id_fam) for id_fam in args['link_fam'])
+                if cond_link_fam:
+                    filter_cond += f' and ref.famille in ({cond_link_fam}) '
+
+        req = '''
+              SELECT
+              IF(param_num_rec.periode=1070,
+              IF(param_num_rec.format=1072, SUBSTRING(rec.num_dos_mois FROM 7), rec.num_dos_mois),
+              IF(param_num_rec.format=1072, SUBSTRING(rec.num_dos_an FROM 7), rec.num_dos_an)) AS rec_num,
+              DATE_FORMAT(rec.rec_date_receipt, %s) AS rec_date,
+              pat.nom AS lastname, pat.nom_jf AS maidenname, pat.prenom AS firstname,
+              ana.nom AS analysis_name, prod.type_prel AS type_prel, prod.statut AS statut, prod.id_data AS id_prod,
+              rec.id_data AS id_rec, dico.label AS type_prel_label
+              FROM sigl_01_data AS prod
+              inner join sigl_02_data AS rec ON prod.id_dos = rec.id_data
+              inner join sigl_03_data AS pat ON rec.id_patient = pat.id_data
+              inner join sigl_param_num_dos_data AS param_num_rec ON param_num_rec.id_data = 1
+              LEFT JOIN sigl_05_data AS ana ON prod.samp_id_ana = ana.id_data
+              inner join sigl_04_data AS req ON prod.samp_id_ana = req.id_data
+              inner join sigl_05_data AS ref ON req.ref_analyse = ref.id_data
+              left join sigl_dico_data AS dico ON prod.type_prel = dico.id_data
+              {table_cond}
+              WHERE {filter_cond}
+              ORDER BY rec.num_dos_an DESC
+              {limit}
+              '''
+
+        req = req.format(table_cond=table_cond, filter_cond=filter_cond, limit=limit)
+
+        Product.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
+
+        cursor.execute(req, (Constants.cst_isodate,))
+
+        return cursor.fetchall()
+
+    """ OLD 30/03/2025
+    @staticmethod
+    def getProductList(args):
+        cursor = DB.cursor()
+
+        table_cond  = ''
+        filter_cond = 'prod.type_prel is not NULL '
+
+        if not args:
+            limit = 'LIMIT 1000'
+
+            # show only products from non-validated records by default
+            filter_cond += ' and rec.statut != 256 '
+        else:
+            limit = 'LIMIT 15000'
+
+            if 'link_fam' in args and args['link_fam']:
                 # avoid redundance of table if filter type_ana exist
                 table_cond += (' inner join sigl_04_data as req on req.id_dos=rec.id_data '
                                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ')
@@ -88,7 +140,7 @@ class Product:
 
         cursor.execute(req, (Constants.cst_isodate,))
 
-        return cursor.fetchall()
+        return cursor.fetchall()"""
 
     @staticmethod
     def getProductReq(id_rec):

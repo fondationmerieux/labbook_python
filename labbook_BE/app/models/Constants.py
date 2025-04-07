@@ -27,6 +27,7 @@ class Constants:
     cst_indicator   = '/storage/resource/indicator/'
     cst_template    = '/storage/resource/template/'
     cst_photo       = '/storage/resource/photo/'
+    cst_printer     = '/storage/resource/printer/'
     cst_upload      = '/storage/upload/'
     cst_path_tmp    = '/home/apps/labbook_BE/labbook_BE/tmp/'
     cst_path_script = '/home/apps/labbook_BE/labbook_BE/script/'

@@ -568,7 +568,7 @@ def upgrade():
     except Exception as err:
         print("ERROR while adding column ans_batch:\n\terr=" + str(err))
 
-    # Create table for connect_setting
+    # Create table for analyzer_result
     try:
         conn.execute(text('''
                           create table analyzer_result(

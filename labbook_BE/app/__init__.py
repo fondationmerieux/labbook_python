@@ -39,6 +39,7 @@ from app.services.RecordRest import *
 from app.services.ReportRest import *
 from app.services.ResultRest import *
 from app.services.SettingRest import *
+from app.services.LiteRest import *
 
 LANGUAGES = {
     'fr_FR': 'French',
@@ -240,6 +241,9 @@ api.add_resource(FileReportNbDL,        '/services/file/report/nb_download/<stri
 api.add_resource(FileStorage,           '/services/file/storage')
 api.add_resource(InitVersion,           '/services/init/version')
 api.add_resource(ListComment,           '/services/quality/list/comment/<int:id_item>')
+api.add_resource(LiteSetupList,         '/services/lite/setup/list')
+api.add_resource(LiteSetupDet,          '/services/lite/setup/det/<int:id_item>')
+api.add_resource(LiteSetupLoad,         '/services/lite/setup/load')
 api.add_resource(ManualList,            '/services/quality/manual/list')
 api.add_resource(ManualDet,             '/services/quality/manual/det/<int:id_item>')
 api.add_resource(ManualExport,          '/services/quality/manual/export')
@@ -272,6 +276,9 @@ api.add_resource(PdfReportToday,        '/services/pdf/report/today')
 api.add_resource(PdfSticker,            '/services/pdf/sticker/<string:template>')
 api.add_resource(PdfTemplate,           '/services/pdf/template/test/<int:id_item>')
 api.add_resource(PdfOutsourced,         '/services/pdf/outsourced/<int:id_rec>/<string:template>/<string:filename>')
+api.add_resource(PrintByScript,         '/services/pdf/print/script/<string:script_name>')
+api.add_resource(PrinterList,           '/services/quality/printer/list')
+api.add_resource(PrinterDet,            '/services/quality/printer/det/<int:id_item>')
 api.add_resource(ProcedureList,         '/services/quality/procedure/list')
 api.add_resource(ProcedureDet,          '/services/quality/procedure/det/<int:id_item>')
 api.add_resource(ProcedureExport,       '/services/quality/procedure/export')
@@ -387,12 +394,14 @@ api.add_resource(UserExport,            '/services/user/export')
 api.add_resource(UserIdentList,         '/services/user/ident/list')
 api.add_resource(UserImport,            '/services/user/import/<string:filename>/<int:id_user>')
 api.add_resource(UserList,              '/services/user/list')
+api.add_resource(UserLiteList,          '/services/user/lite/list')
 api.add_resource(UserStaffDet,          '/services/user/staff/det/<int:id_user>')
 api.add_resource(UserRightsList,        '/services/user/rights/list/<int:id_user>', '/services/user/rights/list')
 api.add_resource(UserRights,            '/services/user/rights/<int:id_user>')
 api.add_resource(UserRoleList,          '/services/user/role/list', '/services/user/role/list/<string:type>')
 api.add_resource(UserRoleDet,           '/services/user/role/det/<int:pro_ser>')
 api.add_resource(UserRoleByUser,        '/services/user/role/user/<int:id_user>')
+api.add_resource(UserRoleExist,         '/services/user/role/exist/<string:role_label>')
 api.add_resource(UserStatus,            '/services/user/status')
 api.add_resource(UserSearch,            '/services/user/search')
 api.add_resource(UserPassword,          '/services/user/password')

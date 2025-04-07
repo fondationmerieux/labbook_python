@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label for="sal_coordinates" class="form-label col-3 text-end mt-2 me-1">{{ _("Coordonnées") }} *</label>
+                            <label for="sal_coordinates" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation d'accès") }} *</label>
                             <div>
                                 <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates" pattern="^[A-Za-z]{1}[0-9]+$">
                                 <small id="sal_coordinates_error" class="text-danger" style="display:none;">"{{ _("Le format attendu est une lettre suivie d'un nombre") }}"</small>
@@ -99,11 +99,26 @@
             
             <div class="my-2 d-flex justify-content-between align-items-center">
                 <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
-                <div class="ms-auto">
+                <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
                     {% if args['id_item'] == 0 %}
-                    <button type="button" id="add_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
+                    <button type="button" id="add_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                        {{ _("Ajouter un aliquot") }}
+                    </button>
                     {% endif %}
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    
+                    <input type="button" onclick="save_item();" id="btn_save"
+                           value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                    {% if ihm['l_printer']['data']|length > 0 %} 
+                    <select name="printer" class="form-select form-select-sm" style="width:auto;">
+                        {% from 'macros.html' import select_printer %}
+                        {{ select_printer(ihm['l_printer']) }}
+                    </select>
+                
+                    <button name="print" id="print" type="button"
+                            class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                        {{ _("Imprimer") }}
+                    </button>
+                    {% endif %}
                 </div>
             </div>
 

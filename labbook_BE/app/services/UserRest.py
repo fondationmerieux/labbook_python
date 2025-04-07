@@ -302,6 +302,25 @@ class UserList(Resource):
         return compose_ret(l_users, Constants.cst_content_type_json)
 
 
+class UserLiteList(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self):
+        l_users = User.getUserLiteList()
+
+        if not l_users:
+            self.log.error(Logs.fileline() + ' : TRACE UserLiteList not found')
+
+        for user in l_users:
+            # Replace None by empty string
+            for key, value in list(user.items()):
+                if user[key] is None:
+                    user[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE UserLiteList')
+        return compose_ret(l_users, Constants.cst_content_type_json)
+
+
 class UserRoleList(Resource):
     log = logging.getLogger('log_services')
 
@@ -711,7 +730,7 @@ class UserExport(Resource):
 
         l_data = [['version', 'firstname', 'lastname', 'username', 'password', 'title', 'email', 'status', 'locale',
                    'cps_id', 'rpps', 'phone', 'initial', 'birth', 'address', 'position', 'cv', 'diploma',
-                   'formation', 'darrived', 'deval', 'section', 'comment', 'side_account', 'role']]
+                   'formation', 'darrived', 'deval', 'section', 'comment', 'side_account', 'role_type', 'role_pro']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : UserExport ERROR args missing')
@@ -723,7 +742,7 @@ class UserExport(Resource):
             for d in dict_data:
                 data = []
 
-                data.append('v2')
+                data.append('v3')
 
                 if d['firstname']:
                     data.append(d['firstname'])
@@ -864,6 +883,11 @@ class UserExport(Resource):
                 else:
                     data.append('')
 
+                if d['role_pro']:
+                    data.append(d['role_pro'])
+                else:
+                    data.append('')
+
                 l_data.append(data)
 
         # if no result to export
@@ -922,7 +946,7 @@ class UserImport(Resource):
         l_rows.pop(0)
 
         # check version
-        if l_rows[0][0] != 'v2':
+        if l_rows[0][0] != 'v3':
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong version')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
@@ -1057,3 +1081,21 @@ class UserImport(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE UserImport')
         return compose_ret('', Constants.cst_content_type_json, 200)
+
+
+class UserRoleExist(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, role_label):
+        ret = User.role_exist(role_label)
+
+        if ret and ret == -1:
+            self.log.error(Logs.fileline() + ' : ' + 'UserRoleExist ERROR sql')
+            return compose_ret(-1, Constants.cst_content_type_json, 500)
+
+        if ret:
+            self.log.error(Logs.fileline() + ' : ' + 'UserRoleExist WARNING role already exist')
+            return compose_ret(1, Constants.cst_content_type_json, 200)
+        else:
+            self.log.info(Logs.fileline() + ' : UserRoleExist code ok :' + str(pat_code_lab))
+            return compose_ret(0, Constants.cst_content_type_json, 200)

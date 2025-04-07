@@ -1,0 +1,153 @@
+{% extends "skeleton.html" %}
+
+{% block head %}
+{{ super() }}
+    <title>{{ _("Paramètrage LabBook Lite") }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Paramètrage LabBook Lite") }}</span></h2>
+
+            {# TODO has_permission("???") #}
+            <table id="itemsTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>{{ _("Action") }}</th>
+                        <th hidden>{{ _("ID") }}</th>
+                        <th>{{ _("Nom") }}</th>
+                        <th>{{ _("Login") }}</th>
+                        <th>{{ _("Nb utilisateurs") }}</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="clearfix mt-2 mb-5">
+                <div class="float-start ms-0">
+                    <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
+                </div>
+                <div class="float-end d-lg-flex align-items-end">
+                    <div>
+                        {# TODO has_permission("???") #}
+                        <input type="button" onclick="add_item();" id="add_printer" value="{{ _("Ajouter une configuration") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                        {# endif #}
+                    </div>
+                </div>
+            </div>
+
+            {#
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
+            #}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+
+function loadItemsTable() 
+{
+    $('#itemsTable').DataTable().destroy();
+    $('#itemsTable').DataTable({
+        "pageLength": 25,
+        "language": {
+            "lengthMenu": "{{ _("Afficher _MENU_ entrées") }}",
+            "zeroRecords": "{{ _("Aucun enregistrement trouvé") }}",
+            "info": "{{ _("Affichage de _START_ à _END_ sur _TOTAL_ entrées") }}",
+            "infoEmpty": "{{ _("Aucune entrée disponible") }}",
+            "infoFiltered": "{{ _("(filtré de _MAX_ entrées au total)") }}",
+            "search": "{{ _("Rechercher") }}:",
+            "paginate": {
+                "first": "{{ _("Premier") }}",
+                "last": "{{ _("Dernier") }}",
+                "next": "{{ _("Suivant") }}",
+                "previous": "{{ _("Précédent") }}"
+            }
+        },
+        "ajax": {
+        "url": "{{ session['server_ext'] }}/services/lite/setup/list",
+        "type": "POST",
+        "contentType": "application/json"
+        },
+        "columns": [
+            {
+                "data": null,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    let menu = `
+                        <nav class="nav-item dropdown">
+                            <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                            <div class="dropdown-menu nav-style menu-act-drop">`;
+        
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-lite/${row.lite_ser}">{{ _("Éditer") }}</a>`;
+
+                    menu += `
+                        <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.lite_ser}); return false;">
+                            {{ _("Supprimer") }}
+                        </a>`;
+        
+                    menu += `</div></nav>`;
+        
+                    return menu;
+                }
+            },
+            { "data": "lite_ser", "visible": false },
+            { "data": "lite_name" },
+            { "data": "lite_login" },
+            { "data": "nb_user" }
+        ]
+    } ) ;
+}
+
+function delete_item(id_item)
+{
+    if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
+    {
+        fetch(`{{ session['server_ext'] }}/services/lite/setup/det/${id_item}`, 
+        {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => 
+        {
+            if (response.status === 200 || response.status === 204) 
+            {
+            loadItemsTable();
+            return;
+            }
+            else
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
+        });
+    }
+}
+
+function add_item()
+{
+window.location.href = "{{ session['server_ext'] }}/det-lite/0" ;
+}
+
+function return_home()
+{
+window.location.href = "{{ session['server_ext'] }}/homepage" ;
+}
+
+{# TODO if has_permission("???") #}
+$(document).ready(function() 
+{
+loadItemsTable() ;
+} ) ;
+{# TODO endif #}
+</script>
+{% endblock %}

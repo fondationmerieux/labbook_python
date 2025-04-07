@@ -525,6 +525,21 @@ class User:
         return cursor.fetchall()
 
     @staticmethod
+    def getUserLiteList():
+        cursor = DB.cursor()
+
+        req = ('select u.id_data, u.username, u.firstname, u.lastname, u.role_type, pro.pro_label as pro_label '
+               'from sigl_user_data as u '
+               'inner join profile_role as pro on pro.pro_ser=u.role_pro '
+               'inner join sigl_pj_role as r on r.id_role=pro.pro_role '
+               'where u.status="' + Constants.cst_user_active + '" and u.role_type in ("A","AGT") '
+               'order by u.role_type asc, u.lastname asc, u.firstname asc, u.username asc ')
+
+        cursor.execute(req)
+
+        return cursor.fetchall()
+
+    @staticmethod
     def getUserSearch(text):
         cursor = DB.cursor()
 
@@ -646,3 +661,22 @@ class User:
         cursor.execute(req, (pro_ser,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def role_exist(role_label):
+        try:
+            cursor = DB.cursor()
+
+            cursor.execute('select count(*) as nb_role '
+                           'from profile_role '
+                           'where pro_label=%s', (role_label,))
+
+            ret = cursor.fetchone()
+
+            if ret and ret['nb_role'] == 0:
+                return False
+            else:
+                return True
+        except mysql.connector.Error as e:
+            User.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
+            return -1

@@ -1,11 +1,14 @@
-function status_samp( samp_id, samp_stat )
+function status_samp( samp_id, samp_stat, type_prel )
 {
 let res = '' ;
+let btn = '' ;
 
     if ( samp_stat == 9 )
-    res = '<button type="button" onclick="det_sample(' + samp_id + ');" class="btn btn-danger">{{ _("A saisir") }}</span>' ;
+    btn = '<button type="button" onclick="det_sample(' + samp_id + ');" class="btn btn-danger">{{ _("A saisir") }}</button>' ;
     else if ( samp_stat == 8 || samp_stat == 10 )
-    res = '<button type="button" onclick="det_sample(' + samp_id + ');" class="btn btn-warning">{{ _("Modifier") }}</span>' ;
+    btn = '<button type="button" onclick="det_sample(' + samp_id + ');" class="btn btn-warning">{{ _("Modifier") }}</button>' ;
+
+    res = btn + '<br><span class="text-muted">(' + type_prel + ')</span>';
 
 return res ;
 }

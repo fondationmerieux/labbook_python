@@ -15,6 +15,7 @@
             <h2 class="page-title page-title-color">
                 <span>{{ _("Saisie de résultats") }}</span><span id="info_pat_title"></span>
             </h2>
+            {% if has_permission("RECORD_17") %}
             <form id="benchsheet" autocomplete="off">
                 <div class="d-md-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :&nbsp;</span> 
@@ -130,7 +131,7 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">{{ _("Coordonnées") }} *</label>
+                                        <label class="form-label">{{ _("Localisation d'accès") }} *</label>
                                         <input type="text" class="form-control coordinates">
                                     </div>
                                     <div class="mb-3 form-check">
@@ -171,6 +172,10 @@
                     </div>
                 </div>
             </div>
+
+            {% else %}
+            {% include 'no-rights.html' %} 
+            {% endif %}
 
       </div>
     </div>
@@ -1322,6 +1327,7 @@ let boxCoordSpan = aliquotForm.querySelector(".box_coord");
 
 {% include 'js/display_histo.js' %}
 
+{% if has_permission("RECORD_17") %}
 $( document ).ready( function()
 {
 data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
@@ -1359,5 +1365,6 @@ info_pat_title() ;
     }, 400);
     {% endif %}
 } ) ;
+{% endif %}
 </script>
 {% endblock %}

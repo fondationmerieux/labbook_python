@@ -218,8 +218,6 @@ var tmp_value = '' ;
 
     param += param_list + tmp_value + ' ] }';
 
-console.log("DEBUG param = " + JSON.stringify(param)) ;
-
     $.ajax( {
        type: "POST",
        url: "{{ session['server_ext'] }}/services/setting/stock",
@@ -229,6 +227,8 @@ console.log("DEBUG param = " + JSON.stringify(param)) ;
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
+
+           location.reload() ;
            },
        error: function(data)
            {

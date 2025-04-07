@@ -4351,3 +4351,74 @@ class MessageUnread(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE MessageUnread nb_msg=' + str(nb_msg))
         return compose_ret(nb_msg, Constants.cst_content_type_json)
+
+
+class PrinterList(Resource):
+    log = logging.getLogger('log_services')
+
+    def post(self):
+        l_printers = Quality.getPrinterList()
+
+        if not l_printers:
+            self.log.error(Logs.fileline() + ' : TRACE PrinterList not found')
+
+        for printer in l_printers:
+            # Replace None by empty string
+            for key, value in list(printer.items()):
+                if printer[key] is None:
+                    printer[key] = ''
+
+        self.log.info(Logs.fileline() + ' : TRACE PrinterList')
+        return compose_ret({"data": l_printers}, Constants.cst_content_type_json)
+
+
+class PrinterDet(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_item):
+        item = Quality.getPrinter(id_item)
+
+        if not item:
+            self.log.error(Logs.fileline() + ' : ' + 'PrinterDet ERROR not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # Replace None by empty string
+        for key, value in list(item.items()):
+            if item[key] is None:
+                item[key] = ''
+
+        self.log.info(Logs.fileline() + ' : PrinterDet id_item=' + str(id_item))
+        return compose_ret(item, Constants.cst_content_type_json, 200)
+
+    def post(self, id_item):
+        args = request.get_json()
+
+        if 'name' not in args or 'script' not in args or 'rank' not in args:
+            self.log.error(Logs.fileline() + ' : PrinterDet ERROR args missing')
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # Update item
+        if id_item > 0:
+            ret = Quality.updatePrinter(id_item=id_item,
+                                        name=args['name'],
+                                        script=args['script'],
+                                        rank=args['rank'])
+
+            if ret is False:
+                self.log.error(Logs.alert() + ' : PrinterDet ERROR update')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+        # Insert new item
+        else:
+            ret = Quality.insertPrinter(name=args['name'],
+                                        script=args['script'],
+                                        rank=args['rank'])
+
+            if ret <= 0:
+                self.log.error(Logs.alert() + ' : SupplierDet ERROR  insert')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_item = ret
+
+        self.log.info(Logs.fileline() + ' : TRACE PrinterDet id_item=' + str(id_item))
+        return compose_ret(id_item, Constants.cst_content_type_json)
