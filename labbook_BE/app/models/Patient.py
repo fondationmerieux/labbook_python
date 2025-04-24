@@ -29,19 +29,19 @@ class Patient:
             if 'code' in args and args['code']:
                 filter_cond += ' and code LIKE %s '
                 params.append('%' + args['code'] + '%')
-    
+
             if 'code_lab' in args and args['code_lab']:
                 filter_cond += ' and code_patient LIKE %s '
                 params.append('%' + args['code_lab'] + '%')
-    
+
             if 'lastname' in args and args['lastname']:
                 filter_cond += ' and nom LIKE %s '
                 params.append('%' + args['lastname'] + '%')
-    
+
             if 'firstname' in args and args['firstname']:
                 filter_cond += ' and prenom LIKE %s '
                 params.append('%' + args['firstname'] + '%')
-    
+
             if 'phone' in args and args['phone']:
                 filter_cond += ' and (tel LIKE %s or pat_phone2 LIKE %s) '
                 params.append(args['phone'] + '%')
@@ -67,27 +67,40 @@ class Patient:
     def getPatientSearch(text):
         cursor = DB.cursor()
 
-        l_words = text.split(' ')
+        words = [w.strip() for w in text.split(' ') if w.strip()]
+        if not words:
+            return []
 
-        cond = '(pat.id_data is not NULL'
+        conditions = []
+        params = []
 
-        for word in l_words:
-            cond = (cond +
-                    ' and pat.nom like "' + word + '%" or '
-                    'pat.prenom like "' + word + '%" or '
-                    'pat.code like "' + word + '%" or '
-                    'pat.code_patient like "' + word + '%" or '
-                    'pat.tel like "' + word + '%" or '
-                    'pat.pat_phone2 like "' + word + '%") ')
+        for word in words:
+            like = word + '%'
+            block = "(" + " OR ".join([
+                "pat.nom LIKE %s",
+                "pat.prenom LIKE %s",
+                "pat.code LIKE %s",
+                "pat.code_patient LIKE %s",
+                "pat.tel LIKE %s",
+                "pat.pat_phone2 LIKE %s"
+            ]) + ")"
+            conditions.append(block)
+            params.extend([like] * 6)
 
-        req = ('select pat.id_data as id, pat.nom, pat.prenom, pat.nom_jf, pat.code, pat.tel as pat_phone1, '
-               'date_format(pat.ddn, %s) as ddn, pat.code_patient, pat.age, d_age_unit.label as age_unit, pat.pat_phone2 '
-               'from sigl_03_data as pat '
-               'left join sigl_dico_data as d_age_unit on d_age_unit.id_data=pat.unite '
-               'where ' + cond + ' order by pat.nom asc limit 1000')
+        where_clause = " AND ".join(conditions)
 
-        cursor.execute(req, (Constants.cst_isodate,))
+        query = (
+            "SELECT pat.id_data AS id, pat.nom, pat.prenom, pat.nom_jf, pat.code, pat.tel AS pat_phone1, "
+            "DATE_FORMAT(pat.ddn, %s) AS ddn, pat.code_patient, pat.age, "
+            "d_age_unit.label AS age_unit, pat.pat_phone2 "
+            "FROM sigl_03_data AS pat "
+            "LEFT JOIN sigl_dico_data AS d_age_unit ON d_age_unit.id_data = pat.unite "
+            f"WHERE {where_clause} "
+            "ORDER BY pat.nom ASC "
+            "LIMIT 1000"
+        )
 
+        cursor.execute(query, (Constants.cst_isodate, *params))
         return cursor.fetchall()
 
     @staticmethod

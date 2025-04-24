@@ -8,6 +8,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.5.9] - 2025-04-24
+### Added
+- pat_email new basic element added for dynamic form patient
+- 2 rights for access to setting of printer and Lite
+- column pat_lite in table sigl_03_data to know which patient are from Lite settings
+- column rec_lite in table sigl_02_data to know which record are from Lite settings
+- setting for PDF report of Lite with or without password
+
+### Changed
+- move print aliquot in menu of items of list of aliquot
+
+### Fixed
+- add and delete a printer for aliquot sticker
+- import users, wrong control of number of columns
+- 3 rigths for technician qualitican
+
 ## [3.5.8] - 2025-04-07
 ### Added
 - mechanism for launching an aliquot label printing script (TODO deciding which values to send)

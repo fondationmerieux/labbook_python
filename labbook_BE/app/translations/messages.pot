@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 14:38+0100\n"
+"POT-Creation-Date: 2025-04-24 14:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -316,7 +316,7 @@ msgstr ""
 msgid "Réparations"
 msgstr ""
 
-#: services/ResultRest.py:106 services/ResultRest.py:236
+#: services/ResultRest.py:107 services/ResultRest.py:237
 msgid "validation"
 msgstr ""
 
@@ -7013,7 +7013,7 @@ msgstr ""
 msgid "Gestionnaire de stock"
 msgstr ""
 
-#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2578
+#: translations/messages_pybabel.py:2314 translations/messages_pybabel.py:2580
 msgid "Laboratoire"
 msgstr ""
 
@@ -7770,510 +7770,518 @@ msgid "Configuration du stockage"
 msgstr ""
 
 #: translations/messages_pybabel.py:2517
-msgid "Contrôle qualité externe"
+msgid "Configuration des imprimantes"
 msgstr ""
 
 #: translations/messages_pybabel.py:2518
-msgid "Contrôle qualité interne"
+msgid "Configuration LabBook Lite"
 msgstr ""
 
 #: translations/messages_pybabel.py:2519
-msgid "Déstocker un élément"
+msgid "Contrôle qualité externe"
 msgstr ""
 
 #: translations/messages_pybabel.py:2520
-msgid "Dictionnaires"
+msgid "Contrôle qualité interne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2521
-msgid "Dossier administratif"
+msgid "Déstocker un élément"
 msgstr ""
 
 #: translations/messages_pybabel.py:2522
-msgid "Éditer les droits de profils"
+msgid "Dictionnaires"
 msgstr ""
 
 #: translations/messages_pybabel.py:2523
-msgid "Éditer un analyseur"
+msgid "Dossier administratif"
 msgstr ""
 
 #: translations/messages_pybabel.py:2524
-msgid "Éditer un contrôle externe"
+msgid "Éditer les droits de profils"
 msgstr ""
 
 #: translations/messages_pybabel.py:2525
-msgid "Éditer un contrôle interne"
+msgid "Éditer un analyseur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2526
-msgid "Éditer un élément"
+msgid "Éditer un contrôle externe"
 msgstr ""
 
 #: translations/messages_pybabel.py:2527
-msgid "Éditer un équipement"
+msgid "Éditer un contrôle interne"
 msgstr ""
 
 #: translations/messages_pybabel.py:2528
-msgid "Éditer un fournisseur"
+msgid "Éditer un élément"
 msgstr ""
 
 #: translations/messages_pybabel.py:2529
-msgid "Éditer un manuel"
+msgid "Éditer un équipement"
 msgstr ""
 
 #: translations/messages_pybabel.py:2530
-msgid "Éditer un modèle de document"
+msgid "Éditer un fournisseur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2531
-msgid "Éditer un personnel"
+msgid "Éditer un manuel"
 msgstr ""
 
 #: translations/messages_pybabel.py:2532
-msgid "Éditer un prescripteur"
+msgid "Éditer un modèle de document"
 msgstr ""
 
 #: translations/messages_pybabel.py:2533
-msgid "Éditer un produit"
+msgid "Éditer un personnel"
 msgstr ""
 
 #: translations/messages_pybabel.py:2534
-msgid "Éditer une non-conformité"
+msgid "Éditer un prescripteur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2535
-msgid "Éditer une plateforme DHIS2 API"
+msgid "Éditer un produit"
 msgstr ""
 
 #: translations/messages_pybabel.py:2536
-msgid "Éditer une procédure"
+msgid "Éditer une non-conformité"
 msgstr ""
 
 #: translations/messages_pybabel.py:2537
-msgid "Éditer une réunion"
+msgid "Éditer une plateforme DHIS2 API"
 msgstr ""
 
 #: translations/messages_pybabel.py:2538
-msgid "Enlever une ligne de stock vide"
+msgid "Éditer une procédure"
 msgstr ""
 
 #: translations/messages_pybabel.py:2539
-msgid "Enregistrer un résultat"
+msgid "Éditer une réunion"
 msgstr ""
 
 #: translations/messages_pybabel.py:2540
-msgid "Équipement – Métrologie"
+msgid "Enlever une ligne de stock vide"
 msgstr ""
 
 #: translations/messages_pybabel.py:2541
-msgid "Équipement – Panne et réparation"
+msgid "Enregistrer un résultat"
 msgstr ""
 
 #: translations/messages_pybabel.py:2542
-msgid "Équipement – Document"
+msgid "Équipement – Métrologie"
 msgstr ""
 
 #: translations/messages_pybabel.py:2543
-msgid "Équipement – Maintenance"
+msgid "Équipement – Panne et réparation"
 msgstr ""
 
 #: translations/messages_pybabel.py:2544
-msgid "Équipements"
+msgid "Équipement – Document"
 msgstr ""
 
 #: translations/messages_pybabel.py:2545
-msgid "État de la facturation journalière"
+msgid "Équipement – Maintenance"
 msgstr ""
 
 #: translations/messages_pybabel.py:2546
-msgid "État des prélèvements en cours"
+msgid "Équipements"
 msgstr ""
 
 #: translations/messages_pybabel.py:2547
-msgid "Export DHIS2"
+msgid "État de la facturation journalière"
 msgstr ""
 
 #: translations/messages_pybabel.py:2548
-msgid "Export WHONET"
+msgid "État des prélèvements en cours"
 msgstr ""
 
 #: translations/messages_pybabel.py:2549
-msgid "Export des contrôles externes"
+msgid "Export DHIS2"
 msgstr ""
 
 #: translations/messages_pybabel.py:2550
-msgid "Export des contrôles internes"
+msgid "Export WHONET"
 msgstr ""
 
 #: translations/messages_pybabel.py:2551
-msgid "Export des équipements"
+msgid "Export des contrôles externes"
 msgstr ""
 
 #: translations/messages_pybabel.py:2552
-msgid "Export des fournisseurs"
+msgid "Export des contrôles internes"
 msgstr ""
 
 #: translations/messages_pybabel.py:2553
-msgid "Export des maintenances"
+msgid "Export des équipements"
 msgstr ""
 
 #: translations/messages_pybabel.py:2554
-msgid "Export des maintenances préventives"
+msgid "Export des fournisseurs"
 msgstr ""
 
 #: translations/messages_pybabel.py:2555
-msgid "Export des manuels"
+msgid "Export des maintenances"
 msgstr ""
 
 #: translations/messages_pybabel.py:2556
-msgid "Export des non-conformités"
+msgid "Export des maintenances préventives"
 msgstr ""
 
 #: translations/messages_pybabel.py:2557
-msgid "Export des pannes et réparations"
+msgid "Export des manuels"
 msgstr ""
 
 #: translations/messages_pybabel.py:2558
-msgid "Export des personnels"
+msgid "Export des non-conformités"
 msgstr ""
 
 #: translations/messages_pybabel.py:2559
-msgid "Export des prescripteurs"
+msgid "Export des pannes et réparations"
 msgstr ""
 
 #: translations/messages_pybabel.py:2560
-msgid "Export des procédures"
+msgid "Export des personnels"
 msgstr ""
 
 #: translations/messages_pybabel.py:2561
-msgid "Export des produits"
+msgid "Export des prescripteurs"
 msgstr ""
 
 #: translations/messages_pybabel.py:2562
-msgid "Export des résultats de contrôles externes"
+msgid "Export des procédures"
 msgstr ""
 
 #: translations/messages_pybabel.py:2563
-msgid "Export des résultats de contrôles internes"
+msgid "Export des produits"
 msgstr ""
 
 #: translations/messages_pybabel.py:2564
-msgid "Export des réunions"
+msgid "Export des résultats de contrôles externes"
 msgstr ""
 
 #: translations/messages_pybabel.py:2565
-msgid "Fournisseurs"
+msgid "Export des résultats de contrôles internes"
 msgstr ""
 
 #: translations/messages_pybabel.py:2566
-msgid "Général"
+msgid "Export des réunions"
 msgstr ""
 
 #: translations/messages_pybabel.py:2567
-msgid "Gestion des échantillons"
+msgid "Fournisseurs"
 msgstr ""
 
 #: translations/messages_pybabel.py:2568
-msgid "Gestion des stocks"
+msgid "Général"
 msgstr ""
 
 #: translations/messages_pybabel.py:2569
-msgid "Gestion des utilisateurs"
+msgid "Gestion des échantillons"
 msgstr ""
 
 #: translations/messages_pybabel.py:2570
-msgid "Gestion dossier patient"
+msgid "Gestion des stocks"
 msgstr ""
 
 #: translations/messages_pybabel.py:2571
-msgid "Historique d'analyse"
+msgid "Gestion des utilisateurs"
 msgstr ""
 
 #: translations/messages_pybabel.py:2572
-msgid "Historique de ce produit"
+msgid "Gestion dossier patient"
 msgstr ""
 
 #: translations/messages_pybabel.py:2573
-msgid "Historique patient"
+msgid "Historique d'analyse"
 msgstr ""
 
 #: translations/messages_pybabel.py:2574
-msgid "Import de dictionnaire"
+msgid "Historique de ce produit"
 msgstr ""
 
 #: translations/messages_pybabel.py:2575
-msgid "Importer des utilisateurs"
+msgid "Historique patient"
 msgstr ""
 
 #: translations/messages_pybabel.py:2576
-msgid "Importer le référentiel"
+msgid "Import de dictionnaire"
 msgstr ""
 
 #: translations/messages_pybabel.py:2577
-msgid "Indiquer quantité utilisée"
+msgid "Importer des utilisateurs"
+msgstr ""
+
+#: translations/messages_pybabel.py:2578
+msgid "Importer le référentiel"
 msgstr ""
 
 #: translations/messages_pybabel.py:2579
-msgid "Liste de travail biologique"
-msgstr ""
-
-#: translations/messages_pybabel.py:2580
-msgid "Liste de travail technique"
+msgid "Indiquer quantité utilisée"
 msgstr ""
 
 #: translations/messages_pybabel.py:2581
-msgid "Liste des dossiers"
+msgid "Liste de travail biologique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2582
-msgid "Manuels"
+msgid "Liste de travail technique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2583
-msgid "Mise en place d'une action correctrice"
+msgid "Liste des dossiers"
 msgstr ""
 
 #: translations/messages_pybabel.py:2584
-msgid "Modification code var d'une analyse"
+msgid "Manuels"
 msgstr ""
 
 #: translations/messages_pybabel.py:2585
-msgid "Modules non-conformités"
+msgid "Mise en place d'une action correctrice"
 msgstr ""
 
 #: translations/messages_pybabel.py:2586
-msgid "Nouvelle demande externe"
+msgid "Modification code var d'une analyse"
 msgstr ""
 
 #: translations/messages_pybabel.py:2587
-msgid "Nouvelle demande hospitalisé"
+msgid "Modules non-conformités"
 msgstr ""
 
 #: translations/messages_pybabel.py:2588
-msgid "Paramétrer l'export WHONET sur une analyse"
+msgid "Nouvelle demande externe"
 msgstr ""
 
 #: translations/messages_pybabel.py:2589
-msgid "Personnels"
+msgid "Nouvelle demande hospitalisé"
 msgstr ""
 
 #: translations/messages_pybabel.py:2590
-msgid "Préférences"
+msgid "Paramétrer l'export WHONET sur une analyse"
 msgstr ""
 
 #: translations/messages_pybabel.py:2591
-msgid "Prescripteurs"
+msgid "Personnels"
 msgstr ""
 
 #: translations/messages_pybabel.py:2592
-msgid "Procédures"
+msgid "Préférences"
 msgstr ""
 
 #: translations/messages_pybabel.py:2593
-msgid "Rapport activité"
+msgid "Prescripteurs"
 msgstr ""
 
 #: translations/messages_pybabel.py:2594
-msgid "Rapport de fin de journée"
+msgid "Procédures"
 msgstr ""
 
 #: translations/messages_pybabel.py:2595
-msgid "Rapport épidémiologique"
+msgid "Rapport activité"
 msgstr ""
 
 #: translations/messages_pybabel.py:2596
-msgid "Rapport global"
+msgid "Rapport de fin de journée"
 msgstr ""
 
 #: translations/messages_pybabel.py:2597
-msgid "Rapport indicateurs"
+msgid "Rapport épidémiologique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2598
-msgid "Rapport statistique"
+msgid "Rapport global"
 msgstr ""
 
 #: translations/messages_pybabel.py:2599
-msgid "Rapport sur le temps de rendu du résultat"
+msgid "Rapport indicateurs"
 msgstr ""
 
 #: translations/messages_pybabel.py:2600
-msgid "Re-télécharger un rapport"
+msgid "Rapport statistique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2601
-msgid "Rééditer un rapport"
+msgid "Rapport sur le temps de rendu du résultat"
 msgstr ""
 
 #: translations/messages_pybabel.py:2602
-msgid "Référentiel des analyses"
+msgid "Re-télécharger un rapport"
 msgstr ""
 
 #: translations/messages_pybabel.py:2603
-msgid "Réunion du laboratoire"
+msgid "Rééditer un rapport"
 msgstr ""
 
 #: translations/messages_pybabel.py:2604
-msgid "Saisie des résultats"
+msgid "Référentiel des analyses"
 msgstr ""
 
 #: translations/messages_pybabel.py:2605
-msgid "Statut des analyses"
+msgid "Réunion du laboratoire"
 msgstr ""
 
 #: translations/messages_pybabel.py:2606
-msgid "Suivi de la non-conformité"
+msgid "Saisie des résultats"
 msgstr ""
 
 #: translations/messages_pybabel.py:2607
-msgid "Supprimer fichier équipement"
+msgid "Statut des analyses"
 msgstr ""
 
 #: translations/messages_pybabel.py:2608
-msgid "Supprimer fichier maintenance"
+msgid "Suivi de la non-conformité"
 msgstr ""
 
 #: translations/messages_pybabel.py:2609
-msgid "Supprimer fichier maintenance préventive"
+msgid "Supprimer fichier équipement"
 msgstr ""
 
 #: translations/messages_pybabel.py:2610
-msgid "Supprimer fichier manuel"
+msgid "Supprimer fichier maintenance"
 msgstr ""
 
 #: translations/messages_pybabel.py:2611
-msgid "Supprimer fichier métrologie ou étalonnage"
+msgid "Supprimer fichier maintenance préventive"
 msgstr ""
 
 #: translations/messages_pybabel.py:2612
-msgid "Supprimer fichier panne ou réparation"
+msgid "Supprimer fichier manuel"
 msgstr ""
 
 #: translations/messages_pybabel.py:2613
-msgid "Supprimer fichier procédure"
+msgid "Supprimer fichier métrologie ou étalonnage"
 msgstr ""
 
 #: translations/messages_pybabel.py:2614
-msgid "Supprimer fichier réunion"
+msgid "Supprimer fichier panne ou réparation"
 msgstr ""
 
 #: translations/messages_pybabel.py:2615
-msgid "Supprimer un analyseur"
+msgid "Supprimer fichier procédure"
 msgstr ""
 
 #: translations/messages_pybabel.py:2616
-msgid "Supprimer un dossier"
+msgid "Supprimer fichier réunion"
 msgstr ""
 
 #: translations/messages_pybabel.py:2617
-msgid "Supprimer un élément"
+msgid "Supprimer un analyseur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2618
-msgid "Supprimer un équipement"
+msgid "Supprimer un dossier"
 msgstr ""
 
 #: translations/messages_pybabel.py:2619
-msgid "Supprimer un fournisseur"
+msgid "Supprimer un élément"
 msgstr ""
 
 #: translations/messages_pybabel.py:2620
-msgid "Supprimer un laboratoire"
+msgid "Supprimer un équipement"
 msgstr ""
 
 #: translations/messages_pybabel.py:2621
-msgid "Supprimer un manuel"
+msgid "Supprimer un fournisseur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2622
-msgid "Supprimer un modèle de document"
+msgid "Supprimer un laboratoire"
 msgstr ""
 
 #: translations/messages_pybabel.py:2623
-msgid "Supprimer un prescripteur"
+msgid "Supprimer un manuel"
 msgstr ""
 
 #: translations/messages_pybabel.py:2624
-msgid "Supprimer un produit"
+msgid "Supprimer un modèle de document"
 msgstr ""
 
 #: translations/messages_pybabel.py:2625
-msgid "Supprimer une maintenance"
+msgid "Supprimer un prescripteur"
 msgstr ""
 
 #: translations/messages_pybabel.py:2626
-msgid "Supprimer une maintenance préventive"
+msgid "Supprimer un produit"
 msgstr ""
 
 #: translations/messages_pybabel.py:2627
-msgid "Supprimer une non-conformité"
+msgid "Supprimer une maintenance"
 msgstr ""
 
 #: translations/messages_pybabel.py:2628
-msgid "Supprimer une panne ou réparation"
+msgid "Supprimer une maintenance préventive"
 msgstr ""
 
 #: translations/messages_pybabel.py:2629
-msgid "Supprimer une pièce jointe au dossier"
+msgid "Supprimer une non-conformité"
 msgstr ""
 
 #: translations/messages_pybabel.py:2630
-msgid "Supprimer une plateforme DHIS2 API"
+msgid "Supprimer une panne ou réparation"
 msgstr ""
 
 #: translations/messages_pybabel.py:2631
-msgid "Supprimer une procédure"
+msgid "Supprimer une pièce jointe au dossier"
 msgstr ""
 
 #: translations/messages_pybabel.py:2632
-msgid "Supprimer une réunion"
+msgid "Supprimer une plateforme DHIS2 API"
 msgstr ""
 
 #: translations/messages_pybabel.py:2633
-msgid "Tableau consultation des procédures"
+msgid "Supprimer une procédure"
 msgstr ""
 
 #: translations/messages_pybabel.py:2634
-msgid "Tableau croisé dynamique"
+msgid "Supprimer une réunion"
 msgstr ""
 
 #: translations/messages_pybabel.py:2635
-msgid "Télécharger étiquette dossier"
+msgid "Tableau consultation des procédures"
 msgstr ""
 
 #: translations/messages_pybabel.py:2636
-msgid "Télécharger la facture"
+msgid "Tableau croisé dynamique"
 msgstr ""
 
 #: translations/messages_pybabel.py:2637
-msgid "Télécharger le bon de transfert"
+msgid "Télécharger étiquette dossier"
 msgstr ""
 
 #: translations/messages_pybabel.py:2638
-msgid "Télécharger un organigramme"
+msgid "Télécharger la facture"
 msgstr ""
 
 #: translations/messages_pybabel.py:2639
-msgid "Télécharger une feuille de paillasse"
+msgid "Télécharger le bon de transfert"
 msgstr ""
 
 #: translations/messages_pybabel.py:2640
-msgid "Télécharger une pièce jointe au dossier"
+msgid "Télécharger un organigramme"
 msgstr ""
 
 #: translations/messages_pybabel.py:2641
-msgid "Tester un modèle de document"
+msgid "Télécharger une feuille de paillasse"
 msgstr ""
 
 #: translations/messages_pybabel.py:2642
-msgid "Validation biologique"
+msgid "Télécharger une pièce jointe au dossier"
 msgstr ""
 
 #: translations/messages_pybabel.py:2643
-msgid "Validation biologique groupée"
+msgid "Tester un modèle de document"
 msgstr ""
 
 #: translations/messages_pybabel.py:2644
+msgid "Validation biologique"
+msgstr ""
+
+#: translations/messages_pybabel.py:2645
+msgid "Validation biologique groupée"
+msgstr ""
+
+#: translations/messages_pybabel.py:2646
 msgid "Validation technique"
 msgstr ""
 

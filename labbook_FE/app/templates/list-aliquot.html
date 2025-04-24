@@ -99,6 +99,43 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="printerModal" tabindex="-1" aria-labelledby="printerModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="printerModalLabel">{{ _("Choisir une imprimante") }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="printerForm">
+                      <div class="mb-3">
+                        <label for="printerSelect" class="form-label">{{ _("Imprimante") }}</label>
+                        <select id="printerSelect" name="printer" class="form-select">
+                          {% from 'macros.html' import select_printer %}
+                          {{ select_printer(ihm['l_printer']) }}
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmPrint();">{{ _("Imprimer") }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+              <div id="printToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+                <div class="d-flex">
+                  <div class="toast-body" id="printToastBody">
+                    {{ _("Impression lancée.") }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+              </div>
+            </div>
+
             {% else %}
             {% include 'no-rights.html' %} 
             {% endif %}
@@ -171,6 +208,10 @@ let in_stock = showDestocked ? "N" : "Y";
 
                     {% if has_permission("ALIQUOT_172") %}
                     menu += `<a class="dropdown-item menu-act-item" href="#" onclick="${actionFunction}; return false;">${actionLabel}</a>`;
+                    {% endif %}
+
+                    {% if ihm['l_printer']['data']|length > 0 %}
+                    menu += `<a class="dropdown-item menu-act-item" href="#" onclick="handlePrintClick(); return false;">{{ _("Imprimer") }}</a>`;
                     {% endif %}
 
                     {% if has_permission("ALIQUOT_173") %}
@@ -363,6 +404,82 @@ function restock_item(id_item)
             alert("{{ _("Une erreur s'est produite.") }}");
         });
     }
+}
+
+function handlePrintClick() 
+{
+    const printers = {{ ihm['l_printer']['data'] | tojson | safe }};
+
+    if (printers.length === 1) {
+        // Direct printing with the only printer available
+        directPrint(printers[0].prt_ser);
+    } else if (printers.length > 1) {
+        var modal = new bootstrap.Modal(document.getElementById('printerModal'));
+        modal.show();
+    }
+}
+
+function confirmPrint() 
+{
+    const printer = document.getElementById("printerSelect").value;
+    const salSer = window.selectedAliquotForPrint;
+
+    console.log("Printing on: ", printer);
+    bootstrap.Modal.getInstance(document.getElementById('printerModal')).hide();
+
+    directPrint(printerId, salSer);
+}
+
+function directPrint(printerId, salSer) 
+{
+    // Find the selected printer info
+    const printers = {{ ihm['l_printer']['data'] | tojson | safe }};
+    const selected = printers.find(p => p.prt_ser === printerId);
+
+    if (!selected) {
+        alert("{{ _('Imprimante introuvable.') }}");
+        return;
+    }
+
+    const scriptName = selected.prt_script;
+    if (!scriptName) {
+        alert("{{ _('Aucun script d\'impression défini.') }}");
+        return;
+    }
+
+    $.ajax({
+        url: `{{ session['server_ext'] }}/services/pdf/print/script/${scriptName}`,
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        data: JSON.stringify({
+            sal_ser: salSer
+        }),
+        success: function () {
+            showToast("{{ _('Impression lancée.') }}", "success");
+        },
+        error: function () {
+            showToast("{{ _('Erreur lors de l\'impression.') }}", "danger");
+        }
+    });
+}
+
+function showToast(message, type = "success") 
+{
+    const toastEl = document.getElementById("printToast");
+    const toastBody = document.getElementById("printToastBody");
+
+    toastBody.innerText = message;
+
+    // Change background based on type
+    toastEl.classList.remove("bg-success", "bg-danger", "bg-warning");
+    toastEl.classList.add("bg-" + type);
+
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
 }
 
 function delete_item(id_item)

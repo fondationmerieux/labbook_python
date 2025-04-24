@@ -15,7 +15,6 @@ from app.models.Record import *
 from app.models.User import *
 from app.models.DB import *
 from app.models.Logs import Logs
-from app.models.Various import Various
 
 
 class ConnectSetting(Resource):
@@ -245,7 +244,7 @@ class AnalyzerLab27(Resource):
             ack_status = "AA" if "AA" in msg_ack else "AE" if "AE" in msg_ack else "AR"
 
             # update transaction in DB
-            ret = Analyzer.updateLab27(id_task=id_msg, stat=ack_status, msg=msg_ack)
+            Analyzer.updateLab27(id_task=id_msg, stat=ack_status, msg=msg_ack)
 
             # Return HL7 ACK^R22 as a response
             return compose_ret(msg_ack, Constants.cst_content_type_hl7)

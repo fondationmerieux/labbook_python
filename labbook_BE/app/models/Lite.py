@@ -2,9 +2,7 @@
 import logging
 import mysql.connector
 
-# from app.models.Constants import *
 from app.models.DB import DB
-from app.models.Constants import Constants
 from app.models.Logs import Logs
 
 
@@ -15,7 +13,7 @@ class Lite:
     def getLiteSetupList():
         cursor = DB.cursor()
 
-        req = ('select lite_ser, lite_name, lite_login, lite_pwd, COUNT(u.litu_user) AS nb_user '
+        req = ('select lite_ser, lite_name, lite_login, lite_pwd, COUNT(u.litu_user) AS nb_user, lite_report_pwd '
                'from lite_setting '
                'LEFT JOIN lite_users u on u.litu_lite = lite_ser '
                'GROUP BY lite_ser, lite_name, lite_login, lite_pwd '
@@ -29,7 +27,7 @@ class Lite:
     def getLiteSetup(id_item):
         cursor = DB.cursor()
 
-        req = ('select lite_ser, lite_name, lite_login, lite_pwd '
+        req = ('select lite_ser, lite_name, lite_login, lite_pwd, lite_report_pwd '
                'from lite_setting '
                'where lite_ser=%s')
 
@@ -43,9 +41,9 @@ class Lite:
             cursor = DB.cursor()
 
             cursor.execute('insert into lite_setting '
-                           '(lite_date, lite_name, lite_login, lite_pwd) '
+                           '(lite_date, lite_name, lite_login, lite_pwd, lite_report_pwd) '
                            'values '
-                           '(NOW(), %(name)s, %(login)s, %(pwd)s)', params)
+                           '(NOW(), %(name)s, %(login)s, %(pwd)s, %(report_pwd)s)', params)
 
             Lite.log.info(Logs.fileline())
 
@@ -60,7 +58,8 @@ class Lite:
             cursor = DB.cursor()
 
             cursor.execute('update lite_setting '
-                           'set lite_name=%(name)s , lite_login=%(login)s, lite_pwd=%(pwd)s '
+                           'set lite_name=%(name)s , lite_login=%(login)s, lite_pwd=%(pwd)s, '
+                           'lite_report_pwd=%(report_pwd)s '
                            'where lite_ser=%(id_item)s', params)
 
             Lite.log.info(Logs.fileline())
@@ -89,15 +88,15 @@ class Lite:
     def getLiteUsers(id_lite):
         try:
             cursor = DB.cursor()
-    
+
             cursor.execute(
                 'SELECT litu_user FROM lite_users WHERE litu_lite = %s',
                 (id_lite,)
             )
-    
+
             rows = cursor.fetchall()
             return [row['litu_user'] for row in rows]
-    
+
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR getLiteUsers SQL = ' + str(e))
             return []
@@ -109,29 +108,29 @@ class Lite:
 
             # Delete existing user associations for this lite device
             cursor.execute('DELETE FROM lite_users WHERE litu_lite = %s', (id_lite,))
-    
+
             # Insert new user associations
             for user_id in users:
                 cursor.execute(
                     'INSERT INTO lite_users (litu_lite, litu_user, litu_date) VALUES (%s, %s, NOW())',
                     (id_lite, user_id)
                 )
-    
+
             Lite.log.info(Logs.fileline())
 
             return True
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR insertLiteUsers SQL = ' + str(e))
             return False
-    
+
     @staticmethod
     def getLiteSetupByLogin(login):
         try:
             cursor = DB.cursor()
-    
-            cursor.execute('SELECT lite_ser, lite_name, lite_pwd FROM lite_setting WHERE lite_login = %s', (login,))
+
+            cursor.execute('SELECT lite_ser, lite_name, lite_pwd, lite_report_pwd FROM lite_setting WHERE lite_login = %s', (login,))
             return cursor.fetchone()
-    
+
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR getLiteSetupByLogin SQL = ' + str(e))
             return None
@@ -140,13 +139,13 @@ class Lite:
     def getLiteUsersByIds(user_ids):
         if not user_ids:
             return []
-    
+
         try:
             placeholders = ','.join(['%s'] * len(user_ids))
             req = f"""
                   SELECT id_data, firstname, lastname, username,
                   password, titre as `title`, email, locale,
-                  initiale as `initial`, adresse as `address`, tel as `phone`, role_type
+                  initiale as `initial`, role_type
                   FROM sigl_user_data
                   WHERE id_data IN ({placeholders})
                   """
@@ -156,18 +155,16 @@ class Lite:
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR getLiteUsersByIds SQL = ' + str(e))
             return []
-    
 
     @staticmethod
     def getLiteAnalysis():
         try:
             req = """
                   SELECT id_data, code, nom as `name`, abbr, famille as `family`,
-                  cote_unite as `rating_unit`, cote_valeur as `rating_value`, commentaire as `comment`,
-                  produit_biologique as `bio_product`, type_prel as `sample_type`, type_analyse as `analysis_type`,
-                  actif as `active`, ana_whonet, ana_ast, ana_loinc
+                  commentaire as `comment`, produit_biologique as `bio_product`, type_prel as `sample_type`,
+                  type_analyse as `analysis_type`, actif as `active`, ana_loinc
                   FROM sigl_05_data
-                  WHERE ana_lite = 'Y'
+                  WHERE (ana_lite = 'Y') or (code like 'PB%')
                   """
             cursor = DB.cursor()
             cursor.execute(req)
@@ -175,17 +172,17 @@ class Lite:
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR getLiteAnalysis SQL = ' + str(e))
             return []
-    
+
     @staticmethod
     def getLiteLinksAnalysisVar(ana_ids):
         if not ana_ids:
             return []
-    
+
         try:
             placeholders = ','.join(['%s'] * len(ana_ids))
             req = f"""
                   SELECT id_data, id_refanalyse as `analysis_id`, id_refvariable as `variable_id`, position,
-                  num_var as `var_number`, obligatoire as `required`, var_whonet, var_qrcode
+                  num_var as `var_number`, obligatoire as `required`
                   FROM sigl_05_07_data
                   WHERE id_refanalyse IN ({placeholders})
                   """
@@ -200,7 +197,7 @@ class Lite:
     def getLiteVAnalysisVarByIds(variable_ids):
         if not variable_ids:
             return []
-    
+
         try:
             placeholders = ','.join(['%s'] * len(variable_ids))
             req = f"""
@@ -217,19 +214,18 @@ class Lite:
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR getLiteVAnalysisVarByIds SQL = ' + str(e))
             return []
-    
+
     @staticmethod
     def getLiteAnalysisByIds(ids):
         if not ids:
             return []
-    
+
         try:
             placeholders = ','.join(['%s'] * len(ids))
             req = f"""
                   SELECT id_data, code, nom as `name`, abbr, famille as `family`,
-                  cote_unite as `rating_unit`, cote_valeur as `rating_value`, commentaire as `comment`,
-                  produit_biologique as `bio_product`, type_prel as `sample_type`, type_analyse as `analysis_type`,
-                  actif as `active`, ana_whonet, ana_ast, ana_loinc
+                  commentaire as `comment`, produit_biologique as `bio_product`, type_prel as `sample_type`,
+                  type_analyse as `analysis_type`, actif as `active`, ana_loinc
                   FROM sigl_05_data
                   WHERE id_data IN ({placeholders})
                   """
@@ -243,7 +239,7 @@ class Lite:
     @staticmethod
     def getLiteDictionary():
         try:
-            req = f"""
+            req = """
                   SELECT id_data, dico_name, label, short_label,
                   code, dico_descr, dict_formatting
                   FROM sigl_dico_data
@@ -267,7 +263,7 @@ class Lite:
                   pat_blood_group AS pat_blood_group, pat_blood_rhesus AS pat_blood_rhesus,
                   adresse AS pat_address, tel AS pat_phone1, pat_phone2 AS pat_phone2,
                   profession AS pat_profession, cp AS pat_zipcode, ville AS pat_city, bp AS pat_pbox,
-                  quartier AS pat_district, pat_email
+                  quartier AS pat_district, pat_email, pat_lite
                   FROM sigl_03_data
                   """
             with DB.cursor() as cursor:
@@ -275,6 +271,26 @@ class Lite:
                 return cursor.fetchall()
         except mysql.connector.Error as e:
             Lite.log.error(Logs.fileline() + ' : ERROR getLitePatients SQL = ' + str(e))
+            return []
+
+    @staticmethod
+    def getLitePrescribers():
+        try:
+            req = """
+                  SELECT
+                  id_data, code,
+                  nom AS lastname, prenom AS firstname,
+                  ville AS city, etablissement AS institution,
+                  specialite AS speciality, tel AS phone, email,
+                  titre AS title, initiale AS initial, service AS department,
+                  adresse AS address, mobile, fax, doc_zipcity AS zip_city
+                  FROM sigl_08_data
+                  """
+            with DB.cursor() as cursor:
+                cursor.execute(req)
+                return cursor.fetchall()
+        except mysql.connector.Error as e:
+            Lite.log.error(Logs.fileline() + ' : ERROR getLitePrescribers SQL = ' + str(e))
             return []
 
     @staticmethod
@@ -301,4 +317,3 @@ class Lite:
         except Exception as e:
             Lite.log.error(Logs.fileline() + f" : ERROR getLiteNationalities() : {str(e)}")
             return []
-    

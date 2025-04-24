@@ -16,7 +16,6 @@ from app.models.Analysis import Analysis
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
-from app.models.Result import Result
 from app.models.Various import Various
 
 

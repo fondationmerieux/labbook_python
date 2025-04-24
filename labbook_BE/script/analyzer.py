@@ -97,10 +97,10 @@ def analyzer(test=False, verbose=False):
                         msa_status = msa_match.group(1) if msa_match else "UN"
 
                         # update status
-                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=msa_status, ORL_O34=ORL_O34)
+                        Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=msa_status, ORL_O34=ORL_O34)
                     else:
                         # update status
-                        ret = Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=Constants.cst_stat_wrong_cnx, ORL_O34='')
+                        Analyzer.updateLab28_ORL_O34(id_task=task['anm_ser'], stat=Constants.cst_stat_wrong_cnx, ORL_O34='')
 
                 # if l_tasks is empty we reload before exit this script
                 l_tasks = Analyzer.listTask('PD')

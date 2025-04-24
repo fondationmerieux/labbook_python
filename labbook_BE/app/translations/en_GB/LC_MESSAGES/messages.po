@@ -7478,7 +7478,7 @@ msgstr "Laboratory"
 
 #: translations/messages_pybabel.py:2315
 msgid "Préleveur"
-msgstr "Sampler"
+msgstr "Sample collector"
 
 #: translations/messages_pybabel.py:2472
 msgid "Accéder à la page d'api"

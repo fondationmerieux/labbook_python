@@ -354,7 +354,7 @@ def get_user_data(login):
             session['l_user_rights'] = []
             session.modified = True
 
-        log.info(Logs.fileline() + ' : DEBUG l_user_rights = ' + str(session['l_user_rights']))
+        # log.info(Logs.fileline() + ' : DEBUG l_user_rights = ' + str(session['l_user_rights']))
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list of user rights failed, err=%s , url=%s', err, url)
@@ -6560,9 +6560,21 @@ def list_aliquot():
     session['current_page'] = 'list-aliquot'
     session.modified = True
 
+    json_ihm  = {}
     json_data = {}
 
-    return render_template('list-aliquot.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    # List printer
+    try:
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/printer/list'
+        req = requests.post(url)
+
+        if req.status_code == 200:
+            json_ihm['l_printer'] = req.json()
+
+    except requests.exceptions.RequestException as err:
+        log.error(Logs.fileline() + ' : requests list printer failed, err=%s , url=%s', err, url)
+
+    return render_template('list-aliquot.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
 
 # Page : list storage room
@@ -6860,17 +6872,6 @@ def det_aliquot(id_item=0):
 
     except requests.exceptions.RequestException as err:
         log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
-
-    # List printer
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/printer/list'
-        req = requests.post(url)
-
-        if req.status_code == 200:
-            json_ihm['l_printer'] = req.json()
-
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list printer failed, err=%s , url=%s', err, url)
 
     if id_item > 0:
         # Load aliquot details

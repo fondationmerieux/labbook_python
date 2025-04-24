@@ -11,7 +11,7 @@
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Liste des imprimantes") }}</span></h2>
 
-            {# TODO has_permission("???") #}
+            {% if has_permission("PRINT_174") %}
             <h6>{{ _("Importer un script d'impression") }}</h6>
             <div class="row mb-3 align-items-center">
                 <div class="col">
@@ -46,18 +46,14 @@
                 </div>
                 <div class="float-end d-lg-flex align-items-end">
                     <div>
-                        {# TODO has_permission("???") #}
                         <input type="button" onclick="add_printer();" id="add_printer" value="{{ _("Ajouter une imprimante") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                        {# endif #}
                     </div>
                 </div>
             </div>
 
-            {#
             {% else %}
             {% include 'no-rights.html' %} 
             {% endif %}
-            #}
 
         </div>
     </div>
@@ -243,11 +239,11 @@ function return_home()
 window.location.href = "{{ session['server_ext'] }}/homepage" ;
 }
 
-{# TODO if has_permission("???") #}
+{% if has_permission("PRINT_174") %}
 $(document).ready(function() 
 {
 loadItemsTable() ;
 } ) ;
-{# TODO endif #}
+{% endif %}
 </script>
 {% endblock %}

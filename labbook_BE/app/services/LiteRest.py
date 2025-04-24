@@ -3,7 +3,6 @@ import logging
 import gettext
 import bcrypt
 
-from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
@@ -11,7 +10,6 @@ from app.models.General import compose_ret
 from app.models.Constants import Constants
 from app.models.Logs import Logs
 from app.models.Lite import Lite
-from app.models.Various import Various
 
 
 class LiteSetupList(Resource):
@@ -57,7 +55,8 @@ class LiteSetupDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        if 'name' not in args or 'login' not in args or 'pwd' not in args or 'users' not in args:
+        if 'name' not in args or 'login' not in args or 'pwd' not in args or 'users' not in args or \
+           'report_pwd' not in args:
             self.log.error(Logs.fileline() + ' : LiteSetupDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -72,7 +71,8 @@ class LiteSetupDet(Resource):
             ret = Lite.updateLiteSetup(id_item=id_item,
                                        name=args['name'],
                                        login=args['login'],
-                                       pwd=pwd_hashed)
+                                       pwd=pwd_hashed,
+                                       report_pwd=args['report_pwd'])
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : LiteSetupDet ERROR update setup')
@@ -88,7 +88,8 @@ class LiteSetupDet(Resource):
         else:
             ret = Lite.insertLiteSetup(name=args['name'],
                                        login=args['login'],
-                                       pwd=pwd_hashed)
+                                       pwd=pwd_hashed,
+                                       report_pwd=args['report_pwd'])
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : LiteSetupDet ERROR insert setup')
@@ -136,7 +137,8 @@ class LiteSetupLoad(Resource):
         # If auth successful load setup
         setup = {
             "lite_name": setting['lite_name'],
-            "lite_ser": setting['lite_ser']
+            "lite_ser": setting['lite_ser'],
+            "lite_report_pwd": setting['lite_report_pwd']
         }
 
         # 1 - retrieve users from sigl_user_data with id_data in l_users
@@ -152,8 +154,6 @@ class LiteSetupLoad(Resource):
                 {"name": "email", "type": "TEXT"},
                 {"name": "locale", "type": "INTEGER"},
                 {"name": "initial", "type": "TEXT"},
-                {"name": "address", "type": "TEXT"},
-                {"name": "phone", "type": "TEXT"},
                 {"name": "role_type", "type": "TEXT"}
             ]
         }
@@ -169,15 +169,11 @@ class LiteSetupLoad(Resource):
                 {"name": "name", "type": "TEXT"},
                 {"name": "abbr", "type": "TEXT"},
                 {"name": "family", "type": "INTEGER"},
-                {"name": "rating_unit", "type": "TEXT"},
-                {"name": "rating_value", "type": "REAL"},
                 {"name": "comment", "type": "TEXT"},
                 {"name": "bio_product", "type": "INTEGER"},
                 {"name": "sample_type", "type": "INTEGER"},
                 {"name": "analysis_type", "type": "INTEGER"},
                 {"name": "active", "type": "INTEGER"},
-                {"name": "ana_whonet", "type": "INTEGER"},
-                {"name": "ana_ast", "type": "TEXT"},
                 {"name": "ana_loinc", "type": "TEXT"}
             ]
         }
@@ -194,8 +190,6 @@ class LiteSetupLoad(Resource):
                 {"name": "position", "type": "INTEGER"},
                 {"name": "var_number", "type": "INTEGER"},
                 {"name": "required", "type": "INTEGER"},
-                {"name": "var_whonet", "type": "INTEGER"},
-                {"name": "var_qrcode", "type": "TEXT"}
             ]
         }
 
@@ -212,7 +206,7 @@ class LiteSetupLoad(Resource):
         # Combine and deduplicate by id_data
         analysis += analysis_samp
         analysis = list({a["id_data"]: a for a in analysis}.values())
-        
+
         # Save in setup
         setup["analysis"] = analysis
 
@@ -224,6 +218,7 @@ class LiteSetupLoad(Resource):
             "columns": [
                 {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
                 {"name": "label", "type": "TEXT"},
+                {"name": "short_label", "type": "TEXT"},
                 {"name": "description", "type": "TEXT"},
                 {"name": "unit", "type": "INTEGER"},
                 {"name": "normal_min", "type": "TEXT"},
@@ -290,13 +285,39 @@ class LiteSetupLoad(Resource):
                 {"name": "pat_city", "type": "TEXT"},
                 {"name": "pat_pbox", "type": "TEXT"},
                 {"name": "pat_district", "type": "TEXT"},
-                {"name": "pat_email", "type": "TEXT"}
+                {"name": "pat_email", "type": "TEXT"},
+                {"name": "pat_lite", "type": "TEXT"}
             ]
         }
 
         setup["patients"] = Lite.getLitePatients()
 
-        # 5 - recover preferences sigl_06_data
+        # 5 - recover prescriber sigl_08_data
+        PRESCRIBER_TABLE_SCHEMA = {
+            "table": "prescriber",
+            "columns": [
+                {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
+                {"name": "code", "type": "TEXT"},
+                {"name": "lastname", "type": "TEXT"},
+                {"name": "firstname", "type": "TEXT"},
+                {"name": "city", "type": "TEXT"},
+                {"name": "institution", "type": "TEXT"},
+                {"name": "speciality", "type": "INTEGER"},
+                {"name": "phone", "type": "TEXT"},
+                {"name": "email", "type": "TEXT"},
+                {"name": "title", "type": "INTEGER"},
+                {"name": "initial", "type": "TEXT"},
+                {"name": "department", "type": "TEXT"},
+                {"name": "address", "type": "TEXT"},
+                {"name": "mobile", "type": "TEXT"},
+                {"name": "fax", "type": "TEXT"},
+                {"name": "zip_city", "type": "TEXT"}
+            ]
+        }
+
+        setup["prescribers"] = Lite.getLitePrescribers()
+
+        # 6 - recover preferences sigl_06_data
         PREFERENCES_TABLE_SCHEMA = {
             "table": "preferences",
             "columns": [
@@ -309,7 +330,7 @@ class LiteSetupLoad(Resource):
 
         setup["preferences"] = Lite.getLitePreferences()
 
-        # 6 - recover nationality
+        # 7 - recover nationality
         NATIONALITY_TABLE_SCHEMA = {
             "table": "nationality",
             "columns": [
@@ -321,14 +342,14 @@ class LiteSetupLoad(Resource):
 
         setup["nationality"] = Lite.getLiteNationalities()
 
-        # 7 - schemas for receive data
+        # 8 - schemas for receive data
         SAMPLE_TABLE_SCHEMA = {
             "table": "sample",
             "columns": [
                 {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
                 {"name": "samp_date", "type": "DATETIME"},
                 {"name": "sample_type", "type": "INTEGER"},
-                {"name": "statu", "type": "INTEGER"},
+                {"name": "status", "type": "INTEGER"},
                 {"name": "record_id", "type": "INTEGER"},
                 {"name": "sampler", "type": "TEXT"},
                 {"name": "samp_receipt_date", "type": "DATETIME"},
@@ -350,32 +371,16 @@ class LiteSetupLoad(Resource):
                 {"name": "id_patient", "type": "INTEGER"},
                 {"name": "type", "type": "INTEGER"},
                 {"name": "rec_date_receipt", "type": "DATETIME"},
-                {"name": "num_dos_jour", "type": "TEXT"},
-                {"name": "num_dos_an", "type": "TEXT"},
                 {"name": "med_prescripteur", "type": "INTEGER"},
                 {"name": "date_prescription", "type": "DATE"},
-                {"name": "service_interne", "type": "TEXT"},
-                {"name": "num_lit", "type": "INTEGER"},
-                {"name": "id_colis", "type": "TEXT"},
-                {"name": "rec_parcel_date", "type": "DATETIME"},
                 {"name": "rc", "type": "TEXT"},
-                {"name": "colis", "type": "INTEGER"},
-                {"name": "prix", "type": "DECIMAL(10,2)"},
-                {"name": "remise", "type": "INTEGER"},
-                {"name": "remise_pourcent", "type": "DECIMAL(10,2)"},
-                {"name": "assu_pourcent", "type": "DECIMAL(10,2)"},
-                {"name": "a_payer", "type": "DECIMAL(10,2)"},
-                {"name": "num_quittance", "type": "TEXT"},
-                {"name": "num_fact", "type": "TEXT"},
                 {"name": "statut", "type": "INTEGER"},
-                {"name": "num_dos_mois", "type": "TEXT"},
-                {"name": "date_hosp", "type": "DATE"},
-                {"name": "rec_custody", "type": "TEXT"},
                 {"name": "rec_num_int", "type": "TEXT"},
                 {"name": "rec_date_vld", "type": "DATETIME"},
                 {"name": "rec_modified", "type": "TEXT"},
-                {"name": "rec_hosp_num", "type": "TEXT"},
-                {"name": "rec_date_save", "type": "DATETIME"}
+                {"name": "rec_date_save", "type": "DATETIME"},
+                {"name": "rec_num", "type": "TEXT"},  # specific for Lite
+                {"name": "rec_lite", "type": "TEXT"}
             ]
         }
 
@@ -387,16 +392,12 @@ class LiteSetupLoad(Resource):
                 {"name": "id_data", "type": "INTEGER PRIMARY KEY"},
                 {"name": "id_dos", "type": "INTEGER"},
                 {"name": "ref_analyse", "type": "INTEGER"},
-                {"name": "prix", "type": "DECIMAL(10,2)"},
-                {"name": "paye", "type": "INTEGER"},
-                {"name": "urgent", "type": "INTEGER"},
-                {"name": "demande", "type": "INTEGER"},
-                {"name": "req_outsourced", "type": "TEXT"}
+                {"name": "urgent", "type": "INTEGER"}
             ]
         }
 
         setup["analysis_request"] = []
-        
+
         RESULT_TABLE_SCHEMA = {
             "table": "analysis_result",
             "columns": [
@@ -404,8 +405,7 @@ class LiteSetupLoad(Resource):
                 {"name": "id_analyse", "type": "INTEGER"},
                 {"name": "ref_variable", "type": "INTEGER"},
                 {"name": "valeur", "type": "TEXT"},
-                {"name": "obligatoire", "type": "INTEGER"},
-                {"name": "res_recovery", "type": "TEXT"}
+                {"name": "obligatoire", "type": "INTEGER"}
             ]
         }
 
@@ -426,7 +426,7 @@ class LiteSetupLoad(Resource):
         }
 
         setup["analysis_validation"] = []
-        
+
         setup["schemas"] = {
             "user": USER_TABLE_SCHEMA,
             "analysis": ANALYSIS_TABLE_SCHEMA,
@@ -434,8 +434,9 @@ class LiteSetupLoad(Resource):
             "ana_var": ANA_VAR_TABLE_SCHEMA,
             "dictionary": DICT_TABLE_SCHEMA,
             "patient": PATIENT_TABLE_SCHEMA,
+            "prescriber": PRESCRIBER_TABLE_SCHEMA,
             "preferences": PREFERENCES_TABLE_SCHEMA,
-            "nationality" : NATIONALITY_TABLE_SCHEMA,
+            "nationality": NATIONALITY_TABLE_SCHEMA,
             "sample": SAMPLE_TABLE_SCHEMA,
             "record": RECORD_TABLE_SCHEMA,
             "analysis_request": REQUEST_TABLE_SCHEMA,

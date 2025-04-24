@@ -4393,7 +4393,7 @@ class PrinterDet(Resource):
     def post(self, id_item):
         args = request.get_json()
 
-        if 'name' not in args or 'script' not in args or 'rank' not in args:
+        if 'name' not in args or 'script' not in args or 'rank' not in args or 'default' not in args:
             self.log.error(Logs.fileline() + ' : PrinterDet ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -4402,6 +4402,7 @@ class PrinterDet(Resource):
             ret = Quality.updatePrinter(id_item=id_item,
                                         name=args['name'],
                                         script=args['script'],
+                                        default=args['default'],
                                         rank=args['rank'])
 
             if ret is False:
@@ -4412,6 +4413,7 @@ class PrinterDet(Resource):
         else:
             ret = Quality.insertPrinter(name=args['name'],
                                         script=args['script'],
+                                        default=args['default'],
                                         rank=args['rank'])
 
             if ret <= 0:
@@ -4422,3 +4424,13 @@ class PrinterDet(Resource):
 
         self.log.info(Logs.fileline() + ' : TRACE PrinterDet id_item=' + str(id_item))
         return compose_ret(id_item, Constants.cst_content_type_json)
+
+    def delete(self, id_item):
+        ret = Quality.deletePrinter(id_item)
+
+        if not ret:
+            self.log.error(Logs.fileline() + ' : TRACE deletePrinter delete ERROR')
+            return compose_ret('', Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : TRACE deletePrinter delete id_item=' + str(id_item))
+        return compose_ret('', Constants.cst_content_type_json)

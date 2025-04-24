@@ -11,7 +11,7 @@
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Paramètrage LabBook Lite") }}</span></h2>
 
-            {# TODO has_permission("???") #}
+            {% if has_permission("LITE_175") %}
             <table id="itemsTable" class="display table table-striped" style="width:100%">
                 <thead>
                     <tr>
@@ -30,18 +30,14 @@
                 </div>
                 <div class="float-end d-lg-flex align-items-end">
                     <div>
-                        {# TODO has_permission("???") #}
                         <input type="button" onclick="add_item();" id="add_printer" value="{{ _("Ajouter une configuration") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                        {# endif #}
                     </div>
                 </div>
             </div>
 
-            {#
             {% else %}
             {% include 'no-rights.html' %} 
             {% endif %}
-            #}
 
         </div>
     </div>
@@ -143,11 +139,11 @@ function return_home()
 window.location.href = "{{ session['server_ext'] }}/homepage" ;
 }
 
-{# TODO if has_permission("???") #}
+{% if has_permission("LITE_175") %}
 $(document).ready(function() 
 {
 loadItemsTable() ;
 } ) ;
-{# TODO endif #}
+{% endif %}
 </script>
 {% endblock %}

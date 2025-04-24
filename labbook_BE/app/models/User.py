@@ -143,7 +143,7 @@ class User:
 
             cursor.execute('update sigl_user_data '
                            'set cps_id=%(cps_id)s, rpps=%(rpps)s, status=%(status)s, locale=%(locale)s, email=%(email)s, '
-                           'titre=%(titre)s, initiale=%(initiale)s, ddn=%(ddn)s, adresse=%(adresse)s, tel=%(phone)s, '
+                           'titre=%(titre)s, initiale=%(initiale)s, ddn=%(ddn)s, adresse=%(adresse)s, tel=%(tel)s, '
                            'darrive=%(darrive)s, position=%(position)s, cv=%(cv)s, diplome=%(diplome)s, '
                            'formation=%(formation)s, section=%(section)s, deval=%(deval)s, commentaire=%(commentaire)s, '
                            'role_type=%(role_type)s, role_pro=%(role_pro)s '

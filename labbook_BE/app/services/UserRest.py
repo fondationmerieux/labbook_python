@@ -951,7 +951,7 @@ class UserImport(Resource):
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check number of column (dont forget version columns)
-        if len(l_rows[0]) != 25:
+        if len(l_rows[0]) != 26:
             self.log.error(Logs.fileline() + ' : TRACE UserImport ERROR wrong number of column')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
@@ -1015,7 +1015,7 @@ class UserImport(Resource):
                 # Check if user exist (same username, lastname and firstname)
                 # if EXIST => UPDATE (all except password)
                 if User.exist(firstname, lastname, username):
-                    ret = User.UpdateUserByImport(firstname=firstname,
+                    ret = User.updateUserByImport(firstname=firstname,
                                                   lastname=lastname,
                                                   username=username,
                                                   titre=title,
@@ -1097,5 +1097,5 @@ class UserRoleExist(Resource):
             self.log.error(Logs.fileline() + ' : ' + 'UserRoleExist WARNING role already exist')
             return compose_ret(1, Constants.cst_content_type_json, 200)
         else:
-            self.log.info(Logs.fileline() + ' : UserRoleExist code ok :' + str(pat_code_lab))
+            self.log.info(Logs.fileline() + ' : UserRoleExist code ok :' + str(role_label))
             return compose_ret(0, Constants.cst_content_type_json, 200)

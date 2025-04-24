@@ -1432,7 +1432,7 @@ class AnalysisImport(Resource):
                         ana_lite = row[40]
                         ana_loinc = row[41]
                     else:
-                        ana_lite  = 'N' 
+                        ana_lite  = 'N'
                         ana_loinc = ''
 
                     ret = Analysis.exist(code, test)

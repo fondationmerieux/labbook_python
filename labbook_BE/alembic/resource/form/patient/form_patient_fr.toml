@@ -100,6 +100,10 @@ version = 1
     input_type = "text"
 
     [[description.form_element]]
+    labbook_ref = "pat_email"
+    input_type = "text"
+
+    [[description.form_element]]
     labbook_ref = "pat_profession"
     input_type = "text"
 
@@ -189,6 +193,7 @@ version = 1
                 { element = "pat_address", class = "flex-md-row" },
                 { element = "pat_phone1", class = "flex-md-row" },
                 { element = "pat_phone2", class = "flex-md-row" },
+                { element = "pat_email", class = "flex-md-row" },
                 { element = "pat_profession", class = "flex-md-row" }
         ]
 

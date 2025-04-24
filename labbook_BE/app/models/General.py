@@ -3,7 +3,6 @@ import json
 
 from app.models.Constants import *
 from datetime import datetime
-from decimal import Decimal
 from flask import make_response
 
 
@@ -32,6 +31,7 @@ def compose_ret_ascii(ret, http_code=200):
 
     return resp
 
+
 def safe_json_default(obj):
     from decimal import Decimal
     from datetime import date, datetime
@@ -48,13 +48,14 @@ def safe_json_default(obj):
             return base64.b64encode(obj).decode("ascii")
     return str(obj)
 
+
 def parse_date_safe(date_str):
     formats = [
         "%Y-%m-%dT%H:%M:%S.%fZ",
-        "%Y-%m-%dT%H:%M:%S", 
+        "%Y-%m-%dT%H:%M:%S",
         "%Y-%m-%d %H:%M:%S",
-        "%Y-%m-%d %H:%M", 
-        "%Y-%m-%d"  
+        "%Y-%m-%d %H:%M",
+        "%Y-%m-%d"
     ]
     for fmt in formats:
         try:
@@ -62,4 +63,3 @@ def parse_date_safe(date_str):
         except ValueError:
             continue
     raise ValueError(f"Unsupported date format: {date_str}")
-

@@ -10,7 +10,7 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Imprimante") }}</span></h2>
-            {# TODO if (has_permission("SETTING_49") and args['id_analyzer'] == 0) or (has_permission("SETTING_50") and args['id_analyzer'] > 0) #}
+            {% if has_permission("PRINT_174") %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
@@ -27,6 +27,14 @@
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="default" class="form-label col-3 text-end mt-2 me-1">{{ _("Par défaut") }}</label>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="default" name="default" value="Y"
+                            {% if args['printer']['prt_default'] == 'Y' %}checked{% endif %}>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="rank" class="form-label col-3 text-end mt-2 me-1">{{ _("position") }}</label>
                     <div>					
                         <input type="number" name="rank" id="rank" min="0" step="1" value="{% if args['printer']['prt_rank'] %}{{args['printer']['prt_rank']}}{% else %}0{% endif %}" class="form-control form-lbk">			
@@ -39,18 +47,14 @@
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {# TODO if has_permission("SETTING_??") #} 
                 <div class="float-end">
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
-                {# TODO endif #}
             </div>
 
-            {#
             {% else %}
             {% include 'no-rights.html' %} 
             {% endif %}
-            #}
         </div>
     </div>
 </div>
@@ -64,6 +68,7 @@ var id_item = {{ args['id_printer']|safe }} ;
 var name    = $("#name").val()   ;
 var rank    = $("#rank").val()   ;
 var script  = $("#script").val() ;
+var by_def  = $("#default").is(":checked") ? "Y" : "N";
 
 var msg = "" ;
 
@@ -82,7 +87,8 @@ var msg = "" ;
 var param = JSON.stringify({
                             "name": name,
                             "script": script,
-                            "rank": rank
+                            "rank": rank,
+                            "default": by_def
                         });
 
     // popup wait

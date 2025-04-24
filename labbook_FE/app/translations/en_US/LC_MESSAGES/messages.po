@@ -1,22 +1,15 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  Labbook_FE\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-06 12:31+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: en_us\n"
-"Language-Team: en_us <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Labbook_FE\n"
+"Language: en-us\n"
 
 #: templates/administrative-record.html:5
 #: templates/administrative-record.html:13 templates/det-hist-analysis.html:108
-#: templates/det-hist-patient.html:144 templates/list-aliquot.html:162
+#: templates/det-hist-patient.html:144 templates/list-aliquot.html:199
 #: templates/list-records.html:298 templates/list-works.html:269
 #: templates/report-tat.html:265 templates/report-today.html:208
 msgid "Dossier administratif"
@@ -26,30 +19,30 @@ msgstr "Administrative record"
 #: templates/biological-validation.html:21
 #: templates/biological-validation.html:761 templates/det-req-ext.html:21
 #: templates/det-req-int.html:21 templates/det-sample.html:18
-#: templates/enter-result.html:20 templates/list-aliquot.html:30
-#: templates/pivot-table.html:31 templates/technical-validation.html:20
+#: templates/enter-result.html:21 templates/list-aliquot.html:30
+#: templates/pivot-table.html:31 templates/technical-validation.html:21
 msgid "Dossier"
 msgstr "Record"
 
 #: templates/administrative-record.html:25
 #: templates/biological-validation.html:26 templates/det-req-ext.html:28
-#: templates/det-req-int.html:28 templates/enter-result.html:24
-#: templates/technical-validation.html:25
+#: templates/det-req-int.html:28 templates/enter-result.html:25
+#: templates/technical-validation.html:26
 msgid "Numéro de dossier interne au laboratoire"
 msgstr "Internal laboratory file number"
 
 #: templates/administrative-record.html:33
 #: templates/biological-validation.html:32 templates/det-req-ext.html:35
 #: templates/det-req-int.html:35 templates/det-sample.html:22
-#: templates/enter-result.html:29 templates/setting-det-user.html:97
-#: templates/technical-validation.html:31 translations/messages_pybabel.py:8
+#: templates/enter-result.html:30 templates/setting-det-user.html:97
+#: templates/technical-validation.html:32 translations/messages_pybabel.py:8
 msgid "Identité"
 msgstr "Identity"
 
 #: templates/administrative-record.html:46
 #: templates/biological-validation.html:43 templates/det-req-ext.html:53
 #: templates/det-req-int.html:56 templates/det-sample.html:33
-#: templates/enter-result.html:40 templates/technical-validation.html:42
+#: templates/enter-result.html:41 templates/technical-validation.html:43
 msgid "Patient anonyme"
 msgstr "Anonymous patient"
 
@@ -58,9 +51,9 @@ msgstr "Anonymous patient"
 #: templates/biological-validation.html:47
 #: templates/biological-validation.html:904 templates/det-req-ext.html:57
 #: templates/det-req-int.html:60 templates/det-sample.html:37
-#: templates/enter-result.html:44 templates/enter-result.html:1163
-#: templates/technical-validation.html:46
-#: templates/technical-validation.html:781
+#: templates/enter-result.html:45 templates/enter-result.html:1168
+#: templates/technical-validation.html:47
+#: templates/technical-validation.html:786
 msgid "Né(e) le"
 msgstr "Date of birth"
 
@@ -68,9 +61,9 @@ msgstr "Date of birth"
 #: templates/administrative-record.html:870
 #: templates/biological-validation.html:51
 #: templates/biological-validation.html:906 templates/det-sample.html:41
-#: templates/enter-result.html:48 templates/enter-result.html:1165
-#: templates/technical-validation.html:50
-#: templates/technical-validation.html:783
+#: templates/enter-result.html:49 templates/enter-result.html:1170
+#: templates/technical-validation.html:51
+#: templates/technical-validation.html:788
 msgid "années"
 msgstr "years"
 
@@ -78,9 +71,9 @@ msgstr "years"
 #: templates/administrative-record.html:871
 #: templates/biological-validation.html:52
 #: templates/biological-validation.html:907 templates/det-sample.html:42
-#: templates/enter-result.html:49 templates/enter-result.html:1166
-#: templates/technical-validation.html:51
-#: templates/technical-validation.html:784
+#: templates/enter-result.html:50 templates/enter-result.html:1171
+#: templates/technical-validation.html:52
+#: templates/technical-validation.html:789
 msgid "mois"
 msgstr "months"
 
@@ -88,9 +81,9 @@ msgstr "months"
 #: templates/administrative-record.html:872
 #: templates/biological-validation.html:53
 #: templates/biological-validation.html:908 templates/det-sample.html:43
-#: templates/enter-result.html:50 templates/enter-result.html:1167
-#: templates/technical-validation.html:52
-#: templates/technical-validation.html:785
+#: templates/enter-result.html:51 templates/enter-result.html:1172
+#: templates/technical-validation.html:53
+#: templates/technical-validation.html:790
 msgid "semaines"
 msgstr "weeks"
 
@@ -98,9 +91,9 @@ msgstr "weeks"
 #: templates/administrative-record.html:873
 #: templates/biological-validation.html:54
 #: templates/biological-validation.html:909 templates/det-sample.html:44
-#: templates/enter-result.html:51 templates/enter-result.html:1168
-#: templates/technical-validation.html:53
-#: templates/technical-validation.html:786
+#: templates/enter-result.html:52 templates/enter-result.html:1173
+#: templates/technical-validation.html:54
+#: templates/technical-validation.html:791
 msgid "jours"
 msgstr "days"
 
@@ -108,10 +101,10 @@ msgstr "days"
 #: templates/biological-validation.html:56 templates/det-hist-patient.html:39
 #: templates/det-req-ext.html:66 templates/det-req-int.html:69
 #: templates/det-sample.html:46 templates/elem/pat_sex.html:3
-#: templates/enter-result.html:53 templates/hist-analyzes.html:234
+#: templates/enter-result.html:54 templates/hist-analyzes.html:234
 #: templates/hist-patients.html:246 templates/manage-pat-records.html:192
 #: templates/manage-pat-records.html:446 templates/report-statistic.html:279
-#: templates/technical-validation.html:55
+#: templates/technical-validation.html:56
 msgid "Masculin"
 msgstr "Male"
 
@@ -119,10 +112,10 @@ msgstr "Male"
 #: templates/biological-validation.html:57 templates/det-hist-patient.html:40
 #: templates/det-req-ext.html:67 templates/det-req-int.html:70
 #: templates/det-sample.html:47 templates/elem/pat_sex.html:6
-#: templates/enter-result.html:54 templates/hist-analyzes.html:236
+#: templates/enter-result.html:55 templates/hist-analyzes.html:236
 #: templates/hist-patients.html:248 templates/manage-pat-records.html:195
 #: templates/manage-pat-records.html:449 templates/report-statistic.html:280
-#: templates/technical-validation.html:56
+#: templates/technical-validation.html:57
 msgid "Féminin"
 msgstr "Female"
 
@@ -130,7 +123,7 @@ msgstr "Female"
 #: templates/biological-validation.html:58 templates/det-hist-patient.html:41
 #: templates/det-req-ext.html:68 templates/det-req-int.html:71
 #: templates/det-sample.html:48 templates/elem/pat_sex.html:9
-#: templates/enter-result.html:55 templates/hist-analyzes.html:231
+#: templates/enter-result.html:56 templates/hist-analyzes.html:231
 #: templates/hist-patients.html:243 templates/list-messages.html:138
 #: templates/list-msg-analyzer.html:125 templates/macros.html:51
 #: templates/macros.html:58 templates/macros.html:65
@@ -138,7 +131,7 @@ msgstr "Female"
 #: templates/manage-pat-records.html:210 templates/manage-pat-records.html:219
 #: templates/manage-pat-records.html:425 templates/manage-pat-records.html:452
 #: templates/manage-pat-records.html:464 templates/manage-pat-records.html:473
-#: templates/report-statistic.html:281 templates/technical-validation.html:57
+#: templates/report-statistic.html:281 templates/technical-validation.html:58
 msgid "Inconnu"
 msgstr "Unknown"
 
@@ -186,7 +179,7 @@ msgstr "Custody application"
 #: templates/setting-det-analysis.html:253
 #: templates/setting-det-analysis.html:262 templates/setting-det-dict.html:78
 #: templates/setting-form.html:61 templates/setting-report.html:26
-#: templates/table-rights.html:40
+#: templates/table-rights.html:42
 msgid "Oui"
 msgstr "Yes"
 
@@ -215,7 +208,7 @@ msgstr "Yes"
 #: templates/setting-det-analysis.html:256
 #: templates/setting-det-analysis.html:265 templates/setting-det-dict.html:78
 #: templates/setting-form.html:64 templates/setting-report.html:29
-#: templates/table-rights.html:47
+#: templates/table-rights.html:49
 msgid "Non"
 msgstr "No"
 
@@ -347,8 +340,8 @@ msgstr "Price"
 
 #: templates/administrative-record.html:186
 #: templates/biological-validation.html:663 templates/det-req-ext.html:221
-#: templates/det-req-int.html:268 templates/enter-result.html:654
-#: templates/list-results.html:692 templates/technical-validation.html:549
+#: templates/det-req-int.html:268 templates/enter-result.html:659
+#: templates/list-results.html:692 templates/technical-validation.html:554
 msgid "Sous-traitée"
 msgstr "Subcontract"
 
@@ -471,16 +464,16 @@ msgstr "Information"
 #: templates/det-analyzer.html:66 templates/det-control-ext.html:41
 #: templates/det-control-int.html:41 templates/det-dhis2-api.html:63
 #: templates/det-doctor.html:132 templates/det-equipment.html:166
-#: templates/det-lite.html:81 templates/det-manual.html:107
+#: templates/det-lite.html:95 templates/det-manual.html:107
 #: templates/det-meeting.html:70 templates/det-new-product.html:95
-#: templates/det-patient.html:31 templates/det-printer.html:44
+#: templates/det-patient.html:31 templates/det-printer.html:51
 #: templates/det-procedure.html:99 templates/det-sample.html:145
 #: templates/det-staff.html:223 templates/det-stock-product.html:96
 #: templates/det-storage-box.html:73 templates/det-storage-chamber.html:51
 #: templates/det-storage-compartment.html:72 templates/det-storage-room.html:41
 #: templates/det-supplier.html:92 templates/det-template.html:74
-#: templates/enter-result.html:158 templates/enter-result.html:502
-#: templates/enter-result.html:849 templates/eqp-document.html:77
+#: templates/enter-result.html:159 templates/enter-result.html:507
+#: templates/enter-result.html:854 templates/eqp-document.html:77
 #: templates/eqp-failure.html:76 templates/eqp-maintenance-contract.html:66
 #: templates/eqp-maintenance-preventive.html:59 templates/eqp-metrology.html:59
 #: templates/list-results.html:126 templates/list-results.html:548
@@ -554,12 +547,12 @@ msgstr "Barcode"
 #: templates/det-procedure.html:327 templates/det-req-ext.html:635
 #: templates/det-req-ext.html:757 templates/det-req-ext.html:842
 #: templates/det-req-int.html:619 templates/det-req-int.html:741
-#: templates/det-staff.html:369 templates/enter-result.html:1267
+#: templates/det-staff.html:369 templates/enter-result.html:1272
 #: templates/eqp-document.html:133 templates/eqp-document.html:178
 #: templates/eqp-document.html:286 templates/eqp-failure.html:256
 #: templates/eqp-maintenance-contract.html:192
 #: templates/eqp-maintenance-preventive.html:183
-#: templates/eqp-metrology.html:183 templates/list-aliquot.html:177
+#: templates/eqp-metrology.html:183 templates/list-aliquot.html:218
 #: templates/list-analyzers.html:122 templates/list-doctors.html:224
 #: templates/list-eqp-failure.html:120 templates/list-eqp-maintenance.html:176
 #: templates/list-eqp-maintenance.html:241
@@ -567,7 +560,7 @@ msgstr "Barcode"
 #: templates/list-laboratory.html:131 templates/list-laboratory.html:326
 #: templates/list-manuals.html:194 templates/list-meeting.html:123
 #: templates/list-messages.html:110 templates/list-msg-analyzer.html:71
-#: templates/list-nonconformities.html:191 templates/list-printer.html:120
+#: templates/list-nonconformities.html:191 templates/list-printer.html:116
 #: templates/list-procedure.html:132 templates/list-records.html:313
 #: templates/list-results.html:1155 templates/list-storage-box.html:79
 #: templates/list-storage-chamber.html:78
@@ -580,7 +573,7 @@ msgstr "Barcode"
 #: templates/setting-det-analysis.html:646 templates/setting-det-dict.html:101
 #: templates/setting-dhis2.html:106 templates/setting-dhis2.html:223
 #: templates/setting-dicts.html:181 templates/setting-form.html:170
-#: templates/setting-functionnal-units.html:93 templates/setting-lite.html:92
+#: templates/setting-functionnal-units.html:93 templates/setting-lite.html:88
 #: templates/setting-manual.html:79
 #: templates/setting-requesting-services.html:79
 #: templates/setting-roles-and-rights.html:125 templates/setting-stock.html:90
@@ -668,30 +661,28 @@ msgid "Aucun fichier déposé"
 msgstr "No file uploaded"
 
 #: templates/administrative-record.html:643
-msgid ""
-"Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace"
-" y figurera)"
+msgid "Souhaitez-vous ré-éditer le compte rendu ? (la mention Annule et remplace y figurera)"
 msgstr "Would you like to re-edit the report? (Cancel and replace will appear)"
 
 #: templates/administrative-record.html:662 templates/pivot-table.html:161
 msgid "Une erreur est survenue lors du traitement"
 msgstr "An error occurred during processing"
 
-#: templates/administrative-record.html:696 templates/det-aliquot.html:382
-#: templates/det-aliquot.html:385 templates/det-analyzer.html:174
+#: templates/administrative-record.html:696 templates/det-aliquot.html:371
+#: templates/det-aliquot.html:374 templates/det-analyzer.html:174
 #: templates/det-control-ext.html:228 templates/det-control-int.html:215
 #: templates/det-dhis2-api.html:128 templates/det-doctor.html:209
 #: templates/det-equipment.html:355 templates/det-list-stock.html:221
-#: templates/det-lite.html:168 templates/det-manual.html:310
+#: templates/det-lite.html:181 templates/det-manual.html:310
 #: templates/det-meeting.html:182 templates/det-message.html:174
-#: templates/det-new-product.html:214 templates/det-printer.html:108
+#: templates/det-new-product.html:214 templates/det-printer.html:114
 #: templates/det-procedure.html:300 templates/det-sample.html:215
 #: templates/det-staff.html:318 templates/det-stock-product.html:252
 #: templates/det-storage-box.html:131 templates/det-storage-chamber.html:96
 #: templates/det-storage-compartment.html:129
 #: templates/det-storage-room.html:77 templates/det-supplier.html:160
-#: templates/det-template.html:161 templates/enter-result.html:1241
-#: templates/enter-result.html:1254 templates/eqp-document.html:247
+#: templates/det-template.html:161 templates/enter-result.html:1246
+#: templates/enter-result.html:1259 templates/eqp-document.html:247
 #: templates/eqp-document.html:257 templates/eqp-failure.html:226
 #: templates/eqp-maintenance-contract.html:174
 #: templates/eqp-maintenance-preventive.html:165
@@ -850,9 +841,7 @@ msgid "Traitement réussi"
 msgstr "Successful processing"
 
 #: templates/analysis-import.html:150 templates/dict-import.html:123
-msgid ""
-"Erreur lors du traitement des données, rafraîchissez la page jusqu'à "
-"connaître le statut"
+msgid "Erreur lors du traitement des données, rafraîchissez la page jusqu'à connaître le statut"
 msgstr "Error while processing data, refresh the page until you know the status"
 
 #: templates/analysis-import.html:187 templates/dict-import.html:155
@@ -860,18 +849,12 @@ msgid "Aucun statut"
 msgstr "No status"
 
 #: templates/analysis-import.html:193 templates/dict-import.html:161
-msgid ""
-"Une erreur est survenue lors de la vérification du statut de la base de "
-"données"
+msgid "Une erreur est survenue lors de la vérification du statut de la base de données"
 msgstr "An error occurred while checking the status of the database"
 
 #: templates/api.html:3
 msgid "LabBook API"
 msgstr "LabBook API"
-
-#: templates/api.html:53 templates/skeleton.html:49
-msgid "Déconnexion"
-msgstr "Disconnection"
 
 #: templates/api.html:86 templates/report-dhis2.html:226
 msgid "Accès non autorisé"
@@ -887,8 +870,8 @@ msgstr "Biological validation"
 msgid "Renseignements cliniques"
 msgstr "Clinical information"
 
-#: templates/biological-validation.html:98 templates/enter-result.html:85
-#: templates/list-results.html:71 templates/technical-validation.html:88
+#: templates/biological-validation.html:98 templates/enter-result.html:86
+#: templates/list-results.html:71 templates/technical-validation.html:89
 msgid "Aucune analyse"
 msgstr "No analyses"
 
@@ -896,10 +879,10 @@ msgstr "No analyses"
 msgid "Validation des résultats cochés"
 msgstr "Validation of the checked results"
 
-#: templates/biological-validation.html:105 templates/enter-result.html:507
-#: templates/enter-result.html:854 templates/list-results.html:553
-#: templates/list-results.html:891 templates/technical-validation.html:441
-#: templates/technical-validation.html:627
+#: templates/biological-validation.html:105 templates/enter-result.html:512
+#: templates/enter-result.html:859 templates/list-results.html:553
+#: templates/list-results.html:891 templates/technical-validation.html:446
+#: templates/technical-validation.html:632
 msgid "Date de validation"
 msgstr "Validation date"
 
@@ -915,71 +898,72 @@ msgstr "Biologist"
 #: templates/list-eqp-failure.html:36 templates/list-eqp-maintenance.html:36
 #: templates/list-eqp-maintenance.html:88 templates/list-eqp-metrology.html:34
 #: templates/non-conformity.html:750 templates/res-control-ext.html:49
-#: templates/res-control-int.html:52 templates/technical-validation.html:109
+#: templates/res-control-int.html:52 templates/technical-validation.html:110
 msgid "Commentaire"
 msgstr "Comment"
 
 #: templates/biological-validation.html:127 templates/det-list-stock.html:83
 #: templates/det-req-ext.html:362 templates/det-req-ext.html:364
 #: templates/det-req-int.html:388 templates/det-req-int.html:390
-#: templates/enter-result.html:542 templates/enter-result.html:889
+#: templates/enter-result.html:547 templates/enter-result.html:894
 #: templates/list-results.html:588 templates/list-results.html:926
 #: templates/setting-backup.html:66 templates/setting-backup.html:96
 #: templates/setting-backup.html:121 templates/setting-backup.html:146
-#: templates/technical-validation.html:469
-#: templates/technical-validation.html:655
+#: templates/technical-validation.html:474
+#: templates/technical-validation.html:660
 msgid "Valider"
 msgstr "Validation"
 
 #: templates/biological-validation.html:146
-#: templates/technical-validation.html:96
+#: templates/technical-validation.html:97
 msgid "Commentaire et motif annulation"
 msgstr "Reason for cancellation and comments"
 
 #: templates/biological-validation.html:151
-#: templates/technical-validation.html:101
+#: templates/technical-validation.html:102
 msgid "Motif"
 msgstr "Reason"
 
 #: templates/biological-validation.html:164
 #: templates/biological-validation.html:182 templates/det-control-ext.html:91
-#: templates/det-control-int.html:90 templates/enter-result.html:105
+#: templates/det-control-int.html:90 templates/enter-result.html:106
 #: templates/list-analyzers.html:59 templates/list-ctrl-ext.html:59
 #: templates/list-ctrl-int.html:59 templates/list-eqp-failure.html:62
 #: templates/list-eqp-maintenance.html:59
 #: templates/list-eqp-maintenance.html:114 templates/list-eqp-metrology.html:60
-#: templates/setting-dhis2.html:36 templates/technical-validation.html:114
-#: templates/technical-validation.html:132
+#: templates/setting-dhis2.html:36 templates/technical-validation.html:115
+#: templates/technical-validation.html:133
 msgid "Ajouter"
 msgstr "Add"
 
 #: templates/biological-validation.html:165 templates/det-aliquot.html:101
 #: templates/det-analyzer.html:62 templates/det-dhis2-api.html:59
 #: templates/det-doctor.html:128 templates/det-equipment.html:162
-#: templates/det-list-stock.html:84 templates/det-lite.html:77
+#: templates/det-list-stock.html:84 templates/det-lite.html:92
 #: templates/det-manual.html:103 templates/det-meeting.html:66
 #: templates/det-message.html:61 templates/det-new-product.html:91
-#: templates/det-printer.html:40 templates/det-procedure.html:95
+#: templates/det-printer.html:48 templates/det-procedure.html:95
 #: templates/det-staff.html:219 templates/det-stock-product.html:93
 #: templates/det-storage-box.html:70 templates/det-storage-chamber.html:48
 #: templates/det-storage-compartment.html:69 templates/det-storage-room.html:38
 #: templates/det-supplier.html:88 templates/det-template.html:71
-#: templates/enter-result.html:156 templates/eqp-document.html:73
+#: templates/enter-result.html:157 templates/eqp-document.html:73
 #: templates/eqp-failure.html:72 templates/eqp-maintenance-contract.html:62
 #: templates/eqp-maintenance-preventive.html:55 templates/eqp-metrology.html:55
 #: templates/hist-stock-product.html:193 templates/list-aliquot.html:95
-#: templates/list-results.html:123 templates/non-conformity.html:773
-#: templates/res-control-ext.html:84 templates/res-control-int.html:61
-#: templates/setting-backup.html:67 templates/setting-backup.html:97
-#: templates/setting-backup.html:122 templates/setting-backup.html:147
-#: templates/setting-det-analysis.html:335 templates/setting-det-role.html:76
-#: templates/setting-det-user.html:221 templates/setting-user-rights.html:32
-#: templates/technical-validation.html:115
+#: templates/list-aliquot.html:121 templates/list-results.html:123
+#: templates/non-conformity.html:773 templates/res-control-ext.html:84
+#: templates/res-control-int.html:61 templates/setting-backup.html:67
+#: templates/setting-backup.html:97 templates/setting-backup.html:122
+#: templates/setting-backup.html:147 templates/setting-det-analysis.html:335
+#: templates/setting-det-role.html:76 templates/setting-det-user.html:221
+#: templates/setting-user-rights.html:32
+#: templates/technical-validation.html:116
 msgid "Annuler"
 msgstr "Cancel"
 
-#: templates/biological-validation.html:175 templates/enter-result.html:98
-#: templates/technical-validation.html:125
+#: templates/biological-validation.html:175 templates/enter-result.html:99
+#: templates/technical-validation.html:126
 msgid "Ajouter de nouvelles analyses"
 msgstr "Add new analyses"
 
@@ -1004,32 +988,28 @@ msgid "Une erreur est survenue lors de création des résultats"
 msgstr "An error occurred while creating the results"
 
 #: templates/biological-validation.html:373 templates/det-req-ext.html:1517
-#: templates/det-req-int.html:1381 templates/enter-result.html:993
-#: templates/technical-validation.html:259
+#: templates/det-req-int.html:1381 templates/enter-result.html:998
+#: templates/technical-validation.html:264
 msgid "Une erreur est survenue lors de l'enregistrement des analyses"
 msgstr "An error has occurred while recording analyses"
 
 #: templates/biological-validation.html:391
-#: templates/technical-validation.html:282
+#: templates/technical-validation.html:287
 msgid "Etes-vous sur de vouloir effacer ce résultat ?"
 msgstr "Are you sure you want to delete this result?"
 
 #: templates/biological-validation.html:410
-#: templates/technical-validation.html:301
+#: templates/technical-validation.html:306
 msgid "Une erreur est survenue lors de réinitialisation d'une valeur saisie"
 msgstr "An error occurred while resetting an entered value"
 
 #: templates/biological-validation.html:418
-#: templates/technical-validation.html:309
-msgid ""
-"Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est "
-"irreversible."
-msgstr ""
-"Are you sure you want to cancel this result?\\nThis action is "
-"irreversible."
+#: templates/technical-validation.html:314
+msgid "Etes-vous sur de vouloir annuler ce résultat ?\\nCette action est irreversible."
+msgstr "Are you sure you want to cancel this result?\\nThis action is irreversible."
 
 #: templates/biological-validation.html:459
-#: templates/technical-validation.html:350
+#: templates/technical-validation.html:355
 msgid "Une erreur est survenue lors de l'annulation d'une valeur saisie"
 msgstr "An error occurred while cancelling an entered value"
 
@@ -1039,11 +1019,11 @@ msgid "Une erreur est survenue lors de validation biologique des valeurs saisies
 msgstr "An error occurred while validating the entered values biologically"
 
 #: templates/biological-validation.html:675
-#: templates/technical-validation.html:570
+#: templates/technical-validation.html:575
 msgid "Réinitialiser la valeur"
 msgstr "Reset value"
 
-#: templates/biological-validation.html:790 templates/det-aliquot.html:140
+#: templates/biological-validation.html:790 templates/det-aliquot.html:129
 #: templates/det-control-ext.html:289 templates/det-control-int.html:276
 #: templates/det-equipment.html:186 templates/det-equipment.html:229
 #: templates/det-manual.html:122 templates/det-manual.html:165
@@ -1053,7 +1033,7 @@ msgstr "Reset value"
 #: templates/det-procedure.html:194 templates/det-req-ext.html:405
 #: templates/det-req-ext.html:437 templates/det-req-int.html:429
 #: templates/det-req-int.html:461 templates/det-stock-product.html:110
-#: templates/enter-result.html:1000 templates/eqp-document.html:99
+#: templates/enter-result.html:1005 templates/eqp-document.html:99
 #: templates/eqp-document.html:144 templates/eqp-failure.html:89
 #: templates/eqp-failure.html:132 templates/eqp-maintenance-contract.html:79
 #: templates/eqp-maintenance-preventive.html:72 templates/eqp-metrology.html:72
@@ -1066,17 +1046,17 @@ msgstr "Reset value"
 #: templates/report-tat.html:102 templates/setting-det-analysis.html:354
 #: templates/setting-det-analysis.html:467
 #: templates/setting-det-analysis.html:535 templates/setting-det-user.html:240
-#: templates/technical-validation.html:667
+#: templates/technical-validation.html:672
 msgid "Cliquer pour commencer une recherche"
 msgstr "Click to start a search"
 
-#: templates/biological-validation.html:858 templates/enter-result.html:1068
-#: templates/technical-validation.html:735
+#: templates/biological-validation.html:858 templates/enter-result.html:1073
+#: templates/technical-validation.html:740
 msgid "Analyse déjà présente !"
 msgstr "Analysis already present!"
 
-#: templates/biological-validation.html:883 templates/enter-result.html:1093
-#: templates/technical-validation.html:760
+#: templates/biological-validation.html:883 templates/enter-result.html:1098
+#: templates/technical-validation.html:765
 msgid "Erreur lors de la récupération d'une analyse"
 msgstr "Error when retrieving an analysis"
 
@@ -1089,136 +1069,15 @@ msgstr "An error has occurred"
 msgid "Attention vous allez quitter ce dossier sans l'avoir validé."
 msgstr "Attention you are going to leave this record without having validated it."
 
-#: templates/connect-management.html:5 templates/connect-management.html:13
-#: templates/list-analyzers.html:56
-msgid "Connect"
-msgstr ""
-
-#: templates/connect-management.html:17
-#, fuzzy
-msgid "Informations sur Connect"
-msgstr "Continuing education"
-
-#: templates/connect-management.html:19 templates/initialization.html:32
-#: templates/login.html:56 templates/skeleton.html:66
-msgid "Version"
-msgstr "Version"
-
-#: templates/connect-management.html:20
-msgid "Plugins chargés"
-msgstr ""
-
-#: templates/connect-management.html:25
-#, fuzzy
-msgid "URL du serveur LabBook Connect"
-msgstr "LabBook Connect Address"
-
-#: templates/connect-management.html:31 templates/det-analyzer.html:38
-#: templates/list-template.html:121 templates/report-dhis2.html:66
-msgid "Tester"
-msgstr "Test"
-
-#: templates/connect-management.html:39
-msgid "Importer un plugin"
-msgstr ""
-
-#: templates/connect-management.html:43 templates/connect-management.html:52
-#: templates/connect-management.html:61 templates/det-message.html:65
-#: templates/list-printer.html:23
-msgid "Envoyer"
-msgstr "Send"
-
-#: templates/connect-management.html:48
-msgid "Importer un fichier de configuration"
-msgstr ""
-
-#: templates/connect-management.html:57
-msgid "Importer un fichier de mapping"
-msgstr ""
-
-#: templates/connect-management.html:70
-msgid "Recharger les plugins"
-msgstr ""
-
-#: templates/connect-management.html:105 templates/list-printer.html:183
-#, fuzzy
-msgid "Veuillez sélectionner un fichier"
-msgstr "Please select the appropriate media"
-
-#: templates/connect-management.html:151 templates/connect-management.html:179
-#: templates/connect-management.html:204
-#, fuzzy
-msgid "Veuillez saisir une URL."
-msgstr "Please enter a title."
-
-#: templates/connect-management.html:161
-msgid "Plugins rechargés avec succès"
-msgstr ""
-
-#: templates/connect-management.html:169
-#, fuzzy
-msgid "Erreur lors du rechargement des plugins"
-msgstr "Error when changing status"
-
-#: templates/connect-management.html:190
-msgid "URL enregistrée avec succès"
-msgstr ""
-
-#: templates/connect-management.html:194
-#, fuzzy
-msgid "Erreur lors de l'enregistrement de l'URL"
-msgstr "An error has occurred while recording analyses"
-
-#: templates/connect-management.html:213
-msgid "Connexion réussie à LabBook Connect"
-msgstr ""
-
-#: templates/connect-management.html:215
-msgid "Échec de la connexion à LabBook Connect"
-msgstr ""
-
-#: templates/connect-management.html:220
-msgid "Impossible de joindre le serveur LabBook Connect"
-msgstr ""
-
 #: templates/contributors.html:6 templates/contributors.html:29
 #: templates/contributors.html:61 templates/initialization.html:32
 #: templates/login.html:56 templates/skeleton.html:66
 msgid "Contributeurs"
 msgstr "Contributors"
 
-#: templates/contributors.html:20 templates/initialization.html:3
-#: templates/initialization.html:19 templates/list-msg-analyzer.html:129
-#: templates/list-msg-analyzer.html:131 templates/login.html:3
-#: templates/login.html:20 templates/skeleton.html:33
-msgid "LabBook"
-msgstr "LabBook"
-
 #: templates/contributors.html:32
 msgid "LabBook est un logiciel de gestion de laboratoire Opensource."
 msgstr "LabBook is an Opensource laboratory management software."
-
-#: templates/contributors.html:33
-msgid ""
-"LabBook est co-financé par l'Agence Française de Développement (AFD) et "
-"la Fondation Mérieux."
-msgstr ""
-"LabBook is co-financed by the French Development Agency (AFD) and the "
-"Mérieux Foundation."
-
-#: templates/contributors.html:34
-msgid ""
-"Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé "
-"(OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le "
-"projet est financé par la Banque allemande de développement (KFW) et "
-"contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance "
-"épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO."
-msgstr ""
-"The PROALAB project is based at the West African Health Organization "
-"(WAHO) and is part of the WAHO Laboratory Strategic Plan. The project is "
-"funded by the German Development Bank (KFW) and contributes to LabBook "
-"since 2024 to improve the epidemiological surveillance network and "
-"laboratory systems in the ECOWAS region."
 
 #: templates/contributors.html:35
 msgid "La société Epiconcept a développé le logiciel LabBook jusqu'en 2019."
@@ -1235,155 +1094,6 @@ msgstr "The software is under the GNU license."
 #: templates/contributors.html:61
 msgid "Version : "
 msgstr "Version : "
-
-#: templates/det-aliquot.html:7 templates/det-aliquot.html:14
-msgid "Détails aliquot"
-msgstr "Aliquot Details"
-
-#: templates/det-aliquot.html:18 templates/list-aliquot.html:29
-#: templates/list-results.html:619 templates/list-samples.html:44
-#: templates/pivot-table.html:30 templates/report-tat.html:74
-#: templates/report-tat.html:335
-msgid "Patient"
-msgstr "Patient"
-
-#: templates/det-aliquot.html:35
-msgid "Nature"
-msgstr "Nature"
-
-#: templates/det-aliquot.html:51 templates/enter-result.html:126
-#: templates/list-aliquot.html:28 templates/list-results.html:93
-msgid "Pathogène"
-msgstr "Pathogen"
-
-#: templates/det-aliquot.html:66 templates/det-storage-box.html:29
-#: templates/enter-result.html:133 templates/list-results.html:100
-#: templates/list-storage-box.html:21
-msgid "Localisation d'accès"
-msgstr ""
-
-#: templates/det-aliquot.html:69
-msgid "Le format attendu est une lettre suivie d'un nombre"
-msgstr "The expected format is a letter followed by a number"
-
-#: templates/det-aliquot.html:74 templates/enter-result.html:138
-#: templates/list-results.html:105
-msgid "Présent en stock"
-msgstr "Available in Stock"
-
-#: templates/det-aliquot.html:81 templates/enter-result.html:141
-#: templates/list-results.html:108
-msgid "Boîte associée"
-msgstr "Associated Box"
-
-#: templates/det-aliquot.html:90 templates/enter-result.html:148
-#: templates/list-results.html:115
-msgid "Stockage boîte"
-msgstr "Box storage"
-
-#: templates/det-aliquot.html:105 templates/enter-result.html:118
-#: templates/enter-result.html:157 templates/enter-result.html:537
-#: templates/enter-result.html:884 templates/list-aliquot.html:53
-#: templates/list-results.html:85 templates/list-results.html:125
-#: templates/list-results.html:583 templates/list-results.html:921
-msgid "Ajouter un aliquot"
-msgstr "Add an Aliquot"
-
-#: templates/det-aliquot.html:119
-msgid "Imprimer"
-msgstr ""
-
-#: templates/det-aliquot.html:310
-msgid "Un patient doit être sélectionné."
-msgstr "A patient must be selected."
-
-#: templates/det-aliquot.html:316
-msgid "Le produit pathologique est obligatoire."
-msgstr "The pathological product is required."
-
-#: templates/det-aliquot.html:332 templates/enter-result.html:1209
-#: templates/list-results.html:1097
-msgid "L'association à une boîte est obligatoire."
-msgstr "Association with a box is required."
-
-#: templates/det-aliquot.html:339
-#, fuzzy
-msgid "Les coordonnées sont obligatoires."
-msgstr "The name and identifier are required."
-
-#: templates/det-aliquot.html:410 templates/enter-result.html:1309
-#: templates/list-results.html:1197 templates/list-storage-box.html:25
-msgid "Pleine"
-msgstr "Full"
-
-#: templates/det-aliquot.html:417 templates/enter-result.html:1316
-#: templates/list-results.html:1204
-msgid "Erreur lors de la récupération"
-msgstr "Error during retrieval"
-
-#: templates/det-analyzer.html:5 templates/det-analyzer.html:12
-#: templates/list-msg-analyzer.html:18 templates/list-msg-analyzer.html:129
-#: templates/list-msg-analyzer.html:131
-msgid "Analyseur"
-msgstr "Analyser"
-
-#: templates/det-analyzer.html:23 templates/list-analyzers.html:5
-#: templates/list-analyzers.html:12
-msgid "Liste des analyseurs"
-msgstr "List of analysers"
-
-#: templates/det-analyzer.html:33 templates/det-dhis2-api.html:23
-#: templates/det-lite.html:23 templates/det-storage-box.html:22
-#: templates/det-storage-chamber.html:29
-#: templates/det-storage-compartment.html:29 templates/det-storage-room.html:29
-#: templates/list-analyzers.html:33 templates/list-staff.html:43
-#: templates/list-storage-box.html:20 templates/list-storage-chamber.html:21
-#: templates/list-storage-compartment.html:21
-#: templates/list-storage-room.html:21 templates/login.html:33
-#: templates/setting-det-user.html:53 templates/setting-link-unit-user.html:22
-#: templates/setting-users.html:21 templates/setting-users.html:89
-msgid "Identifiant"
-msgstr "Login"
-
-#: templates/det-analyzer.html:44 templates/list-analyzers.html:34
-msgid "Batch"
-msgstr ""
-
-#: templates/det-analyzer.html:52 templates/det-printer.html:30
-msgid "position"
-msgstr "position"
-
-#: templates/det-analyzer.html:87
-msgid "Veuillez saisir une adresse LabBook Connect et un identifiant."
-msgstr "Please enter a LabBook Connect address and an identifier."
-
-#: templates/det-analyzer.html:93
-msgid "Test en cours"
-msgstr "Test in Progress"
-
-#: templates/det-analyzer.html:103
-msgid "L'analyseur est chargé."
-msgstr "The analyser is loaded."
-
-#: templates/det-analyzer.html:107
-msgid "Erreur : "
-msgstr "Error:"
-
-#: templates/det-analyzer.html:111
-msgid "Réponse inattendue du serveur."
-msgstr "Unexpected server response."
-
-#: templates/det-analyzer.html:116
-msgid "Erreur lors de la requête :"
-msgstr "Error during the request:"
-
-#: templates/det-analyzer.html:134
-msgid "Veuillez saisir un nom, un identifiant unique et leurs adresses."
-msgstr "Please enter a name, a unique identifier and their addresses."
-
-#: templates/det-analyzer.html:137
-msgid "Veuillez sélectionner un analyseur dans la liste."
-msgstr "Please select an analyser from the list."
 
 #: templates/det-control-ext.html:5 templates/det-control-ext.html:14
 msgid "Contrôle externe"
@@ -1452,7 +1162,7 @@ msgstr "Total number of lines"
 #: templates/hist-analyzes.html:57 templates/hist-analyzes.html:82
 #: templates/hist-patients.html:78 templates/hist-patients.html:105
 #: templates/hist-stock-product.html:41 templates/hist-stock-product.html:71
-#: templates/list-aliquot.html:131 templates/list-analyzers.html:19
+#: templates/list-aliquot.html:168 templates/list-analyzers.html:19
 #: templates/list-analyzers.html:44 templates/list-ctrl-ext.html:19
 #: templates/list-ctrl-ext.html:43 templates/list-ctrl-int.html:19
 #: templates/list-ctrl-int.html:43 templates/list-doctors.html:68
@@ -1467,7 +1177,7 @@ msgstr "Total number of lines"
 #: templates/list-meeting.html:44 templates/list-messages.html:18
 #: templates/list-messages.html:43 templates/list-msg-analyzer.html:53
 #: templates/list-nonconformities.html:44
-#: templates/list-nonconformities.html:72 templates/list-printer.html:95
+#: templates/list-nonconformities.html:72 templates/list-printer.html:91
 #: templates/list-procedure.html:19 templates/list-procedure.html:50
 #: templates/list-products.html:19 templates/list-products.html:47
 #: templates/list-records.html:122 templates/list-records.html:166
@@ -1486,7 +1196,7 @@ msgstr "Total number of lines"
 #: templates/report-billing.html:84 templates/report-today.html:56
 #: templates/report-today.html:91 templates/setting-analyzes.html:67
 #: templates/setting-analyzes.html:93 templates/setting-dicts.html:51
-#: templates/setting-dicts.html:73 templates/setting-lite.html:67
+#: templates/setting-dicts.html:73 templates/setting-lite.html:63
 #: templates/setting-roles-and-rights.html:20
 #: templates/setting-roles-and-rights.html:43 templates/setting-users.html:75
 #: templates/setting-users.html:104 templates/setting-zipcity.html:25
@@ -1502,7 +1212,7 @@ msgstr "First"
 #: templates/hist-analyzes.html:58 templates/hist-analyzes.html:83
 #: templates/hist-patients.html:79 templates/hist-patients.html:106
 #: templates/hist-stock-product.html:42 templates/hist-stock-product.html:72
-#: templates/list-aliquot.html:134 templates/list-analyzers.html:20
+#: templates/list-aliquot.html:171 templates/list-analyzers.html:20
 #: templates/list-analyzers.html:45 templates/list-ctrl-ext.html:20
 #: templates/list-ctrl-ext.html:44 templates/list-ctrl-int.html:20
 #: templates/list-ctrl-int.html:44 templates/list-doctors.html:69
@@ -1517,7 +1227,7 @@ msgstr "First"
 #: templates/list-meeting.html:45 templates/list-messages.html:19
 #: templates/list-messages.html:44 templates/list-msg-analyzer.html:56
 #: templates/list-nonconformities.html:45
-#: templates/list-nonconformities.html:73 templates/list-printer.html:98
+#: templates/list-nonconformities.html:73 templates/list-printer.html:94
 #: templates/list-procedure.html:20 templates/list-procedure.html:51
 #: templates/list-products.html:20 templates/list-products.html:48
 #: templates/list-records.html:123 templates/list-records.html:167
@@ -1536,7 +1246,7 @@ msgstr "First"
 #: templates/report-billing.html:85 templates/report-today.html:57
 #: templates/report-today.html:92 templates/setting-analyzes.html:68
 #: templates/setting-analyzes.html:94 templates/setting-dicts.html:52
-#: templates/setting-dicts.html:74 templates/setting-lite.html:70
+#: templates/setting-dicts.html:74 templates/setting-lite.html:66
 #: templates/setting-roles-and-rights.html:21
 #: templates/setting-roles-and-rights.html:44 templates/setting-users.html:76
 #: templates/setting-users.html:105 templates/setting-zipcity.html:26
@@ -1552,7 +1262,7 @@ msgstr "Previous"
 #: templates/hist-analyzes.html:60 templates/hist-analyzes.html:85
 #: templates/hist-patients.html:81 templates/hist-patients.html:108
 #: templates/hist-stock-product.html:44 templates/hist-stock-product.html:74
-#: templates/list-aliquot.html:133 templates/list-analyzers.html:22
+#: templates/list-aliquot.html:170 templates/list-analyzers.html:22
 #: templates/list-analyzers.html:47 templates/list-ctrl-ext.html:22
 #: templates/list-ctrl-ext.html:46 templates/list-ctrl-int.html:22
 #: templates/list-ctrl-int.html:46 templates/list-doctors.html:71
@@ -1567,7 +1277,7 @@ msgstr "Previous"
 #: templates/list-meeting.html:47 templates/list-messages.html:21
 #: templates/list-messages.html:46 templates/list-msg-analyzer.html:55
 #: templates/list-nonconformities.html:47
-#: templates/list-nonconformities.html:75 templates/list-printer.html:97
+#: templates/list-nonconformities.html:75 templates/list-printer.html:93
 #: templates/list-procedure.html:22 templates/list-procedure.html:53
 #: templates/list-products.html:22 templates/list-products.html:50
 #: templates/list-records.html:125 templates/list-records.html:169
@@ -1586,7 +1296,7 @@ msgstr "Previous"
 #: templates/report-billing.html:87 templates/report-today.html:59
 #: templates/report-today.html:94 templates/setting-analyzes.html:70
 #: templates/setting-analyzes.html:96 templates/setting-dicts.html:54
-#: templates/setting-dicts.html:76 templates/setting-lite.html:69
+#: templates/setting-dicts.html:76 templates/setting-lite.html:65
 #: templates/setting-roles-and-rights.html:23
 #: templates/setting-roles-and-rights.html:46 templates/setting-users.html:78
 #: templates/setting-users.html:107 templates/setting-zipcity.html:28
@@ -1602,7 +1312,7 @@ msgstr "Next"
 #: templates/hist-analyzes.html:61 templates/hist-analyzes.html:86
 #: templates/hist-patients.html:82 templates/hist-patients.html:109
 #: templates/hist-stock-product.html:45 templates/hist-stock-product.html:75
-#: templates/list-aliquot.html:132 templates/list-analyzers.html:23
+#: templates/list-aliquot.html:169 templates/list-analyzers.html:23
 #: templates/list-analyzers.html:48 templates/list-ctrl-ext.html:23
 #: templates/list-ctrl-ext.html:47 templates/list-ctrl-int.html:23
 #: templates/list-ctrl-int.html:47 templates/list-doctors.html:72
@@ -1617,7 +1327,7 @@ msgstr "Next"
 #: templates/list-meeting.html:48 templates/list-messages.html:22
 #: templates/list-messages.html:47 templates/list-msg-analyzer.html:54
 #: templates/list-nonconformities.html:48
-#: templates/list-nonconformities.html:76 templates/list-printer.html:96
+#: templates/list-nonconformities.html:76 templates/list-printer.html:92
 #: templates/list-procedure.html:23 templates/list-procedure.html:54
 #: templates/list-products.html:23 templates/list-products.html:51
 #: templates/list-records.html:126 templates/list-records.html:170
@@ -1636,7 +1346,7 @@ msgstr "Next"
 #: templates/report-billing.html:88 templates/report-today.html:60
 #: templates/report-today.html:95 templates/setting-analyzes.html:71
 #: templates/setting-analyzes.html:97 templates/setting-dicts.html:55
-#: templates/setting-dicts.html:77 templates/setting-lite.html:68
+#: templates/setting-dicts.html:77 templates/setting-lite.html:64
 #: templates/setting-roles-and-rights.html:24
 #: templates/setting-roles-and-rights.html:47 templates/setting-users.html:79
 #: templates/setting-users.html:108 templates/setting-zipcity.html:29
@@ -1734,7 +1444,7 @@ msgid "Veuillez sélectionner un équipement."
 msgstr "Please select an equipment."
 
 #: templates/det-control-ext.html:219 templates/det-control-int.html:206
-#: templates/enter-result.html:168 templates/list-laboratory.html:304
+#: templates/enter-result.html:169 templates/list-laboratory.html:304
 #: templates/list-results.html:136 templates/manage-pat-records.html:731
 #: templates/res-control-ext.html:184 templates/res-control-ext.html:205
 #: templates/res-control-int.html:118 templates/setting-age-interval.html:217
@@ -1765,7 +1475,7 @@ msgid "Aucun résultats à exporter !"
 msgstr "No results to export!"
 
 #: templates/det-control-ext.html:282 templates/det-control-int.html:269
-#: templates/det-list-stock.html:280 templates/enter-result.html:1148
+#: templates/det-list-stock.html:280 templates/enter-result.html:1153
 #: templates/global-report.html:97 templates/hist-analyzes.html:293
 #: templates/hist-patients.html:303 templates/hist-stock-product.html:356
 #: templates/list-ctrl-ext.html:186 templates/list-ctrl-int.html:186
@@ -1797,30 +1507,6 @@ msgstr "Internal control"
 #: templates/det-control-int.html:63
 msgid "Cible"
 msgstr "Target"
-
-#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
-msgid "Plateforme DHIS2 api"
-msgstr "DHIS2 API platform"
-
-#: templates/det-dhis2-api.html:30 templates/det-lite.html:30
-#: templates/login.html:41 templates/setting-backup.html:83
-#: templates/setting-det-user.html:60 templates/setting-pwd-user.html:15
-msgid "Mot de passe"
-msgstr "Password"
-
-#: templates/det-dhis2-api.html:40
-msgid "Adresse plateforme dhis2 "
-msgstr "dhis2 platform address"
-
-#: templates/det-dhis2-api.html:47 templates/list-printer.html:37
-msgid "Par défaut"
-msgstr "By default"
-
-#: templates/det-dhis2-api.html:91 templates/det-doctor.html:170
-#: templates/det-lite.html:110 templates/det-printer.html:71
-#: templates/det-template.html:96 templates/setting-det-role.html:115
-msgid "Veuillez saisir un nom."
-msgstr "Please enter a name"
 
 #: templates/det-doctor.html:18 templates/list-aliquot.html:32
 #: templates/setting-det-user.html:50
@@ -1869,12 +1555,6 @@ msgstr "Service"
 msgid "Adresse"
 msgstr "Address"
 
-#: templates/det-doctor.html:77 templates/elem/pat_zipcode.html:1
-#: templates/list-doctors.html:88 templates/manage-pat-records.html:259
-#: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
-msgid "Code postal"
-msgstr "Zip code"
-
 #: templates/det-doctor.html:84 templates/list-doctors.html:49
 #: templates/list-doctors.html:89 templates/setting-zipcity.html:38
 msgid "Ville"
@@ -1902,16 +1582,11 @@ msgstr "Fax"
 msgid "Adresse email"
 msgstr "Email"
 
-#: templates/det-doctor.html:216 templates/elem/search_zipcity.html:5
-#: templates/manage-pat-records.html:947
-msgid "Recherche de code postal ou ville"
-msgstr "Search by Zip code or city"
-
-#: templates/det-doctor.html:263 templates/det-stock-product.html:158
-#: templates/elem/search_zipcity.html:52 templates/manage-pat-records.html:994
-#: templates/setting-det-analysis.html:451
-msgid "Erreur lors de la récupération des données"
-msgstr "Error during data recovery"
+#: templates/det-dhis2-api.html:91 templates/det-doctor.html:170
+#: templates/det-lite.html:122 templates/det-printer.html:76
+#: templates/det-template.html:96 templates/setting-det-role.html:115
+msgid "Veuillez saisir un nom."
+msgstr "Please enter a name"
 
 #: templates/det-equipment.html:19
 msgid "Nom de l'équipement"
@@ -1961,6 +1636,32 @@ msgstr "Inventory number"
 msgid "Responsable"
 msgstr "Person in charge"
 
+#: templates/det-manual.html:5 templates/det-manual.html:15
+#: templates/eqp-document.html:18 templates/list-manuals.html:68
+msgid "Manuel"
+msgstr "Manual"
+
+#: templates/det-procedure.html:5 templates/det-procedure.html:15
+#: templates/eqp-document.html:41 templates/list-procedure.html:41
+msgid "Procédure"
+msgstr "Procedure"
+
+#: templates/list-eqp-failure.html:12
+msgid "Liste des pannes et réparations"
+msgstr "List of failures and repairs"
+
+#: templates/hist-stock-product.html:61 templates/list-eqp-failure.html:34
+#: templates/list-eqp-maintenance.html:35 templates/list-trace-download.html:24
+#: templates/list-trace-download.html:61 templates/setting-det-user.html:5
+#: templates/setting-det-user.html:15
+msgid "Utilisateur"
+msgstr "User"
+
+#: templates/eqp-maintenance-preventive.html:5
+#: templates/eqp-maintenance-preventive.html:15
+msgid "Maintenance préventive"
+msgstr "Preventive maintenance"
+
 #: templates/det-equipment.html:99 templates/det-template.html:28
 msgid "Facture"
 msgstr "Invoice"
@@ -1982,11 +1683,6 @@ msgstr "Commissioning date"
 msgid "Date de retrait du laboratoire"
 msgstr "Withdrawal date from laboratory"
 
-#: templates/det-equipment.html:146 templates/det-supplier.html:79
-#: templates/list-suppliers.html:39
-msgid "Critique"
-msgstr "Critical"
-
 #: templates/det-equipment.html:152 templates/det-staff.html:210
 #: templates/eqp-document.html:64 templates/eqp-failure.html:63
 #: templates/eqp-maintenance-contract.html:53
@@ -1999,10 +1695,6 @@ msgstr "Comments"
 #: templates/det-equipment.html:299
 msgid "Veuillez saisir un nom d'équipement."
 msgstr "Please enter an equipment name"
-
-#: templates/det-equipment.html:395
-msgid "Voir"
-msgstr "See"
 
 #: templates/det-hist-analysis.html:5 templates/det-hist-analysis.html:12
 msgid "Historique d'une analyse"
@@ -2141,39 +1833,6 @@ msgstr "Indicate the quantity used"
 msgid "Aucun prescripteur à exporter !"
 msgstr "No prescriber to export!"
 
-#: templates/det-lite.html:5 templates/det-lite.html:12
-msgid "Définir une configuration LabBook Lite"
-msgstr ""
-
-#: templates/det-lite.html:40
-msgid "Utilisateurs associés"
-msgstr ""
-
-#: templates/det-lite.html:43
-msgid "Possibles"
-msgstr ""
-
-#: templates/det-lite.html:59
-msgid "Sélectionnés"
-msgstr ""
-
-#: templates/det-lite.html:113 templates/setting-det-user.html:312
-msgid "Veuillez saisir un identifiant."
-msgstr "Please enter a username."
-
-#: templates/det-lite.html:116 templates/setting-det-user.html:325
-msgid "Veuillez saisir un mot de passe."
-msgstr "Please enter a password."
-
-#: templates/det-lite.html:135
-msgid "Sélectionner au moins un administrateur et un agent"
-msgstr ""
-
-#: templates/det-manual.html:5 templates/det-manual.html:15
-#: templates/eqp-document.html:18 templates/list-manuals.html:68
-msgid "Manuel"
-msgstr "Manual"
-
 #: templates/det-manual.html:18 templates/det-procedure.html:18
 #: templates/list-manuals.html:61 templates/list-procedure.html:33
 msgid "Référence"
@@ -2246,32 +1905,6 @@ msgstr "Host"
 msgid "Veuillez saisir une date de réunion."
 msgstr "Please enter a meeting date."
 
-#: templates/det-message.html:5 templates/det-message.html:14
-#: templates/det-message.html:36
-msgid "Message"
-msgstr "Message"
-
-#: templates/det-message.html:18
-msgid "Destinataire"
-msgstr "Recipient"
-
-#: templates/det-message.html:23 templates/det-supplier.html:22
-#: templates/list-messages.html:32
-msgid "Contact"
-msgstr "Contact"
-
-#: templates/det-message.html:132
-msgid "Veuillez saisir un utilisateur."
-msgstr "Please enter a user."
-
-#: templates/det-message.html:135
-msgid "Veuillez saisir un titre."
-msgstr "Please enter a title."
-
-#: templates/det-message.html:138
-msgid "Veuillez saisir un message."
-msgstr "Please enter a message."
-
 #: templates/det-new-product.html:5 templates/det-new-product.html:14
 msgid "Détails produit"
 msgstr "Product details"
@@ -2321,36 +1954,121 @@ msgstr "Patient details"
 msgid "Demande d'analyses patient - Fiche patient"
 msgstr "Patient analysis request - Patient form"
 
-#: templates/det-patient.html:62
-msgid "Code patient interne au laboratoire existe déjà"
-msgstr "Internal laboratory patient code already exists"
+#: templates/elem/pat_ano.html:1 templates/js/pat_ident.js:15
+#: templates/manage-pat-records.html:50 templates/manage-pat-records.html:305
+msgid "Anonyme"
+msgstr "Anonymous"
 
-#: templates/det-patient.html:73 templates/det-req-ext.html:1204
-#: templates/det-req-int.html:1082 templates/setting-det-analysis.html:1105
-#: templates/setting-det-role.html:193
-msgid "Une erreur est survenue lors de la vérification du code"
-msgstr "An error occurred while checking the code"
+#: templates/elem/pat_code_lab.html:1
+msgid "Code patient interne au laboratoire"
+msgstr "Internal laboratory patient code"
+
+#: templates/elem/pat_midname.html:2 templates/manage-pat-records.html:91
+#: templates/manage-pat-records.html:346
+msgid "Deuxième nom"
+msgstr "Second name"
+
+#: templates/elem/pat_maiden.html:2 templates/manage-pat-records.html:101
+#: templates/manage-pat-records.html:356
+msgid "Nom de jeune fille"
+msgstr "Maiden name"
+
+#: templates/elem/pat_firstname.html:2 templates/manage-pat-records.html:111
+#: templates/manage-pat-records.html:366
+msgid "Prénom(s)"
+msgstr "Firstname(s)"
+
+#: templates/elem/pat_birth_approx.html:1 templates/manage-pat-records.html:130
+#: templates/manage-pat-records.html:384
+msgid "Date de naissance approximative"
+msgstr "Approximate date of birth"
+
+#: templates/list-results.html:46 templates/manage-pat-records.html:141
+#: templates/manage-pat-records.html:395 templates/report-tat.html:50
+msgid "ou"
+msgstr "or"
+
+#: templates/elem/pat_age.html:1 templates/manage-pat-records.html:146
+#: templates/manage-pat-records.html:400
+msgid "Age"
+msgstr "Age"
+
+#: templates/elem/pat_age_unit.html:1 templates/manage-pat-records.html:154
+#: templates/manage-pat-records.html:408
+msgid "unité"
+msgstr "unit"
+
+#: templates/elem/pat_nationality.html:1 templates/manage-pat-records.html:169
+#: templates/manage-pat-records.html:423
+msgid "Nationalité"
+msgstr "Nationality"
+
+#: templates/elem/pat_resident.html:1 templates/manage-pat-records.html:176
+#: templates/manage-pat-records.html:430
+msgid "Résident"
+msgstr "Resident"
+
+#: templates/elem/pat_blood_group.html:1 templates/manage-pat-records.html:207
+#: templates/manage-pat-records.html:461
+msgid "Groupe sanguin"
+msgstr "Blood group"
+
+#: templates/elem/pat_blood_rhesus.html:1 templates/manage-pat-records.html:216
+#: templates/manage-pat-records.html:470
+msgid "Rhésus"
+msgstr "Rhesus"
+
+#: templates/manage-pat-records.html:230 templates/manage-pat-records.html:484
+#: translations/messages_pybabel.py:9
+msgid "Coordonnées"
+msgstr "Contact information"
+
+#: templates/elem/pat_phone1.html:1 templates/elem/pat_phone2.html:1
+#: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
+#: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
+msgid "Téléphone"
+msgstr "Phone"
+
+#: templates/elem/pat_profession.html:1 templates/manage-pat-records.html:285
+#: templates/manage-pat-records.html:535
+msgid "Profession"
+msgstr "Profession"
+
+#: templates/elem/pat_pbox.html:1 templates/manage-pat-records.html:243
+#: templates/manage-pat-records.html:497
+msgid "Boite postale"
+msgstr "Mail box"
+
+#: templates/elem/pat_district.html:1 templates/manage-pat-records.html:249
+#: templates/manage-pat-records.html:503
+msgid "Quartier / Secteur"
+msgstr "Neighborhood / Sector"
+
+#: templates/det-doctor.html:77 templates/elem/pat_zipcode.html:1
+#: templates/list-doctors.html:88 templates/manage-pat-records.html:259
+#: templates/manage-pat-records.html:509 templates/setting-zipcity.html:37
+msgid "Code postal"
+msgstr "Zip code"
+
+#: templates/elem/pat_city.html:1 templates/manage-pat-records.html:265
+#: templates/manage-pat-records.html:515
+msgid "Ville / Village"
+msgstr "City / Village"
 
 #: templates/det-patient.html:115
 msgid "Une erreur est survenue lors de la modification/ajout d'un patient"
 msgstr "An error occurred while modifying/adding a patient"
 
-#: templates/det-printer.html:5 templates/det-printer.html:12
-msgid "Imprimante"
-msgstr ""
+#: templates/det-doctor.html:216 templates/elem/search_zipcity.html:5
+#: templates/manage-pat-records.html:947
+msgid "Recherche de code postal ou ville"
+msgstr "Search by Zip code or city"
 
-#: templates/det-printer.html:23 templates/list-printer.html:36
-msgid "Script"
-msgstr ""
-
-#: templates/det-printer.html:74
-msgid "Veuillez saisir le nom complet du script."
-msgstr ""
-
-#: templates/det-procedure.html:5 templates/det-procedure.html:15
-#: templates/eqp-document.html:41 templates/list-procedure.html:41
-msgid "Procédure"
-msgstr "Procedure"
+#: templates/det-doctor.html:263 templates/det-stock-product.html:158
+#: templates/elem/search_zipcity.html:52 templates/manage-pat-records.html:994
+#: templates/setting-det-analysis.html:451
+msgid "Erreur lors de la récupération des données"
+msgstr "Error during data recovery"
 
 #: templates/det-req-ext.html:5 templates/det-req-int.html:5
 msgid "Details demande d'analyses"
@@ -2397,23 +2115,6 @@ msgstr "Pathological products"
 msgid "Ajouter un prélèvement"
 msgstr "Add a sample"
 
-#: templates/det-req-ext.html:325 templates/det-req-int.html:351
-msgid "Date prélèvement"
-msgstr "Collection date"
-
-#: templates/det-req-ext.html:326 templates/det-req-int.html:352
-msgid "Produit pathologiques"
-msgstr "Pathological products"
-
-#: templates/det-req-ext.html:328 templates/det-req-int.html:354
-#: templates/det-sample.html:102
-msgid "Préleveur"
-msgstr "Sampler"
-
-#: templates/det-req-ext.html:331 templates/det-req-int.html:357
-msgid "Date réception"
-msgstr "Receipt date"
-
 #: templates/det-req-ext.html:332 templates/det-req-int.html:358
 #: templates/det-sample.html:56 templates/list-msg-analyzer.html:20
 #: templates/list-records.html:71 templates/list-records.html:138
@@ -2423,13 +2124,14 @@ msgstr "Receipt date"
 msgid "Statut"
 msgstr "Status"
 
-#: templates/det-req-ext.html:565
-msgid "Erreur lors de la récupération des prélèvements"
-msgstr "Error when retrieving samples"
+#: templates/det-req-ext.html:331 templates/det-req-int.html:357
+msgid "Date réception"
+msgstr "Receipt date"
 
-#: templates/det-req-ext.html:599 templates/det-req-int.html:583
-msgid "Erreur lors de la récupération des produits pathologiques"
-msgstr "Error when recovering pathological products"
+#: templates/det-req-ext.html:328 templates/det-req-int.html:354
+#: templates/det-sample.html:102
+msgid "Préleveur"
+msgstr "Sample collector"
 
 #: templates/det-req-ext.html:607 templates/det-req-int.html:591
 msgid "Erreur lors de la récupération des analyses"
@@ -2457,14 +2159,6 @@ msgstr "Error when retrieving analyses"
 #: templates/setting-zipcity.html:121
 msgid "Merci de confirmer la suppression"
 msgstr "Please confirm the deletion"
-
-#: templates/det-req-ext.html:1193 templates/det-req-int.html:1071
-msgid "Numéro de dossier interne au laboratoire existe déjà"
-msgstr "Internal laboratory file number already exists"
-
-#: templates/det-req-ext.html:1242 templates/det-req-int.html:1123
-msgid "Veuillez sélectionner une date et heure de réception du colis"
-msgstr "Please select a date and time to receive the package"
 
 #: templates/det-req-ext.html:1248 templates/det-req-int.html:1129
 msgid "Veuillez sélectionner au moins une analyse"
@@ -2496,7 +2190,7 @@ msgstr "Please fill in all dates of reception"
 
 #: templates/det-req-ext.html:1304 templates/det-req-int.html:1188
 msgid "Veuillez renseigner toutes les identités des préleveurs"
-msgstr "Please fill in all sampler identities"
+msgstr "Please fill in all sample collector identities"
 
 #: templates/det-req-ext.html:1311 templates/det-req-int.html:1195
 msgid "Avertissement : Ce dossier n'est associé à aucun prélèvement"
@@ -2508,13 +2202,13 @@ msgstr "Please confirm the creation and validation of this record"
 
 #: templates/det-req-ext.html:1490 templates/det-req-ext.html:1577
 #: templates/det-req-int.html:1354 templates/det-req-int.html:1442
-#: templates/enter-result.html:979 templates/technical-validation.html:241
+#: templates/enter-result.html:984 templates/technical-validation.html:246
 msgid "Une erreur est survenue lors du changement de statut du dossier"
 msgstr "An error occurred when changing the status of the record"
 
 #: templates/det-req-ext.html:1499 templates/det-req-ext.html:1586
 #: templates/det-req-int.html:1363 templates/det-req-int.html:1451
-#: templates/enter-result.html:986 templates/technical-validation.html:250
+#: templates/enter-result.html:991 templates/technical-validation.html:255
 msgid "Une erreur est survenue lors de la création des résultats"
 msgstr "An error occurred while creating the results"
 
@@ -2533,10 +2227,6 @@ msgstr "In-patient analysis request"
 #: templates/det-sample.html:67
 msgid "Code prélèvement"
 msgstr "Sample code"
-
-#: templates/det-sample.html:73
-msgid "Analyse associée"
-msgstr "Associated analysis"
 
 #: templates/det-sample.html:79
 msgid "Produit pathologique"
@@ -2604,10 +2294,6 @@ msgstr "Work section"
 msgid "Dernière évaluation des compétences"
 msgstr "Last evaluation of competences"
 
-#: templates/det-staff.html:189
-msgid "Signature"
-msgstr "Signature"
-
 #: templates/det-stock-product.html:5 templates/det-stock-product.html:16
 #: templates/list-stock.html:121
 msgid "Approvisionner un produit"
@@ -2641,97 +2327,14 @@ msgstr "Please enter a number of packages greater than 0."
 msgid "Veuillez saisir une date d'expiration."
 msgstr "Please enter an expiry date."
 
-#: templates/det-storage-box.html:5 templates/det-storage-box.html:12
-msgid "Détails boîte"
-msgstr "Box Details"
-
-#: templates/det-storage-box.html:15
-msgid "Nom de la boîte"
-msgstr "Box name"
-
-#: templates/det-storage-box.html:36 templates/det-storage-compartment.html:36
-msgid "Largeur"
-msgstr "Width"
-
-#: templates/det-storage-box.html:43 templates/det-storage-compartment.html:43
-msgid "Profondeur"
-msgstr "Depth"
-
-#: templates/det-storage-box.html:50
-msgid "Boîte pleine"
-msgstr "Box Full"
-
-#: templates/det-storage-box.html:58 templates/list-storage-box.html:22
-msgid "Compartiment associé"
-msgstr "Associated Compartment"
-
-#: templates/det-storage-box.html:95 templates/det-storage-chamber.html:69
-#: templates/det-storage-compartment.html:93 templates/det-storage-room.html:57
-msgid "Le nom et l'identifiant sont obligatoires."
-msgstr "The name and identifier are required."
-
-#: templates/det-storage-box.html:101 templates/det-storage-compartment.html:99
-msgid "Les dimensions doivent être positives."
-msgstr "The dimensions must be positive."
-
-#: templates/det-storage-box.html:107
-msgid "L'association à un compartiment est obligatoire."
-msgstr "Association with a compartment is required."
-
-#: templates/det-storage-chamber.html:5 templates/det-storage-chamber.html:12
-msgid "Détails enceinte"
-msgstr "Enclosure Details"
-
-#: templates/det-storage-chamber.html:15
-msgid "Nom de l'enceinte"
-msgstr "Enclosure Name"
-
-#: templates/det-storage-chamber.html:22
-#: templates/det-storage-compartment.html:22 templates/det-storage-room.html:22
-msgid "Abréviation du nom"
-msgstr "Name Abbreviation"
-
-#: templates/det-storage-chamber.html:36 templates/list-storage-chamber.html:22
-msgid "Pièce associée"
-msgstr "Associated Room"
-
-#: templates/det-storage-chamber.html:75
-msgid "L'association à une pièce est obligatoire."
-msgstr "Association with a room is required."
-
-#: templates/det-storage-compartment.html:5
-#: templates/det-storage-compartment.html:12
-msgid "Détails compartiment"
-msgstr "Compartment Details"
-
-#: templates/det-storage-compartment.html:15
-msgid "Nom du compartiment"
-msgstr "Compartment Name"
-
-#: templates/det-storage-compartment.html:50
-msgid "Hauteur"
-msgstr "Height"
-
-#: templates/det-storage-compartment.html:57
-#: templates/list-storage-compartment.html:22
-msgid "Enceinte associée"
-msgstr "Associated Enclosure"
-
-#: templates/det-storage-compartment.html:105
-msgid "L'association à une enceinte est obligatoire."
-msgstr "Association with an enclosure is required."
-
-#: templates/det-storage-room.html:5 templates/det-storage-room.html:12
-msgid "Détails pièce"
-msgstr "Room Details"
-
-#: templates/det-storage-room.html:15
-msgid "Nom de la pièce"
-msgstr "Room Name"
-
 #: templates/det-supplier.html:15
 msgid "Nom fournisseur"
 msgstr "Supplier name"
+
+#: templates/det-message.html:23 templates/det-supplier.html:22
+#: templates/list-messages.html:32
+msgid "Contact"
+msgstr "Contact"
 
 #: templates/det-supplier.html:125
 msgid "Veuillez saisir un fournisseur."
@@ -2792,87 +2395,34 @@ msgstr "Start dictionary import?"
 msgid "Saisie de résultats"
 msgstr "Results entry"
 
-#: templates/enter-result.html:90 templates/list-results.html:76
+#: templates/enter-result.html:91 templates/list-results.html:76
 msgid "Feuille de paillasse"
 msgstr "Bench sheet"
 
-#: templates/enter-result.html:251 templates/list-results.html:297
+#: templates/enter-result.html:256 templates/list-results.html:297
 msgid "Certains résultats obligatoires ne sont pas saisis"
 msgstr "Some mandatory results are not entered"
 
-#: templates/enter-result.html:278 templates/list-results.html:322
+#: templates/enter-result.html:283 templates/list-results.html:322
 msgid "Une erreur est survenue lors de l'enregistrement des valeurs saisies"
 msgstr "An error occurred while saving the entered values."
 
-#: templates/enter-result.html:457 templates/list-results.html:501
-#: templates/technical-validation.html:402
+#: templates/enter-result.html:462 templates/list-results.html:501
+#: templates/technical-validation.html:407
 msgid "Une erreur est survenue lors de validation technique des valeurs saisies"
 msgstr "An error occurred during the technical validation of the values entered."
 
-#: templates/enter-result.html:511 templates/enter-result.html:858
+#: templates/enter-result.html:516 templates/enter-result.html:863
 #: templates/list-results.html:557 templates/list-results.html:895
-#: templates/technical-validation.html:445
-#: templates/technical-validation.html:631
+#: templates/technical-validation.html:450
+#: templates/technical-validation.html:636
 msgid "Technicien"
 msgstr "Technician"
 
-#: templates/enter-result.html:672 templates/js/display_histo.js:36
-#: templates/list-results.html:709 templates/technical-validation.html:595
+#: templates/enter-result.html:677 templates/js/display_histo.js:36
+#: templates/list-results.html:709 templates/technical-validation.html:600
 msgid "ANNULE"
 msgstr "CANCELED"
-
-#: templates/eqp-document.html:5 templates/eqp-document.html:15
-msgid "Documentation de l'équipement"
-msgstr "Equipment documentation"
-
-#: templates/eqp-document.html:31 templates/eqp-document.html:54
-msgid "Téléchargement"
-msgstr "Download"
-
-#: templates/eqp-document.html:137 templates/eqp-document.html:182
-msgid "Possible après enregistrement"
-msgstr "Possible after registration"
-
-#: templates/eqp-failure.html:5 templates/eqp-failure.html:15
-msgid "Panne et réparation"
-msgstr "Breakdown and repair"
-
-#: templates/eqp-failure.html:28 templates/list-eqp-failure.html:129
-msgid "Panne"
-msgstr "Breakdown"
-
-#: templates/eqp-failure.html:29 templates/list-eqp-failure.html:130
-msgid "Réparation"
-msgstr "Repair"
-
-#: templates/eqp-failure.html:186 templates/eqp-maintenance-contract.html:135
-#: templates/eqp-maintenance-preventive.html:127
-#: templates/eqp-metrology.html:127
-msgid "Veuillez sélectionner une date"
-msgstr "Please select a date"
-
-#: templates/eqp-maintenance-contract.html:5
-#: templates/eqp-maintenance-contract.html:15
-msgid "Maintenance"
-msgstr "Maintenance"
-
-#: templates/eqp-maintenance-contract.html:46
-#: templates/list-eqp-maintenance.html:87
-msgid "Renouvellement"
-msgstr "Renewal"
-
-#: templates/eqp-maintenance-preventive.html:5
-#: templates/eqp-maintenance-preventive.html:15
-msgid "Maintenance préventive"
-msgstr "Preventive maintenance"
-
-#: templates/eqp-maintenance-preventive.html:25
-msgid "Intervenant"
-msgstr "Speaker"
-
-#: templates/eqp-metrology.html:5 templates/eqp-metrology.html:15
-msgid "Métrologie et étalonnage"
-msgstr "Metrology and calibration"
 
 #: templates/global-report.html:5 templates/global-report.html:13
 #: templates/menu.html:32 templates/menu.html:367
@@ -2918,11 +2468,11 @@ msgstr "List of analyses"
 #: templates/hist-analyzes.html:16 templates/hist-analyzes.html:47
 #: templates/hist-patients.html:16 templates/hist-patients.html:67
 #: templates/hist-stock-product.html:17 templates/hist-stock-product.html:30
-#: templates/list-aliquot.html:129 templates/list-doctors.html:16
+#: templates/list-aliquot.html:166 templates/list-doctors.html:16
 #: templates/list-doctors.html:57 templates/list-manuals.html:16
 #: templates/list-manuals.html:35 templates/list-msg-analyzer.html:51
 #: templates/list-nonconformities.html:16
-#: templates/list-nonconformities.html:33 templates/list-printer.html:93
+#: templates/list-nonconformities.html:33 templates/list-printer.html:89
 #: templates/list-records.html:18 templates/list-records.html:104
 #: templates/list-results.html:21 templates/list-results.html:65
 #: templates/list-stock.html:16 templates/list-stock.html:55
@@ -2940,7 +2490,7 @@ msgstr "List of analyses"
 #: templates/report-tat.html:63 templates/report-today.html:17
 #: templates/report-today.html:42 templates/setting-analyzes.html:14
 #: templates/setting-analyzes.html:57 templates/setting-dicts.html:15
-#: templates/setting-dicts.html:40 templates/setting-lite.html:65
+#: templates/setting-dicts.html:40 templates/setting-lite.html:61
 #: templates/setting-users.html:16 templates/setting-users.html:64
 msgid "Rechercher"
 msgstr "Search"
@@ -2989,13 +2539,6 @@ msgstr "Supply and usage history for this product"
 msgid "E/S"
 msgstr "I/O"
 
-#: templates/hist-stock-product.html:61 templates/list-eqp-failure.html:34
-#: templates/list-eqp-maintenance.html:35 templates/list-trace-download.html:24
-#: templates/list-trace-download.html:61 templates/setting-det-user.html:5
-#: templates/setting-det-user.html:15
-msgid "Utilisateur"
-msgstr "User"
-
 #: templates/hist-stock-product.html:62
 msgid "Date action"
 msgstr "Action date"
@@ -3024,13 +2567,13 @@ msgstr "Homepage"
 msgid "Préférences"
 msgstr "Preferences"
 
-#: templates/homepage.html:23
-msgid "Gestion des rôles"
-msgstr "Role management"
-
 #: templates/homepage.html:26 templates/menu.html:143 templates/menu.html:452
 msgid "Gestion des utilisateurs"
 msgstr "User management"
+
+#: templates/homepage.html:23
+msgid "Gestion des rôles"
+msgstr "Role management"
 
 #: templates/homepage.html:29 templates/menu.html:149 templates/menu.html:456
 #: templates/setting-analyzes.html:5 templates/setting-analyzes.html:12
@@ -3044,10 +2587,6 @@ msgstr "Dictionaries"
 #: templates/homepage.html:35
 msgid "Gestion des sauvegardes"
 msgstr "Backup management"
-
-#: templates/homepage.html:38 templates/menu.html:154 templates/menu.html:459
-msgid "Configuration des analyseurs"
-msgstr "Analyser configuration"
 
 #: templates/homepage.html:41
 msgid "Gestion de la Facturation"
@@ -3136,192 +2675,21 @@ msgstr "Biologist"
 msgid "Technique"
 msgstr "Technical"
 
-#: templates/homepage.html:189
-msgid "La dernière sauvegarde OK date de plus de 24 heures."
-msgstr "The last successful backup is over 24 hours old."
-
 #: templates/homepage.html:207
 msgid "Une alerte est présente dans la gestion de stock"
 msgstr "An alert is present in the stock management"
 
-#: templates/list-aliquot.html:5 templates/list-aliquot.html:12
-#: templates/menu.html:310 templates/menu.html:563
-#: templates/table-rights.html:24
-msgid "Gestion des échantillons"
-msgstr "Sample Management"
+#: templates/contributors.html:20 templates/initialization.html:3
+#: templates/initialization.html:19 templates/list-msg-analyzer.html:129
+#: templates/list-msg-analyzer.html:131 templates/login.html:3
+#: templates/login.html:20 templates/skeleton.html:33
+msgid "LabBook"
+msgstr "LabBook"
 
-#: templates/list-aliquot.html:18
-msgid "Déstockés"
-msgstr "Removed from stock"
-
-#: templates/list-aliquot.html:26 templates/list-printer.html:34
-#: templates/setting-lite.html:19
-msgid "ID"
-msgstr "ID"
-
-#: templates/list-aliquot.html:43
-msgid "Stockages"
-msgstr "Storage"
-
-#: templates/list-aliquot.html:45 templates/list-storage-chamber.html:31
-#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
-msgid "Liste pièces"
-msgstr "Room List"
-
-#: templates/list-aliquot.html:46 templates/list-storage-chamber.html:5
-#: templates/list-storage-chamber.html:12
-#: templates/list-storage-compartment.html:32
-#: templates/list-storage-room.html:30
-msgid "Liste enceintes"
-msgstr "Enclosure List"
-
-#: templates/list-aliquot.html:47 templates/list-storage-box.html:33
-#: templates/list-storage-chamber.html:32
-#: templates/list-storage-compartment.html:5
-#: templates/list-storage-compartment.html:12
-msgid "Liste compartiments"
-msgstr "Compartment List"
-
-#: templates/list-aliquot.html:48 templates/list-storage-box.html:5
-#: templates/list-storage-box.html:12
-#: templates/list-storage-compartment.html:33
-msgid "Liste boîtes"
-msgstr "Box List"
-
-#: templates/list-aliquot.html:64
-msgid "Déstocker un aliquot"
-msgstr "Remove an Aliquot"
-
-#: templates/list-aliquot.html:72
-msgid "Raison"
-msgstr "Reason"
-
-#: templates/list-aliquot.html:82
-msgid "Date du déstockage"
-msgstr "Removal Date"
-
-#: templates/list-aliquot.html:89
-msgid "Déstockage externe ?"
-msgstr "External Removal?"
-
-#: templates/list-aliquot.html:96
-msgid "Confirmer"
-msgstr "Confirm"
-
-#: templates/list-aliquot.html:124 templates/list-msg-analyzer.html:46
-#: templates/list-printer.html:88 templates/list-storage-box.html:59
-#: templates/list-storage-chamber.html:58
-#: templates/list-storage-compartment.html:59
-#: templates/list-storage-room.html:56 templates/setting-lite.html:60
-msgid "Afficher _MENU_ entrées"
-msgstr "Display _MENU_ entries"
-
-#: templates/list-aliquot.html:125 templates/list-msg-analyzer.html:47
-#: templates/list-printer.html:89 templates/list-storage-box.html:60
-#: templates/list-storage-chamber.html:59
-#: templates/list-storage-compartment.html:60
-#: templates/list-storage-room.html:57 templates/setting-lite.html:61
-msgid "Aucun enregistrement trouvé"
-msgstr "No Records Found"
-
-#: templates/list-aliquot.html:126 templates/list-msg-analyzer.html:48
-#: templates/list-printer.html:90 templates/list-storage-box.html:61
-#: templates/list-storage-chamber.html:60
-#: templates/list-storage-compartment.html:61
-#: templates/list-storage-room.html:58 templates/setting-lite.html:62
-msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
-msgstr "Displaying _START_ to _END_ of _TOTAL_ entries"
-
-#: templates/list-aliquot.html:127 templates/list-msg-analyzer.html:49
-#: templates/list-printer.html:91 templates/list-storage-box.html:62
-#: templates/list-storage-chamber.html:61
-#: templates/list-storage-compartment.html:62
-#: templates/list-storage-room.html:59 templates/setting-lite.html:63
-msgid "Aucune entrée disponible"
-msgstr "No Entries Available"
-
-#: templates/list-aliquot.html:128 templates/list-msg-analyzer.html:50
-#: templates/list-printer.html:92 templates/list-storage-box.html:63
-#: templates/list-storage-chamber.html:62
-#: templates/list-storage-compartment.html:63
-#: templates/list-storage-room.html:60 templates/setting-lite.html:64
-msgid "(filtré de _MAX_ entrées au total)"
-msgstr "(filtered from _MAX_ entries in total)"
-
-#: templates/list-aliquot.html:149
-msgid "Déstocker"
-msgstr "Remove from stock"
-
-#: templates/list-aliquot.html:149
-msgid "Restocker"
-msgstr "Restock"
-
-#: templates/list-aliquot.html:169 templates/list-printer.html:116
-#: templates/list-storage-box.html:77 templates/list-storage-chamber.html:76
-#: templates/list-storage-compartment.html:77
-#: templates/list-storage-room.html:74 templates/setting-lite.html:88
-msgid "Éditer"
-msgstr "Edit"
-
-#: templates/list-aliquot.html:195
-msgid "Stocké le"
-msgstr "Stored on"
-
-#: templates/list-aliquot.html:199
-msgid "Déstocké le"
-msgstr "Removed from stock on"
-
-#: templates/list-aliquot.html:210
-msgid "Externalisé"
-msgstr "Externalized"
-
-#: templates/list-aliquot.html:299
-msgid "Veuillez indiquer une raison de déstockage."
-msgstr "Please indicate a removal reason."
-
-#: templates/list-aliquot.html:326 templates/list-aliquot.html:331
-#: templates/list-aliquot.html:359 templates/list-aliquot.html:363
-msgid "Une erreur s'est produite."
-msgstr "An error occurred."
-
-#: templates/list-aliquot.html:337
-msgid "Êtes-vous sûr de vouloir restocker ?"
-msgstr "Are you sure you want to restock?"
-
-#: templates/list-aliquot.html:370 templates/list-msg-analyzer.html:159
-#: templates/list-printer.html:149 templates/list-storage-box.html:138
-#: templates/list-storage-chamber.html:117
-#: templates/list-storage-compartment.html:131
-#: templates/list-storage-room.html:109 templates/setting-lite.html:110
-msgid "Êtes-vous sûr de vouloir supprimer ?"
-msgstr "Are you sure you want to delete?"
-
-#: templates/list-aliquot.html:387 templates/list-aliquot.html:391
-#: templates/list-msg-analyzer.html:176 templates/list-msg-analyzer.html:180
-#: templates/list-printer.html:166 templates/list-printer.html:170
-#: templates/list-storage-box.html:155 templates/list-storage-box.html:159
-#: templates/list-storage-chamber.html:134
-#: templates/list-storage-chamber.html:138
-#: templates/list-storage-compartment.html:148
-#: templates/list-storage-compartment.html:152
-#: templates/list-storage-room.html:126 templates/list-storage-room.html:130
-#: templates/setting-lite.html:127 templates/setting-lite.html:131
-msgid "Une erreur s'est produite lors de la suppression."
-msgstr "An error occurred during deletion."
-
-#: templates/list-analyzers.html:35 templates/list-laboratory.html:75
-#: templates/list-printer.html:38 templates/list-staff.html:40
-#: templates/setting-age-interval.html:32
-#: templates/setting-det-analysis.html:283 templates/setting-det-dict.html:49
-#: templates/setting-functionnal-units.html:33 templates/setting-manual.html:31
-#: templates/setting-requesting-services.html:31
-#: templates/setting-stock.html:41
-msgid "Position"
-msgstr "Position"
-
-#: templates/list-analyzers.html:57
-msgid "Transactions"
-msgstr "Transactions"
+#: templates/connect-management.html:19 templates/initialization.html:32
+#: templates/login.html:56 templates/skeleton.html:66
+msgid "Version"
+msgstr "Version"
 
 #: templates/list-ctrl-ext.html:5 templates/list-ctrl-ext.html:12
 msgid "Liste des contrôles externes"
@@ -3364,37 +2732,6 @@ msgstr "Email"
 msgid "Ajouter un prescripteur"
 msgstr "Add a prescriber"
 
-#: templates/list-eqp-failure.html:5
-msgid "Liste des pannes et réparations d'équipements"
-msgstr "List of equipment breakdowns and repairs"
-
-#: templates/list-eqp-failure.html:12
-msgid "Liste des pannes et réparations"
-msgstr "List of failures and repairs"
-
-#: templates/list-eqp-failure.html:37 templates/list-eqp-maintenance.html:37
-#: templates/list-eqp-maintenance.html:89 templates/list-eqp-metrology.html:35
-#: templates/list-equipment.html:126 templates/list-messages.html:34
-#: templates/list-trace-download.html:19 templates/list-trace-download.html:59
-msgid "Document"
-msgstr "Document"
-
-#: templates/list-eqp-maintenance.html:5 templates/list-eqp-maintenance.html:12
-msgid "Liste des maintenances"
-msgstr "Maintenance list"
-
-#: templates/list-eqp-maintenance.html:15
-msgid "Liste des maintenances préventives"
-msgstr "List of preventive maintenance"
-
-#: templates/list-eqp-maintenance.html:66
-msgid "Liste des contrats de maintenances"
-msgstr "List of maintenance contracts"
-
-#: templates/list-eqp-metrology.html:5 templates/list-eqp-metrology.html:12
-msgid "Liste des métrologies et étalonnages"
-msgstr "List of metrologies and calibrations"
-
 #: templates/list-equipment.html:5 templates/list-equipment.html:12
 msgid "Liste des équipements"
 msgstr "List of equipment"
@@ -3406,18 +2743,6 @@ msgstr "Manufacturer"
 #: templates/list-equipment.html:63
 msgid "Ajouter un équipement"
 msgstr "Add an equipment"
-
-#: templates/list-equipment.html:130
-msgid "Maintenances"
-msgstr "Maintenance"
-
-#: templates/list-equipment.html:134
-msgid "Pannes et réparations"
-msgstr "Breakdowns and repairs"
-
-#: templates/list-equipment.html:138
-msgid "Métrologie"
-msgstr "Metrology"
 
 #: templates/list-laboratory.html:5 templates/list-laboratory.html:12
 #: templates/menu.html:269 templates/menu.html:538
@@ -3450,6 +2775,16 @@ msgstr "Label"
 #: templates/list-laboratory.html:74 templates/setting-det-dict.html:48
 msgid "Libellé court"
 msgstr "Short label"
+
+#: templates/list-analyzers.html:35 templates/list-laboratory.html:75
+#: templates/list-printer.html:38 templates/list-staff.html:40
+#: templates/setting-age-interval.html:32
+#: templates/setting-det-analysis.html:283 templates/setting-det-dict.html:49
+#: templates/setting-functionnal-units.html:33 templates/setting-manual.html:31
+#: templates/setting-requesting-services.html:31
+#: templates/setting-stock.html:41
+msgid "Position"
+msgstr "Position"
 
 #: templates/list-laboratory.html:88
 msgid "Enregistrer les valeurs"
@@ -3490,69 +2825,6 @@ msgstr "List of meeting"
 #: templates/list-meeting.html:60
 msgid "Ajouter une réunion"
 msgstr "Add a meeting"
-
-#: templates/list-messages.html:5 templates/list-messages.html:12
-msgid "Messages"
-msgstr "Messages"
-
-#: templates/list-messages.html:55
-msgid "Envoyer un message"
-msgstr "Send a message"
-
-#: templates/list-messages.html:108
-msgid "Lire"
-msgstr "Read"
-
-#: templates/list-messages.html:125
-msgid "Envoyé à"
-msgstr "Sent to"
-
-#: templates/list-messages.html:133
-msgid "Reçu de"
-msgstr "Received from"
-
-#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
-msgid "Liste messages analyseurs"
-msgstr "List of analysers messages"
-
-#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
-#: templates/list-storage-chamber.html:18
-#: templates/list-storage-compartment.html:18
-#: templates/list-storage-room.html:18
-msgid "id"
-msgstr "id"
-
-#: templates/list-msg-analyzer.html:19
-msgid "Date d'envoi"
-msgstr "Sending date"
-
-#: templates/list-msg-analyzer.html:21
-msgid "Message envoyé"
-msgstr "Message sent"
-
-#: templates/list-msg-analyzer.html:22
-msgid "Message reçu"
-msgstr "Message received"
-
-#: templates/list-msg-analyzer.html:110
-msgid "En cours d'envoi"
-msgstr "Currently sending"
-
-#: templates/list-msg-analyzer.html:113
-msgid "Connexion échouée"
-msgstr "Connection failed"
-
-#: templates/list-msg-analyzer.html:116
-msgid "Message accepté sans erreur"
-msgstr "Message accepted without error"
-
-#: templates/list-msg-analyzer.html:119
-msgid "Erreur dans la requête"
-msgstr "Error in the request"
-
-#: templates/list-msg-analyzer.html:122
-msgid "Rejet complet de la commande"
-msgstr "Complete rejection of the command"
 
 #: templates/list-nonconformities.html:5 templates/list-nonconformities.html:12
 msgid "Liste des non-conformités"
@@ -3601,30 +2873,6 @@ msgstr "Serious"
 #: templates/non-conformity.html:686
 msgid "Aucun"
 msgstr "None"
-
-#: templates/list-printer.html:5 templates/list-printer.html:12
-msgid "Liste des imprimantes"
-msgstr ""
-
-#: templates/list-printer.html:15
-msgid "Importer un script d'impression"
-msgstr ""
-
-#: templates/list-printer.html:50
-msgid "Ajouter une imprimante"
-msgstr ""
-
-#: templates/list-printer.html:200
-msgid "Fichier uploadé avec succès"
-msgstr ""
-
-#: templates/list-printer.html:205
-msgid "Erreur lors de l'upload"
-msgstr ""
-
-#: templates/list-printer.html:211
-msgid "Une erreur est survenue lors du dépôt du fichier"
-msgstr ""
 
 #: templates/list-procedure.html:5 templates/list-procedure.html:12
 #: templates/menu.html:300 templates/menu.html:557
@@ -3704,10 +2952,9 @@ msgstr "Biologically validated"
 msgid "Urgent uniquement"
 msgstr "Urgent only"
 
-#: templates/list-records.html:147 templates/report-tat.html:72
-#: templates/report-tat.html:335
-msgid "Réception dossier"
-msgstr "File recetion"
+#: templates/list-works.html:111
+msgid "Création dossier"
+msgstr "Record creation"
 
 #: templates/list-records.html:150 templates/list-results.html:31
 #: templates/list-works.html:58 templates/list-works.html:114
@@ -3732,11 +2979,6 @@ msgstr "Error while deleting a record"
 msgid "Date de la demande du"
 msgstr "Date of the request of"
 
-#: templates/list-results.html:46 templates/manage-pat-records.html:141
-#: templates/manage-pat-records.html:395 templates/report-tat.html:50
-msgid "ou"
-msgstr "or"
-
 #: templates/list-results.html:59
 msgid "Afficher uniquement les analyses prioritaires"
 msgstr "Show only priority analyses"
@@ -3749,6 +2991,13 @@ msgstr "Hide already validated results"
 msgid "Réinitialiser"
 msgstr "Reset"
 
+#: templates/det-aliquot.html:18 templates/list-aliquot.html:29
+#: templates/list-results.html:619 templates/list-samples.html:44
+#: templates/pivot-table.html:30 templates/report-tat.html:74
+#: templates/report-tat.html:335
+msgid "Patient"
+msgstr "Patient"
+
 #: templates/list-results.html:1008
 msgid "Une erreur est survenue lors de la récupération des résultats"
 msgstr "An error occurred while retrieving the results."
@@ -3756,10 +3005,6 @@ msgstr "An error occurred while retrieving the results."
 #: templates/list-samples.html:41
 msgid "Date dossier"
 msgstr "Record date"
-
-#: templates/list-samples.html:50 templates/non-conformity.html:74
-msgid "Prélèvement"
-msgstr "Sample"
 
 #: templates/list-staff.html:5 templates/list-staff.html:12
 msgid "Liste du personnel"
@@ -3776,6 +3021,19 @@ msgstr "Arrival date"
 #: templates/list-staff.html:42
 msgid "Date éval."
 msgstr "Eval. date"
+
+#: templates/det-analyzer.html:33 templates/det-dhis2-api.html:23
+#: templates/det-lite.html:23 templates/det-storage-box.html:22
+#: templates/det-storage-chamber.html:29
+#: templates/det-storage-compartment.html:29 templates/det-storage-room.html:29
+#: templates/list-analyzers.html:33 templates/list-staff.html:43
+#: templates/list-storage-box.html:20 templates/list-storage-chamber.html:21
+#: templates/list-storage-compartment.html:21
+#: templates/list-storage-room.html:21 templates/login.html:33
+#: templates/setting-det-user.html:53 templates/setting-link-unit-user.html:22
+#: templates/setting-users.html:21 templates/setting-users.html:89
+msgid "Identifiant"
+msgstr "login"
 
 #: templates/list-staff.html:47
 msgid "Formations"
@@ -3855,60 +3113,6 @@ msgstr "Please confirm the deactivation of this line"
 msgid "Aucun stock à exporter !"
 msgstr "No stock to export!"
 
-#: templates/list-storage-box.html:5 templates/list-storage-box.html:12
-#: templates/list-storage-chamber.html:5 templates/list-storage-chamber.html:12
-#: templates/list-storage-compartment.html:5
-#: templates/list-storage-compartment.html:12
-#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
-msgid "Stockage d'échantillon"
-msgstr "Sample Storage"
-
-#: templates/list-storage-box.html:23
-msgid "Dimensions l,p"
-msgstr "Dimensions l,p"
-
-#: templates/list-storage-box.html:24
-msgid "Nb. aliquot"
-msgstr "Number of Aliquots"
-
-#: templates/list-storage-box.html:37
-msgid "Ajouter boîte"
-msgstr "Add Box"
-
-#: templates/list-storage-chamber.html:20
-#: templates/list-storage-compartment.html:20
-#: templates/list-storage-room.html:20
-msgid "Abbréviation"
-msgstr "Abbreviation"
-
-#: templates/list-storage-chamber.html:23
-msgid "Nb. compartiment"
-msgstr "Number of compartments"
-
-#: templates/list-storage-chamber.html:36
-msgid "Ajouter enceinte"
-msgstr "Add enclosure"
-
-#: templates/list-storage-compartment.html:23
-msgid "Dimensions l,p,h"
-msgstr "Dimensions l,p,h"
-
-#: templates/list-storage-compartment.html:24
-msgid "Nb. boîte"
-msgstr "Number of boxes"
-
-#: templates/list-storage-compartment.html:37
-msgid "Ajouter compartiment"
-msgstr "Add compartment"
-
-#: templates/list-storage-room.html:22
-msgid "Nb. enceinte"
-msgstr "Number of enclosures"
-
-#: templates/list-storage-room.html:34
-msgid "Ajouter pièce"
-msgstr "Add room"
-
 #: templates/list-suppliers.html:5 templates/list-suppliers.html:12
 msgid "Liste des fournisseurs"
 msgstr "Supplier list"
@@ -3941,17 +3145,25 @@ msgstr "Default"
 msgid "Ajouter un modèle"
 msgstr "Add a template"
 
+#: templates/connect-management.html:31 templates/det-analyzer.html:38
+#: templates/list-template.html:121 templates/report-dhis2.html:66
+msgid "Tester"
+msgstr "Test"
+
 #: templates/list-trace-download.html:5 templates/list-trace-download.html:12
 msgid "Liste des téléchargements éffectués"
 msgstr "List of downloads carried out"
 
+#: templates/list-eqp-failure.html:37 templates/list-eqp-maintenance.html:37
+#: templates/list-eqp-maintenance.html:89 templates/list-eqp-metrology.html:35
+#: templates/list-equipment.html:126 templates/list-messages.html:34
+#: templates/list-trace-download.html:19 templates/list-trace-download.html:59
+msgid "Document"
+msgstr "Document"
+
 #: templates/list-trace-download.html:58
 msgid "Dernier accès"
 msgstr "Last access"
-
-#: templates/list-trace-download.html:60
-msgid "Dépôt"
-msgstr "Deposit"
 
 #: templates/list-vars.html:5 templates/list-vars.html:12
 #: templates/setting-analyzes.html:119
@@ -3987,10 +3199,6 @@ msgstr "Record date greater than"
 msgid "Date dossier inférieure à"
 msgstr "Record date less than"
 
-#: templates/list-works.html:111
-msgid "Création dossier"
-msgstr "Record creation"
-
 #: templates/list-works.html:141
 msgid "Validation groupée"
 msgstr "Group validation"
@@ -4001,11 +3209,17 @@ msgstr "Start the grouped validation"
 
 #: templates/login.html:29
 msgid "Identifiant ou mot de passe incorrect."
-msgstr "Incorrect username or password."
+msgstr "Incorrect login or password."
 
 #: templates/login.html:30
 msgid "Ouverture de session"
 msgstr "Logging in"
+
+#: templates/det-dhis2-api.html:30 templates/det-lite.html:30
+#: templates/login.html:41 templates/setting-backup.html:83
+#: templates/setting-det-user.html:60 templates/setting-pwd-user.html:15
+msgid "Mot de passe"
+msgstr "Password"
 
 #: templates/macros.html:87 templates/report-statistic.html:283
 msgid "Externe"
@@ -4045,95 +3259,9 @@ msgstr "TO DELETE"
 msgid "Identité patient"
 msgstr "Patient identity"
 
-#: templates/elem/pat_ano.html:1 templates/js/pat_ident.js:15
-#: templates/manage-pat-records.html:50 templates/manage-pat-records.html:305
-msgid "Anonyme"
-msgstr "Anonymous"
-
 #: templates/manage-pat-records.html:63 templates/manage-pat-records.html:318
 msgid "Code laboratoire"
 msgstr "Laboratory code"
-
-#: templates/elem/pat_midname.html:2 templates/manage-pat-records.html:91
-#: templates/manage-pat-records.html:346
-msgid "Deuxième nom"
-msgstr "Second name"
-
-#: templates/elem/pat_maiden.html:2 templates/manage-pat-records.html:101
-#: templates/manage-pat-records.html:356
-msgid "Nom de jeune fille"
-msgstr "Maiden name"
-
-#: templates/elem/pat_firstname.html:2 templates/manage-pat-records.html:111
-#: templates/manage-pat-records.html:366
-msgid "Prénom(s)"
-msgstr "Firstname(s)"
-
-#: templates/elem/pat_birth_approx.html:1 templates/manage-pat-records.html:130
-#: templates/manage-pat-records.html:384
-msgid "Date de naissance approximative"
-msgstr "Approximate date of birth"
-
-#: templates/elem/pat_age.html:1 templates/manage-pat-records.html:146
-#: templates/manage-pat-records.html:400
-msgid "Age"
-msgstr "Age"
-
-#: templates/elem/pat_age_unit.html:1 templates/manage-pat-records.html:154
-#: templates/manage-pat-records.html:408
-msgid "unité"
-msgstr "unit"
-
-#: templates/elem/pat_nationality.html:1 templates/manage-pat-records.html:169
-#: templates/manage-pat-records.html:423
-msgid "Nationalité"
-msgstr "Nationality"
-
-#: templates/elem/pat_resident.html:1 templates/manage-pat-records.html:176
-#: templates/manage-pat-records.html:430
-msgid "Résident"
-msgstr "Resident"
-
-#: templates/elem/pat_blood_group.html:1 templates/manage-pat-records.html:207
-#: templates/manage-pat-records.html:461
-msgid "Groupe sanguin"
-msgstr "Blood group"
-
-#: templates/elem/pat_blood_rhesus.html:1 templates/manage-pat-records.html:216
-#: templates/manage-pat-records.html:470
-msgid "Rhésus"
-msgstr "Rhesus"
-
-#: templates/manage-pat-records.html:230 templates/manage-pat-records.html:484
-#: translations/messages_pybabel.py:9
-msgid "Coordonnées"
-msgstr "Contact information"
-
-#: templates/elem/pat_pbox.html:1 templates/manage-pat-records.html:243
-#: templates/manage-pat-records.html:497
-msgid "Boite postale"
-msgstr "Mail box"
-
-#: templates/elem/pat_district.html:1 templates/manage-pat-records.html:249
-#: templates/manage-pat-records.html:503
-msgid "Quartier / Secteur"
-msgstr "Neighborhood / Sector"
-
-#: templates/elem/pat_city.html:1 templates/manage-pat-records.html:265
-#: templates/manage-pat-records.html:515
-msgid "Ville / Village"
-msgstr "City / Village"
-
-#: templates/elem/pat_phone1.html:1 templates/elem/pat_phone2.html:1
-#: templates/manage-pat-records.html:273 templates/manage-pat-records.html:279
-#: templates/manage-pat-records.html:523 templates/manage-pat-records.html:529
-msgid "Téléphone"
-msgstr "Phone"
-
-#: templates/elem/pat_profession.html:1 templates/manage-pat-records.html:285
-#: templates/manage-pat-records.html:535
-msgid "Profession"
-msgstr "Profession"
 
 #: templates/manage-pat-records.html:293
 msgid "Modifier la fiche patient"
@@ -4148,9 +3276,7 @@ msgid "Veuillez sélectionner une date de naissance ou saisir un âge"
 msgstr "Please select a date of birth or enter an age."
 
 #: templates/manage-pat-records.html:900
-msgid ""
-"Vous devez sélectionner 2 fiches patients différentes pour effectuer une "
-"fusion."
+msgid "Vous devez sélectionner 2 fiches patients différentes pour effectuer une fusion."
 msgstr "Please select 2 different patient records to perform a merge."
 
 #: templates/manage-pat-records.html:906
@@ -4162,13 +3288,8 @@ msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
 msgstr "A patient record is missing to perform the file merge."
 
 #: templates/manage-pat-records.html:916
-msgid ""
-"Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A "
-"CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est "
-"irréversible)"
-msgstr ""
-"The patient files TO BE DELETED will be attached\\nto the patient TO BE "
-"KEPT.\\nPlease confirm this merger?\\n(This action is irreversible)"
+msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
+msgstr "The patient files TO BE DELETED will be attached\\nto the patient TO BE KEPT.\\nPlease confirm this merger?\\n(This action is irreversible)"
 
 #: templates/manage-pat-records.html:937
 msgid "Une erreur est survenue lors de la fusion"
@@ -4239,11 +3360,6 @@ msgstr "Indicators report"
 msgid "Rapport statistique"
 msgstr "Statistic report"
 
-#: templates/menu.html:86 templates/report-tat.html:5
-#: templates/report-tat.html:15
-msgid "Rapport sur le délai de rendu du résultat"
-msgstr "Report on result delivery time"
-
 #: templates/menu.html:91 templates/menu.html:412 templates/pivot-table.html:5
 #: templates/pivot-table.html:18
 msgid "Tableau croisé dynamique"
@@ -4277,17 +3393,9 @@ msgstr "Daily billing status"
 msgid "Paramétrages"
 msgstr "Settings"
 
-#: templates/menu.html:138 templates/menu.html:449
-msgid "Gestion des rôles et droits"
-msgstr "Role and rights management"
-
 #: templates/menu.html:165 templates/menu.html:466
 msgid "Configuration des sauvegardes"
 msgstr "Backup configuration"
-
-#: templates/menu.html:170 templates/menu.html:469
-msgid "Configuration des imprimantes"
-msgstr ""
 
 #: templates/menu.html:176 templates/menu.html:473
 msgid "Configuration du logo"
@@ -4344,10 +3452,6 @@ msgstr "Epidemio configuration"
 #: templates/menu.html:246 templates/menu.html:515
 msgid "Configuration du rapport d'indicateurs"
 msgstr "Indicator report configuration"
-
-#: templates/menu.html:251 templates/menu.html:518
-msgid "Configuration LabBook Lite"
-msgstr ""
 
 #: templates/menu.html:259 templates/menu.html:581
 msgid "Qualité"
@@ -4412,10 +3516,6 @@ msgstr "Laboratory meeting"
 msgid "Non conformité"
 msgstr "Non-conformity"
 
-#: templates/menu.html:409
-msgid "Rapport sur le temps de rendu du résultat"
-msgstr "Report on result rendering time"
-
 #: templates/move-stock-product.html:60
 msgid "Nombre de paquet"
 msgstr "Number of packages"
@@ -4439,10 +3539,6 @@ msgstr "Search a patient"
 #: templates/new-req-ext.html:34 templates/new-req-int.html:33
 msgid "Nouveau patient"
 msgstr "New patient"
-
-#: templates/no-rights.html:1
-msgid "Vous n'avez pas les droits pour accéder à cette page"
-msgstr "You do not have the rights to access this page"
 
 #: templates/non-conformity.html:5 templates/non-conformity.html:15
 msgid "Non-conformité"
@@ -4475,6 +3571,10 @@ msgstr "Forgotten or erroneous examination"
 #: templates/non-conformity.html:68
 msgid "Dossier du patient / identité patient"
 msgstr "Patient record / patient identity"
+
+#: templates/list-samples.html:50 templates/non-conformity.html:74
+msgid "Prélèvement"
+msgstr "Sample"
 
 #: templates/non-conformity.html:82
 msgid "Heure de prélèvement"
@@ -4651,9 +3751,7 @@ msgid "Réactifs et consommables"
 msgstr "Reagents and consumables"
 
 #: templates/non-conformity.html:438
-msgid ""
-"Réception de réactifs et/ou consommables ne correspondant pas à la "
-"commande"
+msgid "Réception de réactifs et/ou consommables ne correspondant pas à la commande"
 msgstr "Receipt of reagents and/or consumables not corresponding to the order"
 
 #: templates/non-conformity.html:444
@@ -4706,7 +3804,7 @@ msgstr "No connection"
 
 #: templates/non-conformity.html:543
 msgid "Erreur de paramétrage"
-msgstr "Setting error"
+msgstr "Setup error"
 
 #: templates/non-conformity.html:549
 msgid "Panne réseau"
@@ -4965,44 +4063,20 @@ msgid "Mensuelle"
 msgstr "Monthly"
 
 #: templates/report-dhis2.html:34
-msgid ""
-"Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être "
-"respectivement les dates de début et fin de période."
-msgstr ""
-"For a weekly spreadsheet, Monday and Sunday should be the beginning and "
-"end of this period respectively."
+msgid "Pour une feuille de calcul hebdomadaire, lundi et dimanche doivent être respectivement les dates de début et fin de période."
+msgstr "For a weekly spreadsheet, Monday and Sunday should be the beginning and end of this period respectively."
 
 #: templates/report-dhis2.html:35
-msgid ""
-"Pour une feuille de calcul mensuelle, la date de début doit correspondre "
-"au 1er du mois et la date de fin au dernier jour du mois sélectionné."
-msgstr ""
-"For a monthly spreadsheet, the start date should be the 1st of the month "
-"and the end date should be the last day of the selected month."
+msgid "Pour une feuille de calcul mensuelle, la date de début doit correspondre au 1er du mois et la date de fin au dernier jour du mois sélectionné."
+msgstr "For a monthly spreadsheet, the start date should be the 1st of the month and the end date should be the last day of the selected month."
 
 #: templates/report-dhis2.html:38
 msgid "Feuille de calcul"
 msgstr "Spreadsheet"
 
-#: templates/report-dhis2.html:65
-msgid "Envoyer les données"
-msgstr "Send data"
-
-#: templates/report-dhis2.html:79
-msgid "Retour d'envoi"
-msgstr "Return shipment"
-
 #: templates/report-dhis2.html:110 templates/report-dhis2.html:176
 msgid "Veuillez sélectionner une feuille de calcul."
 msgstr "Please select a spreadsheet."
-
-#: templates/report-dhis2.html:188
-msgid "Veuillez sélectionner une plateforme de destination."
-msgstr "Please select a destination platform."
-
-#: templates/report-dhis2.html:224
-msgid "Paramétrage manquant !"
-msgstr "Missing setup!"
 
 #: templates/report-epidemio.html:34
 msgid "Epidémiologie"
@@ -5038,7 +4112,7 @@ msgstr "Distribution of records"
 
 #: templates/report-statistic.html:61
 msgid "Préleveurs"
-msgstr "Samplers"
+msgstr "Sample collectors"
 
 #: templates/report-statistic.html:68
 msgid "Prélèvements"
@@ -5080,69 +4154,6 @@ msgstr "Number of analyses on-call"
 #: templates/report-statistic.html:547
 msgid "Nombre d'analyses"
 msgstr "Number of analyses"
-
-#: templates/report-tat.html:16
-msgid ""
-"Le calcul du délai de rendu des résultats est basé sur la date "
-"d’enregistrement du dossier et les dates de validation des analyses du "
-"dossier"
-msgstr ""
-"The calculation of the results delivery time is based on the date of "
-"registration of the file and the dates of validation of the analyses"
-
-#: templates/report-tat.html:76 templates/report-tat.html:335
-msgid "Délai de validation technique des résultats"
-msgstr "Time limit for technical validation of results"
-
-#: templates/report-tat.html:77 templates/report-tat.html:335
-msgid "Délai de rendu des résultats"
-msgstr "Results delivery time"
-
-#: templates/report-tat.html:78 templates/report-tat.html:335
-msgid "Délai de rendu du dossier"
-msgstr "File submission deadline"
-
-#: templates/report-tat.html:82
-msgid "Moyenne des délais de validation technique du résultat"
-msgstr "Average time for technical validation of the result"
-
-#: templates/report-tat.html:83
-msgid "Moyenne des délais de rendu du résultat"
-msgstr "Average result rendering times"
-
-#: templates/report-tat.html:87
-msgid "Export"
-msgstr "Export"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "j"
-msgstr "j"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "h"
-msgstr "h"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-#: templates/report-tat.html:380 templates/report-tat.html:381
-#: templates/report-tat.html:382 templates/report-tat.html:386
-msgid "min"
-msgstr "min"
-
-#: templates/report-tat.html:308 templates/report-tat.html:309
-#: templates/report-tat.html:310 templates/report-tat.html:321
-#: templates/report-tat.html:322 templates/report-tat.html:323
-msgid "s"
-msgstr "s"
 
 #: templates/report-today.html:78 templates/setting-analyzes.html:83
 msgid "Famille"
@@ -5273,12 +4284,8 @@ msgid "Désactivé"
 msgstr "Disabled"
 
 #: templates/setting-analyzes.html:267
-msgid ""
-"Veuillez confirmer la suppression du cette analyse\\nAttention les "
-"dossiers éventuellement associés à cette analyse seront en erreurs"
-msgstr ""
-"Please confirm the deletion of this analysis\\nPlease note that the "
-"possible records associated with this analysis will be in error"
+msgid "Veuillez confirmer la suppression du cette analyse\\nAttention les dossiers éventuellement associés à cette analyse seront en erreurs"
+msgstr "Please confirm the deletion of this analysis\\nPlease note that the possible records associated with this analysis will be in error"
 
 #: templates/setting-analyzes.html:368
 msgid "Veuillez confirmer la désactivation de toutes les analyses"
@@ -5362,13 +4369,8 @@ msgid "Veuillez confirmer la modification de l'heure de sauvegarde quotidienne."
 msgstr "Please confirm the change of daily backup time."
 
 #: templates/setting-backup.html:192
-msgid ""
-"Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne"
-" seront pas récupérables\\nVous confirmez la génération d'une nouvelle "
-"clé ?"
-msgstr ""
-"A key already exists,if a key is re-generated, the old backups will not "
-"be recoverable\\nPlease confirm the generation of a new key?"
+msgid "Une clé existe déjà, en re-générant une clé, les anciennes sauvegardes ne seront pas récupérables\\nVous confirmez la génération d'une nouvelle clé ?"
+msgstr "A key already exists,if a key is re-generated, the old backups will not be recoverable\\nPlease confirm the generation of a new key?"
 
 #: templates/setting-backup.html:227 templates/setting-backup.html:274
 msgid "Veuillez saisir un mot de passe"
@@ -5397,11 +4399,11 @@ msgstr "An error has occurred with the chosen media"
 
 #: templates/setting-backup.html:439
 msgid "Initialisation réussie"
-msgstr "Successful initialization"
+msgstr "Successful initialisation"
 
 #: templates/setting-backup.html:443
 msgid "Une erreur est survenue lors de l'initialisation du média"
-msgstr "An error occurred during the initialization of the media"
+msgstr "An error occurred during the initialisation of the media"
 
 #: templates/setting-backup.html:472
 msgid "Génération réussie"
@@ -5412,22 +4414,15 @@ msgid "Merci de confirmer le lancement immédiat de la restauration."
 msgstr "Please confirm the immediate start of the restoration process."
 
 #: templates/setting-backup.html:587
-msgid ""
-"Une erreur est survenue lors de la restauration, veuillez contacter votre"
-" administrateur pour qu'il vérifie manuellement que cette dernière est "
-"terminée."
-msgstr ""
-"An error occurred during the restore, please contact your administrator "
-"to manually verify that the restore is complete."
+msgid "Une erreur est survenue lors de la restauration, veuillez contacter votre administrateur pour qu'il vérifie manuellement que cette dernière est terminée."
+msgstr "An error occurred during the restore, please contact your administrator to manually verify that the restore is complete."
 
 #: templates/setting-backup.html:604
 msgid "Délai d'attente dépassé"
 msgstr "Waiting period exceeded"
 
 #: templates/setting-backup.html:753
-msgid ""
-"La restauration est terminée, LabBook va redémarrer les services de "
-"l'application"
+msgid "La restauration est terminée, LabBook va redémarrer les services de l'application"
 msgstr "The restoration is complete, LabBook will restart the application services"
 
 #: templates/setting-backup.html:767
@@ -5435,30 +4430,20 @@ msgid "Redémarrage activé"
 msgstr "Restart enabled"
 
 #: templates/setting-backup.html:772
-msgid ""
-"Les services ont redémarré ou une erreur est survenue lors de la demande "
-"de redémarrage\\nveuillez recharger la page"
-msgstr ""
-"The services have restarted or an error occurred during the restart "
-"request\\nPlease reload the page"
+msgid "Les services ont redémarré ou une erreur est survenue lors de la demande de redémarrage\\nveuillez recharger la page"
+msgstr "The services have restarted or an error occurred during the restart request\\nPlease reload the page"
 
 #: templates/setting-backup.html:782
 msgid "Sauvegarde réussie"
 msgstr "Backup successful"
 
 #: templates/setting-backup.html:805
-msgid ""
-"Une erreur est survenue lors de la vérification de l'état en cours, "
-"statut inconnu"
+msgid "Une erreur est survenue lors de la vérification de l'état en cours, statut inconnu"
 msgstr "An error occurred while checking the current status, unknown status"
 
 #: templates/setting-backup.html:819
 msgid "Une erreur est survenue lors de la vérification de l'état en cours"
 msgstr "An error occurred while checking the current status"
-
-#: templates/setting-det-analysis.html:27
-msgid "LOINC"
-msgstr "LOINC"
 
 #: templates/setting-det-analysis.html:70
 msgid "Unité de cotation"
@@ -5472,14 +4457,6 @@ msgstr "Quotation value"
 #: templates/setting-det-analysis.html:251
 msgid "Export whonet"
 msgstr "Whonet export"
-
-#: templates/setting-det-analysis.html:110
-msgid "Antiobiogramme"
-msgstr "Antibiotic Resistance Test"
-
-#: templates/setting-det-analysis.html:115
-msgid "LabBook Lite"
-msgstr ""
 
 #: templates/setting-det-analysis.html:127
 msgid "Variables"
@@ -5497,10 +4474,6 @@ msgstr "Create a new variable"
 msgid "Par défaut sera l'ID de la variable"
 msgstr "The default will be the variable ID"
 
-#: templates/setting-det-analysis.html:162
-msgid "Détails de ce dictionnaire"
-msgstr "Details of this dictionary"
-
 #: templates/setting-det-analysis.html:164 templates/setting-det-dict.html:21
 #: templates/setting-dicts.html:65
 msgid "Description"
@@ -5513,10 +4486,6 @@ msgstr "Normal value min."
 #: templates/setting-det-analysis.html:175
 msgid "Valeur normale max."
 msgstr "Normal value max."
-
-#: templates/setting-det-analysis.html:182
-msgid "Affichage min./max."
-msgstr "Min./max. display"
 
 #: templates/setting-det-analysis.html:187
 msgid "Souligner"
@@ -5534,18 +4503,6 @@ msgstr "Unit"
 #: templates/setting-det-analysis.html:210
 msgid "Précision"
 msgstr "Accuracy"
-
-#: templates/setting-det-analysis.html:215
-msgid "Formule de conversion unité 2"
-msgstr "Unit 2 conversion formula"
-
-#: templates/setting-det-analysis.html:219
-msgid "Unité 2"
-msgstr "Unit 2"
-
-#: templates/setting-det-analysis.html:228
-msgid "Précision 2"
-msgstr "Precision 2"
 
 #: templates/setting-det-analysis.html:233
 msgid "Num. var pour la formule"
@@ -5611,6 +4568,12 @@ msgstr "Please select or define at least one variable."
 msgid "Ce code existe déjà"
 msgstr "This code already exists"
 
+#: templates/det-patient.html:73 templates/det-req-ext.html:1204
+#: templates/det-req-int.html:1082 templates/setting-det-analysis.html:1105
+#: templates/setting-det-role.html:193
+msgid "Une erreur est survenue lors de la vérification du code"
+msgstr "An error occurred while checking the code"
+
 #: templates/setting-det-dict.html:5 templates/setting-det-dict.html:12
 msgid "Dictionnaire"
 msgstr "Dictionnary"
@@ -5619,55 +4582,16 @@ msgstr "Dictionnary"
 msgid "Mise en forme"
 msgstr "Formatting"
 
+#: templates/setting-det-user.html:20
+msgid "Droits utilisateur"
+msgstr "User rights"
+
 #: templates/setting-det-role.html:5 templates/setting-det-role.html:12
 #: templates/setting-det-role.html:19 templates/setting-det-user.html:23
 #: templates/setting-link-unit-user.html:25 templates/setting-users.html:43
 #: templates/setting-users.html:94
 msgid "Rôle"
 msgstr "Role"
-
-#: templates/setting-det-role.html:22
-#: templates/setting-roles-and-rights.html:34
-msgid "Rôle de base"
-msgstr "Basic Role"
-
-#: templates/setting-det-role.html:32
-msgid "Nom de ce rôle"
-msgstr "Name of this role"
-
-#: templates/setting-det-role.html:39
-msgid "Couleur principale"
-msgstr "Primary color"
-
-#: templates/setting-det-role.html:46
-msgid "Couleur de survol"
-msgstr "Hover color"
-
-#: templates/setting-det-role.html:53
-msgid "Couleur texte"
-msgstr "Text color"
-
-#: templates/setting-det-role.html:60 templates/setting-user-rights.html:16
-msgid "Droits"
-msgstr "Rights"
-
-#: templates/setting-det-role.html:64
-#: templates/setting-roles-and-rights.html:33
-#: templates/setting-user-rights.html:20
-msgid "Libéllé"
-msgstr "Label"
-
-#: templates/setting-det-role.html:112 templates/setting-det-user.html:338
-msgid "Veuillez choisir un rôle."
-msgstr "Please choose a role."
-
-#: templates/setting-det-role.html:164
-msgid "Ce rôle existe déjà"
-msgstr ""
-
-#: templates/setting-det-user.html:20
-msgid "Droits utilisateur"
-msgstr "User rights"
 
 #: templates/setting-det-user.html:27
 msgid "Administrateur"
@@ -5701,6 +4625,14 @@ msgstr "English (UK)"
 msgid "Américain (US)"
 msgstr "English (US)"
 
+#: templates/det-lite.html:125 templates/setting-det-user.html:312
+msgid "Veuillez saisir un identifiant."
+msgstr "Please enter a login."
+
+#: templates/det-lite.html:128 templates/setting-det-user.html:325
+msgid "Veuillez saisir un mot de passe."
+msgstr "Please enter a password."
+
 #: templates/setting-det-user.html:328
 msgid "Veuillez confirmer votre mot de passe."
 msgstr "Please confirm you password."
@@ -5709,25 +4641,13 @@ msgstr "Please confirm you password."
 msgid "Veuillez choisir une langue."
 msgstr "Please choose a language."
 
+#: templates/setting-det-role.html:112 templates/setting-det-user.html:338
+msgid "Veuillez choisir un rôle."
+msgstr "Please choose a role."
+
 #: templates/setting-dhis2.html:5 templates/setting-dhis2.html:12
 msgid "Paramétrage de l'export DHIS2"
 msgstr "DHIS2 export setup"
-
-#: templates/setting-dhis2.html:15
-msgid "Paramétrage envoi à l'api dhis2"
-msgstr "Dhis2 API sending setup"
-
-#: templates/setting-dhis2.html:23
-msgid "Adresse plateforme"
-msgstr "Platform address"
-
-#: templates/setting-dhis2.html:24
-msgid "login"
-msgstr "log​ in"
-
-#: templates/setting-dhis2.html:41
-msgid "Paramétrage feuille de calcul"
-msgstr "Spreadsheet setup"
 
 #: templates/setting-dhis2.html:61 templates/setting-epidemio.html:33
 #: templates/setting-indicator.html:33
@@ -5754,22 +4674,13 @@ msgstr "Epidemiological report setup"
 msgid "Paramétrage de formulaires"
 msgstr "Forms setup"
 
+#: templates/setting-form.html:41
+msgid "Les modifications sont instantanément enregistrées pour la prise en compte des changements il faut revenir à la page d'accueil ou se reconnecter"
+msgstr "The modifications are instantly saved for the changes to be taken into account, you must return to the home page or reconnect"
+
 #: templates/setting-form.html:15
 msgid "Formulaire patient"
 msgstr "Patient form"
-
-#: templates/setting-form.html:36
-msgid "Enregistrer le formulaire"
-msgstr "Save the form"
-
-#: templates/setting-form.html:41
-msgid ""
-"Les modifications sont instantanément enregistrées pour la prise en "
-"compte des changements il faut revenir à la page d'accueil ou se "
-"reconnecter"
-msgstr ""
-"The modifications are instantly saved for the changes to be taken into "
-"account, you must return to the home page or reconnect"
 
 #: templates/setting-form.html:48
 msgid "Formulaire produit"
@@ -5778,10 +4689,6 @@ msgstr "Product form"
 #: templates/setting-form.html:52
 msgid "Formulaire approvisionnement"
 msgstr "Supply form"
-
-#: templates/setting-form.html:171
-msgid "Aperçu"
-msgstr "Preview"
 
 #: templates/setting-functionnal-units.html:5
 #: templates/setting-functionnal-units.html:12
@@ -5802,7 +4709,7 @@ msgstr "No. users"
 
 #: templates/setting-functionnal-units.html:32
 msgid "Nb. famille ana."
-msgstr "No. ana family."
+msgstr "No. ana. family"
 
 #: templates/setting-functionnal-units.html:88
 msgid "Affecter des utilisateurs"
@@ -5825,22 +4732,6 @@ msgstr "Setup links between units and analysis families"
 #: templates/setting-link-unit-user.html:12
 msgid "Paramétrage des liens entre unité et utilisateurs"
 msgstr "Setup links between units and users"
-
-#: templates/setting-lite.html:5 templates/setting-lite.html:12
-msgid "Paramètrage LabBook Lite"
-msgstr ""
-
-#: templates/setting-lite.html:21
-msgid "Login"
-msgstr ""
-
-#: templates/setting-lite.html:22
-msgid "Nb utilisateurs"
-msgstr ""
-
-#: templates/setting-lite.html:34
-msgid "Ajouter une configuration"
-msgstr ""
 
 #: templates/setting-logo.html:5 templates/setting-logo.html:12
 msgid "Paramétrage du logo pour les documents"
@@ -6047,23 +4938,6 @@ msgstr "Add a service"
 msgid "Services demandeurs"
 msgstr "Requesting services"
 
-#: templates/setting-roles-and-rights.html:5
-#: templates/setting-roles-and-rights.html:12
-msgid "Liste des rôles"
-msgstr "Role list"
-
-#: templates/setting-roles-and-rights.html:35
-msgid "Nombre de profil"
-msgstr "Number of profiles"
-
-#: templates/setting-roles-and-rights.html:56
-msgid "Ajouter un rôle"
-msgstr "Add a role"
-
-#: templates/setting-roles-and-rights.html:119
-msgid "Consulter"
-msgstr "Consult"
-
 #: templates/setting-stock.html:5 templates/setting-stock.html:12
 msgid "Paramétrage du stockage"
 msgstr "Inventory setup"
@@ -6083,10 +4957,6 @@ msgstr "Add a location"
 #: templates/setting-stock.html:42
 msgid "Usage"
 msgstr "Use"
-
-#: templates/setting-user-rights.html:5 templates/setting-user-rights.html:12
-msgid "Droits de cet utilisateur"
-msgstr "Rights of this user"
 
 #: templates/setting-users.html:5 templates/setting-users.html:12
 msgid "Liste des utilisateurs"
@@ -6128,10 +4998,6 @@ msgstr "Enable user"
 msgid "Désactiver utilisateur"
 msgstr "Disable user"
 
-#: templates/setting-users.html:242
-msgid "Editer droits"
-msgstr "Edit rights"
-
 #: templates/setting-users.html:276
 msgid "Veuillez confirmer la modification de statut"
 msgstr "Please confirm status change"
@@ -6160,23 +5026,11 @@ msgstr "Add the file to the database"
 msgid "Erreur lors de l'import des données"
 msgstr "Error while importing data"
 
-#: templates/table-rights.html:6
-msgid "Administration"
-msgstr "Administration"
+#: templates/api.html:53 templates/skeleton.html:49
+msgid "Déconnexion"
+msgstr "Disconnection"
 
-#: templates/table-rights.html:7
-msgid "API"
-msgstr "API"
-
-#: templates/table-rights.html:16
-msgid "Modules des non-conformités"
-msgstr "Non-Conformity modules"
-
-#: templates/table-rights.html:18
-msgid "Dossiers"
-msgstr "Files"
-
-#: templates/technical-validation.html:605
+#: templates/technical-validation.html:610
 msgid "Non rempli"
 msgstr "Not filled in"
 
@@ -6199,10 +5053,6 @@ msgstr "Error while processing data"
 #: templates/whonet-export.html:18
 msgid "Date de validation du"
 msgstr "Date of validation of the"
-
-#: templates/elem/pat_code_lab.html:1
-msgid "Code patient interne au laboratoire"
-msgstr "Internal laboratory patient code"
 
 #: templates/js/display_histo.js:7
 msgid "Création du dossier"
@@ -6235,3 +5085,1104 @@ msgstr "Ongoing process"
 #: templates/popup/popup_wait.html:12
 msgid "Veuillez patienter"
 msgstr "Please wait"
+
+#: templates/det-analyzer.html:5 templates/det-analyzer.html:12
+#: templates/list-msg-analyzer.html:18 templates/list-msg-analyzer.html:129
+#: templates/list-msg-analyzer.html:131
+msgid "Analyseur"
+msgstr "Analyser"
+
+#: templates/det-analyzer.html:23 templates/list-analyzers.html:5
+#: templates/list-analyzers.html:12
+msgid "Liste des analyseurs"
+msgstr "List of analysers"
+
+#: templates/det-analyzer.html:52 templates/det-printer.html:38
+msgid "position"
+msgstr "position"
+
+#: templates/det-analyzer.html:134
+msgid "Veuillez saisir un nom, un identifiant unique et leurs adresses."
+msgstr "Please enter a name, a unique login and their addresses."
+
+#: templates/det-req-ext.html:325 templates/det-req-int.html:351
+msgid "Date prélèvement"
+msgstr "Collection date"
+
+#: templates/det-req-ext.html:326 templates/det-req-int.html:352
+msgid "Produit pathologiques"
+msgstr "Pathological products"
+
+#: templates/det-req-ext.html:1242 templates/det-req-int.html:1123
+msgid "Veuillez sélectionner une date et heure de réception du colis"
+msgstr "Please select a date and time to receive the package"
+
+#: templates/det-sample.html:73
+msgid "Analyse associée"
+msgstr "Associated analysis"
+
+#: templates/det-equipment.html:146 templates/det-supplier.html:79
+#: templates/list-suppliers.html:39
+msgid "Critique"
+msgstr "Critical"
+
+#: templates/homepage.html:38 templates/menu.html:154 templates/menu.html:459
+msgid "Configuration des analyseurs"
+msgstr "Analyser configuration"
+
+#: templates/list-records.html:147 templates/report-tat.html:72
+#: templates/report-tat.html:335
+msgid "Réception dossier"
+msgstr "File recetion"
+
+#: templates/setting-det-analysis.html:162
+msgid "Détails de ce dictionnaire"
+msgstr "Details of this dictionary"
+
+#: templates/setting-det-analysis.html:182
+msgid "Affichage min./max."
+msgstr "Min./max. display"
+
+#: templates/contributors.html:33
+msgid "LabBook est co-financé par l'Agence Française de Développement (AFD) et la Fondation Mérieux."
+msgstr "LabBook is co-financed by the French Development Agency (AFD) and the Mérieux Foundation."
+
+#: templates/contributors.html:34
+msgid "Le projet PROALAB est basé à l'Organisation Ouest Africaine de la Santé (OOAS) et fait partie du Plan Stratégique des Laboratoires de l'OOAS. Le projet est financé par la Banque allemande de développement (KFW) et contribue à LabBook depuis 2024 pour améliorer le réseau de surveillance épidémiologique et les systèmes de laboratoire dans l'espace CEDEAO."
+msgstr "The PROALAB project is based at the West African Health Organization (WAHO) and is part of the WAHO Laboratory Strategic Plan. The project is funded by the German Development Bank (KFW) and contributes to LabBook since 2024 to improve the epidemiological surveillance network and laboratory systems in the ECOWAS region."
+
+#: templates/det-equipment.html:395
+msgid "Voir"
+msgstr "See"
+
+#: templates/eqp-document.html:5 templates/eqp-document.html:15
+msgid "Documentation de l'équipement"
+msgstr "Equipment documentation"
+
+#: templates/eqp-document.html:31 templates/eqp-document.html:54
+msgid "Téléchargement"
+msgstr "Download"
+
+#: templates/eqp-document.html:137 templates/eqp-document.html:182
+msgid "Possible après enregistrement"
+msgstr "Possible after registration"
+
+#: templates/eqp-failure.html:5 templates/eqp-failure.html:15
+msgid "Panne et réparation"
+msgstr "Breakdown and repair"
+
+#: templates/eqp-failure.html:28 templates/list-eqp-failure.html:129
+msgid "Panne"
+msgstr "Breakdown"
+
+#: templates/eqp-failure.html:29 templates/list-eqp-failure.html:130
+msgid "Réparation"
+msgstr "Repair"
+
+#: templates/eqp-failure.html:186 templates/eqp-maintenance-contract.html:135
+#: templates/eqp-maintenance-preventive.html:127
+#: templates/eqp-metrology.html:127
+msgid "Veuillez sélectionner une date"
+msgstr "Please select a date"
+
+#: templates/eqp-maintenance-contract.html:5
+#: templates/eqp-maintenance-contract.html:15
+msgid "Maintenance"
+msgstr "Maintenance"
+
+#: templates/eqp-maintenance-contract.html:46
+#: templates/list-eqp-maintenance.html:87
+msgid "Renouvellement"
+msgstr "Renewal"
+
+#: templates/eqp-maintenance-preventive.html:25
+msgid "Intervenant"
+msgstr "Speaker"
+
+#: templates/eqp-metrology.html:5 templates/eqp-metrology.html:15
+msgid "Métrologie et étalonnage"
+msgstr "Metrology and calibration"
+
+#: templates/list-eqp-failure.html:5
+msgid "Liste des pannes et réparations d'équipements"
+msgstr "List of equipment breakdowns and repairs"
+
+#: templates/list-eqp-maintenance.html:5 templates/list-eqp-maintenance.html:12
+msgid "Liste des maintenances"
+msgstr "Maintenance list"
+
+#: templates/list-eqp-maintenance.html:15
+msgid "Liste des maintenances préventives"
+msgstr "List of preventive maintenance"
+
+#: templates/list-eqp-maintenance.html:66
+msgid "Liste des contrats de maintenances"
+msgstr "List of maintenance contracts"
+
+#: templates/list-eqp-metrology.html:5 templates/list-eqp-metrology.html:12
+msgid "Liste des métrologies et étalonnages"
+msgstr "List of metrologies and calibrations"
+
+#: templates/list-equipment.html:130
+msgid "Maintenances"
+msgstr "Maintenance"
+
+#: templates/list-equipment.html:134
+msgid "Pannes et réparations"
+msgstr "Breakdowns and repairs"
+
+#: templates/list-equipment.html:138
+msgid "Métrologie"
+msgstr "Metrology"
+
+#: templates/list-trace-download.html:60
+msgid "Dépôt"
+msgstr "Deposit"
+
+#: templates/menu.html:86 templates/report-tat.html:5
+#: templates/report-tat.html:15
+msgid "Rapport sur le délai de rendu du résultat"
+msgstr "Report on result delivery time"
+
+#: templates/menu.html:409
+msgid "Rapport sur le temps de rendu du résultat"
+msgstr "Report on result rendering time"
+
+#: templates/report-tat.html:16
+msgid "Le calcul du délai de rendu des résultats est basé sur la date d’enregistrement du dossier et les dates de validation des analyses du dossier"
+msgstr "The calculation of the results delivery time is based on the date of registration of the file and the dates of validation of the analyses"
+
+#: templates/report-tat.html:76 templates/report-tat.html:335
+msgid "Délai de validation technique des résultats"
+msgstr "Time limit for technical validation of results"
+
+#: templates/report-tat.html:77 templates/report-tat.html:335
+msgid "Délai de rendu des résultats"
+msgstr "Results delivery time"
+
+#: templates/report-tat.html:78 templates/report-tat.html:335
+msgid "Délai de rendu du dossier"
+msgstr "File submission deadline"
+
+#: templates/report-tat.html:82
+msgid "Moyenne des délais de validation technique du résultat"
+msgstr "Average time for technical validation of the result"
+
+#: templates/report-tat.html:83
+msgid "Moyenne des délais de rendu du résultat"
+msgstr "Average result rendering times"
+
+#: templates/report-tat.html:87
+msgid "Export"
+msgstr "Export"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "j"
+msgstr "j"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "h"
+msgstr "h"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+#: templates/report-tat.html:380 templates/report-tat.html:381
+#: templates/report-tat.html:382 templates/report-tat.html:386
+msgid "min"
+msgstr "min"
+
+#: templates/setting-det-analysis.html:215
+msgid "Formule de conversion unité 2"
+msgstr "Unit 2 conversion formula"
+
+#: templates/setting-det-analysis.html:219
+msgid "Unité 2"
+msgstr "Unit 2"
+
+#: templates/setting-det-analysis.html:228
+msgid "Précision 2"
+msgstr "Precision 2"
+
+#: templates/det-dhis2-api.html:5 templates/det-dhis2-api.html:12
+msgid "Plateforme DHIS2 api"
+msgstr "DHIS2 API platform"
+
+#: templates/det-dhis2-api.html:40
+msgid "Adresse plateforme dhis2 "
+msgstr "dhis2 platform address"
+
+#: templates/det-dhis2-api.html:47 templates/det-printer.html:30
+#: templates/list-printer.html:37
+msgid "Par défaut"
+msgstr "By default"
+
+#: templates/report-dhis2.html:65
+msgid "Envoyer les données"
+msgstr "Send data"
+
+#: templates/report-dhis2.html:79
+msgid "Retour d'envoi"
+msgstr "Return shipment"
+
+#: templates/report-dhis2.html:188
+msgid "Veuillez sélectionner une plateforme de destination."
+msgstr "Please select a destination platform."
+
+#: templates/report-dhis2.html:224
+msgid "Paramétrage manquant !"
+msgstr "Missing setup!"
+
+#: templates/setting-dhis2.html:15
+msgid "Paramétrage envoi à l'api dhis2"
+msgstr "Dhis2 API sending setup"
+
+#: templates/setting-dhis2.html:23
+msgid "Adresse plateforme"
+msgstr "Platform address"
+
+#: templates/setting-dhis2.html:24
+msgid "login"
+msgstr "log​ in"
+
+#: templates/setting-dhis2.html:41
+msgid "Paramétrage feuille de calcul"
+msgstr "Spreadsheet setup"
+
+#: templates/setting-form.html:36
+msgid "Enregistrer le formulaire"
+msgstr "Save the form"
+
+#: templates/setting-form.html:171
+msgid "Aperçu"
+msgstr "Preview"
+
+#: templates/det-aliquot.html:7 templates/det-aliquot.html:14
+msgid "Détails aliquot"
+msgstr "Aliquot details"
+
+#: templates/det-storage-box.html:5 templates/det-storage-box.html:12
+msgid "Détails boîte"
+msgstr "Box details"
+
+#: templates/det-aliquot.html:51 templates/enter-result.html:127
+#: templates/list-aliquot.html:28 templates/list-results.html:93
+msgid "Pathogène"
+msgstr "Pathogen"
+
+#: templates/det-aliquot.html:74 templates/enter-result.html:139
+#: templates/list-results.html:105
+msgid "Présent en stock"
+msgstr "Available in stock"
+
+#: templates/det-aliquot.html:81 templates/enter-result.html:142
+#: templates/list-results.html:108
+msgid "Boîte associée"
+msgstr "Associated box"
+
+#: templates/det-aliquot.html:105 templates/enter-result.html:119
+#: templates/enter-result.html:158 templates/enter-result.html:542
+#: templates/enter-result.html:889 templates/list-aliquot.html:53
+#: templates/list-results.html:85 templates/list-results.html:125
+#: templates/list-results.html:583 templates/list-results.html:921
+msgid "Ajouter un aliquot"
+msgstr "Add an aliquot"
+
+#: templates/det-aliquot.html:299
+msgid "Un patient doit être sélectionné."
+msgstr "A patient must be selected."
+
+#: templates/det-aliquot.html:305
+msgid "Le produit pathologique est obligatoire."
+msgstr "The pathological product is required."
+
+#: templates/det-aliquot.html:321 templates/enter-result.html:1214
+#: templates/list-results.html:1097
+msgid "L'association à une boîte est obligatoire."
+msgstr "Association with a box is required."
+
+#: templates/det-analyzer.html:87
+msgid "Veuillez saisir une adresse LabBook Connect et un identifiant."
+msgstr "Please enter a LabBook Connect address and a login."
+
+#: templates/det-analyzer.html:93
+msgid "Test en cours"
+msgstr "Test in progress"
+
+#: templates/det-analyzer.html:103
+msgid "L'analyseur est chargé."
+msgstr "The analyser is loaded."
+
+#: templates/det-analyzer.html:107
+msgid "Erreur : "
+msgstr "Error:"
+
+#: templates/det-analyzer.html:111
+msgid "Réponse inattendue du serveur."
+msgstr "Unexpected server response."
+
+#: templates/det-analyzer.html:116
+msgid "Erreur lors de la requête :"
+msgstr "Error during the request:"
+
+#: templates/det-message.html:5 templates/det-message.html:14
+#: templates/det-message.html:36
+msgid "Message"
+msgstr "Message"
+
+#: templates/det-message.html:18
+msgid "Destinataire"
+msgstr "Recipient"
+
+#: templates/connect-management.html:43 templates/connect-management.html:52
+#: templates/connect-management.html:61 templates/det-message.html:65
+#: templates/list-printer.html:23
+msgid "Envoyer"
+msgstr "Send"
+
+#: templates/det-message.html:132
+msgid "Veuillez saisir un utilisateur."
+msgstr "Please enter a user."
+
+#: templates/det-message.html:135
+msgid "Veuillez saisir un titre."
+msgstr "Please enter a title."
+
+#: templates/det-message.html:138
+msgid "Veuillez saisir un message."
+msgstr "Please enter a message."
+
+#: templates/det-patient.html:62
+msgid "Code patient interne au laboratoire existe déjà"
+msgstr "Internal laboratory patient code already exists"
+
+#: templates/det-req-ext.html:1193 templates/det-req-int.html:1071
+msgid "Numéro de dossier interne au laboratoire existe déjà"
+msgstr "Internal laboratory file number already exists"
+
+#: templates/det-staff.html:189
+msgid "Signature"
+msgstr "Signature"
+
+#: templates/det-storage-box.html:15
+msgid "Nom de la boîte"
+msgstr "Box name"
+
+#: templates/det-storage-box.html:36 templates/det-storage-compartment.html:36
+msgid "Largeur"
+msgstr "Width"
+
+#: templates/det-storage-box.html:43 templates/det-storage-compartment.html:43
+msgid "Profondeur"
+msgstr "Depth"
+
+#: templates/det-storage-box.html:50
+msgid "Boîte pleine"
+msgstr "Box Full"
+
+#: templates/det-storage-box.html:58 templates/list-storage-box.html:22
+msgid "Compartiment associé"
+msgstr "Associated compartment"
+
+#: templates/det-storage-box.html:95 templates/det-storage-chamber.html:69
+#: templates/det-storage-compartment.html:93 templates/det-storage-room.html:57
+msgid "Le nom et l'identifiant sont obligatoires."
+msgstr "The name and login are required."
+
+#: templates/det-storage-box.html:101 templates/det-storage-compartment.html:99
+msgid "Les dimensions doivent être positives."
+msgstr "The dimensions must be positive."
+
+#: templates/det-storage-box.html:107
+msgid "L'association à un compartiment est obligatoire."
+msgstr "Association with a compartment is required."
+
+#: templates/det-storage-chamber.html:5 templates/det-storage-chamber.html:12
+msgid "Détails enceinte"
+msgstr "Enclosure details"
+
+#: templates/det-storage-chamber.html:15
+msgid "Nom de l'enceinte"
+msgstr "Enclosure name"
+
+#: templates/det-storage-chamber.html:22
+#: templates/det-storage-compartment.html:22 templates/det-storage-room.html:22
+msgid "Abréviation du nom"
+msgstr "Name abbreviation"
+
+#: templates/det-storage-chamber.html:36 templates/list-storage-chamber.html:22
+msgid "Pièce associée"
+msgstr "Associated room"
+
+#: templates/det-storage-chamber.html:75
+msgid "L'association à une pièce est obligatoire."
+msgstr "Association with a room is required."
+
+#: templates/det-storage-compartment.html:5
+#: templates/det-storage-compartment.html:12
+msgid "Détails compartiment"
+msgstr "Compartment details"
+
+#: templates/det-storage-compartment.html:15
+msgid "Nom du compartiment"
+msgstr "Compartment name"
+
+#: templates/det-storage-compartment.html:50
+msgid "Hauteur"
+msgstr "Height"
+
+#: templates/det-storage-compartment.html:57
+#: templates/list-storage-compartment.html:22
+msgid "Enceinte associée"
+msgstr "Associated enclosure"
+
+#: templates/det-storage-compartment.html:105
+msgid "L'association à une enceinte est obligatoire."
+msgstr "Association with an enclosure is required."
+
+#: templates/det-storage-room.html:5 templates/det-storage-room.html:12
+msgid "Détails pièce"
+msgstr "Room details"
+
+#: templates/det-storage-room.html:15
+msgid "Nom de la pièce"
+msgstr "Room name"
+
+#: templates/homepage.html:189
+msgid "La dernière sauvegarde OK date de plus de 24 heures."
+msgstr "The last successful backup is over 24 hours old."
+
+#: templates/list-aliquot.html:5 templates/list-aliquot.html:12
+#: templates/menu.html:310 templates/menu.html:563
+#: templates/table-rights.html:24
+msgid "Gestion des échantillons"
+msgstr "Sample management"
+
+#: templates/list-aliquot.html:18
+msgid "Déstockés"
+msgstr "Removed from stock"
+
+#: templates/list-aliquot.html:26 templates/list-printer.html:34
+#: templates/setting-lite.html:19
+msgid "ID"
+msgstr "ID"
+
+#: templates/list-aliquot.html:43
+msgid "Stockages"
+msgstr "Storage"
+
+#: templates/list-aliquot.html:45 templates/list-storage-chamber.html:31
+#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
+msgid "Liste pièces"
+msgstr "Room list"
+
+#: templates/list-aliquot.html:46 templates/list-storage-chamber.html:5
+#: templates/list-storage-chamber.html:12
+#: templates/list-storage-compartment.html:32
+#: templates/list-storage-room.html:30
+msgid "Liste enceintes"
+msgstr "Enclosure list"
+
+#: templates/list-aliquot.html:47 templates/list-storage-box.html:33
+#: templates/list-storage-chamber.html:32
+#: templates/list-storage-compartment.html:5
+#: templates/list-storage-compartment.html:12
+msgid "Liste compartiments"
+msgstr "Compartment list"
+
+#: templates/list-aliquot.html:48 templates/list-storage-box.html:5
+#: templates/list-storage-box.html:12
+#: templates/list-storage-compartment.html:33
+msgid "Liste boîtes"
+msgstr "Box list"
+
+#: templates/list-aliquot.html:64
+msgid "Déstocker un aliquot"
+msgstr "Remove an aliquot"
+
+#: templates/list-aliquot.html:72
+msgid "Raison"
+msgstr "Reason"
+
+#: templates/list-aliquot.html:82
+msgid "Date du déstockage"
+msgstr "Removal date"
+
+#: templates/list-aliquot.html:89
+msgid "Déstockage externe ?"
+msgstr "External removal?"
+
+#: templates/list-aliquot.html:96
+msgid "Confirmer"
+msgstr "Confirm"
+
+#: templates/list-aliquot.html:161 templates/list-msg-analyzer.html:46
+#: templates/list-printer.html:84 templates/list-storage-box.html:59
+#: templates/list-storage-chamber.html:58
+#: templates/list-storage-compartment.html:59
+#: templates/list-storage-room.html:56 templates/setting-lite.html:56
+msgid "Afficher _MENU_ entrées"
+msgstr "Display _MENU_ entries"
+
+#: templates/list-aliquot.html:162 templates/list-msg-analyzer.html:47
+#: templates/list-printer.html:85 templates/list-storage-box.html:60
+#: templates/list-storage-chamber.html:59
+#: templates/list-storage-compartment.html:60
+#: templates/list-storage-room.html:57 templates/setting-lite.html:57
+msgid "Aucun enregistrement trouvé"
+msgstr "No records found"
+
+#: templates/list-aliquot.html:163 templates/list-msg-analyzer.html:48
+#: templates/list-printer.html:86 templates/list-storage-box.html:61
+#: templates/list-storage-chamber.html:60
+#: templates/list-storage-compartment.html:61
+#: templates/list-storage-room.html:58 templates/setting-lite.html:58
+msgid "Affichage de _START_ à _END_ sur _TOTAL_ entrées"
+msgstr "Displaying _START_ to _END_ of _TOTAL_ entries"
+
+#: templates/list-aliquot.html:164 templates/list-msg-analyzer.html:49
+#: templates/list-printer.html:87 templates/list-storage-box.html:62
+#: templates/list-storage-chamber.html:61
+#: templates/list-storage-compartment.html:62
+#: templates/list-storage-room.html:59 templates/setting-lite.html:59
+msgid "Aucune entrée disponible"
+msgstr "No entries available"
+
+#: templates/list-aliquot.html:165 templates/list-msg-analyzer.html:50
+#: templates/list-printer.html:88 templates/list-storage-box.html:63
+#: templates/list-storage-chamber.html:62
+#: templates/list-storage-compartment.html:63
+#: templates/list-storage-room.html:60 templates/setting-lite.html:60
+msgid "(filtré de _MAX_ entrées au total)"
+msgstr "(filtered from _MAX_ entries in total)"
+
+#: templates/list-aliquot.html:186
+msgid "Déstocker"
+msgstr "Remove from stock"
+
+#: templates/list-aliquot.html:186
+msgid "Restocker"
+msgstr "Restock"
+
+#: templates/list-aliquot.html:206 templates/list-printer.html:112
+#: templates/list-storage-box.html:77 templates/list-storage-chamber.html:76
+#: templates/list-storage-compartment.html:77
+#: templates/list-storage-room.html:74 templates/setting-lite.html:84
+msgid "Éditer"
+msgstr "Edit"
+
+#: templates/list-aliquot.html:340
+msgid "Veuillez indiquer une raison de déstockage."
+msgstr "Please indicate a removal reason."
+
+#: templates/list-aliquot.html:367 templates/list-aliquot.html:372
+#: templates/list-aliquot.html:400 templates/list-aliquot.html:404
+msgid "Une erreur s'est produite."
+msgstr "An error occurred."
+
+#: templates/list-aliquot.html:378
+msgid "Êtes-vous sûr de vouloir restocker ?"
+msgstr "Are you sure you want to restock?"
+
+#: templates/list-aliquot.html:487 templates/list-msg-analyzer.html:159
+#: templates/list-printer.html:145 templates/list-storage-box.html:138
+#: templates/list-storage-chamber.html:117
+#: templates/list-storage-compartment.html:131
+#: templates/list-storage-room.html:109 templates/setting-lite.html:106
+msgid "Êtes-vous sûr de vouloir supprimer ?"
+msgstr "Are you sure you want to delete?"
+
+#: templates/list-aliquot.html:504 templates/list-aliquot.html:508
+#: templates/list-msg-analyzer.html:176 templates/list-msg-analyzer.html:180
+#: templates/list-printer.html:162 templates/list-printer.html:166
+#: templates/list-storage-box.html:155 templates/list-storage-box.html:159
+#: templates/list-storage-chamber.html:134
+#: templates/list-storage-chamber.html:138
+#: templates/list-storage-compartment.html:148
+#: templates/list-storage-compartment.html:152
+#: templates/list-storage-room.html:126 templates/list-storage-room.html:130
+#: templates/setting-lite.html:123 templates/setting-lite.html:127
+msgid "Une erreur s'est produite lors de la suppression."
+msgstr "An error occurred during deletion."
+
+#: templates/list-messages.html:5 templates/list-messages.html:12
+msgid "Messages"
+msgstr "Messages"
+
+#: templates/list-messages.html:55
+msgid "Envoyer un message"
+msgstr "Send a message"
+
+#: templates/list-messages.html:108
+msgid "Lire"
+msgstr "Read"
+
+#: templates/list-messages.html:125
+msgid "Envoyé à"
+msgstr "Sent to"
+
+#: templates/list-messages.html:133
+msgid "Reçu de"
+msgstr "Received from"
+
+#: templates/list-storage-box.html:5 templates/list-storage-box.html:12
+#: templates/list-storage-chamber.html:5 templates/list-storage-chamber.html:12
+#: templates/list-storage-compartment.html:5
+#: templates/list-storage-compartment.html:12
+#: templates/list-storage-room.html:5 templates/list-storage-room.html:12
+msgid "Stockage d'échantillon"
+msgstr "Sample Storage"
+
+#: templates/list-msg-analyzer.html:17 templates/list-storage-box.html:18
+#: templates/list-storage-chamber.html:18
+#: templates/list-storage-compartment.html:18
+#: templates/list-storage-room.html:18
+msgid "id"
+msgstr "id"
+
+#: templates/list-storage-box.html:23
+msgid "Dimensions l,p"
+msgstr "Dimensions l,p"
+
+#: templates/list-storage-box.html:24
+msgid "Nb. aliquot"
+msgstr "Number of Aliquots"
+
+#: templates/det-aliquot.html:399 templates/enter-result.html:1314
+#: templates/list-results.html:1197 templates/list-storage-box.html:25
+msgid "Pleine"
+msgstr "Full"
+
+#: templates/list-storage-box.html:37
+msgid "Ajouter boîte"
+msgstr "Add box"
+
+#: templates/list-storage-chamber.html:20
+#: templates/list-storage-compartment.html:20
+#: templates/list-storage-room.html:20
+msgid "Abbréviation"
+msgstr "Abbreviation"
+
+#: templates/list-storage-chamber.html:23
+msgid "Nb. compartiment"
+msgstr "Number of compartments"
+
+#: templates/list-storage-chamber.html:36
+msgid "Ajouter enceinte"
+msgstr "Add enclosure"
+
+#: templates/list-storage-compartment.html:23
+msgid "Dimensions l,p,h"
+msgstr "Dimensions l,p,h"
+
+#: templates/list-storage-compartment.html:24
+msgid "Nb. boîte"
+msgstr "Number of boxes"
+
+#: templates/list-storage-compartment.html:37
+msgid "Ajouter compartiment"
+msgstr "Add compartment"
+
+#: templates/list-storage-room.html:22
+msgid "Nb. enceinte"
+msgstr "Number of enclosures"
+
+#: templates/menu.html:138 templates/menu.html:449
+msgid "Gestion des rôles et droits"
+msgstr "Role and rights management"
+
+#: templates/no-rights.html:1
+msgid "Vous n'avez pas les droits pour accéder à cette page"
+msgstr "You do not have the rights to access this page"
+
+#: templates/report-tat.html:308 templates/report-tat.html:309
+#: templates/report-tat.html:310 templates/report-tat.html:321
+#: templates/report-tat.html:322 templates/report-tat.html:323
+msgid "s"
+msgstr "s"
+
+#: templates/setting-det-analysis.html:27
+msgid "LOINC"
+msgstr "LOINC"
+
+#: templates/setting-det-analysis.html:110
+msgid "Antiobiogramme"
+msgstr "Antibiotic Resistance Test"
+
+#: templates/setting-det-role.html:22
+#: templates/setting-roles-and-rights.html:34
+msgid "Rôle de base"
+msgstr "Basic Role"
+
+#: templates/setting-det-role.html:32
+msgid "Nom de ce rôle"
+msgstr "Name of this role"
+
+#: templates/setting-det-role.html:39
+msgid "Couleur principale"
+msgstr "Primary color"
+
+#: templates/setting-det-role.html:46
+msgid "Couleur de survol"
+msgstr "Hover color"
+
+#: templates/setting-det-role.html:53
+msgid "Couleur texte"
+msgstr "Text color"
+
+#: templates/setting-det-role.html:60 templates/setting-user-rights.html:16
+msgid "Droits"
+msgstr "Rights"
+
+#: templates/setting-det-role.html:64
+#: templates/setting-roles-and-rights.html:33
+#: templates/setting-user-rights.html:20
+msgid "Libéllé"
+msgstr "Label"
+
+#: templates/setting-roles-and-rights.html:5
+#: templates/setting-roles-and-rights.html:12
+msgid "Liste des rôles"
+msgstr "Role list"
+
+#: templates/setting-roles-and-rights.html:35
+msgid "Nombre de profil"
+msgstr "Number of profiles"
+
+#: templates/setting-roles-and-rights.html:56
+msgid "Ajouter un rôle"
+msgstr "Add a role"
+
+#: templates/setting-roles-and-rights.html:119
+msgid "Consulter"
+msgstr "Consult"
+
+#: templates/setting-user-rights.html:5 templates/setting-user-rights.html:12
+msgid "Droits de cet utilisateur"
+msgstr "Rights of this user"
+
+#: templates/setting-users.html:242
+msgid "Editer droits"
+msgstr "Edit rights"
+
+#: templates/table-rights.html:6
+msgid "Administration"
+msgstr "Administration"
+
+#: templates/table-rights.html:7
+msgid "API"
+msgstr "API"
+
+#: templates/table-rights.html:16
+msgid "Modules des non-conformités"
+msgstr "Non-Conformity modules"
+
+#: templates/table-rights.html:18
+msgid "Dossiers"
+msgstr "Files"
+
+#: templates/list-analyzers.html:57
+msgid "Transactions"
+msgstr "Transactions"
+
+#: templates/list-msg-analyzer.html:5 templates/list-msg-analyzer.html:12
+msgid "Liste messages analyseurs"
+msgstr "List of analysers messages"
+
+#: templates/list-msg-analyzer.html:19
+msgid "Date d'envoi"
+msgstr "Sending date"
+
+#: templates/list-msg-analyzer.html:21
+msgid "Message envoyé"
+msgstr "Message sent"
+
+#: templates/list-msg-analyzer.html:22
+msgid "Message reçu"
+msgstr "Message received"
+
+#: templates/list-storage-room.html:34
+msgid "Ajouter pièce"
+msgstr "Add room"
+
+#: templates/det-aliquot.html:35
+msgid "Nature"
+msgstr "Nature"
+
+#: templates/det-aliquot.html:69
+msgid "Le format attendu est une lettre suivie d'un nombre"
+msgstr "The expected format is a letter followed by a number"
+
+#: templates/det-aliquot.html:90 templates/enter-result.html:149
+#: templates/list-results.html:115
+msgid "Stockage boîte"
+msgstr "Box storage"
+
+#: templates/det-aliquot.html:406 templates/enter-result.html:1321
+#: templates/list-results.html:1204
+msgid "Erreur lors de la récupération"
+msgstr "Error during retrieval"
+
+#: templates/list-aliquot.html:236
+msgid "Stocké le"
+msgstr "Stored on"
+
+#: templates/list-aliquot.html:240
+msgid "Déstocké le"
+msgstr "Removed from stock on"
+
+#: templates/list-aliquot.html:251
+msgid "Externalisé"
+msgstr "Externalized"
+
+#: templates/list-msg-analyzer.html:110
+msgid "En cours d'envoi"
+msgstr "Currently sending"
+
+#: templates/list-msg-analyzer.html:113
+msgid "Connexion échouée"
+msgstr "Connection failed"
+
+#: templates/list-msg-analyzer.html:116
+msgid "Message accepté sans erreur"
+msgstr "Message accepted without error"
+
+#: templates/list-msg-analyzer.html:119
+msgid "Erreur dans la requête"
+msgstr "Error in the request"
+
+#: templates/list-msg-analyzer.html:122
+msgid "Rejet complet de la commande"
+msgstr "Complete rejection of the command"
+
+#: templates/connect-management.html:5 templates/connect-management.html:13
+#: templates/list-analyzers.html:56
+msgid "Connect"
+msgstr "Connect"
+
+#: templates/connect-management.html:17
+msgid "Informations sur Connect"
+msgstr "Connect information"
+
+#: templates/connect-management.html:20
+msgid "Plugins chargés"
+msgstr "Loaded Plugins"
+
+#: templates/connect-management.html:25
+msgid "URL du serveur LabBook Connect"
+msgstr "LabBook Connect Server URL"
+
+#: templates/connect-management.html:39
+msgid "Importer un plugin"
+msgstr "Import Plugin"
+
+#: templates/connect-management.html:48
+msgid "Importer un fichier de configuration"
+msgstr "Import configuration file"
+
+#: templates/connect-management.html:57
+msgid "Importer un fichier de mapping"
+msgstr "Import mapping file"
+
+#: templates/connect-management.html:70
+msgid "Recharger les plugins"
+msgstr "Reload Plugins"
+
+#: templates/connect-management.html:105 templates/list-printer.html:179
+msgid "Veuillez sélectionner un fichier"
+msgstr "Please select a file"
+
+#: templates/connect-management.html:151 templates/connect-management.html:179
+#: templates/connect-management.html:204
+msgid "Veuillez saisir une URL."
+msgstr "Please enter a URL."
+
+#: templates/connect-management.html:161
+msgid "Plugins rechargés avec succès"
+msgstr "Plugins successfully reloaded"
+
+#: templates/connect-management.html:169
+msgid "Erreur lors du rechargement des plugins"
+msgstr "Error reloading plugins"
+
+#: templates/connect-management.html:190
+msgid "URL enregistrée avec succès"
+msgstr "URL successfully saved"
+
+#: templates/connect-management.html:194
+msgid "Erreur lors de l'enregistrement de l'URL"
+msgstr "Error saving URL"
+
+#: templates/connect-management.html:213
+msgid "Connexion réussie à LabBook Connect"
+msgstr "Successful connection to LabBook Connect"
+
+#: templates/connect-management.html:215
+msgid "Échec de la connexion à LabBook Connect"
+msgstr "Failed to connect to LabBook Connect"
+
+#: templates/connect-management.html:220
+msgid "Impossible de joindre le serveur LabBook Connect"
+msgstr "Unable to reach LabBook Connect server"
+
+#: templates/det-aliquot.html:328
+msgid "Les coordonnées sont obligatoires."
+msgstr "Contact information is required."
+
+#: templates/det-analyzer.html:44 templates/list-analyzers.html:34
+msgid "Batch"
+msgstr "Batch"
+
+#: templates/det-analyzer.html:137
+msgid "Veuillez sélectionner un analyseur dans la liste."
+msgstr "Please select an analyser from the list."
+
+#: templates/det-req-ext.html:565
+msgid "Erreur lors de la récupération des prélèvements"
+msgstr "Error when retrieving samples"
+
+#: templates/det-req-ext.html:599 templates/det-req-int.html:583
+msgid "Erreur lors de la récupération des produits pathologiques"
+msgstr "Error when recovering pathological products"
+
+#: templates/det-aliquot.html:66 templates/det-storage-box.html:29
+#: templates/enter-result.html:134 templates/list-results.html:100
+#: templates/list-storage-box.html:21
+msgid "Localisation d'accès"
+msgstr "Access location"
+
+#: templates/list-aliquot.html:122 templates/list-aliquot.html:214
+msgid "Imprimer"
+msgstr "Print"
+
+#: templates/det-lite.html:5 templates/det-lite.html:12
+msgid "Définir une configuration LabBook Lite"
+msgstr "Define a LabBook Lite configuration"
+
+#: templates/det-lite.html:40
+msgid "Utilisateurs associés"
+msgstr "Associated users"
+
+#: templates/det-lite.html:43
+msgid "Possibles"
+msgstr "Possible"
+
+#: templates/det-lite.html:59
+msgid "Sélectionnés"
+msgstr "Selected"
+
+#: templates/det-lite.html:147
+msgid "Sélectionner au moins un administrateur et un agent"
+msgstr "Select at least one administrator and one agent"
+
+#: templates/det-printer.html:5 templates/det-printer.html:12
+#: templates/list-aliquot.html:112
+msgid "Imprimante"
+msgstr "Printer"
+
+#: templates/det-printer.html:23 templates/list-printer.html:36
+msgid "Script"
+msgstr "Script"
+
+#: templates/det-printer.html:79
+msgid "Veuillez saisir le nom complet du script."
+msgstr "Please enter the full name of the script."
+
+#: templates/list-printer.html:5 templates/list-printer.html:12
+msgid "Liste des imprimantes"
+msgstr "List of printers"
+
+#: templates/list-printer.html:15
+msgid "Importer un script d'impression"
+msgstr "Import a print script"
+
+#: templates/list-printer.html:49
+msgid "Ajouter une imprimante"
+msgstr "Add a printer"
+
+#: templates/list-printer.html:196
+msgid "Fichier uploadé avec succès"
+msgstr "File uploaded successfully"
+
+#: templates/list-printer.html:207
+msgid "Une erreur est survenue lors du dépôt du fichier"
+msgstr "An error occurred while uploading the file"
+
+#: templates/menu.html:170 templates/menu.html:469
+#: templates/table-rights.html:25
+msgid "Configuration des imprimantes"
+msgstr "Printer configuration"
+
+#: templates/menu.html:251 templates/menu.html:518
+#: templates/table-rights.html:26
+msgid "Configuration LabBook Lite"
+msgstr "LabBook Lite configuration"
+
+#: templates/setting-det-analysis.html:115
+msgid "LabBook Lite"
+msgstr "LabBook Lite"
+
+#: templates/setting-det-role.html:164
+msgid "Ce rôle existe déjà"
+msgstr "This role already exists"
+
+#: templates/setting-lite.html:5 templates/setting-lite.html:12
+msgid "Paramètrage LabBook Lite"
+msgstr "LabBook Lite setup"
+
+#: templates/setting-lite.html:21
+msgid "Login"
+msgstr "Login"
+
+#: templates/setting-lite.html:22
+msgid "Nb utilisateurs"
+msgstr "Number of users"
+
+#: templates/setting-lite.html:33
+msgid "Ajouter une configuration"
+msgstr "Add a configuration"
+
+#: templates/list-printer.html:201
+msgid "Erreur lors de l'upload"
+msgstr "Error during upload"
+
+#: templates/det-lite.html:79
+msgid "Compte rendu avec mot de passe"
+msgstr ""
+
+#: templates/det-lite.html:83
+msgid "Le mot de passe sera le code interne de la fiche patient"
+msgstr ""
+
+#: templates/list-aliquot.html:106
+msgid "Choisir une imprimante"
+msgstr ""
+
+#: templates/list-aliquot.html:107
+msgid "Fermer"
+msgstr ""
+
+#: templates/list-aliquot.html:132 templates/list-aliquot.html:462
+msgid "Impression lancée."
+msgstr ""
+
+#: templates/list-aliquot.html:440
+msgid "Imprimante introuvable."
+msgstr ""
+
+#: templates/list-aliquot.html:446
+msgid "Aucun script d'impression défini."
+msgstr ""
+
+#: templates/list-aliquot.html:465
+msgid "Erreur lors de l'impression."
+msgstr ""
+
