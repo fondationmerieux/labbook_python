@@ -217,7 +217,7 @@ $("#list_doctors_total").html( data_len ) ;
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
                    {% if has_permission("DOCTOR_88") %}
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + data_doctors[i].id_data + "\">{{ _("Editer") }}</a>" ;
+                   menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + data_doctors[i].id_data + "\">{{ _("Editer") }}</a>" ;
                    {% endif %}
 
     {% if has_permission("DOCTOR_89") %}

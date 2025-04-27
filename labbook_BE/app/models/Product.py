@@ -61,7 +61,7 @@ class Product:
               inner join sigl_03_data AS pat ON rec.id_patient = pat.id_data
               inner join sigl_param_num_dos_data AS param_num_rec ON param_num_rec.id_data = 1
               LEFT JOIN sigl_05_data AS ana ON prod.samp_id_ana = ana.id_data
-              inner join sigl_04_data AS req ON prod.samp_id_ana = req.id_data
+              inner join sigl_04_data AS req ON prod.samp_id_ana = req.ref_analyse
               inner join sigl_05_data AS ref ON req.ref_analyse = ref.id_data
               left join sigl_dico_data AS dico ON prod.type_prel = dico.id_data
               {table_cond}

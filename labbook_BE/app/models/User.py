@@ -83,7 +83,7 @@ class User:
                'u.locale as lang, u.email, u.titre as title, u.initiale as initial, u.adresse as address, '
                'u.ddn as birth, u.tel as phone, u.darrive as arrived, u.position, u.cv, u.diplome as diploma, '
                'u.formation as training, u.section, u.deval as last_eval, u.commentaire as comment, '
-               'u.side_account, u.role_type, u.role_pro, d_title.label as title, '
+               'u.side_account, u.role_type, u.role_pro, d_title.label as title_label, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_user_data as u '
                'left join sigl_08_data as pres on pres.id_data=u.side_account '

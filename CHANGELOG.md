@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.5.9] - 2025-04-24
+## [3.5.9] - 2025-04-28
 ### Added
 - pat_email new basic element added for dynamic form patient
 - 2 rights for access to setting of printer and Lite
@@ -23,6 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - add and delete a printer for aliquot sticker
 - import users, wrong control of number of columns
 - 3 rigths for technician qualitican
+- tille of user saved but not well displayed in the form after
+- edit prescriber profile
+- request for "Status of sample in progress" pages
 
 ## [3.5.8] - 2025-04-07
 ### Added

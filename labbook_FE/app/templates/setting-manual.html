@@ -208,8 +208,10 @@ param += tmp_value + ' ] }';
        data: param,
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
-           location.reload() ;
+           showToast("{{ _('Enregistrement réussi') }}");
+               setTimeout(function() {
+                   location.reload();
+               }, 2500);
            },
        error: function(data)
            {
@@ -217,6 +219,36 @@ param += tmp_value + ' ] }';
            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") ;
            }
     } ) ;
+}
+
+function showToast(message) 
+{
+    var toast = document.createElement('div');
+    toast.innerText = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = '#28a745';
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = '0px 0px 10px rgba(0,0,0,0.3)';
+    toast.style.zIndex = 9999;
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.5s';
+    document.body.appendChild(toast);
+    
+    setTimeout(function() {
+        toast.style.opacity = '1';
+    }, 100); // pour déclencher la transition
+
+    setTimeout(function() {
+        toast.style.opacity = '0';
+        setTimeout(function() {
+            toast.remove();
+        }, 500);
+    }, 2000);
 }
 
 function cancel()

@@ -35,7 +35,7 @@
                     <div>					
                         <select id="title" name="title" class="form-select">
                             {% from 'macros.html' import select_civility %}
-                            {{ select_civility(ihm['civility'], args['titre']) }}
+                            {{ select_civility(ihm['civility'], args['user_det']['title']) }}
                         </select>			
                     </div>
                 </div>

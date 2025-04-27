@@ -3160,7 +3160,7 @@ def list_samples():
     json_data = {}
 
     dt_start_req = datetime.now()
-    # Load list records
+    # Load list samples
     try:
         payload = {'link_fam': session['user_link_fam']}
 
