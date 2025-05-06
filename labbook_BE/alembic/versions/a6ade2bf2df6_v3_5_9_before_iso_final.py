@@ -119,7 +119,6 @@ def upgrade():
         conn.execute(text("ALTER TABLE lite_setting ADD COLUMN lite_report_pwd VARCHAR(1) NOT NULL DEFAULT 'N'"))
     except Exception as err:
         print("ERROR add column lite_report_pwd to lite_setting,\n\terr=" + str(err))
-    
 
     print(str(datetime.today()) + " : END of migration v3_5_9_before_iso_final revision=a6ade2bf2df6")
 

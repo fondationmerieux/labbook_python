@@ -1507,10 +1507,10 @@ class Pdf:
 
                                     user = ''
 
-                                    if ret_user['title']:
+                                    if ret_user['title_label']:
                                         Various.useLangDB()
-                                        trans = ret_user['title']
-                                        user += _(trans) + ' '
+                                        trans = ret_user['title_label']
+                                        user += str(_(trans)) + ' '
                                         Various.useLangPDF()
 
                                     if ret_user['lastname'] and ret_user['firstname']:
@@ -1811,10 +1811,10 @@ class Pdf:
                         if user:
                             user = user + ', '
 
-                        if ret_user['title']:
+                        if ret_user['title_label']:
                             Various.useLangDB()
-                            trans = ret_user['title']
-                            user += _(trans) + ' '
+                            trans = ret_user['title_label']
+                            user += str(_(trans)) + ' '
                             Various.useLangPDF()
 
                         if ret_user['lastname'] and ret_user['firstname']:

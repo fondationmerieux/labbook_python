@@ -15,7 +15,7 @@
             <h2 class="page-title page-title-color">
                 <span>{{ _("Saisie de résultats") }}</span><span id="info_pat_title"></span>
             </h2>
-            {% if has_permission("RECORD_17") %}
+            {% if has_permission("RECORD_14") %}
             <form id="benchsheet" autocomplete="off">
                 <div class="d-md-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :&nbsp;</span> 
@@ -185,7 +185,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var user_role    = "{{ session['user_role']|safe }}" ;
-var data_res     = [] ;
+var data_res     = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
 {#var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;#}
 var list_id_ana  = [] ;
 var num_dos      = 0  ;
@@ -1327,7 +1327,7 @@ let boxCoordSpan = aliquotForm.querySelector(".box_coord");
 
 {% include 'js/display_histo.js' %}
 
-{% if has_permission("RECORD_17") %}
+{% if has_permission("RECORD_14") %}
 $( document ).ready( function()
 {
 data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
