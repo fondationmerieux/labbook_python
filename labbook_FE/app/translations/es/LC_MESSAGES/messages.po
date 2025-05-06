@@ -6157,33 +6157,33 @@ msgstr "Error al cargar"
 
 #: templates/det-lite.html:79
 msgid "Compte rendu avec mot de passe"
-msgstr ""
+msgstr "Informe con contraseña"
 
 #: templates/det-lite.html:83
 msgid "Le mot de passe sera le code interne de la fiche patient"
-msgstr ""
+msgstr "La contraseña será el código interno del expediente del paciente."
 
 #: templates/list-aliquot.html:106
 msgid "Choisir une imprimante"
-msgstr ""
+msgstr "Elegir una impresora"
 
 #: templates/list-aliquot.html:107
 msgid "Fermer"
-msgstr ""
+msgstr "Cerca"
 
 #: templates/list-aliquot.html:132 templates/list-aliquot.html:462
 msgid "Impression lancée."
-msgstr ""
+msgstr "Comenzó la impresión."
 
 #: templates/list-aliquot.html:440
 msgid "Imprimante introuvable."
-msgstr ""
+msgstr "Impresora no encontrada."
 
 #: templates/list-aliquot.html:446
 msgid "Aucun script d'impression défini."
-msgstr ""
+msgstr "No hay ningún script de impresión definido."
 
 #: templates/list-aliquot.html:465
 msgid "Erreur lors de l'impression."
-msgstr ""
+msgstr "Error durante la impresión."
 

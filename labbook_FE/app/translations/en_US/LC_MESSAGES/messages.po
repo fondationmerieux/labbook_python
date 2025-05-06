@@ -3265,7 +3265,7 @@ msgstr "Laboratory code"
 
 #: templates/manage-pat-records.html:293
 msgid "Modifier la fiche patient"
-msgstr "Modify the patient record"
+msgstr "Modify the patient form"
 
 #: templates/manage-pat-records.html:551
 msgid "Fusionner"
@@ -3285,7 +3285,7 @@ msgstr "The patient records are the same in the database."
 
 #: templates/manage-pat-records.html:912
 msgid "Il manque une fiche patient pour effectuer la fusion de dossier."
-msgstr "A patient record is missing to perform the file merge."
+msgstr "A patient form is missing to perform the file merge."
 
 #: templates/manage-pat-records.html:916
 msgid "Les dossiers du patient A SUPPRIMER vont être rattachés\\nau patient A CONSERVER.\\nVous confirmez cette fusion ?\\n(Cette action est irréversible)"
@@ -6156,33 +6156,33 @@ msgstr "Error during upload"
 
 #: templates/det-lite.html:79
 msgid "Compte rendu avec mot de passe"
-msgstr ""
+msgstr "Report with password"
 
 #: templates/det-lite.html:83
 msgid "Le mot de passe sera le code interne de la fiche patient"
-msgstr ""
+msgstr "The password will be the internal code of the patient form."
 
 #: templates/list-aliquot.html:106
 msgid "Choisir une imprimante"
-msgstr ""
+msgstr "Choose a printer"
 
 #: templates/list-aliquot.html:107
 msgid "Fermer"
-msgstr ""
+msgstr "Close"
 
 #: templates/list-aliquot.html:132 templates/list-aliquot.html:462
 msgid "Impression lancée."
-msgstr ""
+msgstr "Printing started."
 
 #: templates/list-aliquot.html:440
 msgid "Imprimante introuvable."
-msgstr ""
+msgstr "Printer not found."
 
 #: templates/list-aliquot.html:446
 msgid "Aucun script d'impression défini."
-msgstr ""
+msgstr "No print script defined."
 
 #: templates/list-aliquot.html:465
 msgid "Erreur lors de l'impression."
-msgstr ""
+msgstr "Error during printing."
 

@@ -6156,33 +6156,33 @@ msgstr "ເກີດຄວາມຜິດພາດໃນລະຫວ່າງກ
 
 #: templates/det-lite.html:79
 msgid "Compte rendu avec mot de passe"
-msgstr ""
+msgstr "ລາຍງານດ້ວຍລະຫັດຜ່ານ"
 
 #: templates/det-lite.html:83
 msgid "Le mot de passe sera le code interne de la fiche patient"
-msgstr ""
+msgstr "ລະຫັດຜ່ານຈະເປັນລະຫັດພາຍໃນຂອງໄຟລ໌ຄົນເຈັບ"
 
 #: templates/list-aliquot.html:106
 msgid "Choisir une imprimante"
-msgstr ""
+msgstr "ການເລືອກເຄື່ອງພິມ"
 
 #: templates/list-aliquot.html:107
 msgid "Fermer"
-msgstr ""
+msgstr "ປິດ"
 
 #: templates/list-aliquot.html:132 templates/list-aliquot.html:462
 msgid "Impression lancée."
-msgstr ""
+msgstr "ການພິມເລີ່ມຕົ້ນ."
 
 #: templates/list-aliquot.html:440
 msgid "Imprimante introuvable."
-msgstr ""
+msgstr "ບໍ່ພົບເຄື່ອງພິມ."
 
 #: templates/list-aliquot.html:446
 msgid "Aucun script d'impression défini."
-msgstr ""
+msgstr "ບໍ່ໄດ້ກໍານົດຕົວພິມ."
 
 #: templates/list-aliquot.html:465
 msgid "Erreur lors de l'impression."
-msgstr ""
+msgstr "ຜິດພາດໃນຂະນະທີ່ພິມ."
 

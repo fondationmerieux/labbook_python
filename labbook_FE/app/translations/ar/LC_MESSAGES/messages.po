@@ -6175,33 +6175,33 @@ msgstr "خطأ خلال التحميل"
 
 #: templates/det-lite.html:79
 msgid "Compte rendu avec mot de passe"
-msgstr ""
+msgstr "تقرير مع كلمة مرور"
 
 #: templates/det-lite.html:83
 msgid "Le mot de passe sera le code interne de la fiche patient"
-msgstr ""
+msgstr "ستكون كلمة المرور هي الرمز الداخلي لملف المريض"
 
 #: templates/list-aliquot.html:106
 msgid "Choisir une imprimante"
-msgstr ""
+msgstr "اختر الطابعة"
 
 #: templates/list-aliquot.html:107
 msgid "Fermer"
-msgstr ""
+msgstr "إغلاق"
 
 #: templates/list-aliquot.html:132 templates/list-aliquot.html:462
 msgid "Impression lancée."
-msgstr ""
+msgstr "تم البدء بالطباعة"
 
 #: templates/list-aliquot.html:440
 msgid "Imprimante introuvable."
-msgstr ""
+msgstr "لم يتم العثور على الطابعة"
 
 #: templates/list-aliquot.html:446
 msgid "Aucun script d'impression défini."
-msgstr ""
+msgstr "لم يتم تحديد برنامج نصي للطباعة"
 
 #: templates/list-aliquot.html:465
 msgid "Erreur lors de l'impression."
-msgstr ""
+msgstr "خطأ عند الطباعة"
 
