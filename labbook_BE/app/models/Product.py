@@ -48,7 +48,7 @@ class Product:
                     filter_cond += f' and ref.famille in ({cond_link_fam}) '
 
         req = '''
-              SELECT
+              SELECT DISTINCT
               IF(param_num_rec.periode=1070,
               IF(param_num_rec.format=1072, SUBSTRING(rec.num_dos_mois FROM 7), rec.num_dos_mois),
               IF(param_num_rec.format=1072, SUBSTRING(rec.num_dos_an FROM 7), rec.num_dos_an)) AS rec_num,
@@ -72,7 +72,7 @@ class Product:
 
         req = req.format(table_cond=table_cond, filter_cond=filter_cond, limit=limit)
 
-        # Product.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
+        Product.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
 
         cursor.execute(req, (Constants.cst_isodate,))
 

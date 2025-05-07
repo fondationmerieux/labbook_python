@@ -480,6 +480,8 @@ let id_user   = "{{ session['user_id']|safe}}"        ;
 let firstname = "{{ session['user_firstname']|safe}}" ;
 let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
+let btn_aliquot = "" ;
+
     if ( firstname )
     name = firstname + ' ' + lastname ;
     
@@ -494,7 +496,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
     let id_res  = data[i].id_res  ;
     let id_samp = data[i].id_samp ; 
     let samp_type= data[i].samp_type ;
-    let btn_aliquot = "" ;
+    btn_aliquot = "" ;
 
         // close the previous form
         if ( ref_ana_p != 0 && ref_ana != ref_ana_p )
