@@ -1256,7 +1256,7 @@ class Pdf:
             data['rec']['presc_name'] += str(record['prescriber'])
 
         data['rec']['comm_title'] = _("Renseignements cliniques")
-        data['rec']['comm'] = record['rc'].split("\n")
+        data['rec']['comm'] = record['rc'].split("\n") if record.get('rc') else []
 
         if record['rec_date_vld']:
             data['rec']['date_vld'] = datetime.strftime(record['rec_date_vld'], Constants.cst_dt_HM)

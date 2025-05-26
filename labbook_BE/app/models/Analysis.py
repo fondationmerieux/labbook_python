@@ -912,7 +912,7 @@ class Analysis:
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.rec_date_receipt, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
-               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_num_lite, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
                'rec.num_lit as bed_num, rec.rec_hosp_num, rec.prix as price, rec.remise as discount, '

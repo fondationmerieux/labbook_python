@@ -144,6 +144,9 @@ var param = '{ "by_user":' + by_user + ', ' +
               '"role_text_color":"' + role_text_color + '", ' +
               '"l_rights":' + JSON.stringify(l_rights) + '}' ;
 
+
+
+
     // we process the uniqueness of role_label if it is present on the form
     if ( role_label && $("#role_label").val().trim() !== '' ) 
     {
@@ -233,7 +236,7 @@ var param = {
     $.get( url, param,
     function( data )
     {
-        console.log("DEBUG role table-rights data : " + JSON.stringify(data));
+        // console.log("DEBUG role table-rights data : " + JSON.stringify(data));
 
         if ( data != null )
         {
@@ -270,13 +273,15 @@ var param = {
     $.get( url, param,
     function( data )
     {
-        console.log("DEBUG data : " + JSON.stringify(data));
+        // console.log("DEBUG data : " + JSON.stringify(data));
 
         if ( data != null && data.trim() != '')
         {
             $( "#body_rights_res" ).html( data ) ;
         } 
     } ) ;
+
+$('#role_label_ori').val($('#role_label').val());
 {% endif %}
 } ) ;
 {% endif %}

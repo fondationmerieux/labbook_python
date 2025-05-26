@@ -7146,6 +7146,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # JF => Join File
     # PH => Photo
     # RP => Report
+    # RLT => Report from LabBook Lite
     # DH => DHIS2 spreadsheet
     # EP => EPIDEMIO spreadsheet
     # FP => Form Patient
@@ -7208,6 +7209,26 @@ def download_file(type='', filename='', type_ref='', ref=''):
 
             except requests.exceptions.RequestException as err:
                 log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s', err, url)
+    elif type == 'RLT':
+        filepath = Constants.cst_report
+        generated_name = filename  # UUID
+        filename = f"cr_{ref}.pdf"
+
+        path = os.path.join(filepath, generated_name)
+
+        if os.path.exists(path) and os.stat(path).st_size > 0:
+            try:
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/nb_download/' + generated_name
+                req = requests.post(url, json={})
+
+                if req.status_code != 200:
+                    return False
+
+            except requests.exceptions.RequestException as err:
+                log.error(Logs.fileline() + f' : requests file increase nb download failed, err={err} , url={url}')
+        else:
+            log.error(Logs.fileline() + f' : ERROR RLT file not found or empty → {path}')
+            return redirect(session['server_ext'] + '/' + session['current_page'])
     elif type == 'RPC':
         filepath = Constants.cst_report
         generated_name = filename

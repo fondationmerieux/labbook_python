@@ -396,10 +396,24 @@ class File:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_11_data '
-                           '(id_owner, id_dos, file, file_type, doc_type, date, id_tpl, nb_download) '
-                           'values '
-                           '(%(id_owner)s, %(id_dos)s, UUID(), 259, %(doc_type)s, NOW(), %(id_tpl)s, 0)', params)
+            if 'file' in params and params['file']:
+                # Use provided UUID from params
+                cursor.execute(
+                    'INSERT INTO sigl_11_data '
+                    '(id_owner, id_dos, file, file_type, doc_type, date, id_tpl, nb_download) '
+                    'VALUES '
+                    '(%(id_owner)s, %(id_dos)s, %(file)s, 259, %(doc_type)s, NOW(), %(id_tpl)s, 0)',
+                    params
+                )
+            else:
+                # Let MySQL generate the UUID
+                cursor.execute(
+                    'INSERT INTO sigl_11_data '
+                    '(id_owner, id_dos, file, file_type, doc_type, date, id_tpl, nb_download) '
+                    'VALUES '
+                    '(%(id_owner)s, %(id_dos)s, UUID(), 259, %(doc_type)s, NOW(), %(id_tpl)s, 0)',
+                    params
+                )
 
             File.log.info(Logs.fileline())
 

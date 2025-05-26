@@ -25,12 +25,16 @@ class Record:
             limit = 'LIMIT 4000'
             # filter conditions
             if 'num_rec' in args and args['num_rec']:
-                filter_cond += (' and (rec.num_dos_an LIKE %s or rec.num_dos_mois LIKE %s or rec.rec_num_int LIKE %s) ')
-                params.extend(['%' + args['num_rec'] + '%'] * 3)  # Adding num_rec value for all 3 LIKE conditions
+                filter_cond += (' and (rec.num_dos_an LIKE %s or rec.num_dos_mois LIKE %s or rec.rec_num_int LIKE %s or rec.rec_num_lite LIKE %s) ')
+                params.extend(['%' + args['num_rec'] + '%'] * 4)  # Adding num_rec value for all 3 LIKE conditions
 
             if 'stat_work' in args and args['stat_work']:
-                filter_cond += ' and rec.statut IN (%s) '
-                params.append(str(args['stat_work']).strip('[]'))  # Convert list to string for SQL
+                raw = str(args['stat_work'])
+                values = [int(val.strip()) for val in raw.split(',') if val.strip().isdigit()]
+                if values:
+                    placeholders = ','.join(['%s'] * len(values))
+                    filter_cond += f' and rec.statut IN ({placeholders}) '
+                    params.extend(values)  # Convert list to string for SQL
 
             if 'type_rec' in args and args['type_rec']:
                 if args['type_rec'] == 'C':
@@ -111,7 +115,7 @@ class Record:
                'rec.num_dos_mois), if(param_num_rec.format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) '
                'as num_dos, if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_dos_long, '
                'rec.id_data as id_data, date_format(rec.rec_date_receipt, %s) as rec_date_receipt, pat.code as code, pat.nom as nom, '
-               'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab '
+               'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab, rec.rec_num_lite '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
@@ -178,7 +182,7 @@ class Record:
                'rec.remise_pourcent, rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, '
                'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, rec.rec_hosp_num, '
                'if(param_num_rec.periode=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, rec.rec_date_save, '
-               'd_doc_title.label as prescriber_title, d_remise.label as remise, '
+               'd_doc_title.label as prescriber_title, d_remise.label as remise, rec_num_lite, '
                'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
                'from sigl_02_data as rec '
                'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
@@ -560,8 +564,8 @@ class Record:
 
         req = ('select rec.id_data as id_record, rec.rec_custody, rec.id_patient,  d_type.label as type, rec.rec_num_int, '
                'date_format(rec.rec_date_receipt, %s) as record_date, date_format(rec.rec_date_save, %s) as record_created, '
-               'rec.num_dos_an as rec_num_year, '
-               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
+               'rec.num_dos_an as rec_num_year, rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, '
+               'rec.rec_num_lite, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.rec_hosp_num, '
                'rec.service_interne as internal_service, rec.num_lit as bed_num, rec.prix as price, '

@@ -8,6 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.5.11] - 2025-05-26
+### Added
+- web service for recovery report and data from Lite 
+
+### Changed
+- list of records, filter by record number include rec_num_lite, number start with LT-
+- List of records, hovering over the folder number displays the rec_num_lite and rec_num_int numbers if they exist.
+
+### Fixed
+- edit a role
+- biological and technical work list
+- filter by patient code in list of result
+
 ## [3.5.10] - 2025-05-07
 ### Fixed
 - access to results from a specific record for a prescriber

@@ -2,6 +2,7 @@
 import logging
 import mysql.connector
 
+from datetime import datetime
 from app.models.DB import DB
 from app.models.Logs import Logs
 
@@ -256,7 +257,7 @@ class Lite:
         try:
             req = """
                   SELECT
-                  id_data AS id_data, anonyme AS pat_ano, code AS pat_code_lab, code_patient AS pat_code,
+                  id_data AS id_data, anonyme AS pat_ano, code AS pat_code, code_patient AS pat_code_lab,
                   nom AS pat_name, pat_midname AS pat_midname, nom_jf AS pat_maiden, prenom AS pat_firstname,
                   sexe AS pat_sex, ddn AS pat_birth, ddn_approx AS pat_birth_approx, age AS pat_age,
                   unite AS pat_age_unit, pat_nation AS pat_nationality, pat_resident AS pat_resident,
@@ -317,3 +318,77 @@ class Lite:
         except Exception as e:
             Lite.log.error(Logs.fileline() + f" : ERROR getLiteNationalities() : {str(e)}")
             return []
+
+    @staticmethod
+    def parse_date(date_str):
+        try:
+            return datetime.strptime(date_str, "%d/%m/%Y").date()
+        except Exception as e:
+            Lite.log.error(Logs.fileline() + f" : ERROR parse_date : {str(e)}")
+            return None
+
+    @staticmethod
+    def parse_datetime(datetime_str):
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M"):
+            try:
+                return datetime.strptime(datetime_str, fmt)
+            except (ValueError, TypeError):
+                continue
+        return None
+
+    @staticmethod
+    def insertLiteRecord(rec, new_patient_id, lite_user_id):
+        try:
+            cursor = DB.cursor()
+
+            params = {
+                'id_patient': new_patient_id,
+                'id_owner': 0,
+                'type': rec.get('type'),
+                'rec_date_receipt': Lite.parse_datetime(rec.get('rec_date_receipt')),
+                'med_prescripteur': rec.get('prescriber'),
+                'date_prescription': Lite.parse_date(rec.get('prescription_date')),
+                'rec_num_int': rec.get('rec_num_int') or '',
+                'rec_num_lite': rec.get('rec_num_lite') or '',
+                'rec_lite': rec.get('rec_lite', 0),
+                'statut': rec.get('status', 182),
+                'rec_modified': rec.get('rec_modified', 'N'),
+                'rec_hosp_num': rec.get('rec_hosp_num', ''),
+                'rec_date_save': Lite.parse_datetime(rec.get('rec_date_save')),
+                'rec_date_vld': Lite.parse_datetime(rec.get('rec_date_vld')),
+                'remise': 0,
+                'remise_pourcent': 0.0,
+                'assu_pourcent': 0.0,
+                'a_payer': 0.0,
+                'num_lit': 0,
+                'num_quittance': '',
+                'num_fact': '',
+                'id_colis': '',
+                'rec_custody': rec.get('rec_custody', 'N'),
+                'num_dos_jour': rec.get('num_dos_jour'),
+                'num_dos_mois': rec.get('num_dos_mois'),
+                'num_dos_an': rec.get('num_dos_an')
+            }
+
+            cursor.execute(
+                '''INSERT INTO sigl_02_data (
+                    id_patient, id_owner, type, rec_date_receipt, med_prescripteur, date_prescription,
+                    rec_num_int, rec_num_lite, rec_lite, statut, rec_modified, rec_hosp_num,
+                    rec_date_save, rec_date_vld, remise, remise_pourcent, assu_pourcent, a_payer,
+                    num_lit, num_quittance, num_fact, id_colis, rec_custody,
+                    num_dos_jour, num_dos_mois, num_dos_an
+                ) VALUES (
+                    %(id_patient)s, %(id_owner)s, %(type)s, %(rec_date_receipt)s, %(med_prescripteur)s, %(date_prescription)s,
+                    %(rec_num_int)s, %(rec_num_lite)s, %(rec_lite)s, %(statut)s, %(rec_modified)s, %(rec_hosp_num)s,
+                    %(rec_date_save)s, %(rec_date_vld)s, %(remise)s, %(remise_pourcent)s, %(assu_pourcent)s, %(a_payer)s,
+                    %(num_lit)s, %(num_quittance)s, %(num_fact)s, %(id_colis)s, %(rec_custody)s,
+                    %(num_dos_jour)s, %(num_dos_mois)s, %(num_dos_an)s
+                )''',
+                params
+            )
+
+            return cursor.lastrowid
+
+        except mysql.connector.Error as e:
+            Lite.log.error(Logs.fileline() + f' : SQL insertLiteRecord() error → {e}')
+            return 0

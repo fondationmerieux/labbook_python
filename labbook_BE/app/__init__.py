@@ -244,6 +244,8 @@ api.add_resource(ListComment,           '/services/quality/list/comment/<int:id_
 api.add_resource(LiteSetupList,         '/services/lite/setup/list')
 api.add_resource(LiteSetupDet,          '/services/lite/setup/det/<int:id_item>')
 api.add_resource(LiteSetupLoad,         '/services/lite/setup/load')
+api.add_resource(LiteDataRecovery,      '/services/lite/recovery/data')
+api.add_resource(LiteReportRecovery,    '/services/lite/recovery/report')
 api.add_resource(ManualList,            '/services/quality/manual/list')
 api.add_resource(ManualDet,             '/services/quality/manual/det/<int:id_item>')
 api.add_resource(ManualExport,          '/services/quality/manual/export')

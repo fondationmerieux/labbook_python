@@ -72,7 +72,7 @@ class Product:
 
         req = req.format(table_cond=table_cond, filter_cond=filter_cond, limit=limit)
 
-        Product.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
+        # Product.log.info(Logs.fileline() + ' : DEBUG-TRACE req = ' + str(req))
 
         cursor.execute(req, (Constants.cst_isodate,))
 

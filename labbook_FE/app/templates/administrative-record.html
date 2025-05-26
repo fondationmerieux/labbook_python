@@ -19,6 +19,7 @@
                     <div>
                         <span>{{ _("Dossier") }} :&nbsp;</span> 
                         <span class="rec-num col" id="num_rec"></span>
+                        {% if args['record']['rec_num_lite'].startswith("LT-") %}<span>{{args['record']['rec_num_lite']}}</span>{% endif %}
                     </div>
                     {% if args['record']['rec_num_int'] %}
                     <div class="ms-3 mt-1">
@@ -493,6 +494,10 @@ let i_max = obj.length - 1 ;
         {
         let menu_act = '' ;
 
+            {% if args['record']['rec_num_lite'].startswith("LT-") %}
+            menu_act = '<a class="menu-act-item" onclick="download_file(\'RLT\', \'' + obj[i].file + '\', \'REC\', \'' + {{ args["record"]["rec_num_lite"]|tojson|safe }} + '\');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+
+            {% else %}
             if ( obj[i].nb_download == 0 )
             menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
             else
@@ -504,6 +509,8 @@ let i_max = obj.length - 1 ;
             menu_act = '<a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
             {% endif %}
             }
+
+            {% endif %}
 
             let tpl = '' ;
 

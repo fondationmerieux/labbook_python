@@ -37,8 +37,7 @@ class Result:
 
         # Code patient
         if 'code_pat' in args and args['code_pat']:
-            filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%") '
-            table_cond += ' inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
+            filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%" or pat.code like "%' + str(args['code_pat']) + '%") '
 
         # Without valid result
         if 'valid_res' in args and args['valid_res'] > 0:
@@ -158,10 +157,18 @@ class Result:
         try:
             cursor = DB.cursor()
 
+            # Ensure missing or empty optional fields are explicitly set to None
+            if 'valeur' not in params:
+                params['valeur'] = None
+            if 'res_recovery' not in params:
+                params['res_recovery'] = 'M'
+            if 'obligatoire' not in params:
+                params['obligatoire'] = 4
+
             cursor.execute('insert into sigl_09_data '
-                           '(id_owner, id_analyse, ref_variable, obligatoire) '
+                           '(id_owner, id_analyse, ref_variable, valeur, obligatoire, res_recovery) '
                            'values '
-                           '(%(id_owner)s, %(id_analyse)s, %(ref_variable)s, %(obligatoire)s)', params)
+                           '(%(id_owner)s, %(id_analyse)s, %(ref_variable)s, %(valeur)s, %(obligatoire)s, %(res_recovery)s)', params)
 
             Result.log.info(Logs.fileline())
 
@@ -410,7 +417,7 @@ class Result:
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
                'date_format(rec.rec_date_receipt, %s) as record_date, rec.rec_num_int, rec.num_dos_an as rec_num_year, '
-               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_modified, '
+               'rec.num_dos_jour as rec_num_day, rec.num_dos_mois as rec_num_month, rec.rec_num_lite, rec.rec_modified, '
                'rec.med_prescripteur as id_doctor, doctor.nom as doctor_lname, doctor.prenom as doctor_fname, '
                'date_format(rec.date_prescription, %s) as prescription_date, rec.service_interne as internal_service, '
                'rec.num_lit as bed_num, rec.rec_hosp_num, rec.prix as price, rec.remise as discount, '
