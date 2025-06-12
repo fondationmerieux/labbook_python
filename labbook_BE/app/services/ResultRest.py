@@ -649,3 +649,207 @@ class ResultPrevious(Resource):
 
         self.log.info(Logs.fileline() + ' : ResultPrevious')
         return compose_ret(res_prev, Constants.cst_content_type_json, 200)
+
+
+class ResultFromExt(Resource):
+    log = logging.getLogger('log_services')
+
+    def get(self, id_rec):
+        l_res = {}
+
+        auth = request.authorization
+
+        if not auth:
+            self.log.error(Logs.fileline() + ' : ResultFromExt ERROR auth missing')
+            err = {"error": "Authentication required"}
+            return compose_ret(err, Constants.cst_content_type_json, 401)
+
+        login = auth.username
+        pwd   = auth.password
+
+        user = User.getUserByLogin(login)
+
+        if not user:
+            self.log.error(Logs.fileline() + ' : ResultFromExt login not found')
+            err = {"error": str(login) + " not found"}
+            return compose_ret(err, Constants.cst_content_type_json, 404)
+
+        salt_start = user['password'].find(":")
+        salt = user['password'][salt_start + 1:]
+
+        pwd_db = User.getPasswordDB(pwd, salt)
+
+        ret = User.checkUserAccess(login, pwd_db)
+
+        if ret is True:
+            self.log.info(Logs.fileline() + ' : ResultFromExt role=' + str(user['role_type']) + ' | login=' + str(login))
+            if user['role_type'] == Constants.cst_user_type_api:
+                self.log.info(Logs.fileline() + ' : ResultFromExt API access authorized')
+                l_results = Result.getResultRecord(id_rec, True)
+
+                l_res = {
+                    "record_id": id_rec,
+                    "analysis": []
+                }
+
+                ana_map = {}
+
+                for res in l_results:
+                    id_ana = res['id_ana']
+
+                    if id_ana not in ana_map:
+                        # first occurrence
+                        ana_map[id_ana] = {
+                            "ref_ana": res['ref_ana'],
+                            "id_ana": id_ana,
+                            "name": res['nom'],
+                            "variables": []
+                        }
+
+                    # resolve unit label using dico
+                    unit_label = None
+                    if res['unite']:
+                        dico = Various.getDicoById(res['unite'])
+                        if dico and "label" in dico:
+                            unit_label = dico["label"]
+
+                    # default value
+                    value = res["valeur"]
+
+                    # handle dictionary-typed results
+                    possible_values = None
+                    if res.get("type_resultat"):
+                        dico_type = Various.getDicoById(res["type_resultat"])
+                        if dico_type and dico_type.get("short_label", "").startswith("dico_"):
+                            # replace value by its label
+                            val_dico = Various.getDicoById(value)
+                            if val_dico and "label" in val_dico:
+                                value = val_dico["label"]
+
+                            # Get dictionary entries using class Dict
+                            short_label = dico_type.get("short_label", "")
+
+                            if short_label.startswith("dico_"):
+                                dict_name = short_label[5:]  # remove "dico_"
+                                dict_entries = Dict.getDictDetails(dict_name)
+                            possible_values = []
+                            for entry in dict_entries:
+                                possible_values.append({
+                                    "id": entry["id_data"],
+                                    "label": entry["label"]
+                                })
+
+                    var_data = {
+                        "id_res": res["id_res"],
+                        "id_var": res["id_data"],
+                        "code_var": res["code_var"],
+                        "label": res["libelle"],
+                        "value": value,
+                        "unit": unit_label
+                    }
+
+                    if possible_values:
+                        var_data["possible_values"] = possible_values
+
+                    ana_map[id_ana]["variables"].append(var_data)
+
+                l_res["analysis"] = list(ana_map.values())
+            else:
+                self.log.info(Logs.fileline() + ' : ResultFromExt role type not authorized')
+                err = {"error": str(login) + " not authorized"}
+                return compose_ret(err, Constants.cst_content_type_json, 401)
+
+        elif ret is False:
+            self.log.info(Logs.fileline() + ' : ResultFromExt not authorized ' + str(login))
+            err = {"error": str(login) + " not authorized"}
+            return compose_ret(err, Constants.cst_content_type_json, 401)
+        else:
+            self.log.error(Logs.fileline() + ' : ResultFromExt ERROR checkUserAccess')
+            err = {"error": "checkUserAccess is in error"}
+            return compose_ret(err, Constants.cst_content_type_json, 500)
+
+        self.log.info(Logs.fileline() + ' : ResultFromExt id_rec=' + str(id_rec))
+        return compose_ret(l_res, Constants.cst_content_type_json, 200)
+
+    def post(self, id_rec):
+        auth = request.authorization
+
+        if not auth:
+            self.log.error(Logs.fileline() + ' : ResultFromExt ERROR auth missing')
+            err = {"error": "Authentication required"}
+            return compose_ret(err, Constants.cst_content_type_json, 401)
+
+        login = auth.username
+        pwd = auth.password
+
+        args = request.get_json()
+        self.log.info(Logs.fileline() + ' : DEBUG args= ' + str(args))
+
+        if 'list_results' not in args:
+            self.log.error(Logs.fileline() + ' : ResultFromExt ERROR args missing')
+            err = {"error": "list_results missing"}
+            return compose_ret(err, Constants.cst_content_type_json, 400)
+
+        user = User.getUserByLogin(login)
+        if not user:
+            self.log.error(Logs.fileline() + ' : ResultFromExt login not found')
+            err = {"error": str(login) + " not found"}
+            return compose_ret(err, Constants.cst_content_type_json, 404)
+
+        salt_start = user['password'].find(":")
+        salt = user['password'][salt_start + 1:]
+        pwd_db = User.getPasswordDB(pwd, salt)
+
+        ret = User.checkUserAccess(login, pwd_db)
+
+        if ret is not True:
+            self.log.info(Logs.fileline() + ' : ResultFromExt not authorized ' + str(login))
+            err = {"error": str(login) + " not authorized"}
+            return compose_ret(err, Constants.cst_content_type_json, 401)
+
+        if user['role_type'] != Constants.cst_user_type_api:
+            self.log.info(Logs.fileline() + ' : ResultFromExt role type not authorized')
+            err = {"error": str(login) + " not authorized"}
+            return compose_ret(err, Constants.cst_content_type_json, 401)
+
+        self.log.info(Logs.fileline() + ' : ResultFromExt API access authorized')
+
+        updated = []
+        errors = []
+
+        for res in args['list_results']:
+            id_res = res.get("id_res")
+            value = res.get("value")
+
+            if id_res is None or value is None:
+                errors.append({"id_res": id_res, "error": "Missing id_res or value"})
+                continue
+
+            try:
+                ok = Result.updateResult(id_data=id_res, id_owner=user['id_data'], valeur=value)
+                if ok is True:
+                    updated.append(str(id_res))
+                else:
+                    errors.append({"id_res": id_res, "error": "updateResult failed"})
+            except Exception as e:
+                self.log.error(Logs.fileline() + f" : Exception while updating result {id_res} - {e}")
+                errors.append({"id_res": id_res, "error": str(e)})
+
+        # Composition du retour en dehors de compose_ret
+        response_data = {
+            "record_id": id_rec,
+            "updated": updated,
+            "errors": errors
+        }
+
+        if updated and errors:
+            status_code = 207  # partial success
+        elif updated and not errors:
+            status_code = 200  # full success
+        elif errors and not updated:
+            status_code = 400  # full failure (client-side issue)
+        else:
+            status_code = 500  # unexpected, should not occur
+
+        self.log.info(Logs.fileline() + f' : ResultFromExt updated={updated} errors={errors}')
+        return compose_ret(response_data, Constants.cst_content_type_json, status_code)

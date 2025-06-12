@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.5.12] - 2025-06-12
+### Added
+- external webservice for enter result, GET and POST added in swagger page too
+
+### Changed
+- rules about patient code form Lite (same code + age + sex => update else insert)
+- update dump sql demo
+
 ## [3.5.11] - 2025-05-26
 ### Added
 - web service for recovery report and data from Lite 

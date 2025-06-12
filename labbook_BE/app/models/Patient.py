@@ -343,34 +343,34 @@ class Patient:
             return 0
 
     @staticmethod
-    def newPatientCode():
+    def newPatientCode(length=5, prefix=""):
         import random
 
-        # Format ABCD3, 4 letters + 1 digit
+        # Format by defaut 5 alphanumeric characters without zero
 
         chars   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         numbers = "123456789"
-        length  = 4
-        ret     = 'START'
+        pool = chars + numbers
 
+        # Ensure minimum code length of 5 characters
+        length = max(5, length)
+
+        ret = 'START'
         while ret:
             code = ""
 
-            for i in range(length):
-                code += random.choice(chars)  # nosec B311
+            # Generate alphanumeric code of specified length
+            for _ in range(length):
+                code += random.choice(pool)  # nosec B311
 
-            for i in range(1):
-                code += random.choice(numbers)  # nosec B311
+            full_code = prefix + code
 
-            # check if code not already exist in DB
+            # Check for uniqueness in the database
             cursor = DB.cursor()
-
-            req = ('select code '
-                   'from sigl_03_data '
-                   'where code=%s')
-
-            cursor.execute(req, (code,))
-
+            cursor.execute(
+                'select code from sigl_03_data where code=%s',
+                (full_code,)
+            )
             ret = cursor.fetchone()
 
         return code

@@ -20,6 +20,8 @@ tags:
   description: web services about patients
 - name: record
   description: web services about records
+- name: result
+  description: web services about results
 - name: user
   description: web services about users
 paths:
@@ -705,6 +707,153 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Record'
+  /external/result/{id_rec}:
+    get:
+      tags:
+        - result
+      summary: Get record results and variables for external usage
+      description: >
+        Return the list of requested analyses for a record, with their variables,
+        current values, units (as label), and possible values if the variable type is a dictionary.
+      operationId: ResultFromExtGet
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: id_rec
+          in: path
+          required: true
+          description: Record ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  record_id:
+                    type: integer
+                    description: ID of the requested record
+                  analysis:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ref_ana:
+                          type: string
+                          description: Analysis reference code
+                        id_ana:
+                          type: integer
+                          description: Internal ID of the analysis
+                        name:
+                          type: string
+                          description: Analysis name
+                        variables:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id_res:
+                                type: integer
+                                description: Result ID
+                              id_var:
+                                type: integer
+                                description: Variable ID
+                              code_var:
+                                type: string
+                                description: Technical variable code
+                              label:
+                                type: string
+                                description: Variable label
+                              value:
+                                type: string
+                                description: Current value (label if dictionary)
+                              unit:
+                                type: string
+                                nullable: true
+                                description: Unit label
+                              possible_values:
+                                type: array
+                                nullable: true
+                                description: List of possible values if variable is dictionary-based
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Dictionary entry ID
+                                    label:
+                                      type: string
+                                      description: Dictionary entry label
+        401:
+          description: Unauthorized – invalid or missing authentication
+        404:
+          description: Record not found or access not authorized
+    post:
+      tags:
+        - result
+      summary: Post analysis results to a record
+      description: >
+        Accepts a list of result values to update for a given record ID.
+      operationId: ResultFromExtPost
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: id_rec
+          in: path
+          required: true
+          description: Record ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                list_results:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id_res:
+                        type: integer
+                        description: ID of the result to update
+                      value:
+                        type: string
+                        description: New value for the result
+      responses:
+        200:
+          description: All results successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id_res:
+                          type: integer
+                        error:
+                          type: string
+        207:
+          description: Partial success – some results updated, some failed
+        400:
+          description: Missing or invalid parameters
+        401:
+          description: Unauthorized – invalid or missing authentication
+        500:
+          description: Internal error during update
   /user/list:
     post:
       tags:

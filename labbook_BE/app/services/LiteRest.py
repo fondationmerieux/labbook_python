@@ -513,7 +513,7 @@ class LiteDataRecovery(Resource):
             self.log.error(Logs.fileline() + f' : LiteDataRecovery ERROR invalid password for login "{login}"')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
-        self.log.info(Logs.fileline() + ' : DEBUG args = ' + str(args))
+        self.log.info(Logs.fileline() + ' : DEBUG LiteDataRecovery args = ' + str(args))
 
         # 1 - insert new patients and update existing ones (same code)
         patient_id_map = {}
@@ -567,16 +567,31 @@ class LiteDataRecovery(Resource):
                     try:
                         pat['ddn'] = datetime.strptime(pat['pat_birth'], "%Y-%m-%d").date()
                     except Exception as e:
-                        self.log.warning(Logs.fileline() + f' : Invalid patient birth date → {e}')
+                        self.log.warning(Logs.fileline() + f' : LiteDataRecovery Invalid patient birth date → {e}')
                         pat['ddn'] = None
                 else:
                     pat['ddn'] = None
 
                 if existing:
-                    pat['id'] = existing['id_data']
-                    Patient.updatePatient(**pat)
-                    updated += 1
-                    new_id = existing['id_data']
+                    same_age = str(existing['age']) == str(pat.get('pat_age'))
+                    same_sex = str(existing['sexe']) == str(pat.get('pat_sex'))
+
+                    if same_age and same_sex:
+                        # update patient
+                        pat['id'] = existing['id_data']
+                        Patient.updatePatient(**pat)
+                        updated += 1
+                        new_id = existing['id_data']
+                    else:
+                        # create new patient with new code
+                        try:
+                            new_code = Patient.newPatientCode(6, "LT")
+                            pat['code'] = new_code
+                            new_id = Patient.insertPatient(**pat)
+                            inserted += 1
+                        except Exception as e:
+                            self.log.error(Logs.fileline() + f' : LiteDataRecovery Failed to insert duplicate patient with new code → {e}')
+                            continue
                 else:
                     new_id = Patient.insertPatient(**pat)
                     inserted += 1
@@ -585,9 +600,9 @@ class LiteDataRecovery(Resource):
                     patient_id_map[old_id] = new_id
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Patient insert/update error → {e}')
+                self.log.error(Logs.fileline() + f' : LiteDataRecovery Patient insert/update error → {e}')
 
-        self.log.info(Logs.fileline() + f' : Patients processed → {inserted} inserted, {updated} updated')
+        self.log.info(Logs.fileline() + f' : LiteDataRecovery Patients processed → {inserted} inserted, {updated} updated')
 
         # 2 - insert records
         records = args.get('records', [])
@@ -602,7 +617,7 @@ class LiteDataRecovery(Resource):
 
                 if not new_pat_id:
                     log_id = rec.get("rec_num_lite") or rec.get("rec_num_int")
-                    self.log.warning(Logs.fileline() + f' : Skipping record {log_id} → unknown patient id {old_pat_id}')
+                    self.log.warning(Logs.fileline() + f' : LiteDataRecovery Skipping record {log_id} → unknown patient id {old_pat_id}')
                     record_skipped += 1
                     continue
 
@@ -638,21 +653,21 @@ class LiteDataRecovery(Resource):
                 # Step 2 - Save these into sigl_pj_sequence
                 ret = Record.insertPjSequence("numdosjour", f"{day_prefix}%04d", day_suffix)
                 if ret == 0:
-                    self.log.warning(Logs.fileline() + " : PJSequence jour duplicate, retrying")
+                    self.log.warning(Logs.fileline() + " : LiteDataRecovery PJSequence jour duplicate, retrying")
                     day_suffix += 1
                     num_dos_jour = f"{day_prefix}{day_suffix:04d}"
                     Record.insertPjSequence("numdosjour", f"{day_prefix}%04d", day_suffix)
 
                 ret = Record.insertPjSequence("numdosmois", f"{month_prefix}%04d", month_suffix)
                 if ret == 0:
-                    self.log.warning(Logs.fileline() + " : PJSequence mois duplicate, retrying")
+                    self.log.warning(Logs.fileline() + " : LiteDataRecovery PJSequence mois duplicate, retrying")
                     month_suffix += 1
                     num_dos_mois = f"{month_prefix}{month_suffix:04d}"
                     Record.insertPjSequence("numdosmois", f"{month_prefix}%04d", month_suffix)
 
                 ret = Record.insertPjSequence("numdosan", f"{year_prefix}%06d", year_suffix)
                 if ret == 0:
-                    self.log.warning(Logs.fileline() + " : PJSequence an duplicate, retrying")
+                    self.log.warning(Logs.fileline() + " : LiteDataRecovery PJSequence an duplicate, retrying")
                     year_suffix += 1
                     num_dos_an = f"{year_prefix}{year_suffix:06d}"
                     Record.insertPjSequence("numdosan", f"{year_prefix}%06d", year_suffix)
@@ -668,9 +683,9 @@ class LiteDataRecovery(Resource):
                     record_inserted += 1
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Record insert error → {e}')
+                self.log.error(Logs.fileline() + f' : LiteDataRecovery Record insert error → {e}')
 
-        self.log.info(Logs.fileline() + f' : Records processed → {record_inserted} inserted, {record_skipped} skipped')
+        self.log.info(Logs.fileline() + f' : LiteDataRecovery Records processed → {record_inserted} inserted, {record_skipped} skipped')
 
         # 3 - insert analysis request
         analysis_requests = args.get('analysis_request', [])
@@ -684,7 +699,7 @@ class LiteDataRecovery(Resource):
                 new_record_id = record_id_map.get(old_record_id)
 
                 if not new_record_id:
-                    self.log.warning(Logs.fileline() + f' : Skipping analysis request → unknown record id {old_record_id}')
+                    self.log.warning(Logs.fileline() + f' : LiteDataRecovery Skipping analysis request → unknown record id {old_record_id}')
                     request_skipped += 1
                     continue
 
@@ -705,9 +720,9 @@ class LiteDataRecovery(Resource):
                     request_inserted += 1
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Analysis request insert error → {e}')
+                self.log.error(Logs.fileline() + f' : LiteDataRecovery Analysis request insert error → {e}')
 
-        self.log.info(Logs.fileline() + f' : Analysis requests processed → {request_inserted} inserted, {request_skipped} skipped')
+        self.log.info(Logs.fileline() + f' : LiteDataRecovery Analysis requests processed → {request_inserted} inserted, {request_skipped} skipped')
 
         # 4 - insert analysis samples
         samples = args.get('samples', [])
@@ -721,7 +736,7 @@ class LiteDataRecovery(Resource):
                 new_rec_id = record_id_map.get(old_rec_id)
 
                 if not new_rec_id:
-                    self.log.warning(Logs.fileline() + f' : Skipping sample with old record ID {old_rec_id} → unknown record')
+                    self.log.warning(Logs.fileline() + f' : LiteDataRecovery Skipping sample with old record ID {old_rec_id} → unknown record')
                     sample_skipped += 1
                     continue
 
@@ -747,9 +762,9 @@ class LiteDataRecovery(Resource):
                     sample_inserted += 1
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Sample insert error → {e}')
+                self.log.error(Logs.fileline() + f' : LiteDataRecovery Sample insert error → {e}')
 
-        self.log.info(Logs.fileline() + f' : Samples processed → {sample_inserted} inserted, {sample_skipped} skipped')
+        self.log.info(Logs.fileline() + f' : LiteDataRecovery Samples processed → {sample_inserted} inserted, {sample_skipped} skipped')
 
         # 5 - insert analysis results
         results = args.get('analysis_result', [])
@@ -763,7 +778,7 @@ class LiteDataRecovery(Resource):
                 new_req_id = request_id_map.get(old_req_id)
 
                 if not new_req_id:
-                    self.log.warning(Logs.fileline() + f' : Skipping result with old request ID {old_req_id} → unknown analysis request')
+                    self.log.warning(Logs.fileline() + f' : LiteDataRecovery Skipping result with old request ID {old_req_id} → unknown analysis request')
                     result_skipped += 1
                     continue
 
@@ -782,9 +797,9 @@ class LiteDataRecovery(Resource):
                     result_inserted += 1
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Result insert error → {e}')
+                self.log.error(Logs.fileline() + f' : LiteDataRecovery Result insert error → {e}')
 
-        self.log.info(Logs.fileline() + f' : Results processed → {result_inserted} inserted, {result_skipped} skipped')
+        self.log.info(Logs.fileline() + f' : LiteDataRecovery Results processed → {result_inserted} inserted, {result_skipped} skipped')
 
         # 6 - insert analysis validations
         validations = args.get('analysis_validation', [])
@@ -797,7 +812,7 @@ class LiteDataRecovery(Resource):
                 new_result_id = result_id_map.get(old_result_id)
 
                 if not new_result_id:
-                    self.log.warning(Logs.fileline() + f' : Skipping validation → unknown result ID {old_result_id}')
+                    self.log.warning(Logs.fileline() + f' : LiteDataRecovery Skipping validation → unknown result ID {old_result_id}')
                     validation_skipped += 1
                     continue
 
@@ -816,9 +831,9 @@ class LiteDataRecovery(Resource):
                 validation_inserted += 1
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Validation insert error → {e}')
+                self.log.error(Logs.fileline() + f' : LiteDataRecovery Validation insert error → {e}')
 
-        self.log.info(Logs.fileline() + f' : Validations processed → {validation_inserted} inserted, {validation_skipped} skipped')
+        self.log.info(Logs.fileline() + f' : LiteDataRecovery Validations processed → {validation_inserted} inserted, {validation_skipped} skipped')
 
         # 7 - convert pdf report and insert entry in DB for each PDF report
         report_id_map = {}
@@ -830,14 +845,14 @@ class LiteDataRecovery(Resource):
                 new_rec_id = record_id_map.get(old_rec_id)
 
                 if not new_rec_id:
-                    self.log.warning(Logs.fileline() + f" : Skipping PDF → unknown recordId {old_rec_id}")
+                    self.log.warning(Logs.fileline() + f" : LiteDataRecovery Skipping PDF → unknown recordId {old_rec_id}")
                     continue
 
                 filename = pdf.get("filename")  # ex: cr_LT-202505250001.pdf
                 file_path = os.path.join(Constants.cst_upload, filename)
 
                 if not os.path.exists(file_path):
-                    self.log.warning(Logs.fileline() + f" : PDF file not found → {filename}")
+                    self.log.warning(Logs.fileline() + f" : LiteDataRecovery PDF file not found → {filename}")
                     continue
 
                 # generate UUID and rename file
@@ -858,12 +873,12 @@ class LiteDataRecovery(Resource):
                 report_id = File.insertFileReport(**params)
                 if report_id:
                     report_id_map[filename] = report_id
-                    self.log.info(Logs.fileline() + f" : PDF report linked as {generated_uuid}")
+                    self.log.info(Logs.fileline() + f" : LiteDataRecovery PDF report linked as {generated_uuid}")
                 else:
-                    self.log.warning(Logs.fileline() + f" : Failed to insert report for {filename}")
+                    self.log.warning(Logs.fileline() + f" : LiteDataRecovery Failed to insert report for {filename}")
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f" : insertFileReport error → {e}")
+                self.log.error(Logs.fileline() + f" : LiteDataRecovery insertFileReport error → {e}")
 
         # Clean up leftover cr_LT*.pdf files in upload directory
         try:
@@ -874,11 +889,11 @@ class LiteDataRecovery(Resource):
                 if leftover.startswith("cr_LT") and leftover.endswith(".pdf") and leftover not in inserted_files:
                     try:
                         os.remove(os.path.join(Constants.cst_upload, leftover))
-                        self.log.info(Logs.fileline() + f" : Removed leftover file {leftover}")
+                        self.log.info(Logs.fileline() + f" : LiteDataRecovery Removed leftover file {leftover}")
                     except Exception as e:
-                        self.log.warning(Logs.fileline() + f" : Could not delete file {leftover} → {e}")
+                        self.log.warning(Logs.fileline() + f" : LiteDataRecovery Could not delete file {leftover} → {e}")
         except Exception as e:
-            self.log.error(Logs.fileline() + f" : Cleanup error in cst_upload → {e}")
+            self.log.error(Logs.fileline() + f" : LiteDataRecovery Cleanup error in cst_upload → {e}")
 
         self.log.info(Logs.fileline() + f' : LiteDataRecovery OK for login "{login}"')
         return compose_ret({'success': True}, Constants.cst_content_type_json)
@@ -925,10 +940,10 @@ class LiteReportRecovery(Resource):
                 with open(pdf_path, 'wb') as f:
                     f.write(base64.b64decode(content_b64))
 
-                self.log.info(Logs.fileline() + f' : Saved PDF {filename} for login "{login}"')
+                self.log.info(Logs.fileline() + f' : LiteReportRecovery Saved PDF {filename} for login "{login}"')
 
             except Exception as e:
-                self.log.error(Logs.fileline() + f' : Error saving PDF {filename} → {e}')
+                self.log.error(Logs.fileline() + f' : LiteReportRecovery Error saving PDF {filename} → {e}')
                 return compose_ret({'success': False,
                                     'error': f"Erreur lors de la sauvegarde du fichier : {filename}"},
                                     Constants.cst_content_type_json, 500)
