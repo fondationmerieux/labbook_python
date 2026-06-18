@@ -318,8 +318,8 @@ def check_init_version():
         session.modified = True
         return None
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests check init version failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests check init version failed, url=%s', url)
         session['labbook_BE_OK'] = False
         session.modified = True
         return None
@@ -394,8 +394,8 @@ def get_init_var(be_headers=None):
             session['labbook_BE_OK'] = False
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests auto_logout failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests auto_logout failed, url=%s', url)
 
     # Load default language
     try:
@@ -411,8 +411,8 @@ def get_init_var(be_headers=None):
             session['lang_pdf'] = ret_json['value']
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests default_language failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests default_language failed, url=%s', url)
 
     # Load db language
     try:
@@ -428,8 +428,8 @@ def get_init_var(be_headers=None):
             session['lang_db'] = ret_json['value']
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests db_language failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests db_language failed, url=%s', url)
 
     # Load stock setting
     try:
@@ -446,8 +446,8 @@ def get_init_var(be_headers=None):
             session['stock_expir_alert']   = ret_json['sos_expir_alert']
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests default_language failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests default_language failed, url=%s', url)
 
     # Load form setting
     try:
@@ -465,8 +465,8 @@ def get_init_var(be_headers=None):
                 session[fos['fos_ref']] = fos['fos_stat']
                 session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests form setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests form setting failed, url=%s', url)
 
     # Load setting report
     try:
@@ -483,8 +483,8 @@ def get_init_var(be_headers=None):
             session['report_pwd'] = (json_data.get('report_pwd') or 'N').strip().upper()
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests setting report failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests setting report failed, url=%s', url)
 
     try:
         path = os.path.join(Constants.cst_io, 'amicare.toml')
@@ -499,8 +499,8 @@ def get_init_var(be_headers=None):
 
         session.modified = True
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load amicare.toml failed err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load amicare.toml failed')
         session['amicare'] = {}
 
     log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var ends')
@@ -549,8 +549,8 @@ def get_user_data(login, be_headers=None):
             session['text_color']     = json['pro_text_color']
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user login failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user login failed, url=%s', url)
         return None
 
     # get all rights for this user
@@ -571,8 +571,8 @@ def get_user_data(login, be_headers=None):
 
         # log.info(Logs.fileline() + ' : DEBUG l_user_rights = ' + str(session['l_user_rights']))
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list of user rights failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list of user rights failed, url=%s', url)
         return None
 
     # Get analyzes families linked functionnal unit for this user only for all secretary, technician and biologist
@@ -597,8 +597,8 @@ def get_user_data(login, be_headers=None):
             else:
                 session['user_link_fam'] = []
                 session.modified = True
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests setting link user failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests setting link user failed, url=%s', url)
             return None
     else:
         session['user_link_fam'] = []
@@ -627,8 +627,8 @@ def get_software_settings(be_headers=None):
             session['samp_regex'] = json['rstg_samp_regex']
             session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests software settings failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests software settings failed, url=%s', url)
 
     return None
 
@@ -916,8 +916,8 @@ def oauth_callback():
     try:
         req = requests.post(token_url, data=data, timeout=5)
         log.info(Logs.fileline() + " : DEBUG OAUTH_CB token_post_done status=" + str(req.status_code))
-    except requests.RequestException as e:
-        log.error(Logs.fileline() + f" : OAUTH token POST raised exception: {e}")
+    except requests.RequestException:
+        log.exception(Logs.fileline() + f" : OAUTH token POST raised exception")
         req = type('R', (), {'status_code': 500, 'json': lambda: {}})()
 
     if req.status_code != 200:
@@ -1115,7 +1115,7 @@ def homepage(login=''):
                 json_data['stat_backup'] = ret[0]
                 json_data['date_backup'] = ret[1]
     except Exception:
-        log.error(Logs.fileline() + ' : cant read ' + path)
+        log.exception(Logs.fileline() + ' : cant read ' + path)
 
     # difference between now and last_backup_ok
     try:
@@ -1137,8 +1137,8 @@ def homepage(login=''):
                 'date_backup_ok': 'undefined',
                 'is_older_than_24h': False
             }
-    except Exception as err:
-        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok , err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok ')
 
     # Load pref_quality
     try:
@@ -1158,8 +1158,8 @@ def homepage(login=''):
                 session['pref_quality'] = 0
                 session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests pref_quality failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests pref_quality failed, url=%s', url)
 
     # Load pref_bill
     try:
@@ -1179,8 +1179,8 @@ def homepage(login=''):
                 session['pref_bill'] = 0
                 session.modified = True
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests pref_bill failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests pref_bill failed, url=%s', url)
 
     if 'user_role' not in session:
         log.info(Logs.fileline() + ' : TRACE Labbook_FE homepage no user_role in session => Login')
@@ -1231,8 +1231,8 @@ def homepage(login=''):
             if req.status_code == 200:
                 json_data['nb_emer'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests count ermergency failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests count ermergency failed, url=%s', url)
 
         # Load nb_rec_tech
         try:
@@ -1246,8 +1246,8 @@ def homepage(login=''):
             if req.status_code == 200:
                 json_data['nb_rec_tech'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests count technician records failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests count technician records failed, url=%s', url)
 
         # Load nb_rec_bio
         try:
@@ -1261,8 +1261,8 @@ def homepage(login=''):
             if req.status_code == 200:
                 json_data['nb_rec_bio'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests count biologist records failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests count biologist records failed, url=%s', url)
 
         # Load nb_rec
         try:
@@ -1278,8 +1278,8 @@ def homepage(login=''):
             else:
                 log.warning(Logs.fileline() + f' : unexpected status {req.status_code} for URL {url}')
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests count records failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests count records failed, url=%s', url)
 
         # Load nb_rec_today
         try:
@@ -1293,8 +1293,8 @@ def homepage(login=''):
             if req.status_code == 200:
                 json_data['nb_rec_today'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests count today validated records failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests count today validated records failed, url=%s', url)
 
         # Load last_record
         try:
@@ -1308,8 +1308,8 @@ def homepage(login=''):
             if req.status_code == 200:
                 json_data['record'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests last records failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests last records failed, url=%s', url)
 
         # Load list of stock for display alert
         try:
@@ -1323,8 +1323,8 @@ def homepage(login=''):
             if req.status_code == 200:
                 json_data['stock'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests stock list failed, url=%s', url)
 
         dt_stop_req = datetime.now()
         dt_time_req = dt_stop_req - dt_start_req
@@ -1371,8 +1371,8 @@ def setting_roles_and_rights():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests role list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests role list failed, url=%s', url)
 
     log.info(Logs.fileline() + ' : TRACE Labbook setting roles-and-rights json_data = ' + str(json_data))
 
@@ -1414,8 +1414,8 @@ def setting_det_role(role_id=0):
         if req.status_code == 200:
             json_ihm['user_role'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
 
     if role_id > 0:
         # Load user details
@@ -1426,8 +1426,8 @@ def setting_det_role(role_id=0):
             if req.status_code == 200:
                 json_data = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user role det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests user role det failed, url=%s', url)
 
     json_data['by_user'] = session['user_id']
     json_data['user_id'] = 0
@@ -1467,8 +1467,8 @@ def role_table_rights():
         if req.status_code == 200:
             l_rights = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user list rights failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user list rights failed, url=%s', url)
 
     # log.info(Logs.fileline() + ' : DEBUG l_rights = ' + str(l_rights))
 
@@ -1510,8 +1510,8 @@ def setting_user_rights(id_user=0):
         if req.status_code == 200:
             json_ihm['user_role'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
 
     if id_user > 0:
         # Load role for this user
@@ -1522,8 +1522,8 @@ def setting_user_rights(id_user=0):
             if req.status_code == 200:
                 json_data = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user role det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests user role det failed, url=%s', url)
 
     json_data['by_user'] = session['user_id']
     json_data['id_user'] = id_user
@@ -1561,8 +1561,8 @@ def user_table_rights():
         if req.status_code == 200:
             l_rights = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user list rights failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user list rights failed, url=%s', url)
 
     # log.info(Logs.fileline() + ' : DEBUG l_rights = ' + str(l_rights))
 
@@ -1602,8 +1602,8 @@ def setting_users():
         if req.status_code == 200:
             json_ihm['user_role'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
 
     # Load list users
     try:
@@ -1617,8 +1617,8 @@ def setting_users():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user list failed, url=%s', url)
 
     return render_template('setting-users.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -1665,8 +1665,8 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
                 json_ihm['user_role']  = req.json()
                 json_data['role_type'] = 'Z'
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
     else:
         # Load list of user role
         try:
@@ -1682,8 +1682,8 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
             if req.status_code == 200:
                 json_ihm['user_role'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
 
     # Load civility
     try:
@@ -1697,8 +1697,8 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
         if req.status_code == 200:
             json_ihm['civility'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests civility list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests civility list failed, url=%s', url)
 
     # Load sections
     try:
@@ -1712,8 +1712,8 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
         if req.status_code == 200:
             json_ihm['sections'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
 
     if user_id > 0:
         # Load user details
@@ -1728,8 +1728,8 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
             if req.status_code == 200:
                 json_data = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests user det failed, url=%s', url)
 
     json_data['user_id'] = user_id
 
@@ -1845,8 +1845,8 @@ def setting_dicts():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests dicts list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests dicts list failed, url=%s', url)
 
     return render_template('setting-dicts.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -1898,8 +1898,8 @@ def setting_det_dict(dict_name='', id_dict=0):
 
                 json_data['data_last_id'] = i
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests dict det failed, url=%s', url)
     elif id_dict > 0:
         # Load dict details
         try:
@@ -1923,8 +1923,8 @@ def setting_det_dict(dict_name='', id_dict=0):
 
                 json_ihm['readonly'] = 'Y'
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests dict det by id failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests dict det by id failed, url=%s', url)
     else:
         json_data['data_values'] = []
 
@@ -1966,8 +1966,8 @@ def setting_analyzes():
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load products
     try:
@@ -1981,8 +1981,8 @@ def setting_analyzes():
         if req.status_code == 200:
             json_ihm['products'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
 
     # Load list analyzes
     try:
@@ -1996,8 +1996,8 @@ def setting_analyzes():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analyzes list failed, url=%s', url)
 
     return render_template('setting-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2034,8 +2034,8 @@ def list_analyzers():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analyzers list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analyzers list failed, url=%s', url)
 
     return render_template('list-analyzers.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2075,8 +2075,8 @@ def det_analyzer(id_analyzer=0):
         if req.status_code == 200:
             json_data['connect'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests get connect setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests get connect setting failed, url=%s', url)
 
     # Load list of analyzers
     try:
@@ -2090,8 +2090,8 @@ def det_analyzer(id_analyzer=0):
         if req.status_code == 200:
             json_ihm['analyzers'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list of analyzers files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list of analyzers files failed, url=%s', url)
 
     if id_analyzer > 0:
         # Load analyzer details
@@ -2106,8 +2106,8 @@ def det_analyzer(id_analyzer=0):
             if req.status_code == 200:
                 json_data['analyzer'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests analyzer det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests analyzer det failed, url=%s', url)
 
     json_data['id_analyzer'] = id_analyzer
 
@@ -2168,8 +2168,8 @@ def connect_management():
         else:
             log.warning(Logs.fileline() + ' : connect setting HTTP error %s', req.status_code)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests get connect setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests get connect setting failed, url=%s', url)
 
     cos_url = json_data.get('cos_url')
 
@@ -2180,8 +2180,8 @@ def connect_management():
             req = requests.get(url, timeout=5)
             json_data['version'] = req.text
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests get version connect failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests get version connect failed, url=%s', url)
     else:
         json_data['version'] = ''
 
@@ -2192,8 +2192,8 @@ def connect_management():
             req = requests.get(url, timeout=5)
             json_data['analyzers_loaded'] = req.text.replace("\n", ",").rstrip(",")
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests get analyzers loaded in Connect failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests get analyzers loaded in Connect failed, url=%s', url)
     else:
         json_data['analyzers_loaded'] = ''
 
@@ -2232,8 +2232,8 @@ def list_vars():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests vars all failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests vars all failed, url=%s', url)
 
     return render_template('list-vars.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2293,8 +2293,8 @@ def setting_det_analysis(analysis_id=0):
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load products
     try:
@@ -2308,8 +2308,8 @@ def setting_det_analysis(analysis_id=0):
         if req.status_code == 200:
             json_ihm['products'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
 
     # Load type result
     try:
@@ -2323,8 +2323,8 @@ def setting_det_analysis(analysis_id=0):
         if req.status_code == 200:
             json_ihm['type_res'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests type result list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests type result list failed, url=%s', url)
 
     # Load unit
     try:
@@ -2338,8 +2338,8 @@ def setting_det_analysis(analysis_id=0):
         if req.status_code == 200:
             json_ihm['unit'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests unit list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests unit list failed, url=%s', url)
 
     if analysis_id > 0:
         # Load analysis details
@@ -2354,8 +2354,8 @@ def setting_det_analysis(analysis_id=0):
             if req.status_code == 200:
                 json_data['details'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests analysis det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests analysis det failed, url=%s', url)
 
         # Load analysis variables list
         try:
@@ -2369,8 +2369,8 @@ def setting_det_analysis(analysis_id=0):
             if req.status_code == 200:
                 json_data['var'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests analysis var list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests analysis var list failed, url=%s', url)
 
     json_data['analysis_id'] = analysis_id
 
@@ -2410,8 +2410,8 @@ def manage_pat_records():
         if req.status_code == 200:
             json_ihm['pat_nationality'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests nationality list failed, url=%s', url)
 
     # Load unit age
     try:
@@ -2421,8 +2421,8 @@ def manage_pat_records():
         if req.status_code == 200:
             json_ihm['pat_age_unit'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests unit age failed, url=%s', url)
 
     # Load blood group
     try:
@@ -2432,8 +2432,8 @@ def manage_pat_records():
         if req.status_code == 200:
             json_ihm['pat_blood_group'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests blood group failed, url=%s', url)
 
     # Load blood rhesus
     try:
@@ -2443,8 +2443,8 @@ def manage_pat_records():
         if req.status_code == 200:
             json_ihm['pat_blood_rhesus'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests blood rhesus failed, url=%s', url)
 
     # --- Form from file (same as det-patient) ---
     form_filename = 'form_patient_fr.toml'
@@ -2505,8 +2505,8 @@ def setting_preferences():
         if req.status_code == 200:
             json_data['pref_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests preferences list failed, url=%s', url)
 
     return render_template('setting-pref.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2553,7 +2553,7 @@ def setting_backup():
                 json_data['stat_backup'] = ret[0]
                 json_data['date_backup'] = ret[1]
     except Exception:
-        log.error(Logs.fileline() + ' : cant read ' + path)
+        log.exception(Logs.fileline() + ' : cant read ' + path)
 
     # get modification time from last_backup_ok
     try:
@@ -2564,8 +2564,8 @@ def setting_backup():
         if f.exists():
             json_data['last_backup_ok'] = str(datetime.fromtimestamp(f.stat().st_mtime))
             json_data['last_backup_ok'] = json_data['last_backup_ok'][:19]
-    except Exception as err:
-        log.error(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok , err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok ')
 
     # load start_time
     try:
@@ -2579,8 +2579,8 @@ def setting_backup():
         if req.status_code == 200:
             json_data['bks_data'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests preferences list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests preferences list failed, url=%s', url)
 
     return render_template('setting-backup.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2618,8 +2618,8 @@ def setting_zipcity():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests zipcity list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests zipcity list failed, url=%s', url)
 
     return render_template('setting-zipcity.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2656,8 +2656,8 @@ def setting_stock():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests stock setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests stock setting failed, url=%s', url)
 
     # Load local list
     try:
@@ -2678,8 +2678,8 @@ def setting_stock():
 
             json_data['data_last_id'] = i
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests stock local list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests stock local list failed, url=%s', url)
 
     return render_template('setting-stock.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2731,8 +2731,8 @@ def setting_form():
             elif filename.startswith('form_patient_'):
                 json_data['data_form_pat'].append(filename)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load patient form files failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load patient form files failed')
 
     # Load form setting
     try:
@@ -2746,8 +2746,8 @@ def setting_form():
         if req.status_code == 200:
             json_data['l_fos'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests form setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests form setting failed, url=%s', url)
 
     return render_template('setting-form.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -2800,8 +2800,8 @@ def preview_form(type_form='', filename=''):
                 # only input elements with an id
                 if elem and 'id' in elem and 'input_type' in elem:
                     json_data[elem['id']] = ''
-        except Exception as err:
-            log.error(Logs.fileline() + ' : preview-form PAT-HIST init from toml failed, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : preview-form PAT-HIST init from toml failed')
 
         ret_build_form = Form.build_form(type_form, filename)
         json_data['form_html'] = ret_build_form['form_html']
@@ -2848,8 +2848,8 @@ def preview_form(type_form='', filename=''):
         if req.status_code == 200:
             json_ihm['pat_age_unit'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests unit age failed, url=%s', url)
 
     # Load blood group
     try:
@@ -2859,8 +2859,8 @@ def preview_form(type_form='', filename=''):
         if req.status_code == 200:
             json_ihm['pat_blood_group'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests blood group failed, url=%s', url)
 
     # Load blood rhesus
     try:
@@ -2870,8 +2870,8 @@ def preview_form(type_form='', filename=''):
         if req.status_code == 200:
             json_ihm['pat_blood_rhesus'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests blood rhesus failed, url=%s', url)
 
     # Load nationality
     try:
@@ -2881,8 +2881,8 @@ def preview_form(type_form='', filename=''):
         if req.status_code == 200:
             json_ihm['pat_nationality'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests nationality list failed, url=%s', url)
 
     # Load unit age by default
     try:
@@ -2903,8 +2903,8 @@ def preview_form(type_form='', filename=''):
                 if unit_age['code'] == val_age_def:
                     json_data['def_age_unit'] = unit_age['id_data']
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests unite_age_defaut failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests unite_age_defaut failed, url=%s', url)
 
     # generate a code
     try:
@@ -2915,8 +2915,8 @@ def preview_form(type_form='', filename=''):
             json_data['pat_code'] = req.json()
             json_data['id_pat'] = 0
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests patient generate code failed, url=%s', url)
 
     ret_build_form = Form.build_form(type_form, filename)
     json_data['form_html'] = ret_build_form['form_html']
@@ -2979,8 +2979,8 @@ def list_template():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests template list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests template list failed, url=%s', url)
 
     return render_template('list-template.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3020,8 +3020,8 @@ def det_template(id_tpl=0):
             if req.status_code == 200:
                 json_data['template'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests template det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests template det failed, url=%s', url)
 
     json_data['id_tpl'] = id_tpl
 
@@ -3060,8 +3060,8 @@ def setting_report():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests setting report failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests setting report failed, url=%s', url)
 
     return render_template('setting-report.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3123,8 +3123,8 @@ def det_sending_method(type='', id_item=0):
             if req.status_code == 200:
                 json_data['item'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests sending method det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests sending method det failed, url=%s', url)
     else:
         json_data['item'] = {}
 
@@ -3173,8 +3173,8 @@ def det_sending_model(type='', id_item=0):
             if req.status_code == 200:
                 json_data['item'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests sending model det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests sending model det failed, url=%s', url)
     else:
         json_data['item'] = {}
 
@@ -3216,8 +3216,8 @@ def setting_rec_num():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests record number setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests record number setting failed, url=%s', url)
 
     return render_template('setting-rec-num.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3277,8 +3277,8 @@ def setting_age_interval():
 
             json_data['data_last_id'] = i
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests dict det failed, url=%s', url)
 
     return render_template('setting-age-interval.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3322,8 +3322,8 @@ def setting_requesting_services():
 
             json_data['data_last_id'] = i
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests requesting services list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests requesting services list failed, url=%s', url)
 
     return render_template('setting-requesting-services.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3371,8 +3371,8 @@ def setting_functionnal_units():
 
             json_data['data_last_id'] = i
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests functionnal units list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests functionnal units list failed, url=%s', url)
 
     return render_template('setting-functionnal-units.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3416,8 +3416,8 @@ def setting_manual():
 
             json_data['data_last_id'] = i
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests setting manual list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests setting manual list failed, url=%s', url)
 
     return render_template('setting-manual.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3456,8 +3456,8 @@ def setting_link_unit_user(id_unit):
         if req.status_code == 200:
             json_data['func_unit'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests functionnal unit details failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests functionnal unit details failed, url=%s', url)
 
     # Load list of user with or without link with this unit
     try:
@@ -3467,8 +3467,8 @@ def setting_link_unit_user(id_unit):
         if req.status_code == 200:
             json_data['data_values'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests link unit users failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests link unit users failed, url=%s', url)
 
     return render_template('setting-link-unit-user.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3507,8 +3507,8 @@ def setting_link_unit_fam(id_unit):
         if req.status_code == 200:
             json_data['func_unit'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests functionnal unit details failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests functionnal unit details failed, url=%s', url)
 
     # Load list of analysis family with or without link with this unit
     try:
@@ -3518,8 +3518,8 @@ def setting_link_unit_fam(id_unit):
         if req.status_code == 200:
             json_data['data_values'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests link unit family failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests link unit family failed, url=%s', url)
 
     return render_template('setting-link-unit-fam.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3558,8 +3558,8 @@ def setting_dhis2():
         if req.status_code == 200:
             json_data['dhs'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list of dhis2 api failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list of dhis2 api failed, url=%s', url)
 
     # Load dhis2 files in dhis2 directory
     try:
@@ -3569,8 +3569,8 @@ def setting_dhis2():
             if not os.path.isdir(os.path.join(path, filename)) and filename.endswith('.csv'):
                 json_data['data_dhis2'].append(filename)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed')
 
     return render_template('setting-dhis2.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3612,8 +3612,8 @@ def det_dhis2_api(id_item=0):
 
             log.error(Logs.fileline() + ' : json_data = ' + str(json_data))
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests dhis2 api det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests dhis2 api det failed, url=%s', url)
 
     json_data['id_item'] = id_item
 
@@ -3645,8 +3645,8 @@ def setting_epidemio():
             if not os.path.isdir(os.path.join(path, filename)) and filename == 'epidemio.ini':
                 json_data['data_epidemio'].append(filename)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load epidemio files in epidemio directory failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load epidemio files in epidemio directory failed')
 
     return render_template('setting-epidemio.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3676,8 +3676,8 @@ def setting_indicator():
             if not os.path.isdir(os.path.join(path, filename)) and filename == 'indicator.ini':
                 json_data['data_indicator'].append(filename)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load indicator files in indicator directory failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load indicator files in indicator directory failed')
 
     return render_template('setting-indicator.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -3736,8 +3736,8 @@ def det_lite(id_item=0):
         if req.status_code == 200:
             json_ihm['l_users'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user list failed, url=%s', url)
 
     if id_item > 0:
         # Load printer details
@@ -3752,8 +3752,8 @@ def det_lite(id_item=0):
             if req.status_code == 200:
                 json_data['item'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests lite setup det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests lite setup det failed, url=%s', url)
 
     json_data['id_item'] = id_item
 
@@ -3814,8 +3814,8 @@ def det_oauth_client(id_item=0):
             if req.status_code == 200:
                 json_data['item'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests oauth det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests oauth det failed, url=%s', url)
     else:
         # Defaults for creation
         json_data['item'] = {
@@ -3874,8 +3874,8 @@ def list_results():
         if req.status_code == 200:
             json_ihm['l_pathogen'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list pathogen failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list pathogen failed, url=%s', url)
 
     # List storage box
     try:
@@ -3889,8 +3889,8 @@ def list_results():
         if req.status_code == 200:
             json_ihm['l_box'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list storage box failed, url=%s', url)
 
     # Load analysis type
     try:
@@ -3904,8 +3904,8 @@ def list_results():
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load list results
     try:
@@ -3931,8 +3931,8 @@ def list_results():
         if req.status_code == 200:
             json_data['list_res'] = json.dumps(req.json())
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests results list failed, url=%s', url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -3989,8 +3989,8 @@ def enter_result(id_rec=0, anchor=''):
         if req.status_code == 200:
             json_ihm['products'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
 
     # List pathogen
     try:
@@ -4004,8 +4004,8 @@ def enter_result(id_rec=0, anchor=''):
         if req.status_code == 200:
             json_ihm['l_pathogen'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list pathogen failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list pathogen failed, url=%s', url)
 
     # List storage box
     try:
@@ -4019,8 +4019,8 @@ def enter_result(id_rec=0, anchor=''):
         if req.status_code == 200:
             json_ihm['l_box'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list storage box failed, url=%s', url)
 
     # Load list results
     try:
@@ -4060,8 +4060,8 @@ def enter_result(id_rec=0, anchor=''):
                                 else:
                                     type_res = ''
 
-                        except requests.exceptions.RequestException as err:
-                            log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+                        except requests.exceptions.RequestException:
+                            log.exception(Logs.fileline() + ' : requests result type failed, url=%s', url)
 
                     # get unit label
                     try:
@@ -4080,8 +4080,8 @@ def enter_result(id_rec=0, anchor=''):
                             if unit and unit['label']:
                                 res['unit'] = unit['label']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result unit failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests result unit failed, url=%s', url)
 
                     # get unit2 label
                     try:
@@ -4100,8 +4100,8 @@ def enter_result(id_rec=0, anchor=''):
                             if unit2 and unit2['label']:
                                 res['unit2'] = unit2['label']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result unit2 failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests result unit2 failed, url=%s', url)
 
                     # init list of answer
                     res['res_answer'] = []
@@ -4118,8 +4118,8 @@ def enter_result(id_rec=0, anchor=''):
                             if req.status_code == 200:
                                 res['res_answer'] = req.json()
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests results list failed, url=%s', url)
 
             # Load data patient
             if res and res['id_pat']:
@@ -4140,8 +4140,8 @@ def enter_result(id_rec=0, anchor=''):
                     if req.status_code == 200:
                         json_data['doctor'] = req.json()
 
-                except requests.exceptions.RequestException as err:
-                    log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
+                except requests.exceptions.RequestException:
+                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -4160,11 +4160,11 @@ def enter_result(id_rec=0, anchor=''):
                     if json_data['record']:
                         id_pat = json_data['record']['id_patient']
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests results list failed, url=%s', url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests results record failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests results record failed, url=%s', url)
 
     json_data['patient'] = {}
     if id_pat > 0:
@@ -4179,8 +4179,8 @@ def enter_result(id_rec=0, anchor=''):
             if req.status_code == 200:
                 json_data['patient'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -4229,8 +4229,8 @@ def list_records():
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load list records
     try:
@@ -4246,8 +4246,8 @@ def list_records():
         if req.status_code == 200:
             json_data = json.dumps(req.json())
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests records list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests records list failed, url=%s', url)
 
     json_ihm['id_pres'] = id_pres
 
@@ -4295,8 +4295,8 @@ def list_works(user_role='', emer=''):
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load list records with status filter
     try:
@@ -4332,8 +4332,8 @@ def list_works(user_role='', emer=''):
             if emer:
                 json_ihm['emer'] = 'E'
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests works list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests works list failed, url=%s', url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -4395,8 +4395,8 @@ def list_samples():
         if req.status_code == 200:
             json_data = json.dumps(req.json())
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests samples list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests samples list failed, url=%s', url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -4438,8 +4438,8 @@ def det_sample(id_prod=0):
         if req.status_code == 200:
             json_ihm['products_statut'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests samples statut list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests samples statut list failed, url=%s', url)
 
     # Load samples type
     try:
@@ -4453,8 +4453,8 @@ def det_sample(id_prod=0):
         if req.status_code == 200:
             json_ihm['products'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests samples type list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests samples type list failed, url=%s', url)
 
     # Load samples location choice
     try:
@@ -4468,8 +4468,8 @@ def det_sample(id_prod=0):
         if req.status_code == 200:
             json_ihm['products_location'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests samples location list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests samples location list failed, url=%s', url)
 
     if id_prod > 0:
         # Load sample details
@@ -4484,8 +4484,8 @@ def det_sample(id_prod=0):
             if req.status_code == 200:
                 json_data['product'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests sample det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests sample det failed, url=%s', url)
 
         # Load record details
         try:
@@ -4512,11 +4512,11 @@ def det_sample(id_prod=0):
                         if req.status_code == 200:
                             json_data['patient'] = req.json()
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests record det failed, url=%s', url)
 
     json_data['id_prod'] = id_prod
 
@@ -4555,8 +4555,8 @@ def list_doctors():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests doctors list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests doctors list failed, url=%s', url)
 
     return render_template('list-doctors.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -4594,8 +4594,8 @@ def det_doctor(id_doctor=0):
         if req.status_code == 200:
             json_ihm['spe_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests speciality list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests speciality list failed, url=%s', url)
 
     # Load civility
     try:
@@ -4609,8 +4609,8 @@ def det_doctor(id_doctor=0):
         if req.status_code == 200:
             json_ihm['civility'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests civility list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests civility list failed, url=%s', url)
 
     if id_doctor > 0:
         # Load doctor details
@@ -4625,8 +4625,8 @@ def det_doctor(id_doctor=0):
             if req.status_code == 200:
                 json_data = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
 
     json_data['id_doctor'] = id_doctor
 
@@ -4696,8 +4696,8 @@ def det_patient(type_req='E', id_pat=0):
             if filename.startswith('form_patient_hist_') and filename.endswith('.toml'):
                 has_pat_hist_form = True
                 break
-    except Exception as err:
-        log.error(Logs.fileline() + ' : failed to detect patient history form, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : failed to detect patient history form')
 
     # Load unit age
     try:
@@ -4711,8 +4711,8 @@ def det_patient(type_req='E', id_pat=0):
         if req.status_code == 200:
             json_ihm['pat_age_unit'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests unit age failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests unit age failed, url=%s', url)
 
     # Load blood group
     try:
@@ -4726,8 +4726,8 @@ def det_patient(type_req='E', id_pat=0):
         if req.status_code == 200:
             json_ihm['pat_blood_group'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests blood group failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests blood group failed, url=%s', url)
 
     # Load blood rhesus
     try:
@@ -4741,8 +4741,8 @@ def det_patient(type_req='E', id_pat=0):
         if req.status_code == 200:
             json_ihm['pat_blood_rhesus'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests blood rhesus failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests blood rhesus failed, url=%s', url)
 
     # Load nationality
     try:
@@ -4756,8 +4756,8 @@ def det_patient(type_req='E', id_pat=0):
         if req.status_code == 200:
             json_ihm['pat_nationality'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests nationality list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests nationality list failed, url=%s', url)
 
     # Load data patient
     if id_pat > 0:
@@ -4774,8 +4774,8 @@ def det_patient(type_req='E', id_pat=0):
                 json_data.update(data_pat)
                 json_data['id_pat'] = id_pat
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
         # add form items to json_data
         try:
@@ -4789,8 +4789,8 @@ def det_patient(type_req='E', id_pat=0):
             if req.status_code == 200:
                 json_data.update(req.json())
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
     else:
         # Load unit age by default
         try:
@@ -4815,8 +4815,8 @@ def det_patient(type_req='E', id_pat=0):
                     if unit_age['code'] == val_age_def:
                         json_data['def_age_unit'] = unit_age['id_data']
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests unite_age_defaut failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests unite_age_defaut failed, url=%s', url)
 
         # generate a code
         try:
@@ -4831,8 +4831,8 @@ def det_patient(type_req='E', id_pat=0):
                 json_data['pat_code'] = req.json()
                 json_data['id_pat'] = 0
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests patient generate code failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests patient generate code failed, url=%s', url)
 
     # --- Form from file ---
     # build filename with lang check if exist otherwise take file with lang by default
@@ -4948,8 +4948,8 @@ def det_req_ext(entry='Y', ref=0):
             if filename.startswith('form_patient_hist_') and filename.endswith('.toml'):
                 has_pat_hist_form = True
                 break
-    except Exception as err:
-        log.error(Logs.fileline() + ' : failed to detect patient history form, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : failed to detect patient history form')
 
     if entry == "Y":
         # ref = id_pat
@@ -4966,8 +4966,8 @@ def det_req_ext(entry='Y', ref=0):
                 if req.status_code == 200:
                     json_data['patient'] = req.json()
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
         # Load yes or no
         try:
@@ -4981,8 +4981,8 @@ def det_req_ext(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['yorn'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests yorn list failed, url=%s', url)
 
         # Load discount billing
         try:
@@ -4996,8 +4996,8 @@ def det_req_ext(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['discount_bill'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests discount bill list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests discount bill list failed, url=%s', url)
 
         # Load samples statut
         try:
@@ -5011,8 +5011,8 @@ def det_req_ext(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['products_statut'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests samples statut list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests samples statut list failed, url=%s', url)
 
         # Load samples
         try:
@@ -5026,8 +5026,8 @@ def det_req_ext(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['products'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests samples list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests samples list failed, url=%s', url)
 
         # Load prix_acte
         try:
@@ -5041,8 +5041,8 @@ def det_req_ext(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['act_price'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests prix_acte failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests prix_acte failed, url=%s', url)
 
         # Load facturation_pat_hosp
         try:
@@ -5056,8 +5056,8 @@ def det_req_ext(entry='Y', ref=0):
             if req.status_code == 200:
                 json_data['billing_hosp'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests billing_pat failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests billing_pat failed, url=%s', url)
 
         # add empty structure for post data_save after save_request
         json_data['data_analysis'] = []
@@ -5105,8 +5105,8 @@ def det_req_int(entry='Y', ref=0):
             if filename.startswith('form_patient_hist_') and filename.endswith('.toml'):
                 has_pat_hist_form = True
                 break
-    except Exception as err:
-        log.error(Logs.fileline() + ' : failed to detect patient history form, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : failed to detect patient history form')
 
     if entry == "Y":
         # here : ref = id_pat
@@ -5123,8 +5123,8 @@ def det_req_int(entry='Y', ref=0):
                 if req.status_code == 200:
                     json_data['patient'] = req.json()
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
         # Load yes or no
         try:
@@ -5138,8 +5138,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['yorn'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests yorn list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests yorn list failed, url=%s', url)
 
         # Load discount billing
         try:
@@ -5153,8 +5153,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['discount_bill'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests discount bill list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests discount bill list failed, url=%s', url)
 
         # Load products statut
         try:
@@ -5168,8 +5168,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['products_statut'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests products statut list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests products statut list failed, url=%s', url)
 
         # Load products
         try:
@@ -5183,8 +5183,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['products'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
 
         # Load prix_acte
         try:
@@ -5198,8 +5198,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['act_price'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests prix_acte failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests prix_acte failed, url=%s', url)
 
         # Load facturation_pat_hosp
         try:
@@ -5213,8 +5213,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_data['billing_hosp'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests billing_pat failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests billing_pat failed, url=%s', url)
 
         # load requesting services setting
         try:
@@ -5228,8 +5228,8 @@ def det_req_int(entry='Y', ref=0):
             if req.status_code == 200:
                 json_ihm['req_services'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests requesting services setting failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
 
         # add empty structure
         json_data['data_analysis'] = []
@@ -5281,8 +5281,8 @@ def administrative_record(type_req='E', id_rec=0):
             if filename.startswith('form_patient_hist_') and filename.endswith('.toml'):
                 has_pat_hist_form = True
                 break
-    except Exception as err:
-        log.error(Logs.fileline() + ' : failed to detect patient history form, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : failed to detect patient history form')
 
     # Load save record
     try:
@@ -5309,8 +5309,8 @@ def administrative_record(type_req='E', id_rec=0):
                     if req.status_code == 200:
                         json_data['patient'] = req.json()
 
-                except requests.exceptions.RequestException as err:
-                    log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+                except requests.exceptions.RequestException:
+                    log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
             # Load data doctor with id_doctor
             if json_data['record']['med_prescripteur'] and json_data['record']['med_prescripteur'] > 0:
@@ -5325,11 +5325,11 @@ def administrative_record(type_req='E', id_rec=0):
                     if req.status_code == 200:
                         json_data['doctor'] = req.json()
 
-                except requests.exceptions.RequestException as err:
-                    log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
+                except requests.exceptions.RequestException:
+                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests record det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests record det failed, url=%s', url)
 
     # Load list analysis requested
     try:
@@ -5343,8 +5343,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_data['data_analysis'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list ana failed, url=%s', url)
 
     # Load list samples requested
     try:
@@ -5358,8 +5358,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_data['data_samples'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list ana failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list ana failed, url=%s', url)
 
     # Load report attached to this record
     try:
@@ -5373,8 +5373,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_data['data_reports'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report file failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests report file failed, url=%s', url)
 
     # Load files attached to this record
     try:
@@ -5388,8 +5388,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_data['data_files'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests record list files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests record list files failed, url=%s', url)
 
     # Load list template RES
     try:
@@ -5403,8 +5403,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_ihm['tpl_result'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template RES failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template RES failed, url=%s', url)
 
     # Load list template OUT
     try:
@@ -5418,8 +5418,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_ihm['tpl_outsourced'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template failed, url=%s', url)
 
     # Load list template STI
     try:
@@ -5433,8 +5433,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_ihm['tpl_sticker'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template STI failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template STI failed, url=%s', url)
 
     # Load list template INV
     try:
@@ -5448,8 +5448,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_ihm['tpl_invoice'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template INV failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template INV failed, url=%s', url)
 
     # Load list of sending method
     try:
@@ -5463,8 +5463,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_ihm['send_method_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sending method list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
 
     # Load list of sending model
     try:
@@ -5478,8 +5478,8 @@ def administrative_record(type_req='E', id_rec=0):
         if req.status_code == 200:
             json_ihm['send_model_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sending method list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
 
     json_data['has_pat_hist_form'] = has_pat_hist_form
 
@@ -5563,8 +5563,8 @@ def technical_validation(id_rec=0, anchor=''):
                                 else:
                                     type_res = ''
 
-                        except requests.exceptions.RequestException as err:
-                            log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+                        except requests.exceptions.RequestException:
+                            log.exception(Logs.fileline() + ' : requests result type failed, url=%s', url)
 
                     # get result label if a value has been entered
                     if type_res and res['valeur']:
@@ -5585,8 +5585,8 @@ def technical_validation(id_rec=0, anchor=''):
                                 else:
                                     res['res_label'] = ''
 
-                        except requests.exceptions.RequestException as err:
-                            log.error(Logs.fileline() + ' : requests result label failed, err=%s , url=%s', err, url)
+                        except requests.exceptions.RequestException:
+                            log.exception(Logs.fileline() + ' : requests result label failed, url=%s', url)
                     else:
                         res['res_label'] = res['valeur']
 
@@ -5608,8 +5608,8 @@ def technical_validation(id_rec=0, anchor=''):
                             if unit and unit['label']:
                                 res['unit'] = unit['label']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result unit failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests result unit failed, url=%s', url)
 
                     # get unit2 label
                     try:
@@ -5628,8 +5628,8 @@ def technical_validation(id_rec=0, anchor=''):
                             if unit2 and unit2['label']:
                                 res['unit2'] = unit2['label']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result unit2 failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests result unit2 failed, url=%s', url)
 
                     # get previous result
                     try:
@@ -5657,8 +5657,8 @@ def technical_validation(id_rec=0, anchor=''):
                                 res['prev_val']  = prev['valeur']
                                 res['prev_date'] = prev['date_valid']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests previous result failed, url=%s', url)
 
             # Load data patient
             if res and res['id_pat']:
@@ -5679,8 +5679,8 @@ def technical_validation(id_rec=0, anchor=''):
                     if req.status_code == 200:
                         json_data['doctor'] = req.json()
 
-                except requests.exceptions.RequestException as err:
-                    log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
+                except requests.exceptions.RequestException:
+                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
 
             # Load record
             try:
@@ -5694,8 +5694,8 @@ def technical_validation(id_rec=0, anchor=''):
                 if req.status_code == 200:
                     json_data['record'] = req.json()
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests record failed, err=%s , url=%s', err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests record failed, url=%s', url)
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -5714,11 +5714,11 @@ def technical_validation(id_rec=0, anchor=''):
                     if json_data['record']:
                         id_pat = json_data['record']['id_patient']
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests results list failed, url=%s', url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests results record failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests results record failed, url=%s', url)
 
     json_data['patient'] = {}
     if id_pat > 0:
@@ -5733,8 +5733,8 @@ def technical_validation(id_rec=0, anchor=''):
             if req.status_code == 200:
                 json_data['patient'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
     # Load reasons to cancel a result
     try:
@@ -5748,8 +5748,8 @@ def technical_validation(id_rec=0, anchor=''):
         if req.status_code == 200:
             json_ihm['cancel_reason'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests cancel reason failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests cancel reason failed, url=%s', url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -5811,8 +5811,8 @@ def biological_validation(mode='', id_rec=0):
                 else:
                     json_ihm['id_rec_next'] = ''
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests record next failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests record next failed, url=%s', url)
     else:
         json_ihm['mode'] = 'S'
 
@@ -5830,8 +5830,8 @@ def biological_validation(mode='', id_rec=0):
         if req.status_code == 200:
             json_ihm['tpl_result'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template failed, url=%s', url)
 
     # Load record
     try:
@@ -5857,8 +5857,8 @@ def biological_validation(mode='', id_rec=0):
             if req.status_code == 200:
                 json_data['record']['valid'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests det record and validation failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests det record and validation failed, url=%s', url)
 
     # Load list results
     try:
@@ -5900,8 +5900,8 @@ def biological_validation(mode='', id_rec=0):
                                 else:
                                     type_res = ''
 
-                        except requests.exceptions.RequestException as err:
-                            log.error(Logs.fileline() + ' : requests result type failed, err=%s , url=%s', err, url)
+                        except requests.exceptions.RequestException:
+                            log.exception(Logs.fileline() + ' : requests result type failed, url=%s', url)
 
                     # get result label if a value has been entered
                     if type_res and res['valeur']:
@@ -5921,8 +5921,8 @@ def biological_validation(mode='', id_rec=0):
                             else:
                                 res['res_label'] = ''
 
-                        except requests.exceptions.RequestException as err:
-                            log.error(Logs.fileline() + ' : requests result label failed, err=%s , url=%s', err, url)
+                        except requests.exceptions.RequestException:
+                            log.exception(Logs.fileline() + ' : requests result label failed, url=%s', url)
                     else:
                         res['res_label'] = res['valeur']
 
@@ -5944,8 +5944,8 @@ def biological_validation(mode='', id_rec=0):
                             if unit and unit['label']:
                                 res['unit'] = unit['label']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result unit failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests result unit failed, url=%s', url)
 
                     # get unit2 label
                     try:
@@ -5964,8 +5964,8 @@ def biological_validation(mode='', id_rec=0):
                             if unit2 and unit2['label']:
                                 res['unit2'] = unit2['label']
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests result unit2 failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests result unit2 failed, url=%s', url)
 
                     # get previous result
                     try:
@@ -5993,8 +5993,8 @@ def biological_validation(mode='', id_rec=0):
                                 res['prev_val'] = prev['valeur'] if prev['valeur'] is not None else ''
                                 res['prev_date'] = prev['date_valid'] if prev['date_valid'] is not None else ''
 
-                    except requests.exceptions.RequestException as err:
-                        log.error(Logs.fileline() + ' : requests previous result failed, err=%s , url=%s', err, url)
+                    except requests.exceptions.RequestException:
+                        log.exception(Logs.fileline() + ' : requests previous result failed, url=%s', url)
 
             # Load data patient
             if res and res['id_pat']:
@@ -6015,8 +6015,8 @@ def biological_validation(mode='', id_rec=0):
                     if req.status_code == 200:
                         json_data['doctor'] = req.json()
 
-                except requests.exceptions.RequestException as err:
-                    log.error(Logs.fileline() + ' : requests doctor det failed, err=%s , url=%s', err, url)
+                except requests.exceptions.RequestException:
+                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -6035,11 +6035,11 @@ def biological_validation(mode='', id_rec=0):
                     if json_data['record']:
                         id_pat = json_data['record']['id_patient']
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests results list failed, err=%s , url=%s', err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests results list failed, url=%s', url)
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests results record failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests results record failed, url=%s', url)
 
     json_data['patient'] = {}
     if id_pat > 0:
@@ -6054,8 +6054,8 @@ def biological_validation(mode='', id_rec=0):
             if req.status_code == 200:
                 json_data['patient'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests patient det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
     # Load report attached to this record
     try:
@@ -6069,8 +6069,8 @@ def biological_validation(mode='', id_rec=0):
         if req.status_code == 200:
             json_data['data_reports'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report file failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests report file failed, url=%s', url)
 
     # Load reasons to cancel a result
     try:
@@ -6084,8 +6084,8 @@ def biological_validation(mode='', id_rec=0):
         if req.status_code == 200:
             json_ihm['cancel_reason'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests cancel reason failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests cancel reason failed, url=%s', url)
 
     # Load list of sending method
     try:
@@ -6099,8 +6099,8 @@ def biological_validation(mode='', id_rec=0):
         if req.status_code == 200:
             json_ihm['send_method_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sending method list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
 
     # Load list of sending model
     try:
@@ -6114,8 +6114,8 @@ def biological_validation(mode='', id_rec=0):
         if req.status_code == 200:
             json_ihm['send_model_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sending method list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -6163,8 +6163,8 @@ def report_activity():
 
         if req.status_code == 200:
             json_ihm['lite_users'] = req.json()
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : load lite users failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : load lite users failed, url=%s', url)
 
     # Load list template ACT
     try:
@@ -6178,8 +6178,8 @@ def report_activity():
         if req.status_code == 200:
             json_ihm['tpl_activity_report'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template ACT failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template ACT failed, url=%s', url)
 
     # Load analysis type
     try:
@@ -6193,8 +6193,8 @@ def report_activity():
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # load age interval setting
     try:
@@ -6208,8 +6208,8 @@ def report_activity():
         if req.status_code == 200:
             json_ihm['age_interval'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests age interval setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests age interval setting failed, url=%s', url)
 
     # load data for activity
     try:
@@ -6237,8 +6237,8 @@ def report_activity():
         if req.status_code == 200:
             json_data['stat'] = json.dumps(req.json())
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report activity failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests report activity failed, url=%s', url)
 
     return render_template('report-activity.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6279,8 +6279,8 @@ def report_epidemio(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
         if req.status_code == 200:
             users = req.json()
             json_ihm['lite_users'] = [u for u in users if u.get('role_type') != 'A']
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : load lite users failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : load lite users failed, url=%s', url)
 
     # Normalize lite filter
     if lite_filter not in ('A', 'N', 'Y'):
@@ -6320,8 +6320,8 @@ def report_epidemio(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
         if req.status_code == 200:
             json_data['epidemio'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report epidemio failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests report epidemio failed, url=%s', url)
 
     return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6360,8 +6360,8 @@ def report_indicator(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
 
         if req.status_code == 200:
             json_ihm['lite_users'] = req.json()
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : load lite users failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : load lite users failed, url=%s', url)
 
     # load data for indicator
     try:
@@ -6394,8 +6394,8 @@ def report_indicator(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
         if req.status_code == 200:
             json_data['indicator'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report indicator failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests report indicator failed, url=%s', url)
 
     return render_template('report-indicator.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6459,8 +6459,8 @@ def report_statistic(lite_filter='A', lite_user_id=0):
             return redir
         if req.status_code == 200:
             json_ihm['lite_users'] = req.json()
-    except Exception as err:
-        log.error(Logs.fileline() + ' : requests lite users list failed, err=%s , url=%s', err, url)
+    except Exception:
+        log.exception(Logs.fileline() + ' : requests lite users list failed, url=%s', url)
         json_ihm['lite_users'] = []
 
     # load age interval setting
@@ -6475,8 +6475,8 @@ def report_statistic(lite_filter='A', lite_user_id=0):
         if req.status_code == 200:
             json_ihm['age_interval'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests age interval setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests age interval setting failed, url=%s', url)
 
     # load requesting services setting
     try:
@@ -6490,8 +6490,8 @@ def report_statistic(lite_filter='A', lite_user_id=0):
         if req.status_code == 200:
             json_ihm['req_services'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests requesting services setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
 
     # load data for statistic
     try:
@@ -6523,8 +6523,8 @@ def report_statistic(lite_filter='A', lite_user_id=0):
         if req.status_code == 200:
             json_data['stat'] = json.dumps(req.json())
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests report stat failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests report stat failed, url=%s', url)
 
     return render_template('report-statistic.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6562,8 +6562,8 @@ def report_tat():
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load LabBook Lite users
     json_ihm['lite_users'] = []
@@ -6577,8 +6577,8 @@ def report_tat():
 
         if req.status_code == 200:
             json_ihm['lite_users'] = req.json()
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : load lite users failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : load lite users failed, url=%s', url)
 
     return render_template('report-tat.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6614,8 +6614,8 @@ def report_dhis2():
             if not os.path.isdir(os.path.join(path, filename)) and filename.endswith('.csv'):
                 json_data['data_dhis2'].append(filename)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed')
 
     # Load list dhis2 setting
     try:
@@ -6629,8 +6629,8 @@ def report_dhis2():
         if req.status_code == 200:
             json_ihm['dhs'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list dhis2 setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list dhis2 setting failed, url=%s', url)
 
     return render_template('report-dhis2.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6684,8 +6684,8 @@ def hist_patients():
         if req.status_code == 200:
             json_ihm['dict_sex'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests dict sex failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests dict sex failed, url=%s', url)
 
     # Load list patients
     try:
@@ -6699,8 +6699,8 @@ def hist_patients():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests patients list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests patients list failed, url=%s', url)
 
     return render_template('hist-patients.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6737,8 +6737,8 @@ def det_hist_patient(id_pat=0):
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests details hitoric patient failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests details hitoric patient failed, url=%s', url)
 
     return render_template('det-hist-patient.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6776,8 +6776,8 @@ def hist_analyzes():
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load list analyzes
     try:
@@ -6802,8 +6802,8 @@ def hist_analyzes():
         if req.status_code == 200:
             json_data['analyzes'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analyzes list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analyzes list failed, url=%s', url)
 
     return render_template('hist-analyzes.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6845,8 +6845,8 @@ def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
         if req.status_code == 200:
             json_data['details'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests details hitoric analysis failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests details hitoric analysis failed, url=%s', url)
 
     return render_template('det-hist-analysis.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6884,8 +6884,8 @@ def report_today():
         if req.status_code == 200:
             json_ihm['req_services'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests requesting services setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
 
     try:
         date_end = date.today()
@@ -6909,8 +6909,8 @@ def report_today():
         if req.status_code == 200:
             json_data['today_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests today list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests today list failed, url=%s', url)
 
     return render_template('report-today.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -6948,8 +6948,8 @@ def report_billing():
         if req.status_code == 200:
             json_ihm['tpl_billing_status'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template BIL failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template BIL failed, url=%s', url)
 
     try:
         date_end = date.today()
@@ -6973,8 +6973,8 @@ def report_billing():
         if req.status_code == 200:
             json_data['bills'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests billing list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests billing list failed, url=%s', url)
 
     return render_template('report-billing.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -7015,8 +7015,8 @@ def quality_general():
         if req.status_code == 200:
             json_data['nb_users'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count users failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests count users failed, url=%s', url)
 
     # Load nb_manuals
     try:
@@ -7030,8 +7030,8 @@ def quality_general():
         if req.status_code == 200:
             json_data['nb_manuals'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count manuals failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests count manuals failed, url=%s', url)
 
     # Load last_meeting
     try:
@@ -7045,8 +7045,8 @@ def quality_general():
         if req.status_code == 200:
             json_data['meeting'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests last meeting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests last meeting failed, url=%s', url)
 
     # Load nb_noncompliances_open
     try:
@@ -7060,8 +7060,8 @@ def quality_general():
         if req.status_code == 200:
             json_data['nb_noncompliances_open'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count noncompliances open failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests count noncompliances open failed, url=%s', url)
 
     # Load nb_noncompliances_month
     try:
@@ -7075,8 +7075,8 @@ def quality_general():
         if req.status_code == 200:
             json_data['nb_noncompliances_month'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests count noncompliances month failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests count noncompliances month failed, url=%s', url)
 
     return render_template('quality-general.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -7113,8 +7113,8 @@ def list_laboratory():
         if req.status_code == 200:
             json_data['data_files'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests laboratory files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests laboratory files failed, url=%s', url)
 
     # Load dict details
     try:
@@ -7135,8 +7135,8 @@ def list_laboratory():
 
             json_data['data_last_id'] = i
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests dict det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests dict det failed, url=%s', url)
 
     json_data['dict_name'] = 'sections'
 
@@ -7174,8 +7174,8 @@ def list_staff():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user list failed, url=%s', url)
 
     return render_template('list-staff.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -7218,8 +7218,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_ihm['civility'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests civility list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests civility list failed, url=%s', url)
 
     # Load sections
     try:
@@ -7233,8 +7233,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_ihm['sections'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
 
     # Load User CV files
     try:
@@ -7248,8 +7248,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_data['data_USCV'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests User CV files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests User CV files failed, url=%s', url)
 
     # Load User Diploma files
     try:
@@ -7263,8 +7263,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_data['data_USDI'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests User Diploma files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests User Diploma files failed, url=%s', url)
 
     # Load User Training files
     try:
@@ -7278,8 +7278,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_data['data_USTR'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests User Training files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests User Training files failed, url=%s', url)
 
     # Load User Evaluation files
     try:
@@ -7293,8 +7293,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_data['data_USEV'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests User Evaluation files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests User Evaluation files failed, url=%s', url)
 
     # Load User signature files
     try:
@@ -7308,8 +7308,8 @@ def det_staff(user_id=0, ctx=''):
         if req.status_code == 200:
             json_data['data_SIGN'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests User signature files failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests User signature files failed, url=%s', url)
 
     if user_id > 0:
         # Load user details
@@ -7326,8 +7326,8 @@ def det_staff(user_id=0, ctx=''):
             else:
                 json_data['user_det'] = []
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests user det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests user det failed, url=%s', url)
 
     json_data['user_id'] = user_id
 
@@ -7365,8 +7365,8 @@ def list_equipment():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment list failed, url=%s', url)
 
     return render_template('list-equipment.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -7406,8 +7406,8 @@ def det_equipment(id_eqp=0):
         if req.status_code == 200:
             json_ihm['sections'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
 
     # Load equipment status
     try:
@@ -7421,8 +7421,8 @@ def det_equipment(id_eqp=0):
         if req.status_code == 200:
             json_ihm['statuses'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment status failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment status failed, url=%s', url)
 
     if id_eqp > 0:
         # Load Equipment Photo files
@@ -7437,8 +7437,8 @@ def det_equipment(id_eqp=0):
             if req.status_code == 200:
                 json_data['data_EQPH'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Photo files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Equipment Photo files failed, url=%s', url)
 
         # Load Equipment Bill files
         try:
@@ -7452,8 +7452,8 @@ def det_equipment(id_eqp=0):
             if req.status_code == 200:
                 json_data['data_EQBI'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Equipment Bill files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Equipment Bill files failed, url=%s', url)
 
         # Load equipment details
         try:
@@ -7467,8 +7467,8 @@ def det_equipment(id_eqp=0):
             if req.status_code == 200:
                 json_data['det_eqp'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7508,8 +7508,8 @@ def eqp_document(id_eqp=0):
         if req.status_code == 200:
             json_data['data_MANU'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests Equipment document MANU failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests Equipment document MANU failed, url=%s', url)
 
     # Load Equipment document Procedures
     try:
@@ -7523,8 +7523,8 @@ def eqp_document(id_eqp=0):
         if req.status_code == 200:
             json_data['data_PROC'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests Equipment document PROC failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests Equipment document PROC failed, url=%s', url)
 
     # Load equipment document comment
     try:
@@ -7538,8 +7538,8 @@ def eqp_document(id_eqp=0):
         if req.status_code == 200:
             json_data['comm'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment comm DOC failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment comm DOC failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7577,8 +7577,8 @@ def list_eqp_failure(id_eqp=0):
         if req.status_code == 200:
             json_data['eqf'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment failure list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment failure list failed, url=%s', url)
 
     # Load equipment details to get name
     try:
@@ -7592,8 +7592,8 @@ def list_eqp_failure(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7633,8 +7633,8 @@ def eqp_failure(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7672,8 +7672,8 @@ def list_eqp_metrology(id_eqp=0):
         if req.status_code == 200:
             json_data['eqm'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment metrology list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment metrology list failed, url=%s', url)
 
     # Load equipment details to get name
     try:
@@ -7687,8 +7687,8 @@ def list_eqp_metrology(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7728,8 +7728,8 @@ def eqp_metrology(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7768,8 +7768,8 @@ def list_eqp_maintenance(id_eqp=0):
         if req.status_code == 200:
             json_data['eqpm'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment preventive maintenance list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment preventive maintenance list failed, url=%s', url)
 
     # List of maintenance contract
     try:
@@ -7783,8 +7783,8 @@ def list_eqp_maintenance(id_eqp=0):
         if req.status_code == 200:
             json_data['eqmc'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment maintenance contract list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment maintenance contract list failed, url=%s', url)
 
     # Load equipment details to get name
     try:
@@ -7798,8 +7798,8 @@ def list_eqp_maintenance(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7839,8 +7839,8 @@ def eqp_maintenance_preventive(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7880,8 +7880,8 @@ def eqp_maintenance_contract(id_eqp=0):
         if req.status_code == 200:
             json_data['det_eqp'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests equipment det failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
 
     json_data['id_eqp'] = id_eqp
 
@@ -7920,8 +7920,8 @@ def list_suppliers():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests suppliers list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests suppliers list failed, url=%s', url)
 
     return render_template('list-suppliers.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -7959,8 +7959,8 @@ def det_supplier(id_supplier=0):
             if req.status_code == 200:
                 json_data = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests supplier det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests supplier det failed, url=%s', url)
 
     json_data['id_supplier'] = id_supplier
 
@@ -8000,8 +8000,8 @@ def list_manuals():
         if req.status_code == 200:
             json_ihm['l_manualCat'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
 
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/manual/list'
@@ -8014,8 +8014,8 @@ def list_manuals():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests manual list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests manual list failed, url=%s', url)
 
     return render_template('list-manuals.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8055,8 +8055,8 @@ def det_manual(id_manual=0):
         if req.status_code == 200:
             json_ihm['l_manualCat'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
 
     # Load sections
     try:
@@ -8070,8 +8070,8 @@ def det_manual(id_manual=0):
         if req.status_code == 200:
             json_ihm['sections'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
 
     if id_manual > 0:
         # Load Manual files
@@ -8086,8 +8086,8 @@ def det_manual(id_manual=0):
             if req.status_code == 200:
                 json_data['data_MANU'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Manual files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Manual files failed, url=%s', url)
 
         # Load manual details
         try:
@@ -8101,8 +8101,8 @@ def det_manual(id_manual=0):
             if req.status_code == 200:
                 json_data['manual_det'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests manual det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests manual det failed, url=%s', url)
 
     json_data['id_manual'] = id_manual
 
@@ -8140,8 +8140,8 @@ def list_procedure():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests procedure list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests procedure list failed, url=%s', url)
 
     return render_template('list-procedure.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8181,8 +8181,8 @@ def det_procedure(id_procedure=0):
         if req.status_code == 200:
             json_ihm['sections'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests sections failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
 
     if id_procedure > 0:
         # Load procedure files
@@ -8197,8 +8197,8 @@ def det_procedure(id_procedure=0):
             if req.status_code == 200:
                 json_data['data_PROC'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Procedure files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Procedure files failed, url=%s', url)
 
         # Load procedure details
         try:
@@ -8212,8 +8212,8 @@ def det_procedure(id_procedure=0):
             if req.status_code == 200:
                 json_data['procedure'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests procedure det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests procedure det failed, url=%s', url)
 
     json_data['id_procedure'] = id_procedure
 
@@ -8255,8 +8255,8 @@ def list_trace_download(type_trace=''):
         if req.status_code == 200:
             json_ihm['user_ident'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user ident list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user ident list failed, url=%s', url)
 
     try:
         allowed_types = {'PROC': 'PROC'}
@@ -8275,8 +8275,8 @@ def list_trace_download(type_trace=''):
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests trace download list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests trace download list failed, url=%s', url)
 
     return render_template('list-trace-download.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8312,8 +8312,8 @@ def list_ctrl_int():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests internal control list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests internal control list failed, url=%s', url)
 
     return render_template('list-ctrl-int.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8354,8 +8354,8 @@ def det_control_int(id_ctrl=0):
             if req.status_code == 200:
                 json_data['control'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests internal control det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests internal control det failed, url=%s', url)
 
         # Load list of result
         try:
@@ -8369,8 +8369,8 @@ def det_control_int(id_ctrl=0):
             if req.status_code == 200:
                 json_data['result'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests internal control res list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests internal control res list failed, url=%s', url)
 
     json_data['id_ctrl'] = id_ctrl
 
@@ -8412,8 +8412,8 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
             if req.status_code == 200:
                 json_data['result'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests internal control res failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests internal control res failed, url=%s', url)
 
     json_data['ctq_ser']  = ctq_ser
     json_data['type_val'] = type_val
@@ -8453,8 +8453,8 @@ def list_ctrl_ext():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests external control list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests external control list failed, url=%s', url)
 
     return render_template('list-ctrl-ext.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8495,8 +8495,8 @@ def det_control_ext(id_ctrl=0):
             if req.status_code == 200:
                 json_data['control'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests external control det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests external control det failed, url=%s', url)
 
         # Load list of result
         try:
@@ -8510,8 +8510,8 @@ def det_control_ext(id_ctrl=0):
             if req.status_code == 200:
                 json_data['result'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests external control res list failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests external control res list failed, url=%s', url)
 
     json_data['id_ctrl'] = id_ctrl
 
@@ -8553,8 +8553,8 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
             if req.status_code == 200:
                 json_data['data_CTRL'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Control files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Control files failed, url=%s', url)
 
         # Load external control details
         try:
@@ -8568,8 +8568,8 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
             if req.status_code == 200:
                 json_data['result'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests external control res failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests external control res failed, url=%s', url)
 
     json_data['ctq_ser']  = ctq_ser
     json_data['type_val'] = type_val
@@ -8611,8 +8611,8 @@ def list_stock():
         if req.status_code == 200:
             json_ihm['product_type'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product type failed, url=%s', url)
 
     # Load product_conserv
     try:
@@ -8626,8 +8626,8 @@ def list_stock():
         if req.status_code == 200:
             json_ihm['product_conserv'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product status failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product status failed, url=%s', url)
 
     # Load list of local
     try:
@@ -8641,8 +8641,8 @@ def list_stock():
         if req.status_code == 200:
             json_ihm['product_local'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
 
     # Load list of stock
     try:
@@ -8656,8 +8656,8 @@ def list_stock():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests stock list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests stock list failed, url=%s', url)
 
     return render_template('list-stock.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8695,8 +8695,8 @@ def move_stock_product():
         if req.status_code == 200:
             json_ihm['product_local'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
 
     # Load stock product by local
     try:
@@ -8710,8 +8710,8 @@ def move_stock_product():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list supply product failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list supply product failed, url=%s', url)
 
     return render_template('move-stock-product.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8748,8 +8748,8 @@ def list_products():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
 
     return render_template('list-products.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -8790,8 +8790,8 @@ def det_list_stock(prd_ser=0, prl_ser=0):
             if req.status_code == 200:
                 json_data['det_list_stock'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests stock product det failed, url=%s', url)
 
     json_data['prd_ser'] = prd_ser
     json_data['prl_ser'] = prl_ser
@@ -8847,8 +8847,8 @@ def hist_stock_product(prd_ser=0, prl_ser=0):
             if req.status_code == 200:
                 json_data['hist_stock_product'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests history stock product failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests history stock product failed, url=%s', url)
 
     json_data['prd_ser'] = prd_ser
     json_data['prl_ser'] = prl_ser
@@ -8891,8 +8891,8 @@ def det_new_product(prd_ser=0):
         if req.status_code == 200:
             json_ihm['product_type'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product type failed, url=%s', url)
 
     # Load product_conserv
     try:
@@ -8906,8 +8906,8 @@ def det_new_product(prd_ser=0):
         if req.status_code == 200:
             json_ihm['product_conserv'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product conserv failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product conserv failed, url=%s', url)
 
     if prd_ser > 0:
         # Load stock product details
@@ -8922,8 +8922,8 @@ def det_new_product(prd_ser=0):
             if req.status_code == 200:
                 json_data['stock_product'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests stock product det failed, url=%s', url)
 
     json_data['prd_ser'] = prd_ser
 
@@ -8965,8 +8965,8 @@ def det_stock_product(prs_ser=0):
         if req.status_code == 200:
             json_ihm['product_local'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests product local list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
 
     if prs_ser > 0:
         # Load stock product details
@@ -8981,8 +8981,8 @@ def det_stock_product(prs_ser=0):
             if req.status_code == 200:
                 json_data['stock_product'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests stock product det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests stock product det failed, url=%s', url)
 
     json_data['prs_ser'] = prs_ser
 
@@ -9043,8 +9043,8 @@ def det_printer(id_printer=0):
             if req.status_code == 200:
                 json_data['printer'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests printer det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests printer det failed, url=%s', url)
 
     json_data['id_printer'] = id_printer
 
@@ -9084,8 +9084,8 @@ def list_aliquot():
         if req.status_code == 200:
             json_ihm['l_printer'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list printer failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list printer failed, url=%s', url)
 
     return render_template('list-aliquot.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -9141,8 +9141,8 @@ def det_storage_room(id_item=0):
             if req.status_code == 200:
                 json_data['room'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests storage room det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests storage room det failed, url=%s', url)
     else:
         json_data['room'] = {}
 
@@ -9202,8 +9202,8 @@ def det_storage_chamber(id_item=0):
         if req.status_code == 200:
             json_ihm['l_rooms'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list storage room failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list storage room failed, url=%s', url)
 
     if id_item > 0:
         # Load storage chamber details
@@ -9218,8 +9218,8 @@ def det_storage_chamber(id_item=0):
             if req.status_code == 200:
                 json_data['chamber'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests storage chamber det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests storage chamber det failed, url=%s', url)
     else:
         json_data['chamber'] = {}
 
@@ -9279,8 +9279,8 @@ def det_storage_compartment(id_item=0):
         if req.status_code == 200:
             json_ihm['l_chambers'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list storage chamber failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list storage chamber failed, url=%s', url)
 
     if id_item > 0:
         # Load storage compartment details
@@ -9295,8 +9295,8 @@ def det_storage_compartment(id_item=0):
             if req.status_code == 200:
                 json_data['compartment'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests storage compartment det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests storage compartment det failed, url=%s', url)
     else:
         json_data['compartment'] = {}
 
@@ -9356,8 +9356,8 @@ def det_storage_box(id_item=0):
         if req.status_code == 200:
             json_ihm['l_compartments'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list storage compartment failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list storage compartment failed, url=%s', url)
 
     if id_item > 0:
         # Load storage box details
@@ -9372,8 +9372,8 @@ def det_storage_box(id_item=0):
             if req.status_code == 200:
                 json_data['box'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests storage box det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests storage box det failed, url=%s', url)
     else:
         json_data['box'] = {}
 
@@ -9418,8 +9418,8 @@ def det_aliquot(id_item=0):
         if req.status_code == 200:
             json_ihm['products'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests products list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
 
     # List pathogen
     try:
@@ -9433,8 +9433,8 @@ def det_aliquot(id_item=0):
         if req.status_code == 200:
             json_ihm['l_pathogen'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list pathogen failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list pathogen failed, url=%s', url)
 
     # List storage box
     try:
@@ -9448,8 +9448,8 @@ def det_aliquot(id_item=0):
         if req.status_code == 200:
             json_ihm['l_box'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list storage box failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list storage box failed, url=%s', url)
 
     if id_item > 0:
         # Load aliquot details
@@ -9466,8 +9466,8 @@ def det_aliquot(id_item=0):
                 json_data['id_pat']  = json_data['aliquot']['sal_patient']
                 json_data['id_samp'] = json_data['aliquot']['sal_sample']
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests aliquot det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests aliquot det failed, url=%s', url)
     else:
         json_data['aliquot'] = {}
 
@@ -9570,8 +9570,8 @@ def det_job(id_item=0):
         for filename in os.listdir(path):
             if not os.path.isdir(os.path.join(path, filename)) and filename.endswith('.csv'):
                 json_data['data_dhis2'].append(filename)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load dhis2 files failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load dhis2 files failed')
 
     # Load DHIS2 API configs
     try:
@@ -9582,8 +9582,8 @@ def det_job(id_item=0):
             return redir
         if req.status_code == 200:
             json_ihm['dhs'] = req.json()
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list dhis2 setting failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list dhis2 setting failed, url=%s', url)
 
     # Load analysis type
     try:
@@ -9597,8 +9597,8 @@ def det_job(id_item=0):
         if req.status_code == 200:
             json_ihm['type_ana'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests analysis type failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
 
     # Load templates ACT
     try:
@@ -9609,8 +9609,8 @@ def det_job(id_item=0):
             return redir
         if req.status_code == 200:
             json_ihm['tpl_activity'] = req.json()
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template ACT failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template ACT failed, url=%s', url)
 
     # Load templates BIL
     try:
@@ -9621,8 +9621,8 @@ def det_job(id_item=0):
             return redir
         if req.status_code == 200:
             json_ihm['tpl_billing'] = req.json()
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests list template DBS failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests list template DBS failed, url=%s', url)
 
     # Load job details when editing
     if id_item > 0:
@@ -9669,8 +9669,8 @@ def det_job(id_item=0):
 
                 json_data['item'] = item
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests job det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests job det failed, url=%s', url)
     else:
         json_data['item'] = {}
 
@@ -9734,8 +9734,8 @@ def list_nonconformities():
         if req.status_code == 200:
             json_data['item_list'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests conformity list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests conformity list failed, url=%s', url)
 
     return render_template('list-nonconformities.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -9774,8 +9774,8 @@ def non_conformity(id_det=0):
             json_data['details'] = req.json()
             log.error(Logs.fileline() + ' : details=' + str(json_data['details']))
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests non-conformity details failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests non-conformity details failed, url=%s', url)
 
     json_data['id_det'] = id_det
 
@@ -9813,8 +9813,8 @@ def list_meeting():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests meeting list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests meeting list failed, url=%s', url)
 
     return render_template('list-meeting.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -9854,8 +9854,8 @@ def det_meeting(id_meeting=0):
             if req.status_code == 200:
                 json_data['data_MEET'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Meeting files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Meeting files failed, url=%s', url)
 
         # Load meeting details
         try:
@@ -9873,8 +9873,8 @@ def det_meeting(id_meeting=0):
             if req.status_code == 200:
                 json_data['meeting'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests meeting det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests meeting det failed, url=%s', url)
 
     json_data['id_meeting'] = id_meeting
 
@@ -9912,8 +9912,8 @@ def list_messages():
         if req.status_code == 200:
             json_data = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests messages list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests messages list failed, url=%s', url)
 
     return render_template('list-messages.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -9954,8 +9954,8 @@ def det_message(id_message=0):
             if req.status_code != 200:
                 log.error(Logs.fileline() + ' : requests Message read failed status_code=%s', str(req.status_code))
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Message read failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Message read failed, url=%s', url)
 
         # Load message files
         try:
@@ -9969,8 +9969,8 @@ def det_message(id_message=0):
             if req.status_code == 200:
                 json_data['data_MSG'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests Message files failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests Message files failed, url=%s', url)
 
         # Load message details
         try:
@@ -9984,8 +9984,8 @@ def det_message(id_message=0):
             if req.status_code == 200:
                 json_data['message'] = req.json()
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests message det failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests message det failed, url=%s', url)
 
     json_data['id_message'] = id_message
 
@@ -10052,8 +10052,8 @@ def list_audits():
         else:
             ntp_status['raw_content'] = 'file_not_found'
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : read ntp_status.out failed err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : read ntp_status.out failed')
         ntp_status['raw_content'] = 'read_error'
 
     json_ihm['ntp_status'] = ntp_status
@@ -10070,8 +10070,8 @@ def list_audits():
         if req.status_code == 200:
             json_ihm['user_role'] = req.json()
 
-    except requests.exceptions.RequestException as err:
-        log.error(Logs.fileline() + ' : requests user role list failed, err=%s , url=%s', err, url)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
 
     return render_template('list-audits.html', ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -10107,8 +10107,8 @@ def list_audit_archives():
             if not os.path.isdir(os.path.join(path, filename)):
                 json_data['data_audit_archives'].append(filename)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : load audit archives files in audit directory failed, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load audit archives files in audit directory failed')
 
     return render_template('list-audit-archives.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
 
@@ -10206,8 +10206,8 @@ def download_file(type='', filename='', type_ref='', ref=''):
                 else:
                     return False
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + ' : requests file document failed, err=%s , url=%s', err, url)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests file document failed, url=%s', url)
     elif validated_type == 'PH':
         # ref = id_file
         url = ''
@@ -10244,8 +10244,8 @@ def download_file(type='', filename='', type_ref='', ref=''):
                 else:
                     return False
 
-        except requests.exceptions.RequestException as err:
-            log.error(Logs.fileline() + " : requests file photo failed err=%s", err)
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + " : requests file photo failed")
     elif validated_type in ('RP', 'RLT'):
         filepath = Constants.cst_report
         generated_name = filename  # UUID
@@ -10280,8 +10280,8 @@ def download_file(type='', filename='', type_ref='', ref=''):
                 if req.status_code != 200:
                     return False
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + " : requests file increase nb download failed err=%s", err)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + " : requests file increase nb download failed")
     elif validated_type == 'RPC':
         filepath = Constants.cst_report
         generated_name = filename
@@ -10322,9 +10322,8 @@ def download_file(type='', filename='', type_ref='', ref=''):
                 if req.status_code != 200:
                     return False
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests file increase nb download failed, err=%s , url=%s',
-                          err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests file increase nb download failed, url=%s',url)
 
             # Generate copy with watermark
             url = ''
@@ -10347,9 +10346,8 @@ def download_file(type='', filename='', type_ref='', ref=''):
                     generated_name = validated_copy_name
                     filename = validated_copy_name
 
-            except requests.exceptions.RequestException as err:
-                log.error(Logs.fileline() + ' : requests copy file failed, err=%s , url=%s',
-                          err, url)
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests copy file failed, url=%s', url)
     elif validated_type == 'DH':
         filepath = Constants.cst_dhis2
         generated_name = filename
@@ -10439,8 +10437,8 @@ def upload_file(type_ref='', id_ref=0):
 
             # Create end of storage path
             end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed to hash name, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-file failed to hash name')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -10458,8 +10456,8 @@ def upload_file(type_ref='', id_ref=0):
                 if not storage:
                     log.error(Logs.fileline() + ' : upload-file storage failed')
                     return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed requests storage, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-file failed requests storage')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         filepath = Constants.cst_upload
@@ -10467,14 +10465,14 @@ def upload_file(type_ref='', id_ref=0):
         try:
             pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)
             pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=False, exist_ok=True)
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed to filepath, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-file failed to filepath')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
             f.save(os.path.join(filepath + end_path, generated_name))
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed to save file, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-file failed to save file')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -10521,8 +10519,8 @@ def upload_file(type_ref='', id_ref=0):
                 log.error(Logs.fileline() + ' : upload-file insert failed')
                 return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-file failed information file, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-file failed information file')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10562,8 +10560,8 @@ def upload_photo(type_ref='', id_ref=0):
 
             # Create end of storage path
             end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-photo failed to hash name, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-photo failed to hash name')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -10581,8 +10579,8 @@ def upload_photo(type_ref='', id_ref=0):
                 if not storage:
                     log.error(Logs.fileline() + ' : upload-photo storage failed')
                     return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-photo failed requests storage, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-photo failed requests storage')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         filepath = Constants.cst_photo
@@ -10590,15 +10588,15 @@ def upload_photo(type_ref='', id_ref=0):
         try:
             full_path = os.path.join(filepath, end_path)
             pathlib.Path(full_path).mkdir(mode=0o777, parents=True, exist_ok=True)
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-photo failed to filepath, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-photo failed to filepath')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
             file_path = os.path.join(filepath, end_path, generated_name)
             f.save(file_path)
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-photo failed to save file, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-photo failed to save file')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         try:
@@ -10645,8 +10643,8 @@ def upload_photo(type_ref='', id_ref=0):
                 log.error(Logs.fileline() + ' : upload-photo insert failed')
                 return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-photo failed information file, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-photo failed information file')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10661,8 +10659,8 @@ def upload_logo():
     if request.method == 'POST':
         try:
             f = request.files['file']
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-logo failed to get file from request, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-logo failed to get file from request')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         filepath  = Constants.cst_resource
@@ -10672,8 +10670,8 @@ def upload_logo():
 
         try:
             f.save(os.path.join(filepath, logo_name))
-        except Exception as err:
-            log.error(Logs.fileline() + ' : upload-logo failed to save file, err=%s', err)
+        except Exception:
+            log.exception(Logs.fileline() + ' : upload-logo failed to save file')
             return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10692,8 +10690,8 @@ def upload_dhis2():
         f = request.files['file']
 
         filename = f.filename
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-dhis2 failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-dhis2 failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     filepath = os.path.abspath(Constants.cst_dhis2)
@@ -10712,8 +10710,8 @@ def upload_dhis2():
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-dhis2 failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-dhis2 failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10730,8 +10728,8 @@ def upload_epidemio():
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-epidemio failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-epidemio failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     # Accept only this exact file name
@@ -10743,8 +10741,8 @@ def upload_epidemio():
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-epidemio failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-epidemio failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10761,8 +10759,8 @@ def upload_form(type_form):
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-form failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-form failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     if type_form == 'PAT':
@@ -10791,8 +10789,8 @@ def upload_form(type_form):
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-form failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-form failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     log.info(Logs.fileline() + ' upload-form After save file')
@@ -10811,8 +10809,8 @@ def upload_indicator():
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-indicator failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-indicator failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     # accept only the expected filename
@@ -10824,8 +10822,8 @@ def upload_indicator():
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-indicator failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-indicator failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10842,8 +10840,8 @@ def upload_tpl():
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-tpl failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-tpl failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     filepath = os.path.abspath(Constants.cst_template)
@@ -10865,8 +10863,8 @@ def upload_tpl():
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-tpl failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-tpl failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     log.info(Logs.fileline() + ' upload-tpl After save file')
@@ -10885,8 +10883,8 @@ def upload_import():
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-import failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-import failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     filepath = os.path.abspath(Constants.cst_path_tmp)
@@ -10905,8 +10903,8 @@ def upload_import():
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-import failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-import failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10923,8 +10921,8 @@ def upload_zipcity():
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-zipcity failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-zipcity failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     filepath = os.path.abspath(Constants.cst_path_tmp)
@@ -10943,8 +10941,8 @@ def upload_zipcity():
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-zipcity failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-zipcity failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -10961,8 +10959,8 @@ def upload_connect(type=''):
     try:
         f = request.files['file']
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-connect failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-connect failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     if type == 'plugin':
@@ -10991,8 +10989,8 @@ def upload_connect(type=''):
 
     try:
         f.save(path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-connect failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-connect failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     log.info(Logs.fileline() + ' upload-connect After save file')
@@ -11011,8 +11009,8 @@ def upload_printer():
         f = request.files['file']
 
         filename = f.filename or ''
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-printer failed to get file from request, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-printer failed to get file from request')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     base_dir = Constants.cst_printer
@@ -11038,8 +11036,8 @@ def upload_printer():
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
         f.save(target_path)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : upload-printer failed to save file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : upload-printer failed to save file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -11085,8 +11083,8 @@ def delete_file(type='', filename=''):
         if os.path.exists(target_path):
             os.remove(target_path)
 
-    except Exception as err:
-        log.error(Logs.fileline() + ' : delete-file failed to delete file, err=%s', err)
+    except Exception:
+        log.exception(Logs.fileline() + ' : delete-file failed to delete file')
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

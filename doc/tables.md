@@ -112,6 +112,13 @@
 | user_signature_file              | FILE         | user signature file                        |
 | user_training_file               | FILE         | user training file                         |
 | zip_city                         | DICTIONARY   | list of zip codes and cities               |
+| automation_job                   | AUTOMATION   | scheduled task definition                  |
+| automation_run                   | AUTOMATION   | scheduled task execution history           |
+| oauth2_client                    | AUTH         | oauth2 client registration                 |
+| oauth2_code                      | AUTH         | oauth2 authorization codes                 |
+| oauth2_token                     | AUTH         | oauth2 access and refresh tokens           |
+| patient_hist_form_item           | PATIENT      | historical patient dynamic fields          |
+| audit_trail                      | AUDIT        | audit trail                                |
 
-112 tables used
+119 tables used
 

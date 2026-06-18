@@ -3,11 +3,9 @@ import logging
 import mysql.connector
 import os
 import tomli
-# import hl7apy
 
 from datetime import datetime
-from hl7apy.core import Message  # , Segment
-# from hl7apy.parser import parse_message
+from hl7apy.core import Message
 
 from app.models.Constants import Constants
 from app.models.DB import DB

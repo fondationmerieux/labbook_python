@@ -64,7 +64,7 @@
     {% else %}
     <body>
         <div>{{ _("Accès non autorisé") }}</div>
-        <meta http-equiv="refresh" content="3;url=/disconnect">
+        <meta http-equiv="refresh" content="3;url={{ url_for('disconnect', _external=True) }}">
     </body>
     {% endif %}
 </html>

@@ -73,7 +73,7 @@ class AuditList(Resource):
                 "include_system": filter_include_system
             }
 
-            data = Audit.listAudit(start, length, order_col_index, order_dir, search_value, filters)
+            data = Audit.list_audit(start, length, order_col_index, order_dir, search_value, filters)
             filtered = Audit.countAuditFiltered(search_value, filters)
 
             # DataTables recordsTotal must match the default dataset (without system if excluded by default)
@@ -89,7 +89,7 @@ class AuditList(Resource):
                 "data": data
             }
         except Exception as err:
-            self.log.error(Logs.fileline() + " : AuditList ERROR listAudit err=" + str(err))
+            self.log.error(Logs.fileline() + " : AuditList ERROR list_audit err=" + str(err))
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + " : TRACE AuditList OK")
@@ -189,9 +189,9 @@ class AuditExportATNA(Resource):
         date_end_utc = str(d_end) + " 23:59:59"
 
         try:
-            rows = Audit.listAuditByPeriod(date_beg_utc, date_end_utc)
+            rows = Audit.list_audit_by_period(date_beg_utc, date_end_utc)
         except Exception as err:
-            self.log.error(Logs.fileline() + " : AuditExportATNA ERROR listAuditByPeriod err=" + str(err))
+            self.log.error(Logs.fileline() + " : AuditExportATNA ERROR list_audit_by_period err=" + str(err))
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         if not rows:
@@ -359,9 +359,9 @@ class AuditArchive(Resource):
 
         # 1) Fetch rows
         try:
-            rows = Audit.listAuditByPeriod(date_beg_utc, date_end_utc)
+            rows = Audit.list_audit_by_period(date_beg_utc, date_end_utc)
         except Exception as err:
-            self.log.error(Logs.fileline() + " : AuditArchive ERROR listAuditByPeriod err=" + str(err))
+            self.log.error(Logs.fileline() + " : AuditArchive ERROR list_audit_by_period err=" + str(err))
             try:
                 details = {"result": "ERROR", "reason": "DB_READ_FAILED", "date_beg": date_beg, "date_end": date_end, "purge": purge}
                 Audit.insertAudit(audit_user, "AuditArchive", "AUDIT", None, "ERROR", details, "E")

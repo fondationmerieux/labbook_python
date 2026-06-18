@@ -115,12 +115,8 @@ class ReportEpidemio(Resource):
 
                     req_part = Report.ParseFormula(formula, id_prod)
 
-                    # treatment for label for epidemio report
-                    inner_req = req_part.get('inner') if req_part else None
-                    end_req   = req_part.get('end') if req_part else None
-
                     # self.log.error(Logs.fileline() + ' : DEBUG-TRACE req_part=' + str(req_part))
-                    if inner_req and end_req:
+                    if req_part:
                         result = Report.getResultEpidemio(
                             req_part,
                             args['date_beg'],

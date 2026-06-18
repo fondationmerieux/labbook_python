@@ -14,7 +14,7 @@ class Audit:
     audit_trail_enabled = True
 
     @staticmethod
-    def listAudit(offset=0, limit=25, order_col_index=1, order_dir="desc", search_value=None, filters=None):
+    def list_audit(offset=0, limit=25, order_col_index=1, order_dir="desc", search_value=None, filters=None):
         cursor = DB.cursor()
         try:
             col_map = {
@@ -284,7 +284,7 @@ class Audit:
                 pass
 
     @staticmethod
-    def listAuditByPeriod(date_beg_utc, date_end_utc):
+    def list_audit_by_period(date_beg_utc, date_end_utc):
         cursor = DB.cursor()
         try:
             sql = ('''

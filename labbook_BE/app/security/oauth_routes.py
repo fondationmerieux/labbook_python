@@ -251,12 +251,12 @@ class AuthorizationCodeGrantPKCE(grants.AuthorizationCodeGrant):
         """, (
             code,
             req.client.client_id,
-            req.redirect_uri or '',
+            req.payload.redirect_uri or '',
             scope_to_save,
             int(time.time()),
-            req.data.get('nonce', ''),
-            req.data.get('code_challenge', ''),
-            req.data.get('code_challenge_method', ''),
+            req.payload.data.get('nonce', ''),
+            req.payload.data.get('code_challenge', ''),
+            req.payload.data.get('code_challenge_method', ''),
             int(time.time()) + 600
         ))
         return code

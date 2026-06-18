@@ -508,7 +508,7 @@ class Analysis:
                 code = original_code
                 i = 1
 
-                while Analysis.codeVarExists(code, params.get('test', 'N')):
+                while Analysis.code_var_exists(code, params.get('test', 'N')):
                     code = f"{original_code}_{i}"
                     i += 1
 
@@ -1028,7 +1028,7 @@ class Analysis:
             return False
 
     @staticmethod
-    def codeVarExists(code_var, test='N'):
+    def code_var_exists(code_var, test='N'):
         if test == 'Y':
             mode_test = '_test '
         else:

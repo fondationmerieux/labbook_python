@@ -3,7 +3,16 @@ The [epidemio.ini](storage/resource/epidemio/epidemio.ini) file must be present 
 
 In administrator access you can override the epidemio.ini file, to know you have to keep the same file name
 
-**Current version:** 1 (since 17/04/2023)
+**Current version:** 2 (since 18/06/2026)
+
+## Version history
+
+### v2 (18/06/2026)
+- Clarified formula syntax requirements.
+- Variables must be used in a complete expression (e.g. `$_284 > 0` or `$_256 = [posneg.+]`).
+
+### v1 (17/04/2023)
+- Initial version.
 
 **Note:** The only difference with `indicator.ini` is how `sample_type` and `sample_type_xxx` are defined.
 
@@ -30,7 +39,16 @@ If `nb_res = 4`, then the following must be defined:
 - **res_label_xxx** : label of result to display  
 - **formula_xxx** : calculation formula for the result.  
 
-  **Important:** The syntax of formulas is the same as described in the DHIS2 filter documentation.  
+  **Important:** The syntax of formulas is the same as described in the DHIS2 filter documentation. 
+
+  - A variable must always be used in a complete expression.
+  - Valid examples:
+    - `$_284 > 0`
+    - `$_256 = [posneg.+]`
+    - `$_614 IN ([especepalu.pl_falc], [especepalu.vivax])`
+    - `{106}`
+  - Invalid example:
+    - `$_284`
 
   - If `formula_xxx` is empty, then `res_label_xxx` will be considered as a separator title and `sample_type_xxx` is not required.  
 

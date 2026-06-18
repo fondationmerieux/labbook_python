@@ -1360,6 +1360,7 @@ class Report:
                     base_conditions = start_measurement_conditions(current_aliases, variable_id)
 
                     if i + 1 >= len(tokens):
+                        Report.log.error("error on this formula=%s", formula)
                         Report.log.error("Unexpected end of tokens after variable id")
                         break
 

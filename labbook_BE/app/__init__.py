@@ -210,7 +210,7 @@ try:
         log.warning(Logs.fileline() + ' : amicare.toml not found')
 
 except Exception as err:
-    log.error(Logs.fileline() + ' : load amicare.toml failed err=%s', err)
+    log.exception(Logs.fileline() + ' : load amicare.toml failed err=%s', err)
 
 # ===== Authlib insecure transport toggle =====
 # If not provided by the container, default to 1 so HTTP works in dev/lab.

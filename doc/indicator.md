@@ -9,7 +9,16 @@ The [indicator.ini](storage/resource/indicator/indicator.ini) file must be prese
 
 With administrator access you can override the `indicator.ini` file, but you must keep the same file name.
 
-**Current version:** 1 (since 17/04/2023)
+**Current version:** 2 (since 18/06/2026)
+
+## Version history
+
+### v2 (18/06/2026)
+- Clarified formula syntax requirements.
+- Variables must be used in a complete expression (e.g. `$_284 > 0` or `$_256 = [posneg.+]`).
+
+### v1 (17/04/2023)
+- Initial version.
 
 ---
 
@@ -35,7 +44,16 @@ If `nb_res = 4`, then the following must be defined:
 - **res_label_xxx** : label of result to display  
 - **formula_xxx** : calculation formula for the result.  
 
-  **Important:** The syntax of formulas is the same as described in the DHIS2 filter documentation.  
+  **Important:** The syntax of formulas is the same as described in the DHIS2 filter documentation.
+
+  - A variable must always be used in a complete expression.
+  - Valid examples:
+    - `$_284 > 0`
+    - `$_256 = [posneg.+]`
+    - `$_614 IN ([especepalu.pl_falc], [especepalu.vivax])`
+    - `{106}`
+  - Invalid example:
+    - `$_284
 
   - If the formula starts with `AND`, the first part uses the first `sample_type` and the second part uses the second `sample_type`.  
     If both parts use the same `sample_type`, you must write it as `[serial_of_first_sample_type, serial_of_second_sample_type]`.  

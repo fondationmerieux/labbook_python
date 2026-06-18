@@ -67,13 +67,22 @@ COPY etc/httpd/build/conf.d/ssl.conf /etc/httpd/conf.d/
 # ===== FE =====
 WORKDIR /home/apps/labbook_FE/labbook_FE
 COPY labbook_FE/Pipfile ./
-RUN /bin/bash -lc "python3.11 -m venv venv && source venv/bin/activate && pip install --upgrade pip && pip install pipenv && pipenv install --deploy"
+RUN /bin/bash -lc "\
+    python3.11 -m venv venv && \
+    source venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install pipenv && \
+    pipenv install --deploy"
 COPY labbook_FE /home/apps/labbook_FE/labbook_FE
 
 # ===== BE =====
 WORKDIR /home/apps/labbook_BE/labbook_BE
 COPY labbook_BE/Pipfile ./
-RUN /bin/bash -lc "python3.11 -m venv venv && source venv/bin/activate && pip install --upgrade pip && pip install pipenv && pipenv install --deploy"
+RUN /bin/bash -lc "\
+    python3.11 -m venv venv && \
+    source venv/bin/activate && \
+    pip install --upgrade pip && \pip install pipenv && \
+    pipenv install --deploy"
 COPY labbook_BE /home/apps/labbook_BE/labbook_BE
 
 # optional helper
