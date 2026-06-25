@@ -423,8 +423,8 @@ class MyBearerTokenValidator(BearerTokenValidator):
                 "usr_role": role,
                 "usr_id": user_id,
             }
-        except Exception as err:
-            log.error(Logs.fileline() + ' : MyBearerTokenValidator ERROR building oauth_user from session err=' + str(err))
+        except Exception:
+            log.exception(Logs.fileline() + ' : MyBearerTokenValidator ERROR building oauth_user from session')
             request.oauth_user = {
                 "usr_login": '',
                 "usr_display": '',
@@ -563,8 +563,8 @@ def confirm_access():
     # Store minimal user identity for audit
     try:
         user = User.getUserDetails(id_user_int)
-    except Exception as err:
-        log.error(Logs.fileline() + ' : confirm_access ERROR getUserDetails err=' + str(err))
+    except Exception:
+        log.exception(Logs.fileline() + ' : confirm_access ERROR getUserDetails')
         user = None
 
     if user:

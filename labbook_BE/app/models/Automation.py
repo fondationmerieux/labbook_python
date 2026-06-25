@@ -80,8 +80,8 @@ class Automation:
             if 'ajb_params' in row and isinstance(row['ajb_params'], str):
                 try:
                     row['ajb_params'] = json.loads(row['ajb_params'])
-                except Exception as err:
-                    Automation.log.error(Logs.fileline() + " : getAutomationJobs json decode failed ajb_ser=" + str(row.get('ajb_ser')) + " err=" + str(err))
+                except Exception:
+                    Automation.log.exception(Logs.fileline() + " : getAutomationJobs json decode failed ajb_ser=" + str(row.get('ajb_ser')))
 
         return rows
 
@@ -108,8 +108,8 @@ class Automation:
         if 'ajb_params' in row and isinstance(row['ajb_params'], str):
             try:
                 row['ajb_params'] = json.loads(row['ajb_params'])
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + " : getAutomationJob json decode failed ajb_ser=" + str(row.get('ajb_ser')) + " err=" + str(err))
+            except Exception:
+                Automation.log.exception(Logs.fileline() + " : getAutomationJob json decode failed ajb_ser=" + str(row.get('ajb_ser')))
 
         params = row.get('ajb_params') or {}
 
@@ -259,8 +259,8 @@ class Automation:
         try:
             cursor.execute(req, tuple(params))
             new_id = cursor.lastrowid
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + ' : createAutomationJob SQL error=%s', err)
+        except Exception:
+            Automation.log.exception(Logs.fileline() + ' : createAutomationJob SQL')
             return 0
 
         return new_id or 0
@@ -425,8 +425,8 @@ class Automation:
         try:
             cursor.execute(req, tuple(values))
             return True
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + ' : updateAutomationJob SQL error=%s', err)
+        except Exception:
+            Automation.log.exception(Logs.fileline() + ' : updateAutomationJob SQL')
             return False
 
     @staticmethod
@@ -436,8 +436,8 @@ class Automation:
             req = 'delete from automation_job where ajb_ser = %s'
             cursor.execute(req, (ajb_ser,))
             return cursor.rowcount > 0
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + ' : deleteAutomationJob SQL error=%s', err)
+        except Exception:
+            Automation.log.exception(Logs.fileline() + ' : deleteAutomationJob SQL')
             return False
 
     # ---------------------------
@@ -487,8 +487,8 @@ class Automation:
         try:
             cursor.execute(req, tuple(params))
             rows = cursor.fetchall() or []
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + ' : getAutomationRuns SQL error=%s', err)
+        except Exception:
+            Automation.log.exception(Logs.fileline() + ' : getAutomationRuns SQL')
             return []
 
         # Decode ajb_params and collect all potential internal recipients
@@ -505,8 +505,8 @@ class Automation:
             if isinstance(params_blob, str):
                 try:
                     params_obj = json.loads(params_blob)
-                except Exception as err:
-                    Automation.log.error(Logs.fileline() + " : getAutomationRuns json decode failed arn_ser=" + str(row.get('arn_ser')) + " err=" + str(err))
+                except Exception:
+                    Automation.log.exception(Logs.fileline() + " : getAutomationRuns json decode failed arn_ser=" + str(row.get('arn_ser')))
                     params_obj = {}
             else:
                 params_obj = params_blob or {}
@@ -596,8 +596,8 @@ class Automation:
                 )
                 cursor.execute(req_files, tuple(hash_tokens))
                 frows = cursor.fetchall() or []
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + " : getAutomationRuns file lookup SQL error=%s", err)
+            except Exception:
+                Automation.log.exception(Logs.fileline() + " : getAutomationRuns file lookup SQL")
                 frows = []
 
             for f in frows:
@@ -642,8 +642,8 @@ class Automation:
             cursor.execute(req, (ajb_ser,))
             if cursor.rowcount <= 0:
                 return False
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + ' : forceAutomationRunNow SQL error=%s', err)
+        except Exception:
+            Automation.log.exception(Logs.fileline() + ' : forceAutomationRunNow SQL')
             return False
         return True
 
@@ -692,8 +692,8 @@ class Automation:
                         'update automation_job set ajb_last_status = %s where ajb_ser = %s',
                         ('error', job_id)
                     )
-                except Exception as err:
-                    Automation.log.error(Logs.fileline() + " : scheduler _start_run failed ajb_ser=" + str(job_id) + " err=" + str(err))
+                except Exception:
+                    Automation.log.exception(Logs.fileline() + " : scheduler _start_run failed ajb_ser=" + str(job_id))
                 continue
 
             cursor2 = DB.cursor()
@@ -704,8 +704,8 @@ class Automation:
                     'where ajb_ser = %s'
                 )
                 cursor2.execute(req2, ('running', job_id))
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + ' : scheduler mark running SQL error=%s', err)
+            except Exception:
+                Automation.log.exception(Logs.fileline() + ' : scheduler mark running SQL')
 
             try:
                 result = _execute_job(job)  # placeholder: computes window only
@@ -732,8 +732,8 @@ class Automation:
                     'where ajb_ser = %s'
                 )
                 cursor3.execute(req3, (next_dt.strftime('%Y-%m-%d %H:%M:%S'), status, job_id))
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + ' : scheduler persist next_run_at SQL error=%s', err)
+            except Exception:
+                Automation.log.exception(Logs.fileline() + ' : scheduler persist next_run_at SQL')
 
             processed += 1
 
@@ -759,8 +759,8 @@ class Automation:
             if isinstance(param_blob, str):
                 try:
                     row['ajb_params'] = json.loads(param_blob)
-                except Exception as err:
-                    Automation.log.error(Logs.fileline() + " : listActiveJobs json decode failed ajb_ser=" + str(row.get('ajb_ser')) + " err=" + str(err))
+                except Exception:
+                    Automation.log.exception(Logs.fileline() + " : listActiveJobs json decode failed ajb_ser=" + str(row.get('ajb_ser')))
         return rows
 
     @staticmethod
@@ -785,8 +785,8 @@ class Automation:
             if isinstance(param_blob, str):
                 try:
                     row['ajb_params'] = json.loads(param_blob)
-                except Exception as err:
-                    Automation.log.error(Logs.fileline() + " : get_due_jobs json decode failed ajb_ser=" + str(row.get('ajb_ser')) + " err=" + str(err))
+                except Exception:
+                    Automation.log.exception(Logs.fileline() + " : get_due_jobs json decode failed ajb_ser=" + str(row.get('ajb_ser')))
         return rows
 
     @staticmethod
@@ -888,8 +888,8 @@ def compute_next_run_at(kind: str,
     if start_on:
         try:
             start_day = datetime.strptime(start_on, '%Y-%m-%d').date()
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : compute_next_run_at invalid start_on=" + str(start_on) + " err=" + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : compute_next_run_at invalid start_on=" + str(start_on))
             start_day = None
 
     # -----------------
@@ -1003,8 +1003,8 @@ def _start_run(job_id: int, message: str = '') -> int:
         )
         cursor.execute(req, (job_id, 'running', message or ''))
         return cursor.lastrowid or 0
-    except Exception as err:
-        logging.getLogger('log_db').error(Logs.fileline() + ' : _start_run SQL error=%s', err)
+    except Exception:
+        Automation.log.exception(Logs.fileline() + ' : _start_run SQL')
         return 0
 
 
@@ -1025,16 +1025,16 @@ def _finish_run(run_id: int,
             'where arn_ser = %s'
         )
         cursor.execute(req, (status, rows_count, output_uri, message, error_trace, run_id))
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : _finish_run failed arn_ser=" + str(run_id) + " err=" + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : _finish_run failed arn_ser=" + str(run_id))
         try:
             cursor2 = DB.cursor()
             cursor2.execute(
                 'update automation_run set arn_status = %s where arn_ser = %s',
                 ('error', run_id)
             )
-        except Exception as err2:
-            Automation.log.error(Logs.fileline() + " : _finish_run fallback update failed arn_ser=" + str(run_id) + " err=" + str(err2))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : _finish_run fallback update failed arn_ser=" + str(run_id))
 
 
 def _recompute_next_from_row(job_row: dict) -> datetime:
@@ -1299,8 +1299,8 @@ def _execute_job_dhis2_send(job_row: dict) -> dict:
 
     try:
         dhs_ser = int(params.get('dhis2_api_config') or 0)
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : DHIS2 send invalid dhis2_api_config=" + str(params.get('dhis2_api_config')) + " err=" + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : DHIS2 send invalid dhis2_api_config=" + str(params.get('dhis2_api_config')))
         dhs_ser = 0
 
     if dhs_ser <= 0:
@@ -1308,8 +1308,8 @@ def _execute_job_dhis2_send(job_row: dict) -> dict:
 
     try:
         id_user = int(params.get('dhis2_user_id') or 0)
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : DHIS2 send invalid dhis2_user_id=" + str(params.get('dhis2_user_id')) + " err=" + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : DHIS2 send invalid dhis2_user_id=" + str(params.get('dhis2_user_id')))
         id_user = 1
 
     dry_run_flag = (params.get('dhis2_dry_run') or 'N').upper()
@@ -1566,8 +1566,8 @@ def _execute_job_dhis2_create(job_row: dict) -> dict:
     if isinstance(params, str):
         try:
             params = json.loads(params)
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : DHIS2 create ajb_params json decode failed err=" + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : DHIS2 create ajb_params json decode failed")
             params = {}
     sheet = str(params.get('dhis2_sheet') or '').strip()
     if not sheet:
@@ -1753,8 +1753,8 @@ def _execute_job_dhis2_create(job_row: dict) -> dict:
                     content_type="text/csv",
                     path="dhis2/",
                 )
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : DHIS2 internal messaging failed = " + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : DHIS2 internal messaging failed")
 
     return {
         'status': 'success',
@@ -1821,8 +1821,8 @@ def _execute_job_billing(job_row: dict) -> dict:
                 sender = job_row.get("ajb_created_by") or 0
                 _send_internal_message(sender, receiver, title, body)
 
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + " : billing internal msg failed " + str(err))
+            except Exception:
+                Automation.log.exception(Logs.fileline() + " : billing internal msg failed")
 
         # Return success (same behaviour as DHIS2 create)
         msg = "no billing data for selected period"
@@ -1918,8 +1918,8 @@ def _execute_job_billing(job_row: dict) -> dict:
                     path="billing/"
                 )
 
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : billing internal msg failed " + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : billing internal msg failed")
 
     return {
         'status': 'success',
@@ -2019,8 +2019,8 @@ def _execute_job_activity(job_row: dict) -> dict:
     if type_ana_int > 0:
         try:
             dico_row = Various.getDicoById(type_ana_int)
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : activity getDicoById failed err=" + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : activity getDicoById failed")
             dico_row = None
         if dico_row and 'label' in dico_row:
             family_label = dico_row['label']
@@ -2047,9 +2047,9 @@ def _execute_job_activity(job_row: dict) -> dict:
                     row['age'] = int(age // 52)
                 elif unit == 1036:
                     row['age'] = int(age // 12)
-            except Exception as err:
+            except Exception:
                 # Silent failure, keep original age
-                Automation.log.error(Logs.fileline() + " : activity age normalize failed unit=" + str(unit) + " age=" + str(age) + " err=" + str(err))
+                Automation.log.exception(Logs.fileline() + " : activity age normalize failed unit=" + str(unit) + " age=" + str(age))
 
     # Replace None by empty string (same as PdfActivityReport)
     for row in stat_type:
@@ -2079,8 +2079,8 @@ def _execute_job_activity(job_row: dict) -> dict:
                 sender = job_row.get("ajb_created_by") or 0
                 msg_id = _send_internal_message(sender, receiver, title, body)
 
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + " : activity no-data internal msg failed err=" + str(err))
+            except Exception:
+                Automation.log.exception(Logs.fileline() + " : activity no-data internal msg failed")
 
         return {
             'status': 'success',
@@ -2486,8 +2486,8 @@ def _execute_job_activity(job_row: dict) -> dict:
                     content_type="application/pdf",
                     path="activity/",
                 )
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : activity internal msg failed " + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : activity internal msg failed")
 
     return {
         'status': 'success',
@@ -2508,8 +2508,8 @@ def _send_internal_message(sender_id: int, receiver_id: int, title: str, body: s
         else:
             Automation.log.error(Logs.fileline() + " : internal messaging insertMessage error")
         return msg_id
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : internal messaging failed = " + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : internal messaging failed")
         return 0
 
 
@@ -2533,8 +2533,8 @@ def _ensure_file_record(generated_name: str,
         row = cursor.fetchone()
         if row and row.get('id_data'):
             return int(row['id_data'])
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : _ensure_file_record select error=" + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : _ensure_file_record select")
 
     try:
         from app.models.File import File
@@ -2562,8 +2562,8 @@ def _ensure_file_record(generated_name: str,
             return 0
 
         return int(file_id)
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : _ensure_file_record failed err=" + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : _ensure_file_record failed")
         return 0
 
 
@@ -2599,8 +2599,8 @@ def _attach_file_to_message(message_id: int,
             'type_ref': 'MSG',
         }
         File.insertFileDoc(**link_params)
-    except Exception as err:
-        Automation.log.error(Logs.fileline() + " : _attach_file_to_message failed err=" + str(err))
+    except Exception:
+        Automation.log.exception(Logs.fileline() + " : _attach_file_to_message failed")
 
 
 def _execute_job_ssh(job_row: dict) -> dict:
@@ -2636,8 +2636,8 @@ def _execute_job_ssh(job_row: dict) -> dict:
                     {"synced": synced, "output": content},
                     "E"
                 )
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + ' : _execute_job_ssh Audit.insertAudit failed err=' + str(err))
+            except Exception:
+                Automation.log.exception(Logs.fileline() + ' : _execute_job_ssh Audit.insertAudit failed')
 
         return {
             'status': 'success' if synced else 'error',
@@ -2790,8 +2790,8 @@ def _execute_job_audit_purge(job_row: dict) -> dict:
         if archived_count <= 0:
             try:
                 os.remove(fullpath)
-            except Exception as err:
-                Automation.log.error(Logs.fileline() + " : Audit auto archive/purge remove file failed path=" + str(fullpath) + " err=" + str(err))
+            except Exception:
+                Automation.log.exception(Logs.fileline() + " : Audit auto archive/purge remove file failed path=" + str(fullpath))
             iter_start = next_month
             continue
 
@@ -2821,8 +2821,8 @@ def _execute_job_audit_purge(job_row: dict) -> dict:
         }
         try:
             Audit.insertAudit(None, "AuditAutoArchivePurge", "AUDIT", None, "SUCCESS", details, "E")
-        except Exception as err:
-            Automation.log.error(Logs.fileline() + " : Audit auto archive/purge audit insert failed err=" + str(err))
+        except Exception:
+            Automation.log.exception(Logs.fileline() + " : Audit auto archive/purge audit insert failed")
 
     return {
         "status": "success",
