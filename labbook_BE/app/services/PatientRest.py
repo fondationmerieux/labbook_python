@@ -575,7 +575,6 @@ class PatientDet(Resource):
             self.log.error(Logs.fileline() + ' : PatientDet ERROR audit success err=' + str(err))
         return compose_ret(res, Constants.cst_content_type_json)
 
-
     def create_amicare_account(self, args, id_pat):
         from app import AMICARE_CONFIG
         if args.get('pat_amicare') != 1:

@@ -89,6 +89,8 @@ class Export:
                     elif res_var['libelle'].startswith('Diam. inhibition ') or res_var['libelle'].startswith('CMI ') or \
                          res_var['libelle'].endswith('inhibition diam.') or res_var['libelle'].endswith(' CMI'):
                         res['method_value'] = res_var['valeur']
+                        if 'id_rec' not in res:
+                            Export.log.warning(Logs.fileline() + ' : WHONET invalid ana=' + str(ana) + ' res_var=' + str(res_var))
                         l_res.append(res)
 
                     # in case of something else than antiobic and method result
@@ -97,6 +99,9 @@ class Export:
                         res.update(res_var)
 
                         res['method_value'] = ''
+
+                        if 'id_rec' not in res:
+                            Export.log.warning(Logs.fileline() + ' : WHONET invalid ana=' + str(ana) + ' res_var=' + str(res_var))
 
                         l_res.append(res)
 
@@ -107,6 +112,10 @@ class Export:
         l_products = []
 
         for res in l_res:
+            if 'id_rec' not in res:
+                Export.log.error(Logs.fileline() + ' : getDataWhonet missing id_rec in result=' + str(res))
+                continue
+
             if id_rec_p != res['id_rec']:
                 req = ('select id_dos, samp_date, dico.label as type_prod, commentaire as comment, prod.code '
                        'from sigl_01_data as prod '

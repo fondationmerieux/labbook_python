@@ -917,7 +917,7 @@ def oauth_callback():
         req = requests.post(token_url, data=data, timeout=5)
         log.info(Logs.fileline() + " : DEBUG OAUTH_CB token_post_done status=" + str(req.status_code))
     except requests.RequestException:
-        log.exception(Logs.fileline() + f" : OAUTH token POST raised exception")
+        log.exception(Logs.fileline() + " : OAUTH token POST raised exception")
         req = type('R', (), {'status_code': 500, 'json': lambda: {}})()
 
     if req.status_code != 200:
@@ -1041,6 +1041,7 @@ def homepage(login=''):
     headers = be_auth_headers()
 
     json_data = {}
+    json_data['nb_emer'] = 0
 
     if login:
         session['login'] = login
@@ -10323,7 +10324,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
                     return False
 
             except requests.exceptions.RequestException:
-                log.exception(Logs.fileline() + ' : requests file increase nb download failed, url=%s',url)
+                log.exception(Logs.fileline() + ' : requests file increase nb download failed, url=%s', url)
 
             # Generate copy with watermark
             url = ''

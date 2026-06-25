@@ -64,8 +64,8 @@ class DicoById(Resource):
                 dico[key] = ''
             elif key == 'label' and dico[key] != "":
                 dico[key] = _(dico[key].strip())
-            elif key == 'short_label' and dico[key] != "":
-                dico[key] = _(dico[key].strip())
+            # elif key == 'short_label' and dico[key] != "":
+                # dico[key] = _(dico[key].strip())
 
         self.log.info(Logs.fileline() + ' : TRACE DicoById : ' + str(id_data))
         try:

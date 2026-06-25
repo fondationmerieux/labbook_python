@@ -566,6 +566,23 @@ class Analysis:
             else:
                 mode_test = ' '
 
+            # Avoid duplicate code_var
+            if params.get('code_var'):
+                original_code = str(params['code_var'])
+                code = original_code
+                i = 1
+
+                current_var = Analysis.getAnalysisVar(params['id_data'])
+
+                while Analysis.code_var_exists(code, params.get('test', 'N')):
+                    if current_var and current_var['code_var'] == code:
+                        break
+
+                    code = f"{original_code}_{i}"
+                    i += 1
+
+                params['code_var'] = code
+
             cursor = DB.cursor()
 
             cursor.execute('update sigl_07_data' + mode_test +

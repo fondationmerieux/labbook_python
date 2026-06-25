@@ -1969,7 +1969,6 @@ class Pdf:
             result['bold_value'] = 'N'
             result['highlight']  = 'Y'
             result['formatting'] = 'N'
-            result['value']      = ''
             result['unitConv']   = ''
 
             analysis['fam_name'] = _("Biochimie urinaire")
@@ -2216,7 +2215,6 @@ class Pdf:
 
         Returns:
             bool: True for success, False otherwise.
-
         """
 
         tmp_odt = os.path.join(Constants.cst_path_tmp, filename)

@@ -8,12 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.6.20] - 2026-06-18
+## [3.6.20] - 2026-06-23
 ### Fixed
 - OAuth: migrate deprecated Authlib request accessors
 - swagger: fixed unauthorized page redirect when running behind a URL prefix.
 - epidemiological report result counting
 - Updated epidemio.ini formula syntax for viral load counting
+- duplicate code_var handling when updating analysis variables
+- dropdown result lists in translated languages by preventing translation of technical dictionary keys.
 
 ## [3.6.19] - 2026-05-04
 ### Changed

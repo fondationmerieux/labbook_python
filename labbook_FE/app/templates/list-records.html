@@ -306,7 +306,7 @@ let res = ''
         menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' ;
         {% endif %}
 
-        {% if has_permission("RECORD_5") %}
+        {% if has_permission("RECORD_6") %}
         menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' ;
         {% endif %}
 
